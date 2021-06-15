@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <div t-name="documents_spreadsheet.PivotDetailsSidePanel" class="o_spreadsheet_pivot_side_panel" owl="1">
+        <t t-set="cache" t-value="getters.getCache(pivot.id)"/>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Pivot name</div>
+            <div t-esc="getPivotName()"/>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Model</div>
+            <div><t t-esc="cache and cache.getModelLabel() or pivot.model"/> (<t t-esc="pivot.model"/>)</div>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Domain</div>
+            <DomainComponentAdapter Component="DomainSelector" model="pivot.model" domain="pivot.domain" t-key="'pivot_' + pivot.id"/>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Dimensions</div>
+            <t t-foreach="pivot.rowGroupBys.concat(pivot.colGroupBys)" t-as="gp" t-key="gb">
+                <div t-esc="formatGroupBy(gp)"/>
+            </t>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Measures</div>
+            <t t-foreach="pivot.measures" t-as="measure" t-key="measure">
+                <div t-esc="formatMeasure(measure)"/>
+            </t>
+            <div class="o_pivot_last_update"><i>Last updated at <t t-esc="getLastUpdate()"/></i></div>
+            <div class="btn btn-link o_refresh_measures" t-on-click="refreshMeasures()"><i class="fa fa-arrow-right mr-1"/>Refresh values</div><br/>
+        </div>
+    </div>
+</templates>

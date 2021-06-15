@@ -86,49 +86,6 @@
             t-on-change="_onNameChanged"/>
     </div>
 
-    <div t-name="documents_spreadsheet.PivotSidePanel" class="o_spreadsheet_pivot_side_panel" owl="1">
-        <t t-set="currentPivot" t-value="getters.getSelectedPivot()"/>
-        <t t-if="currentPivot">
-            <t t-set="cache" t-value="getters.getCache(currentPivot.id)"/>
-            <div class="o_side_panel_section">
-                <div class="o_side_panel_title">Pivot name</div>
-                <div t-esc="getPivotName(currentPivot)"/>
-            </div>
-            <div class="o_side_panel_section">
-                <div class="o_side_panel_title">Model</div>
-                <div><t t-esc="cache and cache.getModelLabel() or currentPivot.model"/> (<t t-esc="currentPivot.model"/>)</div>
-            </div>
-            <div class="o_side_panel_section">
-                <div class="o_side_panel_title">Domain</div>
-                <DomainComponentAdapter Component="DomainSelector" model="currentPivot.model" domain="currentPivot.domain" t-key="'pivot_' + currentPivot.id"/>
-            </div>
-            <div class="o_side_panel_section">
-                <div class="o_side_panel_title">Dimensions</div>
-                <t t-foreach="currentPivot.rowGroupBys.concat(currentPivot.colGroupBys)" t-as="gp" t-key="gb">
-                    <div t-esc="formatGroupBy(currentPivot, gp)"/>
-                </t>
-            </div>
-            <div class="o_side_panel_section">
-                <div class="o_side_panel_title">Measures</div>
-                <t t-foreach="currentPivot.measures" t-as="measure" t-key="measure">
-                    <div t-esc="formatMeasure(currentPivot, measure)"/>
-                </t>
-                <div class="o_pivot_last_update"><i>Last updated at <t t-esc="getLastUpdate(currentPivot)"/></i></div>
-                <div class="btn btn-link o_refresh_measures" t-on-click="refreshMeasures(currentPivot.id)"><i class="fa fa-arrow-right mr-1"/>Refresh values</div><br/>
-            </div>
-                <div class="o-sidePanelButtons">
-                    <button t-on-click="resetSelectedPivot" class="o-sidePanelButton o_pivot_cancel">Back</button>
-                </div>
-        </t>
-        <t t-else="1">
-            <div t-on-click="selectPivot(pivot.id)" t-foreach="getters.getPivots()" t-as="pivot" t-key="pivot.id">
-                <div class="o_side_panel_select">
-                    <span t-esc="getPivotName(pivot)"/>
-                </div>
-            </div>
-        </t>
-    </div>
-
     <div t-name="documents_spreadsheet.FilterComponent" class="o_filter_component" owl="1">
         <div
             t-attf-class="o_topbar_filter_icon fa fa-filter {{activeFilter ? 'btn-link': ''}}"

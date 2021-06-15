@@ -21,7 +21,7 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'documents_spreadsheet/static/src/js/**/*',
+            'documents_spreadsheet/static/src/**/*.js',
             'documents_spreadsheet/static/src/scss/**/*',
         ],
         'web.qunit_suite_tests': [
@@ -31,7 +31,7 @@
             'documents_spreadsheet/static/tests/tours/**/*',
         ],
         'web.assets_qweb': [
-            'documents_spreadsheet/static/src/xml/*.xml',
+            'documents_spreadsheet/static/src/**/*.xml',
         ],
     }
 }

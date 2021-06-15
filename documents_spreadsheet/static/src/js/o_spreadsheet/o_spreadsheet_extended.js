@@ -4,7 +4,6 @@ import "./registries/autofill";
 import "./registries/filter_component";
 import "./registries/menu_item_registry";
 import "./registries/pivot_functions";
-import "./registries/pivot_side_panel";
 import "./../collaborative/operational_transform";
 
 import spreadsheet from "./o_spreadsheet_loader";
@@ -13,9 +12,11 @@ import PivotStructurePlugin from "documents_spreadsheet.PivotStructurePlugin";
 import PivotTemplatePlugin from "documents_spreadsheet.PivotTemplatePlugin";
 import PivotAutofillPlugin from "documents_spreadsheet.PivotAutofillPlugin";
 import FiltersPlugin from "documents_spreadsheet.FiltersPlugin";
+import { _t } from "web.core";
+import { PivotSidePanel } from "../../side_panels/pivot/pivot_list_side_panel";
 
 const { coreTypes } = spreadsheet;
-const { corePluginRegistry, uiPluginRegistry } = spreadsheet.registries;
+const { corePluginRegistry, uiPluginRegistry, sidePanelRegistry } = spreadsheet.registries;
 
 corePluginRegistry.add("odooPivotPlugin", PivotPlugin);
 corePluginRegistry.add("odooFiltersPlugin", FiltersPlugin);
@@ -28,5 +29,10 @@ coreTypes.add("ADD_PIVOT_FORMULA");
 coreTypes.add("ADD_PIVOT_FILTER");
 coreTypes.add("EDIT_PIVOT_FILTER");
 coreTypes.add("REMOVE_PIVOT_FILTER");
+
+sidePanelRegistry.add("PIVOT_PROPERTIES_PANEL", {
+  title: (env) => _t("Pivot properties"),
+  Body: PivotSidePanel,
+});
 
 export default spreadsheet;

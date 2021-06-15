@@ -102,6 +102,21 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         }
 
         /**
+         * Return the display name for the pivot
+         *
+         * @param {string} pivotId Id of the pivot
+         *
+         * @returns {string | undefined}
+         */
+        getPivotName(pivotId) {
+            const cache = this.getters.getCache(pivotId);
+            if (cache) {
+                const modelName = cache.getModelLabel();
+                return `${modelName} (#${pivotId})`;
+            }
+        }
+
+        /**
          * Get the cache of the given pivot. If the cache is not ready, wait for it.
          *
          * @param {number} pivotId
@@ -712,6 +727,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         "getSelectedPivot",
         "getCache",
         "getPivotLabel",
+        "getPivotName",
         "getAsyncCache",
         "isCacheLoaded",
         "getLastUpdate",

@@ -170,8 +170,14 @@ class AccountMove(models.Model):
         if not max_percent or self.amount_total_signed < 700:
             return {}
         line = self.invoice_line_ids.filtered(lambda r: r.product_id.l10n_pe_withhold_percentage == max_percent)[0]
-        national_bank_account_number = self.company_id.bank_ids.filtered(
-            lambda b: b.bank_id == self.env.ref('l10n_pe_edi.peruvian_national_bank')).acc_number
+        national_bank = self.env.ref('l10n_pe_edi.peruvian_national_bank', raise_if_not_found=False)
+        national_bank_account_number = False
+        if national_bank:
+            national_bank_account = self.company_id.bank_ids.filtered(lambda b: b.bank_id == national_bank)
+            if national_bank_account:
+                # just take the first one (but not meant to have multiple)
+                national_bank_account_number = national_bank_account[0].acc_number
+
         return {
             'ID': 'Detraccion',
             'PaymentMeansID': line.product_id.l10n_pe_withhold_code,

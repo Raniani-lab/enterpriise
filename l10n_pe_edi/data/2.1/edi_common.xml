@@ -173,7 +173,7 @@
                         <cbc:ID t-esc="spot['ID']"/>
                         <cbc:PaymentMeansID t-esc="spot['PaymentMeansID']"/>
                         <cbc:PaymentPercent t-esc="spot['PaymentPercent']"/>
-                        <cbc:Amount t-att-currencyID="record.currency_id.name" t-esc="spot['Amount']"/>
+                        <cbc:Amount currencyID="PEN" t-esc="spot['Amount']"/>
                     </cac:PaymentTerms>
                 </t>
                 <!--END SPOT-->

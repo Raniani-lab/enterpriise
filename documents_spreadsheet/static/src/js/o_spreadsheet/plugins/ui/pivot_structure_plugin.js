@@ -128,7 +128,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         async getAsyncCache(pivotId, { force = false, initialDomain = false } = {}) {
             const pivot = this.getters.getPivot(pivotId);
             if (!pivot) {
-                throw new Error(_.str.sprintf( _t("There is no pivot with the given id: %s"), pivotId));
+                throw new Error(_.str.sprintf(_t("There is no pivot with the given id: %s"), pivotId));
             }
             if (!(pivotId in this.runtimes)) {
                 this.runtimes[pivotId] = {
@@ -143,7 +143,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
             }
             if (!runtime.promise) {
                 runtime.promise = pivotUtils
-                    .createPivotCache(pivot, this.rpc, runtime.cache, { initialDomain})
+                    .createPivotCache(pivot, this.rpc, runtime.cache, { initialDomain })
                     .then((cache) => {
                         runtime.lastUpdate = Date.now();
                         runtime.cache = cache;
@@ -478,7 +478,8 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         _buildRowHeaders(sheetId, pivot, anchor, cache) {
             const col = anchor[0];
             const anchorRow = anchor[1] + cache.getColGroupByLevels() + 1;
-            const bold = [];
+            const levelOne = [];
+            const levelTwo = [];
             const rowCount = cache.getRowCount();
             for (let index = 0; index < rowCount; index++) {
                 const args = [pivot.id];
@@ -490,21 +491,14 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
                 }
                 this._applyFormula(sheetId, col, row, args, true);
                 if (current.length <= 1) {
-                    bold.push({ top: row, bottom: row, left: col, right: col });
+                    levelOne.push({ top: row, bottom: row, left: col, right: col });
+                }
+                if (current.length == 2) {
+                    levelTwo.push({ top: row, bottom: row, left: col, right: col });
                 }
             }
-            this._applyStyle(sheetId, HEADER_STYLE, [
-                {
-                    top: anchorRow,
-                    bottom: anchorRow + rowCount - 1,
-                    left: col,
-                    right: col,
-                },
-            ]);
-
-            for (let zone of bold) {
-                this._applyStyle(sheetId, TOP_LEVEL_STYLE, [zone]);
-            }
+            this._applyStyle(sheetId, TOP_LEVEL_STYLE, levelOne);
+            this._applyStyle(sheetId, HEADER_STYLE, levelTwo);
         }
         /**
          * Build the values of the pivot

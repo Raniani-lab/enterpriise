@@ -11,17 +11,15 @@ import {
     dom,
     createView,
 } from "web.test_utils";
-import {
-    createSpreadsheet,
-    createSpreadsheetFromPivot,
-    getCellFormula,
-    getCellValue,
-    joinSession,
-    leaveSession,
-    setCellContent,
-} from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { getBasicArch } from "./spreadsheet_test_data";
+import {
+    createSpreadsheet,
+    createSpreadsheetFromPivot, getCell, getCellFormula, getCellValue,
+    joinSession,
+    leaveSession,
+    setCellContent
+} from "./spreadsheet_test_utils";
 import spreadsheet from "documents_spreadsheet.spreadsheet";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
@@ -214,8 +212,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             type: "ir.actions.client",
             tag: "action_open_spreadsheet",
             params: {
-            active_id: 1,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
+                active_id: 1,
+                transportService: new MockSpreadsheetCollaborativeChannel(),
             },
         });
         const breadcrumbItems = $(webClient.el).find(".breadcrumb-item");
@@ -483,7 +481,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
         const sheetId = model.getters.getActiveSheetId();
         model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, sheetId: "111" });
-        model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: sheetId, sheetIdTo: "111"});
+        model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: sheetId, sheetIdTo: "111" });
         model.dispatch("SELECT_CELL", { col: 0, row: 0 });
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
@@ -536,7 +534,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(/*A3*/model.getters.getCell(sheetId, 0, 2).value, 110,);
         assert.equal(/*B3*/model.getters.getCell(sheetId, 1, 2).value, 11);
         assert.equal(/*C3*/model.getters.getCell(sheetId, 2, 2).value, 10);
-            // previously in group bar=110, now it's in a new group bar=99
+        // previously in group bar=110, now it's in a new group bar=99
         this.data.partner.records[0].bar = 99;
         this.data.partner.records[1].bar = 99;
         // updated measures
@@ -628,7 +626,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const sheetId = model.getters.getActiveSheetId();
         assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","foo","1","measure","probability")`,
             "It should contain a pivot formula");
-        model.dispatch("ADD_MERGE", { sheetId, target: [{ top: 0, bottom: 1, left: 0, right: 0}]});
+        model.dispatch("ADD_MERGE", { sheetId, target: [{ top: 0, bottom: 1, left: 0, right: 0 }] });
         model.dispatch("SELECT_CELL", { col: 0, row: 1 }); // A1 and A2 are merged; select A2
         assert.ok(model.getters.isInMerge(sheetId, ...toCartesian("A2")));
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
@@ -934,10 +932,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     test("Check pivot measures with m2o field", async function (assert) {
         assert.expect(3);
         this.data.partner.records.push(
-            {id: 3, foo: 12, bar: 110, product: 37, probability: 50},
-            {id: 4, foo: 18, bar: 110, product: 41, probability: 12},
-            {id: 5, foo: 18, bar: 110, product: 37, probability: 13},
-            {id: 6, foo: 18, bar: 110, product: 37, probability: 14},
+            { id: 3, foo: 12, bar: 110, product: 37, probability: 50 },
+            { id: 4, foo: 18, bar: 110, product: 41, probability: 12 },
+            { id: 5, foo: 18, bar: 110, product: 37, probability: 13 },
+            { id: 6, foo: 18, bar: 110, product: 37, probability: 14 },
         )
         const { model } = await createSpreadsheetFromPivot({
           pivotView: {
@@ -1090,7 +1088,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             }
         });
         const label = "MyFoo";
-        const pivots =model.getters.getPivots();
+        const pivots = model.getters.getPivots();
         model.dispatch("ADD_PIVOT", {
             anchor: [15, 15],
             pivot: { ...pivots[0], id: 2 },
@@ -1101,8 +1099,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             modelName: "product",
             label,
             fields: {
-                1: { type:"many2one", field:"product" }, // first pivotId
-                2: { type:"many2one", field:"product" } // second pivotId
+                1: { type: "many2one", field: "product" }, // first pivotId
+                2: { type: "many2one", field: "product" } // second pivotId
             },
             defaultValue: [],
         }
@@ -1206,7 +1204,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
         const label = "This year";
         const defaultValue = "value";
-        model.dispatch("ADD_PIVOT_FILTER", { filter: { id: "42", type: "text", label, defaultValue, fields: {}}});
+        model.dispatch("ADD_PIVOT_FILTER", { filter: { id: "42", type: "text", label, defaultValue, fields: {} } });
         const [filter] = model.getters.getGlobalFilters();
         assert.equal(filter.value, defaultValue);
     });
@@ -1414,6 +1412,43 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.containsOnce(document.body, ".o_missing_value");
         assert.containsN(document.body, ".o_pivot_table_dialog td", 2);
         assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
+    });
+
+    test("Styling on row headers", async function (assert) {
+        assert.expect(11);
+
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView:{
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="product" type="row"/>
+                    <field name="bar" type="row"/>
+                    <field name="foo" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            },
+        });
+        const styleMainheader = {
+            "fillColor": "#f2f2f2",
+            "bold": true,
+        }
+        const styleSubHeader = {
+            "fillColor": "#f2f2f2"
+        }
+        const styleSubSubHeader = undefined
+        assert.deepEqual(getCell(model, "A1").style, styleSubHeader);
+        assert.deepEqual(getCell(model, "A2").style, styleSubHeader);
+        assert.deepEqual(getCell(model, "A3").style, styleMainheader);
+        assert.deepEqual(getCell(model, "A4").style, styleSubHeader);
+        assert.deepEqual(getCell(model, "A5").style, styleSubSubHeader);
+        assert.deepEqual(getCell(model, "A6").style, styleSubSubHeader);
+        assert.deepEqual(getCell(model, "A7").style, styleMainheader);
+        assert.deepEqual(getCell(model, "A8").style, styleSubHeader);
+        assert.deepEqual(getCell(model, "A9").style, styleSubSubHeader);
+        assert.deepEqual(getCell(model, "A10").style, styleSubSubHeader);
+        assert.deepEqual(getCell(model, "A11").style, styleMainheader);
     });
 
     test("Insert missing value modal can show only the values not used in the current sheet with multiple levels", async function (assert) {

@@ -194,6 +194,85 @@ module("documents_spreadsheet > pivot_global_filters", {
         actionManager.destroy();
     })
 
+    test("Cannot create filters with invalid values", 
+        async function (assert) {
+            assert.expect(7);
+            const model = new Model();
+            const filterValuesCombinations = [
+                [ "date", "badDateValue" ],
+                [ "date", [ 5 ] ],
+                [ "text", { year: "this_year" } ],
+                [ "text", [ 5 ] ],
+                [ "relation", "badRelationValue" ],
+                [ "relation", {}],
+                [ "relation", { year: "this_year" } ],
+            ]
+            for (let comb of filterValuesCombinations ){
+                const result = model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: comb[0],
+                        label: "Date Filter",
+                        defaultValue: comb[1]
+                    },
+                });
+                assert.equal(result, CommandResult.InvalidValueTypeCombination);
+            }
+        }
+    );
+
+    test("Create a new date filter without default values", async function (assert) {
+        assert.expect(11);
+        const {actionManager, model} = await createSpreadsheetFromPivot({
+            model: "partner",
+            data: this.data,
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="row"/>
+                <field name="id" type="col"/>
+                <field name="probability" type="measure"/>
+            </pivot>
+        `,
+        });
+        const searchIcon = actionManager.el.querySelector(".o_topbar_filter_icon");
+        await testUtils.dom.click(searchIcon);
+        const newDate = actionManager.el.querySelector(".o_global_filter_new_time");
+        await testUtils.dom.click(newDate);
+        assert.equal(actionManager.el.querySelectorAll(".o-sidePanel").length, 1);
+
+        const label = actionManager.el.querySelector(".o_global_filter_label");
+        await testUtils.fields.editInput(label, "My Label");
+
+        const range = actionManager.el.querySelector(".o_input:nth-child(2)");
+        await testUtils.fields.editAndTrigger(range, "month", ["change"]);
+
+        const filterValues = actionManager.el.querySelector(".date_filter_values .o_input");
+        await testUtils.dom.click(filterValues);
+
+        assert.equal(actionManager.el.querySelectorAll(".date_filter_values .o_input").length, 2)
+        const month = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(1)")
+        assert.equal(month.length, 13)
+        const year = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(2)")
+        assert.equal(year.length, 4)
+
+        $(actionManager.el.querySelector(".o_field_selector_value")).focusin();
+        await testUtils.dom.click(actionManager.el.querySelector(".o_field_selector_select_button"));
+
+        const save = actionManager.el.querySelector(".o_spreadsheet_filter_editor_side_panel .o_global_filter_save");
+        await testUtils.dom.click(save);
+
+        assert.equal(actionManager.el.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length, 1);
+        const globalFilters = model.getters.getGlobalFilters();
+        assert.equal(globalFilters.length, 1);
+        const globalFilter = globalFilters[0];
+        assert.equal(globalFilter.label, "My Label");
+        assert.deepEqual(globalFilter.defaultValue, {});
+        assert.equal(globalFilter.rangeType, "month");
+        assert.equal(globalFilter.type, "date");
+        assert.deepEqual(model.getters.getPivot(1).computedDomain, [])
+        actionManager.destroy();
+    });
+
     test("Cannot have duplicated names", async function (assert) {
         assert.expect(6);
 

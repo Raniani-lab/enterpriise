@@ -1062,7 +1062,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 1: { type:"many2one", field:"product" }, // first pivotId
                 2: { type:"many2one", field:"product" } // second pivotId
             },
-            defaultValue: {},
+            defaultValue: [],
         }
         model.dispatch("ADD_PIVOT_FILTER", { filter });
         const searchIcon = actionManager.el.querySelector(".o_topbar_filter_icon");
@@ -1131,7 +1131,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
         const label = "This year";
         const defaultValue = "value";
-        model.dispatch("ADD_PIVOT_FILTER", { filter: { id: "42", type: "text", label, defaultValue, fields: {}}});
+        model.dispatch("ADD_PIVOT_FILTER", { filter: { id: "42", type: "text", label, defaultValue, fields: { year:"this_year" }}});
         const searchIcon = actionManager.el.querySelector(".o_topbar_filter_icon");
         await dom.click(searchIcon);
         const editFilter = actionManager.el.querySelectorAll(".o_side_panel_filter_icon");

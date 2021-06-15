@@ -5,5 +5,6 @@ odoo.define("documents_spreadsheet.CommandResult", function (require) {
     FilterNotFound: 1000,
     DuplicatedFilterLabel: 1001,
     PivotCacheNotLoaded: 1002,
+    InvalidValueTypeCombination: 1003,
   };
 });

@@ -69,14 +69,20 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "EDIT_PIVOT_FILTER":
-                    if (!this.globalFilters.find((x) => x.id === cmd.id)) {
+                    if (!this.getGlobalFilter(cmd.id)) {
                         return CommandResult.FilterNotFound;
                     } else if (this._isDuplicatedLabel(cmd.id, cmd.filter.label)) {
                         return CommandResult.DuplicatedFilterLabel;
                     }
-                    break;
+                    return this._checkTypeValueCombination(cmd.filter.type, cmd.filter.defaultValue);                
+                case "SET_PIVOT_FILTER_VALUE":
+                    const filter = this.getGlobalFilter(cmd.id);
+                    if (!filter) {
+                        return CommandResult.FilterNotFound;
+                    }
+                    return this._checkTypeValueCombination(filter.type, cmd.value);
                 case "REMOVE_PIVOT_FILTER":
-                    if (!this.globalFilters.find((x) => x.id === cmd.id)) {
+                    if (!this.getGlobalFilter(cmd.id)) {
                         return CommandResult.FilterNotFound;
                     }
                     break;
@@ -84,7 +90,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                     if (this._isDuplicatedLabel(cmd.id, cmd.filter.label)) {
                         return CommandResult.DuplicatedFilterLabel;
                     }
-                    break;
+                    return this._checkTypeValueCombination(cmd.filter.type, cmd.filter.defaultValue);
             }
             return CommandResult.Success;
         }
@@ -410,6 +416,30 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                 ) > -1
             );
         }
+
+        _checkTypeValueCombination(type, value){
+            if (value !== undefined){
+                switch (type){
+                    case "text":
+                        if (typeof value !== "string"){
+                            return CommandResult.InvalidValueTypeCombination;
+                        }
+                        break;
+                    case "date":
+                        if (typeof value !== "object" || Array.isArray(value)){ // not a date
+                            return CommandResult.InvalidValueTypeCombination;
+                        }
+                        break;
+                    case "relation":
+                        if (!Array.isArray(value)){
+                            return CommandResult.InvalidValueTypeCombination;
+                        }
+                        break;
+                }
+            }
+            return CommandResult.Success
+        }
+
         /**
          * Update the domain of all the pivots by applying global filters to
          * the initial domain of the pivot.

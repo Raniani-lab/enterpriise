@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime, timedelta
+
 from odoo.addons.mrp_account.tests.test_mrp_account import TestMrpAccount
 from odoo.tests.common import Form
 
@@ -8,17 +10,19 @@ from odoo.tests.common import Form
 class TestReportsCommon(TestMrpAccount):
 
     def test_mrp_cost_structure(self):
-        """ Check that values of mrp_cost_structure are correctly calculated even when
-        multi-company + multi-currency environment.
+        """ Check that values of mrp_cost_structure are correctly calculated even when:
+        1. byproducts with a cost share.
+        2. multi-company + multi-currency environment.
         """
 
-        # create MO with component cost
+        # create MO with component cost + operations cost
         self.product_table_sheet.standard_price = 20.0
         self.product_table_leg.standard_price = 5.0
         self.product_bolt.standard_price = 1.0
         self.product_screw.standard_price = 2.0
         self.product_table_leg.tracking = 'none'
         self.product_table_sheet.tracking = 'none'
+        self.mrp_workcenter.costs_hour = 50.0
 
         bom = self.mrp_bom_desk.copy()
         production_table_form = Form(self.env['mrp.production'])
@@ -32,14 +36,31 @@ class TestReportsCommon(TestMrpAccount):
         mo_form.qty_producing = 1
         production_table = mo_form.save()
 
+        # add operation duration otherwise 0 operation cost
+        self.env['mrp.workcenter.productivity'].create({
+            'workcenter_id': self.mrp_workcenter.id,
+            'date_start': datetime.now() - timedelta(minutes=30),
+            'date_end': datetime.now(),
+            'loss_id': self.env.ref('mrp.block_reason7').id,
+            'description': self.env.ref('mrp.block_reason7').name,
+            'workorder_id': production_table.workorder_ids[0].id
+        })
+
+        # avoid qty done not being updated when enterprise mrp_workorder is installed
+        for move in production_table.move_raw_ids:
+            move.quantity_done = move.product_uom_qty
         production_table._post_inventory()
         production_table.button_mark_done()
 
         total_component_cost = sum(move.product_id.standard_price * move.quantity_done for move in production_table.move_raw_ids)
+        total_operation_cost = sum(wo.costs_hour * sum(wo.time_ids.mapped('duration')) / 60.0 for wo in production_table.workorder_ids)
 
         report = self.env['report.mrp_account_enterprise.mrp_cost_structure']
+        report.flush()  # flush to avoid the wo duration not being available in the db in order to correctly build report
         report_values = report._get_report_values(docids=production_table.id)['lines'][0]
         self.assertEqual(report_values['total_cost'], total_component_cost)
+        report_op_cost = sum(operation[3] * operation[4] for operation in report_values['operations'])
+        self.assertEqual(report_op_cost, total_operation_cost)
 
         # create another company w/ different currency + rate
         exchange_rate = 4
@@ -67,3 +88,5 @@ class TestReportsCommon(TestMrpAccount):
 
         report_values = report.with_user(user_p)._get_report_values(docids=production_table.id)['lines'][0]
         self.assertEqual(report_values['total_cost'], total_component_cost / exchange_rate)
+        report_op_cost = sum(operation[3] * operation[4] for operation in report_values['operations'])
+        self.assertEqual(report_op_cost, total_operation_cost / exchange_rate)

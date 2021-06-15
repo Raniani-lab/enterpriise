@@ -21,7 +21,14 @@ class MrpCostStructure(models.AbstractModel):
             operations = []
             Workorders = self.env['mrp.workorder'].search([('production_id', 'in', mos.ids)])
             if Workorders:
-                query_str = """SELECT wo.id, op.id, wo.name, partner.name, sum(t.duration), wc.costs_hour, currency_table.rate
+                query_str = """SELECT
+                                    wo.id,
+                                    op.id,
+                                    wo.name,
+                                    partner.name,
+                                    sum(t.duration),
+                                    CASE WHEN wo.costs_hour = 0.0 THEN wc.costs_hour ELSE wo.costs_hour END AS costs_hour,
+                                    currency_table.rate
                                 FROM mrp_workcenter_productivity t
                                 LEFT JOIN mrp_workorder wo ON (wo.id = t.workorder_id)
                                 LEFT JOIN mrp_workcenter wc ON (wc.id = t.workcenter_id)

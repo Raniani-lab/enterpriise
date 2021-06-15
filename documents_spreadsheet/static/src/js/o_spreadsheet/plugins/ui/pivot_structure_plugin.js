@@ -311,6 +311,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          */
         _autoresize(sheetId, anchor, cache) {
             const end = anchor[0] + cache.getTopHeaderCount();
+            const dimension = "COL";
             for (let col = anchor[0]; col <= end; col++) {
                 const cells = this.getters.getColCells(sheetId, col);
                 const ctx = document.createElement("canvas").getContext("2d");
@@ -320,9 +321,9 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
                     return computeTextWidth(ctx, text, style) + 6;
                 }); // 6: padding
                 const size = Math.max(96, ...sizes); //96: default header width
-                const columns = [col];
+                const elements = [col];
                 if (size !== 0) {
-                    this.dispatch("RESIZE_COLUMNS", { sheetId, columns, size });
+                    this.dispatch("RESIZE_COLUMNS_ROWS", { sheetId, elements, size, dimension });
                 }
             }
         }

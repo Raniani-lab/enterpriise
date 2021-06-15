@@ -664,6 +664,17 @@ test("can select a Pivot from cell formula where pivot is in a function call", a
     );
 });
 
+test("Columns of newly inserted pivot are auto-resized", async function (assert) {
+    assert.expect(1);
+
+    const data = getTestData();
+    data.partner.fields.probability.string = "Probability with a super long name";
+    const { model } = await createSpreadsheetFromPivot({ pivotView: { data } });
+    const sheetId = model.getters.getActiveSheetId();
+    const defaultColSize = 96;
+    assert.ok(model.getters.getCol(sheetId, 1).size > defaultColSize, "Column should be resized");
+})
+
 test("can select a Pivot from cell formula (Mix of test scenarios above)", async function (assert) {
     assert.expect(1);
 

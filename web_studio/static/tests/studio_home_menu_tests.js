@@ -16,6 +16,7 @@ import { registry } from "@web/core/registry";
 import testUtils from "web.test_utils";
 
 import { dialogService } from "@web/core/dialog/dialog_service";
+import { makeFakeRPCService } from "@web/../tests/helpers/mock_services";
 
 const { Component, core, hooks, mount, tags } = owl;
 const { EventBus } = core;
@@ -302,6 +303,50 @@ QUnit.module("Studio", (hooks) => {
 
         assert.strictEqual(document.querySelector("div.modal"), null);
 
+        destroy();
+    });
+
+    QUnit.test("edit an icon", async function (assert) {
+        assert.expect(3);
+
+        const mockRPC = (route, args) => {
+            if (route === "/web_studio/edit_menu_icon") {
+                assert.deepEqual(args, {
+                    context: {
+                        lang: "en",
+                        tz: "taht",
+                        uid: 7,
+                    },
+                    icon: ["fa fa-balance-scale", "#f1c40f", "#34495e"],
+                    menu_id: 1,
+                });
+            }
+        };
+        registry.category("services").add("rpc", makeFakeRPCService(mockRPC), { force: true });
+
+        const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
+
+        await testUtils.dom.click(studioHomeMenu.el.querySelector(".o_web_studio_edit_icon i"));
+        const dialog = document.querySelector("div.modal");
+        await testUtils.dom.click(dialog.querySelector(".o_web_studio_upload a"));
+
+        assert.doesNotHaveClass(
+            dialog.querySelector(".o_web_studio_icon .o_app_icon i"),
+            "fa-balance-scale"
+        );
+
+        // Change the icon's pictogram
+        await testUtils.dom.click(dialog.querySelectorAll(".o_web_studio_selector")[2]);
+        await testUtils.dom.click(
+            dialog.querySelector(".o_web_studio_selector .fa.fa-balance-scale")
+        );
+
+        assert.hasClass(
+            dialog.querySelector(".o_web_studio_icon .o_app_icon i"),
+            "fa-balance-scale"
+        );
+
+        await testUtils.dom.click(dialog.querySelector("footer button")); // trigger save
         destroy();
     });
 });

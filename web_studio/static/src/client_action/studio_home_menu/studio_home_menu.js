@@ -1,10 +1,8 @@
 /** @odoo-module **/
 import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
-import { Dialog } from "@web/core/dialog/dialog";
 import { useService } from "@web/core/service_hook";
-import { IconCreator } from "../icon_creator/icon_creator";
 import { NotEditableActionError } from "../../studio_service";
-import { _lt } from "@web/core/l10n/translation";
+import { IconCreatorDialog } from "./icon_creator_dialog/icon_creator_dialog";
 
 const NEW_APP_BUTTON = {
     isNewAppButton: true,
@@ -12,13 +10,6 @@ const NEW_APP_BUTTON = {
     webIconData: "/web_studio/static/src/img/default_icon_app.png",
 };
 
-class StudioHomeMenuDialog extends Dialog {}
-StudioHomeMenuDialog.title = _lt("Edit Application Icon");
-StudioHomeMenuDialog.contentClass = "o_web_studio_edit_menu_icon_modal";
-StudioHomeMenuDialog.size = "modal-md";
-StudioHomeMenuDialog.bodyTemplate = "web_studio.StudioHomeMenuDialogBody";
-StudioHomeMenuDialog.footerTemplate = "web_studio.StudioHomeMenuDialogFooter";
-StudioHomeMenuDialog.components = Object.assign({}, Dialog.components, { IconCreator });
 /**
  * Studio home menu
  *
@@ -48,12 +39,6 @@ export class StudioHomeMenu extends HomeMenu {
         this.studio = useService("studio");
         this.notifications = useService("notification");
         this.dialog = useService("dialog");
-        this.dialogRemove = null;
-
-        this.state.editedAppData = {};
-        this.closeDialog = this.closeDialog.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.onIconChanged = this.onIconChanged.bind(this);
     }
 
     mounted() {
@@ -79,14 +64,6 @@ export class StudioHomeMenu extends HomeMenu {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    closeDialog() {
-        this.dialogRemove();
-        delete this.initialAppData;
-    }
 
     /**
      * @override
@@ -120,108 +97,34 @@ export class StudioHomeMenu extends HomeMenu {
 
     /**
      * @private
-     */
-    async onSave() {
-        const { appId, type } = this.initialAppData;
-        let iconValue;
-        if (this.state.editedAppData.type !== type) {
-            // different type
-            if (this.state.editedAppData.type === "base64") {
-                iconValue = this.state.editedAppData.uploaded_attachment_id;
-            } else {
-                const { iconClass, color, backgroundColor } = this.state.editedAppData;
-                iconValue = [iconClass, color, backgroundColor];
-            }
-        } else if (this.state.editedAppData.type === "custom_icon") {
-            // custom icon changed
-            const { iconClass, color, backgroundColor } = this.state.editedAppData;
-            if (
-                this.initialAppData.iconClass !== iconClass ||
-                this.initialAppData.color !== color ||
-                this.initialAppData.backgroundColor !== backgroundColor
-            ) {
-                iconValue = [iconClass, color, backgroundColor];
-            }
-        } else if (this.state.editedAppData.uploaded_attachment_id) {
-            // new attachment
-            iconValue = this.state.editedAppData.uploaded_attachment_id;
-        }
-
-        if (iconValue) {
-            await this.rpc("/web_studio/edit_menu_icon", {
-                context: this.user.context,
-                icon: iconValue,
-                menu_id: appId,
-            });
-            await this.menus.reload();
-        }
-        this.closeDialog();
-    }
-
-    /**
-     * @private
      * @param {Object} app
      */
     onEditIconClick(app) {
         if (!this.canEditIcons) {
             return;
         }
+        const editedAppData = {};
         if (app.webIconData) {
-            this.state.editedAppData = {
+            Object.assign(editedAppData, {
                 webIconData: app.webIconData,
                 type: "base64",
-            };
+            });
         } else {
-            this.state.editedAppData = {
+            Object.assign(editedAppData, {
                 backgroundColor: app.webIcon.backgroundColor,
                 color: app.webIcon.color,
                 iconClass: app.webIcon.iconClass,
                 type: "custom_icon",
-            };
+            });
         }
-        this.initialAppData = Object.assign(
-            {
-                appId: app.id,
-            },
-            this.state.editedAppData
-        );
+
         const dialogProps = {
-            onSave: this.onSave,
-            closeDialog: this.closeDialog,
-            onIconChanged: this.onIconChanged,
-            editedAppData: this.state.editedAppData,
+            editedAppData,
+            appId: app.id,
         };
-        this.dialogRemove = this.dialog.add(StudioHomeMenuDialog, dialogProps, {
-            onClose: () => {
-                delete this.initialAppData;
-            },
-        });
+        this.dialog.add(IconCreatorDialog, dialogProps);
     }
-
-    /**
-     * @private
-     * @param {CustomEvent} ev
-     */
-    onIconChanged(ev) {
-        for (const key in this.state.editedAppData) {
-            delete this.state.editedAppData[key];
-        }
-        for (const key in ev.detail) {
-            this.state.editedAppData[key] = ev.detail[key];
-        }
-    }
-
-    // AAB: i think it's no longer useful
-    // /**
-    //  * @private
-    //  */
-    // _onNewAppClick() {
-    //     this.canEditIcons = false;
-    // }
 }
 
-StudioHomeMenu.components = Object.assign({}, HomeMenu.components, {
-    StudioHomeMenuDialog,
-});
 StudioHomeMenu.props = { apps: HomeMenu.props.apps };
 StudioHomeMenu.template = "web_studio.StudioHomeMenu";

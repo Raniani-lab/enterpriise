@@ -5,7 +5,7 @@ import CustomFileInput from "web.CustomFileInput";
 import { useService } from "@web/core/service_hook";
 
 const { Component, hooks } = owl;
-const { useRef, useState } = hooks;
+const { useRef, useState, onWillUpdateProps } = hooks;
 
 const DEFAULT_ICON = {
     backgroundColor: BG_COLORS[5],
@@ -36,9 +36,7 @@ export class IconCreator extends Component {
      * @param {string} [props.webIconData] Base64-encoded string representing
      *      the icon image.
      */
-    constructor() {
-        super(...arguments);
-
+    setup() {
         this.COLORS = COLORS;
         this.BG_COLORS = BG_COLORS;
         this.ICONS = ICONS;
@@ -51,6 +49,7 @@ export class IconCreator extends Component {
         this.FileInput = FileInput;
         try {
             const user = useService("user");
+            this.orm = useService("orm");
             this.userId = user.userId;
         } catch (e) {
             if (e.message === "Service user is not available") {
@@ -66,12 +65,14 @@ export class IconCreator extends Component {
             color: false,
             iconClass: false,
         });
-    }
 
-    async willUpdateProps(nextProps) {
-        if ("iconClass" in nextProps && nextProps.iconClass !== this.props.iconClass) {
-            await new Promise((r) => $(this.iconRef.el).stop().fadeOut(50, r));
-            this.transition = () => $(this.iconRef.el).stop().fadeIn(800);
+        if (this.env.qweb.constructor.enableTransitions) {
+            onWillUpdateProps(async (nextProps) => {
+                if ("iconClass" in nextProps && nextProps.iconClass !== this.props.iconClass) {
+                    await new Promise((r) => $(this.iconRef.el).stop().fadeOut(50, r));
+                    this.transition = () => $(this.iconRef.el).stop().fadeIn(800);
+                }
+            });
         }
     }
 
@@ -111,11 +112,16 @@ export class IconCreator extends Component {
             return;
         }
         const file = ev.detail.files[0];
-        const res = await this.rpc({
-            model: "ir.attachment",
-            method: "read",
-            args: [[file.id], ["datas"]],
-        });
+        let res;
+        if (this.orm) {
+            res = await this.orm.read("ir.attachment", [file.id], ["datas"]);
+        } else {
+            res = await this.rpc({
+                model: "ir.attachment",
+                method: "read",
+                args: [[file.id], ["datas"]],
+            });
+        }
 
         this.trigger("icon-changed", {
             type: "base64",

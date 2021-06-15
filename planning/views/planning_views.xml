@@ -5,15 +5,15 @@
         <field name="name">planning.slot.tree</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <tree string="Shift List" multi_edit="1" sample="1" editable="bottom">
-                <field name="employee_id" groups="planning.group_planning_user" widget="many2one_avatar_employee" optional="show"/>
-                <field name="role_id" optional="show"/>
+            <tree string="Shift List" multi_edit="1" sample="1" editable="top">
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
+                <field name="employee_id" groups="planning.group_planning_user" widget="many2one_avatar_employee" optional="show"/>
+                <field name="role_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="allocated_hours" widget="float_time" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
-                <field name="allocated_percentage" readonly="1" optional="show" decoration-danger="allocated_percentage &gt; 100"/>
+                <field name="allocated_percentage" readonly="1" optional="hide" decoration-danger="allocated_percentage &gt; 100"/>
                 <field name="name" optional="hide" />
-                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
             </tree>
         </field>
     </record>
@@ -99,13 +99,22 @@
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="start_datetime"/>
                 <field name="end_datetime"/>
+                <field name="color"/>
+                <field name="allocated_percentage"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
                                     <div class="o_kanban_record_title">
-                                        <span name="role"><field name="role_id"/></span>
+                                        <em>
+                                            <i class="fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
+                                            <field name="start_datetime"/>
+                                            -
+                                            <field name="end_datetime"/>
+                                            (<field name="allocated_hours" widget="float_time"/>)
+                                            (<field name="allocated_percentage"/>%)
+                                        </em>
                                     </div>
                                 </div>
                                 <div class="o_dropdown_kanban dropdown" groups="planning.group_planning_manager">
@@ -113,18 +122,13 @@
                                         <span class="fa fa-ellipsis-v"/>
                                     </a>
                                     <div class="dropdown-menu" role="menu">
-                                        <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit Slot</a></t>
+                                        <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
                                         <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <em>
-                                    <i class="fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
-                                    <field name="start_datetime"/>
-                                    -
-                                    <field name="end_datetime"/>
-                                </em>
+                                <span name="role"><field name="role_id"/></span>
                             </div>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left"/>
@@ -214,10 +218,11 @@
         <field name="name">planning.slot.calendar</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form)d" event_open_popup="true" quick_add="False" js_class="planning_calendar" mode="month">
-                <field name="employee_id" avatar_field="avatar_128"/>
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form)d" event_open_popup="true" quick_add="False" js_class="planning_calendar" mode="month" show_unusual_days="True">
+                <field name="employee_id" widget="many2one_avatar_employee"/>
                 <field name="role_id" filters="1" color="color"/>
-                <field name="name"/>
+                <field name="allocated_hours" invisible="1"/>
+                <field name="allocated_percentage" invisible="1"/>
             </calendar>
         </field>
     </record>
@@ -228,9 +233,10 @@
         <field name="priority">25</field>
         <field name="arch" type="xml">
             <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form)d" event_open_popup="true" show_unusual_days="True" quick_add="False" js_class="planning_calendar" mode="month">
-                <field name="name"/>
-                <field name="employee_id" avatar_field="avatar_128"/>
+                <field name="employee_id" widget="many2one_avatar_employee"/>
                 <field name="role_id" filters="1" color="color"/>
+                <field name="allocated_hours" invisible="1"/>
+                <field name="allocated_percentage" invisible="1"/>
             </calendar>
         </field>
     </record>
@@ -273,7 +279,7 @@
                                 <ul class="pl-1 mb-0">
                                     <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('L LTS')"/></li>
                                     <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('L LTS')"/></li>
-                                    <li id="allocated_hours"><strong>Allocated Hours: </strong> <t t-esc="allocatedHoursFormatted"/></li>
+                                    <li id="allocated_hours"><strong>Allocated Hours: </strong> <t t-esc="allocatedHoursFormatted"/> (<t t-esc="allocatedPercentageFormatted"/>%)</li>
                                 </ul>
                                 <p class="mt-2 mb-0" t-if="name"><t t-esc="name.slice(0, 200) + (name.length > 200?'…':'')" /></p>
                                 <p t-if="is_published and publication_warning and !overlap_slot_count" class="text-warning mt-2 mb-0">
@@ -518,6 +524,24 @@
                 Encode your shifts in one click by using templates.
             </p>
         </field>
+    </record>
+
+    <record id="model_planning_slot_action_publish_and_send" model="ir.actions.server">
+        <field name="name">Publish &amp; Send</field>
+        <field name="model_id" ref="planning.model_planning_slot"/>
+        <field name="binding_model_id" ref="planning.model_planning_slot"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_planning_publish_and_send()</field>
+    </record>
+
+    <record id="model_planning_slot_action_publish" model="ir.actions.server">
+        <field name="name">Publish</field>
+        <field name="model_id" ref="planning.model_planning_slot"/>
+        <field name="binding_model_id" ref="planning.model_planning_slot"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_planning_publish()</field>
     </record>
 
     <!--

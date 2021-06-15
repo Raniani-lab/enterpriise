@@ -5,6 +5,7 @@ odoo.define('forecast_timesheet.ForecastTimesheetGanttView', function (require) 
     const ForecastGanttView = require('forecast.ForecastGanttView');
     const PlanningGanttRenderer = require('planning.PlanningGanttRenderer');
     const PlanningGanttRow = require('planning.PlanningGanttRow');
+    const fieldUtils = require('web.field_utils');
 
     const ForecastTimesheetGanttRow = PlanningGanttRow.extend({
         template: 'PlanningTimesheetGanttView.Row',
@@ -26,6 +27,18 @@ odoo.define('forecast_timesheet.ForecastTimesheetGanttView', function (require) 
                     }
                 });
             }
+        },
+
+        /**
+         * Add effective hours formatted to context
+         *
+         * @private
+         * @override
+         */
+        _getPopoverContext() {
+            const data = this._super(...arguments);
+            data.effectiveHoursFormatted = fieldUtils.format.float_time(data.effective_hours);
+            return data;
         },
     });
 

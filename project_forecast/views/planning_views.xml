@@ -8,8 +8,8 @@
         <field name="inherit_id" ref="planning.planning_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
-                <field name="project_id" optional="hide" options="{'no_open': True}"/>
-                <field name="task_id" optional="hide" widget="task_with_hours" options="{'no_open': True}"/>
+                <field name="project_id" optional="show" options="{'no_open': True}"/>
+                <field name="task_id" context="{'default_project_id': project_id, 'default_allow_forecast': True}" widget="task_with_hours" options="{'no_open': True}" optional="show"/>
             </xpath>
         </field>
     </record>
@@ -67,7 +67,7 @@
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_calendar"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id" />
                 <field name="task_id" />
             </xpath>

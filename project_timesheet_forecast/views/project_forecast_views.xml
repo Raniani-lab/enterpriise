@@ -40,8 +40,7 @@
             <xpath expr="//li[@id='allocated_hours']" position="after">
                 <li t-if="task_id" id="effective_hours">
                     <strong>Effective Hours: </strong>
-                    <!-- Display effective hours with 1 decimal -->
-                    <t t-esc="effective_hours.toFixed(1)"/>
+                    <t t-esc="effectiveHoursFormatted"/>
                 </li>
             </xpath>
         </field>

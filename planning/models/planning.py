@@ -518,9 +518,6 @@ class Planning(models.Model):
     def name_get(self):
         group_by = self.env.context.get('group_by', [])
         field_list = [fname for fname in self._name_get_fields() if fname not in group_by]
-        is_calendar = self.env.context.get('planning_calendar_view', False)
-        if is_calendar and self.env.context.get('planning_hide_employee', False):
-            field_list.remove('employee_id')
 
         # Sudo as a planning manager is not able to read private project if he is not project manager.
         self = self.sudo()
@@ -697,7 +694,7 @@ class Planning(models.Model):
         dfrom = datetime.combine(fields.Date.from_string(date_from), time.min).replace(tzinfo=pytz.utc)
         dto = datetime.combine(fields.Date.from_string(date_to), time.max).replace(tzinfo=pytz.utc)
 
-        works = {d[0].date() for d in calendar._work_intervals_batch(dfrom, dto, employee.resource_id)[employee.resource_id.id]}
+        works = {d[0].date() for d in calendar._work_intervals_batch(dfrom, dto)[False]}
         return {fields.Date.to_string(day.date()): (day.date() not in works) for day in rrule(DAILY, dfrom, until=dto)}
 
 
@@ -777,6 +774,43 @@ class Planning(models.Model):
                     ['|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', self.role_id.id)]])
             return self.env['hr.employee'].sudo().search(domain)
         return self.employee_id
+
+    def _get_notification_action(self, notif_type, message):
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'type': notif_type,
+                'message': message,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }
+
+    def action_planning_publish(self):
+        notif_type = "success"
+        unpublished_shifts = self.filtered(lambda shift: not shift.is_published)
+        if not unpublished_shifts:
+            notif_type = "warning"
+            message = _('There are no shifts to publish.')
+        else:
+            message = _('The shifts have successfully been published.')
+            unpublished_shifts.action_publish()
+        return self._get_notification_action(notif_type, message)
+
+    def action_planning_publish_and_send(self):
+        notif_type = "success"
+        if all(self.mapped('is_published')):
+            notif_type = "warning"
+            message = _('There are no shifts to publish and send.')
+        else:
+            planning = self.env['planning.planning'].create({
+                'start_datetime': min(self.mapped('start_datetime')),
+                'end_datetime': max(self.mapped('end_datetime')),
+                'slot_ids': [(6, 0, self.ids)],
+            })
+            planning._send_planning()
+            message = _('The shifts have successfully been published and sent.')
+        return self._get_notification_action(notif_type, message)
 
     def action_send(self):
         self.ensure_one()

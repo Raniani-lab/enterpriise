@@ -3,7 +3,7 @@
 <templates xml:space="preserve">
     <t t-name="PlanningGanttView.buttons" t-extend="GanttView.buttons">
         <t t-jquery="> :last-child" t-operation="after">
-            <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-secondary" title="Copy previous week">
+            <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-primary" title="Copy previous week">
                 Copy previous week
             </button>
             <button t-if="activeActions.edit" class="o_gantt_button_send_all btn btn-primary mt-1" title="Send schedule">

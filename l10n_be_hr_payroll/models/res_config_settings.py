@@ -20,3 +20,4 @@ class ResConfigSettings(models.TransientModel):
     l10n_be_revenue_code = fields.Char('Revenue Code', related='company_id.l10n_be_revenue_code', readonly=False)
     hospital_insurance_amount_child = fields.Float(string="Hospital Insurance Amount per Child", config_parameter='hr_contract_salary.hospital_insurance_amount_child')
     hospital_insurance_amount_adult = fields.Float(string="Hospital Insurance Amount per Adult", config_parameter='hr_contract_salary.hospital_insurance_amount_adult')
+    l10n_be_ffe_employer_type = fields.Selection(related='company_id.l10n_be_ffe_employer_type', readonly=False)

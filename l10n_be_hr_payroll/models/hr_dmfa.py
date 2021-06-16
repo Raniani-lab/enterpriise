@@ -184,25 +184,27 @@ class DMFANaturalPerson(DMFANode):
     """
     Represents an employee or a student
     """
-    def __init__(self, employee, payslips, quarter_start, quarter_end, sequence=1):
+    def __init__(self, employee, payslips, quarter_start, quarter_end, worker_count, sequence=1):
         super().__init__(employee.env, sequence=sequence)
         self.employee = employee
         self.payslips = payslips
         self.identification_id = employee.niss
         self.quarter_start = quarter_start
         self.quarter_end = quarter_end
-        self.worker_records = DMFAWorker.init_multi([(payslips, quarter_start, quarter_end)])
+        self.worker_count = worker_count
+        self.worker_records = DMFAWorker.init_multi([(payslips, quarter_start, quarter_end, worker_count)])
 
 
 class DMFAWorker(DMFANode):
     """
     Represents the employee contracts
     """
-    def __init__(self, payslips, quarter_start, quarter_end, sequence=1):
+    def __init__(self, payslips, quarter_start, quarter_end, worker_count, sequence=1):
         super().__init__(payslips.env, sequence=sequence)
         self.payslips = payslips
         self.quarter_start = quarter_start
         self.quarter_end = quarter_end
+        self.worker_count = worker_count
 
         self.frontier_worker = 0
         self.activity_with_risk = -1
@@ -249,14 +251,14 @@ class DMFAWorker(DMFANode):
         return [
             DMFAWorkerContribution(contribution_payslips, basis)
         ] + [
-            DMFAWorkerContributionFFE(contribution_payslips, basis)
+            DMFAWorkerContributionFFE(contribution_payslips, basis, self.worker_count)
         ] + [
             DMFAWorkerContributionSpecialFFE(contribution_payslips, basis)
         ] + [
             DMFAWorkerContributionCPAE(contribution_payslips, basis)
-        ] + [
+        ] + ([
             DMFAWorkerContributionWageRestraint(contribution_payslips, basis)
-        ] + [
+        ] if self.worker_count >= 10 else []) + [
             DMFAWorkerContributionSpecialSocialCotisation(contribution_payslips, basis)
         ] + [
             DMFAWorkerContributionTemporaryUnemployment(contribution_payslips, basis)
@@ -448,17 +450,15 @@ class DMFAWorkerContributionFFE(DMFANode):
     """
     Represents the paid amounts on the employee payslips - FFE Fond fermeture Entreprise
     """
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, worker_count, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = 809
         self.contribution_type = 5
         self.calculation_basis = format_amount(basis)
+        self.worker_count = worker_count
         # Cotisations de base FFE
-        # Employeurs avec finalités industrielles ou commerciales
-        # a) en moyenne au moins 20 travailleurs
-        # 0,17% (0,18%)
-        # YTI TODO: Manage the different possible rates
-        self.amount = format_amount(round(basis * 0.0018, 2))
+        rate = payslips[0].company_id._get_ffe_contribution_rate(worker_count)
+        self.amount = format_amount(round(basis * rate, 2))
         self.first_hiring_date = -1
 
 
@@ -475,7 +475,7 @@ class DMFAWorkerContributionSpecialFFE(DMFANode):
         # Tous les employeurs
         # Pour tous les travailleurs soumis à la réglementation sur le chômage
         # 0,13% (0,14%)
-        # YTI TODO: Manage the different possible rates
+        # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/basiccontributions_closingcompanyfunds.html
         self.amount = format_amount(round(basis * 0.0014, 2))
         self.first_hiring_date = -1
 
@@ -494,6 +494,7 @@ class DMFAWorkerContributionCPAE(DMFANode):
         # de sécurité sociale.
         # Les cotisations sont fixées comme suit:
         # Chaque trimestre : 0,23 % de la masse salariale brute
+        # Source: https://www.sfonds200.be/fonds-social/qui-sommes-nous
         self.amount = format_amount(round(basis * 0.0023, 2))
         self.first_hiring_date = -1
 
@@ -507,10 +508,10 @@ class DMFAWorkerContributionWageRestraint(DMFANode):
         self.worker_code = 855
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
-        # YTI TODO: Manage the different possible rates
         # La cotisation de 1,60 % (portée à 1,69 % par l'effet de la cotisation de modération
         # salariale) n'est pas due par tous les employeurs. Elle n'est due que par les employeurs
         # qui, pendant la période de référence, occupaient en moyenne au moins 10 travailleurs.
+        # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/socialsecuritycontributions/contributions.html
         self.amount = format_amount(round(basis * 0.0169, 2))
         self.first_hiring_date = -1
 
@@ -532,10 +533,10 @@ class DMFAWorkerContributionTemporaryUnemployment(DMFANode):
     """
     def __init__(self, payslips, basis, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
+        # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/temporary_oldunemployed.html
         self.worker_code = 859
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
-        # YTI TODO: Manage the different possible rates
         self.amount = format_amount(round(basis * 0.0010, 2))
         self.first_hiring_date = -1
 
@@ -555,7 +556,6 @@ class DMFAOccupation(DMFANode):
         self.date_start = date_from
         self.date_stop = date_to
 
-        # YTI TODO: Add a time credit + a contractual part time demo to check this
         # See: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/fill_in_dmfa/dmfa_fillinrules/workerrecord_occupationrecords/occupationrecord.html
         if contract.time_credit or contract.resource_calendar_id.work_time_rate < 100:
             if contract.time_credit and contract.time_credit_type_id.code == 'LEAVE300':
@@ -909,6 +909,7 @@ class HrDMFAReport(models.Model):
             ('company_id', '=', self.company_id.id),
         ])
         employees = payslips.mapped('employee_id')
+        worker_count = len(employees)
 
         #### Preliminary Checks ####
         # Check Valid ONSS denominations
@@ -937,6 +938,7 @@ class HrDMFAReport(models.Model):
             employee_payslips[payslip.employee_id] |= payslip
 
         double_basis, double_onss = self._get_double_holiday_pay_contribution(payslips)  # rounded
+
         result = {
             'employer_class': self.company_id.dmfa_employer_class,
             'onss_company_id': format_amount(self.company_id.onss_company_id or 0, width=10, hundredth=False),
@@ -952,7 +954,8 @@ class HrDMFAReport(models.Model):
                 employee,
                 employee_payslips[employee],
                 self.quarter_start,
-                self.quarter_end) for employee in employees]),
+                self.quarter_end,
+                worker_count) for employee in employees]),
             'double_holiday_pay_contribution': format_amount(double_onss),
             'unrelated_calculation_basis': format_amount(double_basis),
         }

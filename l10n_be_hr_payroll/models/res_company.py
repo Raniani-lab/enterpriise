@@ -14,6 +14,10 @@ class ResCompany(models.Model):
     dmfa_location_unit_ids = fields.One2many('l10n_be.dmfa.location.unit', 'company_id', string="Work address DMFA codes")
     l10n_be_company_number = fields.Char('Company Number')
     l10n_be_revenue_code = fields.Char('Revenue Code')
+    l10n_be_ffe_employer_type = fields.Selection([
+        ('commercial', 'Employers with industrial or commercial purposes'),
+        ('non_commercial', 'Employers without industrial or commercial purposes'),
+    ], default='commercial')
 
     @api.constrains('l10n_be_company_number')
     def _check_l10n_be_company_number(self):
@@ -48,3 +52,16 @@ class ResCompany(models.Model):
                 ],
             }).id
         super(ResCompany, self - be_companies)._create_resource_calendar()
+
+    def _get_ffe_contribution_rate(self, worker_count):
+        # Fond de fermeture d'entreprise
+        # https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/basiccontributions_closingcompanyfunds.html
+        self.ensure_one()
+        if self.l10n_be_ffe_employer_type == 'commercial':
+            if worker_count < 20:
+                rate = 0.0013
+            else:
+                rate = 0.0018
+        else:
+            rate = 0.0002
+        return rate

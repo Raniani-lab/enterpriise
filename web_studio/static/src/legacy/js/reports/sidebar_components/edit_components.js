@@ -12,7 +12,7 @@ var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 const { WidgetAdapterMixin } = require('web.OwlCompatibility');
 
-var wysiwygLoader = require('web_editor.loader');
+const Wysiwyg = require('web_editor.wysiwyg');
 
 var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
@@ -1119,7 +1119,7 @@ var Text = AbstractEditComponent.extend({
     _onBlurWysiwygEditor: function () {
         this._triggerViewChange({text: this.wysiwyg.getValue()});
     },
-    _startWysiwygEditor: async function () {
+    _startWysiwygEditor: function () {
         var self = this;
         const options = {
             lang: "odoo",
@@ -1128,7 +1128,7 @@ var Text = AbstractEditComponent.extend({
             resizable: true,
             toolbarTemplate: 'web_studio.Sidebar.web_editor_toolbar',
         };
-        this.wysiwyg = await wysiwygLoader.createWysiwyg(this, options);
+        this.wysiwyg = new Wysiwyg(this, options);
         this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);
 
         this.$textarea.after(this.$wysiwygWrapper);

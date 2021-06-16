@@ -26,25 +26,25 @@ QUnit.module('Studio', {
             }
         };
         this.menu_data = {
-            children: [
+            childrenTree: [
                 {
                     id: 1,
                     name: 'Menu 1',
                     parent_id: false,
-                    children: [],
+                    childrenTree: [],
                 }, {
                     id: 2,
                     name: 'Menu 2',
                     parent_id: false,
-                    children: [
+                    childrenTree: [
                         {
-                            children: [],
+                            childrenTree: [],
                             id: 21,
                             name: 'Submenu 1',
                             parent_id: 2,
 
                         }, {
-                            children: [],
+                            childrenTree: [],
                             id: 21,
                             name: 'Submenu 2',
                             parent_id: 2,

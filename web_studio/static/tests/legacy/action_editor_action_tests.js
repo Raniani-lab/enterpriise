@@ -29,7 +29,7 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
 
         QUnit.module('ActionEditorAction');
 
-        QUnit.test('add a gantt view', async function (assert) {
+        QUnit.skip('add a gantt view', async function (assert) {
             assert.expect(5);
 
             var actionManager = await createActionManager({
@@ -68,7 +68,7 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
             actionManager.destroy();
         });
 
-        QUnit.test('disable the view from studio', async function (assert) {
+        QUnit.skip('disable the view from studio', async function (assert) {
             assert.expect(3);
 
             let loadActionStep = 0;
@@ -145,7 +145,7 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
             actionManager.destroy();
         });
 
-        QUnit.test('add groups on action', async function (assert) {
+        QUnit.skip('add groups on action', async function (assert) {
             assert.expect(1);
 
             var actionManager = await createActionManager({

@@ -90,7 +90,7 @@ var ActionEditor = Widget.extend({
      */
     _getActiveViewTypes: function () {
         return _.map(this.action.views, function (view) {
-            return view.type;
+            return view[1];
         });
     },
     /**

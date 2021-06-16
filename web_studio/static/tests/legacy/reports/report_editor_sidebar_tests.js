@@ -46,7 +46,7 @@ QUnit.module('Studio', {}, function () {
             };
         },
     }, function () {
-        QUnit.test("basic rendering", async function (assert) {
+        QUnit.skip("basic rendering", async function (assert) {
             var done = assert.async();
             assert.expect(5);
 
@@ -74,7 +74,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Report' tab behaviour", async function (assert) {
+        QUnit.skip("'Report' tab behaviour", async function (assert) {
             assert.expect(6);
 
             return studioTestUtils.createSidebar({
@@ -121,7 +121,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Add' tab behaviour", function (assert) {
+        QUnit.skip("'Add' tab behaviour", function (assert) {
             var done = assert.async();
             assert.expect(2);
 
@@ -139,7 +139,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("basic 'Options' tab behaviour", function (assert) {
+        QUnit.skip("basic 'Options' tab behaviour", function (assert) {
             var done = assert.async();
             assert.expect(4);
 
@@ -178,7 +178,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Options' tab with multiple nodes", function (assert) {
+        QUnit.skip("'Options' tab with multiple nodes", function (assert) {
             var done = assert.async();
             assert.expect(9);
 
@@ -245,7 +245,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Options' tab with layout component can be expanded", function (assert) {
+        QUnit.skip("'Options' tab with layout component can be expanded", function (assert) {
             var done = assert.async();
             assert.expect(3);
 
@@ -278,7 +278,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Options' tab with layout component can be expanded on open ", function (assert) {
+        QUnit.skip("'Options' tab with layout component can be expanded on open ", function (assert) {
             var done = assert.async();
             assert.expect(1);
 
@@ -309,7 +309,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Options' tab with widget selection (tOptions) component", function (assert) {
+        QUnit.skip("'Options' tab with widget selection (tOptions) component", function (assert) {
             var done = assert.async();
             assert.expect(4);
 
@@ -350,7 +350,7 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Options' tab with FieldSelector does not flicker", async function (assert) {
+        QUnit.skip("'Options' tab with FieldSelector does not flicker", async function (assert) {
             assert.expect(3);
             var def = testUtils.makeTestPromise();
 
@@ -408,7 +408,7 @@ QUnit.module('Studio', {}, function () {
             sidebar.destroy();
         });
 
-        QUnit.test('Various layout changes', function (assert) {
+        QUnit.skip('Various layout changes', function (assert) {
             var done = assert.async();
             // this test is a combinaison of multiple tests, to avoid copy
             // pasting multiple times de sidebar create/intercept/destroy

@@ -134,7 +134,7 @@ var EditMenuDialog = Dialog.extend({
      */
     getMenuDataFiltered: function (menu_data) {
         var self = this;
-        var menus = menu_data.children.filter(function (el) {
+        var menus = menu_data.childrenTree.filter(function (el) {
             return el.id === self.current_primary_menu;
         });
         return menus;

@@ -27,7 +27,7 @@
                 <button type="button" class="btn btn-danger js_delete_menu fa fa-trash-o" aria-label="Delete Menu Item" title="Delete Menu Item"/>
             </div>
         </div>
-        <t t-set="children" t-value="submenu.children"/>
+        <t t-set="children" t-value="submenu.childrenTree"/>
         <ul t-if="children">
             <t t-foreach="children" t-as="submenu">
                 <t t-call="studio.contentMenu.dialog.submenu"/>

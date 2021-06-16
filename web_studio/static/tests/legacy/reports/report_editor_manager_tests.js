@@ -158,7 +158,7 @@ QUnit.module('ReportEditorManager', {
     }
 }, function () {
 
-    QUnit.test('empty editor rendering', async function (assert) {
+    QUnit.skip('empty editor rendering', async function (assert) {
         assert.expect(5);
 
         this.templates.push({
@@ -215,7 +215,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('basic editor rendering', async function (assert) {
+    QUnit.skip('basic editor rendering', async function (assert) {
         assert.expect(12);
 
         this.templates.push({
@@ -303,7 +303,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('editor rendering with paperformat', async function (assert) {
+    QUnit.skip('editor rendering with paperformat', async function (assert) {
         var done = assert.async();
         assert.expect(2);
 
@@ -353,7 +353,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('preview zoomed by paperformat DPI or smart-shrinking', async function (assert) {
+    QUnit.skip('preview zoomed by paperformat DPI or smart-shrinking', async function (assert) {
         assert.expect(7);
 
         this.templates = [{
@@ -455,7 +455,7 @@ QUnit.module('ReportEditorManager', {
         rem.destroy();
     });
 
-    QUnit.test('use pager', async function (assert) {
+    QUnit.skip('use pager', async function (assert) {
         assert.expect(6);
         var self = this;
 
@@ -528,7 +528,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('components edition', async function (assert) {
+    QUnit.skip('components edition', async function (assert) {
         assert.expect(7);
 
         var self = this;
@@ -628,7 +628,7 @@ QUnit.module('ReportEditorManager', {
         rem.destroy();
     });
 
-    QUnit.test('components edition 2', async function (assert) {
+    QUnit.skip('components edition 2', async function (assert) {
         var done = assert.async();
         assert.expect(6);
 
@@ -688,7 +688,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('remove components - when no node is available to select, the add tab is activated', async function (assert) {
+    QUnit.skip('remove components - when no node is available to select, the add tab is activated', async function (assert) {
         var self = this;
         assert.expect(1);
 
@@ -746,7 +746,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('drag & drop text component', async function (assert) {
+    QUnit.skip('drag & drop text component', async function (assert) {
         assert.expect(1);
 
         var self = this;
@@ -821,7 +821,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('drag & drop text component in existing col', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop text component in existing col', loadIframeCss(async function (assert, done) {
         assert.expect(1);
 
         var self = this;
@@ -886,7 +886,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop components and cancel', async function (assert) {
+    QUnit.skip('drag & drop components and cancel', async function (assert) {
         var done = assert.async();
         assert.expect(4);
 
@@ -949,7 +949,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('drag & drop field block', async function (assert) {
+    QUnit.skip('drag & drop field block', async function (assert) {
         assert.expect(7);
         var done = assert.async();
 
@@ -1039,7 +1039,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('preselect first available field in the field selector', async function (assert) {
+    QUnit.skip('preselect first available field in the field selector', async function (assert) {
         assert.expect(1);
         var done = assert.async();
 
@@ -1091,7 +1091,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('drag & drop field in row', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop field in row', loadIframeCss(async function (assert, done) {
         assert.expect(4); // 2 asserts by test
 
         this.templates.push({
@@ -1207,7 +1207,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop field in table', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop field in table', loadIframeCss(async function (assert, done) {
         assert.expect(20);
 
         this.templates.push({
@@ -1516,7 +1516,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop field in table without loop', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop field in table without loop', loadIframeCss(async function (assert, done) {
         assert.expect(4);
 
         this.templates.push({
@@ -1645,7 +1645,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop block "Accounting Total"', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop block "Accounting Total"', loadIframeCss(async function (assert, done) {
         assert.expect(1);
 
         this.templates.push({
@@ -1771,7 +1771,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop block "Accounting Total"', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop block "Accounting Total"', loadIframeCss(async function (assert, done) {
         assert.expect(3);
 
         var initialDebugMode = odoo.debug;
@@ -1865,7 +1865,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop block "Data table"', loadIframeCss(async function (assert, done) {
+    QUnit.skip('drag & drop block "Data table"', loadIframeCss(async function (assert, done) {
         assert.expect(2);
 
         this.templates.push({
@@ -1949,7 +1949,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop block "Address"', async function (assert) {
+    QUnit.skip('drag & drop block "Address"', async function (assert) {
         assert.expect(1);
         var done = assert.async();
 
@@ -2019,7 +2019,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('drag & drop block "Image"', async function (assert) {
+    QUnit.skip('drag & drop block "Image"', async function (assert) {
         assert.expect(2);
         var done = assert.async();
         var self = this;
@@ -2102,7 +2102,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('edit text', async function (assert) {
+    QUnit.skip('edit text', async function (assert) {
         assert.expect(2);
 
         this.templates.push({
@@ -2168,7 +2168,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('open XML editor after modification', async function (assert) {
+    QUnit.skip('open XML editor after modification', async function (assert) {
         assert.expect(7);
 
         // the XML editor lazy loads its libs and its templates so its start
@@ -2286,7 +2286,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('automatic undo of correct operation', async function (assert) {
+    QUnit.skip('automatic undo of correct operation', async function (assert) {
         var self = this;
         var done = assert.async();
         assert.expect(5);
@@ -2378,7 +2378,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('automatic undo on AST error', async function (assert) {
+    QUnit.skip('automatic undo on AST error', async function (assert) {
         var self = this;
         var done = assert.async();
         assert.expect(4);
@@ -2449,7 +2449,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('reattach studio editor, no error', async function (assert) {
+    QUnit.skip('reattach studio editor, no error', async function (assert) {
         var done = assert.async();
         assert.expect(1);
 
@@ -2486,7 +2486,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('t-field are editable in non-debug mode', async function (assert) {
+    QUnit.skip('t-field are editable in non-debug mode', async function (assert) {
         assert.expect(4);
 
         const initialDebugMode = config.debug;
@@ -2548,7 +2548,7 @@ QUnit.module('ReportEditorManager', {
         rem.destroy();
     });
 
-    QUnit.test('preselect appropriate value in domain dialog', async function (assert) {
+    QUnit.skip('preselect appropriate value in domain dialog', async function (assert) {
         var done = assert.async();
         assert.expect(4);
 

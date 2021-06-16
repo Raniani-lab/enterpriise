@@ -10,8 +10,8 @@ let createdAppString = null;
 let createdMenuString = null;
 
 tour.register('web_studio_tests_tour', {
+    url: "/web",
     test: true,
-    url: "/web?debug=tests",
 }, [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
@@ -47,7 +47,7 @@ tour.register('web_studio_tests_tour', {
 }, {
     // toggle the home menu outside of studio and come back in studio
     extra_trigger: '.o_menu_toggle.fa-th',
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     extra_trigger: `.o_web_client:not(.o_in_studio)`,  /* wait to be out of studio */
@@ -60,7 +60,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_new_app',
 }, {
     extra_trigger: '.o_web_studio_app_creator',
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }, {
     // go back to the previous app
     trigger: '.o_home_menu',
@@ -132,7 +132,7 @@ tour.register('web_studio_tests_tour', {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',
     // switch to form view
-    trigger: '.o_web_studio_views_icons > a[data-name="form"]',
+    trigger: '.o_web_studio_views_icons > a[title="Form"]',
 }, {
     // wait for the form editor to be rendered because the sidebar is the same
     extra_trigger: '.o_web_studio_form_view_editor',
@@ -240,12 +240,12 @@ tour.register('web_studio_tests_tour', {
     // verify that a default value has been set for the statusbar
     trigger: '.o_web_studio_sidebar select[name="default_value"]:contains(First Status)',
 }, {
-    trigger: '.o_web_studio_views_icons a[data-name=form]',
+    trigger: '.o_web_studio_views_icons a[title=Form]',
 }, {
     // verify Chatter can be added after changing view to form
     extra_trigger: '.o_web_studio_add_chatter',
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li a:contains(Views)',
 }, {
     // edit form view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type[data-type="form"] .o_web_studio_thumbnail',
@@ -253,7 +253,7 @@ tour.register('web_studio_tests_tour', {
     // verify Chatter can be added after changing view to form
     extra_trigger: '.o_web_studio_add_chatter',
     // switch in list view
-    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="list"]',
+    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[title="List"]',
 }, {
     // wait for the list editor to be rendered because the sidebar is the same
     extra_trigger: '.o_web_studio_list_view_editor',
@@ -267,7 +267,7 @@ tour.register('web_studio_tests_tour', {
     // verify that the field is correctly named
     extra_trigger: '.o_web_studio_list_view_editor th:contains("COUCOU")',
     // leave Studio
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }, {
     // come back to the home menu to check if the menu data have changed
     extra_trigger: '.o_web_client:not(.o_in_studio)',
@@ -296,6 +296,8 @@ tour.register('web_studio_tests_tour', {
         }));
     },
 }, {
+    // wait to be back in the list view
+    extra_trigger: '.o_list_view',
     // re-open studio
     trigger: '.o_web_studio_navbar_item',
 }, {
@@ -317,7 +319,7 @@ tour.register('web_studio_tests_tour', {
     }
 }, {
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li a:contains("Views")',
 }, {
     // add a kanban
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="kanban"] .o_web_studio_thumbnail',
@@ -336,7 +338,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.modal-footer .btn.btn-primary',
 }, {
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li a:contains("Views")',
 }, {
     // check that the kanban view is now active
     extra_trigger: '.o_web_studio_view_category .o_web_studio_view_type:not(.o_web_studio_inactive)[data-type="kanban"]',
@@ -345,13 +347,13 @@ tour.register('web_studio_tests_tour', {
 }, {
     extra_trigger: '.o_activity_view',
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li a:contains("Views")',
 }, {
     // add a graph view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="graph"] .o_web_studio_thumbnail',
 }, {
     extra_trigger: '.o_graph_renderer',
-    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li a:contains("Views")',
 }, {
     extra_trigger: '.o_web_studio_views',
     // edit the search view
@@ -360,7 +362,7 @@ tour.register('web_studio_tests_tour', {
     extra_trigger: '.o_web_studio_search_view_editor',
     trigger: '.o_menu_toggle.fa-th',
 }, {
-    trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',
+    trigger: '.o_web_studio_home_studio_menu .o_dropdown_toggler',
 }, {
     // export all modifications
     trigger: '.o_web_studio_export',
@@ -369,7 +371,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_app[data-menu-xmlid*="studio"]:last',
 }, {
     // switch to form view
-    trigger: '.o_web_studio_views_icons > a[data-name="form"]',
+    trigger: '.o_web_studio_views_icons > a[title="Form"]',
 }, {
     extra_trigger: '.o_web_studio_form_view_editor',
     // click on the view tab
@@ -383,11 +385,12 @@ tour.register('web_studio_tests_tour', {
 }, {
     // checks that the field doesn't exist anymore
     extra_trigger: 'label.o_form_label:not(:contains("COUCOU"))',
-    trigger: '.o_web_studio_leave'
+    trigger: '.o_web_studio_leave > a.btn'
 }]);
 
 tour.register('web_studio_hide_fields_tour', {
-    url: "/web?studio=app_creator&debug=tests",
+    url: "/web#action=studio&mode=home_menu",
+    test: true,
 }, [{
     trigger: '.o_web_studio_new_app',
 }, {
@@ -416,7 +419,7 @@ tour.register('web_studio_hide_fields_tour', {
 }, {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.oe_title input',
@@ -429,7 +432,7 @@ tour.register('web_studio_hide_fields_tour', {
     extra_trigger: '.o_web_studio_menu',
     trigger: `
         .o_web_studio_views_icons
-        > a[data-name="list"]`,
+        > a[title="List"]`,
 }, {
     // wait for the list editor to be rendered because the sidebar is the same
     extra_trigger: '.o_web_studio_list_view_editor',
@@ -462,11 +465,12 @@ tour.register('web_studio_hide_fields_tour', {
     extra_trigger: `
         .o_list_table
         th[data-name="display_name"].o_web_studio_show_invisible`,
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }]);
 
 tour.register('web_studio_model_option_value_tour', {
-    url: "/web?studio=app_creator&debug=tests",
+    url: "/web?debug=tests#action=studio&mode=home_menu",
+    test: true,
 }, [{
     trigger: '.o_web_studio_new_app',
 }, {
@@ -495,16 +499,16 @@ tour.register('web_studio_model_option_value_tour', {
 },{
     trigger: '.o_web_studio_model_configurator_next',
 }, {
-    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="graph"]',
+    trigger: '.o_web_studio_menu .o_web_studio_views_icons > a[title="Graph"]',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     // wait for the graph editor to be rendered and also check for sample data
     extra_trigger: '.o_view_sample_data .o_graph_renderer .o_view_nocontent_empty_folder',
-    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="pivot"]',
+    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[title="Pivot"]',
 }, {
     // wait for the pivot editor to be rendered and also check for sample data
     extra_trigger: '.o_view_sample_data .o_pivot .o_view_nocontent_empty_folder',
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }]);
 
 tour.register('web_studio_new_report_tour', {
@@ -519,7 +523,7 @@ tour.register('web_studio_new_report_tour', {
     extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
-    trigger: '.o_web_studio_menu li[data-name="reports"]',
+    trigger: '.o_web_studio_menu li a:contains(Reports)',
 }, {
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',
@@ -537,7 +541,6 @@ tour.register('web_studio_new_report_tour', {
     run: 'text My Awesome Report',
 }, {
     // switch to 'Add' in Sidebar
-    extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome Report"]',
     trigger: '.o_web_studio_sidebar div[name="new"]',
 }, {
     // wait for the iframe to be loaded
@@ -649,7 +652,7 @@ tour.register('web_studio_new_report_tour', {
     // wait for the duplicated report to be correctly loaded
     extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome Report copy(1)"]',
     // leave Studio
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }]);
 
 tour.register('web_studio_new_report_basic_layout_tour', {
@@ -664,7 +667,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
-    trigger: '.o_web_studio_menu li[data-name="reports"]',
+    trigger: '.o_web_studio_menu li a:contains(Reports)',
 }, {
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',
@@ -682,7 +685,6 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     run: 'text My Awesome basic layout Report',
 }, {
     // switch to 'Add' in Sidebar
-    extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome basic layout Report"]',
     trigger: '.o_web_studio_sidebar div[name="new"]',
 }, {
     // wait for the iframe to be loaded
@@ -793,7 +795,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     // wait for the duplicated report to be correctly loaded
     extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome basic layout Report copy(1)"]',
     // leave Studio
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }]);
 
 tour.register('web_studio_approval_tour', {
@@ -808,7 +810,7 @@ tour.register('web_studio_approval_tour', {
     extra_trigger: '.o_cp_switch_buttons',
 }, {
     // switch to form view editor
-    trigger: '.o_web_studio_views_icons a[data-name="form"]',
+    trigger: '.o_web_studio_views_icons > a[title="Form"]',
 }, {
     // click on first button it finds that has a node id
     trigger: '.o_web_studio_form_view_editor button[data-node-id]',
@@ -849,7 +851,7 @@ tour.register('web_studio_approval_tour', {
     extra_trigger: '.o_web_studio_snackbar .fa-check',
 }, {
     // leave studio
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
     extra_trigger: '.o_web_studio_snackbar .fa-check',
 }, {
     // go back to kanban
@@ -870,8 +872,8 @@ tour.register('web_studio_approval_tour', {
 ]);
 
 tour.register('web_studio_custom_field_tour', {
-    test: true,
     url: "/web",
+    test: true,
 }, [{
     // go to Apps menu
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
@@ -890,7 +892,7 @@ tour.register('web_studio_custom_field_tour', {
     extra_trigger: '.o_web_client.o_in_studio'
 }, {
     //leave studio
-    trigger: '.o_web_studio_leave'
+    trigger: '.o_web_studio_leave > a.btn'
 }, {
     // studio left.
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
@@ -898,8 +900,8 @@ tour.register('web_studio_custom_field_tour', {
 }]);
 
 tour.register('web_studio_local_storage_tour', {
-    test: true,
     url: "/web",
+    test: true,
 }, [{
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
     run: function () {
@@ -913,7 +915,7 @@ tour.register('web_studio_local_storage_tour', {
 }, {
     trigger: '.o_menu_toggle',
 }, {
-    trigger: '.o_web_studio_leave',
+    trigger: '.o_web_studio_leave > a.btn',
 }, {
     // studio left.
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',

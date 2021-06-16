@@ -1166,6 +1166,22 @@ var ViewEditorManager = AbstractEditorManager.extend({
             return self.updateEditor();
         });
     },
+
+    _computeX2mPath(x2mField, x2mViewType, fieldsView=null, x2mData=null) {
+        let fields = this.fields;
+        if (fieldsView) {
+            fields = fieldsView.fields;
+        }
+        const x2mModel = fields[x2mField].relation;
+
+        return  {
+            view_type: this.view_type,
+            x2mField: x2mField,
+            x2mViewType: x2mViewType,
+            x2mModel,
+            x2mData,
+        };
+    },
     /**
      * Called when the x2m editor needs to be opened. Makes the check if an
      * inline view needs to be create or directly instantiate the x2m editor.
@@ -1221,13 +1237,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
             parentID: this.editor.state.id,
         };
         this.renamingAllowedFields = [];
-        this.x2mEditorPath.push({
-            view_type: this.view_type,
-            x2mField: this.x2mField,
-            x2mViewType: this.x2mViewType,
-            x2mModel: this.x2mModel,
-            x2mData: data,
-        });
+        this.x2mEditorPath.push(
+            this._computeX2mPath(this.x2mField, this.x2mViewType, fieldsView, data)
+        );
+
         var field = fieldsInfo[this.view_type][this.x2mField];
         var def;
         // If there is no name for the subview then it's an inline view. So if there is a name,
@@ -1677,10 +1690,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 $node.find('.o_web_studio_editX2Many').click(function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    self._openX2mEditor(
-                        node.attrs.name,
-                        $(e.currentTarget).data('type')
-                    );
+                    const x2mFieldName = node.attrs.name;
+                    const x2mViewType = e.currentTarget.dataset.type;
+                    // trigger on studioBus
+                    bus.trigger('STUDIO_ENTER_X2M', self._computeX2mPath(x2mFieldName, x2mViewType));
                 });
             }
         }

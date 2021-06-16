@@ -23,7 +23,7 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
     }, function () {
         QUnit.module('ReportEditorAction');
 
-        QUnit.test('use pager', async function (assert) {
+        QUnit.skip('use pager', async function (assert) {
             assert.expect(2);
 
             const reportHTML = `

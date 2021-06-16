@@ -741,7 +741,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('editing selection field of list of form view', async function(assert) {
+    QUnit.skip('editing selection field of list of form view', async function(assert) {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
@@ -5722,7 +5722,7 @@ QUnit.module('ViewEditorManager', {
 
     QUnit.module('X2Many');
 
-    QUnit.test('disable creation(no_create options) in many2many_tags widget', async function (assert) {
+    QUnit.skip('disable creation(no_create options) in many2many_tags widget', async function (assert) {
         assert.expect(3);
 
         let fieldsView;
@@ -5763,7 +5763,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('disable creation(no_create options) in many2many_tags_avatar widget', async function (assert) {
+    QUnit.skip('disable creation(no_create options) in many2many_tags_avatar widget', async function (assert) {
         assert.expect(3);
 
         let fieldsView;
@@ -5802,7 +5802,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
+    QUnit.skip('disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
         assert.expect(6);
 
         this.data.product.fields.m2m_users = {
@@ -5863,7 +5863,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('display one2many without inline views', async function (assert) {
+    QUnit.skip('display one2many without inline views', async function (assert) {
         assert.expect(1);
 
         var vem = await studioTestUtils.createViewEditorManager({
@@ -5890,7 +5890,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('edit one2many list view', async function (assert) {
+    QUnit.skip('edit one2many list view', async function (assert) {
         assert.expect(10);
 
         // the 'More' button is only available in debug mode
@@ -5998,7 +5998,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('edit one2many list view with tree_view_ref context key', async function (assert) {
+    QUnit.skip('edit one2many list view with tree_view_ref context key', async function (assert) {
         assert.expect(1);
 
         var vem = await studioTestUtils.createViewEditorManager({
@@ -6032,7 +6032,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('edit one2many form view (2 level) and check chatter allowed', async function (assert) {
+    QUnit.skip('edit one2many form view (2 level) and check chatter allowed', async function (assert) {
         assert.expect(6);
         this.data.coucou.records = [{
             id: 11,
@@ -6137,7 +6137,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('edit one2many list view that uses parent key [REQUIRE FOCUS]', async function (assert) {
+    QUnit.skip('edit one2many list view that uses parent key [REQUIRE FOCUS]', async function (assert) {
         assert.expect(3);
 
         this.data.coucou.records = [{
@@ -6187,7 +6187,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('move a field in one2many list', async function (assert) {
+    QUnit.skip('move a field in one2many list', async function (assert) {
         assert.expect(2);
 
         this.data.coucou.records = [{
@@ -6290,7 +6290,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('notebook and group drag and drop after a group', async function (assert) {
+    QUnit.skip('notebook and group drag and drop after a group', async function (assert) {
         assert.expect(2);
         var arch = "<form><sheet>" +
                 "<group>" +
@@ -6312,7 +6312,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('One2Many list editor column_invisible in attrs ', async function (assert) {
+    QUnit.skip('One2Many list editor column_invisible in attrs ', async function (assert) {
         assert.expect(2);
 
         var fieldsView;
@@ -6391,7 +6391,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('One2Many form datapoint doesn\'t contain the parent datapoint', async function (assert) {
+    QUnit.skip('One2Many form datapoint doesn\'t contain the parent datapoint', async function (assert) {
         /*
         * OPW-2125214
         * When editing a child o2m form with studio, the fields_get method tries to load
@@ -6468,7 +6468,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('Phone field in form with SMS', async function (assert) {
+    QUnit.skip('Phone field in form with SMS', async function (assert) {
         assert.expect(3);
 
         var arch = "<form><sheet>" +
@@ -6503,7 +6503,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('folds/unfolds the existing fields into sidebar', async function (assert) {
+    QUnit.skip('folds/unfolds the existing fields into sidebar', async function (assert) {
         assert.expect(10);
 
         let fieldsView;
@@ -6574,7 +6574,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('open xml editor of component view', async function (assert) {
+    QUnit.skip('open xml editor of component view', async function (assert) {
         assert.expect(1);
 
         // the XML editor button is only available in debug mode

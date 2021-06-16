@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* l10n_mx_edi
+#   * l10n_mx_edi
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-15 12:48+0000\n"
-"PO-Revision-Date: 2021-04-15 12:48+0000\n"
+"POT-Creation-Date: 2021-06-17 14:02+0000\n"
+"PO-Revision-Date: 2021-06-17 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -32,77 +32,90 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> Emitter Acc. Ord.</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> | Certification Date:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> | Emission Date:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> | Expedition place:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> | Fiscal Folio:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> | Fiscal Regime:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span> | SAT Certificate:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>Digital stamp SAT</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>Digital stamp of the emitter</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>Emitter Acc. Ben.</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>Emitter certificate:</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>Extra Info</span>"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>Original chain complement of digital certification SAT</span>"
 msgstr ""
 
@@ -119,6 +132,7 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<span>XML VAT: </span>"
 msgstr ""
 
@@ -135,7 +149,28 @@ msgid "<strong>Bank Account:</strong>"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
+msgid "<strong>Memo: </strong>"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
+msgid "<strong>Payment Amount: </strong>"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
+msgid "<strong>Payment Date: </strong>"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
+msgid "<strong>Payment From: </strong>"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<strong>Payment Method: </strong>"
 msgstr ""
 
@@ -145,7 +180,13 @@ msgid "<strong>Payment Method:</strong>"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
+msgid "<strong>Payment To: </strong>"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<strong>Payment Way CFDI:</strong>"
 msgstr ""
 
@@ -157,6 +198,7 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "<strong>This document is a printed representation of a CFDI</strong>"
 msgstr ""
 
@@ -173,6 +215,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "A signature of this payment is required, but it is not signed."
 msgstr ""
 
@@ -290,11 +333,13 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Account Ben."
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Account Ord."
 msgstr ""
 
@@ -669,6 +714,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Amount Paid"
 msgstr ""
 
@@ -1214,6 +1260,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Balance"
 msgstr ""
 
@@ -1239,6 +1286,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Bank Name Acc. Ord."
 msgstr ""
 
@@ -1255,6 +1303,7 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Barcode"
 msgstr ""
 
@@ -1375,10 +1424,25 @@ msgid "Bácum"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "CC"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "CENTRO DE COSTOS"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_origin
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_move__l10n_mx_edi_origin
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_payment__l10n_mx_edi_origin
 msgid "CFDI Origin"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "CP"
 msgstr ""
 
 #. module: l10n_mx_edi
@@ -2317,6 +2381,11 @@ msgid ""
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "Codigo Planta"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_mic_016
 msgid "Coeneo"
 msgstr ""
@@ -2892,6 +2961,7 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model:ir.model,name:l10n_mx_edi.model_res_currency
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Currency"
 msgstr ""
 
@@ -4258,16 +4328,19 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Invoice"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Invoice Date"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Invoice Number"
 msgstr ""
 
@@ -5898,6 +5971,16 @@ msgid "Múzquiz"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "NC"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "NOMBRE DEL REQUISITOR"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tab_013
 msgid "Nacajuca"
 msgstr ""
@@ -6192,6 +6275,11 @@ msgid "Nácori Chico"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "OC"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_oax_067
 msgid "Oaxaca de Juárez"
 msgstr ""
@@ -6343,12 +6431,18 @@ msgid "Oquitoa"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_edi_addenda_bosh_A_C
+msgid "Orden de Compra"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_pue_108
 msgid "Oriental"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Original Amount"
 msgstr ""
 
@@ -6591,6 +6685,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Partiality"
 msgstr ""
 
@@ -6629,6 +6724,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_move__l10n_mx_edi_payment_policy
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_payment__l10n_mx_edi_payment_policy
 msgid "Payment Policy"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model:ir.actions.report,name:l10n_mx_edi.action_report_payment_receipt
+msgid "Payment Receipt"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
+msgid "Payment Receipt:"
 msgstr ""
 
 #. module: l10n_mx_edi
@@ -6837,7 +6942,13 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Previous balance"
+msgstr ""
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.view_bank_statement_inh_l10n_mx
+msgid "Print Payment Receipt"
 msgstr ""
 
 #. module: l10n_mx_edi
@@ -12271,6 +12382,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "UUID"
 msgstr ""
 

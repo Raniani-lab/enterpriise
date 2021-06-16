@@ -57,6 +57,8 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', date_from),
             ('date_to', '<=', date_to)])
+        employees = all_payslips.mapped('employee_id')
+        worker_count = len(employees)
 
         grouped_payslips = []
         if self.aggregation_level == 'company':
@@ -120,11 +122,20 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             salary_advance = _get_total(monthly_slips, all_values, ['ADVANCE'])
             net = _get_total(aggregate_payslips, all_values, ['NET'])
             total_net = net + salary_advance
-            # YTI TODO: Pliz
-            emp_onss = 0
-            emp_termination_onss = 0
-            closure_fund = 0
+
+            basis_termination = _get_total(termination_slips, all_values, ['BASIC'])
+            basis = _get_total(monthly_slips + thirteen_slips, all_values, ['SALARY']) \
+                  + _get_total(holiday_slips, all_values, ['PAY_SIMPLE']) \
+
+            ffe_rate = self.company_id._get_ffe_contribution_rate(worker_count) + 0.0014
+            # Cotisation patronnale de base =
+            # FFE + Special FFE + CPAE + Modération Salariale + Chomage temporaire
+            global_rate = 0.3810 + 0.0023 + (0.0169 if worker_count >= 10 else 0) + 0.0010
+            emp_onss = basis * global_rate
+            emp_termination_onss = basis_termination * global_rate
+            closure_fund = (basis + basis_termination) * ffe_rate
             charges_redistribution = 0
+
             if 'vehicle_id' in self.env['hr.payslip']:
                 co2_fees = sum(p.vehicle_id.with_context(co2_fee_date=p.date_from)._get_co2_fee(p.vehicle_id.co2, p.vehicle_id.fuel_type) for p in monthly_slips)
             else:

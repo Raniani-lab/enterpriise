@@ -21,6 +21,7 @@
                     <field name="follower_ids" widget="many2many_tags" invisible="not context.get('sign_directly_without_mail',False)" string="CC Signed Document to" placeholder="Write email or search contact..." context="{'show_email': True}"/>
                     <field name="subject" placeholder="Signature Request"/>
                     <field name="filename" placeholder="Name for the file"  colspan="2"/>
+                    <field name="refusal_allowed"/>
                 </group>
 
                 <div invisible="not context.get('sign_directly_without_mail',False)">

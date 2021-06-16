@@ -84,10 +84,6 @@
                 margin: 10px 0;
             }
         }
-
-        > .o_sign_sign_document_button {
-            margin: 0 $o-horizontal-padding;
-        }
     }
 }
 
@@ -177,6 +173,11 @@
         justify-content: flex-start;
     }
 }
+.modal {
+    .o_sign_refuse_confirm_message {
+        width: 100%;
+    }
+}
 
 .oe_sign_terms {
     flex: auto !important;
@@ -227,4 +228,16 @@
     .modal .modal-footer .btn {
         width: 30% !important;
     }
+}
+
+.o_sign_signer_signed {
+    color: green;
+}
+
+.o_sign_signer_refused {
+    color: red;
+}
+
+.o_sign_signer_waiting {
+    color: #0123BC;
 }

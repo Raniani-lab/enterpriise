@@ -37,7 +37,8 @@ class ResPartner(models.Model):
         if partners_email_changed:
             request_items = self.env['sign.request.item'].sudo().search([
                 ('partner_id', 'in', partners_email_changed.ids),
-                ('state', '!=', 'completed'),
+                ('state', '=', 'sent'),
+                ('sign_request_id.state', 'in', ['sent', 'canceled']),
                 ('sign_request_id.active', '=', True),
                 ('is_mail_sent', '=', True)])
             for request_item in request_items:

@@ -283,6 +283,19 @@
                 }
             }
         }
+        .o_kanban_record_body {
+            .o_signers {
+                .fa-times {
+                    position: absolute;
+                }
+                input {
+                    position: absolute;
+                }
+                span {
+                    margin-left: 1.3rem;
+                }
+            }
+        }
     }
 }
 

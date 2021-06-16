@@ -44,6 +44,7 @@ class SignLog(models.Model):
             ('open', 'View/Download'),
             ('save', 'Save'),
             ('sign', 'Signature'),
+            ('refuse', 'Refuse'),
             ('update_mail', 'Mail Update'),
             ('update', 'Update')
         ], required=True,
@@ -52,6 +53,7 @@ class SignLog(models.Model):
     request_state = fields.Selection([
         ("sent", "Before Signature"),
         ("signed", "After Signature"),
+        ("refused", "Refused Signature"),
         ("canceled", "Canceled")
     ], required=True, string="State of the request on action log", groups="sign.group_sign_manager")
 
@@ -123,11 +125,11 @@ class SignLog(models.Model):
 
     def _prepare_vals_from_item(self, request_item):
         sign_request = request_item.sign_request_id
-        # NOTE: We update request_item.latitude/longitude when the request_item is opened and not 'completed'
+        # NOTE: We update request_item.latitude/longitude when the request_item is opened and not 'completed'/'refused'
         # And If the signer accepted the browser geolocation request, the coordinates will be more precise.
-        # We should forcely use the GeoIP ones only if the the request_item is 'completed'
-        latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state == 'completed' else request_item.latitude
-        longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state == 'completed' else request_item.longitude
+        # We should forcely use the GeoIP ones only if the the request_item is 'completed'/'refused'
+        latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state in ['completed', 'refused'] else request_item.latitude
+        longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state in ['completed', 'refused'] else request_item.longitude
         return dict(
             sign_request_item_id=request_item.id,
             sign_request_id=sign_request.id,

@@ -53,8 +53,11 @@
                             <div class="o_kanban_record_body">
                                 <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <div class="o_signers container-fluid mt-2">
-                                    <div t-foreach="record.request_item_infos.raw_value" t-as="request_item_info"  t-att-class="(request_item_info.state === 'completed')? 'o_sign_completed text-success row' : 'o_sign_waiting row'">
-                                        <input t-att-checked="(request_item_info.state === 'completed') ? 'checked' : undefined" class="mt-1 mr-1" type="checkbox" disabled="True"/>
+                                    <div t-foreach="record.request_item_infos.raw_value" t-as="request_item_info"
+                                         t-att-class="(request_item_info.state === 'completed') ? 'o_sign_completed text-success row' :
+                                                      (request_item_info.state === 'refused') ? 'o_sign_refused text-danger row' : 'o_sign_waiting row'">
+                                        <div t-if="request_item_info.state === 'refused'" class="mt-1 mr-1 fa fa-times" title="Refused"/>
+                                        <input t-else="" t-att-checked="(request_item_info.state === 'completed') ? 'checked' : undefined" class="mt-1 mr-1" type="checkbox" disabled="True"/>
                                         <span>
                                             <t t-esc="request_item_info.partner_name"/><t t-if="request_item_info.signing_date" class="ml-1" t-esc="' ' + request_item_info.signing_date"/>
                                         </span>
@@ -87,7 +90,7 @@
                 <field name="reference"/>
                 <field name="template_id" optional="hide"/>
                 <field name="state"/>
-                <field name="request_item_ids" string="Contacts" widget="many2many_tags"/>
+                <field name="request_item_ids" string="Contacts" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="progress"/>
                 <field name="need_my_signature" invisible="1"/>
                 <field name="create_uid" invisible="1"/>
@@ -115,7 +118,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="object" name="go_to_document" class="oe_read_only oe_stat_button" icon="fa-pencil">
+                        <button type="object" name="go_to_document" class="oe_read_only oe_stat_button" icon="fa-pencil" states="sent,signed">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="nb_closed"/>/<field name="nb_total"/><span class="o_stat_text"> Signed</span></span>
                                 <span class="o_stat_text">View</span>
@@ -223,13 +226,13 @@
         <field name="arch" type="xml">
             <tree editable="bottom" create="false" delete="false">
                 <field name="change_authorized" invisible="1"/>
-                <field name="partner_id" attrs="{'readonly': ['|', ('change_authorized', '=', False), ('state', '=', 'completed')]}"/>
+                <field name="partner_id" attrs="{'readonly': ['|', ('change_authorized', '=', False), ('state', 'in', ['completed', 'refused'])]}"/>
                 <field name="signer_email"/>
                 <field name="role_id"/>
                 <field name="state"/>
                 <field name="is_mail_sent" invisible="1"/>
-                <button name="resend_sign_access" string="Send" type="object" icon="fa-square-o pr-2" attrs="{'invisible': [('is_mail_sent', '!=', False)]}"/>
-                <button name="resend_sign_access" string="Resend" type="object" icon="fa-check-square-o pr-2" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
+                <button name="resend_sign_access" string="Send" type="object" icon="fa-square-o pr-2" attrs="{'invisible': ['|', ('state', '!=', 'sent'), ('is_mail_sent', '!=', False)]}"/>
+                <button name="resend_sign_access" string="Resend" type="object" icon="fa-check-square-o pr-2" attrs="{'invisible': ['|', ('state', '!=', 'sent'), ('is_mail_sent', '=', False)]}"/>
             </tree>
         </field>
     </record>
@@ -250,6 +253,7 @@
                             <field name="signer_email"/>
                             <field name="access_token" invisible="1"/>
                             <field name="signing_date"/>
+                            <field name="color"/>
                         </group>
                         <group>
                             <field name="latitude"/>

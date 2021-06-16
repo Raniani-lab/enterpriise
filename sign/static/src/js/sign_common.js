@@ -1325,6 +1325,7 @@ odoo.define('sign.document_signing', function (require) {
     });
 
     var ThankYouDialog = Dialog.extend({
+        template: "sign.thank_you_dialog",
         events: {
             'click .o_go_to_document': 'on_closed',
         },
@@ -1338,6 +1339,7 @@ odoo.define('sign.document_signing', function (require) {
             options = (options || {});
             options.title = options.title || _t("Thank You !");
             options.subtitle = options.subtitle || _t("Your signature has been saved.");
+            options.message = options.message || _t("You will receive a copy of the signed document by mail");
             options.size = options.size || "medium";
             options.technical = false;
             options.buttons = [];
@@ -1841,7 +1843,6 @@ odoo.define('sign.document_signing', function (require) {
             this.onTextChange = options.onTextChange || function () {};
             this.onValidate = options.onValidate || function () {};
         },
-
         updateInputText(text) {
             this.value = text;
             this.el.querySelector('.o_sign_item_bottom_sheet_field').value = text;
@@ -1914,6 +1915,7 @@ odoo.define('sign.document_signing', function (require) {
 
             'click .o_sign_validate_banner button': 'signItemDocument',
             'click .o_sign_sign_document_button': 'signDocument',
+            'click .o_sign_refuse_document_button': 'refuseDocument',
         },
 
         custom_events: { // do_notify is not supported in backend so it is simulated with a bootstrap alert inserted in a frontend-only DOM element
@@ -2130,6 +2132,63 @@ odoo.define('sign.document_signing', function (require) {
                         self.requestID, {'nextSign': self.name_list.length})).open();
                 }
             });
+        },
+
+        refuseDocument: function(e) {
+            const self = this;
+            const $content = $(core.qweb.render('sign.refuse_confirm_dialog', {widget: this}));
+            const buttons = [
+                {
+                    text: _t("Refuse"),
+                    classes: 'btn-primary o_safe_confirm_button',
+                    close: true,
+                    click: _refuse,
+                    disabled: true,
+                },
+                {
+                    text: _t("Cancel"),
+                    close: true,
+                }
+            ];
+            const dialog = new Dialog(self, {
+                size: 'medium',
+                buttons: buttons,
+                $content: $content,
+                title: _t("Refuse Document"),
+            });
+            dialog.opened(function () {
+                const $button = dialog.$footer.find('.o_safe_confirm_button');
+                dialog.$content.find(".o_sign_refuse_confirm_message").on('change keyup paste',  function (ev) {
+                    $button.prop('disabled', $(this).val().length === 0);
+                });
+            });
+            return dialog.open();
+
+            function _refuse () {
+                const refusalReason = this.$(".o_sign_refuse_confirm_message").val();
+
+                // refuse sign request
+                const route = `/sign/refuse/${self.requestID}/${self.accessToken}`;
+                const params = {
+                    refusal_reason: refusalReason
+                };
+                session.rpc(route, params).then(function(response) {
+                    if (!response) {
+                        Dialog.alert(self, _t("Sorry, you cannot refuse this document"), {
+                            title: _t("Error"),
+                            confirm_callback: function() {
+                                window.location.reload();
+                            },
+                        });
+                    }
+                    self.iframeWidget.disableItems();
+                    (new(self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID, {
+                        'nextSign': 0,
+                        'subtitle': _t("The document has been refused"),
+                        'message': _t("We'll send an email to warn other followers & signers with the reason you provided."),
+                    })).open();
+                });
+            };
         },
 
         textareaApplyLineBreak: function (oTextarea) {

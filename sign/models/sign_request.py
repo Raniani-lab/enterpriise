@@ -16,11 +16,12 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from werkzeug.urls import url_join, url_encode
+from werkzeug.urls import url_join, url_quote
 from random import randint
+from markupsafe import Markup
 
 from odoo import api, fields, models, http, _, Command
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, config, get_lang, is_html_empty, formataddr
+from odoo.tools import config, get_lang, is_html_empty, formataddr
 from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
@@ -56,7 +57,7 @@ class SignRequest(models.Model):
         return [key for key, val in type(self).state.selection]
 
     def _get_mail_link(self, email, subject):
-        return "mailto:%s&%s" % (email, url_encode({'subject': subject}).replace("+", "%20"))
+        return "mailto:%s?subject=%s" % (url_quote(email), url_quote(subject))
 
     template_id = fields.Many2one('sign.template', string="Template", required=True)
     subject = fields.Char(string="Email Subject")
@@ -65,9 +66,11 @@ class SignRequest(models.Model):
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
 
     request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers")
+    refusal_allowed = fields.Boolean(default=False, string="Can be refused", help="Allow the contacts to refuse the document for a specific reason.")
     state = fields.Selection([
         ("sent", "Sent"),
         ("signed", "Fully Signed"),
+        ("refused", "Refused"),
         ("canceled", "Canceled")
     ], default='sent', tracking=True, group_expand='_expand_states')
 
@@ -117,7 +120,7 @@ class SignRequest(models.Model):
             for s in rec.request_item_ids:
                 if s.state == "sent":
                     wait += 1
-                if s.state == "completed":
+                if s.state in ["completed", "refused"]:
                     closed += 1
             rec.nb_wait = wait
             rec.nb_closed = closed
@@ -253,6 +256,60 @@ class SignRequest(models.Model):
         for sign_request in self:
             sign_request.write({'completed_document': None, 'access_token': self._default_access_token()})
 
+    def _refuse(self, refuser, refusal_reason):
+        self.ensure_one()
+        if self.state != 'sent' or not self.refusal_allowed:
+            raise UserError(_("This sign request cannot be refused"))
+        self.write({'state': 'refused'})
+
+        # cancel activities for other unsigned users
+        unsigned_partners = self.request_item_ids.filtered(lambda sri: sri.state == 'sent').partner_id
+        unsigned_users = self.env['res.users'].sudo().search(
+            [('partner_id', 'in', unsigned_partners.ids)]
+        ).filtered(lambda u: u.has_group('sign.group_sign_employee'))
+        for user in unsigned_users:
+            self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
+
+        # send emails to signers and followers
+        if not self.create_uid.email_formatted:
+            raise UserError(_("Please configure sender's email address"))
+        if any(not signer.email_formatted for signer in self.request_item_ids.partner_id):
+            raise UserError(_("Please complete the signer's email address"))
+        followers_valid = self.message_follower_ids.partner_id.filtered(lambda p: p.email_formatted)
+        for sign_request_item in self.request_item_ids:
+            self._send_refused_mail(refuser, refusal_reason, sign_request_item.partner_id, access_token=sign_request_item.access_token, force_send=True)
+        for partner in followers_valid - self.request_item_ids.partner_id:
+            self._send_refused_mail(refuser, refusal_reason, partner)
+
+    def _send_refused_mail(self, refuser, refusal_reason, partner, access_token=None, force_send=False):
+        self.ensure_one()
+        if access_token is None:
+            access_token = self.access_token
+        subject = _("The document (%s) has been rejected by one of the signers", self.template_id.name)
+        base_url = self.get_base_url()
+        partner_lang = get_lang(self.env, lang_code=partner.lang).code
+        tpl = self.env.ref('sign.sign_template_mail_refused')
+        body = tpl.with_context(lang=partner_lang)._render({
+            'record': self,
+            'recipient': partner,
+            'refuser': refuser,
+            'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, access_token)),
+            'subject': subject,
+            'body': Markup('<p style="white-space: pre">{}</p>').format(refusal_reason),
+        }, engine='ir.qweb', minimal_qcontext=True)
+
+        self._message_send_mail(
+            body, 'mail.mail_notification_light',
+            {'record_name': self.reference},
+            {'model_description': 'signature', 'company': self.create_uid.company_id},
+            {'email_from': self.create_uid.email_formatted,
+             'author_id': self.create_uid.partner_id.id,
+             'email_to': formataddr((partner.name, partner.email_formatted)),
+             'subject': subject},
+            force_send=force_send,
+            lang=partner_lang,
+        )
+
     def action_sent_without_mail(self):
         self.write({'state': 'sent'})
         for sign_request in self:
@@ -266,7 +323,7 @@ class SignRequest(models.Model):
         for sign_request in self:
             ignored_partners = []
             for request_item in sign_request.request_item_ids:
-                if request_item.state != 'draft':
+                if request_item.state not in ['draft', 'refused']:
                     ignored_partners.append(request_item.partner_id.id)
             included_request_items = sign_request.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners)
 
@@ -613,13 +670,14 @@ class SignRequest(models.Model):
         return mail
 
     @api.model
-    def initialize_new(self, template_id, signers, followers, reference, subject, message, message_cc=None, attachment_ids=None, send=True, without_mail=False):
+    def initialize_new(self, template_id, signers, followers, reference, subject, message, message_cc=None, attachment_ids=None, send=True, without_mail=False, refusal_allowed=False):
         sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_employee'))
         sign_request = self.create({'template_id': template_id,
                                     'reference': reference,
                                     'subject': subject,
                                     'message': message,
-                                    'message_cc': message_cc})
+                                    'message_cc': message_cc,
+                                    'refusal_allowed': refusal_allowed})
         if attachment_ids:
             attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
             sign_request.write({'attachment_ids': [Command.set(attachment_ids.ids)]})
@@ -665,7 +723,7 @@ class SignRequestItem(models.Model):
         return str(uuid.uuid4())
 
     def _get_mail_link(self, email, subject):
-        return "mailto:%s&%s" % (email, url_encode({'subject': subject}).replace("+", "%20"))
+        return "mailto:%s?subject=%s" % (url_quote(email), url_quote(subject))
 
     partner_id = fields.Many2one('res.partner', string="Contact", ondelete='restrict')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
@@ -683,8 +741,10 @@ class SignRequestItem(models.Model):
     state = fields.Selection([
         ("draft", "Draft"),
         ("sent", "To Sign"),
+        ("refused", "Refused"),
         ("completed", "Completed")
     ], readonly=True, default="draft")
+    color = fields.Integer(compute='_compute_color')
 
     signer_email = fields.Char(compute="_compute_email", store=True)
     is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
@@ -755,9 +815,26 @@ class SignRequestItem(models.Model):
         self.mapped('sign_request_id')._check_after_compute()
 
     def action_completed(self):
-        date = fields.Date.context_today(self).strftime(DEFAULT_SERVER_DATE_FORMAT)
-        self.write({'signing_date': date, 'state': 'completed'})
+        self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
         self.mapped('sign_request_id')._check_after_compute()
+
+    def refuse(self, refusal_reason):
+        self.ensure_one()
+        if not self.env.su:
+            raise UserError(_("This function can only be called with sudo."))
+        if self.state != 'sent':
+            raise UserError(_("This sign request item cannot be refused"))
+        self.env['sign.log']._create_log(self, "refuse", is_request=False, token=self.access_token)
+        self.write({'signing_date': fields.Date.context_today(self), 'state': 'refused'})
+        refuse_user = self.env['res.users'].search([('partner_id', '=', self.partner_id.id)], limit=1)
+        # mark the activity as done for the refuser
+        if refuse_user.has_group('sign.group_sign_employee'):
+            self.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=refuse_user.id)
+        refusal_reason = _("No specified reason") if not refusal_reason or refusal_reason.isspace() else refusal_reason
+        message_post = _("The signature has been refused by %s(%s)") % (self.partner_id.name, self.role_id.name)
+        message_post = Markup('{}<p style="white-space: pre">{}</p>').format(message_post, refusal_reason)
+        self.sign_request_id.message_post(body=message_post)
+        self.sign_request_id._refuse(self.partner_id, refusal_reason)
 
     def send_signature_accesses(self):
         tpl = self.env.ref('sign.sign_template_mail_request')
@@ -921,6 +998,15 @@ class SignRequestItem(models.Model):
         super(SignRequestItem, self)._compute_access_url()
         for signature_request in self:
             signature_request.access_url = '/my/signature/%s' % signature_request.id
+
+    @api.depends('state')
+    def _compute_color(self):
+        color_map = {"draft": 0,
+                     "sent": 0,
+                     "refused": 1,
+                     "completed": 10}
+        for sign_request_item in self:
+            sign_request_item.color = color_map[sign_request_item.state]
 
     @api.depends('partner_id.email')
     def _compute_email(self):

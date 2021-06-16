@@ -54,3 +54,19 @@ class TestSignRequest(TestSignCommon):
     def test_templates_send_accesses(self):
         for sign_request in [self.default_role_sign_request, self.multi_role_sign_request, self.single_role_sign_request]:
             self.assertTrue(all(sign_request.request_item_ids.mapped('is_mail_sent')))
+
+    @patch.object(SignLog, "_create_log")
+    def test_sign_request_item_refuse(self, _create_log):
+        sign_request = self.multi_role_sign_request
+        request_item_ids = sign_request.request_item_ids
+        request_item_1 = request_item_ids[0]
+        request_item_2 = request_item_ids[1]
+        with self.assertRaises(UserError):
+            request_item_1.refuse("not good")
+        sign_request.refusal_allowed = True
+        request_item_1.refuse("not good")
+        self.assertEqual(request_item_1.state, 'refused', 'The state of a refused sign_request_item should be "refused"')
+        self.assertEqual(sign_request.state, 'refused', 'The state of a refused sign_request should be "refused"')
+        self.assertEqual(request_item_2.state, 'sent', 'Other sign_request_items of a refused sign_request should be "sent"')
+        with self.assertRaises(UserError):
+            request_item_2.refuse("not good")

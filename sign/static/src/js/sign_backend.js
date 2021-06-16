@@ -1506,7 +1506,7 @@ odoo.define('sign.DocumentBackend', function (require) {
             }).then(function(html) {
 
                 var $html = $(html.trim());
-                var $signDocumentButton = $html.find('.o_sign_sign_document_button').detach();
+                const newButtons = $html.find('.o_sign_sign_document_button, .o_sign_refuse_document_button').detach();
 
                 self.$('.o_content').append($html);
                 self.$('.o_content').addClass('o_sign_document');
@@ -1530,9 +1530,8 @@ odoo.define('sign.DocumentBackend', function (require) {
                     self.$downloadLogButton.attr('href', logUrl);
                     self.$buttons = self.$buttons.add(self.$downloadLogButton);
                 }
-                if ($signDocumentButton)
-                    self.$buttons = $signDocumentButton.add(self.$buttons);
 
+                self.$buttons = $.merge(self.$buttons, newButtons);
                 if (self.$buttons.length){
                     self.cp_content = {$buttons: self.$buttons};
                 }

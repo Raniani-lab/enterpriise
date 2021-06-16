@@ -49,7 +49,7 @@ class Sign(http.Controller):
                             break
                     item_type['auto_field'] = auto_field
 
-            if current_request_item.state != 'completed':
+            if current_request_item.state not in ['completed', 'refused']:
                 """ When signer attempts to sign the request again,
                 its localisation should be reset.
                 We prefer having no/approximative (from geoip) information
@@ -80,9 +80,10 @@ class Sign(http.Controller):
             'sign_items': sign_request.template_id.sign_item_ids,
             'item_values': item_values,
             'role': current_request_item.role_id.id if current_request_item else 0,
-            'readonly': not (current_request_item and current_request_item.state == 'sent'),
+            'readonly': not (current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent'),
             'sign_item_types': sign_item_types,
             'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),
+            'refusal_allowed': sign_request.refusal_allowed and sign_request.state == 'sent',
         }
 
     # -------------
@@ -290,7 +291,7 @@ class Sign(http.Controller):
 
         sign_user = request.env['res.users'].sudo().search([('partner_id', '=', request_item.partner_id.id)], limit=1)
         if sign_user:
-            # sign as an internal user
+            # sign as a known user
             request_item = request_item.with_user(sign_user).sudo()
 
         if not request_item.sign(signature, new_sign_items):
@@ -302,6 +303,28 @@ class Sign(http.Controller):
 
         request.env['sign.log']._create_log(request_item, "sign", is_request=False, token=token)
         request_item.action_completed()
+        return True
+
+    @http.route(['/sign/refuse/<int:sign_request_id>/<token>'], type='json', auth='public')
+    def refuse(self, sign_request_id, token, refusal_reason=""):
+        request_item = request.env["sign.request.item"].sudo().search(
+            [
+                ("sign_request_id", "=", sign_request_id),
+                ("access_token", "=", token),
+                ("state", "=", "sent"),
+                ("sign_request_id.refusal_allowed", "=", True),
+                ("sign_request_id.state", "=", "sent")
+            ],
+            limit=1,
+        )
+        if not request_item:
+            return False
+
+        refuse_user = request.env['res.users'].sudo().search([('partner_id', '=', request_item.partner_id.id)], limit=1)
+        if refuse_user:
+            # refuse as a known user
+            request_item = request_item.with_user(refuse_user).sudo()
+        request_item.refuse(refusal_reason)
         return True
 
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')

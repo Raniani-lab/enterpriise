@@ -4,7 +4,7 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
     const { controlPanel } = require('web.test_utils');
     const { getPagerValue, pagerNext } = controlPanel;
 
-    const { doActionAndOpenStudio, registerStudioDependencies,getReportServerData } = require("@web_studio/../tests/test_utils");
+    const { doActionAndOpenStudio, registerStudioDependencies,getReportServerData } = require("@web_studio/../tests/helpers");
     const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 
     let serverData;

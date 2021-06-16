@@ -123,7 +123,7 @@ Note: Only the admin user is allowed to make those customizations.
             # as web.tests_assets would
             ('include', 'web_studio.studio_assets'),
             'web_studio/static/tests/mock_server.js',
-            'web_studio/static/tests/test_utils.js',
+            'web_studio/static/tests/helpers.js',
             'web_studio/static/tests/app_creator_tests.js',
             'web_studio/static/tests/icon_creator_tests.js',
             'web_studio/static/tests/navigation_tests.js',

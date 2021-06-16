@@ -17,7 +17,7 @@ var studioTestUtils = require('web_studio.testUtils');
 
 const { patchWithCleanup } = require("@web/../tests/helpers/utils");
 
-const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/test_utils");
+const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
 const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 const { MockServer } = require("@web/../tests/helpers/mock_server");

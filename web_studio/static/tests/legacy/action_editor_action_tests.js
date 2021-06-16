@@ -3,7 +3,7 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
 
     var testUtils = require('web.test_utils');
 
-    const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/test_utils");
+    const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
     const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
     const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 

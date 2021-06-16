@@ -5,11 +5,7 @@ import { registry } from "@web/core/registry";
 import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import testUtils from "web.test_utils";
-import {
-    openStudio,
-    leaveStudio,
-    registerStudioDependencies,
-} from "@web_studio/../tests/test_utils";
+import { openStudio, leaveStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
 
 // -----------------------------------------------------------------------------
 // Tests

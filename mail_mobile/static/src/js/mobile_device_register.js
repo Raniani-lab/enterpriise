@@ -3,14 +3,14 @@ odoo.define('mail_mobile.ocn', function (require) {
 
 const mobile = require('web_mobile.core');
 var ajax = require('web.ajax');
+const { session } = require('@web/session');
 
 //Send info only if client is mobile
 if (mobile.methods.getFCMKey) {
-    var sessionInfo = odoo.session_info;
     var registerDevice = function (fcm_project_id) {
         mobile.methods.getFCMKey({
             project_id: fcm_project_id,
-            inbox_action: sessionInfo.inbox_action,
+            inbox_action: session.inbox_action,
         }).then(function (response) {
             if (response.success) {
                 ajax.rpc('/web/dataset/call_kw/res.config.settings/register_device', {
@@ -26,8 +26,8 @@ if (mobile.methods.getFCMKey) {
             }
         });
     };
-    if (sessionInfo.fcm_project_id) {
-        registerDevice(sessionInfo.fcm_project_id);
+    if (session.fcm_project_id) {
+        registerDevice(session.fcm_project_id);
     } else {
         ajax.rpc('/web/dataset/call_kw/res.config.settings/get_fcm_project_id', {
             model: 'res.config.settings',

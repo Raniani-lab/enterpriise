@@ -9,6 +9,7 @@ import { click, getFixture, makeDeferred, patchWithCleanup } from "@web/../tests
 import { MobileSwitchCompanyMenu } from "@web_enterprise/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu";
 import { companyService } from "@web/webclient/company_service";
 import { uiService } from "@web/core/ui/ui_service";
+import { session } from "@web/session";
 
 const { mount } = owl;
 const serviceRegistry = registry.category("services");
@@ -37,7 +38,7 @@ async function createSwitchCompanyMenu(routerParams = {}, toggleDelay = 0) {
 
 QUnit.module("MobileMobileSwitchCompanyMenu", (hooks) => {
     hooks.beforeEach(() => {
-        patchWithCleanup(odoo.session_info.user_companies, {
+        patchWithCleanup(session.user_companies, {
             allowed_companies: {
                 1: { id: 1, name: "Hermit" },
                 2: { id: 2, name: "Herman's" },

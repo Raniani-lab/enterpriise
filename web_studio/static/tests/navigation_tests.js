@@ -6,6 +6,7 @@ import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import testUtils from "web.test_utils";
 import { openStudio, leaveStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
+import { session } from "@web/session";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -96,7 +97,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("Studio not available for non system users", async function (assert) {
         assert.expect(2);
 
-        patchWithCleanup(odoo.session_info, { is_system: false });
+        patchWithCleanup(session, { is_system: false });
         const webClient = await createEnterpriseWebClient({ serverData });
         assert.containsOnce(webClient, ".o_main_navbar");
 

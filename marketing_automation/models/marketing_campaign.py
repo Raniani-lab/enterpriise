@@ -17,7 +17,7 @@ class MarketingCampaign(models.Model):
     _inherits = {'utm.campaign': 'utm_campaign_id'}
     _order = 'create_date DESC'
 
-    utm_campaign_id = fields.Many2one('utm.campaign', 'UTM Campaign', ondelete='cascade', required=True)
+    utm_campaign_id = fields.Many2one('utm.campaign', 'UTM Campaign', ondelete='restrict', required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection([
         ('draft', 'New'),

@@ -10,3 +10,5 @@ from . import hr_referral_onboarding
 from . import hr_referral_level
 from . import hr_referral_friend
 from . import res_users
+from . import utm_campaign
+from . import utm_source

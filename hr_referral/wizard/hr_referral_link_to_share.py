@@ -32,12 +32,24 @@ class HrReferralLinkToShare(models.TransientModel):
         if self.job_id and not self.job_id.utm_campaign_id:
             self.job_id.utm_campaign_id = self.env['utm.campaign'].create({'name': self.job_id.name}).id
 
-        link_tracker = self.env['link.tracker'].search_or_create({
+        link_tracker_values = {
             'url': self.get_base_url() + (self.job_id.website_url or '/jobs'),
             'campaign_id': self.job_id.utm_campaign_id.id,
             'source_id': self.env.user.utm_source_id.id,
-            'medium_id': self.env.ref('utm.utm_medium_%s' % self.channel).id
-        })
+        }
+
+        channel_to_medium = {
+            'direct': 'utm.utm_medium_direct',
+            'facebook': 'utm.utm_medium_facebook',
+            'twitter': 'utm.utm_medium_twitter',
+            'linkedin': 'utm.utm_medium_linkedin',
+        }
+        medium_reference = channel_to_medium.get(self.channel)
+        medium = self.env.ref(medium_reference, raise_if_not_found=False) if medium_reference else False
+        if medium:
+            link_tracker_values['medium_id'] = medium.id
+
+        link_tracker = self.env['link.tracker'].search_or_create(link_tracker_values)
         if self.channel == 'direct':
             self.url = link_tracker.short_url
         elif self.channel == 'facebook':

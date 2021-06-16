@@ -7,3 +7,5 @@ from . import marketing_participant
 from . import marketing_trace
 from . import mailing_trace
 from . import mailing_mailing
+from . import utm_campaign
+from . import utm_source

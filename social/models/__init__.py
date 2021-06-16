@@ -11,4 +11,6 @@ from . import social_stream
 from . import social_stream_type
 from . import social_stream_post
 from . import social_stream_post_image
-from . import utm
+from . import utm_campaign
+from . import utm_medium
+from . import utm_source

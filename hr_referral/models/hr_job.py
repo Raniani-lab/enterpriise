@@ -13,7 +13,7 @@ class Job(models.Model):
     _order = 'sequence, job_open_date'
 
     job_open_date = fields.Date('Job Start Recruitment Date', default=fields.Date.today())
-    utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='cascade')
+    utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='restrict')
     max_points = fields.Integer(compute='_compute_max_points')
     direct_clicks = fields.Integer(compute='_compute_clicks')
     facebook_clicks = fields.Integer(compute='_compute_clicks')
@@ -28,19 +28,19 @@ class Job(models.Model):
                 ], ['count', 'campaign_id', 'medium_id'], ['campaign_id', 'medium_id'], lazy=False)
         else:
             grouped_data = {}
-        medium_direct = self.env.ref('utm.utm_medium_direct')
-        medium_facebook = self.env.ref('utm.utm_medium_facebook')
-        medium_twitter = self.env.ref('utm.utm_medium_twitter')
-        medium_linkedin = self.env.ref('utm.utm_medium_linkedin')
+        medium_direct = self.env.ref('utm.utm_medium_direct', raise_if_not_found=False)
+        medium_facebook = self.env.ref('utm.utm_medium_facebook', raise_if_not_found=False)
+        medium_twitter = self.env.ref('utm.utm_medium_twitter', raise_if_not_found=False)
+        medium_linkedin = self.env.ref('utm.utm_medium_linkedin', raise_if_not_found=False)
         mapped_data = {job.utm_campaign_id.id: {} for job in self}
         for elem in grouped_data:
             mapped_data[elem['campaign_id'][0]][elem['medium_id'][0]] = elem['count']
         for job in self:
             data = mapped_data[job.utm_campaign_id.id]
-            job.direct_clicks = data.get(medium_direct.id, 0)
-            job.facebook_clicks = data.get(medium_facebook.id, 0)
-            job.twitter_clicks = data.get(medium_twitter.id, 0)
-            job.linkedin_clicks = data.get(medium_linkedin.id, 0)
+            job.direct_clicks = data.get(medium_direct.id, 0) if medium_direct else 0
+            job.facebook_clicks = data.get(medium_facebook.id, 0) if medium_facebook else 0
+            job.twitter_clicks = data.get(medium_twitter.id, 0) if medium_twitter else 0
+            job.linkedin_clicks = data.get(medium_linkedin.id, 0) if medium_linkedin else 0
 
     def _compute_max_points(self):
         for job in self:

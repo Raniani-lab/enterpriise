@@ -90,10 +90,10 @@ class RequestAppraisal(models.TransientModel):
                     'author_name': wizard.author_id.name,
                     'author_mail': wizard.author_id.email,
                     'recipient_users': wizard.recipient_ids.mapped('user_ids'),
-                    'url': "${ctx['url']}",
+                    'url': "ctx['url']",
                     'user_body': user_body
                 }
-                wizard.body = self.with_context(ctx).sudo()._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
+                wizard.body = self.with_context(ctx).sudo()._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False, engine='qweb')[self.env.user.id]
             elif not wizard.body:
                 wizard.body = ''
 
@@ -119,7 +119,7 @@ class RequestAppraisal(models.TransientModel):
         }
         context_self = self.with_context(ctx)
         subject = context_self._render_field('subject', appraisal.ids, post_process=False)[appraisal.id]
-        body = context_self._render_field('body', appraisal.ids, post_process=True)[appraisal.id]
+        body = context_self._render_field('body', appraisal.ids, engine='qweb', post_process=True)[appraisal.id]
 
         appraisal.message_post(
             subject=subject,

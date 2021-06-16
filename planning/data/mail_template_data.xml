@@ -4,157 +4,109 @@
 
         <record id="email_template_slot_single" model="mail.template">
             <field name="name">Planning: new single shift</field>
-            <field name="email_from">${object.company_id.email_formatted | safe}</field>
-            <field name="subject">${ctx.mail_subject} ${ctx.start_datetime}</field>
-            <field name="email_to">${ctx.work_email}</field>
+            <field name="email_from">{{ object.company_id.email_formatted }}</field>
+            <field name="subject">{{ ctx.get('mail_subject', '') }} {{ ctx.get('start_datetime' , '') }}</field>
+            <field name="email_to">{{ ctx.get('ctx.work_email', '') }}</field>
             <field name="model_id" ref="model_planning_slot"/>
             <field name="auto_delete" eval="False"/>
             <field name="body_html" type="html">
                 <div>
-                    <p>Dear ${ctx.employee_name or ''},<br/><br/></p>
-                    % if ctx.get('open_shift_available')
-                    <p>A new open shift is available:</p>
-                    % else
-                    <p>You have been assigned the following schedule:</p>
-                    % endif
+                    <p>Dear <t t-out="ctx.get('employee_name', '')">Anita Oliver</t>,<br/><br/></p>
+                    <t t-if="ctx.get('open_shift_available')">
+                        <p>A new open shift is available:</p>
+                    </t>
+                    <t t-else="">
+                        <p>You have been assigned the following schedule:</p>
+                    </t>
                     <br/>
                     <table style="width: 80%; margin: auto;">
                         <tr>
                             <th style="padding: 5px;text-align: left;">From</th>
-                            <td style="padding: 5px;">${ctx.get('start_datetime')}</td>
+                            <td style="padding: 5px;" t-out="ctx.get('start_datetime') or ''">05/31/2021 08:00:00</td>
                         </tr>
                         <tr>
                             <th style="padding: 5px;text-align: left;">To</th>
-                            <td style="padding: 5px;">${ctx.get('end_datetime')}</td>
+                            <td style="padding: 5px;" t-out="ctx.get('end_datetime') or ''">05/31/2021 16:00:00</td>
                         </tr>
-                        % if object.role_id
-                        <tr>
+                        <tr t-if="object.role_id">
                             <th style="padding: 5px;text-align: left;">Role</th>
-                            <td style="padding: 5px;">${object.role_id.name or ''}</td>
+                            <td style="padding: 5px;" t-out="object.role_id.name or ''">Bartender</td>
                         </tr>
-                        % endif
-                        % if object.sale_line_id
-                        <tr>
+                        <tr t-if="hasattr(object, 'sale_line_id') and object.sale_line_id">
                             <th style="padding: 5px;text-align: left;">Sale Order Item</th>
-                            <td style="padding: 5px;">${object.sudo().sale_line_id.name or ''}</td>
+                            <td style="padding: 5px;" t-out="object.sudo().sale_line_id.name or ''"></td>
                         </tr>
-                        % endif
-                        % if object.project_id
-                        <tr>
+                        <tr t-if="hasattr(object, 'project_id') and object.project_id">
                             <th style="padding: 5px;text-align: left;">Project</th>
-                            <td style="padding: 5px;">${object.sudo().project_id.name or ''}</td>
+                            <td style="padding: 5px;" t-out="object.sudo().project_id.name or ''">Gathering</td>
                         </tr>
-                        % endif
-                        % if object.task_id
-                        <tr>
+                        <tr t-if="hasattr(object, 'task_id') and object.task_id">
                             <th style="padding: 5px;text-align: left;">Task</th>
-                            <td style="padding: 5px;">${object.sudo().task_id.name or ''}</td>
+                            <td style="padding: 5px;" t-out="object.sudo().task_id.name or ''">Chef</td>
                         </tr>
-                        % endif
-                        % if object.name
-                        <tr>
+                        <tr t-if="hasattr(object, 'name') and object.name">
                             <th style="padding: 5px;text-align: left;">Note</th>
-                            <td style="padding: 5px;">${object.name or ''}</td>
+                            <td style="padding: 5px;" t-out="object.name or ''">/</td>
                         </tr>
-                        % endif
                     </table>
-                    % if ctx.get('available_link')
-                    <div>
-                        <br/>
-                        <span>Please, assign yourself if you are available.</span>
-                    </div>
-                    % endif
-                    <div style="text-align: center">
-                        % if ctx.get('unavailable_link') and not object.is_unassign_deadline_passed
-                        <div style="display: inline-block; margin: 15px; text-align: center">
-                            <a href="${ctx.unavailable_link}" target="_blank"
-                                style="padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px"
-                            >I am unavailable</a>
-                        </div>
-                        % endif
-                        % if ctx.get('available_link')
-                        <div style="display: inline-block; margin: 15px; text-align: center">
-                            <a href="${ctx.available_link}" target="_blank"
-                                style="padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px"
-                            >Assign me this shift</a>
-                        </div>
-                        % endif
-                        % if ctx.get('link')
-                        <div style="display: inline-block; margin: 15px; text-align: center">
-                            <a href="${ctx.link}" target="_blank"
-                                style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
-                            >View Planning</a>
-                        </div>
-                        % endif
-
-                        % if object.allow_self_unassign and object.self_unassign_days_before and not object.is_unassign_deadline_passed and not ctx.get('open_shift_available'):
-                        <p>
-                        As a small reminder, you have until ${ctx.get('unassign_deadline')} to unassign yourself from this shift if you are unavailable. Thank you for your understanding.
-                        </p>
-                    % endif
-                    </div>
                 </div>
             </field>
         </record>
 
         <record id="email_template_planning_planning" model="mail.template">
             <field name="name">Planning: new schedule (multiple shifts)</field>
-            <field name="email_from">${object.company_id.email_formatted | safe}</field>
-            <field name="subject">Your planning from ${format_date(ctx.get('start_datetime'))} to ${format_date(ctx.get('end_datetime'))}</field>
+            <field name="email_from">{{ object.company_id.email_formatted }}</field>
+            <field name="subject">Your planning from {{ format_date(ctx.get('start_datetime')) }} to {{ format_date(ctx.get('end_datetime')) }}</field>
             <field name="email_to"></field><!-- Set in the code  -->
             <field name="model_id" ref="model_planning_planning"/>
             <field name="auto_delete" eval="False"/><!-- TODO JEM  change this as we are testing -->
             <field name="body_html" type="html">
                 <div>
                     <p>
-                    % if ctx.get('employee'):
-                        Dear ${ctx['employee'].name},
-                    % else:
+                    <t t-if="ctx.get('employee')">
+                        Dear <t t-out="ctx['employee'].name or ''"></t>,
+                    </t>
+                    <t t-else="">
                         Hello,
-                    % endif
+                    </t>
                         <br/><br/>
-                    % if ctx.get('assigned_new_shift'):
+                    <t t-if="ctx.get('assigned_new_shift')">
                         You have been assigned new shifts:
-                    % else:
+                    </t>
+                    <t t-else="">
                         Please, find your planning for the following period:
-                    % endif
+                    </t>
                     </p>
                     <br/>
 
                     <table style="table-layout: fixed; width: 80%; margin: auto;">
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">From</th>
-                            <td style="padding: 5px;">${format_date(ctx.get('start_datetime'))}</td>
+                            <td style="padding: 5px;" t-out="format_date(ctx.get('start_datetime')) or ''">05/05/2021</td>
                         </tr>
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">To</th>
-                            <td style="padding: 5px;">${format_date(ctx.get('end_datetime'))}</td>
+                            <td style="padding: 5px;" t-out="format_date(ctx.get('end_datetime')) or ''">05/05/2021</td>
                         </tr>
                     </table>
 
-                    % if ctx.get('planning_url'):
-                        <div style="margin: 15px;">
-                            <a href="${ctx.get('planning_url')}" target="_blank"
-                                style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px">View Your Planning</a>
-                        </div>
-                    % endif
+                    <div t-if="ctx.get('planning_url')" style="margin: 15px;">
+                        <a t-att-href="ctx.get('planning_url')" target="_blank"
+                            style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px">View Your Planning</a>
+                    </div>
 
-                    % if ctx.get('slot_unassigned_count'):
-                    <div>
+                    <div t-if="ctx.get('slot_unassigned_count')">
                         <p>There are new open shifts available. Please, assign yourself if you are available.</p>
                     </div>
                     <br/>
-                    % endif
 
-                    % if ctx.get('message'):
-                        <p>${ctx['message']}</p>
-                    % endif
+                    <t t-if="ctx.get('message')">
+                        <p t-out="ctx['message'] or ''"></p>
+                    </t>
 
-                    % if object.allow_self_unassign and object.self_unassign_days_before:
-                        <p>
-                        As a small reminder, you have ${object.self_unassign_days_before} day(s) before the beginning of a shift to unassign yourself if you are unavailable. Thank you for your understanding.
-                        </p>
-                    % endif
+                    <p t-if="hasattr(object, 'allow_self_unassign') and object.allow_self_unassign and hasattr(object, 'self_unassign_days_before') and object.self_unassign_days_before">
+                        As a small reminder, you have <t t-out="object.self_unassign_days_before or ''">5</t>day(s) before the beginning of a shift to unassign yourself if you are unavailable. Thank you for your understanding.
+                    </p>
                 </div>
             </field>
         </record>

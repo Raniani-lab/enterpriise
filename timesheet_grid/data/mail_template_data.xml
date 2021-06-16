@@ -6,8 +6,8 @@
             <field name="name">Timesheet: Employees Reminder</field>
             <field name="model_id" ref="hr.model_hr_employee"/>
             <field name="subject">Reminder to log your timesheets</field>
-            <field name="email_from">${(object.user_id.company_id.partner_id.email_formatted or user.email_formatted) | safe}</field>
-            <field name="email_to">${object.work_email | safe}</field>
+            <field name="email_from">{{ (object.user_id.company_id.partner_id.email_formatted or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.work_email }}</field>
             <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -18,11 +18,9 @@
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="middle">
                     <span style="font-size: 10px;">Your Timesheets</span><br/>
-                    <span style="font-size: 20px; font-weight: bold;">
-                        ${object.name}
-                    </span>
+                    <span style="font-size: 20px; font-weight: bold;" t-out="object.name or ''">Abigail Peterson</span>
                 </td><td valign="middle" align="right">
-                    <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}"/>
+                    <img t-attf-src="/logo.png?company={{ object.company_id.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="object.company_id.name"/>
                 </td></tr>
                 <tr><td colspan="2" style="text-align:center;">
                   <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
@@ -36,19 +34,17 @@
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="top" style="font-size: 13px;">
                     <div>
-                        Hello ${object.name},<br/><br/>
-                        This is a friendly reminder to log your hours for the following period: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.
-                        For the time being, you only logged ${ctx.get('timesheet_hours')} hours on the ${ctx.get('working_hours')} requested.<br/>
-                        % if ctx.get('action_url'):
-                        <div style="margin: 16px 0px 16px 0px;">
-                            <a href="${ctx.get('action_url')}"
-                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Fill in your Timesheets</a>
+                        Hello <t t-out="object.name or ''">Abigail Peterson</t>,<br/><br/>
+                        This is a friendly reminder to log your hours for the following period : <t t-out="ctx.get('date_start') or ''">05/05/2021</t> - <t t-out="ctx.get('date_stop') or ''">05/06/2021</t>.
+                        For the time being, you only logged <t t-out="ctx.get('timesheet_hours') or ''">2</t> hours on the <t t-out="ctx.get('working_hours') or ''">8</t> requested.<br/>
+                        <div t-if="ctx.get('action_url')" style="margin: 16px 0px 16px 0px;">
+                            <a t-att-href="ctx.get('action_url')"
+                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Fill in your timesheet</a>
                         </div>
-                        % endif
                         <br/>Thank you,<br/>
-                        % if user.signature
-                            ${user.signature | safe}
-                        % endif
+                        <t t-if="user.signature">
+                            <t t-out="user.signature or ''">--<br/>Mitchell Admin</t>
+                        </t>
                     </div>
                 </td></tr>
                 <tr><td style="text-align:center;">
@@ -62,18 +58,16 @@
         <td align="center" style="min-width: 590px;">
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="middle" align="left">
-                    ${object.company_id.name}
+                    <t t-out="object.company_id.name or ''">YourCompany</t>
                 </td></tr>
                 <tr><td valign="middle" align="left" style="opacity: 0.7;">
-                    ${object.company_id.phone}
-                    % if object.company_id.email
-                        | <a href="'mailto:%s' % ${object.company_id.email}" style="text-decoration:none; color: #454748;">${object.company_id.email}</a>
-                    % endif
-                    % if object.company_id.website
-                        | <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
-                            ${object.company_id.website}
-                        </a>
-                    % endif
+                    <t t-out="object.company_id.phone or ''">+1 650-123-4567</t>
+                    <t t-if="object.company_id.email">
+                        | <a t-attf-href="'mailto:%s' % {{ object.company_id.email }}" style="text-decoration:none; color: #454748;" t-out="object.company_id.email or ''">info@yourcompany.com</a>
+                    </t>
+                    <t t-if="object.company_id.website">
+                        | <a t-attf-href="'%s' % {{ object.company_id.website }}" style="text-decoration:none; color: #454748;" t-out="object.company_id.website or ''">http://www.example.com</a>
+                    </t>
                 </td></tr>
             </table>
         </td>
@@ -91,7 +85,7 @@
 </td></tr>
 </table>
             </field>
-            <field name="lang">${object.user_id.lang}</field>
+            <field name="lang">{{ object.user_id.lang }}</field>
             <field name="auto_delete" eval="True"/>
         </record>
 
@@ -99,8 +93,8 @@
             <field name="name">Timesheet: Manager Reminder</field>
             <field name="model_id" ref="hr.model_hr_employee"/>
             <field name="subject">Reminder to validate your team's timesheets</field>
-            <field name="email_from">${(object.user_id.company_id.partner_id.email_formatted or user.email_formatted) | safe}</field>
-            <field name="email_to">${object.user_id.email_formatted | safe}</field>
+            <field name="email_from">{{ (object.user_id.company_id.partner_id.email_formatted or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.user_id.email_formatted }}</field>
             <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -111,11 +105,9 @@
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="middle">
                     <span style="font-size: 10px;">Your Timesheets</span><br/>
-                    <span style="font-size: 20px; font-weight: bold;">
-                        ${object.name}
-                    </span>
+                    <span style="font-size: 20px; font-weight: bold;" t-out="object.name or ''">Abigail Peterson</span>
                 </td><td valign="middle" align="right">
-                    <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}"/>
+                    <img t-attf-src="/logo.png?company={{ object.company_id.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="object.company_id.name"/>
                 </td></tr>
                 <tr><td colspan="2" style="text-align:center;">
                 <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
@@ -129,18 +121,16 @@
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="top" style="font-size: 13px;">
                     <div>
-                        Hello ${object.name},<br/><br/>
-                        This is a friendly reminder to approve your team's timesheets for the following period: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.<br/>
-                        % if ctx.get('action_url'):
-                        <div style="margin: 16px 0px 16px 0px;">
-                            <a href="${ctx.get('action_url')}"
+                        Hello <t t-out="object.name or ''">Abigail Peterson</t>,<br/><br/>
+                        This is a friendly reminder to approve your team's timesheets for the following period: <t t-out="ctx.get('date_start') or ''">05/05/2021</t> - <t t-out="ctx.get('date_stop') or ''">06/05/2021</t>.<br/>
+                        <div t-if="ctx.get('action_url')" style="margin: 16px 0px 16px 0px;">
+                            <a t-att-href="ctx.get('action_url')"
                                 style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Validate the Timesheets</a>
                         </div>
-                        % endif
                         <br />Thank you,<br/>
-                        % if user.signature
-                            ${user.signature | safe}
-                        % endif
+                        <t t-if="user.signature">
+                            <t t-out="user.signature or ''">--<br/>Mitchell Admin</t>
+                        </t>
                     </div>
                 </td></tr>
                 <tr><td style="text-align:center;">
@@ -154,18 +144,16 @@
         <td align="center" style="min-width: 590px;">
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="middle" align="left">
-                    ${object.company_id.name}
+                    <t t-out="object.company_id.name or ''">YourCompany</t>
                 </td></tr>
                 <tr><td valign="middle" align="left" style="opacity: 0.7;">
-                    ${object.company_id.phone}
-                    % if object.company_id.email
-                        | <a href="'mailto:%s' % ${object.company_id.email}" style="text-decoration:none; color: #454748;">${object.company_id.email}</a>
-                    % endif
-                    % if object.company_id.website
-                        | <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
-                        ${object.company_id.website}
-                    </a>
-                    % endif
+                    <t t-out="object.company_id.phone or ''">+1 650-123-4567</t>
+                    <t t-if="object.company_id.email">
+                        | <a t-attf-href="'mailto:%s' % {{ object.company_id.email }}" style="text-decoration:none; color: #454748;" t-out="object.company_id.email or ''">info@yourcompany.com</a>
+                    </t>
+                    <t t-if="object.company_id.website">
+                        | <a t-attf-href="'%s' % {{ object.company_id.website }}" style="text-decoration:none; color: #454748;" t-out="object.company_id.website or ''">http://www.example.com</a>
+                    </t>
                 </td></tr>
             </table>
         </td>
@@ -183,7 +171,7 @@
 </td></tr>
 </table>
             </field>
-            <field name="lang">${object.user_id.lang}</field>
+            <field name="lang">{{ object.user_id.lang }}</field>
             <field name="auto_delete" eval="True"/>
         </record>
 

@@ -47,7 +47,7 @@ class TestMarketAutoFlow(TestMACommon, CronMixinCase):
         # second activity: send an SMS 1 hour after a reply
         cls.act2_1_mailing = cls._create_mailing(
             model='marketing.test.sms', mailing_type='sms',
-            body_plaintext='SMS for ${object.name}: mega promo on https://test.example.com',
+            body_plaintext='SMS for {{ object.name }}: mega promo on https://test.example.com',
             sms_allow_unsubscribe=True).with_user(cls.user_markauto)
         cls.act2_1 = cls._create_activity(
             cls.campaign,
@@ -72,7 +72,7 @@ for record in records:
 
         cls.act3_1_mailing = cls._create_mailing(
             model='marketing.test.sms', mailing_type='sms',
-            body_plaintext='Confirmation for ${object.name}', sms_allow_unsubscribe=False).with_user(cls.user_markauto)
+            body_plaintext='Confirmation for {{ object.name }}', sms_allow_unsubscribe=False).with_user(cls.user_markauto)
         cls.act3_1 = cls._create_activity(
             cls.campaign, mailing=cls.act3_1_mailing, parent_id=cls.act2_1.id,
             trigger_type='sms_click', interval_number=0

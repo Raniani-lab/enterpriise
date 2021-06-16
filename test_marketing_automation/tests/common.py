@@ -159,7 +159,7 @@ class TestMACommon(TestMailFullCommon):
             'name': 'SourceName',
             'subject': 'Test Subject',
             'mailing_type': 'mail',
-            'body_html': '<div>Hello ${object.name}<br/>You rocks</div>',
+            'body_html': '<div>Hello {{ object.name }}<br/>You rocks</div>',
             'mailing_model_id': cls.env['ir.model']._get(model).id,
             'use_in_marketing_automation': True,
         }

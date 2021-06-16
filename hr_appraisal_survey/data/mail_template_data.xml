@@ -4,42 +4,43 @@
         <record id="mail_template_appraisal_ask_feedback" model="mail.template">
             <field name="name">HR Appraisal: Ask Feedback</field>
             <field name="model_id" ref="model_survey_user_input"/>
-            <field name="subject">Take part in ${object.employee_id.name or 'this'} appraisal</field>
+            <field name="subject">Take part in {{ object.employee_id.name or 'this' }} appraisal</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${object.partner_id.name},
+                        Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,
                         <br/><br/>
-                        An appraisal feedback was requested about ${object.appraisal_id.employee_id.name or 'this'}.
+                        An appraisal feedback was requested about <t t-out="object.appraisal_id.employee_id.name or 'this'" >this</t>.
                         <br/>
                         Please take time to fill the survey.
                         <br/><br/>
                         Thank you!
                         <br/><br/>
-                        % if ctx.get('recipient_users'):
-                        <p style="margin: 16px 0px 16px 0px;">
-                            <a href="${ctx['url']}"
-                                style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                View Appraisal
-                            </a>
-                        </p>
-                        % endif
-                        % if ctx.get('user_body'):
-                        <div style="background-color:#F8F8F8;">
-                            ${ctx['user_body'] | safe}
-                        </div>
-                        % endif
+                        <t t-if="ctx.get('recipient_users')">
+                            <p style="margin: 16px 0px 16px 0px;">
+                                <a t-att-href="ctx.get('url')"
+                                    style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                    View Appraisal
+                                </a>
+                            </p>
+                        </t>
+                        <t t-if="ctx.get('user_body')">
+                            <div style="background-color:#F8F8F8;">
+                                <t t-out="ctx.get('user_body')">Annual appraisal.</t>
+                            </div>
+                        </t>
                         <div style="margin: 16px 0px 16px 0px; text-align: center;">
-                            <a href="${(object.get_start_url()) | safe}"
+                            <a t-att-href="object.get_start_url()"
                                 style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
-                                % if object.survey_id.certification:
+                                <t t-if="object.survey_id.certification">
                                     Start Certification
-                                % else:
+                                </t>
+                                <t t-else="">
                                     Start Survey
-                                % endif
+                                </t>
                             </a>
                         </div>
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                        <tr><td style="padding:15px 20px 10px 20px;"><t t-out="object.signature or ''">--<br/>Addison Olson</t></td></tr>
                     </p>
                 </div>
             </field>

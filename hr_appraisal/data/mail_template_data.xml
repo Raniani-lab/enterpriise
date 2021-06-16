@@ -4,22 +4,22 @@
         <record id="mail_template_appraisal_confirm" model="mail.template">
             <field name="name">Hr Appraisal: Confirm Appraisal</field>
             <field name="model_id" ref="hr_appraisal.model_hr_appraisal"/>
-            <field name="subject">${object.employee_id.name}: Appraisal Confirmed</field>
+            <field name="subject">{{ object.employee_id.name }}: Appraisal Confirmed</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        An appraisal of ${ctx.get('employee_to_name') or 'employee'} has been confirmed.
+                        An appraisal of <t t-out="ctx.get('employee_to_name', 'employee')">employee</t> has been confirmed.
                         <br/><br/>
                         Please schedule an appraisal date together.
                         <br/><br/>
-                        % if ctx.get('recipient_users'):
-                        <p style="margin: 16px 0px 16px 0px; text-align: center;">
-                            <a href="${ctx['url']}"
-                                style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                View Appraisal
-                            </a>
-                        </p>
-                        % endif
+                        <t t-if="ctx.get('recipient_users')">
+                            <p style="margin: 16px 0px 16px 0px; text-align: center;">
+                                <a t-att-href="ctx.get('url')"
+                                    style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                    View Appraisal
+                                </a>
+                            </p>
+                        </t>
                     </p>
                 </div>
             </field>
@@ -33,26 +33,26 @@
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx.get('employee_to_name') or 'employee'},
+                        Dear <t t-out="ctx.get('employee_to_name', 'employee')">employee</t>,
                         <br/>
-                        An appraisal has been requested by ${ctx['author_name']}
+                        An appraisal has been requested by <t t-out="ctx.get('author_name', '')">Addison Olson</t>
                         <br/>
-                        (${ctx['author_mail']}).
-                        % if ctx.get('user_body'):
-                        <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
-                            ${ctx.get('user_body') | safe}
-                        </div>
-                        % endif
-                        % if ctx.get('recipient_users'):
-                        <p style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; text-align: center;">
-                            <a href="${ctx['url']}"
-                                style=" margin: auto; background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                View Appraisal
-                            </a>
-                        </p>
-                        % endif
+                        (<t t-out="ctx.get('author_mail', '')">addison.olson28@example.com</t>).
+                        <t t-if="ctx.get('user_body')">
+                            <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
+                                <t t-out="ctx.get('user_body')">Annual appraisal.</t>
+                            </div>
+                        </t>
+                        <t t-if="ctx.get('recipient_users')">
+                            <p style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; text-align: center;">
+                                <a t-att-t-att-href="ctx.get('url')"
+                                    style=" margin: auto; background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                    View Appraisal
+                                </a>
+                            </p>
+                        </t>
                         <br/>
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                        <tr><td style="padding:15px 20px 10px 20px;"><t t-out="object.signature or ''">--<br/>Addison Olson</t></td></tr>
                     </p>
                 </div>
             </field>
@@ -62,26 +62,26 @@
         <record id="mail_template_appraisal_request_from_employee" model="mail.template">
             <field name="name">Hr Appraisal: Request an Appraisal From Employee</field>
             <field name="model_id" ref="hr_appraisal.model_hr_appraisal"/>
-            <field name="subject">${object.name} requests an Appraisal</field>
+            <field name="subject">{{ hasattr(object, 'name') and object.name or '' }} requests an Appraisal</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx.get('employee_to_name') or 'employee'},
+                        Dear <t t-out="ctx.get('employee_to_name', 'employee')">employee</t>,
                         <br/>
-                        ${ctx['author_name']} (${ctx['author_mail']}) wishes an appraisal.
-                        % if ctx.get('user_body'):
-                        <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
-                            ${ctx.get('user_body') | safe}
-                        </div>
-                        % endif
-                        % if ctx.get('recipient_users'):
-                        <p style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; text-align: center;">
-                            <a href="${ctx['url']}"
-                                style=" margin: auto; background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                View Appraisal
-                            </a>
-                        </p>
-                        % endif
+                        <t t-out="ctx.get('author_name', '')">Addison Olson</t> (<t t-out="ctx.get('author_mail', '')">addison.olson28@example.com</t>) wishes an appraisal.
+                        <t t-if="ctx.get('user_body')">
+                            <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
+                                <t t-out="ctx.get('user_body')">Annual appraisal.</t>
+                            </div>
+                        </t>
+                        <t t-if="ctx.get('recipient_users')">
+                            <p style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; text-align: center;">
+                                <a t-att-t-att-href="ctx.get('url')"
+                                    style=" margin: auto; background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                    View Appraisal
+                                </a>
+                            </p>
+                        </t>
                     </p>
                 </div>
             </field>

@@ -76,7 +76,7 @@
                             <t t-set="originalMessage" t-value="widget._htmlEscape(comment.message)"/>
                             <div t-attf-class="o_social_comment_text flex-grow-1 #{bubble_design? 'bg-200 py-2 px-3 mr-2 o_social_bubble_radius' : ''}"
                                 t-att-data-original-message="originalMessage"
-                                t-raw="widget._formatCommentStreamPost(comment.message)"/>
+                                t-out="widget._formatCommentStreamPost(comment.message)"/>
 
                             <div class="o_social_icon_dropdown o_social_manage_comment dropdown">
                                 <button t-attf-class="btn btn-light dropdown-toggle #{bubble_design? 'bg-200 px-3 rounded-pill' : ''}"
@@ -219,7 +219,7 @@
             </div>
             <div name="o_social_original_post_message_body" t-attf-class="o_social_original_post_message_body">
                 <div t-if="originalPost.postMessage"
-                    t-raw="widget._formatCommentStreamPost(originalPost.postMessage)"
+                    t-out="widget._formatCommentStreamPost(originalPost.postMessage)"
                     class="o_social_original_post_message_text overflow-auto mb-2"/>
                 <div t-if="originalPost.postImages.length > 0"
                     class="o_social_stream_post_image mt-3 d-flex overflow-hidde">

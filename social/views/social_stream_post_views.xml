@@ -62,12 +62,12 @@
                                             class="o_social_stream_post_author d-flex align-items-center"
                                             t-att-href="record.author_link.value"
                                             t-att-title="record.author_name.value or 'Unknown'"
-                                            t-raw="author_info"
+                                            t-out="author_info"
                                             target="_blank"/>
 
                                         <div t-else=""
                                             class="o_social_stream_post_author d-flex align-items-center"
-                                            t-raw="author_info"/>
+                                            t-out="author_info"/>
                                     </div>
 
                                     <a t-att-href="record.post_link.value" target="_blank">

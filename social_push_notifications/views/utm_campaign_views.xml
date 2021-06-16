@@ -37,7 +37,7 @@
             <xpath expr="//ul[@id='o_utm_actions']">
                 <a name="action_redirect_to_push_notifications" type="object"
                     t-attf-class="#{record.social_push_notifications_count.raw_value === 0 ? 'text-muted' : ''}">
-                    <t t-raw="record.social_push_notifications_count.raw_value"/> Notifications
+                    <t t-out="record.social_push_notifications_count.raw_value"/> Notifications
                 </a>
             </xpath>
         </field>

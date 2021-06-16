@@ -175,6 +175,11 @@ $gantt-unavailability-bg: $gray-200;
         .o_gantt_pill {
             z-index: 1;  // pill should overlap the grid
             height: $gantt-pill-height;
+            padding: 0 8px;
+            p {
+                // Prevent displaying pill's description when size is smaller than 50px
+                max-width: calc((100% - 50px) * 9999);
+            }
         }
     }
 
@@ -237,12 +242,16 @@ $gantt-unavailability-bg: $gray-200;
                 }
             }
 
+            .ui-resizable-e, .ui-resizable-w {
+                width: 10px;
+            }
+
             &:hover {
                 .ui-resizable-e, .ui-resizable-w {
-                    background-color: rgba(black, .2);
+                    background-color: rgba(230,230,230, .5);
 
                     &:hover {
-                        background-color: rgba(black, .5);
+                        background-color: rgba(230,230,230, .8);
                     }
                 }
             }
@@ -335,6 +344,7 @@ $gantt-unavailability-bg: $gray-200;
 
         .o_gantt_pill_wrapper {
             line-height: $gantt-pill-height;
+            margin: 0 2px;
 
             &.o_gantt_pill_wrapper_continuous_left {
                 padding-left: 0;

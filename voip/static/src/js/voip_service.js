@@ -21,13 +21,13 @@ export const voipService = {
     async start(env, { user }) {
         const isEmployee = await user.hasGroup('base.group_user');
         if (isEmployee) {
-            systrayRegistry.add('voip', { Component: VoipSystrayItem });
+            const bus = new EventBus();
+            systrayRegistry.add('voip', { Component: VoipSystrayItem, props: { bus } });
             mainComponentRegistry.add('voip.DialingPanelContainer', {
                 Component: DialingPanelContainer,
+                props: { bus },
             });
         }
-
-        return { bus: new EventBus() };
     },
 };
 

@@ -23,12 +23,11 @@ const { EventBus } = owl.core;
 export class DialingPanelAdapter extends ComponentAdapter {
     setup() {
         super.setup();
-        this.voip = useService('voip');
         this.voipLegacy = useService('voip_legacy');
 
         this.env = Component.env;
 
-        this.voip.bus.on('TOGGLE_DIALING_PANEL', this, () => {
+        this.props.bus.on('TOGGLE_DIALING_PANEL', this, () => {
             core.bus.trigger('voip_onToggleDisplay');
         });
 

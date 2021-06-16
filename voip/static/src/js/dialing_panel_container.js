@@ -19,6 +19,6 @@ export class DialingPanelContainer extends Component {
 }
 DialingPanelContainer.template = tags.xml`
     <div class="o_voip_dialing_panel_container">
-        <DialingPanelAdapter Component="DialingPanel"/>
+        <DialingPanelAdapter Component="DialingPanel" bus="props.bus" />
     </div>`;
 DialingPanelContainer.components = { DialingPanelAdapter };

@@ -113,6 +113,8 @@ class HelpdeskTicket(models.Model):
                 ticket.sale_order_id = ticket.sale_line_id.order_id
             elif ticket.project_id.sale_order_id:
                 ticket.sale_order_id = ticket.project_id.sale_order_id
+            else:
+                ticket.sale_order_id = False
             if ticket.sale_order_id and not ticket.partner_id:
                 ticket.partner_id = ticket.sale_order_id.partner_id
 

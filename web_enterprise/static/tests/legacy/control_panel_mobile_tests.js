@@ -38,7 +38,7 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
         },
     }, function () {
 
-        QUnit.test('basic rendering', async function (assert) {
+        QUnit.skip('basic rendering', async function (assert) {
             assert.expect(2);
 
             const actionManager = await createActionManager({
@@ -161,7 +161,7 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             controlPanel.destroy();
         });
 
-        QUnit.test('mobile search: activate a filter through quick search', async function (assert) {
+        QUnit.skip('mobile search: activate a filter through quick search', async function (assert) {
             assert.expect(7);
 
             let searchRPCFlag = false;
@@ -211,7 +211,7 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             actionManager.destroy();
         });
 
-        QUnit.test('mobile search: activate a filter in full screen search view', async function (assert) {
+        QUnit.skip('mobile search: activate a filter in full screen search view', async function (assert) {
             assert.expect(3);
 
             const actionManager = await createActionManager({

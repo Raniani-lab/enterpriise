@@ -1,11 +1,11 @@
 odoo.define('web_enterprise.form_tests', function (require) {
 "use strict";
 
-var FormController = require('web.FormController');
 var FormView = require('web.FormView');
 var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
+const { loadJS } = owl.utils;
 
 QUnit.module('web_enterprise', {
     beforeEach: function () {
@@ -230,6 +230,9 @@ QUnit.module('web_enterprise', {
 
     QUnit.test(`Quick Edition: quick edit many2one`, async function (assert) {
         assert.expect(1);
+
+        // this lib is normally lazy loaded in the kanban view initialization.
+        await loadJS("/web/static/lib/jquery.touchSwipe/jquery.touchSwipe.js");
 
         const form = await createView({
             View: FormView,

@@ -408,7 +408,7 @@ QUnit.module('Views', {
         kanban.destroy();
     });
 
-    QUnit.test('mobile kanban view: preserve active column on grouped kanban view', async function (assert) {
+    QUnit.skip('mobile kanban view: preserve active column on grouped kanban view', async function (assert) {
         assert.expect(9);
 
         const actionManager = await createActionManager({

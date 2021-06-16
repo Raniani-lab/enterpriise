@@ -4,7 +4,7 @@
 <t t-name="web_studio.Sidebar.Toolbox">
     <hr/>
     <div class="o_web_studio_sidebar_toolbox">
-        <t t-raw="0"/>
+        <t t-out="0"/>
     </div>
 </t>
 

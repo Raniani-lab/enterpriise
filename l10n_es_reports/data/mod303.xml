@@ -719,7 +719,13 @@
             <field name="name">[66] Atribuible a la Administración del Estado</field>
             <field name="code">aeat_mod_303_66</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">aeat_mod_303_65 * aeat_mod_303_46 / 100.0</field>
+            <field name="formulas">aeat_mod_303_65 * aeat_mod_303_46</field>
+            <!--
+                Grid 65 is of type 'percent', so its balance is a float between 0 and 1, representing the percentage.
+
+                Should normally be casilla 64 * percentage in 65 (64 = sum of casillas 46, 58 and 76),
+                but only casilla 46 is in our version of the report.
+            -->
             <field name="sequence" eval="68"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -749,7 +755,7 @@
             <field name="name">[69] Resultado</field>
             <field name="code">aeat_mod_303_69</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">aeat_mod_303_66 + aeat_mod_303_77 - aeat_mod_303_67 + aeat_mod_303_68</field>
+            <field name="formulas">aeat_mod_303_66 + aeat_mod_303_77 - aeat_mod_303_78 + aeat_mod_303_68</field>
             <field name="sequence" eval="71"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -807,6 +813,36 @@
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
             <field name="sequence" eval="77"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
+        <record id="mod_303_casilla_78" model="account.financial.html.report.line">
+            <field name="name">[78] Cuotas a compensar de periodos anteriores aplicadas en este periodo</field>
+            <field name="code">aeat_mod_303_78</field>
+            <field name="parent_id" ref="mod_303_title_18"/>
+            <field name="formulas">from_context</field>
+            <field name="sequence" eval="78"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
+        <record id="mod_303_casilla_87" model="account.financial.html.report.line">
+            <field name="name">[87] Cuotas a compensar de periodos previos pendientes para periodos posteriores</field>
+            <field name="code">aeat_mod_303_87</field>
+            <field name="parent_id" ref="mod_303_title_18"/>
+            <field name="formulas">aeat_mod_303_110 - aeat_mod_303_78</field>
+            <field name="sequence" eval="79"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
+        <record id="mod_303_casilla_110" model="account.financial.html.report.line">
+            <field name="name">[110] Cuotas a compensar pendientes de periodos anteriores</field>
+            <field name="code">aeat_mod_303_110</field>
+            <field name="parent_id" ref="mod_303_title_18"/>
+            <field name="formulas">from_context</field>
+            <field name="sequence" eval="80"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>

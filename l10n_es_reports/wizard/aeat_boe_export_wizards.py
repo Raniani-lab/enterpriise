@@ -110,6 +110,15 @@ class Mod303BOEWizard(models.TransientModel):
             if not record.partner_bank_id.bank_bic:
                 raise ValidationError(_("Please first assign a BIC number to the bank related to this account."))
 
+    def _get_using_sii_2021_value(self):
+        """ Hook to be overridden in 2021 module to allow manual
+        configuration of the SII field in the BOE"""
+        return 2
+
+    def _get_exonerated_from_mod_390_2021_value(self, period):
+        """ Hook to be overridden in 2021 module to allow manual
+        configuration of the 'exeonerated from mod 390' field in the BOE"""
+        return 2 if period in ('12', '4T') else 0
 
 class Mod347BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod347and349.export.wizard'

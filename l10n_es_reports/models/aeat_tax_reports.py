@@ -95,8 +95,14 @@ class AEATAccountFinancialReport(models.Model):
                 casilla_fields = [x for x in dir(aeat_wizard) if x.startswith(casilla_prefix)]
                 context_line_values = {}
                 for attr in casilla_fields:
+                    attr_value = getattr(aeat_wizard, attr)
+
+                    if attr == 'casilla_65':
+                        # Casilla 65 is a percentage; the report stores it as float, where 1.0 = 100%
+                        attr_value /= 100
+
                     line_code = 'aeat_mod_' + aeat_wizard._modelo + '_' + attr.replace(self.CASILLA_FIELD_PREFIX, '')
-                    context_line_values[line_code] = getattr(aeat_wizard, attr)
+                    context_line_values[line_code] = attr_value
 
                 self = self.with_context(financial_report_line_values= context_line_values)
 
@@ -280,10 +286,11 @@ class AEATAccountFinancialReport(models.Model):
             split_number = float_split_str(abs(number), decimal_places)
             str_number = split_number[0] + split_number[1]
         else:
-            str_number = str(abs(number))
+            str_number = str(abs(number)) + '0' * decimal_places
 
         negative_amount = in_currency and company.currency_id.compare_amounts(number, 0.0)==-1 or number<0
         sign_str = signed and (negative_amount and sign_neg or sign_pos) or ''
+
         # Done in two parts, so that sign str is always in front of the filling characters
         return self._boe_format_string(sign_str) + self._boe_format_string(str_number, length=length - len(sign_str), align='right', fill_char=b'0')
 
@@ -293,12 +300,20 @@ class AEATAccountFinancialReport(models.Model):
         identify them. Returns a dictionnary, with casillas as keys and their values
         as values.
         """
-        casilla_pattern = re.compile(r'\[(?P<casilla>..).*\]')
+        casilla_pattern = re.compile(r'\[(?P<casilla>.*)\]')
         rslt = {}
         for line in report_lines:
             matcher = casilla_pattern.match(line['name'])
             if matcher:
-                rslt[matcher.group('casilla')] = line['columns'][0]['no_format'] # Element [0] is the current period, in case we are comparing
+                casilla = matcher.group('casilla')
+                casilla_value = line['columns'][0]['no_format'] # Element [0] is the current period, in case we are comparing
+
+                if casilla == '65':
+                    # Casilla 65 is a percentage; the report stores it as float, where 1.0 = 100%
+                    casilla_value *= 100
+
+                rslt[casilla] = casilla_value
+
         return rslt
 
     def _retrieve_report_line(self, options, xmlid):
@@ -541,22 +556,43 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(' ')
         rslt += self._boe_format_string(boe_wizard.declaration_type)
         rslt += self._boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
-        rslt += self._boe_format_string(current_company.name, length=60)
-        rslt += self._boe_format_string(' ' * 20) # We keep the name of the declaring party blank here, as it is a company
+        rslt += self._boe_format_string(current_company.name, length=80)
         rslt += self._boe_format_string(year)
         rslt += self._boe_format_string(period)
-        rslt += self._boe_format_number(boe_wizard.monthly_return and 1 or 2)
 
-        # Identification (everything is constant in our case)
+        # Identification
+        rslt += self._boe_format_number(2) # Tributación exclusivamente foral => Always "no", for simplicity
+        rslt += self._boe_format_number(boe_wizard.monthly_return and 1 or 2)
         rslt += self._boe_format_number(3)
+        rslt += self._boe_format_number(2)
+        rslt += self._boe_format_number(2)
+        rslt += self._boe_format_number(2)
+        rslt += self._boe_format_number(2)
         rslt += self._boe_format_number(2)
         rslt += self._boe_format_number(2)
         rslt += self._boe_format_string(' ' * 8)
         rslt += self._boe_format_string(' ')
-        rslt += self._boe_format_number(2)
-        rslt += self._boe_format_number(2)
-        rslt += self._boe_format_number(2)
-        rslt += self._boe_format_number(2)
+        rslt += self._boe_format_number(boe_wizard._get_using_sii_2021_value())
+        rslt += self._boe_format_number(boe_wizard._get_exonerated_from_mod_390_2021_value(period))
+
+        if period in ('12', '4T'):
+            profit_and_loss_report = self.env.ref('l10n_es_reports.financial_report_es_profit_and_loss')
+            end_date = fields.Date.from_string(options['date']['date_to'])
+            transactions_volume_options = profit_and_loss_report._get_options({
+                'date': {
+                    'date_from': '%s-01-01' % end_date.year,
+                    'date_to': '%s-12-31' % end_date.year,
+                    'filter': 'custom',
+                    'mode': 'range',
+                }
+            })
+            transactions_volume_line = self.env.ref('l10n_es_reports.es_profit_and_loss_line_1')
+            transactions_volume_vals = profit_and_loss_report._get_lines(transactions_volume_options, line_id=transactions_volume_line.id)
+            annual_volume_indicator = current_company.currency_id.is_zero(transactions_volume_vals[0]['columns'][0]['no_format_name']) and 2 or 1
+        else:
+            annual_volume_indicator = 0
+
+        rslt += self._boe_format_number(annual_volume_indicator)
 
         # Casillas
         rslt += self._boe_format_number(casilla_lines_map['01'], length=17, decimal_places=2, in_currency=True)
@@ -587,14 +623,14 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_number(casilla_lines_map['26'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['27'], length=17, decimal_places=2, signed=True, in_currency=True)
 
-        for casilla in range(28, 39):
+        for casilla in range(28, 40):
             rslt += self._boe_format_number(casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
 
-        for casilla in range(40, 46):
+        for casilla in range(40, 47):
             rslt += self._boe_format_number(casilla_lines_map[str(casilla)], length=17, decimal_places=2, signed=True, in_currency=True)
 
         # Footer of page 1
-        rslt += self._boe_format_string(' ' * 582) # Reserved for AEAT
+        rslt += self._boe_format_string(' ' * 600) # Reserved for AEAT
         rslt += self._boe_format_string(' ' * 13) # Reserved for AEAT
         rslt += self._boe_format_string('</T30301000>')
 
@@ -607,17 +643,27 @@ class AEATAccountFinancialReport(models.Model):
         boe_wizard = self._retrieve_boe_manual_wizard(options)
 
         # Casillas
-        for casilla in range(59, 63):
+        for casilla in range(59, 62):
             rslt += self._boe_format_number(casilla_lines_map[str(casilla)], length=17, decimal_places=2, signed=True, in_currency=True)
 
-        rslt += self._boe_format_number(casilla_lines_map['74'], length=17, decimal_places=2, signed=True, in_currency=True)
-        rslt += self._boe_format_number(casilla_lines_map['75'], length=17, decimal_places=2, signed=True, in_currency=True)
+        # Reserved for AEAT
+        rslt += self._boe_format_number(0, length=17)
+        rslt += self._boe_format_number(0, length=17)
+        rslt += self._boe_format_number(0, length=17)
+        rslt += self._boe_format_number(0, length=17)
+        rslt += self._boe_format_number(0, length=17)
+
+        # Next casillas
+        for casilla in (62, 63, 74, 75):
+            rslt += self._boe_format_number(casilla_lines_map[str(casilla)], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(0, length=17)
         rslt += self._boe_format_number(casilla_lines_map['46'], length=17, decimal_places=2, signed=True, in_currency=True) # Should normally be casilla 64 (= sum of casillas 46, 58 and 76), but only casilla 46 is in our version of the report
-        rslt += self._boe_format_number(casilla_lines_map['65'], length=9, decimal_places=6)
+        rslt += self._boe_format_number(casilla_lines_map['65'], length=5, decimal_places=2)
         rslt += self._boe_format_number(casilla_lines_map['66'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['77'], length=17, decimal_places=2, signed=True, in_currency=True)
-        rslt += self._boe_format_number(casilla_lines_map['67'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._boe_format_number(casilla_lines_map.get('110', 0), length=17, decimal_places=2, in_currency=True)
+        rslt += self._boe_format_number(casilla_lines_map.get('78', 0), length=17, decimal_places=2, in_currency=True)
+        rslt += self._boe_format_number(casilla_lines_map.get('87', 0), length=17, decimal_places=2, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['68'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['69'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['70'], length=17, decimal_places=2, signed=True, in_currency=True)
@@ -631,33 +677,11 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(bic, length=11)
         rslt += self._boe_format_string(iban, length=34)
 
-        # "Información adicional" (everything is empty)
-        rslt += self._boe_format_number(0)
-        rslt += self._boe_format_string(' ' * 4)
-        rslt += self._boe_format_number(0)
-        rslt += self._boe_format_string(' ' * 4)
-        rslt += self._boe_format_number(0)
-        rslt += self._boe_format_string(' ' * 4)
-        rslt += self._boe_format_number(0)
-        rslt += self._boe_format_string(' ' * 4)
-        rslt += self._boe_format_number(0)
-        rslt += self._boe_format_string(' ' * 4)
-        rslt += self._boe_format_number(0)
-        rslt += self._boe_format_string(' ' * 4)
-        rslt += self._boe_format_string(' ')
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0)
+        # Reserved by AEAT
+        rslt += self._boe_format_string(' ' * 17)
+        rslt += self._boe_format_string(' ' * 583)
 
         # Footer of page 3
-        rslt += self._boe_format_string(' ' * 590) # Reserved for AEAT
         rslt += self._boe_format_string('</T30303000>')
 
         return rslt

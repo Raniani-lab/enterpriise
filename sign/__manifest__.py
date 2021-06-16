@@ -55,7 +55,7 @@ Let your customers follow the signature process easily.
             'web/static/lib/bootstrap/scss/mixins/_size.scss',
             'web/static/src/legacy/scss/utils.scss',
             'web/static/src/legacy/scss/primary_variables.scss',
-            'web_enterprise/static/src/scss/primary_variables.scss',
+            'web_enterprise/static/src/legacy/scss/primary_variables.scss',
             'web_tour/static/src/scss/tip.scss',
             'sign/static/src/css/iframe.css',
         ],

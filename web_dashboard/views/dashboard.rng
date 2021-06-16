@@ -46,6 +46,7 @@
             <optional><attribute name="widget"/></optional>
             <optional><attribute name="attrs"/></optional>
             <optional><attribute name="modifiers"/></optional>
+            <optional><attribute name="groups"/></optional>
             <optional><attribute name="help"/></optional>
             <optional><attribute name="measure"/></optional>
             <optional><attribute name="value_label"/></optional>
@@ -61,6 +62,7 @@
             <optional><attribute name="widget"/></optional>
             <optional><attribute name="attrs"/></optional>
             <optional><attribute name="modifiers"/></optional>
+            <optional><attribute name="groups"/></optional>
             <optional><attribute name="help"/></optional>
             <optional><attribute name="value_label"/></optional>
         </element>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-19 11:34+0000\n"
+"POT-Creation-Date: 2020-10-23 12:07+0000\n"
 "PO-Revision-Date: 2016-01-27 17:34+0000\n"
 "Last-Translator: David Hernandez <davidhernandez.ctam@gmail.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/odoo/odoo-9/"
@@ -25,75 +25,39 @@ msgid "Companies"
 msgstr "Compañías"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__daily
 msgid "Daily"
 msgstr "Diario"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "European Central Bank"
-msgstr ""
-
-#. module: currency_rate_live
-#: model:ir.model.fields,field_description:currency_rate_live.field_account_config_settings_currency_interval_unit
-#: model:ir.model.fields,field_description:currency_rate_live.field_res_company_currency_interval_unit
+#: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_interval_unit
+#: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_interval_unit
 msgid "Interval Unit"
 msgstr "Unidad de intervalo"
 
 #. module: currency_rate_live
-#: model:ir.ui.view,arch_db:currency_rate_live.view_account_currency_config_settings_inherit
-msgid "Live Currency Rate"
-msgstr "Calificación Actual en Vivo"
-
-#. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__manually
 msgid "Manually"
 msgstr "Manualmente"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__monthly
 msgid "Monthly"
 msgstr "Mensual"
 
 #. module: currency_rate_live
-#: model:ir.model.fields,field_description:currency_rate_live.field_account_config_settings_currency_next_execution_date
-#: model:ir.model.fields,field_description:currency_rate_live.field_res_company_currency_next_execution_date
+#: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date
+#: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_next_execution_date
 msgid "Next Execution Date"
 msgstr "Próxima Fecha de Ejecución"
 
 #. module: currency_rate_live
-#: model:ir.model.fields,field_description:currency_rate_live.field_account_config_settings_currency_provider
-#: model:ir.model.fields,field_description:currency_rate_live.field_res_company_currency_provider
+#: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_provider
+#: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_provider
 msgid "Service Provider"
 msgstr "Proveedor del Servicio"
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/account_config_setting.py:38
-#, python-format
-msgid ""
-"Unable to connect to the online exchange rate platform. The web service may "
-"be temporary down. Please try again in a moment."
-msgstr ""
-
-#. module: currency_rate_live
-#: model:ir.ui.view,arch_db:currency_rate_live.view_account_currency_config_settings_inherit
-msgid "Update Now"
-msgstr ""
-
-#. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
 msgid "Weekly"
 msgstr "Semanalmente"
-
-#. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "Yahoo"
-msgstr "Yahoo"
-
-#. module: currency_rate_live
-#: model:ir.model,name:currency_rate_live.model_account_config_settings
-msgid "account.config.settings"
-msgstr "cuenta.configurar.ajustes"
-
-#~ msgid "Configuration"
-#~ msgstr "Configuración"

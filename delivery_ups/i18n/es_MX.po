@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-29 12:08+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
 "PO-Revision-Date: 2016-08-05 18:37+0000\n"
 "Last-Translator: ougc27 <oscar_garzacordova@hotmail.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/odoo/odoo-9/"
@@ -21,75 +21,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
+#: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Portador"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_dimension_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__cm
 msgid "Centimeters"
 msgstr "Centímetros"
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_default_packaging_id
-msgid "Default Packaging Type"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_package_dimension_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
 msgid "Inches"
 msgstr "Pulgadas"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_weight_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__kgs
 msgid "Kilograms"
 msgstr "Kilogramos"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_product_packaging
-#, fuzzy
-msgid "Packaging"
-msgstr "Altura del Paquete"
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:207
-#, python-format
-msgid "Please provide at least one item to ship."
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_package_weight_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__lbs
 msgid "Pounds"
 msgstr "Libras"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:171
-#, python-format
-msgid "Shipment N° %s has been cancelled"
-msgstr "Embarque Nº %s ha sido cancelado"
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:135
-#, python-format
-msgid "Shipment created into UPS <br/> <b>Tracking Number : </b>%s"
-msgstr ""
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:142
-#, python-format
-msgid "Shipping label for packages"
-msgstr ""
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:182
-#, python-format
-msgid ""
-"The address of your company is missing or wrong.\n"
-"(Missing field(s) : %s)"
-msgstr ""
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:192
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The address of your warehouse is missing or wrong.\n"
@@ -99,14 +56,7 @@ msgstr ""
 "Falta: %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:212
-#, python-format
-msgid ""
-"The delivery cannot be done because the weight of your product is missing."
-msgstr ""
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:209
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is "
@@ -116,168 +66,30 @@ msgstr ""
 "encuentra."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:202
-#, python-format
-msgid ""
-"The recipient address is missing or wrong.\n"
-"(Missing field(s) : %s)"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS 2nd Day"
-msgstr "2do Día UPS"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS 2nd Day AM"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS 3-day Select"
-msgstr ""
-
-#. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_access_number
-msgid "UPS AccessLicenseNumber"
-msgstr ""
-
-#. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_be
-#: model:product.product,name:delivery_ups.delivery_carrier_ups_be_product_product
+#: model:product.product,name:delivery_ups.product_product_delivery_ups_be
+#: model:product.template,name:delivery_ups.product_product_delivery_ups_be_product_template
 msgid "UPS BE"
 msgstr "UPS BE"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
-msgid "UPS Configuration"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Ground"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Next Day"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Next Day AM"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Next Day Air Saver"
-msgstr ""
-
-#. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_passwd
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_passwd
 msgid "UPS Password"
 msgstr "Contraseña UPS"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Saver"
-msgstr "Ahorro UPS"
-
-#. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_default_service_type
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_service_type
 msgid "UPS Service Type"
 msgstr "Tipo de Servicio UPS"
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_shipper_number
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number
 msgid "UPS Shipper Number"
 msgstr "Número de embarque UPS"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Standard"
-msgstr ""
-
-#. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
-#: model:product.product,name:delivery_ups.delivery_carrier_ups_us_product_product
+#: model:product.product,name:delivery_ups.product_product_delivery_ups_us
+#: model:product.template,name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "UPS US"
 msgstr "UPS Estados Unidos"
-
-#. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_username
-msgid "UPS Username"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Worldwide Expedited"
-msgstr "Enviado a todo el mundo por UPS"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Worldwide Express"
-msgstr "UPS Expreso en todo el mundo"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Worldwide Express Freight"
-msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_default_service_type:0
-msgid "UPS Worldwide Express Plus"
-msgstr ""
-
-#. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_package_dimension_unit
-msgid "Units for UPS Package Size"
-msgstr ""
-
-#. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_package_weight_unit
-msgid "Ups package weight unit"
-msgstr "Unidad de peso el paquete en Ups"
-
-#~ msgid "10KG Box"
-#~ msgstr "Caja 10KG"
-
-#~ msgid "25KG Box"
-#~ msgstr "Caja 25KG"
-
-#~ msgid "Express Box"
-#~ msgstr "Caja Express"
-
-#~ msgid "Fixed height if not provided on the product packaging."
-#~ msgstr "Altura fija si no se proporciona en el envase del producto."
-
-#~ msgid "Fixed length if not provided on the product packaging."
-#~ msgstr "Longitud fija si no es proporcionada en el embalaje del producto."
-
-#~ msgid "Fixed width if not provided on the product packaging."
-#~ msgstr "Ancho fijo si no es proporcionada en el embalaje del producto."
-
-#~ msgid "Flat Pack"
-#~ msgstr "Paquete Plano"
-
-#~ msgid "Package Height"
-#~ msgstr "Altura del Paquete"
-
-#~ msgid "Package Width"
-#~ msgstr "Ancho del Paquete"
-
-#~ msgid "Package/customer supplied"
-#~ msgstr "Suministro de Paquete/cliente"
-
-#~ msgid "Pallet"
-#~ msgstr "Palet"
-
-#~ msgid "Test Mode"
-#~ msgstr "Modo Test"
-
-#~ msgid "UPS Letter"
-#~ msgstr "Carta UPS"
-
-#~ msgid "Uncheck this box to use production UPS Web Services"
-#~ msgstr "Uncheck this box to use production UPS Web Services"

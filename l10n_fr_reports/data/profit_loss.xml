@@ -2,8 +2,10 @@
 <odoo>
   <record id="account_financial_report_l10n_fr_cdr" model="account.financial.html.report">
     <field name="name">Compte de résultats</field>
+    <field name="unfold_all_filter" eval="True"/>
     <field name="parent_id" ref="l10n_fr.account_reports_fr_statements_menu"/>
     <field name="country_id" ref="base.fr"/>
+    <field name="show_journal_filter" eval="True"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_prod_exp_A" model="account.financial.html.report.line">
     <field name="name">Produits d'exploitation (I)</field>
@@ -24,6 +26,7 @@
     <field name="domain" eval="[
 '|', ('account_id.code', '=like', '707%'),
 ('account_id.code', '=like', '7097%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp2" model="account.financial.html.report.line">
     <field name="name">Production vendue (biens et service)</field>
@@ -45,8 +48,9 @@
 '|', ('account_id.code', '=like', '7094%'),
 '|', ('account_id.code', '=like', '7095%'),
 '|', ('account_id.code', '=like', '7096%'),
-'|', ('account_id.code', '=like', '7098%'), 
+'|', ('account_id.code', '=like', '7098%'),
 ('account_id.code', '=like', '73%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp3" model="account.financial.html.report.line">
     <field name="name">Production Stockée</field>
@@ -57,6 +61,7 @@
     <field name="formulas">-sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '713%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp4" model="account.financial.html.report.line">
     <field name="name">Production immobilisée</field>
@@ -67,6 +72,7 @@
     <field name="formulas">-sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '72%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp5" model="account.financial.html.report.line">
     <field name="name">Subventions d'exploitation</field>
@@ -76,6 +82,7 @@
     <field name="code">i_5</field>
     <field name="formulas">-sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '74%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp6" model="account.financial.html.report.line">
     <field name="name">Reprises sur provisions (et amortissements), transfert de charges</field>
@@ -88,6 +95,7 @@
 '|', ('account_id.code', '=like', '781%'),
 '|', ('account_id.code', '=like', '791%'),
 ('account_id.code', '=like', '796%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp7" model="account.financial.html.report.line">
     <field name="name">Autres produits</field>
@@ -103,6 +111,7 @@
 '|', ('account_id.code', '=like', '754%'),
 '|', ('account_id.code', '=like', '756%'),
 ('account_id.code', '=like', '758%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char_exp" model="account.financial.html.report.line">
     <field name="name">Charges d'exploitation (II)</field>
@@ -123,6 +132,7 @@
 '|', ('account_id.code', '=like', '607%'),
 '|', ('account_id.code', '=like', '608%'),
 ('account_id.code', '=like', '6097%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc2" model="account.financial.html.report.line">
     <field name="name">Variation de stocks (marchandises)</field>
@@ -132,6 +142,7 @@
     <field name="code">ii_2</field>
     <field name="formulas">sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '6037%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc3" model="account.financial.html.report.line">
     <field name="name">Achats de matières premières et autres approvisionnements</field>
@@ -145,6 +156,7 @@
 '|', ('account_id.code', '=like', '602%'),
 '|', ('account_id.code', '=like', '6091%'),
 ('account_id.code', '=like', '6092%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc4" model="account.financial.html.report.line">
     <field name="name">Variations de stocks (matières premières et approvisionnements)</field>
@@ -156,6 +168,7 @@
     <field name="domain" eval="[
 '|', ('account_id.code', '=like', '6031%'),
 ('account_id.code', '=like', '6032%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc5" model="account.financial.html.report.line">
     <field name="name">Autres achats et charges externes</field>
@@ -179,6 +192,7 @@
 '|', ('account_id.code', '=like', '62%'),
 '|', ('account_id.code', '=like', '651%'),
 ('account_id.code', '=like', '653%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc8" model="account.financial.html.report.line">
     <field name="name">Impôts et taxes</field>
@@ -193,6 +207,7 @@
 '|', ('account_id.code', '=like', '644%'),
 '|', ('account_id.code', '=like', '649%'),
 ('account_id.code', '=like', '696%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc9" model="account.financial.html.report.line">
     <field name="name">Salaires et traitements</field>
@@ -204,6 +219,7 @@
     <field name="domain" eval="[
 '|', ('account_id.code', '=like', '641%'),
 ('account_id.code', '=like', '648%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc10" model="account.financial.html.report.line">
     <field name="name">Charges sociales</field>
@@ -219,6 +235,7 @@
 '|', ('account_id.code', '=like', '631%'),
 ('account_id.code', '=like', '633%'),
 ]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc11" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions sur immobilisations : dotations aux amortissements</field>
@@ -230,6 +247,7 @@
     <field name="domain" eval="[
 '|', ('account_id.code', '=like', '6811%'),
 ('account_id.code', '=like', '6812%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc12" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions sur immobilisations : dotations aux provisions</field>
@@ -240,6 +258,7 @@
     <field name="formulas">sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '6816%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc13" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions sur actif circulant : dotations aux provisions</field>
@@ -250,6 +269,7 @@
     <field name="formulas">sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '6817%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc14" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions pour risques et charges: dotations aux provisions</field>
@@ -259,6 +279,7 @@
     <field name="code">ii_12</field>
     <field name="formulas">sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '6815%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="p_n_l_1_resultat_exploitation" model="account.financial.html.report.line">
     <field name="name">1-Résultat d'exploitation (I-II)</field>
@@ -283,6 +304,7 @@
     <field name="formulas">sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '755%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="p_n_l_pertes_supportee_ou_benefice_transfere_iv" model="account.financial.html.report.line">
     <field name="name">Pertes supportée ou bénéfice transféré (IV)</field>
@@ -294,6 +316,7 @@
     <field name="domain" eval="[
 ('account_id.code', '=like', '655%'),
 ]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_prod_fin" model="account.financial.html.report.line">
     <field name="name">Produits financiers (V)</field>
@@ -312,6 +335,7 @@
     <field name="formulas">-sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '761%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp10" model="account.financial.html.report.line">
     <field name="name">D'autres valeurs mobilières et créances de l'actif immobilisé</field>
@@ -322,6 +346,7 @@
     <field name="formulas">-sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '762%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp11" model="account.financial.html.report.line">
     <field name="name">Autres intérêts et produits assimilés</field>
@@ -335,6 +360,7 @@
 '|', ('account_id.code', '=like', '764%'),
 '|', ('account_id.code', '=like', '765%'),
 ('account_id.code', '=like', '768%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp12" model="account.financial.html.report.line">
     <field name="name">Reprises sur provisions et transferts de charges</field>
@@ -345,6 +371,7 @@
     <field name="formulas">-sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '786%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp13" model="account.financial.html.report.line">
     <field name="name">Différences positives de change</field>
@@ -354,6 +381,7 @@
     <field name="code">v_5</field>
     <field name="formulas">-sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '766%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp14" model="account.financial.html.report.line">
     <field name="name">Produits nets sur cessions de valeurs mobilières de placement</field>
@@ -363,6 +391,7 @@
     <field name="code">v_6</field>
     <field name="formulas">-sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '767%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char_fin" model="account.financial.html.report.line">
     <field name="name">Charges financières (VI)</field>
@@ -381,6 +410,7 @@
     <field name="formulas">sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '686%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc15" model="account.financial.html.report.line">
     <field name="name">Charges diverses</field>
@@ -394,6 +424,7 @@
 '|', ('account_id.code', '=like', '658%'),
 '|', ('account_id.code', '=like', '668%'),
 ('account_id.code', '=like', '672%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc18" model="account.financial.html.report.line">
     <field name="name">Intérêts et charges assimilées</field>
@@ -406,6 +437,7 @@
 '|', ('account_id.code', '=like', '661%'),
 '|', ('account_id.code', '=like', '664%'),
 ('account_id.code', '=like', '665%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc19" model="account.financial.html.report.line">
     <field name="name">Différences négatives de change</field>
@@ -415,6 +447,7 @@
     <field name="code">vi_4</field>
     <field name="formulas">sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '666%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc20" model="account.financial.html.report.line">
     <field name="name">Charges nettes sur cessions de valeurs immobilières de placement</field>
@@ -424,6 +457,7 @@
     <field name="code">vi_5</field>
     <field name="formulas">sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '667%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="p_n_l_2_resultat_financier_v_vi" model="account.financial.html.report.line">
     <field name="name">2.Résultat financier (V-VI)</field>
@@ -456,6 +490,7 @@
     <field name="formulas">-sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '771%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="p_n_l_produits_exceptionnels" model="account.financial.html.report.line">
     <field name="name">Produits exceptionnels</field>
@@ -465,6 +500,7 @@
     <field name="code">vii_2</field>
     <field name="formulas">-sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '772%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp16" model="account.financial.html.report.line">
     <field name="name">Sur opérations au capital</field>
@@ -477,6 +513,7 @@
 '|', ('account_id.code', '=like', '775%'),
 '|', ('account_id.code', '=like', '777%'),
 ('account_id.code', '=like', '778%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrp17" model="account.financial.html.report.line">
     <field name="name">Reprises sur provisions et transferts de charges</field>
@@ -488,6 +525,7 @@
     <field name="domain" eval="[
 '|', ('account_id.code', '=like', '787%'),
 ('account_id.code', '=like', '797%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char_exc" model="account.financial.html.report.line">
     <field name="name">Charges exceptionnels (VIII)</field>
@@ -506,6 +544,7 @@
     <field name="formulas">sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '671%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc22" model="account.financial.html.report.line">
     <field name="name">Sur opérations au capital</field>
@@ -517,6 +556,7 @@
     <field name="domain" eval="[
 '|', ('account_id.code', '=like', '675%'),
 ('account_id.code', '=like', '678%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_fr_cdrc23" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions</field>
@@ -527,6 +567,7 @@
     <field name="formulas">sum</field>
     <field name="domain" eval="[
 ('account_id.code', '=like', '687%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="p_n_l_4_resultat_exceptionnel_vii_viii" model="account.financial.html.report.line">
     <field name="name">4.Résultat exceptionnel (VII-VIII)</field>
@@ -543,6 +584,7 @@
     <field name="code">IX</field>
     <field name="formulas">sum</field>
     <field name="domain" eval="[('account_id.code', '=like', '691%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr25" model="account.financial.html.report.line">
     <field name="name">Impôts sur les bénéfices (X)</field>
@@ -556,6 +598,7 @@
 '|', ('account_id.code', '=like', '697%'),
 '|', ('account_id.code', '=like', '698%'),
 ('account_id.code', '=like', '699%')]"/>
+    <field name="groupby">account_id</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_prod" model="account.financial.html.report.line">
     <field name="name">Total des produits (I+III+V+VII)</field>

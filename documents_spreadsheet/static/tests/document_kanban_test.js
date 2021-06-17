@@ -44,6 +44,7 @@ test("thumbnail size in document side panel", async function (assert) {
       `,
     });
     await dom.click(".o_kanban_record:nth(0) .o_record_selector");
+    await nextTick();
     assert.containsOnce(kanban, ".o_documents_inspector_preview .o_document_preview");
     assert.equal(
         dom.find(kanban, ".o_documents_inspector_preview .o_document_preview img").dataset.src,

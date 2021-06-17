@@ -19,6 +19,15 @@ class AppraisalAskFeedback(models.TransientModel):
     def _get_default_deadline(self):
         return fields.Date.today() + relativedelta(months=1)
 
+    def _get_default_user_body(self):
+        return _("""
+        <p>
+        Hello, we would like to have your opinion and thoughts about one of your co-worker.<br/>
+        More feedbacks means more usefull information about strenghts and opportunities to evolve.<br/><br/>
+        Sharing is caring!<br/>
+        Would you mind take a few minutes to complete this survey?
+        </p>""")
+
     @api.model
     def default_get(self, fields):
         if not self.env.user.email:
@@ -31,7 +40,7 @@ class AppraisalAskFeedback(models.TransientModel):
     appraisal_id = fields.Many2one('hr.appraisal', default=lambda self: self.env.context.get('active_id', None))
     employee_id = fields.Many2one(related='appraisal_id.employee_id', string='Appraisal Employee')
     template_id = fields.Many2one(default=lambda self: self.env.ref('hr_appraisal_survey.mail_template_appraisal_ask_feedback', raise_if_not_found=False))
-    user_body = fields.Html('User Contents')
+    user_body = fields.Html('User Contents', default=_get_default_user_body)
 
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_survey_mail_compose_message_ir_attachments_rel',
@@ -46,7 +55,7 @@ class AppraisalAskFeedback(models.TransientModel):
         default=lambda self: self.env.user.partner_id.id,
         help="Author of the message.",
     )
-    survey_template_id = fields.Many2one('survey.survey', required=True)
+    survey_template_id = fields.Many2one('survey.survey', required=True, domain=[('is_appraisal', '=', True)])
     employee_ids = fields.Many2many(
         'hr.employee', string="Recipients", domain=[('user_id', '!=', False)], required=True)
     deadline = fields.Date(string="Answer Deadline", required=True, default=_get_default_deadline)
@@ -143,4 +152,5 @@ class AppraisalAskFeedback(models.TransientModel):
                 user_id=employee.user_id.id)
 
         self.appraisal_id.employee_feedback_ids |= self.employee_ids
+        self.appraisal_id.survey_ids |= self.survey_template_id
         return {'type': 'ir.actions.act_window_close'}

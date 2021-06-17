@@ -8,6 +8,7 @@ class HrAppraisal(models.Model):
     _inherit = "hr.appraisal"
 
     employee_feedback_ids = fields.Many2many('hr.employee', string="Asked Feedback")
+    survey_ids = fields.Many2many('survey.survey', help="Sent out surveys")
 
     def action_ask_feedback(self):
         self.ensure_one()
@@ -21,7 +22,7 @@ class HrAppraisal(models.Model):
 
     def action_open_survey_inputs(self):
         self.ensure_one()
-        if self.user_has_groups('hr_appraisal.group_hr_appraisal_manager') and len(self.employee_feedback_ids) > 1:
+        if (self.user_has_groups('hr_appraisal.group_hr_appraisal_manager') or self.env.user.employee_id in self.manager_ids) and len(self.survey_ids) > 1:
             return {
                 'name': _("Survey Feedback"),
                 'type': 'ir.actions.act_window',

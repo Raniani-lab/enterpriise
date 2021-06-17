@@ -60,12 +60,23 @@ class AppraisalSurvey(Survey):
         survey_data = survey_sudo._prepare_statistics(user_input_lines_sudo)
         question_and_page_data = survey_sudo.question_and_page_ids._prepare_statistics(user_input_lines_sudo)
 
+        answers = request.env['survey.user_input'].sudo().search([
+                ('appraisal_id', '=', appraisal.id),
+                ('survey_id', '=', survey_sudo.id),
+                ('state', '=', 'done')])
+
+        requestors = answers.mapped('create_uid.partner_id')
+
         template_values = {
             'survey': survey_sudo,
+            'answers': answers,
             'question_and_page_data': question_and_page_data,
             'survey_data': survey_data,
             'search_filters': search_filters,
             'search_finished': 'true',  # always finished
             'appraisal_id': appraisal_id,
+            'appraisal_date': appraisal.date_close,
+            'employee_name': appraisal.employee_id.name,
+            'requestors': requestors,
         }
         return request.render('survey.survey_page_statistics', template_values)

@@ -13,11 +13,11 @@
         <field name="arch" type="xml">
             <form string="Appraisal" class="o_appraisal_form">
             <header>
-                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': &quot;['|',('state','!=','new'), '&amp;', ('manager_user_ids', '!=', uid), '&amp;', ('employee_user_id', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="v"/>
-                <button name="action_done" string="Mark as Done" type="object" class="oe_highlight" attrs="{'invisible': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="x"/>
+                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': &quot;['|',('state','!=','new'), '&amp;', ('manager_user_ids', 'not in', uid), '&amp;', ('employee_user_id', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="v"/>
+                <button name="action_done" string="Mark as Done" type="object" class="oe_highlight" attrs="{'invisible': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="x"/>
                 <button name="action_send_appraisal_request" string="Send by email" states="new" type="object" data-hotkey="g"/>
-                <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="z"/>
-                <button name="action_back" string="Reopen" type="object" attrs="{'invisible': &quot;['|', '&amp;', ('state','!=','done'), ('state','!=','cancel'), '&amp;', ('manager_user_ids', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="w"/>
+                <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="z"/>
+                <button name="action_back" string="Reopen" type="object" attrs="{'invisible': &quot;['|', '&amp;', ('state','!=','done'), ('state','!=','cancel'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}" data-hotkey="w"/>
                 <field name="state" widget="statusbar" statusbar_visible="new,pending,done" options="{'fold_field': 'fold'}"/>
             </header>
             <sheet>
@@ -59,7 +59,7 @@
                             '&amp;',
                             ('state', '=', ('pending')),
                             '&amp;',
-                            ('manager_user_ids', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
+                            ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
                         <field name="date_close" attrs="{'readonly':[('state','in', ('pending','done'))]}"/>
                     </group>
                     <group>
@@ -77,7 +77,7 @@
                             '&amp;',
                             ('state', '=', ('pending')),
                             '&amp;',
-                            ('manager_user_ids', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
+                            ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
                     </group>
                 </group>
                 <notebook>
@@ -190,7 +190,7 @@
                         </group>
                     </page>
                     <page string="Private Note" attrs="{'invisible': &quot;[('employee_user_id', '=', uid)]&quot;}">
-                        <field name="note" attrs="{'readonly': &quot;['|', ('state', '=', 'done'), '&amp;', ('manager_user_ids', '!=', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
+                        <field name="note" attrs="{'readonly': &quot;['|', ('state', '=', 'done'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
                     </page>
                 </notebook>
                 <field name="active" invisible="1"/>

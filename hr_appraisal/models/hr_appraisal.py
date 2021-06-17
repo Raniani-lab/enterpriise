@@ -62,7 +62,7 @@ class HrAppraisal(models.Model):
         'hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id',
         context={'active_test': False},
         domain="[('active', '=', 'True'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    manager_user_ids = fields.Many2one('res.users', string="Manager Users", related='manager_ids.user_id')
+    manager_user_ids = fields.Many2many('res.users', string="Manager Users", compute='_compute_user_manager_rights')
     meeting_ids = fields.Many2many('calendar.event', string='Meetings')
     meeting_count_display = fields.Char(string='Meeting Count', compute='_compute_meeting_count')
     date_final_interview = fields.Date(string="Final Interview", compute='_compute_final_interview')
@@ -102,6 +102,8 @@ class HrAppraisal(models.Model):
     @api.depends_context('uid')
     @api.depends('employee_id', 'manager_ids')
     def _compute_user_manager_rights(self):
+        for appraisal in self:
+            appraisal.manager_user_ids = appraisal.manager_ids.mapped('user_id')
         self.is_appraisal_manager = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
         if self.is_appraisal_manager:
             self.is_implicit_manager = False
@@ -370,7 +372,6 @@ class HrAppraisal(models.Model):
         return action
 
     def action_confirm(self):
-        self.activity_feedback(['mail.mail_activity_data_todo'])
         self.write({'state': 'pending'})
 
     def action_done(self):

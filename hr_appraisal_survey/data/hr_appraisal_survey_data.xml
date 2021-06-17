@@ -14,7 +14,7 @@
     </record>
     <!-- Page 1 -->
     <record model="survey.question" id="appraisal_1">
-        <field name="title">Employee Appraisal Form</field>
+        <field name="title"></field>
         <field name="survey_id" ref="appraisal_feedback_template"/>
         <field name="is_page" eval="True"/>
         <field name="sequence">1</field>

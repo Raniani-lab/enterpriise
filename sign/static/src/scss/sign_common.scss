@@ -172,6 +172,11 @@
         justify-content: flex-start;
     }
 }
+
+.oe_sign_terms {
+    flex: auto !important;
+}
+
 @media only screen and (max-width:650px) {
     .mobile-hide{
         display: none !important;

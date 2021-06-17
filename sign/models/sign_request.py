@@ -659,6 +659,7 @@ class SignRequestItem(models.Model):
                 'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': self.sign_request_id.subject,
                 'body': self.sign_request_id.message if not is_html_empty(self.sign_request_id.message) else False,
+                'use_sign_terms': self.env['ir.config_parameter'].sudo().get_param('sign.use_sign_terms')
             }, engine='ir.qweb', minimal_qcontext=True)
 
             attachment_ids = self.sign_request_id.attachment_ids.ids

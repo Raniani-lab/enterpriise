@@ -40,6 +40,19 @@
             <span>Your IP address and localization are associated to your signature to ensure traceability.</span>
         </div>
     </td></tr>
+    <t t-set="company" t-value="record.create_uid.company_id"/>
+    <tr t-if="use_sign_terms">
+        <t t-if="company.sign_terms_type == 'html'">
+            <td style="margin:16px auto; text-align:center;">
+                <a t-att-href="'%s/sign/terms' % record.get_base_url()" class="text-dark">Terms &amp; Conditions</a>
+            </td>
+        </t>
+        <t t-else="">
+            <td>
+                <t t-out="company.sign_terms" class="text-dark"/>
+            </td>
+        </t>
+    </tr>
 </table>
     </template>
 

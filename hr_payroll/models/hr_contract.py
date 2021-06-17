@@ -31,6 +31,42 @@ class HrContract(models.Model):
         for contract in self:
             contract.payslips_count = mapped_counts.get(contract.id, 0)
 
+    def _get_occupation_dates(self):
+        # Takes several contracts and returns all the contracts under the same occupation (i.e. the same
+        # work rate + the date_from and date_to)
+        result = []
+        done_contracts = self.env['hr.contract']
+
+        for contract in self:
+            if contract in done_contracts:
+                continue
+            contracts = contract  # hr.contract(38,)
+            date_from = contract.date_start
+            date_to = contract.date_end
+            history = self.env['hr.contract.history'].search([('employee_id', '=', contract.employee_id.id)], limit=1)
+            all_contracts = history.contract_ids.filtered(
+                lambda c: c.active and c.state in ['open', 'close'] and c != contract) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
+            before_contracts = all_contracts.filtered(lambda c: c.date_start < contract.date_start) # hr.contract(39, 41)
+            after_contracts = all_contracts.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
+            work_time_rate = contract.resource_calendar_id.work_time_rate
+
+            for before_contract in before_contracts:
+                if before_contract.resource_calendar_id.work_time_rate == work_time_rate:
+                    date_from = before_contract.date_start
+                    contracts |= before_contract
+                else:
+                    break
+
+            for after_contract in after_contracts:
+                if after_contract.resource_calendar_id.work_time_rate == work_time_rate:
+                    date_to = after_contract.date_end
+                    contracts |= after_contract
+                else:
+                    break
+            result.append((contracts, date_from, date_to))
+            done_contracts |= contracts
+        return result
+
     def action_open_payslips(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_view_hr_payslip_month_form")

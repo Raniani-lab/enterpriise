@@ -17,6 +17,10 @@
             <td class="o_mrp_bom_ver"/>
             <td class="o_mrp_ecos"/>
         </xpath>
+        <xpath expr="//td[@name='td_mrp_bom_byproducts_f']" position="after">
+            <td class="o_mrp_bom_ver"/>
+            <td class="o_mrp_ecos"/>
+        </xpath>
     </template>
 
     <template id="report_mrp_bom_line_inherit_mrp_plm" inherit_id="mrp.report_mrp_bom_line">
@@ -32,10 +36,21 @@
             <td class="o_mrp_bom_ver"/>
             <td class="o_mrp_ecos"/>
         </xpath>
+        <xpath expr="//td[@name='td_byproducts']" position="after">
+            <td class="o_mrp_bom_ver"/>
+            <td class="o_mrp_ecos"/>
+        </xpath>
     </template>
 
     <template id="report_mrp_operation_line_inherit_mrp_plm" inherit_id="mrp.report_mrp_operation_line">
         <xpath expr="//td[@name='td_opr_line']" position="after">
+            <td class="o_mrp_bom_ver"/>
+            <td class="o_mrp_ecos"/>
+        </xpath>
+    </template>
+
+    <template id="report_mrp_byproduct_line_inherit_mrp_plm" inherit_id="mrp.report_mrp_byproduct_line">
+        <xpath expr="//td[@name='td_byproduct_line']" position="after">
             <td class="o_mrp_bom_ver"/>
             <td class="o_mrp_ecos"/>
         </xpath>

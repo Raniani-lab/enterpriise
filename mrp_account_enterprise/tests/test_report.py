@@ -31,6 +31,24 @@ class TestReportsCommon(TestMrpAccount):
         production_table_form.product_qty = 1
         production_table = production_table_form.save()
 
+        # add a byproduct w/ a non-zero cost share
+        byproduct_cost_share = 10
+        byproduct = self.env['product.product'].create({
+            'name': 'Plank',
+            'type': 'product',
+        })
+
+        self.env['stock.move'].create({
+            'name': "Byproduct",
+            'product_id': byproduct.id,
+            'product_uom': byproduct.uom_id.id,
+            'product_uom_qty': 1,
+            'production_id': production_table.id,
+            'location_id': self.ref('stock.stock_location_stock'),
+            'location_dest_id': self.ref('stock.stock_location_output'),
+            'cost_share': byproduct_cost_share
+        })
+
         production_table.action_confirm()
         mo_form = Form(production_table)
         mo_form.qty_producing = 1
@@ -58,9 +76,10 @@ class TestReportsCommon(TestMrpAccount):
         report = self.env['report.mrp_account_enterprise.mrp_cost_structure']
         report.flush()  # flush to avoid the wo duration not being available in the db in order to correctly build report
         report_values = report._get_report_values(docids=production_table.id)['lines'][0]
-        self.assertEqual(report_values['total_cost'], total_component_cost)
-        report_op_cost = sum(operation[3] * operation[4] for operation in report_values['operations'])
-        self.assertEqual(report_op_cost, total_operation_cost)
+        self.assertEqual(report_values['component_cost_by_product'][self.dining_table], total_component_cost * (100 - byproduct_cost_share) / 100)
+        self.assertEqual(report_values['operation_cost_by_product'][self.dining_table], total_operation_cost * (100 - byproduct_cost_share) / 100)
+        self.assertEqual(report_values['component_cost_by_product'][byproduct], total_component_cost * byproduct_cost_share / 100)
+        self.assertEqual(report_values['operation_cost_by_product'][byproduct], total_operation_cost * byproduct_cost_share / 100)
 
         # create another company w/ different currency + rate
         exchange_rate = 4
@@ -87,6 +106,7 @@ class TestReportsCommon(TestMrpAccount):
         })
 
         report_values = report.with_user(user_p)._get_report_values(docids=production_table.id)['lines'][0]
-        self.assertEqual(report_values['total_cost'], total_component_cost / exchange_rate)
-        report_op_cost = sum(operation[3] * operation[4] for operation in report_values['operations'])
-        self.assertEqual(report_op_cost, total_operation_cost / exchange_rate)
+        self.assertEqual(report_values['component_cost_by_product'][self.dining_table], total_component_cost * (100 - byproduct_cost_share) / 100 / exchange_rate)
+        self.assertEqual(report_values['operation_cost_by_product'][self.dining_table], total_operation_cost * (100 - byproduct_cost_share) / 100 / exchange_rate)
+        self.assertEqual(report_values['component_cost_by_product'][byproduct], total_component_cost * byproduct_cost_share / 100 / exchange_rate)
+        self.assertEqual(report_values['operation_cost_by_product'][byproduct], total_operation_cost * byproduct_cost_share / 100 / exchange_rate)

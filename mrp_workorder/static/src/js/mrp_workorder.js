@@ -56,7 +56,7 @@ function tabletRenderButtons($node) {
         var self = this;
         this.$buttons = $('<div/>');
         this.$buttons.html('<button class="btn btn-secondary back-button"><i class="fa fa-arrow-left"/></button>');
-        this.$buttons.on('click', function () {
+        this.$buttons.find('button').on('click', function () {
             self.do_action('mrp.mrp_workcenter_kanban_action', {clear_breadcrumbs: true});
         });
         if ($node) {

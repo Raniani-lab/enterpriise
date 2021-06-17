@@ -34,6 +34,8 @@ class StockLandedCost(models.Model):
     def _check_l10n_mx_edi_customs_number(self):
         help_message = self._fields['l10n_mx_edi_customs_number'].help.split('\n', 1)[1]
         for landed_cost in self:
+            if not landed_cost.l10n_mx_edi_customs_number:
+                continue
             custom_number = landed_cost.l10n_mx_edi_customs_number.strip()
             if not CUSTOM_NUMBERS_PATTERN.match(custom_number):
                 raise ValidationError(_("Error!, The format of the customs number is incorrect. \n%s\n"

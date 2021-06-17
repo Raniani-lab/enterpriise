@@ -591,6 +591,14 @@ msgid "Spain"
 msgstr ""
 
 #. module: sale_amazon
+#: code:addons/sale_amazon/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Starting from July 2021, Amazon requires that a tracking reference is provided "
+"with each delivery. See https://odoo.com/r/amz_tracking_ref "
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
 msgid "Stock Location"
 msgstr ""

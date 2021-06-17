@@ -3,7 +3,7 @@
 import logging
 
 from . import mws_connector as mwsc
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 from odoo.addons.sale_amazon.lib import mws
@@ -21,12 +21,26 @@ class StockPicking(models.Model):
         pickings = self
         if 'date_done' in vals:
             amazon_pickings = self.sudo().filtered(lambda p: p.sale_id and p.sale_id.amazon_order_ref)
+            amazon_pickings._check_tracking_reference_availability()
             amazon_pickings._check_sales_order_line_completion()
             # Flag as pending sync the pickings linked to Amazon that are the last step of a (multi-step) delivery route
             last_step_amazon_pickings = amazon_pickings.filtered(lambda p: p.location_dest_id.usage == 'customer')
             super(StockPicking, last_step_amazon_pickings).write(dict(amazon_sync_pending=True, **vals))
             pickings -= last_step_amazon_pickings
         return super(StockPicking, pickings).write(vals)
+
+    def _check_tracking_reference_availability(self):
+        """ Check that a tracking reference can be added to the picking.
+
+        :raise: UserError if the module delivery is not installed
+        """
+        module_delivery = self.env['ir.module.module'].sudo().search([('name', '=', 'delivery')])
+        delivery_installed = module_delivery.state in ('installed', 'to upgrade')
+        if not delivery_installed:
+            raise UserError(_(
+                "Starting from July 2021, Amazon requires that a tracking reference is provided "
+                "with each delivery. See https://odoo.com/r/amz_tracking_ref "
+            ))
 
     def _check_sales_order_line_completion(self):
         """ Check that all stock moves related to a sales order line are set done at the same time.
@@ -95,11 +109,7 @@ class StockPicking(models.Model):
         picking_done = self.env['stock.picking']
         for picking in self:
             amazon_order_ref = picking.sale_id.amazon_order_ref
-            confirmed_order_lines = picking.move_lines.filtered(
-                lambda m: m.sale_line_id.amazon_item_ref  # Only consider moves for Amazon products
-                and m.quantity_done > 0  # Only notify Amazon for shipped products
-                and m.quantity_done == m.product_uom_qty  # Only consider fully shipped products
-            ).sale_line_id
+            confirmed_order_lines = picking._get_confirmed_order_lines()
             items_data = confirmed_order_lines.mapped(
                 lambda l: (l.amazon_item_ref, l.product_uom_qty)
             )  # Take the quantity from the sales order line in case the picking contains a BoM
@@ -117,6 +127,22 @@ class StockPicking(models.Model):
                          "amazon_order_ref %s" % (feed_submission_id, amazon_order_ref))
             picking_done |= picking
         picking_done.write({'amazon_sync_pending': False})
+
+    def _get_confirmed_order_lines(self):
+        """ Return the sales order lines linked to this picking that are confirmed.
+
+        A sales order line is confirmed when the shipment of the linked product can be notified to
+        Amazon.
+
+        Note: self.ensure_one()
+        """
+        self.ensure_one()
+
+        return self.move_lines.filtered(
+            lambda m: m.sale_line_id.amazon_item_ref  # Only consider moves for Amazon products
+            and m.quantity_done > 0  # Only notify Amazon for shipped products
+            and m.quantity_done == m.product_uom_qty  # Only consider fully shipped products
+        ).sale_line_id
 
     def _get_carrier_details(self):
         """ Return the shipper name and tracking number. Overridden by sale_amazon_delivery. """

@@ -320,10 +320,10 @@ class SaleSubscription(models.Model):
         else:
             self.date = False
 
-    @api.onchange('template_id')
+    @api.onchange('template_id', 'partner_id')
     def on_change_template(self):
         for subscription in self.filtered('template_id'):
-            subscription.description = subscription.template_id.description
+            subscription.description = subscription.template_id.with_context(lang=subscription.partner_id.lang or self.env.lang).description
 
     @api.model
     def create(self, vals):

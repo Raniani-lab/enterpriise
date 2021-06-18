@@ -7,13 +7,13 @@ odoo.define("documents_spreadsheet.TemplateListView", function (require) {
     const { getDataFromTemplate } = require("documents_spreadsheet.pivot_utils");
 
     const TemplateController = ListController.extend({
-        _onButtonClicked(ev) {
-            this._super(...arguments);
-            const { attrs, record } = ev.data;
+        _callButtonAction(attrs, record) {
             if (attrs.name === "create_spreadsheet") {
                 this._createSpreadsheet(record);
             } else if (attrs.name === "edit_template") {
                 this._editTemplate(record);
+            } else {
+                return this._super(...arguments);
             }
         },
 

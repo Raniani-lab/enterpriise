@@ -13,7 +13,6 @@ export class EditorMenu extends owl.Component {
     setup() {
         this.l10n = localization;
         this.studio = useService("studio");
-        this.actionManager = useService("action");
         this.rpc = useService("rpc");
 
         useBus(this.studio.bus, "UPDATE", async () => {

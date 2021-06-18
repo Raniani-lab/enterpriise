@@ -10,7 +10,6 @@ const { useRef } = hooks;
 export class EnterpriseNavBar extends NavBar {
     setup() {
         super.setup();
-        this.actionManager = useService("action");
         this.hm = useService("home_menu");
         this.menuAppsRef = useRef("menuApps");
         this.menuBrand = useRef("menuBrand");

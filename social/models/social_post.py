@@ -3,6 +3,7 @@
 
 import json
 import re
+import threading
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
@@ -336,6 +337,17 @@ class SocialPost(models.Model):
                     for live_post in post._prepare_live_post_values()]
             })
 
+        if not getattr(threading.currentThread(), 'testing', False):
+            # If there's a link in the message, the Facebook / Twitter API will fetch it
+            # to build a preview. But when posting, the SQL transaction will not
+            # yet be committed, and so the link tracker associated to this link
+            # will not yet exist for the Facebook API and the preview will be
+            # broken. So we force the compute of the message field and therefor the
+            # creation of the link trackers (flush will compute only stored fields).
+            self.mapped('live_post_ids.message')
+            self.env.cr.commit()
+
+        for post in self:
             # send the live posts
             failed_posts = self.env['social.live.post']
             for live_post in post.live_post_ids:

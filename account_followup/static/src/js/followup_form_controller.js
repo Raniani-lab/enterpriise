@@ -98,6 +98,7 @@ var FollowupFormController = FormController.extend({
                 type: 'rainbow_man',
                 fadeout: 'no',
                 message: message,
+                messageIsHtml: true,
             });
         }
     },

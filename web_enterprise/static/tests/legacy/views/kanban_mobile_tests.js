@@ -2,8 +2,13 @@ odoo.define('web_enterprise.kanban_mobile_tests', function (require) {
 "use strict";
 
 const KanbanView = require('web.KanbanView');
-const {createActionManager, createView, dom} = require('web.test_utils');
+const { createView, dom} = require('web.test_utils');
 const {_t} = require('web.core');
+
+const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+
+let serverData;
 
 QUnit.module('Views', {
     beforeEach() {
@@ -49,6 +54,7 @@ QUnit.module('Views', {
                 ]
             },
         };
+        serverData = { models: this.data };
     },
 }, function () {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
@@ -408,23 +414,23 @@ QUnit.module('Views', {
         kanban.destroy();
     });
 
-    QUnit.skip('mobile kanban view: preserve active column on grouped kanban view', async function (assert) {
+    QUnit.test('mobile kanban view: preserve active column on grouped kanban view', async function (assert) {
         assert.expect(9);
 
-        const actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'partner,false,kanban': '<kanban default_group_by="int_field">' +
-                    '<templates><t t-name="kanban-box">' +
-                    '<div class="oe_kanban_global_click"><field name="foo"/></div>' +
-                    '</t></templates>' +
-                '</kanban>',
-                'partner,form_view,form': '<form string="Partner"><field name="foo"/></form>',
-                'partner,false,search': '<search><filter name="product" string="product" context="{\'group_by\': \'product_id\'}"/></search>',
-            },
-        });
+        const views = {
+            'partner,false,kanban': '<kanban default_group_by="int_field">' +
+                '<templates><t t-name="kanban-box">' +
+                '<div class="oe_kanban_global_click"><field name="foo"/></div>' +
+                '</t></templates>' +
+            '</kanban>',
+            'partner,form_view,form': '<form string="Partner"><field name="foo"/></form>',
+            'partner,false,search': '<search><filter name="product" string="product" context="{\'group_by\': \'product_id\'}"/></search>',
+        };
+        Object.assign(serverData, { views });
 
-        await actionManager.doAction({
+        const webClient = await createWebClient({ serverData });
+
+        await doAction(webClient, {
             name: 'Partner',
             res_model: 'partner',
             type: 'ir.actions.act_window',
@@ -432,46 +438,46 @@ QUnit.module('Views', {
         });
 
         // basic rendering tests
-        assert.containsN(actionManager, '.o_kanban_group', 5, "should have 5 columns");
-        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:first'), 'o_current',
+        assert.containsN(webClient, '.o_kanban_group', 5, "should have 5 columns");
+        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:first'), 'o_current',
             "by default, first tab should be active");
-        assert.hasClass(actionManager.$('.o_kanban_group:first'), 'o_current',
+        assert.hasClass($(webClient.el).find('.o_kanban_group:first'), 'o_current',
             "by default, first column should be active");
 
         // move to second column
-        await dom.click(actionManager.$('.o_kanban_mobile_tab:nth(1)'));
-        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:nth(1)'), 'o_current',
+        await dom.click($(webClient.el).find('.o_kanban_mobile_tab:nth(1)'));
+        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:nth(1)'), 'o_current',
             "second tab should be active");
-        assert.hasClass(actionManager.$('.o_kanban_group:nth(1)'), 'o_current',
+        assert.hasClass($(webClient.el).find('.o_kanban_group:nth(1)'), 'o_current',
             "second column should be active");
 
         // open a form view of the first record from active tab
-        await dom.click(actionManager.$('.o_kanban_group.o_current > .o_kanban_record:first'));
+        await dom.click($(webClient.el).find('.o_kanban_group.o_current > .o_kanban_record:first'));
+        await legacyExtraNextTick();
 
         // go back to the kanban view with 'back' arrow button
-        await dom.click(actionManager.$('.o_back_button'));
+        await dom.click($(webClient.el).find('.o_back_button'));
+        await legacyExtraNextTick();
 
         // check that second column is still active
-        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:nth(1)'), 'o_current',
+        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:nth(1)'), 'o_current',
             "second tab should still be active");
-        assert.hasClass(actionManager.$('.o_kanban_group:nth(1)'), 'o_current',
+        assert.hasClass($(webClient.el).find('.o_kanban_group:nth(1)'), 'o_current',
             "second column should still be active");
 
         // change the group by on view
-        await dom.click(actionManager.$('.o_enable_searchview')); // click search icon
-        await dom.click(actionManager.$('.o_toggle_searchview_full')); // open full screen search view
+        await dom.click($(webClient.el).find('.o_enable_searchview')); // click search icon
+        await dom.click($(webClient.el).find('.o_toggle_searchview_full')); // open full screen search view
         await dom.click($('.o_group_by_menu > .o_dropdown_toggler')); // open 'group by' drop-down
         await dom.click($('.o_group_by_menu .o_menu_item .dropdown-item')); // select first drop-down item
         await dom.click($('button.o_mobile_search_footer')); // click 'See Result' button
 
         // after the group by is changed, check that preserved active column should be cleared and
         // first available column should be set to active instead
-        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:first'), 'o_current',
+        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:first'), 'o_current',
             "first available tab should be active");
-        assert.hasClass(actionManager.$('.o_kanban_group:first'), 'o_current',
+        assert.hasClass($(webClient.el).find('.o_kanban_group:first'), 'o_current',
             "first available column should be active");
-
-        actionManager.destroy();
     });
 });
 });

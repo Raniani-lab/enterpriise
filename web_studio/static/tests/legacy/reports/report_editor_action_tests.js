@@ -1,9 +1,13 @@
 odoo.define('web_studio.ReportEditorAction_tests', function (require) {
     "use strict";
 
-    const { createActionManager, controlPanel } = require('web.test_utils');
+    const { controlPanel } = require('web.test_utils');
     const { getPagerValue, pagerNext } = controlPanel;
 
+    const { doActionAndOpenStudio, registerStudioDependencies,getReportServerData } = require("@web_studio/../tests/test_utils");
+    const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
+
+    let serverData;
     QUnit.module('Studio', {
         beforeEach: function () {
             this.data = {
@@ -12,18 +16,37 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
                     records: [{ id: 22 }, { id: 23 }],
                 },
                 "ir.actions.report": {
-                    fields: { model: { type: "char" } },
-                    records: [{ id: 11, model: "foo" }],
+                    fields: { model: { type: "char" }, report_name: { type: "char" }, report_type:{ type: "char" }},
+                    records: [{ id: 11, model: "foo", report_name: "foo_report", report_type: "pdf" }],
                 },
                 "ir.model": {
                     fields: {},
                 },
             };
+            const reportServerData = getReportServerData();
+            const actions = {
+                1: {
+                    id: 1,
+                    xml_id: "kikou.action",
+                    name: 'Kikou Action',
+                    res_model: 'foo',
+                    type: 'ir.actions.act_window',
+                    view_mode: 'list,form',
+                    views: [[1, 'form']],
+                }
+            };
+            const views = Object.assign({
+                "foo,2,form": `<form><field name="display_name" /></form>`,
+                "foo,false,search": `<search />`,
+            }, reportServerData.views);
+            serverData = {actions, models: this.data, views};
+            Object.assign(serverData.models, reportServerData.models);
+            registerStudioDependencies();
         },
     }, function () {
         QUnit.module('ReportEditorAction');
 
-        QUnit.skip('use pager', async function (assert) {
+        QUnit.test('use pager', async function (assert) {
             assert.expect(2);
 
             const reportHTML = `
@@ -38,33 +61,22 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
                     </body>
                 </html>`;
 
-            const actionManager = await createActionManager({
-                data: this.data,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web_studio/get_report_views":
-                            return { report_html: reportHTML };
-                        case "/web_studio/get_widgets_available_options":
-                        case "/web_studio/read_paperformat":
-                            return {};
-                        default:
-                            return this._super(...arguments);
-                    }
-                },
-            });
+            const mockRPC = (route, args) => {
+                switch (route) {
+                    case "/web_studio/get_report_views":
+                        return { report_html: reportHTML };
+                    case "/web_studio/get_widgets_available_options":
+                    case "/web_studio/read_paperformat":
+                        return {};
+                }
+            };
 
-            await actionManager.doAction("web_studio.action_edit_report", {
-                report: {
-                    data: { report_name: "My Report" },
-                    res_id: 11,
-                },
-            });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
+            await doActionAndOpenStudio(webClient, 1, undefined, {report: 11});
 
-            assert.strictEqual(getPagerValue(actionManager), "1");
-            await pagerNext(actionManager);
-            assert.strictEqual(getPagerValue(actionManager), "2");
-
-            actionManager.destroy();
+            assert.strictEqual(getPagerValue(webClient), "1");
+            await pagerNext(webClient);
+            assert.strictEqual(getPagerValue(webClient), "2");
         });
     });
 });

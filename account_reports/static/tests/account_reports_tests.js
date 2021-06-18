@@ -4,11 +4,13 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
     const ControlPanel = require('web.ControlPanel');
     const testUtils = require("web.test_utils");
     const { patch, unpatch } = require("web.utils");
+    const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+    const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
-    const { createActionManager, dom } = testUtils;
+    const { dom } = testUtils;
 
     QUnit.module('Account Reports', {}, () => {
-        QUnit.skip("mounted is called once when returning on 'Account Reports' from breadcrumb", async assert => {
+        QUnit.test("mounted is called once when returning on 'Account Reports' from breadcrumb", async assert => {
             // This test can be removed as soon as we don't mix legacy and owl layers anymore.
             assert.expect(7);
 
@@ -28,29 +30,31 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                 }
             });
 
-            const actionManager = await createActionManager({
-                actions: [
-                    {
-                        id: 42,
-                        name: "Account reports",
-                        tag: 'account_report',
-                        type: 'ir.actions.client',
+            const models = {
+                partner: {
+                    fields: {
+                        display_name: { string: "Displayed name", type: "char" },
                     },
-                ],
-                archs: {
-                    'partner,false,form': '<form><field name="display_name"/></form>',
-                    'partner,false,search': '<search></search>',
-                },
-                data: {
-                    partner: {
-                        fields: {
-                            display_name: { string: "Displayed name", type: "char" },
-                        },
-                        records: [
-                            {id: 1, display_name: "Genda Swami"},
-                        ],
-                    },
-                },
+                    records: [
+                        {id: 1, display_name: "Genda Swami"},
+                    ],
+                }
+            };
+            const views = {
+                'partner,false,form': '<form><field name="display_name"/></form>',
+                'partner,false,search': '<search></search>',
+            };
+            const actions = {
+                42: {
+                    id: 42,
+                    name: "Account reports",
+                    tag: 'account_report',
+                    type: 'ir.actions.client',
+                }
+            };
+            const serverData = { models, views, actions };
+            const webClient = await createWebClient({
+                serverData,
                 mockRPC: function (route) {
                     if (route === '/web/dataset/call_kw/account.report/get_report_informations') {
                         return Promise.resolve({
@@ -70,17 +74,15 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                     } else if (route === '/web/dataset/call_kw/account.report/get_html_footnotes') {
                         return Promise.resolve("");
                     }
-                    return this._super.apply(this, arguments);
-                },
-                intercepts: {
-                    do_action: ev => actionManager.doAction(ev.data.action, ev.data.options),
                 },
             });
 
-            await actionManager.doAction(42);
-            await dom.click(actionManager.$('a[action="go_to_details"]'));
-            await dom.click(actionManager.$('.breadcrumb-item:first'));
-            actionManager.destroy();
+            await doAction(webClient, 42);
+            await dom.click($(webClient.el).find('a[action="go_to_details"]'));
+            await legacyExtraNextTick();
+            await dom.click($(webClient.el).find('.breadcrumb-item:first'));
+            await legacyExtraNextTick();
+            webClient.destroy();
 
             assert.verifySteps([
                 'mounted 1',

@@ -6,13 +6,14 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 
 export class NewViewDialog extends ConfirmationDialog {
     setup() {
+        super.setup();
         this.orm = useService("orm");
         this.rpc = useService("rpc");
         this.studio = useService("studio");
         this.user = useService("user");
         this.mandatoryStopDate = ["gantt", "cohort"].includes(this.viewType);
 
-        this.props.title = sprintf(this.env._t("Generate %s View"), this.viewType);
+        this.title = sprintf(this.env._t("Generate %s View"), this.viewType);
 
         this.fieldsChoice = {
             date_start: null,
@@ -91,6 +92,9 @@ NewViewDialog.bodyTemplate = "web_studio.NewViewFieldsSelector";
 NewViewDialog.footerTemplate = "web_studio.OwlNewViewDialogFooter";
 NewViewDialog.GROUPABLE_TYPES = ["many2one", "char", "boolean", "selection", "date", "datetime"];
 NewViewDialog.MEASURABLE_TYPES = ["integer", "float"];
+NewViewDialog.size = "modal-md";
 NewViewDialog.props = Object.assign(Object.create(ConfirmationDialog.props), {
     viewType: String,
+    title: { type: String, optional: true },
+    body: { type: String, optional: true },
 });

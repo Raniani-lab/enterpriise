@@ -6,25 +6,14 @@ var Widget = require('web.Widget');
 var ActionEditorSidebar = require('web_studio.ActionEditorSidebar');
 var ActionEditorView = require('web_studio.ActionEditorView');
 
+const { SUPPORTED_VIEW_TYPES } = require("@web_studio/studio_service");
+
 var ActionEditor = Widget.extend({
     template: 'web_studio.ActionEditor',
     custom_events: {
         'parameters_clicked': '_onActionParameters',
     },
-    VIEW_TYPES: [
-        'form',
-        'search',
-        'activity',
-        'list',
-        'kanban',
-        'map',
-        'graph',
-        'pivot',
-        'calendar',
-        'gantt',
-        'dashboard',
-        'cohort',
-    ],
+    VIEW_TYPES: SUPPORTED_VIEW_TYPES.slice(),
 
     /**
      * @constructor

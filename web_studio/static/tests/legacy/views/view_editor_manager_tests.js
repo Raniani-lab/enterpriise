@@ -1,7 +1,7 @@
 odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
-const { afterEach, beforeEach } = require('@mail/utils/test_utils');
+const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
 
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
@@ -14,6 +14,15 @@ var testUtils = require('web.test_utils');
 var session = require('web.session');
 
 var studioTestUtils = require('web_studio.testUtils');
+
+const { patchWithCleanup } = require("@web/../tests/helpers/utils");
+
+const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/test_utils");
+const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
+const { MockServer } = require("@web/../tests/helpers/mock_server");
+
+let serverData;
 
 QUnit.module('web_studio', {}, function () {
 QUnit.module('ViewEditorManager', {
@@ -162,6 +171,23 @@ QUnit.module('ViewEditorManager', {
             id: 11,
             avatar_128: 'D Artagnan',
         });
+
+        registerStudioDependencies();
+        serverData = {models: this.data};
+        serverData.views = {};
+        serverData.actions = {};
+
+        serverData.actions['studio.coucou_action'] = {
+            id: 99,
+            xml_id: 'studio.coucou_action',
+            name: "coucouAction",
+            res_model: "coucou",
+            type: "ir.actions.act_window",
+            views: [[false, 'list']],
+        };
+
+        serverData.views["coucou,false,list"] = `<tree></tree>`;
+        serverData.views["coucou,false,search"] = `<search></search>`;
     },
     afterEach() {
         afterEach(this);
@@ -741,50 +767,50 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.skip('editing selection field of list of form view', async function(assert) {
+    QUnit.test('editing selection field of list of form view', async function(assert) {
         assert.expect(3);
 
-        var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'coucou',
-            arch: '<form>' +
-                      '<group>' +
-                          '<field name="product_ids"><tree>' +
-                              '<field name="toughness"/>' +
-                          '</tree></field>' +
-                      '</group>' +
-                  '</form>',
-            mockRPC: function(route, args) {
-                if (route === '/web_studio/edit_field') {
-                    assert.strictEqual(args.model_name, "product");
-                    assert.strictEqual(args.field_name, "toughness");
-                    assert.deepEqual(args.values, {
-                        selection: '[["0","Hard"],["1","Harder"],["Hardest","Hardest"]]',
-                    });
-                    return Promise.resolve({});
-                }
-                if (route === '/web_studio/edit_view') {
-                    return Promise.resolve({});
-                }
-                if (route === '/web_studio/get_default_value') {
-                    return Promise.resolve({});
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+        serverData.actions["studio.coucou_action"].views = [[false, "form"]];
+        serverData.views["coucou,false,form"] = `
+            <form>
+                <group>
+                    <field name="product_ids"><tree>
+                          <field name="toughness"/>
+                      </tree></field>
+                  </group>
+              </form>`;
+
+        const mockRPC = (route, args) => {
+            if (route === '/web_studio/edit_field') {
+                assert.strictEqual(args.model_name, "product");
+                assert.strictEqual(args.field_name, "toughness");
+                assert.deepEqual(args.values, {
+                    selection: '[["0","Hard"],["1","Harder"],["Hardest","Hardest"]]',
+                });
+                return Promise.resolve({});
+            }
+            if (route === '/web_studio/edit_view') {
+                return Promise.resolve({});
+            }
+            if (route === '/web_studio/get_default_value') {
+                return Promise.resolve({});
+            }
+        };
+
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
 
         // open list view
-        await testUtils.dom.click(vem.$('.o_field_one2many'));
-        await testUtils.dom.click(vem.$('button.o_web_studio_editX2Many[data-type="list"]'));
+        await testUtils.dom.click($(webClient.el).find('.o_field_one2many'));
+        await testUtils.dom.click($(webClient.el).find('button.o_web_studio_editX2Many[data-type="list"]'));
+        await legacyExtraNextTick();
 
         // add value to "toughness" selection field
-        await testUtils.dom.click(vem.$('th[data-node-id]'));
-        await testUtils.dom.click(vem.$('.o_web_studio_edit_selection_values'));
+        await testUtils.dom.click($(webClient.el).find('th[data-node-id]'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_edit_selection_values'));
         $('.modal .o_web_studio_selection_new_value input').val('Hardest');
         await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button.o_web_studio_add_selection_value'));
         await testUtils.dom.click($('.modal.o_web_studio_field_modal footer .btn-primary'));
-
-        vem.destroy();
     });
 
     QUnit.test('deleting selection field value which is linked in other records', async function (assert) {
@@ -5722,48 +5748,43 @@ QUnit.module('ViewEditorManager', {
 
     QUnit.module('X2Many');
 
-    QUnit.skip('disable creation(no_create options) in many2many_tags widget', async function (assert) {
+    QUnit.test('disable creation(no_create options) in many2many_tags widget', async function (assert) {
         assert.expect(3);
 
-        let fieldsView;
-        const vem = await studioTestUtils.createViewEditorManager({
-            arch: `<form>
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "product";
+        serverData.views["product,1,form"] = /*xml*/`
+            <form>
                 <sheet>
                     <group>
                         <field name='display_name'/>
                         <field name='m2m' widget='many2many_tags'/>
                     </group>
                 </sheet>
-            </form>`,
-            model: "product",
-            data: this.data,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/edit_view') {
-                    assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
-                        'no_create options should send with true value');
-                    return Promise.resolve({
-                        fields_views: { form: fieldsView },
-                        fields: fieldsView.fields,
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+            </form>`;
+        serverData.views["product,false,search"] = `<search></search>`;
 
-        fieldsView = $.extend(true, {}, vem.fields_view);
+        const mockRPC = (route, args) => {
+            if (route === '/web_studio/edit_view') {
+                assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
+                    'no_create options should send with true value');
+            }
+        }
 
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_many2manytags'));
-        assert.containsOnce(vem, '.o_web_studio_sidebar #option_no_create',
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags'));
+        assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
             "should have no_create option for m2m field");
-        assert.notOk(vem.$('.o_web_studio_sidebar #option_no_create').is(':checked'),
+        assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
             'by default the no_create option should be false');
 
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
-
-        vem.destroy();
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar #option_no_create'));
     });
 
-    QUnit.skip('disable creation(no_create options) in many2many_tags_avatar widget', async function (assert) {
+    QUnit.test('disable creation(no_create options) in many2many_tags_avatar widget', async function (assert) {
         assert.expect(3);
 
         let fieldsView;
@@ -5802,495 +5823,589 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.skip('disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
+    QUnit.test('[NEEDS "HR" MODULE] disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
         assert.expect(6);
 
-        this.data.product.fields.m2m_users = {
+        serverData.models.product.fields.m2m_users = {
             string: "M2M Users",
             type: 'many2many',
             relation: "res.users",
         };
-        this.data.product.fields.m2m_employees = {
+        serverData.models.product.fields.m2m_employees = {
             string: "M2M Employees",
             type: 'many2many',
             relation: "hr.employee.public",
         };
 
-        let fieldsView;
-        const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'product',
-            arch: `
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "product";
+        serverData.views["product,1,form"] = /*xml*/ `
             <form>
                 <sheet>
                     <field name="m2m_users" widget="many2many_avatar_user"/>
                     <field name="m2m_employees" widget="many2many_avatar_employee"/>
                 </sheet>
-            </form>`,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/edit_view') {
-                    assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
-                        'no_create options should send with true value');
-                    return Promise.resolve({
-                        fields_views: { form: fieldsView },
-                        fields: fieldsView.fields,
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+            </form>`;
+        serverData.views["product,false,search"] = `<search></search>`;
 
-        fieldsView = $.extend(true, {}, vem.fields_view);
+        const mockRPC = (route, args) => {
+            if (route === '/web_studio/edit_view') {
+                assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
+                    'no_create options should send with true value');
+            }
+        }
+
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
 
         // check many2many_avatar_user
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_users"]'));
-        assert.containsOnce(vem, '.o_web_studio_sidebar #option_no_create',
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_users"]'));
+        assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
             "should have no_create option for many2many_avatar_user");
-        assert.notOk(vem.$('.o_web_studio_sidebar #option_no_create').is(':checked'),
+        assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
             'by default the no_create option should be false');
 
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar #option_no_create'));
 
         // check many2many_avatar_employee
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_employees"]'));
-        assert.containsOnce(vem, '.o_web_studio_sidebar #option_no_create',
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_employees"]'));
+        assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
             "should have no_create option for many2many_avatar_user");
-        assert.notOk(vem.$('.o_web_studio_sidebar #option_no_create').is(':checked'),
+        assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
             'by default the no_create option should be false');
 
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
-
-        vem.destroy();
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar #option_no_create'));
     });
 
-    QUnit.skip('display one2many without inline views', async function (assert) {
-        assert.expect(1);
+    QUnit.test('display one2many without inline views', async function (assert) {
+        assert.expect(6);
 
-        var vem = await studioTestUtils.createViewEditorManager({
-            arch: "<form>" +
-                "<sheet>" +
-                    "<field name='display_name'/>" +
-                    "<field name='product_ids'/>" +
-                "</sheet>" +
-            "</form>",
-            model: "coucou",
-            data: this.data,
-            archs: {
-                "product,false,list": '<tree><field name="display_name"/></tree>'
-            },
-        });
-        var $one2many = vem.$('.o_field_one2many.o_field_widget');
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids'/>
+                </sheet>
+            </form>`;
+        serverData.views["coucou,false,search"] = `<search></search>`;
+        serverData.views["product,2,list"] = `<tree><field name="toughness"/></tree>`;
+
+        const mockRPC = (route, args) => {
+            if (route === "/web_studio/create_inline_view") {
+                const { model, field_name, subview_type, subview_xpath, view_id } = args;
+                assert.strictEqual(model, "product");
+                assert.strictEqual(field_name, "product_ids");
+                assert.strictEqual(subview_type, "tree");
+                assert.strictEqual(subview_xpath, "");
+                assert.strictEqual(view_id, 1);
+
+                // hardcode inheritance mechanisme
+                serverData.views["coucou,1,form"] = /*xml */ `
+                    <form>
+                        <sheet>
+                            <field name='display_name'/>
+                            <field name='product_ids'>${serverData.views["product,2,list"]}</field>
+                        </sheet>
+                    </form>`;
+                return serverData.views["product,2,list"];
+            }
+        };
+
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
+        var $one2many = $(webClient.el).find('.o_field_one2many.o_field_widget');
         assert.strictEqual($one2many.children().length, 2,
             "The one2many widget should be displayed");
 
-        // TODO: mock loadViews(?) to add a `name` (this is the way Studio
-        // detects if the view is inline or not) and check if create_inline_view
-        // is correctly called
-
-        vem.destroy();
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click(
+            $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
+        await legacyExtraNextTick();
     });
 
-    QUnit.skip('edit one2many list view', async function (assert) {
-        assert.expect(10);
+    QUnit.test('edit one2many list view', async function (assert) {
+        assert.expect(17);
+
+        patchWithCleanup(framework, {
+            blockUI: () => Promise.resolve(),
+            unblockUI: () => Promise.resolve()
+        });
 
         // the 'More' button is only available in debug mode
-        var initialDebugMode = odoo.debug;
-        odoo.debug = true;
+        patchWithCleanup(odoo, { debug: true });
 
-        var fieldsView;
-        var vem = await studioTestUtils.createViewEditorManager({
-            arch: "<form>" +
-                "<sheet>" +
-                    "<field name='display_name'/>" +
-                    "<field name='product_ids'>" +
-                        "<tree><field name='display_name'/></tree>" +
-                    "</field>" +
-                "</sheet>" +
-            "</form>",
-            model: "coucou",
-            data: this.data,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/get_default_value') {
-                    assert.step(args.model_name);
-                    return Promise.resolve({});
-                }
-                if (args.method === 'search_read' && args.model === 'ir.model.fields') {
-                    assert.deepEqual(args.kwargs.domain, [['model', '=', 'product'], ['name', '=', 'coucou_id']],
-                        "the model should be correctly set when editing field properties");
-                    return Promise.resolve([]);
-                }
-                if (route === '/web_studio/edit_view') {
-                    // We need to create the fieldsView here because the fieldsViewGet in studio
-                    // has a specific behaviour so cannot use the mock server fieldsViewGet
-                    assert.ok(true, "should edit the view to add the one2many field");
-                    fieldsView = {};
-                    fieldsView.arch = "<form>" +
-                    "<sheet>" +
-                        "<field name='display_name'/>" +
-                        "<field name='product_ids'>" +
-                            "<tree><field name='coucou_id'/><field name='display_name'/></tree>" +
-                        "</field>" +
-                    "</sheet>" +
-                    "</form>";
-                    fieldsView.model = "coucou";
-                    fieldsView.fields = {
-                        display_name: {
-                            string: "Display Name",
-                            type: "char",
-                        },
-                        product_ids: {
-                            string: "product",
-                            type: "one2many",
-                            relation: "product",
-                            views: {
-                                list: {
-                                    arch: "<tree><field name='coucou_id'/><field name='display_name'/></tree>",
-                                    fields: {
-                                        coucou_id: {
-                                            string: "coucou",
-                                            type: "many2one",
-                                            relation: "coucou",
-                                        },
-                                        display_name: {
-                                            string: "Display Name",
-                                            type: "char",
-                                        },
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids'>
+                        <tree><field name='display_name'/></tree>
+                    </field>
+                </sheet>
+            </form>`;
+        serverData.views["coucou,false,search"] = `<search></search>`;
+
+        const mockRPC = (route, args) => {
+            if (route === '/web_studio/get_default_value') {
+                assert.step(args.model_name);
+                return Promise.resolve({});
+            }
+            if (args.method === 'search_read' && args.model === 'ir.model.fields') {
+                assert.deepEqual(args.kwargs.domain, [['model', '=', 'product'], ['name', '=', 'coucou_id']],
+                    "the model should be correctly set when editing field properties");
+                return Promise.resolve([]);
+            }
+            if (route === '/web_studio/edit_view') {
+                // We need to create the fieldsView here because the fieldsViewGet in studio
+                // has a specific behaviour so cannot use the mock server fieldsViewGet
+                assert.strictEqual(args.view_id, 1);
+                assert.strictEqual(args.operations.length, 1);
+
+                const operation = args.operations[0];
+                assert.strictEqual(operation.type, "add");
+                assert.strictEqual(operation.position, "before");
+
+                assert.deepEqual(operation.node, {
+                    tag: "field",
+                    attrs: {
+                        name: "coucou_id",
+                        optional: "show",
+                    }
+                });
+
+                const target = operation.target;
+                assert.deepEqual(target.attrs, {name: "display_name"});
+                assert.strictEqual(target.tag, "field");
+                assert.strictEqual(target.subview_xpath, "//field[@name='product_ids']/tree");
+
+                const fieldsView = {};
+                fieldsView.arch = /* xml */`<form>
+                    <sheet>
+                        <field name='display_name'/>
+                        <field name='product_ids'>
+                            <tree><field name='coucou_id'/><field name='display_name'/></tree>
+                        </field>
+                    </sheet>
+                </form>`;
+                fieldsView.model = "coucou";
+                fieldsView.fields = {
+                    display_name: {
+                        string: "Display Name",
+                        type: "char",
+                    },
+                    product_ids: {
+                        string: "product",
+                        type: "one2many",
+                        relation: "product",
+                        views: {
+                            list: {
+                                arch: "<tree><field name='coucou_id'/><field name='display_name'/></tree>",
+                                fields: {
+                                    coucou_id: {
+                                        string: "coucou",
+                                        type: "many2one",
+                                        relation: "coucou",
+                                    },
+                                    display_name: {
+                                        string: "Display Name",
+                                        type: "char",
                                     },
                                 },
                             },
-                        }
-                    };
-                    return Promise.resolve({
-                        fields: fieldsView.fields,
-                        fields_views: {
-                            form: fieldsView,
                         },
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
-        const blockOverlayZindex = vem.el.querySelector('.o_web_studio_view_renderer .o_field_one2many .blockOverlay').style['z-index'];
+                    }
+                };
+                return Promise.resolve({
+                    fields: fieldsView.fields,
+                    fields_views: {
+                        form: fieldsView,
+                    },
+                });
+            }
+        };
+
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        const blockOverlayZindex = webClient.el.querySelector('.o_web_studio_view_renderer .o_field_one2many .blockOverlay').style['z-index'];
         assert.strictEqual(blockOverlayZindex, '1000',
             "z-index of blockOverlay should be 1000");
         assert.verifySteps(['coucou']);
-        await testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
-        assert.containsOnce(vem, '.o_web_studio_view_renderer thead tr [data-node-id]',
+
+        await testUtils.dom.click($($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
+        await legacyExtraNextTick();
+        assert.containsOnce(webClient, '.o_web_studio_view_renderer thead tr [data-node-id]',
             "there should be 1 nodes in the x2m editor.");
-        // used to generate the new fields view in mockRPC
-        fieldsView = $.extend(true, {}, vem.fields_view);
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_many2one')[0], $('.o_web_studio_hook'));
+
+        await testUtils.dom.dragAndDrop($(webClient.el).find('.o_web_studio_existing_fields .o_web_studio_field_many2one')[0], $('.o_web_studio_hook'));
         await testUtils.nextTick();
-        assert.containsN(vem, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
+
+        assert.containsN(webClient, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
             "there should be 2 nodes after the drag and drop.");
 
         // click on a field in the x2m list view
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer [data-node-id]:first'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer [data-node-id]:first'));
+        await legacyExtraNextTick();
         assert.verifySteps(['product'], "the model should be the x2m relation");
 
         // edit field properties
-        assert.containsOnce(vem, '.o_web_studio_sidebar .o_web_studio_parameters',
+        assert.containsOnce(webClient, '.o_web_studio_sidebar .o_web_studio_parameters',
             "there should be button to edit the field properties");
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_parameters'));
-
-        odoo.debug = initialDebugMode;
-        vem.destroy();
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar .o_web_studio_parameters'));
     });
 
-    QUnit.skip('edit one2many list view with tree_view_ref context key', async function (assert) {
-        assert.expect(1);
+    QUnit.test('edit one2many list view with tree_view_ref context key', async function (assert) {
+        assert.expect(6);
 
-        var vem = await studioTestUtils.createViewEditorManager({
-            arch: "<form>" +
-                "<sheet>" +
-                    "<field name='display_name'/>" +
-                    "<field name='product_ids' context=\"{'tree_view_ref': 'module.tree_view_ref'}\"/>" +
-                "</sheet>" +
-            "</form>",
-            model: "coucou",
-            archs: {
-                "product,module.tree_view_ref,list": '<tree><field name="display_name"/></tree>'
-            },
-            data: this.data,
-            mockRPC: function (route, args) {
-                if (route === "/web_studio/create_inline_view") {
-                    assert.equal(args.context.tree_view_ref, 'module.tree_view_ref',
-                        "context tree_view_ref should be propagated for inline view creation");
-                    return $.when();
-                }
-                return this._super.apply(this, arguments);
-            },
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids' context="{'tree_view_ref': 'module.tree_view_ref'}" />
+                </sheet>
+            </form>`;
+
+        serverData.views["coucou,false,search"] = `<search></search>`;
+        serverData.views["product,module.tree_view_ref,list"] = /*xml */ `<tree><field name="display_name"/></tree>`;
+
+        const mockRPC = (route, args) => {
+            if (route === "/web_studio/create_inline_view") {
+                assert.equal(args.context.tree_view_ref, 'module.tree_view_ref',
+                    "context tree_view_ref should be propagated for inline view creation");
+
+                const { model, field_name, subview_type, subview_xpath, view_id } = args;
+                assert.strictEqual(model, "product");
+                assert.strictEqual(field_name, "product_ids");
+                assert.strictEqual(subview_type, "tree");
+                assert.strictEqual(subview_xpath, "");
+                assert.strictEqual(view_id, 1);
+
+                // hardcode inheritance mechanisme
+                serverData.views["coucou,1,form"] = /*xml */ `
+                    <form>
+                        <sheet>
+                            <field name='display_name'/>
+                            <field name='product_ids'>${serverData.views["product,module.tree_view_ref,list"]}</field>
+                        </sheet>
+                    </form>`;
+                return serverData.views["product,module.tree_view_ref,list"];
+            }
+        };
+
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click($($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
+        await legacyExtraNextTick();
+    });
+
+    QUnit.test('edit one2many form view (2 level) and check chatter allowed', async function (assert) {
+        assert.expect(6);
+
+        patchWithCleanup(framework, {
+            blockUI: () => Promise.resolve(),
+            unblockUI: () => Promise.resolve()
         });
 
-        // non-inline view is detected by name, but there is no way to set it in mock environment
-        vem.view.loadParams.fieldsInfo.form.product_ids.views.list.name = "module.tree_view_ref";
-
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
-        await testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
-
-        vem.destroy();
-    });
-
-    QUnit.skip('edit one2many form view (2 level) and check chatter allowed', async function (assert) {
-        assert.expect(6);
-        this.data.coucou.records = [{
+        serverData.models.coucou.records = [{
             id: 11,
             display_name: 'Coucou 11',
             product_ids: [37],
         }];
-        var fieldsView;
-        var vem = await studioTestUtils.createViewEditorManager({
-            arch: "<form>" +
-                "<sheet>" +
-                    "<field name='display_name'/>" +
-                    "<field name='product_ids'>" +
-                        "<form>" +
-                            "<sheet>" +
-                                "<group>" +
-                                    "<field name='partner_ids'>" +
-                                        "<form><sheet><group><field name='display_name'/></group></sheet></form>" +
-                                    "</field>" +
-                                "</group>" +
-                            "</sheet>" +
-                        "</form>" +
-                    "</field>" +
-                "</sheet>" +
-            "</form>",
-            model: "coucou",
-            data: this.data,
-            res_id: 11,
-            archs: {
-                "product,false,list": "<tree><field name='display_name'/></tree>",
-                "partner,false,list": "<tree><field name='display_name'/></tree>",
-            },
-            chatter_allowed: true,
-            mockRPC: function (route, args) {
-                if (args.method === 'name_search' && args.model === 'ir.model.fields') {
-                    assert.deepEqual(args.kwargs.args, [['relation', '=', 'partner'], ['ttype', 'in', ['many2one', 'many2many']], ['store', '=', true]],
-                        "the domain should be correctly set when searching for a related field for new button");
-                    return Promise.resolve([]);
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = 11;
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids'>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <field name='partner_ids'>
+                                        <form><sheet><group><field name='display_name'/></group></sheet></form>
+                                    </field>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </sheet>
+            </form>`;
+
+        Object.assign(serverData.views, {
+            "product,2,list": "<tree><field name='display_name'/></tree>",
+            "partner,3,list": "<tree><field name='display_name'/></tree>",
+        });
+
+        serverData.views["coucou,false,search"] = `<search></search>`;
+
+        patchWithCleanup(MockServer.prototype, {
+            mockEditView(args) {
+                const result = this._super(...arguments);
+                if (args.view_id !== 1) {
+                    return result;
                 }
-                if (route === '/web_studio/edit_view') {
-                    // We need to create the fieldsView here because the fieldsViewGet in studio
-                    // has a specific behaviour so cannot use the mock server fieldsViewGet
-                    assert.ok(true, "should edit the view to add the one2many field");
-                    fieldsView.arch = "<form>" +
-                        "<sheet>" +
-                            "<field name='display_name'/>" +
-                            "<field name='product_ids'/>" +
-                        "</sheet>" +
-                    "</form>";
-                    fieldsView.fields.product_ids.views = {
-                        form: {
-                            arch: "<form><sheet><group><field name='partner_ids'/></group></sheet></form>",
-                            fields: {
-                                partner_ids: {
-                                    string: "partners",
-                                    type: "one2many",
-                                    relation: "partner",
-                                    views: {
-                                        form: {
-                                            arch: "<form><sheet><group><field name='display_name'/></group></sheet></form>",
-                                            fields: {
-                                                display_name: {
-                                                    string: "Display Name",
-                                                    type: "char",
-                                                },
+
+                assert.ok(true, "should edit the view to add the one2many field");
+                result.fields_views.form.arch = "<form>" +
+                    "<sheet>" +
+                        "<field name='display_name'/>" +
+                        "<field name='product_ids'/>" +
+                    "</sheet>" +
+                "</form>";
+                result.fields.product_ids.views = {
+                    form: {
+                        arch: "<form><sheet><group><field name='partner_ids'/></group></sheet></form>",
+                        fields: {
+                            partner_ids: {
+                                string: "partners",
+                                type: "one2many",
+                                relation: "partner",
+                                views: {
+                                    form: {
+                                        arch: "<form><sheet><group><field name='display_name'/></group></sheet></form>",
+                                        fields: {
+                                            display_name: {
+                                                string: "Display Name",
+                                                type: "char",
                                             },
                                         },
                                     },
                                 },
                             },
                         },
-                    };
-                    return Promise.resolve({
-                        fields: fieldsView.fields,
-                        fields_views: {
-                            form: fieldsView,
-                        },
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
+                    },
+                };
+                return result;
+            }
         });
-        assert.containsOnce(vem, '.o_web_studio_add_chatter',
+
+        const mockRPC = (route, args) => {
+            if (route === "/web_studio/chatter_allowed") {
+                return true;
+            }
+            if (args.method === 'name_search' && args.model === 'ir.model.fields') {
+                assert.deepEqual(args.kwargs.args, [['relation', '=', 'partner'], ['ttype', 'in', ['many2one', 'many2many']], ['store', '=', true]],
+                    "the domain should be correctly set when searching for a related field for new button");
+                return Promise.resolve([]);
+            }
+        };
+
+        const { widget: webClient } = await start({
+            hasWebClient: true,
+            serverData,
+            mockRPC
+        });
+
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        await testUtils.nextTick();
+
+        assert.containsOnce(webClient, '.o_web_studio_add_chatter',
             "should be possible to add a chatter");
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
-        await testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')));
-        assert.containsNone(vem, '.o_web_studio_add_chatter',
+
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await legacyExtraNextTick();
+        await testUtils.dom.click(
+            $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+        await legacyExtraNextTick();
+        assert.containsNone(webClient, '.o_web_studio_add_chatter',
             "should not be possible to add a chatter");
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
-        await testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')));
-        // used to generate the new fields view in mockRPC
-        fieldsView = $.extend(true, {}, vem.fields_view);
-        assert.strictEqual(vem.$('.o_field_char').eq(0).text(), 'jean',
+
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click(
+            $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+        );
+        await testUtils.nextTick();
+        await legacyExtraNextTick();
+        assert.strictEqual($(webClient.el).find('.o_field_char').eq(0).text(), 'jean',
             "the partner view form should be displayed.");
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_group .o_web_studio_hook:first'));
+        await testUtils.dom.dragAndDrop(
+            $(webClient.el).find('.o_web_studio_new_fields .o_web_studio_field_char'),
+            $(webClient.el).find('.o_group .o_web_studio_hook:first')
+        );
 
         // add a new button
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_web_studio_button_hook'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_web_studio_button_hook'));
         assert.strictEqual($('.modal .o_web_studio_new_button_dialog').length, 1,
             "there should be an opened modal to add a button");
         await testUtils.dom.click($('.modal .o_web_studio_new_button_dialog .js_many2one_field input'));
-
-        vem.destroy();
     });
 
-    QUnit.skip('edit one2many list view that uses parent key [REQUIRE FOCUS]', async function (assert) {
+    QUnit.test('edit one2many list view that uses parent key [REQUIRE FOCUS]', async function (assert) {
         assert.expect(3);
 
-        this.data.coucou.records = [{
+        serverData.models.coucou.records = [{
             id: 11,
             display_name: 'Coucou 11',
             product_ids: [37],
         }];
+        var fieldsView;
 
-        var vem = await studioTestUtils.createViewEditorManager({
-            arch: "<form>" +
-                "<sheet>" +
-                    "<field name='display_name'/>" +
-                    "<field name='product_ids'>" +
-                        "<form>" +
-                            "<sheet>" +
-                                "<field name='m2o'" +
-                                " attrs=\"{'invisible': [('parent.display_name', '=', 'coucou')]}\"" +
-                                " domain=\"[('display_name', '=', parent.display_name)]\"/>" +
-                            "</sheet>" +
-                        "</form>" +
-                    "</field>" +
-                "</sheet>" +
-            "</form>",
-            model: "coucou",
-            data: this.data,
-            res_id: 11,
-            archs: {
-                "product,false,list": '<tree><field name="display_name"/></tree>'
-            },
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = 11;
+        serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids'>
+                        <form>
+                            <sheet>
+                                <field name="m2o"
+                                       attrs="{'invisible': [('parent.display_name', '=', 'coucou')]}"
+                                       domain="[('display_name', '=', parent.display_name)]" />
+                            </sheet>
+                        </form>
+                    </field>
+                </sheet>
+            </form>`;
+
+        Object.assign(serverData.views, {
+            "product,2,list": "<tree><field name='display_name'/></tree>",
         });
 
+        serverData.views["coucou,false,search"] = `<search></search>`;
+
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
         // edit the x2m form view
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]').text(), "jacques",
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+        await legacyExtraNextTick();
+        assert.strictEqual($(webClient.el).find('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]').text(), "jacques",
             "the x2m form view should be correctly rendered");
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]'));
 
         // open the domain editor
         assert.strictEqual($('.modal .o_domain_selector').length, 0,
             "the domain selector should not be opened");
-        vem.$('.o_web_studio_sidebar_content input[name="domain"]').trigger('focus');
+        $(webClient.el).find('.o_web_studio_sidebar_content input[name="domain"]').trigger('focus');
         await testUtils.nextTick();
         assert.strictEqual($('.modal .o_domain_selector').length, 1,
             "the domain selector should be correctly opened");
-
-        vem.destroy();
     });
 
-    QUnit.skip('move a field in one2many list', async function (assert) {
+    QUnit.test('move a field in one2many list', async function (assert) {
         assert.expect(2);
 
-        this.data.coucou.records = [{
+        patchWithCleanup(framework, {
+            blockUI: () => Promise.resolve(),
+            unblockUI: () => Promise.resolve()
+        });
+
+        serverData.models.coucou.records = [{
             id: 11,
             display_name: 'Coucou 11',
             product_ids: [37],
         }];
 
-        var arch = "<form>" +
-                "<sheet>" +
-                    "<field name='display_name'/>" +
-                    "<field name='product_ids'>" +
-                        "<tree>" +
-                            "<field name='m2o'/>" +
-                            "<field name='coucou_id'/>" +
-                        "</tree>" +
-                    "</field>" +
-                "</sheet>" +
-            "</form>";
-        var vem = await studioTestUtils.createViewEditorManager({
-            arch: arch,
-            data: this.data,
-            model: 'coucou',
-            res_id: 11,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/edit_view') {
-                    assert.deepEqual(args.operations[0], {
-                        node: {
-                            tag: 'field',
-                            attrs: {name: 'coucou_id'},
-                            subview_xpath: "//field[@name='product_ids']/tree",
-                        },
-                        position: 'before',
-                        target: {
-                            tag: 'field',
-                            attrs: {name: 'm2o'},
-                            subview_xpath: "//field[@name='product_ids']/tree",
-                            xpath_info: [
-                                {
-                                    indice: 1,
-                                    tag: 'tree',
-                                },
-                                {
-                                    indice: 1,
-                                    tag: 'field',
-                                },
-                            ],
-                        },
-                        type: 'move',
-                    }, "the move operation should be correct");
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = 11;
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids'>
+                        <tree>
+                            <field name='m2o'/>
+                            <field name='coucou_id'/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>`;
 
-                    // We need to create the fieldsView here because the
-                    // fieldsViewGet in studio has a specific behaviour so
-                    // cannot use the mock server fieldsViewGet
-                    fieldsView.arch = arch;
-                    fieldsView.fields.product_ids.views = {
-                        list: {
-                            arch: "<tree>" +
-                                "<field name='m2o'/>" +
-                                "<field name='coucou_id'/>" +
-                            "</tree>",
-                            fields: {
-                                m2o: {
-                                    type: "many2one",
-                                    relation: "coucou",
-                                },
-                                coucou_id: {
-                                    type: "many2one",
-                                    relation: "coucou",
-                                },
+        serverData.views["coucou,false,search"] = `<search></search>`;
+
+        patchWithCleanup(MockServer.prototype, {
+            mockEditView(args) {
+                const result = this._super(...arguments);
+                if (args.view_id !== 1) {
+                    return result;
+                }
+                assert.deepEqual(args.operations[0], {
+                    node: {
+                        tag: 'field',
+                        attrs: {name: 'coucou_id'},
+                        subview_xpath: "//field[@name='product_ids']/tree",
+                    },
+                    position: 'before',
+                    target: {
+                        tag: 'field',
+                        attrs: {name: 'm2o'},
+                        subview_xpath: "//field[@name='product_ids']/tree",
+                        xpath_info: [
+                            {
+                                indice: 1,
+                                tag: 'tree',
+                            },
+                            {
+                                indice: 1,
+                                tag: 'field',
+                            },
+                        ],
+                    },
+                    type: 'move',
+                }, "the move operation should be correct");
+
+                result.fields.product_ids.views = {
+                    list: {
+                        arch: "<tree>" +
+                        "<field name='m2o'/>" +
+                        "<field name='coucou_id'/>" +
+                        "</tree>",
+                        fields: {
+                            m2o: {
+                                type: "many2one",
+                                relation: "coucou",
+                            },
+                            coucou_id: {
+                                type: "many2one",
+                                relation: "coucou",
                             },
                         },
-                    };
-
-                    return Promise.resolve({
-                        fields: fieldsView.fields,
-                        fields_views: {
-                            form: fieldsView,
-                        },
-                    });
-                }
-                return this._super.apply(this, arguments);
+                    },
+                };
+                return result;
             },
         });
 
-        // used to generate the new fields view in mockRPC
-        var fieldsView = $.extend(true, {}, vem.fields_view);
+        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
 
         // edit the x2m form view
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
+        await legacyExtraNextTick();
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor th').text(), "M2Ocoucou",
+        assert.strictEqual($(webClient.el).find('.o_web_studio_list_view_editor th').text(), "M2Ocoucou",
             "the columns should be in the correct order");
 
         // move coucou at index 0
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_list_view_editor th:contains(coucou)'),
-            vem.$('th.o_web_studio_hook:first'));
-
-        vem.destroy();
+        await testUtils.dom.dragAndDrop($(webClient.el).find('.o_web_studio_list_view_editor th:contains(coucou)'),
+            $(webClient.el).find('th.o_web_studio_hook:first'));
     });
 
-    QUnit.skip('notebook and group drag and drop after a group', async function (assert) {
+    QUnit.test('notebook and group drag and drop after a group', async function (assert) {
         assert.expect(2);
         var arch = "<form><sheet>" +
                 "<group>" +
@@ -6312,112 +6427,70 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.skip('One2Many list editor column_invisible in attrs ', async function (assert) {
+    QUnit.test('One2Many list editor column_invisible in attrs ', async function (assert) {
         assert.expect(2);
 
-        var fieldsView;
+        patchWithCleanup(framework, {
+            blockUI: () => Promise.resolve(),
+            unblockUI: () => Promise.resolve()
+        });
 
-        var productArchReturn = '<tree>' +
-                                    '<field name="display_name" attrs="{&quot;column_invisible&quot;: [[&quot;parent.id&quot;,&quot;=&quot;,false]]}" readonly="1" modifiers="{&quot;column_invisible&quot;: [[&quot;parent.id&quot;, &quot;=&quot;, false]], &quot;readonly&quot;: true}"/>' +
-                                '</tree>';
+        serverData.models.coucou.records = [{
+            id: 11,
+            display_name: 'Coucou 11',
+            product_ids: [37],
+        }];
 
-        var coucouArchReturn = '<form>' +
-                                    '<field name="product_ids">' +
-                                        productArchReturn +
-                                    '</field>' +
-                                '</form>';
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        //ction.res_id = 11;
+        serverData.views["coucou,1,form"] = /*xml */ `
+        <form>
+            <field name='product_ids'>
+                <tree>
+                    <field name="display_name" attrs="{\'column_invisible\': [(\'parent.id\', \'=\',False)]}" />
+                </tree>
+            </field>
+        </form>`;
 
+        serverData.views["coucou,false,search"] = `<search></search>`;
 
-        var coucouFields = {product_ids: {
-                                string: "product",
-                                type: "one2many",
-                                relation: "product",
-                                views: {
-                                    list: {
-                                        arch: productArchReturn,
-                                        fields: {
-                                            display_name: {
-                                                string: "Display Name",
-                                                type: "char",
-                                            },
-                                        },
-                                    },
-                                },
-                            }
-                        };
-
-        var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'coucou',
-            arch: "<form>" +
-                    "<field name='product_ids'>" +
-                        "<tree>" +
-                            '<field name="display_name" attrs="{\'column_invisible\': [(\'parent.id\', \'=\',False)]}" />' +
-                        "</tree>" +
-                    "</field>" +
-                  "</form>",
-            mockRPC: function(route, args) {
-                if (route === '/web_studio/edit_view') {
-                    assert.equal(args.operations[0].new_attrs.attrs, '{"column_invisible": [["parent.id","=",False]]}',
-                        'we should send "column_invisible" in attrs.attrs');
-
-                    assert.equal(args.operations[0].new_attrs.readonly, '1',
-                        'We should send "readonly" in the node attr');
-
-                    fieldsView.arch = coucouArchReturn;
-                    $.extend(fieldsView.fields, coucouFields);
-                    return Promise.resolve({
-                        fields_views: {form: fieldsView},
-                        fields: fieldsView.fields,
-                    });
+        patchWithCleanup(MockServer.prototype, {
+            mockEditView(args) {
+                const result = this._super(...arguments);
+                if (args.view_id !== 1) {
+                    return result;
                 }
-                return this._super.apply(this, arguments);
+                assert.equal(args.operations[0].new_attrs.attrs, '{"column_invisible": [["parent.id","=",False]]}',
+                    'we should send "column_invisible" in attrs.attrs');
+
+                assert.equal(args.operations[0].new_attrs.readonly, '1',
+                    'We should send "readonly" in the node attr');
+
+                result.fields_views.arch = coucouArchReturn;
+                Object.assign(result.fields, coucouFields);
+                return result;
             }
         });
-        fieldsView = $.extend(true, {}, vem.fields_view);
 
-        // Enter edit mode of the O2M
-        await testUtils.dom.click(vem.$('.o_field_x2many_list[name=product_ids]'));
-        await testUtils.dom.click(vem.$('.o_web_studio_editX2Many[data-type="list"]'));
+        const productArchReturn = /* xml */`
+            <tree>
+                <field name="display_name" attrs="{&quot;column_invisible&quot;: [[&quot;parent.id&quot;,&quot;=&quot;,false]]}" readonly="1" modifiers="{&quot;column_invisible&quot;: [[&quot;parent.id&quot;, &quot;=&quot;, false]], &quot;readonly&quot;: true}"/>
+            </tree>`;
 
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
+        const coucouArchReturn = /* xml */ `
+            <form>
+                <field name="product_ids">${productArchReturn}</field>
+            </form>`;
 
-        // select the first column
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
-        // enable readonly
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#readonly'));
-
-        vem.destroy();
-    });
-
-    QUnit.skip('One2Many form datapoint doesn\'t contain the parent datapoint', async function (assert) {
-        /*
-        * OPW-2125214
-        * When editing a child o2m form with studio, the fields_get method tries to load
-        * the parent fields too. This is not allowed anymore by the ORM.
-        * It happened because, before, the child datapoint contained the parent datapoint's data
-        */
-        assert.expect(1);
-        var fieldsGet;
-
-        var fieldsView;
-        var productArchReturn = '<form>' +
-                                    '<field name="display_name" />' +
-                                '</form>';
-        var coucouArchReturn = '<form>' +
-                                    '<field name="product_ids">' +
-                                        productArchReturn +
-                                    '</field>' +
-                                '</form>';
-        var coucouFields = {
+        const coucouFields = {
             product_ids: {
                 string: "product",
                 type: "one2many",
                 relation: "product",
-                mode: "form",
                 views: {
-                    form: {
+                    list: {
                         arch: productArchReturn,
                         fields: {
                             display_name: {
@@ -6430,45 +6503,73 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'coucou',
-            arch: "<form>" +
-                    "<field name='product_ids'>"
-                        + productArchReturn +
-                    "</field>" +
-                  "</form>",
-            archs: {
-                "product,false,list": "<tree><field name='display_name'/></tree>",
-            },
-            mockRPC: async function(route) {
-                if (route === '/web_studio/edit_view') {
-                    fieldsView.arch = coucouArchReturn;
-                    $.extend(fieldsView.fields, coucouFields);
-                    return Promise.resolve({
-                        fields_views: {form: fieldsView},
-                        fields: fieldsView.fields,
-                    });
-                }
-                if (route === '/web/dataset/call_kw/product/fields_get') {
-                    fieldsGet = await this._super.apply(this, arguments);
-                    return fieldsGet;
-                }
-                return this._super.apply(this, arguments);
-            }
-        });
+        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
 
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click(
-            vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
-        );
+        // Enter edit mode of the O2M
+        await testUtils.dom.click($(webClient.el).find('.o_field_x2many_list[name=product_ids]'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_editX2Many[data-type="list"]'));
+        await legacyExtraNextTick();
 
-        assert.deepEqual(_.keys(fieldsGet), _.keys(this.data.product.fields));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar').find('input#show_invisible'));
 
-        vem.destroy();
+        // select the first column
+        await testUtils.dom.click($(webClient.el).find('thead th[data-node-id=1]'));
+        // enable readonly
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar').find('input#readonly'));
     });
 
-    QUnit.skip('Phone field in form with SMS', async function (assert) {
+    QUnit.test('One2Many form datapoint doesn\'t contain the parent datapoint', async function (assert) {
+        /*
+        * OPW-2125214
+        * When editing a child o2m form with studio, the fields_get method tries to load
+        * the parent fields too. This is not allowed anymore by the ORM.
+        * It happened because, before, the child datapoint contained the parent datapoint's data
+        */
+        assert.expect(1);
+
+        serverData.models.coucou.records = [{
+            id: 11,
+            display_name: 'Coucou 11',
+            product_ids: [],
+        }];
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = 11;
+        serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+               <field name='product_ids'>
+                    <form>
+                        <field name="display_name" />
+                        <field name="toughness" />
+                    </form>
+               </field>
+           </form>`;
+
+        serverData.views["coucou,false,search"] = `<search></search>`;
+        serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+
+        const mockRPC = async (route, args) => {
+            if (args.method === "onchange" && args.model === "product") {
+                const fields = args.args[3];
+                assert.deepEqual(Object.keys(fields), ["display_name", "toughness"]);
+            }
+        };
+
+        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click(
+            $(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+        );
+        await legacyExtraNextTick();
+    });
+
+    QUnit.test('Phone field in form with SMS', async function (assert) {
         assert.expect(3);
 
         var arch = "<form><sheet>" +
@@ -6503,7 +6604,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.skip('folds/unfolds the existing fields into sidebar', async function (assert) {
+    QUnit.test('folds/unfolds the existing fields into sidebar', async function (assert) {
         assert.expect(10);
 
         let fieldsView;
@@ -6574,7 +6675,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.skip('open xml editor of component view', async function (assert) {
+    QUnit.test('open xml editor of component view', async function (assert) {
         assert.expect(1);
 
         // the XML editor button is only available in debug mode

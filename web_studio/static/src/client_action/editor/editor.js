@@ -84,7 +84,7 @@ export class Editor extends Component {
             return this.rpc("/web_studio/get_studio_action", {
                 action_name: editorTab,
                 model: editedAction.res_model,
-                view_id: editedAction.view_id[0], // Not sure it is correct or desirable
+                view_id: editedAction.view_id && editedAction.view_id[0], // Not sure it is correct or desirable
             });
         }
     }

@@ -7,13 +7,16 @@ var fieldRegistry = require('web.field_registry');
 var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
-const { createView } = testUtils;
+const { createView, nextTick } = testUtils;
 const cpHelpers = testUtils.controlPanel;
-var createActionManager = testUtils.createActionManager;
 var patchDate = testUtils.mock.patchDate;
 
 var FieldFloat = BasicFields.FieldFloat;
+
+let serverData;
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -65,6 +68,7 @@ QUnit.module('Views', {
                 }],
             },
         };
+        serverData = { models: this.data };
     }
 }, function () {
 
@@ -1359,23 +1363,23 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
-    QUnit.skip('open a graph view fullscreen', async function (assert) {
+    QUnit.test('open a graph view fullscreen', async function (assert) {
         assert.expect(9);
-
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph" ref="some_xmlid"/>' +
-                    '</dashboard>',
-                'test_report,some_xmlid,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
-                'test_report,false,search': '<search>' +
-                        '<filter name="categ" help="Category 1" domain="[(\'categ_id\', \'=\', 1)]"/>' +
-                    '</search>',
-            },
+        const views = {
+            'test_report,false,dashboard': '<dashboard>' +
+                    '<view type="graph" ref="some_xmlid"/>' +
+                '</dashboard>',
+            'test_report,some_xmlid,graph': '<graph>' +
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
+            'test_report,false,search': '<search>' +
+                    '<filter name="categ" help="Category 1" domain="[(\'categ_id\', \'=\', 1)]"/>' +
+                '</search>',
+        };
+        Object.assign(serverData, {views});
+        const webClient = await createWebClient({
+            serverData,
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     if (args.kwargs.domain[0]) {
@@ -1384,16 +1388,10 @@ QUnit.module('Views', {
                         assert.step('initial read_group');
                     }
                 }
-                return this._super.apply(this, arguments);
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
-            },
+            }
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Dashboard',
             res_model: 'test_report',
             type: 'ir.actions.act_window',
@@ -1405,20 +1403,21 @@ QUnit.module('Views', {
 
 
         // activate 'Category 1' filter
-        await cpHelpers.toggleFilterMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 0);
-        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1']);
+        await cpHelpers.toggleFilterMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 0);
+        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1']);
 
         // open graph in fullscreen
-        await testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
-        assert.strictEqual($('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
+        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
+        await nextTick();
+        assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
             "'Graph Analysis' should have been stacked in the breadcrumbs");
-        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1'],
+        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1'],
             "the filter should have been kept");
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
-
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await nextTick();
         assert.verifySteps([
             'initial read_group',
             'categ_id=1', // dashboard view after applying the filter
@@ -1426,10 +1425,9 @@ QUnit.module('Views', {
             'categ_id=1', // dashboard after coming back
         ]);
 
-        actionManager.destroy();
     });
 
-    QUnit.skip('open a cohort view fullscreen', async function (assert) {
+    QUnit.test('open a cohort view fullscreen', async function (assert) {
         assert.expect(9);
 
         this.data.test_report.fields.create_date = {type: 'date', string: 'Creation Date'};
@@ -1440,17 +1438,20 @@ QUnit.module('Views', {
         this.data.test_report.records[0].transformation_date = '2018-07-03';
         this.data.test_report.records[1].transformation_date = '2018-06-23';
 
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="cohort" ref="some_xmlid"/>' +
-                    '</dashboard>',
-                'test_report,some_xmlid,cohort': '<cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week"/>',
-                'test_report,false,search': '<search>' +
-                        '<filter name="categ" help="Category 1" domain="[(\'categ_id\', \'=\', 1)]"/>' +
-                    '</search>',
-            },
+        const views = {
+            'test_report,false,dashboard': '<dashboard>' +
+                    '<view type="cohort" ref="some_xmlid"/>' +
+                '</dashboard>',
+            'test_report,some_xmlid,cohort': '<cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week"/>',
+            'test_report,false,search': '<search>' +
+                    '<filter name="categ" help="Category 1" domain="[(\'categ_id\', \'=\', 1)]"/>' +
+                '</search>',
+        };
+        Object.assign(serverData, {views});
+
+        const webClient = await createWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
             mockRPC: function (route, args) {
                 if (args.method === 'get_cohort_data') {
                     if (args.kwargs.domain[0]) {
@@ -1459,16 +1460,10 @@ QUnit.module('Views', {
                         assert.step('initial get_cohort_data');
                     }
                 }
-                return this._super.apply(this, arguments);
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
-            },
+            }
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Dashboard',
             res_model: 'test_report',
             type: 'ir.actions.act_window',
@@ -1476,22 +1471,24 @@ QUnit.module('Views', {
         });
 
 
-        assert.strictEqual($('.o_control_panel .breadcrumb li').text(), 'Dashboard',
+        assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb li').text(), 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // activate 'Category 1' filter
-        await cpHelpers.toggleFilterMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 0);
-        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1']);
+        await cpHelpers.toggleFilterMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 0);
+        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1']);
 
         // open cohort in fullscreen
-        await testUtils.dom.click(actionManager.$('.o_cohort_buttons .o_button_switch'));
+        await testUtils.dom.click($(webClient.el).find('.o_cohort_buttons .o_button_switch'));
+        await nextTick();
         assert.strictEqual($('.o_control_panel .breadcrumb li:nth(1)').text(), 'Cohort Analysis',
             "'Cohort Analysis' should have been stacked in the breadcrumbs");
-        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1']);
+        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1']);
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await nextTick();
 
         assert.verifySteps([
             'initial get_cohort_data',
@@ -1499,8 +1496,6 @@ QUnit.module('Views', {
             'categ_id=1', // cohort view opened fullscreen
             'categ_id=1', // dashboard after coming back
         ]);
-
-        actionManager.destroy();
     });
 
     QUnit.test('interact with a graph view and open it fullscreen', async function (assert) {
@@ -1699,41 +1694,37 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
-    QUnit.skip('interact with subviews, open one fullscreen and come back', async function (assert) {
+    QUnit.test('interact with subviews, open one fullscreen and come back', async function (assert) {
         assert.expect(14);
 
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph"/>' +
-                        '<view type="pivot"/>' +
-                    '</dashboard>',
-                'test_report,false,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
-                'test_report,false,pivot': '<pivot>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</pivot>',
-                'test_report,false,search': '<search></search>',
-            },
+        const views = {
+            'test_report,false,dashboard': '<dashboard>' +
+                    '<view type="graph"/>' +
+                    '<view type="pivot"/>' +
+                '</dashboard>',
+            'test_report,false,graph': '<graph>' +
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
+            'test_report,false,pivot': '<pivot>' +
+                    '<field name="sold" type="measure"/>' +
+                '</pivot>',
+            'test_report,false,search': '<search></search>',
+        };
+        Object.assign(serverData, {views});
+
+        const webClient = await createWebClient({
+            serverData,
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     for (var i in args.kwargs.fields) {
                         assert.step(args.kwargs.fields[i]);
                     }
                 }
-                return this._super.apply(this, arguments);
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
             },
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Dashboard',
             res_model: 'test_report',
             type: 'ir.actions.act_window',
@@ -1743,18 +1734,20 @@ QUnit.module('Views', {
         await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
 
         // select 'untaxed' as measure in graph view
-        await testUtils.dom.click($('.o_graph_buttons button:contains(Measures)'));
-        await testUtils.dom.click(actionManager.$('.o_graph_buttons .dropdown-item:contains(Untaxed)'));
+        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons button:contains(Measures)'));
+        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .dropdown-item:contains(Untaxed)'));
 
         // select 'untaxed' as additional measure in pivot view
-        await testUtils.dom.click($('.o_pivot_buttons button:contains(Measures)'));
-        await testUtils.dom.click(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'));
+        await testUtils.dom.click($(webClient.el).find('.o_pivot_buttons button:contains(Measures)'));
+        await testUtils.dom.click($(webClient.el).find('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'));
 
         // open graph in fullscreen
-        await testUtils.dom.click(actionManager.$('.o_pivot_buttons .o_button_switch'));
+        await testUtils.dom.click($(webClient.el).find('.o_pivot_buttons .o_button_switch'));
+        await nextTick();
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await nextTick();
 
         assert.verifySteps([
             // initial read_group
@@ -1774,42 +1767,36 @@ QUnit.module('Views', {
             'categ_id', 'untaxed', // graph in dashboard
             'sold:sum', 'untaxed:sum', // pivot in dashboard
         ]);
-
-        actionManager.destroy();
     });
 
-    QUnit.skip('open subview fullscreen, update domain and come back', async function (assert) {
+    QUnit.test('open subview fullscreen, update domain and come back', async function (assert) {
         assert.expect(8);
 
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph"/>' +
-                    '</dashboard>',
-                'test_report,false,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
-                'test_report,false,search': '<search>' +
-                       '<filter name="sold" help="Sold" domain="[(\'sold\', \'=\', 10)]"/>' +
-                       '<filter name="buy" help="Buy" domain="[(\'sold\', \'=\', -10)]"/>' +
-                    '</search>',
-            },
+        const views = {
+            'test_report,false,dashboard': '<dashboard>' +
+                    '<view type="graph"/>' +
+                '</dashboard>',
+            'test_report,false,graph': '<graph>' +
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
+            'test_report,false,search': '<search>' +
+                   '<filter name="sold" help="Sold" domain="[(\'sold\', \'=\', 10)]"/>' +
+                   '<filter name="buy" help="Buy" domain="[(\'sold\', \'=\', -10)]"/>' +
+                '</search>',
+        };
+        Object.assign(serverData, {views});
+
+        const webClient = await createWebClient({
+            serverData,
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     assert.step(args.kwargs.domain[0] ? args.kwargs.domain[0].join('') : ' ');
                 }
-                return this._super.apply(this, arguments);
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
-            },
+            }
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Dashboard',
             res_model: 'test_report',
             type: 'ir.actions.act_window',
@@ -1818,21 +1805,23 @@ QUnit.module('Views', {
 
 
         // open graph in fullscreen
-        await testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
+        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
+        await nextTick();
 
         // filter on bar
-        await cpHelpers.toggleFilterMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 0);
-        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Sold']);
+        await cpHelpers.toggleFilterMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 0);
+        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Sold']);
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
         await testUtils.owlCompatibilityExtraNextTick();
+        await legacyExtraNextTick();
 
-        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), []);
+        assert.deepEqual(cpHelpers.getFacetTexts(webClient), []);
 
-        await cpHelpers.toggleFilterMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 1);
+        await cpHelpers.toggleFilterMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 1);
 
         assert.verifySteps([
             ' ', // graph in dashboard
@@ -1841,39 +1830,33 @@ QUnit.module('Views', {
             ' ', // graph in dashboard after coming back
             'sold=-10', // graph in dashboard with second filter applied
         ]);
-
-        actionManager.destroy();
     });
 
-    QUnit.skip('action domain is kept when going back and forth to fullscreen subview', async function (assert) {
+    QUnit.test('action domain is kept when going back and forth to fullscreen subview', async function (assert) {
         assert.expect(4);
 
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph"/>' +
-                    '</dashboard>',
-                'test_report,false,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
-                'test_report,false,search': '<search></search>',
-            },
+        const views = {
+            'test_report,false,dashboard': '<dashboard>' +
+                    '<view type="graph"/>' +
+                '</dashboard>',
+            'test_report,false,graph': '<graph>' +
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
+            'test_report,false,search': '<search></search>',
+        };
+        Object.assign(serverData, {views});
+
+        const webClient = await createWebClient({
+            serverData,
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     assert.step(args.kwargs.domain[0].join(''));
                 }
-                return this._super.apply(this, arguments);
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
             },
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Dashboard',
             domain: [['categ_id', '=', 1]],
             res_model: 'test_report',
@@ -1882,18 +1865,18 @@ QUnit.module('Views', {
         });
 
         // open graph in fullscreen
-        await testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
+        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
+        await nextTick();
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await nextTick();
 
         assert.verifySteps([
             'categ_id=1', // First rendering of dashboard view
             'categ_id=1', // Rendering of graph view in full screen
             'categ_id=1', // Second rendering of dashboard view
         ]);
-
-        actionManager.destroy();
     });
 
     QUnit.test('getOwnedQueryParams correctly returns graph subview context', async function (assert) {

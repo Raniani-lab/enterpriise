@@ -5,8 +5,10 @@ var FormView = require('web.FormView');
 const framework = require('web.framework');
 var testUtils = require('web.test_utils');
 
-var createActionManager = testUtils.createActionManager;
 var createView = testUtils.createView;
+
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+let serverData;
 
 const DocumentBackend = require('sign.DocumentBackend');
 
@@ -33,9 +35,10 @@ QUnit.module('document_backend_tests', {
                 }],
             },
         };
+        serverData = {models: this.data};
     }
 }, function () {
-    QUnit.skip('simple rendering', async function (assert) {
+    QUnit.test('simple rendering', async function (assert) {
         assert.expect(4);
 
         const hasFinishedProm = testUtils.makeTestPromise();
@@ -48,38 +51,46 @@ QUnit.module('document_backend_tests', {
                 hasFinishedProm.resolve();
             }
         });
+        const actions = {
+          9: {
+              id: 9,
+              name: 'A Client Action',
+              tag: 'sign.Document',
+              type: 'ir.actions.client',
+              context: {id: 5, token: 'abc'},
+          }
+        };
+        Object.assign(serverData, {actions});
 
-        var actionManager = await createActionManager({
-            actions: [{
-                id: 9,
-                name: 'A Client Action',
-                tag: 'sign.Document',
-                type: 'ir.actions.client',
-                context: {id: 5, token: 'abc'},
-            }],
+        const webClient = await createWebClient({
+            serverData,
             mockRPC: function (route) {
                 if (route === '/sign/get_document/5/abc') {
                     return Promise.resolve('<span>def</span>');
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
 
-        await actionManager.doAction(9);
+        await doAction(webClient, 9);
         await hasFinishedProm;
 
         assert.verifySteps(['blockUI', 'unblockUI']);
 
-        assert.strictEqual(actionManager.$('.o_sign_document').text().trim(), 'def',
+        assert.strictEqual($(webClient.el).find('.o_sign_document').text().trim(), 'def',
             'should display text from server');
 
-        actionManager.destroy();
         testUtils.mock.unpatch(framework);
     });
 
-    QUnit.skip('do not crash when leaving the action', async function (assert) {
-        assert.expect(0);
+    QUnit.test('do not crash when leaving the action', async function (assert) {
+        assert.expect(3);
+        testUtils.mock.patch(framework, {
+            blockUI: function () {
+            },
+            unblockUI: function () {
+            }
+        });
 
         const proms = [];
         testUtils.mock.patch(DocumentBackend, {
@@ -89,30 +100,35 @@ QUnit.module('document_backend_tests', {
                 return prom;
             }
         });
+        const actions = {
+          9: {
+              id: 9,
+              name: 'A Client Action',
+              tag: 'sign.Document',
+              type: 'ir.actions.client',
+              context: {id: 5, token: 'abc'},
+          },
+        };
+        Object.assign(serverData, {actions});
 
-        var actionManager = await createActionManager({
-            actions: [{
-                id: 9,
-                name: 'A Client Action',
-                tag: 'sign.Document',
-                type: 'ir.actions.client',
-                context: {id: 5, token: 'abc'},
-            }],
+        const webClient = await createWebClient({
+            serverData,
             mockRPC: function (route) {
                 if (route === '/sign/get_document/5/abc') {
+                    assert.step(route);
                     return Promise.resolve('<span>def</span>');
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
 
-        await actionManager.doAction(9);
-        await actionManager.doAction(9);
+        await doAction(webClient, 9);
+        await doAction(webClient, 9);
         await Promise.all(proms);
 
-        actionManager.destroy();
+        assert.verifySteps(["/sign/get_document/5/abc", "/sign/get_document/5/abc"]);
         testUtils.mock.unpatch(DocumentBackend);
+        testUtils.mock.unpatch(framework);
     });
 
     QUnit.test('search more in many2one pointing to sign.template model', async function (assert) {

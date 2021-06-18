@@ -17,6 +17,12 @@ patch(MockServer.prototype, "web_studio.MockServer", {
         if (route === "/web_studio/get_default_value") {
             return Promise.resolve(this.mockGetDefaultValue());
         }
+        if (route === "/web_studio/get_studio_action") {
+            return Promise.resolve(this.mockGetStudioAction(args));
+        }
+        if (route === "/web_studio/edit_view") {
+            return Promise.resolve(this.mockEditView(args));
+        }
         return this._super(...arguments);
     },
 
@@ -37,5 +43,50 @@ patch(MockServer.prototype, "web_studio.MockServer", {
 
     mockGetDefaultValue() {
         return {};
+    },
+
+    mockGetStudioAction(args) {
+        if (args.action_name === "reports") {
+            return {
+                name: "Reports",
+                res_model: "ir.actions.report",
+                target: "current",
+                type: "ir.actions.act_window",
+                views: [[false, "kanban"]],
+            };
+        }
+    },
+
+    mockEditView(args) {
+        const viewId = args.view_id;
+        if (!viewId) {
+            throw new Error(
+                "To use the 'edit_view' mocked controller, you should specify a unique id on the view you are editing"
+            );
+        }
+        const uniqueViewKey = Object.keys(this.archs)
+            .map((k) => k.split(","))
+            .filter(([model, vid, vtype]) => vid === `${viewId}`);
+
+        if (!uniqueViewKey.length) {
+            throw new Error(`No view with id "${viewId}" in edit_view`);
+        }
+        if (uniqueViewKey.length > 1) {
+            throw new Error(
+                `There are multiple views with id "${viewId}", and probably for different models.`
+            );
+        }
+        const [modelName, , viewType] = uniqueViewKey[0];
+
+        return {
+            fields_views: {
+                [viewType]: this.fieldsViewGet(modelName, [viewId, viewType], {
+                    context: args.context,
+                    options: {},
+                }),
+            },
+            fields: this.mockFieldsGet(modelName),
+            studio_view_id: false,
+        };
     },
 });

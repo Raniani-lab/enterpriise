@@ -5,7 +5,11 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
     const testUtils = require('web.test_utils');
 
     const cpHelpers = testUtils.controlPanel;
-    const { createActionManager, createControlPanel, createView } = testUtils;
+    const { createControlPanel, createView } = testUtils;
+
+    const { createWebClient, doAction, getActionManagerServerData } = require('@web/../tests/webclient/helpers');
+
+    let serverData;
 
     QUnit.module('Control Panel', {
         beforeEach: function () {
@@ -35,25 +39,26 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
                     ],
                 },
             };
+            const actions = {};
+            this.actions.forEach((act) => {
+                actions[act.xml_id || act.id] = act;
+            });
+            serverData = getActionManagerServerData();
+            Object.assign(serverData, { models: this.data, views: this.archs, actions });
         },
     }, function () {
 
-        QUnit.skip('basic rendering', async function (assert) {
+        QUnit.test('basic rendering', async function (assert) {
             assert.expect(2);
 
-            const actionManager = await createActionManager({
-                actions: this.actions,
-                archs: this.archs,
-                data: this.data,
-            });
-            await actionManager.doAction(1);
+            const webClient = await createWebClient({serverData});
+
+            await doAction(webClient, 1);
 
             assert.containsNone(document.body, '.o_control_panel .o_mobile_search',
                 "search options are hidden by default");
-            assert.containsOnce(actionManager, '.o_control_panel .o_enable_searchview',
+            assert.containsOnce(webClient, '.o_control_panel .o_enable_searchview',
                 "should display a button to toggle the searchview");
-
-            actionManager.destroy();
         });
 
         QUnit.test("control panel appears at top on scroll event", async function (assert) {
@@ -161,25 +166,21 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             controlPanel.destroy();
         });
 
-        QUnit.skip('mobile search: activate a filter through quick search', async function (assert) {
+        QUnit.test('mobile search: activate a filter through quick search', async function (assert) {
             assert.expect(7);
 
             let searchRPCFlag = false;
 
-            const actionManager = await createActionManager({
-                actions: this.actions,
-                archs: this.archs,
-                data: this.data,
-                mockRPC: function (route, args) {
-                    if (searchRPCFlag) {
-                        assert.deepEqual(args.domain, [['foo', 'ilike', 'A']],
-                            "domain should have been properly transferred to list view");
-                    }
-                    return this._super.apply(this, arguments);
-                },
-            });
+            const mockRPC = (route, args) => {
+                if (searchRPCFlag) {
+                    assert.deepEqual(args.domain, [['foo', 'ilike', 'A']],
+                        "domain should have been properly transferred to list view");
+                }
+            };
 
-            await actionManager.doAction(1);
+            const webClient = await createWebClient({serverData, mockRPC});
+
+            await doAction(webClient, 1);
 
             assert.containsOnce(document.body, 'button.o_enable_searchview.fa-search',
                 "should display a button to open the searchview");
@@ -207,27 +208,21 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
                 "Expand icon shoud be hidden");
             assert.containsNone(document.body, '.o_searchview_input_container',
                 "Quick search input should be hidden");
-
-            actionManager.destroy();
         });
 
-        QUnit.skip('mobile search: activate a filter in full screen search view', async function (assert) {
+        QUnit.test('mobile search: activate a filter in full screen search view', async function (assert) {
             assert.expect(3);
 
-            const actionManager = await createActionManager({
-                actions: this.actions,
-                archs: this.archs,
-                data: this.data,
-            });
+            const webClient = await createWebClient({ serverData });
 
-            await actionManager.doAction(1);
+            await doAction(webClient, 1);
 
             assert.containsNone(document.body, '.o_mobile_search');
 
             // open the search view
-            await testUtils.dom.click(actionManager.el.querySelector('button.o_enable_searchview'));
+            await testUtils.dom.click(webClient.el.querySelector('button.o_enable_searchview'));
             // open it in full screen
-            await testUtils.dom.click(actionManager.el.querySelector('.o_toggle_searchview_full'));
+            await testUtils.dom.click(webClient.el.querySelector('.o_toggle_searchview_full'));
 
             assert.containsOnce(document.body, '.o_mobile_search');
 
@@ -241,8 +236,6 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
                 )
             );
             assert.containsNone(document.body, '.o_mobile_search');
-
-            actionManager.destroy();
         });
     });
 });

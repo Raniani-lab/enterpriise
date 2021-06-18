@@ -1,34 +1,15 @@
 /** @odoo-module **/
-import { legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { legacyExtraNextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
-import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
-import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
-import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
-import { studioService } from "@web_studio/studio_service";
-import { systrayItem } from "@web_studio/systray_item/systray_item";
 import { companyService } from "@web/webclient/company_service";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
-
+import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import testUtils from "web.test_utils";
-
-// -----------------------------------------------------------------------------
-// Helpers
-// -----------------------------------------------------------------------------
-
-const serviceRegistry = registry.category("services");
-
-async function openStudio(webClient) {
-    await testUtils.dom.click(
-        webClient.el.querySelector(".o_main_navbar .o_web_studio_navbar_item a")
-    );
-    await legacyExtraNextTick();
-}
-
-async function leaveStudio(webClient) {
-    await testUtils.dom.click(webClient.el.querySelector(".o_studio_navbar .o_web_studio_leave a"));
-    return legacyExtraNextTick();
-}
+import {
+    openStudio,
+    leaveStudio,
+    registerStudioDependencies,
+} from "@web_studio/../tests/test_utils";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -39,11 +20,8 @@ let serverData;
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
         serverData = getActionManagerServerData();
-        registry.category("systray").add("StudioSystrayItem", systrayItem);
-        const fakeEnterpriseService = makeFakeEnterpriseService();
-        serviceRegistry.add("enterprise", fakeEnterpriseService);
-        serviceRegistry.add("home_menu", homeMenuService);
-        serviceRegistry.add("studio", studioService);
+        registerStudioDependencies();
+        const serviceRegistry = registry.category("services");
         serviceRegistry.add("company", companyService);
 
         // tweak a bit the default config to better fit with studio needs:
@@ -92,6 +70,7 @@ QUnit.module("Studio", (hooks) => {
                 xmlid: "app_3",
             },
         };
+        serverData.models.partner.fields.date = { string: "Date", type: "date" };
         serverData.models.partner.fields.pony_id = {
             string: "Pony",
             type: "many2one",
@@ -194,8 +173,6 @@ QUnit.module("Studio", (hooks) => {
             ".o_kanban_view .o_kanban_record:contains(yop)",
             "the first partner should be displayed in kanban"
         );
-
-        webClient.destroy();
     });
 
     QUnit.test("open Studio with act_window and viewType", async function (assert) {
@@ -229,8 +206,6 @@ QUnit.module("Studio", (hooks) => {
             "yop",
             "the first partner should be displayed"
         );
-
-        webClient.destroy();
     });
 
     QUnit.test("switch view and close Studio", async function (assert) {
@@ -269,8 +244,6 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsNone(webClient, ".o_web_studio_client_action", "Studio should be closed");
         assert.containsOnce(webClient, ".o_list_view", "the list view should be opened");
-
-        webClient.destroy();
     });
 
     QUnit.test("navigation in Studio with act_window", async function (assert) {
@@ -366,8 +339,6 @@ QUnit.module("Studio", (hooks) => {
             "Twilight SparkleApplejackFluttershy",
             "the list of ponies should be correctly displayed"
         );
-
-        webClient.destroy();
     });
 
     QUnit.test("keep action context when leaving Studio", async function (assert) {
@@ -406,8 +377,6 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsOnce(webClient, ".o_kanban_view");
         assert.strictEqual(nbLoadAction, 2, "the action should have been loaded twice");
-
-        webClient.destroy();
     });
 
     QUnit.test("open same record when leaving form", async function (assert) {
@@ -442,12 +411,10 @@ QUnit.module("Studio", (hooks) => {
             1,
             "should have open the same record"
         );
-
-        webClient.destroy();
     });
 
-    QUnit.skip("open Studio with non editable view", async function (assert) {
-        assert.expect(1);
+    QUnit.test("open Studio with non editable view", async function (assert) {
+        assert.expect(2);
 
         serverData.menus[99] = {
             id: 9,
@@ -458,8 +425,9 @@ QUnit.module("Studio", (hooks) => {
             xmlid: "app_9",
         };
         serverData.menus.root.children.push(99);
-        serverData.actions.push({
+        serverData.actions[99] = {
             id: 99,
+            xml_id: "some.xml_id",
             name: "Partners Action 99",
             res_model: "partner",
             type: "ir.actions.act_window",
@@ -468,7 +436,7 @@ QUnit.module("Studio", (hooks) => {
                 [2, "list"],
                 [false, "form"],
             ],
-        });
+        };
         serverData.views["partner,42,grid"] = `
             <grid>
                 <field name="foo" type="row"/>
@@ -478,7 +446,10 @@ QUnit.module("Studio", (hooks) => {
                 </field>
             </grid>`;
 
-        const webClient = await createEnterpriseWebClient({ serverData });
+        const webClient = await createEnterpriseWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
+        });
         await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_9]"));
         await legacyExtraNextTick();
 
@@ -491,8 +462,6 @@ QUnit.module("Studio", (hooks) => {
             ".o_web_studio_action_editor",
             "action editor should be opened (grid is not editable)"
         );
-
-        webClient.destroy();
     });
 
     QUnit.test(
@@ -522,8 +491,6 @@ QUnit.module("Studio", (hooks) => {
                 ".o_list_table .o_data_row",
                 "the list view should not contain any data"
             );
-
-            webClient.destroy();
         }
     );
 
@@ -597,8 +564,6 @@ QUnit.module("Studio", (hooks) => {
                 ".o_web_studio_client_action .o_web_studio_form_view_editor",
                 "the form view should be opened"
             );
-
-            webClient.destroy();
         }
     );
 

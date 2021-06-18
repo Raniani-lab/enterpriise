@@ -9,7 +9,7 @@ QUnit.module('ReportEditor', {
     beforeEach: function () {
     },
 }, function () {
-    QUnit.skip('basic report rendering', async function (assert) {
+    QUnit.test('basic report rendering', async function (assert) {
         assert.expect(2);
 
         var nodesArchs = {

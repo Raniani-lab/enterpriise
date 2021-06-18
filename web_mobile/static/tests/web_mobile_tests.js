@@ -21,6 +21,8 @@ odoo.define("web_mobile.tests", function (require) {
     const UserPreferencesFormView = require("web_mobile.UserPreferencesFormView");
     const { base64ToBlob } = require("web_mobile.testUtils");
 
+    const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+
     const { Component, tags, useState } = owl;
     const { xml } = tags;
 
@@ -813,7 +815,7 @@ odoo.define("web_mobile.tests", function (require) {
 
             QUnit.module("ControlPanel");
 
-            QUnit.skip("mobile search: close with backbutton event", async function (assert) {
+            QUnit.test("mobile search: close with backbutton event", async function (assert) {
                 assert.expect(7);
 
                 mock.patch(mobile.methods, {
@@ -822,18 +824,17 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                const { createActionManager } = testUtils;
-
-                this.actions = [
-                    {
+                const actions = {
+                    1: {
                         id: 1,
                         name: "Yes",
                         res_model: "partner",
                         type: "ir.actions.act_window",
                         views: [[false, "list"]],
                     },
-                ];
-                this.archs = {
+                };
+
+                const views = {
                     "partner,false,list": '<tree><field name="foo"/></tree>',
                     "partner,false,search": `
                 <search>
@@ -841,7 +842,8 @@ odoo.define("web_mobile.tests", function (require) {
                     <field name="foo" string="Foo"/>
                 </search>`,
                 };
-                this.data = {
+
+                const models = {
                     partner: {
                         fields: {
                             foo: { string: "Foo", type: "char" },
@@ -850,24 +852,21 @@ odoo.define("web_mobile.tests", function (require) {
                         records: [{ id: 1, display_name: "First record", foo: "yop" }],
                     },
                 };
+                const serverData = {actions, models, views};
 
-                const actionManager = await createActionManager({
-                    actions: this.actions,
-                    archs: this.archs,
-                    data: this.data,
-                });
+                const webClient = await createWebClient({ serverData });
 
-                await actionManager.doAction(1);
+                await doAction(webClient, 1);
 
                 assert.containsNone(document.body, ".o_mobile_search");
 
                 // open the search view
                 await testUtils.dom.click(
-                    actionManager.el.querySelector("button.o_enable_searchview")
+                    webClient.el.querySelector("button.o_enable_searchview")
                 );
                 // open it in full screen
                 await testUtils.dom.click(
-                    actionManager.el.querySelector(".o_toggle_searchview_full")
+                    webClient.el.querySelector(".o_toggle_searchview_full")
                 );
 
                 assert.containsOnce(document.body, ".o_mobile_search");
@@ -878,7 +877,6 @@ odoo.define("web_mobile.tests", function (require) {
                 assert.containsNone(document.body, ".o_mobile_search");
                 assert.verifySteps(["overrideBackButton: false"]);
 
-                actionManager.destroy();
                 mock.unpatch(mobile.methods);
             });
 

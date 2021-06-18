@@ -17,6 +17,21 @@ export const MODES = {
 
 export class NotEditableActionError extends Error {}
 
+export const SUPPORTED_VIEW_TYPES = [
+    "activity",
+    "calendar",
+    "cohort",
+    "dashboard",
+    "form",
+    "gantt",
+    "graph",
+    "kanban",
+    "list",
+    "map",
+    "pivot",
+    "search",
+];
+
 export const studioService = {
     name: "studio",
     dependencies: ["action", "home_menu", "router", "user"],
@@ -50,6 +65,10 @@ export const studioService = {
                 return action.res_model ? true : false;
             }
             return false;
+        }
+
+        function isViewEditable(view) {
+            return view && SUPPORTED_VIEW_TYPES.includes(view);
         }
 
         const bus = new core.EventBus();
@@ -120,7 +139,8 @@ export const studioService = {
                     options.clearBreadcrumbs = true;
                 }
                 state.editedAction = action;
-                state.editedViewType = viewType || action.views[0][1]; // fallback on first view of action
+                const vtype = viewType || action.views[0][1]; // fallback on first view of action
+                state.editedViewType = isViewEditable(vtype) ? vtype : null;
                 state.editorTab = "views";
                 state.editedControllerState = controllerState || {};
             }
@@ -173,6 +193,7 @@ export const studioService = {
         }
 
         async function reload(params = {}) {
+            env.bus.trigger("CLEAR-CACHES");
             const action = await env.services.action.loadAction(state.editedAction.id);
             setParams({ action, ...params });
         }

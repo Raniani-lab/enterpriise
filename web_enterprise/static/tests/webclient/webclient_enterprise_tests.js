@@ -256,46 +256,43 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 "red right hand"
             );
         });
-        // QUnit.skip('fast clicking on restore (implementation detail)', async (assert) => {
-        //   let _resolve;
-        //   const prom = new Promise((resolve) => {
-        //     _resolve = resolve;
-        //   });
-        //   let doVeryFastClick = false;
-        //   class DelayedClientAction extends Component {
-        //     static template = owl.tags.xml`<div class='delayed_client_action'>
-        //       <button t-on-click="resolve">RESOLVE</button>
-        //     </div>`;
-        //     mounted() {
-        //       //console.log('patched');
-        //       if (doVeryFastClick) {
-        //         doVeryFastClick = false;
-        //         click(webClient.el.querySelector(".o_menu_toggle"));
-        //       }
-        //     }
-        //   }
-        //   serverData.actionRegistry.add('DelayedClientAction', DelayedClientAction);
-        //   const webClient = await createEnterpriseWebClient({serverData});
-        //   await doAction(webClient, 'DelayedClientAction');
-        //   await nextTick();
-        //   await click(webClient.el.querySelector(".o_menu_toggle"));
-        //   assert.isVisible(webClient.el.querySelector('.o_home_menu'));
-        //   assert.isNotVisible(webClient.el.querySelector('.delayed_client_action'));
+        QUnit.skip("fast clicking on restore (implementation detail)", async (assert) => {
+            assert.expect(6);
 
-        //   doVeryFastClick = true;
-        //   await click(webClient.el.querySelector(".o_menu_toggle"));
-        //   await nextTick();
-        //   // off homemenu
-        //   assert.isVisible(webClient.el.querySelector('.o_home_menu'));
-        //   assert.isNotVisible(webClient.el.querySelector('.delayed_client_action'));
+            let doVeryFastClick = false;
 
-        //   await click(webClient.el.querySelector(".o_menu_toggle"));
-        //   await nextTick();
-        //   assert.isNotVisible(webClient.el.querySelector('.o_home_menu'));
-        //   assert.isVisible(webClient.el.querySelector('.delayed_client_action'));
+            class DelayedClientAction extends owl.Component {
+                mounted() {
+                    if (doVeryFastClick) {
+                        doVeryFastClick = false;
+                        click(webClient.el.querySelector(".o_menu_toggle"));
+                    }
+                }
+            }
+            DelayedClientAction.template = owl.tags.xml`<div class='delayed_client_action'>
+                <button t-on-click="resolve">RESOLVE</button>
+            </div>`;
 
-        //   //await prom;
-        // });
+            registry.category("actions").add("DelayedClientAction", DelayedClientAction);
+            const webClient = await createEnterpriseWebClient({ serverData });
+            await doAction(webClient, "DelayedClientAction");
+            await nextTick();
+            await click(webClient.el.querySelector(".o_menu_toggle"));
+            assert.isVisible(webClient.el.querySelector(".o_home_menu"));
+            assert.isNotVisible(webClient.el.querySelector(".delayed_client_action"));
+
+            doVeryFastClick = true;
+            await click(webClient.el.querySelector(".o_menu_toggle"));
+            await nextTick();
+            // off homemenu
+            assert.isVisible(webClient.el.querySelector(".o_home_menu"));
+            assert.isNotVisible(webClient.el.querySelector(".delayed_client_action"));
+
+            await click(webClient.el.querySelector(".o_menu_toggle"));
+            await nextTick();
+            assert.isNotVisible(webClient.el.querySelector(".o_home_menu"));
+            assert.isVisible(webClient.el.querySelector(".delayed_client_action"));
+        });
     });
     QUnit.test("clear unCommittedChanges when toggling home menu", async function (assert) {
         assert.expect(7);

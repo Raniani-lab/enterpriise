@@ -4,9 +4,10 @@ odoo.define('stock_barcode.stock_picking_barcode_tests', function (require) {
 var testUtils = require('web.test_utils');
 var FormView = require('web.FormView');
 
-var createActionManager = testUtils.createActionManager;
 var createView = testUtils.createView;
 var triggerKeypressEvent = testUtils.dom.triggerKeypressEvent;
+
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
 QUnit.module('stock_barcode', {}, function () {
 
@@ -267,27 +268,25 @@ QUnit.test('scan a product verify onChange', async function (assert) {
     form.destroy();
 });
 
-QUnit.skip('exclamation-triangle when picking is done', async function (assert) {
+QUnit.test('exclamation-triangle when picking is done', async function (assert) {
     assert.expect(1);
     this.clientData.currentState[0].state = 'done';
-    var actionManager = await createActionManager({
+    const webClient = await createWebClient({
         mockRPC: this.mockRPC,
     });
-    await actionManager.doAction(this.clientData.action);
-    assert.containsOnce(actionManager, '.fa-5x.fa-exclamation-triangle:not(.d-none)', "Should have warning icon");
-    actionManager.destroy();
+    await doAction(webClient, this.clientData.action);
+    assert.containsOnce(webClient, '.fa-5x.fa-exclamation-triangle:not(.d-none)', "Should have warning icon");
 });
 
-QUnit.skip('barcode pic when picking is not done or cancelled', async function (assert) {
+QUnit.test('barcode pic when picking is not done or cancelled', async function (assert) {
     assert.expect(2);
     this.clientData.currentState[0].group_stock_multi_locations = false;
-    var actionManager = await createActionManager({
+    const webClient = await createWebClient({
         mockRPC: this.mockRPC,
     });
-    await actionManager.doAction(this.clientData.action);
-    assert.containsOnce(actionManager, '.o_barcode_pic', "Should have barcode picture");
-    assert.containsNone(actionManager, '.o_js_has_warning_msg', "Should not have warning icon");
-    actionManager.destroy();
+    await doAction(webClient, this.clientData.action);
+    assert.containsOnce(webClient, '.o_barcode_pic', "Should have barcode picture");
+    assert.containsNone(webClient, '.o_js_has_warning_msg', "Should not have warning icon");
 });
 
 });

@@ -7,9 +7,10 @@ var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
 const SampleServer = require('web.SampleServer');
 var testUtils = require('web.test_utils');
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
-const createActionManager = testUtils.createActionManager;
 const patchDate = testUtils.mock.patchDate;
+const nextTick = testUtils.nextTick;
 
 const { makeLegacyDialogMappingTestEnv } = require('@web/../tests/helpers/legacy_env_utils');
 
@@ -738,19 +739,21 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.skip('empty gantt with sample data and default_group_by (switch view)', async function (assert) {
+    QUnit.test('empty gantt with sample data and default_group_by (switch view)', async function (assert) {
         assert.expect(7);
 
-        const actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'tasks,false,gantt': '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
-                'tasks,false,list': '<list/>',
-                'tasks,false,search': '<search/>',
-            },
+       const views = {
+            'tasks,false,gantt': '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
+            'tasks,false,list': '<list/>',
+            'tasks,false,search': '<search/>',
+        };
+        const serverData = {models: this.data, views};
+
+        const webClient = await createWebClient({
+          serverData,
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Gantt',
             res_model: 'tasks',
             type: 'ir.actions.act_window',
@@ -758,26 +761,26 @@ QUnit.module('Views', {
         });
 
         // the gantt view should be in sample mode
-        assert.hasClass(actionManager.$('.o_view_controller'), 'o_view_sample_data');
-        assert.ok(actionManager.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-        const content = actionManager.$el.text();
+        assert.hasClass($(webClient.el).find('.o_view_controller'), 'o_view_sample_data');
+        assert.ok($(webClient.el).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        const content = $(webClient.el).find('.o_view_controller').text();
 
         // switch to list view
-        await testUtils.dom.click(actionManager.el.querySelector('.o_cp_bottom_right .o_switch_view.o_list'));
+        await testUtils.dom.click($(webClient.el).find('.o_cp_bottom_right .o_switch_view.o_list'));
+        await nextTick();
 
-        assert.containsOnce(actionManager, '.o_list_view');
+        assert.containsOnce(webClient, '.o_list_view');
 
         // go back to gantt view
-        await testUtils.dom.click(actionManager.el.querySelector('.o_cp_bottom_right .o_switch_view.o_gantt'));
+        await testUtils.dom.click($(webClient.el).find('.o_cp_bottom_right .o_switch_view.o_gantt'));
+        await nextTick();
 
-        assert.containsOnce(actionManager, '.o_gantt_view');
+        assert.containsOnce(webClient, '.o_gantt_view');
 
         // the gantt view should be still in sample mode
-        assert.hasClass(actionManager.$('.o_view_controller'), 'o_view_sample_data');
-        assert.ok(actionManager.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-        assert.strictEqual(actionManager.$('.o_view_controller').text(), content);
-
-        actionManager.destroy();
+        assert.hasClass($(webClient.el).find('.o_view_controller'), 'o_view_sample_data');
+        assert.ok($(webClient.el).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual($(webClient.el).find('.o_view_controller').text(), content);
     });
 
     QUnit.test('empty gantt with sample="1"', async function (assert) {

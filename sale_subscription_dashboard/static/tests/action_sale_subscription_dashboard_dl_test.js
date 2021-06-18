@@ -16,13 +16,13 @@ QUnit.module("Sale Subscription Dashboard Download Reports", {
                 model: "sale.subscription",
                 output_format: "pdf",
             },
-            type: "ir_actions_sale_subscription_dashboard_download",
+            type: 'ir_actions_sale_subscription_dashboard_download',
         };
-        mockDownload((options) => {
-            assert.step(options.url);
-            assert.deepEqual(options.data, {
-                model: "sale.subscription",
-                output_format: "pdf",
+        mockDownload((params) => {
+            assert.step(params.url);
+            assert.deepEqual(params.data, {
+                model: 'sale.subscription',
+                output_format: 'pdf',
             }, "should give the correct data");
             return Promise.resolve();
         });
@@ -33,6 +33,7 @@ QUnit.module("Sale Subscription Dashboard Download Reports", {
             },
         });
         await doAction(webClient, 1);
+
         assert.verifySteps([
             "/web/webclient/load_menus",
             "/web/action/load",

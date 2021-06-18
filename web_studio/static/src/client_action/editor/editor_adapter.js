@@ -7,24 +7,28 @@ import { MapNewViewDialog } from "@web_studio/client_action/editor/new_view_dial
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import ActionEditor from "web_studio.ActionEditor";
 import { ActionEditorMain } from "../../legacy/action_editor_main";
+import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 const { Component } = owl;
 
 export class EditorAdapter extends ComponentAdapter {
     constructor(parent, props) {
-        const studio = useService("studio");
-        const { editedViewType } = studio;
-        if (editedViewType) {
-            props.Component = ActionEditorMain;
-        } else {
-            props.Component = ActionEditor;
-        }
+        // force dummy Component not to crash
+        props.Component = owl.Component;
         super(...arguments);
-        this.studio = studio;
     }
 
     setup() {
         super.setup();
+        this.studio = useService("studio");
+
+        if (this.studio.editedViewType) {
+            this.props.Component = ActionEditorMain;
+        } else {
+            this.props.Component = ActionEditor;
+        }
+
+        this.dialog = useService("dialog");
         this.user = useService("user");
         this.dialog = useService("dialog");
         this.viewService = useService("view");
@@ -108,8 +112,11 @@ export class EditorAdapter extends ComponentAdapter {
                 } else if (viewType === "map") {
                     DialogClass = MapNewViewDialog;
                 } else {
-                    // TODO
-                    // display warning dialog
+                    this.dialog.add(AlertDialog, {
+                        body: this.env._lt(
+                            "Creating this type of view is not currently supported in Studio."
+                        ),
+                    });
                     resolve(false);
                 }
                 this.dialog.add(DialogClass, dialogProps);
@@ -146,8 +153,9 @@ export class EditorAdapter extends ComponentAdapter {
             context: this.user.context,
         });
         if (result !== true) {
-            // TODO: display warning/alert Dialog
-            //Dialog.alert(self, result);
+            this.dialog.add(AlertDialog, {
+                body: result,
+            });
         }
     }
 
@@ -168,13 +176,9 @@ export class EditorAdapter extends ComponentAdapter {
             .filter((m) => m !== viewType);
 
         if (!viewMode.length) {
-            // TODO: display warning/alert Dialog
-            // Dialog.alert(
-            //   this,
-            //   this.env._t(
-            //     "You cannot deactivate this view as it is the last one active."
-            //   )
-            // );
+            this.dialog.add(AlertDialog, {
+                body: this.env._t("You cannot deactivate this view as it is the last one active."),
+            });
         } else {
             this._writeViewMode(viewMode.toString());
         }

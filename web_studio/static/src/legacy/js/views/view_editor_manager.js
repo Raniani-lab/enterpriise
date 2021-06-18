@@ -116,7 +116,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         this.chatter_allowed = params.chatter_allowed || false;
         this.studio_view_id = params.studio_view_id;
         this.studio_view_arch = params.studio_view_arch;
-        this.x2mEditorPath = params.x2mEditorPath || [];
+        this.x2mEditorPath = params.x2mEditorPath ? params.x2mEditorPath.slice() : [];
 
         this.controllerState = params.controllerState;
     },
@@ -128,12 +128,12 @@ var ViewEditorManager = AbstractEditorManager.extend({
         return this._super.apply(this, arguments).then(function () {
             if (self.x2mEditorPath.length) {
                 var currentX2m = self.x2mEditorPath.slice(-1)[0];
-                self.x2mEditorPath = self.x2mEditorPath.slice(0, -1);
+                const upstreamx2mEditorPath = self.x2mEditorPath.slice(0, -1);
                 var fields_view;
                 var x2mData;
-                if (self.x2mEditorPath.length) {
+                if (upstreamx2mEditorPath.length) {
                     x2mData = self.x2mEditorPath.slice(-1)[0].x2mData;
-                    fields_view = self._getX2mFieldsView();
+                    fields_view = self._getX2mFieldsView(self.view_type, currentX2m.x2mModel, upstreamx2mEditorPath, x2mData);
                 }
                 return self._openX2mEditor(currentX2m.x2mField,
                     currentX2m.x2mViewType, true, fields_view, x2mData);
@@ -1014,18 +1014,18 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @private
      * @return {Object} the fields_view of the x2m field
      */
-    _getX2mFieldsView: function () {
+    _getX2mFieldsView: function (mainViewType, x2mModel, x2mEditorPath, x2mViewParams) {
         // this is a crappy way of processing the arch received as string
         // because we need a processed fields_view to find the x2m fields view
-        var View = view_registry.get(this.mainViewType);
-        var view = new View(this.fields_view, _.extend({}, this.x2mViewParams));
+        const View = view_registry.get(mainViewType);
+        const view = new View(this.fields_view, Object.assign({}, x2mViewParams));
 
-        var fields_view = view.fieldsView;
-        _.each(this.x2mEditorPath, function (step) {
+        let fields_view = view.fieldsView;
+        for ( const step of x2mEditorPath) {
             var x2mField = fields_view.fieldsInfo[step.view_type][step.x2mField];
             fields_view = x2mField.views[step.x2mViewType];
-        });
-        fields_view.model = this.x2mModel;
+        }
+        fields_view.model = x2mModel;
         return fields_view;
     },
     /**
@@ -1034,7 +1034,11 @@ var ViewEditorManager = AbstractEditorManager.extend({
      */
     _instantiateEditor: function (params) {
         params = params || {};
-        var fields_view = this.x2mField ? this._getX2mFieldsView() : this.fields_view;
+
+        var fields_view = this.x2mField ?
+            this._getX2mFieldsView(this.mainViewType, this.x2mModel, this.x2mEditorPath, this.x2mViewParams) :
+            this.fields_view;
+
         var viewParams = this.x2mField ? this.x2mViewParams : {
             action: this.action,
             context: this.action.context,
@@ -1237,9 +1241,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
             parentID: this.editor.state.id,
         };
         this.renamingAllowedFields = [];
-        this.x2mEditorPath.push(
-            this._computeX2mPath(this.x2mField, this.x2mViewType, fieldsView, data)
-        );
 
         var field = fieldsInfo[this.view_type][this.x2mField];
         var def;
@@ -1693,7 +1694,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     const x2mFieldName = node.attrs.name;
                     const x2mViewType = e.currentTarget.dataset.type;
                     // trigger on studioBus
-                    bus.trigger('STUDIO_ENTER_X2M', self._computeX2mPath(x2mFieldName, x2mViewType));
+                    bus.trigger('STUDIO_ENTER_X2M',
+                        self._computeX2mPath(x2mFieldName, x2mViewType, null, self.editor.state.data[x2mFieldName])
+                    );
                 });
             }
         }

@@ -267,7 +267,7 @@ QUnit.test('scan a product verify onChange', async function (assert) {
     form.destroy();
 });
 
-QUnit.test('exclamation-triangle when picking is done', async function (assert) {
+QUnit.skip('exclamation-triangle when picking is done', async function (assert) {
     assert.expect(1);
     this.clientData.currentState[0].state = 'done';
     var actionManager = await createActionManager({
@@ -278,7 +278,7 @@ QUnit.test('exclamation-triangle when picking is done', async function (assert) 
     actionManager.destroy();
 });
 
-QUnit.test('barcode pic when picking is not done or cancelled', async function (assert) {
+QUnit.skip('barcode pic when picking is not done or cancelled', async function (assert) {
     assert.expect(2);
     this.clientData.currentState[0].group_stock_multi_locations = false;
     var actionManager = await createActionManager({

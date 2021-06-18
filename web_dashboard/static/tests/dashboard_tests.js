@@ -1359,7 +1359,7 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
-    QUnit.test('open a graph view fullscreen', async function (assert) {
+    QUnit.skip('open a graph view fullscreen', async function (assert) {
         assert.expect(9);
 
         var actionManager = await createActionManager({
@@ -1429,7 +1429,7 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('open a cohort view fullscreen', async function (assert) {
+    QUnit.skip('open a cohort view fullscreen', async function (assert) {
         assert.expect(9);
 
         this.data.test_report.fields.create_date = {type: 'date', string: 'Creation Date'};
@@ -1699,7 +1699,7 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
-    QUnit.test('interact with subviews, open one fullscreen and come back', async function (assert) {
+    QUnit.skip('interact with subviews, open one fullscreen and come back', async function (assert) {
         assert.expect(14);
 
         var actionManager = await createActionManager({
@@ -1778,7 +1778,7 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('open subview fullscreen, update domain and come back', async function (assert) {
+    QUnit.skip('open subview fullscreen, update domain and come back', async function (assert) {
         assert.expect(8);
 
         var actionManager = await createActionManager({
@@ -1845,7 +1845,7 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('action domain is kept when going back and forth to fullscreen subview', async function (assert) {
+    QUnit.skip('action domain is kept when going back and forth to fullscreen subview', async function (assert) {
         assert.expect(4);
 
         var actionManager = await createActionManager({

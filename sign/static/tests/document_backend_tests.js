@@ -35,7 +35,7 @@ QUnit.module('document_backend_tests', {
         };
     }
 }, function () {
-    QUnit.test('simple rendering', async function (assert) {
+    QUnit.skip('simple rendering', async function (assert) {
         assert.expect(4);
 
         const hasFinishedProm = testUtils.makeTestPromise();
@@ -78,7 +78,7 @@ QUnit.module('document_backend_tests', {
         testUtils.mock.unpatch(framework);
     });
 
-    QUnit.test('do not crash when leaving the action', async function (assert) {
+    QUnit.skip('do not crash when leaving the action', async function (assert) {
         assert.expect(0);
 
         const proms = [];

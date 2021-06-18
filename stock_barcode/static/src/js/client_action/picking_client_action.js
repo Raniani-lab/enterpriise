@@ -320,7 +320,7 @@ var PickingClientAction = ClientAction.extend({
                 self.trigger_up('exit');
             };
             const exitCallback = function (infos) {
-                if ((infos === undefined || !infos.special) && this.dialog.$modal.is(':visible')) {
+                if (infos === undefined || !infos.special) {
                     successCallback();
                 }
                 core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);

@@ -2,7 +2,6 @@ odoo.define('hr_contract_salary.tour', function (require) {
 'use strict';
 
 var Tour = require('web_tour.tour');
-var session = require('web.session');
 
 
 Tour.register('hr_contract_salary_tour', {
@@ -19,28 +18,28 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Log into Belgian Company",
-            trigger: '.o_menu_systray .o_switch_company_menu > a',
+            trigger: '.o_menu_systray .o_switch_company_menu button.o_dropdown_toggler',
             run: 'click',
         },
         {
             content: "Log into Belgian Company",
-            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('My Belgian Company - TEST')",
+            trigger: ".o_menu_systray .o_switch_company_menu .o_dropdown_item div span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Recruitment",
-            trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-            extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('My Belgian Company - TEST')",
+            trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
+            extra_trigger: ".o_menu_systray .o_switch_company_menu button.o_dropdown_toggler span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Configuration",
-            trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
+            trigger: 'button[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
             run: 'click',
         },
         {
             content: "Jobs",
-            trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+            trigger: 'li[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
             run: 'click',
         },
         {
@@ -687,28 +686,28 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
 },[
     {
         content: "Log into Belgian Company",
-        trigger: '.o_menu_systray .o_switch_company_menu > a',
+        trigger: '.o_menu_systray .o_switch_company_menu button.o_dropdown_toggler',
         run: 'click',
     },
     {
         content: "Log into Belgian Company",
-        trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('My Belgian Company - TEST')",
+        trigger: ".o_menu_systray .o_switch_company_menu .o_dropdown_item div span:contains('My Belgian Company - TEST')",
         run: 'click',
     },
     {
         content: "Recruitment",
-        trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-        extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('My Belgian Company - TEST')",
+        trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
+        extra_trigger: ".o_menu_systray .o_switch_company_menu button.o_dropdown_toggler span:contains('My Belgian Company - TEST')",
         run: 'click',
     },
     {
         content: "Configuration",
-        trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
+        trigger: 'button[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
         run: 'click',
     },
     {
         content: "Jobs",
-        trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+        trigger: 'li[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
         run: 'click',
     },
     {
@@ -785,28 +784,28 @@ Tour.register('hr_contract_salary_tour_2', {
     },[
         {
             content: "Log into Belgian Company",
-            trigger: '.o_menu_systray .o_switch_company_menu > a',
+            trigger: '.o_menu_systray .o_switch_company_menu button.o_dropdown_toggler',
             run: 'click',
         },
         {
             content: "Log into Belgian Company",
-            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('My Belgian Company - TEST')",
+            trigger: ".o_menu_systray .o_switch_company_menu .o_dropdown_item div span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Recruitment",
-            trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-            extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('My Belgian Company - TEST')",
+            trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
+            extra_trigger: ".o_menu_systray .o_switch_company_menu button.o_dropdown_toggler span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Configuration",
-            trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
+            trigger: 'button[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
             run: 'click',
         },
         {
             content: "Jobs",
-            trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+            trigger: 'li[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
             run: 'click',
         },
         {

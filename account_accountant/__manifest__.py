@@ -49,6 +49,7 @@ It assigns manager and user access rights to the Administrator for the accountin
             'account_accountant/static/src/js/reconciliation/reconciliation_action.js',
             'account_accountant/static/src/js/reconciliation/reconciliation_model.js',
             'account_accountant/static/src/js/reconciliation/reconciliation_renderer.js',
+            'account_accountant/static/src/js/reconciliation/reconciliation_rainbowman_component.js',
         ],
         'web.assets_tests': [
             'account_accountant/static/tests/tours/**/*',

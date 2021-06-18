@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-<li
-    t-name="voip.switch_panel_top_button">
-    <a
-        href="#"
-        title="Display Dialing Panel">
-        <i
-            aria-label="Display Dialing Panel"
-            class="
-                fa
-                fa-fw
-                fa-phone"
-            role="img"/>
-    </a>
-</li>
+<t t-name="voip.SystrayItem" owl="1">
+    <li>
+        <a href="#" title="Display Dialing Panel" t-on-click.prevent="onClick">
+            <i aria-label="Display Dialing Panel" class="fa fa-fw fa-phone" role="img"/>
+        </a>
+    </li>
+</t>
 
 <!--
     @param {voip.dialingPanel} widget

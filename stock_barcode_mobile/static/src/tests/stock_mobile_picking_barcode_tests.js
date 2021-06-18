@@ -41,7 +41,7 @@ QUnit.module('Barcode', {
     }
 });
 
-QUnit.test('scan barcode button in mobile device', async function (assert) {
+QUnit.skip('scan barcode button in mobile device', async function (assert) {
     assert.expect(1);
     this.clientData.currentState[0].group_stock_multi_locations = false;
     mobile.methods.scanBarcode = function () {};

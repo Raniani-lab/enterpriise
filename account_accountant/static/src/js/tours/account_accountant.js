@@ -10,11 +10,11 @@ odoo.define('account_accountant.tour', function (require) {
     tour.tours.account_tour.steps.splice(0, 3,
         ..._.map(tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Go to invoicing')), step => _.extend(step, {auto: true})),
         {
-            trigger: 'a[data-menu-xmlid="account.menu_finance_receivables"]',
+            trigger: 'button[data-menu-xmlid="account.menu_finance_receivables"]',
             content: _t('Go to invoicing'),
             auto: true,
         }, {
-            trigger: 'a[data-menu-xmlid="account.menu_action_move_out_invoice_type"]',
+            trigger: 'li[data-menu-xmlid="account.menu_action_move_out_invoice_type"]',
             content: _t('Go to invoicing'),
             auto: true,
         }
@@ -52,7 +52,7 @@ odoo.define('account_accountant.tour', function (require) {
                 content: _t('Check & validate the bill. If no vendor has been found, add one before validating.'),
                 position: 'bottom',
             }, {
-                trigger: 'a[data-menu-xmlid="account.menu_board_journal_1"]',
+                trigger: 'li[data-menu-xmlid="account.menu_board_journal_1"]',
                 extra_trigger: 'button[data-value="posted"].btn-primary',
                 content: _t('Let’s go back to the dashboard.'),
                 position: 'bottom',

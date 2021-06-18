@@ -15,8 +15,7 @@ class IrUiMenu(models.Model):
         for menu in menus.values():
             # web icons for app root menus
             if menu['id'] == menu['appID']:
-                webIcon = menu.get('webIcon', '')
-                webIconlist = webIcon and webIcon.split(',')
+                webIconlist = menu.get('webIcon', '').split(',')
                 iconClass = color = backgroundColor = None
                 if len(webIconlist) >= 2:
                     iconClass, color = webIconlist[:2]

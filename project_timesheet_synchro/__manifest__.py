@@ -35,6 +35,7 @@ If you use the external timesheet application, this module alows you to synchron
         ],
         'project_timesheet_synchro.assets_timesheet_app': [
             'project_timesheet_synchro/static/src/css/**/*',
+            'web/static/src/legacy/legacy_setup.js',
         ],
         'web.assets_qweb': [
             'project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml',

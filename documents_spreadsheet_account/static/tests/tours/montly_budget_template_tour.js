@@ -16,12 +16,12 @@ odoo.define('documents_spreadsheet_account.monthly_budget_template', function (r
             run: 'click',
         },
         {
-            trigger: '.o_menu_header_lvl_1[data-menu-xmlid="documents.Config"]',
+            trigger: 'button[data-menu-xmlid="documents.Config"]',
             content: 'Open Configuration menu',
             run: 'click',
         },
         {
-            trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="documents_spreadsheet.menu_technical_spreadsheet_template"]',
+            trigger: 'li[data-menu-xmlid="documents_spreadsheet.menu_technical_spreadsheet_template"]',
             content: 'Open Configuration menu',
             run: 'click',
         },

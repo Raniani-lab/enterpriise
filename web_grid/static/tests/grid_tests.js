@@ -1136,7 +1136,7 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('grid_anchor stays when navigating', async function (assert) {
+    QUnit.skip('grid_anchor stays when navigating', async function (assert) {
         assert.expect(3);
 
         // create an action manager to test the interactions with the search view

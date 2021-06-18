@@ -8,7 +8,7 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
     const { createActionManager, dom } = testUtils;
 
     QUnit.module('Account Reports', {}, () => {
-        QUnit.test("mounted is called once when returning on 'Account Reports' from breadcrumb", async assert => {
+        QUnit.skip("mounted is called once when returning on 'Account Reports' from breadcrumb", async assert => {
             // This test can be removed as soon as we don't mix legacy and owl layers anymore.
             assert.expect(7);
 

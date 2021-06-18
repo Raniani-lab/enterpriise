@@ -1,20 +1,15 @@
-odoo.define('web_mobile.CrashManager', function (require) {
-"use strict";
+/** @odoo-module */
 
-var CrashManager = require('web.CrashManager').CrashManager;
+import { registry } from "@web/core/registry";
+import mobile from "web_mobile.core";
 
-const mobile = require('web_mobile.core');
-
-CrashManager.include({
-    /**
-     * @override
-     */
-    rpc_error: function (error) {
+function mobileErrorHandler() {
+    return (error) => {
         if (mobile.methods.crashManager) {
             mobile.methods.crashManager(error);
         }
-        return this._super.apply(this, arguments);
-    },
-});
-
-});
+    };
+}
+registry
+    .category("error_handlers")
+    .add("web_mobile.errorHandler", mobileErrorHandler, { sequence: 3 });

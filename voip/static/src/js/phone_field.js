@@ -26,7 +26,6 @@ Phone.include({
      * @param {string} number
      */
     _call(number) {
-        this.displayNotification({ message: _.str.sprintf(_t('Calling %s'), number) });
         this.trigger_up('voip_call', {
             number,
             resId: this.res_id,

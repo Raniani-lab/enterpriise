@@ -245,15 +245,8 @@ var FollowupFormRenderer = FormRenderer.extend({
      * @param {MouseEvent} event
      */
     _onClickCall: function (ev) {
-        var hasVoip = _.find(SystrayMenu.Items, function (SystrayMenuItem) {
-            return SystrayMenuItem.prototype.name === 'voip';
-        });
-        if (!hasVoip) {
-            return;
-        }
         ev.preventDefault();
         var $el = $(ev.currentTarget);
-        this.displayNotification({ message: _t('Calling') + ' ' + $el.data('number') });
         this.trigger_up('voip_call', {
             resModel: $el.data('model'),
             resId: $el.data('id'),

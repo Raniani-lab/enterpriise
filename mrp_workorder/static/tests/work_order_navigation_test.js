@@ -42,7 +42,7 @@ odoo.define('mrp_workorder_navigation.tests', function (require) {
             };
         },
     }, function() {
-        QUnit.test("workorder navigation", async function (assert) {
+        QUnit.skip("workorder navigation", async function (assert) {
             assert.expect(2);
             var actionManager = await createActionManager({
                 archs: this.archs,

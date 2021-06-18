@@ -16,7 +16,6 @@ If you use the external timesheet application, this module alows you to synchron
     'depends': ['hr_timesheet'],
     'data': [
         'views/templates.xml',
-        'views/timesheet_views.xml',
     ],
     'installable': True,
     'auto_install': True,
@@ -29,16 +28,9 @@ If you use the external timesheet application, this module alows you to synchron
         'web.assets_tests': [
             'project_timesheet_synchro/static/tests/tours/**/*',
         ],
-        'web.assets_backend': [
-            'project_timesheet_synchro/static/src/js/timesheet_app_backend.js',
-            'project_timesheet_synchro/static/src/scss/project_timesheet_backend.scss',
-        ],
         'project_timesheet_synchro.assets_timesheet_app': [
             'project_timesheet_synchro/static/src/css/**/*',
             'web/static/src/legacy/legacy_setup.js',
-        ],
-        'web.assets_qweb': [
-            'project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml',
         ],
     }
 }

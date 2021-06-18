@@ -94,13 +94,6 @@ class ReportAccountAgedPartner(models.AbstractModel):
     def _get_sql(self):
         options = self.env.context['report_options']
         query = ("""
-            WITH last_rates AS (
-                SELECT DISTINCT ON(rate.currency_id, rate.company_id)
-                    rate.currency_id, rate.company_id, rate.rate
-                FROM res_currency_rate rate
-                WHERE rate.name <= %(date)s AND rate.rate > 0
-                ORDER BY rate.currency_id, rate.company_id, rate.name DESC
-            )
             SELECT
                 {move_line_fields},
                 account_move_line.amount_currency as amount_currency,
@@ -117,18 +110,9 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 account.code || ' ' || account.name AS account_name,
                 account.code AS account_code,""" + ','.join([("""
                 CASE WHEN period_table.period_index = {i}
-                THEN %(sign)s *
-                    CASE WHEN (
-                        account_move_line.company_currency_id != account_move_line.currency_id
-                        AND (bool_and(part_debit.debit_currency_id = account_move_line.currency_id) OR COUNT(part_debit) = 0)
-                        AND (bool_and(part_credit.credit_currency_id = account_move_line.currency_id) OR COUNT(part_credit) = 0)
-                    )
-                    THEN ROUND((
-                        account_move_line.amount_currency - COALESCE(SUM(part_debit.debit_amount_currency), 0) + COALESCE(SUM(part_credit.credit_amount_currency), 0)
-                    ) * COALESCE(company_currency.rate, 1) / COALESCE(used_currency.rate, 1), currency_table.precision)
-                    ELSE ROUND((
-                        account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0)
-                    ) * currency_table.rate, currency_table.precision) END
+                THEN %(sign)s * ROUND((
+                    account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0)
+                ) * currency_table.rate, currency_table.precision)
                 ELSE 0 END AS period{i}""").format(i=i) for i in range(6)]) + """
             FROM account_move_line
             JOIN account_move move ON account_move_line.move_id = move.id
@@ -142,19 +126,15 @@ class ReportAccountAgedPartner(models.AbstractModel):
             )
             JOIN {currency_table} ON currency_table.company_id = account_move_line.company_id
             LEFT JOIN LATERAL (
-                SELECT part.amount, part.debit_move_id, part.debit_amount_currency, part.debit_currency_id
+                SELECT part.amount, part.debit_move_id
                 FROM account_partial_reconcile part
                 WHERE part.max_date <= %(date)s
             ) part_debit ON part_debit.debit_move_id = account_move_line.id
             LEFT JOIN LATERAL (
-                SELECT part.amount, part.credit_move_id, part.credit_amount_currency, part.credit_currency_id
+                SELECT part.amount, part.credit_move_id
                 FROM account_partial_reconcile part
                 WHERE part.max_date <= %(date)s
             ) part_credit ON part_credit.credit_move_id = account_move_line.id
-            LEFT JOIN last_rates AS company_currency ON company_currency.currency_id = account_move_line.company_currency_id
-                AND company_currency.company_id = account_move_line.company_id
-            LEFT JOIN last_rates AS used_currency ON used_currency.currency_id = account_move_line.currency_id
-                AND used_currency.company_id = account_move_line.company_id
             JOIN {period_table} ON (
                 period_table.date_start IS NULL
                 OR COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
@@ -166,14 +146,8 @@ class ReportAccountAgedPartner(models.AbstractModel):
             WHERE account.internal_type = %(account_type)s
             AND account.exclude_from_aged_reports IS NOT TRUE
             GROUP BY account_move_line.id, partner.id, trust_property.id, journal.id, move.id, account.id,
-                     period_table.period_index, currency_table.rate, currency_table.precision, company_currency.rate, used_currency.rate
-            HAVING CASE WHEN (
-                account_move_line.company_currency_id != account_move_line.currency_id
-                AND (bool_and(part_debit.debit_currency_id = account_move_line.currency_id) OR COUNT(part_debit) = 0)
-                AND (bool_and(part_credit.credit_currency_id = account_move_line.currency_id) OR COUNT(part_credit) = 0)
-            )
-            THEN ROUND(account_move_line.amount_currency - COALESCE(SUM(part_debit.debit_amount_currency), 0) + COALESCE(SUM(part_credit.credit_amount_currency), 0), currency_table.precision) != 0
-            ELSE ROUND(account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0), currency_table.precision) != 0 END
+                     period_table.period_index, currency_table.rate, currency_table.precision
+            HAVING ROUND(account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0), currency_table.precision) != 0
         """).format(
             move_line_fields=self._get_move_line_fields('account_move_line'),
             currency_table=self.env['res.currency']._get_query_currency_table(options),

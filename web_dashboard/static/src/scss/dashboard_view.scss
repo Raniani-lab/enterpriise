@@ -93,9 +93,6 @@
             &.border-danger, &.border-success {
                 border-left-width: $border-separate-width;
             }
-
-            @include text-emphasis-variant(".o_variation.o_positive", $success);
-            @include text-emphasis-variant(".o_variation.o_negative", $danger);
         }
 
         .o_horizontal_separator {

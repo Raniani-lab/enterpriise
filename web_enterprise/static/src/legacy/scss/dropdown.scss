@@ -1,0 +1,26 @@
+// = Enterprise dropdown customizations
+// ----------------------------------------------------------------------------
+.o_dropdown {
+    &.show .o_dropdown_toggler.btn-secondary,
+    .o_dropdown_toggler.o_dropdown_active.btn-secondary {
+        @include plain-hover-focus() {
+            position: relative;
+            z-index: $zindex-dropdown + 1;
+            border-color: $dropdown-border-color;
+            border-bottom-color: $dropdown-bg;
+            background-color: $dropdown-bg;
+            box-shadow: none;
+            color: $dropdown-link-active-color;
+        }
+    }
+
+    .o_dropdown_menu {
+        margin-top: -1px;
+    }
+}
+
+// = Enterprise jQueryUI dropdown
+// ----------------------------------------------------------------------------
+.ui-widget.ui-autocomplete {
+    border-top: 0;
+}

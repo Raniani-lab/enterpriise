@@ -1,14 +1,16 @@
 /** @odoo-module alias=documents_spreadsheet.PivotTemplateTests */
 
-import { nextTick, dom, fields, createActionManager, createView } from "web.test_utils";
+import { nextTick, dom, fields, createView } from "web.test_utils";
 import pivotUtils from "documents_spreadsheet.pivot_utils";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
 import CommandResult from "documents_spreadsheet.CommandResult";
 import DocumentsListView from "documents_spreadsheet.ListView";
+import { registry } from "@web/core/registry";
 import TemplateListView from "documents_spreadsheet.TemplateListView";
 import { afterEach, beforeEach } from "@mail/utils/test_utils";
 import { createDocumentsView } from "documents.test_utils";
 import spreadsheet from "documents_spreadsheet.spreadsheet_extended";
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
 
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel"
 import {
@@ -17,19 +19,28 @@ import {
     getCellContent,
     getCellFormula
 } from "./spreadsheet_test_utils";
+import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { ClientActionAdapter } from "@web/legacy/action_adapters";
+import { actionService } from "@web/webclient/actions/action_service";
 
 const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
 
+let serverData;
+
 async function convertFormula(config) {
-    const { actionManager, model: m1 } = await createSpreadsheetFromPivot({
+  const { spreadsheetAction, model: m1 } = await createSpreadsheetFromPivot({
+    pivotView: {
         model: "partner",
         data: config.data,
         arch: config.arch,
-    });
-    const spreadsheetAction = actionManager.getCurrentController().widget;
+    },
+    webClient: config.webClient,
+});
+
     const rpc = spreadsheetAction._rpc.bind(spreadsheetAction);
     //reload the model in headless mode, with the conversion plugin
     const model = new Model(m1.exportData(), {
@@ -50,7 +61,6 @@ async function convertFormula(config) {
     );
     setCellContent(model, "A1", `=${config.formula}`);
     model.dispatch(config.convert);
-    actionManager.destroy();
     // Remove the equal sign
     return getCellContent(model, "A1").slice(1);
 }
@@ -165,6 +175,7 @@ module(
                     fields: {
                         name: { string: "Name", type: "char" },
                         data: { string: "Data", type: "binary" },
+                        thumbnail: { string: "Thumbnail", type: "binary" },
                     },
                     records: [
                         { id: 1, name: "Template 1", data: btoa("{}") },
@@ -231,6 +242,7 @@ module(
                     ],
                 },
             });
+            serverData = { models: this.data };
         },
         afterEach() {
             afterEach(this);
@@ -240,8 +252,7 @@ module(
         module("Template");
         test("Dispatch template command is not allowed if cache is not loaded", async function (assert) {
             assert.expect(2);
-            const { actionManager, model: m1 } = await createSpreadsheetFromPivot();
-            const spreadsheetAction = actionManager.getCurrentController().widget;
+            const { model: m1, spreadsheetAction } = await createSpreadsheetFromPivot();
             const rpc = spreadsheetAction._rpc.bind(spreadsheetAction);
             //reload the model in headless mode, with the conversion plugin
             const model = new Model(m1.exportData(), {
@@ -254,7 +265,6 @@ module(
             });
             assert.equal(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE"), CommandResult.PivotCacheNotLoaded);
             assert.equal(model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE"), CommandResult.PivotCacheNotLoaded);
-            actionManager.destroy();
         });
 
         test("Don't change formula if not many2one", async function (assert) {
@@ -284,8 +294,13 @@ module(
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-
+                Object.assign(serverData, {views: arch});
+                const webClient = await createWebClient({
+                    serverData,
+                    legacyParams: { withLegacyMockServer: true },
+                });
                 let result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id","37","bar","110")`,
@@ -297,6 +312,7 @@ module(
                 );
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT.HEADER("1","product_id","37","bar","110")`,
@@ -308,6 +324,7 @@ module(
                 );
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id","41","bar","110")`,
@@ -319,6 +336,7 @@ module(
                 );
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
@@ -341,8 +359,13 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-
+            Object.assign(serverData, {views: arch});
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
+            });
             let result = await convertFormula({
+                webClient,
                 data: this.data,
                 arch,
                 formula: `PIVOT("1","probability","product_id",37,"bar","110")`,
@@ -353,6 +376,7 @@ module(
                 `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
             );
             result = await convertFormula({
+                webClient,
                 data: this.data,
                 arch,
                 formula: `PIVOT.HEADER("1","product_id",41,"bar","110")`,
@@ -374,8 +398,14 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
+                Object.assign(serverData, {views: arch});
+                    const webClient = await createWebClient({
+                    serverData,
+                    legacyParams: { withLegacyMockServer: true },
+                });
 
                 let result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id","37","bar","110")`,
@@ -387,6 +417,7 @@ module(
                 );
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id","41","bar","110")`,
@@ -398,6 +429,7 @@ module(
                 );
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id","41","bar","110")`,
@@ -409,6 +441,7 @@ module(
                 );
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
@@ -431,8 +464,13 @@ module(
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-
+                Object.assign(serverData, {views: arch});
+                const webClient = await createWebClient({
+                    serverData,
+                    legacyParams: { withLegacyMockServer: true },
+                });
                 let result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 1),"bar","110")`,
@@ -441,6 +479,7 @@ module(
                 assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
@@ -449,6 +488,7 @@ module(
                 assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
@@ -457,6 +497,7 @@ module(
                 assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
 
                 result = await convertFormula({
+                    webClient,
                     data: this.data,
                     arch,
                     formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
@@ -470,36 +511,39 @@ module(
             assert
         ) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
-                mockRPC: async function (route, args) {
-                    if (route.includes("join_spreadsheet_session")) {
-                        return Promise.resolve({ raw: "{}", revisions: [] });
-                    }
-                    if (route.includes("dispatch_spreadsheet_message")) {
-                        return Promise.resolve();
-                    }
-                    if (args.method === "search_read" && args.model === "ir.model") {
-                        return [{ name: "partner" }];
-                    }
-                    if (
-                        args.method === "read" &&
-                        args.model === "spreadsheet.template"
-                    ) {
-                        return [{ data: btoa(JSON.stringify(model.exportData())) }];
-                    }
-                    return this._super.apply(this, arguments);
+            const { model, env } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    mockRPC: async function (route, args) {
+                        if (route.includes("join_spreadsheet_session")) {
+                            return Promise.resolve({ raw: "{}", revisions: [] });
+                        }
+                        if (route.includes("dispatch_spreadsheet_message")) {
+                            return Promise.resolve();
+                        }
+                        if (args.method === "search_read" && args.model === "ir.model") {
+                            return [{ name: "partner" }];
+                        }
+                        if (
+                            args.method === "read" &&
+                            args.model === "spreadsheet.template"
+                        ) {
+                            return [{ data: btoa(JSON.stringify(model.exportData())) }];
+                        }
+                        if (this) {
+                            return this._super.apply(this, arguments);
+                        }
+                    },
                 },
             });
             const { pivots } = model.exportData();
-            const spreadsheetAction = actionManager.getCurrentController().widget;
             await Promise.all(Object.values(pivots).map(async(pivot) => {
                 await model.getters.getAsyncCache(pivot.id);
             }));
@@ -509,7 +553,6 @@ module(
                 "this is a fake id"
             );
             assert.notOk(data.sheets[0].cells.A1);
-            actionManager.destroy();
         });
 
         test(
@@ -522,8 +565,13 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-
+                Object.assign(serverData, {views: arch});
+                const webClient = await createWebClient({
+                    serverData,
+                    legacyParams: { withLegacyMockServer: true },
+                });
                 let result = await convertFormula({
+                    webClient,
                     formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
                     data: this.data,
                     convert: "CONVERT_PIVOT_FROM_TEMPLATE",
@@ -532,6 +580,7 @@ module(
                 assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
 
                 result = await convertFormula({
+                    webClient,
                     formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
                     data: this.data,
                     convert: "CONVERT_PIVOT_FROM_TEMPLATE",
@@ -540,6 +589,7 @@ module(
                 assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
 
                 result = await convertFormula({
+                    webClient,
                     formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
                     data: this.data,
                     convert: "CONVERT_PIVOT_FROM_TEMPLATE",
@@ -548,6 +598,7 @@ module(
                 assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
 
                 result = await convertFormula({
+                    webClient,
                     formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
                     data: this.data,
                     convert: "CONVERT_PIVOT_FROM_TEMPLATE",
@@ -722,42 +773,54 @@ module(
         });
 
         test("Save as template menu", async function (assert) {
-            assert.expect(7);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
-                intercepts: {
-                    do_action: function (ev) {
-                        assert.step("create_template_wizard");
-                        assert.equal(
-                            ev.data.action,
-                            "documents_spreadsheet.save_spreadsheet_template_action"
-                        );
-                        const context = ev.data.options.additional_context;
-                        const data = JSON.parse(atob(context.default_data));
-                        const name = context.default_template_name;
-                        const cells = data.sheets[0].cells;
-                        assert.equal(
-                            name,
-                            "pivot spreadsheet - Template",
-                            "It should be named after the spreadsheet"
-                        );
-                        assert.ok(context.default_thumbnail);
-                        assert.equal(
-                            cells.A3.formula.text,
-                            `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1))`
-                        );
-                        assert.equal(
-                            cells.B3.formula.text,
-                            `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
-                        );
-                    },
+            assert.expect(6);
+            const serviceRegistry = registry.category("services");
+            serviceRegistry.add("actionMain", actionService);
+            const fakeActionService = {
+                dependencies: ["actionMain"],
+                start(env, { actionMain }) {
+                    return Object.assign({}, actionMain, {
+                        doAction: (actionRequest, options = {}) => {
+                            if (actionRequest === "documents_spreadsheet.save_spreadsheet_template_action") {
+                                assert.step("create_template_wizard");
+
+                                const context = options.additionalContext;
+                                const data = JSON.parse(atob(context.default_data));
+                                const name = context.default_template_name;
+                                const cells = data.sheets[0].cells;
+                                assert.equal(
+                                    name,
+                                    "pivot spreadsheet - Template",
+                                    "It should be named after the spreadsheet"
+                                );
+                                assert.ok(context.default_thumbnail);
+                                assert.equal(
+                                    cells.A3.formula.text,
+                                    `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1))`
+                                );
+                                assert.equal(
+                                    cells.B3.formula.text,
+                                    `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
+                                );
+                                return Promise.resolve(true);
+                            }
+                            return actionMain.doAction(actionRequest, options);
+                        },
+                    });
+                },
+            };
+            serviceRegistry.add("action", fakeActionService);
+
+            const { env } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
                 },
             });
             const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
@@ -765,20 +828,21 @@ module(
             saveAsTemplate.action(env);
             await nextTick();
             assert.verifySteps(["create_template_wizard"]);
-            actionManager.destroy();
         });
 
         test("Autofill template position", async function (assert) {
             assert.expect(4);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                },
             });
             setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`)
 
@@ -824,21 +888,21 @@ module(
                 getCellFormula(model, "A2"),
                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4443))`
             );
-
-            actionManager.destroy();
         });
 
         test("Autofill template position: =-PIVOT(...)", async function (assert) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                }
             });
             setCellContent(model, "B2", `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`);
 
@@ -853,21 +917,21 @@ module(
                 getCellFormula(model, "B3"),
                 `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 10000),"bar",PIVOT.POSITION("1","bar", 4444))`
             );
-
-            actionManager.destroy();
         });
 
         test("Autofill template position: 2 PIVOT in one formula", async function (assert) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                },
             });
             setCellContent(model, "B2",
                 `=SUM(
@@ -889,21 +953,21 @@ module(
                     PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 667),"bar",PIVOT.POSITION("1","bar", 4444))
                 )`.replace(/\n/g, "")
             );
-
-            actionManager.destroy();
         });
 
         test("Autofill template position: PIVOT.POSITION not in PIVOT", async function (assert) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                },
             });
             setCellContent(model, "B2", `=PIVOT.POSITION("1","foo", 3333)`);
             function selectB2(model) {
@@ -922,20 +986,21 @@ module(
                 `=PIVOT.POSITION("1","foo", 3333)`,
                 "Should have copied the origin value"
             );
-            actionManager.destroy();
         });
 
         test("Autofill template position: with invalid pivot id", async function (assert) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                },
             });
             setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`);
             function selectB2(model) {
@@ -954,21 +1019,22 @@ module(
                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`,
                 "Should have copied the origin value"
             );
-            actionManager.destroy();
         });
 
         test("Autofill template position: increment last group", async function (assert) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="foo" type="row"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="foo" type="row"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                },
             });
             setCellContent(model, "B2", `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`);
             function selectB2(model) {
@@ -987,21 +1053,22 @@ module(
                 `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 10000),"bar",PIVOT.POSITION("1","bar", 4444))`,
                 "It should have incremented the last row group position"
             );
-            actionManager.destroy();
         });
 
         test("Autofill template position: does not increment last field if not many2one", async function (assert) {
             assert.expect(1);
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="foo" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="foo" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                },
             });
             // last row field (foo) is not a position
             setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`);
@@ -1021,7 +1088,6 @@ module(
                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`,
                 "It should not have changed the formula"
             );
-            actionManager.destroy();
         });
 
 
@@ -1164,19 +1230,67 @@ module(
         ) {
             assert.expect(5);
             const data = Object.assign({}, this.data);
-            // 1. create a spreadsheet with a pivot
-            const { actionManager, model, env } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
+
+            // 0. Create a spreadsheet from the template
+            // @legacy: The kanban is created before the call to "createSpreadsheetFromPivot"
+            // to allow the execution environment of this test to be created and then cleaned up
+            // in the right order. For this exact same reason, the mockRPC that the kanban will actually use
+            // after the call to "createSpreadsheetFromPivot" is defined in "createSpreadsheetFromPivot".
+            // The code responsible for this is located at @web/legacy/utils:mapLegacyEnvToWowlEnv
+            const kanban = await createDocumentsView({
+                View: DocumentsKanbanView,
+                model: "documents.document",
+                data,
                 arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
+                    <kanban><templates><t t-name="kanban-box">
+                        <field name="name"/>
+                    </t></templates></kanban>
+                `,
+                archs: {
+                    "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
+                },
+            });
+            registerCleanup(() => kanban.destroy());
+
+            // 1. create a spreadsheet with a pivot
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    mockRPC: function (route, args) {
+                        if (args.method === "create" && args.model === "documents.document") {
+                            const data = JSON.parse(args.args[0].raw);
+                            assert.step("create_sheet");
+                            assert.equal(
+                                data.sheets[0].cells.F15.content,
+                                `Coucou petite perruche`,
+                                "Row 15 should have been deleted"
+                            );
+                            assert.equal(
+                                data.sheets[0].cells.G15,
+                                undefined,
+                                "(previous) Row 15 should have been deleted"
+                            );
+                            assert.notOk(
+                                data.sheets[0].cells.F1,
+                                "The invalid F1 cell should be empty"
+                            );
+                        }
+                        if (args.method === "search_read" && args.model === "ir.model") {
+                            return Promise.resolve([{ name: "partner" }]);
+                        }
+                        if (!this) return;
+                        return this._super.apply(this, arguments);
+                    },
+                },
             });
             const { pivots } = model.exportData();
-            const spreadsheetAction = actionManager.getCurrentController().widget;
             await Promise.all(Object.values(pivots).map(async(pivot) => {
                 model.getters.getAsyncCache(pivot.id);
             }));
@@ -1194,46 +1308,6 @@ module(
                 name: "template",
                 data: btoa(JSON.stringify(modelData)),
             });
-            actionManager.destroy();
-
-            // 3. Create a spreadsheet from the template
-            const kanban = await createDocumentsView({
-                View: DocumentsKanbanView,
-                model: "documents.document",
-                data,
-                arch: `
-                    <kanban><templates><t t-name="kanban-box">
-                        <field name="name"/>
-                    </t></templates></kanban>
-                `,
-                archs: {
-                    "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-                },
-                mockRPC: function (route, args) {
-                    if (args.method === "create" && args.model === "documents.document") {
-                        const data = JSON.parse(args.args[0].raw);
-                        assert.step("create_sheet");
-                        assert.equal(
-                            data.sheets[0].cells.F15.content,
-                            `Coucou petite perruche`,
-                            "Row 15 should have been deleted"
-                        );
-                        assert.equal(
-                            data.sheets[0].cells.G15,
-                            undefined,
-                            "(previous) Row 15 should have been deleted"
-                        );
-                        assert.notOk(
-                            data.sheets[0].cells.F1,
-                            "The invalid F1 cell should be empty"
-                        );
-                    }
-                    if (args.method === "search_read" && args.model === "ir.model") {
-                        return Promise.resolve([{ name: "partner" }]);
-                    }
-                    return this._super.apply(this, arguments);
-                },
-            });
 
             await dom.click(".o_documents_kanban_spreadsheet");
             const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
@@ -1241,13 +1315,46 @@ module(
             await dom.triggerEvent(dialog.querySelectorAll(".o-template img")[3], "focus");
             await dom.click(dialog.querySelector(".o-spreadsheet-create"));
             assert.verifySteps(["create_sheet"]);
-            kanban.destroy();
         });
 
         test("Name template with spreadsheet name", async function (assert) {
             assert.expect(3);
-            const actionManager = await createActionManager({
-                data: this.data,
+            const serviceRegistry = registry.category("services");
+            serviceRegistry.add("actionMain", actionService);
+            const fakeActionService = {
+                dependencies: ["actionMain"],
+                start(env, { actionMain }) {
+                    return Object.assign({}, actionMain, {
+                        doAction: (actionRequest, options = {}) => {
+                            if (actionRequest === "documents_spreadsheet.save_spreadsheet_template_action") {
+                                assert.step("create_template_wizard");
+                                const name = options.additionalContext.default_template_name;
+                                assert.equal(
+                                    name,
+                                    "My spreadsheet - Template",
+                                    "It should be named after the spreadsheet"
+                                );
+                                return Promise.resolve(true);
+                            }
+                            return actionMain.doAction(actionRequest, options);
+                        },
+                    });
+                },
+            };
+            serviceRegistry.add("action", fakeActionService, { force: true });
+
+            let spreadSheetComponent;
+            patchWithCleanup(ClientActionAdapter.prototype, {
+                mounted() {
+                  this._super();
+                  spreadSheetComponent = this.widget.spreadsheetComponent.componentRef.comp
+                  ;
+                }
+            });
+
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
                 mockRPC: function (route, args) {
                     if (args.method === "create" && args.model === "spreadsheet.template") {
                         assert.step("create_template");
@@ -1263,21 +1370,9 @@ module(
                     if (route.includes("dispatch_spreadsheet_message")) {
                         return Promise.resolve();
                     }
-                    return this._super.apply(this, arguments);
-                },
-                intercepts: {
-                    do_action: function (ev) {
-                        assert.step("create_template_wizard");
-                        const name = ev.data.options.additional_context.default_template_name;
-                        assert.equal(
-                            name,
-                            "My spreadsheet - Template",
-                            "It should be named after the spreadsheet"
-                        );
-                    },
                 },
             });
-            await actionManager.doAction({
+            await doAction(webClient, {
                 type: "ir.actions.client",
                 tag: "action_open_spreadsheet",
                 params: {
@@ -1285,18 +1380,15 @@ module(
                     transportService: new MockSpreadsheetCollaborativeChannel(),
                 },
             });
-            const input = actionManager.el.querySelector(".breadcrumb-item input");
+            const input = $(webClient.el).find(".breadcrumb-item input");
             await fields.editInput(input, "My spreadsheet");
             await dom.triggerEvent(input, "change");
-            const spreadSheetComponent = actionManager.getCurrentController().widget
-                .spreadsheetComponent.componentRef.comp;
             const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
             const saveAsTemplate = file.children.find((item) => item.id === "save_as_template");
             saveAsTemplate.action(spreadSheetComponent.env);
             await nextTick();
 
             assert.verifySteps(["create_template_wizard"]);
-            actionManager.destroy();
         });
 
         test("Can fetch next templates", async function (assert) {
@@ -1502,21 +1594,24 @@ module(
 
         test("open template client action without collaborative indicators", async function (assert) {
             assert.expect(2);
-            const actionManager = await createActionManager({ data: this.data });
-            await actionManager.doAction({
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
+            });
+            await doAction(webClient, {
                 type: "ir.actions.client",
                 tag: "action_open_template",
                 params: { active_id: 1 },
             });
-            assert.containsNone(actionManager, ".o_spreadsheet_sync_status");
-            assert.containsNone(actionManager, ".o_spreadsheet_number_users");
-            actionManager.destroy();
+            assert.containsNone(webClient, ".o_spreadsheet_sync_status");
+            assert.containsNone(webClient, ".o_spreadsheet_number_users");
         });
 
         test("collaboration communication is disabled", async function(assert) {
             assert.expect(1);
-            const actionManager = await createActionManager({
-                data: this.data,
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
                 mockRPC: async function (route, args) {
                     if (route.includes("join_spreadsheet_session")) {
                         assert.ok(false, "it should not join a collaborative session");
@@ -1524,16 +1619,14 @@ module(
                     if (route.includes("dispatch_spreadsheet_message")) {
                         assert.ok(false, "it should not dispatch collaborative revisions");
                     }
-                    return this._super(...arguments);
                 },
             });
-            await actionManager.doAction({
+            await doAction(webClient, {
                 type: "ir.actions.client",
                 tag: "action_open_template",
                 params: { active_id: 1 },
             });
             assert.ok(true);
-            actionManager.destroy();
         });
     }
 );

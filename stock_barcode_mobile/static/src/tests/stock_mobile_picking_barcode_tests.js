@@ -1,10 +1,8 @@
 odoo.define('stock_mobile_barcode.stock_picking_barcode_tests', function (require) {
 "use strict";
 
-var testUtils = require('web.test_utils');
 const mobile = require('web_mobile.core');
-
-var createActionManager = testUtils.createActionManager;
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
 QUnit.module('stock_mobile_barcode', {}, function () {
 
@@ -45,12 +43,12 @@ QUnit.test('scan barcode button in mobile device', async function (assert) {
     assert.expect(1);
     this.clientData.currentState[0].group_stock_multi_locations = false;
     mobile.methods.scanBarcode = function () {};
-    var actionManager = await createActionManager({
+    const webClient = await createWebClient({
         mockRPC: this.mockRPC,
     });
-    await actionManager.doAction(this.clientData.action);
-    assert.containsOnce(actionManager, '.o_stock_mobile_barcode');
-    actionManager.destroy();
+    await doAction(webClient, this.clientData.action);
+    assert.containsOnce(webClient, '.o_stock_mobile_barcode');
+    webClient.destroy();
 });
 
 });

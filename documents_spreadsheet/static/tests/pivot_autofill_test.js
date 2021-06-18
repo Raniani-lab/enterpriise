@@ -13,7 +13,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
     test("Autofill pivot values", async function (assert) {
         assert.expect(28);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot();
+        const { model } = await createSpreadsheetFromPivot();
         // From value to value
         assert.strictEqual(
             getAutofillValue(model, "C3", { direction: "bottom", steps: 1 }),
@@ -113,19 +113,20 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getAutofillValue(model, "A5", { direction: "right", steps: 5 }),
             getCellFormula(model, "F5")
         );
-        actionManager.destroy();
     });
 
     test("Autofill pivot values with date in rows", async function (assert) {
         assert.expect(5);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="date" interval="month" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="date" interval="month" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
@@ -147,19 +148,20 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getAutofillValue(model, "B5", { direction: "top", steps: 1 }),
             getCellFormula(model, "B4").replace("10/2016", "11/2016")
         );
-        actionManager.destroy();
     });
 
     test("Autofill pivot values with date in cols", async function (assert) {
         assert.expect(3);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="row"/>
-                <field name="date" interval="day" type="col"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="row"/>
+                    <field name="date" interval="day" type="col"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         assert.strictEqual(
             getAutofillValue(model, "B1", { direction: "right", steps: 1 }),
@@ -173,73 +175,77 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getAutofillValue(model, "B3", { direction: "right", steps: 1 }),
             getCellFormula(model, "B3").replace("20/01/2016", "21/01/2016")
         );
-        actionManager.destroy();
     });
 
     test("Autofill pivot values with date (day)", async function (assert) {
         assert.expect(1);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="date" interval="day" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="date" interval="day" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
             getCellFormula(model, "A3").replace("20/01/2016", "21/01/2016")
         );
-        actionManager.destroy();
     });
 
     test("Autofill pivot values with date (quarter)", async function (assert) {
         assert.expect(1);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="date" interval="quarter" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="date" interval="quarter" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
             getCellFormula(model, "A3").replace("2/2016", "3/2016")
         );
-        actionManager.destroy();
     });
 
     test("Autofill pivot values with date (year)", async function (assert) {
         assert.expect(1);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="date" interval="year" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="date" interval="year" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
             getCellFormula(model, "A3").replace("2016", "2017")
         );
-        actionManager.destroy();
     });
 
     test("Tooltip of pivot formulas", async function (assert) {
         assert.expect(6);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="date" interval="year" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="date" interval="year" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         await Promise.all(
             Object.values(model.getters.getPivots()).map((pivot) =>
@@ -273,20 +279,21 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             "title": "Measure",
             "value": "Probability"
         }]);
-        actionManager.destroy();
     });
 
     test("Tooltip of pivot formulas with 2 measures", async function (assert) {
         assert.expect(3);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="name" type="col"/>
-                <field name="date" interval="year" type="row"/>
-                <field name="probability" type="measure"/>
-                <field name="foo" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="name" type="col"/>
+                    <field name="date" interval="year" type="row"/>
+                    <field name="probability" type="measure"/>
+                    <field name="foo" type="measure"/>
+                </pivot>`,
+            }
         });
         await Promise.all(
             Object.values(model.getters.getPivots()).map((pivot) =>
@@ -308,20 +315,21 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             "title": "Measure",
             "value": "Foo"
         }]);
-        actionManager.destroy();
     });
 
     test("Tooltip of empty pivot formula is empty", async function (assert) {
         assert.expect(1);
 
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="name" type="col"/>
-                <field name="date" interval="year" type="row"/>
-                <field name="probability" type="measure"/>
-                <field name="foo" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="name" type="col"/>
+                    <field name="date" interval="year" type="row"/>
+                    <field name="probability" type="measure"/>
+                    <field name="foo" type="measure"/>
+                </pivot>`,
+            }
         });
         await Promise.all(
             Object.values(model.getters.getPivots()).map((pivot) =>
@@ -331,18 +339,19 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
         model.dispatch("SELECT_CELL", { col: 0, row: 2 });
         model.dispatch("AUTOFILL_SELECT", { col: 10, row: 10 });
         assert.equal(model.getters.getAutofillTooltip(), undefined);
-        actionManager.destroy();
     });
 
     test("Autofill content which contains pivots but which is not a pivot", async function (assert) {
         assert.expect(2);
-        const { actionManager, model } = await createSpreadsheetFromPivot({
-            arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="date" interval="year" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
+        const { model } = await createSpreadsheetFromPivot({
+            pivotView: {
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="date" interval="year" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            }
         });
         const a3 = getCellFormula(model, "A3").replace("=", "");
         const content = `=${a3} + ${a3}`;
@@ -355,6 +364,5 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getAutofillValue(model, "F6", { direction: "right", steps: 1 }),
             content
         );
-        actionManager.destroy();
     });
 });

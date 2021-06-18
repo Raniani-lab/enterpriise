@@ -4,6 +4,7 @@ odoo.define('stock_barcode.inventory_client_action', function (require) {
 var core = require('web.core');
 var ClientAction = require('stock_barcode.ClientAction');
 var ViewsWidget = require('stock_barcode.ViewsWidget');
+const session = require('web.session');
 
 var _t = core._t;
 
@@ -69,7 +70,7 @@ var InventoryClientAction = ClientAction.extend({
         values.default_inventory_quantity = 1;
         values.active_model = 'stock.quant';
         values.default_id = false;
-        values.default_user_id = this.actionManager.userContext.uid;
+        values.default_user_id = session.user_context.uid;
         values.default_inventory_date = new Date().toJSON();
         return values;
     },
@@ -170,7 +171,7 @@ var InventoryClientAction = ClientAction.extend({
             product_uom_id: params.product.uom_id[0],
             quantity: 0,
             inventory_quantity: params.qty_done,
-            user_id: this.actionManager.userContext.uid,
+            user_id: session.user_context.uid,
         });
         return newLine;
     },

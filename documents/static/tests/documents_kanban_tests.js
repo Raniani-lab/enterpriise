@@ -3027,7 +3027,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should have 3 spans for color ball with grey color by default");
 
         assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
-            "rgb(102, 102, 102)", "should have the right color");
+            "rgb(68, 75, 90)", "should have the right color");
 
         kanban.destroy();
     });

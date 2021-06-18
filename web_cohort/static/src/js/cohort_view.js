@@ -93,8 +93,12 @@ var CohortView = AbstractView.extend({
                 return [false, viewType];
             }
             var contextID = viewType === 'list' ? action.context.list_view_id : action.context.form_view_id;
-            var result = _.findWhere(action.views, {type: viewType});
-            return [contextID || (result ? result.viewID : false), viewType];
+            if (contextID) {
+                return [contextID, viewType];
+            } else {
+                const result = action._views ? action._views.find((v) => v[1] === viewType) : undefined;
+                return result || [false, viewType];
+            }
         }
     },
 

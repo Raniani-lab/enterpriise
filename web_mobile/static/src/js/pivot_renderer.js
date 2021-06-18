@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import config from 'web.config';
-import PivotRenderer from '@web/js/views/pivot/pivot_renderer';
-import { PivotGroupByMenu } from '@web/js/views/pivot/pivot_renderer';
-import { patch } from 'web.utils';
+import config from "web.config";
+import PivotRenderer from "@web/legacy/js/views/pivot/pivot_renderer";
+import { PivotGroupByMenu } from "@web/legacy/js/views/pivot/pivot_renderer";
+import { patch } from "web.utils";
 
 if (config.device.isMobile) {
     patch(PivotRenderer.prototype, "pivot_mobile", {
@@ -11,7 +11,7 @@ if (config.device.isMobile) {
          * Do not compute the tooltip on mobile
          * @override
          */
-        _updateTooltip() { },
+        _updateTooltip() {},
 
         /**
          * @override
@@ -26,7 +26,7 @@ if (config.device.isMobile) {
          * @override
          */
         _onClickMenuGroupBy(fieldName, interval, ev) {
-            if (!ev.currentTarget.classList.contains('o_pivot_field_selection')) {
+            if (!ev.currentTarget.classList.contains("o_pivot_field_selection")) {
                 this._super(...arguments);
             } else {
                 ev.stopPropagation();

@@ -7,12 +7,6 @@
         <t t-call-assets="web_studio.studio_assets"/>
     </template>
 
-    <template id="webclient_bootstrap" inherit_id="web.webclient_bootstrap">
-        <xpath expr="//t[@t-call-assets='web.assets_backend'][@t-css='false']" position="after">
-            <t t-call-assets="web_studio.assets" groups="base.group_system"/>
-        </xpath>
-    </template>
-
     <!-- Reports -->
     <template id="web_studio.report_layout" inherit_id="web.report_layout">
         <xpath expr="//head" position="inside">
@@ -20,14 +14,6 @@
         </xpath>
     </template>
 
-    <!-- Tests -->
-    <template id="web_studio.qunit_suite" inherit_id="web.qunit_suite">
-        <xpath expr="//t[@t-call-assets='web.qunit_suite_tests'][@t-js='false']" position="before">
-            <t t-call-assets="web_studio.assets"/>
-            <t t-call-assets="web_studio.studio_assets"/>
-        </xpath>
-    </template>
-
-    </data>
+</data>
 
 </odoo>

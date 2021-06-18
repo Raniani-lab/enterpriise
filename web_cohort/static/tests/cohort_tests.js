@@ -6,8 +6,11 @@ var testUtils = require('web.test_utils');
 
 const cpHelpers = testUtils.controlPanel;
 var createView = testUtils.createView;
-var createActionManager = testUtils.createActionManager;
 var patchDate = testUtils.mock.patchDate;
+
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+let serverData;
+const { nextTick } = require('@web/../tests/helpers/utils');
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -63,6 +66,7 @@ QUnit.module('Views', {
                 ]
             },
         };
+        serverData = {models: this.data};
     }
 }, function () {
     QUnit.module('CohortView');
@@ -286,36 +290,34 @@ QUnit.module('Views', {
     QUnit.test('when clicked on cell redirects to the correct list/form view ', async function(assert) {
         assert.expect(6);
 
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
-                'subscription,my_list_view,list': '<tree>' +
-                        '<field name="start"/>' +
-                        '<field name="stop"/>' +
-                    '</tree>',
-                'subscription,my_form_view,form': '<form>' +
-                        '<field name="start"/>' +
-                        '<field name="stop"/>' +
-                    '</form>',
-                'subscription,false,list': '<tree>' +
-                        '<field name="recurring"/>' +
-                        '<field name="start"/>' +
-                    '</tree>',
-                'subscription,false,form': '<form>' +
-                        '<field name="recurring"/>' +
-                        '<field name="start"/>' +
-                    '</form>',
-                'subscription,false,search': '<search></search>',
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
-            },
+        const views = {
+            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+            'subscription,my_list_view,list': '<tree>' +
+                    '<field name="start"/>' +
+                    '<field name="stop"/>' +
+                '</tree>',
+            'subscription,my_form_view,form': '<form>' +
+                    '<field name="start"/>' +
+                    '<field name="stop"/>' +
+                '</form>',
+            'subscription,false,list': '<tree>' +
+                    '<field name="recurring"/>' +
+                    '<field name="start"/>' +
+                '</tree>',
+            'subscription,false,form': '<form>' +
+                    '<field name="recurring"/>' +
+                    '<field name="start"/>' +
+                '</form>',
+            'subscription,false,search': '<search></search>',
+        };
+        Object.assign(serverData, {views});
+
+        const webClient = await createWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Subscriptions',
             res_model: 'subscription',
             type: 'ir.actions.act_window',
@@ -323,30 +325,32 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        await testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
-                "First field in the list view should be start");
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
-                "Second field in the list view should be stop");
+        await testUtils.dom.click($(webClient.el).find('td.o_cohort_value:first'));
+        await nextTick();
 
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
+                "First field in the list view should be start");
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
+                "Second field in the list view should be stop");
         // Going back to cohort view
-        await testUtils.dom.click(actionManager.$('.o_back_button'));
+        await testUtils.dom.click($(webClient.el).find('.o_back_button'));
+        await nextTick();
         // Going to the list view
-        await testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
+        await testUtils.dom.click($(webClient.el).find('td div.o_cohort_value:first'));
+        await nextTick();
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
-
         // Going to the form view
-        await testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
+        await testUtils.dom.click($(webClient.el).find('.o_list_view .o_data_row'));
+        await nextTick();
 
-        assert.hasAttrValue(actionManager.$('.o_form_view span:first'), 'name', 'start',
+        assert.hasAttrValue($(webClient.el).find('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.hasAttrValue(actionManager.$('.o_form_view span:nth(1)'), 'name', 'stop',
+        assert.hasAttrValue($(webClient.el).find('.o_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
-        actionManager.destroy();
     });
 
     QUnit.test('test mode churn', async function(assert) {
@@ -396,37 +400,33 @@ QUnit.module('Views', {
 
     QUnit.test('when clicked on cell redirects to the action list/form view passed in context', async function(assert) {
         assert.expect(6);
-
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
-                'subscription,my_list_view,list': '<tree>' +
-                        '<field name="start"/>' +
-                        '<field name="stop"/>' +
-                    '</tree>',
-                'subscription,my_form_view,form': '<form>' +
-                        '<field name="start"/>' +
-                        '<field name="stop"/>' +
-                    '</form>',
-                'subscription,false,list': '<tree>' +
+        const views = {
+            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+            'subscription,my_list_view,list': '<tree>' +
+                    '<field name="start"/>' +
+                    '<field name="stop"/>' +
+                '</tree>',
+            'subscription,my_form_view,form': '<form>' +
+                    '<field name="start"/>' +
+                    '<field name="stop"/>' +
+                '</form>',
+            'subscription,false,list': '<tree>' +
+                '<field name="recurring"/>' +
+                '<field name="start"/>' +
+                '</tree>',
+            'subscription,false,form': '<form>' +
                     '<field name="recurring"/>' +
                     '<field name="start"/>' +
-                    '</tree>',
-                'subscription,false,form': '<form>' +
-                        '<field name="recurring"/>' +
-                        '<field name="start"/>' +
-                    '</form>',
-                'subscription,false,search': '<search></search>',
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
-            },
+                '</form>',
+            'subscription,false,search': '<search></search>',
+        };
+        Object.assign(serverData, {views});
+        const webClient = await createWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Subscriptions',
             res_model: 'subscription',
             type: 'ir.actions.act_window',
@@ -435,31 +435,33 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        await testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
+        await testUtils.dom.click($(webClient.el).find('td.o_cohort_value:first'));
+        await nextTick();
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going back to cohort view
         await testUtils.dom.click($('.o_back_button'));
+        await nextTick();
 
         // Going to the list view
-        await testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
+        await testUtils.dom.click($(webClient.el).find('td div.o_cohort_value:first'));
+        await nextTick();
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        await testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
-
-        assert.hasAttrValue(actionManager.$('.o_form_view span:first'), 'name', 'start',
+        await testUtils.dom.click($(webClient.el).find('.o_list_view .o_data_row'));
+        await nextTick();
+        assert.hasAttrValue($(webClient.el).find('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.hasAttrValue(actionManager.$('.o_form_view span:nth(1)'), 'name', 'stop',
+        assert.hasAttrValue($(webClient.el).find('.o_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
-        actionManager.destroy();
     });
 
     QUnit.test('rendering of a cohort view with comparison', async function (assert) {
@@ -467,24 +469,21 @@ QUnit.module('Views', {
 
         var unpatchDate = patchDate(2017, 7, 25, 1, 0, 0);
 
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
-                'subscription,false,search': `
-                    <search>
-                        <filter date="start" name="date_filter" string="Date"/>
-                    </search>
-                `,
-            },
-            intercepts: {
-                do_action: function (ev) {
-                    actionManager.doAction(ev.data.action, ev.data.options);
-                },
-            },
+        const views = {
+            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+            'subscription,false,search': `
+                <search>
+                    <filter date="start" name="date_filter" string="Date"/>
+                </search>
+            `,
+        };
+        Object.assign(serverData, {views});
+        const webClient = await createWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Subscriptions',
             res_model: 'subscription',
             type: 'ir.actions.act_window',
@@ -492,7 +491,7 @@ QUnit.module('Views', {
         });
 
         function verifyContents(results) {
-            var $tables = actionManager.$('table');
+            var $tables = $(webClient.el).find('table');
             assert.strictEqual($tables.length, results.length, 'There should be ' + results.length + ' tables');
             var result;
             $tables.each(function () {
@@ -511,54 +510,53 @@ QUnit.module('Views', {
 
         // with no comparison, with data (no filter)
         verifyContents([3]);
-        assert.containsNone(actionManager, '.o_cohort_no_data');
-        assert.containsNone(actionManager, 'div.o_view_nocontent');
+        assert.containsNone(webClient, '.o_cohort_no_data');
+        assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with no comparison with no data (filter on 'last_year')
-        await cpHelpers.toggleFilterMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 'Date');
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2016');
+        await cpHelpers.toggleFilterMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 'Date');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2016');
 
         verifyContents([]);
-        assert.containsNone(actionManager, '.o_cohort_no_data');
-        assert.containsOnce(actionManager, 'div.o_view_nocontent');
+        assert.containsNone(webClient, '.o_cohort_no_data');
+        assert.containsOnce(webClient, 'div.o_view_nocontent');
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2016');
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', 'August');
-        await cpHelpers.toggleComparisonMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 'Date: Previous period');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2016');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', 'August');
+        await cpHelpers.toggleComparisonMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 'Date: Previous period');
 
         verifyContents(['August 2017', 2, 'July 2017', 1]);
-        assert.containsNone(actionManager, '.o_cohort_no_data');
-        assert.containsNone(actionManager, 'div.o_view_nocontent');
+        assert.containsNone(webClient, '.o_cohort_no_data');
+        assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await cpHelpers.toggleFilterMenu(actionManager);
-        await cpHelpers.toggleMenuItem(actionManager, 'Date');
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', 'August');
+        await cpHelpers.toggleFilterMenu(webClient);
+        await cpHelpers.toggleMenuItem(webClient, 'Date');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', 'August');
 
         verifyContents(['2017', 3, '2016']);
-        assert.containsOnce(actionManager, '.o_cohort_no_data');
-        assert.containsNone(actionManager, 'div.o_view_nocontent');
+        assert.containsOnce(webClient, '.o_cohort_no_data');
+        assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with comparison active, no data, comparisonData (filter on 'Q4' + 'previous_period')
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', 'Q4');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', 'Q4');
 
         verifyContents(['Q4 2017', 'Q3 2017', 3]);
-        assert.containsOnce(actionManager, '.o_cohort_no_data');
-        assert.containsNone(actionManager, 'div.o_view_nocontent');
+        assert.containsOnce(webClient, '.o_cohort_no_data');
+        assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2016');
-        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2017');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2016');
+        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2017');
 
         verifyContents([]);
-        assert.containsNone(actionManager, '.o_cohort_no_data');
-        assert.containsOnce(actionManager, 'div.o_view_nocontent');
+        assert.containsNone(webClient, '.o_cohort_no_data');
+        assert.containsOnce(webClient, 'div.o_view_nocontent');
 
         unpatchDate();
-        actionManager.destroy();
     });
 
     QUnit.test('verify context', async function (assert) {

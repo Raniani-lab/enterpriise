@@ -129,8 +129,6 @@ var FormManager = AbstractAction.extend({
     },
 });
 
-core.action_registry.add('action_web_studio_form', FormManager);
-
 return FormManager;
 
 });

@@ -46,7 +46,7 @@
         ],
         'web.assets_frontend': [
             'planning/static/src/scss/planning_calendar_report.scss',
-            'web/static/src/scss/form_view.scss',
+            'web/static/src/legacy/scss/form_view.scss',
             'planning/static/src/js/planning_calendar_front.js',
         ],
         'web.qunit_suite_tests': [

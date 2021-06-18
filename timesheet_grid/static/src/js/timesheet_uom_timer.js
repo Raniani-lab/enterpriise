@@ -5,8 +5,9 @@ const fieldRegistry = require('web.field_registry');
 const fieldUtils = require('web.field_utils');
 const TimesheetUom = require('hr_timesheet.timesheet_uom');
 const { _lt } = require('web.core');
-const AbstractWebClient = require('web.AbstractWebClient');
+const { registry } = require("@web/core/registry");
 const Timer = require('timer.Timer');
+const session = require('web.session');
 
 const TimesheetUomDisplayTimer = TimesheetUom.FieldTimesheetTime.extend({
     /**
@@ -142,9 +143,9 @@ const FieldTimesheetTimeTimer = TimesheetUomDisplayTimer.extend({
     },
 });
 
-AbstractWebClient.include({
-    init: function () {
-        this._super(...arguments);
+const timesheetUomTimerService = {
+    dependencies: ["timesheet_uom"],
+    start(env, { timesheet_uom }) {
         /**
          * Binding depending on Company Preference
          *
@@ -153,9 +154,7 @@ AbstractWebClient.include({
          * implementation (float_time, float_toggle, ...). The default
          * value will be 'float_factor'.
         **/
-        const widgetName = this.currentCompanyTimesheetUOM &&
-                           this.currentCompanyTimesheetUOM.timesheet_widget ||
-                           'float_factor';
+        const widgetName = timesheet_uom.widget || 'float_factor';
 
         let FieldTimesheetUom = null;
 
@@ -174,7 +173,7 @@ AbstractWebClient.include({
         // bind the formatter and parser method, and tweak the options
         const _tweak_options = (options) => {
             if (!_.contains(options, 'factor')) {
-                options.factor = this.currentCompanyTimesheetUOMFactor;
+                options.factor = timesheet_uom.factor;
             }
             return options;
         };
@@ -191,7 +190,9 @@ AbstractWebClient.include({
             return parser(value, field, options);
         };
     },
-});
+};
+
+registry.category("services").add("timesheet_uom_timer", timesheetUomTimerService);
 
 /**
  * Extend Time widget to add the +/- button for duration
@@ -242,6 +243,7 @@ fieldRegistry.add('timesheet_uom_hours', FieldTimesheetHours);
 return {
     FieldTimesheetHours,
     FieldTimesheetTimeTimer,
+    timesheetUomTimerService,
 };
 
 });

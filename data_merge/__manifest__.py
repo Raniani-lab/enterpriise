@@ -26,7 +26,6 @@
     'post_init_hook': 'post_init',
     'assets': {
         'web.assets_backend': [
-            'data_merge/static/src/scss/data_merge.scss',
             'data_merge/static/src/js/data_merge_list_view.js',
         ],
         'web.assets_qweb': [

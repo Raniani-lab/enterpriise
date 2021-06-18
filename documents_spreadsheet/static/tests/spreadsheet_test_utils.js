@@ -1,11 +1,15 @@
 /** @odoo-module alias=documents_spreadsheet.TestUtils default=0 */
 import spreadsheet from "documents_spreadsheet.spreadsheet";
-import { createActionManager, nextTick, createView } from "web.test_utils";
+import { createView } from "web.test_utils";
 import PivotView from "web.PivotView";
 import MockServer from 'web.MockServer';
 import makeTestEnvironment from 'web.test_env';
+import LegacyRegistry from "web.Registry";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { getBasicArch, getTestData } from "./spreadsheet_test_data";
+import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { ClientActionAdapter } from "@web/legacy/action_adapters";
 
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
@@ -95,7 +99,7 @@ export function setCellContent(model, xc, content, sheetId = undefined) {
  * @returns {Component}
  */
 function getSpreadsheetComponent(actionManager) {
-    return  actionManager.getCurrentController().widget
+    return  actionManager
         .spreadsheetComponent.componentRef.comp;
 }
 
@@ -129,7 +133,14 @@ function getSpreadsheetActionEnv(actionManager) {
 }
 
 export async function createSpreadsheet(params = {}) {
-    let { spreadsheetId } = params;
+    let { spreadsheetId, data, arch, mockRPC, legacyServicesRegistry } = params;
+    let spreadsheetAction;
+    patchWithCleanup(ClientActionAdapter.prototype, {
+        mounted() {
+            this._super();
+            spreadsheetAction = this.widget;
+        }
+    });
     if (!spreadsheetId) {
         const documents = params.data["documents.document"].records;
         spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
@@ -139,9 +150,18 @@ export async function createSpreadsheet(params = {}) {
             raw: "{}",
         });
     }
-    const actionManager = await createActionManager(params);
+    const serverData = {models: data, views: arch}
+    const webClient = await createWebClient({
+        serverData,
+        mockRPC,
+        legacyParams: {
+            withLegacyMockServer: true,
+            serviceRegistry: legacyServicesRegistry,
+        },
+    });
+
     const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
-    await actionManager.doAction({
+    await doAction(webClient, {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
@@ -150,26 +170,35 @@ export async function createSpreadsheet(params = {}) {
         },
     });
     return {
-        actionManager,
-        model: getSpreadsheetActionModel(actionManager),
-        env: getSpreadsheetActionEnv(actionManager),
+        webClient,
+        model: getSpreadsheetActionModel(spreadsheetAction),
+        env: getSpreadsheetActionEnv(spreadsheetAction),
     };
 }
 
 /**
  * Create a spreadsheet model from a Pivot controller
- * @param pivotView Pivot view
- * @param actions Callback to execute on the controller before exporting
+ * @param {*} params
  * the pivot data
  */
-export async function createSpreadsheetFromPivot(pivotView = {}, actions) {
+export async function createSpreadsheetFromPivot(params = {}) {
+  let { actions, pivotView, webClient } = params;
+  if (!pivotView) {
+      pivotView = {};
+  }    let spreadsheetAction = {};
+    patchWithCleanup(ClientActionAdapter.prototype, {
+        mounted() {
+            this._super();
+            spreadsheetAction = this.widget;
+        }
+    });
     pivotView = {
         arch: getBasicArch(),
         data: getTestData(),
         model: pivotView.model || "partner",
         ...pivotView,
     };
-    const { data, debug } = pivotView;
+    const { data } = pivotView;
     const controller = await createView({
         View: PivotView,
         ...pivotView }
@@ -181,19 +210,26 @@ export async function createSpreadsheetFromPivot(pivotView = {}, actions) {
         name: "pivot spreadsheet",
         raw: "{}",
     });
-    const actionManager = await createActionManager({
-        debug,
-        data,
-        mockRPC: pivotView.mockRPC,
-        intercepts: pivotView.intercepts || {},
-        services: pivotView.services,
-        archs: pivotView.archs || {},
-    });
+    if (pivotView.services) {
+        const serviceRegistry = new LegacyRegistry();
+        for (const sname in pivotView.services) {
+            serviceRegistry.add(sname, pivotView.services[sname]);
+        }
+    }
+
+    if (!webClient){
+      const serverData = { models: data, views: pivotView.archs };
+      webClient = await createWebClient({
+          serverData,
+          legacyParams: { withLegacyMockServer: true },
+          mockRPC: pivotView.mockRPC,
+      });
+    }
     if (actions) {
         await actions(controller);
     }
     const transportService = new MockSpreadsheetCollaborativeChannel();
-    await actionManager.doAction({
+    await doAction(webClient, {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
@@ -202,9 +238,7 @@ export async function createSpreadsheetFromPivot(pivotView = {}, actions) {
             initCallback: await controller._getCallbackBuildPivot(true)
         },
     });
-    await nextTick();
-    const spreadSheetComponent = actionManager.getCurrentController().widget
-    .spreadsheetComponent.componentRef.comp;
+    const spreadSheetComponent = spreadsheetAction.spreadsheetComponent.componentRef.comp
     const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp
     const model = oSpreadsheetComponent.model;
     const env = Object.assign(spreadSheetComponent.env, {
@@ -213,8 +247,13 @@ export async function createSpreadsheetFromPivot(pivotView = {}, actions) {
         services: model.config.evalContext.env.services,
         openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
     });
-    controller.destroy();
-    return { actionManager, env, model, transportService };
+    return {
+        webClient,
+        env,
+        model,
+        transportService,
+        get spreadsheetAction() {return spreadsheetAction}
+    };
 }
 
 /**

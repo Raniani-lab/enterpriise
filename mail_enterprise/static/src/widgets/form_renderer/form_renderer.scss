@@ -8,6 +8,10 @@
         border-left: $border-width solid;
         padding: map-get($spacers, 0);
         width: $o-chatter-min-width;
+
+        .o_Message.o-not-discussion {
+            border-width: $border-width 0;
+        }
     }
 
     &.o-isInFormSheetBg:not(.o-aside) {

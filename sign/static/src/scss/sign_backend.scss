@@ -2,21 +2,18 @@
     .o_content {
         .favorite_sign_button {
             position: absolute;
-            color: $o-brand-secondary;
-            &:hover {
-                color: orange;
+            @include o-hover-text-color($o-main-color-muted, $o-main-favorite-color);
+
+            &:hover:before {
+                content: "\f005";
             }
 
             &.favorite_sign_button_enabled {
-                color: orange;
-                &:hover {
-                    color: theme-color('danger');
+                @include o-hover-text-color($o-main-favorite-color, $o-main-color-muted);
+
+                &:hover:before {
+                    content: "\f006";
                 }
-            }
-        }
-       .o_signers > div {
-            &.o_sign_completed {
-                color: theme-color('success');
             }
         }
         .o_form_view {

@@ -7,9 +7,12 @@ var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
 const SampleServer = require('web.SampleServer');
 var testUtils = require('web.test_utils');
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
-const createActionManager = testUtils.createActionManager;
 const patchDate = testUtils.mock.patchDate;
+const nextTick = testUtils.nextTick;
+
+const { makeLegacyDialogMappingTestEnv } = require('@web/../tests/helpers/legacy_env_utils');
 
 var initialDate = new Date(2018, 11, 20, 8, 0, 0);
 initialDate = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() * 60 * 1000);
@@ -487,13 +490,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "2121",
             "the count should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(1, 126, 132)",
             "the 1st group pill should have the correct grey scale)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(1, 126, 132)",
             "the 2nd group pill should have the correct grey scale)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(1, 126, 132)",
             "the 3rd group pill should have the correct grey scale");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(1, 126, 132)",
             "the 4th group pill should have the correct grey scale");
 
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
@@ -739,16 +742,18 @@ QUnit.module('Views', {
     QUnit.test('empty gantt with sample data and default_group_by (switch view)', async function (assert) {
         assert.expect(7);
 
-        const actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'tasks,false,gantt': '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
-                'tasks,false,list': '<list/>',
-                'tasks,false,search': '<search/>',
-            },
+       const views = {
+            'tasks,false,gantt': '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
+            'tasks,false,list': '<list/>',
+            'tasks,false,search': '<search/>',
+        };
+        const serverData = {models: this.data, views};
+
+        const webClient = await createWebClient({
+          serverData,
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             name: 'Gantt',
             res_model: 'tasks',
             type: 'ir.actions.act_window',
@@ -756,26 +761,26 @@ QUnit.module('Views', {
         });
 
         // the gantt view should be in sample mode
-        assert.hasClass(actionManager.$('.o_view_controller'), 'o_view_sample_data');
-        assert.ok(actionManager.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-        const content = actionManager.$el.text();
+        assert.hasClass($(webClient.el).find('.o_view_controller'), 'o_view_sample_data');
+        assert.ok($(webClient.el).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        const content = $(webClient.el).find('.o_view_controller').text();
 
         // switch to list view
-        await testUtils.dom.click(actionManager.el.querySelector('.o_cp_bottom_right .o_switch_view.o_list'));
+        await testUtils.dom.click($(webClient.el).find('.o_cp_bottom_right .o_switch_view.o_list'));
+        await nextTick();
 
-        assert.containsOnce(actionManager, '.o_list_view');
+        assert.containsOnce(webClient, '.o_list_view');
 
         // go back to gantt view
-        await testUtils.dom.click(actionManager.el.querySelector('.o_cp_bottom_right .o_switch_view.o_gantt'));
+        await testUtils.dom.click($(webClient.el).find('.o_cp_bottom_right .o_switch_view.o_gantt'));
+        await nextTick();
 
-        assert.containsOnce(actionManager, '.o_gantt_view');
+        assert.containsOnce(webClient, '.o_gantt_view');
 
         // the gantt view should be still in sample mode
-        assert.hasClass(actionManager.$('.o_view_controller'), 'o_view_sample_data');
-        assert.ok(actionManager.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-        assert.strictEqual(actionManager.$('.o_view_controller').text(), content);
-
-        actionManager.destroy();
+        assert.hasClass($(webClient.el).find('.o_view_controller'), 'o_view_sample_data');
+        assert.ok($(webClient.el).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual($(webClient.el).find('.o_view_controller').text(), content);
     });
 
     QUnit.test('empty gantt with sample="1"', async function (assert) {
@@ -1365,6 +1370,8 @@ QUnit.module('Views', {
     QUnit.test('open a dialog stops the resize/drag', async function (assert) {
         assert.expect(3);
 
+        await makeLegacyDialogMappingTestEnv();
+
         var gantt = await createView({
             View: GanttView,
             model: 'tasks',
@@ -1390,7 +1397,7 @@ QUnit.module('Views', {
         assert.containsOnce($, '.modal', 'There should be one modal opened');
 
         // close the modal without moving the mouse by pressing ESC
-        $('.modal').trigger({type: 'keydown', which: $.ui.keyCode.ESCAPE});
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
         await testUtils.nextTick();
         assert.containsNone($, '.modal', 'There should be no modal opened');
 
@@ -3122,11 +3129,11 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_consolidated_pill_title ').text().replace(/\s+/g, ''), "0000",
             "the consolidation should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(40, 167, 69)",
             "the 1st group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(40, 167, 69)",
             "the 2nd group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(40, 167, 69)",
             "the 3rd group pill should have the correct color");
 
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
@@ -3142,13 +3149,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "301103060",
             "the consolidation should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(0)').css('background-color'), "rgb(40, 167, 69)",
             "the 1st group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(1)').css('background-color'), "rgb(220, 105, 101)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(1)').css('background-color'), "rgb(220, 53, 69)",
             "the 2nd group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(2)').css('background-color'), "rgb(40, 167, 69)",
             "the 3rd group pill should have the correct color");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(40, 167, 69)",
             "the 4th group pill should have the correct color");
 
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
@@ -3321,7 +3328,7 @@ QUnit.module('Views', {
             null,
             "height: 0px;"
         ]);
-        assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgb(252, 250, 243)");
+        assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgb(251, 249, 243)");
 
         unpatchDate();
         gantt.destroy();

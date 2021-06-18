@@ -10,9 +10,8 @@ var session = require('web.session');
 var field_utils = require('web.field_utils');
 var RelationalFields = require('web.relational_fields');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-var WarningDialog = require('web.CrashManager').WarningDialog;
+var { WarningDialog } = require("@web/legacy/js/_deprecated/crash_manager_warning_dialog");
 var Widget = require('web.Widget');
-var session = require('web.session');
 
 var QWeb = core.qweb;
 var _t = core._t;

@@ -43,10 +43,6 @@ var ClientAction = AbstractAction.extend({
             model: action.params.model,
         };
 
-        // Temp patch for the height issue
-        this.actionManager = parent;
-        this.actionManagerInitHeight = this.actionManager.$el.height;
-        this.actionManager.$el.height('100%');
 
         this.mutex = new concurrency.Mutex();
 
@@ -1704,7 +1700,6 @@ var ClientAction = AbstractAction.extend({
         var self = this;
         this.mutex.exec(function () {
             return self._save().then(function () {
-                self.actionManager.$el.height(self.actionManagerInitHeight);
                 self.trigger_up('history_back');
             });
         });

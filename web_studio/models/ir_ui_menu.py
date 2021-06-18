@@ -23,17 +23,16 @@ class IrUiMenu(models.Model):
                 menu.action.name = vals['name']
         return super().write(vals)
 
-    @api.model
-    def load_menus(self, debug):
-        menu_root = super(IrUiMenu, self).load_menus(debug)
+    def load_web_menus(self, debug):
+        menus = super(IrUiMenu, self).load_web_menus(debug)
         cids = request and request.httprequest.cookies.get('cids')
         if cids:
             cids = [int(cid) for cid in cids.split(',')]
         company = self.env['res.company'].browse(cids[0]) \
             if cids and all([cid in self.env.user.company_ids.ids for cid in cids]) \
             else self.env.user.company_id
-        menu_root['background_image'] = bool(company.background_image)
-        return menu_root
+        menus['root']['backgroundImage'] = bool(company.background_image)
+        return menus
 
     @api.model
     def customize(self, to_move, to_delete):

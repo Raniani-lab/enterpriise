@@ -14,7 +14,7 @@ var Widget = require('web.Widget');
 var relational_fields = require('web.relational_fields');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 var ajax = require('web.ajax');
-var WarningDialog = require('web.CrashManager').WarningDialog;
+const { WarningDialog } = require("@web/legacy/js/_deprecated/crash_manager_warning_dialog");
 
 var FieldMany2ManyTags = relational_fields.FieldMany2ManyTags;
 var _t = core._t;

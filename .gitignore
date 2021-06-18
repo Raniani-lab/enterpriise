@@ -16,6 +16,12 @@ __pycache__/
 *.orig
 status
 
+# js tooling
+node_modules
+package-lock.json
+package.json
+.husky
+
 # various virtualenv
 /bin/
 /build/

@@ -264,10 +264,10 @@
     <!-- Common top bar -->
     <!-- TODO: Hide in mobile as it is going to push in control panel and it breaks UI, maybe we will improve it in future -->
     <t t-name="sale_subscription_dashboard.dashboard_option_filters">
-        <div class="o_dropdown_toggler_btn btn-group o_dropdown o_subscription_dashboard_filter_date"></div>
+        <div class="o_dropdown_toggler btn-group o_dropdown o_subscription_dashboard_filter_date"></div>
         <!-- Subscriptions -->
         <div t-if="widget.contract_templates &amp;&amp; widget.contract_templates.length > 1" class="o_dropdown dropdown">
-            <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-file-o"/> Subscriptions</button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.contract_templates" t-as="template">
@@ -288,7 +288,7 @@
 
         <!-- Companies -->
         <div t-if="widget.companies &amp;&amp; widget.companies.length > 1" class="o_dropdown dropdown">
-            <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-building"/> Companies</button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.companies" t-as="company">
@@ -299,7 +299,7 @@
 
         <!-- Sales Team -->
         <div t-if="widget.sales_team &amp;&amp; widget.sales_team.length > 1" class="o_dropdown dropdown">
-            <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-users"/>Sales Team<span class="caret"/></button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.sales_team" t-as="sale_team">

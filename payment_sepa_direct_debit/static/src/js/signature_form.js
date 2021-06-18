@@ -11,7 +11,7 @@ var publicWidget = require('web.public.widget');
 var SepaNameAndSignature = NameAndSignature.extend({
     template: 'payment_sepa_direct_debit.sign_name_and_signature',
     xmlDependencies: [
-        '/web/static/src/xml/name_and_signature.xml',
+        '/web/static/src/legacy/xml/name_and_signature.xml',
         '/payment_sepa_direct_debit/static/src/xml/signature_form.xml'
     ],
     /**
@@ -38,7 +38,7 @@ easily doable in the default widget.
 var SepaSignatureForm = SignatureForm.extend({
     template: 'payment_sepa_direct_debit.signature_form',
     xmlDependencies: [
-        '/web/static/src/xml/name_and_signature.xml',
+        '/web/static/src/legacy/xml/name_and_signature.xml',
         '/payment_sepa_direct_debit/static/src/xml/signature_form.xml'
     ],
     /**

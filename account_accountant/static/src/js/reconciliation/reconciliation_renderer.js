@@ -11,6 +11,8 @@ var session = require('web.session');
 var qweb = core.qweb;
 var _t = core._t;
 
+const { sprintf } = require("@web/core/utils/strings")
+const { ReconciliationRainbowManComponent } = require("@account_accountant/js/reconciliation/reconciliation_rainbowman_component")
 
 /**
  * rendering of the bank statement action contains progress bar, title and
@@ -50,27 +52,31 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
         if (this.model.display_context !== 'validate') {
             return
         }
-        var dt = Date.now()-this.time;
-        var $done = $(qweb.render("reconciliation.done", {
-            'duration': moment(dt).utc().format(time.getLangTimeFormat()),
-            'number': state.valuenow,
-            'timePerTransaction': Math.round(dt/1000/state.valuemax),
-            'context': state.context,
-        }));
-        $done.find('*').addClass('o_reward_subcontent');
-        $done.find('.button_close_statement').click(this._onCloseBankStatement.bind(this));
-        $done.find('.button_back_to_statement').click(this._onGoToBankStatement.bind(this));
-        // display rainbowman after full reconciliation
-        if (session.show_effect) {
-            this.trigger_up('show_effect', {
-                type: 'rainbow_man',
-                fadeout: 'no',
-                message: $done,
-            });
-            this.$el.css('min-height', '450px');
-        } else {
-            $done.appendTo(this.$el);
-        }
+
+        const dt = Date.now()-this.time;
+        const duration = moment(dt).utc().format(time.getLangTimeFormat());
+        const number = state.valuenow;
+        const timePerTransaction = Math.round(dt / 1000 / state.valuemax);
+
+        this.trigger_up('show_effect', {
+            type: 'rainbow_man',
+            fadeout: 'no',
+            Component: ReconciliationRainbowManComponent,
+            props: {
+                duration: duration,
+                number: number,
+                timePerTransaction: timePerTransaction,
+                context: state.context,
+                onButtonBackToStatementClicked: (journalId) => this._onGoToBankStatement(journalId),
+                onButtonCloseStatementClicked: () => this._onCloseBankStatement(),
+            },
+            message: sprintf(
+                _t(`Congrats, you're all done! You reconciled %s transactions in %s. That's on average %s seconds per transaction.`),
+                this.number,
+                this.duration,
+                this.timePerTransaction
+            )
+        });
     },
     /**
      * update the statement rendering
@@ -170,12 +176,7 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
      * @private
      * @param {MouseEvent} event
      */
-    _onGoToBankStatement: function (e) {
-        var journalId = $(e.target).attr('data_journal_id');
-        if (journalId) {
-            journalId = parseInt(journalId);
-        }
-        $('.o_reward').remove();
+    _onGoToBankStatement: function (journalId) {
         this.do_action({
             name: 'Bank Statements',
             res_model: 'account.bank.statement',

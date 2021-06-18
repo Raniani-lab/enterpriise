@@ -125,12 +125,16 @@
 .o_spreadsheet_cp {
     a.o_spreadsheet_favorite {
         margin: 0px 5px;
-        @include o-hover-opacity(0.6, 1);
-        @include o-hover-text-color($gray-400, $warning);
+        @include o-hover-text-color($gray-400, $o-main-favorite-color);
+        &:hover:before {
+            content: "\f005";
+        }
 
         &.favorite_button_enabled {
-            @include o-hover-text-color($warning, $danger);
-            transition: 0.3s color 0.1s;
+            @include o-hover-text-color($o-main-favorite-color, $gray-400);
+            &:hover:before {
+                content: "\f006";
+            }
         }
     }
 
@@ -274,7 +278,6 @@
 
 .o_spreadsheet_filter_editor_side_panel {
     .o_global_filter_delete {
-        color: $danger;
         float: left;
     }
 }

@@ -7,7 +7,7 @@ var testUtils = require('web.test_utils');
 
 const cpHelpers = testUtils.controlPanel;
 var createView = testUtils.createView;
-var createActionManager = testUtils.createActionManager;
+const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -1138,28 +1138,30 @@ QUnit.module('Views', {
 
     QUnit.test('grid_anchor stays when navigating', async function (assert) {
         assert.expect(3);
+        const views = {
+            'analytic.line,false,grid': '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+                '<field name="project_id" type="row"/>' +
+                '<field name="task_id" type="row"/>' +
+                '<field name="date" type="col">' +
+                    '<range name="week" string="Week" span="week" step="day"/>' +
+                    '<range name="month" string="Month" span="month" step="day"/>' +
+                    '<range name="year" string="Year" span="year" step="month"/>' +
+                '</field>'+
+                '<field name="unit_amount" type="measure" widget="float_time"/>' +
+            '</grid>',
+            'analytic.line,false,search': '<search>' +
+                    '<filter name="filter_test" help="Project 31" domain="[(\'project_id\', \'=\', 31)]"/>' +
+            '</search>',
+        };
+        const serverData = {models: this.data, views};
 
         // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
-            data: this.data,
-            archs: {
-                'analytic.line,false,grid': '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
-                    '<field name="project_id" type="row"/>' +
-                    '<field name="task_id" type="row"/>' +
-                    '<field name="date" type="col">' +
-                        '<range name="week" string="Week" span="week" step="day"/>' +
-                        '<range name="month" string="Month" span="month" step="day"/>' +
-                        '<range name="year" string="Year" span="year" step="month"/>' +
-                    '</field>'+
-                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
-                '</grid>',
-                'analytic.line,false,search': '<search>' +
-                        '<filter name="filter_test" help="Project 31" domain="[(\'project_id\', \'=\', 31)]"/>' +
-                '</search>',
-            },
+        const webClient = await createWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
         });
 
-        await actionManager.doAction({
+        await doAction(webClient, {
             res_model: 'analytic.line',
             type: 'ir.actions.act_window',
             views: [[false, 'grid']],
@@ -1170,19 +1172,17 @@ QUnit.module('Views', {
         });
 
         // check first column header
-        assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
+        assert.strictEqual($(webClient.el).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
 
         // move to previous week, and check first column header
-        await testUtils.dom.click(actionManager.$('.o_control_panel .grid_arrow_previous'));
-        assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .grid_arrow_previous'));
+        assert.strictEqual($(webClient.el).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
 
         // remove the filter in the searchview
-        await testUtils.dom.click($('.o_control_panel .o_searchview .o_facet_remove'));
+        await testUtils.dom.click($(webClient.el).find('.o_control_panel .o_searchview .o_facet_remove'));
 
         // recheck first column header
-        assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
-
-        actionManager.destroy();
+        assert.strictEqual($(webClient.el).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
     });
 
     QUnit.test('grid with two tasks with same name, and widget', async function (assert) {

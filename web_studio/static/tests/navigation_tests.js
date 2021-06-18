@@ -1,564 +1,661 @@
-odoo.define('web_studio.navigation_tests', function (require) {
-"use strict";
+/** @odoo-module **/
+import { legacyExtraNextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
+import { registry } from "@web/core/registry";
+import { companyService } from "@web/webclient/company_service";
+import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
+import testUtils from "web.test_utils";
+import { openStudio, leaveStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
 
-var bus = require('web_studio.bus');
-var testUtils = require('web.test_utils');
-const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
-QUnit.module('web_studio', {}, function () {
-QUnit.module('Studio Navigation', {
-    beforeEach() {
-        beforeEach(this);
+let serverData;
 
-        Object.assign(this.data, {
-            partner: {
-                fields: {
-                    foo: {string: "Foo", type: "char"},
-                    date: {string: "Date", type: "date"},
-                    bar: {string: "Bar", type: "many2one", relation: 'partner'},
-                    type: {
-                        string: "Type",
-                        type: "selection",
-                        selection: [['contact', "Contact"], ['invoice', "Invoice"], ['delivery', "Delivery"]],
-                    },
-                },
-                records: [
-                    {id: 1, display_name: "First record", foo: "yop"},
-                    {id: 2, display_name: "Second record", foo: "blip"},
-                    {id: 3, display_name: "Third record", foo: "gnap"},
-                    {id: 4, display_name: "Fourth record", foo: "plop"},
-                    {id: 5, display_name: "Fifth record", foo: "zoup"},
-                ],
+QUnit.module("Studio", (hooks) => {
+    hooks.beforeEach(() => {
+        serverData = getActionManagerServerData();
+        registerStudioDependencies();
+        const serviceRegistry = registry.category("services");
+        serviceRegistry.add("company", companyService);
+
+        // tweak a bit the default config to better fit with studio needs:
+        //  - add some menu items we can click on to test the navigation
+        //  - add a one2many field in a form view to test the one2many edition
+        serverData.menus = {
+            root: { id: "root", children: [1, 2, 3], name: "root", appID: "root" },
+            1: {
+                id: 1,
+                children: [11, 12],
+                name: "Partners",
+                appID: 1,
+                actionID: 4,
+                xmlid: "app_1",
             },
-            pony: {
-                fields: {
-                    name: {string: 'Name', type: 'char'},
-                    partner_ids: {string: "Bar", type: "one2many", relation: 'partner'},
-                    type: {
-                        string: "Type",
-                        type: "selection",
-                        selection: [['foo', "Foo"], ['bar', "Bar"]],
-                    },
-                },
-                records: [
-                    {id: 4, name: 'Twilight Sparkle'},
-                    {id: 6, name: 'Applejack'},
-                    {id: 9, name: 'Fluttershy'},
-                ],
+            11: {
+                id: 11,
+                children: [],
+                name: "Partners (Action 4)",
+                appID: 1,
+                actionID: 4,
+                xmlid: "menu_11",
             },
-        });
-
-        this.actions = [{
-            id: 1,
-            name: 'Partners Action 4',
-            res_model: 'partner',
-            type: 'ir.actions.act_window',
-            views: [[1, 'kanban'], [2, 'list'], [false, 'form']],
-        }, {
-            id: 2,
-            name: 'Favorite Ponies',
-            res_model: 'pony',
-            type: 'ir.actions.act_window',
-            views: [[false, 'list'], [false, 'form']],
-        }];
-
-        this.archs = {
-            // kanban views
-            'partner,1,kanban': '<kanban><templates><t t-name="kanban-box">' +
-                    '<div class="oe_kanban_global_click"><field name="foo"/></div>' +
-                '</t></templates></kanban>',
-
-            // list views
-            'partner,false,list': '<tree><field name="foo"/></tree>',
-            'partner,2,list': '<tree><field name="foo"/></tree>',
-            'pony,false,list': '<tree><field name="name"/></tree>',
-
-            // form views
-            'partner,false,form': '<form>' +
-                    '<header>' +
-                        '<button name="object" string="Call method" type="object"/>' +
-                        '<button name="4" string="Execute action" type="action"/>' +
-                    '</header>' +
-                    '<group>' +
-                        '<field name="display_name"/>' +
-                        '<field name="foo"/>' +
-                        '<field name="bar"/>' +
-                    '</group>' +
-                '</form>',
-            'pony,false,form': '<form>' +
-                    '<field name="name"/>' +
-                    "<field name='partner_ids'>" +
-                            "<form>" +
-                                "<sheet>" +
-                                    "<field name='display_name'/>" +
-                                "</sheet>" +
-                            "</form>" +
-                        "</field>" +
-                '</form>',
-
-            // search views
-            'partner,false,search': '<search><field name="foo" string="Foo"/></search>',
-            'pony,false,search': '<search></search>',
+            12: {
+                id: 12,
+                children: [],
+                name: "Partners (Action 3)",
+                appID: 1,
+                actionID: 3,
+                xmlid: "menu_12",
+            },
+            2: {
+                id: 2,
+                children: [],
+                name: "Ponies",
+                appID: 2,
+                actionID: 8,
+                xmlid: "app_2",
+            },
+            3: {
+                id: 3,
+                children: [],
+                name: "Client Action",
+                appID: 3,
+                actionID: 9,
+                xmlid: "app_3",
+            },
         };
-    },
-    afterEach() {
-        afterEach(this);
-    },
-}, function () {
-    QUnit.module('Misc');
-
-    QUnit.test('open Studio with act_window', async function (assert) {
-        assert.expect(18);
-
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route) {
-                assert.step(route);
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        await actionManager.doAction(1);  // open a act_window_action
-
-        var rpcs = [
-            '/mail/init_messaging',
-            '/web/action/load',
-            '/web/dataset/call_kw/partner',
-            '/web/dataset/search_read',
-        ];
-        assert.verifySteps(rpcs, "should have loaded the action");
-
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-        });
-        bus.trigger('studio_toggled', 'main');
-        await testUtils.nextTick();
-
-        rpcs = [
-            '/web_studio/activity_allowed',
-            '/web_studio/get_studio_view_arch',
-            '/web/dataset/call_kw/partner',  // load_views with studio in context
-            '/web/dataset/search_read',
-        ];
-        assert.verifySteps(rpcs, "should have opened the action in Studio");
-
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_kanban_view_editor',
-            "the kanban view should be opened");
-        assert.strictEqual(actionManager.$('.o_kanban_record:contains(yop)').length, 1,
-            "the first partner should be displayed");
-
-        await actionManager.restoreStudioAction();  // simulate leaving Studio
-
-        rpcs = [
-            '/web/action/load',
-            '/web/dataset/call_kw/partner',  // load_views
-            '/web/dataset/search_read',
-        ];
-        assert.verifySteps(rpcs, "should have reloaded the previous action edited by Studio");
-
-        assert.containsNone(actionManager, '.o_web_studio_client_action',
-            "Studio should be closed");
-        assert.strictEqual(actionManager.$('.o_kanban_view .o_kanban_record:contains(yop)').length, 1,
-            "the first partner should be displayed in kanban");
-
-        actionManager.destroy();
+        serverData.models.partner.fields.date = { string: "Date", type: "date" };
+        serverData.models.partner.fields.pony_id = {
+            string: "Pony",
+            type: "many2one",
+            relation: "pony",
+        };
+        serverData.models.pony.fields.partner_ids = {
+            string: "Partners",
+            type: "one2many",
+            relation: "partner",
+            relation_field: "pony_id",
+        };
+        serverData.views["pony,false,form"] = `
+            <form>
+                <field name="name"/>
+                <field name='partner_ids'>
+                    <form>
+                        <sheet>
+                            <field name='display_name'/>
+                        </sheet>
+                    </form>
+                </field>
+            </form>`;
     });
 
-    QUnit.test('open Studio with act_window and viewType', async function (assert) {
+    QUnit.module("Studio Navigation");
+
+    QUnit.test("Studio not available for non system users", async function (assert) {
         assert.expect(2);
 
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route) {
-                if (route === '/web_studio/chatter_allowed') {
-                    return Promise.resolve(true);
-                }
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+        patchWithCleanup(odoo.session_info, { is_system: false });
+        const webClient = await createEnterpriseWebClient({ serverData });
+        assert.containsOnce(webClient, ".o_main_navbar");
 
-        await actionManager.doAction(1);  // open a act_window_action
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-            viewType: 'form',
-        });
-        bus.trigger('studio_toggled', 'main');
-        await testUtils.nextTick();
-
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
-            "the form view should be opened");
-        assert.strictEqual(actionManager.$('.o_field_widget[name="foo"]').text(), "yop",
-            "the first partner should be displayed");
-
-        actionManager.destroy();
+        assert.containsNone(webClient, ".o_main_navbar .o_web_studio_navbar_item a");
     });
 
-    QUnit.test('switch view and close Studio', async function (assert) {
-        assert.expect(3);
+    QUnit.test("open Studio with act_window", async function (assert) {
+        assert.expect(22);
 
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route) {
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+        const mockRPC = async (route) => {
+            assert.step(route);
+        };
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
+        assert.containsOnce(webClient, ".o_home_menu");
 
-        await actionManager.doAction(1);  // open a act_window_action
+        // open app Partners (act window action)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
 
-        var action = actionManager.getCurrentAction();
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: action,
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-        });
-        bus.trigger('studio_toggled', 'main');
-        await testUtils.nextTick();
+        assert.containsOnce(webClient, ".o_kanban_view");
+        assert.verifySteps(
+            [
+                "/web/webclient/load_menus",
+                "/web/action/load",
+                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/search_read",
+            ],
+            "should have loaded the action"
+        );
+        assert.containsOnce(webClient, ".o_main_navbar .o_web_studio_navbar_item a");
 
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_kanban_view_editor',
-            "the kanban view should be opened");
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: action,
-            controllerState: actionManager.getCurrentStudioController().widget.exportState(),
-            pushState: false,
-            replace_last_action: true,
-            viewType: 'list',
-        });
-        await actionManager.restoreStudioAction();  // simulate leaving Studio
+        await openStudio(webClient);
 
-        assert.containsNone(actionManager, '.o_web_studio_client_action',
-            "Studio should be closed");
-        assert.containsOnce(actionManager, '.o_list_view',
-            "the list view should be opened");
+        assert.verifySteps(
+            [
+                "/web_studio/activity_allowed",
+                "/web_studio/get_studio_view_arch",
+                "/web/dataset/call_kw/partner", // load_views with studio in context (from legacy code)
+                "/web/dataset/search_read",
+            ],
+            "should have opened the action in Studio"
+        );
 
-        actionManager.destroy();
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_kanban_view_editor",
+            "the kanban view should be opened"
+        );
+        assert.containsOnce(
+            webClient,
+            ".o_kanban_record:contains(yop)",
+            "the first partner should be displayed"
+        );
+        assert.containsOnce(webClient, ".o_studio_navbar .o_web_studio_leave a");
+
+        await leaveStudio(webClient);
+
+        assert.verifySteps(
+            [
+                "/web/action/load",
+                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/search_read",
+            ],
+            "should have reloaded the previous action edited by Studio"
+        );
+
+        assert.containsNone(webClient, ".o_web_studio_client_action", "Studio should be closed");
+        assert.containsOnce(
+            webClient,
+            ".o_kanban_view .o_kanban_record:contains(yop)",
+            "the first partner should be displayed in kanban"
+        );
     });
 
-    QUnit.test('navigation in Studio with act_window', async function (assert) {
+    QUnit.test("open Studio with act_window and viewType", async function (assert) {
+        assert.expect(4);
+
+        const webClient = await createEnterpriseWebClient({ serverData });
+
+        // open app Partners (act window action), sub menu Partners (action 3)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
+        // the menu is rendered once the action is ready, so potentially in the next animation frame
+        await testUtils.nextTick();
+        await testUtils.dom.click(
+            $(webClient.el).find('.o_menu_sections li:contains("Partners (Action 3)")')
+        );
+        await legacyExtraNextTick();
+        assert.containsOnce(webClient, ".o_list_view");
+
+        await testUtils.dom.click(webClient.el.querySelector(".o_data_row")); // open a record
+        await legacyExtraNextTick();
+        assert.containsOnce(webClient, ".o_form_view");
+
+        await openStudio(webClient);
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_form_view_editor",
+            "the form view should be opened"
+        );
+        assert.strictEqual(
+            $(webClient.el).find('.o_field_widget[name="foo"]').text(),
+            "yop",
+            "the first partner should be displayed"
+        );
+    });
+
+    QUnit.test("switch view and close Studio", async function (assert) {
+        assert.expect(6);
+
+        const webClient = await createEnterpriseWebClient({ serverData });
+        // open app Partners (act window action)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
+        assert.containsOnce(webClient, ".o_kanban_view");
+
+        await openStudio(webClient);
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_kanban_view_editor"
+        );
+
+        // click on tab "Views"
+        await testUtils.dom.click(
+            webClient.el.querySelector(".o_web_studio_menu .o_web_studio_menu_item a")
+        );
+        assert.containsOnce(webClient, ".o_web_studio_action_editor");
+
+        // open list view
+        await testUtils.dom.click(
+            webClient.el.querySelector(
+                ".o_web_studio_views .o_web_studio_view_type[data-type=list] .o_web_studio_thumbnail"
+            )
+        );
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_list_view_editor"
+        );
+
+        await leaveStudio(webClient);
+
+        assert.containsNone(webClient, ".o_web_studio_client_action", "Studio should be closed");
+        assert.containsOnce(webClient, ".o_list_view", "the list view should be opened");
+    });
+
+    QUnit.test("navigation in Studio with act_window", async function (assert) {
         assert.expect(28);
 
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route) {
-                assert.step(route);
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+        const mockRPC = async (route) => {
+            assert.step(route);
+        };
 
-        await actionManager.doAction(1);  // open a act_window_action
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
+        // open app Partners (act window action)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
 
-        var rpcs = ['/mail/init_messaging', '/web/action/load', '/web/dataset/call_kw/partner', '/web/dataset/search_read'];
-        assert.verifySteps(rpcs, "should have loaded the action");
-
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-        });
-        bus.trigger('studio_toggled', 'main');
-
-        rpcs = [
-            '/web_studio/activity_allowed',
-            '/web_studio/get_studio_view_arch',
-            '/web/dataset/call_kw/partner',  // load_views with studio in context
-            '/web/dataset/search_read',
-        ];
-        assert.verifySteps(rpcs, "should have opened the action in Studio");
-
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_kanban_view_editor',
-            "the kanban view should be opened");
-        assert.strictEqual(actionManager.$('.o_kanban_record:contains(yop)').length, 1,
-            "the first partner should be displayed");
-
-        this.actions[1].studioNavigation = true;  // is normally set by the webclient
-        await actionManager.doAction(2);  // favourite ponies
-
-        rpcs = ['/web/action/load'];
-        assert.verifySteps(rpcs, "should not have done any extra rpc for the new action");
-
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getLastAction(),
-        });
-
-        rpcs = [
-            '/web_studio/activity_allowed',
-            '/web_studio/get_studio_view_arch',
-            '/web/dataset/call_kw/pony',  // load_views with studio in context
-            '/web/dataset/search_read',
-        ];
-        assert.verifySteps(rpcs, "should have opened the navigated action in Studio");
-
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_list_view_editor',
-            "the list view should be opened");
-        assert.strictEqual(actionManager.$('.o_list_view .o_data_cell').text(), "Twilight SparkleApplejackFluttershy",
-            "the list of ponies should be correctly displayed");
-
-        this.actions[1].studioNavigation = false;
-        await actionManager.restoreStudioAction();  // simulate leaving Studio
-
-        rpcs = [
-            '/web/action/load',
-            '/web/dataset/call_kw/pony',  // load_views
-            '/web/dataset/search_read',
-        ];
-        assert.verifySteps(rpcs, "should have reloaded the previous action edited by Studio");
-
-        assert.containsNone(actionManager, '.o_web_studio_client_action',
-            "Studio should be closed");
-        assert.containsOnce(actionManager, '.o_list_view',
-            "the list view should be opened");
-        assert.strictEqual(actionManager.$('.o_list_view .o_data_cell').text(), "Twilight SparkleApplejackFluttershy",
-            "the list of ponies should be correctly displayed");
-
-        actionManager.destroy();
-    });
-
-    QUnit.test('keep action context when leaving Studio', async function (assert) {
-        assert.expect(2);
-
-        this.actions[0].context = "{'active_id': 1}";
-        var nbLoadAction = 0;
-
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                } else if (route === '/web/action/load') {
-                    nbLoadAction++;
-                    if (nbLoadAction === 2) {
-                        assert.deepEqual(args.additional_context, {
-                            active_id: 1,
-                        }, "the context should be correctly passed when leaving Studio");
-                    }
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        await actionManager.doAction(1);  // open a act_window_action
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-        });
-        bus.trigger('studio_toggled', 'main');
-        await actionManager.restoreStudioAction();  // simulate leaving Studio
-        assert.strictEqual(nbLoadAction, 2, "the action should have been loaded twice");
-        actionManager.destroy();
-    });
-
-    QUnit.test('open same record when leaving form', async function (assert) {
-        assert.expect(3);
-
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route) {
-                if (route === '/web_studio/chatter_allowed') {
-                    return Promise.resolve(true);
-                }
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        await actionManager.doAction(2);  // open a act_window_action
-        await testUtils.dom.click(actionManager.$('.o_list_view tbody tr:first td:contains(Twilight Sparkle)'));
-
-        var action = actionManager.getCurrentAction();
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: action,
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-            viewType: 'form',  // is normally set by the webclient
-        });
-        bus.trigger('studio_toggled', 'main');
-        await testUtils.nextTick();
-
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
-            "the form view should be opened");
-        await actionManager.restoreStudioAction();  // simulate leaving Studio
-        assert.containsOnce(actionManager, '.o_form_view',
-            "the form view should be opened");
-        assert.strictEqual(actionManager.$('.o_form_view span:contains(Twilight Sparkle)').length, 1,
-            "should have open the same record");
-
-        actionManager.destroy();
-    });
-
-    QUnit.test('open Studio with non editable view', async function (assert) {
-        assert.expect(1);
-
-        this.actions.push({
-            id: 42,
-            name: 'Partners Action 42',
-            res_model: 'partner',
-            type: 'ir.actions.act_window',
-            views: [[42, 'grid'], [2, 'list'], [false, 'form']],
-        });
-        this.archs['partner,42,grid'] = '<grid>' +
-                '<field name="foo" type="row"/>' +
-                '<field name="id" type="measure"/>' +
-                '<field name="date" type="col">' +
-                    '<range name="week" string="Week" span="week" step="day"/>' +
-                '</field>' +
-            '</grid>';
-
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-        });
-
-        await actionManager.doAction(42);
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-        });
-
-        assert.containsOnce(actionManager, '.o_web_studio_action_editor',
-            "action editor should be opened (grid is not editable)");
-
-        actionManager.destroy();
-    });
-
-    QUnit.test('open list view with sample data gives empty list view in studio', async function (assert) {
-        assert.expect(2);
-
-        this.data.partner.records = [];
-        this.data.pony.records = [];
-        this.archs['pony,false,list'] = `<tree sample="1"><field name="name"/></tree>`;
-
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route) {
-                if (route === '/web_studio/chatter_allowed') {
-                    return Promise.resolve(true);
-                }
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        await actionManager.doAction(2);
-        assert.ok(
+        assert.verifySteps(
             [
-                ...actionManager.el.querySelectorAll(
-                    '.o_list_table .o_data_row'
-                )
-            ].length > 0,
-            'there should be some sample data in the list view'
+                "/web/webclient/load_menus",
+                "/web/action/load",
+                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/search_read",
+            ],
+            "should have loaded the action"
         );
 
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-        });
-        bus.trigger('studio_toggled', 'main');
-        await testUtils.nextTick();
+        await openStudio(webClient);
 
-        assert.containsNone(
-            actionManager,
-            '.o_list_table .o_data_row',
-            'the list view should not contain any data'
+        assert.verifySteps(
+            [
+                "/web_studio/activity_allowed",
+                "/web_studio/get_studio_view_arch",
+                "/web/dataset/call_kw/partner", // load_views with studio in context
+                "/web/dataset/search_read",
+            ],
+            "should have opened the action in Studio"
         );
 
-        actionManager.destroy();
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_kanban_view_editor",
+            "the kanban view should be opened"
+        );
+        assert.strictEqual(
+            $(webClient.el).find(".o_kanban_record:contains(yop)").length,
+            1,
+            "the first partner should be displayed"
+        );
+
+        await testUtils.dom.click(webClient.el.querySelector(".o_studio_navbar .o_menu_toggle"));
+
+        assert.containsOnce(webClient, ".o_studio_home_menu");
+
+        // open app Ponies (act window action)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_2]"));
+        await legacyExtraNextTick();
+
+        assert.verifySteps(
+            [
+                "/web/action/load",
+                "/web_studio/activity_allowed",
+                "/web_studio/get_studio_view_arch",
+                "/web/dataset/call_kw/pony", // load_views with studio in context
+                "/web/dataset/search_read",
+            ],
+            "should have opened the navigated action in Studio"
+        );
+
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_list_view_editor",
+            "the list view should be opened"
+        );
+        assert.strictEqual(
+            $(webClient.el).find(".o_list_view .o_data_cell").text(),
+            "Twilight SparkleApplejackFluttershy",
+            "the list of ponies should be correctly displayed"
+        );
+
+        await leaveStudio(webClient);
+
+        assert.verifySteps(
+            [
+                "/web/action/load",
+                "/web/dataset/call_kw/pony/load_views",
+                "/web/dataset/search_read",
+            ],
+            "should have reloaded the previous action edited by Studio"
+        );
+
+        assert.containsNone(webClient, ".o_web_studio_client_action", "Studio should be closed");
+        assert.containsOnce(webClient, ".o_list_view", "the list view should be opened");
+        assert.strictEqual(
+            $(webClient.el).find(".o_list_view .o_data_cell").text(),
+            "Twilight SparkleApplejackFluttershy",
+            "the list of ponies should be correctly displayed"
+        );
     });
 
-    QUnit.test('open Studio with editable form view and check context propagation', async function (assert) {
+    QUnit.test("keep action context when leaving Studio", async function (assert) {
         assert.expect(5);
 
-        this.actions.push({
-            id: 43,
-            name: 'Pony Action 43',
-            res_model: 'pony',
-            type: 'ir.actions.act_window',
-            views: [[false, 'form']],
-            context: "{'default_type': 'foo'}",
-            res_id: 4,
+        let nbLoadAction = 0;
+        const mockRPC = async (route, args) => {
+            if (route === "/web/action/load") {
+                nbLoadAction++;
+                if (nbLoadAction === 2) {
+                    assert.strictEqual(
+                        args.additional_context.active_id,
+                        1,
+                        "the context should be correctly passed when leaving Studio"
+                    );
+                }
+            }
+        };
+        serverData.actions[4].context = "{'active_id': 1}";
+
+        const webClient = await createEnterpriseWebClient({
+            serverData,
+            mockRPC,
         });
+        // open app Partners (act window action)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
 
+        assert.containsOnce(webClient, ".o_kanban_view");
 
-        const { widget: actionManager } = await start({
-            hasActionManager: true,
-            actions: this.actions,
-            archs: this.archs,
-            data: this.data,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/chatter_allowed') {
-                    return Promise.resolve(true);
-                }
-                if (route === '/web_studio/get_studio_view_arch') {
-                    return Promise.resolve();
-                }
-                if (route === '/web/dataset/call_kw/pony/read') {
-                    assert.strictEqual(args.kwargs.context.hasOwnProperty("default_type"), true,
-                    "'default_type' context value should be available")
-                }
-                if (route === '/web/dataset/call_kw/partner/onchange') {
-                    assert.strictEqual(args.kwargs.context.hasOwnProperty("default_type"), false,
-                    "'default_x' context value should not be propaged to x2m model")
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
+        await openStudio(webClient);
 
-        await actionManager.doAction(43);
-        await actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            controllerState: actionManager.getCurrentController().widget.exportState(),
-            viewType: 'form',
-        });
+        assert.containsOnce(webClient, ".o_web_studio_kanban_view_editor");
 
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
-            "the form view should be opened");
+        await leaveStudio(webClient);
 
-        await testUtils.dom.click(actionManager.$('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click(actionManager.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
-
-        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
-            "the form view should be opened");
-
-        actionManager.destroy();
+        assert.containsOnce(webClient, ".o_kanban_view");
+        assert.strictEqual(nbLoadAction, 2, "the action should have been loaded twice");
     });
 
-});
-});
+    QUnit.test("open same record when leaving form", async function (assert) {
+        assert.expect(5);
 
+        const webClient = await createEnterpriseWebClient({ serverData });
+        // open app Ponies (act window action)
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_2]"));
+        await legacyExtraNextTick();
+
+        assert.containsOnce(webClient, ".o_list_view");
+
+        await testUtils.dom.click(
+            $(webClient.el).find(".o_list_view tbody tr:first td:contains(Twilight Sparkle)")
+        );
+        await legacyExtraNextTick();
+
+        assert.containsOnce(webClient, ".o_form_view");
+
+        await openStudio(webClient);
+
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_client_action .o_web_studio_form_view_editor",
+            "the form view should be opened"
+        );
+
+        await leaveStudio(webClient);
+        assert.containsOnce(webClient, ".o_form_view", "the form view should be opened");
+        assert.strictEqual(
+            $(webClient.el).find(".o_form_view span:contains(Twilight Sparkle)").length,
+            1,
+            "should have open the same record"
+        );
+    });
+
+    QUnit.test("open Studio with non editable view", async function (assert) {
+        assert.expect(2);
+
+        serverData.menus[99] = {
+            id: 9,
+            children: [],
+            name: "Action with Grid view",
+            appID: 9,
+            actionID: 99,
+            xmlid: "app_9",
+        };
+        serverData.menus.root.children.push(99);
+        serverData.actions[99] = {
+            id: 99,
+            xml_id: "some.xml_id",
+            name: "Partners Action 99",
+            res_model: "partner",
+            type: "ir.actions.act_window",
+            views: [
+                [42, "grid"],
+                [2, "list"],
+                [false, "form"],
+            ],
+        };
+        serverData.views["partner,42,grid"] = `
+            <grid>
+                <field name="foo" type="row"/>
+                <field name="id" type="measure"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                </field>
+            </grid>`;
+
+        const webClient = await createEnterpriseWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
+        });
+        await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_9]"));
+        await legacyExtraNextTick();
+
+        assert.containsOnce(webClient, ".o_grid_view");
+
+        await openStudio(webClient);
+
+        assert.containsOnce(
+            webClient,
+            ".o_web_studio_action_editor",
+            "action editor should be opened (grid is not editable)"
+        );
+    });
+
+    QUnit.test(
+        "open list view with sample data gives empty list view in studio",
+        async function (assert) {
+            assert.expect(2);
+
+            serverData.models.pony.records = [];
+            serverData.views["pony,false,list"] = `<tree sample="1"><field name="name"/></tree>`;
+
+            const webClient = await createEnterpriseWebClient({
+                serverData,
+            });
+            // open app Ponies (act window action)
+            await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_2]"));
+            await legacyExtraNextTick();
+
+            assert.ok(
+                [...webClient.el.querySelectorAll(".o_list_table .o_data_row")].length > 0,
+                "there should be some sample data in the list view"
+            );
+
+            await openStudio(webClient);
+
+            assert.containsNone(
+                webClient,
+                ".o_list_table .o_data_row",
+                "the list view should not contain any data"
+            );
+        }
+    );
+
+    QUnit.test(
+        "open Studio with editable form view and check context propagation",
+        async function (assert) {
+            assert.expect(7);
+
+            serverData.menus[43] = {
+                id: 43,
+                children: [],
+                name: "Form with context",
+                appID: 43,
+                actionID: 43,
+                xmlid: "app_43",
+            };
+            serverData.menus.root.children.push(43);
+            serverData.actions[43] = {
+                id: 43,
+                name: "Pony Action 43",
+                res_model: "pony",
+                type: "ir.actions.act_window",
+                views: [[false, "form"]],
+                context: "{'default_type': 'foo'}",
+                res_id: 4,
+                xml_id: "action_43",
+            };
+
+            const mockRPC = async (route, args) => {
+                if (route === "/web/dataset/call_kw/pony/read") {
+                    // We pass here twice: once for the "classic" action
+                    // and once when entering studio
+                    assert.strictEqual(args.kwargs.context.default_type, "foo");
+                }
+                if (route === "/web/dataset/call_kw/partner/onchange") {
+                    assert.ok(
+                        !("default_type" in args.kwargs.context),
+                        "'default_x' context value should not be propaged to x2m model"
+                    );
+                }
+            };
+
+            const webClient = await createEnterpriseWebClient({
+                serverData,
+                mockRPC,
+            });
+            await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_43]"));
+            await legacyExtraNextTick();
+
+            assert.containsOnce(webClient, ".o_form_view");
+
+            await openStudio(webClient);
+
+            assert.containsOnce(
+                webClient,
+                ".o_web_studio_client_action .o_web_studio_form_view_editor",
+                "the form view should be opened"
+            );
+
+            await testUtils.dom.click(
+                webClient.el.querySelector(".o_web_studio_form_view_editor .o_field_one2many")
+            );
+            await testUtils.dom.click(
+                webClient.el.querySelector(
+                    '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+                )
+            );
+
+            assert.containsOnce(
+                webClient,
+                ".o_web_studio_client_action .o_web_studio_form_view_editor",
+                "the form view should be opened"
+            );
+        }
+    );
+
+    QUnit.module("Report Editor", (hooks) => {
+        hooks.beforeEach(() => {
+            serverData.models["ir.actions.report"] = {
+                fields: {
+                    model: { type: "char", string: "Model" },
+                },
+                records: [
+                    {
+                        id: 1,
+                        display_name: "report1",
+                        model: "partner",
+                    },
+                ],
+            };
+
+            serverData.models["ir.model"] = {
+                fields: {},
+                records: [],
+            };
+
+            Object.assign(serverData.views, {
+                "ir.actions.report,false,kanban": `
+          <kanban class="o_web_studio_report_kanban" js_class="studio_report_kanban">
+            <field name="display_name"/>
+            <templates>
+              <t t-name="kanban-box">
+                <div class="oe_kanban_global_click">
+                  <t t-esc="record.display_name.value" />
+                </div>
+              </t>
+            </templates>
+         </kanban>
+        `,
+
+                "ir.actions.report,false,form": `<form><field name="display_name" /></form>`,
+                "ir.actions.report,false,search": `<search><field name="display_name" /></search>`,
+            });
+        });
+
+        QUnit.skip("LPE DUMMY", async (assert) => {
+            const mockRPC = (route, args) => {
+                if (route === "/web_studio/get_studio_action") {
+                    // #1 : assert action_name is "report"
+                }
+                if (
+                    route === "/web/dataset/call_kw/ir.actions.report/search_read" ||
+                    (args.model === "ir.actions.report" && args.method === "search_read") ||
+                    (route === "/web/dataset/search_read" && args.model === "ir.actions.report")
+                ) {
+                    assert.step("ir.actions.report search_read");
+                    // assert all args are correct, in particular context.studio and domain
+                }
+                if (route === "/web/dataset/call_kw/ir.actions.report/read") {
+                    // assert all args are correct, in particular context.studio
+                }
+                if (route === "/web/dataset/call_kw/ir.model/search_read") {
+                    // assert all args are correct, in particular context.studio
+                }
+
+                if (route === "/web/dataset/call_kw/partner/search") {
+                    // LPE fill in report model
+                    // assert all args are correct, in particular context.studio
+                }
+                // '/web_studio/get_widgets_available_options'
+                // /web_studio/get_report_views'
+                // '/web_studio/read_paperformat'
+                // /web_studio/create_new_report not in this test though
+            };
+            const webClient = await createEnterpriseWebClient({
+                serverData,
+                mockRPC,
+            });
+            await legacyExtraNextTick();
+            await openStudio(webClient);
+            await testUtils.dom.click(webClient.el.querySelector(".o_studio .o_app.o_menuitem"));
+            await testUtils.dom.click(
+                webClient.el.querySelectorAll(
+                    ".o_studio .o_menu_sections .o_web_studio_menu_item"
+                )[1]
+            ); // the 2nd should be record
+            await legacyExtraNextTick();
+            assert.verifySteps(["ir.actions.report search_read"]);
+            // assert step get_studio_action with report ; step actions.report.search_read (kanban open ONCE !)
+            // asset kanban report is present
+            // assert one record present
+            await testUtils.dom.click(webClient.el.querySelector(".o_studio .o_kanban_record"));
+            // steps actions.report.read() ; irmodel.search_read() ; [report_model].search ; available_options ; report_views ; PaperFormat
+            // assert report_editor in DOM
+            // assert iframe loaded
+            // assert studio breadcrumb
+            assert.verifySteps([]);
+
+            //await new Promise(() => {});
+        });
+    });
 });

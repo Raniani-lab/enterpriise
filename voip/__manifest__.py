@@ -25,7 +25,6 @@ Allows to make call from next activities or with click-to-dial.
         'views/res_partner_views.xml',
         'views/res_users_views.xml',
         'views/voip_phonecall_views.xml',
-        'data/mail_activity_data.xml',
     ],
     'application': True,
     'license': 'OEEL-1',

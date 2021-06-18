@@ -23,14 +23,14 @@
     </record>
 
     <record id="helpdesk_tag_action" model="ir.actions.act_window">
-        <field name="name">Ticket Tags</field>
+        <field name="name">Tags</field>
         <field name="res_model">helpdesk.tag</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
             No tags found. Let's create one!
           </p><p>
-            Tags are perfect to organize your tickets.
+            Tags are perfect for organizing your tickets.
           </p>
         </field>
     </record>
@@ -52,14 +52,14 @@
     </record>
 
     <record id="helpdesk_ticket_type_action" model="ir.actions.act_window">
-        <field name="name">Ticket Type</field>
+        <field name="name">Types</field>
         <field name="res_model">helpdesk.ticket.type</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
             No types found. Let's create one!
           </p><p>
-            Types are perfect to categorize your tickets.
+            Types are perfect for categorizing your tickets.
           </p>
         </field>
     </record>
@@ -75,8 +75,10 @@
             <tree string="Stage" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="is_close"/>
-                <field name="team_ids" widget="many2many_tags" optional="show"/>
+                <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
+                <field name="template_id" options="{'no_create': True}" optional="hide"/>
+                <field name="is_close" optional="hide"/>
+                <field name="fold" optional="show"/>
             </tree>
         </field>
     </record>
@@ -122,21 +124,24 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="sequence" groups="base.group_no_one"/>
-                            <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="template_id" options="{'no_create': True}"/>
+                            <field name="sequence" groups="base.group_no_one"/>
                         </group>
                         <group>
                             <field name="is_close"/>
                             <field name="fold"/>
+                            <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </group>
-                    <group string="Stage Description and Tooltips">
+                    <group string="Stage Description and States Meaning">
                         <group>
+                            <p class="text-muted mt-2" colspan="2">
+                                Add a description to help your coworkers understand the meaning and purpose of the stage.
+                            </p>
+                            <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
                             <p class="text-muted" colspan="2">
-                                At each stage employees can block or make task/issue ready for next stage.
-                                You can define here labels that will be displayed for the state instead
-                                of the default labels.
+                                At each stage, employees can block tickets or mark them as ready for the next step.
+                                You can customize the meaning of each state.
                             </p>
                             <div class="row ml-1" colspan="2">
                                 <label for="legend_normal" string=" " class="o_status mt4"
@@ -157,10 +162,6 @@
                                 <field name="legend_done" class="col-11 pl-0" nolabel="1"/>
                             </div>
 
-                            <p class="text-muted mt-2" colspan="2">
-                                You can also add a description to help your coworkers understand the meaning and purpose of the stage.
-                            </p>
-                            <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
                         </group>
                     </group>
                 </sheet>
@@ -177,7 +178,7 @@
           <p class="o_view_nocontent_smiling_face">
             No stages found. Let's create one!
           </p><p>
-            Adapt your pipeline to your workflow and easily track the progress of your tickets.
+            Adapt your pipeline to your workflow and track the progress of your tickets.
           </p>
         </field>
     </record>
@@ -192,9 +193,14 @@
         <field name="arch" type="xml">
             <tree string="SLA Policies" multi_edit="1" sample="1">
                 <field name="name"/>
-                <field name="team_id"/>
-                <field name="active"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="team_id" optional="show"/>
+                <field name="priority" optional="show" widget="priority"/>
+                <field name="ticket_type_id" optional="show"/>
+                <field name="tag_ids" widget="many2many_tags" optional="hide" options="{'color_field': 'color'}"/>
+                <field name="partner_ids" widget="many2many_tags" optional="hide"/>
+                <field name="stage_id" optional="show" string="Reach Stage"/>
+                <field name="time_text" optional="show"/>
+                <field name="exclude_stage_ids" widget="many2many_tags" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -240,20 +246,22 @@
                 <sheet>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
-                        <label for="name"/>
                         <h1>
                             <field name="name" placeholder="e.g. Close urgent tickets within 36 hours"/>
                         </h1>
                     </div>
+                    <field name="description" placeholder="Description of the policy..."/>
                     <group>
                         <group>
                             <field name="active" invisible="1"/>
-                            <separator colspan="2" string="Apply on"/>
+                            <field name="company_id" invisible="1"/>
+                            <separator colspan="2" string="Criteria"/>
                             <field name="team_id" domain="[('use_sla', '=', True)]"/>
                             <field name="priority" widget="priority"/>
                             <field name="ticket_type_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="partner_ids" widget="many2many_tags"/>
+                            <field name="partner_ids" widget="many2many_tags"
+                                domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
 
                             <separator colspan="2" string="Target" class="mt32"/>
                             <field name="target_type" widget="radio"/>
@@ -263,7 +271,7 @@
                             </div>
                             <field name="stage_id" nolabel="1" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" attrs="{'required': [('target_type', '=', 'stage')]}"/>
                             <div class="o_td_label">
-                                <label for="time_days" string="Reach In" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
+                                <label for="time_days" string="In" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
                                 <label for="time_days" string="Within" attrs="{'invisible': [('target_type', '=', 'stage')]}"/>
                             </div>
                             <div class="o_row">
@@ -274,7 +282,6 @@
                             <field name="exclude_stage_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('id', '!=', stage_id), ('team_ids', '=', team_id)]" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
                         </group>
                     </group>
-                    <field name="description" placeholder="Description of the policy..."/>
                 </sheet>
             </form>
         </field>
@@ -286,9 +293,9 @@
         <field name="view_mode">tree,form,kanban</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-                No SLA policies found. Let's create one! 
-            </p><p> 
-                Make sure tickets are handled in a timely manner by using SLA Policies.<br/>
+                No SLA policies found. Let's create one!
+            </p><p>
+                Make sure tickets are handled on time by using SLA Policies.<br/>
             </p>
         </field>
     </record>

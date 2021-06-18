@@ -492,7 +492,7 @@ class HelpdeskStage(models.Model):
             return [(4, team_id, 0)]
 
     active = fields.Boolean(default=True)
-    name = fields.Char('Stage Name', required=True, translate=True)
+    name = fields.Char(required=True, translate=True)
     description = fields.Text(translate=True)
     sequence = fields.Integer('Sequence', default=10)
     is_close = fields.Boolean(
@@ -503,7 +503,7 @@ class HelpdeskStage(models.Model):
         'Folded in Kanban',
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     team_ids = fields.Many2many(
-        'helpdesk.team', relation='team_stage_rel', string='Team',
+        'helpdesk.team', relation='team_stage_rel', string='Helpdesk Teams',
         default=_default_team_ids,
         help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
     template_id = fields.Many2one(
@@ -542,13 +542,13 @@ class HelpdeskSLA(models.Model):
     _order = "name"
     _description = "Helpdesk SLA Policies"
 
-    name = fields.Char('SLA Policy Name', required=True, index=True)
+    name = fields.Char(required=True, index=True)
     description = fields.Html('SLA Policy Description')
     active = fields.Boolean('Active', default=True)
-    team_id = fields.Many2one('helpdesk.team', 'Team', required=True)
+    team_id = fields.Many2one('helpdesk.team', 'Helpdesk Team', required=True)
     target_type = fields.Selection([('stage', 'Reaching Stage'), ('assigning', 'Assigning Ticket')], default='stage', required=True)
     ticket_type_id = fields.Many2one(
-        'helpdesk.ticket.type', "Ticket Type",
+        'helpdesk.ticket.type', "Type",
         help="Only apply the SLA to a specific ticket type. If left empty it will apply to all types.")
     tag_ids = fields.Many2many(
         'helpdesk.tag', string='Tags',
@@ -557,7 +557,7 @@ class HelpdeskSLA(models.Model):
         'helpdesk.stage', 'Target Stage',
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
     exclude_stage_ids = fields.Many2many(
-        'helpdesk.stage', string='Exclude Stages',
+        'helpdesk.stage', string='Excluding Stages',
         compute='_compute_exclude_stage_ids', store=True, readonly=False, copy=True,
         domain="[('id', '!=', stage_id.id)]",
         help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
@@ -578,6 +578,7 @@ class HelpdeskSLA(models.Model):
     time_minutes = fields.Integer(
         'Minutes', default=0, inverse='_inverse_time_minutes', required=True,
         help="Minutes to reach given stage based on ticket creation date")
+    time_text = fields.Char(compute='_compute_time_text', string='In')
 
     @api.depends('target_type')
     def _compute_exclude_stage_ids(self):
@@ -598,3 +599,10 @@ class HelpdeskSLA(models.Model):
             if sla.time_minutes >= 60:
                 sla.time_hours += sla.time_minutes / 60
                 sla.time_minutes = sla.time_minutes % 60
+
+    @api.depends_context('lang')
+    @api.depends('time_days', 'time_hours', 'time_minutes')
+    def _compute_time_text(self):
+        for sla in self:
+            sla.time_text = _('%s days, %s hours and %s minutes',
+                sla.time_days, sla.time_hours, sla.time_minutes)

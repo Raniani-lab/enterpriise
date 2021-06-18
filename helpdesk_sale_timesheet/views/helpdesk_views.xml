@@ -106,4 +106,15 @@
         </field>
     </record>
 
+    <record id="helpdesk_sla_view_tree_inherit_sale_timesheet" model="ir.ui.view">
+        <field name="name">helpdesk.sla.tree.inherit.sale.timesheet</field>
+        <field name="model">helpdesk.sla</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ids']" position="after">
+                <field name="sale_line_ids" widget="many2many_tags" optional="hide"
+                    options="{'no_create_edit': True, 'no_create': True}" groups="sales_team.group_sale_salesman"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

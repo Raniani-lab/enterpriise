@@ -25,7 +25,7 @@ class HelpdeskTag(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
-    name = fields.Char('Tag Name', required=True)
+    name = fields.Char(required=True)
     color = fields.Integer('Color', default=_get_default_color)
 
     _sql_constraints = [
@@ -38,7 +38,7 @@ class HelpdeskTicketType(models.Model):
     _description = 'Helpdesk Ticket Type'
     _order = 'sequence'
 
-    name = fields.Char('Type', required=True, translate=True)
+    name = fields.Char(required=True, translate=True)
     sequence = fields.Integer(default=10)
 
     _sql_constraints = [

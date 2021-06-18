@@ -180,7 +180,7 @@ export const studioService = {
                 options.additionalContext = state.editedAction.context;
                 options.viewType = state.editedViewType;
                 if (state.editedControllerState) {
-                    options.resId = state.editedControllerState.currentId;
+                    options.props = { resId: state.editedControllerState.currentId };
                 }
             } else {
                 actionId = "menu";

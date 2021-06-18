@@ -9,23 +9,20 @@
                 <attribute name="invisible">True</attribute>
             </field>
             <xpath expr="//notebook/page[@name='contract_history']//tree/field[@name='wage']" position="replace">
-                <field name="wage_with_holidays" string="Wage"/>
-                <field name="final_yearly_costs" widget="monetary"/>
-                <field name="monthly_yearly_costs" widget="monetary"/>
+                <field name="wage_with_holidays" string="Monthly Wage"/>
+                <field name="monthly_yearly_costs" string="Monthly Cost" widget="monetary"/>
+                <field name="final_yearly_costs" string="Yearly Cost" widget="monetary"/>
             </xpath>
-            <field name="wage" position="after">
+            <field name="job_id" position="after">
                 <field name="reference_yearly_cost" optional="hide"/>
                 <field name="reference_monthly_wage" optional="hide"/>
             </field>
-            <field name="job_id" position="after">
+            <field name="resource_calendar_id" position="after">
                 <field name="contract_type_id"/>
             </field>
             <field name="hr_responsible_id" position="after">
                 <field name="contract_update_template_id"/>
             </field>
-            <xpath expr="//header/button[@name='action_sign_contract_wizard']" position="before">
-                <button name="action_generate_simulation_link" type="object" string="Generate Simulation Link" attrs="{'invisible': [('contract_id', '=', False)]}"/>
-            </xpath>
         </field>
     </record>
     <record id="hr_contract_history_view_list" model="ir.ui.view">

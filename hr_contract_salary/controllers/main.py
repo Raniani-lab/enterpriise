@@ -282,7 +282,7 @@ class HrContractSalary(http.Controller):
         personal_infos = request.env['hr.contract.salary.personal.info'].sudo().search([
             '|',
             ('structure_type_id', '=', False),
-            ('structure_type_id', '=', contract.structure_type_id.id)])
+            ('structure_type_id', '=', contract.structure_type_id.id)]).sorted(lambda info: (info.info_type_id.sequence, info.sequence))
         mapped_personal_infos = [
             defaultdict(lambda: request.env['hr.contract.salary.personal.info']), # Main Panel
             request.env['hr.contract.salary.personal.info'], # Side Panel
@@ -317,7 +317,7 @@ class HrContractSalary(http.Controller):
                 elif personal_info.dropdown_selection == 'country':
                     values = [(country.id, country.name) for country in countries]
                 elif personal_info.dropdown_selection == 'state':
-                    values = [(state.id, state.name) for state in states]
+                    values = [(state.id, state.name, state.country_id.id) for state in states]
                 elif personal_info.dropdown_selection == 'lang':
                     values = [(lang.code, lang.name) for lang in langs]
                 dropdown_options[personal_info.field] = values
@@ -572,11 +572,13 @@ class HrContractSalary(http.Controller):
         for resume_line in resume_lines - monthly_total_lines:
             value = 0
             uom = uoms[resume_line.uom]
+            resume_explanation = False
             if resume_line.value_type == 'fixed':
                 value = resume_line.fixed_value
             if resume_line.value_type == 'contract':
                 value = new_contract[resume_line.code] if resume_line.code in new_contract else 0
             if resume_line.value_type == 'sum':
+                resume_explanation = _('Equals to the sum of the following values:\n\n%s', '\n+ '.join(resume_line.advantage_ids.res_field_id.mapped('field_description')))
                 for advantage in resume_line.advantage_ids:
                     if not advantage.fold_field or (advantage.fold_field and new_contract[advantage.fold_field]):
                         field = advantage.field
@@ -587,9 +589,9 @@ class HrContractSalary(http.Controller):
                 value = round(float(value), 2)
             except:
                 pass
-            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, uom)
+            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, uom, resume_explanation)
         for resume_line in monthly_total_lines:
-            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, round(float(monthly_total), 2), uoms['currency'])
+            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, round(float(monthly_total), 2), uoms['currency'], resume_explanation)
         return result
 
     @http.route(['/salary_package/onchange_advantage/'], type='json', auth='public')

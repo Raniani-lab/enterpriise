@@ -6,7 +6,7 @@
 
     <menuitem
         id="menu_hr_payroll_employees_root"
-        name="Employees"
+        name="Contracts"
         parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
         sequence="50"
         groups="hr_payroll.group_hr_payroll_user"/>
@@ -34,26 +34,15 @@
 
     <!-- **** Employees **** -->
     <menuitem
-        id="menu_hr_payroll_employees_configuration"
-        action="hr.open_view_employee_list_my"
-        parent="menu_hr_payroll_employees_root"
-        sequence="10"/>
-
-    <menuitem
         id="menu_hr_payroll_contracts_configuration"
+        name="Employees"
         action="hr_contract.hr_contract_history_view_list_action"
         parent="menu_hr_payroll_employees_root"
         sequence="20"/>
 
     <menuitem
-        id="menu_hr_payroll_contracts_to_review"
-        action="hr_contract.hr_contract_history_to_review_view_list_action"
-        parent="menu_hr_payroll_employees_root"
-        sequence="25"/>
-
-    <menuitem
         id="hr_menu_all_contracts"
-        name="All Contracts"
+        name="Contracts"
         action="hr_contract.action_hr_contract"
         parent="menu_hr_payroll_employees_root"
         sequence="30"/>

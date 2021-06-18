@@ -9,10 +9,10 @@ class ContractHistory(models.Model):
 
     default_contract_id = fields.Many2one('hr.contract', string='Contract Template', readonly=True,
         help='Default contract used when making an offer to an applicant.')
-    reference_yearly_cost = fields.Monetary('Reference Yearly Cost',
+    reference_yearly_cost = fields.Monetary('Yearly Cost',
         compute='_compute_reference_data',
         help='Total yearly cost of the employee for the employer.')
-    reference_monthly_wage = fields.Monetary('Reference Monthly Wage',
+    reference_monthly_wage = fields.Monetary('Monthly Wage',
         compute='_compute_reference_data',
         help='Wage update with holidays retenues')
     sign_template_id = fields.Many2one('sign.template', string='New Contract Document Template',
@@ -28,9 +28,3 @@ class ContractHistory(models.Model):
         for history in self:
             history.reference_monthly_wage = mapped_employee_contract[history.employee_id].wage_with_holidays
             history.reference_yearly_cost = mapped_employee_contract[history.employee_id].final_yearly_costs
-
-    def action_generate_simulation_link(self):
-        self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id('hr_contract_salary.generate_simulation_link_action')
-        action['context'] = {'active_id': self.contract_id.id, 'active_model': 'hr.contract'}
-        return action

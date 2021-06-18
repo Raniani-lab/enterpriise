@@ -12,7 +12,7 @@ from werkzeug.urls import url_encode
 
 class GenerateSimulationLink(models.TransientModel):
     _name = 'generate.simulation.link'
-    _description = 'Gamification Simulation Link'
+    _description = 'Generate Simulation Link'
 
     @api.model
     def default_get(self, fields):
@@ -52,12 +52,16 @@ class GenerateSimulationLink(models.TransientModel):
             ('employee_id', '=', False),
             ('employee_id', '=', self.employee_contract_id.employee_id.id)]
 
-    contract_id = fields.Many2one('hr.contract', string="Contract Template", required=True, store=True,
+    contract_id = fields.Many2one(
+        'hr.contract', string="Offer Template", required=True, store=True,
         domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_contract_employee_id)]")
     employee_contract_id = fields.Many2one('hr.contract')
     employee_contract_employee_id = fields.Many2one(related='employee_contract_id.employee_id', string="contract employee")
     employee_id = fields.Many2one('hr.employee')
-    final_yearly_costs = fields.Float(string="Employee Budget", compute='_compute_from_contract_id', readonly=False, store=True, required=True)
+    final_yearly_costs = fields.Monetary(
+        string="Yearly Cost", required=True,
+        compute='_compute_from_contract_id', readonly=False, store=True)
+    currency_id = fields.Many2one(related='contract_id.currency_id')
     applicant_id = fields.Many2one('hr.applicant')
     job_title = fields.Char("Job Title", compute='_compute_from_contract_id', store=True, readonly=False)
     contract_start_date = fields.Date("Contract Start Date", default=fields.Date.context_today)
@@ -65,7 +69,7 @@ class GenerateSimulationLink(models.TransientModel):
     contract_start_date = fields.Date()
 
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
-    url = fields.Char('Simulation link', compute='_compute_url')
+    url = fields.Char('Offer link', compute='_compute_url')
 
     @api.depends('employee_id.address_home_id.email', 'applicant_id.email_from')
     def _compute_email_to(self):

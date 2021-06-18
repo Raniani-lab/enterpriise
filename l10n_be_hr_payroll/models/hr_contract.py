@@ -32,44 +32,56 @@ class HrContract(models.Model):
     company_car_total_depreciated_cost = fields.Monetary()
     private_car_reimbursed_amount = fields.Monetary(compute='_compute_private_car_reimbursed_amount')
     km_home_work = fields.Integer(related="employee_id.km_home_work", related_sudo=True, readonly=False)
-    train_transport_reimbursed_amount = fields.Monetary(string='Train Transport Reimbursed amount',
+    train_transport_reimbursed_amount = fields.Monetary(
+        string='Train Transport Reimbursed amount',
         compute='_compute_train_transport_reimbursed_amount', readonly=False, store=True)
-    public_transport_reimbursed_amount = fields.Monetary(string='Public Transport Reimbursed amount',
+    public_transport_reimbursed_amount = fields.Monetary(
+        string='Public Transport Reimbursed amount',
         compute='_compute_public_transport_reimbursed_amount', readonly=False, store=True)
     warrants_cost = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly cost for the employer")
     yearly_commission = fields.Monetary(compute='_compute_commission_cost')
     yearly_commission_cost = fields.Monetary(compute='_compute_commission_cost')
 
     # Advantages
-    commission_on_target = fields.Monetary(string="Commission",
+    commission_on_target = fields.Monetary(
+        string="Commission",
         tracking=True,
         help="Monthly gross amount that the employee receives if the target is reached.")
-    fuel_card = fields.Monetary(string="Fuel Card",
+    fuel_card = fields.Monetary(
+        string="Fuel Card",
         tracking=True,
         help="Monthly amount the employee receives on his fuel card.")
-    internet = fields.Monetary(string="Internet",
+    internet = fields.Monetary(
+        string="Internet Subscription",
         tracking=True,
         help="The employee's internet subcription will be paid up to this amount.")
-    representation_fees = fields.Monetary(string="Expense Fees",
+    representation_fees = fields.Monetary(
+        string="Expense Fees",
         tracking=True,
         help="Monthly net amount the employee receives to cover his representation fees.")
-    mobile = fields.Monetary(string="Mobile",
+    mobile = fields.Monetary(
+        string="Mobile Subscription",
         tracking=True,
         help="The employee's mobile subscription will be paid up to this amount.")
-    has_laptop = fields.Boolean(string="Laptop",
+    has_laptop = fields.Boolean(
+        string="Laptop",
         tracking=True,
         help="A benefit in kind is paid when the employee uses its laptop at home.")
-    meal_voucher_amount = fields.Monetary(string="Meal Vouchers",
+    meal_voucher_amount = fields.Monetary(
+        string="Meal Vouchers",
         tracking=True,
         help="Amount the employee receives in the form of meal vouchers per worked day.")
     meal_voucher_average_monthly_amount = fields.Monetary(compute="_compute_meal_voucher_info")
-    eco_checks = fields.Monetary("Eco Vouchers",
+    eco_checks = fields.Monetary(
+        "Eco Vouchers",
         help="Yearly amount the employee receives in the form of eco vouchers.")
-    ip = fields.Boolean('IP', default=False, tracking=True)
+    ip = fields.Boolean('Intellectual Property', default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
     time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
-    work_time_rate = fields.Float(string='Work time rate', readonly=False, help='Work time rate versus full time working schedule.')
+    work_time_rate = fields.Float(
+        compute='_compute_work_time_rate', store=True, readonly=False,
+        string='Work time rate', help='Work time rate versus full time working schedule.')
     time_credit_full_time_wage = fields.Monetary(
         'Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
         store=True, readonly=False)
@@ -92,7 +104,7 @@ class HrContract(models.Model):
         ('25yo', '< 25 years old'),
         ('12mo', '12 months +'),
         ('55yo', '55+ years old')], string="Impulsion Plan")
-    l10n_be_onss_restructuring = fields.Boolean(string="Manage ONSS Reduction for Restructuring")
+    l10n_be_onss_restructuring = fields.Boolean(string="Allow ONSS Reduction for Restructuring")
 
     _sql_constraints = [
         ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),
@@ -100,8 +112,8 @@ class HrContract(models.Model):
     ]
 
     has_hospital_insurance = fields.Boolean(string="Has Hospital Insurance", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    insured_relative_children = fields.Integer(string="# Insured Children < 19", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    insured_relative_adults = fields.Integer(string="# Insured Children >= 19", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    insured_relative_children = fields.Integer(string="# Insured Children < 19 y/o", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    insured_relative_adults = fields.Integer(string="# Insured Children >= 19 y/o", groups="hr_contract.group_hr_contract_manager", tracking=True)
     insured_relative_spouse = fields.Boolean(string="Insured Spouse", groups="hr_contract.group_hr_contract_manager", tracking=True)
     hospital_insurance_amount_per_child = fields.Float(string="Amount per Child", groups="hr_contract.group_hr_contract_manager",
         default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_child', default=7.2)))
@@ -113,6 +125,14 @@ class HrContract(models.Model):
     l10n_be_is_below_scale = fields.Boolean(
         string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')
     l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale')
+
+    @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
+    def _compute_work_time_rate(self):
+        for contract in self:
+            if contract.time_credit:
+                contract.work_time_rate = contract.resource_calendar_id.hours_per_week / contract.standard_calendar_id.hours_per_week
+            else:
+                contract.work_time_rate = contract.resource_calendar_id.hours_per_week / contract.company_id.resource_calendar_id.hours_per_week
 
     @api.depends(
         'wage', 'state', 'employee_id.l10n_be_scale_seniority', 'job_id.l10n_be_scale_category',
@@ -158,7 +178,7 @@ class HrContract(models.Model):
                 min_wage = min_wage * contract.resource_calendar_id.work_time_rate / 100
             if contract._get_contract_wage() < min_wage:
                 contract.l10n_be_is_below_scale = True
-                contract.l10n_be_is_below_scale_warning = _("The wage is under the minimum scale of %s€ for a seniority of %s years.", min_wage, seniority)
+                contract.l10n_be_is_below_scale_warning = _("The wage is under the minimum scale of %s€ for a seniority of %s years.", round(min_wage, 2), seniority)
             else:
                 contract.l10n_be_is_below_scale = False
                 contract.l10n_be_is_below_scale_warning = False

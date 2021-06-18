@@ -441,6 +441,8 @@ class HrPayslip(models.Model):
     def action_refresh_from_work_entries(self):
         # Refresh the whole payslip in case the HR has modified some work entries
         # after the payslip generation
+        if any(p.state not in ['draft', 'verify'] for p in self):
+            raise UserError(_('The payslips should be in Draft or Waiting state.'))
         self.mapped('worked_days_line_ids').unlink()
         self.mapped('line_ids').unlink()
         self._compute_worked_days_line_ids()
@@ -779,6 +781,13 @@ class HrPayslip(models.Model):
         lines = self.input_line_ids.filtered(lambda line: line.code == code)
         return sum([line.amount for line in lines])
 
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        res = super().fields_view_get(view_id, view_type, toolbar, submenu)
+        if toolbar and 'print' in res['toolbar']:
+            res['toolbar'].pop('print')
+        return res
+
     def action_print_payslip(self):
         return {
             'name': 'Payslip',
@@ -905,9 +914,9 @@ class HrPayslipLine(models.Model):
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True, index=True)
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
     rate = fields.Float(string='Rate (%)', digits='Payroll Rate', default=100.0)
-    amount = fields.Float(digits='Payroll')
+    amount = fields.Monetary()
     quantity = fields.Float(digits='Payroll', default=1.0)
-    total = fields.Float(compute='_compute_total', string='Total', digits='Payroll', store=True)
+    total = fields.Monetary(compute='_compute_total', string='Total', store=True)
 
     amount_select = fields.Selection(related='salary_rule_id.amount_select', readonly=True)
     amount_fix = fields.Float(related='salary_rule_id.amount_fix', readonly=True)
@@ -919,6 +928,7 @@ class HrPayslipLine(models.Model):
     date_from = fields.Date(string='From', related="slip_id.date_from", store=True)
     date_to = fields.Date(string='To', related="slip_id.date_to", store=True)
     company_id = fields.Many2one(related='slip_id.company_id')
+    currency_id = fields.Many2one('res.currency', related='slip_id.currency_id')
 
     @api.depends('quantity', 'amount', 'rate')
     def _compute_total(self):
@@ -985,22 +995,19 @@ class HrPayslipInput(models.Model):
     _description = 'Payslip Input'
     _order = 'payslip_id, sequence'
 
-    name = fields.Char(compute='_compute_name', store=True, string="Description", readonly=False)
+    name = fields.Char(string="Description")
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', required=True, ondelete='cascade', index=True)
     sequence = fields.Integer(required=True, index=True, default=10)
     input_type_id = fields.Many2one('hr.payslip.input.type', string='Type', required=True, domain="['|', ('id', 'in', _allowed_input_type_ids), ('struct_ids', '=', False)]")
     _allowed_input_type_ids = fields.Many2many('hr.payslip.input.type', related='payslip_id.struct_id.input_line_type_ids')
     code = fields.Char(related='input_type_id.code', required=True, help="The code that can be used in the salary rules")
-    amount = fields.Float(help="It is used in computation. E.g. a rule for salesmen having "
-                               "1%% commission of basic salary per product can defined in expression "
-                               "like: result = inputs.SALEURO.amount * contract.wage * 0.01.")
-    contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
+    amount = fields.Float(
+        string="Count",
+        help="It is used in computation. E.g. a rule for salesmen having 1%% commission of basic salary per product can defined in expression like: result = inputs.SALEURO.amount * contract.wage * 0.01.")
+    contract_id = fields.Many2one(
+        related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which apply this input")
 
-    @api.depends('input_type_id')
-    def _compute_name(self):
-        for payslip_input in self:
-            payslip_input.name = payslip_input.input_type_id.name
 
 class HrPayslipInputType(models.Model):
     _name = 'hr.payslip.input.type'
@@ -1021,8 +1028,8 @@ class HrPayslipRun(models.Model):
     slip_ids = fields.One2many('hr.payslip', 'payslip_run_id', string='Payslips', readonly=True,
         states={'draft': [('readonly', False)]})
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('verify', 'Verify'),
+        ('draft', 'New'),
+        ('verify', 'Confirmed'),
         ('close', 'Done'),
         ('paid', 'Paid'),
     ], string='Status', index=True, readonly=True, copy=False, default='draft')

@@ -10,7 +10,7 @@ from odoo.exceptions import UserError
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    sepa_export_date = fields.Date(string='Generation Date', help="Creation date of the related export file.")
+    sepa_export_date = fields.Date(string='Generation Date', help="Creation date of the payment file.")
     sepa_export = fields.Binary(string='SEPA File', help="Export file related to this payslip")
     sepa_export_filename = fields.Char(string='File Name', help="Name of the export file generated for this payslip", store=True)
 
@@ -69,9 +69,6 @@ class HrPayslip(models.Model):
             'sepa_export_filename': (file_name or 'SEPA_export') + '.xml',
         })
 
-        # Change open payslips state to 'Paid'
-        self.filtered(lambda slip: slip.state == 'done').write({'state': 'paid'})
-
         # Set payslip runs to paid state, if needed
         self.mapped('payslip_run_id').write({
             'sepa_export_date': fields.Date.today(),
@@ -80,4 +77,3 @@ class HrPayslip(models.Model):
         })
         payslip_runs = self.mapped('payslip_run_id').filtered(
             lambda run: run.state == 'close' and all(slip.state in ['paid', 'cancel'] for slip in run.slip_ids))
-        payslip_runs.write({'state': 'paid'})

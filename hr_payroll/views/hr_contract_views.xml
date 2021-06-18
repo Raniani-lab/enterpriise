@@ -6,11 +6,9 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='other']/group" position="before">
-                <group name="duration_group" invisible="1">
-                    <field name="currency_id" invisible="1"/>
-                </group>
-            </xpath>
+            <field name="company_id" position="after">
+                <field name="currency_id" invisible="1"/>
+            </field>
             <field name="structure_type_id" position="attributes">
                 <attribute name="required">1</attribute>
             </field>
@@ -30,7 +28,8 @@
             </xpath>
             <div name="button_box" position="inside">
                 <button class="oe_stat_button" name="action_open_payslips"
-                        type="object" icon="fa-dollar" groups="hr_payroll.group_hr_payroll_user">
+                        type="object" icon="fa-dollar" groups="hr_payroll.group_hr_payroll_user"
+                        attrs="{'invisible': ['|', ('payslips_count', '=', 0), ('state', '=', 'draft')]}">
                     <field name="payslips_count" string="Payslips" widget="statinfo"/>
                 </button>
             </div>
@@ -42,9 +41,42 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='to_renew']" position="after">
+            <xpath expr="//filter[@name='not_running']" position="after">
                 <separator/>
                 <filter string="Working Schedule Change" name="calendar_change" domain="[('calendar_changed', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_contract_view_kanban" model="ir.ui.view">
+        <field name="name">hr.contract.kanban</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_kanban"/>
+        <field name="arch" type="xml">
+            <field name="activity_state" position="after">
+                <field name="wage_type"/>
+                <field name="currency_id"/>
+            </field>
+            <div name="div_job_id" position="after">
+                <div class="text-muted o_kanban_record_subtitle o_hr_contract_job_id" name="div_job_id">
+                    <t t-if="record.wage_type.raw_value == 'monthly'">
+                        <field name="contract_wage"/> / Month
+                    </t>
+                    <t t-if="record.wage_type.raw_value == 'hourly'">
+                        <field name="hourly_wage"/> / Hour
+                    </t>
+                </div>
+            </div>
+        </field>
+    </record>
+
+    <record id="hr_contract_view_tree" model="ir.ui.view">
+        <field name="name">hr.contract.view.tree</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">hr_contract_tree</attribute>
             </xpath>
         </field>
     </record>

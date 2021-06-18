@@ -18,6 +18,26 @@
                     <field name="l10n_be_is_below_scale" invisible="1"/>
                 </div>
             </xpath>
+            <field name="date_hired" position="after">
+                <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                <label for="fiscal_voluntary_rate"
+                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}"/>
+                <div class="o_row" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}">
+                    <field name="fiscal_voluntary_rate" nolabel="1"/>
+                    <span>%</span>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_contract_history_view_search" model="ir.ui.view">
+        <field name="name">hr.contract.history.search</field>
+        <field name="model">hr.contract.history</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_history_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="no_contracts" position="after">
+                <filter string="Part Time" name="part_time" domain="[('work_time_rate', '&lt;', 1)]"/>
+            </filter>
         </field>
     </record>
 </odoo>

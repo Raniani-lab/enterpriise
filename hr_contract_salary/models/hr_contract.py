@@ -18,7 +18,6 @@ _logger = logging.getLogger(__name__)
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    # YTI TODO: Introduce a country_code field to hide country specific advantages fields
     origin_contract_id = fields.Many2one('hr.contract', string="Origin Contract", domain="[('company_id', '=', company_id)]", help="The contract from which this contract has been duplicated.")
     is_origin_contract_template = fields.Boolean(compute='_compute_is_origin_contract_template', string='Is origin contract a contract template ?', readonly=True)
     hash_token = fields.Char('Created From Token', copy=False)
@@ -53,6 +52,10 @@ class HrContract(models.Model):
     monthly_yearly_costs = fields.Monetary(
         compute='_compute_monthly_yearly_costs', string='Monthly Cost (Real)', readonly=True,
         help="Total real monthly cost of the employee for the employer.")
+
+    @api.depends('wage', 'wage_on_signature')
+    def _compute_contract_wage(self):
+        super()._compute_contract_wage()
 
     def _get_contract_wage_field(self):
         self.ensure_one()

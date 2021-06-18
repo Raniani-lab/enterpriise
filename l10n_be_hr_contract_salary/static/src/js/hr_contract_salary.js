@@ -6,11 +6,27 @@ const hrContractSalary = require('hr_contract_salary');
 hrContractSalary.include({
     events: _.extend({}, hrContractSalary.prototype.events, {
         "change input[name='has_hospital_insurance_radio']": "onchangeHospital",
+        "change input[name='fold_company_car_total_depreciated_cost']": "onchangeCompanyCar",
+        "change input[name='fold_private_car_reimbursed_amount']": "onchangePrivateCar",
     }),
 
     updateGrossToNetModal(data) {
         this._super(data);
         $("input[name='double_holiday_wage']").val(data['double_holiday_wage']);
+    },
+
+    onchangeCompanyCar: function(event) {
+        var private_car_input = $("input[name='fold_private_car_reimbursed_amount']")
+        if (event.target.checked && private_car_input[0].checked) {
+            private_car_input.click()
+        }
+    },
+
+    onchangePrivateCar: function(event) {
+        var company_car_input = $("input[name='fold_company_car_total_depreciated_cost']")
+        if (event.target.checked && company_car_input[0].checked) {
+            company_car_input.click()
+        }
     },
 
     onchange_mobility: function() {

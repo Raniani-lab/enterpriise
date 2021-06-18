@@ -34,11 +34,14 @@ class HrPayslipEmployees(models.TransientModel):
 
     @api.depends('department_id')
     def _compute_employee_ids(self):
-        for wizard in self.filtered(lambda w: w.department_id):
-            wizard.employee_ids = self.env['hr.employee'].search(expression.AND([
-                wizard._get_available_contracts_domain(),
-                [('department_id', 'child_of', self.department_id.id)]
-            ]))
+        for wizard in self:
+            domain = wizard._get_available_contracts_domain()
+            if wizard.department_id:
+                domain = expression.AND([
+                    domain,
+                    [('department_id', 'child_of', self.department_id.id)]
+                ])
+            wizard.employee_ids = self.env['hr.employee'].search(domain)
 
     def _check_undefined_slots(self, work_entries, payslip_run):
         """
@@ -121,6 +124,7 @@ class HrPayslipEmployees(models.TransientModel):
             })
             payslips_vals.append(values)
         payslips = Payslip.with_context(tracking_disable=True).create(payslips_vals)
+        payslips._compute_name()
         payslips.compute_sheet()
         payslip_run.state = 'verify'
 

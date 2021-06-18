@@ -77,7 +77,7 @@ class HrWorkEntryType(models.Model):
     # 110 Prestations d’un membre d'un parlement ou d'un gouvernement fédéral ou régional ou d’un mandataire local protégé ; jours couverts par une indemnité de sortie d'un membre d'un parlement, d'un gouvernement, d'une Députation permanente ou d'un collège provincial
     # 301 toutes les données relatives au temps de travail couvertes par une indemnité exonérée de cotisations de sécurité sociale, à l'exception de celles reprises sous un autre code
 
-    dmfa_code = fields.Char(string="DMFA code")
+    dmfa_code = fields.Char(string="DMFA code", help="The DMFA Code will identify the work entry in DMFA report.")
     leave_right = fields.Boolean(
         string="Keep Time Off Right", default=False,
         help="Work entries counts for time off right for next year.")

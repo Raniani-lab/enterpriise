@@ -14,5 +14,3 @@ class HrContract(models.Model):
         action = self.env['ir.actions.actions']._for_xml_id('hr_contract_sign.sign_contract_wizard_action')
         action['context'] = {'active_id': self.contract_id.id}
         return action
-
-#

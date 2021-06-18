@@ -3846,30 +3846,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'km_home_work': 75,
         }])
 
-        second_car = self.env['fleet.vehicle'].create([{
-            'name': "Test Car 2",
-            'license_plate': "TEST2",
-            'driver_id': second_employee.address_home_id.id,
-            'company_id': self.env.company.id,
-            'model_id': self.model.id,
-            'first_contract_date': datetime.date(2020, 12, 17),
-            'co2': 88.0,
-            'car_value': 38000.0,
-            'fuel_type': "diesel",
-            'acquisition_date': datetime.date(2020, 1, 1)
-        }])
-
-        second_vehicle_contract = self.env['fleet.vehicle.log.contract'].create({
-            'name': "Test Contract",
-            'vehicle_id': second_car.id,
-            'company_id': self.env.company.id,
-            'start_date': datetime.date(2020, 12, 17),
-            'expiration_date': datetime.date(2021, 12, 17),
-            'state': "open",
-            'cost_frequency': "monthly",
-            'recurring_cost_amount_depreciated': 450.0
-        })
-
         second_contract = self.env['hr.contract'].create([{
             'name': "Contract For Payslip Test",
             'employee_id': second_employee.id,
@@ -3877,13 +3853,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'company_id': self.env.company.id,
             'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
             'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
-            'car_id': second_car.id,
+            'car_id': False,
             'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
             'date_start': datetime.date(2018, 12, 31),
             'wage': 2000.0,
             'wage_on_signature': 2000.0,
             'state': "open",
-            'transport_mode_car': True,
+            'transport_mode_car': False,
             'transport_mode_private_car': True,
             'fuel_card': 150.0,
             'internet': 38.0,
@@ -3910,8 +3886,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         payslip_1 = payslips.filtered(lambda p: p.employee_id == self.employee)
         self.assertEqual(len(payslip_1.worked_days_line_ids), 1)
         self.assertEqual(len(payslip_1.input_line_ids), 0)
-        self.assertEqual(len(payslip_1.line_ids), 24)
-
+        self.assertEqual(len(payslip_1.line_ids), 22)
         self.assertAlmostEqual(payslip_1._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
         self.assertAlmostEqual(payslip_1._get_worked_days_line_number_of_days('WORK100'), 23.0, places=2)
         self.assertAlmostEqual(payslip_1._get_worked_days_line_number_of_hours('WORK100'), 174.8, places=2)
@@ -3923,13 +3898,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'SALARY': 2659.0,
             'ONSS': -347.53,
             'ONSSTOTAL': 347.53,
-            'ATN.CAR': 141.14,
-            'GROSSIP': 2452.61,
+            'GROSSIP': 2311.47,
             'IP.PART': -662.5,
-            'GROSS': 1790.11,
-            'P.P': -265.94,
-            'PPTOTAL': 265.94,
-            'ATN.CAR.2': -141.14,
+            'GROSS': 1648.97,
+            'P.P': -208.16,
+            'PPTOTAL': 208.16,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
             'M.ONSS': -23.66,
@@ -3938,7 +3911,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 150.0,
             'IP': 662.5,
             'IP.DED': -49.69,
-            'NET': 2186.61,
+            'NET': 2244.39,
             'REMUNERATION': 1987.5,
             'ONSSEMPLOYER': 721.65,
         }
@@ -3950,7 +3923,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         # Account   Formula                                                     Debit       Credit
         # 620200    Remuneration: Basic_Salary - IP                            1987.5
-        # 453000    Withholding Taxes  Precompte - low salary bonus                         265.94
+        # 453000    Withholding Taxes  Precompte - low salary bonus                         208.16
 
         # 643000    IP                                                          662.5
         # 453000    IP Deduction                                                             43.17
@@ -3973,7 +3946,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip_2.worked_days_line_ids), 1)
         self.assertEqual(len(payslip_2.input_line_ids), 0)
-        self.assertEqual(len(payslip_2.line_ids), 26)
+        self.assertEqual(len(payslip_2.line_ids), 24)
 
         self.assertAlmostEqual(payslip_2._get_worked_days_line_amount('WORK100'), 2000.0, places=2)
         self.assertAlmostEqual(payslip_2._get_worked_days_line_number_of_days('WORK100'), 23.0, places=2)
@@ -3987,14 +3960,12 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -262.58,
             'EmpBonus.1': 132.26,
             'ONSSTOTAL': 130.32,
-            'ATN.CAR': 141.14,
-            'GROSSIP': 2019.83,
+            'GROSSIP': 1878.68,
             'IP.PART': -500.0,
-            'GROSS': 1519.83,
-            'P.P': -150.38,
+            'GROSS': 1378.68,
+            'P.P': -101.42,
             'P.P.DED': 43.83,
-            'PPTOTAL': 106.55,
-            'ATN.CAR.2': -141.14,
+            'PPTOTAL': 57.59,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
             'M.ONSS': -4.15,
@@ -4003,7 +3974,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 150.0,
             'IP': 500.0,
             'IP.DED': -37.5,
-            'NET': 1944.91,
+            'NET': 1993.87,
             'REMUNERATION': 1500.0,
             'ONSSEMPLOYER': 545.24,
         }
@@ -4015,7 +3986,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         # Account   Formula                                                     Debit       Credit
         # 620200    Remuneration: Basic_Salary - IP                              1500
-        # 453000    Withholding Taxes  Precompte - low salary bonus                         106.55
+        # 453000    Withholding Taxes  Precompte - low salary bonus                         57.59
 
         # 643000    IP                                                            500
         # 453000    IP Deduction                                                             32.58
@@ -4042,7 +4013,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         balance = 6413.89
         move_line_results = [
             ('620200', 'debit', 3487.5),        # remuneration
-            ('453000', 'credit', 372.49),       # PP
+            ('453000', 'credit', 265.75),       # PP
             ('643000', 'debit', 1162.5),        # IP
             ('453000', 'credit', 87.19),        # IP DED
             ('454000', 'credit', 477.85),       # ONSS - Emp Bonus
@@ -4050,10 +4021,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             ('620200', 'debit', 197),           # Private Car
             ('620200', 'debit', 300),           # Representation Fees
             ('455000', 'credit', 50.14),        # Meal vouchers
-            ('455000', 'credit', 4131.52),      # NET
+            ('455000', 'credit', 4238.26),      # NET
             ('454000', 'credit', 1266.89),      # ONSS Employer
             ('621000', 'debit', 1266.89),       # ONSS Employer
         ]
+
         # ================================================ #
         #         Accounting entries for Batch             #
         # ================================================ #

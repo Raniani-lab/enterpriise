@@ -28,9 +28,6 @@
                 <xpath expr="//button[@name='action_validate']" position="replace">
                     <button name="action_validate" type="object" string="Create Draft Entry" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}" confirm="Are you sure you want to proceed ?"/>
                 </xpath>
-                <xpath expr="//button[@name='action_draft']" position="replace">
-                    <button name="action_draft" type="object" string="Set to Draft" states="verify" class="oe_highlight" invisible="1"/>
-                </xpath>
             </field>
         </record>
 
@@ -67,11 +64,8 @@
             <field name="model">hr.contract</field>
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='duration_group']" position="inside">
-                        <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
-                </xpath>
-                <xpath expr="//group[@name='duration_group']" position="attributes">
-                    <attribute name="invisible">0</attribute>
+                <xpath expr="//group[@name='contract_details']" position="inside">
+                    <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                 </xpath>
             </field>
         </record>

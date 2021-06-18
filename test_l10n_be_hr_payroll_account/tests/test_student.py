@@ -5,10 +5,20 @@ from datetime import datetime, date
 
 from odoo.tests import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.tools.float_utils import float_compare
 
 
 @tagged('post_install', '-at_install', 'student')
 class TestStudent(AccountTestInvoicingCommon):
+
+    def _validate_payslip(self, payslip, results):
+        error = []
+        line_values = payslip._get_line_values(results.keys())
+        for code, value in results.items():
+            payslip_line_value = line_values[code][payslip.id]['total']
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
@@ -88,11 +98,13 @@ class TestStudent(AccountTestInvoicingCommon):
         payslip.compute_sheet()
 
         self.assertEqual(len(payslip.line_ids), 6)
-        line_values = payslip._get_line_values(['BASIC', 'ONSS', 'GROSS', 'CAR.PRIV', 'MEAL_V_EMP', 'NET'])
 
-        self.assertAlmostEqual(line_values['BASIC'][payslip.id]['total'], 586.98, places=2)
-        self.assertAlmostEqual(line_values['ONSS'][payslip.id]['total'], -15.91, places=2)
-        self.assertAlmostEqual(line_values['GROSS'][payslip.id]['total'], 571.07, places=2)
-        self.assertAlmostEqual(line_values['CAR.PRIV'][payslip.id]['total'], 13.86, places=2)
-        self.assertAlmostEqual(line_values['MEAL_V_EMP'][payslip.id]['total'], -6.54, places=2)
-        self.assertAlmostEqual(line_values['NET'][payslip.id]['total'], 578.38, places=2)
+        payslip_results = {
+            'BASIC': 587.06,  # 10.8714 * 54 = 587.0556
+            'ONSS': -15.91,
+            'GROSS': 571.15,
+            'CAR.PRIV': 13.86,
+            'MEAL_V_EMP': -6.54,
+            'NET': 578.46,
+        }
+        self._validate_payslip(payslip, payslip_results)

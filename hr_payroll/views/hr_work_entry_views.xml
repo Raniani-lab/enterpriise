@@ -12,8 +12,10 @@
                         <field name="round_days"/>
                         <field name="round_days_type" attrs="{'invisible': [('round_days', '=', 'NO')]}"/>
                     </group>
-                    <group string="Unpaid">
-                        <field name="unpaid_structure_ids" widget="many2many_tags"/>
+                    <group name="time_off" position="after">
+                        <group string="Unpaid">
+                            <field name="unpaid_structure_ids" widget="many2many_tags"/>
+                        </group>
                     </group>
                 </group>
             </xpath>
@@ -24,9 +26,11 @@
       <field name="model">hr.work.entry.type</field>
       <field name="inherit_id" ref="hr_work_entry_contract.hr_work_entry_contract_type_view_form_inherit"/>
       <field name="arch" type="xml">
-        <xpath expr="//field[@name='is_leave']" position="after">
-          <field name="is_unforeseen"/>
-        </xpath>
+        <group name="time_off" position="after">
+            <group string="Reporting">
+                <field name="is_unforeseen"/>
+            </group>
+        </group>
       </field>
     </record>
 

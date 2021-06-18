@@ -482,7 +482,7 @@ class Payslip(models.Model):
                 lambda p: p.struct_id.country_id.code == "BE" and p.employee_id.sudo().address_home_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
             if bad_language_slips:
                 raise UserError(_(
-                    'The is no language set on the private address for the employees:\n\n%s',
+                    'There is no valid language (French, Dutch or German) set on the private address for the following employees:\n\n%s',
                     '\n'.join([e.name for e in bad_language_slips.mapped('employee_id')])
                 ))
         return super().action_payslip_done()

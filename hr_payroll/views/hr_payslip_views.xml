@@ -161,6 +161,7 @@
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile" sample="1">
+                <field name="currency_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_content oe_kanban_global_click">
@@ -181,6 +182,9 @@
                                 <div class="col-12">
                                     <span><field name="name"/></span>
                                 </div>
+                                <div class="col-12">
+                                    <span>Net - <field name="net_wage"/></span>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -197,11 +201,11 @@
             <header>
                 <button string="Confirm" name="action_payslip_done" type="object" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
                 <button string="Mark as paid" name="action_payslip_paid" type="object" states="done" class="oe_highlight"/>
-                <button string="Refund" name="refund_sheet" states="done,paid" type='object'/>
+                <button string="Refund" name="refund_sheet" states="done,paid" type='object' attrs="{'invisible': [('credit_note', '=', True)]}"/>
                 <button string="Set to Draft" name="action_payslip_draft" type="object" states="cancel"/>
-                <button string="Compute Sheet" name="compute_sheet" type="object" states="draft,verify" class="oe_highlight" help="Recompute the payslip lines only, not the worked days / input lines"/>
-                <button string="Cancel Payslip" name="action_payslip_cancel" type="object" states="draft,done,verify"/>
-                <button string="Recompute Whole Sheet" name="action_refresh_from_work_entries" type="object" help="Recompute the worked days / input lines and the payslip lines, in case you modified the work entries" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'verify']), ('employee_id', '=', False)]}"/>
+                <button string="Compute Sheet" name="compute_sheet" type="object" states="draft" class="oe_highlight" help="Recompute the payslip lines only, not the worked days / input lines"/>
+                <button string="Compute Sheet" name="compute_sheet" type="object" states="verify" help="Recompute the payslip lines only, not the worked days / input lines"/>
+                <button string="Cancel" name="action_payslip_cancel" type="object" states="draft,done,verify"/>
                 <button string="Print" name="action_print_payslip" type="object"/>
                 <button string="Export Payslip" name="action_export_payslip" type="object" attrs="{'invisible': [('is_superuser', '=', False)]}"/>
                 <field name="state" widget="statusbar" statusbar_visible="draft,done,paid"/>
@@ -250,10 +254,11 @@
                                 <field name="work_entry_type_id" readonly="1" force_save="1"/>
                                 <field name="name"/>
                                 <field name="number_of_days" sum="Total Working Days" readonly="1" force_save="1"/>
-                                <field name="number_of_hours" readonly="1" force_save="1"/>
+                                <field name="number_of_hours" sum="Total Working Hours" readonly="1" force_save="1"/>
                                 <field name="amount" readonly="1" sum="Total Amount" force_save="1"/>
                                 <field name="is_paid" invisible="True" readonly="1" force_save="1"/>
                                 <field name="sequence" invisible="True" readonly="1" force_save="1"/>
+                                <field name="currency_id" invisible="1"/>
                             </tree>
                             <form string="Worked Day">
                                 <group col="4">
@@ -261,10 +266,11 @@
                                     <field name="name"/>
                                     <field name="sequence"/>
                                     <field name="number_of_days"/>
-                                    <field name="number_of_hours"/>
+                                    <field name="number_of_hours" widget="float_time"/>
                                     <field name="amount"/>
                                     <field name="is_paid"/>
                                     <field name="contract_id"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </group>
                             </form>
                         </field>
@@ -305,7 +311,7 @@
                         <field name="line_ids" colspan="4" nolabel="1">
                             <tree string="Salary Structure" editable="bottom" decoration-info="total == 0" create="0" delete="0">
                                 <field name="name"/>
-                                <field name="code" readonly="1" force_save="1"/>
+                                <field name="code" readonly="1" force_save="1" optional="hide"/>
                                 <field name="category_id" readonly="1" force_save="1"/>
                                 <field name="sequence" invisible="1" readonly="1" force_save="1"/>
                                 <field name="quantity" readonly="1" force_save="1"/>
@@ -313,6 +319,7 @@
                                 <field name="salary_rule_id" groups="base.group_no_one" readonly="1" force_save="1"/>
                                 <field name="amount" readonly="1" force_save="1"/>
                                 <field name="total" readonly="1" force_save="1"/>
+                                <field name="currency_id" invisible="1"/>
                             </tree>
                             <form string="Payslip Line">
                                 <group col="4">
@@ -325,6 +332,7 @@
                                     <field name="amount"/>
                                     <field name="total"/>
                                     <field name="salary_rule_id"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </group>
                             </form>
                         </field>
@@ -483,9 +491,8 @@
             <header>
                 <button name="%(action_hr_payslip_by_employees)d" type="action" states="draft" string="Generate Payslips" class="oe_highlight"/>
                 <button name="action_validate" type="object" string="Validate" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
-                <button string="Confirm" name="action_open" type="object" states="draft"/>
-                <button string="Mark all as paid" name="action_paid" type="object" states="close" class="oe_highlight"/>
-                <button string="Set to Draft" name="action_draft" type="object" states="close"/>
+                <button string="Mark as paid" name="action_paid" type="object" states="close" class="oe_highlight"/>
+                <button string="Set to Draft" name="action_draft" type="object" states="verify,close"/>
                 <field name="state" widget="statusbar"/>
             </header>
             <sheet>
@@ -546,6 +553,17 @@
         <field name="state">code</field>
         <field name="code">
             records.compute_sheet()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_hr_payroll_recompute_whole_sheet">
+        <field name="name">Recompute Whole Sheet</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_refresh_from_work_entries()
         </field>
     </record>
 

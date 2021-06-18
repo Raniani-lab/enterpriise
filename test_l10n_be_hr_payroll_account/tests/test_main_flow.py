@@ -9,7 +9,7 @@ from contextlib import contextmanager
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Date, Datetime
-from odoo.tests import common, Form
+from odoo.tests import common, Form, tagged
 
 
 @contextmanager
@@ -28,6 +28,7 @@ def additional_groups(user, groups):
         user.write({'groups_id': [(3, group.id, False) for group in group_ids]})
 
 
+@tagged('payroll_main_flow')
 class TestHR(common.TransactionCase):
 
     def setUp(self):
@@ -222,6 +223,10 @@ class TestHR(common.TransactionCase):
             contract_form.car_id = car
         contract_form.wage = wage
         contract_form.state = state
+        sign_template = self.env['sign.template'].search([], limit=1)
+        contract_form.hr_responsible_id = self.user
+        contract_form.sign_template_id = sign_template
+        contract_form.contract_update_template_id = sign_template
         return contract_form.save()
 
     def create_work_entry_type(self, user, name, code, is_leave=False, leave_type=None):

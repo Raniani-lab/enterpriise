@@ -76,7 +76,7 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
         self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
 
         # I verify the payslip is in paid state.
-        self.assertEqual(self.hr_payslip_john.state, 'paid', 'State not changed!')
+        self.assertEqual(self.hr_payslip_john.state, 'done', 'State should not change!')
 
     def test_01_hr_payroll_account_sepa(self):
         """ Checking the process of payslip run when you create a SEPA payment. """
@@ -115,4 +115,4 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
         self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
 
         # I verify the payslip is in paid state.
-        self.assertEqual(self.payslip_run.state, 'paid', 'State not changed!')
+        self.assertEqual(self.payslip_run.state, 'close', 'State should not change!')

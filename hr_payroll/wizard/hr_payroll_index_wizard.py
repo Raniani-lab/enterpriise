@@ -10,12 +10,18 @@ class HrPayrollIndex(models.TransientModel):
     _name = 'hr.payroll.index'
     _description = 'Index contracts'
 
+    def _get_default_contract_ids(self):
+        if self.env.context.get("active_ids"):
+            return self.env.context.get("active_ids")
+        return self.env['hr.contract'].search([('state', '=', 'open')])
+
     percentage = fields.Float("Percentage")
-    description = fields.Char("Description", compute='_compute_description', store=True, readonly=False,
+    description = fields.Char(
+        "Description", compute='_compute_description', store=True, readonly=False,
         help="Will be used as the message specifying why the wage on the contract has been modified")
     contract_ids = fields.Many2many(
         'hr.contract', string="Contracts",
-        default=lambda s: s.env.context.get("active_ids", []),
+        default=_get_default_contract_ids,
     )
     display_warning = fields.Boolean("Error", compute='_compute_display_warning')
 

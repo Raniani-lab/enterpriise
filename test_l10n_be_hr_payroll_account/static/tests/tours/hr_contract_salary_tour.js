@@ -608,7 +608,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "submit",
             trigger: 'button#hr_cs_submit',
-            extra_trigger: 'input[name="Gross"][value="2690.51"]',
+            extra_trigger: 'input[name="Gross"][value="2676.12"]',
             run: 'click',
         },
         {
@@ -933,6 +933,17 @@ Tour.register('hr_contract_salary_tour_2', {
             auto: true,
         },
         {
+            content: "New Contract Document Template",
+            trigger: '.o_field_widget.o_field_many2one[name=sign_template_id]',
+            run: function (actions) {
+                actions.text("test_employee_contract", this.$anchor.find("input"));
+            },
+        },
+        {
+            trigger: ".ui-autocomplete > li > a:contains('test_employee_contract')",
+            auto: true,
+        },
+        {
             content: "Contract Information",
             trigger: ".o_content .o_form_view .o_notebook li.nav-item:eq(1) a",
             run: "click",
@@ -941,16 +952,6 @@ Tour.register('hr_contract_salary_tour_2', {
             content: "Contract Information",
             trigger: "div.o_input[name='wage'] input",
             run: "text 2950",
-        },
-        {
-            content: "Contract Information",
-            trigger: "div.o_input[name='fuel_card'] input",
-            run: "text 250",
-        },
-        {
-            content: "Contract Information",
-            trigger: "div.o_input[name='commission_on_target'] input",
-            run: "text 1000",
         },
         {
             content: "Contract Information",
@@ -967,6 +968,16 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             trigger: ".ui-autocomplete > li > a:contains('1-JFC-095')",
             auto: true,
+        },
+        {
+            content: "Contract Information",
+            trigger: "div.o_input[name='fuel_card'] input",
+            run: "text 250",
+        },
+        {
+            content: "Contract Information",
+            trigger: "div.o_input[name='commission_on_target'] input",
+            run: "text 1000",
         },
         {
             content: "Contract Information",
@@ -987,6 +998,7 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             content: "Send Offer",
             trigger: "button[name='send_offer']",
+            extra_trigger: "div.modal-content",
             run: 'click',
         },
         {
@@ -1151,6 +1163,11 @@ Tour.register('hr_contract_salary_tour_2', {
                 $('select[name=country] option:contains(Belgium)').prop('selected', true);
                 $('select[name=country]').trigger('change');
             },
+        },
+        {
+            content: 'Set 0 Children',
+            trigger: 'input[name=children]',
+            run: 'text 0'
         },
         {
             content: "submit",

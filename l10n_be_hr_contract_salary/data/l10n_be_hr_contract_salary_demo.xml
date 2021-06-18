@@ -106,6 +106,17 @@
         <field name="default_recurring_cost_amount_depreciated">450.00</field>
     </record>
 
+    <record id="ir_property_can_request_corsa_belgian_company" model="ir.property">
+        <field name="name">can_be_requested</field>
+        <field name="fields_id" search="[
+            ('model', '=', 'fleet.vehicle.model'),
+            ('name', '=', 'can_be_requested')]"/>
+        <field name="res_id" model="fleet.vehicle" eval="'fleet.vehicle.model,' + str(obj().env.ref('fleet.model_corsa').id)"/>
+        <field name="type">boolean</field>
+        <field name="value" eval="True"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <record id="fleet_vehicle_model_category_family_car" model="fleet.vehicle.model.category">
         <field name="name">Small Family Car</field>
     </record>
@@ -143,6 +154,17 @@
         <field name="can_be_requested" eval="True"/>
         <field name="default_car_value">1000</field>
         <field name="default_recurring_cost_amount_depreciated">25</field>
+    </record>
+
+    <record id="ir_property_can_request_bike_belgian_company" model="ir.property">
+        <field name="name">can_be_requested</field>
+        <field name="fields_id" search="[
+            ('model', '=', 'fleet.vehicle.model'),
+            ('name', '=', 'can_be_requested')]"/>
+        <field name="res_id" model="fleet.vehicle" eval="'fleet.vehicle.model,' + str(obj().env.ref('l10n_be_hr_contract_salary.fleet_vehicle_model_san_remo').id)"/>
+        <field name="type">boolean</field>
+        <field name="value" eval="True"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
     <record id="fleet_vehicle_bike_laurie_poiret" model="fleet.vehicle">

@@ -9,7 +9,7 @@
                 <div name="car_id_div" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
                     colspan="2" class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager">
-                    <label for="car_id" string="Company Car" name="car_id_label"/>
+                    <label for="car_id" name="car_id_label"/>
                     <field name="transport_mode_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
                     <field name="car_id" nolabel="1" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
                 </div>
@@ -19,7 +19,7 @@
                     colspan="2" class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager"
                     attrs="{'invisible': ['|', '|', ('wage_type', '=', 'hourly'), ('transport_mode_car', '=', False), ('country_code', '!=', 'BE')]}">
-                    <label for="new_car_model_id" string="Requested New Car Model"/>
+                    <label for="new_car_model_id"/>
                     <field name="new_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
                     <field name="new_car_model_id" attrs="{'invisible': [('new_car', '=', False)]}" nolabel="1"/>
                 </div>
@@ -28,11 +28,18 @@
                 <div name="bike_id_div" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
                     colspan="2" class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager">
-                    <label for="bike_id" string="Company Bike" name="bike_id_label"/>
+                    <label for="bike_id" name="bike_id_label"/>
                     <field name="transport_mode_bike" nolabel="1"/>
                     <field name="bike_id" nolabel="1" attrs="{'invisible': [('transport_mode_bike', '=', False)]}"/>
                 </div>
-                <field name="new_bike_model_id" attrs="{'invisible': ['|', ('transport_mode_bike', '=', False), ('country_code', '!=', 'BE')]}"/>
+                <div name="new_bike_model_id_div"
+                    colspan="2" class="o_checkbox_optional_field"
+                    groups="fleet.fleet_group_manager"
+                    attrs="{'invisible': ['|', ('transport_mode_bike', '=', False), ('country_code', '!=', 'BE')]}">
+                    <label for="new_bike_model_id"/>
+                    <field name="new_bike" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
+                    <field name="new_bike_model_id" attrs="{'invisible': [('new_bike', '=', False)]}" nolabel="1"/>
+                </div>
             </field>
         </field>
     </record>

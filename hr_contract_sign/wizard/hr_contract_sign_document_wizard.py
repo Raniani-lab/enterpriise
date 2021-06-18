@@ -35,7 +35,10 @@ class HrContractSignDocumentWizard(models.TransientModel):
         'res.users', string='Responsible', required=True,
         domain=_group_hr_contract_domain,
     )
-    employee_role_id = fields.Many2one("sign.item.role", string="Employee Role", required=True, domain="[('id', 'in', sign_template_responsible_ids)]")
+    employee_role_id = fields.Many2one(
+        "sign.item.role", string="Employee Role",
+        compute='_compute_employee_role_id', store=True, readonly=False,
+        required=True, domain="[('id', 'in', sign_template_responsible_ids)]")
     sign_template_responsible_ids = fields.Many2many('sign.item.role', compute='_compute_responsible_ids')
 
     sign_template_id = fields.Many2one('sign.template', string="Document to Sign", required=True,
@@ -44,6 +47,12 @@ class HrContractSignDocumentWizard(models.TransientModel):
     subject = fields.Char(string="Subject", required=True, default='Signature Request')
     message = fields.Html("Message")
     follower_ids = fields.Many2many('res.partner', string="Copy to")
+
+    @api.depends('sign_template_responsible_ids')
+    def _compute_employee_role_id(self):
+        for wizard in self:
+            if len(wizard.sign_template_responsible_ids) == 1:
+                wizard.employee_role_id = wizard.sign_template_responsible_ids
 
     @api.depends('sign_template_id.sign_item_ids.responsible_id')
     def _compute_responsible_ids(self):

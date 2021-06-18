@@ -34,20 +34,26 @@ class SignContract(Sign):
                 }
             if contract.new_car:
                 model = contract.new_car_model_id.sudo()
+                contract.update({
+                    'new_car': False,
+                    'new_car_model_id': False,
+                })
                 contract.car_id = Vehicle.create(dict(vehicle_vals, **{
                     'model_id': model.id,
                     'car_value': model.default_car_value,
                     'co2': model.default_co2,
                     'fuel_type': model.default_fuel_type,
                 }))
-                contract.new_car = False
-                contract.new_car_model_id = False
                 vehicle_contract = contract.car_id.log_contracts[0]
                 vehicle_contract.write(dict(contracts_vals , **{
                     'recurring_cost_amount_depreciated': model.default_recurring_cost_amount_depreciated,
                     'cost_generated': model.default_recurring_cost_amount_depreciated,
                 }))
             if contract.new_bike_model_id:
+                contract.update({
+                    'new_bike': False,
+                    'new_bike_model_id': False,
+                })
                 model = contract.new_bike_model_id.sudo()
                 contract.bike_id = Vehicle.create(dict(vehicle_vals, **{
                     'model_id': model.id,
@@ -55,7 +61,6 @@ class SignContract(Sign):
                     'co2': model.default_co2,
                     'fuel_type': model.default_fuel_type,
                 }))
-                contract.new_bike_model_id = False
                 vehicle_contract = contract.bike_id.log_contracts[0]
                 vehicle_contract.write(dict(contracts_vals , **{
                     'recurring_cost_amount_depreciated': model.default_recurring_cost_amount_depreciated,
@@ -100,7 +105,6 @@ class HrContractSalary(main.HrContractSalary):
             else:
                 res['new_value'] = round(request.env['fleet.vehicle'].sudo().browse(int(vehicle_id)).total_depreciated_cost, 2)
         elif advantage_field == 'wishlist_car_total_depreciated_cost':
-            dummy, vehicle_id = new_value.split('-')
             res['new_value'] = 0
         elif advantage_field == 'fold_company_car_total_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('company_car_total_depreciated_cost', 0)]

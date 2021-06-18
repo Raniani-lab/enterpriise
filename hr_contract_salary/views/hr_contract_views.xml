@@ -41,15 +41,11 @@
                     <span>/ month</span>
                 </div>
             </field>
-             <xpath expr="//group[@name='notes_group']" position="before">
-                <group>
-                    <group name="contract_template">
-                        <field name="default_contract_id"/>
-                        <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"/>
-                        <field name="contract_update_template_id" options="{'no_create': True}"/>
-                        <field name="signatures_count" invisible="1"/>
-                    </group>
-                </group>
+             <xpath expr="//group[@name='contract_details']" position="inside">
+                <field name="default_contract_id"/>
+                <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s" required="1"/>
+                <field name="contract_update_template_id" options="{'no_create': True}" required="1"/>
+                <field name="signatures_count" invisible="1"/>
              </xpath>
             <page name="information" position="after">
                 <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager" attrs="{'invisible': [('employee_id', '=', False)]}">
@@ -73,10 +69,10 @@
                 </group>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="inside">
-                <label for="holidays"/>
-                <div class="o_row">
+                <label for="holidays" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
+                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="holidays" nolabel="1"/>
-                    <span>/ year</span>
+                    <span>days / year</span>
                 </div>
             </xpath>
         </field>

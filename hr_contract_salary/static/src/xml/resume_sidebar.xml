@@ -16,7 +16,7 @@
                             </div>
                         </t>
                         <t t-if="!is_net">
-                            <label class="col-md-6 col-form-label" t-att-for="line[0]"><t t-esc="line[0]"/></label>
+                            <label class="col-md-6 col-form-label" t-att-for="line[0]"><t t-esc="line[0]"/> <t t-if="line[3]"><i class="fa fa-question-circle text-info" t-att-title="line[3]"/></t></label>
                         </t>
                         <div t-att-class="is_net ? 'col-md-5' : 'col-md-6'">
                             <div class="input-group">

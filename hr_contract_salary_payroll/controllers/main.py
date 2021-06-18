@@ -45,12 +45,12 @@ class HrContractSalary(main.HrContractSalary):
         line_values = payslip._get_line_values(all_codes)
         for resume_line in resume_lines - monthly_total_lines:
             value = round(line_values[resume_line.code][payslip.id]['total'], 2)
-            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, new_contract.company_id.currency_id.symbol)
+            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, new_contract.company_id.currency_id.symbol, False)
             if resume_line.impacts_monthly_total:
                 monthly_total += value / 12.0 if resume_line.category_id.periodicity == 'yearly' else value
 
         for resume_line in monthly_total_lines:
             super_line = result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code]
-            new_value = (super_line[0], round(super_line[1] + float(monthly_total), 2), super_line[2])
+            new_value = (super_line[0], round(super_line[1] + float(monthly_total), 2), super_line[2], False)
             result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = new_value
         return result

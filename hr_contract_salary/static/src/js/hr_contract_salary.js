@@ -22,6 +22,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change input.bg-danger": "checkFormValidity",
         "change div.invalid_radio": "checkFormValidity",
         "change input.document": "onchangeDocument",
+        "input input[type='range']": "onchangeSlider",
+        "change select[name='country_id']": "onchangeCountry",
     },
 
     init(parent, options) {
@@ -54,6 +56,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     }
                 });
         }
+        this.onchangeCountry();
 
         // When user use back button, unfold previously unfolded items.
         $('#hr_cs_configurator .hr_cs_control input.folded:checked').closest('div').find('.folded_content').removeClass('d-none')
@@ -165,6 +168,25 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         checked ? $(foldedContent).removeClass('d-none') : $(foldedContent).addClass('d-none');
     },
 
+    onchangeSlider(event) {
+        let advantageField = event.target.name.replace("_slider", "");;
+        $("input[name='" + advantageField + "']").val(event.target.value);
+    },
+
+    onchangeCountry(event) {
+        let countryID = parseInt($("select[name='country_id'][applies-on='address']").val());
+        $("select[name='state_id']").find('option').toArray().forEach(option => {
+            let $option = $(option);
+            let stateCountryID = $option.data('additional-info');
+            debugger;
+            if (countryID === stateCountryID) {
+                $option.removeClass('d-none');
+            } else {
+                $option.addClass('d-none');
+            }
+        })
+    },
+
     _isInvalidInput() {
         let isInvalidInput;
         $('input[data-field-type=integer]').toArray().forEach(input => {
@@ -188,10 +210,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     async onchangeAdvantage(event) {
         // Check that https://github.com/odoo/enterprise/commit/e4fdb4df1d0d6aa5e8880ce1b4cc289a075479fd#diff-aa5bcb2caed35c99a7bd3e018a104342 is still valid
-
         // Will check when the user has entered a floating value in the integer field
         if (this._isInvalidInput()) {
             return false;
+        }
+        // Prevent negative value for number inputs
+        if (event.target.type === 'number' && parseFloat(event.target.value) < 0) {
+            $(event.target).val(0);
         }
         let advantageField = event.target.name;
         if (advantageField.includes('_slider')) {

@@ -6,14 +6,16 @@
         <field name="inherit_id" ref="hr_work_entry_contract.hr_work_entry_contract_type_view_form_inherit"/>
         <field name="priority">30</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='is_leave']" position="before">
-                <field name="meal_voucher"/>
-            </xpath>
-            <xpath expr="//field[@name='is_leave']" position="after">
+            <group name="time_off" position="before">
+                <group string="Valid For Advantages">
+                    <field name="meal_voucher"/>
+                    <field name="representation_fees"/>
+                    <field name="private_car"/>
+                </group>
+            </group>
+            <group name="time_off" position="inside">
                 <field name="leave_right"/>
-                <field name="representation_fees"/>
-                <field name="private_car"/>
-            </xpath>
+            </group>
             <field name="code" position="after">
                 <field name="dmfa_code"/>
             </field>

@@ -28,7 +28,8 @@ class HrContract(models.Model):
     def _get_possible_model_domain(self, vehicle_type='car'):
         return [('can_be_requested', '=', True), ('vehicle_type', '=', vehicle_type)]
 
-    car_id = fields.Many2one('fleet.vehicle', string='Company Car',
+    car_id = fields.Many2one(
+        'fleet.vehicle', string='Catalog Company Car',
         tracking=True, compute="_compute_car_id", store=True, readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'car')]",
         help="Employee's company car.",
@@ -37,8 +38,11 @@ class HrContract(models.Model):
     wishlist_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     company_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
-    new_car = fields.Boolean('Requested a new car')
-    new_car_model_id = fields.Many2one('fleet.vehicle.model', string="Model", domain=lambda self: self._get_possible_model_domain())
+    new_car = fields.Boolean(
+        'Requested a new car', compute='_compute_new_car_model_id', store=True, readonly=False)
+    new_car_model_id = fields.Many2one(
+        'fleet.vehicle.model', string="New Company Car", domain=lambda self: self._get_possible_model_domain(),
+        compute='_compute_new_car_model_id', store=True, readonly=False)
     # Useful on sign to use only one box to sign the contract instead of 2
     car_model_name = fields.Char(compute='_compute_car_model_name')
     max_unused_cars = fields.Integer(compute='_compute_max_unused_cars')
@@ -53,14 +57,57 @@ class HrContract(models.Model):
         compute='_compute_recurring_cost_amount_depreciated',
         inverse="_inverse_recurring_cost_amount_depreciated")
     transport_mode_bike = fields.Boolean('Uses Bike')
-    bike_id = fields.Many2one('fleet.vehicle', string="Company Bike",
+    bike_id = fields.Many2one(
+        'fleet.vehicle', string="Catalog Company Bike",
         tracking=True,
+        compute='_compute_bike_id', store=True, readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'bike')]",
         help="Employee's company bike.",
         groups='fleet.fleet_group_manager')
     company_bike_depreciated_cost = fields.Float(compute='_compute_company_bike_depreciated_cost', store=True, compute_sudo=True)
+    new_bike = fields.Boolean(
+        'Requested a new bike', compute='_compute_new_bike', store=True, readonly=False)
     new_bike_model_id = fields.Many2one(
-        'fleet.vehicle.model', string="Requested New Bike Model", domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'))
+        'fleet.vehicle.model', string="New Company Bike",
+        domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'),
+        compute='_compute_new_bike_model_id', store=True, readonly=False)
+    transport_mode_private_car = fields.Boolean(compute='_compute_transport_mode_private_car', store=True, readonly=False)
+
+    @api.depends('new_bike', 'new_bike_model_id')
+    def _compute_bike_id(self):
+        for contract in self:
+            if contract.new_bike or contract.new_bike_model_id:
+                contract.bike_id = False
+
+    @api.depends('bike_id')
+    def _compute_new_bike_model_id(self):
+        for contract in self:
+            if contract.bike_id:
+                contract.update({
+                    'new_bike_model_id': False,
+                    'new_bike': False,
+                })
+
+    @api.depends('new_bike_model_id')
+    def _compute_new_bike(self):
+        for contract in self:
+            if contract.new_bike_model_id:
+                contract.new_bike = True
+
+    @api.depends('car_id', 'transport_mode_private_car')
+    def _compute_new_car_model_id(self):
+        for contract in self:
+            if contract.car_id or contract.transport_mode_private_car:
+                contract.update({
+                    'new_car_model_id': False,
+                    'new_car': False,
+                })
+
+    @api.depends('transport_mode_car', 'car_id', 'new_car_model_id', 'new_car')
+    def _compute_transport_mode_private_car(self):
+        for contract in self:
+            if contract.transport_mode_car or contract.car_id or contract.new_car or contract.new_car_model_id:
+                contract.transport_mode_private_car = False
 
     @api.depends('car_id', 'new_car_model_id')
     def _compute_car_model_name(self):
@@ -72,18 +119,24 @@ class HrContract(models.Model):
             else:
                 contract.car_model_name = False
 
-    @api.depends('employee_id')
+    @api.depends('employee_id', 'new_car', 'new_car_model_id', 'transport_mode_private_car')
     def _compute_car_id(self):
-        employees_partners = self.employee_id.address_home_id
+        contracts_to_reset = self.filtered(lambda c: c.new_car or c.new_car_model_id or c.transport_mode_private_car or not c.transport_mode_private_car)
+        contracts_to_reset.update({'car_id': False})
+        remaining_contracts = self - contracts_to_reset
+        if not remaining_contracts:
+            return
+        employees_partners = remaining_contracts.employee_id.address_home_id
         cars = self.env['fleet.vehicle'].search([('driver_id', 'in', employees_partners.ids)])
-        dict_car = dict([(car.driver_id.id, car.id) for car in cars])
-        for contract in self:
+        dict_car = {car.driver_id.id: car.id for car in cars}
+        for contract in remaining_contracts:
             partner_id = contract.employee_id.address_home_id.id
             if partner_id in dict_car:
                 contract.car_id = dict_car[partner_id]
                 contract.transport_mode_car = True
             else:
                 contract.car_id = False
+
 
     @api.depends('car_id', 'new_car', 'new_car_model_id', 'car_id.total_depreciated_cost',
         'car_id.atn', 'new_car_model_id.default_atn', 'new_car_model_id.default_total_depreciated_cost')

@@ -285,9 +285,6 @@
                 <xpath expr="//field[@name='unit_amount']" position="before">
                     <button type="object" class="btn-primary o_timesheet_validate" name="action_validate_timesheet" string="Validate"/>
                 </xpath>
-                <xpath expr="/grid" position="attributes">
-                    <attribute name="create">false</attribute>
-                </xpath>
             </field>
         </record>
 
@@ -467,6 +464,16 @@
             </field>
         </record>
 
+        <record id="timesheet_validate_action" model="ir.actions.server">
+            <field name="name">Validate</field>
+            <field name="model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="binding_model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="groups_id" eval="[(4, ref('hr_timesheet.group_hr_timesheet_approver'))]"/>
+            <field name="code">action = records.action_validate_timesheet()</field>
+        </record>
+
           <!-- Override Pivot view -->
         <record id="timesheet_grid_pivot_view" model="ir.ui.view">
             <field name="name">account.analytic.line.pivot.timesheet_grid</field>
@@ -476,6 +483,30 @@
                 <pivot position="attributes">
                     <attribute name="js_class">timesheet_pivot_view</attribute>
                 </pivot>
+            </field>
+        </record>
+
+        <!-- Same for my timesheet -->
+        <record id="timesheet_grid_pivot_view_my" model="ir.ui.view">
+            <field name="name">account.analytic.line.pivot.timesheet_grid.my</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.view_my_timesheet_line_pivot"/>
+            <field name="arch" type="xml">
+                <pivot position="attributes">
+                    <attribute name="js_class">timesheet_pivot_view</attribute>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="timesheet_grid_pivot_view_weekly_validate" model="ir.ui.view">
+            <field name="name">account.analytic.line.pivot.weekly.validate.timesheet_grid</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.view_hr_timesheet_line_pivot"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <field name="date" position="attributes">
+                    <attribute name="interval">week</attribute>
+                </field>
             </field>
         </record>
 

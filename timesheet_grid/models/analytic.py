@@ -3,6 +3,7 @@
 import re
 
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from lxml import etree
 from collections import defaultdict
 from pytz import utc
@@ -686,46 +687,40 @@ class AnalyticLine(models.Model):
         return new_timesheet.id
 
     def _action_open_to_validate_timesheet_view(self, type_view='week'):
-        """ search the oldest non-validated timesheet to display in grid view
-
-            When the user want to validate the timesheet, we want to be sure
-            that before the range date of grid view, all timesheets have
-            already been validated.
-            Thus, we display to the user, the grid view contains the oldest
-            timesheet that isn't validated yet.
-        """
-        oldest_timesheet = self.search(self._get_domain_for_validation_timesheets(), order="date asc", limit=1)
-        name = ''
         context = {
             'search_default_nonvalidated': True,
             'search_default_my_team_timesheet': True,
             'group_expand': True,
         }
-
-        if oldest_timesheet:  # check if exists a timesheet to validate
-            context.update(grid_anchor=oldest_timesheet.date)
-
         if (type_view == 'week'):
-            name = 'Timesheets to Validate'
+            context['grid_anchor'] = fields.Date.today() - relativedelta(weeks=1)
         elif type_view == 'month':
-            name = 'Timesheets to Validate'
             context['grid_range'] = 'month'
+            context['grid_anchor'] = fields.Date.today() - relativedelta(months=1)
 
+        name = _('Timesheets to Validate')
         action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.act_hr_timesheet_report")
+        #We want the pivot view to group by week and not by month in weekly mode
+        if type_view == 'week':
+            pivot_view_id = self.env.ref('timesheet_grid.timesheet_grid_pivot_view_weekly_validate').id
+        else:
+            pivot_view_id = self.env.ref('hr_timesheet.view_hr_timesheet_line_pivot').id
         action.update({
             "name": name,
             "display_name": name,
             "views": [
                 [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
                 [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
-                [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form']
+                [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
+                [pivot_view_id, 'pivot'],
+                [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
             ],
-            "view_mode": 'grid,tree',
+            "view_mode": 'grid,tree,pivot,graph',
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
             "context": context,
-            "help": '<p class="o_view_nocontent_smiling_face">No activities to validate.</p><p>Congratulations, you are up to date.<br/>' +
-                'Let\'s wait for your employees to start new activities.</p>',
+            "help": '<p class="o_view_nocontent_smiling_face">No timesheets to validate</p>' +
+                '<p>Check that your employees correctly filled in their timesheets and that their time is billable</p>',
         })
         return action
 

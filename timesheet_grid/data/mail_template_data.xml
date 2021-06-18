@@ -37,12 +37,12 @@
                 <tr><td valign="top" style="font-size: 13px;">
                     <div>
                         Hello ${object.name},<br/><br/>
-                        This is a friendly reminder to log your hours for the period : ${ctx.get('date_start')} - ${ctx.get('date_stop')}.
+                        This is a friendly reminder to log your hours for the following period: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.
                         For the time being, you only logged ${ctx.get('timesheet_hours')} hours on the ${ctx.get('working_hours')} requested.<br/>
                         % if ctx.get('action_url'):
                         <div style="margin: 16px 0px 16px 0px;">
                             <a href="${ctx.get('action_url')}"
-                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Fill your timesheet</a>
+                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Fill in your Timesheets</a>
                         </div>
                         % endif
                         <br/>Thank you,<br/>
@@ -98,7 +98,7 @@
         <record id="mail_template_timesheet_reminder_manager" model="mail.template">
             <field name="name">Timesheet: Manager Reminder</field>
             <field name="model_id" ref="hr.model_hr_employee"/>
-            <field name="subject">Reminder to validate your team timesheets</field>
+            <field name="subject">Reminder to validate your team's timesheets</field>
             <field name="email_from">${(object.user_id.company_id.partner_id.email_formatted or user.email_formatted) | safe}</field>
             <field name="email_to">${object.user_id.email_formatted | safe}</field>
             <field name="body_html" type="html">
@@ -130,11 +130,11 @@
                 <tr><td valign="top" style="font-size: 13px;">
                     <div>
                         Hello ${object.name},<br/><br/>
-                        This is a friendly reminder to approved your team's hours for the period : ${ctx.get('date_start')} - ${ctx.get('date_stop')}.<br/>
+                        This is a friendly reminder to approve your team's timesheets for the following period: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.<br/>
                         % if ctx.get('action_url'):
                         <div style="margin: 16px 0px 16px 0px;">
                             <a href="${ctx.get('action_url')}"
-                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Fill your timesheet</a>
+                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">Validate the Timesheets</a>
                         </div>
                         % endif
                         <br />Thank you,<br/>

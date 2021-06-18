@@ -1,13 +1,12 @@
 /** @odoo-module */
 import { useService } from "@web/core/service_hook";
-import { FileUploader } from "../../../file_uploader/file_uploader";
 import { browser } from "@web/core/browser/browser";
 import { download } from "@web/core/network/download";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { FileInput } from "@web/core/file_input/file_input";
 
 export class HomeMenuCustomizer extends owl.Component {
     setup() {
-        this.fileUploader = owl.hooks.useRef("fileUploader");
         this.rpc = useService("rpc");
         this.ui = useService("ui");
         this.notification = useService("notification");
@@ -19,17 +18,18 @@ export class HomeMenuCustomizer extends owl.Component {
         this.bgImageUploaded = this.bgImageUploaded.bind(this); // is executed as a callback
     }
 
-    _changeBackgroundImage() {
-        this.fileUploader.comp.chooseFiles();
-    }
+    async bgImageUploaded(ev) {
+        const file = ev.detail.files[0];
 
-    async bgImageUploaded(payload) {
-        if (payload.error || !payload.id) {
-            this.notification.add(payload); // FIXME
+        if (!file) {
+            this.notification.add(this.env._t("Could not change the background"), {
+                sticky: true,
+                type: "warning",
+            });
         } else {
             this.ui.block();
             try {
-                await this._setBackgroundImage(payload.id);
+                await this._setBackgroundImage(file.id);
                 browser.location.reload();
             } finally {
                 this.ui.unblock();
@@ -84,7 +84,7 @@ export class HomeMenuCustomizer extends owl.Component {
     }
 
     _resetBgImage() {
-        this.dialogManager.open(ConfirmationDialog, {
+        this.dialogManager.add(ConfirmationDialog, {
             body: this.env._t("Are you sure you want to reset the background image?"),
             title: this.env._t("Confirmation"),
             confirm: () => this._resetBgConfirmed(),
@@ -92,4 +92,4 @@ export class HomeMenuCustomizer extends owl.Component {
     }
 }
 HomeMenuCustomizer.template = "web_studio.HomeMenuCustomizer";
-HomeMenuCustomizer.components = { FileUploader };
+HomeMenuCustomizer.components = { FileInput };

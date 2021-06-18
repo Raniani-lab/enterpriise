@@ -64,7 +64,6 @@ Note: Only the admin user is allowed to make those customizations.
         'web_studio.studio_assets': [
             'web_studio/static/src/client_action/**/*.js',
             ('remove', 'web_studio/static/src/client_action/studio_action_loader.js'),
-            'web_studio/static/src/file_uploader/**/*.js',  # FIXME: remove ? use input_file instead
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/legacy/action_editor_main.js',
             'web_studio/static/src/legacy/edit_menu_adapter.js',

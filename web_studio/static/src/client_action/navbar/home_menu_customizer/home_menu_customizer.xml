@@ -3,24 +3,19 @@
 
   <t t-name="web_studio.HomeMenuCustomizer" owl="1">
     <div class="o_web_studio_home_studio_menu">
-      <FileUploader
-          t-ref="fileUploader"
-          withLabel="false"
-          fileUploadUrl="'/web/binary/upload_attachment'"
-          onUploaded="bgImageUploaded"
-          multiUpload="false"
-          uploadParams="{
-            model: 'res.company',
-            id: company.currentCompany.id,
-          }">
-      </FileUploader>
       <Dropdown>
         Customizations
         <t t-set-slot="menu">
-          <DropdownItem class="o_web_studio_change_background" t-on-click="_changeBackgroundImage">
-            Change background image
+          <DropdownItem class="o_web_studio_change_background" t-on-dropdown-item-selected.stop="">
+            <FileInput
+              action="'/web/binary/upload_attachment'"
+              t-on-uploaded="bgImageUploaded"
+              model="'res.company'" id="company.currentCompany.id"
+            >
+              Change Background
+            </FileInput>
           </DropdownItem>
-          <DropdownItem t-if="menus.getMenu('root').backgroundImage or true"
+          <DropdownItem t-if="menus.getMenu('root').backgroundImage"
             class="o_web_studio_reset_default_background"
             t-on-click="_resetBgImage">
             Reset Default Background

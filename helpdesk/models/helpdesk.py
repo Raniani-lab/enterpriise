@@ -200,9 +200,10 @@ class HelpdeskTeam(models.Model):
                 })
                 self.env.ref('helpdesk.group_use_sla').write({'users': [(5, 0, 0)]})
 
-    def _check_modules_to_install(self):
+    @api.model
+    def _get_field_modules(self):
         # mapping of field names to module names
-        FIELD_MODULE = {
+        return {
             'use_website_helpdesk_form': 'website_helpdesk_form',
             'use_website_helpdesk_livechat': 'website_helpdesk_livechat',
             'use_website_helpdesk_forum': 'website_helpdesk_forum',
@@ -215,10 +216,11 @@ class HelpdeskTeam(models.Model):
             'use_coupons': 'helpdesk_sale_coupon',
         }
 
+    def _check_modules_to_install(self):
         # determine the modules to be installed
         expected = [
             mname
-            for fname, mname in FIELD_MODULE.items()
+            for fname, mname in self._get_field_modules().items()
             if any(team[fname] for team in self)
         ]
         modules = self.env['ir.module.module']

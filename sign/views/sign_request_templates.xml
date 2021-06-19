@@ -117,6 +117,7 @@
                     });
                 </script>
             </t>
+            <t t-set="body_classname" t-value="'o_sign_document_body'"/>
             <div class="o_sign_document">
                 <header>
                     <div class="container-fluid">

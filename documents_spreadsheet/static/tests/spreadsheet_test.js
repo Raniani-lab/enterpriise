@@ -1074,10 +1074,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.deepEqual(globalFilter.fields[1], { field: "product", type: "many2one" });
     });
 
-    // LPE Fixme: there is a genuine bug in business code: the read_group triggered by
-    // `model.dispatch("ADD_PIVOT_FILTER", { filter });`has the form [["product", "in", {…}]]
-    // where in should always have an Array of ids, not an object
-    QUnit.skip("Display with an existing 'Relation' global filter", async function (assert) {
+    QUnit.test("Display with an existing 'Relation' global filter", async function (assert) {
         assert.expect(8);
 
         const { webClient, model } = await createSpreadsheetFromPivot({
@@ -1107,7 +1104,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 1: { type:"many2one", field:"product" }, // first pivotId
                 2: { type:"many2one", field:"product" } // second pivotId
             },
-            defaultValue: {},
+            defaultValue: [],
         }
         model.dispatch("ADD_PIVOT_FILTER", { filter });
         const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");

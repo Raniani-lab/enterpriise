@@ -4,11 +4,13 @@ import { memoize } from "@web/core/utils/functions";
 import { registry } from "@web/core/registry";
 import { loadPublicAsset } from "@web/core/assets";
 
+import { loadWysiwyg } from "web_editor.loader";
+
 const actionRegistry = registry.category("actions");
 
 const loadStudioAction = memoize(async (env) => {
     // some parts of the studio client action depend on the wysiwyg widgets, so load them first
-    await loadPublicAsset("web_editor.compiled_assets_wysiwyg", env.services.orm);
+    await loadWysiwyg();
     await loadPublicAsset("web_studio.compiled_assets_studio", env.services.orm);
 
     if (actionRegistry.get("studio") === loadStudioAction) {

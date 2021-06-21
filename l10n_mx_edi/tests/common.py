@@ -41,7 +41,6 @@ class TestMxEdiCommon(AccountEdiTestCommon):
         })
 
         cls.company_data['company'].write({
-            'country_id': cls.env.ref('base.mx').id,
             'vat': 'EKU9003173C9',
             'street_name': 'Campobasso Norte',
             'street2': 'Fraccionamiento Montecarlo',
@@ -49,6 +48,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'street_number2': '9000',
             'zip': '85134',
             'city': 'Ciudad Obregón',
+            'country_id': cls.env.ref('base.mx').id,
             'state_id': cls.env.ref('base.state_mx_son').id,
             'l10n_mx_edi_pac': 'solfact',
             'l10n_mx_edi_pac_test_env': True,

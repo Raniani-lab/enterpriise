@@ -229,3 +229,10 @@ class TestPlanning(TestCommonPlanning):
         self.assertEqual(slot.start_datetime, datetime(2021, 1, 1, 22, 0), 'The start datetime should have the same hour and minutes defined in the template.')
         self.assertEqual(slot.end_datetime, datetime(2021, 1, 2, 1, 0), 'The end datetime of this slot should be 3 hours after the start datetime as mentionned in the template.')
         self.assertEqual(slot.allocated_hours, 3, 'The allocated hours of this slot should be the duration defined in the template.')
+
+    def test_planning_state(self):
+        """ The purpose of this test case is to check the planning state """
+        self.slot.employee_id = self.employee_bert
+        self.assertEqual(self.slot.state, 'draft', 'Planning is draft mode.')
+        self.slot.action_publish()
+        self.assertEqual(self.slot.state, 'published', 'Planning is published.')

@@ -90,13 +90,18 @@ class Planning(models.Model):
     duration = fields.Float("Duration", compute="_compute_slot_duration")
 
     # publication and sending
-    is_published = fields.Boolean("Is The Shift Sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.", copy=False)
+    is_published = fields.Boolean("Is The Shift Sent", default=False, compute='_compute_is_published', search='_search_is_published',
+        help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
     publication_warning = fields.Boolean(
         "Modified Since Last Publication", default=False, compute='_compute_publication_warning',
         store=True, readonly=True, copy=False,
         help="If checked, it means that the shift contains has changed since its last publish.")
+    state = fields.Selection([
+            ('draft', 'Draft'),
+            ('published', 'Published'),
+    ], string='Status', default='draft')
     # template dummy fields (only for UI purpose)
-    template_creation = fields.Boolean("Save As Template", store=False, inverse='_inverse_template_creation')
+    template_creation = fields.Boolean("Save as Template", store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
     template_id = fields.Many2one('planning.slot.template', string='Shift Templates', compute='_compute_template_id', readonly=False, store=True)
     template_reset = fields.Boolean()
@@ -115,6 +120,22 @@ class Planning(models.Model):
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
+
+    @api.model
+    def _search_is_published(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError('Operation not supported')
+
+        domain = [('state', operator, 'draft')]
+        if value:
+            domain.insert(0, expression.NOT_OPERATOR)
+            domain = expression.distribute_not(domain)
+        return domain
+
+    @api.depends('state')
+    def _compute_is_published(self):
+        for slot in self:
+            slot.is_published = slot.state == 'published'
 
     @api.depends('repeat_until')
     def _compute_confirm_delete(self):
@@ -728,7 +749,7 @@ class Planning(models.Model):
                     values['start_datetime'] = self._add_delta_with_dst(values['start_datetime'], relativedelta(days=7))
                 if values.get('end_datetime'):
                     values['end_datetime'] = self._add_delta_with_dst(values['end_datetime'], relativedelta(days=7))
-                values['is_published'] = False
+                values['state'] = 'draft'
                 new_slot_values.append(values)
         slots_to_copy.write({'was_copied': True})
         if new_slot_values:
@@ -814,14 +835,15 @@ class Planning(models.Model):
     def action_send(self):
         self.ensure_one()
         if not self.employee_id or not self.employee_id.work_email:
-            self.is_published = True
+            self.state = 'published'
         employee_ids = self._get_employees_to_send_slot()
         self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
-        return True
+        message = _("The shift has successfully been sent.")
+        return self._get_notification_action('success', message)
 
     def action_publish(self):
         self.write({
-            'is_published': True,
+            'state': 'published',
             'publication_warning': False,
         })
         return True
@@ -831,7 +853,7 @@ class Planning(models.Model):
             raise AccessError(_('You are not allowed to reset to draft shifts.'))
         published_shifts = self.filtered('is_published')
         if published_shifts:
-            published_shifts.write({'is_published': False})
+            published_shifts.write({'state': 'draft'})
             notif_type = "success"
             message = _('The shifts have been successfully reset to draft.')
         else:
@@ -1047,7 +1069,7 @@ class Planning(models.Model):
             mails_to_send.send()
 
         self.write({
-            'is_published': True,
+            'state': 'published',
             'publication_warning': False,
         })
 
@@ -1136,7 +1158,7 @@ class PlanningPlanning(models.Model):
             sent_slots |= slots
         # mark as sent
         sent_slots.write({
-            'is_published': True,
+            'state': 'published',
             'publication_warning': False
         })
         return True

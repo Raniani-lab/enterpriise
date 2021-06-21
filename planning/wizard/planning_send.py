@@ -94,7 +94,7 @@ class PlanningSend(models.TransientModel):
         if not self.include_unassigned:
             slot_to_publish = slot_to_publish.filtered(lambda s: s.employee_id)
         slot_to_publish.write({
-            'is_published': True,
+            'state': 'published',
             'publication_warning': False
         })
         return True

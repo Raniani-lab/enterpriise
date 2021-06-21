@@ -38,7 +38,7 @@ class TestPlanningPublishing(TestCommonPlanning):
         before_mails = Mails.search([])
 
         self.shift.action_send()
-        self.assertTrue(self.shift.is_published, 'planning is is_published when we call its action_send')
+        self.assertEqual(self.shift.state, 'published', 'planning is published when we call its action_send')
 
         shift_mails = set(Mails.search([])) ^ set(before_mails)
         self.assertEqual(len(shift_mails), 1, 'only one mail is created when publishing planning')

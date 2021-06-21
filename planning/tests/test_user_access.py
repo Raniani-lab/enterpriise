@@ -59,7 +59,7 @@ class TestUserAccess(TransactionCase):
             'repeat_type': 'until',
             'repeat_until': datetime(2022, 6, 27, 17, 0, 0),
             'repeat_interval': 1,
-            'is_published': True,
+            'state': 'published',
         })
 
         self.env['planning.slot'].create({
@@ -70,7 +70,7 @@ class TestUserAccess(TransactionCase):
             'repeat_type': 'until',
             'repeat_until': datetime(2022, 6, 28, 17, 0, 0),
             'repeat_interval': 1,
-            'is_published': True,
+            'state': 'published',
         })
 
     def test_01_internal_user_read_own_slots(self):
@@ -88,7 +88,7 @@ class TestUserAccess(TransactionCase):
             'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
             'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
             'employee_id': self.hr_internal_user.id,
-            'is_published': False,
+            'state': 'draft',
         })
         unpublished_count = self.env['planning.slot'].with_user(self.internal_user).search_count([('is_published', '=', False)])
         self.assertEqual(unpublished_count, 0, "An internal user shouldn't see unpublished slots")
@@ -118,7 +118,7 @@ class TestUserAccess(TransactionCase):
             'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
             'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
             'employee_id': self.hr_planning_user.id,
-            'is_published': False,
+            'state': 'draft',
         })
         unpublished_count = self.env['planning.slot'].with_user(self.planning_user).search_count([('is_published', '=', False)])
         self.assertEqual(unpublished_count, 0, "A planning user shouldn't see unpublished slots")

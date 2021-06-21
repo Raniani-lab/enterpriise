@@ -86,7 +86,7 @@ class PlanningRecurrency(models.Model):
                         'recurrency_id': recurrency.id,
                         'company_id': recurrency.company_id.id,
                         'repeat': True,
-                        'is_published': False
+                        'state': 'draft'
                     })[0]
                     slot_values_list.append(slot_values)
                     next_start = PlanningSlot._add_delta_with_dst(next_start, recurrency_delta)
@@ -102,6 +102,6 @@ class PlanningRecurrency(models.Model):
         slots = self.env['planning.slot'].search([
             ('recurrency_id', 'in', self.ids),
             ('start_datetime', '>=', start_datetime),
-            ('is_published', '=', False),
+            ('state', '=', 'draft'),
         ])
         slots.unlink()

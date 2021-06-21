@@ -252,6 +252,9 @@ class IntrastatReport(models.AbstractModel):
 
         date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
 
+        if not journal_ids:
+            return []
+
         invoice_types = []
         if incl_arrivals:
             invoice_types += ['in_invoice', 'out_refund']

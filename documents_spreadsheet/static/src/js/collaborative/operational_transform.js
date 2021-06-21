@@ -39,3 +39,9 @@ inverseCommandRegistry.add("ADD_PIVOT_FILTER", (cmd) => {
         filter: {}
     }]
 })
+.add("ADD_PIVOT", (cmd) => {
+    return cmd
+})
+.add("ADD_PIVOT_FORMULA", (cmd) => {
+    return cmd
+})

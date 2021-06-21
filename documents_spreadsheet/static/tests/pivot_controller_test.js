@@ -9,7 +9,8 @@ import {
     getCellContent,
     getCellFormula,
     getCells,
-    getMerges
+    getMerges,
+    setCellContent
 } from "./spreadsheet_test_utils";
 import { doAction } from '@web/../tests/webclient/helpers';
 
@@ -701,4 +702,15 @@ test("can select a Pivot from cell formula (Mix of test scenarios above)", async
         selectedPivot.id,
         1
     );
+});
+
+test("Can remove a pivot with undo after editing a cell", async function (assert) {
+    assert.expect(3);
+    const { model } = await createSpreadsheetFromPivot();
+    assert.ok(getCellContent(model, "B1").startsWith("=PIVOT.HEADER"))
+    setCellContent(model, "G10", "should be undoable");
+    model.dispatch("REQUEST_UNDO");
+    assert.equal(getCellContent(model, "G10"), "");
+    model.dispatch("REQUEST_UNDO");
+    assert.equal(getCellContent(model, "B1"), "");
 });

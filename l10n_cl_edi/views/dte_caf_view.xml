@@ -55,7 +55,8 @@
             <field name="context">{"search_default_active":1}</field>
         </record>
 
-        <menuitem action="action_l10n_cl_dte_caf" id="menu_l10n_cl_dte_caf" sequence="21" parent="account.account_account_menu"/>
+        <menuitem name="Chilean SII" id="menu_sii_chile" sequence="5" parent="account.menu_finance_configuration"/>
+        <menuitem action="action_l10n_cl_dte_caf" id="menu_l10n_cl_dte_caf" sequence="21" parent="l10n_cl_edi.menu_sii_chile"/>
 
     </data>
 </odoo>

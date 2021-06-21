@@ -46,10 +46,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Chilean SII"
-    	id="menu_sii_chile" sequence="5"
-        parent="account.account_account_menu"/>
-
     <menuitem name="SII Partner Activities"
         id="menu_action_act_partner_activities"
         action="act_partner_activities" 

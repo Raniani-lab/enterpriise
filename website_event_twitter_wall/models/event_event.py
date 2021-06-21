@@ -20,11 +20,13 @@ class EventEvent(models.Model):
     # WEBSITE MENU MANAGEMENT
     # ------------------------------------------------------------
 
-    @api.depends('website_menu', 'twitter_wall_id')
+    @api.depends('website_menu', 'twitter_wall_id', 'event_type_id')
     def _compute_social_menu(self):
         """ If the main menu is checked and we have a twitter wall configured: show 'Social' menu entry """
         for event in self:
-            if not event.twitter_wall_id:
+            if event.event_type_id and event.event_type_id != event._origin.event_type_id:
+                event.social_menu = event.event_type_id.social_menu
+            elif not event.twitter_wall_id:
                 event.social_menu = False
             elif event.website_menu and (event.website_menu != event._origin.website_menu or not event.social_menu):
                 event.social_menu = True

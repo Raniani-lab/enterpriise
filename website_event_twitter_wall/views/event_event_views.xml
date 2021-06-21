@@ -11,7 +11,7 @@
                     attrs="{'required': [('social_menu', '=', True)]}"
                     options="{'no_quick_create': True}"/>
             </xpath>
-            <xpath expr="//field[@name='community_menu']" position="after">
+            <xpath expr="//label[@for='menu_register_cta']" position="before">
                 <label for="social_menu"/>
                 <field name="social_menu"/>
             </xpath>

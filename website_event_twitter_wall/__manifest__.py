@@ -6,7 +6,7 @@
     'name': 'Configure a Twitter Wall on your Event',
     'category': 'Marketing/Events',
     'sequence': 1030,
-    'version': '1.0',
+    'version': '1.1',
     'summary': 'Bridge module to configure a twitter wall on your event',
     'website': 'https://www.odoo.com/app/events',
     'description': "",
@@ -17,6 +17,7 @@
     'data': [
         'views/event_event_views.xml',
         'views/event_twitter_wall_templates.xml',
+        'views/event_type_views.xml',
     ],
     'demo': [
         'data/event_twitter_wall_demo.xml'

@@ -291,35 +291,63 @@ class AccountEdiFormat(models.Model):
         :param move:    An account.move record.
         :return:        A dictionary with one of the following key:
         * cfdi_str:     A string of the unsigned cfdi of the invoice.
-        * error:        An error if the cfdi was not successfuly generated.
+        * error:        An error if the cfdi was not successfully generated.
         '''
+        if move.payment_id:
+            currency = move.payment_id.currency_id
+            total_amount = move.payment_id.amount
+        else:
+            if move.statement_line_id.foreign_currency_id:
+                total_amount = move.statement_line_id.amount_currency
+                currency = move.statement_line_id.foreign_currency_id
+            else:
+                total_amount = move.statement_line_id.amount
+                currency = move.statement_line_id.currency_id
+
         # Process reconciled invoices.
         invoice_vals_list = []
         pay_rec_lines = move.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
+        paid_amount = abs(sum(pay_rec_lines.mapped('amount_currency')))
+
+        # Exclude the write-off if necessary.
+        if paid_amount > total_amount:
+            paid_amount = total_amount
+
         for field1, field2 in (('debit', 'credit'), ('credit', 'debit')):
             for partial in pay_rec_lines[f'matched_{field1}_ids']:
                 payment_line = partial[f'{field2}_move_id']
                 invoice_line = partial[f'{field1}_move_id']
-                invoice = invoice_line.move_id
-                payment_amount = partial[f'{field2}_amount_currency']
                 invoice_amount = partial[f'{field1}_amount_currency']
+                payment_amount = partial[f'{field2}_amount_currency']
+                exchange_move = invoice_line.full_reconcile_id.exchange_move_id
+                invoice = invoice_line.move_id
 
                 if not invoice.l10n_mx_edi_cfdi_request:
                     continue
 
+                if exchange_move:
+                    exchange_partial = invoice_line[f'matched_{field2}_ids']\
+                        .filtered(lambda x: x[f'{field2}_move_id'].move_id == exchange_move)
+                    if exchange_partial:
+                        invoice_amount += exchange_partial[f'{field2}_amount_currency']
+
                 if invoice_line.currency_id == payment_line.currency_id:
                     # Same currency
-                    rate = 1.0
+                    amount_paid_invoice_curr = invoice_amount
+                    exchange_rate = None
                 else:
                     # It needs to be how much invoice currency you pay for one payment currency
-                    rate = invoice_amount / payment_amount
+                    invoice_rate = abs(invoice_line.amount_currency) / abs(invoice_line.balance)
+                    amount_paid_invoice_curr = invoice_line.currency_id.round(partial.amount * invoice_rate)
+                    payment_amount_with_writeoff = total_amount * (payment_amount / paid_amount)
+                    exchange_rate = invoice_amount / payment_amount_with_writeoff
 
                 invoice_vals_list.append({
                     'invoice': invoice,
-                    'exchange_rate': rate,
+                    'exchange_rate': exchange_rate,
                     'payment_policy': invoice.l10n_mx_edi_payment_policy,
                     'number_of_payments': len(invoice._get_reconciled_payments()) + len(invoice._get_reconciled_statement_lines()),
-                    'amount_paid': invoice_amount,
+                    'amount_paid': amount_paid_invoice_curr,
                     **self._l10n_mx_edi_get_serie_and_folio(invoice),
                 })
 
@@ -343,15 +371,11 @@ class AccountEdiFormat(models.Model):
         payment_account_ord = re.sub(r'\s+', '', move.partner_bank_id.acc_number or '') or None
         payment_account_receiver = re.sub(r'\s+', '', move.journal_id.bank_account_id.acc_number or '') or None
 
-        receivable_lines = move.line_ids.filtered(lambda line: line.account_internal_type == 'receivable')
-        currencies = receivable_lines.mapped('currency_id')
-        amount = abs(sum(receivable_lines.mapped('amount_currency')) if len(currencies) == 1 else sum(receivable_lines.mapped('balance')))
-
         cfdi_values = {
             **self._l10n_mx_edi_get_common_cfdi_values(move),
             'invoice_vals_list': invoice_vals_list,
-            'currency': currencies[0] if len(currencies) == 1 else move.currency_id,
-            'amount': amount,
+            'currency': currency,
+            'amount': total_amount,
             'rate_payment_curr_mxn': rate_payment_curr_mxn,
             'emitter_vat_ord': is_payment_code_emitter_ok and partner_bank_vat,
             'bank_vat_ord': is_payment_code_bank_ok and partner_bank.name,

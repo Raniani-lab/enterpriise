@@ -858,6 +858,9 @@ odoo.define('sign.document_signing', function (require) {
             if (!options.buttons) {
                 options.buttons = [];
                 options.buttons.push({text: _t("Cancel"), close: true});
+                options.buttons.push({text: _t("Sign all"), classes: "btn-secondary", disabled: true, click: function (e) {
+                    this.confirmAllFunction();
+                }});
                 options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: function (e) {
                     this.confirmFunction();
                 }});
@@ -888,6 +891,7 @@ odoo.define('sign.document_signing', function (require) {
         start: function () {
             var self = this;
             this.$primaryButton = this.$footer.find('.btn-primary');
+            this.$secondaryButton = this.$footer.find('.btn-secondary');
             this.opened().then(function () {
                 self.$('.o_web_sign_name_and_signature').replaceWith(self.nameAndSignature.$el);
                 // initialize the signature area
@@ -899,6 +903,11 @@ odoo.define('sign.document_signing', function (require) {
         onConfirm: function (fct) {
             this.confirmFunction = fct;
         },
+
+        onConfirmAll: function (fct) {
+            this.confirmAllFunction = fct;
+        },
+
         /**
          * Gets the name currently given by the user.
          *
@@ -961,6 +970,7 @@ odoo.define('sign.document_signing', function (require) {
         _onChangeSignature: function () {
             var isEmpty = this.nameAndSignature.isSignatureEmpty();
             this.$primaryButton.prop('disabled', isEmpty);
+            this.$secondaryButton.prop('disabled', isEmpty);
         },
         /**
          * @override
@@ -1647,19 +1657,11 @@ odoo.define('sign.document_signing', function (require) {
                                     var name = signDialog.getName();
                                     var signature = signDialog.getSignatureImageSrc();
                                     self.getParent().signerName = name;
-                                    if (type.item_type === 'signature') {
-                                        self.nextSignature = signature
-                                    } else {
-                                        self.nextInitial = signature
-                                    }
+
+                                    self.updateNextSignatureOrInitial(type.item_type, signature);
+
                                     if(signDialog.nameAndSignature.signatureChanged) {
-                                        self._rpc({
-                                            route: '/sign/update_user_signature/',
-                                            params: {
-                                                signature_type: type.item_type === 'signature' ? 'sign_signature' : 'sign_initials',
-                                                datas: signature
-                                            }
-                                        })
+                                        self.updateUserSignature(type.item_type, signature);
                                     }
 
                                     $signatureItem.data({
@@ -1674,6 +1676,34 @@ odoo.define('sign.document_signing', function (require) {
                                 $signatureItem.trigger('input').focus();
                                 signDialog.close();
                             });
+
+                            signDialog.onConfirmAll(async function () {
+                                for (const pageNumber of Object.keys(self.configuration)) {
+                                    const page = self.configuration[pageNumber];
+                                    const name = signDialog.getName();
+                                    const signature = signDialog.getSignatureImageSrc();
+                                    self.getParent().signerName = name;
+
+                                    self.updateNextSignatureOrInitial(type.item_type, signature);
+
+                                    if(signDialog.nameAndSignature.signatureChanged) {
+                                        self.updateUserSignature(type.item_type, signature)
+                                    }
+
+                                    await Promise.all(page.reduce((promise, item) => {
+                                        if (item.data('type') === type.id && item.data('responsible') === self.role) {
+                                            promise.push(self.adjustSignatureSize(signature, item).then(data => {
+                                                item.data('signature', data)
+                                                .empty()
+                                                .append($('<span/>').addClass("o_sign_helper"), $('<img/>', {src: item.data('signature')}));
+                                            }));
+                                        }
+                                        return promise;
+                                    }, []))
+                                }
+                                $signatureItem.trigger('input').focus();
+                                signDialog.close();
+                            })
                         }
                     });
                 }
@@ -1719,6 +1749,26 @@ odoo.define('sign.document_signing', function (require) {
                 $signatureItem.val(value);
             }
             return $signatureItem;
+        },
+
+        updateNextSignatureOrInitial (type, signature) {
+            if (type === 'signature') {
+                this.nextSignature = signature
+            } else {
+                this.nextInitial = signature
+            }
+        },
+
+        updateUserSignature (type, signature) {
+            this._rpc({
+                route: '/sign/update_user_signature/',
+                params: {
+                    sign_request_id: this.getParent().requestID,
+                    role: this.role,
+                    signature_type: type === 'signature' ? 'sign_signature' : 'sign_initials',
+                    datas: signature
+                }
+            })
         },
 
         adjustSignatureSize: function (data, signatureItem) {

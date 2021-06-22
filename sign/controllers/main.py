@@ -203,9 +203,11 @@ class Sign(http.Controller):
         return http.Response(template='sign._doc_sign', qcontext=self.get_document_qweb_context(id, token)).render()
 
     @http.route(["/sign/update_user_signature"], type="json", auth="user")
-    def update_signature(self, signature_type=None, datas=None):
+    def update_signature(self, sign_request_id, role, signature_type=None, datas=None):
+        sign_request_item_sudo = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id), ('role_id', '=', role)], limit=1)
         user = http.request.env.user
-        if signature_type not in ['sign_signature', 'sign_initials'] or not user:
+        allowed = sign_request_item_sudo.partner_id.id == user.partner_id.id
+        if not allowed or signature_type not in ['sign_signature', 'sign_initials'] or not user:
             return False
         user[signature_type] = datas[datas.find(',') + 1:]
         return True

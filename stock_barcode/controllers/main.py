@@ -1,7 +1,7 @@
 from odoo import http, _
 from odoo.http import request
 from odoo.modules.module import get_resource_path
-from odoo.tools import pdf
+from odoo.tools import pdf, split_every
 
 
 class StockBarcodeController(http.Controller):
@@ -181,17 +181,19 @@ class StockBarcodeController(http.Controller):
         # get picking types barcodes
         picking_type_ids = request.env['stock.picking.type'].search(domain)
         picking_report = request.env.ref('stock.action_report_picking_type_label', raise_if_not_found=True)
-        picking_types_pdf, _ = picking_report._render_qweb_pdf(picking_type_ids.ids)
-        if picking_types_pdf:
-            barcode_pdfs.append(picking_types_pdf)
+        for picking_type_batch in split_every(100, picking_type_ids.ids):
+            picking_types_pdf, _ = picking_report._render_qweb_pdf(picking_type_batch)
+            if picking_types_pdf:
+                barcode_pdfs.append(picking_types_pdf)
 
         # get locations barcodes
         if request.env.user.has_group('stock.group_stock_multi_locations'):
             locations_ids = request.env['stock.location'].search(domain)
             locations_report = request.env.ref('stock.action_report_location_barcode', raise_if_not_found=True)
-            locations_pdf, _ = locations_report._render_qweb_pdf(locations_ids.ids)
-            if locations_pdf:
-                barcode_pdfs.append(locations_pdf)
+            for location_ids_batch in split_every(100, locations_ids.ids):
+                locations_pdf, _ = locations_report._render_qweb_pdf(location_ids_batch)
+                if locations_pdf:
+                    barcode_pdfs.append(locations_pdf)
 
         merged_pdf = pdf.merge_pdf(barcode_pdfs)
 

@@ -54,7 +54,7 @@
         </t>
     </MenuDropdown>
     <MenuItem t-else="" t-key="section.id" t-on-click.stop="_onMenuClicked(section)" payload="{ xmlid: section.xmlid }">
-        <t t-esc="section.name" />
+        <span t-esc="section.name" />
     </MenuItem>
 </t>
 

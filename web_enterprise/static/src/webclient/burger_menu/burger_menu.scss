@@ -115,7 +115,7 @@
 
     // ====== 'App menu' spefic design rules
     .o_burger_menu_app {
-      .o_dropdown_item, .o_dropdown_toggler {
+      .o_dropdown_item span, .o_dropdown_toggler {
         @include o-hover-text-color(rgba($-base-color, .8), $-base-color);
       }
 

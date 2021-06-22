@@ -162,17 +162,6 @@ class AccountBankStatement(models.Model):
             created_stmts = self.env['account.bank.statement']
             for date, lines in transactions_to_create.items():
                 # balance_start and balance_end_real will be computed automatically
-                if journal.bank_statement_creation_groupby in ('bimonthly', 'week', 'month'):
-                    end_date = date
-                    if journal.bank_statement_creation_groupby == 'month':
-                        end_date = date_utils.end_of(date, 'month')
-                    elif journal.bank_statement_creation_groupby == 'week':
-                        end_date = date_utils.add(date, days=6)
-                    elif journal.bank_statement_creation_groupby == 'bimonthly':
-                        if end_date.day == 1:
-                            end_date = date.replace(day=14)
-                        else:
-                            end_date = date_utils.end_of(date, 'month')
                 created_stmts += self.env['account.bank.statement'].create({
                     'date': date,
                     'line_ids': lines,

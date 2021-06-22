@@ -18,10 +18,14 @@ Bridge module for project and enterprise
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'project_enterprise/static/**/*',
+            'project_enterprise/static/src/js/**/*',
+            'project_enterprise/static/src/scss/**/*',
         ],
         'web.assets_qweb': [
             'project_enterprise/static/src/xml/**/*',
+        ],
+        'web.qunit_suite_tests': [
+            'project_enterprise/static/tests/**/*',
         ],
     }
 }

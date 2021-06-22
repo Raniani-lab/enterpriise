@@ -7,72 +7,58 @@ export const TaskGanttModel = GanttModel.extend({
     /**
      * @private
      * @override
-     * @returns {Object[]}
      */
-    _generateRows: function (params) {
-        // provide group for unassigned task
-        if(params.groupedBy.length) {
-            var groupedByField = params.groupedBy[0];
+    _generateRows(params) {
+        const { groupedBy, groups, parentPath } = params;
+        if (groupedBy.length) {
+            const groupedByField = groupedBy[0];
             if (groupedByField === 'user_id') {
-                var empty_exists = _.some(params.groups, function(group) {return !group[groupedByField];});
-                if (!empty_exists) {
-                    var values = this._parsePath(params.parentPath);
-                    var new_group = _.clone(values);
-                    new_group = _.extend(new_group, {
-                        id: _.uniqueId('group'),
-                        fake: true,
-                        __count: 0,
-                        __domain: this._getDomain(), // TODO: add the domain part with the values
-                        user_id: false,
-                    });
-                    params.groups.push(new_group);
-                    this.ganttData.groups.push(new_group);
-                }
+                // Here we are generating some rows under a common "parent" (if any).
+                // We make sure that a row with resId = false for "user_id"
+                // ('Unassigned Tasks') and same "parent" will be added by adding
+                // a suitable fake group to groups (a subset of the groups returned
+                // by read_group).
+                const fakeGroup = Object.assign({}, ...parentPath);
+                groups.push(fakeGroup);
             }
         }
-
-        var rows = this._super(params);
-
-        // rename undefined assigned to
-        _.each(rows, function(row){
-            if(row.groupedByField === 'user_id' && !row.resId){
-                row.name = _t('Unassigned Tasks');
-            }
-        });
-        // is the data grouped by?
-        if(params.groupedBy && params.groupedBy.length){
-            // in the last row is the grouped by field is null
-            if(rows && rows.length && rows[rows.length - 1] && !rows[rows.length - 1].resId){
-                // then make it the first one
-                rows.unshift(rows.pop());
-            }
+        const rows = this._super(params);
+        // always move an empty row to the head
+        if (groupedBy && groupedBy.length && rows.length > 1 && rows[0].resId) {
+            this._reorderEmptyRow(rows);
         }
         return rows;
     },
     /**
-     * Parse the path of a group, according to the groupedBy fields, in order to extract
-     * default value of a group.
+     * @private
+     * @override
+     */
+    _getRowName(groupedByField, value) {
+        if (groupedByField === "user_id") {
+            const resId = Array.isArray(value) ? value[0] : value;
+            if (!resId) {
+                return _t("Unassigned Tasks");
+            }
+        }
+        return this._super(...arguments);
+    },
+    /**
+     * Find an empty row and move it at the head of the array.
      *
      * @private
+     * @param {Object[]} rows
      */
-    _parsePath: function(path) {
-        var values = {};
-        if (path) {
-            var pathParts = path.split('\n');
-            var state = this.get();
-            var groupby = state.groupedBy;
-            _.each(groupby, function(fname, index) {
-                var val = pathParts[index];
-                if (val) {
-                    val = JSON.parse(val);
-                    if (state.fields[fname].type == 'many2one') {
-                        values[fname] = val[0];
-                    } else {
-                        values[fname] = val;
-                    }
-                }
-            });
+    _reorderEmptyRow(rows) {
+        let emptyIndex = null;
+        for (let i = 0; i < rows.length; ++i) {
+            if (!rows[i].resId) {
+                emptyIndex = i;
+                break;
+            }
         }
-        return values;
+        if (emptyIndex) {
+            const emptyRow = rows.splice(emptyIndex, 1)[0];
+            rows.unshift(emptyRow);
+        }
     },
 });

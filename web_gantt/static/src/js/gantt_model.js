@@ -5,7 +5,7 @@ var AbstractModel = require('web.AbstractModel');
 var concurrency = require('web.concurrency');
 var core = require('web.core');
 var fieldUtils = require('web.field_utils');
-const utils = require('web.utils');
+const { findWhere, groupBy } = require('web.utils');
 var session = require('web.session');
 
 var _t = core._t;
@@ -298,13 +298,11 @@ var GanttModel = AbstractModel.extend({
         });
 
         return this.dp.add(Promise.all([groupsDef, dataDef])).then(function (results) {
-            var groups = results[0];
+            const groups = results[0] || [];
             var searchReadResult = results[1];
-            if (groups) {
-                _.each(groups, function (group) {
-                    group.id = _.uniqueId('group');
-                });
-            }
+            _.each(groups, function (group) {
+                group.id = _.uniqueId('group');
+            });
             var oldRows = self.allRows;
             self.allRows = {};
             self.ganttData.groups = groups;
@@ -313,6 +311,7 @@ var GanttModel = AbstractModel.extend({
                 groupedBy: self.ganttData.groupedBy,
                 groups: groups,
                 oldRows: oldRows,
+                parentPath: [],
                 records: self.ganttData.records,
             });
             var unavailabilityProm;
@@ -405,87 +404,96 @@ var GanttModel = AbstractModel.extend({
      * @param {string[]} params.groupedBy
      * @param {Object} params.oldRows previous version of this.allRows (prior to
      *   this reload), used to keep collapsed rows collapsed
-     * @param {string} [params.parentPath=''] persistent identifier of the
-     *   parent row (concatenation of the value of each ancestor group), used to
-     *   identify rows between two reloads, to restore their collapsed state
+     * @param {Object[]} params.parentPath used to determine the ancestors of a
+     *   row through their groupedBy field and value.
+     *   The stringification of this must give a unique identifier to the parent row.
      * @returns {Object[]}
      */
-    _generateRows: function (params) {
-        var self = this;
-        var groups = params.groups;
-        var groupedBy = params.groupedBy;
-        var rows;
-        if (!groupedBy.length) {
-            // When no groupby, all records are in a single row
-            var row = {
+    _generateRows(params) {
+        const { groupedBy, groups, oldRows, parentPath, records } = params;
+        const groupLevel = this.ganttData.groupedBy.length - groupedBy.length;
+        if (!groupedBy.length || !groups.length) {
+            const row = {
+                groupLevel,
                 groupId: groups && groups.length && groups[0].id,
-                id: _.uniqueId('row'),
-                records: params.records,
+                id: JSON.stringify([...parentPath, {}]),
+                isGroup: false,
+                name: "",
+                records,
             };
-            rows = [row];
             this.allRows[row.id] = row;
-        } else {
-            // Some groups might be empty (thanks to expand_groups), so we can't
-            // simply group the data, we need to keep all returned groups
-            var groupedByField = groupedBy[0];
-            var currentLevelGroups = utils.groupBy(groups, groupedByField);
-            const groupedRecords = utils.groupBy(params.records, groupedByField);
-            rows = Object.keys(currentLevelGroups).map(function (key) {
-                var subGroups = currentLevelGroups[key];
-                var groupRecords = groupedRecords[key];
+            return [row];
+        }
 
-                // For empty groups, we can't look at the record to get the
-                // formatted value of the field, we have to trust expand_groups
-                var value;
-                if (groupRecords && groupRecords.length) {
-                    value = groupRecords[0][groupedByField];
-                } else {
-                    value = subGroups[0][groupedByField];
-                }
-
-                var path = (params.parentPath || '') + JSON.stringify(value);
-                var minNbGroups = self.collapseFirstLevel ? 0 : 1;
-                var isGroup = groupedBy.length > minNbGroups;
-                var row = {
-                    name: self._getFieldFormattedValue(value, self.fields[groupedByField]),
-                    groupId: subGroups[0].id,
-                    groupedBy: groupedBy,
-                    groupedByField: groupedByField,
-                    id: _.uniqueId('row'),
-                    resId: Array.isArray(value) ? value[0] : value,
-                    isGroup: isGroup,
-                    isOpen: !utils.findWhere(params.oldRows, { path: path, isOpen: false }),
-                    path: path,
-                    records: groupRecords,
-                };
-
-                // Generate sub groups
-                if (isGroup) {
-                    row.rows = self._generateRows({
-                        groupedBy: groupedBy.slice(1),
-                        groups: subGroups,
-                        oldRows: params.oldRows,
-                        parentPath: row.path + '\n',
-                        records: groupRecords,
-                    });
-                    row.childrenRowIds = [];
-                    row.rows.forEach(function (subRow) {
-                        row.childrenRowIds.push(subRow.id);
-                        row.childrenRowIds = row.childrenRowIds.concat(subRow.childrenRowIds || []);
-                    });
-                }
-
-                self.allRows[row.id] = row;
-
-                return row;
-            });
-            if (!rows.length) {
-                // we want to display an empty row in this case
-                rows = [{
-                    groups: [],
-                    records: [],
-                }];
+        const rows = [];
+        // Some groups might be empty (thanks to expand_groups), so we can't
+        // simply group the data, we need to keep all returned groups
+        const groupedByField = groupedBy[0];
+        const groupedRecords = groupBy(records || [], groupedByField);
+        const currentLevelGroups = groupBy(groups, group => {
+            if (group[groupedByField] === undefined) {
+                // Here we change undefined value to false as:
+                // 1/ we want to group together:
+                //    - groups having an undefined value for groupedByField
+                //    - groups having false value for groupedByField
+                // 2/ we want to be sure that stringification keeps
+                //    the groupedByField because of:
+                //      JSON.stringify({ key: undefined }) === "{}"
+                //      (see id construction below)
+                group[groupedByField] = false;
             }
+            return group[groupedByField];
+        });
+
+        for (const key in currentLevelGroups) {
+            const subGroups = currentLevelGroups[key];
+            const groupRecords = groupedRecords[key];
+            // For empty groups, we can't look at the record to get the
+            // formatted value of the field, we have to trust expand_groups
+            let value;
+            if (groupRecords && groupRecords.length) {
+                value = groupRecords[0][groupedByField];
+            } else {
+                value = subGroups[0][groupedByField];
+            }
+            const part = {};
+            part[groupedByField] = value;
+            const path = [...parentPath, part];
+            const id = JSON.stringify(path);
+            const resId = Array.isArray(value) ? value[0] : value;
+            const minNbGroups = this.collapseFirstLevel ? 0 : 1;
+            const isGroup = groupedBy.length > minNbGroups;
+            const row = {
+                name: this._getRowName(groupedByField, value),
+                groupId: subGroups[0].id,
+                groupedBy,
+                groupedByField,
+                groupLevel,
+                id,
+                resId,
+                isGroup,
+                isOpen: !findWhere(oldRows, { id: JSON.stringify(parentPath), isOpen: false }),
+                records: groupRecords,
+            };
+
+            if (isGroup) {
+                row.rows = this._generateRows({
+                    ...params,
+                    groupedBy: groupedBy.slice(1),
+                    groups: subGroups,
+                    oldRows,
+                    parentPath: path,
+                    records: groupRecords,
+                });
+                row.childrenRowIds = [];
+                row.rows.forEach(function (subRow) {
+                    row.childrenRowIds.push(subRow.id);
+                    row.childrenRowIds = row.childrenRowIds.concat(subRow.childrenRowIds || []);
+                });
+            }
+
+            rows.push(row);
+            this.allRows[row.id] = row;
         }
         return rows;
     },
@@ -545,6 +553,15 @@ var GanttModel = AbstractModel.extend({
         }
         var formattedValue = fieldUtils.format[field.type](value, field, options);
         return formattedValue || _.str.sprintf(_t('Undefined %s'), field.string);
+    },
+    /**
+     * @param {string} groupedByField
+     * @param {*} value
+     * @returns {string}
+     */
+    _getRowName(groupedByField, value) {
+        const field = this.fields[groupedByField];
+        return this._getFieldFormattedValue(value, field);
     },
     /**
      * @override

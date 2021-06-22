@@ -16,7 +16,7 @@
                     <Umsatzsteuervoranmeldung>
                         <Jahr><t t-esc="year" /></Jahr>
                         <Zeitraum><t t-esc="period" /></Zeitraum>
-                        <Steuernummer><t t-esc="company.l10n_de_nat_tax_nb" /></Steuernummer>
+                        <Steuernummer><t t-esc="company.l10n_de_stnr" /></Steuernummer>
                         <!-- kz nodes will be added dynamically here containing the values of the tax report -->
                     </Umsatzsteuervoranmeldung>
                 </Steuerfall>

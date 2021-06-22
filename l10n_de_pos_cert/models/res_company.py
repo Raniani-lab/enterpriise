@@ -16,8 +16,6 @@ class ResCompany(models.Model):
     l10n_de_fiskaly_api_key = fields.Char(string="Fiskaly API Key", groups="base.group_erp_manager")
     l10n_de_fiskaly_api_secret = fields.Char(string="Fiskaly API Secret", groups="base.group_erp_manager")
     l10n_de_fiskaly_organization_id = fields.Char(string="Fiskaly Organization ID")
-    l10n_de_stnr = fields.Char(string="St.-Nr.", help="Steuernummer. Scheme: ??FF0BBBUUUUP, e.g.: 2893081508152 https://de.wikipedia.org/wiki/Steuernummer")
-    l10n_de_widnr = fields.Char(string="W-IdNr.", help="Wirtschafts-Identifikationsnummer.")
     is_country_germany = fields.Boolean(string="Company located in Germany", compute='_compute_is_country_germany')
     l10n_de_fiskaly_kassensichv_token = fields.Char(string="Fiskaly Kassensichv Token", groups="base.group_erp_manager", help="Store the temporary token used for the Kassensichv API")
     l10n_de_fiskaly_dsfinvk_token = fields.Char(string="Fiskaly DSFinV-K Token", groups="base.group_erp_manager", help="Store the temporary token used for the DSFinV-K API")

@@ -299,8 +299,9 @@ class MxReportPartnerLedger(models.AbstractModel):
                                for exem in tax_exe.ids
                                if exem in line.tax_ids.ids])
                 columns.append(self.format_value(exempt))
+                balance_multiplicator = -1 if line.move_id.is_outbound() else 1
                 withh += sum([
-                    abs((line.debit or line.credit * -1) / (100 / ret.amount))
+                    (balance_multiplicator * line.balance) / (100 / ret.amount)
                     for ret in tax_ret
                     if ret.id in line.tax_ids.ids])
                 columns.append(self.format_value(withh))

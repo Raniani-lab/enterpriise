@@ -33,7 +33,6 @@ export const SUPPORTED_VIEW_TYPES = [
 ];
 
 export const studioService = {
-    name: "studio",
     dependencies: ["action", "home_menu", "router", "user"],
     async start(env, { user }) {
         function _getCurrentAction() {
@@ -327,4 +326,4 @@ export const studioService = {
     },
 };
 
-registry.category("services").add(studioService.name, studioService);
+registry.category("services").add("studio", studioService);

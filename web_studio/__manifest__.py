@@ -57,6 +57,7 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/js/views/renderers/form_renderer.js',
             'web_studio/static/src/legacy/js/views/renderers/list_renderer_eager.js',
             'web_studio/static/src/legacy/js/views/controllers/form_controller.js',
+            'web_studio/static/src/legacy/studio_legacy_service.js',
         ],
         'web.assets_backend_prod_only': [
             'web_studio/static/src/client_action/studio_action_loader.js',

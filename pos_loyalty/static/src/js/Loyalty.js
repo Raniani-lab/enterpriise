@@ -81,12 +81,12 @@ models.Order = models.Order.extend({
 
             var line_points = 0;
             this.pos.loyalty.rules.forEach(function(rule) {
-                 var rule_points = 0
+                var rule_points = 0
                 if(rule.valid_product_ids.find(function(product_id) {return product_id === line.get_product().id})) {
                     rule_points += rule.points_quantity * line.get_quantity();
                     rule_points += rule.points_currency * line.get_price_with_tax();
                 }
-                if(rule_points > line_points)
+                if(Math.abs(rule_points) > Math.abs(line_points))
                     line_points = rule_points;
             });
 

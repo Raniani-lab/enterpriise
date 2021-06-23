@@ -34,7 +34,8 @@ const DocumentsListRenderer = ListRenderer.extend({
     updateSelection(selectedRecordIds) {
         this.$('.o_data_row > .o_list_record_selector input:checked').prop('checked', false);
         for (const id of selectedRecordIds) {
-            this.$(`.o_document_list_record[data-res-id="${id}"] input`).prop('checked', true);
+            this.$(`.o_document_list_record[data-res-id="${id}"] .o_list_record_selector input`)
+                .prop('checked', true);
         }
         this._updateSelection();
     },

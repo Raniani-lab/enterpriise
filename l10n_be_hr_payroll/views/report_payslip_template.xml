@@ -122,7 +122,7 @@
             </tr>
             <tr>
                 <t t-set="ecovouchers" t-value="o._get_input_line_amount('ECOVOUCHERS')"/>
-                <td><span><t t-esc="ecovouchers"/>€ (= <t t-esc="int(ecovouchers // 10)"/>*10€ + 1*<t t-esc="ecovouchers % 10"/>€)</span></td>
+                <td><span><t t-esc="round(ecovouchers, 2)"/>€ (= <t t-esc="int(ecovouchers // 10)"/>*10€ + 1*<t t-esc="round(ecovouchers % 10, 2)"/>€)</span></td>
             </tr>
         </t>
     </xpath>

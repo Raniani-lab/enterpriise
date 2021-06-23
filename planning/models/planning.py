@@ -920,12 +920,12 @@ class Planning(models.Model):
             if len(dom) == 3 and dom[0] == 'start_datetime' and dom[1] == '<=':
                 max_date = dom[2] if dom[2] else datetime.now()
                 max_date = max_date if isinstance(max_date, date) else datetime.strptime(max_date, '%Y-%m-%d %H:%M:%S')
-                max_date = max_date + timedelta(days=30)
+                max_date = max_date + timedelta(days=7)
                 filters.append((dom[0], dom[1], max_date))
             elif len(dom) == 3 and dom[0] == 'end_datetime' and dom[1] == '>=':
                 min_date = dom[2] if dom[2] else datetime.now()
                 min_date = min_date if isinstance(min_date, date) else datetime.strptime(min_date, '%Y-%m-%d %H:%M:%S')
-                min_date = min_date - timedelta(days=30)
+                min_date = min_date - timedelta(days=7)
                 filters.append((dom[0], dom[1], min_date))
             else:
                 filters.append(dom)

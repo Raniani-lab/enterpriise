@@ -147,7 +147,7 @@
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
             </p><p>
-                Let's start your planning by adding a new shift.
+                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
             </p>
         </field>
     </record>
@@ -172,7 +172,7 @@
                 <p class="o_view_nocontent_smiling_face">
                     No shifts found. Let's create one!
                 </p><p>
-                    Let's start your planning by adding a new shift.
+                    Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
                 </p>
             </field>
         </record>
@@ -194,7 +194,7 @@
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
             </p><p>
-                Let's start your planning by adding a new shift.
+                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
             </p>
         </field>
     </record>

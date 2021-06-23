@@ -11,7 +11,7 @@
                             <label for="start_datetime">Period</label>
                             <div class="o_row">
                                 <field name="start_datetime" widget="daterange" options='{"related_end_date": "end_datetime"}'/>
-                                <i class="fa fa-caret-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                <i class="fa fa-long-arrow-right mx-1" aria-label="Arrow icon" title="Arrow"/>
                                 <field name="end_datetime" widget="daterange" options='{"related_start_date": "start_datetime"}'/>
                             </div>
                         </group>
@@ -21,7 +21,7 @@
                         </group>
                     </group>
                     <group col="2">
-                        <field name="employee_ids" widget="many2many_tags" default_focus="1"/>
+                        <field name="employee_ids" widget="many2many_avatar_employee" default_focus="1"/>
                         <field name="note" nolabel="1" colspan="2" placeholder="Additional message"/>
                     </group>
                 <footer>

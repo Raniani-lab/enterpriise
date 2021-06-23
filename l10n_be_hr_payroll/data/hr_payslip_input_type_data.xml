@@ -8,6 +8,20 @@
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
     </record>
 
+    <record id="cp200_input_hiring_bonus" model="hr.payslip.input.type">
+        <field name="name">Hiring Bonus</field>
+        <field name="code">HIRINGBONUS</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
+    </record>
+
+    <record id="cp200_input_additional_gross" model="hr.payslip.input.type">
+        <field name="name">Additional Gross</field>
+        <field name="code">ADDITIONALGROSS</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
+    </record>
+
     <record id="cp200_employee_eco_vouchers" model="hr.payslip.input.type">
         <field name="name">Eco-Vouchers</field>
         <field name="code">ECOVOUCHERS</field>

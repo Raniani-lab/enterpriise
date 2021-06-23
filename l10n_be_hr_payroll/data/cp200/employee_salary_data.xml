@@ -15,6 +15,36 @@ result_name = inputs.COMMISSION.name
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
+    <record id="cp200_employees_salary_hiring_bonus" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">Hiring Bonus</field>
+        <field name="code">HIRINGBONUS</field>
+        <field name="sequence">15</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.HIRINGBONUS</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = inputs.HIRINGBONUS.amount
+result_name = inputs.HIRINGBONUS.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+    </record>
+
+    <record id="cp200_employees_salary_additional_gross" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">Additional Gross</field>
+        <field name="code">ADDITIONALGROSS</field>
+        <field name="sequence">15</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.ADDITIONALGROSS</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = inputs.ADDITIONALGROSS.amount
+result_name = inputs.ADDITIONALGROSS.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+    </record>
+
     <record id="cp200_employees_salary_after_contract_public_holiday" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="name">After Contract Public Holidays</field>
@@ -87,6 +117,10 @@ result = 7.0
 result = categories.BASIC + result_rules['HolPayRecN']['total'] + result_rules['HolPayRecN1']['total']
 if inputs.COMMISSION:
     result += result_rules['COMMISSION']['total']
+if inputs.HIRINGBONUS:
+    result += result_rules['HIRINGBONUS']['total']
+if inputs.ADDITIONALGROSS:
+    result += result_rules['ADDITIONALGROSS']['total']
 if inputs.AFTERPUB:
     result += result_rules['AFTERPUB']['total']
 if contract.internet:
@@ -530,7 +564,7 @@ result = inputs.EXPENSES.amount if inputs.EXPENSES else 0
         <field name="sequence">500</field>
         <field name="condition_select">none</field>
         <field name="amount_python_compute">
-result = categories.BASIC + categories.COMMISSION + categories.AFTERPUB - abs(result_rules['IP']['total'] if contract.ip else 0)</field>
+result = categories.BASIC + categories.COMMISSION + result_rules['HIRINGBONUS']['total'] + result_rules['ADDITIONALGROSS']['total'] +  categories.AFTERPUB - abs(result_rules['IP']['total'] if contract.ip else 0)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payslip" eval="False"/>
     </record>

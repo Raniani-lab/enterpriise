@@ -14,6 +14,9 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import testUtils from "web.test_utils";
 import { makeFakeEnterpriseService } from "../mocks";
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import { errorService } from "@web/core/errors/error_service";
+import { browser } from "@web/core/browser/browser";
 
 let serverData;
 const serviceRegistry = registry.category("services");
@@ -538,4 +541,42 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.isNotVisible(webClient.el.querySelector(".o_main_navbar .o_menu_toggle"));
         }
     );
+
+    QUnit.test("initial action crashes", async (assert) => {
+        assert.expect(6);
+
+        const handler = (ev) => {
+            // need to preventDefault to remove error from console (so python test pass)
+            ev.preventDefault();
+        };
+        window.addEventListener("unhandledrejection", handler);
+        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
+
+        patchWithCleanup(QUnit, {
+            onUnhandledRejection: () => {},
+        });
+
+        browser.location.hash = "#action=__test__client__action__&menu_id=1";
+        const ClientAction = registry.category("actions").get("__test__client__action__");
+        class Override extends ClientAction {
+            setup() {
+                super.setup();
+                assert.step("clientAction setup");
+                throw new Error("my error");
+            }
+        }
+        registry.category("actions").add("__test__client__action__", Override, { force: true });
+
+        registry.category("services").add("error", errorService);
+
+        const webClient = await createEnterpriseWebClient({ serverData });
+        assert.verifySteps(["clientAction setup"]);
+        assert.containsOnce(webClient, "nav .o_menu_toggle.fa-th");
+        assert.isVisible(webClient.el.querySelector("nav .o_menu_toggle.fa-th"));
+        assert.strictEqual(webClient.el.querySelector(".o_action_manager").innerHTML, "");
+        assert.deepEqual(webClient.env.services.router.current.hash, {
+            action: "__test__client__action__",
+            menu_id: 1,
+        });
+    });
 });

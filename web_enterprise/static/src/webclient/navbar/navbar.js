@@ -15,6 +15,7 @@ export class EnterpriseNavBar extends NavBar {
         this.menuBrand = useRef("menuBrand");
         hooks.onMounted(() => {
             this.env.bus.on("HOME-MENU:TOGGLED", this, () => this._updateMenuAppsIcon());
+            this._updateMenuAppsIcon();
         });
         hooks.onPatched(() => {
             this._updateMenuAppsIcon();

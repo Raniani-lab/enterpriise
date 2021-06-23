@@ -27,9 +27,7 @@
             <field name="arch" type="xml">
                 <data>
                     <field name="signature" position="before">
-                        <group name="voip_config">
-                            <field name="mobile_call_method" widget="radio"/>
-                        </group>
+                        <field name="mobile_call_method" widget="radio"/>
                     </field>
                 </data>
             </field>

@@ -40,7 +40,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'date_end': '2018-01-01 01:00:00',
         })
 
-        cls.company_data['company'].write({
+        cls.company_values = {
             'vat': 'EKU9003173C9',
             'street_name': 'Campobasso Norte',
             'street2': 'Fraccionamiento Montecarlo',
@@ -54,7 +54,8 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'l10n_mx_edi_pac_test_env': True,
             'l10n_mx_edi_fiscal_regime': '601',
             'l10n_mx_edi_certificate_ids': [(6, 0, cls.certificate.ids)],
-        })
+        }
+        cls.company_data['company'].write(cls.company_values)
 
         cls.currency_data['currency'].l10n_mx_edi_decimal_places = 3
 

@@ -194,14 +194,11 @@ class AccountEdiFormat(models.Model):
         }
 
         # ==== Invoice Values ====
-
-        if invoice.currency_id == invoice.company_currency_id:
+        if invoice.currency_id.name == 'MXN':
             cfdi_values['currency_conversion_rate'] = None
         else:
-            sign = 1 if invoice.is_inbound(include_receipts=False) else -1
-            total_amount_currency = sign * invoice.amount_total
-            total_balance = invoice.amount_total_signed
-            cfdi_values['currency_conversion_rate'] = total_balance / total_amount_currency
+            mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
+            cfdi_values['currency_conversion_rate'] = self.env['res.currency']._get_conversion_rate(invoice.currency_id, mxn_currency, invoice.company_id, invoice.date)
 
         if invoice.partner_bank_id:
             digits = [s for s in invoice.partner_bank_id.acc_number if s.isdigit()]

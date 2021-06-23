@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import _
 from odoo.addons.hr_contract_salary.controllers import main
 from odoo.http import route, request
 from odoo.tools.float_utils import float_compare
 
 
 class HrContractSalary(main.HrContractSalary):
+
+    @route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
+    def salary_package(self, contract_id=None, **kw):
+        contract = request.env['hr.contract'].sudo().browse(contract_id)
+        if contract and contract.wage_type == 'hourly':
+            return request.render('http_routing.http_error', {'status_code': _('Oops'),
+                'status_message': _('The salary configurator does not support hourly wage contracts.')})
+        return super().salary_package(contract_id, **kw)
 
     def _generate_payslip(self, new_contract):
         return request.env['hr.payslip'].sudo().create({

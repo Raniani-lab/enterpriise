@@ -36,6 +36,12 @@ class HrPayrollReport(models.Model):
     basic_wage = fields.Float('Basic Wage', readonly=True)
     gross_wage = fields.Float('Gross Wage', readonly=True)
     leave_basic_wage = fields.Float('Basic Wage for Time Off', readonly=True)
+    # Some of those might not be enabled (requiring respective work_entry modules) but adding them separately would require
+    # a module just for that
+    work_entry_source = fields.Selection([
+        ('calendar', 'Working Schedule'),
+        ('attendance', 'Attendances'),
+        ('planning', 'Planning')], readonly=True)
 
     work_code = fields.Many2one('hr.work.entry.type', 'Work type', readonly=True)
     work_type = fields.Selection([
@@ -61,6 +67,7 @@ class HrPayrollReport(models.Model):
                 e.department_id as department_id,
                 d.master_department_id as master_department_id,
                 c.job_id as job_id,
+                c.work_entry_source as work_entry_source,
                 e.company_id as company_id,
                 wet.id as work_code,
                 CASE WHEN wet.is_leave IS NOT TRUE THEN '1' WHEN wd.amount = 0 THEN '3' ELSE '2' END as work_type,

@@ -210,8 +210,7 @@ class HrContract(models.Model):
 
                 work_data[work_entry.work_entry_type_id.id] += contract_data.get('hours', 0)
             else:
-                dt = date_stop - date_start
-                work_data[work_entry.work_entry_type_id.id] += dt.days * 24 + dt.seconds / 3600  # Number of hours
+                work_data[work_entry.work_entry_type_id.id] += work_entry._get_work_duration(date_start, date_stop)  # Number of hours
         return work_data
 
     def _get_default_work_entry_type(self):

@@ -19,6 +19,7 @@ from . import resource_calendar
 from . import res_company
 from . import res_users
 from . import hr_rule_parameter
+from . import hr_work_entry_type
 from . import hr_work_entry
 from . import hr_salary_attachment
 from . import note

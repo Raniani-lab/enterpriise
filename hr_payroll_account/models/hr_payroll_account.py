@@ -1,6 +1,8 @@
 #-*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero, plaintext2html
@@ -51,10 +53,9 @@ class HrPayslip(models.Model):
 
         # Map all payslips by structure journal and pay slips month.
         # {'journal_id': {'month': [slip_ids]}}
-        slip_mapped_data = {slip.struct_id.journal_id.id: {fields.Date().end_of(slip.date_to, 'month'): self.env['hr.payslip']} for slip in payslips_to_post}
+        slip_mapped_data = defaultdict(lambda: defaultdict(lambda: self.env['hr.payslip']))
         for slip in payslips_to_post:
             slip_mapped_data[slip.struct_id.journal_id.id][fields.Date().end_of(slip.date_to, 'month')] |= slip
-
         for journal_id in slip_mapped_data: # For each journal_id.
             for slip_date in slip_mapped_data[journal_id]: # For each month.
                 line_ids = []

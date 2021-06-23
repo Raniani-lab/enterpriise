@@ -119,11 +119,13 @@ class HrContract(models.Model):
         'work_time_rate', 'time_credit', 'resource_calendar_id.work_time_rate')
     def _compute_l10n_be_is_below_scale(self):
         # Source: https://emploi.belgique.be/fr/themes/remuneration/salaires-minimums-par-sous-commission-paritaire/banque-de-donnees-salaires
+        student_stucture_type = self.env.ref('hr_contract.structure_type_employee_cp200')
         open_contracts = self.filtered(
             lambda c: c.state in ['draft', 'open']
             and c.company_id.country_id.code == 'BE'
             and c.employee_id
-            and c._get_contract_wage())
+            and c._get_contract_wage()
+            and c.structure_type_id == student_stucture_type)
         (self - open_contracts).write({
             'l10n_be_is_below_scale_warning': False,
             'l10n_be_is_below_scale': False

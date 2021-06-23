@@ -69,7 +69,7 @@
                     </div>
                     <field name="has_laptop" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
                 </group>
-                <group string="Hospital Insurance" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                <group string="Hospital Insurance" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="has_hospital_insurance"/>
                     <field name="insured_relative_spouse"/>
                     <field name="insured_relative_adults"/>
@@ -89,8 +89,8 @@
                     <field name="meal_voucher_amount" nolabel="1"/>
                     <span>/ worked day</span>
                 </div>
-                <label for="eco_checks" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
-                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                <label for="eco_checks" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"/>
+                <div class="o_row" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="eco_checks" nolabel="1"/>
                     <span>/ year</span>
                 </div>
@@ -156,14 +156,14 @@
                 </group>
             </xpath>
             <group name="salary_info" position="inside">
-                <group string="Posted Employee" name="posted_employee" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                <group string="Posted Employee" name="posted_employee" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="no_onss"/>
                     <field name="no_withholding_taxes"/>
                 </group>
-                <group string="Withholding Taxes Exemption" name="withholding_taxes_exemption" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                <group string="Withholding Taxes Exemption" name="withholding_taxes_exemption" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="rd_percentage"/>
                 </group>
-                <group string="Impulsion Plan" name="impulsion_plan" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                <group string="Impulsion Plan" name="impulsion_plan" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <label for="employee_age" attrs="{'invisible': [('employee_age', '=', 0)]}"/>
                     <div attrs="{'invisible': [('employee_age', '=', 0)]}">
                         <field name="employee_age"/>
@@ -171,7 +171,7 @@
                     </div>
                     <field name="l10n_be_impulsion_plan"/>
                 </group>
-                <group string="ONSS Reduction" name="onss_retructuring" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                <group string="ONSS Reduction" name="onss_retructuring" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_onss_restructuring"/>
                 </group>
                 <group name="fiscal_voluntarism" string="Fiscal Voluntarism">

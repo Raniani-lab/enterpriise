@@ -964,7 +964,7 @@ class HrPayslipWorkedDays(models.Model):
     @api.depends('is_paid', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):
         for worked_days in self.filtered(lambda wd: not wd.payslip_id.edited):
-            if not worked_days.contract_id:
+            if not worked_days.contract_id or worked_days.code == 'OUT':
                 worked_days.amount = 0
                 continue
             if worked_days.payslip_id.wage_type == "hourly":

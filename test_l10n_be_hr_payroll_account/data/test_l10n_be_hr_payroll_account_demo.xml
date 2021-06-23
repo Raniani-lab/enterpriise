@@ -2763,6 +2763,94 @@
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_april_2020')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_april_2020')]]"/>
 
+    <!-- Clemence Student -->
+    <record id="resource_calendar_1_5_monday_student" model="resource.calendar">
+        <field name="name">Clemence Student Calendar</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="hours_per_day">7.6</field>
+        <field name="attendance_ids"
+            eval="[(5, 0, 0),
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+            ]"
+        />
+    </record>
+
+    <record id="res_partner_clemence_student_private_address" model="res.partner">
+        <field name="name">Clemence Student</field>
+        <field name="street">20 rue de la Crochette</field>
+        <field name="city">Darville</field>
+        <field name="zip">6987</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="phone">+0032483039453</field>
+        <field name="email">clemence.student@example.com</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
+    </record>
+
+    <record id="res_partner_bank_account_clemence_student" model="res.partner.bank">
+        <field name="acc_number">BE44666834865273</field>
+        <field name="bank_id" ref="base.bank_ing"/>
+        <field name="partner_id" ref="res_partner_clemence_student_private_address"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="hr_employee_clemence_student" model="hr.employee">
+        <field name="name">Clemence Student (cst)</field>
+        <field name="gender">female</field>
+        <field name="marital">single</field>
+        <field name="job_title">Student</field>
+        <field name="address_home_id" ref="res_partner_clemence_student_private_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="emergency_contact">Lucien Student</field>
+        <field name="emergency_phone">+0032467845368</field>
+        <field name="birthday">2002-02-02</field>
+        <field name="km_home_work">30</field>
+        <field name="place_of_birth">Outsiplou</field>
+        <field name="country_of_birth" ref="base.be"/>
+        <field name="certificate">other</field>
+        <field name="study_field">CESS</field>
+        <field name="study_school">ISJ Libramont</field>
+        <field name="department_id" ref="hr_department_2"/>
+        <field name="parent_id" ref="l10n_be_hr_contract_salary.employee_max"/>
+        <field name="country_id" ref="base.be"/>
+        <field name="resource_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_1_5_monday_student"/>
+        <field name="identification_id">02-02-02-085-37</field>
+        <field name="niss">02020208537</field>
+        <field name="bank_account_id" ref="res_partner_bank_account_clemence_student"/>
+        <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_student-image.jpg"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="hr_job_student" model="hr.job">
+        <field name="name">Student</field>
+        <field name="department_id" ref="hr_department_2"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="description">Student hired during company events.</field>
+        <field name="state">open</field>
+        <field name="l10n_be_scale_category">A</field>
+    </record>
+
+    <record id="hr_contract_clemence_student" model="hr.contract">
+        <field name="name">Contract - Clemence Student</field>
+        <field name="department_id" ref="hr_department_2"/>
+        <field name="employee_id" ref="hr_employee_clemence_student"/>
+        <field name="job_id" ref="hr_job_student"/>
+        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_student"/>
+        <field name="wage">0</field>
+        <field name="hourly_wage">10.8714</field>
+        <field name="meal_voucher_amount">7.45</field>
+        <field name="representation_fees">0</field>
+        <field name="transport_mode_private_car" eval="True"/>
+        <field name="km_home_work">30</field>
+        <field name="internet">0</field>
+        <field name="mobile">0</field>
+        <field name="state">open</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(months=-6))"/>
+        <field name="resource_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_1_5_monday_student"/>
+    </record>
+
     <!-- Reset company on superuser -->
 
     <function model="res.users" name="write">

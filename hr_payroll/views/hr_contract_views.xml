@@ -22,9 +22,6 @@
                     <span>/ hour</span>
                 </div>
             </xpath>
-            <group name="yearly_advantages" position="attributes">
-                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
-            </group>
             <xpath expr="//label[@for='wage']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
             </xpath>

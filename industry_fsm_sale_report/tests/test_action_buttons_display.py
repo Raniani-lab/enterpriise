@@ -158,7 +158,7 @@ class TestTimerButtons(TransactionCase):
         self.assertFalse(self.task.display_sign_report_primary)
         self.assertTrue(self.task.display_sign_report_secondary)
         self.assertFalse(self.task.display_send_report_primary)
-        self.assertFalse(self.task.display_send_report_secondary) # Not signed yet
+        self.assertTrue(self.task.display_send_report_secondary) # Not signed yet
         timesheet.unlink()
 
         # Secondary if worksheet > 0 only
@@ -175,7 +175,7 @@ class TestTimerButtons(TransactionCase):
         self.assertFalse(self.task.display_sign_report_primary)
         self.assertTrue(self.task.display_sign_report_secondary)
         self.assertFalse(self.task.display_send_report_primary)
-        self.assertFalse(self.task.display_send_report_secondary) # Not signed yet
+        self.assertTrue(self.task.display_send_report_secondary) # Not signed yet
         worksheet.unlink()
 
         # Secondary if product > 0 only
@@ -187,7 +187,7 @@ class TestTimerButtons(TransactionCase):
         self.assertFalse(self.task.display_sign_report_primary)
         self.assertTrue(self.task.display_sign_report_secondary)
         self.assertFalse(self.task.display_send_report_primary)
-        self.assertFalse(self.task.display_send_report_secondary) # Not signed yet
+        self.assertTrue(self.task.display_send_report_secondary) # Not signed yet
 
         # Primary of all conditions met
         timesheet = self.env['account.analytic.line'].create({
@@ -209,7 +209,7 @@ class TestTimerButtons(TransactionCase):
         self.assertEqual(self.task.display_satisfied_conditions_count, 3)
         self.assertTrue(self.task.display_sign_report_primary)
         self.assertFalse(self.task.display_sign_report_secondary)
-        self.assertFalse(self.task.display_send_report_primary) # Report is not signed yet
+        self.assertTrue(self.task.display_send_report_primary) # Report is not signed yet
         self.assertFalse(self.task.display_send_report_secondary) # Report is not signed yet
 
         # Send visible in primary if report is signed and not sent yet

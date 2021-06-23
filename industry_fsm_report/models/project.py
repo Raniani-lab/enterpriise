@@ -87,14 +87,14 @@ class Task(models.Model):
             })
 
     @api.depends(
-        'allow_worksheets', 'timer_start', 'worksheet_signature', 'worksheet_template_id',
+        'allow_worksheets', 'timer_start', 'worksheet_template_id',
         'display_satisfied_conditions_count', 'display_satisfied_conditions_count',
         'fsm_is_sent')
     def _compute_display_send_report_buttons(self):
         for task in self:
             send_p, send_s = True, True
             if not task.allow_worksheets or task.timer_start or \
-                    not task.worksheet_signature or not task.worksheet_template_id or \
+                    not task.worksheet_template_id or \
                     not task.display_satisfied_conditions_count or task.fsm_is_sent:
                 send_p, send_s = False, False
             else:
@@ -156,10 +156,22 @@ class Task(models.Model):
         self.ensure_one()
         return 'Worksheet %s - %s' % (self.name, self.partner_id.name)
 
-    def action_send_report(self):
+    def _is_fsm_report_available(self):
         self.ensure_one()
-        if not self.worksheet_template_id:
-            raise UserError(_("To send the report, you need to select a worksheet template."))
+        return self.worksheet_count or self.timesheet_ids
+
+    def action_send_report(self):
+        tasks_with_report = self.filtered(lambda task: task._is_fsm_report_available())
+        if not tasks_with_report:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': _("There are no reports to send."),
+                    'sticky': False,
+                    'type': 'danger',
+                }
+            }
 
         template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
         return {
@@ -170,12 +182,13 @@ class Task(models.Model):
             'view_id': False,
             'target': 'new',
             'context': {
+                'default_composition_mode': 'mass_mail' if len(tasks_with_report.ids) > 1 else 'comment',
                 'default_model': 'project.task',
-                'default_res_id': self.id,
+                'default_res_id': tasks_with_report.ids[0],
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id,
-                'force_email': True,
                 'fsm_mark_as_sent': True,
+                'active_ids': tasks_with_report.ids,
             },
         }
 

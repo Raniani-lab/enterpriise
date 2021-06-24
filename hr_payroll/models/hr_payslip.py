@@ -681,6 +681,8 @@ class HrPayslip(models.Model):
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_worked_days_line_ids(self):
+        if self.env.context.get('salary_simulation'):
+            return
         valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
         # Make sure to reset invalid payslip's worked days line
         invalid_slips = self - valid_slips

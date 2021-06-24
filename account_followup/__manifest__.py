@@ -21,7 +21,7 @@ It will generate a PDF / send emails / set manual actions according to the diffe
 of recall defined. You can define different policies for different companies.
 
 """,
-    'website': 'https://www.odoo.com/page/billing',
+    'website': 'https://www.odoo.com/app/invoicing',
     'depends': ['account', 'mail', 'sms', 'account_reports'],
     'data': [
         'security/account_followup_security.xml',

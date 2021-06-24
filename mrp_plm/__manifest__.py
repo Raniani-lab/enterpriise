@@ -7,7 +7,7 @@
     'category': 'Manufacturing/Product Lifecycle Management (PLM)',
     'sequence': 155,
     'summary': """Manage engineering change orders on products, bills of material and routings""",
-    'website': 'https://www.odoo.com/page/mrp-plm',
+    'website': 'https://www.odoo.com/app/plm',
     'depends': ['mrp'],
     'description': """
 Product Life Management

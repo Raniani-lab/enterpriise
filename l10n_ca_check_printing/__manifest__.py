@@ -18,7 +18,7 @@ Supported formats
 - Check on middle: Peachtree standard
 - Check on bottom: ADP standard
     """,
-    'website': 'https://www.odoo.com/page/accounting',
+    'website': 'https://www.odoo.com/app/accounting',
     'depends': ['account_check_printing', 'l10n_ca'],
     'data': [
         'data/ca_check_printing.xml',

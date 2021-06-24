@@ -10,7 +10,7 @@
 Sign and complete your documents easily. Customize your documents with text and signature fields and send them to your recipients.\n
 Let your customers follow the signature process easily.
     """,
-    'website': 'https://www.odoo.com/page/sign',
+    'website': 'https://www.odoo.com/app/sign',
     'depends': ['mail', 'attachment_indexation', 'portal', 'sms'],
     'data': [
         'security/security.xml',

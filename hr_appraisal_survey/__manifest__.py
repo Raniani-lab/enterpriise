@@ -7,7 +7,7 @@
     'category': 'Human Resources/Appraisals',
     'sequence': 31,
     'summary': '360 Feedback',
-    'website': 'https://www.odoo.com/page/appraisal',
+    'website': 'https://www.odoo.com/app/appraisals',
     'depends': ['hr_appraisal', 'survey'],
     'description': """
 This module adds an integration with Survey to ask feedbacks to any employee, based on a survey to fill.

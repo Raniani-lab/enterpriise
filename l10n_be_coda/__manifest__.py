@@ -61,7 +61,7 @@ If required, you can manually adjust the descriptions via the CODA configuration
         'views/account_bank_statement_views.xml',
     ],
     'auto_install': True,
-    'website': 'https://www.odoo.com/page/accounting',
+    'website': 'https://www.odoo.com/app/accounting',
     'installable': True,
     'license': 'OEEL-1',
 }

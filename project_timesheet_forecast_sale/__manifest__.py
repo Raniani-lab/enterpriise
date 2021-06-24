@@ -11,7 +11,7 @@ Compare timesheets and forecast for your projects.
 
 In your project plan, you can compare your timesheets and your forecast to better schedule your resources.
     """,
-    'website': 'https://www.odoo.com/page/project-management',
+    'website': 'https://www.odoo.com/app/project',
     'depends': ['project_forecast', 'sale_timesheet'],
     'data': [
         'views/project_templates.xml'

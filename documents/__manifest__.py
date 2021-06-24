@@ -13,7 +13,7 @@
     'sequence': 80,
     'version': '1.1',
     'application': True,
-    'website': 'https://www.odoo.com/page/documents',
+    'website': 'https://www.odoo.com/app/documents',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'mail', 'portal', 'web', 'attachment_indexation', 'digest'],

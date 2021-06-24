@@ -65,7 +65,7 @@
                 <footer class="flex-grow-0 flex-shrink-0 mb16 mt32 ">
                     <div class="text-center col-sm-12">
                         <p t-if="expiration_date">shared by <t t-esc="author"/>, expired on <t t-esc="expiration_date"/></p>
-                        <br/>Powered by <a target="_blank" title="Odoo Website" href="http://www.odoo.com/page/documents"><img class="o_object_fit_cover align-text-top" height="15" src="/web/static/img/logo_inverse_white_206px.png" alt="Odoo Logo"/><span style="color:white;">&amp;nbsp;Documents.</span></a>
+                        <br/>Powered by <a target="_blank" title="Odoo Website" href="http://www.odoo.com/app/documents"><img class="o_object_fit_cover align-text-top" height="15" src="/web/static/img/logo_inverse_white_206px.png" alt="Odoo Logo"/><span style="color:white;">&amp;nbsp;Documents.</span></a>
                     </div>
                 </footer>
             </div>

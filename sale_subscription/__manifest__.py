@@ -17,7 +17,7 @@ Features:
     - Generate invoice automatically at fixed intervals
 """,
     'author': 'Camptocamp / Odoo',
-    'website': 'https://www.odoo.com/page/subscriptions',
+    'website': 'https://www.odoo.com/app/subscriptions',
     'depends': [
         'sale_management',
         'portal',

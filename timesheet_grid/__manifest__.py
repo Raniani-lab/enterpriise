@@ -24,7 +24,7 @@
     'demo': [
         'data/timesheet_grid_demo.xml',
     ],
-    'website': ' https://www.odoo.com/page/timesheet-mobile-app',
+    'website': ' https://www.odoo.com/app/timesheet',
     'auto_install': ['web_grid', 'hr_timesheet'],
     'application': True,
     'license': 'OEEL-1',

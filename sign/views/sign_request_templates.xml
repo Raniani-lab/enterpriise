@@ -134,7 +134,7 @@
                         </div>
                         <div class="col-lg-4 justify-content-end">
                         <div class="o_odoo">
-                            <a href="https://www.odoo.com/page/sign?utm_source=db&amp;utm_medium=sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
+                            <a href="https://www.odoo.com/app/sign?utm_source=db&amp;utm_medium=sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
                         </div>
                         </div>
                     </div>

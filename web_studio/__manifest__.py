@@ -3,7 +3,7 @@
 {
     'name': "Studio",
     'summary': "Create and customize your Odoo apps",
-    'website': 'https://www.odoo.com/page/studio',
+    'website': 'https://www.odoo.com/app/studio',
     'description': """
 Studio - Customize Odoo
 =======================

@@ -7,7 +7,7 @@
     'description': """
         Accounting reports for US
     """,
-    'website': 'https://www.odoo.com/page/accounting',
+    'website': 'https://www.odoo.com/app/accounting',
     'depends': [
         'l10n_us', 'account_reports'
     ],

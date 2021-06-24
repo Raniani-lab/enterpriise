@@ -8,7 +8,7 @@
     'sequence': 1030,
     'version': '1.0',
     'summary': 'Bridge module to configure a twitter wall on your event',
-    'website': 'https://www.odoo.com/page/events',
+    'website': 'https://www.odoo.com/app/events',
     'description': "",
     'depends': [
         'website_twitter_wall',

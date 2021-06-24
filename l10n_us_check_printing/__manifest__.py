@@ -22,7 +22,7 @@ You can choose between:
 - Check on middle: Peachtree standard (https://www.checkdepot.net/checks/checkorder/laser_middlecheck.htm)
 - Check on bottom: ADP standard (https://www.checkdepot.net/checks/checkorder/laser_bottomcheck.htm)
     """,
-    'website': 'https://www.odoo.com/page/accounting',
+    'website': 'https://www.odoo.com/app/accounting',
     'depends' : ['account_check_printing', 'l10n_us'],
     'data': [
         'data/us_check_printing.xml',

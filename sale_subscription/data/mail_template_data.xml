@@ -373,7 +373,7 @@
                 <table style="width:600px;margin:auto;text-align:center;font-size:12px;">
                     <tbody>
                         <tr><td style="padding-top:10px;color:#afafaf;">
-                            <p>Email automatically sent by <a target="_blank" href="https://www.odoo.com/page/subscriptions" style="color:#875A7B;text-decoration:none;">Odoo Subscription</a> for <a href="${object.company_id.website}" style="color:#875A7B;text-decoration:none;">${object.company_id.name}</a></p>
+                                <p>Email automatically sent by <a target="_blank" href="https://www.odoo.com/app/subscriptions" style="color:#875A7B;text-decoration:none;">Odoo Subscription</a> for <a href="${object.company_id.website}" style="color:#875A7B;text-decoration:none;">${object.company_id.name}</a></p>
                         </td></tr>
                     </tbody>
                 </table>

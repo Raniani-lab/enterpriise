@@ -8,7 +8,7 @@
     'sequence': 1020,
     'version': '1.1',
     'summary': 'Bridge module to push notifications to event attendees',
-    'website': 'https://www.odoo.com/page/events',
+    'website': 'https://www.odoo.com/app/events',
     'description': "",
     'depends': [
         'website_event',

@@ -17,9 +17,9 @@
                     <h1>Your personal timesheets</h1>
                     <h3 class="text-muted">Any device, anywhere. Even offline.</h3>
                     <div class="text-center mt32 mb32">
-                        <a target="_blank" href="http://www.odoo.com/page/timesheet?platform=android"><img src="project_timesheet_synchro/static/src/img/play_store.png" class="mb8" alt="Google Play Store"/></a>
-                        <a target="_blank" href="http://www.odoo.com/page/timesheet?platform=chrome"><img src="project_timesheet_synchro/static/src/img/chrome_store.png" class="mb8 d-none d-sm-inline-block" alt="Google Chrome Store"/></a>
-                        <a target="_blank" href="http://www.odoo.com/page/timesheet?platform=ios"><img src="project_timesheet_synchro/static/src/img/app_store.png" class="mb8" alt="Apple App Store"/></a>
+                        <a target="_blank" href="http://www.odoo.com/app/timesheet?platform=android"><img src="project_timesheet_synchro/static/src/img/play_store.png" class="mb8" alt="Google Play Store"/></a>
+                        <a target="_blank" href="http://www.odoo.com/app/timesheet?platform=chrome"><img src="project_timesheet_synchro/static/src/img/chrome_store.png" class="mb8 d-none d-sm-inline-block" alt="Google Chrome Store"/></a>
+                        <a target="_blank" href="http://www.odoo.com/app/timesheet?platform=ios"><img src="project_timesheet_synchro/static/src/img/app_store.png" class="mb8" alt="Apple App Store"/></a>
                         <h6 class="text-center text-muted">Available for iPhone, Android and Chrome.</h6>
                     </div>
                     <ul class="list-unstyled fa-ul">
@@ -43,7 +43,7 @@
 
                     <div class="text-center pt-2">
                         <div class="mb8 mt8">
-                            <a target="_blank" href="http://www.odoo.com/page/timesheet"><button class="btn btn-primary mb16">More info</button></a>
+                            <a target="_blank" href="http://www.odoo.com/app/timesheet"><button class="btn btn-primary mb16">More info</button></a>
                             <a role="button" class="btn btn-xl btn-primary mb16 d-md-none" target="_blank" href="/project_timesheet_synchro/timesheet_app">Try the App</a>
                         </div>
                     </div>

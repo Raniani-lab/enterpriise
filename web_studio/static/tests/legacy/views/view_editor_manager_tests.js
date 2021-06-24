@@ -5823,8 +5823,8 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('[NEEDS "HR" MODULE] disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
-        assert.expect(6);
+    QUnit.test('disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
+        assert.expect(3);
 
         serverData.models.product.fields.m2m_users = {
             string: "M2M Users",
@@ -5844,7 +5844,6 @@ QUnit.module('ViewEditorManager', {
             <form>
                 <sheet>
                     <field name="m2m_users" widget="many2many_avatar_user"/>
-                    <field name="m2m_employees" widget="many2many_avatar_employee"/>
                 </sheet>
             </form>`;
         serverData.views["product,false,search"] = `<search></search>`;
@@ -5861,15 +5860,6 @@ QUnit.module('ViewEditorManager', {
 
         // check many2many_avatar_user
         await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_users"]'));
-        assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
-            "should have no_create option for many2many_avatar_user");
-        assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
-            'by default the no_create option should be false');
-
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar #option_no_create'));
-
-        // check many2many_avatar_employee
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_employees"]'));
         assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
             "should have no_create option for many2many_avatar_user");
         assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),

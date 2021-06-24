@@ -185,7 +185,7 @@ class AssetsReport(models.AbstractModel):
         }
         # Depreciations table totals
         total_book_value_beginning = sum([i.get('605') and i['605']['value'] or 0.0 for i in depreciations_table])
-        total_acquisitions = sum([i.get('606') and i['605']['value'] or 0.0 for i in depreciations_table])
+        total_acquisitions = sum([i.get('606') and i['606']['value'] or 0.0 for i in depreciations_table])
         total_sales = sum([i.get('607') and i['607']['value'] or 0.0 for i in depreciations_table])
         total_depreciation = sum([i.get('608') and i['608']['value'] or 0.0 for i in depreciations_table])
         total_book_value_end = sum([i.get('609') and i['609']['value'] or 0.0 for i in depreciations_table])

@@ -4,7 +4,7 @@
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, float_repr, DEFAULT_SERVER_DATE_FORMAT
-from odoo.tools.misc import mod10r
+from odoo.tools.misc import mod10r, remove_accents
 from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
 
 from collections import defaultdict
@@ -30,7 +30,7 @@ def sanitize_communication(communication):
         communication = communication[1:]
     if communication.endswith('/'):
         communication = communication[:-1]
-    communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', communication)
+    communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', remove_accents(communication))
     return communication
 
 class AccountJournal(models.Model):

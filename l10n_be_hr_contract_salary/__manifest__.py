@@ -20,7 +20,6 @@
         'wizard/generate_simulation_link_views.xml',
         'report/hr_contract_history_report_views.xml',
         'views/hr_contract_views.xml',
-        'views/hr_employee_views.xml',
         'views/res_config_settings_views.xml',
     ],
     'demo': [

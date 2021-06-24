@@ -18,6 +18,11 @@
                 <xpath expr="//field[@name='job_id']" position="after">
                     <field name="registration_number"/>
                 </xpath>
+                <xpath expr="//field[@name='driving_license']" position="after">
+                    <field name="mobile_invoice"/>
+                    <field name="sim_card"/>
+                    <field name="internet_invoice"/>
+                </xpath>
         </field>
     </record>
 </odoo>

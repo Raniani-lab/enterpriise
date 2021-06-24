@@ -341,10 +341,22 @@ class ProductTemplate(models.Model):
                     product_tmpl.quality_fail_qty = checks_data['quality_state_count']
                 elif checks_data['quality_state'] == 'pass':
                     product_tmpl.quality_pass_qty = checks_data['quality_state_count']
-            product_tmpl.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('company_id', '=', self.env.company.id),
-                '|', ('product_ids', '=', False), ('product_ids', 'in', product_tmpl.product_variant_ids.ids)
-            ])
+            query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
+            self.env['quality.point']._apply_ir_rules(query, 'read')
+            _, where_clause, where_clause_args = query.get_sql()
+            self.env.cr.execute(
+            """
+                SELECT COUNT(*)
+                    FROM quality_point
+                    WHERE %s
+                    AND (
+                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = ANY(%%s))
+                        OR
+                        NOT EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
+                        )
+            """ % (where_clause,), where_clause_args + [list(product_tmpl.product_variant_ids.ids)]
+            )
+            product_tmpl.quality_control_point_qty = self.env.cr.fetchone()[0]
 
     def action_see_quality_control_points(self):
         self.ensure_one()
@@ -385,10 +397,23 @@ class ProductProduct(models.Model):
                     product.quality_fail_qty = checks_data['quality_state_count']
                 elif checks_data['quality_state'] == 'pass':
                     product.quality_pass_qty = checks_data['quality_state_count']
-            product.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('company_id', '=', self.env.company.id),
-                '|', ('product_ids', '=', False), ('product_ids', 'in', product.id),
-            ])
+            query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
+            self.env['quality.point']._apply_ir_rules(query, 'read')
+            _, where_clause, where_clause_args = query.get_sql()
+            self.env.cr.execute(
+            """
+                SELECT COUNT(*)
+                    FROM quality_point
+                    WHERE %s
+                    AND (
+                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = %%s)
+                        OR
+                        NOT EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
+                        )
+            """ % (where_clause,), where_clause_args + [product.id]
+            )
+            product.quality_control_point_qty = self.env.cr.fetchone()[0]
+
 
     def action_see_quality_control_points(self):
         self.ensure_one()

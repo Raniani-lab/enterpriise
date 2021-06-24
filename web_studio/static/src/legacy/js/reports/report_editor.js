@@ -656,9 +656,14 @@ var ReportEditor = Widget.extend(EditorMixin, {
         var self = this;
         // zoom content from 96 (default browser DPI) to paperformat DPI
         var zoom = 96 / this.paperFormat.dpi;
-        // scale each section either to fit DPI or shrinking to fit page (wkhtmltopdf enable-smart-shrinking)
         self.$content.find('main:first').children().each(function () {
-            var sectionZoom = Math.min(zoom, $(this).width() / this.scrollWidth);
+            // scale each section to fit DPI
+            var sectionZoom = zoom;
+            if (!self.paperFormat.disable_shrinking) {
+                // check if needs shrinking to fit page (wkhtmltopdf enable-smart-shrinking)
+                // only applies if option is not manually disabled on the paperformat (see 'disable_shrinking')
+                sectionZoom = Math.min(zoom, $(this).width() / this.scrollWidth);
+            }
             $(this).css({zoom: sectionZoom});
         });
         // WHY --> so that after the load of the iframe, if there are images,

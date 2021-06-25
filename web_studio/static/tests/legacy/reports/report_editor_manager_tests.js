@@ -6,7 +6,6 @@ const ajax = require('web.ajax');
 var config = require('web.config');
 const core = require('web.core');
 var MediaDialog = require('wysiwyg.widgets.MediaDialog');
-var NotificationService = require('web.NotificationService');
 var testUtils = require('web.test_utils');
 var testUtilsDom = require('web.test_utils_dom');
 var studioTestUtils = require('web_studio.testUtils');
@@ -2430,11 +2429,11 @@ QUnit.module('ReportEditorManager', {
                 return this._super.apply(this, arguments);
             },
             services: {
-                notification: NotificationService.extend({
+                notification: {
                     notify: function (params) {
                         assert.step(params.type);
                     }
-                }),
+                },
             },
         });
 

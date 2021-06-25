@@ -16,7 +16,6 @@ const {
 const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
 const KanbanView = require('web.KanbanView');
-const NotificationService = require('web.NotificationService');
 const RamStorage = require('web.RamStorage');
 const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
@@ -3316,7 +3315,7 @@ QUnit.module('documents_kanban_tests.js', {
     });
 
     QUnit.test('documents: notifies server side errors', async function (assert) {
-        assert.expect(3);
+        assert.expect(2);
 
         const file = await testUtils.file.createFile({
             name: 'text.txt',
@@ -3332,7 +3331,15 @@ QUnit.module('documents_kanban_tests.js', {
             model: 'documents.document',
             data: this.data,
             services: {
-                notification: NotificationService,
+                notification: {
+                    notify(notification) {
+                        assert.strictEqual(
+                            notification.message,
+                            "One or more file(s) failed to upload",
+                            "the notification message should be the response error message"
+                        );
+                    },
+                },
             },
             arch: `
             <kanban><templates><t t-name="kanban-box">
@@ -3356,9 +3363,6 @@ QUnit.module('documents_kanban_tests.js', {
         await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_kanban_progress_card', "There should be no upload card left");
-        assert.containsOnce($, '.o_notification', "should display a notification on upload error");
-        assert.strictEqual($('.o_notification_content').text(), "One or more file(s) failed to upload",
-           "the notification message should be the response error message");
         kanban.destroy();
     });
 

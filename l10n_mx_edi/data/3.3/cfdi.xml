@@ -86,7 +86,8 @@
                         </cfdi:Concepto>
                     </t>
                 </cfdi:Conceptos>
-                <t t-if="tax_detail_vals_list_transferred or tax_detail_vals_list_withholding">
+                <t t-set="tax_detail_vals_list_transferred_not_exento" t-value="[tax_detail_vals for tax_detail_vals in tax_detail_vals_list_transferred if tax_detail_vals['tax'].l10n_mx_tax_type != 'Exento']"/>
+                <t t-if="tax_detail_vals_list_transferred_not_exento or tax_detail_vals_list_withholding">
                     <cfdi:Impuestos
                         t-att-TotalImpuestosTrasladados="format_float(total_tax_transferred, currency_precision) if tax_detail_vals_list_transferred else None"
                         t-att-TotalImpuestosRetenidos="format_float(-total_tax_withholding, currency_precision) if tax_detail_vals_list_withholding else None">
@@ -99,20 +100,16 @@
                                 </t>
                             </cfdi:Retenciones>
                         </t>
-                        <t t-if="tax_detail_vals_list_transferred and total_tax_transferred > 0">
-                            <cfdi:Traslados>
-                                <t t-foreach="tax_detail_vals_list_transferred" t-as="tax_detail_vals">
-                                    <t t-set="tax" t-value="tax_detail_vals['tax']"/>
-                                    <t t-if="tax.l10n_mx_tax_type != 'Exento'">
-                                        <cfdi:Traslado
-                                            t-att-Importe="format_float(tax_detail_vals['tax_amount_currency'], currency_precision)"
-                                            t-att-Impuesto="tax_detail_vals['tax_name']"
-                                            t-att-TipoFactor="tax.l10n_mx_tax_type"
-                                            t-att-TasaOCuota="format_float(tax.amount / 100.0, 6)"/>
-                                    </t>
-                                </t>
-                            </cfdi:Traslados>
-                        </t>
+                        <cfdi:Traslados t-if="tax_detail_vals_list_transferred_not_exento">
+                            <t t-foreach="tax_detail_vals_list_transferred_not_exento" t-as="tax_detail_vals">
+                                <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                                <cfdi:Traslado
+                                    t-att-Importe="format_float(tax_detail_vals['tax_amount_currency'], currency_precision)"
+                                    t-att-Impuesto="tax_detail_vals['tax_name']"
+                                    t-att-TipoFactor="tax.l10n_mx_tax_type"
+                                    t-att-TasaOCuota="format_float(tax.amount / 100.0, 6)"/>
+                            </t>
+                        </cfdi:Traslados>
                     </cfdi:Impuestos>
                 </t>
             </cfdi:Comprobante>

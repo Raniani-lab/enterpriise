@@ -1,16 +1,15 @@
 odoo.define('voip/static/src/components/activity/activity_tests.js', function (require) {
 'use strict';
 
-const components = {
-    Activity: require('@mail/components/activity/activity')[Symbol.for("default")],
-};
-
+const { Activity } = require('@mail/components/activity/activity');
 const { insert } = require('@mail/model/model_field_command');
 const {
     afterEach,
     beforeEach,
     start,
 } = require('@mail/utils/test_utils');
+
+const components = { Activity };
 
 QUnit.module('voip', {}, function () {
 QUnit.module('components', {}, function () {

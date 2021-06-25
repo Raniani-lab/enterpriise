@@ -1,9 +1,7 @@
 odoo.define('mail_enterprise/static/src/components/attachment/attachment_tests.js', function (require) {
 'use strict';
 
-const components = {
-    Attachment: require('@mail/components/attachment/attachment')[Symbol.for("default")],
-};
+const { Attachment } = require('@mail/components/attachment/attachment');
 const {
     afterEach,
     afterNextRender,
@@ -15,6 +13,8 @@ const {
 const { mock } = require('web.test_utils');
 
 const { methods } = require('web_mobile.core');
+
+const components = { Attachment };
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {

@@ -1,7 +1,7 @@
 odoo.define('approvals/static/src/components/approval/approval.js', function (require) {
 'use strict';
 
-const useStore = require('@mail/component_hooks/use_store/use_store')[Symbol.for("default")];
+const { useStore } = require('@mail/component_hooks/use_store/use_store');
 
 const { Component } = owl;
 

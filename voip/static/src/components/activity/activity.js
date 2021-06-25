@@ -1,11 +1,11 @@
 odoo.define('voip/static/src/components/activity/activity.js', function (require) {
 'use strict';
 
-const components = {
-    Activity: require('@mail/components/activity/activity')[Symbol.for("default")],
-};
+const { Activity } = require('@mail/components/activity/activity');
 
 const { patch } = require('web.utils');
+
+const components = { Activity };
 
 patch(components.Activity.prototype, 'voip/static/src/components/activity/activity.js', {
     //--------------------------------------------------------------------------

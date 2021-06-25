@@ -1,6 +1,6 @@
 odoo.define('mail_enterprise/static/src/components/chat_window/chat_window.js', function (require) {
 
-const ChatWindow = require('@mail/components/chat_window/chat_window')[Symbol.for("default")];
+const { ChatWindow } = require('@mail/components/chat_window/chat_window');
 
 const { useBackButton } = require('web_mobile.hooks');
 const { patch } = require('web.utils');

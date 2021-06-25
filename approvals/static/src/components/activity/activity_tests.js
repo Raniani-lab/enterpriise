@@ -1,9 +1,7 @@
 odoo.define('approvals/static/src/components/activity/activity_tests.js', function (require) {
 'use strict';
 
-const components = {
-    Activity: require('@mail/components/activity/activity')[Symbol.for("default")],
-};
+const { Activity } = require('@mail/components/activity/activity');
 
 const {
     afterEach,
@@ -11,6 +9,8 @@ const {
     createRootComponent,
     start,
 } = require('@mail/utils/test_utils');
+
+const components = { Activity };
 
 QUnit.module('approvals', {}, function () {
 QUnit.module('components', {}, function () {

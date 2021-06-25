@@ -5,9 +5,7 @@ const DocumentsInspector = require('documents.DocumentsInspector');
 const DocumentViewer = require('documents.DocumentViewer');
 const { computeMultiSelection } = require('documents.utils');
 
-const components = {
-    ChatterContainer: require('@mail/components/chatter_container/chatter_container')[Symbol.for("default")],
-};
+const { ChatterContainer } = require('@mail/components/chatter_container/chatter_container');
 
 const { _t, qweb } = require('web.core');
 const config = require('web.config');
@@ -15,6 +13,8 @@ const fileUploadMixin = require('web.fileUploadMixin');
 const session = require('web.session');
 const { ComponentWrapper } = require('web.OwlCompatibility');
 const Dialog = require('web.Dialog');
+
+const components = { ChatterContainer };
 
 class ChatterContainerWrapperComponent extends ComponentWrapper {}
 

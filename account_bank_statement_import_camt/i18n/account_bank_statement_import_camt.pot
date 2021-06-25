@@ -134,6 +134,12 @@ msgstr ""
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #, python-format
+msgid "Additional Info: %s"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
 msgid "Additional Miscellaneous Credit Operations"
 msgstr ""
 
@@ -322,6 +328,12 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #, python-format
 msgid "Charges"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Check Number: %s"
 msgstr ""
 
 #. module: account_bank_statement_import_camt
@@ -747,6 +759,18 @@ msgstr ""
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #, python-format
+msgid "End to end ID: %s"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Entry Info: %s"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
 msgid "Equity Premium Reserve"
 msgstr ""
 
@@ -993,6 +1017,12 @@ msgstr ""
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Instruction ID: %s"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #, python-format
@@ -1139,6 +1169,12 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #, python-format
 msgid "Management Fees"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Mandate ID: %s"
 msgstr ""
 
 #. module: account_bank_statement_import_camt
@@ -1916,6 +1952,12 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
 #, python-format
 msgid "Transaction Fees"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Transaction ID: %s"
 msgstr ""
 
 #. module: account_bank_statement_import_camt

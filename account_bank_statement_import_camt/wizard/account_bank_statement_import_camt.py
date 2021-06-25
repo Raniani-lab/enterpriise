@@ -544,8 +544,14 @@ _get_other_ref = partial(_generic_get,
            '| {placeholder}ns:Refs/ns:MndtId/text()'
            '| {placeholder}ns:Refs/ns:ChqNb/text()'))
 
-_get_additional_entry_info = partial(_generic_get,
-    xpath='ns:AddtlNtryInf/text()')
+_get_additional_entry_info = partial(_generic_get, xpath='ns:AddtlNtryInf/text()')
+_get_additional_text_info = partial(_generic_get, xpath='ns:AddtlTxInf/text()')
+_get_transaction_id = partial(_generic_get, xpath='ns:Refs/ns:TxId/text()')
+_get_instruction_id = partial(_generic_get, xpath='ns:Refs/ns:InstrId/text()')
+_get_end_to_end_id = partial(_generic_get, xpath='ns:Refs/ns:EndToEndId/text()')
+_get_mandate_id = partial(_generic_get, xpath='ns:Refs/ns:MndtId/text()')
+_get_check_number = partial(_generic_get, xpath='ns:Refs/ns:ChqNb/text()')
+
 
 def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     # journal_currency is not necessarily journal.currency_id, because currency_id is not required
@@ -728,12 +734,33 @@ class AccountBankStatementImport(models.TransientModel):
 
                     BkTxCd = entry.xpath('ns:BkTxCd', namespaces=ns)[0]
                     entry_vals.update(_get_transaction_type(BkTxCd, namespaces=ns))
-                    notes = [_get_additional_entry_info(entry, namespaces=ns) or ""]
-                    partner_address = _get_partner_address(entry_details, ns, counter_party)
+                    notes = []
+                    entry_info = _get_additional_entry_info(entry_details, namespaces=ns)
+                    if entry_info:
+                        notes.append(_('Entry Info: %s', entry_info))
+                    text_info = _get_additional_text_info(entry_details, namespaces=ns)
+                    if text_info:
+                        notes.append(_('Additional Info: %s', text_info))
                     if partner_name:
                         notes.append(_('Counter Party: %(partner)s', partner=partner_name))
+                    partner_address = _get_partner_address(entry_details, ns, counter_party)
                     if partner_address:
                         notes.append(_('Address:\n') + partner_address)
+                    transaction_id = _get_transaction_id(entry_details, namespaces=ns)
+                    if transaction_id:
+                        notes.append(_('Transaction ID: %s', transaction_id))
+                    instruction_id = _get_instruction_id(entry_details, namespaces=ns)
+                    if instruction_id:
+                        notes.append(_('Instruction ID: %s', instruction_id))
+                    end_to_end_id = _get_end_to_end_id(entry_details, namespaces=ns)
+                    if end_to_end_id:
+                        notes.append(_('End to end ID: %s', end_to_end_id))
+                    mandate_id = _get_mandate_id(entry_details, namespaces=ns)
+                    if mandate_id:
+                        notes.append(_('Mandate ID: %s', mandate_id))
+                    check_number = _get_check_number(entry_details, namespaces=ns)
+                    if check_number:
+                        notes.append(_('Check Number: %s', check_number))
                     entry_vals['narration'] = "\n".join(notes)
 
                     unique_import_set.add(entry_vals['unique_import_id'])

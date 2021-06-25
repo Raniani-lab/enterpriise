@@ -815,6 +815,19 @@ class Planning(models.Model):
         })
         return True
 
+    def action_unpublish(self):
+        if not self.env.user.has_group('planning.group_planning_manager'):
+            raise AccessError(_('You are not allowed to reset to draft shifts.'))
+        published_shifts = self.filtered('is_published')
+        if published_shifts:
+            published_shifts.write({'is_published': False})
+            notif_type = "success"
+            message = _('The shifts have been successfully reset to draft.')
+        else:
+            notif_type = "warning"
+            message = _('There are no shifts to reset to draft.')
+        return self._get_notification_action(notif_type, message)
+
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------

@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div align="center" t-if="no_data and not open_slots_ids" class="alert alert-info o_shift_info">
-                        There are no planning slot to display. Please, refer to your manager.
+                        This open shift is no longer available, or the planning has been updated in the meantime. Please contact your manager for further information.
                     </div>
                     <t t-call="planning.planning_shift_notification"/>
                     <div id="calendar_employee" class="o_calendar_container">

@@ -23,6 +23,12 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Reset to Draft" type="object" name="action_unpublish"
+                        class="btn btn-secondary" close="1" groups="planning.group_planning_manager"
+                        attrs="{'invisible': [('is_published', '=', False)]}"/>
+                </header>
+                <field name="is_published" invisible="1" />
                 <field name="work_email" invisible="1" />
                 <field name="previous_template_id" invisible="1" />
                 <field name="template_reset" invisible="1" />
@@ -149,6 +155,9 @@
         <field name="inherit_id" ref="planning_view_form"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//group[@name='shift_templates']" position="replace">
                 <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}" class="oe_edit_only">
                     <label for="template_id" class="oe_edit_only"/>
@@ -172,6 +181,7 @@
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': [('is_published', '=', True)]}" groups="planning.group_planning_manager"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': [('is_published', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('is_published', '=', True)]}"/>
+                    <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('is_published', '=', False)]}"/>
                     <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
@@ -542,6 +552,16 @@
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">action = records.action_planning_publish()</field>
+    </record>
+
+    <record id="model_planning_slot_action_reset_to_draft" model="ir.actions.server">
+        <field name="name">Reset to Draft</field>
+        <field name="model_id" ref="model_planning_slot"/>
+        <field name="binding_model_id" ref="planning.model_planning_slot"/>
+        <field name="groups_id" eval="[(4, ref('planning.group_planning_manager'))]"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_unpublish()</field>
     </record>
 
     <!--

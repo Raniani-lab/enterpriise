@@ -35,9 +35,9 @@ class ShiftController(http.Controller):
         open_slots = []
 
         if planning_sudo.include_unassigned:
-            planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo or not s.employee_id)
+            planning_slots = planning_sudo.slot_ids.filtered(lambda s: (s.employee_id == employee_sudo or not s.employee_id) and s.is_published)
         else:
-            planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo)
+            planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo and s.is_published)
 
         # filter and format slots
         slots_start_datetime = []

@@ -1,5 +1,9 @@
 // = Enterprise dropdown customizations
 // ----------------------------------------------------------------------------
+.dropdown-item {
+    @extend %dropdown-li-a-padding;
+}
+
 .o_dropdown {
     &.show .o_dropdown_toggler.btn-secondary,
     .o_dropdown_toggler.o_dropdown_active.btn-secondary {

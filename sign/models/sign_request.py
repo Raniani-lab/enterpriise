@@ -255,11 +255,7 @@ class SignRequest(models.Model):
         for sign_request in self:
             for sign_request_item in sign_request.request_item_ids:
                 sign_request_item.write({'state':'sent'})
-                Log = self.env['sign.log'].sudo()
-                vals = Log._prepare_vals_from_request(sign_request)
-                vals['action'] = 'create'
-                vals = Log._update_vals_with_http_request(vals)
-                Log.create(vals)
+            self.env['sign.log']._create_log(sign_request, "create", is_request=True)
 
     def action_sent(self):
         # Send accesses by email

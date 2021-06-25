@@ -232,7 +232,7 @@ class UPSRequest():
     def get_error_message(self, error_code, description):
         result = {}
         result['error_message'] = str(UPS_ERROR_MAP.get(error_code))
-        if not result['error_message']:
+        if result['error_message'] == "None":
             result['error_message'] = description
         return result
 

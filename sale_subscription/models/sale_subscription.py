@@ -904,19 +904,21 @@ class SaleSubscription(models.Model):
         self.ensure_one()
 
         if tx.renewal_allowed:  # The payment is confirmed, it can be reconciled
-            # Re-create the invoice that was deleted in the controller and post it immediately
-            invoice_values = self.with_context(lang=self.partner_id.lang)._prepare_invoice()
-            invoice_values.update({
-                'ref': tx.reference,
-                'payment_reference': tx.reference
-            })
-            invoice = self.env['account.move'].create(invoice_values)
-            invoice.message_post_with_view(
-                'mail.message_origin_link',
-                values={'self': invoice, 'origin': self},
-                subtype_id=self.env.ref('mail.mt_note').id
-            )
-            tx.invoice_ids = invoice.id,
+            # avoid to create an invoice when one is already linked
+            if not tx.invoice_ids:
+                # Re-create the invoice that was deleted in the controller and post it immediately
+                invoice_values = self.with_context(lang=self.partner_id.lang)._prepare_invoice()
+                invoice_values.update({
+                    'ref': tx.reference,
+                    'payment_reference': tx.reference
+                })
+                invoice = self.env['account.move'].create(invoice_values)
+                invoice.message_post_with_view(
+                    'mail.message_origin_link',
+                    values={'self': invoice, 'origin': self},
+                    subtype_id=self.env.ref('mail.mt_note').id
+                )
+                tx.invoice_ids = invoice.id,
 
             # Renew the subscription
             self.increment_period(renew=self.to_renew)

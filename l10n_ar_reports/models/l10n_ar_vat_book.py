@@ -44,6 +44,8 @@ class L10nARVatBook(models.AbstractModel):
         return res
 
     def _get_columns_name(self, options):
+        if not options.get('journal_type'):
+            options.update({'journal_type': self.env.context.get('journal_type', 'sale')})
         dynamic_columns = [item.get('name') for item in self._get_dynamic_columns(options)]
         return [
             {'name': _("Date"), 'class': 'date'},

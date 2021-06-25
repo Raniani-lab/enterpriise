@@ -7,7 +7,9 @@
         <field name="arch" type="xml">
             <div name="job_description" position="before">
                 <group>
-                    <field name="l10n_be_scale_category" string="CP200 Category"/>
+                    <field name="display_l10n_be_scale" invisible="1"/>
+                    <field name="l10n_be_scale_category" string="CP200 Category"
+                        attrs="{'invisible': [('display_l10n_be_scale', '=', False)]}"/>
                 </group>
             </div>
         </field>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class HrJob(models.Model):
@@ -23,3 +23,9 @@ Included in this class are functions characterized by carrying out a complete se
 
 Category D - Advisory functions.
 Included in this class are functions characterized by monitoring and developing the same professional process within the framework of a specific objective. For example: the programmer, accountant or consultant""")
+    display_l10n_be_scale = fields.Boolean(compute='_compute_display_be')
+
+    @api.depends('company_id')
+    def _compute_display_be(self):
+        for job in self:
+            job.display_l10n_be_scale = job.company_id.country_id.code == 'BE'

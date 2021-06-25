@@ -9,6 +9,15 @@ class QuantPackage(models.Model):
     _barcode_field = 'name'
 
     @api.model
+    def action_create_from_barcode(self, vals_list):
+        """ Creates a new package then returns its data to be added in the client side cache.
+        """
+        res = self.create(vals_list)
+        return {
+            'stock.quant.package': res.read(self._get_fields_stock_barcode(), False)
+        }
+
+    @api.model
     def _get_fields_stock_barcode(self):
         return ['name', 'location_id', 'quant_ids']
 

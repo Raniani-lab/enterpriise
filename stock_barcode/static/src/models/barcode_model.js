@@ -15,7 +15,12 @@ export default class BarcodeModel extends owl.core.EventBus {
 
     setData(data) {
         this.cache = new LazyBarcodeCache(data.data.records);
-        this.parser = new BarcodeParser({nomenclature_id: data.data.nomenclature_id});
+        const nomenclature = this.cache.getRecord('barcode.nomenclature', data.data.nomenclature_id);
+        nomenclature.rules = [];
+        for (const ruleId of nomenclature.rule_ids) {
+            nomenclature.rules.push(this.cache.getRecord('barcode.rule', ruleId));
+        }
+        this.parser = new BarcodeParser({nomenclature: nomenclature});
         this.scannedLinesVirtualId = [];
 
         this.notification = useService('notification');
@@ -804,11 +809,70 @@ export default class BarcodeModel extends owl.core.EventBus {
         }
         // Then, parses the barcode through the nomenclature.
         await this.parser.is_loaded();
-        const parsedBarcode = this.parser.parse_barcode(barcode);
-        if (parsedBarcode.type === 'weight') {
-            result.weight = parsedBarcode;
-            result.match = true;
-            barcode = parsedBarcode.base_code;
+        try {
+            const parsedBarcode = this.parser.parse_barcode(barcode);
+            if (parsedBarcode.length) { // With the GS1 nomenclature, the parsed result is a list.
+                for (const data of parsedBarcode) {
+                    const { rule, value } = data;
+                    if (['location', 'location_dest'].includes(rule.type)) {
+                        const location = await this.cache.getRecordByBarcode(value, 'stock.location');
+                        if (!location) {
+                            continue;
+                        }
+                        // TODO: should be overrided, as location dest make sense only for pickings.
+                        if (rule.type === 'location_dest' || this.messageType === 'scan_product_or_dest') {
+                            result.destLocation = location;
+                        } else {
+                            result.location = location;
+                        }
+                        result.match = true;
+                    } else if (rule.type === 'lot') {
+                        if (this.useExistingLots) {
+                            result.lot = await this.cache.getRecordByBarcode(value, 'stock.production.lot');
+                        }
+                        if (!result.lot) { // No existing lot found, set a lot name.
+                            result.lotName = value;
+                        }
+                        if (result.lot || result.lotName) {
+                            result.match = true;
+                        }
+                    } else if (rule.type === 'package') {
+                        const stockPackage = await this.cache.getRecordByBarcode(value, 'stock.quant.package');
+                        if (stockPackage) {
+                            result.package = stockPackage;
+                        } else {
+                            await this._scanNewPackage(result, value);
+                        }
+                        result.match = true;
+                    } else if (rule.type === 'product') {
+                        const product = await this.cache.getRecordByBarcode(value, 'product.product');
+                        if (product) {
+                            result.product = product;
+                            result.match = true;
+                        }
+                    } else if (rule.type === 'qty_done') { // TODO: replace `qty_done` by 'quantity' in the GS1 rules ('barcodes_gs1_rules.xml').
+                        result.quantity = value;
+                        // The quantity is usually associated to an UoM, but we
+                        // ignore this info if the UoM setting is disabled.
+                        if (this.groups.group_uom) {
+                            result.uom = await this.cache.getRecord('uom.uom', rule.associated_uom_id);
+                        }
+                        result.match = result.quantity ? true : false;
+                    }
+                }
+                if(result.match) {
+                    return result;
+                }
+            } else if (parsedBarcode.type === 'weight') {
+                result.weight = parsedBarcode;
+                result.match = true;
+                barcode = parsedBarcode.base_code;
+            }
+        } catch (err) {
+            // The barcode can't be parsed but the error is caught to fallback
+            // on the classic way to handle barcodes.
+            console.log(`%cWarning: error about ${barcode}`, 'text-weight: bold;');
+            console.log(err.message);
         }
         const recordByData = await this.cache.getRecordByBarcode(barcode, false, false, filters);
         if (recordByData.size > 1) {
@@ -939,6 +1003,13 @@ export default class BarcodeModel extends owl.core.EventBus {
         // if there is a scanned tracking number.
         if (product.tracking === 'none' || barcodeData.lot || barcodeData.lotName || this._incrementTrackedLine()) {
             barcodeData.quantity = barcodeData.quantity || 1;
+            if (product.tracking === 'serial' && barcodeData.quantity > 1 && (barcodeData.lot || barcodeData.lotName)) {
+                barcodeData.quantity = 1;
+                this.notification.add(
+                    _t(`A product tracked by serial numbers can't have multiple quantities for the same serial number.`),
+                    { type: 'danger' }
+                );
+            }
         }
 
         // Searches and selects a line if needed.
@@ -1004,6 +1075,9 @@ export default class BarcodeModel extends owl.core.EventBus {
                     package: barcodeData.package,
                     owner: barcodeData.owner,
                 });
+                if (barcodeData.uom) {
+                    fieldsParams.uom = barcodeData.uom;
+                }
                 await this.updateLine(currentLine, fieldsParams);
             }
             if (exceedingQuantity) { // Creates a new line for the excess quantity.
@@ -1015,6 +1089,9 @@ export default class BarcodeModel extends owl.core.EventBus {
                     package: barcodeData.package,
                     owner: barcodeData.owner,
                 });
+                if (barcodeData.uom) {
+                    fieldsParams.uom = barcodeData.uom;
+                }
                 currentLine = await this._createNewLine({
                     copyOf: currentLine,
                     fieldsParams,
@@ -1029,6 +1106,9 @@ export default class BarcodeModel extends owl.core.EventBus {
                 package: barcodeData.package,
                 owner: barcodeData.owner,
             });
+            if (barcodeData.uom) {
+                fieldsParams.uom = barcodeData.uom;
+            }
             currentLine = await this._createNewLine({fieldsParams});
         }
 
@@ -1127,6 +1207,13 @@ export default class BarcodeModel extends owl.core.EventBus {
         this.selectedLineVirtualId = false;
         this.lastScannedPackage = recPackage.id;
         this.trigger('update');
+    }
+
+    /**
+     * Called when a non-existing package is specificaly scanned with a GS1 barcode.
+     */
+    async _scanNewPackage() {
+        throw new Error('Not Implemented');
     }
 
     _setLocationFromBarcode(result, location) {

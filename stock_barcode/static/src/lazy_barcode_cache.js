@@ -16,6 +16,15 @@ export default class LazyBarcodeCache {
             'stock.quant.package': 'name',
             'stock.production.lot': 'name', // Also ref, should take in account multiple fields ?
         };
+        this.gs1LengthsByModel = {
+            'product.product': 14,
+            'stock.location': 13,
+            'stock.quant.package': 18,
+        };
+        // If there is only one active barcode nomenclature, set the cache to be compliant with it.
+        if (cacheData['barcode.nomenclature'].length === 1) {
+            this.nomenclature = cacheData['barcode.nomenclature'][0];
+        }
         this.setCache(cacheData);
     }
 
@@ -45,6 +54,9 @@ export default class LazyBarcodeCache {
                     }
                     if (!this.dbBarcodeCache[model][barcode].includes(record.id)) {
                         this.dbBarcodeCache[model][barcode].push(record.id);
+                        if (this.nomenclature && this.nomenclature.is_gs1_nomenclature && this.gs1LengthsByModel[model]) {
+                            this._setBarcodeInCacheForGS1(barcode, model, record);
+                        }
                     }
                 }
             }
@@ -161,5 +173,40 @@ export default class LazyBarcodeCache {
         // Set the missing cache
         const keyCache = (model && `${barcode}_${model}`) || barcode;
         missCache.add(keyCache);
+    }
+
+    /**
+     * Sets in the cache an entry for the given record with its formatted barcode as key.
+     * The barcode will be formatted (if needed) at the length corresponding to its data part in a
+     * GS1 barcode (e.g.: 14 digits for a product's barcode) by padding with 0 the original barcode.
+     * That makes it easier to find when a GS1 barcode is scanned.
+     * If the formatted barcode is similar to an another barcode for the same model, it will show a
+     * warning in the console (as a clue to find where issue could come from, not to alert the user)
+     *
+     * @param {string} barcode
+     * @param {string} model
+     * @param {Object} record
+     */
+    _setBarcodeInCacheForGS1(barcode, model, record) {
+        const length = this.gs1LengthsByModel[model];
+        if (!barcode || barcode.length >= length || isNaN(Number(barcode))) {
+            // Barcode already has the good length, or is too long or isn't
+            // fully numerical (and so, it doesn't make sense to adapt it).
+            return;
+        }
+        const paddedBarcode = barcode.padStart(length, '0');
+        // Avoids to override or mix records if there is already a key for this
+        // barcode (which means there is a conflict somewhere).
+        if (!this.dbBarcodeCache[model][paddedBarcode]) {
+            this.dbBarcodeCache[model][paddedBarcode] = [record.id];
+        } else if (!this.dbBarcodeCache[model][paddedBarcode].includes(record.id)) {
+            const previousRecordId = this.dbBarcodeCache[model][paddedBarcode][0];
+            const previousRecord = this.getRecord(model, previousRecordId);
+            console.log(
+                `Conflict for barcode %c${paddedBarcode}%c:`, 'font-weight: bold', '',
+                `it could refer for both ${record.display_name} and ${previousRecord.display_name}.`,
+                `\nThe last one will be used but consider to edit those products barcode to avoid error due to ambiguities.`
+            );
+        }
     }
 }

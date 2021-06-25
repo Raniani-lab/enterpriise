@@ -2,6 +2,7 @@
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import {_t} from "web.core";
+import { sprintf } from '@web/core/utils/strings';
 
 export default class BarcodeQuantModel extends BarcodeModel {
     constructor(params) {
@@ -194,6 +195,22 @@ export default class BarcodeQuantModel extends BarcodeModel {
             line.quantity = args.quantity;
         }
         if (args.inventory_quantity) { // Increments inventory quantity.
+            if (args.uom) {
+                // An UoM was passed alongside the quantity, needs to check it's
+                // compatible with the product's UoM.
+                const productUOM = this.cache.getRecord('uom.uom', line.product_id.uom_id);
+                if (args.uom.category_id !== productUOM.category_id) {
+                    // Not the same UoM's category -> Can't be converted.
+                    const message = sprintf(
+                        _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
+                        args.uom.name, productUOM.name
+                    );
+                    return this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'warning' });
+                } else if (args.uom.id !== productUOM.id) {
+                    // Compatible but not the same UoM => Need a conversion.
+                    args.inventory_quantity = (args.inventory_quantity / args.uom.factor) * productUOM.factor;
+                }
+            }
             line.inventory_quantity += args.inventory_quantity;
             if (line.product_id.tracking === 'serial' && (line.lot_name || line.lot_id)) {
                 line.inventory_quantity = Math.max(0, Math.min(1, line.inventory_quantity));
@@ -258,5 +275,18 @@ export default class BarcodeQuantModel extends BarcodeModel {
 
     _defaultDestLocationId() {
         return null;
+    }
+
+    async _scanNewPackage(barcodeData, name) {
+        const currentLine = this.selectedLine || this.lastScannedLine;
+        if (currentLine && !currentLine.package_id && !currentLine.result_package_id) {
+            const newPackageData = await this.orm.call(
+                'stock.quant.package',
+                'action_create_from_barcode',
+                [{ name }]
+            );
+            this.cache.setCache(newPackageData);
+            barcodeData.package = newPackageData['stock.quant.package'][0];
+        }
     }
 }

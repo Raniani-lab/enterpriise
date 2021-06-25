@@ -95,6 +95,18 @@ class TestBarcodeClientAction(HttpCase):
         self.owner = self.env['res.partner'].create({
             'name': 'Azure Interior',
         })
+
+        # Creates records specific to GS1 use cases.
+        self.product_tln_gtn8 = self.env['product.product'].create({
+            'name': 'Battle Droid',
+            'default_code': 'B1',
+            'type': 'product',
+            'tracking': 'lot',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '76543210',  # (01)00000076543210 (GTIN-8 format)
+            'uom_id': self.env.ref('uom.product_uom_unit').id
+        })
+
         self.call_count = 0
 
     def tearDown(self):
@@ -1568,6 +1580,256 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         line_owner = move_line.owner_id
         self.assertEqual(line_owner.id, self.owner.id)
 
+    def test_gs1_reserved_delivery(self):
+        """ Process a delivery by scanning multiple quantity multiple times.
+        """
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        # Creates a product and adds some quantity.
+        product_gtin_8 = self.env['product.product'].create({
+            'name': 'PRO_GTIN_8',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '11011019',  # GTIN-8 format.
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+        self.env['stock.quant']._update_available_quantity(product_gtin_8, self.stock_location, 99)
+
+        # Creates and process the delivery.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = product_gtin_8
+            move.product_uom_qty = 10
+
+        delivery = picking_form.save()
+        delivery.action_confirm()
+        delivery.action_assign()
+
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_gs1_reserved_delivery', login='admin', timeout=180)
+
+        self.assertEqual(delivery.state, 'done')
+        self.assertEqual(len(delivery.move_lines), 1)
+        self.assertEqual(delivery.move_lines.product_qty, 14)
+        self.assertEqual(len(delivery.move_line_ids), 2)
+        self.assertEqual(delivery.move_line_ids[0].qty_done, 10)
+        self.assertEqual(delivery.move_line_ids[1].qty_done, 4)
+
+    def test_gs1_receipt_conflicting_barcodes(self):
+        """ Creates some receipts for two products but their barcodes mingle
+        together once they are adapted for GS1.
+        """
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        product_gtin_8 = self.env['product.product'].create({
+            'name': 'PRO_GTIN_8',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '11011019',  # GTIN-8 format -> Will become 00000011011019.
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+
+        product_gtin_12 = self.env['product.product'].create({
+            'name': 'PRO_GTIN_12',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '000011011019',  # GTIN-12 format -> Will also become 00000011011019.
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+
+        # Test for product_gtin_8 only.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = product_gtin_8
+            move.product_uom_qty = 1
+
+        receipt_1 = picking_form.save()
+        receipt_1.action_confirm()
+        receipt_1.action_assign()
+
+        url = self._get_client_action_url(receipt_1.id)
+        self.start_tour(url, 'test_gs1_receipt_conflicting_barcodes_1', login='admin', timeout=180)
+
+        self.assertEqual(receipt_1.state, 'done')
+        self.assertEqual(len(receipt_1.move_line_ids), 1)
+        self.assertEqual(receipt_1.move_line_ids.product_id.id, product_gtin_8.id)
+
+        # Test for product_gtin_12 only.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = product_gtin_12
+            move.product_uom_qty = 1
+
+        receipt_2 = picking_form.save()
+        receipt_2.action_confirm()
+        receipt_2.action_assign()
+
+        url = self._get_client_action_url(receipt_2.id)
+        self.start_tour(url, 'test_gs1_receipt_conflicting_barcodes_2', login='admin', timeout=180)
+
+        self.assertEqual(receipt_2.state, 'done')
+        self.assertEqual(len(receipt_2.move_line_ids), 1)
+        self.assertEqual(receipt_2.move_line_ids.product_id.id, product_gtin_12.id)
+
+        # Test for both product_gtin_8 and product_gtin_12.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = product_gtin_8
+            move.product_uom_qty = 1
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = product_gtin_12
+            move.product_uom_qty = 1
+
+        receipt_3 = picking_form.save()
+        receipt_3.action_confirm()
+        receipt_3.action_assign()
+
+        self.assertEqual(len(receipt_3.move_line_ids), 2)
+        url = self._get_client_action_url(receipt_3.id)
+        self.start_tour(url, 'test_gs1_receipt_conflicting_barcodes_3', login='admin', timeout=180)
+
+        self.assertEqual(receipt_3.state, 'done')
+        self.assertEqual(len(receipt_3.move_line_ids), 3)
+        self.assertEqual(receipt_3.move_line_ids[0].product_id.id, product_gtin_8.id)
+        self.assertEqual(receipt_3.move_line_ids[0].qty_done, 1)
+        self.assertEqual(receipt_3.move_line_ids[1].product_id.id, product_gtin_12.id)
+        self.assertEqual(receipt_3.move_line_ids[1].qty_done, 1)
+        self.assertEqual(receipt_3.move_line_ids[2].product_id.id, product_gtin_8.id)
+        self.assertEqual(receipt_3.move_line_ids[2].qty_done, 1)
+
+    def test_gs1_receipt_lot_serial(self):
+        """ Creates a receipt for a product tracked by lot, then process it in the Barcode App.
+        """
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product_tln_gtn8
+            move.product_uom_qty = 40
+
+        receipt = picking_form.save()
+        receipt.action_confirm()
+        receipt.action_assign()
+
+        url = self._get_client_action_url(receipt.id)
+        self.start_tour(url, 'test_gs1_receipt_lot_serial', login='admin', timeout=180)
+
+        self.assertEqual(receipt.state, 'done')
+        self.assertEqual(len(receipt.move_line_ids), 5)
+        self.assertEqual(
+            receipt.move_line_ids.lot_id.mapped('name'),
+            ['b1-b001', 'b1-b002', 'b1-b003', 'b1-b004', 'b1-b005']
+        )
+        for move_line in receipt.move_line_ids:
+            self.assertEqual(move_line.qty_done, 8)
+
+    def test_gs1_receipt_quantity_with_uom(self):
+        """ Creates a new receipt and scans barcodes with different combinaisons
+        of product and quantity expressed with different UoM and checks the
+        quantity is taken only if the UoM is compatible with the product's one.
+        """
+        clean_access_rights(self.env)
+        # Enables the UoM and the GS1 nomenclature.
+        grp_uom = self.env.ref('uom.group_uom')
+        group_user = self.env.ref('base.group_user')
+        group_user.write({'implied_ids': [(4, grp_uom.id)]})
+        self.env.user.write({'groups_id': [(4, grp_uom.id)]})
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+        # Configures three products using units, kg and g.
+        uom_unit = self.env.ref('product.product_category_all')
+        uom_g = self.env.ref('uom.product_uom_gram')
+        uom_kg = self.env.ref('uom.product_uom_kgm')
+        product_by_units = self.env['product.product'].create({
+            'name': 'Product by Units',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '15264329',
+            'uom_id': uom_unit.id,
+        })
+        product_by_kg = self.env['product.product'].create({
+            'name': 'Product by g',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '15264893',
+            'uom_id': uom_g.id,
+            'uom_po_id': uom_g.id,
+        })
+        product_by_g = self.env['product.product'].create({
+            'name': 'Product by kg',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '15264879',
+            'uom_id': uom_kg.id,
+            'uom_po_id': uom_kg.id,
+        })
+        # Creates a new receipt.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        receipt = picking_form.save()
+        # Runs the tour.
+        url = self._get_client_action_url(receipt.id)
+        self.start_tour(url, 'test_gs1_receipt_quantity_with_uom', login='admin', timeout=180)
+        # Checks the moves' quantities and UoM.
+        self.assertTrue(len(receipt.move_lines), 3)
+        move1, move2, move3 = receipt.move_lines
+        self.assertTrue(move1.product_id.id, product_by_units.id)
+        self.assertTrue(move1.quantity_done, 4)
+        self.assertTrue(move1.product_uom.id, uom_unit.id)
+        self.assertTrue(move2.product_id.id, product_by_kg.id)
+        self.assertTrue(move2.quantity_done, 5)
+        self.assertTrue(move2.product_uom.id, uom_kg.id)
+        self.assertTrue(move3.product_id.id, product_by_g.id)
+        self.assertTrue(move3.quantity_done, 1250)
+        self.assertTrue(move3.product_uom.id, uom_g.id)
+
+    def test_gs1_package_receipt_and_delivery(self):
+        """ Receives some products and scans a GS1 barcode for a package, then
+        creates a delivery and scans the same package.
+        """
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        product1 = self.env['product.product'].create({
+            'name': 'PRO_GTIN_8',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '82655853',  # GTIN-8
+            'uom_id': self.env.ref('uom.product_uom_unit').id
+        })
+        product2 = self.env['product.product'].create({
+            'name': 'PRO_GTIN_12',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '584687955629',  # GTIN-12
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_gs1_package_receipt', login='admin', timeout=180)
+        # Checks the package is in the stock location with the products.
+        package = self.env['stock.quant.package'].search([('name', '=', '546879213579461324')])
+        self.assertEqual(len(package), 1)
+        self.assertEqual(len(package.quant_ids), 2)
+        self.assertEqual(package.quant_ids[0].product_id.id, product1.id)
+        self.assertEqual(package.quant_ids[1].product_id.id, product2.id)
+        self.assertEqual(package.location_id.id, self.stock_location.id)
+
+        self.start_tour(url, 'test_gs1_package_delivery', login='admin', timeout=180)
+        # Checks the package is in the customer's location.
+        self.assertEqual(package.location_id.id, self.customer_location.id)
+
 
 @tagged('post_install', '-at_install')
 class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
@@ -1765,3 +2027,148 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(productlot1_quant.quantity, 1.0)
         self.assertEqual(productlot1_quant.lot_id.name, 'toto-42')
         self.assertEqual(productlot1_quant.location_id.id, self.stock_location.id)
+
+    def test_gs1_inventory_gtin_8(self):
+        """ Simulate scanning a product with his gs1 barcode """
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        product = self.env['product.product'].create({
+            'name': 'PRO_GTIN_8',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '82655853',  # GTIN-8 format
+            'uom_id': self.env.ref('uom.product_uom_unit').id
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_gs1_inventory_gtin_8', login='admin', timeout=180)
+
+        # Checks the inventory adjustment correclty created a move line.
+        move_line = self.env['stock.move.line'].search([
+            ('product_id', '=', product.id),
+            ('state', '=', 'done'),
+            ('location_id', '=', product.property_stock_inventory.id),
+        ])
+        self.assertEqual(move_line.qty_done, 78)
+
+    def test_gs1_inventory_product_units(self):
+        """ Scans a product with a GS1 barcode containing multiple quantities."""
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        product = self.env['product.product'].create({
+            'name': 'PRO_GTIN_8',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '82655853',  # GTIN-8 format
+            'uom_id': self.env.ref('uom.product_uom_unit').id
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_gs1_inventory_product_units', login='admin', timeout=180)
+
+        quantity = self.env['stock.move.line'].search([
+            ('product_id', '=', product.id),
+            ('state', '=', 'done'),
+            ('location_id', '=', product.property_stock_inventory.id),
+        ])
+
+        self.assertEqual(quantity.qty_done, 102)
+
+    def test_gs1_inventory_package(self):
+        """ Scans existing packages and checks their products are correclty added
+        to the inventory adjustment. Then scans some products, scans a new package
+        and checks the package was created and correclty assigned to those products.
+        """
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        product = self.env['product.product'].create({
+            'name': 'PRO_GTIN_8',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '82655853',  # GTIN-8 format
+            'uom_id': self.env.ref('uom.product_uom_unit').id
+        })
+
+        # Creates a first package in Section 1 and adds some products.
+        pack_1 = self.env['stock.quant.package'].create({'name': '987654123487568456'})
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 8, package_id=pack_1)
+        # Creates a second package in Section 2 and adds some other products.
+        pack_2 = self.env['stock.quant.package'].create({'name': '487325612456785124'})
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf2, 6, package_id=pack_2)
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, 'test_gs1_inventory_package', login='admin', timeout=180)
+
+        pack_3 = self.env['stock.quant.package'].search([('name', '=', '122333444455555670')])
+        self.assertEqual(pack_3.location_id.id, self.shelf2.id)
+        self.assertEqual(pack_3.quant_ids.product_id.ids, [product.id])
+
+    def test_gs1_inventory_lot_serial(self):
+        """ Checks tracking numbers and quantites are correctly got from GS1
+        barcodes for tracked products."""
+        clean_access_rights(self.env)
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        product_lot = self.env['product.product'].create({
+            'name': 'PRO_GTIN_12_lot',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '111155555717',  # GTIN-12 format
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+            'tracking': 'lot',
+        })
+
+        product_serial = self.env['product.product'].create({
+            'name': 'PRO_GTIN_14_serial',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '15222222222219',  # GTIN-14 format
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+            'tracking': 'serial',
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, 'test_gs1_inventory_lot_serial', login='admin', timeout=180)
+
+        smls_lot = self.env['stock.move.line'].search([
+            ('product_id', '=', product_lot.id),
+            ('state', '=', 'done'),
+            ('location_id', '=', product_lot.property_stock_inventory.id),
+        ])
+        self.assertEqual(len(smls_lot), 3)
+        self.assertEqual(smls_lot[0].qty_done, 10)
+        self.assertEqual(smls_lot[1].qty_done, 15)
+        self.assertEqual(smls_lot[2].qty_done, 20)
+        self.assertEqual(
+            smls_lot.lot_id.mapped('name'),
+            ['LOT-AAA', 'LOT-AAB', 'LOT-AAC']
+        )
+
+        smls_serial = self.env['stock.move.line'].search([
+            ('product_id', '=', product_serial.id),
+            ('state', '=', 'done'),
+            ('location_id', '=', product_serial.property_stock_inventory.id),
+        ])
+        self.assertEqual(len(smls_serial), 5)
+        self.assertEqual(smls_serial[0].qty_done, 1)
+        self.assertEqual(smls_serial[1].qty_done, 1)
+        self.assertEqual(smls_serial[2].qty_done, 1)
+        self.assertEqual(smls_serial[3].qty_done, 20)
+        self.assertEqual(smls_serial[4].qty_done, 1)
+        self.assertEqual(
+            smls_serial.lot_id.mapped('name'),
+            ['Serial1', 'Serial2', 'Serial3', 'Serial4']
+        )

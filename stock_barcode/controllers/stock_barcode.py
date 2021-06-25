@@ -69,16 +69,28 @@ class StockBarcodeController(http.Controller):
 
     @http.route('/stock_barcode/get_specific_barcode_data', type='json', auth='user')
     def get_specific_barcode_data(self, barcode, model_name, domains_by_model=False):
+        nomenclature = request.env.company.nomenclature_id
+        # Adapts the search parameters for GS1 specifications.
+        operator = '='
+        limit = None if nomenclature.is_gs1_nomenclature else 1
+        if nomenclature.is_gs1_nomenclature:
+            try:
+                # If barcode is digits only, cut off the padding to keep the original barcode only.
+                barcode = str(int(barcode))
+                operator = 'ilike'
+            except ValueError:
+                pass  # Barcode isn't digits only.
+
         domains_by_model = domains_by_model or {}
         barcode_field_by_model = self._get_barcode_field_by_model()
         result = defaultdict(list)
         model_names = model_name and [model_name] or list(barcode_field_by_model.keys())
         for model in model_names:
-            domain = [(barcode_field_by_model[model], '=', barcode)]
+            domain = [(barcode_field_by_model[model], operator, barcode)]
             domain_for_this_model = domains_by_model.get(model)
             if domain_for_this_model:
                 domain = expression.AND([domain, domain_for_this_model])
-            record = request.env[model].search(domain, limit=1)
+            record = request.env[model].search(domain, limit=limit)
             if record:
                 result[model] += record.read(request.env[model]._get_fields_stock_barcode(), load=False)
                 if hasattr(record, '_get_stock_barcode_specific_data'):
@@ -242,8 +254,8 @@ class StockBarcodeController(http.Controller):
         company = request.env['res.company'].browse(self._get_allowed_company_ids()[0])
         nomenclature = company.nomenclature_id
         return {
-            "barcode.nomenclature": nomenclature.read(),
-            "barcode.rule": nomenclature.rule_ids.read()
+            "barcode.nomenclature": nomenclature.read(load=False),
+            "barcode.rule": nomenclature.rule_ids.read(load=False)
         }
 
     def _get_barcode_field_by_model(self):

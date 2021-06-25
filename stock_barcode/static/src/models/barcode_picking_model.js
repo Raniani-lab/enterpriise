@@ -2,6 +2,7 @@
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import {_t} from "web.core";
+import { sprintf } from '@web/core/utils/strings';
 
 export default class BarcodePickingModel extends BarcodeModel {
     constructor(params) {
@@ -32,7 +33,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     async changeDestinationLocation(id, moveScannedLineOnly) {
         this.currentDestLocationId = id;
-        if (moveScannedLineOnly) {
+        if (moveScannedLineOnly && this.previousScannedLines.length) {
             this.currentDestLocationId = id;
             for (const line of this.previousScannedLines) {
                 // If the line is complete, we move it...
@@ -459,6 +460,23 @@ export default class BarcodePickingModel extends BarcodeModel {
         }
     }
 
+    async _scanNewPackage(barcodeData, default_name) {
+        // If no existing package found, put in pack in a new package.
+        await this.save();
+        const res = await this.orm.call(
+            this.params.model,
+            'action_put_in_pack',
+            [[this.params.id]],
+            { context: { barcode_view: true, default_name } }
+        );
+        if (typeof res === 'object') {
+            this.trigger('process-action', res);
+        } else {
+            this.trigger('refresh');
+        }
+        barcodeData.stopped = true;
+    }
+
     _setLocationFromBarcode(result, location) {
         if (this.record.picking_type_code === 'outgoing') {
             result.location = location;
@@ -484,6 +502,22 @@ export default class BarcodePickingModel extends BarcodeModel {
             return;
         }
         if (args.qty_done) {
+            if (args.uom) {
+                // An UoM was passed alongside the quantity, needs to check it's
+                // compatible with the product's UoM.
+                const productUOM = this.cache.getRecord('uom.uom', line.product_id.uom_id);
+                if (args.uom.category_id !== productUOM.category_id) {
+                    // Not the same UoM's category -> Can't be converted.
+                    const message = sprintf(
+                        _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
+                        args.uom.name, productUOM.name
+                    );
+                    return this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'danger' });
+                } else if (args.uom.id !== productUOM.id) {
+                    // Compatible but not the same UoM => Need a conversion.
+                    args.qty_done = (args.qty_done / args.uom.factor) * productUOM.factor;
+                }
+            }
             line.qty_done += args.qty_done;
         }
     }

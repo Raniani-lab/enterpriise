@@ -1915,7 +1915,7 @@ odoo.define('sign.document_signing', function (require) {
     });
 
     function initDocumentToSign(parent) {
-        return session.session_bind(session.origin).then(function () {
+        return session.is_bound.then(function () {
             // Manually add 'sign' to module list and load the
             // translations.
             const modules = ['sign', 'web'];

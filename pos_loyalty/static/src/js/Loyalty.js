@@ -26,6 +26,7 @@ models.load_models([
         model: 'loyalty.rule',
         condition: function(self){ return self.loyalty; },
         fields: ['name','valid_product_ids','points_quantity','points_currency','loyalty_program_id'],
+        domain: function(self){ return [['loyalty_program_id','=',self.loyalty.id]]; },
         loaded: function(self,rules){
             rules.forEach(function(rule) {
                 self.loyalty.rules.push(rule);
@@ -37,6 +38,7 @@ models.load_models([
         fields: ['name','reward_type','minimum_points','gift_product_id','point_cost','discount_product_id',
                 'discount_percentage', 'discount_fixed_amount', 'discount_apply_on', 'discount_type', 'discount_apply_on',
                 'discount_specific_product_ids', 'discount_max_amount', 'minimum_amount', 'loyalty_program_id'],
+        domain: function(self){ return [['loyalty_program_id','=',self.loyalty.id]]; },
         loaded: function(self,rewards){
             rewards.forEach(function(reward) {
                 self.loyalty.rewards.push(reward);

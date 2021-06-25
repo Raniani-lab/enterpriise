@@ -94,8 +94,9 @@
     margin-bottom: 40px;
 
     .o_menuitem {
-      color: $gray-200;
+      color: $gray-100;
       outline: none;
+      text-shadow: 0 1px 0 rgba(#000, .3);
       @include o-text-overflow;
       @include media-breakpoint-up(md) {
         font-size: 20px;
@@ -103,7 +104,7 @@
 
       .o_menuitem_parents {
         font-weight: $font-weight-light;
-        color: $gray-400;
+        color: $gray-200;
       }
 
       &:hover,
@@ -111,7 +112,7 @@
       &.o_focused {
         color: white;
         .o_menuitem_parents {
-          color: $gray-300;
+          color: $gray-100;
         }
       }
 

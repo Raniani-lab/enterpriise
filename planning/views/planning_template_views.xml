@@ -31,7 +31,7 @@
                 <tree string="Shift Template List" sample="1">
                     <field name="sequence" widget="handle"/>
                     <field name="name" />
-                    <field name="role_id"/>
+                    <field name="role_id" optional="show"/>
                 </tree>
             </field>
         </record>

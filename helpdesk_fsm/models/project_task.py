@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from odoo import models, fields, _
+from odoo import models, fields
 
 
 class Task(models.Model):
     _inherit = 'project.task'
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket', help='Ticket this task was generated from', readonly=True)
+
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS | {'helpdesk_ticket_id'}
 
     def action_view_ticket(self):
         return {

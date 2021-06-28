@@ -21,6 +21,8 @@
 
         <xpath expr="//div[@name='customer_code']" position="after">
             <t t-if="is_cfdi_signed">
+                <t t-set="original_o_grid_layout" t-value="o_grid_layout"/>
+                <t t-set="o_grid_layout" t-value="'col-auto col-3 mw-100 mb-2'"/>
                 <t t-if="cfdi_vals.get('usage')">
                     <div name="cfdi_vals['usage']" t-att-class="o_grid_layout">
                         <strong>Usage:</strong>
@@ -41,6 +43,7 @@
                     <strong>Bank Account:</strong>
                     <p t-esc="cfdi_vals['bank_account']"/>
                 </div>
+                <t t-set="o_grid_layout" t-value="original_o_grid_layout"/>
             </t>
         </xpath>
 

@@ -33,9 +33,9 @@ class View(models.Model):
         'web.internal_layout',
         'web.basic_layout',
         'web.minimal_layout',
-        'web.external_layout_background',
+        'web.external_layout_striped',
         'web.external_layout_boxed',
-        'web.external_layout_clean',
+        'web.external_layout_bold',
         'web.external_layout_standard',
     ]
 

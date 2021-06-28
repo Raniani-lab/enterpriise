@@ -103,7 +103,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
         });
 
         QUnit.test('add record in empty gantt with sample="1"', async function (assert) {
-            assert.expect(5);
+            assert.expect(7);
 
             this.data.task.records = [];
 
@@ -129,6 +129,13 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
 
             assert.hasClass(gantt, 'o_view_sample_data');
             assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+            const firstRow = gantt.$(".o_gantt_row:first")[0];
+            assert.strictEqual(firstRow.innerText, "Open Shifts");
+            assert.doesNotHaveClass(
+                firstRow,
+                "o_sample_data_disabled",
+                "First row should not be disabled"
+            );
 
             await testUtils.dom.triggerMouseEvent(gantt.$(`.o_gantt_row:first .o_gantt_cell:first .o_gantt_cell_add`), "click");
             await testUtils.fields.editInput($('.modal .modal-body input[name=name]'), 'new task');

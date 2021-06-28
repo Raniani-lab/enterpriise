@@ -294,8 +294,7 @@ Content-Transfer-Encoding: quoted-printable
             'team_id': self.test_team.id,
             'stage_id': self.stage_progress.id,
             'priority': '2',
-            'time_days': 0,
-            'time_hours': 1
+            'time': 1,
         })
 
         #We create a ticket with priority less than what's on the sla policy

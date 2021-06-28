@@ -569,40 +569,8 @@ class HelpdeskSLA(models.Model):
         'res.partner', string="Customers",
         help="This SLA Policy will apply to any tickets from the selected customers. Leave empty to apply this SLA Policy to any ticket without distinction.")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
-    time_days = fields.Integer(
-        'Days', default=0, required=True,
-        help="Days to reach given stage based on ticket creation date")
-    time_hours = fields.Integer(
-        'Hours', default=0, inverse='_inverse_time_hours', required=True,
-        help="Hours to reach given stage based on ticket creation date")
-    time_minutes = fields.Integer(
-        'Minutes', default=0, inverse='_inverse_time_minutes', required=True,
-        help="Minutes to reach given stage based on ticket creation date")
-    time_text = fields.Char(compute='_compute_time_text', string='In')
+    time = fields.Float('In', help='Time to reach given stage based on ticket creation date', default=0, required=True)
 
     @api.depends('target_type')
     def _compute_exclude_stage_ids(self):
         self.update({'exclude_stage_ids': False})
-
-    def _inverse_time_hours(self):
-        for sla in self:
-            resource_calendar = sla.team_id.resource_calendar_id or self.env.company.resource_calendar_id
-            avg_hour = resource_calendar.hours_per_day
-            sla.time_hours = max(0, sla.time_hours)
-            if sla.time_hours >= avg_hour:
-                sla.time_days += sla.time_hours / avg_hour
-                sla.time_hours = sla.time_hours % avg_hour
-
-    def _inverse_time_minutes(self):
-        for sla in self:
-            sla.time_minutes = max(0, sla.time_minutes)
-            if sla.time_minutes >= 60:
-                sla.time_hours += sla.time_minutes / 60
-                sla.time_minutes = sla.time_minutes % 60
-
-    @api.depends_context('lang')
-    @api.depends('time_days', 'time_hours', 'time_minutes')
-    def _compute_time_text(self):
-        for sla in self:
-            sla.time_text = _('%s days, %s hours and %s minutes',
-                sla.time_days, sla.time_hours, sla.time_minutes)

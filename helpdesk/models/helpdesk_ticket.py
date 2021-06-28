@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import math
 from dateutil.relativedelta import relativedelta
 from random import randint
 
@@ -87,7 +88,8 @@ class HelpdeskSLAStatus(models.Model):
                     status.deadline = False
                     continue
 
-            time_days = status.sla_id.time_days
+            avg_hour = working_calendar.hours_per_day or 8 #default to 8 working hours/day
+            time_days = math.floor(status.sla_id.time / avg_hour)
             if time_days and (status.sla_id.target_type == 'stage' or status.sla_id.target_type == 'assigning' and not status.sla_id.stage_id):
                 deadline = working_calendar.plan_days(time_days + 1, deadline, compute_leaves=True)
                 # We should also depend on ticket creation time, otherwise for 1 day SLA, all tickets
@@ -99,7 +101,7 @@ class HelpdeskSLAStatus(models.Model):
                 reached_stage_dt = fields.Datetime.now()
                 deadline = deadline.replace(hour=reached_stage_dt.hour, minute=reached_stage_dt.minute, second=reached_stage_dt.second, microsecond=reached_stage_dt.microsecond)
 
-            sla_hours = status.sla_id.time_hours + (status.sla_id.time_minutes / 60)
+            sla_hours = status.sla_id.time % avg_hour
 
             if status.target_type == 'stage' and status.sla_id.exclude_stage_ids:
                 sla_hours += status._get_freezed_hours(working_calendar)

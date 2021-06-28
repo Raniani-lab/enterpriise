@@ -80,16 +80,13 @@ class HelpdeskSLA(TransactionCase):
         cls.sla = cls.env['helpdesk.sla'].create({
             'name': 'SLA',
             'team_id': cls.test_team.id,
-            'time_days': 1,
-            'time_hours': 24,
+            'time': 32,
             'stage_id': cls.stage_progress.id,
         })
         cls.sla_2 = cls.env['helpdesk.sla'].create({
             'name': 'SLA done stage with freeze time',
             'team_id': cls.test_team.id,
-            'time_days': 1,
-            'time_hours': 2,
-            'time_minutes': 2,
+            'time': 10.033333333333333,
             'tag_ids': [(4, cls.tag_freeze.id)],
             'exclude_stage_ids': cls.stage_wait.ids,
             'stage_id': cls.stage_done.id,
@@ -97,14 +94,14 @@ class HelpdeskSLA(TransactionCase):
         cls.sla_assigning_1 = cls.env['helpdesk.sla'].create({
             'name': 'SLA assigning no stage',
             'team_id': cls.test_team.id,
-            'time_hours': 1,
+            'time': 1,
             'target_type': 'assigning'
         })
 
         cls.sla_assigning_2 = cls.env['helpdesk.sla'].create({
             'name': 'SLA assigning new stage',
             'team_id': cls.test_team.id,
-            'time_hours': 1,
+            'time': 1,
             'stage_id': cls.stage_new.id,
             'target_type': 'assigning'
         })
@@ -112,7 +109,7 @@ class HelpdeskSLA(TransactionCase):
         cls.sla_assigning_3 = cls.env['helpdesk.sla'].create({
             'name': 'SLA assigning progress stage',
             'team_id': cls.test_team.id,
-            'time_hours': 1,
+            'time': 1,
             'stage_id': cls.stage_progress.id,
             'target_type': 'assigning'
         })
@@ -120,7 +117,7 @@ class HelpdeskSLA(TransactionCase):
         cls.sla_assigning_4 = cls.env['helpdesk.sla'].create({
             'name': 'SLA assigning done stage',
             'team_id': cls.test_team.id,
-            'time_hours': 1,
+            'time': 1,
             'stage_id': cls.stage_done.id,
             'target_type': 'assigning'
         })
@@ -341,8 +338,7 @@ class HelpdeskSLA(TransactionCase):
     @patch.object(fields.Datetime, 'today', lambda: NOW.replace(hour=0, minute=0, second=0))
     @patch.object(fields.Datetime, 'now', lambda: NOW)
     def test_failed_tickets(self):
-        self.sla.time_days = 0
-        self.sla.time_hours = 3
+        self.sla.time = 3
         # Failed ticket
         failed_ticket = self.create_ticket(user_id=self.env.user.id, create_date=NOW - relativedelta(hours=3, minutes=2))
 

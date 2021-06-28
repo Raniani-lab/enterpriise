@@ -110,20 +110,20 @@ class HelpdeskCommon(TransactionCase):
         cls.sla_1_progress = SLA.create({
             'name': "2 days to be in progress",
             'stage_id': cls.team_sla_stage_progress.id,
-            'time_days': 2,
+            'time': 16,
             'team_id': cls.team_with_sla.id,
         })
         cls.sla_2_done = SLA.create({
             'name': "7 days to be in progress",
             'stage_id': cls.team_sla_stage_done.id,
-            'time_days': 7,
+            'time': 56,
             'team_id': cls.team_with_sla.id,
             'priority': '0',
         })
         cls.sla_3_done_prior = SLA.create({
             'name': "5 days to be in done for 3 stars ticket",
             'stage_id': cls.team_sla_stage_done.id,
-            'time_days': 5,
+            'time': 40,
             'team_id': cls.team_with_sla.id,
             'priority': '3',
         })

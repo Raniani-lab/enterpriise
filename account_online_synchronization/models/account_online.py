@@ -344,7 +344,10 @@ class AccountOnlineLink(models.Model):
         accounts_to_delete = self.env['account.online.account']
         for account in self.account_online_account_ids:
             # pop from accounts to create as it already exists, otherwise mark for deletion
-            if not accounts.pop(account.online_identifier):
+            existing_account = accounts.pop(account.online_identifier, False)
+            if existing_account:
+                account.account_data = existing_account.get('account_data')
+            else:
                 accounts_to_delete += account
 
         accounts_to_delete.unlink()

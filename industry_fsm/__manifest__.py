@@ -31,6 +31,7 @@ Adds the following options:
         'views/hr_timesheet_views.xml',
         'views/fsm_views.xml',
         'views/project_task_views.xml',
+        'views/project_sharing_views.xml',
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],

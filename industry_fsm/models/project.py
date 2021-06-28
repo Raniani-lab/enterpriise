@@ -94,6 +94,17 @@ class Task(models.Model):
     display_mark_as_done_secondary = fields.Boolean(compute='_compute_mark_as_done_buttons')
     has_complete_partner_address = fields.Boolean(compute='_compute_has_complete_partner_address')
 
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS | {'is_fsm',
+                                              'planned_date_begin',
+                                              'planned_date_end',
+                                              'fsm_done',
+                                              'display_fsm_dates',
+                                              'partner_phone',
+                                              'partner_city',
+                                              'has_complete_partner_address'}
+
     @api.depends(
         'fsm_done', 'is_fsm', 'timer_start',
         'display_enabled_conditions_count', 'display_satisfied_conditions_count')

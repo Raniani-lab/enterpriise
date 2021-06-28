@@ -23,6 +23,17 @@ class Task(models.Model):
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
 
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS | {'allow_material',
+                                              'allow_quotations',
+                                              'quotation_count',
+                                              'material_line_product_count',
+                                              'material_line_total_price',
+                                              'currency_id',
+                                              'invoice_count',
+                                              'warning_message'}
+
     @api.depends('allow_material', 'material_line_product_count')
     def _compute_display_conditions_count(self):
         super(Task, self)._compute_display_conditions_count()

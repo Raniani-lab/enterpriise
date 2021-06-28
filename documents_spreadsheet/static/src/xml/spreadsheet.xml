@@ -3,7 +3,7 @@
 
     <div t-name="documents_spreadsheet.SpreadsheetAction" class="o_spreadsheet_action"></div>
 
-    <div t-name="documents_spreadsheet.ControlPanel" t-inherit="web.ControlPanel" t-inherit-mode="primary" owl="1">
+    <div t-name="documents_spreadsheet.ControlPanel" t-inherit="web.Legacy.ControlPanel" t-inherit-mode="primary" owl="1">
         <xpath expr="//ol[hasclass('breadcrumb')]/li[hasclass('active')]" position="replace">
             <li class="breadcrumb-item active">
                 <SpreadsheetName name="props.title"/>

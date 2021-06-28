@@ -237,11 +237,11 @@ odoo.define('web_grid.components', function (require) {
          */
         _onClickButton() {
             const range = this.fieldOptions.range;
-            const currentFloat = parseFloat(this._format(this.state.value));
+            const currentFloat = fieldUtils.parse.float(this._format(this.state.value));
             const closest = utils.closestNumber(currentFloat, range);
             const closestIndex = range.indexOf(closest);
             const nextIndex = closestIndex + 1 < range.length ? closestIndex + 1 : 0;
-            this.state.value = this._parse(range[nextIndex].toString());
+            this.state.value = this._parse(fieldUtils.format.float(range[nextIndex]));
             this.trigger('grid-cell-update-temporary', {
                 path: this.props.path,
                 value: this.state.value

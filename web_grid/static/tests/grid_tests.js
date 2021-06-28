@@ -1427,6 +1427,46 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('float_toggle component comma', async function (assert) {
+        assert.expect(3);
+        let grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                        '<range name="month" string="Month" span="month" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_toggle" options="{\'factor\': 0.125, \'range\': [0.0, 0.5, 1.0]}"/>' +
+                '</grid>',
+            currentDate: "2017-01-31",
+            translateParameters: {
+                thousands_sep: ".",
+                decimal_point: ",",
+            },
+        });
+
+        // clicking on empty cell button
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '0,00',
+        "0,00 before we click on it");
+        let $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button');
+        $button.focus();
+
+        await testUtils.dom.click($button);
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '0,50',
+            "0,5 is the next value since 0,0 was the closest value in the range");
+        await testUtils.dom.click($button);
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '1,00',
+            "0,5 becomes 1,0 as it is the next value in the range");
+
+        $button.blur();
+        await testUtils.nextTick();
+        grid.destroy();
+    });
+
     QUnit.test('button context not polluted by previous click', async function (assert) {
         assert.expect(4);
 

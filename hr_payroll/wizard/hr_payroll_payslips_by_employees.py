@@ -82,6 +82,17 @@ class HrPayslipEmployees(models.TransientModel):
         if not employees:
             raise UserError(_("You must select employee(s) to generate payslip(s)."))
 
+        #Prevent a payslip_run from having multiple payslips for the same employee
+        employees -= payslip_run.slip_ids.employee_id
+        success_result = {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.payslip.run',
+            'views': [[False, 'form']],
+            'res_id': payslip_run.id,
+        }
+        if not employees:
+            return success_result
+
         payslips = self.env['hr.payslip']
         Payslip = self.env['hr.payslip']
 
@@ -128,9 +139,4 @@ class HrPayslipEmployees(models.TransientModel):
         payslips.compute_sheet()
         payslip_run.state = 'verify'
 
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'hr.payslip.run',
-            'views': [[False, 'form']],
-            'res_id': payslip_run.id,
-        }
+        return success_result

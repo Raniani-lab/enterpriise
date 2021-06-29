@@ -47,7 +47,7 @@ class View(models.Model):
         # them with similar many2many widget. So we also add them to node (only in Studio).
         # This preprocess cannot be done at validation time because the
         # attributes `studio_groups`, `studio_map_field_ids` and `studio_pivot_measure_fields` are not RNG valid.
-        if self._context.get('studio') and not name_manager.validate:
+        if self._context.get('studio'):
             if node.get('groups'):
                 self.set_studio_groups(node)
             if node.tag == 'map':

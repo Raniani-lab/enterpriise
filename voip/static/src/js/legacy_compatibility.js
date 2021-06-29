@@ -49,13 +49,13 @@ export class DialingPanelAdapter extends ComponentAdapter {
  * Service that redirects events triggered up by e.g. the FieldPhone to the
  * DialingPanel.
  */
-const voipLegacyCompatibilityService = {
+export const voipLegacyCompatibilityService = {
     dependencies: ["notification"],
     start(env, { notification }) {
         const bus = new EventBus();
 
         browser.addEventListener("voip-call", (ev) => {
-            notification.create(sprintf(env._t("Calling %s"), ev.detail.number));
+            notification.add(sprintf(env._t("Calling %s"), ev.detail.number));
             bus.trigger('VOIP-CALL', ev.detail);
         });
         browser.addEventListener("voip-activity-call", (ev) => {

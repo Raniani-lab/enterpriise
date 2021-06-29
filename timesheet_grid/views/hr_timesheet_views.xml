@@ -61,11 +61,27 @@
             </field>
         </record>
 
+        <!-- Add status bubble to analytic line kanban view -->
+        <record id="view_kanban_account_analytic_line_inherit_timesheet_grid" model="ir.ui.view">
+            <field name="name">account.analytic.line.view.kanban.inherit.timesheet.grid</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.view_kanban_account_analytic_line"/>
+            <field name="arch" type="xml">
+                <xpath expr="/kanban" position="inside">
+                    <field name="validated" invisible="1"/>
+                </xpath>
+                <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
+                    <span t-att-class="'o_status_bubble mx-0 float-right mt-1 o_color_bubble_' + (record.validated.value ? 10 : 4)"
+                        class="o_timesheet_status_bubble" title="Status"/>
+                </xpath>
+            </field>
+        </record>
+
         <!-- Override Kanban view -->
         <record id="timesheet_kanban_view" model="ir.ui.view">
             <field name="name">account.analytic.line.kanban.timesheet_grid</field>
             <field name="model">account.analytic.line</field>
-            <field name="inherit_id" ref="hr_timesheet.view_kanban_account_analytic_line"/>
+            <field name="inherit_id" ref="timesheet_grid.view_kanban_account_analytic_line_inherit_timesheet_grid"/>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
                 <kanban position="attributes">
@@ -73,9 +89,9 @@
                     <attribute name="sample">1</attribute>
                 </kanban>
                 <xpath expr="/kanban" position="inside">
+                    <field name="validated" invisible="1"/>
                     <field name="timer_start" invisible="1"/>
                     <field name="display_timer" invisible="1"/>
-                    <field name="validated" invisible="1"/>
                 </xpath>
                 <xpath expr="//div/span[@name='duration']" position="replace"/>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
@@ -91,6 +107,9 @@
                         </span>
                     </span>
                  </xpath>
+                 <xpath expr="//div[hasclass('o_kanban_record_bottom')]" position="inside">
+                    <xpath expr="//span[hasclass('o_timesheet_status_bubble')]" position="move"/>
+                 </xpath>
             </field>
         </record>
         <!-- add timer to My Timesheet kanban view -->
@@ -105,10 +124,21 @@
             <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='unit_amount']" position="after">
+                    <field name="validated" invisible="1"/>
+                    <field name="user_can_validate" invisible="1"/>
                     <field name="timer_start" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='unit_amount']" position="attributes">
                     <attribute name="attrs">{'readonly': [('id', '!=', False), ('timer_start', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
+                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                        <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
+                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                        <field name="validated_status" widget="statusbar"/>
+                    </header>
                 </xpath>
             </field>
         </record>
@@ -120,9 +150,18 @@
             <field name="priority">4567</field>
             <field name="arch" type="xml">
                 <form string="Add a Task">
+                    <header>
+                        <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
+                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                        <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
+                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                        <field name="validated_status" widget="statusbar"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
+                                <field name="validated" invisible="1"/>
+                                <field name="user_can_validate" invisible="1"/>
                                 <field name="company_id" invisible="1"/>
                                 <field name="can_edit" invisible="1"/>
                                 <field name="validated" invisible="1"/>
@@ -161,7 +200,6 @@
                       create_inline="1"
                       display_empty="1">
                     <field name="project_id" type="row"/>
-                    <field name="validated" type="readonly"/>
                     <field name="task_id" type="row"/>
                     <field name="date" type="col">
                         <range name="week" string="Week" span="week" step="day"/>
@@ -184,7 +222,6 @@
                       create_inline="1"
                       display_empty="1">
                     <field name="project_id" type="row" section="1"/>
-                    <field name="validated" type="readonly"/>
                     <field name="task_id" type="row"/>
                     <field name="date" type="col">
                         <range name="week" string="Week" span="week" step="day"/>
@@ -236,7 +273,6 @@
                       barchart_total="1"
                       create_inline="1"
                       display_empty="1">
-                    <field name="validated" type="readonly"/>
                     <field name="employee_id" type="row"/>
                     <field name="date" type="col">
                         <range name="week" string="Week" span="week" step="day"/>
@@ -320,7 +356,7 @@
                 <xpath expr="/search" position="inside">
                     <separator/>
                     <filter name="validated" string="Validated" domain="[('validated', '=', True)]"/>
-                    <filter name="nonvalidated" string="Non Validated" domain="[('validated', '=', False)]"/>
+                    <filter name="nonvalidated" string="Draft" domain="[('validated', '=', False)]"/>
                 </xpath>
                 <xpath expr="//filter[@name='mine']" position="after">
                     <filter name="my_team_timesheet" string="My Team" domain="[
@@ -777,6 +813,16 @@ action = model._action_open_to_validate_timesheet_view('month')
             <field name="view_mode">grid</field>
             <field name="view_id" ref="timesheet_view_grid_by_task_readonly"/>
             <field name="act_window_id" ref="hr_timesheet.timesheet_action_report_by_task"/>
+        </record>
+
+        <record id="invalidate_timesheet_action" model="ir.actions.server">
+            <field name="name">Reset to draft</field>
+            <field name="model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="binding_model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="groups_id" eval="[(4, ref('hr_timesheet.group_hr_timesheet_approver'))]"/>
+            <field name="code">action = records.action_invalidate_timesheet()</field>
         </record>
 
         <record id="merge_timesheet_action" model="ir.actions.server">

@@ -26,6 +26,10 @@ class AnalyticLine(models.Model):
     # reset amount on copy
     amount = fields.Monetary(copy=False)
     validated = fields.Boolean("Validated line", group_operator="bool_and", store=True, copy=False)
+    validated_status = fields.Selection([('draft', 'Draft'), ('validated', 'Validated')], required=True,
+        compute='_compute_validated_status', inverse='_inverse_validated_status', readonly=False)
+    user_can_validate = fields.Boolean(compute='_compute_can_validate',
+        help="Whether or not the current user can validate/reset to draft the record.")
     is_timesheet = fields.Boolean(
         string="Timesheet Line", compute_sudo=True,
         compute='_compute_is_timesheet', search='_search_is_timesheet',
@@ -268,6 +272,35 @@ class AnalyticLine(models.Model):
             return [('project_id', '!=', False)]
         return [('project_id', '=', False)]
 
+    @api.depends('validated')
+    def _compute_validated_status(self):
+        for line in self:
+            if line.validated:
+                line.validated_status = 'validated'
+            else:
+                line.validated_status = 'draft'
+
+    def _inverse_validated_status(self):
+        for line in self:
+            if line.validated_status == 'validated':
+                line.validated = True
+            else:
+                line.validated = False
+
+    @api.depends_context('uid')
+    def _compute_can_validate(self):
+        is_manager = self.user_has_groups('hr_timesheet.group_timesheet_manager')
+        is_approver = self.user_has_groups('hr_timesheet.group_hr_timesheet_approver')
+        for line in self:
+            if is_manager or (is_approver and (
+                line.employee_id.timesheet_manager_id.id == self.env.user.id or
+                line.employee_id.parent_id.user_id.id == self.env.user.id or
+                line.project_id.user_id.id == self.env.user.id or
+                line.user_id == self.env.user.id)):
+                line.user_can_validate = True
+            else:
+                line.user_can_validate = False
+
     def action_validate_timesheet(self):
         notification = {
             'type': 'ir.actions.client',
@@ -298,12 +331,46 @@ class AnalyticLine(models.Model):
             running_analytic_lines.action_timer_stop()
 
         analytic_lines.sudo().write({'validated': True})
-        notification['params'].update({
-            'title': _("The timesheets have successfully been validated."),
-            'type': 'success',
-            'next': {'type': 'ir.actions.act_window_close'},
-        })
-        return notification
+        if self.env.context.get('use_notification', True):
+            notification['params'].update({
+                'title': _("The timesheets have successfully been validated."),
+                'type': 'success',
+                'next': {'type': 'ir.actions.act_window_close'},
+            })
+            return notification
+        return True
+
+    def action_invalidate_timesheet(self):
+        notification = {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': None,
+                'type': None,
+                'sticky': False,
+            },
+        }
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
+            raise AccessError(_("You can only reset to draft the timesheets of employees of whom you are the manager or the timesheet approver."))
+        #Use the same domain for validation but change validated = False to validated = True
+        domain = self._get_domain_for_validation_timesheets(validated=True)
+        analytic_lines = self.filtered_domain(domain)
+        if not analytic_lines:
+            notification['params'].update({
+                'title': _('There are no timesheet entries to reset to draft or they have already been invoiced.'),
+                'type': 'warning',
+            })
+            return notification
+
+        analytic_lines.sudo().write({'validated': False})
+        if self.env.context.get('use_notification', True):
+            notification['params'].update({
+                'title': _("The timesheets have successfully been reset to draft."),
+                'type': 'success',
+                'next': {'type': 'ir.actions.act_window_close'},
+            })
+            return notification
+        return True
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -724,8 +791,8 @@ class AnalyticLine(models.Model):
         })
         return action
 
-    def _get_domain_for_validation_timesheets(self):
-        """ Get the domain to check if the user can validate which timesheets
+    def _get_domain_for_validation_timesheets(self, validated=False):
+        """ Get the domain to check if the user can validate/invalidate which timesheets
 
             2 access rights give access to validate timesheets:
 
@@ -736,7 +803,7 @@ class AnalyticLine(models.Model):
 
             2. Manager (Administrator): with this access right, the user can validate all timesheets.
         """
-        domain = [('validated', '=', False)]
+        domain = [('validated', '=', validated)]
 
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
             return expression.AND([domain, ['|', ('employee_id.timesheet_manager_id', '=', self.env.user.id),

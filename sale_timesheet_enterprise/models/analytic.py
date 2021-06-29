@@ -29,3 +29,17 @@ class AnalyticLine(models.Model):
         if param_invoiced_timesheet == 'approved':
             domain = expression.AND([domain, [('validated', '=', True)]])
         return domain
+
+    def _compute_can_validate(self):
+        # Prevent `user_can_validate` from being true if the line is validated and the SO aswell
+        billed_lines = self.filtered(lambda l: l.validated and not l._is_not_billed())
+        for line in billed_lines:
+            line.user_can_validate = False
+        self -= billed_lines
+        return super()._compute_can_validate()
+
+    def action_invalidate_timesheet(self):
+        invoice_validated_timesheets = self.filtered(lambda l: not l._is_not_billed())
+        self -= invoice_validated_timesheets
+        # Errors are handled in the parent if there are no lines left
+        return super(AnalyticLine, self).action_invalidate_timesheet()

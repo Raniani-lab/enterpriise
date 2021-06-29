@@ -103,81 +103,42 @@ QUnit.test('autocall flow', async function (assert) {
                 return { mode: 'demo' };
             }
             if (args.model === 'voip.phonecall') {
-                if (args.method === 'get_next_activities_list') {
+                const id = args.args[0];
+                switch (args.method) {
+                case 'get_next_activities_list':
                     counterNextActivities++;
                     return self.phoneCallDetailsData.filter(phoneCallDetailData =>
                         ['done', 'cancel'].indexOf(phoneCallDetailData.state) === -1);
-                }
-                if (args.method === 'get_recent_list') {
+                case 'get_recent_list':
                     return self.phoneCallDetailsData.filter(phoneCallDetailData =>
                         phoneCallDetailData.state === 'open');
-                }
-                const id = args.args[0];
-                if (args.method === 'init_call') {
+                case 'init_call':
                     assert.step('init_call');
                     return [];
-                }
-                if (args.method === 'hangup_call') {
+                case 'hangup_call':
                     if (args.kwargs.done) {
-                        for (const phoneCallDetailData of self.phoneCallDetailsData) {
-                            if (phoneCallDetailData.id === id) {
-                                phoneCallDetailData.state = 'done';
-                            }
-                        }
+                        self.phoneCallDetailsData.find(d => d.id === id).state = 'done';
                     }
                     assert.step('hangup_call');
-                    return [];
-                }
-                if (args.method === 'create_from_rejected_call') {
-                    for (const phoneCallDetailData of self.phoneCallDetailsData) {
-                        if (phoneCallDetailData.id === id) {
-                            phoneCallDetailData.state = 'pending';
-                        }
-                    }
+                    return;
+                case 'create_from_rejected_call':
+                    (self.phoneCallDetailsData.find(d => d.id === id) || {}).state = 'pending';
                     assert.step('rejected_call');
-                    return [];
-                }
-                if (args.method === 'canceled_call') {
-                    for (const phoneCallDetailData of self.phoneCallDetailsData) {
-                        if (phoneCallDetailData.id === id) {
-                            phoneCallDetailData.state = 'pending';
-                        }
-                    }
+                    return {id: 418};
+                case 'canceled_call':
+                    self.phoneCallDetailsData.find(d => d.id === id).state = 'pending';
                     assert.step('canceled_call');
                     return [];
-                }
-                if (args.method === 'remove_from_queue') {
-                    for (const phoneCallDetailData of self.phoneCallDetailsData) {
-                        if (phoneCallDetailData.id === id) {
-                            phoneCallDetailData.state = 'cancel';
-                        }
-                    }
+                case 'remove_from_queue':
+                    self.phoneCallDetailsData.find(d => d.id === id).state = 'cancel';
                     assert.step('remove_from_queue');
                     return [];
-                }
-                if (args.method === 'create_from_incoming_call') {
+                case 'create_from_incoming_call':
                     assert.step('incoming_call');
-                    return [];
-                }
-                if (args.method === 'create_from_incoming_call_accepted') {
+                    return {id: 200};
+                case 'create_from_incoming_call_accepted':
                     assert.step('incoming_call_accepted');
-                    return [];
-                }
-                if (args.method === 'create_from_incoming_call') {
-                    assert.step('incoming_call');
-                    return [];
-                }
-                if (args.method === 'create_from_incoming_call_accepted') {
-                    assert.step('incoming_call_accepted');
-                    return [];
-                }
-                if (args.method === 'create_from_incoming_call') {
-                    assert.step('incoming_call');
-                    return [];
-                }
-                if (args.method === 'create_from_incoming_call_accepted') {
-                    assert.step('incoming_call_accepted');
-                    return [];
+                    return {id: 201};
                 }
             }
             return this._super(...arguments);
@@ -376,7 +337,7 @@ QUnit.test('autocall flow', async function (assert) {
 });
 
 QUnit.test('Call from Recent tab + keypad', async function (assert) {
-    assert.expect(9);
+    assert.expect(10);
 
     const self = this;
 
@@ -390,7 +351,8 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
                 return { mode: 'demo' };
             }
             if (args.model === 'voip.phonecall') {
-                if (args.method === 'create_from_number') {
+                switch (args.method) {
+                case 'create_from_number':
                     assert.step('create_from_number');
                     self.recentList = [{
                         call_date: '2019-06-06 08:05:47',
@@ -409,32 +371,19 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
                         write_uid: 2,
                     }];
                     return self.recentList[0];
-                }
-                if (args.method === 'create_from_recent') {
+                case 'create_from_recent':
                     assert.step('create_from_recent');
-                    return;
-                }
-                if (args.method === 'get_recent_list') {
+                    return {id: 202};
+                case 'get_recent_list':
                     return self.recentList;
-                }
-                if (args.method === 'get_next_activities_list') {
-                    return self.phoneCallDetailsData.filter(phoneCallDetailData =>
-                        ['done', 'cancel'].indexOf(phoneCallDetailData.state) === -1);
-                }
-                if (args.method === 'init_call') {
+                case 'get_next_activities_list':
+                    return [];
+                case 'init_call':
                     assert.step('init_call');
                     return [];
-                }
-                if (args.method === 'hangup_call') {
-                    if (args.kwargs.done) {
-                        for (const phoneCallDetailData of self.phoneCallDetailsData) {
-                            if (phoneCallDetailData.id === args.args[0]) {
-                                phoneCallDetailData.state = 'done';
-                            }
-                        }
-                    }
+                case 'hangup_call':
                     assert.step('hangup_call');
-                    return [];
+                    return;
                 }
             }
             return this._super(...arguments);
@@ -502,7 +451,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         'create_from_number',
         'hangup_call',
         'create_from_recent',
-        // 'hangup_call', // disabled due to prevent crash from phonecall with no Id
+        'hangup_call',
     ]);
 
     parent.destroy();

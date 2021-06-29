@@ -63,11 +63,8 @@
                             t-att-class="{ o_web_studio_app_creator_field_warning: invalid.modelId }"
                         >
                                 <label for="name">Model</label>
-                                <ComponentAdapter Component="FieldMany2One"
+                                <ModelSelector
                                     widgetArgs="['model', record, { mode: 'edit' }]"
-                                    name="'model'"
-                                    record="record"
-                                    options="{ mode: 'edit', noCreate: true }"
                                     t-on-field-changed="_onModelIdChanged"
                                 />
                         </div>

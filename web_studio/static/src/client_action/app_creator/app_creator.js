@@ -11,6 +11,15 @@ import { IconCreator } from "../icon_creator/icon_creator";
 const { Component, hooks, useState } = owl;
 const { useExternalListener } = hooks;
 
+class ModelSelector extends ComponentAdapter {
+    constructor(parent, props) {
+        Object.assign(props, {Component: FieldMany2One});
+        super(parent, props);
+    }
+    updateWidget(nextProps) {}
+    renderWidget() {}
+}
+
 export const AppCreatorWrapper = Widget.extend(StandaloneFieldManagerMixin, WidgetAdapterMixin, {
     target: "fullscreen",
     /**
@@ -89,8 +98,6 @@ class AppCreator extends Component {
             },
         });
         this.debug = Boolean(AppCreator.env.isDebug());
-
-        this.FieldMany2One = FieldMany2One;
 
         useAutofocus();
         this.invalid = useState({
@@ -336,7 +343,7 @@ class AppCreator extends Component {
     }
 }
 
-AppCreator.components = { ComponentAdapter, IconCreator, ModelConfigurator };
+AppCreator.components = { ModelSelector, IconCreator, ModelConfigurator };
 AppCreator.props = {
     model: Object,
 };

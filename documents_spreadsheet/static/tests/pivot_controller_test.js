@@ -330,34 +330,33 @@ QUnit.test("Can save a pivot in existing spreadsheet", async (assert) => {
             <pivot string="Partners">
                 <field name="probability" type="measure"/>
             </pivot>`,
-            mockRPC: async function (route, args) {
-                if (route.includes("get_spreadsheets_to_display")) {
-                    return [{ id: 1, name: "My Spreadsheet" }];
+            async mockRPC(route, args) {
+                if (route === '/web/action/load') {
+                    return {id: args.action_id, type: 'ir.actions.act_window_close'};
                 }
-                if (args.method === "write" && args.model === "documents.document") {
-                    assert.step("write");
-                }
-                if (route.includes("join_spreadsheet_session")) {
-                    assert.step("join_spreadsheet_session");
+                if (args.model === 'documents.document') {
+                    assert.step(args.method);
+                    switch (args.method) {
+                    case "get_spreadsheets_to_display":
+                        return [{id: 1, name: "My Spreadsheet"}];
+                    }
                 }
                 if (!this) return;
                 return this._super.apply(this, arguments);
             },
             session: { user_has_group: async () => true },
         },
-        actions: async (controller) => {
-            await testUtils.nextTick();
+        async actions(controller) {
             await testUtils.dom.click(controller.$el.find(".o_pivot_add_spreadsheet"));
             await testUtils.dom.click($(document.body.querySelector(".modal-content select")));
             document.body.querySelector(".modal-content option[value='1']").setAttribute("selected", "selected");
-            await testUtils.nextTick();
             await testUtils.modal.clickButton("Confirm");
         }
     });
     await doAction(webClient, 1); // leave the spreadsheet action
     assert.verifySteps([
+        "get_spreadsheets_to_display",
         "join_spreadsheet_session",
-        "write",  // leave
     ]);
 });
 

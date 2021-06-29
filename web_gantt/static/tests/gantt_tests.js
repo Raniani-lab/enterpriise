@@ -3665,7 +3665,7 @@ QUnit.module('Views', {
     QUnit.test('concurrent scale switches return in inverse order', async function (assert) {
         assert.expect(11);
 
-        testUtils.patch(GanttRenderer, {
+        testUtils.mock.patch(GanttRenderer, {
             _render: function () {
                 assert.step('render');
                 return this._super.apply(this, arguments);
@@ -3725,13 +3725,13 @@ QUnit.module('Views', {
         assert.verifySteps(['render', 'render']); // should only re-render once
 
         gantt.destroy();
-        testUtils.unpatch(GanttRenderer);
+        testUtils.mock.unpatch(GanttRenderer);
     });
 
     QUnit.test('concurrent pill resizes return in inverse order', async function (assert) {
         assert.expect(7);
 
-        testUtils.patch(GanttRenderer, {
+        testUtils.mock.patch(GanttRenderer, {
             _render: function () {
                 assert.step('render');
                 return this._super.apply(this, arguments);
@@ -3792,7 +3792,7 @@ QUnit.module('Views', {
         ]);
 
         gantt.destroy();
-        testUtils.unpatch(GanttRenderer);
+        testUtils.mock.unpatch(GanttRenderer);
     });
 
     QUnit.test('concurrent pill resizes and open, dialog show updated number', async function (assert) {

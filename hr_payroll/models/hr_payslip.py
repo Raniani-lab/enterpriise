@@ -99,6 +99,7 @@ class HrPayslip(models.Model):
         string='Credit Note', readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
         help="Indicates this payslip has a refund of another")
+    has_refund_slip = fields.Boolean(compute='_compute_has_refund_slip')
     payslip_run_id = fields.Many2one(
         'hr.payslip.run', string='Batch Name', readonly=True,
         copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade',
@@ -276,6 +277,23 @@ class HrPayslip(models.Model):
 
     def _compute_is_superuser(self):
         self.update({'is_superuser': self.env.user._is_superuser() and self.user_has_groups("base.group_no_one")})
+
+    def _compute_has_refund_slip(self):
+        #This field is only used to know whether we need a confirm on refund or not
+        #It doesn't have to work in batch and we try not to search if not necessary
+        for payslip in self:
+            if not payslip.credit_note and payslip.state in ('done', 'paid') and self.search_count([
+                ('employee_id', '=', payslip.employee_id.id),
+                ('date_from', '=', payslip.date_from),
+                ('date_to', '=', payslip.date_to),
+                ('contract_id', '=', payslip.contract_id.id),
+                ('struct_id', '=', payslip.struct_id.id),
+                ('credit_note', '=', True),
+                ('state', '!=', 'cancel'),
+                ]):
+                payslip.has_refund_slip = True
+            else:
+                payslip.has_refund_slip = False
 
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):

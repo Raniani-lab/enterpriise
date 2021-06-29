@@ -442,7 +442,7 @@
                     <field name="encode_uom_in_days"/>
                     <field name="allow_timesheets"/>
                 </xpath>
-                <xpath expr="//div[@t-name='gantt-popover']" position="inside">
+                <xpath expr="//div[@t-if='partner_id']" position="after">
                     <div t-if="allow_timesheets">
                         <strong t-if="encode_uom_in_days">Days Spent — </strong>
                         <strong t-else="">Hours Spent — </strong>

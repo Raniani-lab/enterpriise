@@ -55,6 +55,8 @@
                     ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <separator/>
+                <filter name="conflict_task" string="Tasks in Conflict" domain="[('planning_overlap', '&gt;', 0)]"/>
+                <separator/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Responsible" name="groupby_user" context="{'group_by':'user_ids'}"/>
@@ -87,18 +89,8 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="planning_overlap"/>
-                <field name="is_fsm"/>
-            </xpath>
             <xpath expr="//gantt" position="attributes">
-                <attribute name="decoration-danger">is_fsm and planning_overlap &gt; 0</attribute>
                 <attribute name="total_row">True</attribute>
-            </xpath>
-            <xpath expr="//div[@t-name='gantt-popover']" position="inside">
-                <div class="text-danger mt-2" t-if="planning_overlap">
-                    <t t-esc="planning_overlap"/> other task<span t-if="planning_overlap &gt; 1">s</span> for this employee at the same time.
-                </div>
             </xpath>
         </field>
     </record>

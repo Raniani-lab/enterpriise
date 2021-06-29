@@ -23,15 +23,6 @@
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': [('display_mark_as_done_secondary', '=', False)]}" data-hotkey="v"/>
             </xpath>
-            <xpath expr="//sheet" position="before">
-                <div role="alert" class="alert alert-warning p-3 text-center alert-overflow"
-                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
-                    <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
-                        <field name="planning_overlap"/> other task<span attrs="{'invisible': [('planning_overlap', '=', 1)]}">s</span>
-                    </button>
-                    <span class="align-middle">for this employee at the same time.</span>
-                </div>
-            </xpath>
             <!-- FIXME: refactor this as in project_sharing_views.xml -->
             <xpath expr="//field[@name='tag_ids']" position="replace">
             </xpath>

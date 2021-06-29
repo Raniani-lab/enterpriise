@@ -6,7 +6,7 @@ from collections import defaultdict
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.resource.models.resource import Intervals
 
@@ -25,6 +25,7 @@ class Task(models.Model):
     dependent_ids = fields.Many2many('project.task', relation="task_dependencies_rel", column1="depends_on_id",
                                      column2="task_id", string="Block")
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
+    planning_overlap = fields.Integer(compute='_compute_planning_overlap', search='_search_planning_overlap')
 
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
@@ -43,6 +44,76 @@ class Task(models.Model):
     def _compute_display_warning_dependency_in_gantt(self):
         for task in self:
             task.display_warning_dependency_in_gantt = not (task.stage_id.is_closed or task.stage_id.fold)
+
+    @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
+    def _compute_planning_overlap(self):
+        if self.ids:
+            query = """
+                SELECT
+                    T1.id, COUNT(T2.id)
+                FROM
+                    (
+                        SELECT
+                            T.id as id,
+                            T.project_id,
+                            T.planned_date_begin as planned_date_begin,
+                            T.planned_date_end as planned_date_end,
+                            T.active as active
+                        FROM project_task T
+                        LEFT OUTER JOIN project_project P ON P.id = T.project_id
+                        WHERE T.id IN %s
+                            AND T.active = 't'
+                            AND T.planned_date_begin IS NOT NULL
+                            AND T.planned_date_end IS NOT NULL
+                            AND T.project_id IS NOT NULL
+                    ) T1
+                INNER JOIN project_task_user_rel U1
+                    ON T1.id = U1.task_id
+                INNER JOIN project_task T2
+                    ON T1.id != T2.id
+                        AND T2.active = 't'
+                        AND T2.planned_date_begin IS NOT NULL
+                        AND T2.planned_date_end IS NOT NULL
+                        AND T2.project_id IS NOT NULL
+                        AND (T1.planned_date_begin::TIMESTAMP, T1.planned_date_end::TIMESTAMP)
+                            OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
+                INNER JOIN project_task_user_rel U2
+                    ON T2.id = U2.task_id
+                    AND U2.user_id = U1.user_id
+                GROUP BY T1.id
+            """
+            self.env.cr.execute(query, (tuple(self.ids),))
+            raw_data = self.env.cr.dictfetchall()
+            overlap_mapping = dict(map(lambda d: d.values(), raw_data))
+            for task in self:
+                task.planning_overlap = overlap_mapping.get(task.id, 0)
+        else:
+            self.planning_overlap = False
+
+    @api.model
+    def _search_planning_overlap(self, operator, value):
+        if operator not in ['=', '>'] or not isinstance(value, int) or value != 0:
+            raise NotImplementedError(_('Operation not supported, you should always compare planning_overlap to 0 value with = or > operator.'))
+
+        query = """
+            SELECT T1.id
+            FROM project_task T1
+            INNER JOIN project_task T2 ON T1.id <> T2.id
+            INNER JOIN project_task_user_rel U1 ON T1.id = U1.task_id
+            WHERE
+                T1.planned_date_begin < T2.planned_date_end
+                AND T1.planned_date_end > T2.planned_date_begin
+                AND T1.planned_date_begin IS NOT NULL
+                AND T1.planned_date_end IS NOT NULL
+                AND T1.active = 't'
+                AND T1.project_id IS NOT NULL
+                AND T2.planned_date_begin IS NOT NULL
+                AND T2.planned_date_end IS NOT NULL
+                AND T2.project_id IS NOT NULL
+                AND T2.active = 't'
+        """
+        operator_new = (operator == ">") and "inselect" or "not inselect"
+        return [('id', operator_new, (query, ()))]
 
     @api.model
     def _calculate_planned_dates(self, date_start, date_stop, user_id=None, calendar=None):
@@ -530,6 +601,39 @@ class Task(models.Model):
                 task.planned_date_end - task.planned_date_begin)
 
         return new_planned_date_begin, new_planned_date_end, intervals_cache
+
+    def _get_task_overlap_domain(self):
+        domain_mapping = {}
+        for task in self:
+            domain_mapping[task.id] = [
+                '&',
+                    '&',
+                        ('user_ids', 'in', task.user_ids.ids),
+                        '&',
+                            ('planned_date_begin', '<', task.planned_date_end),
+                            ('planned_date_end', '>', task.planned_date_begin),
+                    ('project_id', '!=', False)
+            ]
+        return domain_mapping
+
+    def action_fsm_view_overlapping_tasks(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('project.action_view_all_task')
+        domain = self._get_task_overlap_domain()[self.id]
+        if 'views' in action:
+            gantt_view = self.env.ref("project_enterprise.project_task_dependency_view_gantt")
+            map_view = self.env.ref('project_enterprise.project_task_map_view_no_title')
+            action['views'] = [(gantt_view.id, 'gantt'), (map_view.id, 'map')] + [(state, view) for state, view in action['views'] if view not in ['gantt', 'map']]
+        action.update({
+            'name': _('Overlapping Tasks'),
+            'domain': domain,
+            'context': {
+                'fsm_mode': False,
+                'task_nameget_with_hours': False,
+                'initialDate': self.planned_date_begin,
+            }
+        })
+        return action
 
     # ----------------------------------------------------
     # Gantt view

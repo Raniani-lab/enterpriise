@@ -5,7 +5,6 @@ from datetime import timedelta, datetime
 import pytz
 
 from odoo import fields, models, api, _
-from odoo.osv import expression
 
 
 # YTI TODO: Split file into 2
@@ -81,7 +80,6 @@ class Task(models.Model):
         return result
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
-    planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
     user_ids = fields.Many2many(group_expand='_read_group_user_ids')
     # Use to count conditions between : time, worksheet and materials
@@ -170,52 +168,6 @@ class Task(models.Model):
             return users.search(search_domain, order=order)
         return users
 
-    @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
-    def _compute_planning_overlap(self):
-        if self.ids:
-            query = """
-                SELECT
-                    T1.id, COUNT(T2.id)
-                FROM
-                    (
-                        SELECT
-                            T.id as id,
-                            T.project_id,
-                            T.planned_date_begin as planned_date_begin,
-                            T.planned_date_end as planned_date_end,
-                            T.active as active
-                        FROM project_task T
-                        LEFT OUTER JOIN project_project P ON P.id = T.project_id
-                        WHERE T.id IN %s
-                            AND T.active = 't'
-                            AND P.is_fsm = 't'
-                            AND T.planned_date_begin IS NOT NULL
-                            AND T.planned_date_end IS NOT NULL
-                            AND T.project_id IS NOT NULL
-                    ) T1
-                INNER JOIN project_task_user_rel U1
-                    ON T1.id = U1.task_id
-                INNER JOIN project_task T2
-                    ON T1.id != T2.id
-                        AND T2.active = 't'
-                        AND T2.planned_date_begin IS NOT NULL
-                        AND T2.planned_date_end IS NOT NULL
-                        AND T2.project_id IS NOT NULL
-                        AND (T1.planned_date_begin::TIMESTAMP, T1.planned_date_end::TIMESTAMP)
-                            OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
-                INNER JOIN project_task_user_rel U2
-                    ON T2.id = U2.task_id
-                   AND U2.user_id = U1.user_id
-                GROUP BY T1.id
-            """
-            self.env.cr.execute(query, (tuple(self.ids),))
-            raw_data = self.env.cr.dictfetchall()
-            overlap_mapping = dict(map(lambda d: d.values(), raw_data))
-            for task in self:
-                task.planning_overlap = overlap_mapping.get(task.id, 0)
-        else:
-            self.planning_overlap = False
-
     def _compute_fsm_done(self):
         for task in self:
             closed_stage = task.project_id.type_ids.filtered('is_closed')
@@ -257,23 +209,6 @@ class Task(models.Model):
 
             task.write(values)
 
-    def action_fsm_view_overlapping_tasks(self):
-        fsm_task_form_view = self.env.ref('project.view_task_form2')
-        fsm_task_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
-        fsm_task_kanban_view = self.env.ref('industry_fsm.project_task_view_kanban_fsm')
-        domain = self._get_fsm_overlap_domain()[self.id]
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Overlapping Tasks'),
-            'res_model': 'project.task',
-            'domain': domain,
-            'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_kanban_view.id, 'kanban'), (fsm_task_form_view.id, 'form')],
-            'context': {
-                'fsm_mode': True,
-                'task_nameget_with_hours': False,
-            }
-        }
-
     def action_fsm_navigate(self):
         if not self.partner_id.partner_latitude and not self.partner_id.partner_longitude:
             self.partner_id.geo_localize()
@@ -284,25 +219,6 @@ class Task(models.Model):
             'url': url,
             'target': 'new'
         }
-
-    def _get_fsm_overlap_domain(self):
-        domain_mapping = {}
-        for task in self:
-            domain_mapping[task.id] = [
-                '&',
-                    '&',
-                        '&',
-                            ('is_fsm', '=', True),
-                            ('user_id', '=', task.user_id.id),
-                        '&',
-                            ('planned_date_begin', '<', task.planned_date_end),
-                            ('planned_date_end', '>', task.planned_date_begin),
-                    ('project_id', '!=', False)
-            ]
-            current_id = task._origin.id
-            if current_id:
-                domain_mapping[task.id] = expression.AND([domain_mapping[task.id], [('id', '!=', current_id)]])
-        return domain_mapping
 
     @api.model
     def get_unusual_days(self, date_from, date_to=None):

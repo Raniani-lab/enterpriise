@@ -2,17 +2,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Planning Time Off',
+    'name': "Project Time Off",
     'version': '1.0',
     'category': 'Hidden',
-    'sequence': 50,
-    'summary': 'Planning integration with holidays',
-    'depends': ['planning', 'hr_holidays_gantt'],
+    'summary': "Project and task integration with holidays",
     'description': """
-Planning integration with time off
-""",
+Project and task integration with holidays
+    """,
+    'depends': ['project_enterprise', 'hr_holidays_gantt'],
     'data': [
-        'views/planning_slot_views.xml',
+        'views/project_task_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

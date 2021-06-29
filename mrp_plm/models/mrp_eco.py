@@ -624,12 +624,12 @@ class MrpEco(models.Model):
                 })
                 attachments = IrAttachment.search([('res_model', '=', 'mrp.bom'),
                                                    ('res_id', '=', eco.bom_id.id)])
-                for attachment in attachments:
-                    attachment.copy(default={'res_id':eco.new_bom_id.id})
-            # duplicate all attachment on the product
-            attachments = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', eco.product_tmpl_id.id)])
+            else:
+                attachments = IrAttachment.search([('res_model', '=', 'product.template'),
+                                                   ('res_id', '=', eco.product_tmpl_id.id)])
             for attach in attachments:
-                attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
+                new_attach = attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
+                self.env['mrp.document'].create({'ir_attachment_id': new_attach.id, 'origin_attachment_id': attach.id})
         self.write({'state': 'progress'})
 
     def action_apply(self):
@@ -641,21 +641,32 @@ class MrpEco(models.Model):
             if eco.state == 'rebase':
                 eco.apply_rebase()
             if eco.allow_apply_change:
-                eco.mapped('new_bom_id').apply_new_version()
-                documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
-                documents.mapped('ir_attachment_id').unlink()
-                for attach in self.with_context(active_test=False).mrp_document_ids:
-                    product_attach = attach.copy({
-                        'res_model': 'product.template',
-                        'res_id': eco.product_tmpl_id.id,
-                    })
-                    if not attach.active:
-                        product_attach.write({
-                            'name': attach.name + '(v'+str(eco.product_tmpl_id.version)+')'
+                if eco.type == 'product':
+                    for attach in eco.with_context(active_test=False).mrp_document_ids:
+                        origin = attach.origin_attachment_id
+                        if not attach.active:
+                            origin.unlink()
+                            continue
+                        if origin._compute_checksum(origin.raw) == origin._compute_checksum(attach.raw):
+                            if attach.origin_attachment_id.name != attach.name:
+                                attach.origin_attachment_id.name = attach.name
+                            if attach.origin_attachment_id.company_id != attach.company_id:
+                                attach.origin_attachment_id.company_id = attach.company_id
+                            continue
+                        attach.ir_attachment_id.copy({
+                            'res_model': 'product.template',
+                            'res_id': eco.product_tmpl_id.id,
                         })
-                eco.product_tmpl_id.version = eco.product_tmpl_id.version + 1
+                        eco.product_tmpl_id.version = eco.product_tmpl_id.version + 1
+                else:
+                    eco.mapped('new_bom_id').apply_new_version()
+                    for attach in eco.mrp_document_ids:
+                        attach.ir_attachment_id.copy({
+                            'res_model': 'mrp.bom',
+                            'res_id': eco.new_bom_id.id,
+                        })
                 vals = {'state': 'done'}
-                stage_id = self.env['mrp.eco.stage'].search([
+                stage_id = eco.env['mrp.eco.stage'].search([
                     ('final_stage', '=', True),
                     ('type_ids', 'in', eco.type_id.id)], limit=1).id
                 if stage_id:
@@ -678,7 +689,18 @@ class MrpEco(models.Model):
     def action_see_attachments(self):
         self.ensure_one()
         domain = ['&', ('res_model', '=', self._name), ('res_id', '=', self.id)]
-        attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')
+        attachment_view = self.env.ref('mrp_plm.view_document_file_kanban_mrp_plm')
+        context = {
+            'default_res_model': self._name,
+            'default_res_id': self.id,
+            'default_company_id': self.company_id.id,
+            'search_default_all': 1,
+            'create': self.state != 'done',
+            'edit': self.state != 'done',
+            'delete': self.state != 'done',
+        }
+        if self.state == 'done':
+            context.update({'search_default_all': 0, 'no_banner': True})
         return {
             'name': _('Attachments'),
             'domain': domain,
@@ -693,14 +715,7 @@ class MrpEco(models.Model):
                         Use this feature to store any files, like drawings or specifications.
                     </p>'''),
             'limit': 80,
-            'context': {
-                'default_res_model': self._name,
-                'default_res_id': self.id,
-                'default_company_id': self.company_id.id,
-                'create': self.state != 'done',
-                'edit': self.state != 'done',
-                'delete': self.state != 'done',
-            }
+            'context': context,
         }
 
     def open_new_bom(self):

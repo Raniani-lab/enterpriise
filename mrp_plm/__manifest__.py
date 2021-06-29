@@ -39,6 +39,7 @@ Product Life Management
             'mrp_plm/static/src/js/mrp_plm_toaster_button.js',
             'mrp_plm/static/src/js/mrp_plm_update_qty.js',
             'mrp_plm/static/src/scss/mrp_plm_dashboard.scss',
+            'mrp_plm/static/src/scss/mrp_document_kanban_view.scss',
         ],
         'web.assets_qweb': [
             'mrp_plm/static/src/xml/**/*',

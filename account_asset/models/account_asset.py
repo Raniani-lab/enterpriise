@@ -199,26 +199,23 @@ class AccountAsset(models.Model):
                 account = record.original_move_line_ids.account_id
                 record.asset_type = account.asset_type
 
-    @api.depends('original_value', 'salvage_value', 'already_depreciated_amount_import', 'depreciation_move_ids.state', 'state')
+    @api.depends(
+        'original_value', 'salvage_value', 'already_depreciated_amount_import',
+        'depreciation_move_ids.state',
+        'depreciation_move_ids.amount_total',
+        'depreciation_move_ids.reversal_move_id'
+    )
     def _compute_value_residual(self):
         for record in self:
+            posted = record.depreciation_move_ids.filtered(
+                lambda m: m.state == 'posted' and not m.reversal_move_id
+            )
             record.value_residual = (
                 record.original_value
                 - record.salvage_value
                 - record.already_depreciated_amount_import
-                - sum(
-                    record.depreciation_move_ids
-                          .filtered(lambda m: m.state == 'posted' and not m.reversal_move_id)
-                          .line_ids
-                          .filtered(lambda l: l.account_id == record.account_depreciation_id)
-                          .mapped('credit' if record.asset_type in ('expense', 'purchase') else 'debit')
-                )
+                - sum(move._get_depreciation() for move in posted)
             )
-            # When closing the asset, an additional depreciation line is created, exceeding the amount by
-            # record.salvage_value + record.already_depreciated_amount_import. We want it to bring
-            # residual value to 0, so we don't remove those values from the residual value manually.
-            if record.state == 'close' and set(record.depreciation_move_ids.mapped('state')) == {'posted'}:
-                record.value_residual += record.salvage_value + record.already_depreciated_amount_import
 
     @api.depends('value_residual', 'salvage_value', 'children_ids.book_value')
     def _compute_book_value(self):

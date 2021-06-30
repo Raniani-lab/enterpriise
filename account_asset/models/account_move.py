@@ -216,6 +216,31 @@ class AccountMove(models.Model):
         }
         return move_vals
 
+    def _get_depreciation(self):
+        asset = self.asset_id
+        if asset:
+            account = asset.account_depreciation_id
+            field = 'debit' if asset.asset_type == 'sale' else 'credit'
+            asset_depreciation = sum(
+                self.line_ids.filtered(lambda l: l.account_id == account).mapped(field)
+            )
+            # Special case of closing entry
+            if any(
+                (line.account_id, line[field]) == (asset.account_asset_id, asset.original_value)
+                for line in self.line_ids
+            ):
+                rfield = 'debit' if asset.asset_type != 'sale' else 'credit'
+                asset_depreciation = (
+                    asset.original_value
+                    - asset.salvage_value
+                    - sum(
+                        self.line_ids.filtered(lambda l: l.account_id == account).mapped(rfield)
+                    )
+                )
+        else:
+            asset_depreciation = 0
+        return asset_depreciation
+
     @api.depends('line_ids.asset_ids')
     def _compute_asset_ids(self):
         for record in self:

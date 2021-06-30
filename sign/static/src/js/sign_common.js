@@ -682,6 +682,7 @@ odoo.define('sign.document_signing', function (require) {
     var session = require('web.session');
     var Widget = require('web.Widget');
     var time = require('web.time');
+    var multiFileUpload = require('sign.multiFileUpload')
 
     var _t = core._t;
 
@@ -1285,6 +1286,7 @@ odoo.define('sign.document_signing', function (require) {
         start: async function () {
             var self = this;
             var result = false;
+            const nextTemplate = multiFileUpload.getNext();
             var canReadRequestItem = await session.user_has_group('sign.group_sign_user');
             if (canReadRequestItem) {
                 result = await this._rpc({
@@ -1313,7 +1315,27 @@ odoo.define('sign.document_signing', function (require) {
                 }
             };
 
-            if (result && result.length) {
+            if (nextTemplate && nextTemplate.template) {
+                openDocumentButton.classes = 'btn-secondary';
+                this.options.buttons.push(openDocumentButton);
+
+                this.options.buttons.push({
+                    text: _t('Next Document'), classes: 'btn-primary', click: function (e) {
+                        multiFileUpload.removeFile(nextTemplate.template);
+                        self.do_action({
+                            type: "ir.actions.client",
+                            tag: 'sign.Template',
+                            name: _.str.sprintf(_t('Template "%s"'), nextTemplate.name),
+                            context: {
+                                sign_edit_call: 'sign_send_request',
+                                id: nextTemplate.template,
+                                sign_directly_without_mail: false,
+                            }
+                        }, {clear_breadcrumbs: true});
+                    }
+                });
+
+            } else if (result && result.length) {
                 this.has_next_document = true;
 
                 openDocumentButton.classes = 'btn-secondary';

@@ -62,6 +62,7 @@
         </t>
         <t t-elif="action_type==='sign_template_edit'">
             <button type="button" class="btn btn-primary mr-2 o_sign_template_save">Save</button>
+            <button t-if="widget.nextTemplate &amp;&amp; widget.nextTemplate.template" type="button" class="btn btn-primary mr-2 o_sign_template_next" t-att-template-id="widget.nextTemplate.template" t-att-template-name="widget.nextTemplate.name">Next Document</button>
         </t>
         <t t-if="widget.has_sign_requests &amp;&amp; widget.isPDF">
             <div class="alert o_duplicate d-inline">

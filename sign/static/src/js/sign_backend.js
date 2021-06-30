@@ -9,6 +9,7 @@ odoo.define('sign.views_custo', function(require) {
     var ListController = require("web.ListController");
     var utils = require('web.utils');
     var session = require('web.session');
+    var multiFileUpload = require('sign.multiFileUpload')
 
     var _t = core._t;
 
@@ -135,41 +136,49 @@ odoo.define('sign.views_custo', function(require) {
     function _sign_upload_file(inactive, sign_directly_without_mail, sign_edit_context) {
         var self = this;
         var sign_directly_without_mail =  sign_directly_without_mail || false;
-        var $upload_input = $('<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf"/>');
+        var $upload_input = $('<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf" multiple="true"/>');
         $upload_input.on('change', function (e) {
-            var f = e.target.files[0];
-            utils.getDataURLFromFile(f).then(function (result) {
-                var args;
-                if (inactive) {
-                    args = [f.name, result, false];
-                } else {
-                    args = [f.name, result];
-                }
-                self._rpc({
-                        model: 'sign.template',
-                        method: 'upload_template',
-                        args: args,
-                    })
-                    .then(function(data) {
-                        self.do_action({
-                            type: "ir.actions.client",
-                            tag: 'sign.Template',
-                            name: _.str.sprintf(_t('Template "%s"'), f.name),
-                            context: {
-                                sign_edit_call: sign_edit_context,
-                                id: data.template,
-                                sign_directly_without_mail: sign_directly_without_mail,
-                            },
+            let files = e.target.files;
+            Promise.all(
+                Array.from(files).map((file) => {
+                    return utils.getDataURLFromFile(file).then((result) => {
+                        const args = [file.name, result, !inactive]
+
+                        return self._rpc({
+                            model: 'sign.template',
+                            method: 'upload_template',
+                            args: args,
                         });
-                    })
-                    .then(function() {
-                        $upload_input.removeAttr('disabled');
-                        $upload_input.val("");
-                    })
-                    .guardedCatch(function() {
-                        $upload_input.removeAttr('disabled');
-                        $upload_input.val("");
                     });
+                })
+            ).then(uploadedTemplateData => {
+                let templates = uploadedTemplateData.map((template, index) => {
+                    return {
+                        template: template.template,
+                        name: files[index].name
+                    }
+                })
+                const file = templates.shift();
+                if(templates.length) {
+                    multiFileUpload.addNewFiles(templates);
+                }
+
+                self.do_action({
+                    type: "ir.actions.client",
+                    tag: 'sign.Template',
+                    name: _.str.sprintf(_t('Template "%s"'), file.name),
+                    context: {
+                        sign_edit_call: sign_edit_context,
+                        id: file.template,
+                        sign_directly_without_mail: sign_directly_without_mail,
+                    }
+                });
+            }).then(() => {
+                $upload_input.removeAttr('disabled');
+                $upload_input.val("");
+            }).then(() => {
+                $upload_input.removeAttr('disabled');
+                $upload_input.val("");
             });
         });
 
@@ -194,6 +203,7 @@ odoo.define('sign.template', function(require) {
     var FormFieldMany2ManyTags = require('web.relational_fields').FormFieldMany2ManyTags;
     const SmoothScrollOnDrag = require('web/static/src/js/core/smooth_scroll_on_drag.js');
     var FormFieldSelection = require('web.relational_fields').FieldSelection;
+    var multiFileUpload = require('sign.multiFileUpload')
 
     var _t = core._t;
 
@@ -827,6 +837,22 @@ odoo.define('sign.template', function(require) {
                 });
             },
 
+            'click .o_sign_template_next' : function (e) {
+                const templateName = e.target.getAttribute('template-name');
+                const templateId = parseInt(e.target.getAttribute('template-id'));
+                multiFileUpload.removeFile(templateId);
+                this.do_action({
+                    type: "ir.actions.client",
+                    tag: 'sign.Template',
+                    name: _.str.sprintf(_t('Template "%s"'), templateName),
+                    context: {
+                        sign_edit_call: 'sign_template_edit',
+                        id: templateId,
+                        sign_directly_without_mail: false,
+                    }
+                });
+            },
+
             'click .o_sign_template_duplicate' : function (e) {
                 this.saveTemplate(true);
             },
@@ -854,6 +880,9 @@ odoo.define('sign.template', function(require) {
             this.templateID = options.context.id;
             this.actionType = options.context.sign_edit_call ? options.context.sign_edit_call : '';
             this.rolesToChoose = {};
+
+            const nextTemplate = multiFileUpload.getNext();
+            this.nextTemplate = nextTemplate ? nextTemplate : false;
 
         },
 
@@ -1411,6 +1440,7 @@ odoo.define('sign.document_edition', function(require) {
     var core = require('web.core');
     var session = require('web.session');
     var DocumentBackend = require('sign.DocumentBackend');
+    var multiFileUpload = require('sign.multiFileUpload');
 
     var _t = core._t;
 
@@ -1457,6 +1487,28 @@ odoo.define('sign.document_edition', function(require) {
 
         start: function() {
             var self = this;
+            const nextTemplate = multiFileUpload.getNext();
+
+            if (nextTemplate && nextTemplate.template) {
+                let nextDocumentButton = $('<button/>', {html: _t("Next Document"), type: "button", 'class': 'btn btn-primary mr-2'});
+                nextDocumentButton.on('click', function () {
+                    multiFileUpload.removeFile(nextTemplate.template);
+                    self.do_action({
+                        type: "ir.actions.client",
+                        tag: 'sign.Template',
+                        name: _.str.sprintf(_t('Template "%s"'), nextTemplate.name),
+                        context: {
+                            sign_edit_call: 'sign_send_request',
+                            id: nextTemplate.template,
+                            sign_directly_without_mail: false,
+                        }
+                    }, {clear_breadcrumbs: true});
+                });
+                if (self.cp_content) {
+                    self.cp_content.$buttons = nextDocumentButton.add(self.cp_content.$buttons);
+                }
+            }
+
             return this._super.apply(this, arguments).then(function () {
                 if(self.is_author && self.is_sent) {
                     self.$('.o_sign_signer_status').not('.o_sign_signer_signed').each(function(i, el) {

@@ -9,7 +9,6 @@
 
 .o_input {
     border-width: 0 0 $input-border-width 0;
-    padding: 1px 0;
 }
 
 //------------------------------------------------------------------------------
@@ -17,9 +16,12 @@
 //------------------------------------------------------------------------------
 
 .o_field_widget {
-    // Dropdowns input carret
-    .o_input_dropdown .o_dropdown_button {
-        @include o-position-absolute(0, 0);
+    .o_field_many2one, .o_field_many2manytags {
+         .o_input_dropdown .o_input {
+            // Overlap legacy menus border-top with the underneath input border.
+            border-bottom: $input-border-width solid #{var(--o-input-border-color)};
+            transform: translateY($input-border-width + $dropdown-border-width);
+        }
     }
 
     // Percent pie field

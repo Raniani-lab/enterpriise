@@ -49,7 +49,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/menu_search.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_layout.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_mobile.scss',
-            'web_enterprise/static/src/legacy/scss/datepicker.scss',
             'web_enterprise/static/src/legacy/scss/kanban_view.scss',
             'web_enterprise/static/src/legacy/scss/touch_device.scss',
             'web_enterprise/static/src/legacy/scss/snackbar.scss',

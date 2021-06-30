@@ -15,12 +15,12 @@
     }
 
     .o_dropdown_menu {
-        margin-top: -1px;
+        margin-top: $dropdown-border-width * -1;
     }
 }
 
 // = Enterprise jQueryUI dropdown
 // ----------------------------------------------------------------------------
 .ui-widget.ui-autocomplete {
-    border-top: 0;
+    border-top: $dropdown-border-width solid transparent;
 }

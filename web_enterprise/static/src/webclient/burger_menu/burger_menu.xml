@@ -9,7 +9,7 @@
         title="Toggle menu" aria-label="Toggle menu"
          t-on-click="_openBurger"/>
     <Portal target="'body.o_web_client'">
-      <div t-if="state.isBurgerOpened" class="o_burger_menu d-flex flex-column flex-nowrap position-fixed w-100" t-transition="burgerslide">
+      <div t-if="state.isBurgerOpened" class="o_burger_menu d-flex flex-column flex-nowrap position-fixed" t-on-touchstart.stop="_onSwipeStart" t-on-touchend.stop="_onSwipeEnd" t-transition="burgerslide">
         <div class="o_burger_menu_topbar d-flex align-items-center justify-content-between"
             t-on-click.stop='_toggleUserMenu'>
             <span class="dropdown-toggle small d-flex align-items-center justify-content-between" t-att-class="{active: state.isUserMenuOpened}">
@@ -40,19 +40,25 @@
       </div>
       <div t-else="" />
     </Portal>
+    <Portal target="'body.o_web_client'">
+        <div t-if="state.isBurgerOpened" class="o_burger_menu_backdrop" t-on-click.stop="_closeBurger" t-on-touchstart.stop="_onSwipeStart" t-on-touchend.stop="_onSwipeEnd" />
+        <div t-else="" />
+    </Portal>
 </li>
 
 <t t-name="web_enterprise.BurgerSection" owl="1">
-    <MenuDropdown t-if="section.childrenTree.length" t-att-class="'o_burger_menu_section'" t-on-click.stop="_onDropDownClicked" manualOnly="true" t-key="section.id" xmlid="section.xmlid">
-        <t t-set-slot="toggler" >
-            <span t-esc="section.name"/><span class="fa fa-chevron-right toggle_icon"/>
-        </t>
-        <t t-foreach="section.childrenTree" t-as="subSection" >
-            <t t-call="web_enterprise.BurgerSection">
-                <t t-set="section" t-value="subSection" />
+    <div t-if="section.childrenTree.length" t-key="section.id" class="o_dropdown o_burger_menu_section show">
+        <button class="o_dropdown_toggler" t-att-data-menu-xmlid="section.xmlid">
+            <span t-esc="section.name"/>
+        </button>
+        <ul class="o_dropdown_menu d-block">
+            <t t-foreach="section.childrenTree" t-as="subSection" >
+                <t t-call="web_enterprise.BurgerSection">
+                    <t t-set="section" t-value="subSection" />
+                </t>
             </t>
-        </t>
-    </MenuDropdown>
+        </ul>
+    </div>
     <MenuItem t-else="" t-key="section.id" t-on-click.stop="_onMenuClicked(section)" payload="{ xmlid: section.xmlid }">
         <span t-esc="section.name" />
     </MenuItem>

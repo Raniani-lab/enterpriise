@@ -6,6 +6,7 @@
   top: 0;
   bottom: 0;
   left: 100%;
+  width: 90%;
   z-index: $zindex-tooltip + 10;
   transition: transform .2s ease;
 
@@ -92,6 +93,8 @@
     .o_dropdown_menu {
       margin-top: 0;
       text-indent: 1em;
+      width: 100%;
+      max-height: none;
 
       .o_dropdown_toggler {
         text-indent: 1em;
@@ -138,6 +141,18 @@
       margin-right: $dropdown-item-padding-x;
     }
   }
+}
+
+// Burger background
+.o_burger_menu_backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $zindex-modal-backdrop;
+  width: 100vw;
+  height: 100vh;
+  background-color: $modal-backdrop-bg;
+  opacity: $modal-backdrop-opacity;
 }
 
 

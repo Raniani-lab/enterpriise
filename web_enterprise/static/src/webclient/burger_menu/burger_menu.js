@@ -4,12 +4,14 @@ import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { BurgerUserMenu } from "./user_menu/user_menu";
 import { MobileSwitchCompanyMenu } from "./mobile_switch_company_menu/mobile_switch_company_menu";
-import { MenuDropdown, MenuItem } from "@web/webclient/navbar/navbar";
+import { MenuItem } from "@web/webclient/navbar/navbar";
 
 /**
  * This file includes the widget Menu in mobile to render the BurgerMenu which
  * opens fullscreen and displays the user menu and the current app submenus.
  */
+
+const SWIPE_ACTIVATION_THRESHOLD = 100;
 
 export class BurgerMenu extends owl.Component {
     setup() {
@@ -21,6 +23,7 @@ export class BurgerMenu extends owl.Component {
             isUserMenuOpened: false,
             isBurgerOpened: false,
         });
+        this.swipeStartX = null;
         owl.hooks.onMounted(() => {
             this.env.bus.on("HOME-MENU:TOGGLED", this, () => {
                 this._closeBurger();
@@ -50,24 +53,27 @@ export class BurgerMenu extends owl.Component {
     _toggleUserMenu() {
         this.state.isUserMenuOpened = !this.state.isUserMenuOpened;
     }
-    /**
-     * @param {Event} ev
-     */
-    _onDropDownClicked(ev) {
-        const dropDownToggler = ev.currentTarget.querySelector(".o_dropdown_toggler");
-        const wasActive = dropDownToggler.classList.contains("o_dropdown_active");
-        const toggleIcon = dropDownToggler.querySelector(".toggle_icon");
-        toggleIcon.classList.toggle("fa-chevron-down", !wasActive);
-        toggleIcon.classList.toggle("fa-chevron-right", wasActive);
-    }
     _onMenuClicked(menu) {
         this.menuRepo.selectMenu(menu);
+    }
+    _onSwipeStart(ev) {
+        this.swipeStartX = ev.changedTouches[0].clientX;
+    }
+    _onSwipeEnd(ev) {
+        if (!this.swipeStartX) {
+            return;
+        }
+        const deltaX = ev.changedTouches[0].clientX - this.swipeStartX;
+        if (deltaX < SWIPE_ACTIVATION_THRESHOLD) {
+            return;
+        }
+        this._closeBurger();
+        this.swipeStartX = null;
     }
 }
 BurgerMenu.template = "web_enterprise.BurgerMenu";
 BurgerMenu.components = {
     Portal: owl.misc.Portal,
-    MenuDropdown,
     MenuItem,
     BurgerUserMenu,
     MobileSwitchCompanyMenu,

@@ -494,7 +494,7 @@ class Payslip(models.Model):
         for payslip in self:
             if payslip.struct_id.code == 'CP200HOLN1':
                 res[report_n1] |= payslip
-            elif payslip.struct_id == 'CP200HOLN':
+            elif payslip.struct_id.code == 'CP200HOLN':
                 res[report_n] |= payslip
         return res
 

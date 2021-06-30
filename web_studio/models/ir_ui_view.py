@@ -51,9 +51,9 @@ class View(models.Model):
             if node.get('groups'):
                 self.set_studio_groups(node)
             if node.tag == 'map':
-                self.set_studio_map_popup_fields(name_manager.Model._name, node)
+                self.set_studio_map_popup_fields(name_manager.model._name, node)
             if node.tag == 'pivot':
-                self.set_studio_pivot_measure_fields(name_manager.Model._name, node)
+                self.set_studio_pivot_measure_fields(name_manager.model._name, node)
 
         return super(View, self)._apply_groups(node, name_manager, node_info)
 

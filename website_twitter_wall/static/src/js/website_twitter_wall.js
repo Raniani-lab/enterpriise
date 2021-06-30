@@ -2,6 +2,7 @@ odoo.define('website_twitter_wall.views', function (require) {
 'use strict';
 
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var Widget = require('web.Widget');
 var publicWidget = require('web.public.widget');
 
@@ -128,10 +129,9 @@ var TweetWall = Widget.extend({
         if (tweets.length) {
             var tweet = tweets[0];
             self.pool_cache[tweet.id].round = leastRound + 1;
-            var tweetDesc = $(tweet.tweet_html);
             $(qweb.render('website_twitter_wall_tweets', {
                 tweet_id: tweet.id,
-                tweet: tweetDesc.prop('outerHTML'),
+                tweet: Markup(tweet.tweet_html),
             })).prependTo(self.prependTweetsTo);
             var nextPrepend = self.prependTweetsTo.next('.o-tw-walls-col');
             self.prependTweetsTo = nextPrepend.length ? nextPrepend.first() : $('.o-tw-walls-col').first();

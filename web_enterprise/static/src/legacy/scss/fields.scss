@@ -3,15 +3,13 @@
 // are in the DOM, in enterprise version.
 //
 
-// Required
-.o_required_modifier {
-    &.o_input, .o_input {
-        border-bottom-width: 2px;
+//------------------------------------------------------------------------------
+// Generic Input
+//------------------------------------------------------------------------------
 
-        &:not(:focus-within) {
-            border-bottom-color: gray('500');
-        }
-    }
+.o_input {
+    border-width: 0 0 $input-border-width 0;
+    padding: 1px 0;
 }
 
 //------------------------------------------------------------------------------

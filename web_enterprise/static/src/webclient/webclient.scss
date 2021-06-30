@@ -10,21 +10,6 @@ select {
   display: block;
   outline: none;
 }
-.o_input {
-  border: 1px solid $o-form-lightsecondary;
-  border-top-style: none;
-  border-right-style: none;
-  border-left-style: none;
-
-  .o_input {
-    border: none !important;
-    padding: 0;
-  }
-
-  &:focus-within {
-    border-bottom-color: $primary;
-  }
-}
 select {
   // FIXME buggy 'padding-left'
   cursor: pointer;

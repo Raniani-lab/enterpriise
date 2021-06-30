@@ -257,6 +257,12 @@ class CrossoveredBudgetLines(models.Model):
         if domain_list:
             self.crossovered_budget_id = self.env['crossovered.budget'].search(AND(domain_list), limit=1)
 
+    @api.onchange('crossovered_budget_id')
+    def _onchange_crossovered_budget_id(self):
+        if self.crossovered_budget_id:
+            self.date_from = self.date_from or self.crossovered_budget_id.date_from
+            self.date_to = self.date_to or self.crossovered_budget_id.date_to
+
     @api.constrains('general_budget_id', 'analytic_account_id')
     def _must_have_analytical_or_budgetary_or_both(self):
         for record in self:

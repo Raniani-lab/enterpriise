@@ -13,7 +13,8 @@ Bridge module for project and enterprise
     'data': [
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
-        ],
+        'views/project_sharing_templates.xml',
+    ],
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
@@ -26,6 +27,9 @@ Bridge module for project and enterprise
         ],
         'web.qunit_suite_tests': [
             'project_enterprise/static/tests/**/*',
+        ],
+        'project.webclient': [
+            'project_enterprise/static/src/project_sharing/**/*',
         ],
     }
 }

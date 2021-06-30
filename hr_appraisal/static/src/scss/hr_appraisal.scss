@@ -81,7 +81,10 @@
         }
     }
     .o_appraisal_blur {
-        filter: blur(0.6rem);
+        filter: blur(0.2rem);
+        line-height: 1;
+        margin-top: 2rem;
+        opacity: .3;
         user-select: none;
         pointer-events: none;
     }

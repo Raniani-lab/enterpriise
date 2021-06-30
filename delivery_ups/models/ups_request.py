@@ -96,10 +96,7 @@ class Package():
         self.weight_unit = carrier.ups_package_weight_unit
         self.name = name
         self.dimension_unit = carrier.ups_package_dimension_unit
-        if quant_pack:
-            self.dimension = {'length': quant_pack.packaging_length, 'width': quant_pack.width, 'height': quant_pack.height}
-        else:
-            self.dimension = {'length': carrier.ups_default_package_type_id.packaging_length, 'width': carrier.ups_default_package_type_id.width, 'height': carrier.ups_default_package_type_id.height}
+        self.dimension = carrier._ups_convert_dimensions(quant_pack or carrier.ups_default_package_type_id, self.dimension_unit)
         self.packaging_type = quant_pack and quant_pack.shipper_package_code or False
 
 

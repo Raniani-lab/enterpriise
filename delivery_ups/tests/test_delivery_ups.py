@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from odoo.addons.delivery_ups.models.ups_request import Package
 from odoo.tests.common import TransactionCase, tagged, Form
 
 
@@ -187,3 +188,25 @@ class TestDeliveryUPS(TransactionCase):
 
         delivery_order.button_validate()
         self.assertEqual(delivery_order.state, 'done', 'Shipment state should be done.')
+
+    def test_04_package_dimensions(self):
+        carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
+        package_dimension_unit = 'IN'
+        carrier.write({
+            'ups_default_service_type': '08',
+            'ups_package_dimension_unit': package_dimension_unit,
+        })
+
+        # Package is 1 x 2 x 3 meters
+        self.assertEqual(carrier.ups_default_package_type_id.length_uom_name, 'mm')
+        carrier.ups_default_package_type_id.write({
+            'packaging_length': '1000',
+            'width': '2000',
+            'height': '3000',
+        })
+
+        package = Package(carrier, 1)
+        self.assertEqual(package.dimension_unit, package_dimension_unit)
+        self.assertEqual(package.dimension['length'], 39.38)
+        self.assertEqual(package.dimension['width'], 78.75)
+        self.assertEqual(package.dimension['height'], 118.12)

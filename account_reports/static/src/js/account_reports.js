@@ -374,8 +374,6 @@ var accountReportsWidget = AbstractAction.extend({
                         })
                     });
 
-                    var formula_element = $content.find('.js_popup_formula');
-
                     // Highlight involved codes during formula evaluation.
                     _.each($content.find('.js_popup_formula'), function(element){
                         $(element).on("mouseenter", function(event){

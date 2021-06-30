@@ -96,6 +96,8 @@
         }
 
         #hr_cs_sidebar {
+            align-self: flex-start;
+            @include o-position-sticky($top: 60px);
             .form-group {
                 padding: 5px 0;
                 &:last-child {

@@ -589,6 +589,21 @@
         </field>
     </record>
 
+    <record id="project_task_type_action_fsm" model="ir.actions.act_window">
+        <field name="name">Stages</field>
+        <field name="res_model">project.task.type</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="domain">[('project_ids.is_fsm', '=', True)]</field>
+        <field name="view_id" ref="project.task_type_tree"/>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No stages found. Let's create one!
+          </p><p>
+            Track the progress of your tasks from their creation to their closing.
+          </p>
+        </field>
+    </record>
+
     <!--
         FSM Menus
     -->
@@ -696,6 +711,13 @@
             name="Tags"
             sequence="40"
             action="project.project_tags_action"
+            parent="fsm_menu_settings"
+            groups="industry_fsm.group_fsm_manager"/>
+
+        <menuitem id="fsm_menu_settings_stage"
+            name="Stages"
+            sequence="10"
+            action="industry_fsm.project_task_type_action_fsm"
             parent="fsm_menu_settings"
             groups="industry_fsm.group_fsm_manager"/>
 

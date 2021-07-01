@@ -251,7 +251,7 @@
                                         icon="fa-long-arrow-right"
                                         type="object"
                                         groups="base.group_no_one"
-                                        attrs="{'invisible': [('payment_mode', '=', 'manual')]}"/>
+                                        attrs="{'invisible': [('payment_mode', 'in', ['manual', 'success_payment'])]}"/>
                             </div>
                             <field name="close_reason_id" attrs="{'invisible': [('stage_category', '!=', 'closed')]}"/>
                         </group>

@@ -672,11 +672,7 @@ class SaleSubscription(models.Model):
         if res:
             return self.action_subscription_invoice()
         else:
-            warning = """ Please check the selected subscription template:
-    - Is there a fixed duration which is reached?
-    - Do you configure your invoice method as "send & try to charge" or "Send after successful payment"?
-            """
-            raise UserError(warning)
+            raise UserError("You already have generated an invoice for each period.")
 
     def _prepare_renewal_order_values(self, discard_product_ids=False, new_lines_ids=False):
         res = dict()

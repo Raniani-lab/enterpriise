@@ -75,7 +75,7 @@ $o-mm-resto-color-6: #795745;
 
     // ===== Snippets (specific) =====
     .o_mail_block_header_social, .o_mail_block_header_text_social, .o_mail_block_header_logo {
-        table:first-child {
+        div.container:first-child {
             border-bottom: 5px solid $o-mm-resto-color-3;
         }
 

@@ -78,7 +78,7 @@ $o-mm-tech-color-6: #a17e92;
             width: 560px;
             box-sizing: content-box;
 
-            > table {
+            > div.container {
                 max-width: 560px;
                 border-bottom: 1px solid darken($o-mm-tech-color-2, 60%);
             }
@@ -130,7 +130,7 @@ $o-mm-tech-color-6: #a17e92;
             color: $o-mm-tech-color-1;
         }
 
-        .o_mail_full_width_padding > tbody > tr  {
+        .o_mail_full_width_padding > div.row  {
             background-color: $o-mm-tech-color-2;
             color: $o-mm-tech-color-1;
         }

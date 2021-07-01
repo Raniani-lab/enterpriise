@@ -82,12 +82,12 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
             width: 560px;
             box-sizing: content-box;
 
-            > table {
+            > div.container {
                 padding: 0;
                 max-width: 560px;
                 border-top: 3px solid $o-mm-bold-color-2;
                 border-bottom: 3px solid $o-mm-bold-color-2;
-                td {
+                div.col {
                     vertical-align: middle;
                 }
             }
@@ -136,7 +136,7 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
         .o_mail_full_width_padding {
             padding-left: 0;
             padding-right: 0;
-            > tbody > tr  {
+            > div.row  {
                 color: $o-mm-bold-color-2;
                 background-color: $o-mm-bold-color-1;
             }

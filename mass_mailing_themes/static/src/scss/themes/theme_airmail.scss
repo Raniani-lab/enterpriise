@@ -120,7 +120,7 @@ $o-mm-airmail-color-6: #a17e92;
     .o_mail_block_two_cols, .o_mail_block_three_cols {
         $tmp-gap: 10px;
 
-        table {
+        div.container {
             width: 100%;
             max-width: (600+($tmp-gap*2));
             .o_mail_col_container {
@@ -161,7 +161,7 @@ $o-mm-airmail-color-6: #a17e92;
     }
 
     .o_mail_block_footer_tag_line {
-        table.o_mail_h_padding {
+        div.container.o_mail_h_padding {
             padding-left: 0;
             padding-right: 0;
         }

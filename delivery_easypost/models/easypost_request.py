@@ -435,7 +435,7 @@ class EasypostRequest():
         can be override in order to modify the default
         rate behavior.
         """
-        return sorted(rates, key=lambda rate: rate.get('rate'))
+        return sorted(rates, key=lambda rate: float(rate.get('rate')))
 
     def _post_process_ship_response(self, response, carrier=False, picking=False):
         """ Easypost manage different carriers however they don't follow a

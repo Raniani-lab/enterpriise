@@ -9,7 +9,7 @@ from collections import defaultdict
 from odoo import api, fields, models, _
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
 from odoo.addons.http_routing.models.ir_http import slug
-from odoo.exceptions import UserError, ValidationError
+from odoo.addons.web.controllers.main import clean_action
 from odoo.osv import expression
 
 
@@ -406,6 +406,7 @@ class HelpdeskTeam(models.Model):
 
         ticket_ids = self.env['helpdesk.ticket'].search(domain).ids
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.rating_rating_action_helpdesk")
+        action = clean_action(action, self.env)
         action['domain'] = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
         return action
 

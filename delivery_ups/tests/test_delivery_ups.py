@@ -10,6 +10,9 @@ class TestDeliveryUPS(TransactionCase):
     def setUp(self):
         super(TestDeliveryUPS, self).setUp()
 
+        # By default, lengths are expressed in foot
+        self.env['ir.config_parameter'].sudo().set_param('product.volume_in_cubic_feet', 1)
+
         self.iPadMini = self.env.ref('product.product_product_6')
         self.large_desk = self.env.ref('product.product_product_8')
         self.uom_unit = self.env.ref('uom.product_uom_unit')
@@ -53,9 +56,10 @@ class TestDeliveryUPS(TransactionCase):
         carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
         carrier.write({'ups_default_service_type': '08',
                        'ups_package_dimension_unit': 'IN'})
-        carrier.ups_default_package_type_id.write({'height': '3',
-                                                   'width': '3',
-                                                   'packaging_length': '3'})
+        # Package is 1 x 1 x 1 foot
+        carrier.ups_default_package_type_id.write({'height': '1',
+                                                   'width': '1',
+                                                   'packaging_length': '1'})
 
         so_vals = {'partner_id': self.agrolait.id,
                    'order_line': [(0, None, sol_vals)]}
@@ -97,9 +101,10 @@ class TestDeliveryUPS(TransactionCase):
         carrier.write({'ups_default_package_type_id': self.env.ref('delivery_ups.ups_packaging_30').id,
                        'ups_default_service_type': '96',
                        'ups_package_dimension_unit': 'IN'})
-        carrier.ups_default_package_type_id.write({'height': '3',
-                                                   'width': '3',
-                                                   'packaging_length': '3'})
+        # Package is 1 x 1 x 1 foot
+        carrier.ups_default_package_type_id.write({'height': '1',
+                                                   'width': '1',
+                                                   'packaging_length': '1'})
 
         sol_1_vals = {'product_id': self.iPadMini.id,
                       'name': "[A1232] Large Cabinet",
@@ -155,9 +160,10 @@ class TestDeliveryUPS(TransactionCase):
         carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
         carrier.write({'ups_default_service_type': '08',
                        'ups_package_dimension_unit': 'IN'})
-        carrier.ups_default_package_type_id.write({'height': '3',
-                                                   'width': '3',
-                                                   'packaging_length': '3'})
+        # Package is 1 x 1 x 1 foot
+        carrier.ups_default_package_type_id.write({'height': '1',
+                                                   'width': '1',
+                                                   'packaging_length': '1'})
 
         StockPicking = self.env['stock.picking']
 
@@ -197,8 +203,8 @@ class TestDeliveryUPS(TransactionCase):
             'ups_package_dimension_unit': package_dimension_unit,
         })
 
-        # Package is 1 x 2 x 3 meters
-        self.assertEqual(carrier.ups_default_package_type_id.length_uom_name, 'mm')
+        # Package is 1 x 2 x 3 mm
+        self.env['ir.config_parameter'].sudo().set_param('product.volume_in_cubic_feet', 0)
         carrier.ups_default_package_type_id.write({
             'packaging_length': '1000',
             'width': '2000',

@@ -196,9 +196,8 @@ class AccountEdiFormat(models.Model):
         # ==== Invoice Values ====
         if invoice.currency_id.name == 'MXN':
             cfdi_values['currency_conversion_rate'] = None
-        else:
-            mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
-            cfdi_values['currency_conversion_rate'] = self.env['res.currency']._get_conversion_rate(invoice.currency_id, mxn_currency, invoice.company_id, invoice.date)
+        else:  # assumes that invoice.company_id.country_id.code == 'MX', as checked in '_is_required_for_invoice'
+            cfdi_values['currency_conversion_rate'] = abs(invoice.amount_total_signed) / abs(invoice.amount_total)
 
         if invoice.partner_bank_id:
             digits = [s for s in invoice.partner_bank_id.acc_number if s.isdigit()]
@@ -822,7 +821,8 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         self.ensure_one()
         if self.code != 'cfdi_3_3':
             return super()._is_compatible_with_journal(journal)
-        return journal.type == 'sale' and journal.country_code == 'MX'
+        return journal.type == 'sale' and journal.country_code == 'MX' and \
+            journal.company_id.currency_id.name == 'MXN'
 
     def _is_required_for_invoice(self, invoice):
         # OVERRIDE
@@ -831,7 +831,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             return super()._is_required_for_invoice(invoice)
 
         # Determine on which invoices the Mexican CFDI must be generated.
-        return invoice.move_type in ('out_invoice', 'out_refund') and invoice.country_code == 'MX'
+        return invoice.move_type in ('out_invoice', 'out_refund') and \
+            invoice.country_code == 'MX' and \
+            invoice.company_id.currency_id.name == 'MXN'
 
     def _is_required_for_payment(self, move):
         # OVERRIDE

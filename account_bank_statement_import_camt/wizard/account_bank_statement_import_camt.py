@@ -10,7 +10,7 @@ from functools import partial
 from lxml import etree
 
 from odoo import models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -494,28 +494,17 @@ def _generic_get(*nodes, xpath, namespaces, placeholder=None):
             return item[0]
     return False
 
+# These are pair of getters: (getter for the amount, getter for the amount's currency)
 _amount_getters = [
-    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/text()'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'),
-    partial(_generic_get, xpath='ns:Amt/text()'),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:Amt/text()'), partial(_generic_get, xpath='ns:Amt/@Ccy')),
 ]
 
-_amount_currency_getters = [
-    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/@Ccy'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy'),
-    partial(_generic_get, xpath='ns:Amt/@Ccy'),
-]
-
+# These are pair of getters: (getter for the exchange rate, getter for the target currency)
 _rate_getters = [
-    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'),
-    partial(_generic_get, xpath='ns:XchgRate/text()'),
-]
-
-_rate_currency_getters = [
-    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
-    partial(_generic_get, xpath='ns:TrgtCcy/text()'),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
+    (partial(_generic_get, xpath='ns:XchgRate/text()'), partial(_generic_get, xpath='ns:TrgtCcy/text()')),
 ]
 
 _get_credit_debit_indicator = partial(_generic_get,
@@ -557,30 +546,38 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     # journal_currency is not necessarily journal.currency_id, because currency_id is not required
     # In such a case, journal_currency can be defined with journal.company_id.currency_id
     # (Therefore, journal_currency will never be empty)
-    res_amount = None
-    res_amount_currency = None
-    res_rate = None
-    res_rate_currency = None
-    for i, dummy in enumerate(_amount_getters):
-        amount = _amount_getters[i](*nodes, namespaces=namespaces)
-        amount_currency = _amount_currency_getters[i](*nodes, namespaces=namespaces)
-        rate = _rate_getters[i](*nodes, namespaces=namespaces)
-        rate_currency = _rate_currency_getters[i](*nodes, namespaces=namespaces)
-
-        if amount:
-            res_amount = amount
-            res_amount_currency = amount_currency
-            res_rate = rate
-            res_rate_currency = rate_currency
-
-            if not journal_currency or journal_currency.name == amount_currency or journal_currency.name == rate_currency:
-                # Best solution; we search no further
+    def get_value_and_currency_name(node, getters):
+        value = currency_name = None
+        for value_getter, currency_getter in getters:
+            value = value_getter(node, namespaces=namespaces)
+            currency_name = currency_getter(node, namespaces=namespaces)
+            if value:
                 break
+        return value, currency_name
 
-    res_amount = float(res_amount)
-    res_rate = float(res_rate) if res_amount_currency != res_rate_currency and res_rate else 1.0
-    sign = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
-    return res_amount * res_rate if sign == 'CRDT' else -res_amount * res_rate
+    entry_details = nodes[0]
+    entry = nodes[1] if len(nodes) > 1 else nodes[0]
+
+    amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters)
+    if not amount:
+        amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters)
+        entry_details = entry
+    rate, rate_currency_name = get_value_and_currency_name(entry_details, _rate_getters)
+
+    amount = float(amount)
+    rate = float(rate) if rate and amount_currency_name != rate_currency_name else 1.0
+
+    if journal_currency and amount_currency_name == journal_currency.name:
+        rate = 1.0
+    elif journal_currency and rate_currency_name != journal_currency.name:
+        entry_rate, entry_rate_currency_name = get_value_and_currency_name(entry, _rate_getters)
+        if entry_rate and entry_rate_currency_name == journal_currency.name:
+            rate = float(entry_rate)
+        else:
+            raise ValidationError(_("No exchange rate was found to convert an amount into the currency of the journal"))
+
+    sign = 1 if _get_credit_debit_indicator(*nodes, namespaces=namespaces) == "CRDT" else -1
+    return sign * amount * rate
 
 def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)

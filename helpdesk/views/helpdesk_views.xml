@@ -352,37 +352,6 @@
         </field>
     </record>
 
-    <record id="helpdesk_ticket_view_graph_analysis" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.graph.analysis</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="arch" type="xml">
-            <graph string="Helpdesk Ticket Analysis" stacked="True" sample="1">
-                <field name="team_id" type="row"/>
-                <field name="stage_id" type="col"/>
-            </graph>
-        </field>
-    </record>
-
-    <record id="helpdesk_ticket_view_cohort" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.view.cohort</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="arch" type="xml">
-            <cohort string="Tickets" date_start="create_date" date_stop="close_date" interval="week" sample="1"/>
-        </field>
-    </record>
-
-    <record id="helpdesk_ticket_view_pivot_analysis" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.pivot.analysis</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="arch" type="xml">
-            <pivot string="Helpdesk Ticket Analysis" sample="1">
-                <field name="team_id" type="row"/>
-                <field name="stage_id" type="col"/>
-                <field name="color" invisible="1"/>
-            </pivot>
-        </field>
-    </record>
-
     <record id="helpdesk_tickets_view_search" model="ir.ui.view">
         <field name="name">helpdesk.ticket.search</field>
         <field name="model">helpdesk.ticket</field>
@@ -710,15 +679,19 @@
     <!-- Reporting action for dashboard -->
     <record id="helpdesk_ticket_action_close_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
-        <field name="res_model">helpdesk.ticket</field>
+        <field name="res_model">helpdesk.ticket.report.analysis</field>
         <field name="view_mode">pivot,graph</field>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis_closed"/>
+        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="context">{'search_default_my_ticket': True}</field>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'pivot_measures': ['__count__'],
+            'pivot_row_groupby': ['create_date:day'],
+        }</field>
         <field name="view_ids"
                    eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
+                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
+                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet ! 
@@ -730,15 +703,20 @@
 
     <record id="helpdesk_ticket_action_7days_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
-        <field name="res_model">helpdesk.ticket</field>
+        <field name="res_model">helpdesk.ticket.report.analysis</field>
         <field name="view_mode">pivot,graph</field>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis_closed"/>
+        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
         <field name="view_ids"
                    eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
-        <field name="context">{'search_default_my_ticket': True, 'search_default_close': True}</field>
+                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
+                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_is_close': True,
+            'pivot_measures': ['__count__'],
+            'pivot_row_groupby': ['create_date:day'],
+        }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet ! 
@@ -820,48 +798,9 @@
         sequence="20" parent="helpdesk.menu_helpdesk_root"
         groups="helpdesk.group_helpdesk_manager"/>
 
-    <record id="helpdesk_ticket_analysis_action" model="ir.actions.act_window">
-       <field name="name">Helpdesk Ticket Analysis</field>
-       <field name="res_model">helpdesk.ticket</field>
-       <field name="view_mode">pivot,graph</field>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')}),
-                      (0, 0, {'view_mode': 'cohort', 'view_id': ref('helpdesk_ticket_view_cohort')})]"/>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
-        <field name="context">{'search_default_group_by_create_date': 1}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No data yet ! 
-            </p><p>
-                Create tickets to get statistics.
-            </p>
-        </field>
-    </record>
-
-    <menuitem id="helpdesk_ticket_report_menu" name="Tickets" action="helpdesk_ticket_analysis_action"
+    <menuitem id="helpdesk_ticket_report_menu" name="Tickets Analysis" action="helpdesk.helpdesk_ticket_analysis_action"
         sequence="10" parent="helpdesk_ticket_report_menu_main"
         groups="helpdesk.group_helpdesk_manager"/>
-
-    <record id="helpdesk_ticket_team_analysis_action" model="ir.actions.act_window">
-        <field name="name">Ticket Analysis</field>
-        <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">pivot,graph</field>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
-        <field name="context">{'search_default_team_id': active_ids, 'search_default_is_open': True}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No data yet ! 
-            </p><p>
-                Create tickets to get statistics.
-            </p>
-        </field>
-    </record>
 
     <!-- helpdesk team pivot View -->
     <record id="helpdesk_team_view_pivot_analysis" model="ir.ui.view">
@@ -911,15 +850,21 @@
 
     <record id="helpdesk_ticket_action_success" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
-        <field name="res_model">helpdesk.ticket</field>
+        <field name="res_model">helpdesk.ticket.report.analysis</field>
         <field name="view_mode">pivot,graph</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
+                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
+                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
-        <field name="context">{'search_default_is_close': True, 'search_default_my_ticket': True, 'search_default_not_sla_failed': True,}</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
+        <field name="context">{
+            'search_default_is_close': True,
+            'search_default_my_ticket': True,
+            'search_default_not_sla_failed': True,
+            'pivot_measures': ['__count__'],
+            'pivot_row_groupby': ['create_date:day'],
+        }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet ! 
@@ -931,15 +876,21 @@
 
     <record id="helpdesk_ticket_action_7dayssuccess" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
-        <field name="res_model">helpdesk.ticket</field>
+        <field name="res_model">helpdesk.ticket.report.analysis</field>
         <field name="view_mode">pivot,graph</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
+                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
+                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
-        <field name="context">{'search_default_is_close': True, 'search_default_my_ticket': True, 'search_default_not_sla_failed': True,}</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
+        <field name="context">{
+            'search_default_is_close': True,
+            'search_default_my_ticket': True,
+            'search_default_not_sla_failed': True,
+            'pivot_measures': ['__count__'],
+            'pivot_row_groupby': ['create_date:day'],
+        }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet! 

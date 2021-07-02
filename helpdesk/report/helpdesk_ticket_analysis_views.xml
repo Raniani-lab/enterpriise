@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="helpdesk_ticket_view_pivot_analysis" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.pivot</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="arch" type="xml">
+            <pivot string="Ticket Analysis" disable_linking="True" sample="1">
+                <field name="team_id" type="row"/>
+                <field name="ticket_close_hours" widget="timesheet_uom" type="measure"/>
+                <field name="ticket_open_hours" widget="timesheet_uom" type="measure"/>
+                <field name="ticket_assignation_hours" widget="timesheet_uom" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_graph_analysis" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.graph</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="arch" type="xml">
+            <graph string="Tickets Analysis" sample="1" stacked="True" disable_linking="1">
+                <field name="team_id" type="row"/>
+                <field name="ticket_stage_id" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_cohort" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.cohort</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="arch" type="xml">
+            <cohort string="Tickets Analysis" date_start="create_date" date_stop="close_date" interval="week" sample="1"/>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_report_analysis_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.search</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="arch" type="xml">
+            <search string="Tickets Analysis">
+                <field name="create_date"/>
+                <field name="ticket_type_id"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
+                <filter string="Unassigned Tickets" domain="[('user_id','=',False)]" name="unassigned"/>
+                <separator/>
+                <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
+                <separator/>
+                <filter string="Open Tickets" domain="[('ticket_stage_id.is_close','=',False)]" name="is_open"/>
+                <filter string="Closed Tickets" domain="[('ticket_stage_id.is_close','=',True)]" name="is_close"/>
+                <separator/>
+                <filter name="filter_create_date" date="create_date"/>
+                <separator/>
+                <filter string="SLA Failed" domain="[('sla_fail','!=',False)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
+                <filter string="SLA in Progress" domain="[('sla_fail','=',False)]" name="not_sla_failed" groups="helpdesk.group_use_sla"/>
+                <separator/>
+                <filter string="Ticket Deadline" name="filter_ticket_deadline" date="ticket_deadline"/>
+                <filter string="Ticket Creation Date" name="filter_create_date" date="create_date"/>
+                <group expand="0" string="Group By">
+                  <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
+                  <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
+                  <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
+                  <filter string="Creation Date" context="{'group_by':'create_date:week'}" name="group_by_create_date"/>
+                  <filter string="First Assignment Date" context="{'group_by': 'assign_date:month'}" name="group_by_assign_date"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="helpdesk_ticket_analysis_action" model="ir.actions.act_window">
+       <field name="name">Ticket Analysis</field>
+       <field name="res_model">helpdesk.ticket.report.analysis</field>
+       <field name="view_mode">pivot,graph</field>
+        <field name="search_view_id" ref="helpdesk_ticket_report_analysis_view_search"/>
+        <field name="context">{
+            'search_default_group_by_create_date': 1,
+            'pivot_measures': ['__count__', 'ticket_assignation_hours', 'ticket_close_hours'],
+            'graph_measure': '__count__',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet !
+            </p><p>
+                Create tickets to get statistics on the performance of your teams.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_helpdesk_ticket_analysis_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk_ticket_view_graph_analysis"/>
+        <field name="act_window_id" ref="helpdesk_ticket_analysis_action"/>
+    </record>
+
+    <record id="action_helpdesk_ticket_analysis_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk_ticket_view_pivot_analysis"/>
+        <field name="act_window_id" ref="helpdesk_ticket_analysis_action"/>
+    </record>
+
+    <record id="action_helpdesk_ticket_analysis_cohort" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">cohort</field>
+        <field name="view_id" ref="helpdesk_ticket_view_cohort"/>
+        <field name="act_window_id" ref="helpdesk_ticket_analysis_action"/>
+    </record>
+
+</odoo>

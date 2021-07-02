@@ -8,6 +8,7 @@
                 <header>
                     <field name="model_id" invisible="True"/>
                     <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" groups="base.group_system"/>
+                    <button name="action_analysis_report" type="object" string="Analysis"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

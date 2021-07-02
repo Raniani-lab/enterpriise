@@ -45,6 +45,9 @@
             <xpath expr="//form" position="attributes">
                 <attribute name="create">1</attribute>
             </xpath>
+            <xpath expr="//header/button[@name='action_analysis_report']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
     <record id="worksheet_template_view_form_inherit_fsm_report" model="ir.ui.view">

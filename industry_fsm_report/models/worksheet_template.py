@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from ast import literal_eval
+
 from odoo import api, models, _
 from odoo.exceptions import UserError
 
@@ -7,21 +9,10 @@ from odoo.exceptions import UserError
 class WorksheetTemplate(models.Model):
     _inherit = 'worksheet.template'
 
-    # ---------------------------------------------------------
-    # Actions
-    # ---------------------------------------------------------
-
-    def action_fsm_report(self):
-        self.ensure_one()
-        return {
-            'name': _('Analysis'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'graph,pivot,list,form',
-            'res_model': self.model_id.model,
-            'context': {
-                'fsm_mode': True,
-            }
-        }
+    def action_analysis_report(self):
+        res = super().action_analysis_report()
+        res['context'] = dict(literal_eval(res.get('context', '{}')), fsm_mode=True)
+        return res
 
     @api.model
     def _get_models_to_check_dict(self):

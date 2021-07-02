@@ -285,6 +285,15 @@ class WorksheetTemplate(models.Model):
         """
         return {}
 
+    def action_analysis_report(self):
+        self.ensure_one()
+        return {
+            'name': _('Analysis'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'graph,pivot,list,form',
+            'res_model': self.model_id.model,
+        }
+
     def action_view_worksheets(self):
         action = self.action_id.read()[0]
         # modify context to force no create/import button

@@ -23,6 +23,24 @@ QUnit.module('Social Formatter Regex', {}, () => {
         ].join(' '));
     });
 
+    QUnit.test('Instagram Message', (assert) => {
+        assert.expect(1);
+
+        SocialPostFormatterMixin._getMediaType = () => 'instagram';
+
+        const testMessage = 'Hello @Odoo-Social, check this out: https://www.odoo.com #crazydeals #odoo';
+        const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
+
+        assert.equal(finalMessage, [
+            "Hello",
+            "<a href='https://www.instagram.com/Odoo-Social' target='_blank'>@Odoo-Social</a>,",
+            "check this out:",
+            "<a href='https://www.odoo.com' target='_blank' rel='noreferrer noopener'>https://www.odoo.com</a>",
+            "<a href='https://www.instagram.com/explore/tags/crazydeals' target='_blank'>#crazydeals</a>",
+            "<a href='https://www.instagram.com/explore/tags/odoo' target='_blank'>#odoo</a>",
+        ].join(' '));
+    });
+
     QUnit.test('LinkedIn Message', (assert) => {
         assert.expect(1);
 

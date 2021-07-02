@@ -8,9 +8,9 @@ from odoo.osv import expression
 class UtmCampaign(models.Model):
     _inherit = 'utm.campaign'
 
-    social_post_ids = fields.One2many(compute="_compute_social_post_ids")
-    social_push_notification_ids = fields.One2many("social.post", "utm_campaign_id", compute="_compute_social_post_ids", string="Push Notifications")
-    social_push_notifications_count = fields.Integer(compute='_compute_social_push_notifications_count', string='Number Of Push Notifications')
+    social_post_ids = fields.One2many(compute="_compute_social_post_ids", groups="social.group_social_user")
+    social_push_notification_ids = fields.One2many("social.post", "utm_campaign_id", compute="_compute_social_post_ids", string="Push Notifications", groups="social.group_social_user")
+    social_push_notifications_count = fields.Integer(compute='_compute_social_push_notifications_count', string='Number Of Push Notifications', groups="social.group_social_user")
 
     def _compute_social_post_ids(self):
         """social_post_ids has to contain every posts that have at least one 'real' social media

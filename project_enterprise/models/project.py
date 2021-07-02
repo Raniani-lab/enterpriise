@@ -45,7 +45,7 @@ class Task(models.Model):
 
         if not calendar:
             user = self.env['res.users'].sudo().browse(user_id) if user_id and user_id != self.env.user.id else self.env.user
-            calendar = user.resource_calendar_id if user.employee_id else self.env.company.resource_calendar_id
+            calendar = user.resource_calendar_id or self.env.company.resource_calendar_id
             if not calendar:  # Then we stop and return the dates given in parameter.
                 return date_start, date_stop
 
@@ -79,7 +79,7 @@ class Task(models.Model):
 
             calendar_by_user_dict = {  # key: user_id, value: resource.calendar instance
                 user.id:
-                    user.resource_calendar_id if user.employee_id else default_calendar
+                    user.resource_calendar_id or default_calendar
                 for user in compute_default_planned_dates.mapped('user_id')
             }
 

@@ -4,15 +4,16 @@
 import base64
 import json
 import requests
-from datetime import timedelta
-from werkzeug.urls import url_encode, url_join
 
+from datetime import timedelta
 from odoo import _, fields, http
+from odoo.addons.social.controllers.main import SocialController
 from odoo.addons.social.controllers.main import SocialValidationException
 from odoo.http import request
+from werkzeug.urls import url_encode, url_join
 
 
-class SocialYoutubeController(http.Controller):
+class SocialYoutubeController(SocialController):
     @http.route('/social_youtube/callback', type='http', auth='user')
     def youtube_account_callback(self, code=None, iap_access_token=None, iap_refresh_token=None, iap_expires_in=0, **kw):
         """ Main entry point that receives YouTube information as part of the OAuth flow.
@@ -33,6 +34,7 @@ class SocialYoutubeController(http.Controller):
                 'social.social_http_error_view',
                 {'error_message': _('YouTube did not provide a valid authorization code.')})
 
+        youtube_media = request.env.ref('social_youtube.social_media_youtube')
         youtube_oauth_client_id = request.env['ir.config_parameter'].sudo().get_param('social.youtube_oauth_client_id')
         youtube_oauth_client_secret = request.env['ir.config_parameter'].sudo().get_param('social.youtube_oauth_client_secret')
 
@@ -41,17 +43,20 @@ class SocialYoutubeController(http.Controller):
             refresh_token = iap_refresh_token
             expires_in = iap_expires_in
         else:
-            base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            token_exchange_response = requests.post('https://oauth2.googleapis.com/token', {
-                'client_id': youtube_oauth_client_id,
-                'client_secret': youtube_oauth_client_secret,
-                'code': code,
-                'grant_type': 'authorization_code',
-                'access_type': 'offline',
-                'prompt': 'consent',
-                # unclear why 'redirect_uri' is necessary, probably used as a validation by Google
-                'redirect_uri': url_join(base_url, 'social_youtube/callback'),
-            }).json()
+            base_url = youtube_media.get_base_url()
+            token_exchange_response = requests.post('https://oauth2.googleapis.com/token',
+                data={
+                    'client_id': youtube_oauth_client_id,
+                    'client_secret': youtube_oauth_client_secret,
+                    'code': code,
+                    'grant_type': 'authorization_code',
+                    'access_type': 'offline',
+                    'prompt': 'consent',
+                    # unclear why 'redirect_uri' is necessary, probably used as a validation by Google
+                    'redirect_uri': url_join(base_url, 'social_youtube/callback'),
+                },
+                timeout=5
+            ).json()
 
             if token_exchange_response.get('error_description'):
                 return request.render('social.social_http_error_view', {
@@ -72,7 +77,7 @@ class SocialYoutubeController(http.Controller):
             expires_in = token_exchange_response.get('expires_in', 0)
 
         try:
-            self._create_youtube_accounts(access_token, refresh_token, expires_in)
+            self._youtube_create_accounts(access_token, refresh_token, expires_in)
         except SocialValidationException as e:
             return request.render('social.social_http_error_view', {'error_message': str(e)})
 
@@ -83,72 +88,45 @@ class SocialYoutubeController(http.Controller):
         })
         return request.redirect(url)
 
-    @http.route('/social_youtube/comment', type='http', auth='user')
-    def comment(self, post_id=None, comment_id=None, message=None, is_edit=False, **kwargs):
-        post = request.env['social.stream.post'].browse(int(post_id))
-        if not post.exists() or post.account_id.media_type != 'youtube':
-            return {}
-        post.account_id._refresh_youtube_token()
+    # ========================================================
+    # COMMENTS / LIKES
+    # ========================================================
 
-        common_params = {
-            'access_token': post.account_id.youtube_access_token,
-            'part': 'snippet',
-        }
+    @http.route('/social_youtube/comment', type='http', auth='user', methods=['POST'])
+    def social_youtube_comment(self, stream_post_id=None, comment_id=None, message=None, is_edit=False, **kwargs):
+        stream_post = self._get_social_stream_post(stream_post_id, 'youtube')
+        return json.dumps(stream_post._youtube_comment_add(comment_id, message, is_edit=is_edit))
 
-        if comment_id:
-            if is_edit:
-                # editing own comment
-                result_comment = requests.put(
-                    url_join(request.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/comments"),
-                    params=common_params,
-                    json={
-                        'id': comment_id,
-                        'snippet': {
-                            'textOriginal': message,
-                        }
-                    }
-                ).json()
-            else:
-                # reply to comment, uses different endpoint that commenting a video
-                result_comment = requests.post(
-                    url_join(request.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/comments"),
-                    params=common_params,
-                    json={
-                        'snippet': {
-                            'textOriginal': message,
-                            'parentId': comment_id
-                        }
-                    }
-                ).json()
-        else:
-            # brand new comment on the video
-            result_comment = requests.post(
-                url_join(request.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/commentThreads"),
-                params=common_params,
-                json={
-                    'snippet': {
-                        'topLevelComment': {'snippet': {'textOriginal': message}},
-                        'channelId': post.account_id.youtube_channel_id,
-                        'videoId': post.youtube_video_id
-                    },
-                }
-            ).json().get('snippet', {}).get('topLevelComment')
+    @http.route('/social_youtube/delete_comment', type='json', auth='user')
+    def social_youtube_delete_comment(self, stream_post_id=None, comment_id=None):
+        stream_post = self._get_social_stream_post(stream_post_id, 'youtube')
+        return stream_post._youtube_comment_delete(comment_id)
 
-        return json.dumps(request.env['social.media']._format_youtube_comment(result_comment))
+    @http.route('/social_youtube/get_comments', type='json', auth='user')
+    def social_youtube_get_comments(self, stream_post_id, next_page_token=False):
+        stream_post = self._get_social_stream_post(stream_post_id, 'youtube')
+        return stream_post._youtube_comment_fetch(next_page_token)
 
-    def _create_youtube_accounts(self, access_token, refresh_token, expires_in):
+    # ========================================================
+    # MISC / UTILITY
+    # ========================================================
+
+    def _youtube_create_accounts(self, access_token, refresh_token, expires_in):
         youtube_channels_endpoint = url_join(request.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/channels")
-        youtube_channels = requests.get(youtube_channels_endpoint, params={
-            'mine': 'true',
-            'access_token': access_token,
-            'part': 'snippet,contentDetails'
-        }).json()
+        youtube_channels = requests.get(youtube_channels_endpoint,
+            params={
+                'mine': 'true',
+                'access_token': access_token,
+                'part': 'snippet,contentDetails'
+            },
+            timeout=5
+        ).json()
 
         if 'error' in youtube_channels:
             raise SocialValidationException(_('YouTube did not provide a valid access token or it may have expired.'))
 
         accounts_to_create = []
-        existing_accounts = self._get_existing_accounts(youtube_channels)
+        existing_accounts = self._youtube_get_existing_accounts(youtube_channels)
         youtube_media = request.env.ref('social_youtube.social_media_youtube')
         for channel in youtube_channels.get('items'):
             if channel.get('kind') != 'youtube#channel':
@@ -164,7 +142,7 @@ class SocialYoutubeController(http.Controller):
                 'youtube_upload_playlist_id': channel['contentDetails']['relatedPlaylists']['uploads'],
                 'is_media_disconnected': False,
                 'image': base64.b64encode(requests.get(
-                    channel['snippet']['thumbnails']['medium']['url']).content)
+                    channel['snippet']['thumbnails']['medium']['url'], timeout=10).content)
             }
 
             if existing_accounts.get(account_id):
@@ -180,7 +158,7 @@ class SocialYoutubeController(http.Controller):
         if accounts_to_create:
             request.env['social.account'].create(accounts_to_create)
 
-    def _get_existing_accounts(self, youtube_channels):
+    def _youtube_get_existing_accounts(self, youtube_channels):
         youtube_accounts_ids = [account['id'] for account in youtube_channels.get('items', [])]
         if youtube_accounts_ids:
             existing_accounts = request.env['social.account'].sudo().with_context(active_test=False).search([

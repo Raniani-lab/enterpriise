@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, api, fields
-from odoo.osv import expression
 
 
 class SocialPostTemplate(models.Model):
@@ -10,16 +9,6 @@ class SocialPostTemplate(models.Model):
 
     display_linkedin_preview = fields.Boolean('Display LinkedIn Preview', compute='_compute_display_linkedin_preview')
     linkedin_preview = fields.Html('LinkedIn Preview', compute='_compute_linkedin_preview')
-
-    @api.depends('live_post_ids.linkedin_post_id')
-    def _compute_stream_posts_count(self):
-        super(SocialPostTemplate, self)._compute_stream_posts_count()
-        for post in self:
-            linkedin_post_ids = [linkedin_post_id for linkedin_post_id in post.live_post_ids.mapped('linkedin_post_id') if linkedin_post_id]
-            if linkedin_post_ids:
-                post.stream_posts_count += self.env['social.stream.post'].search_count(
-                    [('linkedin_post_urn', 'in', linkedin_post_ids)]
-                )
 
     @api.depends('message', 'account_ids.media_id.media_type')
     def _compute_display_linkedin_preview(self):
@@ -30,20 +19,15 @@ class SocialPostTemplate(models.Model):
 
     @api.depends(lambda self: ['message', 'image_ids'] + self._get_post_message_modifying_fields())
     def _compute_linkedin_preview(self):
-        for post in self.with_context(bin_size=False):
+        for post in self:
             post.linkedin_preview = self.env.ref('social_linkedin.linkedin_preview')._render({
                 'message': post._prepare_post_content(
                     post.message,
                     'linkedin',
                     **{field: post[field] for field in post._get_post_message_modifying_fields()}),
                 'published_date': fields.Datetime.now(),
-                'images': [image.datas for image in post.image_ids],
+                'images': [
+                    image.with_context(bin_size=False).datas
+                    for image in post.image_ids.sorted(lambda image: image._origin.id or image.id, reverse=True)
+                ]
             })
-
-    def _get_stream_post_domain(self):
-        domain = super(SocialPostTemplate, self)._get_stream_post_domain()
-        linkedin_post_ids = [linkedin_post_id for linkedin_post_id in self.live_post_ids.mapped('linkedin_post_id') if linkedin_post_id]
-        if linkedin_post_ids:
-            return expression.OR([domain, [('linkedin_post_urn', 'in', linkedin_post_ids)]])
-        else:
-            return domain

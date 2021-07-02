@@ -128,7 +128,7 @@ class SocialAccountPushNotifications(models.Model):
                         }
                     },
                     headers={'authorization': f'Bearer {auth_token}'},
-                    timeout=10
+                    timeout=5
                 )
         else:
             raise UserError(_('You have to either install "firebase_admin>=2.17.0" or '

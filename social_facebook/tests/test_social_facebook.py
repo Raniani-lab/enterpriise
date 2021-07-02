@@ -4,11 +4,11 @@
 import json
 import requests
 
-from unittest.mock import patch
-
+from freezegun import freeze_time
 from odoo.addons.social_facebook.models.social_post import SocialPostFacebook
 from odoo.addons.social_facebook.models.social_stream import SocialStreamFacebook
 from odoo.addons.social_facebook.tests.common import SocialFacebookCommon
+from unittest.mock import patch
 
 
 class SocialFacebookCase(SocialFacebookCommon):
@@ -77,3 +77,18 @@ class SocialFacebookCase(SocialFacebookCommon):
         self.assertEqual(
             social_stream._format_facebook_message(message, tags),
             excepted_message)
+
+    def test_format_facebook_post_date(self):
+        """ Facebook has its own format to return date values.
+        Let's make sure those are correctly formatted. """
+
+        formatted_value = self.env['social.stream.post']._format_facebook_published_date({
+            'created_time': "2000-07-07T09:12:30+0000"
+        })
+        self.assertEqual(formatted_value, '07/07/2000')
+
+        with freeze_time('2000-07-07 09:16:30'):
+            formatted_value = self.env['social.stream.post']._format_facebook_published_date({
+                'created_time': "2000-07-07T09:12:30+0000"
+            })
+            self.assertEqual(formatted_value, '4 minutes')

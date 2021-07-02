@@ -24,25 +24,28 @@ class SocialAccountYoutube(models.Model):
 
     def _compute_stats_link(self):
         """ External link to this Youtube Page's Analytics. """
-        youtube_accounts = self.filtered(lambda account: account.media_type == 'youtube')
+        youtube_accounts = self._filter_by_media_types(['youtube'])
         super(SocialAccountYoutube, (self - youtube_accounts))._compute_stats_link()
 
         for account in youtube_accounts:
             account.stats_link = "https://studio.youtube.com/channel/%s/analytics/tab-overview" % account.youtube_channel_id
 
     def _compute_statistics(self):
-        youtube_accounts = self.filtered(lambda account: account.media_type == 'youtube')
+        youtube_accounts = self._filter_by_media_types(['youtube'])
         super(SocialAccountYoutube, (self - youtube_accounts))._compute_statistics()
         endpoint_url = url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/channels")
 
         for account in youtube_accounts:
             account._refresh_youtube_token()
 
-            stats_response = requests.get(endpoint_url, params={
-                'access_token': account.youtube_access_token,
-                'id': account.youtube_channel_id,
-                'part': 'statistics',
-            }).json()
+            stats_response = requests.get(endpoint_url,
+                params={
+                    'access_token': account.youtube_access_token,
+                    'id': account.youtube_channel_id,
+                    'part': 'statistics',
+                },
+                timeout=5
+            ).json()
 
             if stats_response.get('error'):
                 account.write({'is_media_disconnected': True})
@@ -92,12 +95,15 @@ class SocialAccountYoutube(models.Model):
                 continue
 
             if youtube_oauth_client_id and youtube_oauth_client_secret:
-                token_refresh_response = requests.post('https://oauth2.googleapis.com/token', {
-                    'client_id': youtube_oauth_client_id,
-                    'client_secret': youtube_oauth_client_secret,
-                    'grant_type': 'refresh_token',
-                    'refresh_token': account.youtube_refresh_token
-                }).json()
+                token_refresh_response = requests.post('https://oauth2.googleapis.com/token',
+                    data={
+                        'client_id': youtube_oauth_client_id,
+                        'client_secret': youtube_oauth_client_secret,
+                        'grant_type': 'refresh_token',
+                        'refresh_token': account.youtube_refresh_token
+                    },
+                    timeout=5
+                ).json()
             else:
                 social_iap_endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'social.social_iap_endpoint',
@@ -109,7 +115,8 @@ class SocialAccountYoutube(models.Model):
                     params={
                         'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                         'refresh_token': account.youtube_refresh_token
-                    }
+                    },
+                    timeout=5
                 ).json()
 
             if token_refresh_response.get('error'):

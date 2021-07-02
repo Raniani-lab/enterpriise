@@ -11,12 +11,6 @@ class SocialPostTwitter(models.Model):
     @api.depends('live_post_ids.twitter_tweet_id')
     def _compute_stream_posts_count(self):
         super(SocialPostTwitter, self)._compute_stream_posts_count()
-        for post in self:
-            twitter_tweet_ids = [twitter_tweet_id for twitter_tweet_id in post.live_post_ids.mapped('twitter_tweet_id') if twitter_tweet_id]
-            if twitter_tweet_ids:
-                post.stream_posts_count += self.env['social.stream.post'].search_count(
-                    [('twitter_tweet_id', 'in', twitter_tweet_ids)]
-                )
 
     def _get_stream_post_domain(self):
         domain = super(SocialPostTwitter, self)._get_stream_post_domain()

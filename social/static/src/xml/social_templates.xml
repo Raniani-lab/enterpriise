@@ -60,7 +60,7 @@
                             class="o_social_comment_author_name font-weight-bold"
                             t-esc="comment.from.name"
                             target="_blank"/>
-                        <span class="mx-1">&#183;</span>
+                        <span class="mx-1 o_social_comment_published_date">&#183;</span>
                         <a t-att-href="widget.getCommentLink(comment)"
                             target="_blank"
                             class="o_social_comment_published_date">
@@ -383,7 +383,7 @@
                     </t>
                 </div>
                 <t t-set="engagement_content">Number of times people have engaged with your posts (likes, comments, shares,...)</t>
-                <div class="d-flex align-items-center justify-content-center flex-grow-1 px-3"
+                <div t-attf-class="d-flex align-items-center justify-content-center flex-grow-1 #{widget._hasStories(socialAccount) ? 'px-3' : 'pl-3'}"
                     data-toggle="popover" title="Engagement"
                     t-att-data-content="engagement_content">
                     <t t-call="social.AccountsStatsValue">
@@ -392,16 +392,18 @@
                         <t t-set="trend" t-value="socialAccount.engagement_trend"/>
                     </t>
                 </div>
-                <t t-set="stories_content">Number of times people who have engaged with your channel have created stories on their friends' or followers' feed (Shares, Retweets...)</t>
-                <div class="d-flex align-items-center justify-content-end flex-grow-1 pl-3"
-                    data-toggle="popover" title="Stories"
-                    t-att-data-content="stories_content">
-                    <t t-call="social.AccountsStatsValue">
-                        <t t-set="icon" t-value="'fa-book'"/>
-                        <t t-set="value" t-value="socialAccount.stories"/>
-                        <t t-set="trend" t-value="socialAccount.stories_trend"/>
-                    </t>
-                </div>
+                <t t-if="widget._hasStories(socialAccount)">
+                    <t t-set="stories_content">Number of times people who have engaged with your channel have created stories on their friends' or followers' feed (Shares, Retweets...)</t>
+                    <div class="d-flex align-items-center justify-content-end flex-grow-1 pl-3"
+                        data-toggle="popover" title="Stories"
+                        t-att-data-content="stories_content">
+                        <t t-call="social.AccountsStatsValue">
+                            <t t-set="icon" t-value="'fa-book'"/>
+                            <t t-set="value" t-value="socialAccount.stories"/>
+                            <t t-set="trend" t-value="socialAccount.stories_trend"/>
+                        </t>
+                    </div>
+                </t>
             </div>
         </div>
     </t>

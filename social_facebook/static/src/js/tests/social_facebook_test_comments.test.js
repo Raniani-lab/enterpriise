@@ -174,7 +174,8 @@ QUnit.module('Facebook Comments', {
                         string: 'Media',
                         type: 'many2one',
                         relation: 'social.media'
-                    }
+                    },
+                    media_type: {type: 'char'},
                 },
                 records: [{
                     id: 1,
@@ -189,7 +190,8 @@ QUnit.module('Facebook Comments', {
                     stories: 70000,
                     stories_trend: -20,
                     stats_link: 'facebook.com/jack',
-                    media_id: 1
+                    media_id: 1,
+                    media_type: 'facebook',
                 }, {
                     id: 2,
                     name: 'Jhon\'s Page',
@@ -202,7 +204,8 @@ QUnit.module('Facebook Comments', {
                     stories: 4000,
                     stories_trend: 0,
                     stats_link: 'facebook.com/jhon',
-                    media_id: 1
+                    media_id: 1,
+                    media_type: 'facebook',
                 }]
             },
             social_stream: {
@@ -441,7 +444,7 @@ QUnit.module('Facebook Comments', {
             mockRPC: function (route, params) {
                 if (params.method === 'refresh_all' || params.method === 'refresh_statistics') {
                     return Promise.resolve({});
-                } else if(params.method === 'get_facebook_comments') {
+                } else if(route === '/social_facebook/get_comments') {
                     return Promise.resolve({
                         summary: {
                             total_count: 1
@@ -499,7 +502,7 @@ QUnit.module('Facebook Comments', {
                             }
                         }]
                     });
-                } else if (params.method === 'like_facebook_comment') {
+                } else if (route === '/social_facebook/like_comment') {
                     // test that 2 calls are made
                     assert.ok(true);
                     return Promise.resolve({});

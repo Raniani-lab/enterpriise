@@ -20,9 +20,10 @@ StreamPostKanbanController.include({
         var postId = $target.data('postId');
 
         this._rpc({
-            model: 'social.stream.post',
-            method: 'get_linkedin_comments',
-            args: [[postId]]
+            route: 'social_linkedin/get_comments',
+            params: {
+                stream_post_id: postId
+            }
         }).then(function (result) {
             new StreamPostLinkedInComments(
                 self,

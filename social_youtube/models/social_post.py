@@ -38,21 +38,6 @@ class SocialPostYoutube(models.Model):
     def _compute_stream_posts_count(self):
         super(SocialPostYoutube, self)._compute_stream_posts_count()
 
-        count_by_post = {}
-        youtube_posts = self.filtered(lambda post: post.youtube_video_id)
-        if youtube_posts:
-            all_stream_posts = self.env['social.stream.post'].read_group(
-                [('youtube_video_id', 'in', youtube_posts.mapped('youtube_video_id'))],
-                ['youtube_video_id'],
-                ['youtube_video_id'],
-            )
-            count_by_post = {
-                stream_post['youtube_video_id']: stream_post['youtube_video_id_count']
-                for stream_post in all_stream_posts}
-
-        for post in youtube_posts:
-            post.stream_posts_count += count_by_post.get(post.youtube_video_id, 0)
-
     @api.depends('account_ids.media_type', 'account_ids.youtube_access_token')
     def _compute_youtube_access_token(self):
         for post in self:
@@ -91,7 +76,7 @@ class SocialPostYoutube(models.Model):
 
     def _get_stream_post_domain(self):
         domain = super(SocialPostYoutube, self)._get_stream_post_domain()
-        youtube_video_ids = self.mapped('youtube_video_id')
+        youtube_video_ids = [youtube_video_id for youtube_video_id in self.mapped('youtube_video_id') if youtube_video_id]
         if youtube_video_ids:
             return expression.OR([domain, [('youtube_video_id', 'in', youtube_video_ids)]])
         else:

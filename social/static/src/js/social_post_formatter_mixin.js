@@ -3,7 +3,13 @@ odoo.define('social.post_formatter_mixin', function (require) {
 
 var SocialEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
 
-return {
+var SocialPostFormatterMixin = {
+    REGEX_AT: /\B@([\w\dÀ-ÿ-]+)/g,
+    REGEX_HASHTAG: /\B#([a-zA-Z\d-_]+)/g,
+    REGEX_URL: /http(s)?:\/\/(www\.)?[a-zA-Z0-9@:%_+~#=~#?&//=\-\.]{3,256}/g,
+};
+
+return Object.assign({}, SocialPostFormatterMixin, {
     /**
      * Add emojis support
      * Wraps links, #hashtag and @tag around anchors
@@ -12,13 +18,13 @@ return {
      * @param {String} formattedValue
      * @private
      */
-    _formatPost: function (formattedValue) {
+     _formatPost: function (formattedValue) {
         // add emojis support and escape HTML
         formattedValue = SocialEmojisMixin._formatText(formattedValue);
 
         // highlight URLs
         formattedValue = formattedValue.replace(
-            /http(s)?:\/\/(www\.)?[a-zA-Z0-9@:%_+~#=~#?&//=\-\.]{3,256}/g,
+            SocialPostFormatterMixin.REGEX_URL,
             "<a href='$&' target='_blank' rel='noreferrer noopener'>$&</a>");
 
         return formattedValue;
@@ -31,6 +37,6 @@ return {
             return this.attrs.media_type;
         }
     },
-};
+});
 
 });

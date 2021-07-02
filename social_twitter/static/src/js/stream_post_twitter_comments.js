@@ -75,7 +75,7 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
         },
 
         getDeleteCommentEndpoint: function () {
-            return 'delete_tweet';
+            return '/social_twitter/delete_tweet';
         },
 
         isCommentEditable: function () {

@@ -142,8 +142,10 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
         this.$before.empty();
         if (this.state.socialAccountsStats && this.state.socialAccountsStats.length !== 0) {
             var $socialAccountsStats = QWeb.render(
-                'social.AccountsStats',
-                {socialAccounts: this.state.socialAccountsStats}
+                'social.AccountsStats', {
+                    widget: this,
+                    socialAccounts: this.state.socialAccountsStats,
+                }
             );
 
             if (this.$before.find('.o_social_stream_stat_box').length > 0) {
@@ -178,6 +180,17 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
         return $('<section/>', {
             class: 'o_social_stream_post_kanban_before d-flex flex-nowrap border-bottom'
         });
+    },
+
+    /**
+     * Defines whether the social account has stories or not.
+     * True by default and can be overridden to add specific behavior.
+     *
+     * @param {Object} socialAccount social.account search_read data
+     * @private
+     */
+    _hasStories: function (socialAccount) {
+        return true;
     },
 
     /**

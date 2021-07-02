@@ -18,4 +18,9 @@ and social-related sub modules. It will test interactions between all those modu
     'installable': True,
     'application': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.qunit_suite_tests': [
+            'social_test_full/static/src/js/tests/**/*',
+        ],
+    }
 }

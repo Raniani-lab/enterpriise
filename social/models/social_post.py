@@ -100,7 +100,12 @@ class SocialPost(models.Model):
     @api.depends('live_post_ids')
     def _compute_stream_posts_count(self):
         for post in self:
-            post.stream_posts_count = 0
+            stream_post_domain = post._get_stream_post_domain()
+            if stream_post_domain:
+                post.stream_posts_count = self.env['social.stream.post'].search_count(
+                    stream_post_domain)
+            else:
+                post.stream_posts_count = 0
 
     @api.depends('company_id')
     def _compute_account_ids(self):
@@ -264,7 +269,7 @@ class SocialPost(models.Model):
         """
         Raise an error if the user cannot post on a social media
         """
-        if not self.user_has_groups('social.group_social_manager'):
+        if not self.env.is_admin() and not self.user_has_groups('social.group_social_manager'):
             raise AccessError(_('You are not allowed to do this operation.'))
 
         if any(not post.account_ids for post in self):

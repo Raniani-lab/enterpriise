@@ -63,7 +63,7 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
     },
 
     getDeleteCommentEndpoint: function () {
-        return 'delete_linkedin_comment';
+        return '/social_linkedin/delete_comment';
     },
 
     showMoreComments: function (result) {
@@ -85,9 +85,11 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
         ev.preventDefault();
 
         this._rpc({
-            model: 'social.stream.post',
-            method: 'get_linkedin_comments',
-            args: [[this.postId], null, this.offset]
+            route: 'social_linkedin/get_comments',
+            params: {
+                stream_post_id: this.postId,
+                offset: this.offset
+            }
         }).then(function (result) {
             var $moreComments = $(QWeb.render("social.StreamPostCommentsWrapper", {
                 widget: self,
@@ -119,9 +121,11 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
             var superMethod = this._super;
 
             return this._rpc({
-                model: 'social.stream.post',
-                method: 'get_linkedin_comments',
-                args: [[this.postId], data.parentUrn]
+                route: 'social_linkedin/get_comments',
+                params: {
+                    stream_post_id: this.postId,
+                    comment_urn: data.parentUrn
+                }
             }).then(function (result) {
                 $target.data('innerComments', result.comments);
                 return superMethod.apply(self, superArguments);

@@ -9,27 +9,46 @@ class DemoSocialStreamPost(models.Model):
 
     _inherit = 'social.stream.post'
 
-    def _like_facebook_object(self, object_id, like):
-        """ Overridden to bypass third-party API calls. """
-        pass
+    # ========================================================
+    # COMMENTS / LIKES
+    # ========================================================
 
-    def get_facebook_comments(self, next_records_token=False):
+    # FACEBOOK
+
+    def _facebook_comment_fetch(self, next_records_token=False):
         return {
             'comments': self._get_demo_comments(),
             'summary': {'totalCount': 1}
         }
 
-    def get_twitter_comments(self):
+    def _facebook_comment_post(self, endpoint_url, message, existing_attachment_id=None, attachment=None):
+        """ Returns a fake comment containing the passed 'message' """
+        return self._get_new_comment_demo(message)
+
+    def _facebook_like(self, object_id, like):
+        """ Overridden to bypass third-party API calls. """
+        return
+
+    # LINKEDIN
+
+    def _linkedin_comment_add(self, message, comment_urn=None):
+        """ Returns a fake comment containing the passed 'message' """
         return {
-            'comments': self._get_demo_comments()
+            'id': 'urn:li:comment:(urn:li:activity:12547,452542)',
+            'formatted_created_time': '10/02/2019',
+            'likes': {'summary': {'total_count': 0}},
+            'from': {
+                'name': 'Mitchell Admin',
+                'profile_image_url_https': '/web/image/res.users/2/avatar_128',
+                'authorUrn': 'urn:li:organization:2414183',
+            },
+            'message': message
         }
 
-    def get_youtube_comments(self, next_page_token=False):
-        return {
-            'comments': self._get_demo_comments()
-        }
+    def _linkedin_comment_delete(self, comment_urn):
+        pass
 
-    def get_linkedin_comments(self, comment_urn=None, offset=0, count=20):
+    def _linkedin_comment_fetch(self, comment_urn=None, offset=0, count=20):
         if comment_urn:
             comments = self._get_demo_sub_comments()
         else:
@@ -49,15 +68,34 @@ class DemoSocialStreamPost(models.Model):
             'summary': {'totalCount': len(comments)}
         }
 
-    def delete_linkedin_comment(self, comment_urn):
-        pass
+    # TWITTER
 
-    def _add_linkedin_comment(self, message, comment_urn=None):
-        return {}
+    def _twitter_comment_add(self, stream, comment_id, message):
+        """ Returns a fake comment containing the passed 'message' """
+        return self._get_new_comment_demo(message)
+
+    def _twitter_comment_fetch(self, page=1):
+        return {
+            'comments': self._get_demo_comments()
+        }
+
+    def _twitter_tweet_like(self, stream, tweet_id, like):
+        return True
+
+    # YOUTUBE
+
+    def _youtube_comment_add(self, comment_id, message, is_edit=False):
+        return self._get_new_comment_demo(message)
+
+    def _youtube_comment_fetch(self, next_page_token=False):
+        return {
+            'comments': self._get_demo_comments()
+        }
 
     def _get_new_comment_demo(self, message):
         return {
             'id': 5,
+            'created_time': '2019-02-10 11:11:11',
             'formatted_created_time': '10/02/2019',
             'likes': {'summary': {'total_count': 0}},
             'from': {
@@ -67,18 +105,9 @@ class DemoSocialStreamPost(models.Model):
             'message': message
         }
 
-    def _get_new_linkedin_comment_demo(self, message):
-        return {
-            'id': 'urn:li:comment:(urn:li:activity:12547,452542)',
-            'formatted_created_time': '10/02/2019',
-            'likes': {'summary': {'total_count': 0}},
-            'from': {
-                'name': 'Mitchell Admin',
-                'profile_image_url_https': '/web/image/res.users/2/avatar_128',
-                'authorUrn': 'urn:li:organization:2414183',
-            },
-            'message': message
-        }
+    # ========================================================
+    # MISC / UTILITY
+    # ========================================================
 
     def _get_demo_comments(self):
         """ Return some fake comments. """

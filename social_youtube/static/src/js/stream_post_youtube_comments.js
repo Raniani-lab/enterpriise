@@ -77,7 +77,7 @@ var StreamPostYoutubeComments = StreamPostComments.extend({
     },
 
     getDeleteCommentEndpoint: function () {
-        return 'delete_youtube_comment';
+        return '/social_youtube/delete_comment';
     },
 
     getLikesClass: function () {

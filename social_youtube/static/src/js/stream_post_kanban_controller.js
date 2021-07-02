@@ -19,9 +19,11 @@ StreamPostKanbanController.include({
 
         var postId = $target.data('postId');
         this._rpc({
-            model: 'social.stream.post',
-            method: 'get_youtube_comments',
-            args: [[postId], this.nextPageToken]
+            route: '/social_youtube/get_comments',
+            params: {
+                stream_post_id: postId,
+                next_page_token: this.nextPageToken
+            }
         }).then(function (result) {
             new StreamPostYoutubeComments(
                 self,

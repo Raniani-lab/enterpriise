@@ -7,7 +7,7 @@ import requests
 import urllib.parse
 
 
-from odoo import _, api, models, fields
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from werkzeug.urls import url_join
 
@@ -30,20 +30,32 @@ class SocialStreamPostFacebook(models.Model):
     facebook_is_event_post = fields.Boolean('Is event post')
 
     def _compute_author_link(self):
-        facebook_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'facebook')
+        facebook_posts = self._filter_by_media_types(['facebook'])
         super(SocialStreamPostFacebook, (self - facebook_posts))._compute_author_link()
 
         for post in facebook_posts:
             post.author_link = '/social_facebook/redirect_to_profile/%s/%s?name=%s' % (post.account_id.id, post.facebook_author_id, urllib.parse.quote(post.author_name))
 
     def _compute_post_link(self):
-        facebook_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'facebook')
+        facebook_posts = self._filter_by_media_types(['facebook'])
         super(SocialStreamPostFacebook, (self - facebook_posts))._compute_post_link()
 
         for post in facebook_posts:
             post.post_link = 'https://www.facebook.com/%s' % post.facebook_post_id
 
-    def get_facebook_comments(self, next_records_token=False):
+    # ========================================================
+    # COMMENTS / LIKES
+    # ========================================================
+
+    def _facebook_comment_delete(self, comment_id):
+        requests.delete(url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s" % comment_id),
+            data={'access_token': self.stream_id.account_id.facebook_access_token},
+            timeout=5
+        )
+
+        return True
+
+    def _facebook_comment_fetch(self, next_records_token=False):
         self.ensure_one()
 
         comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/comments" % (self.facebook_post_id))
@@ -94,48 +106,7 @@ class SocialStreamPostFacebook(models.Model):
             'nextRecordsToken': result_json.get('paging').get('cursors').get('after') if result_json.get('paging') else None
         }
 
-    @api.model
-    def _format_facebook_published_date(self, comment):
-        return self.env['social.stream.post']._format_published_date(fields.Datetime.from_string(
-            dateutil.parser.parse(comment.get('created_time')).strftime('%Y-%m-%d %H:%M:%S')
-        ))
-
-    def like_facebook_post(self, like):
-        self.ensure_one()
-        self._like_facebook_object(self.facebook_post_id, like)
-
-    def like_facebook_comment(self, comment_id, like):
-        self.ensure_one()
-        self._like_facebook_object(comment_id, like)
-
-    def delete_facebook_comment(self, comment_id):
-        self.ensure_one()
-        comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s" % comment_id)
-        requests.delete(comments_endpoint_url, data={
-            'access_token': self.stream_id.account_id.facebook_access_token,
-        })
-
-    def _edit_facebook_comment(self, message, comment_id, existing_attachment_id=None, attachment=None):
-        self.ensure_one()
-
-        return self._post_facebook_comment(
-            url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s" % comment_id),
-            message,
-            existing_attachment_id=existing_attachment_id,
-            attachment=attachment
-        )
-
-    def _add_facebook_comment(self, message, comment_id, existing_attachment_id=None, attachment=None):
-        self.ensure_one()
-
-        return self._post_facebook_comment(
-            url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/comments" % (comment_id)),
-            message,
-            existing_attachment_id=existing_attachment_id,
-            attachment=attachment
-        )
-
-    def _post_facebook_comment(self, endpoint_url, message, existing_attachment_id=None, attachment=None):
+    def _facebook_comment_post(self, endpoint_url, message, existing_attachment_id=None, attachment=None):
         params = {
             'message': message,
             'access_token': self.stream_id.account_id.facebook_access_token,
@@ -152,8 +123,9 @@ class SocialStreamPostFacebook(models.Model):
 
         result = requests.post(
             endpoint_url,
-            params,
-            files={'source': ('source', attachment.read(), attachment.content_type)} if attachment else None
+            data=params,
+            files={'source': ('source', attachment.read(), attachment.content_type)} if attachment else None,
+            timeout=15  # can take some time if there are attached images to upload
         ).json()
         result['likes'] = {'summary': {'total_count': result.get('like_count', 0)}}
 
@@ -163,10 +135,20 @@ class SocialStreamPostFacebook(models.Model):
 
         return result
 
-    def _like_facebook_object(self, object_id, like):
+    def _facebook_like(self, object_id, like):
         params = {'access_token': self.stream_id.account_id.facebook_access_token}
         comments_like_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/likes" % (object_id))
         if like:
-            requests.post(comments_like_endpoint_url, params)
+            requests.post(comments_like_endpoint_url, data=params, timeout=5)
         else:
             requests.delete(comments_like_endpoint_url, data=params)
+
+    # ========================================================
+    # MISC / UTILITY
+    # ========================================================
+
+    @api.model
+    def _format_facebook_published_date(self, comment):
+        return self.env['social.stream.post']._format_published_date(
+            dateutil.parser.parse(comment.get('created_time'), ignoretz=True)
+        )

@@ -13,9 +13,9 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
     formattedValue = _superFormatPost.apply(this, arguments);
     var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
     if (mediaType === 'twitter') {
-        formattedValue = formattedValue.replace(/\B#([a-zA-Z\d-_]+)/g,
+        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
                 `<a href='https://twitter.com/hashtag/$1?src=hash' target='_blank'>#$1</a>`);
-        formattedValue = formattedValue.replace(/\B@([\w\dÀ-ÿ-]+)/g,
+        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_AT,
                 `<a href='https://twitter.com/$1' target='_blank'>@$1</a>`);
     }
     return formattedValue;

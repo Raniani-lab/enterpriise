@@ -3,11 +3,11 @@
 
 import logging
 import requests
-from dateutil.relativedelta import relativedelta
-from werkzeug.urls import url_join
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
+from werkzeug.urls import url_join
 
 _logger = logging.getLogger(__name__)
 
@@ -23,20 +23,91 @@ class SocialStreamPostYoutube(models.Model):
     youtube_video_duration = fields.Float('YouTube Video Duration')  # in minutes
 
     def _compute_author_link(self):
-        youtube_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'youtube')
+        youtube_posts = self._filter_by_media_types(['youtube'])
         super(SocialStreamPostYoutube, (self - youtube_posts))._compute_author_link()
 
         for post in youtube_posts:
             post.author_link = 'http://www.youtube.com/channel/%s' % (post.stream_id.account_id.youtube_channel_id)
 
     def _compute_post_link(self):
-        youtube_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'youtube')
+        youtube_posts = self._filter_by_media_types(['youtube'])
         super(SocialStreamPostYoutube, (self - youtube_posts))._compute_post_link()
 
         for post in youtube_posts:
             post.post_link = 'https://www.youtube.com/watch?v=%s' % post.youtube_video_id
 
-    def get_youtube_comments(self, next_page_token=False):
+    # ========================================================
+    # COMMENTS / LIKES
+    # ========================================================
+
+    def _youtube_comment_add(self, comment_id, message, is_edit=False):
+        self.ensure_one()
+        self.account_id._refresh_youtube_token()
+
+        common_params = {
+            'access_token': self.account_id.youtube_access_token,
+            'part': 'snippet',
+        }
+
+        if comment_id:
+            if is_edit:
+                # editing own comment
+                result_comment = requests.put(
+                    url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/comments"),
+                    params=common_params,
+                    json={
+                        'id': comment_id,
+                        'snippet': {
+                            'textOriginal': message,
+                        }
+                    }
+                ).json()
+            else:
+                # reply to comment, uses different endpoint that commenting a video
+                result_comment = requests.post(
+                    url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/comments"),
+                    params=common_params,
+                    json={
+                        'snippet': {
+                            'textOriginal': message,
+                            'parentId': comment_id
+                        }
+                    },
+                    timeout=5
+                ).json()
+        else:
+            # brand new comment on the video
+            result_comment = requests.post(
+                url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/commentThreads"),
+                params=common_params,
+                json={
+                    'snippet': {
+                        'topLevelComment': {'snippet': {'textOriginal': message}},
+                        'channelId': self.account_id.youtube_channel_id,
+                        'videoId': self.youtube_video_id
+                    },
+                },
+                timeout=5
+            ).json().get('snippet', {}).get('topLevelComment')
+
+        return self.env['social.media']._format_youtube_comment(result_comment)
+
+    def _youtube_comment_delete(self, comment_id):
+        self.ensure_one()
+        self.account_id._refresh_youtube_token()
+
+        response = requests.delete(
+            url=url_join(self.env['social.media']._YOUTUBE_ENDPOINT, 'youtube/v3/comments'),
+            params={
+                'id': comment_id,
+                'access_token': self.account_id.youtube_access_token,
+            }
+        )
+
+        if not response.ok:
+            self.account_id.sudo().write({'is_media_disconnected': True})
+
+    def _youtube_comment_fetch(self, next_page_token=False):
         self.ensure_one()
         self.stream_id.account_id._refresh_youtube_token()
 
@@ -51,7 +122,7 @@ class SocialStreamPostYoutube(models.Model):
         if next_page_token:
             params['pageToken'] = next_page_token
 
-        result = requests.get(comments_endpoint_url, params)
+        result = requests.get(comments_endpoint_url, params=params, timeout=5)
         result_json = result.json()
 
         if not result.ok:
@@ -87,20 +158,9 @@ class SocialStreamPostYoutube(models.Model):
             'nextPageToken': result_json.get('nextPageToken')
         }
 
-    def delete_youtube_comment(self, comment_id):
-        self.ensure_one()
-        self.account_id._refresh_youtube_token()
-
-        response = requests.delete(
-            url=url_join(self.env['social.media']._YOUTUBE_ENDPOINT, 'youtube/v3/comments'),
-            params={
-                'id': comment_id,
-                'access_token': self.account_id.youtube_access_token,
-            }
-        )
-
-        if not response.ok:
-            self.account_id.sudo().write({'is_media_disconnected': True})
+    # ========================================================
+    # MISC / UTILITY
+    # ========================================================
 
     @api.autovacuum
     def _gc_youtube_data(self):

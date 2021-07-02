@@ -93,6 +93,20 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
         self._test_minimal_camt_file_import('camt_053_minimal_and_multicurrency.xml', usd_currency)
 
+    def test_several_minimal_stmt_different_currency(self):
+        """
+        Two different journals with the same bank account. The first one is in USD, the second one in EUR
+        Test to import a CAMT file with two statements: one in USD, another in EUR
+        """
+        usd_currency = self.env.ref('base.USD')
+        eur_currency = self.env.ref('base.EUR')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        # USD Statement
+        self._test_minimal_camt_file_import('camt_053_several_minimal_stmt_different_currency.xml', usd_currency)
+        # EUR Statement
+        self._test_minimal_camt_file_import('camt_053_several_minimal_stmt_different_currency.xml', eur_currency,
+                                            start_balance=2000, end_balance=3000)
+
     def test_journal_with_other_currency(self):
         """
         This test aims at importing a file with amounts expressed in EUR into a journal
@@ -102,13 +116,22 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         self._test_minimal_camt_file_import('camt_053_minimal_EUR.xml', self.env.ref('base.EUR'))
 
     def _import_camt_file(self, camt_file_name, currency):
-        bank_journal = self.env['account.journal'].create({
-            'name': "Bank 112233",
-            'code': 'BNK68',
-            'type': 'bank',
-            'bank_acc_number': '112233',
-            'currency_id': currency.id,
-        })
+        # Create a bank account and journal corresponding to the CAMT
+        # file (same currency and account number)
+        BankAccount = self.env['res.partner.bank']
+        partner = self.env.user.company_id.partner_id
+        bank_account = BankAccount.search([('acc_number', '=', '112233'), ('partner_id', '=', partner.id)]) \
+                       or BankAccount.create({'acc_number': '112233', 'partner_id': partner.id})
+        bank_journal = self.env['account.journal'].create(
+            {
+                'name': "Bank 112233 %s" % currency.name,
+                'code': "B-%s" % currency.name,
+                'type': 'bank',
+                'bank_account_id': bank_account.id,
+                'currency_id': currency.id,
+            }
+        )
+
         # Use an import wizard to process the file
         camt_file_path = get_module_resource(
             'account_bank_statement_import_camt',
@@ -121,18 +144,24 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
             .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': camt_file})]})\
             .import_file()
 
-    def _test_minimal_camt_file_import(self, camt_file_name, currency):
+    def _test_minimal_camt_file_import(self, camt_file_name, currency, start_balance=1000, end_balance=1500):
         # Create a bank account and journal corresponding to the CAMT
         # file (same currency and account number)
         self._import_camt_file(camt_file_name, currency)
         # Check the imported bank statement
-        imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])
-        self.assertRecordValues(imported_statement, [{
-            'name': '2514988305.2019-02-13',
-            'balance_start': 1000.00,
-            'balance_end_real': 1500.00,
-        }])
-        self.assertRecordValues(imported_statement.line_ids.sorted('ref'), [{'amount': 500.00}])
+        bank_st_record = self.env['account.bank.statement'].search(
+            [('name', '=', '2514988305.2019-02-13')]
+        ).filtered(lambda bk_stmt: bk_stmt.currency_id == currency).ensure_one()
+        self.assertEqual(
+            bank_st_record.balance_start, start_balance, "Start balance not matched"
+        )
+        self.assertEqual(
+            bank_st_record.balance_end_real, end_balance, "End balance not matched"
+        )
+
+        # Check the imported bank statement line
+        line = bank_st_record.line_ids.ensure_one()
+        self.assertEqual(line.amount, end_balance - start_balance, "Transaction not matched")
 
     def _test_camt_with_several_tx_details(self, filename):
         usd_currency = self.env.ref('base.USD')

@@ -693,6 +693,9 @@ class AccountBankStatementImport(models.TransientModel):
             # Currency 0..1
             currency = statement.xpath('ns:Acct/ns:Ccy/text() | ns:Bal/ns:Amt/@Ccy', namespaces=ns)[0]
 
+            if currency and journal_currency and currency != journal_currency.name:
+                continue
+
             for entry in statement.findall('ns:Ntry', ns):
                 # Date 0..1
                 date = _get_transaction_date(entry, namespaces=ns) or statement_vals['date']

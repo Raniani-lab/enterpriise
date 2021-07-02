@@ -27,10 +27,8 @@ class TestIncomingTransactionResponse(BaseCase):
     )
     def setUp(self):
         # pylint: disable=import-outside-toplevel
-        from odoo.addons.iot.iot_handlers.drivers.IngenicoDriver import IncommingIngenicoMessage
-
-        # The classname has a typo in it. To be changed in master.
-        self.IncomingIngenicoMessage = IncommingIngenicoMessage
+        from odoo.addons.iot.iot_handlers.drivers.IngenicoDriver import IncomingIngenicoMessage
+        self.IncomingIngenicoMessage = IncomingIngenicoMessage
 
     def test_parse_ticketdata(self):
         # The file contains the payload of a TLV message. To view or modify its

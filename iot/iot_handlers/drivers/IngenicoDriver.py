@@ -83,11 +83,11 @@ class IngenicoMessage():
     _const: Most of these constants are provided by Ingenico and should not be changed. 
     """
     _const = type('',(),{ 
-        'keepAliveInterval': b'\x50\x05',
+        'keepAliveInterval': b'\x00\x05',
         'magic' : b'P4Y-ECR!',
         'messageType' : {
             'HelloRequest'                      : b'\x00\x00\x00\x16',   #!< Request# a# connection# with# the# ECR.
-            'HelloResponse'                 : b'\x00\x00\x00\x16',   #!< Result# of# the# connection# request.
+            'HelloResponse'                 : b'\x00\x00\x00\x17',   #!< Result# of# the# connection# request.
             'KeepAliveRequest'                  : b'\x00\x00\x00\x18',   #!< Notification# of# status# and# keep-alive.
             'KeepAliveResponse'                 : b'\x00\x00\x00\x19',   #!< Result# of# the# notification.
             'ByeRequest'                    : b'\x00\x00\x00\x20',   #!< Request# to# terminate# the# connection.
@@ -518,15 +518,11 @@ class OutgoingIngenicoMessage(IngenicoMessage):
         """
         self.dev.send(self.message)
 
-class IncommingIngenicoMessage(IngenicoMessage):
+
+class IncomingIngenicoMessage(IngenicoMessage):
 
     @staticmethod
-    def _bcdToInt(byteArray):
-        """Return an integer from a binary coded decimal.
-
-        Args:
-            byteArray (b): Binary Coded Decimal (https://www.electronics-tutorials.ws/binary/binary-coded-decimal.html)
-        """
+    def _hexToInt(byteArray):
         return int.from_bytes(byteArray, byteorder='big')
 
     def _getMsg(self, length ):
@@ -590,7 +586,7 @@ class IncommingIngenicoMessage(IngenicoMessage):
 
         # Receive message length and reduce it with length of magic string
         _logger.debug("Waiting for message length")
-        length = self._bcdToInt(self.dev.recv(4)) - 8
+        length = self._hexToInt(self.dev.recv(4)) - 8
         # Check if message is from Ingenico terminal by comparing magic string
         _logger.debug("Waiting for magic string")
         self.magic = self.dev.recv(8)
@@ -730,7 +726,7 @@ class IngenicoDriver(Driver):
         """
         try:
             # Setup socket connection
-            msg = IncommingIngenicoMessage(device.dev)
+            msg = IncomingIngenicoMessage(device.dev)
             if msg and msg.magic == b'P4Y-ECR!' and msg.getMessageType() == "HelloRequest":
                 device.terminalId = msg.getTerminalId()
                 device.protocolId = msg.getProtocolId()
@@ -819,7 +815,7 @@ class IngenicoDriver(Driver):
             while not self._stopped.isSet():
                 sleep(1)
                 _logger.debug("Waiting for incoming message")
-                msg = IncommingIngenicoMessage(self)
+                msg = IncomingIngenicoMessage(self)
                 _logger.debug("Incoming message received")
                 if msg and msg.magic == b'P4Y-ECR!':
                     self.data['value'] = 'Connected'

@@ -104,7 +104,7 @@
                         </div>
                         <field name="marketing_activity_ids" widget="hierarchy_kanban" mode="kanban" nolabel="1"
                             class="o_ma_hierarchy_container o_ma_campaign_hierarchy"
-                            options="{'create_text':'Add new activity'}"
+                            add-label="Add new activity"
                             context="{
                                 'default_campaign_id': active_id,
                                 'default_model_id': model_id,

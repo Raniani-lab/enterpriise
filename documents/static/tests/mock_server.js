@@ -13,10 +13,13 @@ MockServer.include({
      * @override
      * @private
      */
-    _performRpc: function (route) {
+    async _performRpc(route, args) {
         if (route.indexOf('/documents/image') >= 0 ||
             _.contains(['.png', '.jpg'], route.substr(route.length - 4))) {
             return Promise.resolve();
+        }
+        if (args.model === 'documents.share' && args.method === 'check_access_rights') {
+            return true;
         }
         return this._super.apply(this, arguments);
     },

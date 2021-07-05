@@ -78,6 +78,25 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
          */
         this._selectedRecordIds = params.selectedRecordIds || [];
         fileUploadMixin.init.call(this);
+        /**
+         * _hasShareReadAccessRights defines whether or not the user has read access rights on the documents.share model.
+         */
+        this._hasShareReadAccessRights = undefined;
+    },
+
+    async willStart() {
+        const parentPromise = this._super(...arguments);
+        const readAccessRightsPromise = this._rpc({
+            model: 'documents.share',
+            method: 'check_access_rights',
+            kwargs: {
+                'operation': 'read',
+                'raise_exception': false,
+            },
+        }).then((res) => {
+            this._hasShareReadAccessRights = res;
+        });
+        return Promise.all([parentPromise, readAccessRightsPromise]);
     },
 
     /**
@@ -448,7 +467,9 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
     async _updateHelper(searchDomain) {
         var self = this;
         const rpcDomain = searchDomain.filter(elem => Array.isArray(elem) && elem.includes('folder_id'))
-        if (rpcDomain.length) {  // Avoid updating the Helper when the "All folder" is selected in the search panel.
+        // Avoid updating the Helper when the "All folder" is selected in the search panel or
+        // if the user does not have the rights to read documents shares.
+        if (rpcDomain.length && this._hasShareReadAccessRights) {
             return await this._rpc({
                 model: 'documents.share',
                 method: 'search_read',

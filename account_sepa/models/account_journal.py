@@ -432,10 +432,9 @@ class AccountJournal(models.Model):
         QR-codes. They are formed like regular IBANs, but are actually something
         different.
         """
-        partner_bank_ids = self.env['res.partner'].browse(payment['partner_id']).bank_ids
-        iban = partner_bank_ids[0].sanitized_acc_number \
-            if partner_bank_ids and partner_bank_ids[0].acc_type == 'iban' \
-            and partner_bank_ids[0].sanitized_acc_number[:2] == 'CH' else None
+        partner_bank_id = self.env['res.partner.bank'].browse(payment['partner_bank_id'])\
+            .filtered(lambda r: r.acc_type == 'iban' and r.sanitized_acc_number[:2] == 'CH' and r.company_id.id in (False, self.company_id.id))
+        iban = partner_bank_id.sanitized_acc_number
         if not iban or len(iban) < 9:
             return False
         iid_start_index = 4
@@ -448,7 +447,8 @@ class AccountJournal(models.Model):
         """ Local instrument node is used to indicate the use of some regional
         variant, such as in Switzerland.
         """
-        partner_bank_ids = self.env['res.partner'].sudo().browse(payment['partner_id']).bank_ids.filtered(lambda r: r.company_id.id in (False, self.company_id.id))
-        if partner_bank_ids and partner_bank_ids[0].acc_type == 'postal' and self._has_isr_ref(payment['ref']):
+        partner_bank_id = self.env['res.partner.bank'].browse(payment['partner_bank_id'])\
+            .filtered(lambda r: r.acc_type == 'postal' and r.company_id.id in (False, self.company_id.id))
+        if partner_bank_id and self._has_isr_ref(payment['ref']):
             return 'CH01'
         return None

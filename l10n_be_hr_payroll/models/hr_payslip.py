@@ -378,21 +378,34 @@ class Payslip(models.Model):
         # If any day in the month is not covered by the contract dates coverage
         # the entire month is not taken into account for the proratization
         contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
-        if not contracts:
+        if not contracts or not self.contract_id.first_contract_date:
             return 0.0
 
-        year = self.date_to.year
-        date_from = date(year, 1, 1)
-        date_to = date(year, 12, 31)
-        # 1. Number of months
-        n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
-        if n_months < 6:
-            return 0
+        date_from = self.contract_id.first_contract_date
+        date_to = self.date_to + relativedelta(day=31)
 
-        # 2. Deduct absences
-        presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
         basic = self.contract_id._get_contract_wage()
-        return basic * n_months / 12 * presence_prorata
+
+        force_months = self.input_line_ids.filtered(lambda l: l.code == 'MONTHS')
+        if force_months:
+            n_months = force_months[0].amount
+            presence_prorata = 1
+        else:
+            # 1. Number of months
+            n_months = min(12, self._compute_number_complete_months_of_work(date_from, date_to, contracts))
+            # 2. Deduct absences
+            presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
+
+        fixed_salary = basic * n_months / 12 * presence_prorata
+
+        force_avg_variable_revenues = self.input_line_ids.filtered(lambda l: l.code == 'VARIABLE')
+        if force_avg_variable_revenues:
+            avg_variable_revenues = force_avg_variable_revenues[0].amount
+        else:
+            avg_variable_revenues = self.with_context(
+                variable_revenue_date_from=self.date_from + relativedelta(months=-1)
+            )._get_last_year_average_variable_revenues()
+        return fixed_salary + avg_variable_revenues
 
     def _get_paid_amount_warrant(self):
         self.ensure_one()
@@ -761,13 +774,14 @@ def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, i
         monthly_revenue += 4.0
     if contract.has_laptop:
         monthly_revenue += 7.0
-    if contract.transport_mode_car:
-        if 'vehicle_id' in payslip.dict:
-            monthly_revenue += payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from)
-        else:
-            monthly_revenue += contract.car_atn
 
     yearly_revenue = monthly_revenue * (1 - 0.1307) * 12.0
+
+    if contract.transport_mode_car:
+        if 'vehicle_id' in payslip.dict:
+            yearly_revenue += payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from) * 12.0
+        else:
+            yearly_revenue += contract.car_atn * 12.0
 
     # Exoneration
     children = employee.dependent_children
@@ -782,37 +796,51 @@ def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, i
     return - withholding_tax_amount
 
 def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, inputs):
-    # YTI: This is all wrong (and outdated).
+    # See: https://www.securex.eu/lex-go.nsf/vwReferencesByCategory_fr/52DA120D5DCDAE78C12584E000721081?OpenDocument
+    def find_rates(x, rates):
+        for low, high, rate in rates:
+            if low <= x <= high:
+                return rate / 100.0
+
+    rates = payslip.rule_parameter('exceptional_allowances_pp_rates')
+    children_exoneration = payslip.rule_parameter('holiday_pay_pp_exoneration')
+    children_reduction = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
+
     employee = payslip.contract_id.employee_id
-    rates = [
-        (8460.0, 0), (10830.0, 0.2322),
-        (13775.0, 0.2523), (16520.0, 0.3028),
-        (18690.0, 0.2533), (20870.0, 0.3836),
-        (25230.0, 0.4038), (27450.0, 0.4341),
-        (36360.0, 0.4644), (47480.0, 0.5148)]
 
-    def find_rates(x):
-        for a, b in rates:
-            if x <= a:
-                return b
-        return 0.535
+    gross = categories.GROSS
 
-    # Up to 12 children
-    children_exoneration = [0.0, 13329.0, 16680.0, 21820.0, 27560.0, 33300.0, 39040.0, 44780.0, 50520.0, 56260.0, 62000.0, 67740.0, 73480.0]
-    # Only if no more than 5 children
-    children_reduction = [(0, 0), (22940.0, 0.075), (22940.0, 0.2), (25235.0, 0.35), (29825.0, 0.55), (32120.0, 0.75)]
+    contract = payslip.dict.contract_id
+    monthly_revenue = contract._get_contract_wage()
+    # Count ANT in yearly remuneration
+    if contract.internet:
+        monthly_revenue += 5.0
+    if contract.mobile and not contract.internet:
+        monthly_revenue += 4.0 + 5.0
+    if contract.mobile and contract.internet:
+        monthly_revenue += 4.0
+    if contract.has_laptop:
+        monthly_revenue += 7.0
 
-    n = employee.dependent_children
-    yearly_revenue = categories.GROSS * 12.0
+    yearly_revenue = monthly_revenue * (1 - 0.1307) * 12.0
 
-    if 0 < n < 13 and yearly_revenue <= children_exoneration[n]:
-        yearly_revenue = yearly_revenue - (children_exoneration[n] - yearly_revenue)
+    if contract.transport_mode_car:
+        if 'vehicle_id' in payslip.dict:
+            yearly_revenue += payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from) * 12.0
+        else:
+            yearly_revenue += contract.car_atn * 12.0
 
-    if n <= 5 and yearly_revenue <= children_reduction[n][0]:
-        withholding_tax_amount = yearly_revenue * find_rates(yearly_revenue) * (1 - children_reduction[n][1])
+    # Exoneration
+    children = employee.dependent_children
+    if children > 0 and yearly_revenue <= children_exoneration.get(children, children_exoneration[12]):
+        yearly_revenue -= children_exoneration.get(children, children_exoneration[12]) - yearly_revenue
+
+    # Reduction
+    if children > 0 and yearly_revenue <= children_reduction.get(children, children_reduction[5])[1]:
+        withholding_tax_amount = gross * find_rates(yearly_revenue, rates) * (1 - children_reduction.get(children, children_reduction[5])[0] / 100.0)
     else:
-        withholding_tax_amount = yearly_revenue * find_rates(yearly_revenue)
-    return -withholding_tax_amount / 12.0
+        withholding_tax_amount = gross * find_rates(yearly_revenue, rates)
+    return - withholding_tax_amount
 
 def compute_withholding_reduction(payslip, categories, worked_days, inputs):
     if categories.EmpBonus:

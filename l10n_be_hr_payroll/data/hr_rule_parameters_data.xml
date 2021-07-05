@@ -574,6 +574,30 @@
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
 
+        <record id="rule_parameter_exceptional_allowances_rates" model="hr.rule.parameter">
+            <field name="name">Exceptional Allowances: Withholding Taxes Rates</field>
+            <field name="code">exceptional_allowances_pp_rates</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_exceptional_allowances_rates_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (    0.00,       8660.00,  0.00),
+    ( 8660.01,      11075.00, 23.22),
+    (11075.01,      14090.00, 25.23),
+    (14090.01,      16890.00, 30.28),
+    (16890.01,      19110.00, 35.33),
+    (19110.01,      21350.00, 38.36),
+    (21350.01,      25800.00, 40.38),
+    (25800.01,      28080.00, 43.41),
+    (28080.01,      37180.00, 46.44),
+    (37180.01,      48550.00, 51.48),
+    (48550.00,  999999999.00, 53.50)
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_exceptional_allowances_rates"/>
+            <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
+        </record>
+
         <!-- Holiday Pay - PP Exoneration -->
         <record id="rule_parameter_holiday_pay_exoneration" model="hr.rule.parameter">
             <field name="name">Holiday Pay: Withholding Taxes Exoneration</field>

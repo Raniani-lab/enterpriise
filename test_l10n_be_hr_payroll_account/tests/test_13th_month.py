@@ -31,8 +31,7 @@ class Test13thMonth(TestPayslipBase):
             'ONSS': -326.75,
             'GROSS': 2173.25,
             'P.P': -943.41,
-            'M.ONSS': -22.01,
-            'NET': 1207.83,
+            'NET': 1229.84,
         })
 
     def test_13th_month_paid_amount_full_year(self):
@@ -49,7 +48,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries.action_validate()
         self.payslip.contract_id = contract
         self.payslip.struct_id = self.structure
-        self.assertEqual(self.payslip._get_paid_amount(), 0, 'It should be 0 after the 1st July')
+        self.assertEqual(self.payslip._get_paid_amount(), 1250)
 
     def test_13th_month_paid_amount_first_july(self):
         contract = self.create_contract(date(2019, 7, 1))
@@ -73,7 +72,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries.action_validate()
         self.payslip.contract_id = contract
         self.payslip.struct_id = self.structure
-        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 6 / 12, msg='It should count 6/12 months')
+        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 7 / 12, msg='It should count 7/12 months')
 
     def test_13th_month_paid_amount_multiple_contracts(self):
         self.create_contract(date(2019, 1, 1), date(2019, 3, 31))
@@ -129,4 +128,4 @@ class Test13thMonth(TestPayslipBase):
         work_entries.filtered(lambda r: r.state == 'confirmed').action_validate()
         work_entry.action_validate()
         # In 2019: 261 days * 8h = 2088 hours
-        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 2040 / 2088, msg='It should deduct 48 hours')
+        self.assertAlmostEqual(self.payslip._get_paid_amount(), 2442.748, places=2, msg='It should deduct 48 hours')

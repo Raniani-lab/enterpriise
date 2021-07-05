@@ -682,7 +682,6 @@ class DMFAOccupation(DMFANode):
         termination_fees = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_basic')
         holiday_pay_recovery_n = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n', raise_if_not_found=False)
         holiday_pay_recovery_n1 = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n1', raise_if_not_found=False)
-        # YTI TODO: Double holidays ?
         # YTI TODO: Students
         codes = {
             regular_gross: 1,

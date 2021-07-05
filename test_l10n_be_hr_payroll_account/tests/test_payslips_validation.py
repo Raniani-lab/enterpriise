@@ -4577,17 +4577,17 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(self.holiday_pay_2019.input_line_ids), 6)
         self.assertEqual(len(self.holiday_pay_2019.line_ids), 13)
         payslip_results = {
-            'PAY_SIMPLE': 2927.28,
-            'PAY DOUBLE': 2965.99,
-            'PAY DOUBLE COMPLEMENTARY': 379.47,
-            'BASIC': 6272.73,
-            'ONSS1': -382.6,
-            'ONSS2': -387.65,
-            'ONSSTOTAL': 770.25,
-            'GROSS': 5502.48,
-            'PROF_TAX': -1999.60,
-            'PPTOTAL': 1999.60,
-            'NET': 3502.88,
+            'PAY_SIMPLE': 2966.94,
+            'PAY DOUBLE': 3006.17,
+            'PAY DOUBLE COMPLEMENTARY': 384.61,
+            'BASIC': 6357.73,
+            'ONSS1': -387.78,
+            'ONSS2': -392.91,
+            'ONSSTOTAL': 780.69,
+            'GROSS': 5577.04,
+            'PROF_TAX': -2026.7,
+            'PPTOTAL': 2026.7,
+            'NET': 3550.34,
         }
         self._validate_payslip(self.holiday_pay_2019, payslip_results)
 
@@ -4675,19 +4675,19 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(self.holiday_pay_2019.input_line_ids), 6)
         self.assertEqual(len(self.holiday_pay_2019.line_ids), 13)
         payslip_results = {
-            'PAY_SIMPLE': 2927.28,
-            'DOUBLE_BASIC': 2965.99,
+            'PAY_SIMPLE': 2966.94,
+            'DOUBLE_BASIC': 3006.17,
             'EUROPEAN': -1384.62,
-            'PAY DOUBLE': 1581.37,
-            'PAY DOUBLE COMPLEMENTARY': 379.47,
-            'BASIC': 4888.11,
-            'ONSS1': -382.6,
-            'ONSS2': -206.69,
-            'ONSSTOTAL': 589.28,
-            'GROSS': 4298.83,
-            'PROF_TAX': -1562.19,
-            'PPTOTAL': 1562.2,
-            'NET': 2736.64,
+            'PAY DOUBLE': 1621.55,
+            'PAY DOUBLE COMPLEMENTARY': 384.61,
+            'BASIC': 4973.11,
+            'ONSS1': -387.78,
+            'ONSS2': -211.94,
+            'ONSSTOTAL': 599.72,
+            'GROSS': 4373.39,
+            'PROF_TAX': -1589.29,
+            'PPTOTAL': 1589.29,
+            'NET': 2784.1,
         }
         self._validate_payslip(self.holiday_pay_2019, payslip_results)
 

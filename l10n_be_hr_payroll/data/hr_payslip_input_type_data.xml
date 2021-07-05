@@ -218,14 +218,20 @@
         <field name="name">Force number of months</field>
         <field name="code">MONTHS</field>
         <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday'))]"/>
+        <field name="struct_ids" eval="[
+            (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
+            (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')),
+            ]"/>
     </record>
 
     <record id="input_double_holiday_avg_variable" model="hr.payslip.input.type">
         <field name="name">Force average variable revenues</field>
         <field name="code">VARIABLE</field>
         <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday'))]"/>
+        <field name="struct_ids" eval="[
+            (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
+            (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')),
+            ]"/>
     </record>
 
     <record id="input_double_holiday_european_leave_deduction" model="hr.payslip.input.type">

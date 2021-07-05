@@ -32,7 +32,7 @@
         <field name="arch" type="xml">
             <xpath expr="//footer" position="replace">
                 <footer>
-                    <button string="Discard" special="cancel" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
+                    <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
                 </footer>
             </xpath>
         </field>

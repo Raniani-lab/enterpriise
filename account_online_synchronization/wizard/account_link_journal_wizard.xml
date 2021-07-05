@@ -35,8 +35,8 @@
                         </div>
                     </div>
                     <footer>
-                        <button attrs="{'invisible': [('number_added', '=', 0)]}" name="sync_now" class="btn-primary" string="Synchronize now" type="object"/>
-                        <button string="Cancel" name="cancel_sync" class="btn-secondary" type="object"/>
+                        <button attrs="{'invisible': [('number_added', '=', 0)]}" name="sync_now" class="btn-primary" string="Synchronize now" type="object" data-hotkey="q"/>
+                        <button string="Cancel" name="cancel_sync" class="btn-secondary" type="object" data-hotkey="w"/>
                     </footer>
                 </form>
             </field>

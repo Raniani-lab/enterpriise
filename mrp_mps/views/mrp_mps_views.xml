@@ -29,8 +29,8 @@
                     </group>
                 </group>
                 <footer>
-                    <button special="save" type="object" string="Save" class="btn-primary"/>
-                    <button string="Cancel" class="btn btn-secondary" special="cancel" />
+                    <button special="save" data-hotkey="v" type="object" string="Save" class="btn-primary"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
                 </footer>
             </form>
         </field>

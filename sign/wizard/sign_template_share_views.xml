@@ -13,8 +13,8 @@
                 </group>
                 <span attrs="{'invisible': [('url', '!=', False)]}">To be able to share, there should be only one responsible for all the fields.</span>
                 <footer>
-                    <button string="Close" class="btn-primary" special="cancel"/>
-                    <button string="Sign Now" name="open" type="object" attrs="{'invisible': [('url', '=', False)]}"/>
+                    <button string="Close" class="btn-primary" special="cancel" data-hotkey="z"/>
+                    <button string="Sign Now" name="open" type="object" attrs="{'invisible': [('url', '=', False)]}" data-hotkey="q"/>
                 </footer>
             </form>
         </field>

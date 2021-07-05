@@ -37,8 +37,8 @@
                     </group>
                 </xpath>
                 <xpath expr="//button[@name='import_file']" position="replace">
-                    <button name="import_file" string="Upload" type="object" class="btn-primary" attrs="{'invisible': [('qif_date_format', '=', 'day_first')]}"/>
-                    <button name="import_file" string="Upload" type="object" class="btn-primary" context="{'qif_date_format': 'day_first'}" attrs="{'invisible': [('qif_date_format', '!=', 'day_first')]}"/>
+                    <button name="import_file" string="Upload" type="object" class="btn-primary" attrs="{'invisible': [('qif_date_format', '=', 'day_first')]}" data-hotkey="q"/>
+                    <button name="import_file" string="Upload" type="object" class="btn-primary" context="{'qif_date_format': 'day_first'}" attrs="{'invisible': [('qif_date_format', '!=', 'day_first')]}" data-hotkey="q"/>
                 </xpath>
             </field>
         </record>

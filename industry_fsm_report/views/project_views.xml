@@ -181,15 +181,15 @@
             </field>
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="before">
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': [('display_sign_report_primary', '=', False)]}"/>
+                    attrs="{'invisible': [('display_sign_report_primary', '=', False)]}" data-hotkey="y"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': [('display_send_report_primary', '=', False)]}"/>
+                    attrs="{'invisible': [('display_send_report_primary', '=', False)]}" data-hotkey="g"/>
             </xpath>
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')]" position="before">
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': [('display_sign_report_secondary', '=', False)]}"/>
+                    attrs="{'invisible': [('display_sign_report_secondary', '=', False)]}" data-hotkey="y"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': [('display_send_report_secondary', '=', False)]}"/>
+                    attrs="{'invisible': [('display_send_report_secondary', '=', False)]}" data-hotkey="g"/>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
                 <field name="worksheet_count" invisible="1"/>

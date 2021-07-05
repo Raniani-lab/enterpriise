@@ -24,8 +24,8 @@
                     </field>
                 </group>
                 <footer>
-                    <button string="Generate" type="object" name="action_generate" class="btn-primary" />
-                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    <button string="Generate" type="object" name="action_generate" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z" class="btn-secondary"/>
                 </footer>
             </form>
         </field>

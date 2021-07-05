@@ -25,7 +25,7 @@
                     </div>
 
                     <footer>
-                        <button string="Cancel" special="cancel"/>
+                        <button string="Cancel" special="cancel" data-hotkey="z"/>
                         <button string="Send" class="oe_highlight" type="object" name="send"
                                 attrs="{'invisible': [('accept_legal', '=', False)]}"/>
                     </footer>

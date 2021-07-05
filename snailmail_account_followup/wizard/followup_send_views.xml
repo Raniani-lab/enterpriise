@@ -41,8 +41,8 @@
 
                     <footer>
                         <button string="Send by Post"
-                            name="snailmail_send_action" type="object" class="btn-primary o_mail_send"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                            name="snailmail_send_action" type="object" class="btn-primary o_mail_send" data-hotkey="q"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
                     </footer>
                 </form>
             </field>

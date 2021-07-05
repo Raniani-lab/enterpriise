@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="retry_ocr" class="oe_highlight" string="Send For Digitalization" type="object"
-                attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}"/>
+                attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="x" />
             </xpath>
             <xpath expr="//header" position='after'>
                 <field name="extract_state" attrs="{'invisible':True}"/>
@@ -29,7 +29,7 @@
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
                     <button name="retry_ocr" class="btn btn-sm btn-primary pull-right mb0 mr-1" string="Resend For Digitalization" type="object"
-                    attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}"/>
+                    attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="v"/>
                     You don't have enough credit to extract data from your invoice.
                     <div class="clearfix"/>
                 </div>
@@ -58,7 +58,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status']),
                             ('extract_status_code', '&gt;', 99)]}">
-                    <button name="retry_ocr" class="btn btn-sm btn-primary pull-right mb0 mr-1" string="Resend For Digitalization" type="object"/>
+                    <button name="retry_ocr" class="btn btn-sm btn-primary pull-right mb0 mr-1" string="Resend For Digitalization" type="object" data-hotkey="v"/>
                     <field name="extract_error_message" class="oe_inline"/>
                     <div class="clearfix"/>
                 </div>

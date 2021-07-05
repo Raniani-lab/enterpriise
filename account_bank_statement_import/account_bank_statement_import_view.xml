@@ -13,8 +13,8 @@
                     </ul>
                     <field name="attachment_ids"  widget="many2many_binary" colspan="2" string="Select Files" nolabel="1"/>
                     <footer>
-                        <button name="import_file" string="Upload" type="object" class="btn-primary" />
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <button name="import_file" string="Upload" type="object" class="btn-primary" data-hotkey="q" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
                     </footer>
                 </form>
             </field>

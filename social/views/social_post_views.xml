@@ -182,10 +182,10 @@
                         groups="social.group_social_manager" />
                     <button name="action_post" string="Post Now" type="object"
                         attrs="{'invisible': [('state', '!=', 'scheduled')]}"
-                        groups="social.group_social_manager" />
+                        groups="social.group_social_manager" data-hotkey="v" />
                     <button name="action_schedule" string="Schedule" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'now')]}"
-                        groups="social.group_social_manager" />
+                        groups="social.group_social_manager" data-hotkey="q" />
                     <field name="state" widget="statusbar"/>
                 </header>
             </xpath>

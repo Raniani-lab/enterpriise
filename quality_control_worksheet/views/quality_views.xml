@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='do_measure']" position="after">
                 <button
-                    string="Check Worksheet"
+                    string="Check Worksheet" data-hotkey="z"
                     name="action_worksheet_check" type="object"
                     attrs="{'invisible': ['|', ('test_type', '!=', 'worksheet'), ('quality_state', '!=', 'none')]}"
                     context="{'no_redirect': True}"/>

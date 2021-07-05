@@ -167,16 +167,16 @@
                     <field name="is_past" invisible="1"/>
                     <field name="confirm_delete" invisible="1"/>
                     <field name="is_unassign_deadline_passed" invisible="1"/>
-                    <button string="Save" special="save" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
-                    <button string="Save" special="save" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
+                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
+                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': [('is_published', '=', True)]}" groups="planning.group_planning_manager"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': [('is_published', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('is_published', '=', True)]}"/>
                     <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
-                    <button string="Discard" special="cancel" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
+                    <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
-                    <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I Take It" attrs="{'invisible': ['|', ('employee_id', '!=', False), ('is_past', '=', True)]}" close="1"/>
-                    <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1"/>
+                    <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I Take It" attrs="{'invisible': ['|', ('employee_id', '!=', False), ('is_past', '=', True)]}" close="1" data-hotkey="q"/>
+                    <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
                 </footer>
             </xpath>
         </field>

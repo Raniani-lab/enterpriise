@@ -229,8 +229,8 @@
                         <field name="tag_ids" invisible="1"/>
                     </group>
                 <footer>
-                    <button special="save" string="Add" class="btn btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button special="save" data-hotkey="v" string="Add" class="btn btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
                 </sheet>
             </form>
@@ -536,8 +536,8 @@
                     </group>
                     <field name="document_ids" invisible="1" readonly="1"/>
                     <footer>
-                        <button special="save" string="Done" class="btn btn-primary"/>
-                        <button type="object" name="action_delete_shares" string="Cancel" class="btn btn-secondary"/>
+                        <button special="save" data-hotkey="v" string="Done" class="btn btn-primary"/>
+                        <button type="object" name="action_delete_shares" string="Cancel" class="btn btn-secondary" data-hotkey="w"/>
                     </footer>
                 </sheet>
             </form>

@@ -39,8 +39,8 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button name="action_validate_edition" string="Validate Edition" type="object" class="oe_highlight"/>
-                    <button string="Discard" special="cancel" class="btn-secondary"/>
+                    <button name="action_validate_edition" string="Validate Edition" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary"/>
                 </footer>
             </form>
         </field>

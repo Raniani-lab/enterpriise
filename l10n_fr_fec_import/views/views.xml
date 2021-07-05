@@ -19,7 +19,7 @@
                 <br/>
                 <footer>
                     <button name="action_import" string="Import" type="object" class="btn-primary"/>
-                    <button special="cancel" string="Cancel" class="btn-secondary"/>
+                    <button special="cancel" data-hotkey="z" string="Cancel" class="btn-secondary"/>
                 </footer>
             </form>
         </field>

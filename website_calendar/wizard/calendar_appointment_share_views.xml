@@ -17,7 +17,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Close" class="btn btn-secondary" special="cancel"/>
+                    <button string="Close" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
         </field>

@@ -216,13 +216,13 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="do_pass" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Pass"/>
-                    <button name="do_pass" type="object" attrs="{'invisible': [('quality_state', '!=', 'fail')]}" groups="quality.group_quality_manager" context="{'no_redirect': True}" string="Pass"/>
-                    <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Fail"/>
-                    <button name="do_fail" type="object" attrs="{'invisible': [('quality_state', '!=', 'pass')]}" groups="quality.group_quality_manager" context="{'no_redirect': True}" string="Fail"/>
-                    <button name="do_measure" type="object" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Measure"/>
-                    <button name="do_alert" type="object" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'pass')]}" string="Make Alert"/>
-                    <button name="do_alert" type="object" class="btn-primary" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'fail')]}" string="Make Alert"/>
+                    <button name="do_pass" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Pass" data-hotkey="q"/>
+                    <button name="do_pass" type="object" attrs="{'invisible': [('quality_state', '!=', 'fail')]}" groups="quality.group_quality_manager" context="{'no_redirect': True}" string="Pass" data-hotkey="q"/>
+                    <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Fail" data-hotkey="w"/>
+                    <button name="do_fail" type="object" attrs="{'invisible': [('quality_state', '!=', 'pass')]}" groups="quality.group_quality_manager" context="{'no_redirect': True}" string="Fail" data-hotkey="w"/>
+                    <button name="do_measure" type="object" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Measure" data-hotkey="v"/>
+                    <button name="do_alert" type="object" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'pass')]}" string="Make Alert" data-hotkey="g"/>
+                    <button name="do_alert" type="object" class="btn-primary" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'fail')]}" string="Make Alert" data-hotkey="g"/>
                     <field name="quality_state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -308,14 +308,14 @@
                 </group>
                 <footer>
                     <button name="do_measure" type="object" class="btn-primary" string="Validate"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
                     <button name="do_pass" type="object" class="btn-primary" string="Validate"
-                        attrs="{'invisible': [ '|' , ('test_type', '=', 'passfail'), ('test_type', '=', 'measure')]}"/>
+                        attrs="{'invisible': [ '|' , ('test_type', '=', 'passfail'), ('test_type', '=', 'measure')]}" data-hotkey="w"/>
                     <button name="do_pass" type="object" class="btn-primary" string="Pass"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
                     <button name="do_fail" type="object" class="btn-primary" string="Fail"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}"/>
-                    <button string="Cancel" class="btn btn-secondary" special="cancel" />
+                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="x"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
                 </footer>
             </form>
         </field>
@@ -336,11 +336,11 @@
                 </div>
                 <footer>
                     <button name="correct_measure" type="object" class="btn-primary" string="Correct Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
                     <button name="redirect_after_failure" type="object" string="Confirm Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="w"/>
                     <button name="redirect_after_failure" type="object" class="btn-primary" string="OK"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
                 </footer>
             </form>
         </field>

@@ -106,7 +106,7 @@
                 </group>
 
                 <footer>
-                    <button name="compute_termination_holidays" string="Validate &amp; Compute holiday attests" type="object" class="oe_highlight"/>
+                    <button name="compute_termination_holidays" string="Validate &amp; Compute holiday attests" type="object" class="oe_highlight" data-hotkey="q"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

@@ -35,8 +35,8 @@
                 </group>
 
                 <footer>
-                    <button string="Validate" class="btn-primary" special="save"/>
-                    <button string="Cancel" special="cancel"/>
+                    <button string="Validate" class="btn-primary" special="save" data-hotkey="v"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
         </field>

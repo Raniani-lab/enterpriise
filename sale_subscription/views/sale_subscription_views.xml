@@ -175,10 +175,10 @@
             <form string="Subscription" class="o_subscription_form">
                 <header>
                     <field name="archived_product_count" invisible="1"/>
-                    <button string="Start" name="start_subscription" type="object" attrs="{'invisible': [('stage_category','!=', 'draft')]}" class="btn-primary"/>
-                    <button string="Create Invoice" name="generate_recurring_invoice" type="object" attrs="{'invisible': [('payment_mode', '!=', 'manual')]}" class="btn-primary"/>
+                    <button string="Start" name="start_subscription" type="object" attrs="{'invisible': [('stage_category','!=', 'draft')]}" class="btn-primary" data-hotkey="q"/>
+                    <button string="Create Invoice" name="generate_recurring_invoice" type="object" attrs="{'invisible': [('payment_mode', '!=', 'manual')]}" class="btn-primary" data-hotkey="g"/>
                     <!-- if not archived products, just the renewal -->
-                    <button string="Renewal Quotation" name="prepare_renewal_order" type="object"
+                    <button string="Renewal Quotation" name="prepare_renewal_order" type="object" data-hotkey="w"
                             attrs="{'invisible': ['|',
                             ('archived_product_count','!=', 0),
                             '&amp;',
@@ -188,7 +188,7 @@
                             ('to_renew', '=', False)]}"/>
                     <!-- if archived products, just the renewal with wizard -->
                     <button string="Renewal Quotation" name="%(sale_subscription.sale_subscription_renew_wizard_action)d"
-                            type="action" context="{'active_test':False}"
+                            type="action" context="{'active_test':False}" data-hotkey="w"
                             attrs="{'invisible': ['|',
                             ('archived_product_count','=', 0),
                            '&amp;',
@@ -197,8 +197,8 @@
                             ('stage_category','!=','closed'),
                              ('to_renew', '=', False),
                                     ]}"/>
-                    <button string="Upsell" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
-                    <button string="Close" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('stage_category', 'in', ['draft', 'closed'])]}"/>
+                    <button string="Upsell" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('stage_category', '!=', 'progress')]}" data-hotkey="z"/>
+                    <button string="Close" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('stage_category', 'in', ['draft', 'closed'])]}" data-hotkey="x"/>
                     <field name="stage_id" widget="statusbar"/>
                     <field name="stage_category" invisible="1"/>
                 </header>

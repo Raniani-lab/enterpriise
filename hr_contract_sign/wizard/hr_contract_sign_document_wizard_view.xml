@@ -25,8 +25,8 @@
                     <field name="message" placeholder="Optional Message..."/>
                 </group>
                 <footer>
-                    <button name="validate_signature" string="Send" type="object" class="oe_highlight"/>
-                    <button string="Discard" class="btn-secondary" special="cancel"/>
+                    <button name="validate_signature" string="Send" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
         </field>

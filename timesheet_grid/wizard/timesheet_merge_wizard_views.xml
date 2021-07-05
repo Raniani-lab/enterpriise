@@ -28,8 +28,8 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="action_merge" type="object" string="Merge" class="btn-primary"/>
-                        <button name="cancel" special="cancel" type="object" string="Cancel" class="btn-secondary"/>
+                        <button name="action_merge" type="object" string="Merge" class="btn-primary" data-hotkey="q"/>
+                        <button name="cancel" special="cancel" data-hotkey="z" type="object" string="Cancel" class="btn-secondary"/>
                     </footer>
                 </form>
             </field>

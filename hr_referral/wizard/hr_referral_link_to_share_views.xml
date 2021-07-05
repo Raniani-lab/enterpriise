@@ -14,7 +14,7 @@
                     </group>
                 </group>
                 <footer>
-                    <button string="Close" class="oe_highlight" special="cancel"/>
+                    <button string="Close" class="oe_highlight" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
           </field>

@@ -13,8 +13,8 @@
                     should already be done or are scheduled on a date earlier than <field name="picking_id"/>.
                 </p>
                 <footer>
-                    <button string="Start a New Batch" name="action_generate_new_batch_picking" type="object" class="oe_highlight"/>
-                    <button name="action_open_picking" type="object">
+                    <button string="Start a New Batch" name="action_generate_new_batch_picking" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="action_open_picking" type="object" data-hotkey="w">
                         Process <field name="picking_id" options="{'no_open': True}"/>
                     </button>
                 </footer>

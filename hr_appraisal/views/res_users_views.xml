@@ -28,6 +28,7 @@
                 <button name="action_send_appraisal_request"
                     string="Request Appraisal"
                     type="object"
+                    data-hotkey="g"
                     class="btn btn-primary"/>
             </header>
     </field>

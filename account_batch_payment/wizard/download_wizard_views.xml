@@ -14,7 +14,7 @@
                         </h2>
                     </sheet>
                     <footer>
-                        <button string="Close" class="btn-secondary" special="cancel"/>
+                        <button string="Close" class="btn-secondary" special="cancel" data-hotkey="z"/>
                     </footer>
                 </form>
             </field>

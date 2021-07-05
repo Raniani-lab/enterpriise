@@ -11,8 +11,8 @@
                     <field name="body" no_label="1"/>
                 </group>
                 <footer>
-                    <button string="Send" class="oe_highlight" type="object" name="action_send"/>
-                    <button string="Cancel" special="cancel"/>
+                    <button string="Send" class="oe_highlight" type="object" name="action_send" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
         </field>

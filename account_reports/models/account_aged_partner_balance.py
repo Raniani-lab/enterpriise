@@ -23,11 +23,11 @@ class ReportAccountAgedPartner(models.AbstractModel):
     partner_name = fields.Char(group_operator='max')
     partner_trust = fields.Char(group_operator='max')
     payment_id = fields.Many2one('account.payment')
-    report_date = fields.Date(group_operator='max')
-    expected_pay_date = fields.Date(string='Exp. Date')
+    report_date = fields.Date(group_operator='max', string='Due Date')
+    expected_pay_date = fields.Date(string='Expected Date')
     move_type = fields.Char()
     move_name = fields.Char(group_operator='max')
-    journal_code = fields.Char(group_operator='max')
+    move_ref = fields.Char()
     account_name = fields.Char(group_operator='max')
     account_code = fields.Char(group_operator='max')
     report_currency_id = fields.Many2one('res.currency')
@@ -106,7 +106,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 account_move_line.expected_pay_date AS expected_pay_date,
                 move.move_type AS move_type,
                 move.name AS move_name,
-                journal.code AS journal_code,
+                move.ref AS move_ref,
                 account.code || ' ' || account.name AS account_name,
                 account.code AS account_code,""" + ','.join([("""
                 CASE WHEN period_table.period_index = {i}
@@ -168,7 +168,6 @@ class ReportAccountAgedPartner(models.AbstractModel):
         columns = [
             self._header_column(),
             self._field_column('report_date'),
-            self._field_column('journal_code', name="Journal"),
             self._field_column('account_name', name="Account", ellipsis=True),
             self._field_column('expected_pay_date'),
             self._field_column('period0', name=_("As of: %s") % format_date(self.env, options['date']['date_to'])),
@@ -213,6 +212,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
     def _format_id_line(self, res, value_dict, options):
         res['name'] = value_dict['move_name']
+        res['title_hover'] = value_dict['move_ref']
         res['caret_options'] = 'account.payment' if value_dict.get('payment_id') else 'account.move'
         for col in res['columns']:
             if col.get('no_format') == 0:

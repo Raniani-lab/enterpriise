@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class Job(models.Model):
     _inherit = "hr.job"
-    _order = 'job_open_date'
+    _order = 'sequence, job_open_date'
 
     job_open_date = fields.Date('Job Start Recruitment Date', default=fields.Date.today())
     utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='cascade')

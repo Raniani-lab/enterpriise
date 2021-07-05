@@ -20,8 +20,3 @@ class Users(models.Model):
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS + ['document_count']
 
-
-class Employee(models.Model):
-    _inherit = 'hr.employee'
-
-    document_count = fields.Integer(related='user_id.document_count')

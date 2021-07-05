@@ -138,27 +138,51 @@
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile" sample="1">
-                <field name="name"/>
-                <field name="first_depreciation_date"/>
-                <field name="state"/>
+                <field name="model_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="row mb4">
-                                <div class="col-6">
-                                    <strong><span><t t-esc="record.name.value"/></span></strong>
+                                <div class="col-10 o_account_asset_kanban_title">
+                                    <strong><span><field name="name"/></span></strong>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <strong><t t-esc="record.first_depreciation_date.value"/></strong>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 text-muted">
-                                </div>
-                                <div class="col-6">
+                                <div class="col-2">
                                     <span class="float-right text-right">
                                         <field name="state" widget="label_selection" options="{'classes': {'draft': 'primary', 'open': 'success', 'close': 'default'}}"/>
                                     </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    Original Value
+                                </div>
+                                <div class="col-7 text-right">
+                                    <span><field name="original_value" widget='monetary'/></span>
+                                    <span><field name="currency_id" invisible="1"/></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    Acquisition Date
+                                </div>
+                                <div class="col-7 text-right">
+                                    <span><field name="acquisition_date"/></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    Duration
+                                </div>
+                                <div class="col-7 text-right">
+                                    <field name="method_number"/> <field name="method_period"/>
+                                </div>
+                            </div>
+                            <div class="row" t-if="record.model_id.value">
+                                <div class="col-5">
+                                    Model
+                                </div>
+                                <div class="col-7 text-right">
+                                    <field name="model_id"/>
                                 </div>
                             </div>
                         </div>

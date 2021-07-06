@@ -716,8 +716,8 @@ class product_template(models.Model):
     @api.ondelete(at_uninstall=True)
     def _unlink_except_master_data(self):
         ir_model_data = self.env['ir.model.data']
-        work_in = ir_model_data.xmlid_to_object('pos_blackbox_be.product_product_work_in').product_tmpl_id.id
-        work_out = ir_model_data.xmlid_to_object('pos_blackbox_be.product_product_work_out').product_tmpl_id.id
+        work_in = ir_model_data._xmlid_to_object('pos_blackbox_be.product_product_work_in').product_tmpl_id.id
+        work_out = ir_model_data._xmlid_to_object('pos_blackbox_be.product_product_work_out').product_tmpl_id.id
 
         for product in self.ids:
             if product == work_in or product == work_out:

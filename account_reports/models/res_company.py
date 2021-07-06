@@ -109,7 +109,7 @@ class ResCompany(models.Model):
         activity_deadline = period_end + relativedelta(days=self.account_tax_periodicity_reminder_day)
 
         # Search for an existing tax closing move
-        tax_closing_activity_type_id = self.env['ir.model.data'].xmlid_to_res_id('account_reports.tax_closing_activity_type')
+        tax_closing_activity_type_id = self.env['ir.model.data']._xmlid_to_res_id('account_reports.tax_closing_activity_type')
 
         all_closing_moves = self.env['account.move']
         for fpos in itertools.chain(fiscal_positions, [None] if include_domestic else []):

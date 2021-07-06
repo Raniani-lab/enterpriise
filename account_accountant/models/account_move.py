@@ -98,7 +98,7 @@ class AccountMoveLine(models.Model):
             'type': 'ir.actions.client',
             'name': _('Reconcile'),
             'tag': 'manual_reconciliation_view',
-            'binding_model_id': self.env['ir.model.data'].xmlid_to_res_id('account.model_account_move_line'),
+            'binding_model_id': self.env['ir.model.data']._xmlid_to_res_id('account.model_account_move_line'),
             'binding_type': 'action',
             'binding_view_types': 'list',
             'context': {'active_ids': self.ids, 'active_model': 'account.move.line'},

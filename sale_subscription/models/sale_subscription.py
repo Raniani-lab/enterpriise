@@ -1018,7 +1018,7 @@ class SaleSubscription(models.Model):
                                     'auto_close_limit': auto_close_limit
                                 })
                                 if close_subscription:
-                                    model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_close')
+                                    template_id = imd_res._get_object_reference('sale_subscription', 'email_payment_close')[1]
                                     template = template_res.browse(template_id)
                                     template.with_context(email_context).send_mail(subscription.id)
                                     _logger.debug("Sending Subscription Closure Mail to %s for subscription %s and closing subscription", subscription.partner_id.email, subscription.id)
@@ -1026,7 +1026,7 @@ class SaleSubscription(models.Model):
                                     subscription.message_post(body=msg_body)
                                     subscription.set_close()
                                 else:
-                                    model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_reminder')
+                                    template_id = imd_res._get_object_reference('sale_subscription', 'email_payment_reminder')[1]
                                     msg_body = _('Automatic payment failed. Subscription set to "To Renew".')
                                     if (datetime.date.today() - subscription.recurring_next_date).days in [0, 3, 7, 14]:
                                         template = template_res.browse(template_id)
@@ -1093,7 +1093,7 @@ class SaleSubscription(models.Model):
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
             invoicing_period = relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval})
             next_date = next_date + invoicing_period
-        _, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_success')
+        _, template_id = imd_res._get_object_reference('sale_subscription', 'email_payment_success')
         email_context = self.env.context.copy()
         email_context.update({
             'payment_token': self.payment_token_id.name,

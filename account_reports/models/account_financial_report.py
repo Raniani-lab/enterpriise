@@ -840,7 +840,7 @@ class ReportAccountFinancialReport(models.Model):
 
                 menu_vals = {
                     'name': report._get_report_name(),
-                    'parent_id': parent_id or IMD.xmlid_to_res_id('account.menu_finance_reports'),
+                    'parent_id': parent_id or IMD._xmlid_to_res_id('account.menu_finance_reports'),
                     'action': 'ir.actions.client,%s' % (action.id,),
                 }
                 menu_xmlid = "%s.%s" % (module, 'account_financial_html_report_menu_' + str(report.id))

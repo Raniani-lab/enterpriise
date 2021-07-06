@@ -356,7 +356,7 @@ class FormulaSolver:
             if not re.search(regex, formula):
                 return formula
 
-            if financial_report == self.financial_report:
+            if not financial_report or financial_report == self.financial_report:
                 code_as_html = '''<span class="js_popup_formula">%s</span>''' % code
             else:
                 code_as_html = '''<button data-id="%s" data-target="%s" class="btn btn-sm btn-secondary js_popup_open_report">%s</button>''' % \

@@ -12,7 +12,7 @@
          <field name="name">timesheet.forecast.report.pivot</field>
          <field name="model">project.timesheet.forecast.report.analysis</field>
          <field name="arch" type="xml">
-             <pivot string="Timesheet and Planning Analysis" sample="1">
+             <pivot string="Timesheet and Planning Analysis" sample="1" disable_linking="1">
                  <field name="entry_date" interval="month"/>
                  <field name="employee_id" type="row"/>
                  <field name="planned_hours" widget="timesheet_uom" type="measure"/>
@@ -26,7 +26,7 @@
         <field name="name">timesheet.forecast.report.graph</field>
         <field name="model">project.timesheet.forecast.report.analysis</field>
         <field name="arch" type="xml">
-            <graph string="Timesheet and Planning Analysis" type="bar" sample="1" stacked="False" js_class="hr_timesheet_graphview">
+            <graph string="Timesheet and Planning Analysis" type="bar" sample="1" stacked="False" js_class="hr_timesheet_graphview" disable_linking="1">
                 <field name="entry_date" type="row"/>
                 <field name="planned_hours" widget="timesheet_uom" type="measure"/>
                 <field name="effective_hours" widget="timesheet_uom" type="measure"/>
@@ -61,8 +61,11 @@
                 <field name="project_id" filter_domain="[('project_id', 'ilike', self)]"/>
                 <field name="task_id" filter_domain="[('task_id', 'ilike', self)]"/>
                 <field name="entry_date"/>
-                <filter string="Date" name="year" date="entry_date"/>
+                <filter string="My Team" name="myteam" help="My Team" domain="[('employee_id.parent_id.user_id', '=', uid)]"/>
+                <filter string="My Projects" name="myprojects" domain="[('project_id.user_id', '=', uid)]"/>
+                <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
                 <separator/>
+                <filter string="Date" name="year" date="entry_date"/>
                 <group expand="1" string="Group By">
                     <filter string="Employee" name="resource_employee" context="{'group_by':'employee_id'}"/>
                     <filter string="Task" name="resource_task" context="{'group_by':'task_id'}"/>
@@ -75,7 +78,7 @@
     </record>
 
     <record id="project_timesheet_forecast_report_action" model="ir.actions.act_window">
-        <field name="name">Timesheet and Planning Analysis</field>
+        <field name="name">Timesheets and Planning Analysis</field>
         <field name="res_model">project.timesheet.forecast.report.analysis</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="project_timesheet_forecast_report_view_search"/>
@@ -89,13 +92,13 @@
             <p class="o_view_nocontent_empty_folder">
                 No data yet!
             </p><p>
-                Plan your future project better by comparing planned vs. effective hours taken to complete tasks.
+                Track the progress of your projects by comparing the hours initially planned with the effective hours recorded on your tasks
             </p>
         </field>
     </record>
 
     <menuitem id="menu_project_timesheet_forecast_report_analysis"
-        name="Timesheet and Planning Analysis"
+        name="Timesheets and Planning Analysis"
         parent="project.menu_project_report"
         action="project_timesheet_forecast_report_action"/>
 

@@ -9,7 +9,7 @@
             <xpath expr="//div[hasclass('o_kanban_manage_reporting')]" position="inside">
                 <div t-if="record.allow_timesheets.raw_value and record.allow_billable.raw_value" role="menuitem" groups="project.group_project_manager">
                     <a name="%(project_timesheet_forecast.project_timesheet_forecast_report_action)d" type="action" context="{'search_default_project_id': [active_id]}">
-                        Timesheet and Planning Analysis
+                        Timesheets and Planning Analysis
                     </a>
                 </div>
             </xpath>

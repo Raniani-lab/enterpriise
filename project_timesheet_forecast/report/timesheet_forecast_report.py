@@ -22,6 +22,7 @@ class TimesheetForecastReport(models.Model):
     effective_hours = fields.Float('Effective Hours', readonly=True)
     planned_hours = fields.Float('Planned Hours', readonly=True)
     difference = fields.Float('Difference', readonly=True)
+    user_id = fields.Many2one('res.users', string='Assigned to', readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
@@ -33,6 +34,7 @@ class TimesheetForecastReport(models.Model):
                         F.employee_id AS employee_id,
                         F.task_id AS task_id,
                         F.project_id AS project_id,
+                        F.user_id AS user_id,
                         0.0 AS effective_hours,
                         F.allocated_hours / NULLIF(F.working_days_count, 0) AS planned_hours,
                         F.allocated_hours / NULLIF(F.working_days_count, 0) AS difference,
@@ -56,6 +58,7 @@ class TimesheetForecastReport(models.Model):
                         E.id AS employee_id,
                         A.task_id AS task_id,
                         A.project_id AS project_id,
+                        A.user_id AS user_id,
                         A.unit_amount AS effective_hours,
                         0.0 AS planned_hours,
                         -A.unit_amount AS difference,

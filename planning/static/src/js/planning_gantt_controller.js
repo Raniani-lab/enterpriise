@@ -1,10 +1,11 @@
 /** @odoo-module alias=planning.PlanningGanttController **/
 
 import GanttController from 'web_gantt.GanttController';
-import { _t } from 'web.core';
+import {_t} from 'web.core';
+import {Markup} from 'web.utils';
 import Dialog from 'web.Dialog';
-import { FormViewDialog } from 'web.view_dialogs';
-import { _displayDialogWhenEmployeeNoEmail } from './planning_send/form_controller';
+import {FormViewDialog} from 'web.view_dialogs';
+import {_displayDialogWhenEmployeeNoEmail} from './planning_send/form_controller';
 
 var PlanningGanttController = GanttController.extend({
     events: Object.assign({}, GanttController.prototype.events, {
@@ -105,10 +106,10 @@ var PlanningGanttController = GanttController.extend({
 
                 if (initialState.data.template_creation != state.data.template_creation && state.data.template_creation) {
                     // Then the shift should be saved as a template too.
+                    const message = _t("This shift was successfully saved as a template.")
                     self.displayNotification({
                         type: 'success',
-                        message: `<i class="fa fa-fw fa-check"></i><span class="ml-1">${_t("This shift was successfully saved as a template.")}</span>`,
-                        messageIsHtml: true,
+                        message: Markup`<i class="fa fa-fw fa-check"></i><span class="ml-1">${message}</span>`,
                     });
                 }
 
@@ -143,34 +144,30 @@ var PlanningGanttController = GanttController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onCopyWeekClicked: function (ev) {
+    async _onCopyWeekClicked(ev) {
         ev.preventDefault();
-        var state = this.model.get();
-        var self = this;
-        self._rpc({
-            model: self.modelName,
+        const result = await this._rpc({
+            model: this.modelName,
             method: 'action_copy_previous_week',
             args: [
-                self.model.convertToServerTime(state.startDate),
+                this.model.convertToServerTime(this.model.get().startDate),
                 this.model._getDomain(),
             ],
-            context: _.extend({}, self.context || {}),
-        })
-        .then(function (result) {
-            let notificationOptions = {
-                type: 'success',
-                message: `<i class="fa fa-fw fa-check"></i><span class="ml-1">${_t("The shifts from the previous week have successfully been copied.")}</span>`,
-                messageIsHtml: true,
-            };
-            if (!result) {
-                notificationOptions = {
-                    type: 'danger',
-                    message: _t('There are no shifts to copy or the previous shifts were already copied.'),
-                };
-            }
-            self.displayNotification(notificationOptions);
-            self.reload();
+            context: this.context || {},
         });
+        if (result) {
+            const message = _t("The shifts from the previous week have successfully been copied.");
+            this.displayNotification({
+                type: 'success',
+                message: Markup`<i class="fa fa-fw fa-check"></i><span class="ml-1">${message}</span>`,
+            });
+        } else {
+            this.displayNotification({
+                type: 'danger',
+                message: _t('There are no shifts to copy or the previous shifts were already copied.'),
+            });
+        }
+        this.reload();
     },
     /**
      * @private

@@ -14,6 +14,7 @@ import { registerCleanup } from "@web/../tests/helpers/cleanup";
 
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel"
 import {
+    createSpreadsheetActionManager,
     createSpreadsheetFromPivot,
     setCellContent,
     getCellContent,
@@ -1683,5 +1684,52 @@ module(
                 "It should show the smiley as a smiley 😉"
             );
         });
+        test("create and edit template and create new spreadsheet from it", async function (assert) {
+            assert.expect(4);
+            const templateModel = new Model();
+            setCellContent(templateModel, 'A1', 'Firstname');
+            setCellContent(templateModel, 'B1', 'Lastname');
+            const id = 101;
+            this.data["spreadsheet.template"].records = [{
+                id,
+                name: "template",
+                data: jsonToBase64(templateModel.exportData()),
+            }];
+            let spreadSheetComponent;
+            patchWithCleanup(ClientActionAdapter.prototype, {
+                mounted() {
+                  this._super();
+                  spreadSheetComponent = this.widget.spreadsheetComponent.componentRef.comp;
+                }
+            });
+            const { model, webClient } = await createSpreadsheetTemplate({
+                data: this.data,
+                spreadsheetId: id,
+                mockRPC: function (route, args) {
+                    if (args.model == 'spreadsheet.template'){
+                        if (args.method === 'write') {
+                            const model = base64ToJson(args.args[1].data);
+                            assert.strictEqual(typeof(model), 'object', 'Model type should be object');
+                            const {A1, B1} = model.sheets[0].cells;
+                            assert.equal(
+                                `${A1.content} ${B1.content}`, `Firstname Name`,
+                                'A1 and B1 should be changed after update'
+                            )
+                        }
+                    }
+                    if (this) {
+                        return this._super.apply(this, arguments);
+                    }
+                },
+            })
+
+            setCellContent(model, 'B1', 'Name');
+            await spreadSheetComponent.trigger("spreadsheet_saved", spreadSheetComponent.getSaveData());
+            await doAction(webClient, {
+                type: 'ir.actions.client',
+                tag: 'action_open_template',
+                params: { active_id: id },
+            });
+        })
     }
 );

@@ -37,7 +37,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_template_ac
                 args: [
                     this.res_id,
                     {
-                        data: btoa(data),
+                        data: jsonToBase64(data),
                         thumbnail,
                     },
                 ],

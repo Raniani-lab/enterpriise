@@ -65,7 +65,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
                     this.res_id,
                     {
                         mimetype: "application/o-spreadsheet",
-                        raw: data,
+                        raw: JSON.stringify(data),
                         spreadsheet_snapshot: false,
                         thumbnail,
                     },
@@ -152,7 +152,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
                     [this.res_id],
                     {
                         "thumbnail": thumbnail,
-                        "raw": data,
+                        "raw": JSON.stringify(data),
                     }
                 ],
             });

@@ -144,7 +144,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
         getSaveData() {
             const data = this.spreadsheet.comp.model.exportData();
             return {
-                data: JSON.stringify(data),
+                data,
                 revisionId: data.revisionId,
                 thumbnail: this.getThumbnail()
             };

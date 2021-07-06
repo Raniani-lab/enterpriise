@@ -158,7 +158,7 @@ $grid-pill-height: 3rem;
             }
 
             &.o_grid_cell_empty {
-                & > .o_grid_input, & > .o_grid_show {
+                & > .o_grid_input, & > .o_grid_show, & > .o_grid_float_toggle {
                     opacity: 0.2;
                 }
             }

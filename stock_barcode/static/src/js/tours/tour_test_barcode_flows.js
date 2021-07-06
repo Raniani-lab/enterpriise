@@ -510,8 +510,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
             helper.assertLinesCount(2);
         },
     },
-    /* on this page, scan a product and then edit it through with the form view without explicitly saving it first.
-    */
+    // On this page, scans product1 which will create a new line and then opens its edit form view.
     {
         trigger: '.o_next_page',
     },
@@ -531,11 +530,8 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_field_widget[name="product_id"]',
-    },
-
-    {
         trigger :'.o_save',
+        extra_trigger: '.o_field_widget[name="product_id"]:contains("product1")',
     },
 
     {

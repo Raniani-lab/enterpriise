@@ -175,3 +175,27 @@ QUnit.test("[..., user_ids(, ...)] grouped", async (assert) => {
         ]
     );
 });
+
+QUnit.test('Empty groupby "Assigned To" and "Project" can be rendered', async function (assert) {
+    ganttViewParams.data = {
+        task: {
+            fields: {
+                id: {string: 'ID', type: 'integer'},
+                name: {string: 'Name', type: 'char'},
+                start: {string: 'Start Date', type: 'datetime'},
+                stop: {string: 'Stop Date', type: 'datetime'},
+                project_id: {string: 'Project', type: 'many2one', relation: 'projects'},
+                user_ids: {string: 'Assignees', type: 'many2one', relation: 'users'},
+            },
+            records: [],
+        },
+    };
+
+    assert.expect(1);
+    var gantt = await createView({
+        ...ganttViewParams,
+        groupBy: ['user_ids', 'project_id'],
+    });
+    assert.containsN(gantt, ".o_gantt_row", 2);
+    gantt.destroy();
+});

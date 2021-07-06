@@ -470,7 +470,7 @@ var GanttModel = AbstractModel.extend({
 
         for (const key in currentLevelGroups) {
             const subGroups = currentLevelGroups[key];
-            const groupRecords = groupedRecords[key];
+            const groupRecords = groupedRecords[key] || [];
             // For empty groups (or when groupedByField is a m2m), we can't look at the record to get the
             // formatted value of the field, we have to trust expand_groups.
             let value;

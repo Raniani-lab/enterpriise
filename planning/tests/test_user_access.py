@@ -37,6 +37,7 @@ class TestUserAccess(TransactionCase):
             'name': 'Planning User',
             'user_id': self.planning_user.id,
         })
+        self.res_planning_user = self.hr_planning_user.resource_id
 
         # create an internal user
         self.internal_user = new_test_user(self.env,
@@ -49,12 +50,13 @@ class TestUserAccess(TransactionCase):
             'name': 'Internal User',
             'user_id': self.internal_user.id,
         })
+        self.res_internal_user = self.hr_internal_user.resource_id
 
         # create several slots for users
         self.env['planning.slot'].create({
             'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
             'end_datetime': datetime(2019, 6, 27, 17, 0, 0),
-            'employee_id': self.hr_planning_user.id,
+            'resource_id': self.res_planning_user.id,
             'repeat': True,
             'repeat_type': 'until',
             'repeat_until': datetime(2022, 6, 27, 17, 0, 0),
@@ -65,7 +67,7 @@ class TestUserAccess(TransactionCase):
         self.env['planning.slot'].create({
             'start_datetime': datetime(2019, 6, 28, 8, 0, 0),
             'end_datetime': datetime(2019, 6, 28, 17, 0, 0),
-            'employee_id': self.hr_internal_user.id,
+            'resource_id': self.res_internal_user.id,
             'repeat': True,
             'repeat_type': 'until',
             'repeat_until': datetime(2022, 6, 28, 17, 0, 0),
@@ -87,7 +89,7 @@ class TestUserAccess(TransactionCase):
         self.env['planning.slot'].create({
             'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
             'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
-            'employee_id': self.hr_internal_user.id,
+            'resource_id': self.res_internal_user.id,
             'state': 'draft',
         })
         unpublished_count = self.env['planning.slot'].with_user(self.internal_user).search_count([('state', '=', 'draft')])
@@ -117,7 +119,7 @@ class TestUserAccess(TransactionCase):
         self.env['planning.slot'].create({
             'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
             'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
-            'employee_id': self.hr_planning_user.id,
+            'resource_id': self.res_planning_user.id,
             'state': 'draft',
         })
         unpublished_count = self.env['planning.slot'].with_user(self.planning_user).search_count([('state', '=', 'draft')])
@@ -147,7 +149,7 @@ class TestUserAccess(TransactionCase):
             self.env['planning.slot'].with_user(self.internal_user).create({
                 'start_datetime': datetime(2019, 7, 28, 8, 0, 0),
                 'end_datetime': datetime(2019, 7, 28, 17, 0, 0),
-                'employee_id': self.hr_internal_user.id,
+                'resource_id': self.res_internal_user.id,
                 'repeat': True,
                 'repeat_type': 'until',
                 'repeat_until': datetime(2022, 7, 28, 17, 0, 0),

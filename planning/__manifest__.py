@@ -19,6 +19,7 @@
         'wizard/slot_planning_select_send_views.xml',
         'views/hr_views.xml',
         'views/planning_template_views.xml',
+        'views/resource_views.xml',
         'views/planning_views.xml',
         'views/planning_report_views.xml',
         'views/res_config_settings_views.xml',

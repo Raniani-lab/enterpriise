@@ -37,7 +37,7 @@ class TestPlanningHr(TestCommonPlanning):
 
     def test_hr_employee_view_planning(self):
         self.env['planning.slot'].create({
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
             'start_datetime': datetime(2021, 6, 4, 8, 0),
             'end_datetime': datetime(2021, 6, 5, 17, 0),
         }).copy()
@@ -46,4 +46,4 @@ class TestPlanningHr(TestCommonPlanning):
         slots = self.env['planning.slot'].search(action['domain'])
         self.assertEqual(action['res_model'], 'planning.slot')
         self.assertEqual(len(slots), 2, 'Bert has 2 planning slots')
-        self.assertEqual(action['context']['default_employee_id'], self.employee_bert.id)
+        self.assertEqual(action['context']['default_resource_id'], self.resource_bert.id)

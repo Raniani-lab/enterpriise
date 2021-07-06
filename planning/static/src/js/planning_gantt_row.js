@@ -5,6 +5,19 @@ import fieldUtils from 'web.field_utils';
 
 const PlanningGanttRow = HrGanttRow.extend({
     template: 'PlanningGanttView.Row',
+
+    init(parent, pillsInfo, viewInfo, options) {
+        this._super(...arguments);
+        const isGroupedByResource = pillsInfo.groupedByField === 'resource_id';
+        const isEmptyGroup = pillsInfo.groupId === 'empty';
+        this.employeeID = pillsInfo.pills && pillsInfo.pills.length && Array.isArray(pillsInfo.pills[0].employee_id) ? pillsInfo.pills[0].employee_id[0] : false;
+        this.showEmployeeAvatar = (isGroupedByResource && !isEmptyGroup && !!this.employeeID);
+    },
+
+    _getEmployeeID() {
+        return this.employeeID;
+    },
+
     /**
      * Add allocated hours formatted to context
      *

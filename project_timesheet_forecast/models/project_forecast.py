@@ -41,3 +41,6 @@ class Forecast(models.Model):
                     timesheets = Timesheet.browse()
 
                 forecast.effective_hours = sum(timesheet.unit_amount for timesheet in timesheets)
+
+    def _read_group_fields_nullify(self):
+        return super()._read_group_fields_nullify() + ['effective_hours']

@@ -47,13 +47,16 @@ class TestCommonPlanning(TransactionCase):
             'work_email': 'joseph@a.be',
             'tz': 'UTC'
         })
+        cls.resource_joseph = cls.employee_joseph.resource_id
         cls.employee_bert = cls.env['hr.employee'].create({
             'name': 'bert',
             'work_email': 'bert@a.be',
             'tz': 'UTC'
         })
+        cls.resource_bert = cls.employee_bert.resource_id
         cls.employee_janice = cls.env['hr.employee'].create({
             'name': 'janice',
             'work_email': 'janice@a.be',
             'tz': 'America/New_York'
         })
+        cls.resource_janice = cls.employee_janice.resource_id

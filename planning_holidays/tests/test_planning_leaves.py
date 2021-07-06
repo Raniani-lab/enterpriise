@@ -15,12 +15,12 @@ class TestPlanningLeaves(TestCommon):
         })
 
         slot_1 = self.env['planning.slot'].create({
-            'employee_id': self.patrick.id,
+            'resource_id': self.res_patrick.id,
             'start_datetime': datetime.datetime(2020, 1, 1, 8, 0),
             'end_datetime': datetime.datetime(2020, 1, 1, 17, 0),
         })
         slot_2 = self.env['planning.slot'].create({
-            'employee_id': self.patrick.id,
+            'resource_id': self.res_patrick.id,
             'start_datetime': datetime.datetime(2020, 1, 2, 8, 0),
             'end_datetime': datetime.datetime(2020, 1, 2, 17, 0),
         })
@@ -54,7 +54,7 @@ class TestPlanningLeaves(TestCommon):
         }).action_validate()
 
         slot_1 = self.env['planning.slot'].create({
-            'employee_id': self.patrick.id,
+            'resource_id': self.res_patrick.id,
             'start_datetime': datetime.datetime(2020, 1, 6, 8, 0),
             'end_datetime': datetime.datetime(2020, 1, 6, 17, 0),
         })
@@ -65,7 +65,7 @@ class TestPlanningLeaves(TestCommon):
             "patrick is on time off on that day"), "single day slot, should show 'on that day'")
 
         slot_2 = self.env['planning.slot'].create({
-            'employee_id': self.patrick.id,
+            'resource_id': self.res_patrick.id,
             'start_datetime': datetime.datetime(2020, 1, 6, 8, 0),
             'end_datetime': datetime.datetime(2020, 1, 7, 17, 0),
         })
@@ -73,7 +73,7 @@ class TestPlanningLeaves(TestCommon):
                          "patrick is on time off from the 01/06/2020 to the 01/07/2020.")
 
         slot_3 = self.env['planning.slot'].create({
-            'employee_id': self.patrick.id,
+            'resource_id': self.res_patrick.id,
             'start_datetime': datetime.datetime(2020, 1, 6, 8, 0),
             'end_datetime': datetime.datetime(2020, 1, 10, 17, 0),
         })

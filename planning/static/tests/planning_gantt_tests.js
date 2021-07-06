@@ -21,10 +21,10 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                         start: { string: "Start Date", type: "datetime" },
                         stop: { string: "Stop Date", type: "datetime" },
                         time: { string: "Time", type: "float" },
-                        employee_id: {
+                        resource_id: {
                             string: "Assigned to",
                             type: "many2one",
-                            relation: "hr.employee",
+                            relation: "resource.resource",
                         },
                         department_id: {
                             string: "Department",
@@ -40,7 +40,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     },
                     records: [],
                 },
-                'hr.employee': {
+                'resource.resource': {
                     fields: {
                         id: { string: "ID", type: "integer" },
                         name: { string: "Name", type: "char" },
@@ -77,7 +77,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     <gantt date_start="start" date_stop="stop" sample="1"/>`,
                 data: this.data,
                 domain: Domain.FALSE_DOMAIN,
-                groupBy: ["employee_id"],
+                groupBy: ["resource_id"],
                 model: "task",
                 View: PlanningGanttView,
                 viewOptions: { initialDate },
@@ -118,13 +118,13 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                             <field name="name"/>
                             <field name="start"/>
                             <field name="stop"/>
-                            <field name="employee_id"/>
+                            <field name="resource_id"/>
                         </form>`,
                 },
                 viewOptions: {
                     initialDate: new Date(),
                 },
-                groupBy: ['employee_id'],
+                groupBy: ['resource_id'],
             });
 
             assert.hasClass(gantt, 'o_view_sample_data');
@@ -162,7 +162,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                             <field name="name"/>
                             <field name="start"/>
                             <field name="stop"/>
-                            <field name="employee_id"/>
+                            <field name="resource_id"/>
                             <field name="role_id"/>
                             <field name="department_id"/>
                         </form>`,
@@ -170,7 +170,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 viewOptions: {
                     initialDate: new Date(),
                 },
-                groupBy: ['department_id', 'role_id', 'employee_id'],
+                groupBy: ['department_id', 'role_id', 'resource_id'],
             });
 
             function getRow(index) {

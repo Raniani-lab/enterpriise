@@ -17,11 +17,13 @@ class TestCommonForecast(TransactionCase):
             'work_email': 'joseph@a.be',
             'tz': 'UTC'
         })
+        cls.resource_joseph = cls.employee_joseph.resource_id
         cls.employee_bert = cls.env['hr.employee'].create({
             'name': 'bert',
             'work_email': 'bert@a.be',
             'tz': 'UTC'
         })
+        cls.resource_bert = cls.employee_bert.resource_id
 
     @classmethod
     def setUpProjects(cls):

@@ -6,19 +6,19 @@ import { PlanningModelMixin } from './planning_mixins';
 
 const GROUPBY_COMBINATIONS = [
     "role_id",
-    "role_id,employee_id",
+    "role_id,resource_id",
     "role_id,department_id",
     "department_id",
     "department_id,role_id",
     "project_id",
     "project_id,department_id",
-    "project_id,employee_id",
+    "project_id,resource_id",
     "project_id,role_id",
-    "project_id,task_id,employee_id",
+    "project_id,task_id,resource_id",
     "project_id,task_id,role_id",
     "task_id",
     "task_id,department_id",
-    "task_id,employee_id",
+    "task_id,resource_id",
     "task_id,role_id",
 ];
 
@@ -28,7 +28,7 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
      */
     __reload(handle, params) {
         if ("context" in params && params.context.planning_groupby_role && !params.groupBy.length) {
-            params.groupBy.unshift('employee_id');
+            params.groupBy.unshift('resource_id');
             params.groupBy.unshift('role_id');
         }
         return this._super(handle, params);
@@ -52,7 +52,7 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
             if (parentPath.length === 0) {
                 // _generateRows is a recursive function.
                 // Here, we are generating top level rows.
-                if (groupedBy.includes("employee_id")) {
+                if (groupedBy.includes("resource_id")) {
                     // The group with false values for every groupby can be absent from
                     // groups (= groups returned by read_group basically).
                     // Here we add the fake group {} in groups in any case (this simulates the group
@@ -85,13 +85,13 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
         return rows;
     },
     /**
-     * Rename 'Undefined Employee' and 'Undefined Department' to 'Open Shifts'.
+     * Rename 'Undefined Resource' and 'Undefined Department' to 'Open Shifts'.
      *
      * @private
      * @override
      */
     _getRowName(groupedByField, value) {
-        if (["department_id", "employee_id"].includes(groupedByField)) {
+        if (["department_id", "resource_id"].includes(groupedByField)) {
             const resId = Array.isArray(value) ? value[0] : value;
             if (!resId) {
                 return _t("Open Shifts");

@@ -35,7 +35,7 @@ class ShiftController(http.Controller):
         open_slots = []
 
         if planning_sudo.include_unassigned:
-            planning_slots = planning_sudo.slot_ids.filtered(lambda s: (s.employee_id == employee_sudo or not s.employee_id) and s.state == 'published')
+            planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo or not s.resource_id and s.state == 'published')
         else:
             planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo and s.state == 'published')
 
@@ -146,10 +146,10 @@ class ShiftController(http.Controller):
         if not planning_sudo or slot_sudo.id not in planning_sudo.slot_ids._ids:
             return request.not_found()
 
-        if slot_sudo.employee_id:
+        if slot_sudo.resource_id:
             return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'already_assign'))
 
-        slot_sudo.write({'employee_id': employee_sudo.id})
+        slot_sudo.write({'resource_id': employee_sudo.resource_id.id})
         if message:
             return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'assign'))
         else:
@@ -172,7 +172,7 @@ class ShiftController(http.Controller):
         if not planning_sudo or slot_sudo.id not in planning_sudo.slot_ids._ids:
             return request.not_found()
 
-        slot_sudo.write({'employee_id': False})
+        slot_sudo.write({'resource_id': False})
         if message:
             return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'unassign'))
         else:
@@ -189,7 +189,7 @@ class ShiftController(http.Controller):
             return request.not_found()
 
         if not slot_sudo.employee_id:
-            slot_sudo.write({'employee_id': employee})
+            slot_sudo.write({'resource_id': employee.resource_id.id})
 
         return request.redirect('/web?#action=planning.planning_action_open_shift')
 
@@ -208,7 +208,7 @@ class ShiftController(http.Controller):
         if not employee or employee != slot_sudo.employee_id:
             return request.not_found()
 
-        slot_sudo.write({'employee_id': False})
+        slot_sudo.write({'resource_id': False})
 
         if request.env.user:
             return request.redirect('/web?#action=planning.planning_action_open_shift')

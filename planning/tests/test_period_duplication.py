@@ -12,17 +12,17 @@ class TestPeriodDuplication(TestCommonPlanning):
         super(TestPeriodDuplication, cls).setUpClass()
         cls.setUpEmployees()
         cls.env['planning.slot'].create({
-            'employee_id': cls.employee_bert.id,
+            'resource_id': cls.resource_bert.id,
             'start_datetime': datetime(2019, 6, 2, 8, 0),
             'end_datetime': datetime(2019, 6, 2, 17, 0),
         })
         cls.env['planning.slot'].create({
-            'employee_id': cls.employee_bert.id,
+            'resource_id': cls.resource_bert.id,
             'start_datetime': datetime(2019, 6, 4, 8, 0),
             'end_datetime': datetime(2019, 6, 5, 17, 0),
         })
         cls.env['planning.slot'].create({
-            'employee_id': cls.employee_bert.id,
+            'resource_id': cls.resource_bert.id,
             'start_datetime': datetime(2019, 6, 3, 8, 0),
             'end_datetime': datetime(2019, 6, 3, 17, 0),
             'repeat': True,
@@ -31,7 +31,7 @@ class TestPeriodDuplication(TestCommonPlanning):
             'repeat_interval': 1,
         })
         cls.env['planning.slot'].create({
-            'employee_id': cls.employee_joseph.id,
+            'resource_id': cls.resource_joseph.id,
             'start_datetime': datetime(2020, 10, 19, 6, 0),
             'end_datetime': datetime(2020, 10, 19, 15, 0),
         })

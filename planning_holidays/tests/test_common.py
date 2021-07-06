@@ -14,10 +14,12 @@ class TestCommon(TransactionCase):
             'name': 'patrick',
             'tz': 'UTC',
         })
+        self.res_patrick = self.patrick.resource_id
         self.bob = self.env['hr.employee'].create({
             'name': 'bob',
             'tz': 'UTC',
         })
+        self.res_bob = self.bob.resource_id
 
         # Leave type
         self.leave_type = self.env['hr.leave.type'].create({
@@ -37,5 +39,3 @@ class TestCommon(TransactionCase):
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.bob.id,
         })
-
-

@@ -12,7 +12,7 @@
             <xpath expr="//field[@name='allocated_hours']" position="after">
                 <field name="allow_timesheets" invisible="1"/>
                 <field name="allocation_type" invisible="1"/>
-                <field name="effective_hours" widget="float_time" attrs="{'invisible': ['|', '|', '|', ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}" decoration-danger="forecast_hours &gt; 0 and effective_hours > forecast_hours"/>
+                <field name="effective_hours" widget="float_time" attrs="{'invisible': ['|', '|', '|', '|', ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False), ('resource_type', '!=', 'user')]}" decoration-danger="forecast_hours &gt; 0 and effective_hours > forecast_hours"/>
             </xpath>
         </field>
     </record>
@@ -67,8 +67,8 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{
-            'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
-            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+            'search_default_group_by_role': 1, 'search_default_group_by_resource': 2, 'planning_groupby_role': True,
+            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

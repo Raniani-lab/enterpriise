@@ -35,7 +35,7 @@ class PlanningShift(models.Model):
     allow_forecast = fields.Boolean(related="project_id.allow_forecast")
     forecast_hours = fields.Float("Forecast Hours", compute='_compute_forecast_hours', help="Number of hours already forecast for this task (and its sub-tasks).")
     parent_id = fields.Many2one('project.task', related='task_id.parent_id', store=True)  # store for group by
-    employee_id = fields.Many2one(compute='_compute_employee_id', store=True, readonly=False)
+    resource_id = fields.Many2one(compute='_compute_resource_id', store=True, readonly=False)
 
     _sql_constraints = [
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
@@ -156,9 +156,9 @@ class PlanningShift(models.Model):
         super(PlanningShift, self)._compute_allow_template_creation()
 
     @api.depends('task_id')
-    def _compute_employee_id(self):
-        for slot in self.filtered(lambda slot: not slot.employee_id and slot.task_id):
-            slot.employee_id = slot.task_id.user_id.employee_id
+    def _compute_resource_id(self):
+        for slot in self.filtered(lambda slot: not slot.resource_id and slot.task_id):
+            slot.resource_id = slot.task_id.user_id.resource_ids.filtered(lambda r: r.company_id.id == slot.company_id.id)
 
     @api.model_create_multi
     def create(self, vals_list):

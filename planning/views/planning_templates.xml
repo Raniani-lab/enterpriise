@@ -75,7 +75,7 @@
                                                 <td t-if="has_role" class="align-middle"><t t-esc="shift.role_id.name"/></td>
                                                 <td t-if="has_note" class="align-middle"><t t-esc="shift.name"/></td>
                                                 <td>
-                                                    <t t-if="not shift.employee_id">
+                                                    <t t-if="not shift.resource_id">
                                                         <div class="text-center float-right">
                                                             <form t-attf-action="/planning/#{planning_planning_id.access_token}/#{employee.employee_token}/assign/#{shift.id}" method="post">
                                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>

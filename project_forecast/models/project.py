@@ -54,7 +54,7 @@ class Task(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("project_forecast.project_forecast_action_schedule_by_employee")
         first_slot = self.env['planning.slot'].search([('end_datetime', '>=', datetime.datetime.now()), ('task_id', 'in', allowed_task_ids)], limit=1, order="end_datetime asc")
         action_context = {
-            'group_by': ['task_id', 'employee_id'],
+            'group_by': ['task_id', 'resource_id'],
         }
         if first_slot:
             action_context.update({'initialDate': first_slot.start_datetime})

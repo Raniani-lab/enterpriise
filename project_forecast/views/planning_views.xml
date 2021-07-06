@@ -129,13 +129,13 @@
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{
             'search_default_group_by_project': 1, 'planning_groupby_project': True,
-            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1
+            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
             </p><p>
-                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
+                Shifts are periods allocated to your resources for a specific role. Together, they constitute your resources' planning.
             </p>
         </field>
     </record>
@@ -148,19 +148,19 @@
         </record>
 
         <record id="project_forecast_action_schedule_by_employee" model="ir.actions.act_window">
-            <field name="name">Schedule by Employee</field>
+            <field name="name">Schedule by Resource</field>
             <field name="res_model">planning.slot</field>
             <field name="view_mode">gantt,calendar,tree,form,kanban</field>
             <field name="view_id" ref="project_forecast.planning_view_gantt"/>
             <field name="context">{
-                'search_default_group_by_employee': 1, 'planning_groupby_employee': True, 'planning_expand_employee': 1, 'planning_expand_role': 1,
+                'search_default_group_by_resource': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1,
                 'planning_expand_project': 1, 'planning_expand_task': 1
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     No shifts found. Let's create one!
                 </p><p>
-                    Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
+                    Shifts are periods allocated to your resources for a specific role. Together, they constitute your resources' planning.
                 </p>
             </field>
         </record>
@@ -176,20 +176,20 @@
     <record id="planning.planning_action_my_calendar" model="ir.actions.act_window">
         <field name="context">{
             'search_default_my_shifts': 1, 'search_default_open_shifts': 1,
-            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
             </p><p>
-                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
+                Shifts are periods allocated to your resources for a specific role. Together, they constitute your resources' planning.
             </p>
         </field>
     </record>
 
-    <record id="planning.planning_action_schedule_by_employee" model="ir.actions.act_window">
+    <record id="planning.planning_action_schedule_by_resource" model="ir.actions.act_window">
         <field name="context">{
-            'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1,
+            'search_default_group_by_resource': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1,
             'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">
@@ -203,8 +203,8 @@
 
     <record id="planning.planning_action_schedule_by_role" model="ir.actions.act_window">
         <field name="context">{
-            'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
-            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+            'search_default_group_by_role': 1, 'search_default_group_by_resource': 2, 'planning_groupby_role': True,
+            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -223,11 +223,11 @@
         parent="planning.planning_menu_schedule"
         action="planning_action_schedule_by_project"/>
 
-    <!--  override of the schedule by employee menu entry to take into account the option
+    <!--  override of the schedule by resource menu entry to take into account the option
           project_forecast_display_allocated_time  -->
         <menuitem
-            id="planning.planning_menu_schedule_by_employee"
-            name="By Employee"
+            id="planning.planning_menu_schedule_by_resource"
+            name="By Resource"
             sequence="10"
             parent="planning.planning_menu_schedule"
             action="project_forecast_action_schedule_by_employee"/>

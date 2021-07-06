@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from ast import literal_eval
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
-import json
 import logging
 import pytz
 import uuid
@@ -13,9 +11,8 @@ from random import randint
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
-from odoo.tools import format_time
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from odoo.tools.misc import format_date, format_datetime
+from odoo.tools.misc import format_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -45,15 +42,17 @@ class Planning(models.Model):
         return datetime.combine(fields.Datetime.now(), datetime.max.time())
 
     name = fields.Text('Note')
-    employee_id = fields.Many2one('hr.employee', "Employee", group_expand='_read_group_employee_id')
+    resource_id = fields.Many2one('resource.resource', 'Resource', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", group_expand='_read_group_resource_id')
+    resource_type = fields.Selection(related='resource_id.resource_type')
+    employee_id = fields.Many2one('hr.employee', 'Employee', compute='_compute_employee_id', store=True)
     work_email = fields.Char("Work Email", related='employee_id.work_email')
     department_id = fields.Many2one(related='employee_id.department_id', store=True)
-    user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
+    user_id = fields.Many2one('res.users', string="User", related='resource_id.user_id', store=True, readonly=True)
     manager_id = fields.Many2one(related='employee_id.parent_id')
     job_title = fields.Char(related='employee_id.job_title')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
     role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id')
-    color = fields.Integer("Color", related='role_id.color')
+    color = fields.Integer("Color", compute='_compute_color')
     was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
     access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
 
@@ -119,6 +118,11 @@ class Planning(models.Model):
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
 
+    @api.depends('role_id.color', 'resource_id.color')
+    def _compute_color(self):
+        for slot in self:
+            slot.color = slot.role_id.color or slot.resource_id.color
+
     @api.depends('repeat_until')
     def _compute_confirm_delete(self):
         for slot in self:
@@ -130,25 +134,27 @@ class Planning(models.Model):
     @api.constrains('repeat_until')
     def _check_repeat_until(self):
         if any([slot.repeat_until and slot.repeat_until < slot.start_datetime.date() for slot in self]):
-            raise UserError(_('The recurrence until date should be after the shift start date')) 
+            raise UserError(_('The recurrence until date should be after the shift start date'))
 
     @api.onchange('repeat_until')
     def _onchange_repeat_until(self):
         self._check_repeat_until()
 
-    @api.depends('employee_id.company_id')
+    @api.depends('resource_id.company_id')
     def _compute_planning_slot_company_id(self):
         for slot in self:
-            if slot.employee_id:
-                slot.company_id = slot.employee_id.company_id.id
-            if not slot.company_id.id:
-                slot.company_id = slot.env.company
+            slot.company_id = slot.resource_id.company_id or slot.env.company
 
     @api.depends('start_datetime')
     def _compute_past_shift(self):
         now = fields.Datetime.now()
         for slot in self:
             slot.is_past = slot.end_datetime < now if slot.end_datetime else False
+
+    @api.depends('resource_id.employee_id', 'resource_type')
+    def _compute_employee_id(self):
+        for slot in self:
+            slot.employee_id = slot.resource_id.employee_id if slot.resource_type == 'user' else False
 
     @api.depends('employee_id', 'template_id')
     def _compute_role_id(self):
@@ -203,7 +209,7 @@ class Planning(models.Model):
                         slot.allocated_percentage = 100
 
     @api.depends(
-        'start_datetime', 'end_datetime', 'employee_id.resource_calendar_id',
+        'start_datetime', 'end_datetime', 'resource_id.calendar_id',
         'company_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
         percentage_field = self._fields['allocated_percentage']
@@ -214,7 +220,7 @@ class Planning(models.Model):
                 if slot.allocation_type == 'planning':
                     slot.allocated_hours = slot._get_slot_duration() * ratio
                 else:
-                    calendar = slot.employee_id.resource_calendar_id or slot.company_id.resource_calendar_id
+                    calendar = slot.resource_id.calendar_id or slot.company_id.resource_calendar_id
                     hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime) if calendar else slot._get_slot_duration()
                     slot.allocated_hours = hours * ratio
             else:
@@ -230,17 +236,17 @@ class Planning(models.Model):
             else:
                 slot.working_days_count = 0
 
-    @api.depends('start_datetime', 'end_datetime', 'employee_id')
+    @api.depends('start_datetime', 'end_datetime', 'resource_id')
     def _compute_overlap_slot_count(self):
         if self.ids:
-            self.flush(['start_datetime', 'end_datetime', 'employee_id'])
+            self.flush(['start_datetime', 'end_datetime', 'resource_id'])
             query = """
                 SELECT S1.id,ARRAY_AGG(DISTINCT S2.id) as conflict_ids FROM
                     planning_slot S1, planning_slot S2
                 WHERE
                     S1.start_datetime < S2.end_datetime
                     AND S1.end_datetime > S2.start_datetime
-                    AND S1.id <> S2.id AND S1.employee_id = S2.employee_id
+                    AND S1.id <> S2.id AND S1.resource_id = S2.resource_id
                     AND S1.allocated_percentage + S2.allocated_percentage > 100
                     and S1.id in %s
                 GROUP BY S1.id;
@@ -262,7 +268,7 @@ class Planning(models.Model):
         query = """
             SELECT S1.id
             FROM planning_slot S1
-            INNER JOIN planning_slot S2 ON S1.employee_id = S2.employee_id AND S1.id <> S2.id
+            INNER JOIN planning_slot S2 ON S1.resource_id = S2.resource_id AND S1.id <> S2.id
             WHERE
                 S1.start_datetime < S2.end_datetime
                 AND S1.end_datetime > S2.start_datetime
@@ -284,7 +290,9 @@ class Planning(models.Model):
 
     def _get_domain_template_slots(self):
         domain = []
-        if self.role_id:
+        if self.resource_type == 'material':
+            domain += [('role_id', '=', False)]
+        elif self.role_id:
             domain += ['|', ('role_id', '=', self.role_id.id), ('role_id', '=', False)]
         elif self.employee_id and self.employee_id.sudo().planning_role_ids:
             domain += ['|', ('role_id', 'in', self.employee_id.sudo().planning_role_ids.ids), ('role_id', '=', False)]
@@ -408,17 +416,17 @@ class Planning(models.Model):
     def _calculate_start_end_dates(self,
                                  start_datetime,
                                  end_datetime,
-                                 employee_id,
+                                 resource_id,
                                  template_id,
                                  previous_template_id,
                                  template_reset):
         user_tz = pytz.timezone(self._get_tz())
-        employee = employee_id if employee_id else self.env.user.employee_id
+        resource = resource_id or self.env.user.employee_id.resource_id
 
         start = start_datetime or self._default_start_datetime()
         end = end_datetime or self._default_end_datetime()
-        if employee and employee.tz == self.env.user.tz:
-            work_interval_start, work_interval_end = employee._adjust_to_calendar(start, end)[employee]
+        if resource and resource.tz == self.env.user.tz:
+            work_interval_start, work_interval_end = resource._adjust_to_calendar(start, end)[resource]
             start, end = (work_interval_start or start, work_interval_end or end)
 
         if not previous_template_id and not template_reset:
@@ -445,14 +453,14 @@ class Planning(models.Model):
         for slot in self.filtered(lambda s: s.template_id):
             slot.start_datetime, slot.end_datetime = self._calculate_start_end_dates(slot.start_datetime,
                                                                                      slot.end_datetime,
-                                                                                     slot.employee_id,
+                                                                                     slot.resource_id,
                                                                                      slot.template_id,
                                                                                      slot.previous_template_id,
                                                                                      slot.template_reset)
 
-    @api.depends('start_datetime', 'end_datetime', 'employee_id')
+    @api.depends('start_datetime', 'end_datetime', 'resource_id')
     def _compute_publication_warning(self):
-        with_warning = self.filtered(lambda t: t.employee_id and t.state == 'published')
+        with_warning = self.filtered(lambda t: t.resource_id and t.state == 'published')
         with_warning.update({'publication_warning': True})
 
     def _company_working_hours(self, start, end):
@@ -481,17 +489,33 @@ class Planning(models.Model):
     # ----------------------------------------------------
 
     @api.model
+    def _read_group_fields_nullify(self):
+        return ['working_days_count']
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        res = super().read_group(domain, fields, groupby, offset, limit, orderby, False)
+
+        null_fields = [f for f in self._read_group_fields_nullify() if any(f2.startswith(f) for f2 in fields)]
+        if null_fields:
+            for r in res:
+                for f in null_fields:
+                    if r[f] == 0:
+                        r[f] = False
+        return res
+
+    @api.model
     def default_get(self, fields_list):
         res = super(Planning, self).default_get(fields_list)
 
-        if res.get('employee_id'):
-            employee_id = self.env['hr.employee'].browse(res.get('employee_id'))
+        if res.get('resource_id'):
+            resource_id = self.env['resource.resource'].browse(res.get('resource_id'))
             template_id, previous_template_id = [res.get(key) for key in ['template_id', 'previous_template_id']]
             template_id = template_id and self.env['planning.slot.template'].browse(template_id)
             previous_template_id = template_id and self.env['planning.slot.template'].browse(previous_template_id)
             res['start_datetime'], res['end_datetime'] = self._calculate_start_end_dates(res.get('start_datetime'),
                                                                                        res.get('end_datetime'),
-                                                                                       employee_id,
+                                                                                       resource_id,
                                                                                        template_id,
                                                                                        previous_template_id,
                                                                                        res.get('template_reset'))
@@ -534,7 +558,8 @@ class Planning(models.Model):
         result = []
         for slot in self:
             # label part, depending on context `groupby`
-            name = ' - '.join([self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:3])  # limit to 3 labels
+            name_values = [self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:3]  # limit to 3 labels
+            name = ' - '.join(name_values) or slot.resource_id.name
 
             # add unicode bubble to tell there is a note
             if slot.name:
@@ -546,8 +571,8 @@ class Planning(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if not vals.get('company_id') and vals.get('employee_id'):
-                vals['company_id'] = self.env['hr.employee'].browse(vals.get('employee_id')).company_id.id
+            if not vals.get('company_id') and vals.get('resource_id'):
+                vals['company_id'] = self.env['resource.resource'].browse(vals.get('resource_id')).company_id.id
             if not vals.get('company_id'):
                 vals['company_id'] = self.env.company.id
         return super().create(vals_list)
@@ -603,24 +628,15 @@ class Planning(models.Model):
             }
         }
 
-    def action_open_employee_form(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'hr.employee',
-            'res_id': self.employee_id.id,
-            'target': 'new',
-            'view_mode': 'form'
-        }
-
     def action_self_assign(self):
         """ Allow planning user to self assign open shift. """
         self.ensure_one()
         # user must at least 'read' the shift to self assign (Prevent any user in the system (portal, ...) to assign themselves)
         if not self.check_access_rights('read', raise_exception=False):
-            raise AccessError(_("You don't the right to self assign."))
-        if self.employee_id:
+            raise AccessError(_("You don't have the right to self assign."))
+        if self.resource_id:
             raise UserError(_("You can not assign yourself to an already assigned shift."))
-        return self.sudo().write({'employee_id': self.env.user.employee_id.id if self.env.user.employee_id else False})
+        return self.sudo().write({'resource_id': self.env.user.employee_id.resource_id.id if self.env.user.employee_id else False})
 
     def action_self_unassign(self):
         """ Allow planning user to self unassign from a shift, if the feature is activated """
@@ -633,7 +649,7 @@ class Planning(models.Model):
             raise UserError(_("The deadline for unassignment has passed."))
         if self.employee_id != self.env.user.employee_id:
             raise UserError(_("You can not unassign another employee than yourself."))
-        return self.sudo().write({'employee_id': False})
+        return self.sudo().write({'resource_id': False})
 
     # ----------------------------------------------------
     # Gantt - Calendar view
@@ -643,35 +659,35 @@ class Planning(models.Model):
     def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):
         start_datetime = fields.Datetime.from_string(start_date)
         end_datetime = fields.Datetime.from_string(end_date)
-        employee_ids = set()
+        resource_ids = set()
 
-        # function to "mark" top level rows concerning employees
+        # function to "mark" top level rows concerning resources
         # the propagation of that item to subrows is taken care of in the traverse function below
-        def tag_employee_rows(rows):
+        def tag_resource_rows(rows):
             for row in rows:
                 group_bys = row.get('groupedBy')
                 res_id = row.get('resId')
                 if group_bys:
-                    # if employee_id is the first grouping attribute, we mark the row
-                    if group_bys[0] == 'employee_id' and res_id:
-                        employee_id = res_id
-                        employee_ids.add(employee_id)
-                        row['employee_id'] = employee_id
-                    # else we recursively traverse the rows where employee_id appears in the group_by
-                    elif 'employee_id' in group_bys:
-                        tag_employee_rows(row.get('rows'))
+                    # if resource_id is the first grouping attribute, we mark the row
+                    if group_bys[0] == 'resource_id' and res_id:
+                        resource_id = res_id
+                        resource_ids.add(resource_id)
+                        row['resource_id'] = resource_id
+                    # else we recursively traverse the rows where resource_id appears in the group_by
+                    elif 'resource_id' in group_bys:
+                        tag_resource_rows(row.get('rows'))
 
-        tag_employee_rows(rows)
-        employees = self.env['hr.employee'].browse(employee_ids)
-        leaves_mapping = employees.mapped('resource_id')._get_unavailable_intervals(start_datetime, end_datetime)
+        tag_resource_rows(rows)
+        resources = self.env['resource.resource'].browse(resource_ids)
+        leaves_mapping = resources._get_unavailable_intervals(start_datetime, end_datetime)
         company_leaves = self.env.company.resource_calendar_id._unavailable_intervals(start_datetime.replace(tzinfo=pytz.utc), end_datetime.replace(tzinfo=pytz.utc))
 
         # function to recursively replace subrows with the ones returned by func
         def traverse(func, row):
             new_row = dict(row)
-            if new_row.get('employee_id'):
+            if new_row.get('resource_id'):
                 for sub_row in new_row.get('rows'):
-                    sub_row['employee_id'] = new_row['employee_id']
+                    sub_row['resource_id'] = new_row['resource_id']
             new_row['rows'] = [traverse(func, row) for row in new_row.get('rows')]
             return func(new_row)
 
@@ -682,10 +698,10 @@ class Planning(models.Model):
             new_row = dict(row)
 
             calendar = company_leaves
-            if row.get('employee_id'):
-                employee_id = self.env['hr.employee'].browse(row.get('employee_id'))
-                if employee_id:
-                    calendar = leaves_mapping[employee_id.resource_id.id]
+            if row.get('resource_id'):
+                resource_id = self.env['resource.resource'].browse(row.get('resource_id'))
+                if resource_id:
+                    calendar = leaves_mapping[resource_id.id]
 
             # remove intervals smaller than a cell, as they will cause half a cell to turn grey
             # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
@@ -864,12 +880,12 @@ class Planning(models.Model):
 
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
-        return ['employee_id', 'role_id']
+        return ['resource_id', 'role_id']
 
     def _get_fields_breaking_publication(self):
         """ Fields list triggering the `publication_warning` to True when updating shifts """
         return [
-            'employee_id',
+            'resource_id',
             'start_datetime',
             'end_datetime',
             'role_id',
@@ -880,7 +896,7 @@ class Planning(models.Model):
             with it's recurrency
         """
         return [
-            'employee_id',
+            'resource_id',
             'role_id',
         ]
 
@@ -893,6 +909,7 @@ class Planning(models.Model):
     def _get_tz(self):
         return (self.env.user.tz
                 or self.employee_id.tz
+                or self.resource_id.tz
                 or self._context.get('tz')
                 or self.company_id.resource_calendar_id.tz
                 or 'UTC')
@@ -926,19 +943,19 @@ class Planning(models.Model):
             'role_id': self.role_id.id
         }
 
-    def _read_group_employee_id(self, employees, domain, order):
+    def _read_group_resource_id(self, resources, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
-        employee_ids = self.env.context.get('filter_employee_ids', False)
-        if employee_ids:
-            return self.env['hr.employee'].search([('id', 'in', employee_ids)], order=order)
-        elif self._context.get('planning_expand_employee') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
-            if ('employee_id', '=') in dom_tuples or ('employee_id', 'ilike') in dom_tuples:
-                filter_domain = self._expand_domain_m2o_groupby(domain, 'employee_id')
-                return self.env['hr.employee'].search(filter_domain, order=order)
+        resource_ids = self.env.context.get('filter_resource_ids', False)
+        if resource_ids:
+            return self.env['resource.resource'].search([('id', 'in', resource_ids)], order=order)
+        if self.env.context.get('planning_expand_resource') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            if ('resource_id', '=') in dom_tuples or ('resource_id', 'ilike') in dom_tuples:
+                filter_domain = self._expand_domain_m2o_groupby(domain, 'resource_id')
+                return self.env['resource.resource'].search(filter_domain, order=order)
             filters = self._expand_domain_dates(domain)
-            employees = self.env['planning.slot'].search(filters).mapped('employee_id')
-            return employees.search([('id', 'in', employees.ids)], order=order)
-        return employees
+            resources = self.env['planning.slot'].search(filters).mapped('resource_id')
+            return resources.search([('id', 'in', resources.ids)], order=order)
+        return resources
 
     def _read_group_role_id(self, roles, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
@@ -987,7 +1004,7 @@ class Planning(models.Model):
 
     def _send_slot(self, employee_ids, start_datetime, end_datetime, include_unassigned=True, message=None):
         if not include_unassigned:
-            self = self.filtered(lambda s: s.employee_id)
+            self = self.filtered(lambda s: s.resource_id)
         if not self:
             return False
 
@@ -1068,7 +1085,7 @@ class PlanningRole(models.Model):
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name', required=True)
     color = fields.Integer("Color", default=_get_default_color)
-    employee_ids = fields.Many2many('hr.employee', string='Employees')
+    employee_ids = fields.Many2many('hr.employee', string='Resources')
     sequence = fields.Integer()
 
 
@@ -1114,7 +1131,7 @@ class PlanningPlanning(models.Model):
         for planning in self:
             # prepare planning urls, recipient employees, ...
             slots = planning.slot_ids
-            slots_open = slots.filtered(lambda slot: not slot.employee_id) if planning.include_unassigned else 0
+            slots_open = slots.filtered(lambda slot: not slot.resource_id) if planning.include_unassigned else 0
 
             # extract planning URLs
             employees = employees or slots.mapped('employee_id')

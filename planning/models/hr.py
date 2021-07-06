@@ -82,15 +82,15 @@ class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"
 
     def action_view_planning(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_employee")
+        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_resource")
         action.update({
             'name': _('View Planning'),
-            'domain': [('employee_id', 'in', self.ids)],
+            'domain': [('resource_id', 'in', self.resource_id.ids)],
             'context': {
-                'search_default_group_by_employee': True,
-                'filter_employee_ids': self.ids,
+                'search_default_group_by_resource': True,
+                'filter_resource_ids': self.resource_id.ids,
                 'hide_open_shift': True,
-                'default_employee_id': self.id if len(self) == 1 else False,
+                'default_resource_id': self.resource_id.id if len(self) == 1 else False,
             }
         })
         return action

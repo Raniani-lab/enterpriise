@@ -125,8 +125,8 @@ class TestPlanning(TestCommonPlanning):
             tz='UTC',
             default_start_datetime='2019-06-27 00:00:00',
             default_end_datetime='2019-06-27 23:59:59',
-            default_employee_id=self.employee_joseph.id)
-        defaults = PlanningSlot.default_get(['employee_id', 'start_datetime', 'end_datetime'])
+            default_resource_id=self.resource_joseph.id)
+        defaults = PlanningSlot.default_get(['resource_id', 'start_datetime', 'end_datetime'])
         self.assertEqual(defaults.get('start_datetime'), datetime(2019, 6, 27, 9, 0), 'It should be adjusted to employee calendar: 0am -> 9pm')
         self.assertEqual(defaults.get('end_datetime'), datetime(2019, 6, 27, 18, 0), 'It should be adjusted to employee calendar: 0am -> 18pm')
 
@@ -137,8 +137,8 @@ class TestPlanning(TestCommonPlanning):
             tz='UTC',
             default_start_datetime='2019-06-26 00:00:00',
             default_end_datetime='2019-06-26 23:59:59',
-            default_employee_id=self.employee_joseph.id)
-        defaults = PlanningSlot.default_get(['employee_id', 'start_datetime', 'end_datetime'])
+            default_resource_id=self.resource_joseph.id)
+        defaults = PlanningSlot.default_get(['resource_id', 'start_datetime', 'end_datetime'])
         self.assertEqual(defaults.get('start_datetime'), datetime(2019, 6, 26, 00, 0), 'It should still be the default start_datetime 0am')
         self.assertEqual(defaults.get('end_datetime'), datetime(2019, 6, 26, 23, 59, 59), 'It should adjust to employee calendar: 0am -> 9pm')
 
@@ -149,8 +149,8 @@ class TestPlanning(TestCommonPlanning):
             tz='UTC',
             default_start_datetime='2019-06-27 00:00:00',
             default_end_datetime='2019-06-27 23:59:59',
-            default_employee_id=False)
-        defaults = PlanningSlot.default_get(['employee_id', 'start_datetime', 'end_datetime'])
+            default_resource_id=False)
+        defaults = PlanningSlot.default_get(['resource_id', 'start_datetime', 'end_datetime'])
         self.assertEqual(defaults.get('start_datetime'), datetime(2019, 6, 27, 8, 0), 'It should adjust to employee calendar: 0am -> 9pm')
         self.assertEqual(defaults.get('end_datetime'), datetime(2019, 6, 27, 17, 0), 'It should adjust to employee calendar: 0am -> 9pm')
 
@@ -164,37 +164,37 @@ class TestPlanning(TestCommonPlanning):
 
         # simulate public user (no tz)
         self.env.user.tz = False
-        self.slot.employee_id = self.employee_janice.id
+        self.slot.resource_id = self.resource_janice.id
         self.slot.flush()
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should adjust to employee timezone')
 
-        self.slot.employee_id = None
+        self.slot.resource_id = None
         self.assertEqual(self.slot.template_id, self.template, 'It should keep the template')
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should reset to company calendar timezone: 11am EDT -> 3pm UTC')
 
     def test_compute_overlap_count(self):
         self.slot_6_2 = self.env['planning.slot'].create({
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
             'start_datetime': datetime(2019, 6, 2, 8, 0),
             'end_datetime': datetime(2019, 6, 2, 17, 0),
         })
         self.slot_6_3 = self.env['planning.slot'].create({
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
             'start_datetime': datetime(2019, 6, 3, 8, 0),
             'end_datetime': datetime(2019, 6, 3, 17, 0),
         })
         self.env['planning.slot'].create({
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
             'start_datetime': datetime(2019, 6, 2, 10, 0),
             'end_datetime': datetime(2019, 6, 2, 12, 0),
         })
         self.env['planning.slot'].create({
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
             'start_datetime': datetime(2019, 6, 2, 16, 0),
             'end_datetime': datetime(2019, 6, 2, 18, 0),
         })
         self.env['planning.slot'].create({
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
             'start_datetime': datetime(2019, 6, 2, 18, 0),
             'end_datetime': datetime(2019, 6, 2, 20, 0),
         })
@@ -219,7 +219,7 @@ class TestPlanning(TestCommonPlanning):
         slot = self.env['planning.slot'].create({
             'start_datetime': datetime(2021, 1, 1, 0, 0),
             'end_datetime': datetime(2021, 1, 1, 23, 59),
-            'employee_id': self.employee_bert.id,
+            'resource_id': self.resource_bert.id,
         })
 
         slot.write({

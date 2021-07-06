@@ -20,7 +20,7 @@ class PlanningSend(models.TransientModel):
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Include Open Shifts", default=True)
     note = fields.Text("Extra Message", help="Additional message displayed in the email sent to employees")
-    employee_ids = fields.Many2many('hr.employee', string="Employees",
+    employee_ids = fields.Many2many('hr.employee', string="Resources",
                                     help="Employees who will receive planning by email if you click on publish & send.",
                                     compute='_compute_slots_data', inverse='_inverse_employee_ids', store=True)
     slot_ids = fields.Many2many('planning.slot', compute='_compute_slots_data', store=True)
@@ -30,7 +30,7 @@ class PlanningSend(models.TransientModel):
         for wiz in self:
             wiz.slot_ids = self.env['planning.slot'].search([('start_datetime', '>=', wiz.start_datetime),
                                                              ('end_datetime', '<=', wiz.end_datetime)])
-            wiz.employee_ids = wiz.slot_ids.mapped('employee_id')
+            wiz.employee_ids = wiz.slot_ids.filtered(lambda s: s.resource_type == 'user').mapped('employee_id')
 
     def _inverse_employee_ids(self):
         for wiz in self:

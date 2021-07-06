@@ -41,6 +41,9 @@ odoo.define('hr_gantt.GanttRow', function (require) {
         //--------------------------------------------------------------------------
         // Private
         //--------------------------------------------------------------------------
+        _getEmployeeID() {
+            return this.resId;
+        },
 
         /**
          * Initialize the avatar widget in virtual DOM.
@@ -49,7 +52,7 @@ odoo.define('hr_gantt.GanttRow', function (require) {
          * @returns {Promise}
          */
         async _preloadAvatarWidget() {
-            const employee = [this.resId, this.name];
+            const employee = [this._getEmployeeID(), this.name];
             this.avatarWidget = new StandaloneM2OAvatarEmployee(this, employee);
             return this.avatarWidget.appendTo(document.createDocumentFragment());
         },

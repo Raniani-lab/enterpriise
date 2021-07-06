@@ -19,8 +19,8 @@ odoo.define('planning.tour', function (require) {
         content: _t("Let's create your first <b>shift</b> by clicking on Add. <i>Tip: use the (+) shortcut available on each cell of the Gantt view to save time.</i>"),
         position: "bottom",
     }, {
-        trigger: ".o_field_widget[name='employee_id']",
-        content: _t("Assign this shift to your <b>employee</b>, or leave it open for the moment."),
+        trigger: ".o_field_widget[name='resource_id']",
+        content: _t("Assign this shift to your <b>resource</b>, or leave it open for the moment."),
         position: "bottom",
     }, {
         trigger: ".o_field_widget[name='role_id']",

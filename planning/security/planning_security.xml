@@ -25,7 +25,7 @@
         <field name="domain_force">[
             '|',
                 ('user_id', '=', user.id),
-                ('employee_id', '=', False),
+                ('resource_id', '=', False),
             ('state', '=', 'published'),
         ]</field>
         <field name="perm_read" eval="True"/>

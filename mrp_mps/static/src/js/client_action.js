@@ -63,28 +63,11 @@ var ClientAction = AbstractAction.extend({
         this.searchModelConfig.modelName = 'mrp.production.schedule';
     },
 
-    willStart: function () {
-        var self = this;
-        var _super = this._super.bind(this);
-        var args = arguments;
-
-        var def_control_panel = this._rpc({
-            model: 'ir.model.data',
-            method: 'get_object_reference',
-            args: ['mrp_mps', 'mrp_mps_search_view'],
-            kwargs: {context: session.user_context},
-        })
-        .then(function (viewId) {
-            self.viewId = viewId[1];
-        });
-
-        var def_content = this._getRecordIds();
-
-        return Promise.all([def_content, def_control_panel]).then(function () {
-            return self._getState().then(function () {
-                return _super.apply(self, args);
-            });
-        });
+    async willStart() {
+        var _super = this._super;
+        await this._getRecordIds();
+        await this._getState();
+        return _super.apply(this, arguments);
     },
 
     start: async function () {

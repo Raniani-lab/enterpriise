@@ -117,6 +117,7 @@ class TestCommissions(TestCommissionsSetup):
             'date': fields.Date.today(),
             'reason': '...',
             'refund_method': 'refund',
+            'journal_id': inv.journal_id.id,
         })
         reversal = move_reversal.reverse_moves()
         reverse_move = self.env['account.move'].browse(reversal['res_id'])

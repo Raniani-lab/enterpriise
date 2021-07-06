@@ -37,6 +37,7 @@ class TestL10AccountMoveReversal(TestL10nClEdiCommon):
             active_model='account.move', active_ids=self.invoice.ids).create({
             'reason': 'Test Partial Refund',
             'refund_method': 'refund',
+            'journal_id': self.invoice.journal_id.id,
         })
         res = refund_wizard.reverse_moves()
         refund = self.env['account.move'].browse(res['res_id'])
@@ -56,6 +57,7 @@ class TestL10AccountMoveReversal(TestL10nClEdiCommon):
                 'l10n_cl_edi_reference_doc_code': '2',
                 'l10n_cl_original_text': 'Test Original Text',
                 'l10n_cl_corrected_text': 'Test Corrected Text',
+                'journal_id': self.invoice.journal_id.id,
             })
         res = refund_wizard.reverse_moves()
         refund = self.env['account.move'].browse(res['res_id'])

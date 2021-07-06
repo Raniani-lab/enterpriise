@@ -144,6 +144,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
                 'reason': 'Test refund tax repartition',
                 'refund_method': 'refund',
                 'date': fields.Date.from_string('2020-03-31'),
+                'journal_id': invoice.journal_id.id,
             })
         res = refund_wizard.reverse_moves()
         refund = self.env['account.move'].browse(res['res_id'])

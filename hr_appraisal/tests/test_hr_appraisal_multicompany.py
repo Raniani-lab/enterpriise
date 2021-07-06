@@ -27,14 +27,16 @@ class TestHrAppraisal(TransactionCase):
         self.hr_employee = self.HrEmployee.create(dict(
             name="Michael Hawkins",
             user_id=self.user.id,
-            last_appraisal_date=date.today() - relativedelta(months=12, days=-12),
+            create_date=date.today() - relativedelta(months=6, days=-12),
+            last_appraisal_date=date.today() - relativedelta(months=6, days=-12),
             company_id=self.main_company.id,
         ))
 
         self.hr_employee2 = self.HrEmployee.create(dict(
             user_id=self.user.id,
             company_id=self.other_company.id,
-            last_appraisal_date=date.today() - relativedelta(months=12, days=-6),
+            create_date=date.today() - relativedelta(months=6, days=-6),
+            last_appraisal_date=date.today() - relativedelta(months=6, days=-6),
         ))
 
     def test_hr_appraisal(self):

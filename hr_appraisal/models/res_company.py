@@ -5,6 +5,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
+from odoo.tools.misc import format_date
 
 
 class ResCompany(models.Model):
@@ -92,14 +93,13 @@ class ResCompany(models.Model):
                     ('create_date', '>', current_date - relativedelta(months=company.duration_after_recruitment + 1)),
                     ('create_date', '<=', current_date - relativedelta(months=company.duration_after_recruitment)),
                 '|', # First Appraisal
-                    '&', '&',
-                    ('create_date', '>', current_date - relativedelta(months=first_appraisal + 1)),
-                    ('create_date', '<=', current_date - relativedelta(months=first_appraisal)),
-                    ('last_appraisal_date', '<=', current_date - relativedelta(months=company.duration_first_appraisal)),
-                 # Next Appraisal
                     '&',
-                    ('create_date', '>', current_date - relativedelta(months=first_appraisal + company.duration_next_appraisal + 1)),
-                    ('last_appraisal_date', '<=', current_date - relativedelta(months=company.duration_next_appraisal)),
+                    ('appraisal_count', '=', 1),
+                    ('last_appraisal_date', '<=', current_date - relativedelta(months=company.duration_first_appraisal)),
+                # Next Appraisal
+                    '&',
+                    ('appraisal_count', '>', 1),
+                    ('last_appraisal_date', '<=', current_date - relativedelta(months=company.duration_next_appraisal))
             ]
 
             all_employees = self.env['hr.employee'].search(domain)
@@ -129,12 +129,13 @@ class ResCompany(models.Model):
                     summary=_('Appraisal to Confirm and Send'),
                     note=note, user_id=employee.user_id.id)
                 for manager in managers.filtered('user_id'):
+                    formated_date = format_date(self.env, appraisal.date_close, date_format="MMM d y")
                     if employee.appraisal_count == 1:
                         note = _("The employee %s arrived %s months ago. An appraisal for %s is created. You can assess %s & determinate the date for '1to1' meeting before %s.") % (
-                            employee.name, months, employee.name, employee.name, appraisal.date_close)
+                            employee.name, months, employee.name, employee.name, formated_date)
                     else:
                         note = _("Your employee's last appraisal was %s months ago. An appraisal for %s is created. You can assess %s & determinate the date for '1to1' meeting before %s.") % (
-                            last_appraisal_months, employee.name, employee.name, appraisal.date_close)
+                            last_appraisal_months, employee.name, employee.name, formated_date)
                     appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
                         'mail.mail_activity_data_todo', today,
                         summary=_('Appraisal to Confirm and Send'),

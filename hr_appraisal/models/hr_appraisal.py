@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools.misc import format_date
 
 _logger = logging.getLogger(__name__)
 
@@ -80,6 +81,7 @@ class HrAppraisal(models.Model):
     can_see_manager_publish = fields.Boolean(compute='_compute_buttons_display')
     assessment_note = fields.Many2one('hr.appraisal.note', string="Final Rating", help="This field is not visible to the Employee.", domain="[('company_id', '=', company_id)]")
     note = fields.Html(string="Private Note", help="The content of this note is not visible by the Employee.")
+    appraisal_plan_posted = fields.Boolean()
 
     @api.depends('employee_id', 'manager_ids')
     def _compute_buttons_display(self):
@@ -257,16 +259,18 @@ class HrAppraisal(models.Model):
                 else:
                     appraisal.previous_appraisal_id = False
 
+    def _update_next_appraisal_date(self):
+        for employee in set(self.mapped('employee_id')):
+            appraisals = employee.appraisal_ids.filtered(lambda a: a.state not in ['done', 'cancel']).sorted('date_close')
+            employee.sudo().write({'next_appraisal_date': appraisals[0].date_close if appraisals else False})
+
     @api.model
     def create(self, vals):
         result = super(HrAppraisal, self).create(vals)
         result.sudo()._update_previous_appraisal()
         if vals.get('state') and vals['state'] == 'pending':
             self.send_appraisal()
-
-        result.employee_id.sudo().write({
-            'next_appraisal_date': result.date_close,
-        })
+        result.sudo()._update_next_appraisal_date()
         result.subscribe_employees()
         return result
 
@@ -284,6 +288,7 @@ class HrAppraisal(models.Model):
                     'last_appraisal_date': current_date,
                     'next_appraisal_date': False})
             vals['date_close'] = current_date
+            self._appraisal_plan_post()
         if 'state' in vals and vals['state'] == 'cancel':
             self.meeting_ids.unlink()
             self.activity_unlink(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
@@ -296,11 +301,22 @@ class HrAppraisal(models.Model):
         if 'employee_id' in vals or 'date_close' in vals:
             self.sudo()._update_previous_appraisal()
         if vals.get('date_close'):
-            self.sudo().mapped('employee_id').write({'next_appraisal_date': vals.get('date_close')})
-            self.activity_reschedule(['mail.mail_activity_data_todo'], date_deadline=vals['date_close'])
+            self.sudo()._update_next_appraisal_date()
         if 'manager_ids' in vals:
             self._sync_meeting_attendees(previous_managers)
         return result
+
+    def _appraisal_plan_post(self):
+        odoobot = self.env.ref('base.partner_root')
+        days = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_create_in_advance_days', 8))
+        for appraisal in self:
+            if not appraisal.appraisal_plan_posted and appraisal.company_id.appraisal_plan and not appraisal.employee_id.next_appraisal_date:
+                month = appraisal.company_id.duration_first_appraisal if appraisal.employee_id.sudo().appraisal_count == 1 else appraisal.company_id.duration_next_appraisal
+                date = (datetime.date.today() + relativedelta(months=month, days=-days))
+                formated_date = format_date(self.env, date, date_format="MMM d y")
+                body = _('Thanks to your Appraisal Plan, without any new manual Appraisal, the new Appraisal will be automatically created on %s.', formated_date)
+                appraisal.message_post(body=body, author_id=odoobot.id)
+                appraisal.appraisal_plan_posted = True
 
     def _sync_meeting_attendees(self, manager_ids):
         for appraisal in self.filtered('meeting_ids'):

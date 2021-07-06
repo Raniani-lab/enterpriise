@@ -216,6 +216,13 @@ class TestHrAppraisal(TransactionCase):
         """
         self.hr_employee.create_date = date.today() - relativedelta(months=self.duration_after_recruitment + self.duration_first_appraisal, days=10)
         self.hr_employee.last_appraisal_date = date.today() - relativedelta(months=self.duration_first_appraisal, days=10)
+        # In order to make the second appraisal, cron checks that
+        # there is alraedy one done appraisal for the employee
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() - relativedelta(months=self.duration_first_appraisal, days=10),
+            'state': 'done'
+        })
 
         self.env['res.company']._run_employee_appraisal_plans()
         appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
@@ -230,9 +237,21 @@ class TestHrAppraisal(TransactionCase):
         """
         self.hr_employee.create_date = date.today() - relativedelta(months=self.duration_after_recruitment + self.duration_first_appraisal + 2, days=10)
         self.hr_employee.last_appraisal_date = date.today() - relativedelta(months=2, days=10)
+        # In order to make recurring appraisal, cron checks that
+        # there are alraedy two done appraisals for the employee
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() - relativedelta(months=self.duration_first_appraisal + 2, days=10),
+            'state': 'done'
+        })
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() - relativedelta(months=2, days=10),
+            'state': 'done'
+        })
 
         self.env['res.company']._run_employee_appraisal_plans()
-        appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
+        appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id), ('state', '=', 'new')])
         self.assertFalse(appraisals, "Appraisal created")
 
     def test_12_check_recurring_appraisal(self):
@@ -242,6 +261,17 @@ class TestHrAppraisal(TransactionCase):
 
         self.hr_employee.create_date = date.today() - relativedelta(months=self.duration_after_recruitment + self.duration_first_appraisal + self.duration_next_appraisal, days=10)
         self.hr_employee.last_appraisal_date = date.today() - relativedelta(months=self.duration_next_appraisal, days=10)
+
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() - relativedelta(months=self.duration_first_appraisal + self.duration_next_appraisal, days=10),
+            'state': 'done'
+        })
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() - relativedelta(months=self.duration_next_appraisal, days=10),
+            'state': 'done'
+        })
 
         self.env['res.company']._run_employee_appraisal_plans()
         appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])

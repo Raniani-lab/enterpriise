@@ -1057,7 +1057,7 @@ class generic_tax_report(models.AbstractModel):
                     'debug': self.user_has_groups('base.group_no_one'),
                     'balance': _("The carryover balance will be : %s", carryover_balance),
                 })
-                column['popup_data'] = json.dumps(popup_data)
+                column['carryover_popup_data'] = json.dumps(popup_data)
                 column['popup_template'] = 'accountReports.CarryOverInfoTemplate'
         else:
             # Update the balance when printing

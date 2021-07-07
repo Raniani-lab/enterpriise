@@ -507,3 +507,20 @@ class PlanningSlot(models.Model):
                     employee_ids_to_exclude.append(employee_id)
             slots_assigned = slot_assigned or slots_assigned
         return slots_assigned
+
+    def action_unschedule(self):
+        self.ensure_one()
+        if self.sale_line_id.product_id.planning_enabled:
+            if self.sale_line_id.planning_hours_to_plan - self.sale_line_id.planning_hours_planned > 0.0:
+                unscheduled_slot = self.search([
+                    ('sale_line_id', '=', self.sale_line_id.id),
+                    ('start_datetime', '=', False),
+                ])
+                if unscheduled_slot:
+                    self.unlink()
+                    return {'type': 'ir.actions.act_window_close'}
+        return self.write({
+            'start_datetime': False,
+            'end_datetime': False,
+            'employee_id': False,
+        })

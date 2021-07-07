@@ -12,6 +12,9 @@
                 <field name="sale_order_id" string="Sales Order"/>
                 <field name="role_product_ids"/>
             </xpath>
+            <xpath expr="//filter[@name='conflict_shifts']" position="after">
+                <filter name="to_schedule" string="To Schedule" domain="[('start_datetime', '=', False)]" groups="planning.group_planning_manager"/>
+            </xpath>
             <xpath expr="//filter[@name='group_by_role']" position="after">
                 <!-- TODO TLE : Handle group visibility -->
                 <filter name="group_by_sale_order" string="Sales Order" context="{'group_by': 'sale_order_id'}"/>
@@ -154,5 +157,46 @@
             'planning_expand_sale_line_id': 1,
         }</field>
     </record>
+
+    <record id="planning_view_form_in_gantt_inherit_sale_planning" model="ir.ui.view">
+        <field name="name">planning.slot.form.gantt</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning.planning_view_form_in_gantt"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer/button[@special='cancel']" position="before">
+                <field name="sale_line_plannable" invisible="1"/>
+                <button string="Unschedule" type="object" name="action_unschedule" class="btn btn-secondary" close="1"
+                    groups="planning.group_planning_manager"
+                    attrs="{'invisible': ['|', ('id', '=', False), ('sale_line_plannable', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_planning_action_schedule_by_sale_order" model="ir.actions.act_window">
+        <field name="name">By Sales Order</field>
+        <field name="res_model">planning.slot</field>
+        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+        <field name="context">{
+            'search_default_group_by_sale_order_line': 1, 'planning_groupby_role': True,
+            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_sale_line_id': 1,
+        }</field>
+        <field name="groups_id" eval="[(4, ref('planning.group_planning_manager'))]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found. Let's create one!
+            </p>
+            <p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="sale_planning_menu_schedule_by_sale_order"
+            name="By Sales Order"
+            sequence="40"
+            parent="planning.planning_menu_schedule"
+            action="sale_planning_action_schedule_by_sale_order"
+            groups="planning.group_planning_manager"/>
 
 </odoo>

@@ -24,17 +24,31 @@ class SocialStreamFacebook(models.Model):
             return super(SocialStreamFacebook, self)._fetch_stream_data()
 
         if self.stream_type_id.stream_type == 'facebook_page_posts':
-            return self._fetch_page_posts('feed')
+            return self._fetch_page_posts('published_posts')
         elif self.stream_type_id.stream_type == 'facebook_page_mentions':
             return self._fetch_page_posts('tagged')
 
     def _fetch_page_posts(self, endpoint_name):
         self.ensure_one()
 
+        facebook_fields = [
+            'id',
+            'message',
+            'from',
+            'shares',
+            'likes.limit(1).summary(true)',
+            'comments.limit(10).summary(true){message,from,like_count}',
+            'attachments',
+            'created_time',
+            'message_tags'
+        ]
+        if endpoint_name == 'published_posts':
+            facebook_fields.append('insights.metric(post_impressions)')
+
         posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (self.account_id.facebook_account_id, endpoint_name))
         result = requests.get(posts_endpoint_url, {
             'access_token': self.account_id.facebook_access_token,
-            'fields': 'id,message,from,shares,insights.metric(post_impressions),message_tags,likes.limit(1).summary(true),comments.limit(10).summary(true){message,from,like_count},attachments,created_time',
+            'fields': ','.join(facebook_fields)
         })
 
         result_posts = result.json().get('data')

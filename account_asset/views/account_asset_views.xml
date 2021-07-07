@@ -287,6 +287,11 @@
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_form')})]"/>
         <field name="domain">[('asset_type', '=', 'purchase'), ('state', '!=', 'model'), ('parent_id', '=', False)]</field>
         <field name="context">{'asset_type': 'purchase', 'default_asset_type': 'purchase'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new asset
+            </p>
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_account_asset_model_form">
@@ -300,6 +305,11 @@
         <field name="search_view_id" ref="view_account_asset_model_search"/>
         <field name="domain">[('asset_type', '=', 'purchase'), ('state', '=', 'model')]</field>
         <field name="context">{'asset_type': 'purchase', 'default_asset_type': 'purchase', 'default_state': 'model'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new asset model
+            </p>
+        </field>
     </record>
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_asset_form" action="action_account_asset_form" sequence="101" groups="account.group_account_readonly"/>

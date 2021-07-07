@@ -4,7 +4,7 @@
         <field name="name">account.asset.expense.tree</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
-            <tree string="Deferred Expenses" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')">
+            <tree string="Deferred Expenses" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')" sample="1">
                 <field name="name" string="Expense"/>
                 <field name="first_depreciation_date"/>
                 <field name="book_value"/>
@@ -124,6 +124,11 @@
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_expense_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_expense_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new deferred expense
+            </p>
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_account_expense_model_form">
@@ -136,6 +141,11 @@
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_model_expense_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_expense_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new deferred expense model
+            </p>
+        </field>
     </record>
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_expense_recognition" action="action_account_expense_form" sequence="104" groups="account.group_account_readonly"/>

@@ -139,6 +139,11 @@
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_sale_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_revenue_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new deferred revenue
+            </p>
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_account_revenue_model_form">
@@ -151,6 +156,11 @@
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_model_sale_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_revenue_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new deferred revenue model
+            </p>
+        </field>
     </record>
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_revenue_recognition" action="action_account_revenue_form" sequence="103" groups="account.group_account_readonly"/>

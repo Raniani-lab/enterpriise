@@ -247,10 +247,15 @@ class SaleSubscription(models.Model):
         return super(SaleSubscription, self)._track_subtype(init_values)
 
     def _compute_invoice_count(self):
-        Invoice = self.env['account.move']
-        can_read = Invoice.check_access_rights('read', raise_exception=False)
+        can_read = self.env['account.move'].check_access_rights('read', raise_exception=False)
+        if not can_read:
+            self.update({'invoice_count': 0})
+            return
+        res = self.env['account.move.line'].read_group(
+            [('subscription_id', 'in', self.ids)], ['move_id:count_distinct'], ['subscription_id'])
+        invoice_count_dict = {r['subscription_id'][0]: r['move_id'] for r in res}
         for subscription in self:
-            subscription.invoice_count = can_read and Invoice.search_count([('invoice_line_ids.subscription_id', '=', subscription.id)]) or 0
+            subscription.invoice_count = invoice_count_dict.get(subscription.id, 0)
 
     @api.depends('recurring_total', 'template_id.recurring_interval', 'template_id.recurring_rule_type')
     def _compute_recurring_monthly(self):

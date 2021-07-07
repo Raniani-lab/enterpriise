@@ -40,14 +40,15 @@ class EventEvent(models.Model):
         super(EventEvent, self)._update_website_menus(menus_update_by_field=menus_update_by_field)
         for event in self:
             if event.menu_id and (not menus_update_by_field or event in menus_update_by_field.get('social_menu')):
-                event._update_website_menu_entry('social_menu', 'social_menu_ids', '_get_social_menu_entries')
+                event._update_website_menu_entry('social_menu', 'social_menu_ids', 'social')
 
     def _get_menu_type_field_matching(self):
         res = super(EventEvent, self)._get_menu_type_field_matching()
         res['social'] = 'social_menu'
         return res
 
-    def _get_social_menu_entries(self):
+    def _get_website_menu_entries(self):
         self.ensure_one()
-        res = [(_('Social'), '/event/%s/social' % slug(self), False, 85, 'social')]
-        return res
+        return super(EventEvent, self)._get_website_menu_entries() + [
+            (_('Social'), '/event/%s/social' % slug(self), False, 85, 'social')
+        ]

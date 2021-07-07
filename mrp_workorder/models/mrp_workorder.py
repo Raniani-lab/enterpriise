@@ -252,8 +252,8 @@ class MrpProductionWorkcenterLine(models.Model):
                     self.move_line_id.with_context(bypass_reservation_update=True).write({
                         'product_uom_qty': self.qty_done,
                         'qty_done': self.qty_done,
-                        'lot_id': self.lot_id.id,
                     })
+                    self.move_line_id.lot_id = self.lot_id
             else:
                 line = self.env['stock.move.line'].create(self._create_extra_move_lines())
                 self.move_line_id = line[:1]

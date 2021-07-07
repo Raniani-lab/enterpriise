@@ -20,7 +20,7 @@ FormRenderer.include({
      * @private
      * @returns {jQueryElement}
      */
-    _renderTagContactsync: function () {
+    _renderTagContactsync: function (node) {
         var $el = $('<div>');
         var widget = new ContactSync(this, {
             res_id: this.state.res_id,
@@ -28,7 +28,8 @@ FormRenderer.include({
         });
         // Prepare widget rendering and save the related promise
         var prom = widget._widgetRenderAndInsert(function () { });
-        prom.then(function () {
+        prom.then(() => {
+            this._registerModifiers(node, this.state, widget);
             $el.replaceWith(widget.$el);
         });
 

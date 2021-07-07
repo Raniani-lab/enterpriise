@@ -43,7 +43,7 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='not_running']" position="after">
                 <separator/>
-                <filter string="Working Schedule Change" name="calendar_change" domain="[('calendar_changed', '=', True)]"/>
+                <filter string="Change of Occupation" name="calendar_change" domain="[('calendar_changed', '=', True)]"/>
             </xpath>
         </field>
     </record>

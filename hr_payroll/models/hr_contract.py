@@ -32,6 +32,12 @@ class HrContract(models.Model):
         for contract in self:
             contract.payslips_count = mapped_counts.get(contract.id, 0)
 
+    def _is_same_occupation(self, contract):
+        self.ensure_one()
+        contract_type = self.contract_type_id
+        work_time_rate = self.resource_calendar_id.work_time_rate
+        return contract_type == contract.contract_type_id and work_time_rate == contract.resource_calendar_id.work_time_rate
+
     def _get_occupation_dates(self, include_future_contracts=False):
         # Takes several contracts and returns all the contracts under the same occupation (i.e. the same
         #  work rate + the date_from and date_to)
@@ -56,17 +62,16 @@ class HrContract(models.Model):
             ) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
             before_contracts = all_contracts.filtered(lambda c: c.date_start < contract.date_start) # hr.contract(39, 41)
             after_contracts = all_contracts.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
-            work_time_rate = contract.resource_calendar_id.work_time_rate
 
             for before_contract in before_contracts:
-                if before_contract.resource_calendar_id.work_time_rate == work_time_rate:
+                if contract._is_same_occupation(before_contract):
                     date_from = before_contract.date_start
                     contracts |= before_contract
                 else:
                     break
 
             for after_contract in after_contracts:
-                if after_contract.resource_calendar_id.work_time_rate == work_time_rate:
+                if contract._is_same_occupation(after_contract):
                     date_to = after_contract.date_end
                     contracts |= after_contract
                 else:

@@ -587,6 +587,13 @@ class HrContract(models.Model):
             'LEAVE110', # Sick Leave
         ]
 
+    def _is_same_occupation(self, contract):
+        self.ensure_one()
+        res = super()._is_same_occupation(contract)
+        time_credit = self.time_credit
+        time_credit_type = self.time_credit_type_id
+        return res and time_credit == contract.time_credit and (not time_credit or (time_credit_type == contract.time_credit_type_id))
+
     def _create_credit_time_next_activity(self):
         self.ensure_one()
         part_time_link = "https://www.socialsecurity.be/site_fr/employer/applics/elo/index.htm"

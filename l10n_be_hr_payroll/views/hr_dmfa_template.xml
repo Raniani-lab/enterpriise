@@ -1522,6 +1522,7 @@
     </template>
 
     <template id="Service">
+        <t t-if="service.nbr_days != '00000' and service.nbr_hours != '00000'">
         <!-- Service ~= Worked days -->
         <!-- 90018: Bloc fonctionnel permettant de déclarer les prestations d'un travailleur pour une occupation de la ligne travailleur.
             Une prestation donnée (un code prestation) ne peut se retrouver qu'une seule fois par occupation.
@@ -1597,6 +1598,7 @@
                 <FlightNbrMinutes t-esc="service.flight_nbr_minutes"/>
             </t>
         </Service>
+        </t>
     </template>
 
     <template id="Remun">
@@ -1669,7 +1671,7 @@
                 LONGUEUR:   11
                 PRESENCE:   Indispensable
              -->
-            <RemunAmount t-esc="remuneration.amount"/>
+            <RemunAmount t-esc="remuneration.amount if remuneration.code != '012' else '0' + remuneration.amount[1:]"/>
         </Remun>
     </template>
 </data>

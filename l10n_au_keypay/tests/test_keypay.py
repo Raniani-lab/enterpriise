@@ -7,7 +7,7 @@ from unittest import skipIf
 from odoo.tests.common import tagged, TransactionCase
 
 
-@tagged("external")
+@tagged('external_l10n', "external")
 @skipIf(not os.getenv("KEYPAY_BUSINESS_ID" or not os.getenv("KEYPAY_API_KEY")), "no keypay credentials")
 class TestKeypay(TransactionCase):
     @classmethod

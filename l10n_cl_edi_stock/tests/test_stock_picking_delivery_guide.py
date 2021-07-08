@@ -6,6 +6,7 @@ from freezegun import freeze_time
 from lxml import etree
 from unittest.mock import patch
 
+from odoo.tests import tagged
 from odoo.tools import misc
 from odoo.addons.l10n_cl_edi_stock.tests.common import TestL10nClEdiStockCommon
 from odoo.addons.l10n_cl_edi.tests.common import _check_with_xsd_patch
@@ -13,7 +14,7 @@ from odoo.addons.l10n_cl_edi.tests.common import _check_with_xsd_patch
 _logger = logging.getLogger(__name__)
 
 
-
+@tagged('post_install_l10n', 'post_install', '-at_install')
 @patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
 class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 

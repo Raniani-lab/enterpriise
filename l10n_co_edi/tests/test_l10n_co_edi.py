@@ -5,7 +5,7 @@ from odoo.tests import tagged
 from odoo.tools import mute_logger
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestColombianInvoice(TestCoEdiCommon):
 
     def l10n_co_assert_generated_file_equal(self, invoice, expected_values, applied_xpath=None):

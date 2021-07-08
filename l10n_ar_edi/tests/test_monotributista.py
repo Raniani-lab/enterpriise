@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-@tagged('-at_install', 'post_install')
+@tagged('post_install_l10n', '-at_install', 'post_install')
 class TestMono(common.TestEdi):
 
     @classmethod
@@ -19,7 +19,7 @@ class TestMono(common.TestEdi):
         cls.env = cls.env(context=context)
 
 
-@tagged('fe', 'mono', '-at_install', 'post_install')
+@tagged('fe', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
 class TestFE(TestMono):
 
     @classmethod
@@ -73,7 +73,7 @@ class TestFE(TestMono):
         self._test_case_credit_note('credit_note_c', invoice)
 
 
-@tagged('fe', 'mono', '-at_install', 'post_install', '-standard', 'external')
+@tagged('fe', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
 class TestMiPyME(TestMono):
 
     @classmethod
@@ -94,7 +94,7 @@ class TestMiPyME(TestMono):
         self._test_case('invoice_mipyme_c', 'product_service')
 
 
-@tagged('fex', 'mono', '-at_install', 'post_install')
+@tagged('fex', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
 class TestFEX(common.TestFex, TestMono):
 
     def test_01_invoice_e_product(self):

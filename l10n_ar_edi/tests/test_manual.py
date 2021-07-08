@@ -3,7 +3,7 @@ from . import common
 from odoo.tests import tagged
 
 
-@tagged('-at_install', 'post_install')
+@tagged('-at_install', 'external_l10n', 'post_install', '-standard', 'external')
 class TestManual(common.TestEdi):
 
 

@@ -2,8 +2,10 @@
 from unittest.mock import patch
 
 from .common import TestL10nClEdiCommon, _check_with_xsd_patch
+from odoo.tests import tagged
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestL10AccountMoveReversal(TestL10nClEdiCommon):
     @classmethod
     @patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)

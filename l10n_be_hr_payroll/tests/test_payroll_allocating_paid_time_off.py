@@ -8,7 +8,7 @@ from odoo.tests import tagged
 from .common import TestPayrollCommon
 
 
-@tagged('post_install', '-at_install', 'alloc_paid_time_off')
+@tagged('post_install_l10n', 'post_install', '-at_install', 'alloc_paid_time_off')
 class TestPayrollAllocatingPaidTimeOff(TestPayrollCommon):
 
     def setUp(self):

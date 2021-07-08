@@ -8,7 +8,7 @@ from odoo.tests import tagged
 from freezegun import freeze_time
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestEdiResults(TestMxExtendedEdiCommon, ValuationReconciliationTestCommon):
 
     def create_sale_order(self):

@@ -6,7 +6,7 @@ from odoo.tests import tagged
 from freezegun import freeze_time
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class BelgiumTaxReportTest(AccountSalesReportCommon):
 
     @classmethod
@@ -39,7 +39,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
         # As no values are in the report, we only find the grid 71 which is always expected to be present.
         expected_xml = """
         <ns2:VATConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/VATConsignment" VATDeclarationsNbr="1">
-        
+
             <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%s">
                 <ns2:Declarant>
                     <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">0477472701</VATNumber>
@@ -55,13 +55,13 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                     <ns2:Month>11</ns2:Month>
                     <ns2:Year>2019</ns2:Year>
                 </ns2:Period>
-                <ns2:Data>	
+                <ns2:Data>
                     <ns2:Amount GridNumber="71">0.00</ns2:Amount>
                 </ns2:Data>
                 <ns2:ClientListingNihil>NO</ns2:ClientListingNihil>
                 <ns2:Ask Restitution="NO" Payment="NO"/>
                 <ns2:Comment></ns2:Comment>
-            </ns2:VATDeclaration> 
+            </ns2:VATDeclaration>
         </ns2:VATConsignment>
         """ % ref
 
@@ -123,7 +123,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                     <ns2:Month>11</ns2:Month>
                     <ns2:Year>2019</ns2:Year>
                 </ns2:Period>
-                <ns2:Data>	
+                <ns2:Data>
                     <ns2:Amount GridNumber="56">10.50</ns2:Amount>
                     <ns2:Amount GridNumber="59">31.50</ns2:Amount>
                     <ns2:Amount GridNumber="72">21.00</ns2:Amount>
@@ -133,7 +133,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                 <ns2:ClientListingNihil>NO</ns2:ClientListingNihil>
                 <ns2:Ask Restitution="NO" Payment="NO"/>
                 <ns2:Comment></ns2:Comment>
-            </ns2:VATDeclaration> 
+            </ns2:VATDeclaration>
         </ns2:VATConsignment>
         """ % ref
 

@@ -6,11 +6,12 @@ import os
 from lxml import etree
 
 from odoo import fields
-from odoo.tests import Form
+from odoo.tests import Form, tagged
 from odoo.tools import misc
 from .common import TestL10nClEdiCommon
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestFetchmailServer(TestL10nClEdiCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_cl.cl_chart_template'):

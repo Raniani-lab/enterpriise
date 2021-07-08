@@ -4,6 +4,7 @@ from psycopg2 import sql
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests.common import Form, SingleTransactionCase
+from odoo.tests import tagged
 from odoo.modules.module import get_module_resource
 import base64
 import random
@@ -13,6 +14,7 @@ import uuid
 _logger = logging.getLogger(__name__)
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestEdi(SingleTransactionCase):
 
     @classmethod
@@ -329,6 +331,7 @@ class TestEdi(SingleTransactionCase):
         self.assertTrue(invoice.l10n_ar_afip_xml_response, error_msg)
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestFex(TestEdi):
 
     @classmethod

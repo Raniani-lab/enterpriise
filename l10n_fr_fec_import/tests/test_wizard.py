@@ -6,11 +6,13 @@ import datetime
 import logging
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.tests import tagged
 from odoo import tools
 
 _logger = logging.getLogger(__name__)
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class AccountTestFecImport(AccountTestInvoicingCommon):
     """ Main test class for Account FEC import testing """
 

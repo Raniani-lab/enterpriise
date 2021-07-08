@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 from .common import TestPayrollCommon
 
 
-@tagged('post_install', '-at_install', 'payroll_credit_time')
+@tagged('post_install_l10n', 'post_install', '-at_install', 'payroll_credit_time')
 class TestPayrollCreditTime(TestPayrollCommon):
 
     def setUp(self):

@@ -3,7 +3,7 @@ from odoo.tests import tagged
 from .common import TestPeEdiCommon
 
 
-@tagged('post_install', '-at_install', '-standard', 'external')
+@tagged('external_l10n', 'post_install', '-at_install', '-standard', 'external')
 class TestEdiIAP(TestPeEdiCommon):
 
     @classmethod

@@ -2,6 +2,7 @@
 from odoo import fields
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tools import date_utils
+from odoo.tests import tagged
 from odoo.modules.module import get_module_resource
 from dateutil.relativedelta import relativedelta
 import logging
@@ -10,6 +11,7 @@ import codecs
 _logger = logging.getLogger(__name__)
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestReports(TestAccountReportsCommon):
 
     @classmethod

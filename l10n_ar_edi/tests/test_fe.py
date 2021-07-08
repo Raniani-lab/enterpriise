@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-@tagged('fe', 'ri', '-at_install', 'post_install')
+@tagged('fe', 'ri', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
 class TestFe(common.TestEdi):
 
     @classmethod
@@ -116,7 +116,7 @@ class TestFe(common.TestEdi):
         self._edi_validate_and_review(invoice)
 
 
-@tagged('vendor', 'ri', 'mono', '-at_install', 'post_install')
+@tagged('vendor', 'ri', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
 class TestVendorBill(common.TestEdi):
 
     @classmethod

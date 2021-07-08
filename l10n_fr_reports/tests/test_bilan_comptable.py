@@ -6,7 +6,7 @@ from odoo.tests import tagged
 from odoo import fields
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestBilanComptable(TestAccountReportsCommon):
 
     def _build_generic_id_from_financial_line(self, financial_rep_ln_xmlid):

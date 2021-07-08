@@ -4,7 +4,7 @@ from odoo import fields
 from odoo.tests import tagged
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestClEightColumnsReport(TestAccountReportsCommon):
 
     @classmethod

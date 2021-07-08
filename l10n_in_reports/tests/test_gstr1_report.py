@@ -1,11 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
+from odoo.tests import tagged
 import logging
 
 _logger = logging.getLogger(__name__)
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestReports(TestAccountReportsCommon):
 
     @classmethod

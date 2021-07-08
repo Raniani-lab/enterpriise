@@ -8,7 +8,7 @@ from freezegun import freeze_time
 from unittest.mock import patch
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestEdiResults(TestMxExtendedEdiCommon):
 
     def test_invoice_cfdi_external_trade(self):

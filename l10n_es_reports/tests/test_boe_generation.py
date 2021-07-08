@@ -4,8 +4,10 @@ from freezegun import freeze_time
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo import fields
+from odoo.tests import tagged
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestBOEGeneration(TestAccountReportsCommon):
     """ Basic tests checking the generation of BOE files is still possible.
     """

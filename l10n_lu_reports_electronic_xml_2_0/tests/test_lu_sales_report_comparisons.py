@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 from odoo.tests import tagged
 from odoo.tests.common import Form
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class LuxembourgSalesReportComparisonsTest(TestAccountReportsCommon):
 
     @classmethod

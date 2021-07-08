@@ -6,8 +6,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
-@tagged('bfe', 'ri', '-at_install', 'post_install')
+@tagged('bfe', 'ri', '-at_install', 'external_l10n', 'post_install', '-standard', 'external')
 class TestBfe(common.TestEdi):
 
     @classmethod

@@ -9,7 +9,7 @@ from odoo.tests.common import TransactionCase
 
 
 
-@tagged('post_install', '-at_install', 'eco_vouchers')
+@tagged('post_install_l10n', 'post_install', '-at_install', 'eco_vouchers')
 class TestEcoVouchers(TransactionCase):
 
     def test_eco_vouchers(self):

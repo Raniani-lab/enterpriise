@@ -8,7 +8,7 @@ from odoo.tests import tagged
 from .common import TestPayrollCommon
 
 
-@tagged('post_install', '-at_install', 'payroll_right_to_legal_leaves')
+@tagged('post_install_l10n', 'post_install', '-at_install', 'payroll_right_to_legal_leaves')
 class TestPayrollRightToLegalLeaves(TestPayrollCommon):
 
     @classmethod

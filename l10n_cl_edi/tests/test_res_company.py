@@ -3,10 +3,11 @@ import datetime
 
 from odoo import fields
 from odoo.exceptions import UserError
-from odoo.tests import TransactionCase
+from odoo.tests import TransactionCase, tagged
 from odoo.tools import misc, os
 
 
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestResCompany(TransactionCase):
     def setUp(self):
         super(TestResCompany, self).setUp()

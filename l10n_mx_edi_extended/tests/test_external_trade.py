@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 from freezegun import freeze_time
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestExternalTrade(TestMxExtendedEdiCommon):
 
     def test_invoice_cfdi_external_trade(self):

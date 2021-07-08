@@ -9,7 +9,7 @@ from freezegun import freeze_time
 from unittest.mock import patch
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestEdiFlows(TestMxEdiCommon):
 
     def test_invoice_flow_not_sent(self):

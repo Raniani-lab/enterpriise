@@ -10,7 +10,7 @@ import datetime
 from pytz import timezone
 
 
-@tagged('-at_install', 'post_install')
+@tagged('post_install_l10n', '-at_install', 'post_install')
 class TestMxExtendedEdiCommon(TestMxEdiCommon):
 
     @classmethod

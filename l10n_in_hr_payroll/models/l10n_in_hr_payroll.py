@@ -88,6 +88,13 @@ class HrPayrollAdvice(models.Model):
             date = fields.Date.from_string(fields.Date.today())
             advice_year = date.strftime('%m') + '-' + date.strftime('%Y')
             number = self.env['ir.sequence'].next_by_code('payment.advice')
+            if number is False:
+                self.env['ir.sequence'].create({
+                    'name': "Payment Advice",
+                    'code': "payment.advice",
+                    'padding': 3,
+                })
+                number = self.env['ir.sequence'].next_by_code('payment.advice')
             advice.write({
                 'number': 'PAY' + '/' + advice_year + '/' + number,
                 'state': 'confirm',

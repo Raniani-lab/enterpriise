@@ -40,6 +40,7 @@
                                     </a>
                                     <div class="dropdown-menu" role="menu">
                                         <a role="menuitem" type="object" name="open_request" class="dropdown-item">Details</a>
+                                        <a role="menuitem" type="object" name="open_template" class="dropdown-item">Template</a>
                                         <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
                                             <t t-if="!record.active.raw_value">Restore</t>
                                             <t t-if="record.active.raw_value">Archive</t>

@@ -34,3 +34,4 @@ access_sign_template_share,access.sign.template.share,model_sign_template_share,
 access_sign_template_share_employee,access.sign.template.share.employee,model_sign_template_share,sign.group_sign_employee,1,1,1,0
 access_sign_request_send_copy,access.sign.request.send.copy,model_sign_request_send_copy,sign.group_sign_user,1,1,1,0
 access_sign_request_send_copy_employee,access.sign.request.send.copy.employee,model_sign_request_send_copy,sign.group_sign_employee,1,1,1,0
+access_sign_duplicate_template_with_pdf,access.sign.duplicate.template.pdf all,model_sign_duplicate_template_pdf,,1,1,1,0

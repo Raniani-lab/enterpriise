@@ -166,6 +166,16 @@ class SignRequest(models.Model):
             "res_id": self.id,
         }
 
+    def open_template(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Templates"),
+            "res_model": "sign.template",
+            "domain": [["id", "=", self.template_id.id], ["active", "=", self.template_id.active]],
+            "views": [[False, 'kanban']]
+        }
+
     def get_completed_document(self):
         self.ensure_one()
         if not self.completed_document:

@@ -61,8 +61,10 @@ class L10nClDteCaf(models.Model):
         self.start_nb = int(result.xpath('RNG/D')[0].text)
         self.final_nb = int(result.xpath('RNG/H')[0].text)
         l10n_latam_document_type_code = result.xpath('TD')[0].text
-        self.l10n_latam_document_type_id = self.env['l10n_latam.document.type'].search(
-            [('code', '=', l10n_latam_document_type_code)])
+        self.l10n_latam_document_type_id = self.env['l10n_latam.document.type'].search([
+            ('code', '=', l10n_latam_document_type_code),
+            ('country_id.code', '=', 'CL'),
+        ])
         self.issued_date = result.xpath('FA')[0].text
         rut_n = result.xpath('RE')[0].text
         if not self.company_id.vat:

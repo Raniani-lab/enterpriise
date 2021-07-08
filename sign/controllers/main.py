@@ -101,7 +101,7 @@ class Sign(http.Controller):
         current_request_item.access_via_link = True
         return request.redirect('/sign/document/%s/%s' % (id, token))
 
-    @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public')
+    @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public', website=True)
     def sign_document_public(self, id, token, **post):
         document_context = self.get_document_qweb_context(id, token)
         if not isinstance(document_context, dict):

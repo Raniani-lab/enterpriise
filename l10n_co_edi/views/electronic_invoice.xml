@@ -13,7 +13,7 @@
                     <t t-set="line" t-value="group_tax_details['base_line_id']"/>
                     <t t-set="line_details" t-value="tax_details['invoice_line_tax_details'][line]['tax_details'][group]" />
                     <IMP_1 t-esc="detail['l10n_co_edi_type'].code"/>
-                    <IMP_2 t-esc="format_monetary((abs(line_details['base_amount_currency'] * 100 / 15) if detail['l10n_co_edi_type'].code == '05' 
+                    <IMP_2 t-esc="format_monetary((abs(line_details['base_amount_currency'] * 100 / 15) if detail['l10n_co_edi_type'].code == '05'
                         else abs(line_details['base_amount_currency'])), invoice.currency_id)"/>
                     <IMP_3 t-esc="invoice.currency_id.name"/>
                     <IMP_4 t-esc="format_monetary(abs(line_details['tax_amount_currency']), invoice.currency_id)"/>
@@ -237,13 +237,13 @@
 
             <IEN>
                 <IEN_1 t-esc="shipping_partner.street if shipping_partner else ''"/>
-                <IEN_2 t-esc="str(invoice.partner_shipping_id.state_id.l10n_co_edi_code).zfill(2) if 'partner_shipping_id' in invoice._fields else str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>
+                <IEN_2 t-esc="str(env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()).state_id.l10n_co_edi_code or '').zfill(2)"/>
                 <IEN_3/>
                 <IEN_4 t-esc="shipping_partner.city if shipping_partner else ''"/>
                 <IEN_6 t-esc="shipping_partner.country_id.code if shipping_partner else ''"/>
                 <IEN_7 t-esc="invoice_partner.name"/>
                 <IEN_8 t-esc="delivery_date"/>
-                <IEN_12 t-esc="str(invoice.partner_shipping_id.city_id.l10n_co_edi_code).zfill(5) if 'partner_shipping_id' in invoice._fields else str(invoice_partner.city_id.l10n_co_edi_code).zfill(5)"/>
+                <IEN_12 t-esc="str(env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()).city_id.l10n_co_edi_code or '').zfill(5)"/>
             </IEN>
 
             <MEP>

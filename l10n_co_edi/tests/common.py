@@ -77,7 +77,7 @@ class TestCoEdiCommon(AccountEdiTestCommon):
         })
 
         cls.company_data['company'].partner_id.write({
-            'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut'),
+            'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut').id,
             'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_1').id])],
             'l10n_co_edi_large_taxpayer': True,
         })
@@ -100,7 +100,7 @@ class TestCoEdiCommon(AccountEdiTestCommon):
         })
 
         cls.company_data_2['company'].partner_id.write({
-            'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut'),
+            'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut').id,
             'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_1').id])],
             'l10n_co_edi_large_taxpayer': True,
         })

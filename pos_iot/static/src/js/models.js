@@ -50,10 +50,11 @@ models.load_models([{
                     self.iot_device_proxies.scanners[iot_device.identifier] = new DeviceProxy(self, { iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;
                 case 'payment':
-                    var payment_method = _.find(self.payment_methods, function (payment_method) {
-                        return payment_method.iot_device_id[0] == iot_device.id;
+                    _.each(self.payment_methods, function(payment_method) {
+                        if (payment_method.iot_device_id[0] == iot_device.id) {
+                            payment_method.terminal_proxy = new DeviceProxy(self, { iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
+                        }
                     });
-                    payment_method.terminal_proxy = new DeviceProxy(self, { iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;
             }
         });

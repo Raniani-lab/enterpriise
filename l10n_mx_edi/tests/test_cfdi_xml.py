@@ -80,7 +80,9 @@ class TestEdiResults(TestMxEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_mxn(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.invoice.currency_id = self.invoice.company_id.currency_id
             self.invoice.action_post()
 

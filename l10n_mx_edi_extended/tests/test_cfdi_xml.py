@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 from .common import TestMxExtendedEdiCommon
+from odoo.addons.l10n_mx_edi.tests.common import mocked_l10n_mx_edi_pac
 from odoo.tests import tagged
 from odoo.exceptions import ValidationError
 
 from freezegun import freeze_time
+from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
 class TestEdiResults(TestMxExtendedEdiCommon):
 
     def test_invoice_cfdi_external_trade(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.invoice.l10n_mx_edi_external_trade = True
             self.invoice.partner_id.l10n_mx_edi_external_trade = True
             self.invoice.action_post()
@@ -70,7 +74,9 @@ class TestEdiResults(TestMxExtendedEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_customs_number(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
             # The format of the customs number is incorrect.
             with self.assertRaises(ValidationError), self.cr.savepoint():
                 self.invoice.invoice_line_ids.l10n_mx_edi_customs_number = '15  48  30  001234'

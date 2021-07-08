@@ -95,10 +95,13 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             self.assertEqual(invoice.amount_total, 330)
             self.assertEqual(invoice.amount_untaxed, 300)
             self.assertEqual(invoice.amount_tax, 30)
-            self.assertEqual(invoice.ref, 'INV0001')
             self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
             self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
             self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
+            if move_type == 'in_invoice':
+                self.assertEqual(invoice.ref, 'INV0001')
+            else:
+                self.assertEqual(invoice.name, 'INV0001')
 
             self.assertEqual(len(invoice.invoice_line_ids), 3)
             for i, invoice_line in enumerate(invoice.invoice_line_ids):

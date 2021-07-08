@@ -4,6 +4,7 @@ from odoo import api, fields, models, tools, _
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
+from odoo.tools import mute_logger
 from odoo.tools.misc import clean_context
 import logging
 import math
@@ -780,8 +781,12 @@ class AccountMove(models.Model):
                     move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
                 else:
                     move_form.invoice_date_due = due_date_ocr
-            if not move_form.ref and not no_ref:
+            if self.move_type in {'in_invoice', 'in_refund'} and not move_form.ref and not no_ref:
                 move_form.ref = invoice_id_ocr
+
+            if self.move_type in {'out_invoice', 'out_refund'}:
+                with mute_logger('odoo.tests.common.onchange'):
+                    move_form.name = invoice_id_ocr
 
             if self.user_has_groups('base.group_multi_currency') and (not move_form.currency_id or move_form.currency_id == self._get_default_currency()):
                 currency = self.env["res.currency"].search([

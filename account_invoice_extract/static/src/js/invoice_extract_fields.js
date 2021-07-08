@@ -30,16 +30,15 @@ var InvoiceExtractFields = Class.extend(Mixins.EventDispatcherMixin, ServicesMix
         Mixins.EventDispatcherMixin.init.call(this, arguments);
         this.setParent(parent);
 
-        var vendor_text = _t('Vendor');
-        if (is_customer_invoice) {
-            vendor_text = _t('Customer');
-        }
+        var vendor_text = is_customer_invoice ? _t('Customer') : _t('Vendor');
+        var invoice_id_text = is_customer_invoice ? _t('Reference') : _t('Vendor Reference');
+
         this._fields = [
             new InvoiceExtractField(this, { text: _t('VAT'), fieldName: 'VAT_Number' }),
             new InvoiceExtractField(this, { text: vendor_text, fieldName: 'supplier' }),
             new InvoiceExtractField(this, { text: _t('Date'), fieldName: 'date' }),
             new InvoiceExtractField(this, { text: _t('Due Date'), fieldName: 'due_date' }),
-            new InvoiceExtractField(this, { text: _t('Vendor Reference'), fieldName: 'invoice_id' }),
+            new InvoiceExtractField(this, { text: invoice_id_text, fieldName: 'invoice_id' }),
         ];
 
         this._fields[0].setActive();

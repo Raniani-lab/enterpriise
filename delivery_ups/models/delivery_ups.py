@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from functools import partial
-
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 from odoo.tools import pdf
@@ -349,21 +347,6 @@ class ProviderUPS(models.Model):
 
     def _ups_get_default_custom_package_code(self):
         return '02'
-
-    def _ups_convert_dimensions(self, package, unit):
-        length_uom = self.env['product.template']._get_length_uom_id_from_ir_config_parameter()
-        if unit == 'CM':
-            ups_package_dimension_uom = self.env.ref('uom.product_uom_cm')
-        elif unit == 'IN':
-            ups_package_dimension_uom = self.env.ref('uom.product_uom_inch')
-        else:
-            raise ValueError
-        convert = partial(length_uom._compute_quantity, to_unit=ups_package_dimension_uom)
-        return {
-            'length': convert(package.packaging_length),
-            'width': convert(package.width),
-            'height': convert(package.height),
-        }
 
     def _ups_convert_weight(self, weight, unit='KGS'):
         weight_uom_id = self.env['product.template']._get_weight_uom_id_from_ir_config_parameter()

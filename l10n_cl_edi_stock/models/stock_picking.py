@@ -76,7 +76,6 @@ class Picking(models.Model):
     l10n_cl_dte_file = fields.Many2one('ir.attachment', string='DTE file', copy=False)
     l10n_cl_sii_send_ident = fields.Text(string='SII Send Identification(Track ID)', readonly=True,
                                          states={'draft': [('readonly', False)]}, copy=False, tracking=True)
-    country_code = fields.Char(related='company_id.country_id.code')
 
     _sql_constraints = [
         ('unique_document_number_in_company', 'UNIQUE(l10n_latam_document_number, company_id)',

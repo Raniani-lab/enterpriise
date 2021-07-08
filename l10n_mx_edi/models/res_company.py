@@ -34,7 +34,7 @@ class ResCompany(models.Model):
         string='PAC password',
         help='The password used to request the seal from the PAC')
     l10n_mx_edi_certificate_ids = fields.Many2many('l10n_mx_edi.certificate',
-        string='Certificates')
+        string='Certificates (MX)')
 
     # == Address ==
     l10n_mx_edi_colony_code = fields.Char(

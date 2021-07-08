@@ -21,6 +21,7 @@
     'depends': [
         'sale_stock',
         'l10n_cl_edi',
+        'stock_account',
         ],
     'data': [
         'data/l10n_latam.document.type.csv',

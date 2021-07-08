@@ -99,7 +99,7 @@ class ResCompany(models.Model):
              '3 - End consumer (only receipts)\n'
              '4 - Foreigner')
     l10n_cl_certificate_ids = fields.One2many(
-        'l10n_cl.certificate', 'company_id', string='Certificates')
+        'l10n_cl.certificate', 'company_id', string='Certificates (CL)')
 
     def _get_digital_signature(self, user_id=None):
         """

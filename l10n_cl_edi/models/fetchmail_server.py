@@ -35,7 +35,7 @@ class FetchmailServer(models.Model):
                            'site in the section: "ACTUALIZACION DE DATOS DEL CONTRIBUYENTE", "Mail Contacto SII"\n'
                            'and "Mail Contacto Empresas".')
     l10n_cl_last_uid = fields.Integer(
-        string='Last message UID', default=1,
+        string='Last message UID (CL)', default=1,
         help='This value is pointing to the number of the last message unread by odoo '
              'in the inbox. This value will be updated by the system during its normal'
              'operation.')

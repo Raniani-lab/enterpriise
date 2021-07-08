@@ -91,7 +91,7 @@ class AccountMove(models.Model):
             ('1004', '[1004] Operation Subject to Drawdown - Cargo Transportation Services'),
             ('2001', '[2001] Operation Subject to Perception')
         ],
-        string="Operation Type",
+        string="Operation Type (PE)",
         store=True, readonly=False,
         compute='_compute_l10n_pe_edi_operation_type',
         help="Defines the operation type, all the options can be used for all the document types, except "

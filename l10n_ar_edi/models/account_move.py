@@ -126,7 +126,7 @@ class AccountMove(models.Model):
             # This is useful when duplicating the production database for training purpose or others
             if inv._is_dummy_afip_validation():
                 inv._dummy_afip_validation()
-                validated += super(AccountMove, inv)._post()
+                validated += super(AccountMove, inv)._post(soft)
                 continue
 
             client, auth, transport = inv.company_id._l10n_ar_get_connection(inv.journal_id.l10n_ar_afip_ws)._get_client(return_transport=True)
@@ -171,7 +171,7 @@ class AccountMove(models.Model):
                 )
             raise UserError(msg)
 
-        return validated + super(AccountMove, self - sale_ar_edi_invoices)._post()
+        return validated + super(AccountMove, self - sale_ar_edi_invoices)._post(soft)
 
     def l10n_ar_verify_on_afip(self):
         """ This method let us to connect to AFIP using WSCDC webservice to verify if a vendor bill is valid on AFIP """

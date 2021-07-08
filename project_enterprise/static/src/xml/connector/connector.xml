@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="connector_stroke_head" owl="1">
+        <path d="M2,2 L10,6 L2,10 L6,6 L2,2"
+              class="o_connector_stroke_head"
+              t-att="{
+                        'fill': color,
+                        'stroke': color,
+                     }"
+              t-if="width"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"/>
+    </t>
+    <t t-name="connector_stroke" owl="1">
+        <path fill="none"
+              pointer-events="stroke"
+              t-att="{
+                        'd': path,
+                        'stroke': color,
+                        'stroke-width': width,
+                        'class': 'o_connector_stroke' + (classNameModifier ? classNameModifier : ''),
+                        'marker-end': markerEnd ? 'url(#' + markerEnd + ')' : false,
+                        'pointer-events': props.inCreation ? 'none' : 'stroke',
+                     }"
+              t-if="width"/>
+    </t>
+    <t t-name="connector" owl="1">
+        <svg class="o_connector"
+             pointer-events="none"
+             version="1.1"
+             xmlns="http://www.w3.org/2000/svg"
+             t-att-class="props.hovered ? 'o_connector_hovered' : ''"
+             t-att-data-id="props.id">
+            <t t-set="strokeColor"
+               t-value="props.hovered and !!style.stroke.hoveredColor ? style.stroke.hoveredColor : style.stroke.color"/>
+            <t t-set="outlineStrokeColor"
+               t-value="props.hovered and !!style.outlineStroke.hoveredColor ? style.outlineStroke.hoveredColor : style.outlineStroke.color"/>
+            <defs t-if="style.drawHead">
+                <marker markerHeight="6"
+                        markerWidth="6"
+                        markerUnits="strokeWidth"
+                        orient="auto"
+                        refX="9"
+                        refY="6"
+                        stroke-linejoin="round"
+                        t-attf-id="o_connector_arrow_head_{{props.id}}"
+                        viewBox="0 0 12 12">
+                    <t t-call="connector_stroke_head">
+                        <t t-set="color" t-value="strokeColor"/>
+                        <t t-set="width" t-value="style.stroke.width"/>
+                    </t>
+                </marker>
+            </defs>
+            <t t-if="hoverEaseWidth > 0" t-call="connector_stroke">
+                <t t-set="color" t-value="transparent"/>
+                <t t-set="classNameModifier" t-value="'_hover_ease'"/>
+                <t t-set="width"
+                   t-value="style.stroke.width + hoverEaseWidth + style.outlineStroke.width"/>
+            </t>
+            <t t-if="style.outlineStroke.width > 0" t-call="connector_stroke">
+                <t t-set="color" t-value="outlineStrokeColor"/>
+                <t t-set="classNameModifier" t-value="'_outline'"/>
+                <t t-set="width" t-value="style.stroke.width + style.outlineStroke.width"/>
+            </t>
+            <t t-call="connector_stroke">
+                <t t-set="color" t-value="strokeColor"/>
+                <t t-set="markerEnd" t-value="'o_connector_arrow_head_' + props.id"/>
+                <t t-set="width" t-value="style.stroke.width"/>
+            </t>
+            <t t-set="removeButtonSize" t-value="6 * style.stroke.width"/>
+            <svg class="connector_stroke_remove_button"
+                 pointer-events="auto"
+                 t-att="{
+                            'height': removeButtonSize,
+                            'width': removeButtonSize,
+                            'x': removeButtonPosition.left - removeButtonSize / 2,
+                            'y': removeButtonPosition.top - removeButtonSize / 2
+                        }"
+                 t-if="props.canBeRemoved and props.hovered"
+                 version="1.1"
+                 viewBox="0 0 512 512"
+                 xmlns="http://www.w3.org/2000/svg">
+                <g transform="rotate(45,256,256)" t-on-click.stop="_onRemoveButtonClick">
+                    <circle stroke-width="32" stroke="white" fill="rgb(221, 60, 79)" cx="256" cy="256" r="224"/>
+                    <rect x="228" y="113" fill="white" width="56" height="286"/>
+                    <rect x="113" y="228" fill="white" width="286" height="56"/>
+                </g>
+            </svg>
+        </g>
+    </t>
+</templates>

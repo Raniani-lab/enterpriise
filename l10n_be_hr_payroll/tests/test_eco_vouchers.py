@@ -20,7 +20,14 @@ class TestEcoVouchers(TransactionCase):
         # Employees is on unpaid time off from the 01/04/2021 to 21/04/2021 (9 working days over 2.5 weeks)
 
         # Expected result = 250*5/12 + 200*(7-1)/12 = 104.67 + 100 = 204.17
-        self.env.company.country_id = self.env.ref('base.be')
+        be_company = self.env['res.company'].sudo().search([
+            ('partner_id.country_id.code', '=', 'BE'),
+        ], limit=1)
+        if be_company:
+            # Use a company with the correct CoA installed if `account` is installed
+            self.env = self.env(context={'allowed_company_ids': be_company.ids})
+        else:
+            self.env.company.country_id = self.env.ref('base.be')
 
         employee = self.env['hr.employee'].create({'name': 'Test Employee'})
 

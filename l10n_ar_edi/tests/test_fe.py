@@ -122,6 +122,8 @@ class TestVendorBill(common.TestEdi):
     @classmethod
     def setUpClass(cls):
         super(TestVendorBill, cls).setUpClass()
+        cls._create_afip_connections(cls, cls.env.ref('l10n_ar.company_mono'))
+
         cls.partner = cls.partner_ri
         cls.journal = cls._create_journal(cls, 'wsfe')
 
@@ -134,7 +136,6 @@ class TestVendorBill(common.TestEdi):
         # Login in "Monotributista" Company
         context = dict(self.env.context, allowed_company_ids=[mono_company.id])
         self.env = self.env(context=context)
-        self._create_afip_connections(mono_company)
 
         # Create a vendor bill with the same values of "Responsable Inscripto"
         bill = self._create_invoice({

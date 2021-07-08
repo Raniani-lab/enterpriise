@@ -584,11 +584,14 @@ class AEATAccountFinancialReport(models.Model):
                     'date_to': '%s-12-31' % end_date.year,
                     'filter': 'custom',
                     'mode': 'range',
-                }
+                },
             })
+            transactions_volume_options['sorted_groupby_keys'] = options['sorted_groupby_keys'],
             transactions_volume_line = self.env.ref('l10n_es_reports.es_profit_and_loss_line_1')
-            transactions_volume_vals = profit_and_loss_report._get_lines(transactions_volume_options, line_id=transactions_volume_line.id)
-            annual_volume_indicator = current_company.currency_id.is_zero(transactions_volume_vals[0]['columns'][0]['no_format_name']) and 2 or 1
+            transactions_volume_vals = profit_and_loss_report._get_lines(transactions_volume_options, line_id=self._build_line_id([
+                ('', transactions_volume_line._name, transactions_volume_line.id)
+            ]))
+            annual_volume_indicator = current_company.currency_id.is_zero(transactions_volume_vals[0]['columns'][0]['no_format']) and 2 or 1
         else:
             annual_volume_indicator = 0
 

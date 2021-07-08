@@ -36,7 +36,8 @@
             flex: 1 1 auto;
             .o-spreadsheet {
                 height: 100%;
-                .o_spreadsheet_pivot_side_panel, .o_spreadsheet_filter_editor_side_panel, .o_spreadsheet_global_filters_side_panel {
+
+                .o_spreadsheet_pivot_side_panel, .o_spreadsheet_filter_editor_side_panel, .o_spreadsheet_global_filters_side_panel, .o-listing-details-side-panel, .o-listing-all-side-panel {
                     .o_side_panel_section {
                         background-color: #fff;
                         padding: 16px;
@@ -367,4 +368,17 @@ $margin-right: 15px;
 article.spreadsheet_fade {
     cursor: default;
     opacity: 50%;
+}
+
+.o_spreadsheet_selector_dialog {
+
+    .o_threshold_list {
+        padding-top: 10px;
+
+        .o_input {
+            display: inline;
+            padding-left: 5px;
+            width: fit-content;
+        }
+    }
 }

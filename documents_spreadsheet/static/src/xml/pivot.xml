@@ -15,13 +15,4 @@
         </t>
     </t>
 
-    <div t-name="documents_spreadsheet.SpreadsheetSelectorDialog" class="o_spreadsheet_selector_dialog">
-        <select id="spreadsheet" name="spreadsheet" class="o_input">
-            <option class="o_new" value=''>New Spreadsheet</option>
-            <option t-foreach="widget.spreadsheets" t-as="spreadsheet" t-att-value="spreadsheet.id">
-                <t t-esc="spreadsheet.name"/>
-            </option>
-        </select>
-    </div>
-
 </templates>

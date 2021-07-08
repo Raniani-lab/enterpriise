@@ -1,3 +1,5 @@
+/* global _ */
+
 odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require) {
     "use strict";
 
@@ -25,7 +27,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
 
     /**
      * This is the side panel to define/edit a global filter.
-     * It can be of 3 differents type: text, date and relation.
+     * It can be of 3 different type: text, date and relation.
      */
     class FilterEditorSidePanel extends owl.Component {
         /**
@@ -54,13 +56,13 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                     relatedModelName: undefined,
                 },
             });
-            this.pivots = this.env.getters.getPivots();
+            this.getters = this.env.getters;
+            this.pivotIds = this.getters.getPivotIds();
             this.loadValues(props);
             // Widgets
             this.FieldSelectorWidget = FieldSelectorWidget;
             this.ModelSelectorWidget = ModelSelectorWidget;
             this.TagSelectorWidget = TagSelectorWidget;
-            this.getters = this.env.getters;
             this.orm = useService("orm");
             this.notification = useService("notification");
         }
@@ -73,7 +75,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         }
 
         get missingLabel() {
-            return this.state.saved && !Boolean(this.state.label);
+            return this.state.saved && !this.state.label;
         }
 
         get missingField() {
@@ -88,28 +90,9 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             );
         }
 
-        /**
-         * List of model names of all related models of all pivots
-         * @returns {Array<string>}
-         */
-        get relatedModels() {
-            const getters = this.env.getters;
-            return [
-                ...new Set(
-                    getters
-                        .getPivots()
-                        .filter((pivot) => getters.isCacheLoaded(pivot.id))
-                        .map((pivot) => Object.values(getters.getCache(pivot.id).getFields()))
-                        .flat()
-                        .filter((field) => field.type === "many2one")
-                        .map((field) => field.relation)
-                ),
-            ];
-        }
-
         loadValues(props) {
             this.id = props.id;
-            const globalFilter = this.id && this.env.getters.getGlobalFilter(this.id);
+            const globalFilter = this.id && this.getters.getGlobalFilter(this.id);
             this.state.label = globalFilter && globalFilter.label;
             this.state.type = globalFilter ? globalFilter.type : props.type;
             this.state.pivotFields = globalFilter ? globalFilter.fields : {};
@@ -124,7 +107,12 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         }
 
         async willStart() {
-            await this.fetchModelFromName();
+            const proms = [];
+            proms.push(this.fetchModelFromName());
+            for (const pivotId of this.getters.getPivotIds()) {
+                proms.push(this.getters.waitForPivotMetaData(pivotId));
+            }
+            await Promise.all(proms);
         }
 
         async onModelSelected(ev) {
@@ -133,15 +121,14 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             }
             this.state.relation.relatedModelID = ev.detail.value;
             await this.fetchModelFromId();
-            const getters = this.env.getters;
-            for (const pivot of this.pivots.filter((pivot) => getters.isCacheLoaded(pivot.id))) {
+            for (const pivotId of this.pivotIds) {
                 const [field, fieldDesc] =
-                    Object.entries(getters.getCache(pivot.id).getFields()).find(
-                        ([fieldName, fieldDesc]) =>
+                    Object.entries(this.getters.getPivotFields(pivotId)).find(
+                        ([, fieldDesc]) =>
                             fieldDesc.type === "many2one" &&
                             fieldDesc.relation === this.state.relation.relatedModelName
                     ) || [];
-                this.state.pivotFields[pivot.id] = field
+                this.state.pivotFields[pivotId] = field
                     ? { field, type: fieldDesc.type }
                     : undefined;
             }
@@ -155,7 +142,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             const result = await this.orm.searchRead(
                 "ir.model",
                 [["model", "=", this.state.relation.relatedModelName]],
-                ["id", "name"],
+                ["id", "name"]
             );
             this.state.relation.relatedModelID = result[0] && result[0].id;
             if (!this.state.label) {
@@ -171,7 +158,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             const result = await this.orm.searchRead(
                 "ir.model",
                 [["id", "=", this.state.relation.relatedModelID]],
-                ["model", "name"],
+                ["model", "name"]
             );
 
             this.state.relation.relatedModelName = result[0] && result[0].model;
@@ -182,9 +169,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
 
         onSelectedField(id, ev) {
             const fieldName = ev.detail.chain[0];
-            const pivot = this.pivots.find((pivot) => pivot.id === id);
-            const cache = this.getters.getCache(pivot.id);
-            const field = cache.getField(fieldName);
+            const field = this.getters.getPivotField(id, fieldName);
             if (field) {
                 this.state.pivotFields[id] = {
                     field: fieldName,
@@ -196,10 +181,10 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         onSave() {
             this.state.saved = true;
             if (this.missingLabel || this.missingField || this.missingModel) {
-                this.notification.add(
-                    this.env._t("Some required fields are not valid"),
-                    { type: "danger", sticky: false }
-                );
+                this.notification.add(this.env._t("Some required fields are not valid"), {
+                    type: "danger",
+                    sticky: false,
+                });
                 return;
             }
             const cmd = this.id ? "EDIT_PIVOT_FILTER" : "ADD_PIVOT_FILTER";
@@ -215,11 +200,11 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 fields: this.state.pivotFields,
             };
             const result = this.env.dispatch(cmd, { id, filter });
-            if (result=== CommandResult.DuplicatedFilterLabel) {
-                this.notification.add(
-                    this.env._t("Duplicated Label"),
-                    { type: "danger", sticky: false }
-                );
+            if (result === CommandResult.DuplicatedFilterLabel) {
+                this.notification.add(this.env._t("Duplicated Label"), {
+                    type: "danger",
+                    sticky: false,
+                });
                 return;
             }
             this.env.openSidePanel("GLOBAL_FILTERS_SIDE_PANEL", {});
@@ -235,7 +220,6 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         }
 
         onTimeRangeChanged(ev) {
-            const { year, period } = ev.detail;
             this.state.date.defaultValue = ev.detail;
         }
 

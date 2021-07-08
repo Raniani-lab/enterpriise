@@ -55,8 +55,6 @@
         };
     };
 
-    // Scheduler
-    const MAXIMUM_EVALUATION_CHECK_DELAY_MS = 15;
     // Colors
     const BACKGROUND_GRAY_COLOR = "#f5f5f5";
     const BACKGROUND_HEADER_COLOR = "#F8F9FA";
@@ -1329,23 +1327,18 @@
         CommandResult[CommandResult["MaxNaN"] = 38] = "MaxNaN";
         CommandResult[CommandResult["ValueUpperInflectionNaN"] = 39] = "ValueUpperInflectionNaN";
         CommandResult[CommandResult["ValueLowerInflectionNaN"] = 40] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 41] = "MinAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 42] = "MidAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 43] = "MaxAsyncFormulaNotSupported";
-        CommandResult[CommandResult["ValueUpperAsyncFormulaNotSupported"] = 44] = "ValueUpperAsyncFormulaNotSupported";
-        CommandResult[CommandResult["ValueLowerAsyncFormulaNotSupported"] = 45] = "ValueLowerAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MinInvalidFormula"] = 46] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 47] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 48] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 49] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 50] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 51] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 52] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 53] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 54] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 55] = "Readonly";
-        CommandResult[CommandResult["InvalidOffset"] = 56] = "InvalidOffset";
-        CommandResult[CommandResult["InvalidViewportSize"] = 57] = "InvalidViewportSize";
+        CommandResult[CommandResult["MinInvalidFormula"] = 41] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 42] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 43] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 44] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 45] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 46] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 47] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 48] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 49] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 50] = "Readonly";
+        CommandResult[CommandResult["InvalidOffset"] = 51] = "InvalidOffset";
+        CommandResult[CommandResult["InvalidViewportSize"] = 52] = "InvalidViewportSize";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -5843,22 +5836,6 @@
     });
 
     // -----------------------------------------------------------------------------
-    // WAIT
-    // -----------------------------------------------------------------------------
-    const WAIT = {
-        description: _lt("Wait"),
-        args: args(`ms (number) ${_lt("wait time in milliseconds")}`),
-        returns: ["ANY"],
-        async: true,
-        compute: function (delay) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    resolve(delay);
-                }, toNumber(delay));
-            });
-        },
-    };
-    // -----------------------------------------------------------------------------
     // AND
     // -----------------------------------------------------------------------------
     const AND = {
@@ -6005,7 +5982,6 @@
 
     var logical = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        WAIT: WAIT,
         AND: AND,
         IF: IF,
         IFERROR: IFERROR,
@@ -6796,7 +6772,7 @@
         UPPER: UPPER
     });
 
-    const functions$5 = {
+    const functions$4 = {
         database,
         date,
         financial,
@@ -6826,8 +6802,8 @@
         }
     }
     const functionRegistry = new FunctionRegistry();
-    for (let category in functions$5) {
-        const fns = functions$5[category];
+    for (let category in functions$4) {
+        const fns = functions$4[category];
         for (let name in fns) {
             const addDescr = fns[name];
             addDescr.category = category;
@@ -7440,7 +7416,7 @@
      * is useful for the composer, which needs to be able to work with incomplete
      * formulas.
      */
-    const functions$4 = functionRegistry.content;
+    const functions$3 = functionRegistry.content;
     const OPERATORS = "+,-,*,/,:,=,<>,>=,>,<=,<,%,^,&".split(",");
     function tokenize(str) {
         const chars = str.split("");
@@ -7591,7 +7567,7 @@
         }
         if (result.length) {
             const value = result.join("");
-            const isFunction = value.toUpperCase() in functions$4;
+            const isFunction = value.toUpperCase() in functions$3;
             const type = isFunction ? "FUNCTION" : "SYMBOL";
             return { type, value };
         }
@@ -7610,7 +7586,6 @@
         return null;
     }
 
-    const functions$3 = functionRegistry.content;
     const UNARY_OPERATORS = ["-", "+"];
     const OP_PRIORITY = {
         "^": 30,
@@ -7683,9 +7658,7 @@
                     if (tokens.shift().type !== "RIGHT_PAREN") {
                         throw new Error(_lt("Wrong function call"));
                     }
-                    const isAsync = functions$3[current.value.toUpperCase()].async;
-                    const type = isAsync ? "ASYNC_FUNCALL" : "FUNCALL";
-                    return { type, value: current.value, args };
+                    return { type: "FUNCALL", value: current.value, args };
                 }
             case "REFERENCE":
                 return {
@@ -7764,7 +7737,6 @@
     function astToFormula(ast) {
         switch (ast.type) {
             case "FUNCALL":
-            case "ASYNC_FUNCALL":
                 const args = ast.args.map((arg) => astToFormula(arg));
                 return `${ast.value}(${args.join(",")})`;
             case "NUMBER":
@@ -7811,9 +7783,7 @@
     // -----------------------------------------------------------------------------
     // COMPILER
     // -----------------------------------------------------------------------------
-    const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
     function compile(str) {
-        let isAsync = false;
         if (!functionCache[str.text]) {
             const ast = parse(str.text);
             let nextId = 1;
@@ -7825,14 +7795,13 @@
                 throw new Error(_lt("Invalid formula"));
             }
             code.push(`return ${compileAST(ast)};`);
-            const Constructor = isAsync ? AsyncFunction : Function;
-            let baseFunction = new Constructor("deps", // the dependencies in the current formula
+            let baseFunction = new Function("deps", // the dependencies in the current formula
             "sheetId", // the sheet the formula is currently evaluating
             "ref", // a function to access a certain dependency at a given index
             "range", // same as above, but guarantee that the result is in the form of a range
             "ctx", code.join("\n"));
+            //@ts-ignore
             functionCache[str.text] = baseFunction;
-            functionCache[str.text].async = isAsync;
             functionCache[str.text].dependenciesFormat = formatAST(ast);
             /**
              * This function compile the function arguments. It is mostly straightforward,
@@ -7957,14 +7926,6 @@
                         code.push(`ctx.__lastFnCalled = '${fnName}'`);
                         statement = `ctx['${fnName}'](${args})`;
                         break;
-                    case "ASYNC_FUNCALL":
-                        id = nextId++;
-                        isAsync = true;
-                        args = compileFunctionArgs(ast);
-                        fnName = ast.value.toUpperCase();
-                        code.push(`ctx.__lastFnCalled = '${fnName}'`);
-                        statement = `await ctx['${fnName}'](${args})`;
-                        break;
                     case "UNARY_OPERATION":
                         id = nextId++;
                         right = compileAST(ast.right);
@@ -8010,7 +7971,6 @@
                         }
                         break;
                     case "FUNCALL":
-                    case "ASYNC_FUNCALL":
                         fnDef = functions$2[ast.value.toUpperCase()];
                         if (fnDef.returnFormat) {
                             if (fnDef.returnFormat === "FormatFromArgument") {
@@ -9585,12 +9545,12 @@
                         "NotContains",
                     ]), this.checkOperatorArgsNumber(0, ["IsEmpty", "IsNotEmpty"]));
                 case "ColorScaleRule": {
-                    return this.checkValidations(rule, this.chainValidations(this.checkThresholds(this.checkFormulaCompilation), this.checkThresholds(this.checkAsyncFormula)), this.chainValidations(this.checkThresholds(this.checkNaN), this.batchValidations(this.checkMinBiggerThanMax, this.checkMinBiggerThanMid, this.checkMidBiggerThanMax
+                    return this.checkValidations(rule, this.chainValidations(this.checkThresholds(this.checkFormulaCompilation)), this.chainValidations(this.checkThresholds(this.checkNaN), this.batchValidations(this.checkMinBiggerThanMax, this.checkMinBiggerThanMid, this.checkMidBiggerThanMax
                     // ☝️ Those three validations can be factorized further
                     )));
                 }
                 case "IconSetRule": {
-                    return this.checkValidations(rule, this.chainValidations(this.checkInflectionPoints(this.checkNaN), this.checkLowerBiggerThanUpper), this.chainValidations(this.checkInflectionPoints(this.checkFormulaCompilation), this.checkInflectionPoints(this.checkAsyncFormula)));
+                    return this.checkValidations(rule, this.chainValidations(this.checkInflectionPoints(this.checkNaN), this.checkLowerBiggerThanUpper), this.chainValidations(this.checkInflectionPoints(this.checkFormulaCompilation)));
                 }
             }
             return 0 /* Success */;
@@ -9641,35 +9601,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 46 /* MinInvalidFormula */;
+                        return 41 /* MinInvalidFormula */;
                     case "max":
-                        return 48 /* MaxInvalidFormula */;
+                        return 43 /* MaxInvalidFormula */;
                     case "mid":
-                        return 47 /* MidInvalidFormula */;
+                        return 42 /* MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 49 /* ValueUpperInvalidFormula */;
+                        return 44 /* ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 50 /* ValueLowerInvalidFormula */;
-                }
-            }
-            return 0 /* Success */;
-        }
-        checkAsyncFormula(threshold, thresholdName) {
-            if (threshold.type !== "formula")
-                return 0 /* Success */;
-            const compiledFormula = compile(normalize(threshold.value || ""));
-            if (compiledFormula.async) {
-                switch (thresholdName) {
-                    case "min":
-                        return 41 /* MinAsyncFormulaNotSupported */;
-                    case "max":
-                        return 43 /* MaxAsyncFormulaNotSupported */;
-                    case "mid":
-                        return 42 /* MidAsyncFormulaNotSupported */;
-                    case "upperInflectionPoint":
-                        return 44 /* ValueUpperAsyncFormulaNotSupported */;
-                    case "lowerInflectionPoint":
-                        return 45 /* ValueLowerAsyncFormulaNotSupported */;
+                        return 45 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -10035,7 +9975,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 53 /* MergeOverlap */;
+                        return 48 /* MergeOverlap */;
                     }
                 }
             }
@@ -10256,7 +10196,7 @@
                     const elements = cmd.dimension === "COL" ? sheet.cols : sheet.rows;
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements.length
                         ? 0 /* Success */
-                        : 54 /* TooManyHiddenElements */;
+                        : 49 /* TooManyHiddenElements */;
                 }
                 default:
                     return 0 /* Success */;
@@ -11343,6 +11283,7 @@
         action: false,
         children: [],
         separator: false,
+        icon: false,
         id: key,
     });
     function createFullMenuItem(key, value) {
@@ -11920,6 +11861,7 @@
     const FORMAT_BOLD_ACTION = (env) => setStyle(env, { bold: !env.getters.getCurrentStyle().bold });
     const FORMAT_ITALIC_ACTION = (env) => setStyle(env, { italic: !env.getters.getCurrentStyle().italic });
     const FORMAT_STRIKETHROUGH_ACTION = (env) => setStyle(env, { strikethrough: !env.getters.getCurrentStyle().strikethrough });
+    const FORMAT_UNDERLINE_ACTION = (env) => setStyle(env, { underline: !env.getters.getCurrentStyle().underline });
     //------------------------------------------------------------------------------
     // Side panel
     //------------------------------------------------------------------------------
@@ -12560,11 +12502,12 @@
         shortCut: "Ctrl+I",
         action: FORMAT_ITALIC_ACTION,
     })
-        // .addChild("format_underline", ["format"], {
-        //   Underline is not yet implemented
-        //   name: _lt("Underline"),
-        //   sequence: 40,
-        // })
+        .addChild("format_underline", ["format"], {
+        name: _lt("Underline"),
+        shortCut: "Ctrl+U",
+        sequence: 40,
+        action: FORMAT_UNDERLINE_ACTION,
+    })
         .addChild("format_strikethrough", ["format"], {
         name: _lt("Strikethrough"),
         sequence: 50,
@@ -12790,6 +12733,7 @@
     const TRIANGLE_LEFT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 3)"/></svg>`;
     const BOLD_ICON = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M9,3.5 C9,1.57 7.43,0 5.5,0 L1.77635684e-15,0 L1.77635684e-15,12 L6.25,12 C8.04,12 9.5,10.54 9.5,8.75 C9.5,7.45 8.73,6.34 7.63,5.82 C8.46,5.24 9,4.38 9,3.5 Z M5,2 C5.82999992,2 6.5,2.67 6.5,3.5 C6.5,4.33 5.82999992,5 5,5 L3,5 L3,2 L5,2 Z M3,10 L3,7 L5.5,7 C6.32999992,7 7,7.67 7,8.5 C7,9.33 6.32999992,10 5.5,10 L3,10 Z" transform="translate(4 3)"/></svg>`;
     const ITALIC_ICON = `<svg class="o-icon"><polygon fill="#000000" fill-rule="evenodd" points="4 0 4 2 6.58 2 2.92 10 0 10 0 12 8 12 8 10 5.42 10 9.08 2 12 2 12 0" transform="translate(3 3)"/></svg>`;
+    const UNDERLINE_ICON = `<svg class="o-icon"><path fill="#000000" d="M6,12 C8.76,12 11,9.76 11,7 L11,0 L9,0 L9,7 C9,8.75029916 7.49912807,10 6,10 C4.50087193,10 3,8.75837486 3,7 L3,0 L1,0 L1,7 C1,9.76 3.24,12 6,12 Z M0,13 L0,15 L12,15 L12,13 L0,13 Z" transform="translate(3 3)"/></svg>`;
     const STRIKE_ICON = `<svg class="o-icon"><path fill="#010101" fill-rule="evenodd" d="M2.8875,3.06 C2.8875,2.6025 2.985,2.18625 3.18375,1.8075 C3.3825,1.42875 3.66,1.10625 4.02,0.84 C4.38,0.57375 4.80375,0.3675 5.29875,0.22125 C5.79375,0.075 6.33375,0 6.92625,0 C7.53375,0 8.085,0.0825 8.58,0.25125 C9.075,0.42 9.49875,0.6525 9.85125,0.95625 C10.20375,1.25625 10.47375,1.6125 10.665,2.02875 C10.85625,2.44125 10.95,2.895 10.95,3.38625 L8.6925,3.38625 C8.6925,3.1575 8.655,2.94375 8.58375,2.74875 C8.5125,2.55 8.4,2.38125 8.25,2.2425 C8.1,2.10375 7.9125,1.99125 7.6875,1.91625 C7.4625,1.8375 7.19625,1.8 6.88875,1.8 C6.5925,1.8 6.3375,1.83375 6.11625,1.8975 C5.89875,1.96125 5.71875,2.05125 5.57625,2.1675 C5.43375,2.28375 5.325,2.41875 5.25375,2.5725 C5.1825,2.72625 5.145,2.895 5.145,3.0675 C5.145,3.4275 5.32875,3.73125 5.69625,3.975 C5.71780203,3.98908066 5.73942012,4.00311728 5.76118357,4.01733315 C6.02342923,4.18863185 6.5,4.5 7,5 L4,5 C4,5 3.21375,4.37625 3.17625,4.30875 C2.985,3.9525 2.8875,3.53625 2.8875,3.06 Z M14,6 L0,6 L0,8 L7.21875,8 C7.35375,8.0525 7.51875,8.105 7.63125,8.15375 C7.90875,8.2775 8.12625,8.40875 8.28375,8.53625 C8.44125,8.6675 8.54625,8.81 8.6025,8.96 C8.65875,9.11375 8.685,9.28625 8.685,9.47375 C8.685,9.65 8.65125,9.815 8.58375,9.965 C8.51625,10.11875 8.41125,10.25 8.2725,10.35875 C8.13375,10.4675 7.95375,10.55375 7.74,10.6175 C7.5225,10.68125 7.27125,10.71125 6.97875,10.71125 C6.6525,10.71125 6.35625,10.6775 6.09,10.61375 C5.82375,10.55 5.59875,10.445 5.41125,10.3025 C5.22375,10.16 5.0775,9.9725 4.9725,9.74375 C4.8675,9.515 4.78125,9.17 4.78125,9 L2.55,9 C2.55,9.2525 2.61,9.6875 2.72625,10.025 C2.8425,10.3625 3.0075,10.66625 3.21375,10.9325 C3.42,11.19875 3.6675,11.4275 3.94875,11.6225 C4.23,11.8175 4.53375,11.9825 4.86375,12.11 C5.19375,12.24125 5.535,12.33875 5.89875,12.39875 C6.25875,12.4625 6.6225,12.4925 6.9825,12.4925 C7.5825,12.4925 8.13,12.425 8.6175,12.28625 C9.105,12.1475 9.525,11.94875 9.87,11.69375 C10.215,11.435 10.48125,11.12 10.6725,10.74125 C10.86375,10.3625 10.95375,9.935 10.95375,9.455 C10.95375,9.005 10.875,8.6 10.72125,8.24375 C10.68375,8.1575 10.6425,8.075 10.59375,7.9925 L14,8 L14,6 Z" transform="translate(2 3)"/></svg>`;
     const TEXT_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M7,0 L5,0 L0.5,12 L2.5,12 L3.62,9 L8.37,9 L9.49,12 L11.49,12 L7,0 L7,0 Z M4.38,7 L6,2.67 L7.62,7 L4.38,7 L4.38,7 Z" transform="translate(3 1)"/></svg>`;
     const FILL_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M14.5,8.87 C14.5,8.87 13,10.49 13,11.49 C13,12.32 13.67,12.99 14.5,12.99 C15.33,12.99 16,12.32 16,11.49 C16,10.5 14.5,8.87 14.5,8.87 L14.5,8.87 Z M12.71,6.79 L5.91,0 L4.85,1.06 L6.44,2.65 L2.29,6.79 C1.9,7.18 1.9,7.81 2.29,8.2 L6.79,12.7 C6.99,12.9 7.24,13 7.5,13 C7.76,13 8.01,12.9 8.21,12.71 L12.71,8.21 C13.1,7.82 13.1,7.18 12.71,6.79 L12.71,6.79 Z M4.21,7 L7.5,3.71 L10.79,7 L4.21,7 L4.21,7 Z"/></svg>`;
@@ -13098,6 +13042,7 @@
         FORMATTING_STYLE: _lt("Formatting style"),
         BOLD: _lt("Bold"),
         ITALIC: _lt("Italic"),
+        UNDERLINE: _lt("Underline"),
         STRIKE_THROUGH: _lt("Strikethrough"),
         TEXT_COLOR: _lt("Text Color"),
         FILL_COLOR: _lt("Fill Color"),
@@ -13117,16 +13062,11 @@
             [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
             [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
             [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
-            [46 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [48 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [47 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [49 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [50 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
-            [41 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
-            [43 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
-            [42 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
-            [44 /* ValueUpperAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the upper inflection point"),
-            [45 /* ValueLowerAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the lower inflection point"),
+            [41 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [43 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [42 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
             [19 /* EmptyRange */]: _lt("A range needs to be defined"),
             unexpected: _lt("The rule is invalid for an unknown reason"),
         },
@@ -13439,13 +13379,27 @@
     ChartPanel.style = STYLE;
     ChartPanel.components = { SelectionInput, ColorPicker };
 
+    /**
+     * Return true if the event was triggered from
+     * a child element.
+     */
+    function isChildEvent(parent, ev) {
+        return !!ev.target && parent.contains(ev.target);
+    }
+    function getTextDecoration({ strikethrough, underline, }) {
+        if (!strikethrough && !underline) {
+            return "none";
+        }
+        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
+    }
+
     const { Component: Component$h, useState: useState$h, hooks: hooks$3 } = owl__namespace;
     const { useExternalListener: useExternalListener$6 } = hooks$3;
     const { xml: xml$k, css: css$k } = owl__namespace.tags;
     const PREVIEW_TEMPLATE$2 = xml$k /* xml */ `
     <div class="o-cf-preview-line"
          t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
-                       text-decoration:{{currentStyle.strikethrough ? 'line-through':'none'}};
+                       text-decoration:{{getTextDecoration(currentStyle)}};
                        font-style:{{currentStyle.italic?'italic':'normal'}};
                        color:{{currentStyle.textColor}};
                        border-radius: 4px;
@@ -13485,6 +13439,9 @@
         </div>
         <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:state.style.italic}" t-on-click="toggleTool('italic')">
             ${ITALIC_ICON}
+        </div>
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.UNDERLINE}')" t-att-class="{active:state.style.underline}"
+             t-on-click="toggleTool('underline')">${UNDERLINE_ICON}
         </div>
         <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:state.style.strikethrough}"
              t-on-click="toggleTool('strikethrough')">${STRIKE_ICON}
@@ -13540,6 +13497,8 @@
             super(...arguments);
             // @ts-ignore used in XML template
             this.cellIsOperators = cellIsOperators;
+            // @ts-ignore used in XML template
+            this.getTextDecoration = getTextDecoration;
             this.state = useState$h({
                 condition: {
                     operator: this.props.rule && this.props.rule.operator ? this.props.rule.operator : "IsNotEmpty",
@@ -13554,6 +13513,7 @@
                     bold: this.props.rule.style.bold,
                     italic: this.props.rule.style.italic,
                     strikethrough: this.props.rule.style.strikethrough,
+                    underline: this.props.rule.style.underline,
                 },
             });
             useExternalListener$6(window, "click", this.closeMenus);
@@ -13577,6 +13537,9 @@
             }
             if (style.strikethrough !== undefined) {
                 newStyle.strikethrough = style.strikethrough;
+            }
+            if (style.underline !== undefined) {
+                newStyle.underline = style.underline;
             }
             if (style.fillColor) {
                 newStyle.fillColor = style.fillColor;
@@ -13773,19 +13736,16 @@
         isValueInvalid(threshold) {
             switch (threshold) {
                 case "minimum":
-                    return (this.props.errors.includes(41 /* MinAsyncFormulaNotSupported */) ||
-                        this.props.errors.includes(46 /* MinInvalidFormula */) ||
+                    return (this.props.errors.includes(41 /* MinInvalidFormula */) ||
                         this.props.errors.includes(33 /* MinBiggerThanMid */) ||
                         this.props.errors.includes(30 /* MinBiggerThanMax */) ||
                         this.props.errors.includes(36 /* MinNaN */));
                 case "midpoint":
-                    return (this.props.errors.includes(42 /* MidAsyncFormulaNotSupported */) ||
-                        this.props.errors.includes(47 /* MidInvalidFormula */) ||
+                    return (this.props.errors.includes(42 /* MidInvalidFormula */) ||
                         this.props.errors.includes(37 /* MidNaN */) ||
                         this.props.errors.includes(32 /* MidBiggerThanMax */));
                 case "maximum":
-                    return (this.props.errors.includes(43 /* MaxAsyncFormulaNotSupported */) ||
-                        this.props.errors.includes(48 /* MaxInvalidFormula */) ||
+                    return (this.props.errors.includes(43 /* MaxInvalidFormula */) ||
                         this.props.errors.includes(38 /* MaxNaN */));
                 default:
                     return false;
@@ -14092,13 +14052,11 @@
             switch (inflectionPoint) {
                 case "lowerInflectionPoint":
                     return (this.props.errors.includes(40 /* ValueLowerInflectionNaN */) ||
-                        this.props.errors.includes(45 /* ValueLowerAsyncFormulaNotSupported */) ||
-                        this.props.errors.includes(50 /* ValueLowerInvalidFormula */) ||
+                        this.props.errors.includes(45 /* ValueLowerInvalidFormula */) ||
                         this.props.errors.includes(31 /* LowerBiggerThanUpper */));
                 case "upperInflectionPoint":
                     return (this.props.errors.includes(39 /* ValueUpperInflectionNaN */) ||
-                        this.props.errors.includes(44 /* ValueUpperAsyncFormulaNotSupported */) ||
-                        this.props.errors.includes(49 /* ValueUpperInvalidFormula */) ||
+                        this.props.errors.includes(44 /* ValueUpperInvalidFormula */) ||
                         this.props.errors.includes(31 /* LowerBiggerThanUpper */));
                 default:
                     return true;
@@ -14531,7 +14489,7 @@
         getStyle(rule) {
             if (rule.type === "CellIsRule") {
                 const fontWeight = rule.style.bold ? "bold" : "normal";
-                const fontDecoration = rule.style.strikethrough ? "line-through" : "none";
+                const fontDecoration = getTextDecoration(rule.style);
                 const fontStyle = rule.style.italic ? "italic" : "normal";
                 const color = rule.style.textColor || "none";
                 const backgroundColor = rule.style.fillColor || "none";
@@ -17407,45 +17365,15 @@
             yield obj[i];
         }
     }
-    function* makeSetIterator(set) {
-        for (let elem of set) {
-            yield elem;
-        }
-    }
     const functionMap = functionRegistry.mapping;
-    const LOADING = "Loading...";
     class EvaluationPlugin extends UIPlugin {
         constructor(getters, state, dispatch, config) {
             super(getters, state, dispatch, config);
             this.isUpToDate = new Set(); // Set<sheetIds>
-            this.loadingCells = 0;
-            this.isStarted = false;
-            /**
-             * For all cells that are being currently computed (asynchronously).
-             *
-             * For example: =Wait(3)
-             */
-            this.PENDING = new Set();
-            /**
-             * For all cells that are NOT being currently computed, but depend on another
-             * asynchronous computation.
-             *
-             * For example: A2 is in WAITING (initially) and A1 in PENDING
-             *   A1: =Wait(3)
-             *   A2: =A1
-             */
-            this.WAITING = new Set();
-            /**
-             * For all cells that have been async computed.
-             *
-             * For example:
-             *  A1: =Wait(3)
-             *  A2: =A1
-             *
-             * When A1 is computed, A1 is moved in COMPUTED
-             */
-            this.COMPUTED = new Set();
             this.evalContext = config.evalContext;
+            config.dataSources.on("data-loaded", this, () => {
+                this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
+            });
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -17467,22 +17395,7 @@
                     }
                     break;
                 case "EVALUATE_CELLS":
-                    if (cmd.onlyWaiting) {
-                        const cellIds = new Set(this.WAITING);
-                        this.WAITING.clear();
-                        const cells = new Set();
-                        for (const id of cellIds) {
-                            const cell = this.getters.getCellById(id);
-                            if (cell) {
-                                cells.add(cell);
-                            }
-                        }
-                        this.evaluateCells(makeSetIterator(cells), cmd.sheetId);
-                    }
-                    else {
-                        this.WAITING.clear();
-                        this.evaluate(cmd.sheetId);
-                    }
+                    this.evaluate(cmd.sheetId);
                     this.isUpToDate.add(cmd.sheetId);
                     break;
                 case "EVALUATE_ALL_SHEETS":
@@ -17497,12 +17410,8 @@
         finalize() {
             const sheetId = this.getters.getActiveSheetId();
             if (!this.isUpToDate.has(sheetId)) {
-                this.WAITING.clear();
                 this.evaluate(sheetId);
                 this.isUpToDate.add(sheetId);
-            }
-            if (this.loadingCells > 0) {
-                this.startScheduler();
             }
         }
         // ---------------------------------------------------------------------------
@@ -17517,9 +17426,6 @@
                 ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
             }
             return compiledFormula(ranges, sheetId, ...params);
-        }
-        isIdle() {
-            return this.loadingCells === 0 && this.WAITING.size === 0 && this.PENDING.size === 0;
         }
         /**
          * Return the value of each cell in the range as they are displayed in the grid.
@@ -17540,40 +17446,12 @@
             return mapCellsInZone(range.zone, sheet, (cell) => this.getters.getCellValue(cell, sheet.id));
         }
         // ---------------------------------------------------------------------------
-        // Scheduler
-        // ---------------------------------------------------------------------------
-        startScheduler() {
-            if (!this.isStarted) {
-                this.isStarted = true;
-                let current = this.loadingCells;
-                const recomputeCells = () => {
-                    if (this.loadingCells !== current) {
-                        this.dispatch("EVALUATE_CELLS", {
-                            onlyWaiting: true,
-                            sheetId: this.getters.getActiveSheetId(),
-                        });
-                        current = this.loadingCells;
-                        if (current === 0) {
-                            this.isStarted = false;
-                        }
-                    }
-                    if (current > 0) {
-                        window.setTimeout(recomputeCells, MAXIMUM_EVALUATION_CHECK_DELAY_MS);
-                    }
-                };
-                window.setTimeout(recomputeCells, 5);
-            }
-        }
-        // ---------------------------------------------------------------------------
         // Evaluator
         // ---------------------------------------------------------------------------
         evaluate(sheetId) {
-            this.COMPUTED.clear();
             this.evaluateCells(makeObjectIterator(this.getters.getCells(sheetId)), sheetId);
         }
         evaluateCells(cells, sheetId) {
-            const self = this;
-            const { COMPUTED, PENDING, WAITING } = this;
             const params = this.getFormulaParameters(computeValue);
             const visited = {};
             for (let cell of cells) {
@@ -17583,15 +17461,7 @@
                 if (!(e instanceof Error)) {
                     e = new Error(e);
                 }
-                if (PENDING.has(cell.id)) {
-                    PENDING.delete(cell.id);
-                    self.loadingCells--;
-                }
-                if (e.message === "not ready") {
-                    WAITING.add(cell.id);
-                    cell.value = LOADING;
-                }
-                else if (!cell.error) {
+                if (!cell.error) {
                     cell.value = "#ERROR";
                     // apply function name
                     const __lastFnCalled = params[2].__lastFnCalled || "";
@@ -17612,35 +17482,11 @@
                     }
                     return;
                 }
-                if (COMPUTED.has(cell.id) || PENDING.has(cell.id)) {
-                    return;
-                }
                 visited[sheetId][xc] = null;
                 cell.error = undefined;
                 try {
                     params[2].__originCellXC = xc;
-                    if (cell.formula.compiledFormula.async) {
-                        cell.value = LOADING;
-                        PENDING.add(cell.id);
-                        cell.formula
-                            .compiledFormula(cell.dependencies, sheetId, ...params)
-                            .then((val) => {
-                            const c = params[2].getters.getCellById(cell.id);
-                            self.loadingCells--;
-                            if (c) {
-                                c.value = val;
-                            }
-                            if (PENDING.has(cell.id)) {
-                                PENDING.delete(cell.id);
-                                COMPUTED.add(cell.id);
-                            }
-                        })
-                            .catch((e) => handleError(e, cell));
-                        self.loadingCells++;
-                    }
-                    else {
-                        cell.value = cell.formula.compiledFormula(cell.dependencies, sheetId, ...params);
-                    }
+                    cell.value = cell.formula.compiledFormula(cell.dependencies, sheetId, ...params);
                     if (Array.isArray(cell.value)) {
                         // if a value returns an array (like =A1:A3)
                         throw new Error(_lt("This formula depends on invalid values"));
@@ -17666,7 +17512,6 @@
                 getters: this.getters,
             });
             const sheets = this.getters.getEvaluationSheets();
-            const PENDING = this.PENDING;
             function readCell(range) {
                 var _a;
                 let cell;
@@ -17683,18 +17528,12 @@
                 return getCellValue(cell, range.sheetId);
             }
             function getCellValue(cell, sheetId) {
-                if (cell.type === CellType.formula &&
-                    cell.formula.compiledFormula.async &&
-                    cell.error &&
-                    !PENDING.has(cell.id)) {
+                if (cell.type === CellType.formula && cell.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
                 }
                 computeValue(cell, sheetId);
                 if (cell.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
-                }
-                if (cell.value === LOADING) {
-                    throw new Error("not ready");
                 }
                 return cell.value;
             }
@@ -17764,10 +17603,9 @@
                     this.isUpToDate.add(sheetId);
                 }
             }
-            this.startScheduler();
         }
     }
-    EvaluationPlugin.getters = ["evaluateFormula", "isIdle", "getRangeFormattedValues", "getRangeValues"];
+    EvaluationPlugin.getters = ["evaluateFormula", "getRangeFormattedValues", "getRangeValues"];
     EvaluationPlugin.modes = ["normal", "readonly"];
 
     const GraphColors = [
@@ -17885,6 +17723,7 @@
                     break;
                 case "EVALUATE_CELLS":
                     // if there was an async evaluation of cell, there is no way to know which was updated so all charts must be updated
+                    //TODO Need to check that someday
                     for (let id in this.chartRuntime) {
                         this.outOfDate.add(id);
                     }
@@ -19229,14 +19068,20 @@
                         ctx.clip();
                     }
                     ctx.fillText(box.text, Math.round(x), Math.round(y));
-                    if (style.strikethrough) {
+                    if (style.strikethrough || style.underline) {
                         if (align === "right") {
                             x = x - box.textWidth;
                         }
                         else if (align === "center") {
                             x = x - box.textWidth / 2;
                         }
-                        ctx.fillRect(x, y, box.textWidth, 2.6 * thinLineWidth);
+                        if (style.strikethrough) {
+                            ctx.fillRect(x, y, box.textWidth, 2.6 * thinLineWidth);
+                        }
+                        if (style.underline) {
+                            y = box.y + box.height / 2 + 1 + size / 2;
+                            ctx.fillRect(x, y, box.textWidth, 1.3 * thinLineWidth);
+                        }
                     }
                     if (box.clipRect) {
                         ctx.restore();
@@ -20429,7 +20274,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 51 /* InvalidSortZone */;
+                        return 46 /* InvalidSortZone */;
                     }
                 }
             }
@@ -20450,7 +20295,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 51 /* InvalidSortZone */;
+                return 46 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -20509,7 +20354,7 @@
                     });
                 }
             }
-            if (result.isCancelledBecause(51 /* InvalidSortZone */)) {
+            if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
                 this.dispatch("SET_SELECTION", {
                     anchor: anchor,
                     zones: [zone],
@@ -20957,7 +20802,7 @@
                     return this.checkOffsetValidity(cmd.offsetX, cmd.offsetY);
                 case "RESIZE_VIEWPORT":
                     if (cmd.width < 0 || cmd.height < 0) {
-                        return 57 /* InvalidViewportSize */;
+                        return 52 /* InvalidViewportSize */;
                     }
                     return 0 /* Success */;
                 default:
@@ -21050,7 +20895,7 @@
                 offsetY < 0 ||
                 this.clientHeight - HEADER_HEIGHT + offsetY > height ||
                 this.clientWidth - HEADER_WIDTH + offsetX > width) {
-                return 56 /* InvalidOffset */;
+                return 51 /* InvalidOffset */;
             }
             return 0 /* Success */;
         }
@@ -21540,6 +21385,126 @@
             ...createEmptyWorkbookData(),
             sheets: [createEmptyExcelSheet("Sheet1")],
         };
+    }
+
+    /**
+     * DataSourceRegistry is used to contains all the DataSource of spreadsheet.
+     * It's role is to ensure that an evaluation is triggered when a data source is
+     * ready, and to provide a way to wait for the loading of all the data sources
+     */
+    class DataSourceRegistry extends owl__namespace.core.EventBus {
+        constructor() {
+            super(...arguments);
+            this.registry = new Registry();
+        }
+        /**
+         * Add a new DataSource.
+         *
+         * Note that it will load the metadata directly
+         */
+        add(key, value) {
+            this.registry.add(key, value);
+            value.on("data-loaded", this, () => this.trigger("data-loaded", { id: key }));
+            value.loadMetadata();
+            return this;
+        }
+        /**
+         * Get an item from the registry
+         */
+        get(key) {
+            return this.registry.get(key);
+        }
+        /**
+         * Get a list of all elements in the registry
+         */
+        getAll() {
+            return this.registry.getAll();
+        }
+        /**
+         * Remove an item from the registry
+         */
+        remove(key) {
+            const value = this.get(key);
+            value.off("data-loaded", this);
+            this.registry.remove(key);
+        }
+        /**
+         * Wait for the loading of all the data sources
+         */
+        async waitForReady() {
+            const proms = [];
+            for (const source of this.getAll()) {
+                proms.push(source.get());
+            }
+            return Promise.all(proms);
+        }
+    }
+    /**
+     * DataSource is an abstract class that contains the logic of fetching and
+     * maintaining access to data that have to be loaded.
+     *
+     * A class which extends this class have to implement two different methods:
+     * * `_fetchMetadata`: This method should fetch the metadata, i.e. data that
+     * should be fetch only once.
+     *
+     * * `_fetch`: This method should fetch the data from the server.
+     *
+     * To get the data from this class, there is three options:
+     * * `get`: async function that will returns the data when it's loaded
+     * * `getSync`: get the data that are currently loaded, undefined if no data
+     * are loaded
+     * * specific method: Subclass can implement concrete method to have access to a
+     * particular data.
+     */
+    class DataSource extends owl__namespace.core.EventBus {
+        /**
+         * Load the metadata
+         */
+        async loadMetadata() {
+            if (!this.metadataPromise) {
+                this.metadataPromise = this._fetchMetadata().then((metadata) => {
+                    this.metadata = metadata;
+                    return metadata;
+                });
+            }
+            await this.metadataPromise;
+        }
+        /**
+         * This method should be use to get the data
+         */
+        async get(params) {
+            if (params && params.forceFetch) {
+                this.data = undefined;
+                this.dataPromise = undefined;
+            }
+            await this.loadMetadata();
+            if (!this.dataPromise) {
+                this.dataPromise = this._fetch(params).then((data) => {
+                    this.data = data;
+                    this.lastUpdate = Date.now();
+                    this.trigger("data-loaded");
+                    return data;
+                });
+            }
+            return this.dataPromise;
+        }
+        /**
+         * Get the data ONLY if it's ready (data are loaded). Returns undefined if
+         * it's not ready
+         */
+        getSync() {
+            return this.data;
+        }
+        /**
+         * Get the metadata ONLY if it's ready (loaded). Returns undefined if it's
+         * not ready
+         */
+        getMetadataSync() {
+            return this.metadata;
+        }
+        getLastUpdate() {
+            return this.lastUpdate;
+        }
     }
 
     function transformZone(zone, executed) {
@@ -22561,7 +22526,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 52 /* WaitingSessionConfirmation */;
+                return 47 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -23244,6 +23209,7 @@
             horizontalAlignment: style === null || style === void 0 ? void 0 : style.align,
         };
         styles.font["strike"] = !!(style === null || style === void 0 ? void 0 : style.strikethrough) || undefined;
+        styles.font["underline"] = !!(style === null || style === void 0 ? void 0 : style.underline) || undefined;
         styles.font["bold"] = !!(style === null || style === void 0 ? void 0 : style.bold) || undefined;
         styles.font["italic"] = !!(style === null || style === void 0 ? void 0 : style.italic) || undefined;
         return styles;
@@ -23840,7 +23806,7 @@
      *
      * We cannot use astToFormula directly; since the function is of recursive form,
      * it will call itself when we'd need it to call astToExcelFormula to process
-     * the specific cases of FUNCALL and ASYNC_FUNCALL.
+     * the specific cases of FUNCALL.
      * Function calls are different because:
      * - non retrocompatible function needs to be prepended
      * - required args which are optional in o-spreadsheet
@@ -23849,7 +23815,6 @@
         let value;
         switch (ast.type) {
             case "FUNCALL":
-            case "ASYNC_FUNCALL":
                 value = ast.value.toUpperCase();
                 // In this case, the Excel function will need required args that might not be mandatory in Spreadsheet
                 const exportDefaultArgs = FORCE_DEFAULT_ARGS_FUNCTIONS[value];
@@ -24235,6 +24200,7 @@
       <font>
         ${font.bold ? escapeXml /*xml*/ `<b />` : ""}
         ${font.italic ? escapeXml /*xml*/ `<i />` : ""}
+        ${font.underline ? escapeXml /*xml*/ `<u />` : ""}
         ${font.strike ? escapeXml /*xml*/ `<strike />` : ""}
         <sz val="${font.size}" />
         <color rgb="${toHex6(font.color)}" />
@@ -24674,6 +24640,7 @@
             super();
             this.corePlugins = [];
             this.uiPlugins = [];
+            this.dataSources = new DataSourceRegistry();
             /**
              * A plugin can draw some contents on the canvas. But even better: it can do
              * so multiple times.  The order of the render calls will determine a list of
@@ -24704,7 +24671,7 @@
                 const command = { type, ...payload };
                 let status = command.interactive ? 4 /* Interactive */ : this.status;
                 if (this.config.isReadonly && !canExecuteInReadonly(command)) {
-                    return new DispatchResult(55 /* Readonly */);
+                    return new DispatchResult(50 /* Readonly */);
                 }
                 switch (status) {
                     case 0 /* Ready */:
@@ -24891,6 +24858,7 @@
                 isHeadless: config.mode === "headless" || false,
                 isReadonly: config.mode === "readonly" || false,
                 snapshotRequested: false,
+                dataSources: this.dataSources,
             };
         }
         // ---------------------------------------------------------------------------
@@ -24974,23 +24942,10 @@
             this.config.isReadonly = isReadonly || false;
         }
         /**
-         * Wait until all async cells in spreadsheet are computed
+         * Wait until all cells that depends on dataSources in spreadsheet are computed
          */
-        async waitForIdle() {
-            return new Promise((resolve) => {
-                const interval = setInterval(() => {
-                    if (this.getters.isIdle()) {
-                        clearInterval(interval);
-                        // after the last cell has been evaluated, the dependencies of that cell still need to
-                        // be evaluated at the next scheduler "tick" so we are waiting a little more than the
-                        // next scheduler tick to ensure it's done.
-                        setTimeout(() => {
-                            this.getters.isIdle();
-                            resolve();
-                        }, MAXIMUM_EVALUATION_CHECK_DELAY_MS + 1);
-                    }
-                }, 20);
-            });
+        waitForIdle() {
+            return this.dataSources.waitForReady();
         }
         /**
          * Exports the current model data into a list of serialized XML files
@@ -25002,8 +24957,8 @@
          * (e.g. open a document with several sheet and click on download before visiting each sheet)
          */
         async exportXLSX() {
-            this.dispatch("EVALUATE_ALL_SHEETS");
             await this.waitForIdle();
+            this.dispatch("EVALUATE_ALL_SHEETS");
             let data = createEmptyExcelWorkbookData();
             for (let handler of this.handlers) {
                 if (handler instanceof CorePlugin) {
@@ -25013,14 +24968,6 @@
             data = JSON.parse(JSON.stringify(data));
             return getXLSX(data);
         }
-    }
-
-    /**
-     * Return true if the event was triggered from
-     * a child element.
-     */
-    function isChildEvent(parent, ev) {
-        return !!ev.target && parent.contains(ev.target);
     }
 
     const { xml: xml$e, css: css$e } = owl.tags;
@@ -25053,6 +25000,9 @@
             <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
             <t t-if="isMenuRoot">
               ${TRIANGLE_RIGHT_ICON}
+            </t>
+            <t t-elif="menuItem.icon">
+              <i t-att-class="menuItem.icon" class="o-menu-item-icon"/>
             </t>
           </div>
           <div t-if="menuItem.separator and !menuItem_last" class="o-separator"/>
@@ -25102,7 +25052,10 @@
       .o-menu-item-shortcut {
         color: grey;
       }
-
+      .o-menu-item-icon {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
       .o-icon {
         width: 10px;
       }
@@ -25654,7 +25607,7 @@
     const { xml: xml$a, css: css$a } = owl__namespace.tags;
     const functions$1 = functionRegistry.content;
     const providerRegistry = new Registry();
-    providerRegistry.add("functions", async function () {
+    providerRegistry.add("functions", () => {
         return Object.keys(functions$1).map((key) => {
             return {
                 text: key,
@@ -25720,7 +25673,7 @@
         }
         async filter(searchTerm) {
             const provider = providerRegistry.get(this.props.provider);
-            let values = await provider();
+            let values = provider();
             if (this.props.filter) {
                 values = this.props.filter(searchTerm, values);
             }
@@ -26579,7 +26532,7 @@
             const fontSize = (!isFormula && style.fontSize) || 10;
             const fontWeight = !isFormula && style.bold ? "bold" : 500;
             const fontStyle = !isFormula && style.italic ? "italic" : "normal";
-            const textDecoration = !isFormula && style.strikethrough ? "line-through" : "none";
+            const textDecoration = !isFormula ? getTextDecoration(style) : "none";
             // align style
             let textAlign = "left";
             if (!isFormula) {
@@ -27833,6 +27786,11 @@
                     sheetId: this.getters.getActiveSheetId(),
                     target: this.getters.getSelectedZones(),
                     style: { italic: !this.getters.getCurrentStyle().italic },
+                }),
+                "CTRL+U": () => this.dispatch("SET_FORMATTING", {
+                    sheetId: this.getters.getActiveSheetId(),
+                    target: this.getters.getSelectedZones(),
+                    style: { underline: !this.getters.getCurrentStyle().underline },
                 }),
                 "ALT+=": () => {
                     var _a;
@@ -29186,6 +29144,7 @@
 
     exports.CorePlugin = CorePlugin;
     exports.DATETIME_FORMAT = DATETIME_FORMAT;
+    exports.DataSource = DataSource;
     exports.DispatchResult = DispatchResult;
     exports.Model = Model;
     exports.Revision = Revision;
@@ -29207,8 +29166,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-24T11:35:07.419Z';
-    exports.__info__.hash = 'e1834f2';
+    exports.__info__.date = '2021-08-27T13:49:57.966Z';
+    exports.__info__.hash = '1b28eb4';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

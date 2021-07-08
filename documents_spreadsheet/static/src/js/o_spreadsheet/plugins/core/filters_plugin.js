@@ -14,44 +14,20 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
      * @property {string} [modelName] Name of the related model
      */
 
-    const Domain = require("web.Domain");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
-    const { constructDateDomain, constructDateRange, yearSelected, getPeriodOptions } = require("web.searchUtils");
+    const { getPeriodOptions } = require("web.searchUtils");
     const CommandResult = require("documents_spreadsheet.CommandResult");
-    const pyUtils = require("web.py_utils");
 
     const core = require("web.core");
     const _t = core._t;
 
-    const MONTHS = {
-        january: { value: 0, granularity: 'month' },
-        february: { value: 1, granularity: 'month' },
-        march: { value: 2, granularity: 'month' },
-        april: { value: 3, granularity: 'month' },
-        may: { value: 4, granularity: 'month' },
-        june: { value: 5, granularity: 'month' },
-        july: { value: 6, granularity: 'month' },
-        august: { value: 7, granularity: 'month' },
-        september: { value: 8, granularity: 'month' },
-        october: { value: 9, granularity: 'month' },
-        november: { value: 10, granularity: 'month' },
-        december: { value: 11, granularity: 'month' },
-    };
-    const THIS_YEAR = moment().year();
-    const YEARS = {
-        this_year: { value: THIS_YEAR, granularity: 'year' },
-        last_year: { value: THIS_YEAR - 1, granularity: 'year' },
-        antepenultimate_year: { value: THIS_YEAR - 2, granularity: 'year' },
-    };
-    const PERIOD_OPTIONS = Object.assign({}, MONTHS, YEARS);
-
-    const { uuidv4 } = spreadsheet.helpers;
+    const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     class FiltersPlugin extends spreadsheet.CorePlugin {
         constructor(getters, history, range, dispatch, config) {
             super(...arguments);
-            this.orm = config.evalContext.env ? config.evalContext.env.services.orm : undefined;
             this.globalFilters = [];
+            this.orm = config.evalContext.env ? config.evalContext.env.services.orm : undefined;
 
             /**
              * Cache record display names for relation filters.
@@ -74,7 +50,10 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                     } else if (this._isDuplicatedLabel(cmd.id, cmd.filter.label)) {
                         return CommandResult.DuplicatedFilterLabel;
                     }
-                    return this._checkTypeValueCombination(cmd.filter.type, cmd.filter.defaultValue);                
+                    return this._checkTypeValueCombination(
+                        cmd.filter.type,
+                        cmd.filter.defaultValue
+                    );
                 case "SET_PIVOT_FILTER_VALUE":
                     const filter = this.getGlobalFilter(cmd.id);
                     if (!filter) {
@@ -90,7 +69,10 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                     if (this._isDuplicatedLabel(cmd.id, cmd.filter.label)) {
                         return CommandResult.DuplicatedFilterLabel;
                     }
-                    return this._checkTypeValueCombination(cmd.filter.type, cmd.filter.defaultValue);
+                    return this._checkTypeValueCombination(
+                        cmd.filter.type,
+                        cmd.filter.defaultValue
+                    );
             }
             return CommandResult.Success;
         }
@@ -102,9 +84,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
          */
         handle(cmd) {
             switch (cmd.type) {
-                case "START":
-                    this._setUpFilters();
-                    break;
                 case "ADD_PIVOT_FILTER":
                     this.recordsDisplayName[cmd.filter.id] = cmd.filter.defaultValueDisplayNames;
                     this._addGlobalFilter(cmd.filter);
@@ -161,7 +140,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             }).length;
         }
 
-        async getFilterDisplayValue(filterName) {
+        getFilterDisplayValue(filterName) {
             const filter = this.globalFilters.find((filter) => filter.label === filterName);
             if (!filter) {
                 throw new Error(_.str.sprintf(_t(`Filter "%s" not found`), filterName));
@@ -181,15 +160,18 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                 case "relation":
                     if (!filter.value || !this.orm) return "";
                     if (!this.recordsDisplayName[filter.id]) {
-                        // store the promise resolving to the list of display names
-                        this.recordsDisplayName[filter.id] = this.orm.call(
-                            filter.modelName,
-                            "name_get",
-                            [filter.value],
-                        ).then((result) => result.map(([id, name]) => name));
+                        this.orm
+                            .call(filter.modelName, "name_get", [filter.value])
+                            .then((result) => {
+                                const names = result.map(([, name]) => name);
+                                this.recordsDisplayName[filter.id] = names;
+                                this.dispatch("EVALUATE_CELLS", {
+                                    sheetId: this.getters.getActiveSheetId(),
+                                });
+                            });
+                        return "";
                     }
-                    const names = await this.recordsDisplayName[filter.id];
-                    return names.join(", ");
+                    return this.recordsDisplayName[filter.id].join(", ");
             }
         }
 
@@ -215,8 +197,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                 modelName: filter.modelName,
             });
             this.history.update("globalFilters", gb);
-            this._updatePivotsDomain();
-            this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
         }
         /**
          * Set the current value of a global filter
@@ -227,8 +207,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
         _setGlobalFilterValue(id, value) {
             const globalFilter = this.globalFilters.find((filter) => filter.id === id);
             globalFilter.value = value;
-            this._updatePivotsDomain();
-            this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
         }
         /**
          * Remove a global filter
@@ -238,8 +216,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
         _removeGlobalFilter(id) {
             const gb = this.globalFilters.filter((filter) => filter.id !== id);
             this.history.update("globalFilters", gb);
-            this._updatePivotsDomain();
-            this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
         }
         /**
          * Edit a global filter
@@ -268,8 +244,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             if (currentLabel !== newLabel) {
                 this._updateFilterLabelInFormulas(currentLabel, newLabel);
             }
-            this._updatePivotsDomain();
-            this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
         }
 
         // ---------------------------------------------------------------------
@@ -306,29 +280,28 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
          *
          * @param {Object} data
          */
-        exportForExcel(data){
-            if (this.globalFilters.length === 0){
+        exportForExcel(data) {
+            if (this.globalFilters.length === 0) {
                 return;
             }
-            const styles = Object.entries(data.styles)
+            const styles = Object.entries(data.styles);
             let titleStyleId =
-              styles.findIndex(
-                el => JSON.stringify(el[1]) === JSON.stringify({bold: true})
-              ) + 1;
+                styles.findIndex((el) => JSON.stringify(el[1]) === JSON.stringify({ bold: true })) +
+                1;
 
-            if (titleStyleId <= 0){
-                titleStyleId = styles.length + 1
-                data.styles[styles.length + 1] = {bold: true}
+            if (titleStyleId <= 0) {
+                titleStyleId = styles.length + 1;
+                data.styles[styles.length + 1] = { bold: true };
             }
 
-            const cells = {}
-            cells["A1"] = {content: "Filter", style: titleStyleId}
-            cells["B1"] = {content: "Value", style: titleStyleId}
-            for (let [index, filter] of Object.entries(this.globalFilters)){
+            const cells = {};
+            cells["A1"] = { content: "Filter", style: titleStyleId };
+            cells["B1"] = { content: "Value", style: titleStyleId };
+            for (let [index, filter] of Object.entries(this.globalFilters)) {
                 const row = parseInt(index) + 2;
-                cells[`A${row}`] = {content: filter.label};
+                cells[`A${row}`] = { content: filter.label };
                 let content;
-                switch (filter.type){
+                switch (filter.type) {
                     case "text":
                         content = filter.value || "";
                         break;
@@ -336,19 +309,20 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                         content = getPeriodOptions(moment())
                             .filter(
                                 ({ id }) =>
-                                    filter.value && [filter.value.year, filter.value.period].includes(id)
+                                    filter.value &&
+                                    [filter.value.year, filter.value.period].includes(id)
                             )
                             .map((period) => period.description)
                             .join(" ");
                         break;
                     case "relation":
-                        content = this.recordsDisplayName[filter.id].join(', ');
+                        content = this.recordsDisplayName[filter.id].join(", ");
                         break;
                 }
                 cells[`B${row}`] = { content };
             }
             data.sheets.push({
-                id: uuidv4(),
+                id: uuidGenerator.uuidv4(),
                 name: "Active Filters",
                 cells,
                 colNumber: 2,
@@ -359,18 +333,12 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                 figures: [],
                 conditionalFormats: [],
                 charts: [],
-            })
+            });
         }
 
         // ---------------------------------------------------------------------
         // Global filters
         // ---------------------------------------------------------------------
-
-        _setUpFilters() {
-            if (this.getters.getPivots().length) {
-                this._updatePivotsDomain({ refresh: true });
-            }
-        }
 
         /**
          * Update all FILTER.VALUE formulas to reference a filter
@@ -417,98 +385,28 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             );
         }
 
-        _checkTypeValueCombination(type, value){
-            if (value !== undefined){
-                switch (type){
+        _checkTypeValueCombination(type, value) {
+            if (value !== undefined) {
+                switch (type) {
                     case "text":
-                        if (typeof value !== "string"){
+                        if (typeof value !== "string") {
                             return CommandResult.InvalidValueTypeCombination;
                         }
                         break;
                     case "date":
-                        if (typeof value !== "object" || Array.isArray(value)){ // not a date
+                        if (typeof value !== "object" || Array.isArray(value)) {
+                            // not a date
                             return CommandResult.InvalidValueTypeCombination;
                         }
                         break;
                     case "relation":
-                        if (!Array.isArray(value)){
+                        if (!Array.isArray(value)) {
                             return CommandResult.InvalidValueTypeCombination;
                         }
                         break;
                 }
             }
-            return CommandResult.Success
-        }
-
-        /**
-         * Update the domain of all the pivots by applying global filters to
-         * the initial domain of the pivot.
-         */
-        _updatePivotsDomain({ refresh = true } = {}) {
-            for (let pivot of this.getters.getPivots()) {
-                let domain = "[]";
-                for (let filter of this.globalFilters) {
-                    if (!(pivot.id in filter.fields)) {
-                        continue;
-                    }
-                    if (filter.type === "date") {
-                        const values = filter.value && Object.values(filter.value).filter(Boolean);
-                        if (!values || values.length === 0) {
-                            continue;
-                        }
-                        if (!yearSelected(values)) {
-                            values.push("this_year");
-                        }
-                        const field = filter.fields[pivot.id].field;
-                        const type = filter.fields[pivot.id].type;
-                        const dateFilterRange =
-                            filter.rangeType === "month"
-                                ? constructDateRange({
-                                      referenceMoment: moment(),
-                                      fieldName: field,
-                                      fieldType: type,
-                                      granularity: "month",
-                                      setParam: this._getSelectedOptions(values),
-                                  })
-                                : constructDateDomain(moment(), field, type, values);
-                        const dateDomain = Domain.prototype.arrayToString(
-                            pyUtils.eval("domain", dateFilterRange.domain, {})
-                        );
-                        domain = pyUtils.assembleDomains([domain, dateDomain], "AND");
-                    }
-                    if (filter.type === "text") {
-                        const value = filter.value;
-                        if (!value) {
-                            continue;
-                        }
-                        const field = filter.fields[pivot.id].field;
-                        const textDomain = Domain.prototype.arrayToString([
-                            [field, "ilike", value],
-                        ]);
-                        domain = pyUtils.assembleDomains([domain, textDomain], "AND");
-                    }
-                    if (filter.type === "relation") {
-                        const values = filter.value;
-                        if (!values || values.length === 0) {
-                            continue;
-                        }
-                        const field = filter.fields[pivot.id].field;
-                        const textDomain = Domain.prototype.arrayToString([[field, "in", values]]);
-                        domain = pyUtils.assembleDomains([domain, textDomain], "AND");
-                    }
-                }
-                this.dispatch("ADD_PIVOT_DOMAIN", { id: pivot.id, domain, refresh });
-            }
-        }
-
-        _getSelectedOptions(selectedOptionIds) {
-            const selectedOptions = { year: [] };
-            for (const optionId of selectedOptionIds) {
-                const option = PERIOD_OPTIONS[optionId];
-                const granularity = option.granularity;
-                selectedOptions[granularity] = option.value;
-            }
-            return selectedOptions;
+            return CommandResult.Success;
         }
     }
 

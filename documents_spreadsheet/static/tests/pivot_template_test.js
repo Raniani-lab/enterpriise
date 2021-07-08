@@ -3,14 +3,14 @@
 import { nextTick, dom, fields, createView } from "web.test_utils";
 import pivotUtils from "documents_spreadsheet.pivot_utils";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
-import CommandResult from "documents_spreadsheet.CommandResult";
+import CommandResult from "../src/js/o_spreadsheet/plugins/cancelled_reason";
 import DocumentsListView from "documents_spreadsheet.ListView";
 import { registry } from "@web/core/registry";
 import { ormService } from "@web/core/orm_service";
 import TemplateListView from "documents_spreadsheet.TemplateListView";
 import { afterEach, beforeEach } from "@mail/utils/test_utils";
 import { createDocumentsView } from "documents.test_utils";
-import spreadsheet from "documents_spreadsheet.spreadsheet_extended";
+import spreadsheet from "../src/js/o_spreadsheet/o_spreadsheet_extended";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/spreadsheet_template_action";
 
@@ -23,7 +23,7 @@ import {
     createSpreadsheetTemplate,
     createSpreadsheet,
 } from "./spreadsheet_test_utils";
-import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { ClientActionAdapter } from "@web/legacy/action_adapters";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -37,28 +37,22 @@ const { module, test } = QUnit;
 let serverData;
 
 async function convertFormula(config) {
-  const { env, model: m1 } = await createSpreadsheetFromPivot({
-    pivotView: {
-        model: "partner",
-        data: config.data,
-        arch: config.arch,
-    },
-    webClient: config.webClient,
-});
+    const { env, model: m1 } = await createSpreadsheetFromPivot({
+        pivotView: {
+            model: "partner",
+            data: config.data,
+            arch: config.arch,
+        },
+        webClient: config.webClient,
+    });
 
     //reload the model in headless mode, with the conversion plugin
     const model = new Model(m1.exportData(), {
         mode: "headless",
-        evalContext: { env }
+        evalContext: { env },
     });
-    await Promise.all(
-        model.getters.getPivots().map((pivot) =>
-            model.getters.getAsyncCache(pivot.id, {
-                force: true,
-                initialDomain: true
-            })
-        )
-    );
+
+    await model.waitForIdle();
     setCellContent(model, "A1", `=${config.formula}`);
     model.dispatch(config.convert);
     // Remove the equal sign
@@ -86,7 +80,7 @@ module(
                             id: 544,
                             name: "partner",
                             model: "partner",
-                        }
+                        },
                     ],
                 },
                 "documents.document": {
@@ -145,23 +139,23 @@ module(
                         },
                     ],
                 },
-                'mail.alias': {
+                "mail.alias": {
                     fields: {
-                        alias_name: {string: 'Name', type: 'char'},
+                        alias_name: { string: "Name", type: "char" },
                     },
-                    records: [
-                        {id: 1, alias_name: 'hazard@rmcf.es'},
-                    ]
+                    records: [{ id: 1, alias_name: "hazard@rmcf.es" }],
                 },
-                'documents.share': {
+                "documents.share": {
                     fields: {
-                        name: {string: 'Name', type: 'char'},
-                        folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
-                        alias_id: {string: "alias", type: 'many2one', relation: 'mail.alias'},
+                        name: { string: "Name", type: "char" },
+                        folder_id: {
+                            string: "Workspaces",
+                            type: "many2one",
+                            relation: "documents.folder",
+                        },
+                        alias_id: { string: "alias", type: "many2one", relation: "mail.alias" },
                     },
-                    records: [
-                        {id: 1, name: 'Share1', folder_id: 1, alias_id: 1},
-                    ],
+                    records: [{ id: 1, name: "Share1", folder_id: 1, alias_id: 1 }],
                     create_share: function () {
                         return Promise.resolve();
                     },
@@ -256,10 +250,14 @@ module(
             //reload the model in headless mode, with the conversion plugin
             const model = new Model(m1.exportData(), {
                 mode: "headless",
-                evalContext: { env }
+                evalContext: { env },
             });
-            assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [CommandResult.PivotCacheNotLoaded]);
-            assert.deepEqual(model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE").reasons, [CommandResult.PivotCacheNotLoaded]);
+            assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [
+                CommandResult.PivotCacheNotLoaded,
+            ]);
+            assert.deepEqual(model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE").reasons, [
+                CommandResult.PivotCacheNotLoaded,
+            ]);
         });
 
         test("Don't change formula if not many2one", async function (assert) {
@@ -279,74 +277,69 @@ module(
             assert.equal(result, formula);
         });
 
-        test(
-            "Adapt formula from absolute to relative with many2one in col",
-            async function (assert) {
-                assert.expect(4);
-                const arch = `
+        test("Adapt formula from absolute to relative with many2one in col", async function (assert) {
+            assert.expect(4);
+            const arch = `
                     <pivot string="Partners">
                         <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-                Object.assign(serverData, {views: arch});
-                const webClient = await createWebClient({
-                    serverData,
-                    legacyParams: { withLegacyMockServer: true },
-                });
-                let result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id","37","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
-                );
+            Object.assign(serverData, { views: arch });
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
+            });
+            let result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id","37","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
+            );
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT.HEADER("1","product_id","37","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
-                );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT.HEADER("1","product_id","37","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
+            );
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id","41","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
-                );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id","41","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
+            );
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
-                );
-            }
-        );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
+            );
+        });
 
-        test("Adapt formula from absolute to relative with integer ids", async function (
-            assert
-        ) {
+        test("Adapt formula from absolute to relative with integer ids", async function (assert) {
             assert.expect(2);
             const arch = `
                     <pivot string="Partners">
@@ -354,7 +347,7 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-            Object.assign(serverData, {views: arch});
+            Object.assign(serverData, { views: arch });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -383,128 +376,120 @@ module(
             );
         });
 
-        test(
-            "Adapt formula from absolute to relative with many2one in row",
-            async function (assert) {
-                assert.expect(4);
-                const arch = `
+        test("Adapt formula from absolute to relative with many2one in row", async function (assert) {
+            assert.expect(4);
+            const arch = `
                     <pivot string="Partners">
                         <field name="bar" type="col"/>
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-                Object.assign(serverData, {views: arch});
-                    const webClient = await createWebClient({
-                    serverData,
-                    legacyParams: { withLegacyMockServer: true },
-                });
+            Object.assign(serverData, { views: arch });
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
+            });
 
-                let result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id","37","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
-                );
+            let result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id","37","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
+            );
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id","41","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
-                );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id","41","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
+            );
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id","41","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
-                );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id","41","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
+            );
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                });
-                assert.equal(
-                    result,
-                    `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
-                );
-            }
-        );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+            });
+            assert.equal(
+                result,
+                `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`
+            );
+        });
 
-        test(
-            "Adapt formula from relative to absolute with many2one in col",
-            async function (assert) {
-                assert.expect(4);
-                const arch = `
+        test("Adapt formula from relative to absolute with many2one in col", async function (assert) {
+            assert.expect(4);
+            const arch = `
                     <pivot string="Partners">
                         <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-                Object.assign(serverData, {views: arch});
-                const webClient = await createWebClient({
-                    serverData,
-                    legacyParams: { withLegacyMockServer: true },
-                });
-                let result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 1),"bar","110")`,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                });
-                assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
+            Object.assign(serverData, { views: arch });
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
+            });
+            let result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 1),"bar","110")`,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+            });
+            assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                });
-                assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+            });
+            assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                });
-                assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+            });
+            assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
 
-                result = await convertFormula({
-                    webClient,
-                    data: this.data,
-                    arch,
-                    formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                });
-                assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
-            }
-        );
+            result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+            });
+            assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
+        });
 
-        test("Will ignore overflowing template position", async function (
-            assert
-        ) {
+        test("Will ignore overflowing template position", async function (assert) {
             assert.expect(1);
             const arch = `
                 <pivot string="Partners">
@@ -512,7 +497,7 @@ module(
                 <field name="product_id" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`;
-            Object.assign(serverData, {views: arch});
+            Object.assign(serverData, { views: arch });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -527,62 +512,104 @@ module(
             assert.equal(result, "");
         });
 
-        test(
-            "Adapt formula from relative to absolute with many2one in row",
-            async function (assert) {
-                assert.expect(4);
-                const arch = `
+        test("copy template menu", async function (assert) {
+            const serviceRegistry = registry.category("services");
+            serviceRegistry.add("actionMain", actionService);
+            const fakeActionService = {
+                dependencies: ["actionMain"],
+                start(env, { actionMain }) {
+                    return {
+                        ...actionMain,
+                        doAction: (actionRequest, options = {}) => {
+                            if (
+                                actionRequest.tag === "action_open_template" &&
+                                actionRequest.params.spreadsheet_id === 111
+                            ) {
+                                assert.step("redirect");
+                            }
+                            return actionMain.doAction(actionRequest, options);
+                        },
+                    };
+                },
+            };
+            serviceRegistry.add("action", fakeActionService, { force: true });
+            const serverData = this.data;
+            const { env } = await createSpreadsheetTemplate({
+                data: serverData,
+                mockRPC: function (route, args) {
+                    if (args.model == "spreadsheet.template" && args.method === "copy") {
+                        assert.step("template_copied");
+                        const { data, thumbnail } = args.kwargs.default;
+                        assert.ok(data);
+                        assert.ok(thumbnail);
+                        serverData["spreadsheet.template"].records.push({
+                            id: 111,
+                            name: "template",
+                            data,
+                            thumbnail,
+                        });
+                        return 111;
+                    }
+                },
+            });
+            const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
+            const makeACopy = file.children.find((item) => item.id === "make_copy");
+            makeACopy.action(env);
+            await nextTick();
+            assert.verifySteps(["template_copied", "redirect"]);
+        });
+
+        test("Adapt formula from relative to absolute with many2one in row", async function (assert) {
+            assert.expect(4);
+            const arch = `
                     <pivot string="Partners">
                         <field name="bar" type="col"/>
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-                Object.assign(serverData, {views: arch});
-                const webClient = await createWebClient({
-                    serverData,
-                    legacyParams: { withLegacyMockServer: true },
-                });
-                let result = await convertFormula({
-                    webClient,
-                    formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
-                    data: this.data,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                    arch,
-                });
-                assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
+            Object.assign(serverData, { views: arch });
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
+            });
+            let result = await convertFormula({
+                webClient,
+                formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
+                data: this.data,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+                arch,
+            });
+            assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
 
-                result = await convertFormula({
-                    webClient,
-                    formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
-                    data: this.data,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                    arch,
-                });
-                assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
+            result = await convertFormula({
+                webClient,
+                formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
+                data: this.data,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+                arch,
+            });
+            assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
 
-                result = await convertFormula({
-                    webClient,
-                    formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
-                    data: this.data,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                    arch,
-                });
-                assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
+            result = await convertFormula({
+                webClient,
+                formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
+                data: this.data,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+                arch,
+            });
+            assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
 
-                result = await convertFormula({
-                    webClient,
-                    formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
-                    data: this.data,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                    arch,
-                });
-                assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
-            }
-        );
+            result = await convertFormula({
+                webClient,
+                formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
+                data: this.data,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+                arch,
+            });
+            assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
+        });
 
-        test("Adapt pivot as function arg from relative to absolute", async function (
-            assert
-        ) {
+        test("Adapt pivot as function arg from relative to absolute", async function (assert) {
             assert.expect(1);
             const result = await convertFormula({
                 formula: `SUM(
@@ -604,9 +631,7 @@ module(
             );
         });
 
-        test("Adapt pivot as operator arg from relative to absolute", async function (
-            assert
-        ) {
+        test("Adapt pivot as operator arg from relative to absolute", async function (assert) {
             assert.expect(1);
             const result = await convertFormula({
                 formula: `
@@ -629,30 +654,25 @@ module(
             );
         });
 
-        test(
-            "Adapt pivot as unary operator arg from relative to absolute",
-            async function (assert) {
-                assert.expect(1);
-                const result = await convertFormula({
-                    formula: `
+        test("Adapt pivot as unary operator arg from relative to absolute", async function (assert) {
+            assert.expect(1);
+            const result = await convertFormula({
+                formula: `
                         -PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")
                     `,
-                    data: this.data,
-                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                    arch: `
+                data: this.data,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+                arch: `
                 <pivot string="Partners">
                     <field name="bar" type="col"/>
                     <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-                });
-                assert.equal(result, `-PIVOT("1","probability","product_id","37","bar","110")`);
-            }
-        );
+            });
+            assert.equal(result, `-PIVOT("1","probability","product_id","37","bar","110")`);
+        });
 
-        test("Adapt pivot as operator arg from absolute to relative", async function (
-            assert
-        ) {
+        test("Adapt pivot as operator arg from absolute to relative", async function (assert) {
             assert.expect(1);
             const result = await convertFormula({
                 formula: `
@@ -675,33 +695,28 @@ module(
             );
         });
 
-        test(
-            "Adapt pivot as unary operator arg from absolute to relative",
-            async function (assert) {
-                assert.expect(1);
-                const result = await convertFormula({
-                    formula: `
+        test("Adapt pivot as unary operator arg from absolute to relative", async function (assert) {
+            assert.expect(1);
+            const result = await convertFormula({
+                formula: `
                     -PIVOT("1","probability","product_id","37","bar","110")
                 `,
-                    data: this.data,
-                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                    arch: `
+                data: this.data,
+                convert: "CONVERT_PIVOT_TO_TEMPLATE",
+                arch: `
                         <pivot string="Partners">
                             <field name="bar" type="col"/>
                             <field name="product_id" type="row"/>
                             <field name="probability" type="measure"/>
                         </pivot>`,
-                });
-                assert.equal(
-                    result,
-                    `-PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
-                );
-            }
-        );
+            });
+            assert.equal(
+                result,
+                `-PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
+            );
+        });
 
-        test("Adapt pivot as function arg from absolute to relative", async function (
-            assert
-        ) {
+        test("Adapt pivot as function arg from absolute to relative", async function (assert) {
             assert.expect(1);
             const result = await convertFormula({
                 formula: `
@@ -738,10 +753,7 @@ module(
                     <field name="probability" type="measure"/>
                 </pivot>`,
             });
-            assert.equal(
-                result,
-                `PIVOT("1","probability","product_id",A2,"bar","110")`
-            );
+            assert.equal(result, `PIVOT("1","probability","product_id",A2,"bar","110")`);
         });
 
         test("Save as template menu", async function (assert) {
@@ -753,7 +765,10 @@ module(
                 start(env, { actionMain }) {
                     return Object.assign({}, actionMain, {
                         doAction: (actionRequest, options = {}) => {
-                            if (actionRequest === "documents_spreadsheet.save_spreadsheet_template_action") {
+                            if (
+                                actionRequest ===
+                                "documents_spreadsheet.save_spreadsheet_template_action"
+                            ) {
                                 assert.step("create_template_wizard");
 
                                 const context = options.additionalContext;
@@ -774,10 +789,7 @@ module(
                                     cells.B3.formula.text,
                                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
                                 );
-                                assert.equal(
-                                    cells.A11.content,
-                                    "😃",
-                                );
+                                assert.equal(cells.A11.content, "😃");
                                 return Promise.resolve(true);
                             }
                             return actionMain.doAction(actionRequest, options);
@@ -816,7 +828,10 @@ module(
                     return {
                         ...actionMain,
                         doAction: (actionRequest, options = {}) => {
-                            if (actionRequest.tag === "action_open_template" && actionRequest.params.spreadsheet_id === 111) {
+                            if (
+                                actionRequest.tag === "action_open_template" &&
+                                actionRequest.params.spreadsheet_id === 111
+                            ) {
                                 assert.step("redirect");
                             }
                             return actionMain.doAction(actionRequest, options);
@@ -830,7 +845,7 @@ module(
                 data: serverData,
                 mockRPC: function (route, args) {
                     if (args.model == "spreadsheet.template" && args.method === "copy") {
-                        assert.step("template_copied")
+                        assert.step("template_copied");
                         const { data, thumbnail } = args.kwargs.default;
                         assert.ok(data);
                         assert.ok(thumbnail);
@@ -865,7 +880,11 @@ module(
                         </pivot>`,
                 },
             });
-            setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`)
+            setCellContent(
+                model,
+                "B2",
+                `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`
+            );
 
             function selectB2(model) {
                 model.dispatch("SET_SELECTION", {
@@ -924,9 +943,13 @@ module(
                             <field name="product_id" type="row"/>
                             <field name="probability" type="measure"/>
                         </pivot>`,
-                }
+                },
             });
-            setCellContent(model, "B2", `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`);
+            setCellContent(
+                model,
+                "B2",
+                `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`
+            );
 
             // DOWN
             model.dispatch("SET_SELECTION", {
@@ -956,11 +979,14 @@ module(
                         </pivot>`,
                 },
             });
-            setCellContent(model, "B2",
+            setCellContent(
+                model,
+                "B2",
                 `=SUM(
                     PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444)),
                     PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 666),"bar",PIVOT.POSITION("1","bar", 4444))
-                )`.replace(/\n/g, ""));
+                )`.replace(/\n/g, "")
+            );
 
             model.dispatch("SET_SELECTION", {
                 anchor: [1, 1],
@@ -1027,11 +1053,15 @@ module(
                         </pivot>`,
                 },
             });
-            setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`);
+            setCellContent(
+                model,
+                "B2",
+                `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`
+            );
             function selectB2(model) {
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],                    
+                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
                     anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
                 });
             }
@@ -1062,7 +1092,11 @@ module(
                         </pivot>`,
                 },
             });
-            setCellContent(model, "B2", `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`);
+            setCellContent(
+                model,
+                "B2",
+                `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`
+            );
             function selectB2(model) {
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
@@ -1098,7 +1132,11 @@ module(
                 },
             });
             // last row field (foo) is not a position
-            setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`);
+            setCellContent(
+                model,
+                "B2",
+                `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`
+            );
             function selectB2(model) {
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
@@ -1118,13 +1156,9 @@ module(
             );
         });
 
-
-
         module("Template Modal");
 
-        test("Create spreadsheet from kanban view opens a modal", async function (
-            assert
-        ) {
+        test("Create spreadsheet from kanban view opens a modal", async function (assert) {
             assert.expect(2);
             const kanban = await createDocumentsView({
                 View: DocumentsKanbanView,
@@ -1253,9 +1287,7 @@ module(
             kanban.destroy();
         });
 
-        test("Will convert additional template position to empty cell", async function (
-            assert
-        ) {
+        test("Will convert additional template position to empty cell", async function (assert) {
             assert.expect(5);
             const data = Object.assign({}, this.data);
 
@@ -1318,16 +1350,21 @@ module(
                     },
                 },
             });
-            const { pivots } = model.exportData();
-            await Promise.all(Object.values(pivots).map(async(pivot) => {
-                model.getters.getAsyncCache(pivot.id);
-            }));
+            await model.waitForIdle();
 
             // 2. Set a template position which is too high
             // there are other pivot headers on row 1
-            setCellContent(model, "F1", `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",999),"bar","110")`);
+            setCellContent(
+                model,
+                "F1",
+                `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",999),"bar","110")`
+            );
             // there are not other pivot headers on row 15
-            setCellContent(model, "F15", `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",888),"bar","110")`);
+            setCellContent(
+                model,
+                "F15",
+                `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",888),"bar","110")`
+            );
             setCellContent(model, "G15", `Hello`);
             setCellContent(model, "F16", `Coucou petite perruche`);
             const modelData = model.exportData();
@@ -1354,7 +1391,10 @@ module(
                 start(env, { actionMain }) {
                     return Object.assign({}, actionMain, {
                         doAction: (actionRequest, options = {}) => {
-                            if (actionRequest === "documents_spreadsheet.save_spreadsheet_template_action") {
+                            if (
+                                actionRequest ===
+                                "documents_spreadsheet.save_spreadsheet_template_action"
+                            ) {
                                 assert.step("create_template_wizard");
                                 const name = options.additionalContext.default_template_name;
                                 assert.equal(
@@ -1374,10 +1414,9 @@ module(
             let spreadSheetComponent;
             patchWithCleanup(ClientActionAdapter.prototype, {
                 mounted() {
-                  this._super();
-                  spreadSheetComponent = this.widget.spreadsheetComponent.componentRef.comp
-                  ;
-                }
+                    this._super();
+                    spreadSheetComponent = this.widget.spreadsheetComponent.componentRef.comp;
+                },
             });
 
             const webClient = await createWebClient({
@@ -1525,17 +1564,14 @@ module(
                 intercepts: {
                     do_action: function ({ data }) {
                         assert.step("redirect_to_template");
-                        assert.deepEqual(
-                            data.action,
-                            {
-                                type: "ir.actions.client",
-                                tag: "action_open_template",
-                                params: {
-                                    spreadsheet_id: 1,
-                                    showFormulas: true,
-                                },
-                            }
-                        );
+                        assert.deepEqual(data.action, {
+                            type: "ir.actions.client",
+                            tag: "action_open_template",
+                            params: {
+                                spreadsheet_id: 1,
+                                showFormulas: true,
+                            },
+                        });
                     },
                 },
             });
@@ -1558,15 +1594,18 @@ module(
                 `,
                 intercepts: {
                     execute_action: function ({ data }) {
-                        assert.strictEqual(data.action_data.name, 'copy',
-                            "should call the copy method");
-                        assert.equal(data.env.currentID, 1, "template with ID 1 should be copied")
+                        assert.strictEqual(
+                            data.action_data.name,
+                            "copy",
+                            "should call the copy method"
+                        );
+                        assert.equal(data.env.currentID, 1, "template with ID 1 should be copied");
                         assert.step("add_copy_of_template");
                     },
                 },
             });
             await dom.clickFirst(`button[name="copy"]`);
-            assert.verifySteps(["add_copy_of_template"])
+            assert.verifySteps(["add_copy_of_template"]);
             list.destroy();
         });
 
@@ -1603,7 +1642,7 @@ module(
                 },
             });
             await dom.clickFirst(`button[name="create_spreadsheet"]`);
-            assert.verifySteps(["spreadsheet_created", "redirect_to_spreadsheet"])
+            assert.verifySteps(["spreadsheet_created", "redirect_to_spreadsheet"]);
             list.destroy();
         });
 
@@ -1622,7 +1661,7 @@ module(
             assert.containsNone(webClient, ".o_spreadsheet_number_users");
         });
 
-        test("collaboration communication is disabled", async function(assert) {
+        test("collaboration communication is disabled", async function (assert) {
             assert.expect(1);
             const webClient = await createWebClient({
                 serverData,
@@ -1648,11 +1687,13 @@ module(
             assert.expect(1);
             const model = new Model();
             setCellContent(model, "A1", "😃");
-            this.data["spreadsheet.template"].records = [{
-                id: 99,
-                name: "template",
-                data: jsonToBase64(model.exportData()),
-            }];
+            this.data["spreadsheet.template"].records = [
+                {
+                    id: 99,
+                    name: "template",
+                    data: jsonToBase64(model.exportData()),
+                },
+            ];
             const list = await createView({
                 View: TemplateListView,
                 model: "spreadsheet.template",
@@ -1665,8 +1706,8 @@ module(
                 `,
             });
             await dom.click(`button[name="create_spreadsheet"]`);
-            const documents = this.data["documents.document"].records
-            const data = JSON.parse(documents[documents.length-1].raw);
+            const documents = this.data["documents.document"].records;
+            const data = JSON.parse(documents[documents.length - 1].raw);
             const cells = data.sheets[0].cells;
             assert.equal(cells.A1.content, "😃");
             list.destroy();
@@ -1676,66 +1717,79 @@ module(
             assert.expect(1);
             const model = new Model();
             setCellContent(model, "A1", "😃");
-            this.data["spreadsheet.template"].records = [{
-                id: 99,
-                name: "template",
-                data: jsonToBase64(model.exportData()),
-            }];
+            this.data["spreadsheet.template"].records = [
+                {
+                    id: 99,
+                    name: "template",
+                    data: jsonToBase64(model.exportData()),
+                },
+            ];
             const { model: template } = await createSpreadsheetTemplate({
                 data: this.data,
                 spreadsheetId: 99,
-            })
+            });
             assert.equal(
-                getCellValue(template, "A1"), "😃",
+                getCellValue(template, "A1"),
+                "😃",
                 "It should show the smiley as a smiley 😉"
             );
         });
         test("create and edit template and create new spreadsheet from it", async function (assert) {
             assert.expect(4);
             const templateModel = new Model();
-            setCellContent(templateModel, 'A1', 'Firstname');
-            setCellContent(templateModel, 'B1', 'Lastname');
+            setCellContent(templateModel, "A1", "Firstname");
+            setCellContent(templateModel, "B1", "Lastname");
             const id = 101;
-            this.data["spreadsheet.template"].records = [{
-                id,
-                name: "template",
-                data: jsonToBase64(templateModel.exportData()),
-            }];
+            this.data["spreadsheet.template"].records = [
+                {
+                    id,
+                    name: "template",
+                    data: jsonToBase64(templateModel.exportData()),
+                },
+            ];
             let spreadSheetComponent;
             patchWithCleanup(SpreadsheetTemplateAction.prototype, {
                 mounted() {
-                  this._super();
-                  spreadSheetComponent = this.spreadsheetRef.comp;
-                }
+                    this._super();
+                    spreadSheetComponent = this.spreadsheetRef.comp;
+                },
             });
             const { model, webClient } = await createSpreadsheetTemplate({
                 data: this.data,
                 spreadsheetId: id,
                 mockRPC: function (route, args) {
-                    if (args.model == 'spreadsheet.template'){
-                        if (args.method === 'write') {
+                    if (args.model == "spreadsheet.template") {
+                        if (args.method === "write") {
                             const model = base64ToJson(args.args[1].data);
-                            assert.strictEqual(typeof(model), 'object', 'Model type should be object');
-                            const {A1, B1} = model.sheets[0].cells;
+                            assert.strictEqual(
+                                typeof model,
+                                "object",
+                                "Model type should be object"
+                            );
+                            const { A1, B1 } = model.sheets[0].cells;
                             assert.equal(
-                                `${A1.content} ${B1.content}`, `Firstname Name`,
-                                'A1 and B1 should be changed after update'
-                            )
+                                `${A1.content} ${B1.content}`,
+                                `Firstname Name`,
+                                "A1 and B1 should be changed after update"
+                            );
                         }
                     }
                     if (this) {
                         return this._super.apply(this, arguments);
                     }
                 },
-            })
-
-            setCellContent(model, 'B1', 'Name');
-            await spreadSheetComponent.trigger("spreadsheet-saved", spreadSheetComponent.getSaveData());
-            await doAction(webClient, {
-                type: 'ir.actions.client',
-                tag: 'action_open_template',
-                params: { spreadsheet_id: id },
             });
-        })
+
+            setCellContent(model, "B1", "Name");
+            await spreadSheetComponent.trigger(
+                "spreadsheet-saved",
+                spreadSheetComponent.getSaveData()
+            );
+            await doAction(webClient, {
+                type: "ir.actions.client",
+                tag: "action_open_template",
+                params: { active_id: id },
+            });
+        });
     }
 );

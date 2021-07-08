@@ -2,17 +2,18 @@
 
 import PivotView from "web.PivotView";
 import testUtils from "web.test_utils";
-import { getTestData } from "./spreadsheet_test_data";
+import { getBasicData } from "./spreadsheet_test_data";
 import {
     createSpreadsheetFromPivot,
     getCell,
     getCellContent,
     getCellFormula,
     getCells,
+    getCellValue,
     getMerges,
-    setCellContent
+    setCellContent,
 } from "./spreadsheet_test_utils";
-import { doAction } from '@web/../tests/webclient/helpers';
+import { doAction } from "@web/../tests/webclient/helpers";
 
 const createView = testUtils.createView;
 const { module, test } = QUnit;
@@ -27,7 +28,7 @@ test("simple pivot export", async (assert) => {
                 <pivot string="Partners">
                     <field name="foo" type="measure"/>
                 </pivot>`,
-            }
+        },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 6);
     assert.strictEqual(getCellFormula(model, "A1"), "");
@@ -42,13 +43,13 @@ test("simple pivot export", async (assert) => {
 test("simple pivot export with two measures", async (assert) => {
     assert.expect(10);
     const { model } = await createSpreadsheetFromPivot({
-       pivotView: {
+        pivotView: {
             arch: `
                 <pivot string="Partners">
                     <field name="foo" type="measure"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-       }
+        },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 9);
     assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER("1")');
@@ -73,7 +74,7 @@ test("pivot with two measures: total cells above measures totals are merged in o
                     <field name="foo" type="measure"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+        },
     });
     const merges = getMerges(model);
     assert.strictEqual(merges.length, 5);
@@ -87,8 +88,14 @@ test("pivot with one level of group bys", async (assert) => {
     assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","bar","false")');
     assert.strictEqual(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","bar","true")');
     assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER("1")');
-    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER("1","foo","1","measure","probability")');
-    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT("1","probability","bar","false","foo","2")');
+    assert.strictEqual(
+        getCellFormula(model, "B2"),
+        '=PIVOT.HEADER("1","foo","1","measure","probability")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "C3"),
+        '=PIVOT("1","probability","bar","false","foo","2")'
+    );
     assert.strictEqual(getCellFormula(model, "F5"), '=PIVOT("1","probability")');
 });
 
@@ -107,33 +114,47 @@ test("pivot with two levels of group bys in rows", async (assert) => {
             await testUtils.dom.click(
                 controller.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
             );
-        }
+        },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 18);
     assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","bar","false")');
     assert.deepEqual(getCell(model, "A3").style, { fillColor: "#f2f2f2", bold: true });
-    assert.strictEqual(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","bar","false","product_id","37")');
+    assert.strictEqual(
+        getCellFormula(model, "A4"),
+        '=PIVOT.HEADER("1","bar","false","product_id","37")'
+    );
     assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2" });
-    assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER("1","bar","false","product_id","41")');
+    assert.strictEqual(
+        getCellFormula(model, "A5"),
+        '=PIVOT.HEADER("1","bar","false","product_id","41")'
+    );
     assert.strictEqual(getCellFormula(model, "A6"), '=PIVOT.HEADER("1","bar","true")');
-    assert.strictEqual(getCellFormula(model, "A7"), '=PIVOT.HEADER("1","bar","true","product_id","37")');
-    assert.strictEqual(getCellFormula(model, "A8"), '=PIVOT.HEADER("1","bar","true","product_id","41")');
+    assert.strictEqual(
+        getCellFormula(model, "A7"),
+        '=PIVOT.HEADER("1","bar","true","product_id","37")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "A8"),
+        '=PIVOT.HEADER("1","bar","true","product_id","41")'
+    );
     assert.strictEqual(getCellFormula(model, "A9"), '=PIVOT.HEADER("1")');
 });
 
 test("verify that there is a record for an undefined header", async (assert) => {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
 
-    data.partner.records = [{
-        id: 1,
-        foo: 12,
-        bar: true,
-        date: "2016-04-14",
-        product_id: false,
-        probability: 10,
-    }];
+    data.partner.records = [
+        {
+            id: 1,
+            foo: 12,
+            bar: true,
+            date: "2016-04-14",
+            product_id: false,
+            probability: 10,
+        },
+    ];
 
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
@@ -143,7 +164,7 @@ test("verify that there is a record for an undefined header", async (assert) => 
                 <field name="product_id" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","product_id","false")');
 });
@@ -151,15 +172,17 @@ test("verify that there is a record for an undefined header", async (assert) => 
 test("undefined date is inserted in pivot", async (assert) => {
     assert.expect(1);
 
-    const data = getTestData();
-    data.partner.records = [{
-        id: 1,
-        foo: 12,
-        bar: true,
-        date: false,
-        product_id: 37,
-        probability: 10,
-    }];
+    const data = getBasicData();
+    data.partner.records = [
+        {
+            id: 1,
+            foo: 12,
+            bar: true,
+            date: false,
+            product_id: 37,
+            probability: 10,
+        },
+    ];
 
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
@@ -169,7 +192,7 @@ test("undefined date is inserted in pivot", async (assert) => {
                 <field name="date" interval="day" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","date:day","false")');
 });
@@ -185,28 +208,52 @@ test("pivot with two levels of group bys in cols", async (assert) => {
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions:  async(controller) => {
+        actions: async (controller) => {
             await testUtils.dom.click(controller.$("thead .o_pivot_header_cell_closed:first"));
             await testUtils.dom.click(
                 controller.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
             );
-        }
+        },
     });
 
     assert.strictEqual(Object.values(getCells(model)).length, 24);
     assert.strictEqual(getCellContent(model, "A1"), "");
     assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2", bold: true });
     assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER("1","bar","false")');
-    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER("1","bar","false","product_id","37")');
-    assert.strictEqual(getCellFormula(model, "B3"), '=PIVOT.HEADER("1","bar","false","product_id","37","measure","probability")');
+    assert.strictEqual(
+        getCellFormula(model, "B2"),
+        '=PIVOT.HEADER("1","bar","false","product_id","37")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "B3"),
+        '=PIVOT.HEADER("1","bar","false","product_id","37","measure","probability")'
+    );
     assert.deepEqual(getCell(model, "C2").style, { fillColor: "#f2f2f2", bold: true });
-    assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER("1","bar","false","product_id","41")');
-    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")');
+    assert.strictEqual(
+        getCellFormula(model, "C2"),
+        '=PIVOT.HEADER("1","bar","false","product_id","41")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "C3"),
+        '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")'
+    );
     assert.strictEqual(getCellFormula(model, "D1"), '=PIVOT.HEADER("1","bar","true")');
-    assert.strictEqual(getCellFormula(model, "D2"), '=PIVOT.HEADER("1","bar","true","product_id","37")');
-    assert.strictEqual(getCellFormula(model, "D3"), '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")');
-    assert.strictEqual(getCellFormula(model, "E2"), '=PIVOT.HEADER("1","bar","true","product_id","41")');
-    assert.strictEqual(getCellFormula(model, "E3"), '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")');
+    assert.strictEqual(
+        getCellFormula(model, "D2"),
+        '=PIVOT.HEADER("1","bar","true","product_id","37")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "D3"),
+        '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "E2"),
+        '=PIVOT.HEADER("1","bar","true","product_id","41")'
+    );
+    assert.strictEqual(
+        getCellFormula(model, "E3"),
+        '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")'
+    );
 });
 
 test("pivot with count as measure", async (assert) => {
@@ -219,11 +266,11 @@ test("pivot with count as measure", async (assert) => {
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions: async(controller) => {
+        actions: async (controller) => {
             await testUtils.nextTick();
             await testUtils.pivot.toggleMeasuresDropdown(controller);
             await testUtils.pivot.clickMeasure(controller, "__count");
-        }
+        },
     });
     assert.strictEqual(Object.keys(getCells(model)).length, 9);
     assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER("1","measure","__count")');
@@ -233,19 +280,19 @@ test("pivot with count as measure", async (assert) => {
 test("pivot with two levels of group bys in cols with not enough cols", async (assert) => {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     // add many values in a subgroup
     for (let i = 0; i < 35; i++) {
         data.product.records.push({
             id: i + 9999,
             display_name: i.toString(),
-        })
+        });
         data.partner.records.push({
             id: i + 9999,
             bar: i % 2 === 0,
             product_id: i + 9999,
             probability: i,
-        })
+        });
     }
 
     const { model } = await createSpreadsheetFromPivot({
@@ -258,12 +305,12 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions: async(controller) => {
+        actions: async (controller) => {
             await testUtils.dom.click(controller.$("thead .o_pivot_header_cell_closed:first"));
             await testUtils.dom.click(
                 controller.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
             );
-        }
+        },
     });
     // 37 products * 2 groups + 1 row header + 1 total col + 1 extra empty col at the end
     assert.strictEqual(model.getters.getActiveSheet().cols.length, 77);
@@ -280,7 +327,7 @@ test("groupby week is sorted", async (assert) => {
                 <field name="date" interval="week" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:week","16/2016")`);
     assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:week","44/2016")`);
@@ -310,13 +357,13 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
             },
             session: { user_has_group: async () => true },
         },
-        actions:  async(controller) => {
+        actions: async (controller) => {
             await testUtils.nextTick();
             await testUtils.dom.click(controller.$el.find(".o_pivot_add_spreadsheet"));
             await testUtils.nextTick();
             await testUtils.modal.clickButton("Confirm");
             await testUtils.nextTick();
-        }
+        },
     });
     assert.verifySteps(["create"]);
 });
@@ -331,14 +378,14 @@ QUnit.test("Can save a pivot in existing spreadsheet", async (assert) => {
                 <field name="probability" type="measure"/>
             </pivot>`,
             async mockRPC(route, args) {
-                if (route === '/web/action/load') {
-                    return {id: args.action_id, type: 'ir.actions.act_window_close'};
+                if (route === "/web/action/load") {
+                    return { id: args.action_id, type: "ir.actions.act_window_close" };
                 }
-                if (args.model === 'documents.document') {
+                if (args.model === "documents.document") {
                     assert.step(args.method);
                     switch (args.method) {
-                    case "get_spreadsheets_to_display":
-                        return [{id: 1, name: "My Spreadsheet"}];
+                        case "get_spreadsheets_to_display":
+                            return [{ id: 1, name: "My Spreadsheet" }];
                     }
                 }
                 if (!this) return;
@@ -349,15 +396,14 @@ QUnit.test("Can save a pivot in existing spreadsheet", async (assert) => {
         async actions(controller) {
             await testUtils.dom.click(controller.$el.find(".o_pivot_add_spreadsheet"));
             await testUtils.dom.click($(document.body.querySelector(".modal-content select")));
-            document.body.querySelector(".modal-content option[value='1']").setAttribute("selected", "selected");
+            document.body
+                .querySelector(".modal-content option[value='1']")
+                .setAttribute("selected", "selected");
             await testUtils.modal.clickButton("Confirm");
-        }
+        },
     });
     await doAction(webClient, 1); // leave the spreadsheet action
-    assert.verifySteps([
-        "get_spreadsheets_to_display",
-        "join_spreadsheet_session",
-    ]);
+    assert.verifySteps(["get_spreadsheets_to_display", "join_spreadsheet_session"]);
 });
 
 test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
@@ -365,8 +411,9 @@ test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
 
     let callback;
     const { model } = await createSpreadsheetFromPivot({
-        async actions(pivot) {
-            callback = await pivot._getCallbackBuildPivot(false);
+        async actions(controller) {
+            const pivot = controller._getPivotForSpreadsheet();
+            callback = await controller._getCallbackBuildPivot(pivot, false);
         },
     });
     model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
@@ -378,55 +425,17 @@ test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
     assert.deepEqual(model.getters.getVisibleSheets()[1], "42");
 });
 
-test("pivot ids are correctly assigned", async (assert) => {
-    assert.expect(3);
-
-    const { model } = await createSpreadsheetFromPivot();
-    const [ p1 ] = model.getters.getPivots();
-    assert.strictEqual(p1.id, 1, "It should have id 1");
-    const [ p2, p3 ] = [ { ...p1 }, { ...p1 } ];
-    const sheetId = model.getters.getActiveSheetId();
-    const cache = await model.getters.getAsyncCache(p1.id);
-    model.dispatch("BUILD_PIVOT", {
-        sheetId,
-        anchor: [12, 0],
-        pivot: p2,
-        cache,
-    });
-    assert.deepEqual(
-        model.getters.getPivots().map((p) => p.id), [1, 2],
-        "Last pivot should have id 2",
-    );
-    model.dispatch("BUILD_PIVOT", {
-        sheetId,
-        anchor: [12, 0],
-        pivot: p3,
-        cache,
-    });
-    assert.deepEqual(
-        model.getters.getPivots().map((p) => p.id), [1, 2, 3],
-        "Last pivot should have id 3",
-    );
-});
-
 test("pivot with a domain", async (assert) => {
     assert.expect(3);
 
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             domain: [["bar", "=", true]],
-        }
+        },
     });
-    const [ p1 ] = model.getters.getPivots();
-    assert.deepEqual(
-        p1.domain,
-        [["bar", "=", true]],
-        "It should have the correct domain"
-    );
-    assert.strictEqual(
-        getCellFormula(model, "A3"),
-        `=PIVOT.HEADER("1","bar","true")`
-    );
+    const domain = model.getters.getPivotDomain("1");
+    assert.deepEqual(domain, [["bar", "=", true]], "It should have the correct domain");
+    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","bar","true")`);
     assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER("1")`);
 });
 
@@ -436,7 +445,7 @@ test("Insert in spreadsheet is disabled when no measure is specified", async (as
     const pivot = await createView({
         View: PivotView,
         model: "partner",
-        data: getTestData(),
+        data: getBasicData(),
         arch: `
         <pivot string="Partners">
             <field name="foo" type="measure"/>
@@ -444,7 +453,7 @@ test("Insert in spreadsheet is disabled when no measure is specified", async (as
         session: { user_has_group: async () => true },
     });
     await testUtils.pivot.toggleMeasuresDropdown(pivot);
-    await testUtils.pivot.clickMeasure(pivot, 'foo');
+    await testUtils.pivot.clickMeasure(pivot, "foo");
     assert.ok(document.body.querySelector("button.o_pivot_add_spreadsheet").disabled);
     pivot.destroy();
 });
@@ -452,7 +461,7 @@ test("Insert in spreadsheet is disabled when no measure is specified", async (as
 test("Insert in spreadsheet is disabled when data is empty", async (assert) => {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     data.partner.records = [];
     data.product.records = [];
     const pivot = await createView({
@@ -472,7 +481,7 @@ test("Insert in spreadsheet is disabled when data is empty", async (assert) => {
 test("pivot with a quote in name", async function (assert) {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     data.product.records.push({
         id: 42,
         display_name: `name with "`,
@@ -486,7 +495,7 @@ test("pivot with a quote in name", async function (assert) {
                 <field name="display_name" type="col"/>
                 <field name="id" type="row"/>
             </pivot>`,
-        }
+        },
     });
     assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","display_name","name with \\"")`);
 });
@@ -497,25 +506,24 @@ test("group by regular field defined with not supported aggregate", async functi
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             model: "partner",
-            data: getTestData(),
+            data: getBasicData(),
             arch: `
             <pivot string="Partners">
                 <field name="foo" type="row"/>
                 <field name="field_with_array_agg" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     const B7 = getCell(model, "B7");
     assert.equal(B7.error, `Not implemented: array_agg`);
     assert.equal(B7.value, `#ERROR`);
 });
 
-
-test("group by related field with archived record", async function (assert) {
+QUnit.test("group by related field with archived record", async function (assert) {
     assert.expect(3);
 
-    const data = getTestData();
-    data.product.records[0].active = false;
+    const data = getBasicData();
+    // data.product.records[0].active = false;
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             data,
@@ -525,7 +533,7 @@ test("group by related field with archived record", async function (assert) {
                 <field name="name" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
     assert.equal(getCellContent(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
@@ -535,7 +543,7 @@ test("group by related field with archived record", async function (assert) {
 test("group by regular field with archived record", async function (assert) {
     assert.expect(4);
 
-    const data = getTestData();
+    const data = getBasicData();
     data.partner.records[0].active = false;
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
@@ -546,7 +554,7 @@ test("group by regular field with archived record", async function (assert) {
                 <field name="foo" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     assert.equal(getCellContent(model, "A3"), `=PIVOT.HEADER("1","foo","1")`);
     assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","foo","2")`);
@@ -556,7 +564,7 @@ test("group by regular field with archived record", async function (assert) {
 
 test("can select a Pivot from cell formula", async function (assert) {
     assert.expect(1);
-    const data = getTestData();
+    const data = getBasicData();
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             data,
@@ -566,21 +574,19 @@ test("can select a Pivot from cell formula", async function (assert) {
                 <field name="foo" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
-    const pivotId = await model.getters.getPivotFromPosition(2, 2);
-    model.dispatch("SELECT_PIVOT", { pivotId});
-    const selectedPivot = model.getters.getSelectedPivot();
-    assert.strictEqual(
-        selectedPivot.id,
-        1
-    );
+    const sheetId = model.getters.getActiveSheetId();
+    const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId });
+    const selectedPivotId = model.getters.getSelectedPivotId();
+    assert.strictEqual(selectedPivotId, "1");
 });
 
 test("can select a Pivot from cell formula with '-' before the formula", async function (assert) {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             data,
@@ -590,25 +596,23 @@ test("can select a Pivot from cell formula with '-' before the formula", async f
                 <field name="foo" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     model.dispatch("SET_VALUE", {
         xc: "C3",
         text: `=-PIVOT("1","probability","bar","false","foo","2")`,
     });
-    const pivotId = await model.getters.getPivotFromPosition(2, 2);
-    model.dispatch("SELECT_PIVOT", { pivotId});
-    const selectedPivot = model.getters.getSelectedPivot();
-    assert.strictEqual(
-        selectedPivot.id,
-        1
-    );
+    const sheetId = model.getters.getActiveSheetId();
+    const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId });
+    const selectedPivotId = model.getters.getSelectedPivotId();
+    assert.strictEqual(selectedPivotId, "1");
 });
 
 test("can select a Pivot from cell formula with other numerical values", async function (assert) {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             data,
@@ -618,25 +622,23 @@ test("can select a Pivot from cell formula with other numerical values", async f
                 <field name="foo" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     model.dispatch("SET_VALUE", {
         xc: "C3",
         text: `=3*PIVOT("1","probability","bar","false","foo","2")+2`,
     });
-    const pivotId = await model.getters.getPivotFromPosition(2, 2);
-    model.dispatch("SELECT_PIVOT", { pivotId});
-    const selectedPivot = model.getters.getSelectedPivot();
-    assert.strictEqual(
-        selectedPivot.id,
-        1
-    );
+    const sheetId = model.getters.getActiveSheetId();
+    const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId });
+    const selectedPivotId = model.getters.getSelectedPivotId();
+    assert.strictEqual(selectedPivotId, "1");
 });
 
 test("can select a Pivot from cell formula where pivot is in a function call", async function (assert) {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             data,
@@ -646,36 +648,34 @@ test("can select a Pivot from cell formula where pivot is in a function call", a
                 <field name="foo" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     model.dispatch("SET_VALUE", {
         xc: "C3",
         text: `=SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))`,
     });
-    const pivotId = await model.getters.getPivotFromPosition(2, 2);
-    model.dispatch("SELECT_PIVOT", { pivotId});
-    const selectedPivot = model.getters.getSelectedPivot();
-    assert.strictEqual(
-        selectedPivot.id,
-        1
-    );
+    const sheetId = model.getters.getActiveSheetId();
+    const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId });
+    const selectedPivotId = model.getters.getSelectedPivotId();
+    assert.strictEqual(selectedPivotId, "1");
 });
 
 test("Columns of newly inserted pivot are auto-resized", async function (assert) {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     data.partner.fields.probability.string = "Probability with a super long name";
     const { model } = await createSpreadsheetFromPivot({ pivotView: { data } });
     const sheetId = model.getters.getActiveSheetId();
     const defaultColSize = 96;
     assert.ok(model.getters.getCol(sheetId, 1).size > defaultColSize, "Column should be resized");
-})
+});
 
 test("can select a Pivot from cell formula (Mix of test scenarios above)", async function (assert) {
     assert.expect(1);
 
-    const data = getTestData();
+    const data = getBasicData();
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             data,
@@ -685,28 +685,41 @@ test("can select a Pivot from cell formula (Mix of test scenarios above)", async
                 <field name="foo" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        }
+        },
     });
     model.dispatch("SET_VALUE", {
         xc: "C3",
         text: `=3*SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))+2*PIVOT("1","probability","bar","false","foo","2")`,
     });
-    const pivotId = await model.getters.getPivotFromPosition(2, 2);
-    model.dispatch("SELECT_PIVOT", { pivotId});
-    const selectedPivot = model.getters.getSelectedPivot();
-    assert.strictEqual(
-        selectedPivot.id,
-        1
-    );
+    const sheetId = model.getters.getActiveSheetId();
+    const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId });
+    const selectedPivotId = model.getters.getSelectedPivotId();
+    assert.strictEqual(selectedPivotId, "1");
 });
 
 test("Can remove a pivot with undo after editing a cell", async function (assert) {
-    assert.expect(3);
+    assert.expect(4);
     const { model } = await createSpreadsheetFromPivot();
-    assert.ok(getCellContent(model, "B1").startsWith("=PIVOT.HEADER"))
+    assert.ok(getCellContent(model, "B1").startsWith("=PIVOT.HEADER"));
     setCellContent(model, "G10", "should be undoable");
     model.dispatch("REQUEST_UNDO");
     assert.equal(getCellContent(model, "G10"), "");
+    // 2 REQUEST_UNDO because of the AUTORESIZE feature
+    model.dispatch("REQUEST_UNDO");
     model.dispatch("REQUEST_UNDO");
     assert.equal(getCellContent(model, "B1"), "");
+    assert.equal(model.getters.getPivotIds().length, 0);
+});
+
+test("Get value from pivot with a non-loaded cache", async function (assert) {
+    assert.expect(3);
+    const { model } = await createSpreadsheetFromPivot();
+    await model.waitForIdle();
+    assert.equal(getCellValue(model, "C3"), 15);
+    model.getters.waitForPivotDataReady("1", { force: true });
+    model.dispatch("EVALUATE_CELLS", { sheetId: model.getters.getActiveSheetId() });
+    assert.equal(getCellValue(model, "C3"), "Loading...");
+    await model.waitForIdle();
+    assert.equal(getCellValue(model, "C3"), 15);
 });

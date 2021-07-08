@@ -1,15 +1,15 @@
-/** @odoo-module alias=documents_spreadsheet.PivotSidePanel */
+/** @odoo-module */
 
 import { PivotDetailsSidePanel } from "./pivot_details_side_panel";
 
-export class PivotSidePanel extends owl.Component {
-    constructor(parent, props) {
+export default class PivotSidePanel extends owl.Component {
+    constructor() {
         super(...arguments);
         this.getters = this.env.getters;
     }
 
     selectPivot(pivotId) {
-        this.env.dispatch("SELECT_PIVOT", { pivotId })
+        this.env.dispatch("SELECT_PIVOT", { pivotId });
     }
 
     resetSelectedPivot() {

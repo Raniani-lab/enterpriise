@@ -1,25 +1,14 @@
 /** @odoo-module alias=documents_spreadsheet.MenuItemRegistry */
 
-import {
-    getNumberOfPivotFormulas
-} from "documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js";
 import { _t } from "web.core";
+import { getFirstPivotFunction, getNumberOfPivotFormulas } from "../helpers/odoo_functions_helpers";
 import { pivotFormulaRegex } from "../helpers/pivot_helpers";
 import spreadsheet from "../o_spreadsheet_loader";
-import {
-    getFormulaNameAndArgs
-} from "documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js";
+import { REINSERT_LIST_CHILDREN } from "./list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "./pivot_actions";
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
 const { createFullMenuItem } = spreadsheet.helpers;
 const { astToFormula } = spreadsheet;
-
-
-function getPivotName(getters, pivot) {
-    return getters.isCacheLoaded(pivot.id)
-        ? getters.getCache(pivot.id).getModelLabel()
-        : pivot.model;
-}
 
 //--------------------------------------------------------------------------
 // Spreadsheet context menu items
@@ -46,96 +35,156 @@ topbarMenuRegistry.addChild("download", ["file"], {
     sequence: 50,
     action: (env) => env.download(),
 });
-topbarMenuRegistry.add("pivots", {
-    name: _t("Pivots"),
+topbarMenuRegistry.add("data", {
+    name: _t("Data"),
     sequence: 60,
     children: function (env) {
-        const view = _t("View")
-        const pivots = env.getters.getPivots()
-        const children = pivots
-            .map((pivot, index) => (createFullMenuItem(`item_pivot_${pivot.id}`, {
-                name: view + " " + `${getPivotName(env.getters, pivot)} (#${pivot.id})`,
+        const pivots = env.getters.getPivotIds();
+        const children = pivots.map((pivotId, index) =>
+            createFullMenuItem(`item_pivot_${pivotId}`, {
+                name: env.getters.getPivotDisplayName(pivotId),
                 sequence: index,
                 action: (env) => {
-                    env.dispatch("SELECT_PIVOT", { pivotId: pivot.id });
+                    env.dispatch("SELECT_PIVOT", { pivotId: pivotId });
                     env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
                 },
-                separator: index === env.getters.getPivots().length - 1,
-            })))
-        return children.concat([
-            createFullMenuItem(`refresh_pivot`, {
-                name: _t("Refresh pivot values"),
-                sequence: env.getters.getPivots().length + 1,
-                action: (env) => env.dispatch("REFRESH_PIVOT"),
+                icon: "fa fa-table",
+                separator: index === env.getters.getPivotIds().length - 1,
+            })
+        );
+        const lists = env.getters.getListIds().map((listId, index) => {
+            return createFullMenuItem(`item_list_${listId}`, {
+                name: env.getters.getListDisplayName(listId),
+                sequence: index + pivots.length,
+                action: (env) => {
+                    env.dispatch("SELECT_ODOO_LIST", { listId: listId });
+                    env.openSidePanel("LIST_PROPERTIES_PANEL", {});
+                },
+                icon: "fa fa-list",
+                separator: index === env.getters.getListIds().length - 1,
+            });
+        });
+        return children.concat(lists).concat([
+            createFullMenuItem(`refresh_all_data`, {
+                name: _t("Refresh all data"),
+                sequence: 1000,
+                action: (env) => {
+                    env.dispatch("REFRESH_ALL_DATA_SOURCES");
+                },
                 separator: true,
             }),
             createFullMenuItem(`reinsert_pivot`, {
-                name: _t("re-Insert Pivot"),
-                sequence: 60,
+                name: _t("Re-Insert Pivot"),
+                sequence: 1010,
                 children: REINSERT_PIVOT_CHILDREN,
-                isVisible: (env) => env.getters.getPivots().length,
+                isVisible: (env) => env.getters.getPivotIds().length,
             }),
             createFullMenuItem(`insert_pivot_cell`, {
                 name: _t("Insert pivot cell"),
-                sequence: 70,
+                sequence: 1020,
                 children: INSERT_PIVOT_CELL_CHILDREN,
-                isVisible: (env) => env.getters.getPivots().length,
+                isVisible: (env) => env.getters.getPivotIds().length,
+                separator: true,
+            }),
+            createFullMenuItem(`reinsert_list`, {
+                name: _t("Re-insert list"),
+                sequence: 1020,
+                children: REINSERT_LIST_CHILDREN,
+                isVisible: (env) => env.getters.getListIds().length,
             }),
         ]);
     },
-    isVisible: (env) => env.getters.getPivots().length,
+    isVisible: (env) => env.getters.getPivotIds().length || env.getters.getListIds().length,
 });
 
-cellMenuRegistry.add("reinsert_pivot", {
-    name: _t("Re-insert pivot"),
-    sequence: 160,
-    children: REINSERT_PIVOT_CHILDREN,
-    isVisible: (env) => env.getters.getPivots().length,
-}).add("insert_pivot_cell", {
-    name: _t("Insert pivot cell"),
-    sequence: 170,
-    children: INSERT_PIVOT_CELL_CHILDREN,
-    isVisible: (env) => env.getters.getPivots().length,
-}).add("pivot_properties", {
-    name: _t("Pivot properties"),
-    sequence: 150,
-    async action(env) {
-        const [col, row] = env.getters.getPosition();
-        const pivotId = await env.getters.getPivotFromPosition(col, row);
-        env.dispatch("SELECT_PIVOT", { pivotId });
-        env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
-    },
-    isVisible: (env) => {
-        const cell = env.getters.getActiveCell();
-        return cell && cell.type === "formula" && cell.formula.text.match(pivotFormulaRegex);
-    }
-}).add("see records", {
-    name: _t("See records"),
-    sequence: 122,
-    async action(env) {
-        const [col, row] = env.getters.getPosition();
-        const sheetId = env.getters.getActiveSheetId();
-        const cell = env.getters.getCell(sheetId, col, row);
-        const cellValue = env.getters.getCellValue(cell, sheetId, true);
-        const { args } = getFormulaNameAndArgs(cellValue); 
-        const evaluatedArgs = await Promise.all(args.map(astToFormula).map((arg) => env.getters.evaluateFormula(arg)));
-        const pivotId = await env.getters.getPivotFromPosition(col, row);
-        const pivot = env.getters.getPivot(pivotId)
-        const cache = await env.getters.getAsyncCache(pivotId);
-        const domain = cache.getDomainFromFormula(evaluatedArgs);
-        await env.services.action.doAction({
-            type: "ir.actions.act_window",
-            name: cache.getModelLabel(),
-            res_model: pivot.model,
-            view_mode: 'list',
-            views: [[false, 'list']],
-            target: 'current',
-            domain,
-        });
-    },
-    isVisible: (env) => {
-        const cell = env.getters.getActiveCell();
-        return cell && cell.type === "formula" && cell.value !== "" && getNumberOfPivotFormulas(cell.formula.text) === 1;
-    },
-    separator: true,
-});;
+cellMenuRegistry
+    .add("reinsert_pivot", {
+        name: _t("Re-insert pivot"),
+        sequence: 122,
+        children: REINSERT_PIVOT_CHILDREN,
+        isVisible: (env) => env.getters.getPivotIds().length,
+    })
+    .add("insert_pivot_cell", {
+        name: _t("Insert pivot cell"),
+        sequence: 123,
+        children: INSERT_PIVOT_CELL_CHILDREN,
+        isVisible: (env) => env.getters.getPivotIds().length,
+        separator: true,
+    })
+    .add("pivot_properties", {
+        name: _t("Pivot properties"),
+        sequence: 121,
+        action(env) {
+            const [col, row] = env.getters.getPosition();
+            const sheetId = env.getters.getActiveSheetId();
+            const pivotId = env.getters.getPivotIdFromPosition(sheetId, col, row);
+            env.dispatch("SELECT_PIVOT", { pivotId });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
+        },
+        isVisible: (env) => {
+            const cell = env.getters.getActiveCell();
+            return cell && cell.type === "formula" && cell.formula.text.match(pivotFormulaRegex);
+        },
+    })
+    .add("listing_properties", {
+        name: _t("List properties"),
+        sequence: 124,
+        action(env) {
+            const [col, row] = env.getters.getPosition();
+            const sheetId = env.getters.getActiveSheetId();
+            const listId = env.getters.getListIdFromPosition(sheetId, col, row);
+            env.dispatch("SELECT_ODOO_LIST", { listId });
+            env.openSidePanel("LIST_PROPERTIES_PANEL", {});
+        },
+        isVisible: (env) => {
+            const [col, row] = env.getters.getPosition();
+            const sheetId = env.getters.getActiveSheetId();
+            return env.getters.getListIdFromPosition(sheetId, col, row) !== undefined;
+        },
+    })
+    .add("reinsert_list", {
+        name: _t("Re-insert list"),
+        sequence: 125,
+        children: REINSERT_LIST_CHILDREN,
+        isVisible: (env) => env.getters.getListIds().length,
+        separator: true,
+    })
+    .add("see records", {
+        name: _t("See records"),
+        sequence: 126,
+        async action(env) {
+            const [col, row] = env.getters.getPosition();
+            const sheetId = env.getters.getActiveSheetId();
+            const cell = env.getters.getCell(sheetId, col, row);
+            const cellValue = env.getters.getCellValue(cell, sheetId, true);
+            const { args } = getFirstPivotFunction(cellValue);
+            const evaluatedArgs = args
+                .map(astToFormula)
+                .map((arg) => env.getters.evaluateFormula(arg));
+            const pivotId = env.getters.getPivotIdFromPosition(sheetId, col, row);
+            const model = env.getters.getPivotModel(pivotId);
+            await env.getters.waitForPivotMetaData(pivotId);
+            const cache = env.getters.getPivotStructureData(pivotId);
+            const domain = cache.getDomainFromFormula(evaluatedArgs);
+            const name = env.getters.getPivotModelDisplayName(pivotId);
+            await env.services.action.doAction({
+                type: "ir.actions.act_window",
+                name,
+                res_model: model,
+                view_mode: "list",
+                views: [[false, "list"]],
+                target: "current",
+                domain,
+            });
+        },
+        isVisible: (env) => {
+            const cell = env.getters.getActiveCell();
+            return (
+                cell &&
+                cell.type === "formula" &&
+                cell.value !== "" &&
+                getNumberOfPivotFormulas(cell.formula.text) === 1
+            );
+        },
+        separator: true,
+    });

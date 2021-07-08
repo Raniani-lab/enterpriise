@@ -3,8 +3,6 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
     const core = require("web.core");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const PivotDialogTable = require("documents_spreadsheet.PivotDialogTable");
-    const pivotUtils = require("documents_spreadsheet.pivot_utils");
-    const functionRegistry = spreadsheet.registries.functionRegistry;
     const _t = core._t;
     const { useState } = owl.hooks;
     const formatDecimal = spreadsheet.helpers.formatDecimal;
@@ -36,7 +34,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
      * @property {boolean} isMissing True if the value is missing from the sheet
      */
 
-     class PivotDialog extends owl.Component {
+    class PivotDialog extends owl.Component {
         constructor() {
             super(...arguments);
             this.state = useState({
@@ -45,6 +43,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
         }
 
         async willStart() {
+            await this.getters.waitForPivotDataReady(this.pivotId);
             this.data = {
                 columns: this._buildColHeaders(),
                 rows: this._buildRowHeaders(),
@@ -52,12 +51,22 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
             };
         }
 
-        get pivot() {
-            return this.props.pivot;
+        get pivotId() {
+            return this.props.pivotId;
         }
 
-        get cache() {
-            return this.props.cache;
+        get getters() {
+            return this.props.getters;
+        }
+
+        /**
+         * This method always returns the PivotCache, as we ensure that it's
+         * loaded in the willStart
+         *
+         * @returns {PivotCache}
+         */
+        get pivotData() {
+            return this.getters.getPivotStructureData(this.pivotId);
         }
 
         // ---------------------------------------------------------------------
@@ -99,12 +108,12 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
          * @returns {Array<number>}
          */
         _addRecursiveRow(index) {
-            const row = this.cache.getRowValues(index).slice();
+            const row = this.pivotData.getRowValues(index).slice();
             if (row.length <= 1) {
                 return [index];
             }
             row.pop();
-            const parentRowIndex = this.cache.getRowIndex(row);
+            const parentRowIndex = this.pivotData.getRowIndex(row);
             return [index].concat(this._addRecursiveRow(parentRowIndex));
         }
         /**
@@ -152,7 +161,9 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                 for (let i = 0; i < columnsMap[mapIndex].length; i++) {
                     if (index !== columnsMap[mapIndex][i]) {
                         if (index) {
-                            column.push(Object.assign({}, this.data.columns[mapIndex][index], { span }));
+                            column.push(
+                                Object.assign({}, this.data.columns[mapIndex][index], { span })
+                            );
                         }
                         index = columnsMap[mapIndex][i];
                         span = 1;
@@ -237,9 +248,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                 }
                 for (let col of this.data.values) {
                     if (col[i].isMissing) {
-                        this._addRecursiveRow(i).forEach((x) =>
-                            rowIndexes.add(x)
-                        );
+                        this._addRecursiveRow(i).forEach((x) => rowIndexes.add(x));
                     }
                 }
             }
@@ -260,18 +269,12 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
         _buildCell(args) {
             const formula = `=PIVOT("${args.join('","')}")`;
             const measure = args[1];
-            const operator = this.pivot.measures.filter(
-                (m) => m.field === measure
-            )[0].operator;
+            const measures = this.getters.getPivotMeasures(this.pivotId);
+            const operator = measures.filter((m) => m.field === measure)[0].operator;
             args.splice(0, 2);
             const domain = args.map((x) => x.toString());
-            const value = this.cache.getMeasureValue(
-                functionRegistry.mapping,
-                measure,
-                operator,
-                domain
-            );
-            return {value: this._formatValue(value), formula };
+            const value = this.pivotData.getMeasureValue(measure, operator, domain);
+            return { value: this._formatValue(value), formula };
         }
         /**
          * Create the columns headers of the Pivot
@@ -280,25 +283,25 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
          * @returns {Array<Array<PivotDialogColumn>>}
          */
         _buildColHeaders() {
-            const pivot = this.pivot;
-            const levels = this.cache.getColGroupByLevels();
+            const levels = this.pivotData.getColGroupByLevels();
             const headers = [];
 
             let length =
-                this.cache.getTopHeaderCount() - pivot.measures.length;
+                this.pivotData.getTopHeaderCount() -
+                this.getters.getPivotMeasures(this.pivotId).length;
             if (length === 0) {
-                length = this.cache.getTopHeaderCount();
+                length = this.pivotData.getTopHeaderCount();
             }
             for (let i = 0; i < length; i++) {
                 for (let level = 0; level <= levels; level++) {
                     const pivotArgs = [];
-                    const values = this.cache.getColGroupHierarchy(i, level);
+                    const values = this.pivotData.getColGroupHierarchy(i, level);
                     for (const index in values) {
-                        pivotArgs.push(this.cache.getColLevelIdentifier(index));
+                        pivotArgs.push(this.pivotData.getColLevelIdentifier(index));
                         pivotArgs.push(values[index]);
                     }
-                    const isMissing = !this.cache.isUsedHeader(pivotArgs);
-                    pivotArgs.unshift(pivot.id);
+                    const isMissing = !this.pivotData.isUsedHeader(pivotArgs);
+                    pivotArgs.unshift(this.pivotId);
                     if (headers[level]) {
                         headers[level].push({ args: pivotArgs, isMissing });
                     } else {
@@ -306,12 +309,12 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                     }
                 }
             }
-            for (let i = length; i < this.cache.getTopHeaderCount(); i++) {
-                let isMissing = !this.cache.isUsedHeader([]);
-                headers[headers.length - 2].push({ args: [pivot.id], isMissing });
-                const args = ["measure", this.cache.getColGroupHierarchy(i, 1)[0]];
-                isMissing = !this.cache.isUsedHeader(args);
-                headers[headers.length - 1].push({ args: [pivot.id, ...args], isMissing });
+            for (let i = length; i < this.pivotData.getTopHeaderCount(); i++) {
+                let isMissing = !this.pivotData.isUsedHeader([]);
+                headers[headers.length - 2].push({ args: [this.pivotId], isMissing });
+                const args = ["measure", this.pivotData.getColGroupHierarchy(i, 1)[0]];
+                isMissing = !this.pivotData.isUsedHeader(args);
+                headers[headers.length - 1].push({ args: [this.pivotId, ...args], isMissing });
             }
             return headers.map((row) => {
                 const reducedRow = row.reduce((acc, curr) => {
@@ -329,7 +332,10 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
 
                 return Object.entries(reducedRow)
                     .map(([val, info]) => {
-                        const style = row === headers[headers.length - 1] && !info.isMissing &&  "color: #756f6f;"
+                        const style =
+                            row === headers[headers.length - 1] &&
+                            !info.isMissing &&
+                            "color: #756f6f;";
                         return {
                             formula: `=PIVOT.HEADER("${val}")`,
                             value: this._getLabel(val),
@@ -349,18 +355,17 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
          * @returns {Array<PivotDialogRow>}
          */
         _buildRowHeaders() {
-            const pivot = this.pivot;
-            const rowCount = this.cache.getRowCount();
+            const rowCount = this.pivotData.getRowCount();
             const headers = [];
             for (let index = 0; index < rowCount; index++) {
                 const pivotArgs = [];
-                const current = this.cache.getRowValues(index);
+                const current = this.pivotData.getRowValues(index);
                 for (let i in current) {
-                    pivotArgs.push(pivot.rowGroupBys[i]);
+                    pivotArgs.push(this.getters.getPivotRowGroupBys(this.pivotId)[i]);
                     pivotArgs.push(current[i]);
                 }
-                const isMissing = !this.cache.isUsedHeader(pivotArgs);
-                pivotArgs.unshift(pivot.id);
+                const isMissing = !this.pivotData.isUsedHeader(pivotArgs);
+                pivotArgs.unshift(this.pivotId);
                 headers.push({ args: pivotArgs, isMissing });
             }
             return headers.map(({ args, isMissing }) => {
@@ -382,53 +387,53 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
          * @returns {Array<PivotDialogValue>}
          */
         _buildValues() {
-            const pivot = this.pivot;
             const length =
-                this.cache.getTopHeaderCount() - pivot.measures.length;
-
+                this.pivotData.getTopHeaderCount() -
+                this.getters.getPivotMeasures(this.pivotId).length;
+            const rowGroupBys = this.getters.getPivotRowGroupBys(this.pivotId);
             const values = [];
             for (let i = 0; i < length; i++) {
                 const colElement = [
-                    ...this.cache.getColumnValues(i),
-                    this.cache.getMeasureName(i),
+                    ...this.pivotData.getColumnValues(i),
+                    this.pivotData.getMeasureName(i),
                 ];
                 const colValues = [];
-                for (let rowElement of this.cache.getRows()) {
+                for (let rowElement of this.pivotData.getRows()) {
                     const pivotArgs = [];
                     for (let index in rowElement) {
-                        pivotArgs.push(pivot.rowGroupBys[index]);
+                        pivotArgs.push(rowGroupBys[index]);
                         pivotArgs.push(rowElement[index]);
                     }
                     for (let index in colElement) {
-                        const field = this.cache.getColLevelIdentifier(index);
+                        const field = this.pivotData.getColLevelIdentifier(index);
                         if (field === "measure") {
                             pivotArgs.unshift(colElement[index]);
                         } else {
-                            pivotArgs.push(this.cache.getColLevelIdentifier(index));
+                            pivotArgs.push(this.pivotData.getColLevelIdentifier(index));
                             pivotArgs.push(colElement[index]);
                         }
                     }
-                    const isMissing = !this.cache.isUsedValue(pivotArgs);
-                    pivotArgs.unshift(pivot.id);
+                    const isMissing = !this.pivotData.isUsedValue(pivotArgs);
+                    pivotArgs.unshift(this.pivotId);
                     colValues.push({ args: this._buildCell(pivotArgs), isMissing });
                 }
                 values.push(colValues);
             }
-            for (let i = length; i < this.cache.getTopHeaderCount(); i++) {
+            for (let i = length; i < this.pivotData.getTopHeaderCount(); i++) {
                 const colElement = [
-                    ...this.cache.getColumnValues(i),
-                    this.cache.getMeasureName(i),
+                    ...this.pivotData.getColumnValues(i),
+                    this.pivotData.getMeasureName(i),
                 ];
                 const colValues = [];
-                for (let rowElement of this.cache.getRows()) {
+                for (let rowElement of this.pivotData.getRows()) {
                     const pivotArgs = [];
                     for (let index in rowElement) {
-                        pivotArgs.push(pivot.rowGroupBys[index]);
+                        pivotArgs.push(rowGroupBys[index]);
                         pivotArgs.push(rowElement[index]);
                     }
                     pivotArgs.unshift(colElement[0]);
-                    const isMissing = !this.cache.isUsedValue(pivotArgs);
-                    pivotArgs.unshift(pivot.id);
+                    const isMissing = !this.pivotData.isUsedValue(pivotArgs);
+                    pivotArgs.unshift(this.pivotId);
                     colValues.push({ args: this._buildCell(pivotArgs), isMissing });
                 }
                 values.push(colValues);
@@ -463,19 +468,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
             }
             const field = domain[len - 2];
             const value = domain[len - 1];
-            if (field === "measure") {
-                if (value === "__count") {
-                    return _t("Count");
-                }
-                return this.cache.getField(value).string;
-            } else {
-                if (["date", "datetime"].includes(this.cache.getField(field.split(":")[0]).type)) {
-                    return pivotUtils.formatDate(field, value);
-                }
-                return (
-                    this.cache.getGroupLabel(field, value) || _t("(Undefined)")
-                );
-            }
+            return this.getters.getFormattedHeader(this.pivotId, field, value);
         }
         /**
          * Get the style to apply to a row.
@@ -492,7 +485,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
             if (!length) {
                 return "";
             }
-            return `padding-left: ${(length) * 10}px`;
+            return `padding-left: ${length * 10}px`;
         }
     }
     PivotDialog.template = "documents_spreadsheet.PivotDialog";

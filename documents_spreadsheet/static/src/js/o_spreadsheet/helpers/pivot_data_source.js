@@ -1,0 +1,363 @@
+/** @odoo-module */
+/* global moment */
+
+import { BasicDataSource } from "./basic_data_source";
+import PivotCache from "./pivot_cache";
+import { formats } from "../constants";
+import { intersect } from "./helpers";
+/**
+ * @typedef {import("../plugins/core/pivot_plugin").SpreadsheetPivotForRPC} SpreadsheetPivotForRPC
+ * @typedef {import("./basic_data_source").Field} Field
+ */
+export default class PivotDataSource extends BasicDataSource {
+    /**
+     *
+     * @param {Object} params
+     * @param {SpreadsheetPivotForRPC} params.definition;
+     */
+    constructor(params) {
+        super(params);
+        this.definition = params.definition;
+        this.computedDomain = this.definition.domain;
+    }
+    /**
+     * @override
+     * @param {Object} params
+     * @param {boolean|undefined} params.initialDomain True to fetch with the
+     * domain which does not contains the global filters
+     */
+    async _fetch(params = {}) {
+        const result = await this.rpc({
+            model: this.definition.model,
+            method: "read_group",
+            context: this.definition.context,
+            domain: params.initialDomain ? this.definition.domain : this.computedDomain,
+            fields: this.definition.measures.map((elt) =>
+                elt.field === "__count" ? elt.field : elt.field + ":" + elt.operator
+            ),
+            groupBy: this.definition.rowGroupBys.concat(this.definition.colGroupBys),
+            lazy: false,
+        });
+        return this._createCache(result);
+    }
+
+    /**
+     * Get the computed domain of this source
+     * @returns {Array}
+     */
+    getComputedDomain() {
+        return this.computedDomain;
+    }
+
+    /**
+     * Set the computed domain
+     *
+     * @param {Array} computedDomain
+     */
+    setComputedDomain(computedDomain) {
+        this.computedDomain = computedDomain;
+    }
+
+    /**
+     * Fetch the labels which do not exist on the cache (it could happen for
+     * example in multi-company)
+     * It also update the cache to avoid further rpc.
+     *
+     * @param {string} field Name of the field
+     * @param {string} value Value
+     *
+     * @returns {Promise<string>}
+     */
+    async _fetchLabel(field, value) {
+        const model = this.getField(field).relation;
+        let label;
+        try {
+            const rpc = await this.rpc({
+                model,
+                method: "name_get",
+                args: [parseInt(value, 10)],
+            });
+            label = rpc;
+        } catch (e) {
+            label = e;
+        }
+        if (this.data) {
+            this.data.addLabel(field, value, label);
+        }
+    }
+
+    /**
+     * Create a cache object for the given pivot from the result of the read
+     * group RPC
+     *
+     * @param {Object} readGroups Result of the read_group rpc
+     *
+     * @private
+     *
+     * @returns {PivotCache} Cache for pivot object
+     */
+    async _createCache(readGroups) {
+        const formulaToDomain = {};
+        const groupBys = {};
+        const labels = {};
+        const values = [];
+
+        const fieldNames = this.definition.rowGroupBys.concat(this.definition.colGroupBys);
+        for (let fieldName of fieldNames) {
+            labels[fieldName] = {};
+        }
+
+        for (let readGroup of readGroups) {
+            const value = {};
+            for (let measure of this.definition.measures) {
+                const field = measure.field;
+                value[field] = readGroup[field];
+            }
+            value["count"] = readGroup["__count"];
+            const formulaDomain = [];
+            const index = values.push(value) - 1;
+            for (let fieldName of fieldNames) {
+                const { label, id } = this._formatValue(fieldName, readGroup[fieldName]);
+                labels[fieldName][id] = label;
+                let groupBy = groupBys[fieldName] || {};
+                let vals = groupBy[id] || [];
+                vals.push(index);
+                groupBy[id] = vals;
+                groupBys[fieldName] = groupBy;
+                formulaDomain.push(`${fieldName},${id}`);
+            }
+            formulaToDomain[formulaDomain.join(",")] = readGroup["__domain"];
+        }
+        const orderedValues = await this._getOrderedValues(this.definition, groupBys);
+        const orderedMeasureIds = {};
+        for (const fieldName of fieldNames) {
+            orderedMeasureIds[fieldName] = orderedValues[fieldName]
+                ? orderedValues[fieldName].map((value) => [value, groupBys[fieldName][value] || []])
+                : [];
+        }
+
+        const measures = this.definition.measures.map((m) => m.field);
+        const rows = this._createRows(this.definition.rowGroupBys, orderedMeasureIds);
+        const cols = this._createCols(this.definition.colGroupBys, orderedMeasureIds, measures);
+        const colStructure = this.definition.colGroupBys.slice();
+        colStructure.push("measure");
+        return new PivotCache({
+            cols,
+            colStructure,
+            orderedMeasureIds,
+            labels,
+            rows,
+            values,
+            formulaToDomain,
+        });
+    }
+
+    /**
+     * Retrieves the id and the label of a field/value. It also convert dates
+     * to non-locale version (i.e. March 2020 => 03/2020)
+     *
+     * @param {string} fieldDesc Field (create_date:month)
+     * @param {string} value Value
+     *
+     * @private
+     * @returns {Object} Label and id formatted
+     */
+    _formatValue(fieldDesc, value) {
+        const [fieldName, group] = fieldDesc.split(":");
+        const field = this.metadata.fields[fieldName];
+        let id;
+        let label;
+        if (value instanceof Array) {
+            id = value[0];
+            label = value[1];
+        } else {
+            id = value;
+            label = value;
+        }
+        if (field && field.type === "selection") {
+            const selection = field.selection.find((x) => x[0] === id);
+            label = selection && selection[1];
+        }
+        if (field && ["date", "datetime"].includes(field.type) && group && value) {
+            const fIn = formats[group]["in"];
+            const fOut = formats[group]["out"];
+            // eslint-disable-next-line no-undef
+            const date = moment(value, fIn);
+            id = date.isValid() ? date.format(fOut) : false;
+            label = id;
+        }
+        return { label, id };
+    }
+    /**
+     * Return all possible values for each grouped field. Values are ordered according
+     * to the read group result.
+     * e.g.
+     *  {
+     *      field1: [value1, value2, value3],
+     *      field2: [value1, value2],
+     *  }
+     *
+     * @param {Object} params rpc params
+     * @param {string} params.model model name
+     * @param {Object} params.context
+     * @param {Object} groupBys
+     * @returns {Object}
+     */
+    async _getOrderedValues({ model, context }, groupBys) {
+        return Object.fromEntries(
+            await Promise.all(
+                Object.entries(groupBys).map(async ([groupBy, measures]) => {
+                    const [fieldName, aggregationFunction] = groupBy.split(":");
+                    const field = this.metadata.fields[fieldName];
+                    let values = Object.keys(measures);
+                    const hasUndefined = values.includes("false");
+                    values = ["date", "datetime"].includes(field.type)
+                        ? this._orderDateValues(
+                              values.filter((value) => value !== "false"),
+                              aggregationFunction
+                          )
+                        : await this._orderValues(values, fieldName, field, model, context);
+                    if (hasUndefined && field.type !== "boolean") {
+                        values.push("false");
+                    }
+                    return [groupBy, values];
+                })
+            )
+        );
+    }
+    /**
+     * Sort date and datetime aggregated values.
+     *
+     * @param {Array<string>} values
+     * @param {string} aggregationFunction
+     * @returns {Array<string>}
+     */
+    _orderDateValues(values, aggregationFunction) {
+        return aggregationFunction === "quarter"
+            ? values.sort()
+            : values
+                  .map((value) => moment(value, formats[aggregationFunction].out))
+                  .sort((a, b) => a - b)
+                  .map((value) => value.format(formats[aggregationFunction].out));
+    }
+
+    /**
+     * Order values according to a search_read result.
+     *
+     * @param {Array} values
+     * @param {string} fieldName
+     * @param {Field} field
+     * @param {string} model
+     * @param {Object} context
+     * @returns {Array}
+     */
+    async _orderValues(values, fieldName, field, model, context) {
+        const requestField = field.relation ? "id" : fieldName;
+        values = ["boolean", "many2one", "integer", "float"].includes(field.type)
+            ? values.map((value) => JSON.parse(value))
+            : values;
+        const records = await this.rpc({
+            model: field.relation ? field.relation : model,
+            domain: [[requestField, "in", values]],
+            context: Object.assign({}, context, { active_test: false }),
+            method: "search_read",
+            fields: [requestField],
+            // orderby is omitted for relational fields on purpose to have the default order of the model
+            orderBy: field.relation ? false : [{ name: fieldName, asc: true }],
+        });
+        return [...new Set(records.map((record) => record[requestField].toString()))];
+    }
+    /**
+     * Create the columns structure
+     *
+     * @param {Array<string>} groupBys Name of the fields of colGroupBys
+     * @param {Object} values Values of the pivot (see PivotCache.groupBys)
+     * @param {Array<string>} measures Measures
+     *
+     * @private
+     * @returns {Array<Array<Array<string>>>} cols
+     */
+    _createCols(groupBys, values, measures) {
+        const cols = [];
+        if (groupBys.length !== 0) {
+            this._fillColumns(cols, [], [], groupBys, measures, values, false);
+        }
+        for (let field of measures) {
+            cols.push([[], [field]]); // Total
+        }
+        return cols;
+    }
+    /**
+     * Create the rows structure
+     *
+     * @param {Array<string>} groupBys Name of the fields of rowGroupBys
+     * @param {Object} values Values of the pivot (see PivotCache.groupBys)
+     *
+     * @private
+     * @returns {Array<Array<string>>} rows
+     */
+    _createRows(groupBys, values) {
+        const rows = [];
+        this._fillRows(rows, [], groupBys, values, false);
+        rows.push([]); // Total
+        return rows;
+    }
+    /**
+     * fill the columns structure
+     *
+     * @param {Array} cols Columns to fill
+     * @param {Array} currentRow Current value of a row
+     * @param {Array} currentCol Current value of a col
+     * @param {Array<string>} groupBys Name of the fields of colGroupBys
+     * @param {Array<string>} measures Measures
+     * @param {Object} values Values of the pivot (see PivotCache.groupBys)
+     * @param {Array<number|false} currentIds Ids used to compute the intersection
+     *
+     * @private
+     */
+    _fillColumns(cols, currentRow, currentCol, groupBys, measures, values, currentIds) {
+        const field = groupBys[0];
+        if (!field) {
+            for (let measure of measures) {
+                const row = currentRow.slice();
+                const col = currentCol.slice();
+                row.push(measure);
+                col.push(row);
+                cols.push(col);
+            }
+            return;
+        }
+        for (let [id, vals] of values[field] || []) {
+            let ids = currentIds ? intersect(currentIds, vals) : vals;
+            const row = currentRow.slice();
+            const col = currentCol.slice();
+            row.push(id);
+            col.push(row);
+            this._fillColumns(cols, row, col, groupBys.slice(1), measures, values, ids);
+        }
+    }
+    /**
+     * Fill the rows structure
+     *
+     * @param {Array} rows Rows to fill
+     * @param {Array} currentRow Current value of a row
+     * @param {Array<string>} groupBys Name of the fields of colGroupBys
+     * @param {Object} values Values of the pivot (see PivotCache.groupBys)
+     * @param {Array<number|false} currentIds Ids used to compute the intersection
+     *
+     * @private
+     */
+    _fillRows(rows, currentRow, groupBys, values, currentIds) {
+        if (groupBys.length === 0) {
+            return;
+        }
+        const fieldName = groupBys[0];
+        for (let [id, vals] of values[fieldName] || []) {
+            let ids = currentIds ? intersect(currentIds, vals) : vals;
+            const row = currentRow.slice();
+            row.push(id);
+            rows.push(row);
+            this._fillRows(rows, row, groupBys.slice(1), values, ids);
+        }
+    }
+}

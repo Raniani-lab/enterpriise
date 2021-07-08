@@ -4,8 +4,9 @@ import { _t } from "web.core";
 import Domain from "web.Domain";
 import pyUtils from "web.py_utils";
 import spreadsheet from "../o_spreadsheet_loader";
-const { toString} = spreadsheet.helpers;
 
+const { toString } = spreadsheet.helpers;
+const functionRegistry = spreadsheet.registries.functionRegistry;
 
 /**
  * Chunk array elements two by two
@@ -13,7 +14,7 @@ const { toString} = spreadsheet.helpers;
  * >> [[1, 2], [3, 4]]
  */
 function chunkBy2(arr) {
-    return Array.from({length: arr.length / 2}, () => arr.splice(0,2));
+    return Array.from({ length: arr.length / 2 }, () => arr.splice(0, 2));
 }
 
 /**
@@ -26,7 +27,6 @@ function groupDomainElements(pivotFormulaDomainArgs) {
 
 export default class PivotCache {
     constructor(data) {
-        this._modelLabel = data.modelLabel;
         /**
          * Here is an example of a possible cols structure in the PivotCache.
          * Each element of the array describes a spreadsheet column. Each element
@@ -57,11 +57,6 @@ export default class PivotCache {
          * e.g. ["partner_id", "stage_id", "measure"]
          */
         this._colStructure = data.colStructure;
-
-        /**
-         * Model fields description as given by `fields_get`
-         */
-        this._fields = data.fields;
 
         /**
          * Link between a given group and measures falling in that group.
@@ -209,25 +204,6 @@ export default class PivotCache {
     }
 
     /**
-     * Return all field definitions
-     *
-     * @returns {Object}
-     */
-    getFields() {
-        return this._fields;
-    }
-
-    /**
-     * Return a field description
-     *
-     * @param {string} fieldName
-     * @returns {Object}
-     */
-    getField(fieldName) {
-        return this._fields[fieldName];
-    }
-
-    /**
      * Return all possible values in the pivot for a given field.
      *
      * @param {string} fieldName
@@ -260,24 +236,6 @@ export default class PivotCache {
      */
     isGroupLabelLoaded(groupBy, groupValue) {
         return groupValue in this._labels[groupBy];
-    }
-
-    /**
-     * Check if the pivot is only grouped by a date field.
-     *
-     * @param {Array<string>} groupBys e.g. ["stage_id", "create_date:month"]
-     * @returns {Object} isDate: boolean and group: string
-     */
-    isGroupedByDate(groupBys) {
-        if (groupBys.length !== 1) {
-            return { isDate: false };
-        }
-        const [fieldName, group] = groupBys[0].split(":");
-        const field = this._fields[fieldName];
-        return {
-            isDate: ["date", "datetime"].includes(field.type),
-            group,
-        };
     }
 
     /**
@@ -403,18 +361,13 @@ export default class PivotCache {
     /**
      * Compute and aggregate measures satisfying a given domain.
      *
-     * @param {Object} evalContext should contains aggregation functions.
      * @param {string} measureName
      * @param {string} operator
      * @param  {Array<string>} domain
      */
-    getMeasureValue(evalContext, measureName, operator, domain) {
+    getMeasureValue(measureName, operator, domain) {
         const measureIds = this._computeMeasureIds(domain);
-        return this._aggregateMeasure(evalContext, measureIds, measureName, operator);
-    }
-
-    getModelLabel() {
-        return this._modelLabel;
+        return this._aggregateMeasure(measureIds, measureName, operator);
     }
 
     /**
@@ -439,9 +392,11 @@ export default class PivotCache {
         const parsedFormulaDomain = groupDomainElements(args.slice(2));
         const formulaDomains = Object.keys(this._formulaToDomain).filter((cellDomain) => {
             const parsedCellDomain = groupDomainElements(cellDomain.split(","));
-            return parsedFormulaDomain.every(v => parsedCellDomain.includes(v))
-        })
-        const domains = formulaDomains.map((formulaDomain) => Domain.prototype.arrayToString(this._formulaToDomain[formulaDomain]));
+            return parsedFormulaDomain.every((v) => parsedCellDomain.includes(v));
+        });
+        const domains = formulaDomains.map((formulaDomain) =>
+            Domain.prototype.arrayToString(this._formulaToDomain[formulaDomain])
+        );
         return pyUtils.assembleDomains(domains, "OR");
     }
 
@@ -474,8 +429,7 @@ export default class PivotCache {
             }
             const [, measureIds] =
                 field in this._orderedMeasureIds &&
-                this._orderedMeasureIds[field]
-                    .find(([fieldValue,]) => fieldValue === value);
+                this._orderedMeasureIds[field].find(([fieldValue]) => fieldValue === value);
             returnValue = measureIds.filter((x) => returnValue.includes(x));
             i += 2;
         }
@@ -486,13 +440,13 @@ export default class PivotCache {
      * Process the values computed to return one value
      *
      * @private
-     * @param {Object} evalContext (See EvalContext in o-spreadsheet)
      * @param {Array<number>} measureIds
      * @param {string} measureName Name of the measure
      *
      * @returns Computed value
      */
-    _aggregateMeasure(evalContext, measureIds, measureName, operator) {
+    _aggregateMeasure(measureIds, measureName, operator) {
+        const functions = functionRegistry.mapping;
         if (measureIds.length === 0) {
             return "";
         }
@@ -503,31 +457,23 @@ export default class PivotCache {
             case "array_agg":
                 throw Error(_.str.sprintf(_t("Not implemented: %s"), operator));
             case "count":
-                return evalContext.COUNT(
+                return functions.COUNT(
                     ...measureIds.map((id) => this._values[id][measureName] || 0)
                 );
             case "count_distinct":
-                return evalContext.COUNTUNIQUE(
+                return functions.COUNTUNIQUE(
                     ...measureIds.map((id) => measureIds[id][measureName] || 0)
                 );
             case "bool_and":
-                return evalContext.AND(
-                    ...measureIds.map((id) => this._values[id][measureName] || 0)
-                );
+                return functions.AND(...measureIds.map((id) => this._values[id][measureName] || 0));
             case "bool_or":
-                return evalContext.OR(
-                    ...measureIds.map((id) => this._values[id][measureName] || 0)
-                );
+                return functions.OR(...measureIds.map((id) => this._values[id][measureName] || 0));
             case "max":
-                return evalContext.MAX(
-                    ...measureIds.map((id) => this._values[id][measureName] || 0)
-                );
+                return functions.MAX(...measureIds.map((id) => this._values[id][measureName] || 0));
             case "min":
-                return evalContext.MIN(
-                    ...measureIds.map((id) => this._values[id][measureName] || 0)
-                );
+                return functions.MIN(...measureIds.map((id) => this._values[id][measureName] || 0));
             case "avg":
-                return evalContext["AVERAGE.WEIGHTED"](
+                return functions["AVERAGE.WEIGHTED"](
                     ...measureIds
                         .map((id) => [
                             this._values[id][measureName] || 0,
@@ -536,9 +482,7 @@ export default class PivotCache {
                         .flat()
                 );
             case "sum":
-                return evalContext.SUM(
-                    ...measureIds.map((id) => this._values[id][measureName] || 0)
-                );
+                return functions.SUM(...measureIds.map((id) => this._values[id][measureName] || 0));
             default:
                 console.warn(_.str.sprintf(_t("Unknown operator: %s"), operator));
                 return "";

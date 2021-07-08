@@ -15,14 +15,15 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "CONVERT_PIVOT_TO_TEMPLATE":
-                case "CONVERT_PIVOT_FROM_TEMPLATE":
+                case "CONVERT_PIVOT_FROM_TEMPLATE": {
                     const caches = this.getters
-                        .getPivots()
-                        .map((pivot) => this.getters.isCacheLoaded(pivot.id));
-                    if (caches.includes(false)) {
+                        .getPivotIds()
+                        .map(this.getters.getPivotStructureData);
+                    if (caches.includes(undefined)) {
                         return CommandResult.PivotCacheNotLoaded;
                     }
                     break;
+                }
             }
             return CommandResult.Success;
         }
@@ -38,14 +39,14 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                     this._convertFormulas(
                         this._getCells(pivotFormulaRegex),
                         this._absoluteToRelative.bind(this),
-                        this.getters.getPivots()
+                        this.getters.getPivotIds().map(this.getters.getPivotForRPC)
                     );
                     break;
                 case "CONVERT_PIVOT_FROM_TEMPLATE":
                     this._convertFormulas(
                         this._getCells(pivotFormulaRegex),
                         this._relativeToAbsolute.bind(this),
-                        this.getters.getPivots()
+                        this.getters.getPivotIds().map(this.getters.getPivotForRPC)
                     );
                     this._removeInvalidPivotRows();
                     break;
@@ -102,8 +103,10 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             return this.getters
                 .getSheets()
                 .map((sheet) =>
-                    Object.values(this.getters.getCells(sheet.id)).filter((cell) =>
-                        cell.type === "formula" && regex.test(this.getters.getFormulaCellContent(sheet.id, cell))
+                    Object.values(this.getters.getCells(sheet.id)).filter(
+                        (cell) =>
+                            cell.type === "formula" &&
+                            regex.test(this.getters.getFormulaCellContent(sheet.id, cell))
                     )
                 )
                 .flat();
@@ -126,7 +129,6 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          */
         _relativeToAbsolute(ast) {
             switch (ast.type) {
-                case "ASYNC_FUNCALL":
                 case "FUNCALL":
                     switch (ast.value) {
                         case "PIVOT.POSITION":
@@ -166,7 +168,6 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          */
         _absoluteToRelative(ast) {
             switch (ast.type) {
-                case "ASYNC_FUNCALL":
                 case "FUNCALL":
                     switch (ast.value) {
                         case "PIVOT":
@@ -203,8 +204,8 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             const pivotId = JSON.parse(pivotIdAst.value);
             const fieldName = JSON.parse(fieldAst.value);
             const position = JSON.parse(positionAst.value);
-            const cache = this.getters.getCache(pivotId);
-            const id = cache.getFieldValues(fieldName)[position - 1];
+            const values = this.getters.getPivotFieldValues(pivotId, fieldName);
+            const id = values[position - 1];
             return {
                 value: id ? `"${id}"` : `"#IDNOTFOUND"`,
                 type: id ? "STRING" : "UNKNOWN",
@@ -260,16 +261,15 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 const fieldAst = domainAsts[i];
                 const valueAst = domainAsts[i + 1];
                 const pivotId = JSON.parse(pivotIdAst.value);
-                const cache = this.getters.getCache(pivotId);
                 const fieldName = JSON.parse(fieldAst.value);
                 if (
-                    this._isAbsolute(fieldName, cache) &&
+                    this._isAbsolute(pivotId, fieldName) &&
                     fieldAst.type === "STRING" &&
                     ["STRING", "NUMBER"].includes(valueAst.type)
                 ) {
                     const id = JSON.parse(valueAst.value);
-                    const cache = this.getters.getCache(pivotId);
-                    const index = cache.getFieldValues(fieldName).indexOf(id.toString());
+                    const values = this.getters.getPivotFieldValues(pivotId, fieldName);
+                    const index = values.indexOf(id.toString());
                     relativeDomain = relativeDomain.concat([
                         fieldAst,
                         {
@@ -285,8 +285,8 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             return relativeDomain;
         }
 
-        _isAbsolute(fieldName, cache) {
-            const field = cache.getField(fieldName.split(":")[0]);
+        _isAbsolute(pivotId, fieldName) {
+            const field = this.getters.getPivotField(pivotId, fieldName.split(":")[0]);
             return field && field.type === "many2one";
         }
 

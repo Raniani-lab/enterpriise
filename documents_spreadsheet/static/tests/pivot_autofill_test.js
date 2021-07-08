@@ -14,6 +14,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
         assert.expect(28);
 
         const { model } = await createSpreadsheetFromPivot();
+
         // From value to value
         assert.strictEqual(
             getAutofillValue(model, "C3", { direction: "bottom", steps: 1 }),
@@ -35,7 +36,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getAutofillValue(model, "C3", { direction: "bottom", steps: 2 }),
             getCellFormula(model, "C5")
         );
-        assert.strictEqual(getAutofillValue(model, "C3", { direction: "bottom", steps: 3}), "");
+        assert.strictEqual(getAutofillValue(model, "C3", { direction: "bottom", steps: 3 }), "");
         assert.strictEqual(getAutofillValue(model, "C3", { direction: "right", steps: 4 }), "");
         // From value to header
         assert.strictEqual(
@@ -51,7 +52,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getCellFormula(model, "B2")
         );
         assert.strictEqual(
-            getAutofillValue(model, "B4", { direction: "top", steps: 3}),
+            getAutofillValue(model, "B4", { direction: "top", steps: 3 }),
             getCellFormula(model, "B1")
         );
         // From header to header
@@ -84,7 +85,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getCellFormula(model, "A3")
         );
         assert.strictEqual(getAutofillValue(model, "A4", { direction: "bottom", steps: 2 }), "");
-        assert.strictEqual(getAutofillValue(model, "A4", { direction: "top", steps: 3}), "");
+        assert.strictEqual(getAutofillValue(model, "A4", { direction: "top", steps: 3 }), "");
         // From header to value
         assert.strictEqual(
             getAutofillValue(model, "B2", { direction: "bottom", steps: 1 }),
@@ -126,7 +127,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="month" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
@@ -161,7 +162,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="day" type="col"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
         assert.strictEqual(
             getAutofillValue(model, "B1", { direction: "right", steps: 1 }),
@@ -188,7 +189,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="day" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
@@ -207,7 +208,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="quarter" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
@@ -226,7 +227,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="year" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
         assert.strictEqual(
             getAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
@@ -245,50 +246,49 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="year" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
-        await Promise.all(
-            Object.values(model.getters.getPivots()).map((pivot) =>
-                model.getters.getAsyncCache(pivot.id)
-            )
-        );
-        let tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "A3"))
-        assert.deepEqual(tooltip, [{
-            "title": "Date (Year)",
-            "value": "2016"
-        }]);
-        
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B3"))
-        assert.deepEqual(tooltip, [{
-            "title": "Date (Year)",
-            "value": "2016"
-        }]);
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "E3"))
-        assert.deepEqual(tooltip, [{
-            "title": "Date (Year)",
-            "value": "2016"
-        }]);
-
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "F3"))
-        assert.deepEqual(tooltip, [{
-            "title": "Date (Year)",
-            "value": "2016"
-        }]);
-
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B1"))
-        assert.deepEqual(tooltip, [{
-            "title": "Foo",
-            "value": 1
-        }]);
-
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B2"))
-        assert.deepEqual(tooltip, [{
-            "title": "Foo",
-            "value": 1
-        }, {
-            "title": "Measure",
-            "value": "Probability"
-        }]);
+        await model.waitForIdle();
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A3")), [
+            {
+                title: "Date (Year)",
+                value: "2016",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B3")), [
+            {
+                title: "Date (Year)",
+                value: "2016",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "E3")), [
+            {
+                title: "Date (Year)",
+                value: "2016",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "F3")), [
+            {
+                title: "Date (Year)",
+                value: "2016",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B1")), [
+            {
+                title: "Foo",
+                value: 1,
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B2")), [
+            {
+                title: "Foo",
+                value: 1,
+            },
+            {
+                title: "Measure",
+                value: "Probability",
+            },
+        ]);
     });
 
     test("Tooltip of pivot formulas with 2 measures", async function (assert) {
@@ -303,33 +303,31 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="probability" type="measure"/>
                     <field name="foo" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
-        await Promise.all(
-            Object.values(model.getters.getPivots()).map((pivot) =>
-                model.getters.getAsyncCache(pivot.id)
-            )
-        );
-        let tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "A3"))
-        assert.deepEqual(tooltip, [{
-            "title": "Date (Year)",
-            "value": "2016"
-        }]);
-
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B3"))
-        assert.deepEqual(tooltip, [{
-            "title": "Date (Year)",
-            "value": "2016"
-        }]);
-
-        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "C3"), true)
-        assert.deepEqual(tooltip, [{
-            "title": "name",
-            "value": "Undefined"
-        }, {
-            "title": "Measure",
-            "value": "Foo"
-        }]);
+        await model.waitForIdle();
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A3")), [
+            {
+                title: "Date (Year)",
+                value: "2016",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B3")), [
+            {
+                title: "Date (Year)",
+                value: "2016",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "C3"), true), [
+            {
+                title: "name",
+                value: "(Undefined)",
+            },
+            {
+                title: "Measure",
+                value: "Foo",
+            },
+        ]);
     });
 
     test("Tooltip of empty pivot formula is empty", async function (assert) {
@@ -344,13 +342,9 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="probability" type="measure"/>
                     <field name="foo" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
-        await Promise.all(
-            Object.values(model.getters.getPivots()).map((pivot) =>
-                model.getters.getAsyncCache(pivot.id)
-            )
-        );
+        await model.waitForIdle();
         model.dispatch("SELECT_CELL", { col: 0, row: 2 });
         model.dispatch("AUTOFILL_SELECT", { col: 10, row: 10 });
         assert.equal(model.getters.getAutofillTooltip(), undefined);
@@ -366,7 +360,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                     <field name="date" interval="year" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            }
+            },
         });
         const a3 = getCellFormula(model, "A3").replace("=", "");
         const content = `=${a3} + ${a3}`;

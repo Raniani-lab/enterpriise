@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents_spreadsheet.PivotRPC */
+/** @odoo-module */
 
 /**
  * This class is used to collect and regroup all the RPCs requests that are
@@ -7,9 +7,10 @@
  * LUL TODO convert to use the `orm` service. I already have a working implementation
  * but it currently doesn't fit well with some other non-converted elements (views, helpers).
  */
-export default class PivotRPC {
+export default class CachedRPC {
     /**
-     * @param {Function} rpc RPC function
+     *
+     * @param {Function} rpc RPC Function
      */
     constructor(rpc) {
         this.rpc = rpc;
@@ -33,7 +34,7 @@ export default class PivotRPC {
      * @param {Object} options Options of the RPC
      */
     async delayedRPC(params, options) {
-        if (params.method === "fields_get" || params.method === "search_read") {
+        if (params.method === "fields_get") {
             const key = JSON.stringify(params);
             if (!(key in this.cache)) {
                 this.cache[key] = this.rpc(params, options);
@@ -70,7 +71,7 @@ export default class PivotRPC {
         if (this.setTimeoutPromise) {
             return this.setTimeoutPromise;
         }
-        this.setTimeoutPromise = new Promise((resolve, reject)=> {
+        this.setTimeoutPromise = new Promise((resolve, reject) => {
             setTimeout(async () => {
                 try {
                     const promises = {};
@@ -78,8 +79,8 @@ export default class PivotRPC {
                         if (params.toFetch.length) {
                             promises[model] = this.rpc({
                                 model,
-                                args: [params.toFetch],
-                                method: "name_get"
+                                args: [Array.from(new Set(params.toFetch))],
+                                method: "name_get",
                             }).then((result) => {
                                 for (const r of result) {
                                     this.nameGets[model][r[0]] = r[1];
@@ -90,15 +91,13 @@ export default class PivotRPC {
                     }
                     await Promise.all(Object.values(promises));
                     resolve();
-                }
-                catch(e) {
+                } catch (e) {
                     reject(e);
-                }
-                finally {
+                } finally {
                     this.setTimeoutPromise = undefined;
                 }
-            })
-        })
+            });
+        });
         return this.setTimeoutPromise;
     }
 }

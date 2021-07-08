@@ -10,13 +10,19 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
         /**
          * @constructor
          * @param {Widget} parent
-         * @param {Object} spreadsheets
+         * @param {Object} params
+         * @param {Object} params.spreadsheets
+         * @param {string|undefined} params.title
+         * @param {number|undefined} params.threshold
+         * @param {number|undefined} params.maxThreshold
          */
-        init: function (parent, spreadsheets) {
-            this.spreadsheets = spreadsheets;
+        init: function (parent, params) {
+            this.spreadsheets = params.spreadsheets;
+            this.threshold = params.threshold;
+            this.maxThreshold = params.maxThreshold;
 
             const options = {
-                title: _t("Select a spreadsheet to insert your pivot"),
+                title: params.title || _t("Select a spreadsheet to insert your pivot"),
                 buttons: [
                     {
                         text: _t("Confirm"),
@@ -47,7 +53,10 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
             if (id !== "") {
                 selectedSpreadsheet = this.spreadsheets.find((s) => s.id === parseInt(id, 10));
             }
-            this.trigger("confirm", selectedSpreadsheet);
+            const threshold = this.threshold
+                ? Math.min(this.el.querySelector("input[id='threshold']").value, this.maxThreshold)
+                : 0;
+            this.trigger("confirm", { id: selectedSpreadsheet, threshold });
         },
         /**
          * @private

@@ -7,14 +7,14 @@ const { useState } = owl.hooks;
 
 export class AbstractSpreadsheetAction extends owl.Component {
     setup() {
-        const params = this.props.action.params
+        const params = this.props.action.params;
         this.resId = params.spreadsheet_id || params.active_id; // backward compatibility. spreadsheet_id used to be active_id
         this.router = useService("router");
         this.actionService = useService("action");
         this.notifications = useService("notification");
         this.state = useState({
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,
-        })
+        });
     }
 
     async willStart() {
@@ -27,7 +27,7 @@ export class AbstractSpreadsheetAction extends owl.Component {
     }
 
     mounted() {
-        this.router.pushState({ spreadsheet_id : this.resId });
+        this.router.pushState({ spreadsheet_id: this.resId });
         this.trigger("controller-title-updated", this.state.spreadsheetName);
     }
 
@@ -35,7 +35,6 @@ export class AbstractSpreadsheetAction extends owl.Component {
         this.state.spreadsheetName = ev.detail.name;
         this.trigger("controller-title-updated", this.state.spreadsheetName);
     }
-
 
     /**
      * Create a copy of the given spreadsheet and display it

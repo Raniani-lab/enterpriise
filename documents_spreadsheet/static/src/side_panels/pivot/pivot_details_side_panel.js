@@ -1,59 +1,28 @@
-/** @odoo-module alias=documents_spreadsheet.PivotDetailsSidePanel */
+/** @odoo-module */
 
 import { _t } from "web.core";
-import { ComponentAdapter} from "web.OwlCompatibility";
 import DomainSelector from "web.DomainSelector";
-import pivotUtils from "documents_spreadsheet.pivot_utils";
-import { time_to_str } from 'web.time';
-
-/**
- * ComponentAdapter to allow using DomainSelector in a owl Component
- */
-class DomainComponentAdapter extends ComponentAdapter {
-    setup() {
-        this.env = owl.Component.env;
-    }
-    get widgetArgs() {
-        return [this.props.model, this.props.domain, { readonly: true, filters: {} }];
-    }
-}
+import { time_to_str } from "web.time";
+import DomainComponentAdapter from "../domain_component_adapter";
 
 export class PivotDetailsSidePanel extends owl.Component {
-    constructor(parent, props) {
+    constructor() {
         super(...arguments);
         this.getters = this.env.getters;
         this.DomainSelector = DomainSelector;
     }
 
-    get pivot() {
-        return this.getters.getPivot(this.props.pivotId);
-    }
-
-    /**
-     * Format the given groupby
-     * @param {string} gp Groupby to format
-     *
-     * @returns groupby formatted
-     */
-    formatGroupBy(gp) {
-        if (!this.getters.isCacheLoaded(this.pivot.id)) {
-            return gp;
-        }
-        const cache = this.getters.getCache(this.pivot.id);
-        return pivotUtils.formatGroupBy(cache, gp);
-    }
-
-    /**
-     * Format the given measure
-     * @param {string} measure Measure to format
-     *
-     * @returns measure formatted
-     */
-    formatMeasure(measure) {
-        if (this.getters.isCacheLoaded(this.pivot.id)) {
-            const cache = this.getters.getCache(this.pivot.id);
-            return measure.field === "__count" ? _t("Count") : cache.getField(measure.field).string;
-        }
+    get pivotDefinition() {
+        const pivotId = this.props.pivotId;
+        return {
+            model: this.getters.getPivotModel(pivotId),
+            modelDisplayName: this.getters.getPivotModelDisplayName(pivotId),
+            domain: this.getters.getPivotDomain(pivotId),
+            dimensions: this.getters
+                .getPivotRowGroupBys(pivotId)
+                .concat(this.getters.getPivotColGroupBys(pivotId)),
+            measures: this.getters.getPivotMeasures(pivotId),
+        };
     }
 
     /**
@@ -62,7 +31,7 @@ export class PivotDetailsSidePanel extends owl.Component {
      * @returns {string} date formatted
      */
     getLastUpdate() {
-        const lastUpdate = this.getters.getLastUpdate(this.pivot.id);
+        const lastUpdate = this.getters.getPivotLastUpdate(this.props.pivotId);
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }
@@ -70,20 +39,18 @@ export class PivotDetailsSidePanel extends owl.Component {
     }
 
     /**
-     * Refresh the cache of the given pivot
+     * Refresh the cache of the current pivot
      *
      */
-    refreshMeasures() {
+    refresh() {
         this.env.dispatch("REFRESH_PIVOT", { id: this.props.pivotId });
     }
-
-    getPivotName() {
-        return this.getters.getPivotName(this.props.pivotId);
-    }
-
 }
 PivotDetailsSidePanel.template = "documents_spreadsheet.PivotDetailsSidePanel";
 PivotDetailsSidePanel.components = { DomainComponentAdapter };
 PivotDetailsSidePanel.props = {
-    pivotId: Number
+    pivotId: {
+        type: String,
+        optional: true,
+    },
 };

@@ -1,15 +1,29 @@
-/** @odoo-module alias=documents_spreadsheet.PivotAutofillPlugin */
-
-import pivotUtils from "documents_spreadsheet.pivot_utils";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
-import {
-    getFormulaNameAndArgs, getNumberOfPivotFormulas
-} from "documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js";
+/** @odoo-module */
 
 import core from "web.core";
+import spreadsheet from "documents_spreadsheet.spreadsheet";
+import { formats } from "../../constants";
+import {
+    getFirstPivotFunction,
+    getNumberOfPivotFormulas,
+} from "../../helpers/odoo_functions_helpers";
 
 const { astToFormula } = spreadsheet;
 const _t = core._t;
+
+/**
+ * @typedef CurrentElement
+ * @property {Array<string>} cols
+ * @property {Array<string>} rows
+ *
+ * @typedef TooltipFormula
+ * @property {string} title
+ * @property {string} value
+ *
+ * @typedef GroupByDate
+ * @property {boolean} isDate
+ * @property {string|undefined} group
+ */
 
 export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     // ---------------------------------------------------------------------
@@ -23,24 +37,22 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @param {boolean} isColumn True if autofill is LEFT/RIGHT, false otherwise
      * @param {number} increment number of steps
      *
-     * @returns Autofilled value
+     * @returns {string}
      */
-    getNextValue(formula, isColumn, increment) {
-        if (getNumberOfPivotFormulas(formula, false) !== 1) {
+    getPivotNextAutofillValue(formula, isColumn, increment) {
+        if (getNumberOfPivotFormulas(formula) !== 1) {
             return formula;
         }
-        const { functionName, args } = getFormulaNameAndArgs(formula);
-        const evaluatedArgs = args.map(astToFormula).map((arg) => this.getters.evaluateFormula(arg));
+        const { functionName, args } = getFirstPivotFunction(formula);
+        const evaluatedArgs = args
+            .map(astToFormula)
+            .map((arg) => this.getters.evaluateFormula(arg));
         const pivotId = evaluatedArgs[0];
-        const pivot = this.getters.getPivot(pivotId);
-        if (!pivot || !this.getters.isCacheLoaded(pivot.id)) {
-            return formula;
-        }
         let builder;
         if (functionName === "PIVOT") {
             builder = this._autofillPivotValue.bind(this);
         } else if (functionName === "PIVOT.HEADER") {
-            if (args.length === 1) {
+            if (evaluatedArgs.length === 1) {
                 // Total
                 if (isColumn) {
                     // LEFT-RIGHT
@@ -49,14 +61,14 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     // UP-DOWN
                     builder = this._autofillPivotColHeader.bind(this);
                 }
-            } else if (pivot.rowGroupBys.includes(evaluatedArgs[1])) {
+            } else if (this.getters.getPivotRowGroupBys(pivotId).includes(evaluatedArgs[1])) {
                 builder = this._autofillPivotRowHeader.bind(this);
             } else {
                 builder = this._autofillPivotColHeader.bind(this);
             }
         }
         if (builder) {
-            return builder(pivot, evaluatedArgs, isColumn, increment);
+            return builder(pivotId, evaluatedArgs, isColumn, increment);
         }
         return formula;
     }
@@ -67,21 +79,22 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @param {string} formula Pivot formula
      * @param {boolean} isColumn True if the direction is left/right, false
      *                           otherwise
+     *
+     * @returns {Array<TooltipFormula>}
      */
     getTooltipFormula(formula, isColumn) {
-        if (!formula) {
+        if (getNumberOfPivotFormulas(formula) !== 1) {
             return [];
         }
-        const { functionName, args } = getFormulaNameAndArgs(formula);
-        const evaluatedArgs = args.map(astToFormula).map((arg) => this.getters.evaluateFormula(arg));
-        const pivot = this.getters.getPivot(evaluatedArgs[0]);
-        if (!pivot) {
-            return [];
-        }
+        const { functionName, args } = getFirstPivotFunction(formula);
+        const evaluatedArgs = args
+            .map(astToFormula)
+            .map((arg) => this.getters.evaluateFormula(arg));
+        const pivotId = evaluatedArgs[0];
         if (functionName === "PIVOT") {
-            return this._tooltipFormatPivot(pivot, evaluatedArgs, isColumn);
+            return this._tooltipFormatPivot(pivotId, evaluatedArgs, isColumn);
         } else if (functionName === "PIVOT.HEADER") {
-            return this._tooltipFormatPivotHeader(pivot, evaluatedArgs);
+            return this._tooltipFormatPivotHeader(pivotId, evaluatedArgs);
         }
         return [];
     }
@@ -89,6 +102,27 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     // ---------------------------------------------------------------------
     // Autofill
     // ---------------------------------------------------------------------
+
+    /**
+     * Check if the pivot is only grouped by a date field.
+     *
+     * @param {string} pivotId Id of the pivot
+     * @param {Array<string>} groupBys Array of group by
+     *
+     * @private
+     *
+     * @returns {GroupByDate}
+     */
+    _isGroupedByDate(pivotId, groupBys) {
+        if (groupBys.length !== 1) {
+            return { isDate: false };
+        }
+        const [fieldName, group] = groupBys[0].split(":");
+        return {
+            isDate: this.getters.isPivotFieldDate(pivotId, fieldName),
+            group,
+        };
+    }
 
     /**
      * Get the next value to autofill from a pivot value ("=PIVOT()")
@@ -115,18 +149,25 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      *  - Targeting a value cell
      *      => Autofill by changing the rows
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args args of the pivot formula
      * @param {boolean} isColumn True if the direction is left/right, false
      *                           otherwise
      * @param {number} increment Increment of the autofill
      *
      * @private
+     *
+     * @returns {string}
      */
-    _autofillPivotValue(pivot, args, isColumn, increment) {
-        const currentElement = this._getCurrentValueElement(pivot, args);
-        const cache = this.getters.getCache(pivot.id);
-        const date = cache.isGroupedByDate(isColumn ? pivot.colGroupBys : pivot.rowGroupBys);
+    _autofillPivotValue(pivotId, args, isColumn, increment) {
+        const currentElement = this._getCurrentValueElement(pivotId, args);
+        const pivotData = this.getters.getPivotStructureData(pivotId);
+        const date = this._isGroupedByDate(
+            pivotId,
+            isColumn
+                ? this.getters.getPivotColGroupBys(pivotId)
+                : this.getters.getPivotRowGroupBys(pivotId)
+        );
         let cols = [];
         let rows = [];
         let measure;
@@ -139,22 +180,22 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 cols[0] = this._incrementDate(cols[0], date.group, increment);
                 measure = cols.pop();
             } else {
-                const currentColIndex = cache.getTopGroupIndex(currentElement.cols);
+                const currentColIndex = pivotData.getTopGroupIndex(currentElement.cols);
                 if (currentColIndex === -1) {
                     return "";
                 }
                 const nextColIndex = currentColIndex + increment;
                 if (nextColIndex === -1) {
                     // Targeting row-header
-                    return this._autofillRowFromValue(pivot, currentElement);
+                    return this._autofillRowFromValue(pivotId, currentElement);
                 }
-                if (nextColIndex < -1 || nextColIndex >= cache.getTopHeaderCount()) {
+                if (nextColIndex < -1 || nextColIndex >= pivotData.getTopHeaderCount()) {
                     // Outside the pivot
                     return "";
                 }
                 // Targeting value
-                cols = cache.getColumnValues(nextColIndex);
-                measure = cache.getMeasureName(nextColIndex);
+                cols = pivotData.getColumnValues(nextColIndex);
+                measure = pivotData.getMeasureName(nextColIndex);
             }
         } else {
             // UP-DOWN
@@ -164,25 +205,25 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 rows = currentElement.rows;
                 rows[0] = this._incrementDate(rows[0], date.group, increment);
             } else {
-                const currentRowIndex = cache.getRowIndex(currentElement.rows);
+                const currentRowIndex = pivotData.getRowIndex(currentElement.rows);
                 if (currentRowIndex === -1) {
                     return "";
                 }
                 const nextRowIndex = currentRowIndex + increment;
                 if (nextRowIndex < 0) {
                     // Targeting col-header
-                    return this._autofillColFromValue(pivot, nextRowIndex, currentElement);
+                    return this._autofillColFromValue(pivotId, nextRowIndex, currentElement);
                 }
-                if (nextRowIndex >= cache.getRowCount()) {
+                if (nextRowIndex >= pivotData.getRowCount()) {
                     // Outside the pivot
                     return "";
                 }
                 // Targeting value
-                rows = cache.getRowValues(nextRowIndex);
+                rows = pivotData.getRowValues(nextRowIndex);
             }
             measure = cols.pop();
         }
-        return this._buildValueFormula(this._buildArgs(pivot, measure, rows, cols));
+        return this._buildValueFormula(this._buildArgs(pivotId, measure, rows, cols));
     }
     /**
      * Get the next value to autofill from a pivot header ("=PIVOT.HEADER()")
@@ -208,19 +249,21 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      *    last row)
      *      => Return empty string
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args args of the pivot.header formula
      * @param {boolean} isColumn True if the direction is left/right, false
      *                           otherwise
      * @param {number} increment Increment of the autofill
      *
      * @private
+     *
+     * @returns {string}
      */
-    _autofillPivotColHeader(pivot, args, isColumn, increment) {
-        const currentElement = this._getCurrentHeaderElement(pivot, args);
-        const cache = this.getters.getCache(pivot.id);
-        const currentIndex = cache.getTopGroupIndex(currentElement.cols);
-        const date = cache.isGroupedByDate(pivot.colGroupBys);
+    _autofillPivotColHeader(pivotId, args, isColumn, increment) {
+        const pivotData = this.getters.getPivotStructureData(pivotId);
+        const currentElement = this._getCurrentHeaderElement(pivotId, args);
+        const currentIndex = pivotData.getTopGroupIndex(currentElement.cols);
+        const date = this._isGroupedByDate(pivotId, this.getters.getPivotColGroupBys(pivotId));
         if (isColumn) {
             // LEFT-RIGHT
             let groupValues;
@@ -229,40 +272,40 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 groupValues = currentElement.cols;
                 groupValues[0] = this._incrementDate(groupValues[0], date.group, increment);
             } else {
-                const colIndex = cache.getSubgroupLevel(currentElement.cols);
+                const colIndex = pivotData.getSubgroupLevel(currentElement.cols);
                 const nextIndex = currentIndex + increment;
                 if (
                     currentIndex === -1 ||
                     nextIndex < 0 ||
-                    nextIndex >= cache.getTopHeaderCount()
+                    nextIndex >= pivotData.getTopHeaderCount()
                 ) {
                     // Outside the pivot
                     return "";
                 }
                 // Targeting a col.header
-                groupValues = cache.getColGroupHierarchy(nextIndex, colIndex);
+                groupValues = pivotData.getColGroupHierarchy(nextIndex, colIndex);
             }
-            return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], groupValues));
+            return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], groupValues));
         } else {
             // UP-DOWN
-            const colIndex = cache.getSubgroupLevel(currentElement.cols);
+            const colIndex = pivotData.getSubgroupLevel(currentElement.cols);
             const nextIndex = colIndex + increment;
-            const groupLevels = cache.getColGroupByLevels();
-            if (nextIndex < 0 || nextIndex >= groupLevels + 1 + cache.getRowCount()) {
+            const groupLevels = pivotData.getColGroupByLevels();
+            if (nextIndex < 0 || nextIndex >= groupLevels + 1 + pivotData.getRowCount()) {
                 // Outside the pivot
                 return "";
             }
             if (nextIndex >= groupLevels + 1) {
                 // Targeting a value
                 const rowIndex = nextIndex - groupLevels - 1;
-                const measure = cache.getMeasureName(currentIndex);
-                const cols = cache.getColumnValues(currentIndex);
-                const rows = cache.getRowValues(rowIndex);
-                return this._buildValueFormula(this._buildArgs(pivot, measure, rows, cols));
+                const measure = pivotData.getMeasureName(currentIndex);
+                const cols = pivotData.getColumnValues(currentIndex);
+                const rows = pivotData.getRowValues(rowIndex);
+                return this._buildValueFormula(this._buildArgs(pivotId, measure, rows, cols));
             } else {
                 // Targeting a col.header
-                const cols = cache.getColGroupHierarchy(currentIndex, nextIndex);
-                return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
+                const cols = pivotData.getColGroupHierarchy(currentIndex, nextIndex);
+                return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], cols));
             }
         }
     }
@@ -285,29 +328,31 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      *    last row)
      *      => Return empty string
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args args of the pivot.header formula
      * @param {boolean} isColumn True if the direction is left/right, false
      *                           otherwise
      * @param {number} increment Increment of the autofill
      *
      * @private
+     *
+     * @returns {string}
      */
-    _autofillPivotRowHeader(pivot, args, isColumn, increment) {
-        const currentElement = this._getCurrentHeaderElement(pivot, args);
-        const cache = this.getters.getCache(pivot.id);
-        const currentIndex = cache.getRowIndex(currentElement.rows);
-        const date = cache.isGroupedByDate(pivot.rowGroupBys);
+    _autofillPivotRowHeader(pivotId, args, isColumn, increment) {
+        const pivotData = this.getters.getPivotStructureData(pivotId);
+        const currentElement = this._getCurrentHeaderElement(pivotId, args);
+        const currentIndex = pivotData.getRowIndex(currentElement.rows);
+        const date = this._isGroupedByDate(pivotId, this.getters.getPivotRowGroupBys(pivotId));
         if (isColumn) {
             // LEFT-RIGHT
-            if (increment < 0 || increment > cache.getTopHeaderCount()) {
+            if (increment < 0 || increment > pivotData.getTopHeaderCount()) {
                 // Outside the pivot
                 return "";
             }
-            const values = cache.getColumnValues(increment - 1);
-            const measure = cache.getMeasureName(increment - 1);
+            const values = pivotData.getColumnValues(increment - 1);
+            const measure = pivotData.getMeasureName(increment - 1);
             return this._buildValueFormula(
-                this._buildArgs(pivot, measure, currentElement.rows, values)
+                this._buildArgs(pivotId, measure, currentElement.rows, values)
             );
         } else {
             // UP-DOWN
@@ -318,81 +363,94 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 rows[0] = this._incrementDate(rows[0], date.group, increment);
             } else {
                 const nextIndex = currentIndex + increment;
-                if (currentIndex === -1 || nextIndex < 0 || nextIndex >= cache.getRowCount()) {
+                if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivotData.getRowCount()) {
                     return "";
                 }
-                rows = cache.getRowValues(nextIndex);
+                rows = pivotData.getRowValues(nextIndex);
             }
-            return this._buildHeaderFormula(this._buildArgs(pivot, undefined, rows, []));
+            return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, rows, []));
         }
     }
     /**
      * Create a col header from a value
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {number} nextIndex Index of the target column
-     * @param {Object} currentElement Current element (rows and cols)
+     * @param {CurrentElement} currentElement Current element (rows and cols)
      *
      * @private
+     *
+     * @returns {string}
      */
-    _autofillColFromValue(pivot, nextIndex, currentElement) {
-        const cache = this.getters.getCache(pivot.id);
-        const groupIndex = cache.getTopGroupIndex(currentElement.cols);
+    _autofillColFromValue(pivotId, nextIndex, currentElement) {
+        const pivotData = this.getters.getPivotStructureData(pivotId);
+        const groupIndex = pivotData.getTopGroupIndex(currentElement.cols);
         if (groupIndex < 0) {
             return "";
         }
-        const levels = cache.getColGroupByLevels();
+        const levels = pivotData.getColGroupByLevels();
         const index = levels + 1 + nextIndex;
         if (index < 0 || index >= levels + 1) {
             return "";
         }
-        const cols = cache.getColGroupHierarchy(groupIndex, index);
-        return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
+        const cols = pivotData.getColGroupHierarchy(groupIndex, index);
+        return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], cols));
     }
     /**
      * Create a row header from a value
      *
-     * @param {Pivot} pivot
-     * @param {Object} currentElement Current element (rows and cols)
+     * @param {string} pivotId Id of the pivot
+     * @param {CurrentElement} currentElement Current element (rows and cols)
      *
      * @private
+     *
+     * @returns {string}
      */
-    _autofillRowFromValue(pivot, currentElement) {
+    _autofillRowFromValue(pivotId, currentElement) {
         const rows = currentElement.rows;
         if (!rows) {
             return "";
         }
-        return this._buildHeaderFormula(this._buildArgs(pivot, undefined, rows, []));
+        return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, rows, []));
     }
     /**
      * Parse the arguments of a pivot function to find the col values and
      * the row values of a PIVOT.HEADER function
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args Args of the pivot.header formula
      *
      * @private
+     *
+     * @returns {CurrentElement}
      */
-    _getCurrentHeaderElement(pivot, args) {
+    _getCurrentHeaderElement(pivotId, args) {
         const values = this._parseArgs(args.slice(1));
-        const cols = this._getFieldValues([...pivot.colGroupBys, "measure"], values);
-        const rows = this._getFieldValues(pivot.rowGroupBys, values);
+        const cols = this._getFieldValues(
+            [...this.getters.getPivotColGroupBys(pivotId), "measure"],
+            values
+        );
+        const rows = this._getFieldValues(this.getters.getPivotRowGroupBys(pivotId), values);
         return { cols, rows };
     }
     /**
      * Parse the arguments of a pivot function to find the col values and
      * the row values of a PIVOT function
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args Args of the pivot formula
      *
      * @private
+     *
+     * @returns {CurrentElement}
      */
-    _getCurrentValueElement(pivot, args) {
+    _getCurrentValueElement(pivotId, args) {
         const values = this._parseArgs(args.slice(2));
-        const cols = this._getFieldValues(pivot.colGroupBys, values);
+        const colGroupBys = this.getters.getPivotColGroupBys(pivotId);
+        const cols = this._getFieldValues(colGroupBys, values);
         cols.push(args[1]); // measure
-        const rows = this._getFieldValues(pivot.rowGroupBys, values);
+        const rowGroupBys = this.getters.getPivotRowGroupBys(pivotId);
+        const rows = this._getFieldValues(rowGroupBys, values);
         return { cols, rows };
     }
     /**
@@ -407,7 +465,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @param {Object} values Association field-values
      *
      * @private
-     * @returns {string}
+     * @returns {Array<string>}
      */
     _getFieldValues(fields, values) {
         return fields.filter((field) => field in values).map((field) => values[field]);
@@ -423,8 +481,8 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {string}
      */
     _incrementDate(date, group, increment) {
-        const format = pivotUtils.formats[group].out;
-        const interval = pivotUtils.formats[group].interval;
+        const format = formats[group].out;
+        const interval = formats[group].interval;
         const dateMoment = moment(date, format);
         return dateMoment.isValid() ? dateMoment.add(increment, interval).format(format) : date;
     }
@@ -452,32 +510,35 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     /**
      * Get the tooltip for a pivot formula
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args
      * @param {boolean} isColumn True if the direction is left/right, false
      *                           otherwise
      * @private
+     *
+     * @returns {Array<TooltipFormula>}
      */
-    _tooltipFormatPivot(pivot, args, isColumn) {
+    _tooltipFormatPivot(pivotId, args, isColumn) {
         const tooltips = [];
         const values = this._parseArgs(args.slice(2));
-        const cache = this.getters.getCache(pivot.id);
+        const colGroupBys = this.getters.getPivotColGroupBys(pivotId);
+        const rowGroupBys = this.getters.getPivotRowGroupBys(pivotId);
         for (let [field, value] of Object.entries(values)) {
             if (
-                (pivot.colGroupBys.includes(field) && isColumn) ||
-                (pivot.rowGroupBys.includes(field) && !isColumn)
+                (colGroupBys.includes(field) && isColumn) ||
+                (rowGroupBys.includes(field) && !isColumn)
             ) {
                 tooltips.push({
-                    title: pivotUtils.formatGroupBy(cache, field),
-                    value: pivotUtils.formatHeader(cache, field, value) || _t("Undefined"),
+                    title: this.getters.getFormattedGroupBy(pivotId, field),
+                    value: this.getters.getFormattedHeader(pivotId, field, value),
                 });
             }
         }
-        if (pivot.measures.length !== 1 && isColumn) {
+        if (this.getters.getPivotMeasures(pivotId).length !== 1 && isColumn) {
             const measure = args[1];
             tooltips.push({
                 title: _t("Measure"),
-                value: pivotUtils.formatHeader(cache, "measure", measure),
+                value: this.getters.getFormattedHeader(pivotId, "measure", measure),
             });
         }
         return tooltips;
@@ -485,18 +546,23 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     /**
      * Get the tooltip for a pivot header formula
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {Array<string>} args
+     *
      * @private
+     *
+     * @returns {Array<TooltipFormula>}
      */
-    _tooltipFormatPivotHeader(pivot, args) {
+    _tooltipFormatPivotHeader(pivotId, args) {
         const tooltips = [];
         const values = this._parseArgs(args.slice(1));
-        const cache = this.getters.getCache(pivot.id);
         for (let [field, value] of Object.entries(values)) {
             tooltips.push({
-                title: field === "measure" ? _t("Measure") : pivotUtils.formatGroupBy(cache, field),
-                value: pivotUtils.formatHeader(cache, field, value) || _t("Undefined"),
+                title:
+                    field === "measure"
+                        ? _t("Measure")
+                        : this.getters.getFormattedGroupBy(pivotId, field),
+                value: this.getters.getFormattedHeader(pivotId, field, value),
             });
         }
         return tooltips;
@@ -510,7 +576,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * Create the args from pivot, measure, rows and cols
      * if measure is undefined, it's not added
      *
-     * @param {Pivot} pivot
+     * @param {string} pivotId Id of the pivot
      * @param {string} measure
      * @param {Object} rows
      * @param {Object} cols
@@ -518,22 +584,24 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @private
      * @returns {Array<string>}
      */
-    _buildArgs(pivot, measure, rows, cols) {
-        const args = [pivot.id];
+    _buildArgs(pivotId, measure, rows, cols) {
+        const args = [pivotId];
         if (measure) {
             args.push(measure);
         }
+        const rowGroupBys = this.getters.getPivotRowGroupBys(pivotId);
         for (let index in rows) {
-            args.push(pivot.rowGroupBys[index]);
+            args.push(rowGroupBys[index]);
             args.push(rows[index]);
         }
-        if (cols.length === 1 && pivot.measures.map((x) => x.field).includes(cols[0])) {
+        const measures = this.getters.getPivotMeasures(pivotId);
+        if (cols.length === 1 && measures.map((x) => x.field).includes(cols[0])) {
             args.push("measure");
             args.push(cols[0]);
         } else {
-            const cache = this.getters.getCache(pivot.id);
+            const pivotData = this.getters.getPivotStructureData(pivotId);
             for (let index in cols) {
-                args.push(cache.getColLevelIdentifier(index));
+                args.push(pivotData.getColLevelIdentifier(index));
                 args.push(cols[index]);
             }
         }
@@ -566,4 +634,4 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
 }
 
 PivotAutofillPlugin.modes = ["normal", "headless", "readonly"];
-PivotAutofillPlugin.getters = ["getNextValue", "getTooltipFormula"];
+PivotAutofillPlugin.getters = ["getPivotNextAutofillValue", "getTooltipFormula"];

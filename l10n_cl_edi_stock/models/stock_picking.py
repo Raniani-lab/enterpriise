@@ -212,6 +212,7 @@ class Picking(models.Model):
         values = {
             'format_vat': self._l10n_cl_format_vat,
             'format_length': self._format_length,
+            'format_uom': self._format_uom,
             'time_stamp': self._get_cl_current_strftime(),
             'caf': self.l10n_latam_document_type_id.sudo()._get_caf_file(self.company_id.id,
                                                                   int(self.l10n_latam_document_number)),
@@ -329,6 +330,7 @@ class Picking(models.Model):
             'float_repr': float_repr,
             'format_vat': self._l10n_cl_format_vat,
             'get_cl_current_strftime': self._get_cl_current_strftime,
+            'format_uom': self._format_uom,
             'format_length': self._format_length,
             'doc_id': doc_id_number,
             'caf': caf_file,

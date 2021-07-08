@@ -104,7 +104,7 @@
                 <DscItem t-esc="format_length(line.name, 1000)"/>
             <t t-if="line.price_unit > 0.0 or line.price_total > 0.0">
                 <QtyItem t-esc="float_repr(line.quantity, 6)"/>
-                <UnmdItem t-esc="format_length(line.product_uom_id.name, 4)"/>
+                <UnmdItem t-esc="format_uom(line.product_uom_id)"/>
                 <PrcItem t-esc="float_repr(line_amounts['price_item'], 6)"/>
             </t>
             <t t-if="line.discount > 0">

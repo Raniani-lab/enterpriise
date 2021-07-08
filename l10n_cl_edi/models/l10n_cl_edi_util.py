@@ -85,6 +85,20 @@ class L10nClEdiUtilMixin(models.AbstractModel):
     def _format_length(self, text, text_len):
         return text and text[:text_len] or ''
 
+    def _format_uom(self, uom):
+        if not uom:
+            return ''
+        xml_id = uom.get_metadata()[0]['xmlid']
+        return {
+            'uom.product_uom_unit': 'U',
+            'uom.product_uom_dozen': 'DOC',
+            'uom.product_uom_meter': 'MT',
+            'uom.product_uom_foot': 'P2',
+            'uom.product_uom_kgm': 'KN',
+            'uom.product_uom_litre': 'LT',
+            'uom.product_uom_gram': 'GN',
+        }.get(xml_id, uom.name[:4])
+
     def _get_cl_current_datetime(self):
         """ Get the current datetime with the Chilean timezone. """
         return fields.Datetime.context_timestamp(

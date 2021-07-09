@@ -36,6 +36,7 @@ class WorkflowActionRuleAccount(models.Model):
                     invoice_ids.append(document.res_id)
                 else:
                     new_obj = self.env['account.move'].create(create_values)
+                    new_obj.partner_bank_id = new_obj.bank_partner_id.bank_ids and new_obj.bank_partner_id.bank_ids[0]
                     body = "<p>created from Documents app</p>"
                     # the 'no_document' key in the context indicates that this ir_attachment has already a
                     # documents.document and a new document shouldn't be automatically generated.

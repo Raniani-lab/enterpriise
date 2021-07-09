@@ -113,6 +113,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
                         raw: JSON.stringify(data),
                     },
                 ],
+                context: this.props.context,
             });
             this.env.services.notification.notify({
                 type: "info",

@@ -115,8 +115,8 @@ class L10nInReportAccount(models.AbstractModel):
         filter_domain += self._get_options_journals_domain(options)
         if gst_section:
             model_domain = self.get_gst_section_model_domain(gst_return_type, gst_section)
-            fields_values = self.env[model_domain.get('model')].search_read(
-                filter_domain + model_domain.get('domain'))
+            fields_values = self.env[model_domain.get('model')].search(
+                filter_domain + model_domain.get('domain')).union().read()
             lines += self.set_gst_section_lines(
                 gst_return_type,
                 gst_section,
@@ -127,7 +127,7 @@ class L10nInReportAccount(models.AbstractModel):
                 move_count_dict = {}
                 model_domain = self.get_gst_section_model_domain(gst_return_type, gst_section)
                 domain = filter_domain + model_domain.get('domain')
-                for read_data in self.env[model_domain.get('model')].search_read(domain, model_domain.get('sum_fields')):
+                for read_data in self.env[model_domain.get('model')].search(domain).union().read(model_domain.get('sum_fields')):
                     total_cess += read_data.get('cess_amount', 0)
                     total_igst += read_data.get('igst_amount', 0)
                     total_cgst += read_data.get('cgst_amount', 0)

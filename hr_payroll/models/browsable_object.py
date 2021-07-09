@@ -47,7 +47,7 @@ class WorkedDays(BrowsableObject):
             SELECT sum(number_of_days) as number_of_days, sum(number_of_hours) as number_of_hours
             FROM hr_payslip as hp, hr_payslip_worked_days as pi
             WHERE hp.employee_id = %s AND hp.state = 'done'
-            AND hp.date_from >= %s AND hp.date_to <= %s AND hp.id = pi.payslip_id AND pi.code = %s""",
+            AND hp.date_from >= %s AND hp.date_to <= %s AND hp.id = pi.payslip_id AND pi.work_entry_type_id IN (SELECT id FROM hr_work_entry_type WHERE code = %s)""",
             (self.employee_id, from_date, to_date, code))
         return self.env.cr.fetchone()
 

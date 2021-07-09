@@ -30,6 +30,7 @@ cp $odoo_path/addons/web/static/src/legacy/js/core/ram_storage.js extension/web/
 cp $odoo_path/addons/web/static/src/legacy/js/core/registry.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/rpc.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/service_mixins.js extension/web/static/src/js/core
+cp $odoo_path/addons/web/static/src/session.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/session.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/time.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/translation.js extension/web/static/src/js/core

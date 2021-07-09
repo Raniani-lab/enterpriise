@@ -756,21 +756,6 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
         run: 'click',
     },
     {
-        content: "Click Auto",
-        trigger: "a.o_web_sign_auto_button:contains('Auto')",
-        run: 'click',
-    },
-    {
-        content: "Adopt and Sign",
-        trigger: 'footer.modal-footer button.btn-primary:enabled',
-        run: 'click',
-    },
-    {
-        content: "Wait modal closed",
-        trigger: 'iframe body:not(:has(footer.modal-footer button.btn-primary))',
-        run: function () {},
-    },
-    {
         content: "Validate and Sign",
         trigger: ".o_sign_validate_banner button",
         run: 'click',

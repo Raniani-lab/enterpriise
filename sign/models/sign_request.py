@@ -712,10 +712,6 @@ class SignRequestItem(models.Model):
                     item_value.write({'value': signature[itemId]})
                 if item_value.sign_item_id.type_id.item_type == 'signature':
                     self.signature = signature[itemId][signature[itemId].find(',')+1:]
-                    if user:
-                        user.sign_signature = self.signature
-                if item_value.sign_item_id.type_id.item_type == 'initial' and user:
-                    user.sign_initials = signature[itemId][signature[itemId].find(',')+1:]
 
         return True
 

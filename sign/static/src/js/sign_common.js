@@ -712,6 +712,7 @@ odoo.define('sign.document_signing', function (require) {
             this.accessToken = accessToken;
 
             this.defaultSignature = '';
+            this.signatureChanged = false;
         },
         /**
          * Fetches the existing signature.
@@ -754,6 +755,53 @@ odoo.define('sign.document_signing', function (require) {
                     return self._waitForSignatureNotEmpty();
                 }
             });
+        },
+        //----------------------------------------------------------------------
+        // Handlers
+        //----------------------------------------------------------------------
+
+        /**
+         * Override: If a user clicks on load, we overwrite the signature in the server.
+         * 
+         * @see NameAndSignature._onChangeSignLoadInput()
+         * @private
+         */
+        _onChangeSignLoadInput: function () {
+            this.signatureChanged = true;
+            return this._super.apply(this, arguments);
+        },
+        /**
+         * If a user clicks on draw, we overwrite the signature in the server.
+         * 
+         * @override
+         * @see NameAndSignature._onClickSignDrawClear()
+         * @private
+         */
+        _onClickSignDrawClear: function () {
+            this.signatureChanged = true;
+            return this._super.apply(this, arguments);
+        },
+        /**
+         * If a user clicks on auto, we overwrite the signature in the server.
+         * 
+         * @override
+         * @see NameAndSignature._onClickSignAutoButton()
+         * @private
+         */
+        _onClickSignAutoButton: function () {
+            this.signatureChanged = true;
+            return this._super.apply(this, arguments);
+        },
+        /**
+         * If a user clicks on draw, we overwrite the signature in the server.
+         * 
+         * @override
+         * @see NameAndSignature._onClickSignDrawButton()
+         * @private
+         */
+        _onClickSignDrawButton: function () {
+            this.signatureChanged = true;
+            return this._super.apply(this, arguments);
         },
     });
 
@@ -1466,11 +1514,43 @@ odoo.define('sign.document_signing', function (require) {
                     this.signatureItemNav.goToNextSignItem();
                 },
             });
+            this.nextSignature = '';
+            this.nextInitial = '';
+        },
+
+        fetchSignature: function (signatureType='signature') {
+            var self = this;
+            const shouldRequestSignature = Object.values(self.signatureItems).some((currentSignature) => {
+                return self.types[currentSignature.type].item_type === signatureType
+            });
+
+            if (shouldRequestSignature) {
+                return self._rpc({
+                    route: '/sign/get_signature/' + self.getParent().requestID + '/' + self.getParent().accessToken,
+                    params: {
+                        signature_type: signatureType,
+                    },
+                }).then(function (signature) {
+                    if (signature) {
+                        signature = 'data:image/png;base64,' + signature;
+                        if (signatureType === 'signature') {
+                            self.nextSignature = signature;
+                        } else {
+                            self.nextInitial = signature
+                        }
+                    }
+                });
+            }
         },
 
         doPDFPostLoad: function() {
             var self = this;
-            this.fullyLoaded.then(function() {
+
+            Promise.all([
+                this.fullyLoaded,
+                this.fetchSignature('signature'),
+                this.fetchSignature('initial')
+            ]).then(function() {
                 self.signatureItemNav = new SignItemNavigator(self, self.types);
                 return self.signatureItemNav.prependTo(self.$('#viewerContainer')).then(function () {
 
@@ -1515,17 +1595,24 @@ odoo.define('sign.document_signing', function (require) {
                 if (type.item_type === "signature" || type.item_type === "initial") {
                     $signatureItem.on('click', function(e) {
                         self.refreshSignItems();
-                        var $signedItems = self.$('.o_sign_sign_item').filter(function(i) {
-                            var $item = $(this);
-                            return ($item.data('type') === type.id &&
-                                $item.data('signature') && $item.data('signature') !== $signatureItem.data('signature') &&
-                                ($item.data('responsible') <= 0 || $item.data('responsible') === $signatureItem.data('responsible')));
-                        });
-
-                        if($signedItems.length > 0) {
-                            $signatureItem.data('signature', $signedItems.first().data('signature'));
-                            $signatureItem.html('<span class="o_sign_helper"/><img src="' + $signatureItem.data('signature') + '"/>');
-                            $signatureItem.trigger('input');
+                        /** Logic for wizard/mark behavior is: 
+                         * If type is signature, nextSignature is defined and the item is not marked yet, the default signature is used
+                         * Else, wizard is opened.
+                         * If type is initial, other initial items were already signed and item is not marked yet, the previous initial is used
+                         * Else, wizard is opened.
+                         * */
+                        if (type.item_type === "signature" && self.nextSignature && !$signatureItem.data('signature')) {
+                            self.adjustSignatureSize(self.nextSignature, $signatureItem).then(data => {
+                                $signatureItem.data('signature', data)
+                                    .empty().append($('<span/>').addClass("o_sign_helper"), $('<img/>', {src: $signatureItem.data('signature')}));
+                                $signatureItem.trigger('input');
+                            });
+                        } else if (type.item_type === "initial" && self.nextInitial && !$signatureItem.data('signature')) {
+                            self.adjustSignatureSize(self.nextInitial, $signatureItem).then(data => {
+                                $signatureItem.data('signature', data)
+                                    .empty().append($('<span/>').addClass("o_sign_helper"), $('<img/>', {src: $signatureItem.data('signature')}));
+                                $signatureItem.trigger('input');
+                            })
                         } else {
                             var nameAndSignatureOptions = {
                                 defaultName: self.getParent().signerName || "",
@@ -1540,9 +1627,24 @@ odoo.define('sign.document_signing', function (require) {
                                     var name = signDialog.getName();
                                     var signature = signDialog.getSignatureImageSrc();
                                     self.getParent().signerName = name;
-                                    $signatureItem.data('signature', signature)
-                                                  .empty()
-                                                  .append($('<span/>').addClass("o_sign_helper"), $('<img/>', {src: $signatureItem.data('signature')}));
+                                    if (type.item_type === 'signature') {
+                                        self.nextSignature = signature
+                                    } else {
+                                        self.nextInitial = signature
+                                    }
+                                    if(signDialog.nameAndSignature.signatureChanged) {
+                                        self._rpc({
+                                            route: 'sign/update_user_signature/',
+                                            params: {
+                                                signature_type: type.item_type === 'signature' ? 'sign_signature' : 'sign_initials',
+                                                datas: signature
+                                            }
+                                        })
+                                    }
+
+                                    $signatureItem.data({
+                                        'signature': signature,
+                                    }).empty().append($('<span/>').addClass("o_sign_helper"), $('<img/>', {src: $signatureItem.data('signature')}));
                                 } else {
                                     $signatureItem.removeData('signature')
                                                   .empty()
@@ -1597,6 +1699,34 @@ odoo.define('sign.document_signing', function (require) {
                 $signatureItem.val(value);
             }
             return $signatureItem;
+        },
+
+        adjustSignatureSize: function (data, signatureItem) {
+            return new Promise(function (resolve, _) {
+                var img = new Image()
+                , c = document.createElement('canvas');
+    
+                c.height = signatureItem.height();
+                c.width = signatureItem.width();
+    
+                img.onload = function () {
+                    var ctx = c.getContext("2d");
+                    var oldShadowColor = ctx.shadowColor;
+                    ctx.shadowColor = "transparent";
+                    var ratio = ((img.width / img.height) > (c.width / c.height)) ? c.width / img.width : c.height / img.height;
+    
+                    ctx.drawImage( 
+                        img,
+                        (c.width / 2) - (img.width * ratio / 2),
+                        (c.height / 2) - (img.height * ratio / 2)
+                        , img.width * ratio
+                        , img.height * ratio
+                    );
+                    ctx.shadowColor = oldShadowColor;
+                    resolve(c.toDataURL())
+                };
+                img.src = data;
+            })
         },
 
         checkSignItemsCompletion: function() {

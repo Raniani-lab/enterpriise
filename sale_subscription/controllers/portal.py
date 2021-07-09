@@ -116,7 +116,8 @@ class SaleSubscription(http.Controller):
             subscription.company_id.id,
             subscription.partner_id.id,
             currency_id=subscription.currency_id.id,
-            force_tokenization=True
+            force_tokenization=True,
+            is_validation=not subscription.to_renew,
         )  # In sudo mode to read the fields of acquirers and partner (if not logged in)
         # The tokens are filtered based on the partner hierarchy to allow managing tokens of any
         # sibling partners. As a result, a partner can manage any token belonging to partners of its

@@ -85,6 +85,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
+            # pylint: disable=C0326
             report._get_lines(options),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
@@ -94,11 +95,11 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('211000 Account Payable',              50.0,           0.0,            50.0),
                 ('400000 Product Sales',                20000.0,        0.0,            20000.0),
                 ('Initial Balance',                     0.0,            0.0,            0.0),
-                ('INV/2017/01/0001',                    2000.0,         '',             2000.0),
-                ('INV/2017/01/0001',                    3000.0,         '',             5000.0),
-                ('INV/2017/01/0001',                    4000.0,         '',             9000.0),
-                ('INV/2017/01/0001',                    5000.0,         '',             14000.0),
-                ('INV/2017/01/0001',                    6000.0,         '',             20000.0),
+                ('INV/2017/00001',                      2000.0,         '',             2000.0),
+                ('INV/2017/00001',                      3000.0,         '',             5000.0),
+                ('INV/2017/00001',                      4000.0,         '',             9000.0),
+                ('INV/2017/00001',                      5000.0,         '',             14000.0),
+                ('INV/2017/00001',                      6000.0,         '',             20000.0),
                 ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
                 ('400000 Product Sales',                0.0,            200.0,          -200.0),
                 ('600000 Expenses',                     0.0,            21000.0,        -21000.0),
@@ -117,17 +118,18 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
+            # pylint: disable=C0326
             report._get_lines(options, line_id=line_id),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
                 ('400000 Product Sales',                20000.0,        0.0,            20000.0),
                 ('Initial Balance',                     0.0,            0.0,            0.0),
-                ('INV/2017/01/0001',                    2000.0,         '',             2000.0),
-                ('INV/2017/01/0001',                    3000.0,         '',             5000.0),
-                ('INV/2017/01/0001',                    4000.0,         '',             9000.0),
-                ('INV/2017/01/0001',                    5000.0,         '',             14000.0),
-                ('INV/2017/01/0001',                    6000.0,         '',             20000.0),
+                ('INV/2017/00001',                      2000.0,         '',             2000.0),
+                ('INV/2017/00001',                      3000.0,         '',             5000.0),
+                ('INV/2017/00001',                      4000.0,         '',             9000.0),
+                ('INV/2017/00001',                      5000.0,         '',             14000.0),
+                ('INV/2017/00001',                      6000.0,         '',             20000.0),
                 ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
             ],
         )
@@ -142,14 +144,15 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         with patch.object(type(report), 'MAX_LINES', 2):
             report_lines = report._get_lines(options, line_id=line_id)
             self.assertLinesValues(
+                # pylint: disable=C0326
                 report_lines,
                 #   Name                                    Debit           Credit          Balance
                 [   0,                                      4,              5,              6],
                 [
                     ('400000 Product Sales',                20000.0,        0.0,            20000.0),
                     ('Initial Balance',                     0.0,            0.0,            0.0),
-                    ('INV/2017/01/0001',                    2000.0,         '',             2000.0),
-                    ('INV/2017/01/0001',                    3000.0,         '',             5000.0),
+                    ('INV/2017/00001',                      2000.0,         '',             2000.0),
+                    ('INV/2017/00001',                      3000.0,         '',             5000.0),
                     ('Load more... (3 remaining)',          '',             '',             ''),
                     ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
                 ],
@@ -165,12 +168,13 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
 
             report_lines = report._get_lines(options, line_id=line_id)
             self.assertLinesValues(
+                # pylint: disable=C0326
                 report_lines,
                 #   Name                                    Debit           Credit          Balance
                 [   0,                                      4,              5,              6],
                 [
-                    ('INV/2017/01/0001',                    4000.0,         '',             9000.0),
-                    ('INV/2017/01/0001',                    5000.0,         '',             14000.0),
+                    ('INV/2017/00001',                      4000.0,         '',             9000.0),
+                    ('INV/2017/00001',                      5000.0,         '',             14000.0),
                     ('Load more... (1 remaining)',          '',             '',             ''),
                 ],
             )
@@ -185,11 +189,12 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
 
             report_lines = report._get_lines(options, line_id=line_id)
             self.assertLinesValues(
+                # pylint: disable=C0326
                 report_lines,
                 #   Name                                    Debit           Credit          Balance
                 [   0,                                      4,              5,              6],
                 [
-                    ('INV/2017/01/0001',                    6000.0,         '',             20000.0),
+                    ('INV/2017/00001',                      6000.0,         '',             20000.0),
                 ],
             )
 
@@ -264,6 +269,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
+            # pylint: disable=C0326
             report._get_lines(options),
             #   Name                                    Amount_currency Debit           Credit          Balance
             [   0,                                      4,              5,              6,              7],
@@ -279,7 +285,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('999999 Undistributed Profits/Losses', '',             0.0,            50.0,           -50.0),
                 ('test foreign_curr_account',           -2300.0,        0.0,            1100.0,         -1100.0),
                 ('Initial Balance',                     -300.0,         0.0,            100.0,          -100.0),
-                ('INV/2017/01/0002',                    -2000.0,        '',             1000.0,         -1100.0),
+                ('INV/2017/00002',                      -2000.0,        '',             1000.0,         -1100.0),
                 ('Total test foreign_curr_account',     -2300.0,        0.0,            1100.0,         -1100.0),
                 ('Total',                               '',             22650.0,        22650.0,        0.0),
             ],

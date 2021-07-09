@@ -76,11 +76,12 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         with freeze_time('2016-01-01'):
             self.assertLinesValues(
+                # pylint: disable=C0326
                 report._get_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
-                    ('INV/2016/01/0001',                    '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
+                    ('INV/2016/00001',                      '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
                     ('',                                    '',             '',             '',     '',         'Total Due',        300.0),
                 ],
             )
@@ -99,12 +100,13 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         with freeze_time('2016-01-05'):
             self.assertLinesValues(
+                # pylint: disable=C0326
                 report._get_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
-                    ('RINV/2016/01/0001',                   '01/05/2016',   '01/10/2016',   '',     '',         '',                 -200.0),
-                    ('INV/2016/01/0001',                    '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
+                    ('RINV/2016/00001',                     '01/05/2016',   '01/10/2016',   '',     '',         '',                 -200.0),
+                    ('INV/2016/00001',                      '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
                     ('',                                    '',             '',             '',     '',         'Total Due',        100.0),
                     ('',                                    '',             '',             '',     '',         'Total Overdue',    300.0),
                 ],
@@ -123,12 +125,13 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         with freeze_time('2016-01-15'):
             self.assertLinesValues(
+                # pylint: disable=C0326
                 report._get_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
-                    ('RINV/2016/01/0001',                   '01/05/2016',   '01/10/2016',   '',     '',         '',                 -200.0),
-                    ('INV/2016/01/0001',                    '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
+                    ('RINV/2016/00001',                     '01/05/2016',   '01/10/2016',   '',     '',         '',                 -200.0),
+                    ('INV/2016/00001',                      '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
                     ('',                                    '',             '',             '',     '',         'Total Due',        100.0),
                     ('',                                    '',             '',             '',     '',         'Total Overdue',    100.0),
                 ],
@@ -149,23 +152,25 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         with freeze_time('2016-01-20'):
             lines = report._get_lines(options)
             self.assertLinesValues(
+                # pylint: disable=C0326
                 lines[:3],
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
-                    ('INV/2016/01/0002',                    '01/20/2016',   '01/20/2016',   '',     '',         '',                 300.0),
+                    ('INV/2016/00002',                      '01/20/2016',   '01/20/2016',   '',     '',         '',                 300.0),
                     ('',                                    '',             '',             '',     '',         'Total Due',        300.0),
                     ('',                                    '',             '',             '',     '',         '',                 ''),
                 ],
                 currency_map={7: {'currency': self.currency_data['currency']}},
             )
             self.assertLinesValues(
+                # pylint: disable=C0326
                 lines[3:],
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
-                    ('RINV/2016/01/0001',                   '01/05/2016',   '01/10/2016',   '',     '',         '',                 -200.0),
-                    ('INV/2016/01/0001',                    '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
+                    ('RINV/2016/00001',                     '01/05/2016',   '01/10/2016',   '',     '',         '',                 -200.0),
+                    ('INV/2016/00001',                      '01/01/2016',   '01/01/2016',   '',     '',         '',                 300.0),
                     ('',                                    '',             '',             '',     '',         'Total Due',        100.0),
                     ('',                                    '',             '',             '',     '',         'Total Overdue',    100.0),
                 ],

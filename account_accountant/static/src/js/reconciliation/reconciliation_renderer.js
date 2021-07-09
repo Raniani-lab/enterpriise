@@ -817,7 +817,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
      */
     _onQuickCreateProposition: function (event) {
         document.activeElement && document.activeElement.blur();
-        this.trigger_up('quick_create_proposition', {'data': $(event.target).data('reconcile-model-id')});
+        this.trigger_up('quick_create_proposition', {'data': $(event.target).closest('button').data('reconcile-model-id')});
     },
     /**
      * @private

@@ -322,8 +322,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account.name                            AS account_name,
                 journal.code                            AS journal_code,
                 journal.name                            AS journal_name
-            FROM account_move_line
-            LEFT JOIN account_move account_move_line__move_id ON account_move_line__move_id.id = account_move_line.move_id
+            FROM %s
             LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
             LEFT JOIN res_company company               ON company.id = account_move_line.company_id
             LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
@@ -331,7 +330,7 @@ class ReportPartnerLedger(models.AbstractModel):
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
             WHERE %s
             ORDER BY account_move_line.date, account_move_line.id
-        ''' % (ct_query, where_clause)
+        ''' % (tables, ct_query, where_clause)
 
         if offset:
             query += ' OFFSET %s '

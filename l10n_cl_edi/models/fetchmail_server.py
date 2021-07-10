@@ -524,6 +524,7 @@ class FetchmailServer(models.Model):
                 'quantity': 1,
             }
             amount_dr = float(valor_dr)
+            percent_dr = amount_dr / 100
             # The price unit of a discount line should be negative while surcharge should be positive
             price_unit_multiplier = 1 if line_type == 'D' else -1
             if price_type == '%':
@@ -531,13 +532,13 @@ class FetchmailServer(models.Model):
                 if inde_exe_dr is None:  # Applied to items with tax
                     dte_amount_tag = (dte_xml.findtext('.//ns0:MntNetoOtrMnda', namespaces=XML_NAMESPACES) or
                                       dte_xml.findtext('.//ns0:MntNeto', namespaces=XML_NAMESPACES))
-                    tax_amount_tag = dte_xml.findtext('.//ns0:IVA', namespaces=XML_NAMESPACES)
-                    dte_amount = dte_amount_tag is not None and int(dte_amount_tag) or 0
-                    tax_amount = tax_amount_tag is not None and int(tax_amount_tag) or 0
-                    values['price_unit'] = round(sum([
-                        dte_amount - (dte_amount / (1 - amount_dr / 100)),
-                        tax_amount - (tax_amount / (1 - amount_dr / 100))
-                    ])) * price_unit_multiplier
+                    dte_amount = int(dte_amount_tag or 0)
+                    # as MntNeto value is calculated after discount
+                    # we need to calculate back the amount before discount in order to apply the percentage
+                    # and know the amount of the discount.
+                    dte_amount_before_discount = dte_amount / (1 - percent_dr)
+                    values['price_unit'] = - price_unit_multiplier * dte_amount_before_discount * percent_dr
+                    values['default_tax'] = self._use_default_tax(dte_xml)
                 elif inde_exe_dr == '2':  # Applied to items not billable
                     dte_amount_tag = dte_xml.findtext('.//ns0:MontoNF', namespaces=XML_NAMESPACES)
                     dte_amount = dte_amount_tag is not None and int(dte_amount_tag) or 0
@@ -551,7 +552,7 @@ class FetchmailServer(models.Model):
                         dte_amount - (int(dte_amount) / (1 - amount_dr / 100))) * price_unit_multiplier
             else:
                 values['price_unit'] = amount_dr * -1 * price_unit_multiplier
-                if not desc_rcg_global.findtext('.//ns0:IndExeDR', namespaces=XML_NAMESPACES) == '1':
+                if desc_rcg_global.findtext('.//ns0:IndExeDR', namespaces=XML_NAMESPACES) not in ['1', '2']:
                     values['default_tax'] = self._use_default_tax(dte_xml)
             invoice_lines.append(values)
         return invoice_lines

@@ -232,7 +232,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                 <PeriodYear>2019</PeriodYear>
                                 <TransactionDate>2019-01-01</TransactionDate>
                                 <TransactionType>out_invoi</TransactionType>
-                                <Description>INV/2019/01/0001</Description>
+                                <Description>INV/2019/00001</Description>
                                 <SystemEntryDate>___ignore___</SystemEntryDate>
                                 <GLPostingDate>2019-01-01</GLPostingDate>
                                 <CustomerID>___ignore___</CustomerID>
@@ -273,7 +273,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                     <ValueDate>2019-01-01</ValueDate>
                                     <SourceDocumentID>___ignore___</SourceDocumentID>
                                     <CustomerID>___ignore___</CustomerID>
-                                    <Description>INV/2019/01/0001</Description>
+                                    <Description>INV/2019/00001</Description>
                                     <DebitAmount>
                                         <Amount>6250.00</Amount>
                                     </DebitAmount>
@@ -285,7 +285,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                 <PeriodYear>2019</PeriodYear>
                                 <TransactionDate>2019-03-01</TransactionDate>
                                 <TransactionType>out_refun</TransactionType>
-                                <Description>RINV/2019/03/0001</Description>
+                                <Description>RINV/2019/00001</Description>
                                 <SystemEntryDate>___ignore___</SystemEntryDate>
                                 <GLPostingDate>2019-03-01</GLPostingDate>
                                 <CustomerID>___ignore___</CustomerID>
@@ -326,7 +326,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                     <ValueDate>2019-03-01</ValueDate>
                                     <SourceDocumentID>___ignore___</SourceDocumentID>
                                     <CustomerID>___ignore___</CustomerID>
-                                    <Description>RINV/2019/03/0001</Description>
+                                    <Description>RINV/2019/00001</Description>
                                     <CreditAmount>
                                         <Amount>3750.00</Amount>
                                     </CreditAmount>

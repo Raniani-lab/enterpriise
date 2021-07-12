@@ -211,7 +211,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="USD"
                                         TipoCambioDR="2.000000"
                                         NumParcialidad="1"
-                                        Serie="INV/2017/01/"/>
+                                        Serie="INV/2017/"/>
                                 </Pago>
                             </Pagos>
                         </Complemento>

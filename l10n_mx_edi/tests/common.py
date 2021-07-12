@@ -159,7 +159,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                 MetodoPago="PUE"
                 Moneda="Gol"
                 NoCertificado="''' + cls.certificate.serial_number + '''"
-                Serie="INV/2017/01/"
+                Serie="INV/2017/"
                 Sello="___ignore___"
                 Descuento="2000.000"
                 SubTotal="10000.000"
@@ -296,7 +296,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                                 MetodoDePagoDR="PUE"
                                 MonedaDR="Gol"
                                 NumParcialidad="1"
-                                Serie="INV/2017/01/"/>
+                                Serie="INV/2017/"/>
                         </Pago>
                     </Pagos>
                 </Complemento>

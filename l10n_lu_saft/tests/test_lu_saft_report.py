@@ -239,7 +239,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 <PeriodYear>2019</PeriodYear>
                                 <TransactionDate>2019-01-01</TransactionDate>
                                 <TransactionType>out_invoi</TransactionType>
-                                <Description>INV/2019/01/0001</Description>
+                                <Description>INV/2019/00001</Description>
                                 <SystemEntryDate>___ignore___</SystemEntryDate>
                                 <GLPostingDate>2019-01-01</GLPostingDate>
                                 <CustomerID>___ignore___</CustomerID>
@@ -280,7 +280,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                     <ValueDate>2019-01-01</ValueDate>
                                     <SourceDocumentID>___ignore___</SourceDocumentID>
                                     <CustomerID>___ignore___</CustomerID>
-                                    <Description>INV/2019/01/0001</Description>
+                                    <Description>INV/2019/00001</Description>
                                     <DebitAmount>
                                         <Amount>5850.00</Amount>
                                     </DebitAmount>
@@ -292,7 +292,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 <PeriodYear>2019</PeriodYear>
                                 <TransactionDate>2019-03-01</TransactionDate>
                                 <TransactionType>out_refun</TransactionType>
-                                <Description>RINV/2019/03/0001</Description>
+                                <Description>RINV/2019/00001</Description>
                                 <SystemEntryDate>___ignore___</SystemEntryDate>
                                 <GLPostingDate>2019-03-01</GLPostingDate>
                                 <CustomerID>___ignore___</CustomerID>
@@ -333,7 +333,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                     <ValueDate>2019-03-01</ValueDate>
                                     <SourceDocumentID>___ignore___</SourceDocumentID>
                                     <CustomerID>___ignore___</CustomerID>
-                                    <Description>RINV/2019/03/0001</Description>
+                                    <Description>RINV/2019/00001</Description>
                                     <CreditAmount>
                                         <Amount>3510.00</Amount>
                                     </CreditAmount>
@@ -347,7 +347,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                             <TotalDebit>3000.00</TotalDebit>
                             <TotalCredit>5000.00</TotalCredit>
                             <Invoice>
-                                <InvoiceNo>INV/2019/01/0001</InvoiceNo>
+                                <InvoiceNo>INV/2019/00001</InvoiceNo>
                                 <CustomerInfo>
                                     <CustomerID>___ignore___</CustomerID>
                                     <BillingAddress>
@@ -365,7 +365,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 <Line>
                                     <AccountID>___ignore___</AccountID>
                                     <OrderReferences>
-                                        <OriginatingON>INV/2019/01/0001</OriginatingON>
+                                        <OriginatingON>INV/2019/00001</OriginatingON>
                                         <OrderDate>2019-01-01</OrderDate>
                                     </OrderReferences>
                                     <ProductCode>PA</ProductCode>
@@ -403,7 +403,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 </DocumentTotals>
                             </Invoice>
                             <Invoice>
-                                <InvoiceNo>RINV/2019/03/0001</InvoiceNo>
+                                <InvoiceNo>RINV/2019/00001</InvoiceNo>
                                 <CustomerInfo>
                                     <CustomerID>___ignore___</CustomerID>
                                     <BillingAddress>
@@ -421,7 +421,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 <Line>
                                     <AccountID>___ignore___</AccountID>
                                     <OrderReferences>
-                                        <OriginatingON>RINV/2019/03/0001</OriginatingON>
+                                        <OriginatingON>RINV/2019/00001</OriginatingON>
                                         <OrderDate>2019-03-01</OrderDate>
                                     </OrderReferences>
                                     <ProductCode>PA</ProductCode>

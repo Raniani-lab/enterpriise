@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
             <NOTA>
-                
+
             <ENC>
                 <ENC_1>NC</ENC_1>
                 <ENC_2>213123432</ENC_2>
                 <ENC_3>213.123.432</ENC_3>
                 <ENC_4>UBL 2.1</ENC_4>
                 <ENC_5>DIAN 2.1</ENC_5>
-                <ENC_6>RINV/2020/08/0001</ENC_6>
+                <ENC_6>RINV/2020/00001</ENC_6>
                 <ENC_7>2020-08-27</ENC_7>
                 <ENC_8>19:00:00-05:00</ENC_8>
                 <ENC_9>91</ENC_9>
@@ -30,7 +30,7 @@
                 <EMI_10>Route de Ramilies </EMI_10>
                 <EMI_11>05</EMI_11>
                 <EMI_12></EMI_12>
-                
+
                 <EMI_14>1234</EMI_14>
                 <EMI_15>CO</EMI_15>
                 <EMI_18></EMI_18>
@@ -55,7 +55,7 @@
                     <DFE_4>1234</DFE_4>
                     <DFE_5>Colombia</DFE_5>
                     <DFE_6>Antioquia</DFE_6>
-                    
+
                     <DFE_8></DFE_8>
                 </DFE>
 
@@ -76,12 +76,12 @@
                 <ADQ_2>213.123.432</ADQ_2>
                 <ADQ_3>31</ADQ_3>
                 <ADQ_4>48</ADQ_4>
-                
+
                 <ADQ_6>company_2_data</ADQ_6>
                 <ADQ_7>company_2_data</ADQ_7>
                 <ADQ_8>company_2_data</ADQ_8>
                 <ADQ_9>company_2_data</ADQ_9>
-                
+
                     <ADQ_10>Route de Eghezée </ADQ_10>
                     <ADQ_11>08</ADQ_11>
                     <ADQ_12></ADQ_12>
@@ -93,7 +93,7 @@
                     <ADQ_21>Colombia</ADQ_21>
                     <ADQ_22>1</ADQ_22>
                     <ADQ_23>00000</ADQ_23>
-                
+
                 <ADQ_24>213.123.432</ADQ_24>
                 <ADQ_25>31</ADQ_25>
                 <ADQ_26>1</ADQ_26>
@@ -140,10 +140,10 @@
                 <TOT_7>43875.00</TOT_7>
                 <TOT_8>COP</TOT_8>
             </TOT>
-            
-            
-        
-            
+
+
+
+
             <TIM>
                 <TIM_1>false</TIM_1>
                 <TIM_2>5062.50</TIM_2>
@@ -155,13 +155,13 @@
                     <IMP_3>COP</IMP_3>
                     <IMP_4>5062.50</IMP_4>
                     <IMP_5>COP</IMP_5>
-                    
+
                         <IMP_6>15.0</IMP_6>
                         <IMP_7></IMP_7>
                         <IMP_8></IMP_8>
                         <IMP_9></IMP_9>
                         <IMP_10></IMP_10>
-                    
+
                 </IMP>
             </TIM><TIM>
                 <TIM_1>false</TIM_1>
@@ -174,16 +174,16 @@
                     <IMP_3>COP</IMP_3>
                     <IMP_4>5062.50</IMP_4>
                     <IMP_5>COP</IMP_5>
-                    
+
                         <IMP_6>15.0</IMP_6>
                         <IMP_7></IMP_7>
                         <IMP_8></IMP_8>
                         <IMP_9></IMP_9>
                         <IMP_10></IMP_10>
-                    
+
                 </IMP>
             </TIM>
-        
+
             <TDC>
                 <TDC_1>COP</TDC_1>
                 <TDC_2>COP</TDC_2>
@@ -196,7 +196,7 @@
                 <DRF_1>42</DRF_1>
                 <DRF_2>2020-08-27</DRF_2>
                 <DRF_3>2020-08-27</DRF_3>
-                <DRF_4>RINV/2020/08/</DRF_4>
+                <DRF_4>RINV/2020/</DRF_4>
                 <DRF_5>0</DRF_5>
                 <DRF_6>0</DRF_6>
             </DRF>
@@ -224,16 +224,16 @@
             </NOT>
 
             <ORC>
-                
-                
+
+
             </ORC>
 
-            
+
             <REF>
                 <REF_1>IV</REF_1>
-                <REF_2>INV/2020/08/0001</REF_2>
+                <REF_2>INV/2020/00001</REF_2>
                 <REF_3>2020-08-27</REF_3>
-                
+
                 <REF_5>CUFE-SHA384</REF_5>
             </REF>
 
@@ -255,25 +255,25 @@
             </MEP>
 
             <CTS>
-                
+
             </CTS>
 
             <CDN>
-                
-                
+
+
             </CDN>
 
             <DCN>
-                
+
             </DCN>
 
-            
+
 
             <FE1>
-                
+
             </FE1>
 
-            
+
             <ITE>
                     <ITE_1>1</ITE_1>
                     <ITE_2></ITE_2>
@@ -295,12 +295,12 @@
 
                     <IRF>
                         <IRF_1>NC</IRF_1>
-                        <IRF_2>RINV/2020/08/0001</IRF_2>
+                        <IRF_2>RINV/2020/00001</IRF_2>
                         <IRF_3>1</IRF_3>
                     </IRF>
 
                     <MYM>
-                        
+
                         <MYM_2>[P0000] product_a</MYM_2>
                     </MYM>
 
@@ -323,13 +323,13 @@
                             <IIM_3>COP</IIM_3>
                             <IIM_4>33750.00</IIM_4>
                             <IIM_5>COP</IIM_5>
-                            
+
                                 <IIM_6>15.0</IIM_6>
                                 <IIM_7></IIM_7>
                                 <IIM_8></IIM_8>
                                 <IIM_9></IIM_9>
                                 <IIM_10></IIM_10>
-                            
+
                         </IIM>
                     </TII><TII>
                         <TII_1>5062.50</TII_1>
@@ -341,21 +341,21 @@
                             <IIM_3>COP</IIM_3>
                             <IIM_4>33750.00</IIM_4>
                             <IIM_5>COP</IIM_5>
-                            
+
                                 <IIM_6>15.0</IIM_6>
                                 <IIM_7></IIM_7>
                                 <IIM_8></IIM_8>
                                 <IIM_9></IIM_9>
                                 <IIM_10></IIM_10>
-                            
+
                         </IIM>
                     </TII>
                     <IAE>
-                        
+
                         <IAE_1>P0000</IAE_1>
                         <IAE_2>999</IAE_2>
                     </IAE>
-                    
-                    
+
+
             </ITE>
             </NOTA>

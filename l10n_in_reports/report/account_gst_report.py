@@ -5,7 +5,7 @@ import ast
 import json
 from itertools import groupby
 from collections import OrderedDict
-from odoo import api, models, fields, _
+from odoo import api, models, _
 from odoo.addons.web.controllers.main import clean_action
 
 
@@ -226,7 +226,7 @@ class L10nInReportAccount(models.AbstractModel):
     def group_report_lines(self, group_fields, fields_values, fields):
         res = []
         fields_values = sorted(fields_values, key=lambda s: [s.get(g, '') for g in group_fields])
-        for key, grouped_values in groupby(fields_values, lambda x: [x.get(g, '') for g in group_fields]):
+        for _, grouped_values in groupby(fields_values, lambda x: [x.get(g, '') for g in group_fields]):
             vals = {}
             first_grouped_value = {}
             for grouped_value in grouped_values:

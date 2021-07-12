@@ -1,11 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
-from odoo.tools import date_utils
-from odoo.modules.module import get_module_resource
-from dateutil.relativedelta import relativedelta
 import logging
-import codecs
 
 _logger = logging.getLogger(__name__)
 
@@ -26,7 +22,12 @@ class TestReports(TestAccountReportsCommon):
             "country_id": cls.env.ref("base.in"),
             "l10n_in_gst_treatment": "regular",
             })
-        cls.invoice = cls.init_invoice("out_invoice",post=True,products=cls.product_a, taxes=cls.company_data["default_tax_sale"])
+        cls.invoice = cls.init_invoice(
+            "out_invoice",
+            post=True,
+            products=cls.product_a,
+            taxes=cls.company_data["default_tax_sale"]
+        )
 
     @classmethod
     def setup_armageddon_tax(cls, tax_name, company_data):

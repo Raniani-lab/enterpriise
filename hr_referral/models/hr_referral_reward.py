@@ -17,6 +17,7 @@ class HrReferralReward(models.Model):
         return [('groups_id', 'in', group.ids)] if group else []
 
     sequence = fields.Integer()
+    active = fields.Boolean(default=True)
     name = fields.Char('Product Name', required=True)
     cost = fields.Integer('Cost', required=True, tracking=True)
     awarded_employees = fields.Integer(compute='_compute_awarded_employees')

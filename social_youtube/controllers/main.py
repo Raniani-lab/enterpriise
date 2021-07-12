@@ -4,7 +4,6 @@
 import base64
 import json
 import requests
-import werkzeug
 from datetime import timedelta
 from werkzeug.urls import url_encode, url_join
 
@@ -82,7 +81,7 @@ class SocialYoutubeController(http.Controller):
             'view_type': 'kanban',
             'model': 'social.stream.post',
         })
-        return werkzeug.utils.redirect(url)
+        return request.redirect(url)
 
     @http.route('/social_youtube/comment', type='http', auth='user')
     def comment(self, post_id=None, comment_id=None, message=None, is_edit=False, **kwargs):

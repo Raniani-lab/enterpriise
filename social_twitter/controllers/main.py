@@ -5,7 +5,6 @@ import base64
 import json
 
 import requests
-import werkzeug
 from werkzeug.urls import url_encode, url_join
 
 from odoo import http, _
@@ -49,7 +48,7 @@ class SocialTwitterController(http.Controller):
         }
 
         url = '/web?#%s' % url_encode(url_params)
-        return werkzeug.utils.redirect(url)
+        return request.redirect(url)
 
     def _create_twitter_accounts(self, oauth_token, oauth_verifier, media):
         twitter_consumer_key = request.env['ir.config_parameter'].sudo().get_param('social.twitter_consumer_key')

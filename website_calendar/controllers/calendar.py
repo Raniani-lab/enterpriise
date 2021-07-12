@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from werkzeug import urls, utils
+from werkzeug import urls
 
 from odoo.addons.calendar.controllers.main import CalendarController
 from odoo.http import request, route
@@ -27,9 +27,9 @@ class WebsiteCalendarController(CalendarController):
                 'view_type': 'form',
                 'model': attendee.event_id._name,
             })
-            return utils.redirect('/web?db=%s#%s' % (request.env.cr.dbname, url_params))
+            return request.redirect('/web?db=%s#%s' % (request.env.cr.dbname, url_params))
 
         request.session['timezone'] = attendee.partner_id.tz
         if not attendee.event_id.access_token:
             attendee.event_id._generate_access_token()
-        return utils.redirect('/calendar/view/%s?partner_id=%s' % (attendee.event_id.access_token, attendee.partner_id.id))
+        return request.redirect('/calendar/view/%s?partner_id=%s' % (attendee.event_id.access_token, attendee.partner_id.id))

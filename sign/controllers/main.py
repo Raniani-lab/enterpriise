@@ -99,7 +99,7 @@ class Sign(http.Controller):
             return http.request.render('sign.deleted_sign_request')
         current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
         current_request_item.access_via_link = True
-        return http.local_redirect('/sign/document/%s/%s' % (id, token))
+        return request.redirect('/sign/document/%s/%s' % (id, token))
 
     @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public')
     def sign_document_public(self, id, token, **post):
@@ -134,11 +134,11 @@ class Sign(http.Controller):
         elif download_type == "completed":
             document = sign_request.completed_document
             if not document: # if the document is completed but the document is encrypted
-                return http.redirect_with_hash('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
+                return request.redirect('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
 
         if not document:
             # Shouldn't it fall back on 'origin' download type?
-            return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
+            return request.redirect("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
 
         # Avoid to have file named "test file.pdf (V2)" impossible to open on Windows.
         # This line produce: test file (V2).pdf
@@ -168,7 +168,7 @@ class Sign(http.Controller):
         request_item = http.request.env['sign.request.item'].sudo().create({'sign_request_id': sign_request.id, 'role_id': template.sign_item_ids.mapped('responsible_id').id})
         sign_request.action_sent()
 
-        return http.redirect_with_hash('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': request_item.access_token})
+        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': request_item.access_token})
 
     @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
     def check_password_page(self, sign_request_id, token, **post):
@@ -193,7 +193,7 @@ class Sign(http.Controller):
 
         request_item.sign_request_id.generate_completed_document(password)
         request_item.sign_request_id.send_completed_document()
-        return http.redirect_with_hash('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request_id, 'access_token': token})
+        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request_id, 'access_token': token})
 
     # -------------
     #  JSON Routes

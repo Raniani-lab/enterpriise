@@ -52,7 +52,7 @@ class SocialLinkedin(http.Controller):
             'model': 'social.stream.post',
         }
 
-        return werkzeug.utils.redirect('/web?#%s' % url_encode(url_params))
+        return request.redirect('/web?#%s' % url_encode(url_params))
 
     def _get_linkedin_access_token(self, linkedin_authorization_code, media):
         """

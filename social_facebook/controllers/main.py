@@ -5,7 +5,6 @@ import base64
 import json
 
 import requests
-import werkzeug
 import urllib.parse
 from werkzeug.urls import url_encode, url_join
 
@@ -50,7 +49,7 @@ class SocialFacebookController(http.Controller):
         }
 
         url = '/web?#%s' % url_encode(url_params)
-        return werkzeug.utils.redirect(url)
+        return request.redirect(url)
 
     def _create_facebook_accounts(self, access_token, media, is_extended_token):
         """ Steps to create the facebook social.accounts:
@@ -192,4 +191,4 @@ class SocialFacebookController(http.Controller):
         else:
             redirect_url = 'https://www.facebook.com/search/?q=%s' % urllib.parse.quote(name)
 
-        return werkzeug.utils.redirect(redirect_url)
+        return request.redirect(redirect_url)

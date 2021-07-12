@@ -6,7 +6,6 @@ from odoo import http, _
 from odoo.http import request
 
 import pytz
-from werkzeug.utils import redirect
 from odoo.tools.misc import get_lang
 
 from odoo import tools
@@ -148,13 +147,13 @@ class ShiftController(http.Controller):
             return request.not_found()
 
         if slot_sudo.employee_id:
-            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'already_assign'))
+            return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'already_assign'))
 
         slot_sudo.write({'employee_id': employee_sudo.id})
         if message:
-            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'assign'))
+            return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'assign'))
         else:
-            return redirect('/planning/%s/%s' % (token_planning, token_employee))
+            return request.redirect('/planning/%s/%s' % (token_planning, token_employee))
 
     @http.route('/planning/<string:token_planning>/<string:token_employee>/unassign/<int:shift_id>', type="http", auth="public", website=True)
     def planning_self_unassign(self, token_planning, token_employee, shift_id, message=False, **kwargs):
@@ -163,7 +162,7 @@ class ShiftController(http.Controller):
             return request.not_found()
 
         if slot_sudo.is_unassign_deadline_passed:
-            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, "deny_unassign"))
+            return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, "deny_unassign"))
 
         employee_sudo = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
         if not employee_sudo or employee_sudo.id != slot_sudo.employee_id.id:
@@ -175,9 +174,9 @@ class ShiftController(http.Controller):
 
         slot_sudo.write({'employee_id': False})
         if message:
-            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'unassign'))
+            return request.redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'unassign'))
         else:
-            return redirect('/planning/%s/%s' % (token_planning, token_employee))
+            return request.redirect('/planning/%s/%s' % (token_planning, token_employee))
 
     @http.route('/planning/assign/<string:token_employee>/<int:shift_id>', type="http", auth="user", website=True)
     def planning_self_assign_with_user(self, token_employee, shift_id, **kwargs):
@@ -192,7 +191,7 @@ class ShiftController(http.Controller):
         if not slot_sudo.employee_id:
             slot_sudo.write({'employee_id': employee})
 
-        return redirect('/web?#action=planning.planning_action_open_shift')
+        return request.redirect('/web?#action=planning.planning_action_open_shift')
 
     @http.route('/planning/unassign/<string:token_employee>/<int:shift_id>', type="http", auth="user", website=True)
     def planning_self_unassign_with_user(self, token_employee, shift_id, **kwargs):
@@ -201,7 +200,7 @@ class ShiftController(http.Controller):
             return request.not_found()
 
         if slot_sudo.is_unassign_deadline_passed:
-            return redirect('/web?#action=planning.planning_action_open_shift')
+            return request.redirect('/web?#action=planning.planning_action_open_shift')
 
         employee = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
         if not employee:
@@ -212,7 +211,7 @@ class ShiftController(http.Controller):
         slot_sudo.write({'employee_id': False})
 
         if request.env.user:
-            return redirect('/web?#action=planning.planning_action_open_shift')
+            return request.redirect('/web?#action=planning.planning_action_open_shift')
         return request.env['ir.ui.view']._render_template('planning.slot_unassign')
 
     @staticmethod

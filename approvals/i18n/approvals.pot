@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -356,7 +356,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_category__display_name
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__display_name
 #: model:ir.model.fields,field_description:approvals.field_approval_request__display_name
-#: model:ir.model.fields,field_description:approvals.field_mail_activity__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -492,7 +491,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_category__id
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__id
 #: model:ir.model.fields,field_description:approvals.field_approval_request__id
-#: model:ir.model.fields,field_description:approvals.field_mail_activity__id
 msgid "ID"
 msgstr ""
 
@@ -546,7 +544,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_category____last_update
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line____last_update
 #: model:ir.model.fields,field_description:approvals.field_approval_request____last_update
-#: model:ir.model.fields,field_description:approvals.field_mail_activity____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -610,6 +607,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approval_minimum
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approval_minimum
 msgid "Minimum Approval"
+msgstr ""
+
+#. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: approvals
@@ -988,6 +990,11 @@ msgstr ""
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to attach at lease one document."
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
+msgid "e.g. Brussels"
 msgstr ""
 
 #. module: approvals

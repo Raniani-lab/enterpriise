@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -65,9 +65,6 @@ msgstr ""
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__display_name
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__display_name
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__display_name
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -103,17 +100,11 @@ msgstr ""
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__id
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__id
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__id
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__id
 msgid "ID"
 msgstr ""
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task____last_update
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team____last_update
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket____last_update
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task____last_update
 msgid "Last Modified on"
 msgstr ""
 

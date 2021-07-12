@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -462,10 +462,6 @@ msgid "Discard"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__display_name
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing__display_name
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace__display_name
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace_report__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__display_name
@@ -590,10 +586,6 @@ msgid "Hours"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__id
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing__id
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace__id
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace_report__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__id
@@ -608,10 +600,6 @@ msgid "It will be generated automatically once you save this record."
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message____last_update
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing____last_update
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace____last_update
-#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace_report____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test____last_update

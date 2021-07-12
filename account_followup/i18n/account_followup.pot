@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -309,13 +309,7 @@ msgid "Description"
 msgstr ""
 
 #. module: account_followup
-#: model:ir.model.fields,field_description:account_followup.field_account_chart_template__display_name
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__display_name
-#: model:ir.model.fields,field_description:account_followup.field_account_followup_report__display_name
-#: model:ir.model.fields,field_description:account_followup.field_account_move_line__display_name
-#: model:ir.model.fields,field_description:account_followup.field_account_report_manager__display_name
-#: model:ir.model.fields,field_description:account_followup.field_report_account_followup_report_followup_print_all__display_name
-#: model:ir.model.fields,field_description:account_followup.field_res_partner__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -442,12 +436,6 @@ msgid "Follow-ups Done / Total Follow-ups"
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/models/account_followup_report.py:0
-#, python-format
-msgid "Followup Report"
-msgstr ""
-
-#. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form
 msgid ""
 "For each step, specify the actions to be taken and delay in days. It is\n"
@@ -461,13 +449,7 @@ msgid "Good debtor"
 msgstr ""
 
 #. module: account_followup
-#: model:ir.model.fields,field_description:account_followup.field_account_chart_template__id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__id
-#: model:ir.model.fields,field_description:account_followup.field_account_followup_report__id
-#: model:ir.model.fields,field_description:account_followup.field_account_move_line__id
-#: model:ir.model.fields,field_description:account_followup.field_account_report_manager__id
-#: model:ir.model.fields,field_description:account_followup.field_report_account_followup_report_followup_print_all__id
-#: model:ir.model.fields,field_description:account_followup.field_res_partner__id
 msgid "ID"
 msgstr ""
 
@@ -498,13 +480,7 @@ msgid "Journal Item"
 msgstr ""
 
 #. module: account_followup
-#: model:ir.model.fields,field_description:account_followup.field_account_chart_template____last_update
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line____last_update
-#: model:ir.model.fields,field_description:account_followup.field_account_followup_report____last_update
-#: model:ir.model.fields,field_description:account_followup.field_account_move_line____last_update
-#: model:ir.model.fields,field_description:account_followup.field_account_report_manager____last_update
-#: model:ir.model.fields,field_description:account_followup.field_report_account_followup_report_followup_print_all____last_update
-#: model:ir.model.fields,field_description:account_followup.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -633,6 +609,12 @@ msgstr ""
 #. module: account_followup
 #: model:ir.actions.act_window,name:account_followup.action_account_followup_line_definition_form
 msgid "Payment Follow-ups"
+msgstr ""
+
+#. module: account_followup
+#: code:addons/account_followup/models/account_followup_report.py:0
+#, python-format
+msgid "Payment Reminder"
 msgstr ""
 
 #. module: account_followup

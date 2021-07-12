@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:30+0000\n"
-"PO-Revision-Date: 2021-05-11 09:30+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -101,6 +101,11 @@ msgid "All Tasks"
 msgstr ""
 
 #. module: industry_fsm
+#: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
+msgid "Analyze the performance of your projects and your employees."
+msgstr ""
+
+#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Archived"
 msgstr ""
@@ -152,8 +157,19 @@ msgid "Configuration"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
-msgid "Create tasks to get statistics."
+#: model:res.groups,name:industry_fsm.group_fsm_quotation_from_task
+#: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
+msgid "Create new quotations directly from the tasks"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__create_date
+msgid "Created on"
 msgstr ""
 
 #. module: industry_fsm
@@ -187,11 +203,7 @@ msgid "Display Mark As Done Secondary"
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_project__display_name
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_name
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__display_name
-#: model:ir.model.fields,field_description:industry_fsm.field_res_company__display_name
-#: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -209,11 +221,6 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
-msgid "Documentation"
-msgstr ""
-
-#. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
 msgid "Done"
 msgstr ""
@@ -226,6 +233,11 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_end
 msgid "Ending Date"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__group_industry_fsm_quotations
+msgid "Extra Quotations"
 msgstr ""
 
 #. module: industry_fsm
@@ -287,11 +299,7 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_project__id
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__id
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__id
-#: model:ir.model.fields,field_description:industry_fsm.field_res_company__id
-#: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__id
 msgid "ID"
 msgstr ""
 
@@ -324,17 +332,23 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_project____last_update
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task____last_update
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm____last_update
-#: model:ir.model.fields,field_description:industry_fsm.field_res_company____last_update
-#: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_last_stage_update
 msgid "Last Stage Update"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__write_date
+msgid "Last Updated on"
 msgstr ""
 
 #. module: industry_fsm
@@ -584,6 +598,11 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__name
 msgid "Task Title"
+msgstr ""
+
+#. module: industry_fsm
+#: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
+msgid "Task: Intervention Scheduled"
 msgstr ""
 
 #. module: industry_fsm

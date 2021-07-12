@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:30+0000\n"
-"PO-Revision-Date: 2021-05-11 09:30+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -90,7 +90,6 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_alert
 msgid ""
-"<?xml version=\"1.0\"?>\n"
 "<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
 "                <table style=\"width:600px;margin:5px auto;\">\n"
 "                    <tbody>\n"
@@ -119,7 +118,6 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_invoice
 msgid ""
-"<?xml version=\"1.0\"?>\n"
 "<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
 "                <table style=\"width:600px;margin:5px auto;\">\n"
 "                    <tbody>\n"
@@ -168,7 +166,6 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_rating
 msgid ""
-"<?xml version=\"1.0\"?>\n"
 "<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
 "            % set access_token = object.rating_get_access_token()\n"
 "                <table style=\"width:600px;margin:5px auto;\">\n"
@@ -209,12 +206,12 @@ msgid ""
 "                                                </td>\n"
 "                                                <td>\n"
 "                                                    <a href=\"/rate/${access_token}/3\">\n"
-"                                                        <img alt=\"Not satisfied\" src=\"/rating/static/src/img/rating_3.png\" title=\"Not satisfied\"/>\n"
+"                                                        <img alt=\"Okay\" src=\"/rating/static/src/img/rating_3.png\" title=\"Okay\"/>\n"
 "                                                    </a>\n"
 "                                                </td>\n"
 "                                                <td>\n"
 "                                                    <a href=\"/rate/${access_token}/1\">\n"
-"                                                        <img alt=\"Highly Dissatisfied\" src=\"/rating/static/src/img/rating_1.png\" title=\"Highly Dissatisfied\"/>\n"
+"                                                        <img alt=\"Dissatisfied\" src=\"/rating/static/src/img/rating_1.png\" title=\"Dissatisfied\"/>\n"
 "                                                    </a>\n"
 "                                                </td>\n"
 "                                            </tr>\n"
@@ -1386,15 +1383,6 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_acquirer__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_token__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_product_template__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_res_partner__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__display_name
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason__display_name
@@ -1636,15 +1624,6 @@ msgid "I don't use it"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__id
-#: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__id
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_acquirer__id
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_token__id
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__id
-#: model:ir.model.fields,field_description:sale_subscription.field_product_template__id
-#: model:ir.model.fields,field_description:sale_subscription.field_res_partner__id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason__id
@@ -1909,15 +1888,6 @@ msgid "Keep the product"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_account_move_line____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_acquirer____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_token____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_product_template____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_res_partner____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order____last_update
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line____last_update
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription____last_update
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert____last_update
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason____last_update
@@ -1987,12 +1957,12 @@ msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
-msgid "Latest Rating: Higly Dissatisfied"
+msgid "Latest Rating: Dissatisfied"
 msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
-msgid "Latest Rating: Not Satisfied"
+msgid "Latest Rating: Okay"
 msgstr ""
 
 #. module: sale_subscription
@@ -2189,6 +2159,11 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__recurring_rule_type__monthly
 msgid "Months"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: sale_subscription
@@ -3057,6 +3032,11 @@ msgid "Subscription Count"
 msgstr ""
 
 #. module: sale_subscription
+#: model:mail.template,name:sale_subscription.mail_template_subscription_invoice
+msgid "Subscription Invoice: Send by Email"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_line
 msgid "Subscription Line"
 msgstr ""
@@ -3187,8 +3167,28 @@ msgid "Subscription stage has changed"
 msgstr ""
 
 #. module: sale_subscription
+#: model:mail.template,name:sale_subscription.mail_template_subscription_alert
+msgid "Subscription: Default Email Alert"
+msgstr ""
+
+#. module: sale_subscription
 #: model:sms.template,name:sale_subscription.sms_template_data_default_alert
 msgid "Subscription: Default SMS Alert"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,name:sale_subscription.email_payment_close
+msgid "Subscription: Payment Failure"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,name:sale_subscription.email_payment_reminder
+msgid "Subscription: Payment Reminder"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,name:sale_subscription.email_payment_success
+msgid "Subscription: Payment Success"
 msgstr ""
 
 #. module: sale_subscription
@@ -3199,6 +3199,11 @@ msgstr ""
 #. module: sale_subscription
 #: model:sms.template,name:sale_subscription.sms_template_data_payment_reminder
 msgid "Subscription: Payment reminder"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,name:sale_subscription.mail_template_subscription_rating
+msgid "Subscription: Rating Request"
 msgstr ""
 
 #. module: sale_subscription

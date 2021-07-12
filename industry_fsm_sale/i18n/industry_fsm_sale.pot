@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:32+0000\n"
-"PO-Revision-Date: 2021-05-11 09:32+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,6 +39,11 @@ msgstr ""
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Add a product by clicking on it."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
+msgid "Added Products"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -101,12 +106,6 @@ msgid "Create new quotations directly from tasks"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:res.groups,name:industry_fsm_sale.group_fsm_quotation_from_task
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.res_config_settings_view_form
-msgid "Create new quotations directly from the tasks"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__currency_id
 msgid "Currency"
 msgstr ""
@@ -122,28 +121,8 @@ msgid "Display Create Invoice Secondary"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_account_analytic_line__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order__display_name
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__display_name
-msgid "Display Name"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.res_config_settings_view_form
-msgid "Documentation"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_quotations
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__allow_quotations
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__group_industry_fsm_quotations
 msgid "Extra Quotations"
 msgstr ""
 
@@ -164,20 +143,6 @@ msgstr ""
 #: model:product.product,uom_name:industry_fsm_sale.field_service_product
 #: model:product.template,uom_name:industry_fsm_sale.field_service_product_product_template
 msgid "Hours"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_account_analytic_line__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order__id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__id
-msgid "ID"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -227,20 +192,6 @@ msgid "Invoices"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_account_analytic_line____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order____last_update
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_product_count
 msgid "Material Line Product Count"
 msgstr ""
@@ -273,11 +224,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Price:"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__pricing_type
-msgid "Pricing"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -319,12 +265,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_sale_line_employee_map
 msgid "Project Sales line, employee mapping"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__project_template_id
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__project_template_id
-msgid "Project Template"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -394,14 +334,6 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_product_product__project_template_id
-#: model:ir.model.fields,help:industry_fsm_sale.field_product_template__project_template_id
-msgid ""
-"Select a billable project to be the skeleton of the new created project when"
-" selling the current product. Its stages and tasks will be duplicated."
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__timesheet_product_id
 msgid "Service"
 msgstr ""
@@ -432,18 +364,6 @@ msgstr ""
 #: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
 #, python-format
 msgid "The set quantity is invalid"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__pricing_type
-msgid ""
-"The task rate is perfect if you would like to bill different services to "
-"different customers at different rates. The fixed rate is perfect if you "
-"bill a service at a fixed rate per hour or day worked regardless of the "
-"employee who performed it. The employee rate is preferable if your employees"
-" deliver the same service at a different rate. For instance, junior and "
-"senior consultants would deliver the same service (= consultancy), but at a "
-"different rate because of their level of seniority."
 msgstr ""
 
 #. module: industry_fsm_sale

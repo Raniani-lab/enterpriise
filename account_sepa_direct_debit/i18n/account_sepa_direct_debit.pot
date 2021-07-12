@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -350,15 +350,6 @@ msgid "Direct debit payments to collect"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_journal__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_move__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_move_line__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_payment__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_company__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner__display_name
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner_bank__display_name
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__display_name
 msgid "Display Name"
 msgstr ""
@@ -421,15 +412,6 @@ msgid "IBAN"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_journal__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_move__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_move_line__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_payment__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_company__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_config_settings__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner__id
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner_bank__id
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__id
 msgid "ID"
 msgstr ""
@@ -532,15 +514,6 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_journal____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_move____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_move_line____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_payment____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_company____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner____last_update
-#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner_bank____last_update
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -585,6 +558,11 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_ids
 msgid "Messages"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -720,6 +698,11 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,name:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate
 msgid "Paid via direct debit"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model,name:account_sepa_direct_debit.model_account_payment_method
+msgid "Payment Methods"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -914,6 +897,11 @@ msgid ""
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__suitable_journal_ids
+msgid "Suitable Journal"
 msgstr ""
 
 #. module: account_sepa_direct_debit

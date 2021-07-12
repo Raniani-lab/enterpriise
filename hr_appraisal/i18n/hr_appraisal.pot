@@ -4,24 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:30+0000\n"
-"PO-Revision-Date: 2021-05-11 09:30+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: hr_appraisal
-#: model:mail.template,report_name:hr_appraisal.mail_template_appraisal_confirm_employee
-#: model:mail.template,report_name:hr_appraisal.mail_template_appraisal_confirm_manager
-#: model:mail.template,report_name:hr_appraisal.mail_template_appraisal_request
-#: model:mail.template,report_name:hr_appraisal.mail_template_appraisal_request_from_employee
-msgid "${(object.name or '').replace('/','_')}"
-msgstr ""
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_confirm_employee
@@ -87,7 +79,7 @@ msgstr ""
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Dear ${ctx.get('employee_to_name', 'employee')},\n"
+"                        Dear ${ctx.get('employee_to_name') or 'employee'},\n"
 "                        <br/><br/>\n"
 "                        An appraisal was requested.\n"
 "                        <br/>\n"
@@ -103,8 +95,6 @@ msgid ""
 "                            </a>\n"
 "                        </p>\n"
 "                        % endif\n"
-"                        <br/><br/>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.signature or '')| safe}</td></tr>\n"
 "                    </p>\n"
 "                </div>\n"
 "            "
@@ -115,7 +105,7 @@ msgstr ""
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Dear ${ctx['partner_to_name']},\n"
+"                        Dear ${ctx.get('employee_to_name') or 'employee'},\n"
 "                        <br/><br/>\n"
 "                        I wish to request an appraisal.<br/>\n"
 "                        % if ctx.get('recipient_users'):\n"
@@ -126,8 +116,6 @@ msgid ""
 "                            </a>\n"
 "                        </p>\n"
 "                        % endif\n"
-"                        <br/><br/>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.employee_id.user_id.signature or '')| safe}</td></tr>\n"
 "                    </p>\n"
 "                </div>\n"
 "            "
@@ -138,7 +126,7 @@ msgstr ""
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Dear ${ctx['partner_to_name']},\n"
+"                        Dear ${ctx.get('employee_to_name') or 'employee'},\n"
 "                        <br/><br/>\n"
 "                        I would like to start an Appraisal for you.\n"
 "\n"
@@ -149,8 +137,6 @@ msgid ""
 "                            </a>\n"
 "                        </p>\n"
 "                        % endif\n"
-"                        <br/><br/>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.signature or '')| safe}</td></tr>\n"
 "                    </p>\n"
 "                </div>\n"
 "            "
@@ -479,6 +465,16 @@ msgid "Automatically generate appraisals"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_1920
+msgid "Avatar"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_128
+msgid "Avatar 128"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Back"
 msgstr ""
@@ -491,6 +487,11 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_calendar_event
 msgid "Calendar Event"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__can_edit_body
+msgid "Can Edit Body"
 msgstr ""
 
 #. module: hr_appraisal
@@ -639,6 +640,11 @@ msgid "Deadline:"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__null_value
+msgid "Default Value"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Delete"
@@ -668,22 +674,12 @@ msgid "Desired Deadline"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_calendar_event__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_plan__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_departure_wizard__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_base__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_public__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_job__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -780,6 +776,11 @@ msgid "Feedback Templates"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__model_object_field
+msgid "Field"
+msgstr ""
+
+#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a>"
@@ -793,6 +794,13 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Final Interview Date"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__copyvalue
+msgid ""
+"Final placeholder expression, to be copy-pasted in the desired template "
+"field."
 msgstr ""
 
 #. module: hr_appraisal
@@ -851,22 +859,32 @@ msgid "Has Message"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_calendar_event__id
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_confirm_employee
+msgid "Hr Appraisal: Confirm Appraisal to Employee"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_confirm_manager
+msgid "Hr Appraisal: Confirm Appraisal to Manager"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_request_from_employee
+msgid "Hr Appraisal: Request an Appraisal From Employee"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_request
+msgid "Hr Appraisal: Request an Appraisal from Manager"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_plan__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_departure_wizard__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_base__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_public__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_job__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__id
 msgid "ID"
 msgstr ""
 
@@ -939,6 +957,11 @@ msgid "Jobs Configuration"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__lang
+msgid "Language"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__last_appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_base__last_appraisal_id
@@ -961,22 +984,12 @@ msgid "Last Meeting"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_calendar_event____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_plan____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_department____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_departure_wizard____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_base____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_public____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_job____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_company____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -1007,6 +1020,11 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__template_id
+msgid "Mail Template"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1072,6 +1090,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_ids
 msgid "Messages"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__my_activity_date_deadline
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1171,6 +1195,20 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__lang
+msgid ""
+"Optional translation language (ISO code) to select when sending out an "
+"email. If not set, the english version will be used. This should usually be "
+"a placeholder expression that provides the appropriate language, e.g. "
+"${object.partner_id.lang}."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__null_value
+msgid "Optional value to use if the target field is empty"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Or Configure Feedback Templates by Job"
 msgstr ""
@@ -1191,6 +1229,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "People I Manage"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__copyvalue
+msgid "Placeholder Expression"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1223,6 +1266,11 @@ msgstr ""
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__parent_user_id
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee_base__parent_user_id
 msgid "Related user name for the resource to manage its access."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__render_model
+msgid "Rendering Model"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1261,6 +1309,13 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Search Appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__model_object_field
+msgid ""
+"Select target field from the related document model.\n"
+"If it is a relationship field you will be able to select a target field at the destination of the relationship."
 msgstr ""
 
 #. module: hr_appraisal
@@ -1308,6 +1363,16 @@ msgid "Strongly Exceed Expectations"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__sub_model_object_field
+msgid "Sub-field"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__sub_object
+msgid "Sub-model"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__subject
 msgid "Subject"
 msgstr ""
@@ -1315,6 +1380,11 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 msgid "Subject..."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__text_description
+msgid "Text Description"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1398,11 +1468,6 @@ msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__template_id
-msgid "Use template"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_user_id
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "User"
@@ -1416,6 +1481,20 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__waiting_feedback
 msgid "Waiting Feedback from Employee/Managers"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__sub_model_object_field
+msgid ""
+"When a relationship field is selected as first field, this field lets you "
+"select the target field within the destination document model (sub-model)."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__sub_object
+msgid ""
+"When a relationship field is selected as first field, this field shows the "
+"document model the relationship goes to."
 msgstr ""
 
 #. module: hr_appraisal

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -161,6 +161,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:mail.template,name:hr_contract_salary.mail_template_send_offer_applicant
+msgid "Applicant: Your Salary Package"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -352,6 +357,11 @@ msgid "Contract is countersigned"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:mail.template,name:hr_contract_salary.mail_template_send_offer
+msgid "Contract: Your Salary Package"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Contracts Reviews"
 msgstr ""
@@ -479,10 +489,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__display_name
@@ -491,9 +497,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_payroll_structure_type__display_name
-#: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -527,6 +530,11 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__email_to
 msgid "Email To"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__sign_copy_partner_id
+msgid "Email address to which to transfer the signature."
 msgstr ""
 
 #. module: hr_contract_salary
@@ -687,10 +695,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__id
@@ -699,9 +703,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_payroll_structure_type__id
-#: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings__id
 msgid "ID"
 msgstr ""
 
@@ -773,10 +774,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value____last_update
@@ -785,9 +782,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_payroll_structure_type____last_update
-#: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -1249,6 +1243,11 @@ msgid "Send Offer"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_copy_partner_id
+msgid "Send a copy to"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sequence
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__sequence
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__sequence
@@ -1267,6 +1266,11 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__position__right
 msgid "Side Panel"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_frenquency
+msgid "Sign Frenquency"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1331,6 +1335,11 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__sum
 msgid "Sum of Advantages Values"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_template_id
+msgid "Template to Sign"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1456,11 +1465,13 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__onchange
+#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__sign_frenquency__always
 msgid "When the advantage is modified"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__always
+#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__sign_frenquency__onchange
 msgid "When the advantage is set"
 msgstr ""
 

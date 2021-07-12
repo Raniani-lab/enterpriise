@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -46,11 +46,7 @@ msgid "Disallowed Expenses Report"
 msgstr ""
 
 #. module: account_disallowed_expenses_fleet
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__display_name
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_report__display_name
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__display_name
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -60,11 +56,7 @@ msgid "Fiscality: Disallowed Expenses Rates"
 msgstr ""
 
 #. module: account_disallowed_expenses_fleet
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__id
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_report__id
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__id
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__id
 msgid "ID"
 msgstr ""
 
@@ -74,11 +66,7 @@ msgid "Journal Item"
 msgstr ""
 
 #. module: account_disallowed_expenses_fleet
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category____last_update
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_report____last_update
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate____last_update
-#: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle____last_update
 msgid "Last Modified on"
 msgstr ""
 

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -245,15 +245,10 @@ msgid ""
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement__display_name
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__display_name
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__display_name
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__display_name
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__display_name
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__display_name
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__display_name
-#: model:ir.model.fields,field_description:account_online_synchronization.field_res_company__display_name
-#: model:ir.model.fields,field_description:account_online_synchronization.field_res_partner__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -298,15 +293,10 @@ msgid "Has Message"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement__id
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__id
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__id
-#: model:ir.model.fields,field_description:account_online_synchronization.field_res_company__id
-#: model:ir.model.fields,field_description:account_online_synchronization.field_res_partner__id
 msgid "ID"
 msgstr ""
 
@@ -369,15 +359,10 @@ msgid "Journal"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement____last_update
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line____last_update
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal____last_update
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal____last_update
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line____last_update
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account____last_update
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link____last_update
-#: model:ir.model.fields,field_description:account_online_synchronization.field_res_company____last_update
-#: model:ir.model.fields,field_description:account_online_synchronization.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr ""
 

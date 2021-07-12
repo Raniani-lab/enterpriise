@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:30+0000\n"
-"PO-Revision-Date: 2021-05-11 09:30+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -495,7 +495,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_editor_manager.js:0
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Are you sure you want to remove this %s from the view?"
@@ -1374,6 +1373,9 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Disable creation"
 msgstr ""
@@ -1393,32 +1395,8 @@ msgid "Display"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_base_automation__display_name
-#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_act_window__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_act_window_view__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_report__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_server__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_default__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_filters__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_http__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_model__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_access__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_data__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_fields__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_module_module__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_qweb__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_rule__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__display_name
-#: model:ir.model.fields,field_description:web_studio.field_ir_ui_view__display_name
-#: model:ir.model.fields,field_description:web_studio.field_mail_template__display_name
-#: model:ir.model.fields,field_description:web_studio.field_mail_thread__display_name
-#: model:ir.model.fields,field_description:web_studio.field_report_paperformat__display_name
-#: model:ir.model.fields,field_description:web_studio.field_res_company__display_name
-#: model:ir.model.fields,field_description:web_studio.field_res_groups__display_name
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__display_name
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__display_name
-#: model:ir.model.fields,field_description:web_studio.field_studio_mixin__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -1656,13 +1634,6 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "Error"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_editor_manager.js:0
-#, python-format
-msgid "Error when compiling AST"
 msgstr ""
 
 #. module: web_studio
@@ -2112,32 +2083,8 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
-#: model:ir.model.fields,field_description:web_studio.field_base_automation__id
-#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_act_window__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_act_window_view__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_report__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_server__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_default__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_filters__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_http__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_model__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_access__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_data__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_fields__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_module_module__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_qweb__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_rule__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__id
-#: model:ir.model.fields,field_description:web_studio.field_ir_ui_view__id
-#: model:ir.model.fields,field_description:web_studio.field_mail_template__id
-#: model:ir.model.fields,field_description:web_studio.field_mail_thread__id
-#: model:ir.model.fields,field_description:web_studio.field_report_paperformat__id
-#: model:ir.model.fields,field_description:web_studio.field_res_company__id
-#: model:ir.model.fields,field_description:web_studio.field_res_groups__id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__id
-#: model:ir.model.fields,field_description:web_studio.field_studio_mixin__id
 #, python-format
 msgid "ID"
 msgstr ""
@@ -2311,32 +2258,8 @@ msgid "Large"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_base_automation____last_update
-#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_act_window____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_act_window_view____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_report____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_actions_server____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_default____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_filters____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_http____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_model____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_access____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_data____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_model_fields____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_module_module____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_qweb____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_rule____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu____last_update
-#: model:ir.model.fields,field_description:web_studio.field_ir_ui_view____last_update
-#: model:ir.model.fields,field_description:web_studio.field_mail_template____last_update
-#: model:ir.model.fields,field_description:web_studio.field_mail_thread____last_update
-#: model:ir.model.fields,field_description:web_studio.field_report_paperformat____last_update
-#: model:ir.model.fields,field_description:web_studio.field_res_company____last_update
-#: model:ir.model.fields,field_description:web_studio.field_res_groups____last_update
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry____last_update
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule____last_update
-#: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
 msgid "Last Modified on"
 msgstr ""
 

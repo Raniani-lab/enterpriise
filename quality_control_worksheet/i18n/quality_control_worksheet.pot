@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:37+0000\n"
-"PO-Revision-Date: 2021-02-18 14:37+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,32 +36,8 @@ msgid "Correct Worksheet"
 msgstr ""
 
 #. module: quality_control_worksheet
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__display_name
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__display_name
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_report_quality_control_worksheet_worksheet_custom__display_name
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_worksheet_template__display_name
-msgid "Display Name"
-msgstr ""
-
-#. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_small_inherit_worksheet
 msgid "Fill in Worksheet"
-msgstr ""
-
-#. module: quality_control_worksheet
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__id
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__id
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_report_quality_control_worksheet_worksheet_custom__id
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_worksheet_template__id
-msgid "ID"
-msgstr ""
-
-#. module: quality_control_worksheet
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check____last_update
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point____last_update
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_report_quality_control_worksheet_worksheet_custom____last_update
-#: model:ir.model.fields,field_description:quality_control_worksheet.field_worksheet_template____last_update
-msgid "Last Modified on"
 msgstr ""
 
 #. module: quality_control_worksheet

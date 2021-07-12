@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -166,6 +166,11 @@ msgid "Amazon-defined item reference"
 msgstr ""
 
 #. module: sale_amazon
+#: model:mail.template,name:sale_amazon.order_sync_failure
+msgid "Amazon: Order Synchronization Failure"
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_orders_ir_actions_server
 #: model:ir.cron,cron_name:sale_amazon.ir_cron_sync_amazon_orders
 #: model:ir.cron,name:sale_amazon.ir_cron_sync_amazon_orders
@@ -274,15 +279,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__display_name
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__display_name
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_crm_team__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_product_product__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_product_template__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_res_partner__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order_line__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_stock_location__display_name
-#: model:ir.model.fields,field_description:sale_amazon.field_stock_picking__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -345,15 +341,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__id
-#: model:ir.model.fields,field_description:sale_amazon.field_crm_team__id
-#: model:ir.model.fields,field_description:sale_amazon.field_product_product__id
-#: model:ir.model.fields,field_description:sale_amazon.field_product_template__id
-#: model:ir.model.fields,field_description:sale_amazon.field_res_config_settings__id
-#: model:ir.model.fields,field_description:sale_amazon.field_res_partner__id
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order__id
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order_line__id
-#: model:ir.model.fields,field_description:sale_amazon.field_stock_location__id
-#: model:ir.model.fields,field_description:sale_amazon.field_stock_picking__id
 msgid "ID"
 msgstr ""
 
@@ -408,15 +395,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account____last_update
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace____last_update
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_crm_team____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_product_product____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_product_template____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_res_partner____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order_line____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_stock_location____last_update
-#: model:ir.model.fields,field_description:sale_amazon.field_stock_picking____last_update
 msgid "Last Modified on"
 msgstr ""
 

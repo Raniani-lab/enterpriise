@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -228,19 +228,7 @@ msgid "Discard"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_change_production_qty__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workcenter__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__display_name
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point_test_type__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_stock_move__display_name
-#: model:ir.model.fields,field_description:mrp_workorder.field_stock_move_line__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -307,19 +295,7 @@ msgid "Finished Steps"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_change_production_qty__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workcenter__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__id
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point_test_type__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_stock_move__id
-#: model:ir.model.fields,field_description:mrp_workorder.field_stock_move_line__id
 msgid "ID"
 msgstr ""
 
@@ -365,19 +341,7 @@ msgid "Is Workorder Step"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_change_production_qty____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workcenter____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder____last_update
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point_test_type____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_stock_move____last_update
-#: model:ir.model.fields,field_description:mrp_workorder.field_stock_move_line____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -519,7 +483,7 @@ msgid "Please enter a positive quantity."
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_production.py:0
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
 msgid ""
 "Please go in the Operations tab and perform the following work orders and "

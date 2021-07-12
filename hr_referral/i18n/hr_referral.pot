@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 09:31+0000\n"
-"PO-Revision-Date: 2021-05-11 09:31+0000\n"
+"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"PO-Revision-Date: 2021-07-12 07:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -343,10 +343,6 @@ msgid "Direct Referral"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__display_name
-#: model:ir.model.fields,field_description:hr_referral.field_hr_job__display_name
-#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__display_name
-#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_stage__display_name
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__display_name
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__display_name
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__display_name
@@ -356,7 +352,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__display_name
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__display_name
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__display_name
-#: model:ir.model.fields,field_description:hr_referral.field_res_users__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -581,10 +576,6 @@ msgid "Hr Referral Reward"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_job__id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_stage__id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__id
@@ -594,7 +585,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__id
-#: model:ir.model.fields,field_description:hr_referral.field_res_users__id
 msgid "ID"
 msgstr ""
 
@@ -671,10 +661,6 @@ msgid "Job Start Recruitment Date"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant____last_update
-#: model:ir.model.fields,field_description:hr_referral.field_hr_job____last_update
-#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report____last_update
-#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_stage____last_update
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert____last_update
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend____last_update
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level____last_update
@@ -684,7 +670,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report____last_update
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward____last_update
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail____last_update
-#: model:ir.model.fields,field_description:hr_referral.field_res_users____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -805,6 +790,11 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_ids
 msgid "Messages"
+msgstr ""
+
+#. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: hr_referral
@@ -1023,6 +1013,11 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
 msgid "Referral Rate"
+msgstr ""
+
+#. module: hr_referral
+#: model:res.groups,name:hr_referral.group_hr_referral_reward_responsible_user
+msgid "Referral Reward Responsible User"
 msgstr ""
 
 #. module: hr_referral

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2021-07-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -187,7 +187,6 @@ msgid "Disabled"
 msgstr ""
 
 #. module: account_auto_transfer
-#: model:ir.model.fields,field_description:account_auto_transfer.field_account_move__display_name
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__display_name
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__display_name
 msgid "Display Name"
@@ -209,7 +208,6 @@ msgid "Generated Moves"
 msgstr ""
 
 #. module: account_auto_transfer
-#: model:ir.model.fields,field_description:account_auto_transfer.field_account_move__id
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__id
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__id
 msgid "ID"
@@ -226,7 +224,6 @@ msgid "Journal Entry"
 msgstr ""
 
 #. module: account_auto_transfer
-#: model:ir.model.fields,field_description:account_auto_transfer.field_account_move____last_update
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model____last_update
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line____last_update
 msgid "Last Modified on"

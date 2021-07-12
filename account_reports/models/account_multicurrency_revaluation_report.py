@@ -112,10 +112,10 @@ class MulticurrencyRevaluationReport(models.Model):
 
         return """
             SELECT {move_line_fields},
-                   aml.amount_currency                                  AS report_amount_currency,
-                   aml.balance                                          AS report_balance,
-                   aml.amount_currency / custom_currency_table.rate               AS report_amount_currency_current,
-                   aml.amount_currency / custom_currency_table.rate - aml.balance AS report_adjustment,
+                   aml.amount_residual_currency                         AS report_amount_currency,
+                   aml.amount_residual                                  AS report_balance,
+                   aml.amount_residual_currency / custom_currency_table.rate                       AS report_amount_currency_current,
+                   aml.amount_residual_currency / custom_currency_table.rate - aml.amount_residual AS report_adjustment,
                    aml.currency_id                                      AS report_currency_id,
                    account.code                                         AS account_code,
                    account.name                                         AS account_name,
@@ -131,6 +131,7 @@ class MulticurrencyRevaluationReport(models.Model):
             JOIN res_currency currency ON currency.id = aml.currency_id
             JOIN {custom_currency_table} ON custom_currency_table.currency_id = currency.id
             WHERE (account.currency_id != aml.company_currency_id OR (account.internal_type IN ('receivable', 'payable') AND (aml.currency_id != aml.company_currency_id)))
+              AND (aml.amount_residual != 0 OR aml.amount_residual_currency != 0)
 
             UNION ALL
 

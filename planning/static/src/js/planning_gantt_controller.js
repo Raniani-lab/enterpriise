@@ -107,7 +107,7 @@ var PlanningGanttController = GanttController.extend({
                     // Then the shift should be saved as a template too.
                     self.displayNotification({
                         type: 'success',
-                        message: `<i class="fa fa-fw fa-check"/>` + _t("This shift was successfully saved as a template."),
+                        message: `<i class="fa fa-fw fa-check"></i><span class="ml-1">${_t("This shift was successfully saved as a template.")}</span>`,
                         messageIsHtml: true,
                     });
                 }
@@ -159,7 +159,7 @@ var PlanningGanttController = GanttController.extend({
         .then(function (result) {
             let notificationOptions = {
                 type: 'success',
-                message: `<i class="fa fa-fw fa-check"/> ${_t("The shifts from the previous week have successfully been copied.")}`,
+                message: `<i class="fa fa-fw fa-check"></i><span class="ml-1">${_t("The shifts from the previous week have successfully been copied.")}</span>`,
                 messageIsHtml: true,
             };
             if (!result) {

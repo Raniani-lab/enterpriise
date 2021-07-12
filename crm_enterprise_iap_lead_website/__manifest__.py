@@ -9,7 +9,7 @@
     'category': 'Sales/CRM',
     'depends': [
         'crm_enterprise',
-        'crm_iap_lead_website',
+        'website_crm_iap_reveal',
     ],
     'data': [
         'views/crm_lead_views.xml',

@@ -123,6 +123,15 @@ var GanttRow = Widget.extend({
         }
         this.isRTL = _t.database.parameters.direction === "rtl";
     },
+    /**
+     * @override
+     */
+    destroy: function () {
+        if (this.$el) {
+            this.$('.o_gantt_pill').popover('dispose');
+        }
+        this._super();
+    },
  
     //--------------------------------------------------------------------------
     // Public

@@ -247,8 +247,8 @@ var GanttRenderer = AbstractRenderer.extend({
         var proms = this.proms;
         delete this.proms;
         return Promise.all(proms).then(function () {
-            self.$el.empty();
             _.invoke(oldRowWidgets, 'destroy');
+            self.$el.empty();
 
             self._replaceElement(QWeb.render('GanttView', {widget: self, isMobile: config.device.isMobile}));
             const $containment = $('<div id="o_gantt_containment"/>');

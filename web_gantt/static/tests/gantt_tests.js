@@ -2790,6 +2790,78 @@ QUnit.module('Views', {
         GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
     });
 
+    QUnit.test('drag&drop on other pill in grouped view', async function (assert) {
+        assert.expect(4);
+
+        var POPOVER_DELAY = GanttRow.prototype.POPOVER_DELAY;
+        GanttRow.prototype.POPOVER_DELAY = 0;
+
+        this.data.tasks.records[0].start = '2018-12-16 05:00:00';
+        this.data.tasks.records[0].stop = '2018-12-16 07:00:00';
+        this.data.tasks.records[1].stop = '2018-12-17 13:00:00';
+
+        let resolve;
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt default_scale="week" date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form/>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['project_id'],
+            mockRPC: async function (route, args) {
+                const promise = this._super.apply(this, arguments);
+                if (args.method === 'write') {
+                    await new Promise(r => {
+                        resolve = r;
+                    });
+                }
+                return promise;
+            },
+        });
+
+        const $firstPill = gantt.$('.o_gantt_pill:nth(0)');
+        let $secondPill = gantt.$('.o_gantt_pill:nth(1)');
+
+        // enable the drag feature
+        await testUtils.dom.triggerMouseEvent($secondPill, 'mouseover');
+        assert.hasClass($secondPill, 'ui-draggable', "the pill should be draggable after mouse enter");
+        assert.containsOnce(document.body, 'div.popover h3:contains(Task 2)', 'the pill should be display the popover');
+
+        // move the pill on hover the other pill
+        await testUtils.dom.dragAndDrop($secondPill, $firstPill, {
+            disableDrop: true,
+        });
+
+        // drop the pill on the other pill, the mouse stay at the same place
+        await testUtils.dom.triggerMouseEvent($secondPill, 'mouseup');
+        await testUtils.dom.triggerMouseEvent($firstPill, 'mouseover');
+
+        // wait popover is shown
+        await testUtils.nextTick();
+        await testUtils.returnAfterNextAnimationFrame();
+
+        assert.containsOnce(document.body, 'div.popover h3:contains(Task 1)', 'when drag&drop the other pills should be display the popover');
+
+        // force a long transition duration (avoid intermittent error raising)
+        $('div.popover:has(h3:contains(Task 1))').css('transition-duration', '1s');
+
+        // wait the redrawing and popover is removed
+        resolve();
+        await testUtils.nextTick();
+        await testUtils.returnAfterNextAnimationFrame();
+
+        assert.containsNone(document.body, 'div.popover', 'should not have a popover anymore');
+
+        gantt.destroy();
+
+        GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
+    });
+
     // ATTRIBUTES TESTS
 
     QUnit.test('create attribute', async function (assert) {

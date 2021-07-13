@@ -93,6 +93,26 @@ class TestFsmFlowStock(TestFsmFlowSale):
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done', 'done'], "Pickings should be set as done")
 
+    def test_fsm_mixed_pickings(self):
+        '''
+            1. Add normal product on SO
+            2. Validate fsm task
+            3. Check that pickings are not auto validated
+        '''
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        self.task.sale_order_id.write({
+            'order_line': [
+                (0, 0, {
+                    'product_id': self.product_a.id,
+                    'product_uom_qty': 1,
+                })
+            ]
+        })
+        self.task.sale_order_id.action_confirm()
+        self.task.with_user(self.project_user).action_fsm_validate()
+        self.assertNotEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done'], "Pickings should be set as done")
+
     def test_fsm_flow_with_default_warehouses(self):
         '''
             When the multi warehouses feature is activated, a default warehouse can be set 

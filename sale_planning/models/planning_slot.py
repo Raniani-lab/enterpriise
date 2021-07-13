@@ -508,6 +508,56 @@ class PlanningSlot(models.Model):
             slots_assigned = slot_assigned or slots_assigned
         return slots_assigned
 
+    # -------------------------------------------
+    # Copy slots
+    # -------------------------------------------
+
+    def _init_remaining_hours_to_plan(self, remaining_hours_to_plan):
+        """
+            Fills the remaining_hours_to_plan dict for a given slot and returns wether
+            there are enough remaining hours.
+
+            :return a bool representing wether or not there are still hours remaining
+        """
+        self.ensure_one()
+        res = super()._init_remaining_hours_to_plan(remaining_hours_to_plan)
+        if self.sale_line_id.product_id.planning_enabled:
+            # if the slot is linked to a slot, we only need to allocate the remaining hours to plan
+            # we keep track of those hours in a dict and decrease it each time we create a slot.
+            if self.sale_line_id not in remaining_hours_to_plan:
+                remaining_hours_to_plan[self.sale_line_id] = self.sale_line_id.planning_hours_to_plan - self.sale_line_id.planning_hours_planned
+            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) < 1:
+                return False  # nothing left to allocate.
+        return res
+
+    def _update_remaining_hours_to_plan_and_values(self, remaining_hours_to_plan, values):
+        """
+            Update the remaining_hours_to_plan with the allocated hours of the slot in `values`
+            and returns wether there are enough remaining hours.
+
+            If remaining_hours is strictly positive, and the allocated hours of the slot in `values` is
+            higher than remaining hours, than update the values in order to consume at most the
+            number of remaining_hours still available.
+
+            :return a bool representing wether or not there are still hours remaining
+        """
+        if self.sale_line_id.product_id.planning_enabled:
+            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) < 1:
+                return False
+            # The allocated hours of the slot can be computed as for a slot with allocation_type == 'planning'
+            # since it is build from an employee work interval, thus will last less than 24hours.
+            allocated_hours = (values['end_datetime'] - values['start_datetime']).total_seconds() / 3600
+            # Allocated_hours is discounted from remaining hours with a maximum of : remaining_hours
+            # So, the difference between the two values must be checked, if remaining_hours is less than the
+            # allocated hours, than update the end_datetime.
+            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], allocated_hours, precision_digits=2) < 0:
+                remaining_hours = remaining_hours_to_plan[self.sale_line_id] * 100.0 / self.allocated_percentage
+                values['end_datetime'] = values['start_datetime'] + timedelta(hours=remaining_hours)
+                remaining_hours_to_plan[self.sale_line_id] -= remaining_hours
+            else:
+                remaining_hours_to_plan[self.sale_line_id] -= allocated_hours
+        return True
+
     def action_unschedule(self):
         self.ensure_one()
         if self.sale_line_id.product_id.planning_enabled:

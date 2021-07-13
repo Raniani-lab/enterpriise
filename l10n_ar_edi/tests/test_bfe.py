@@ -1,18 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.exceptions import UserError
 from odoo.tests import tagged
 from . import common
-import logging
-
-_logger = logging.getLogger(__name__)
 
 @tagged('bfe', 'ri', '-at_install', 'external_l10n', 'post_install', '-standard', 'external')
 class TestBfe(common.TestEdi):
 
     @classmethod
     def setUpClass(cls):
-        super(TestBfe, cls).setUpClass()
-        cls.partner = cls.partner_ri
+        super(TestBfe, cls).setUpClass('wsbfe')
+        cls.partner = cls.res_partner_adhoc
         cls.journal = cls._create_journal(cls, 'wsbfe')
         cls.product_iva_21.l10n_ar_ncm_code = '8421.12.10'
         cls.service_iva_27.l10n_ar_ncm_code = '8422.11.00'
@@ -88,7 +84,7 @@ class TestBfe(common.TestEdi):
         invoice = self._create_invoice()
         invoice.invoice_line_ids.filtered(lambda x: x.tax_ids).tax_ids = [(4, iibb_tax.id)]
         self.assertIn(iibb_tax.name, invoice.invoice_line_ids.mapped('tax_ids').mapped('name'))
-        self._edi_validate_and_review(invoice, expected_result='O')
+        self._validate_and_review(invoice, expected_result='O')
 
     def test_21_iibb_sales_usd(self):
         iibb_tax = self._search_tax('percepcion_iibb_ba')
@@ -98,4 +94,4 @@ class TestBfe(common.TestEdi):
         invoice = self._create_invoice({'currency': self.env.ref('base.USD')})
         invoice.invoice_line_ids.filtered(lambda x: x.tax_ids).tax_ids = [(4, iibb_tax.id)]
         self.assertIn(iibb_tax.name, invoice.invoice_line_ids.mapped('tax_ids').mapped('name'))
-        self._edi_validate_and_review(invoice, expected_result='O')
+        self._validate_and_review(invoice, expected_result='O')

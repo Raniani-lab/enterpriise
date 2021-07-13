@@ -1,22 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.tests import tagged
 from . import common
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
-@tagged('post_install_l10n', '-at_install', 'post_install')
+@tagged('-at_install', 'external_l10n', 'post_install', '-standard', 'external')
 class TestMono(common.TestEdi):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls, afip_ws):
         # Issue ['C', 'E'] and  Receive ['B', 'C', 'I']
-        super(TestMono, cls).setUpClass()
-        cls.company_mono = cls.env.ref('l10n_ar.company_mono')
-        context = dict(cls.env.context, allowed_company_ids=[cls.company_mono.id])
-        cls._create_afip_connections(cls, cls.company_mono)
-        cls.env = cls.env(context=context)
+        super(TestMono, cls).setUpClass(afip_ws)
+        # Login in "Monotributista" Company
+        cls.env.user.write({'company_id': cls.company_mono.id})
+        cls._create_afip_connections(cls, cls.company_mono, afip_ws, 'test_cert2.crt')
 
 
 @tagged('fe', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
@@ -24,8 +20,8 @@ class TestFE(TestMono):
 
     @classmethod
     def setUpClass(cls):
-        super(TestFE, cls).setUpClass()
-        cls.partner = cls.partner_ri
+        super(TestFE, cls).setUpClass('wsfe')
+        cls.partner = cls.res_partner_adhoc
         cls.journal = cls._create_journal(cls, 'wsfe')
         cls.document_type.update({
             'invoice_c': cls.env.ref('l10n_ar.dc_c_f'),
@@ -73,35 +69,35 @@ class TestFE(TestMono):
         self._test_case_credit_note('credit_note_c', invoice)
 
 
-@tagged('fe', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
-class TestMiPyME(TestMono):
+# @tagged('fe', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
+# class TestMiPyME(TestMono):
 
-    @classmethod
-    def setUpClass(cls):
-        super(TestMiPyME, cls).setUpClass()
-        cls.partner = cls.partner_ri
-        cls.journal = cls._create_journal(cls, 'wsfe')
-        cls.document_type.update({
-            'invoice_mipyme_c': cls.env.ref('l10n_ar.dc_fce_c_f')})
+#     @classmethod
+#     def setUpClass(cls):
+#         super(TestMiPyME, cls).setUpClass('wsfe')
+#         cls.partner = cls.res_partner_adhoc
+#         cls.journal = cls._create_journal(cls, 'wsfe')
+#         cls.document_type.update({
+#             'invoice_mipyme_c': cls.env.ref('l10n_ar.dc_fce_c_f')})
 
-    def test_10_invoice_mipyme_c_product(self):
-        self._test_case('invoice_mipyme_c', 'product')
+#     def test_10_invoice_mipyme_c_product(self):
+#         self._test_case('invoice_mipyme_c', 'product')
 
-    def test_11_invoice_mipyme_c_service(self):
-        self._test_case('invoice_mipyme_c', 'service')
+#     def test_11_invoice_mipyme_c_service(self):
+#         self._test_case('invoice_mipyme_c', 'service')
 
-    def test_12_invoice_mipyme_c_product_service(self):
-        self._test_case('invoice_mipyme_c', 'product_service')
+#     def test_12_invoice_mipyme_c_product_service(self):
+#         self._test_case('invoice_mipyme_c', 'product_service')
 
 
-@tagged('fex', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
-class TestFEX(common.TestFex, TestMono):
+# @tagged('fex', 'mono', 'external_l10n', '-at_install', 'post_install', '-standard', 'external')
+# class TestFEX(common.TestFex, TestMono):
 
-    def test_01_invoice_e_product(self):
-        self._test_case('invoice_e', 'product')
+#     def test_01_invoice_e_product(self):
+#         self._test_case('invoice_e', 'product')
 
-    def test_02_invoice_e_service(self):
-        self._test_case('invoice_e', 'service')
+#     def test_02_invoice_e_service(self):
+#         self._test_case('invoice_e', 'service')
 
-    def test_03_invoice_e_product_service(self):
-        self._test_case('invoice_e', 'product_service')
+#     def test_03_invoice_e_product_service(self):
+#         self._test_case('invoice_e', 'product_service')

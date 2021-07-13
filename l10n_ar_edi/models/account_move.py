@@ -733,9 +733,10 @@ class AccountMove(models.Model):
         return bool(self.journal_id.l10n_latam_use_documents and self.env.company.account_fiscal_country_id.code == "AR" and self.journal_id.l10n_ar_afip_ws)
 
     def _get_last_sequence_from_afip(self):
-        """ Get last number from AFIP, this will be applied only when the account.move state = 'posted' in order to only
-        connect to AFIP when the invoice has been posted, in the other case will return a sequence with number 0 """
-        last_number = 0 if self._is_dummy_afip_validation() or self.state != 'posted' else self.journal_id._l10n_ar_get_afip_last_invoice_number(self.l10n_latam_document_type_id)
+        """ This method is called to return the highest number for electronic invoices, it will try to connect to AFIP
+            only if it is necessary (when we are validating the invoice and need to set the document number)"""
+        last_number = 0 if self._is_dummy_afip_validation() or self.l10n_latam_document_number \
+            else self.journal_id._l10n_ar_get_afip_last_invoice_number(self.l10n_latam_document_type_id)
         return "%s %05d-%08d" % (self.l10n_latam_document_type_id.doc_code_prefix, self.journal_id.l10n_ar_afip_pos_number, last_number)
 
     def _get_last_sequence(self, relaxed=False, with_prefix=None):

@@ -14,6 +14,7 @@
         'utm',
         'rating',
         'web_tour',
+        'web_cohort',
         'resource',
         'portal',
         'digest',

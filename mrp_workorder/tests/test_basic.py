@@ -1117,9 +1117,10 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         production_table.button_plan()
         workorder = production_table.workorder_ids[0]
 
-        # Check that the workorder is planned now and that it lasts one hour
-        self.assertAlmostEqual(workorder.date_planned_start, datetime.now(), delta=timedelta(seconds=10), msg="Workorder should be planned now.")
-        self.assertAlmostEqual(workorder.date_planned_finished, datetime.now() + timedelta(hours=1), delta=timedelta(seconds=10), msg="Workorder should be done in an hour.")
+        # Check that the workorder is planned the next hour and that it lasts one hour
+        scheduledDate = datetime.now().replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+        self.assertEqual(workorder.date_planned_start, scheduledDate, msg="Workorder should be planned now.")
+        self.assertEqual(workorder.date_planned_finished, scheduledDate + timedelta(hours=1), msg="Workorder should be done in an hour.")
 
     def test_04b_test_planning_date(self):
         """ Test that workorder are planned at the correct time when setting a start date """

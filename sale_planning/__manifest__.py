@@ -21,6 +21,7 @@
         'views/planning_slot_views.xml',
         'views/planning_templates.xml',
         'views/product_views.xml',
+        'views/sale_order_views.xml',
     ],
     'demo': [
         'data/product_demo.xml',

@@ -290,7 +290,7 @@ var GridController = AbstractController.extend({
             return row.values[g][1];
         }), function (g) {
             return g;
-        }).join(': ');
+        }).join(' - ');
         // pass group by, section and col fields as default in context
         var cols_path = cell_path.slice(0, -3).concat(['cols'], cell_path.slice(-1));
         var col = utils.into(state.data, cols_path);
@@ -326,6 +326,7 @@ var GridController = AbstractController.extend({
             ],
             domain: cell.domain,
             context: ctx,
+            help: "<p class='o_view_nocontent_smiling_face'>No activities found</p>",
         });
     },
     /**

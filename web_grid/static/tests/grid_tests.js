@@ -664,7 +664,7 @@ QUnit.module('Views', {
             var action = event.data.action;
 
             assert.deepEqual(action.domain, domain, "should trigger a do_action with correct values");
-            assert.strictEqual(action.name, "P1: BS task",
+            assert.strictEqual(action.name, "P1 - BS task",
                 "should have correct action name");
             assert.strictEqual(action.context.default_project_id, 31, "should pass project_id in context when click on info icon on cell");
             assert.strictEqual(action.context.default_task_id, 1 , "should pass task_id in context when click on info icon on cell");

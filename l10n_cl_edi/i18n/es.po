@@ -529,39 +529,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:mail.template,body_html:l10n_cl_edi.l10n_cl_edi_email_template_invoice
 #, fuzzy
-#| msgid ""
-#| "<div style=\"margin: 0px; padding: 0px;\">\n"
-#| "    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-#| "        Dear\n"
-#| "        % if object.commercial_partner_id:\n"
-#| "            ${object.partner_id.name} (${object.commercial_partner_id."
-#| "name}),\n"
-#| "        % else:\n"
-#| "            ${object.partner_id.name},\n"
-#| "        % endif\n"
-#| "        <br/><br/>\n"
-#| "        Here is your\n"
-#| "        % if object.name:\n"
-#| "            invoice <strong>${object.name}</strong>\n"
-#| "        % else:\n"
-#| "            invoice\n"
-#| "        %endif\n"
-#| "        % if object.invoice_origin:\n"
-#| "            (with reference: ${object.invoice_origin})\n"
-#| "        % endif\n"
-#| "        with a total amount of <strong>${format_amount(object."
-#| "amount_total, object.currency_id)}</strong>\n"
-#| "        from ${object.company_id.name}.\n"
-#| "        % if object.payment_state == 'paid':\n"
-#| "            This invoice is already paid.\n"
-#| "        % else:\n"
-#| "            Please remit payment at your earliest convenience.\n"
-#| "        % endif\n"
-#| "        <br/><br/>\n"
-#| "        Do not hesitate to contact us if you have any questions.\n"
-#| "    </p>\n"
-#| "</div>\n"
-#| "            "
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
@@ -1677,7 +1644,6 @@ msgstr "Diario"
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_move
 #, fuzzy
-#| msgid "Journal Entries"
 msgid "Journal Entry"
 msgstr "Asientos contables"
 
@@ -2501,9 +2467,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: code:addons/l10n_cl_edi/models/l10n_latam_document_type.py:0
 #, fuzzy, python-format
-#| msgid ""
-#| "There are no CAFs available for folio %s in the sequence of %s. Please "
-#| "upload a CAF file or ask for a new one at www.sii.cl website"
 msgid ""
 "There are no CAFs available. Please upload a CAF file or ask for a new one "
 "at www.sii.cl website"
@@ -2843,7 +2806,6 @@ msgstr "Donde dice: %s debería decir: %s"
 #. module: l10n_cl_edi
 #: code:addons/l10n_cl_edi/wizard/account_move_debit.py:0
 #, fuzzy, python-format
-#| msgid "You can add a debit note only if the %s is accepted by SII. "
 msgid ""
 "You can add a debit note only if the %s is accepted or objected by SII. "
 msgstr ""

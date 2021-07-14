@@ -262,7 +262,7 @@ class TestEdi(SingleTransactionCase):
         refund_wizard = self.env['account.move.reversal'].with_context({'active_ids': [invoice.id], 'active_model': 'account.move'}).create({
             'reason': data.get('reason', 'Mercadería defectuosa'),
             'refund_method': data.get('refund_method', 'refund'),
-            'journal_id': self.invoice.journal_id.id,
+            'journal_id': invoice.journal_id.id,
         })
 
         forced_document_type = data.get('document_type')

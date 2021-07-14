@@ -38,10 +38,7 @@ class AccountBatchPayment(models.Model):
 
     file_generation_enabled = fields.Boolean(help="Whether or not this batch payment should display the 'Generate File' button instead of 'Print' in form view.", compute='_compute_file_generation_enabled')
 
-    @api.depends('batch_type',
-                 'journal_id.inbound_payment_method_line_ids',
-                 'journal_id.outbound_payment_method_line_ids',
-                 'payment_ids.payment_method_line_id')
+    @api.depends('batch_type', 'journal_id', 'payment_ids')
     def _compute_payment_method_id(self):
         ''' Compute the 'payment_method_line_id' field.
         This field is not computed in '_compute_available_payment_method_line_ids' because it's a stored editable one.
@@ -66,9 +63,7 @@ class AccountBatchPayment(models.Model):
             else:
                 batch.payment_method_id = False
 
-    @api.depends('batch_type',
-                 'journal_id.inbound_payment_method_line_ids',
-                 'journal_id.outbound_payment_method_line_ids')
+    @api.depends('batch_type', 'journal_id')
     def _compute_available_payment_method_ids(self):
         for batch in self:
             available_payment_method_lines = batch.journal_id._get_available_payment_method_lines(batch.batch_type)

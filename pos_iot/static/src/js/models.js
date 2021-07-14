@@ -52,7 +52,7 @@ models.load_models([{
                 case 'payment':
                     _.each(self.payment_methods, function(payment_method) {
                         if (payment_method.iot_device_id[0] == iot_device.id) {
-                            payment_method.terminal_proxy = new DeviceProxy(self, { iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
+                            payment_method.terminal_proxy = new DeviceProxy(self, { iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manufacturer: iot_device.manufacturer});
                         }
                     });
                     break;

@@ -33,6 +33,9 @@
         'web.assets_frontend': [
             'sale_planning/static/src/js/frontend/**/*',
         ],
+        'web.assets_qweb': [
+            'sale_planning/static/src/xml/**/*',
+        ],
     },
     'auto_install': True,
     'license': 'OEEL-1',

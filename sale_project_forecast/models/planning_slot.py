@@ -49,3 +49,42 @@ class PlanningSlot(models.Model):
         # Ensure this will be displayed in the right order
         name_get_fields = [item for item in super()._name_get_fields() if item not in ['sale_line_id', 'project_id', 'task_id']]
         return name_get_fields + ['sale_line_id', 'project_id', 'task_id']
+
+    # -----------------------------------------------------------------
+    # Business methods
+    # -----------------------------------------------------------------
+
+    # -----------------------------------------------------------------
+    # Assign sales order lines
+    # -----------------------------------------------------------------
+
+    @api.model
+    def _get_employee_to_assign_priority_list(self):
+        """
+            This method will extend the possible priorities criteria.
+            It makes sure any other priority is not skipped.
+        """
+        priority_list = super()._get_employee_to_assign_priority_list()
+
+        def insert_after_or_append(preceding_priority, priority_to_insert):
+            if preceding_priority in priority_list:
+                priority_list.insert(priority_list.index(preceding_priority) + 1, priority_to_insert)
+            else:
+                priority_list.append(priority_to_insert)
+
+        insert_after_or_append('previous_slot', 'task_assignee')
+        return priority_list
+
+    def _get_employee_per_priority(self, priority, employee_ids_to_exclude, cache):
+        """
+            This method returns the id of an employee filling the priority criterias and
+            not present in the employee_ids_to_exclude.
+        """
+        employee_id = super()._get_employee_per_priority(priority, employee_ids_to_exclude, cache)
+        if employee_id or priority in cache:
+            return employee_id
+        if priority == 'task_assignee' and self.task_id:
+            tmp_emp_id = self.task_id.user_id.employee_id.id
+            if tmp_emp_id not in employee_ids_to_exclude:
+                cache[priority] = [tmp_emp_id]
+        return cache[priority].pop(0) if cache.get(priority) else employee_id

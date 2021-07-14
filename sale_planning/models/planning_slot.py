@@ -406,3 +406,104 @@ class PlanningSlot(models.Model):
             resource = self.env['resource.resource'].browse(vals.get('resource_id'))
         resource_calendar_validity_intervals = resource._get_calendars_validity_within_period(start, end, default_company=self.company_id)[resource.id]
         return resource_calendar_validity_intervals, resource
+
+    # -------------------------------------------
+    # Slots Assignation
+    # -------------------------------------------
+
+    @api.model
+    def _get_employee_to_assign_priority_list(self):
+        return ['previous_slot', 'default_role', 'roles']
+
+    def _get_employee_per_priority(self, priority, employee_ids_to_exclude, cache):
+        """
+            This method returns the id of an employee filling the priority criterias and
+            not present in the employee_ids_to_exclude.
+        """
+        if priority in cache:
+            return cache[priority].pop(0) if cache.get(priority) else None
+        if priority == 'previous_slot':
+            search = self.read_group([
+                ('sale_line_id', '=', self.sale_line_id.id),
+                ('employee_id', '!=', False),
+                ('start_datetime', '!=', False),
+                ('employee_id', 'not in', employee_ids_to_exclude),
+            ], ['employee_id', 'end_datetime:max'], ['employee_id'], orderby='end_datetime desc')
+            cache[priority] = [res['employee_id'][0] for res in search]
+        elif priority == 'default_role':
+            search = self.env['hr.employee'].search_read([
+                ('default_planning_role_id', '=', self.role_id.id),
+                ('id', 'not in', employee_ids_to_exclude),
+            ], ['id'])
+            cache[priority] = [res['id'] for res in search]
+        elif priority == 'roles':
+            search = self.env['hr.employee'].search_read([
+                ('planning_role_ids.id', '=', self.role_id.id),
+                ('id', 'not in', employee_ids_to_exclude),
+            ], ['id'])
+            cache[priority] = [res['id'] for res in search]
+        return cache[priority].pop(0) if cache.get(priority) else None
+
+    def _get_employee_to_assign(self, default_priority, employee_ids_to_exclude, cache):
+        """
+            Returns the id of the employee to assign and its corresponding priority
+        """
+        self.ensure_one()
+        # This method is written to be overridden, so as every module can keep the priority ordered as its required.
+        priority_list = self._get_employee_to_assign_priority_list()
+        for priority in priority_list:
+            if not default_priority or priority == default_priority:
+                # if default_priority is given, the search only starts with this priority.
+                default_priority = None
+                employee_id = self._get_employee_per_priority(priority, employee_ids_to_exclude, cache)
+                if employee_id:
+                    return employee_id, priority
+        return None, None
+
+    @api.model
+    def _get_ordered_slots_to_assign(self, domain):
+        """
+            Returns an ordered list of slots (linked to sol) to plan while using the action_plan_sale_order.
+
+            This method is meant to be easily overriden.
+        """
+        return self.search(domain, order='sale_line_id desc')
+
+    @api.model
+    def action_plan_sale_order(self, view_domain):
+        new_view_domain = []
+        for clause in view_domain:
+            # remove clauses on start_datetime and end_datetime
+            if isinstance(clause, str) or clause[0] not in ['start_datetime', 'end_datetime']:
+                new_view_domain.append(clause)
+        domain = expression.AND([new_view_domain, [('start_datetime', '=', False), ('sale_line_id', '!=', False)]])
+        if self.env.context.get('planning_gantt_active_sale_order_id'):
+            domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
+        slots_to_assign = self._get_ordered_slots_to_assign(domain)
+        slots_assigned = False
+        start_datetime = max(datetime.strptime(self.env.context.get('start_date'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
+        employee_ids_to_exclude = []
+        for slot in slots_to_assign:
+            slot_assigned = False
+            previous_priority = None
+            cache = {}
+            while not slot_assigned:
+                # Retrieve an employee_id that may be assigned to this slot, excluding the ones who have no time left.
+                # The previous priority is given in order to get the second employee that respects the previous criterias
+                employee_id, previous_priority = slot._get_employee_to_assign(previous_priority, employee_ids_to_exclude, cache)
+                if not employee_id:
+                    break
+                # The browse is mandatory to access the resource calendar
+                employee = self.env['hr.employee'].browse(employee_id)
+                vals = {
+                    'start_datetime': start_datetime,
+                    'end_datetime': start_datetime + timedelta(days=1),
+                    'resource_id': employee.resource_id.id
+                }
+                # With the context keys, the maximal date to assign the slot will be self.env.context.get('end_date')
+                slot_assigned = slot.write(vals)
+                if not slot_assigned:
+                    # if no slot was generated (it uses the write method), then the employee_id is excluded from the employees assignable on this slot.
+                    employee_ids_to_exclude.append(employee_id)
+            slots_assigned = slot_assigned or slots_assigned
+        return slots_assigned

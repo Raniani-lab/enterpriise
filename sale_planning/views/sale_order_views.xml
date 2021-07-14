@@ -12,7 +12,9 @@
                 <field name="planning_initial_date" invisible="1"/>
                 <button name="%(planning.planning_action_schedule_by_resource)d"
                     type="action"
-                    context="{'default_sale_line_id': planning_first_sale_line_id, 'initialDate': planning_initial_date}"
+                    context="{'default_sale_line_id': planning_first_sale_line_id,
+                              'initialDate': planning_initial_date,
+                              'planning_gantt_active_sale_order_id': id}"
                     icon="fa-tasks"
                     attrs="{'invisible': ['|', ('planning_hours_to_plan', '=', 0), ('state', 'in', ['draft', 'sent', 'cancel', 'done'])]}">
                     <div class="o_field_widget o_stat_info">
@@ -25,7 +27,10 @@
                 </button>
                 <button name="%(planning.planning_action_schedule_by_resource)d"
                     type="action"
-                    context="{'search_default_sale_order_id': id, 'default_sale_line_id': planning_first_sale_line_id, 'initialDate': planning_initial_date}"
+                    context="{'search_default_sale_order_id': id,
+                              'default_sale_line_id': planning_first_sale_line_id,
+                              'initialDate': planning_initial_date,
+                              'planning_gantt_active_sale_order_id': id}"
                     class="oe_stat_button"
                     icon="fa-tasks"
                     attrs="{'invisible': ['|', ('planning_hours_planned', '=', 0), ('state', 'in', ['draft', 'sent'])]}">

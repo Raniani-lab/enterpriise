@@ -4,6 +4,10 @@ import PlanningGanttController from '@planning/js/planning_gantt_controller';
 import { _t } from 'web.core';
 
 PlanningGanttController.include({
+    events: Object.assign({}, PlanningGanttController.prototype.events, {
+        'click .o_gantt_button_plan_so': '_onPlanSOClicked',
+    }),
+    buttonTemplateName: 'SalePlanningGanttView.buttons',
 
     //--------------------------------------------------------------------------
     // Utils
@@ -51,4 +55,35 @@ PlanningGanttController.include({
         this._super.apply(this, arguments);
     },
 
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onPlanSOClicked: function (ev) {
+        ev.preventDefault();
+        const self = this;
+        this._rpc({
+            model: this.modelName,
+            method: 'action_plan_sale_order',
+            args: [
+                this.model._getDomain(),
+            ],
+            context: this._addGanttContextValues(this.context),
+        }).then(function (result) {
+            let notificationOptions;
+            if (result) {
+                notificationOptions = {
+                    type: 'success',
+                    message: _t("The sales orders have successfully been assigned."),
+                };
+            } else {
+                notificationOptions = {
+                    type: 'danger',
+                    message: _t('There are no sales orders to assign or no employees are available.'),
+                };
+            }
+            self.displayNotification(notificationOptions);
+            self.reload();
+        });
+    },
 });

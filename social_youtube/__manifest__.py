@@ -13,6 +13,7 @@
         'views/res_config_settings_views.xml',
         'views/social_account_views.xml',
         'views/social_post_views.xml',
+        'views/social_post_template_views.xml',
         'views/social_stream_post_views.xml',
         'views/social_youtube_templates.xml',
     ],

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
+from odoo.tools.misc import get_lang
 
 from dateutil.relativedelta import relativedelta
 
@@ -198,9 +199,10 @@ class AccountCashFlowReport(models.AbstractModel):
             AND partial.max_date BETWEEN %s AND %s
             GROUP BY debit_line.company_id, debit_line.account_id, account.code, account_name, account.internal_type
         '''
+        lang = self.env.user.lang or get_lang(self.env).code
         self._cr.execute(query, [
-            self.env.user.lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
-            self.env.user.lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
+            lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
+            lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
         ])
 
         for account_id, account_code, account_name, account_internal_type, reconciled_amount in self._cr.fetchall():
@@ -223,7 +225,7 @@ class AccountCashFlowReport(models.AbstractModel):
             WHERE line.move_id IN %s AND line.account_id NOT IN %s
             GROUP BY line.account_id, account.code, account_name, account.internal_type
         '''
-        self._cr.execute(query, [self.env.user.lang, payment_move_ids, payment_account_ids])
+        self._cr.execute(query, [lang, payment_move_ids, payment_account_ids])
 
         for account_id, account_code, account_name, account_internal_type, balance in self._cr.fetchall():
             reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_internal_type, 0.0, 0.0])
@@ -331,7 +333,8 @@ class AccountCashFlowReport(models.AbstractModel):
             WHERE line.move_id IN %s
             GROUP BY line.move_id, line.account_id, account.code, account_name, account.internal_type
         '''
-        self._cr.execute(query, [self.env.user.lang, tuple(reconciled_percentage_per_move.keys())])
+        lang = self.env.user.lang or get_lang(self.env).code
+        self._cr.execute(query, [lang, tuple(reconciled_percentage_per_move.keys())])
 
         for move_id, account_id, account_code, account_name, account_internal_type, balance in self._cr.fetchall():
             # Compute the total reconciled for the whole move.
@@ -400,7 +403,8 @@ class AccountCashFlowReport(models.AbstractModel):
             WHERE ''' + where_clause + '''
             GROUP BY account_move_line.account_id, account.code, account_name
         '''
-        self._cr.execute(query, [self.env.user.lang] + where_params)
+        lang = self.env.user.lang or get_lang(self.env).code
+        self._cr.execute(query, [lang] + where_params)
         return self._cr.fetchall()
 
     # -------------------------------------------------------------------------

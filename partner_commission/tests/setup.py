@@ -40,6 +40,10 @@ class TestCommissionsSetup(TransactionCase):
             'type': 'sale',
         })
 
+        (self.bank_journal.inbound_payment_method_line_ids + self.bank_journal.outbound_payment_method_line_ids)\
+            .filtered(lambda x: x.code != 'manual')\
+            .unlink()
+
     def _make_partners(self):
         self.referrer = self.env['res.partner'].create({
             'name': 'Referrer',

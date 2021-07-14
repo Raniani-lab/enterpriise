@@ -33,7 +33,7 @@
                                         </div>
                                     </strong>
                                     <div class="o_kanban_tags_section">
-                                        <field name="product_template_attribute_value_ids" groups="product.group_product_variant"/>
+                                        <field name="product_template_attribute_value_ids" groups="product.group_product_variant" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     </div>
                                     <ul>
                                         <li><strong>Price: <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></strong></li>
@@ -51,16 +51,24 @@
 </record>
 
     <record id="product_search_form_view_inherit_fsm_sale" model="ir.ui.view">
-        <field name="name">product.product.search.inherit.fsm.sale</field>
+        <field name="name">product.product.search.fsm.sale</field>
         <field name="model">product.product</field>
-        <field name="mode">primary</field>
-        <field name="inherit_id" ref="product.product_search_form_view"/>
         <field name="arch" type="xml">
-            <filter name="services" position="before">
+            <search string="Product">
+                <field name="name" string="Product" filter_domain="['|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self)]"/>
+                <field name="categ_id" filter_domain="[('categ_id', 'child_of', raw_value)]"/>
+                <field name="product_template_attribute_value_ids" groups="product.group_product_variant"/>
+                <field name="product_tmpl_id" string="Product Template"/>
                 <filter string="Added Products" name="fsm_quantity" domain="[('fsm_quantity', '>', 0)]"/>
                 <separator/>
-            </filter>
-            <search position="inside">
+                <filter string="Favorites" name="favorites" domain="[('priority','=','1')]"/>
+                <separator/>
+                <filter string="Services" name="services" domain="[('type','=','service')]"/>
+                <filter string="Products" name="consumable" domain="[('type', 'in', ['consu', 'product'])]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Product Type" name="type" context="{'group_by':'type'}"/>
+                    <filter string="Product Category" name="categ_id" context="{'group_by':'categ_id'}"/>
+                </group>
                 <searchpanel>
                     <field name="categ_id" icon="fa-th-list" string="Product Category" enable_counters="1"/>
                 </searchpanel>

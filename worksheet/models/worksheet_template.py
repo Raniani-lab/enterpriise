@@ -265,11 +265,7 @@ class WorksheetTemplate(models.Model):
                             <field name="x_%s_id"/>
                         </h1>
                         <group>
-                            <group>
-                                <field name="x_comments"/>
-                            </group>
-                            <group>
-                            </group>
+                            <field name="x_comments"/>
                         </group>
                     </sheet>
                 </form>

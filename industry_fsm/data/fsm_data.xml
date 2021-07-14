@@ -9,9 +9,15 @@
 
         <record id="planning_project_stage_1" model="project.task.type">
             <field name="sequence">5</field>
+            <field name="name">Planned</field>
+            <field name="legend_blocked">Not validated</field>
+        </record>
+
+        <record id="planning_project_stage_3" model="project.task.type">
+            <field name="sequence">20</field>
             <field name="name">Done</field>
             <field name="legend_blocked">Not validated</field>
-            <field name="is_closed" eval="True"/>
+            <field name="fold" eval="True"/>
         </record>
 
         <record id="fsm_project" model="project.project">
@@ -20,7 +26,7 @@
             <field name="allow_subtasks" eval="False"/>
             <field name="allow_timesheets" eval="True"/>
             <field name="allow_timesheet_timer" eval="True"/>
-            <field name="type_ids" eval="[(4, ref('planning_project_stage_0')), (4, ref('planning_project_stage_1'))]"/>
+            <field name="type_ids" eval="[(4, ref('planning_project_stage_0')), (4, ref('planning_project_stage_1')), (4, ref('project.project_stage_1')), (4, ref('planning_project_stage_3')), (4, ref('project.project_stage_3'))]"/>
         </record>
     </data>
 </odoo>

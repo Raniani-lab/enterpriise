@@ -68,23 +68,17 @@
                 <xpath expr="//form/sheet" position="replace">
                     <sheet>
                         <group invisible="context.get('studio') or context.get('default_x_project_task_id')">
-                            <group>
-                                <field name="x_project_task_id" domain="[('is_fsm', '=', True)]"/>
-                            </group>
+                            <field name="x_project_task_id" domain="[('is_fsm', '=', True)]"/>
                         </group>
                         <group class="o_fsm_worksheet_form">
-                            <group>
-                                <field name="x_name"/>
-                                <field name="x_manufacturer" options="{'no_create':true,'no_open':true}"/>
-                                <field name="x_serial_number"/>
-                                <field name="x_intervention_type" widget="radio"/>
-                                <field name="x_description"/>
-                            </group>
-                            <group>
-                                <field name="x_checkbox"/>
-                                <field name="x_date"/>
-                                <field name="x_worker_signature" widget="signature"/>
-                            </group>
+                            <field name="x_name"/>
+                            <field name="x_manufacturer" options="{'no_create':true,'no_open':true}"/>
+                            <field name="x_serial_number"/>
+                            <field name="x_intervention_type" widget="radio"/>
+                            <field name="x_description"/>
+                            <field name="x_checkbox"/>
+                            <field name="x_date"/>
+                            <field name="x_worker_signature" widget="signature"/>
                         </group>
                     </sheet>
                 </xpath>

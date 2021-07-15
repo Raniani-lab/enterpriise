@@ -55,8 +55,14 @@ tour.register('test_receipt_subcontracted_2', {test: true}, [
     },
 
     {
-        trigger: ".modal-footer .btn-secondary[name=do_produce]",
-        content: _t('Save'),
+        trigger: ".modal-footer .btn[name=subcontracting_record_component]",
+        content: _t('Continue'),
+        position: "bottom",
+    },
+    {
+        trigger: ".modal-footer .btn-secondary",
+        extra_trigger: "button [name=product_qty]:contains(4)",
+        content: _t('Discard'),
         position: "bottom",
     },
 
@@ -72,12 +78,15 @@ tour.register('test_receipt_subcontracted_2', {test: true}, [
     },
 
     {
-        trigger: ".modal-footer .btn-primary[name=continue_production]",
+        trigger: ".modal-footer .btn[name=subcontracting_record_component]",
+        content: _t('Continue'),
         position: "bottom",
     },
 
     {
-        trigger: ".modal-footer .btn-primary[name=do_produce]",
+        trigger: ".modal-footer .btn-primary[name=subcontracting_record_component]",
+        extra_trigger: "button [name=product_qty]:contains(3)",
+        content: _t('Record production'),
         position: "bottom",
     },
 
@@ -89,8 +98,6 @@ tour.register('test_receipt_subcontracted_2', {test: true}, [
     {
         trigger: '.o_notification.bg-success',
     },
-
 ]);
-
 
 });

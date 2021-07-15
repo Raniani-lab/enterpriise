@@ -3,6 +3,7 @@
 from odoo.addons.stock_barcode.tests.test_barcode_client_action import clean_access_rights, TestBarcodeClientAction
 from odoo.tests import Form, tagged
 
+
 @tagged('post_install', '-at_install')
 class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
     def setUp(self):
@@ -61,8 +62,8 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
         self.assertTrue(receipt_picking.move_line_ids.filtered(lambda ml: ml.location_dest_id == self.shelf1))
         self.assertTrue(receipt_picking.move_line_ids.filtered(lambda ml: ml.location_dest_id == self.shelf2))
         sub_order = self.env['mrp.production'].search([('product_id', '=', self.subcontracted_product.id)])
-        self.assertTrue(sub_order)
-        self.assertEqual(sub_order.state, 'done')
+        self.assertEqual(len(sub_order), 2)
+        self.assertEqual(sub_order.mapped('state'), ['done', 'done'])
 
     def test_receipt_tracked_subcontracted_product(self):
         clean_access_rights(self.env)

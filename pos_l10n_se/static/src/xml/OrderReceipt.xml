@@ -44,19 +44,21 @@
         </xpath>
 
         <xpath expr="//div[hasclass('orderlines')]" position="replace">
-            <t t-if="receipt.useBlackBoxSweden">
-                <span class="pos-receipt-left-padding">Products:</span><br/>
-                <t t-set="receipt.displayService" t-value="false"/>
-                <t t-call="OrderLines"/>
+            <div class="orderlines">
+                <t t-if="receipt.useBlackBoxSweden">
+                    <span class="pos-receipt-left-padding">Products:</span><br/>
+                    <t t-set="receipt.displayService" t-value="false"/>
+                    <t t-call="OrderLines"/>
 
-                <br/><span class="pos-receipt-left-padding">Services:</span><br/>
-                <t t-set="receipt.displayService" t-value="true"/>
-                <t t-call="OrderLines"/>
-            </t>
-            <t t-else="">
-                <t t-set="receipt.displayService" t-value="true"/>
-                <t t-call="OrderLines"/>
-            </t>
+                    <br/><span class="pos-receipt-left-padding">Services:</span><br/>
+                    <t t-set="receipt.displayService" t-value="true"/>
+                    <t t-call="OrderLines"/>
+                </t>
+                <t t-else="">
+                    <t t-set="receipt.displayService" t-value="true"/>
+                    <t t-call="OrderLines"/>
+                </t>
+            </div>
         </xpath>
     </t>
 

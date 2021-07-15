@@ -551,16 +551,19 @@ class AccountMove(models.Model):
                 if len(taxes_by_document) != 0:
                     taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                 else:
-                    taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
-                    if taxes_records:
-                        # prioritize taxes based on db setting
-                        line_tax_type = self.env['ir.config_parameter'].sudo().get_param('account.show_line_subtotals_tax_selection')
-                        taxes_records_setting_based = taxes_records.filtered(lambda r: not r.price_include if line_tax_type == 'tax_excluded' else r.price_include)
-                        if taxes_records_setting_based:
-                            taxes_record = taxes_records_setting_based[0]
-                        else:
-                            taxes_record = taxes_records[0]
-                        taxes_found |= taxes_record
+                    if self.company_id.account_purchase_tax_id and self.company_id.account_purchase_tax_id.amount == taxes and self.company_id.account_purchase_tax_id.amount_type == taxes_type:
+                        taxes_found |= self.company_id.account_purchase_tax_id
+                    else:
+                        taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
+                        if taxes_records:
+                            # prioritize taxes based on db setting
+                            line_tax_type = self.env['ir.config_parameter'].sudo().get_param('account.show_line_subtotals_tax_selection')
+                            taxes_records_setting_based = taxes_records.filtered(lambda r: not r.price_include if line_tax_type == 'tax_excluded' else r.price_include)
+                            if taxes_records_setting_based:
+                                taxes_record = taxes_records_setting_based[0]
+                            else:
+                                taxes_record = taxes_records[0]
+                            taxes_found |= taxes_record
         return taxes_found
 
     def _get_invoice_lines(self, invoice_lines, subtotal_ocr):

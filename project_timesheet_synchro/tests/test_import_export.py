@@ -50,7 +50,7 @@ class TestImportExport(common.TransactionCase):
 
         for line in test_analytic_lines:
             line_ext_id = line["id"]
-            aal = self.env["ir.model.data"]._xmlid_to_object(line_ext_id)
+            aal = self.env.ref(line_ext_id)
             self.assertEqual(line["desc"], aal.name)
             self.assertEqual(line["date"], str(aal.date))
             self.assertEqual(float(line["unit_amount"]), aal.unit_amount)
@@ -72,7 +72,7 @@ class TestImportExport(common.TransactionCase):
         AAL = self.env['account.analytic.line']
         AAL.with_context(context).import_ui_data([], [], test_projects)
 
-        project = self.env["ir.model.data"]._xmlid_to_object(test_projects[0]['id'])
+        project = self.env.ref(test_projects[0]['id'])
 
         AAL = self.env['account.analytic.line']
         aal = AAL.with_context(context).create({

@@ -61,7 +61,7 @@ class View(models.Model):
     def set_studio_groups(self, node):
         studio_groups = []
         for xml_id in node.attrib['groups'].split(','):
-            group = self.env['ir.model.data']._xmlid_to_object(xml_id)
+            group = self.env.ref(xml_id, raise_if_not_found=False)
             if group:
                 studio_groups.append({
                     "id": group.id,

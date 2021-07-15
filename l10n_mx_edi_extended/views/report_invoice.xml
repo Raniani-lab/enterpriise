@@ -47,7 +47,7 @@
                                         <th class="text-center">Operation Type</th>
                                         <th class="text-center">Certificate Key</th>
                                         <th class="text-center">Certificate Source</th>
-                                        <th class="text-center" t-if="cfdi_vals['ext_trade_nb_certificate_origin'] == 1">Number Certificate Source</th>
+                                        <th class="text-center" t-if="cfdi_vals['ext_trade_nb_certificate_origin'] == '1'">Number Certificate Source</th>
                                         <th class="text-center">Subdivision</th>
                                     </tr>
                                 </thead>
@@ -56,7 +56,7 @@
                                         <td><span t-esc="cfdi_vals['ext_trade_operation_type']"/></td>
                                         <td><span t-esc="cfdi_vals['ext_trade_certificate_key']"/></td>
                                         <td><span t-esc="cfdi_vals['ext_trade_certificate_source']"/></td>
-                                        <td t-if="cfdi_vals['ext_trade_nb_certificate_origin'] == 1"><span t-esc="cfdi_vals['ext_trade_certificate_origin']"/></td>
+                                        <td t-if="cfdi_vals['ext_trade_nb_certificate_origin'] == '1'"><span t-esc="cfdi_vals['ext_trade_certificate_origin']"/></td>
                                         <td><span t-esc="cfdi_vals['ext_trade_subdivision']"/></td>
                                     </tr>
                                 </tbody>

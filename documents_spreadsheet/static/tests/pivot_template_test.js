@@ -859,6 +859,7 @@ module(
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
                     zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
                 });
             }
 
@@ -919,6 +920,7 @@ module(
             model.dispatch("SET_SELECTION", {
                 anchor: [1, 1],
                 zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
             });
             model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
             model.dispatch("AUTOFILL");
@@ -951,6 +953,7 @@ module(
             model.dispatch("SET_SELECTION", {
                 anchor: [1, 1],
                 zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
             });
             model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
             model.dispatch("AUTOFILL");
@@ -983,6 +986,7 @@ module(
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
                     zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
                 });
             }
 
@@ -1015,7 +1019,8 @@ module(
             function selectB2(model) {
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],                    
+                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
                 });
             }
 
@@ -1050,6 +1055,7 @@ module(
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
                     zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
                 });
             }
 
@@ -1085,6 +1091,7 @@ module(
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
                     zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
+                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
                 });
             }
 

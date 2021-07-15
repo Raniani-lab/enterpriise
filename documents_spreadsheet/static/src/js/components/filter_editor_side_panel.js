@@ -21,7 +21,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     const _t = core._t;
     const { useState } = owl.hooks;
     const sidePanelRegistry = spreadsheet.registries.sidePanelRegistry;
-    const { uuidv4 } = spreadsheet.helpers;
+    const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     /**
      * This is the side panel to define/edit a global filter.
@@ -203,7 +203,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 return;
             }
             const cmd = this.id ? "EDIT_PIVOT_FILTER" : "ADD_PIVOT_FILTER";
-            const id = this.id || uuidv4();
+            const id = this.id || uuidGenerator.uuidv4();
             const filter = {
                 id,
                 type: this.state.type,

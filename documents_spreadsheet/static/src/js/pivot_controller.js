@@ -11,7 +11,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const _t = core._t;
-    const uuidv4 = spreadsheet.helpers.uuidv4;
+    const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     PivotController.include({
         init() {
@@ -110,7 +110,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
             const { pivot, cache } = await this._getPivotForSpreadsheet();
             return (model) => {
                 if (!isEmptySpreadsheet) {
-                    const sheetId = uuidv4();
+                    const sheetId = uuidGenerator.uuidv4();
                     const sheetIdFrom = model.getters.getActiveSheetId();
                     model.dispatch("CREATE_SHEET", {
                         sheetId,

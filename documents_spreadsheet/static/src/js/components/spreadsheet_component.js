@@ -9,7 +9,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     const { jsonToBase64 } = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
-    const uuidv4 = spreadsheet.helpers.uuidv4;
+    const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     const Spreadsheet = spreadsheet.Spreadsheet;
     const Model = spreadsheet.Model;
@@ -46,7 +46,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.stateUpdateMessages = props.stateUpdateMessages;
             this.res_id = props.res_id;
             this.client = {
-                id: uuidv4(),
+                id: uuidGenerator.uuidv4(),
                 name: this.env.session.name,
                 userId: this.env.session.uid,
             }

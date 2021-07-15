@@ -540,12 +540,13 @@ class AccountMove(models.Model):
         Find taxes records to use from the taxes detected for an invoice line.
         """
         taxes_found = self.env['account.tax']
+        type_tax_use = 'purchase' if self.move_type in {'in_invoice', 'in_refund'} else 'sale'
         for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
                 related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('move_type', '=', self.move_type), ('partner_id', '=', self.partner_id.id)])
                 lines = related_documents.mapped('invoice_line_ids')
                 taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
-                taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
+                taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == type_tax_use)
                 taxes_by_document = []
                 for tax in taxes_ids:
                     taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
@@ -555,7 +556,7 @@ class AccountMove(models.Model):
                     if self.company_id.account_purchase_tax_id and self.company_id.account_purchase_tax_id.amount == taxes and self.company_id.account_purchase_tax_id.amount_type == taxes_type:
                         taxes_found |= self.company_id.account_purchase_tax_id
                     else:
-                        taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
+                        taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', type_tax_use), ('company_id', '=', self.company_id.id)])
                         if taxes_records:
                             # prioritize taxes based on db setting
                             line_tax_type = self.env['ir.config_parameter'].sudo().get_param('account.show_line_subtotals_tax_selection')

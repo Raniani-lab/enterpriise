@@ -28,7 +28,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             WHERE line_tag.account_account_tag_id IN %(product_service_tags)s
             AND l.parent_state = 'posted'
             AND company_country.id != country.id
-            AND country.intrastat = TRUE
+            AND country.intrastat = TRUE AND (country.code != 'GB' OR inv.date < '2021-01-01')
             AND l.date >= %(date_from)s
             AND l.date <= %(date_to)s
             AND l.company_id IN %(company_ids)s

@@ -188,7 +188,7 @@ class IntrastatReport(models.AbstractModel):
                 AND NOT inv_line.quantity = 0
                 AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
-                AND country.intrastat = TRUE
+                AND country.intrastat = TRUE AND (country.code != 'GB' OR inv.date < '2021-01-01')
                 AND coalesce(inv.date, inv.invoice_date) >= %(date_from)s
                 AND coalesce(inv.date, inv.invoice_date) <= %(date_to)s
                 AND prodt.type != 'service'

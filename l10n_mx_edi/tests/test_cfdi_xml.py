@@ -260,7 +260,6 @@ class TestEdiResults(TestMxEdiCommon):
                     'payment_difference_handling': 'reconcile',
                     'writeoff_account_id': self.company_data['default_account_revenue'].id,
                     'writeoff_label': 'writeoff',
-                    'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
                 })\
                 ._create_payments()
 
@@ -292,7 +291,7 @@ class TestEdiResults(TestMxEdiCommon):
                                     FechaPago="2017-01-01T12:00:00"
                                     MonedaP="MXN"
                                     Monto="750.00"
-                                    NumOperacion="INV/2016/12/0001 INV/2016/12/0002"
+                                    NumOperacion="INV/2016/00001 INV/2016/00002"
                                     FormaDePagoP="99">
                                     <DoctoRelacionado
                                         Folio="1"
@@ -304,7 +303,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="Gol"
                                         TipoCambioDR="2.000000"
                                         NumParcialidad="1"
-                                        Serie="INV/2016/12/"/>
+                                        Serie="INV/2016/"/>
                                     <DoctoRelacionado
                                         Folio="2"
                                         IdDocumento="987654321"
@@ -315,7 +314,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="Gol"
                                         TipoCambioDR="2.000000"
                                         NumParcialidad="1"
-                                        Serie="INV/2016/12/"/>
+                                        Serie="INV/2016/"/>
                                 </Pago>
                             </Pagos>
                         </Complemento>
@@ -363,7 +362,6 @@ class TestEdiResults(TestMxEdiCommon):
                     'payment_difference_handling': 'reconcile',
                     'writeoff_account_id': self.company_data['default_account_revenue'].id,
                     'writeoff_label': 'writeoff',
-                    'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
                 })\
                 ._create_payments()
 
@@ -400,7 +398,7 @@ class TestEdiResults(TestMxEdiCommon):
                                     FechaPago="2016-12-31T12:00:00"
                                     MonedaP="MXN"
                                     Monto="500.00"
-                                    NumOperacion="INV/2017/01/0002 INV/2017/01/0003"
+                                    NumOperacion="INV/2017/00002 INV/2017/00003"
                                     FormaDePagoP="99">
                                     <DoctoRelacionado
                                         Folio="2"
@@ -412,7 +410,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="Gol"
                                         TipoCambioDR="3.000000"
                                         NumParcialidad="1"
-                                        Serie="INV/2017/01/"/>
+                                        Serie="INV/2017/"/>
                                     <DoctoRelacionado
                                         Folio="3"
                                         IdDocumento="987654321"
@@ -423,7 +421,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="Gol"
                                         TipoCambioDR="3.000000"
                                         NumParcialidad="1"
-                                        Serie="INV/2017/01/"/>
+                                        Serie="INV/2017/"/>
                                 </Pago>
                             </Pagos>
                         </Complemento>
@@ -466,7 +464,6 @@ class TestEdiResults(TestMxEdiCommon):
                     'payment_date': '2017-01-01',
                     'currency_id': self.env.company.currency_id.id,
                     'group_payment': True,
-                    'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
                 })\
                 ._create_payments()
 
@@ -503,7 +500,7 @@ class TestEdiResults(TestMxEdiCommon):
                                     FechaPago="2017-01-01T12:00:00"
                                     MonedaP="MXN"
                                     Monto="3215.96"
-                                    NumOperacion="INV/2016/12/0001 INV/2016/12/0002"
+                                    NumOperacion="INV/2016/00001 INV/2016/00002"
                                     FormaDePagoP="99">
                                     <DoctoRelacionado
                                         Folio="1"
@@ -515,7 +512,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="USD"
                                         TipoCambioDR="0.050498"
                                         NumParcialidad="1"
-                                        Serie="INV/2016/12/"/>
+                                        Serie="INV/2016/"/>
                                     <DoctoRelacionado
                                         Folio="2"
                                         IdDocumento="987654321"
@@ -526,7 +523,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         MonedaDR="USD"
                                         TipoCambioDR="0.050498"
                                         NumParcialidad="1"
-                                        Serie="INV/2016/12/"/>
+                                        Serie="INV/2016/"/>
                                 </Pago>
                             </Pagos>
                         </Complemento>

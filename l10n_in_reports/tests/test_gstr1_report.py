@@ -15,13 +15,13 @@ class TestReports(TestAccountReportsCommon):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.maxDiff = None
         cls.company_data["company"].write({
-            "state_id": cls.env.ref("base.state_in_gj"),
-            "country_id": cls.env.ref("base.in"),
+            "state_id": cls.env.ref("base.state_in_gj").id,
+            "country_id": cls.env.ref("base.in").id,
             })
         cls.partner_a.write({
             "vat": "24BBBFF5679L8ZR",
-            "state_id": cls.env.ref("base.state_in_gj"),
-            "country_id": cls.env.ref("base.in"),
+            "state_id": cls.env.ref("base.state_in_gj").id,
+            "country_id": cls.env.ref("base.in").id,
             "l10n_in_gst_treatment": "regular",
             })
         cls.invoice = cls.init_invoice(
@@ -58,8 +58,8 @@ class TestReports(TestAccountReportsCommon):
         lines = report._get_lines(options)
         expected = [{'id': min(self.invoice.line_ids.filtered(lambda l: l.tax_line_id).ids),
             'caret_options': 'account.move',
-            'name': 'INV/2019/01/0001',
-            'class': 'top-vertical-align o_account_reports_level2',
+            'name': 'INV/2019/00001',
+            'class': 'o_account_reports_level2',
             'style': 'font-weight: normal;',
             'level': 1,
             'colspan': 0,

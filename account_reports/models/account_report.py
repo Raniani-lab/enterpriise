@@ -279,6 +279,7 @@ class AccountReport(models.AbstractModel):
             return
 
         previous_date = (previous_options or {}).get('date', {})
+        previous_date_to = previous_date.get('date_to')
         previous_mode = previous_date.get('mode')
         previous_filter = previous_date.get('filter')
 
@@ -288,12 +289,16 @@ class AccountReport(models.AbstractModel):
         options_strict_range = self.filter_date.get('strict_range', False)
         date_from = date_to = period_type = False
 
-        # 'today' is not managed in 'range' mode.
-        if previous_mode == 'single' and options_mode == 'range' and previous_filter == 'today':
-            options_filter = 'this_year'
-
-        # Try to retrieve dates from previous options.
-        if not previous_filter or previous_filter == 'custom':
+        if previous_mode == 'single' and options_mode == 'range':
+            options_filter = 'custom'
+            if previous_date_to:
+                date_from = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(previous_date_to))['date_from']
+                date_to = fields.Date.from_string(previous_date['date_to'])
+            else:
+                # Failed to propagate the custom filter.
+                options_filter = default_filter
+        elif not previous_filter or previous_filter == 'custom':
+            # Try to retrieve dates from previous options.
             custom_date_from = previous_date.get('date_from')
             custom_date_to = previous_date.get('date_to')
             if custom_date_to or custom_date_from:

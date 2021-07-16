@@ -178,7 +178,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("select[name='state_id']").find('option').toArray().forEach(option => {
             let $option = $(option);
             let stateCountryID = $option.data('additional-info');
-            debugger;
             if (countryID === stateCountryID) {
                 $option.removeClass('d-none');
             } else {

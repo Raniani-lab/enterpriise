@@ -324,11 +324,11 @@ class HelpdeskTeam(models.Model):
             if not _is_sla_failed(ticket):
                 result['7days']['success'] += ticket['__count']
 
-        result['today']['success'] = (result['today']['success'] * 100) / (result['today']['count'] or 1)
-        result['7days']['success'] = (result['7days']['success'] * 100) / (result['7days']['count'] or 1)
-        result['my_all']['hours'] = round(result['my_all']['hours'] / (result['my_all']['count'] or 1), 2)
-        result['my_high']['hours'] = round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
-        result['my_urgent']['hours'] = round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)
+        result['today']['success'] = fields.Float.round(result['today']['success'] * 100 / (result['today']['count'] or 1), 2)
+        result['7days']['success'] = fields.Float.round(result['7days']['success'] * 100 / (result['7days']['count'] or 1), 2)
+        result['my_all']['hours'] = fields.Float.round(result['my_all']['hours'] / (result['my_all']['count'] or 1), 2)
+        result['my_high']['hours'] = fields.Float.round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
+        result['my_urgent']['hours'] = fields.Float.round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)
 
         if self.env['helpdesk.team'].search([('use_rating', '=', True), ('member_ids', 'in', self._uid)]):
             result['rating_enable'] = True
@@ -339,7 +339,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
+            team_satisfaction = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
             if team_satisfaction:
                 result['today']['rating'] = team_satisfaction
 
@@ -349,7 +349,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
+            team_satisfaction_7days = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
             if team_satisfaction_7days:
                 result['7days']['rating'] = team_satisfaction_7days
         return result

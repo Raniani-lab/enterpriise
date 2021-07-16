@@ -9,10 +9,10 @@
         <field name="context">{'search_default_filter_my_posts':1}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-            Create a new post
+            Create a Post
           </p>
           <p>
-            Manage and edit your posts from here.
+            Write an enticing post, add images and schedule it to be posted later on multiple platforms at once.
           </p>
         </field>
     </record>

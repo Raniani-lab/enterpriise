@@ -8,10 +8,10 @@
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-            Add a stream
+            No Social Streams yet!
           </p>
           <p>
-            Add stream to your dashboard to monitor your social media.
+            Go to the <a href="/web#action=social.action_social_stream_post">dashboard</a> to link your accounts and start posting.
           </p>
         </field>
     </record>

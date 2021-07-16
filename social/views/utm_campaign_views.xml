@@ -66,10 +66,10 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-            Create your first campaign
+            Create a Campaign
           </p>
           <p>
-            Campaigns are the perfect tool to track your posts results.
+            Campaigns are used to centralize your marketing efforts and track their results.
           </p>
         </field>
         <field name="domain">[('is_auto_campaign', '=', False)]</field>

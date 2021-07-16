@@ -44,12 +44,12 @@
 
 <t t-name="web_enterprise.BurgerSection" owl="1">
     <MenuDropdown t-if="section.childrenTree.length" t-att-class="'o_burger_menu_section'" t-on-click.stop="_onDropDownClicked" manualOnly="true" t-key="section.id" xmlid="section.xmlid">
-        <span t-esc="section.name"/><span class="fa fa-chevron-right toggle_icon"/>
-        <t t-set-slot="menu" >
-            <t t-foreach="section.childrenTree" t-as="subSection" >
-                <t t-call="web_enterprise.BurgerSection">
-                    <t t-set="section" t-value="subSection" />
-                </t>
+        <t t-set-slot="toggler" >
+            <span t-esc="section.name"/><span class="fa fa-chevron-right toggle_icon"/>
+        </t>
+        <t t-foreach="section.childrenTree" t-as="subSection" >
+            <t t-call="web_enterprise.BurgerSection">
+                <t t-set="section" t-value="subSection" />
             </t>
         </t>
     </MenuDropdown>

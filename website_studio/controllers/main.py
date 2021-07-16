@@ -64,7 +64,7 @@ class WebsiteStudioController(http.Controller):
             :rtype: boolean
         """
         html_element = html.fromstring(view.arch_base)
-        path = '//form[@action="/website_form/"][@data-model_name="%s"]' % res_model
+        path = '//form[@action="/website/form/"][@data-model_name="%s"]' % res_model
         form_element = html_element.xpath(path)
         if not len(form_element):
             return False

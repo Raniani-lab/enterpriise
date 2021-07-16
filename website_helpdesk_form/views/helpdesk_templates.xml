@@ -32,7 +32,6 @@
     <template id="website_helpdesk_form_team" name="Website Helpdesk Form Team" inherit_id="website_helpdesk.team">
         <xpath expr="//div[@id='website_helpdesk_form']" position="replace">
             <div t-if="team.use_website_helpdesk_form">
-                <t t-set="default_values" t-value="default_partner_values"/>
                 <t t-set="template_xmlid" t-value="team.website_form_view_id.xml_id"/>
                 <t t-call="#{template_xmlid}"/>
             </div>
@@ -44,11 +43,11 @@
             <h2 class="text-muted">
                 Submit a Ticket
             </h2>
-            <span class="hidden" data-for="helpdesk_ticket_form" t-att-data-values="{'partner_name': default_values.get('name', ''), 'partner_email': default_values.get('email', ''), 'team_id': team and team.id or False}" />
+            <span class="hidden" data-for="helpdesk_ticket_form" t-att-data-values="{'team_id': team and team.id or False}" />
             <div id="helpdesk_section">
                 <section id="forms" class="s_website_form" data-vcss="001" data-snippet="s_website_form">
                     <div class="container">
-                        <form id="helpdesk_ticket_form" action="/website_form/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="helpdesk.ticket" data-success-mode="redirect" data-success-page="/your-ticket-has-been-submitted" data-editable-form="false"  hide-change-model="true">
+                        <form id="helpdesk_ticket_form" action="/website/form/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="helpdesk.ticket" data-success-mode="redirect" data-success-page="/your-ticket-has-been-submitted" data-editable-form="false"  hide-change-model="true">
                             <div class="s_website_form_rows row s_col_no_bgcolor">
                                 <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
                                     <div class="row s_col_no_resize s_col_no_bgcolor">

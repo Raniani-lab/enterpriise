@@ -41,6 +41,6 @@ class HelpDeskPortal(HttpCase):
             'csrf_token': http.WebRequest.csrf_token(self),
         }
         files = [('file', ('test.txt', b'test', 'plain/text'))]
-        response = self.url_open('/website_form/helpdesk.ticket', data=ticket_data, files=files)
+        response = self.url_open('/website/form/helpdesk.ticket', data=ticket_data, files=files)
         ticket = self.env['helpdesk.ticket'].browse(response.json().get('id'))
         self.assertTrue(ticket.exists())

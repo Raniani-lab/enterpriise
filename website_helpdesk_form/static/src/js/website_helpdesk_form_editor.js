@@ -2,7 +2,7 @@ odoo.define('website_helpdesk_form.form', function (require) {
 'use strict';
 
 var core = require('web.core');
-var FormEditorRegistry = require('website_form.form_editor_registry');
+var FormEditorRegistry = require('website.form_editor_registry');
 
 var _t = core._t;
 
@@ -11,11 +11,13 @@ FormEditorRegistry.add('create_ticket', {
         type: 'char',
         required: true,
         name: 'partner_name',
+        fillWith: 'name',
         string: 'Your Name',
     }, {
         type: 'email',
         required: true,
         name: 'partner_email',
+        fillWith: 'email',
         string: 'Your Email',
     }, {
         type: 'char',

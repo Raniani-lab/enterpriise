@@ -8,7 +8,6 @@
 
     <record id="template_sign_termination" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_termination"/>
-        <field name="share_link">demo-termination</field>
         <field name="create_uid" ref="base.user_admin"/>
         <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_1'))]"/>
     </record>

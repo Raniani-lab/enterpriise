@@ -12,12 +12,12 @@ const { qweb } = core;
 
 const NoPubThankYouDialog = document_signable.ThankYouDialog.extend({
   template: "sign.no_pub_thank_you_dialog",
-  init: function (parent, RedirectURL, RedirectURLText, requestID, options) {
+  init: function (parent, RedirectURL, RedirectURLText, requestID, accessToken, options) {
     options = options || {};
     if (!options.buttons) {
       options.buttons = [{ text: _t("Ok"), close: true }];
     }
-    this._super(parent, RedirectURL, RedirectURLText, requestID, options);
+    this._super(parent, RedirectURL, RedirectURLText, requestID, accessToken, options);
   },
 
   on_closed: async function () {

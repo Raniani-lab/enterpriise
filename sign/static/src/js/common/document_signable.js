@@ -477,7 +477,7 @@ const PublicSignerDialog = Dialog.extend({
     }
 
     if (!options.buttons) {
-      this.addDefaultButtons(options);
+      this.addDefaultButtons(parent, options);
     }
 
     this._super(parent, options);
@@ -489,27 +489,37 @@ const PublicSignerDialog = Dialog.extend({
     });
   },
 
-  addDefaultButtons(options) {
+  addDefaultButtons(parent, options) {
     options.buttons = [];
     options.buttons.push({
       text: _t("Validate & Send"),
       classes: "btn-primary",
-      click: (e) => {
+      click: async (e) => {
         const name = this.inputs[0].value;
         const mail = this.inputs[1].value;
-        if (this.validateDialogInputs(name, mail)) {
-          this._rpc({
+        if (!this.validateDialogInputs(name, mail)) {
+          return false;
+        }
+        const response = await this._rpc({
             route:
               "/sign/send_public/" + this.requestID + "/" + this.requestToken,
             params: {
               name: name,
               mail: mail,
             },
-          }).then(() => {
-            this.close();
-            this.sentResolve();
+          })
+        parent.requestID = response['requestID'];
+        parent.requestToken = response['requestToken'];
+        parent.accessToken = response['accessToken'];
+        if(parent.coords) {
+          await this._rpc({
+            route:
+              "/sign/save_location/" + parent.requestID + "/" + parent.accessToken,
+            params: parent.coords,
           });
         }
+        this.close();
+        this.sentResolve();
       },
     });
     options.buttons.push({ text: _t("Cancel"), close: true });
@@ -721,7 +731,7 @@ const ThankYouDialog = Dialog.extend({
     return EncryptedDialog;
   },
 
-  init: function (parent, RedirectURL, RedirectURLText, requestID, options) {
+  init: function (parent, RedirectURL, RedirectURLText, requestID, accessToken, options) {
     options = options || {};
     options.title = options.title || _t("Thank You !");
     options.subtitle = options.subtitle || _t("Your signature has been saved.");
@@ -746,6 +756,7 @@ const ThankYouDialog = Dialog.extend({
     this.has_next_document = false;
     this.RedirectURL = RedirectURL;
     this.requestID = requestID;
+    this.accessToken = accessToken;
 
     this._super(parent, options);
 
@@ -793,7 +804,11 @@ const ThankYouDialog = Dialog.extend({
             this.do_action(action, { clear_breadcrumbs: true });
           });
         } else {
-          window.location.reload();
+          const protocol = window.location.protocol;
+          const port = window.location.port;
+          const hostname = window.location.hostname;
+          const address = `${protocol}//${hostname}:${port}/sign/document/${this.requestID}/${this.accessToken}`;
+          window.location.replace(address);
         }
       },
     };
@@ -1672,6 +1687,7 @@ const SignableDocument = Document.extend({
       this.RedirectURL,
       this.RedirectURLText,
       this.requestID,
+      this.accessToken,
       { nextSign }
     ).open();
   },
@@ -1733,7 +1749,7 @@ const SignableDocument = Document.extend({
         );
       }
       this.iframeWidget.disableItems();
-      (new (this.get_thankyoudialog_class())(this, this.RedirectURL, this.RedirectURLText, this.requestID, {
+      (new (this.get_thankyoudialog_class())(this, this.RedirectURL, this.RedirectURLText, this.requestID, this.accessToken, {
         'nextSign': 0,
         'subtitle': _t("The document has been refused"),
         'message': _t("We'll send an email to warn other contacts in copy & signers with the reason you provided."),
@@ -1794,14 +1810,14 @@ function initDocumentToSign(parent) {
           navigator.geolocation.getCurrentPosition(function (position) {
             const { latitude, longitude } = position.coords;
             const coords = { latitude, longitude };
-            ajax.jsonRpc(
-              "/sign/save_location/" +
-                documentPage.requestID +
-                "/" +
-                documentPage.accessToken,
-              "call",
-              coords
-            );
+            documentPage.coords = coords;
+            if (documentPage.requestState !== 'shared') {
+              ajax.jsonRpc(
+                  `/sign/save_location/${documentPage.requestID}/${documentPage.accessToken}`,
+                "call",
+                coords
+              );
+            }
           });
         }
       });

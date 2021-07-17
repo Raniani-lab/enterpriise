@@ -52,6 +52,7 @@ class SignLog(models.Model):
     )
 
     request_state = fields.Selection([
+        ("shared", "Shared"),
         ("sent", "Before Signature"),
         ("signed", "After Signature"),
         ("refused", "Refused Signature"),

@@ -30,6 +30,4 @@ access_sign_send_request,access.sign.send.request,model_sign_send_request,sign.g
 access_sign_send_request_employee,access.sign.send.request.employee,model_sign_send_request,sign.group_sign_employee,1,1,1,0
 access_sign_send_request_signer,access.sign.send.request.signer,model_sign_send_request_signer,sign.group_sign_user,1,1,1,0
 access_sign_send_request_signer_employee,access.sign.send.request.signer.employee,model_sign_send_request_signer,sign.group_sign_employee,1,1,1,0
-access_sign_template_share,access.sign.template.share,model_sign_template_share,sign.group_sign_user,1,1,1,0
-access_sign_template_share_employee,access.sign.template.share.employee,model_sign_template_share,sign.group_sign_employee,1,1,1,0
 access_sign_duplicate_template_with_pdf,access.sign.duplicate.template.pdf all,model_sign_duplicate_template_pdf,,1,1,1,0

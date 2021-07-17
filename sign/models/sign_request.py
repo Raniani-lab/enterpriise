@@ -64,10 +64,12 @@ class SignRequest(models.Model):
     reference = fields.Char(required=True, string="Document Name", help="This is how the document will be named in the mail")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True, copy=False)
+    share_link = fields.Char(string="Share Link", compute='_compute_share_link')
 
     request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers", copy=True)
     refusal_allowed = fields.Boolean(default=False, string="Can be refused", help="Allow the contacts to refuse the document for a specific reason.")
     state = fields.Selection([
+        ("shared", "Shared"),
         ("sent", "Sent"),
         ("signed", "Fully Signed"),
         ("refused", "Refused"),
@@ -144,6 +146,11 @@ class SignRequest(models.Model):
         for sign_request in self:
             sign_request.cc_partner_ids = sign_request.message_follower_ids.partner_id - sign_request.request_item_ids.partner_id
 
+    @api.depends('request_item_ids.access_token')
+    def _compute_share_link(self):
+        for sign_request in self.filtered(lambda sr: sr.state == 'shared'):
+            sign_request.share_link = "%s/sign/document/mail/%s/%s" % (self.get_base_url(), sign_request.id, sign_request.request_item_ids[0].access_token)
+
     @api.model_create_multi
     def create(self, vals_list):
         sign_requests = super().create(vals_list)
@@ -178,6 +185,22 @@ class SignRequest(models.Model):
         if invalid_senders:
             raise ValidationError(_("Please configure senders'(%s) email addresses", ', '.join(invalid_senders.mapped('name'))))
 
+    def _check_signers_roles_validity(self):
+        for sign_request in self:
+            template_roles = sign_request.template_id.sign_item_ids.responsible_id
+            sign_request_items = sign_request.request_item_ids
+            if len(sign_request_items) != max(len(template_roles), 1) or \
+                    set(sign_request_items.role_id.ids) != (set(template_roles.ids) if template_roles else set([self.env.ref('sign.sign_item_role_default').id])):
+                raise ValidationError(_("You must specify one signer for each role of your sign template"))
+
+    def _check_signers_partners_validity(self):
+        for sign_request in self:
+            sign_request_items = sign_request.request_item_ids
+            if sign_request.state == 'shared' and (len(sign_request_items) != 1 or sign_request_items.partner_id):
+                raise ValidationError(_("A shared sign request should only have one signer with an empty partner"))
+            if sign_request.state != 'shared' and any(not sri.partner_id for sri in sign_request_items):
+                raise ValidationError(_("A non-shared sign request's should not have any signer with an empty partner"))
+
     def _get_final_recipients(self):
         all_recipients = set(self.request_item_ids.mapped('signer_email')) | \
                          set(self.cc_partner_ids.filtered(lambda p: p.email_formatted).mapped('email'))
@@ -185,7 +208,7 @@ class SignRequest(models.Model):
 
     def go_to_document(self):
         self.ensure_one()
-        request_items = self.request_item_ids.filtered(lambda r: r.state == 'sent' and r.partner_id and r.partner_id.id == self.env.user.partner_id.id)
+        request_items = self.request_item_ids.filtered(lambda r: not r.partner_id or (r.state == 'sent' and r.partner_id.id == self.env.user.partner_id.id))
         return {
             'name': self.reference,
             'type': 'ir.actions.client',
@@ -204,7 +227,7 @@ class SignRequest(models.Model):
         """ go to the signable document as the signers for specified request_items or the current user"""
         self.ensure_one()
         if not request_items:
-            request_items = self.request_item_ids.filtered(lambda r: r.state == 'sent' and r.partner_id and r.partner_id.id == self.env.user.partner_id.id)
+            request_items = self.request_item_ids.filtered(lambda r: not r.partner_id or (r.state == 'sent' and r.partner_id.id == self.env.user.partner_id.id))
         return {
             'name': self.reference,
             'type': 'ir.actions.client',
@@ -653,13 +676,8 @@ class SignRequestItem(models.Model):
     @api.constrains('partner_id', 'role_id')
     def _check_signers_validity(self):
         # this check allows one signer to be False, which is used to "share" a sign template
-        for sign_request in self.sign_request_id:
-            template_roles = sign_request.template_id.sign_item_ids.responsible_id
-            sign_request_items = sign_request.request_item_ids
-            if len(sign_request_items) != max(len(template_roles), 1) or \
-                    set(sign_request_items.role_id.ids) != (set(template_roles.ids) if template_roles else set([self.env.ref('sign.sign_item_role_default').id])) or \
-                    (any(not sri.partner_id for sri in sign_request_items) and len(sign_request_items) != 1):
-                raise ValidationError(_("You must specify one signer for each role of your sign template"))
+        self.sign_request_id._check_signers_roles_validity()
+        self.sign_request_id._check_signers_partners_validity()
 
     @api.depends('partner_id.name')
     def _compute_display_name(self):
@@ -675,6 +693,7 @@ class SignRequestItem(models.Model):
             if any(sri.state != 'sent'
                    or sri.sign_request_id.state != 'sent'
                    or (sri.partner_id and not sri.role_id.change_authorized)
+                   or sri.sign_request_id.state == 'shared'
                    for sri in request_items_reassigned):
                 raise UserError(_("You cannot reassign this signatory"))
             new_sign_partner = self.env['res.partner'].browse(vals.get('partner_id'))
@@ -726,7 +745,7 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
-        if self.state != 'sent':
+        if self.state != 'sent' or self.sign_request_id.state != 'sent':
             raise UserError(_("This sign request item cannot be refused"))
         self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'refuse'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'refused'})
@@ -779,7 +798,7 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
-        if self.state != 'sent':
+        if self.state != 'sent' or self.sign_request_id.state != 'sent':
             raise UserError(_("This sign request item cannot be signed"))
 
         # edit request template while signing
@@ -825,7 +844,7 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
-        if self.state != 'sent':
+        if self.state != 'sent' or self.sign_request_id.state != 'sent':
             raise UserError(_("This sign request item cannot be signed"))
 
         required_ids = set(self.sign_request_id.template_id.sign_item_ids.filtered(
@@ -854,7 +873,7 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
-        if self.state != 'sent':
+        if self.state != 'sent' or self.sign_request_id.state != 'sent':
             raise UserError(_("This sign request item cannot be filled"))
 
         authorised_ids = set(self.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id.id == self.role_id.id).ids)

@@ -135,7 +135,6 @@
     </record>
     <record id="template_sign_tour" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_tour"/>
-        <field name="share_link">tour-template</field>
         <field name="active" eval="False"/>
     </record>
 

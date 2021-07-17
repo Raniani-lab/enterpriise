@@ -8,7 +8,7 @@ import io
 from PyPDF2 import PdfFileReader
 from collections import defaultdict
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.tools import pdf
 
@@ -38,8 +38,6 @@ class SignTemplate(models.Model):
     favorited_ids = fields.Many2many('res.users', string="Invited Users", default=lambda s: s._default_favorited_ids(), copy=False)
     user_id = fields.Many2one('res.users', string="Responsible", default=lambda self: self.env.user)
 
-    share_link = fields.Char(string="Share Link", copy=False)
-
     sign_request_ids = fields.One2many('sign.request', 'template_id', string="Signature Requests")
 
     tag_ids = fields.Many2many('sign.template.tag', string='Tags')
@@ -52,6 +50,8 @@ class SignTemplate(models.Model):
     in_progress_count = fields.Integer(compute='_compute_signed_in_progress_template')
 
     group_ids = fields.Many2many("res.groups", string="Template Access Group")
+
+    is_sharing = fields.Boolean(compute='_compute_is_sharing', help='Checked if this template has created a shared document for you')
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
@@ -89,6 +89,14 @@ class SignTemplate(models.Model):
         for template in self:
             template.signed_count = signed_request_dict[template.id]
             template.in_progress_count = in_progress_request_dict[template.id]
+
+    @api.depends_context('uid')
+    def _compute_is_sharing(self):
+        sign_template_sharing_ids = set(self.env['sign.request'].search([
+            ('state', '=', 'shared'), ('create_uid', '=', self.env.user.id), ('template_id', 'in', self.ids)
+        ]).template_id.ids)
+        for template in self:
+            template.is_sharing = template.id in sign_template_sharing_ids
 
     @api.model
     def get_empty_list_help(self, help):
@@ -208,8 +216,6 @@ class SignTemplate(models.Model):
                 values['template_id'] = self.id
                 new_values_list.append(values)
         new_id_to_item_id_map.update(zip(new_sign_items.keys(), self.env['sign.item'].create(new_values_list).ids))
-        if len(self.sign_item_ids.mapped('responsible_id')) > 1:
-            self.share_link = None
 
         return new_id_to_item_id_map
 
@@ -241,6 +247,30 @@ class SignTemplate(models.Model):
             "views": [[False, 'kanban'], [False, "form"]],
             "context": {'search_default_signed': True}
         }
+
+    def open_shared_sign_request(self):
+        self.ensure_one()
+        shared_sign_request = self.sign_request_ids.filtered(lambda sr: sr.state == 'shared' and sr.create_uid == self.env.user)
+        if not shared_sign_request:
+            shared_sign_request = self.env['sign.request'].with_context(no_sign_mail=True).create({
+                'template_id': self.id,
+                'request_item_ids': [Command.create({'role_id': self.sign_item_ids.responsible_id.id or self.env.ref('sign.sign_item_role_default').id})],
+                'reference': "%s-%s" % (self.name, _("Shared")),
+                'state': 'shared',
+            })
+        return {
+            "name": _("Share Document by Link"),
+            'type': 'ir.actions.act_window',
+            "res_model": "sign.request",
+            "res_id": shared_sign_request.id,
+            "target": "new",
+            "view_mode": "form",
+            "view_id": self.env.ref("sign.sign_request_share_view_form").id,
+        }
+
+    def stop_sharing(self):
+        self.ensure_one()
+        return self.sign_request_ids.filtered(lambda sr: sr.state == 'shared' and sr.create_uid == self.env.user).unlink()
 
     def _copy_sign_items_to(self, new_template):
         """ copy all sign items of the self template to the new_template """

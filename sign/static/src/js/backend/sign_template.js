@@ -965,10 +965,12 @@ const Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
     },
 
     "click .o_sign_template_share": function (e) {
-      this.do_action("sign.action_sign_template_share", {
-        additional_context: {
-          active_id: this.templateID,
-        },
+      this._rpc({
+        model: 'sign.template',
+        method: 'open_shared_sign_request',
+        args: [[this.templateID]],
+      }).then((action) => {
+        this.do_action(action);
       });
     },
 

@@ -58,11 +58,12 @@ class Sign(http.Controller):
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
 
-        request.env['sign.log'].sudo().create({
-            'sign_request_id': sign_request.id,
-            'sign_request_item_id': current_request_item.id,
-            'action': 'open',
-        })
+        if sign_request.state != 'shared':
+            request.env['sign.log'].sudo().create({
+                'sign_request_id': sign_request.id,
+                'sign_request_item_id': current_request_item.id,
+                'action': 'open',
+            })
 
         return {
             'sign_request': sign_request,
@@ -76,7 +77,7 @@ class Sign(http.Controller):
             'sign_items': sign_request.template_id.sign_item_ids,
             'item_values': item_values,
             'role': current_request_item.role_id.id if current_request_item else 0,
-            'readonly': not (current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent'),
+            'readonly': not (current_request_item and current_request_item.state == 'sent' and sign_request.state in ['sent', 'shared']),
             'sign_item_types': sign_item_types,
             'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),
             'refusal_allowed': sign_request.refusal_allowed and sign_request.state == 'sent',
@@ -149,23 +150,6 @@ class Sign(http.Controller):
             ]
         )
 
-    @http.route(['/sign/<link>'], type='http', auth='public')
-    def share_link(self, link, **post):
-        template = request.env['sign.template'].sudo().search([('share_link', '=', link)], limit=1)
-        if not template:
-            return request.not_found()
-
-        sign_request = request.env['sign.request'].with_user(template.create_uid).with_context(no_sign_mail=True).create({
-            'template_id': template.id,
-            'request_item_ids': [Command.create({
-                'partner_id': False,
-                'role_id': template.sign_item_ids.responsible_id.id if template.sign_item_ids else request.env.ref('sign.sign_item_role_default').id},
-            )],
-            'reference': "%(template_name)s-public" % {'template_name': template.attachment_id.name},
-        })
-        access_token = sign_request.request_item_ids[0].access_token
-        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': access_token})
-
     @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
     def check_password_page(self, sign_request_id, token, **post):
         values = http.request.params.copy()
@@ -227,7 +211,16 @@ class Sign(http.Controller):
         partner = ResPartner.search([('email', '=', mail)], limit=1)
         if not partner:
             partner = ResPartner.create({'name': name, 'email': mail})
-        sign_request.request_item_ids[0].write({'partner_id': partner.id})
+
+        new_sign_request = sign_request.with_user(sign_request.create_uid).with_context(no_sign_mail=True).copy({
+            'reference': sign_request.reference.replace('-%s' % _("Shared"), ''),
+            'request_item_ids': [Command.create({
+                'partner_id': partner.id,
+                'role_id': sign_request.request_item_ids[0].role_id.id,
+            })],
+            'state': 'sent',
+        })
+        return {"requestID": new_sign_request.id, "requestToken": new_sign_request.access_token, "accessToken": new_sign_request.request_item_ids[0].access_token}
 
     @http.route([
         '/sign/send-sms/<int:id>/<token>/<phone_number>',

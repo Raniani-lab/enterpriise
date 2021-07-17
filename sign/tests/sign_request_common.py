@@ -27,16 +27,35 @@ class SignRequestCommon(TransactionCase):
         cls.role_company.change_authorized = True
 
         cls.template_no_item = cls.env['sign.template'].create({
+            'name': 'template_no_item',
             'attachment_id': cls.attachment.id,
         })
 
-        cls.template_3_roles = cls.env['sign.template'].create({
+        cls.template_1_role = cls.env['sign.template'].create({
+            'name': 'template_1_role',
             'attachment_id': cls.attachment.id,
         })
         cls.env['sign.item'].create([
             {
                 'type_id': cls.env.ref('sign.sign_item_type_text').id,
-                'name': 'customer_id.name',
+                'required': True,
+                'responsible_id': cls.env.ref('sign.sign_item_role_customer').id,
+                'page': 1,
+                'posX': 0.273,
+                'posY': 0.158,
+                'template_id': cls.template_1_role.id,
+                'width': 0.150,
+                'height': 0.015,
+            }
+        ])
+
+        cls.template_3_roles = cls.env['sign.template'].create({
+            'name': 'template_3_roles',
+            'attachment_id': cls.attachment.id,
+        })
+        cls.env['sign.item'].create([
+            {
+                'type_id': cls.env.ref('sign.sign_item_type_text').id,
                 'required': True,
                 'responsible_id': cls.env.ref('sign.sign_item_role_customer').id,
                 'page': 1,
@@ -47,7 +66,6 @@ class SignRequestCommon(TransactionCase):
                 'height': 0.015,
             }, {
                 'type_id': cls.env.ref('sign.sign_item_type_text').id,
-                'name': 'employee_id.name',
                 'required': True,
                 'responsible_id': cls.env.ref('sign.sign_item_role_employee').id,
                 'page': 1,
@@ -58,7 +76,6 @@ class SignRequestCommon(TransactionCase):
                 'height': 0.015,
             }, {
                 'type_id': cls.env.ref('sign.sign_item_type_text').id,
-                'name': 'employee_id.name',
                 'required': True,
                 'responsible_id': cls.env.ref('sign.sign_item_role_company').id,
                 'page': 1,

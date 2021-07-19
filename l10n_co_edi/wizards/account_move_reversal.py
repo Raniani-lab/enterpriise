@@ -15,5 +15,4 @@ class AccountMoveReversal(models.TransientModel):
         action = super(AccountMoveReversal, self).reverse_moves()
         for refund in self.new_move_ids:
             refund.l10n_co_edi_description_code_credit = self.l10n_co_edi_description_code_credit
-            refund._onchange_type()
         return action

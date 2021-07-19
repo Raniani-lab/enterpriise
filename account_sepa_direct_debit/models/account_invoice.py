@@ -98,7 +98,7 @@ class AccountMoveLine(models.Model):
 
         for pay in self.payment_id:
             if pay.sdd_mandate_id:
-                pay.move_id._get_reconciled_invoices().sdd_mandate_id = pay.sdd_mandate_id
+                pay.move_id._get_reconciled_invoices().filtered(lambda m: m.sdd_mandate_id != pay.sdd_mandate_id).sdd_mandate_id = pay.sdd_mandate_id
 
                 if pay.sdd_mandate_id.one_off:
                     pay.sdd_mandate_id.action_close_mandate()

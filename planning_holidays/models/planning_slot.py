@@ -30,7 +30,7 @@ class Slot(models.Model):
         loc_cache = {}
         def localize(date):
             if date not in loc_cache:
-                loc_cache[date] = utc.localize(date).astimezone(timezone(self.env.user.tz)).replace(tzinfo=None)
+                loc_cache[date] = utc.localize(date).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None)
             return loc_cache.get(date)
 
         assigned_slots = self.filtered(lambda s: s.employee_id)

@@ -30,12 +30,9 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
     # ACTIONS
     def action_open_view_grid(self, options):
         period_id = self._get_selected_period_id()
-        AnalysisPeriod = self.env['consolidation.period']
-        periods = AnalysisPeriod.search_read([('id', '=', period_id)], ['display_name'])
-        period_name = periods[0]['display_name'] if periods and len(periods) == 1 else False
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Edit') + ' ' + (period_name or ''),
+            'name': _('Edit') + ' ' + self._get_report_name(),
             'res_model': 'consolidation.journal.line',
             'view_mode': 'grid,graph,form',
             'view_type': 'grid',
@@ -135,7 +132,8 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
 
     @api.model
     def _get_report_name(self):
-        return _("Trial Balance")
+        period_id = self._get_selected_period_id()
+        return self.env['consolidation.period'].browse(period_id)['display_name'] or _("Trial Balance")
 
     def _get_reports_buttons(self, options):
         ap_is_closed = False

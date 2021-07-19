@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+import odoo
 
 from . import mws_connector as mwsc
 from odoo import _, api, fields, models
@@ -21,7 +22,8 @@ class StockPicking(models.Model):
         pickings = self
         if 'date_done' in vals:
             amazon_pickings = self.sudo().filtered(lambda p: p.sale_id and p.sale_id.amazon_order_ref)
-            amazon_pickings._check_tracking_reference_availability()
+            if amazon_pickings:
+                self._check_tracking_reference_availability()
             amazon_pickings._check_sales_order_line_completion()
             # Flag as pending sync the pickings linked to Amazon that are the last step of a (multi-step) delivery route
             last_step_amazon_pickings = amazon_pickings.filtered(lambda p: p.location_dest_id.usage == 'customer')
@@ -32,11 +34,13 @@ class StockPicking(models.Model):
     def _check_tracking_reference_availability(self):
         """ Check that a tracking reference can be added to the picking.
 
+        If in testing environment, no user error is raised to allow testing modules individually.
+
         :raise: UserError if the module delivery is not installed
         """
         module_delivery = self.env['ir.module.module'].sudo().search([('name', '=', 'delivery')])
         delivery_installed = module_delivery.state in ('installed', 'to upgrade')
-        if not delivery_installed:
+        if not delivery_installed and not odoo.modules.module.current_test:
             raise UserError(_(
                 "Starting from July 2021, Amazon requires that a tracking reference is provided "
                 "with each delivery. See https://odoo.com/r/amz_tracking_ref "

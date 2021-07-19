@@ -19,3 +19,5 @@ class ResConfigSettings(models.TransientModel):
     reminder_manager_delay = fields.Integer("Days to Remind Manager", related='company_id.timesheet_mail_manager_delay', readonly=False)
     reminder_manager_interval = fields.Selection(string='Manager Reminder Frequency', required=True,
         related='company_id.timesheet_mail_manager_interval', readonly=False)
+    timesheet_min_duration = fields.Integer('Minimal Duration', default=15, config_parameter='timesheet_grid.timesheet_min_duration')
+    timesheet_rounding = fields.Integer('Round up', default=15, config_parameter='timesheet_grid.timesheet_rounding')

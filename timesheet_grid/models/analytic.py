@@ -615,8 +615,8 @@ class AnalyticLine(models.Model):
             # if yes, then remove the timesheet
             self.unlink()
             return
-        minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
-        rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
+        minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 0))
+        rounding = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_rounding', 0))
         minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
         amount = self.unit_amount + minutes_spent * 60 / 3600
         if not try_to_match or self.name != '/':
@@ -701,14 +701,14 @@ class AnalyticLine(models.Model):
         if len(last_timesheet_ids) == 5 and len(last_timesheet_ids.project_id) == 1:
             favorite_project = last_timesheet_ids.project_id.id
         return {
-            'step_timer': int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 15)),
+            'step_timer': int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15)),
             'favorite_project': favorite_project
         }
 
     @api.model
     def get_rounded_time(self, timer):
-        minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
-        rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
+        minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 0))
+        rounding = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_rounding', 0))
         rounded_minutes = self._timer_rounding(timer, minimum_duration, rounding)
         return rounded_minutes / 60
 
@@ -848,10 +848,10 @@ class AnalyticLine(models.Model):
         }
 
     def action_timer_increase(self):
-        min_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+        min_duration = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 0))
         self.update({'unit_amount': self.unit_amount + (min_duration / 60)})
 
     def action_timer_decrease(self):
-        min_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+        min_duration = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 0))
         duration = self.unit_amount - (min_duration / 60)
         self.update({'unit_amount': duration if duration > 0 else 0 })

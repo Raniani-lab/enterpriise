@@ -115,6 +115,7 @@ class AnalyticLine(models.Model):
         last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
         domain_search = [
             ('project_id', '!=', False),
+            ('task_id.active', '=', True),
             ('date', '>=', last_month),
             ('date', '<=', grid_anchor)
         ]

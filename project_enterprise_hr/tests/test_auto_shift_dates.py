@@ -86,3 +86,13 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
         })
         self.assertEqual(self.task_3.planned_date_end,
                          new_task_1_begin_date + relativedelta(days=1, hour=9), failed_message)
+
+    def test_auto_shift_multiple_assignees(self):
+        """
+        Tests that the auto shift fallbacks to the company calendar in the case that
+        there are multiple assignees to the task.
+        """
+        self.task_1.user_ids += self.user_projectmanager
+        self.task_1.write(self.task_1_date_auto_shift_trigger)
+        failed_message = "The auto shift date feature should move forward a dependent tasks."
+        self.assertTrue(self.task_1.planned_date_end <= self.task_3.planned_date_begin, failed_message)

@@ -100,10 +100,10 @@
             <field name="name" position="attributes">
                 <attribute name="placeholder">e.g. Boiler replacement</attribute>
             </field>
-            <field name="user_id" position="attributes">
-                <attribute name="widget">many2one_avatar_user</attribute>
+            <field name="user_ids" position="attributes">
+                <attribute name="widget">many2many_avatar_user</attribute>
             </field>
-            <field name="user_id" position="before">
+            <field name="user_ids" position="before">
                 <field name="project_id" invisible="1"/>
                 <field name="is_fsm" invisible="1"/>
                 <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>

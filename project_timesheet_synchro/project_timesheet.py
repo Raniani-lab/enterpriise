@@ -72,7 +72,7 @@ class account_analytic_line(models.Model):
             '&',
                 '|',
                     '|',
-                        ("user_id", "=", self.env.uid),
+                        ("user_ids", "in", self.env.uid),
                     ("message_partner_ids", "=", self.env.user.partner_id.id),
                 ("id", "in", task_ids_list),
             ('active', '=', True),
@@ -183,7 +183,7 @@ class account_analytic_line(models.Model):
             'id',
             'name',
             'project_id/id',
-            'user_id/.id',
+            'user_ids/.id',
         ]
         task_errors = self.load_wrapper(self.env["project.task"], tasks_fields, ls_tasks_to_import)
 

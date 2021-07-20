@@ -49,7 +49,7 @@ class TestSaleForecast(TestSalePlanning):
             sol_form.product_uom_qty = 50
         so = so_form.save()
         so.action_confirm()
-        so.order_line.task_id.write({'user_id': self.user_projectuser_wout.id})
+        so.order_line.task_id.write({'user_ids': self.user_projectuser_wout})
         Slot = self.env['planning.slot'].with_context(start_date='2021-07-25 00:00:00', stop_date='2021-07-31 23:59:59', scale='week', focus_date='2021-07-31 00:00:00')
         with freeze_time('2021-07-26'):
             Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])

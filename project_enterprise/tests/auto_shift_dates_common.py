@@ -32,7 +32,7 @@ class AutoShiftDatesCommon(TestProjectCommon):
         cls.task_3_planned_date_end = datetime(2021, 6, 24, 15, 0, 0)
         cls.task_3 = cls.env['project.task'].create({
             'name': 'Pigs UserTask 2',
-            'user_id': cls.user_projectuser.id,
+            'user_ids': cls.user_projectuser,
             'project_id': cls.project_pigs.id,
             'depend_on_ids': [Command.link(cls.task_1.id)],
             'planned_date_begin': cls.task_3_planned_date_begin,
@@ -43,7 +43,7 @@ class AutoShiftDatesCommon(TestProjectCommon):
         cls.task_4_planned_date_end = datetime(2021, 6, 30, 17, 0, 0)
         cls.task_4 = cls.env['project.task'].create({
             'name': 'Pigs UserTask 3',
-            'user_id': cls.user_projectuser.id,
+            'user_ids': cls.user_projectuser,
             'project_id': cls.project_pigs.id,
             'depend_on_ids': [Command.link(cls.task_3.id)],
             'planned_date_begin': cls.task_4_planned_date_begin,
@@ -54,7 +54,7 @@ class AutoShiftDatesCommon(TestProjectCommon):
         cls.task_5_planned_date_end = datetime(2021, 8, 3, 17, 0, 0)
         cls.task_5 = cls.env['project.task'].create({
             'name': 'Pigs UserTask 4',
-            'user_id': cls.user_projectuser.id,
+            'user_ids': cls.user_projectuser,
             'project_id': cls.project_pigs.id,
             'depend_on_ids': [Command.link(cls.task_4.id)],
             'planned_date_begin': cls.task_5_planned_date_begin,
@@ -65,7 +65,7 @@ class AutoShiftDatesCommon(TestProjectCommon):
         cls.task_6_planned_date_end = datetime(2021, 8, 4, 17, 0, 0)
         cls.task_6 = cls.env['project.task'].create({
             'name': 'Pigs UserTask 5',
-            'user_id': cls.user_projectuser.id,
+            'user_ids': cls.user_projectuser,
             'project_id': cls.project_pigs.id,
             'depend_on_ids': [Command.link(cls.task_5.id)],
             'planned_date_begin': cls.task_6_planned_date_begin,

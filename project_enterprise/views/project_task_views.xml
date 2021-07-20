@@ -32,7 +32,7 @@
                 scales="day,week,month,year"
                 color="project_color"
                 string="Planning"
-                thumbnails="{'user_id': 'avatar_128'}"
+                thumbnails="{'user_ids': 'avatar_128'}"
                 js_class="task_gantt"
                 display_unavailability="1"
                 sample="1"
@@ -40,13 +40,13 @@
                 <templates>
                     <div t-name="gantt-popover">
                         <div t-if="project_id"><strong>Project — </strong> <t t-esc="project_id[1]"/></div>
-                        <div t-if="user_id"><strong>Assignee — </strong> <t t-esc="user_id[1]"/></div>
+                        <div t-if="user_ids"><strong>Assignee — </strong> <t t-esc="user_ids[1]"/></div>
                         <div t-if="partner_id"><strong>Customer — </strong> <t t-esc="partner_id[1]"/></div>
                         <div><t t-esc="userTimezoneStartDate.format('l LT ')"/><i class="fa fa-long-arrow-right" title="Arrow"/><t t-esc="userTimezoneStopDate.format(' l LT')"/></div>
                     </div>
                 </templates>
                 <field name="project_id"/>
-                <field name="user_id"/>
+                <field name="user_ids"/>
                 <field name="partner_id"/>
                 <field name="project_color" />
             </gantt>
@@ -76,7 +76,7 @@
                 <field name="partner_id" string="Customer"/>
                 <field name="partner_phone" string="Phone"/>
                 <field name="project_id" string="Project"/>
-                <field name="user_id" string="Assigned To"/>
+                <field name="user_ids" string="Assigned To"/>
                 <field name="planned_date_begin" string="Date"/>
             </map>
         </field>
@@ -90,7 +90,7 @@
             <map res_partner="partner_id" routing="true" js_class="project_map">
                 <field name="partner_id" string="Customer"/>
                 <field name="partner_phone" string="Phone"/>
-                <field name="user_id" string="Assigned to"/>
+                <field name="user_ids" string="Assigned to"/>
             </map>
         </field>
     </record>
@@ -103,7 +103,7 @@
 
     <record id="project.action_view_all_task" model="ir.actions.act_window">
         <field name="res_model">project.task</field>
-        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,gantt,activity,map</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt,activity,map</field>
     </record>
 
     <!-- Set map view and rearrange order -->

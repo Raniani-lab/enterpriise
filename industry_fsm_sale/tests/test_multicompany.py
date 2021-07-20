@@ -56,14 +56,14 @@ class TestMultiCompanyCommon(TestCommonSaleTimesheet):
         Task = cls.env['project.task'].with_context({'mail_create_nolog': True, 'tracking_disable': True})
         cls.task_1 = Task.create({
             'name': 'Task 1 in Project A',
-            'user_id': cls.company_data['default_user_employee'].id,
+            'user_ids': cls.company_data['default_user_employee'],
             'partner_id': cls.partner_a.id,
             'project_id': cls.fsm_company_a.id
         })
 
         cls.task_2 = Task.create({
             'name': 'Task 2 in Project A',
-            'user_id': cls.company_data['default_user_employee'].id,
+            'user_ids': cls.company_data['default_user_employee'],
             'partner_id': cls.partner_a.id,
             'project_id': cls.fsm_company_a.id
         })

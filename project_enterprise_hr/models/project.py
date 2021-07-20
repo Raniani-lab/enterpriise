@@ -13,8 +13,8 @@ class Task(models.Model):
 
     def _get_calendars_and_resources_key(self):
         self.ensure_one()
-        if self.user_id.employee_id.resource_calendar_id:
-            self.user_id.employee_id.id
+        if len(self.user_ids) == 1 and self.user_ids.employee_id.resource_calendar_id:
+            self.user_ids.employee_id.id
         else:
             return super(Task, self)._get_calendars_and_resources_key()
 
@@ -33,12 +33,12 @@ class Task(models.Model):
         """
         self.ensure_one()
 
-        if not self.user_id.employee_id.resource_calendar_id:
+        if len(self.user_ids) != 1 or not self.user_ids.employee_id.resource_calendar_id:
             return super(Task, self)._get_calendars_and_resources(date_start, date_end)
 
         key = self._get_calendars_and_resources_key()
         calendar_by_task_dict = defaultdict(list)
-        employee = self.user_id.employee_id
+        employee = self.user_ids.employee_id
         creation_date = employee.create_date.replace(tzinfo=utc)
         employee_company_tz = employee.company_id.resource_calendar_id.tz
         # Use company's resource calendar prior to employee creation.

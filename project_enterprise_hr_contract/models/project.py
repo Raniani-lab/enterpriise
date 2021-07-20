@@ -14,8 +14,8 @@ class Task(models.Model):
 
     def _get_calendars_and_resources_key(self):
         self.ensure_one()
-        if self.user_id.employee_id.resource_calendar_id:
-            self.user_id.employee_id.id
+        if len(self.user_ids) == 1 and self.user_ids.employee_id.resource_calendar_id:
+            self.user_ids.employee_id.id
         else:
             return super(Task, self)._get_calendars_and_resources_key()
 
@@ -36,8 +36,8 @@ class Task(models.Model):
 
         calendar_by_task_dict = defaultdict(list)
         contracts = self.env['project.task']
-        if self.user_id.employee_id:
-            employee = self.user_id.employee_id
+        if len(self.user_ids) == 1 and self.user_ids.employee_id:
+            employee = self.user_ids.employee_id
             contracts = employee._get_contracts(date_start, date_end, ['open', 'close'])
 
         if not contracts:

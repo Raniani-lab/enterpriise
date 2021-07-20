@@ -83,8 +83,8 @@ class PlanningSlot(models.Model):
         employee_id = super()._get_employee_per_priority(priority, employee_ids_to_exclude, cache)
         if employee_id or priority in cache:
             return employee_id
-        if priority == 'task_assignee' and self.task_id:
-            tmp_emp_id = self.task_id.user_id.employee_id.id
+        if priority == 'task_assignee' and self.task_id and len(self.task_id.user_ids) == 1:
+            tmp_emp_id = self.task_id.user_ids.employee_id.id
             if tmp_emp_id not in employee_ids_to_exclude:
                 cache[priority] = [tmp_emp_id]
         return cache[priority].pop(0) if cache.get(priority) else employee_id

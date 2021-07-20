@@ -18,7 +18,7 @@ class TestIndustryFsmEmployeeRate(TestFsmFlowSaleCommon):
         cls.Task = cls.env['project.task'].with_context({
             'mail_create_nolog': True,
             'default_project_id': cls.fsm_project_employee_rate.id,
-            'default_user_id': cls.project_user.id,
+            'default_user_ids': cls.project_user,
         })
 
     def test_fsm_employee_rate(self):

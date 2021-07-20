@@ -6,15 +6,15 @@
                 <div class="page">
                     <div class="d-flex flex-wrap">
                         <div class="d-flex flex-wrap pt-3 col-6 flex-column align-items-start">
-                            <t t-if="doc.user_id">
+                            <t t-foreach="doc.user_ids" t-as="user">
                                 <div class="pr-2 align-top"><strong>Worker: </strong></div>
-                                <div class="align-top" t-esc="doc.user_id" t-options='{
+                                <div class="align-top" t-esc="user" t-options='{
                                     "widget": "contact",
                                     "fields": ["name", "address", "phone", "email"]
                                     }'/>
                             </t>
                         </div>
-                        <div t-attf-class="{{'d-flex pl-3 col-6' if doc.user_id else ''}} flex-wrap py-3 pr-3 flex-column align-items-start">
+                        <div t-attf-class="{{'d-flex pl-3 col-6' if doc.user_ids else ''}} flex-wrap py-3 pr-3 flex-column align-items-start">
                             <t t-if="doc.partner_id">
                                 <div class="pr-2 align-top"><strong>Customer: </strong></div>
                                 <div class="align-top"><t t-esc="doc.partner_id" t-options='{

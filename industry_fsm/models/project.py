@@ -83,7 +83,7 @@ class Task(models.Model):
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
-    user_id = fields.Many2one(group_expand='_read_group_user_ids')
+    user_ids = fields.Many2many(group_expand='_read_group_user_ids')
     # Use to count conditions between : time, worksheet and materials
     # If 2 over 3 are enabled for the project, the required count = 2
     # If 1 over 3 is met (enabled + encoded), the satisfied count = 2
@@ -164,13 +164,13 @@ class Task(models.Model):
             recently_created_tasks = self.env['project.task'].search([
                 ('create_date', '>', datetime.now() - timedelta(days=30)),
                 ('is_fsm', '=', True),
-                ('user_id', '!=', False)
+                ('user_ids', '!=', False)
             ])
-            search_domain = ['|', '|', ('id', 'in', users.ids), ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id), ('id', 'in', recently_created_tasks.mapped('user_id.id'))]
+            search_domain = ['|', '|', ('id', 'in', users.ids), ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id), ('id', 'in', recently_created_tasks.mapped('user_ids.id'))]
             return users.search(search_domain, order=order)
         return users
 
-    @api.depends('planned_date_begin', 'planned_date_end', 'user_id')
+    @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
     def _compute_planning_overlap(self):
         if self.ids:
             query = """
@@ -180,7 +180,6 @@ class Task(models.Model):
                     (
                         SELECT
                             T.id as id,
-                            T.user_id as user_id,
                             T.project_id,
                             T.planned_date_begin as planned_date_begin,
                             T.planned_date_end as planned_date_end,
@@ -194,15 +193,19 @@ class Task(models.Model):
                             AND T.planned_date_end IS NOT NULL
                             AND T.project_id IS NOT NULL
                     ) T1
+                INNER JOIN project_task_user_rel U1
+                    ON T1.id = U1.task_id
                 INNER JOIN project_task T2
                     ON T1.id != T2.id
                         AND T2.active = 't'
-                        AND T1.user_id = T2.user_id
                         AND T2.planned_date_begin IS NOT NULL
                         AND T2.planned_date_end IS NOT NULL
                         AND T2.project_id IS NOT NULL
                         AND (T1.planned_date_begin::TIMESTAMP, T1.planned_date_end::TIMESTAMP)
                             OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
+                INNER JOIN project_task_user_rel U2
+                    ON T2.id = U2.task_id
+                   AND U2.user_id = U1.user_id
                 GROUP BY T1.id
             """
             self.env.cr.execute(query, (tuple(self.ids),))

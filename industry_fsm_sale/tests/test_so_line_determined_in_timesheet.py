@@ -56,7 +56,7 @@ class TestSoLineDeterminedInTimesheet(TestFsmFlowSaleCommon):
         task = self.env['project.task'].with_context({
             'mail_create_nolog': True,
             'default_project_id': self.fsm_project_employee_rate.id,
-            'default_user_id': self.project_user.id,
+            'default_user_ids': self.project_user,
         }).create({
             'sale_line_id': self.fsm_so.order_line[:1].id,
             'name': 'Fsm Task',

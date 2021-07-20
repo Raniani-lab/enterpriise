@@ -4,7 +4,7 @@
 
         <record id="planning_task_0" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_28"/>
             <field name="name">Boiler maintenance</field>
             <field name="color">4</field>
@@ -17,7 +17,7 @@
 
         <record id="planning_task_1" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_31"/>
             <field name="name">Fix sink</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -28,7 +28,7 @@
 
         <record id="planning_task_2" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_11"/>
             <field name="name">Filter replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -39,7 +39,7 @@
 
         <record id="planning_task_3" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_30"/>
             <field name="name">Check joints</field>
             <field name="color">2</field>
@@ -52,7 +52,7 @@
 
         <record id="planning_task_4" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_34"/>
             <field name="name">Bathroom ventilation</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -63,7 +63,7 @@
 
         <record id="planning_task_5" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_17"/>
             <field name="name">3-port Valve replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -74,7 +74,7 @@
 
         <record id="planning_task_6" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_27"/>
             <field name="name">Two radiators installation</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -85,7 +85,7 @@
 
         <record id="planning_task_7" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_16"/>
             <field name="name">Install pipeline system</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -96,7 +96,7 @@
 
         <record id="planning_task_8" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_3"/>
             <field name="name">Install air extractor</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -107,7 +107,7 @@
 
         <record id="planning_task_9" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_demo"/>
+            <field name="user_ids" eval="[(4, ref('base.user_demo'))]"/>
             <field name="partner_id" ref="base.res_partner_address_5"/>
             <field name="name">Fix Clogged line</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -118,7 +118,7 @@
 
         <record id="planning_task_10" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
             <field name="partner_id" ref="base.res_partner_address_33"/>
             <field name="name">Water Heater</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -129,7 +129,7 @@
 
         <record id="planning_task_11" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.demo_user0"/>  <!--ref="res.users.partner_demo_portal"-->
+            <field name="user_ids" eval="[(4, ref('base.demo_user0'))]"/>  <!--ref="res.users.partner_demo_portal"-->
             <field name="partner_id" ref="base.res_partner_address_2"/>
             <field name="name">Find and fix leak</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -140,7 +140,7 @@
 
         <record id="planning_task_12" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" eval="False"/>  
+            <field name="user_ids" eval="False"/>
             <field name="partner_id" ref="base.res_partner_address_1"/>
             <field name="name">Light switch replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -151,7 +151,7 @@
 
         <record id="planning_task_13" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.demo_user0"/>  
+            <field name="user_ids" eval="[(4, ref('base.demo_user0'))]"/>
             <field name="partner_id" ref="base.res_partner_address_16"/>
             <field name="name">Electric installation safety check</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -162,7 +162,7 @@
 
         <record id="planning_task_14" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" eval="False"/>  
+            <field name="user_ids" eval="False"/>
             <field name="partner_id" ref="base.res_partner_address_2"/>
             <field name="name">Radiator replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -173,7 +173,7 @@
 
         <record id="planning_task_15" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.demo_user0"/> 
+            <field name="user_ids" eval="[(4, ref('base.demo_user0'))]"/>
             <field name="partner_id" ref="base.res_partner_address_32"/>
             <field name="name">Bathroom tiling</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -184,7 +184,7 @@
 
         <record id="planning_task_16" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" eval="False"/> 
+            <field name="user_ids" eval="False"/>
             <field name="partner_id" ref="base.res_partner_address_34"/>
             <field name="name">Replace defective shower head</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -195,7 +195,7 @@
 
         <record id="planning_task_17" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.demo_user0"/>  
+            <field name="user_ids" eval="[(4, ref('base.demo_user0'))]"/>
             <field name="partner_id" ref="base.res_partner_address_28"/>
             <field name="name">Secure basement window</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -206,7 +206,7 @@
 
         <record id="planning_task_18" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" eval="False"/> 
+            <field name="user_ids" eval="False"/>
             <field name="partner_id" ref="base.res_partner_address_15"/>
             <field name="name">Find and fix leak</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -217,7 +217,7 @@
 
         <record id="planning_task_19" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.demo_user0"/>  
+            <field name="user_ids" eval="[(4, ref('base.demo_user0'))]"/>
             <field name="partner_id" ref="base.res_partner_address_13"/>
             <field name="name">Fix sink</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -228,7 +228,7 @@
 
         <record id="planning_task_20" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" eval="False"/>  
+            <field name="user_ids" eval="False"/>
             <field name="partner_id" ref="base.res_partner_address_24"/>
             <field name="name">Radiator replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>

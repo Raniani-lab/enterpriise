@@ -61,7 +61,7 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
 
         cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',
-            'user_id': cls.project_user.id,
+            'user_ids': cls.project_user,
             'project_id': cls.fsm_project.id})
 
         cls.product_ordered = cls.env['product.product'].create({

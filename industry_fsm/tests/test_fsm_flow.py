@@ -11,28 +11,28 @@ class TestFsmFlow(TestFsmFlowCommon):
     def test_planning_overlap(self):
         task_A = self.env['project.task'].create({
             'name': 'Fsm task 1',
-            'user_id': self.project_user.id,
+            'user_ids': self.project_user,
             'project_id': self.fsm_project.id,
             'planned_date_begin': datetime.now(),
             'planned_date_end': datetime.now() + relativedelta(hours=4)
         })
         task_B = self.env['project.task'].create({
             'name': 'Fsm task 2',
-            'user_id': self.project_user.id,
+            'user_ids': self.project_user,
             'project_id': self.fsm_project.id,
             'planned_date_begin': datetime.now() + relativedelta(hours=2),
             'planned_date_end': datetime.now() + relativedelta(hours=6)
         })
         task_C = self.env['project.task'].create({
             'name': 'Fsm task 2',
-            'user_id': self.project_user.id,
+            'user_ids': self.project_user,
             'project_id': self.fsm_project.id,
             'planned_date_begin': datetime.now() + relativedelta(hours=5),
             'planned_date_end': datetime.now() + relativedelta(hours=7)
         })
         task_D = self.env['project.task'].create({
             'name': 'Fsm task 2',
-            'user_id': self.project_user.id,
+            'user_ids': self.project_user,
             'project_id': self.fsm_project.id,
             'planned_date_begin': datetime.now() + relativedelta(hours=8),
             'planned_date_end': datetime.now() + relativedelta(hours=9)

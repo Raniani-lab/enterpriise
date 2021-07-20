@@ -94,14 +94,14 @@ class Task(models.Model):
         calendar_by_user_dict = {  # key: user_id, value: resource.calendar instance
             user.id:
                 user.resource_calendar_id or default_calendar
-            for user in self.mapped('user_id')
+            for user in self.mapped('user_ids')
         }
 
         tasks_by_resource_calendar_dict = defaultdict(
             lambda: self.env[self._name])  # key = resource_calendar instance, value = tasks
         for task in self:
-            if task.user_id:
-                tasks_by_resource_calendar_dict[calendar_by_user_dict[task.user_id.id]] |= task
+            if len(task.user_ids) == 1:
+                tasks_by_resource_calendar_dict[calendar_by_user_dict[task.user_ids.id]] |= task
             else:
                 tasks_by_resource_calendar_dict[default_calendar] |= task
 

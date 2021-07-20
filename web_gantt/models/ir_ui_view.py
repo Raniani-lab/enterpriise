@@ -5,6 +5,7 @@ from odoo import models, _
 from lxml import etree
 
 GANTT_VALID_ATTRIBUTES = set([
+    '__validate__',                     # ir.ui.view implementation detail
     'date_start',
     'date_stop',
     'default_scale',
@@ -60,8 +61,10 @@ class View(models.Model):
                         not self._context.get(action, True) and is_base_model):
                     node.set(action, 'false')
 
-
     def _validate_tag_gantt(self, node, name_manager, node_info):
+        if not node_info['validate']:
+            return
+
         templates_count = 0
         for child in node.iterchildren(tag=etree.Element):
             if child.tag == 'templates':

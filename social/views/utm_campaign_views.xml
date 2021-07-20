@@ -54,7 +54,7 @@
             <xpath expr="//ul[@id='o_utm_actions']">
                 <a name="action_redirect_to_social_media_posts" type="object"
                     t-attf-class="#{record.social_posts_count.raw_value === 0 ? 'text-muted' : ''}">
-                    <t t-raw="record.social_posts_count.raw_value"/> Posts
+                    <t t-out="record.social_posts_count.raw_value"/> Posts
                 </a>
             </xpath>
         </field>

@@ -2,6 +2,7 @@ odoo.define('helpdesk.tour', function(require) {
 "use strict";
 
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
@@ -11,7 +12,7 @@ tour.register('helpdesk_tour', {
     sequence: 220,
 }, [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',
-    content: _t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>'),
+    content: Markup(_t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>')),
     position: 'bottom',
 }, {
     trigger: '.oe_kanban_action_button',
@@ -28,7 +29,7 @@ tour.register('helpdesk_tour', {
 }, {
     trigger: 'input.field_name',
     extra_trigger: '.o_form_editable',
-    content: _t('Enter the <b>subject</b> of your ticket <br/><i>(e.g. Problem with my installation, Wrong order, etc.).</i>'),
+    content: Markup(_t('Enter the <b>subject</b> of your ticket <br/><i>(e.g. Problem with my installation, Wrong order, etc.).</i>')),
     position: 'right',
 }, {
     trigger: '.o_field_widget.field_partner_id',
@@ -73,12 +74,12 @@ tour.register('helpdesk_tour', {
     position: 'bottom',
 }, {
     trigger: '.o_kanban_record',
-    content: _t('<b>Drag &amp; drop</b> the card to change the stage of your ticket.'),
+    content: Markup(_t('<b>Drag &amp; drop</b> the card to change the stage of your ticket.')),
     position: 'right',
     run: "drag_and_drop .o_kanban_group:eq(2) ",
 }, {
     trigger: ".o_column_quick_create .o_quick_create_folded",
-    content: _t('Adapt your <b>pipeline</b> to your workflow by adding <b>stages</b> <i>(e.g. Awaiting Customer Feedback, etc.).</i>'),
+    content: Markup(_t('Adapt your <b>pipeline</b> to your workflow by adding <b>stages</b> <i>(e.g. Awaiting Customer Feedback, etc.).</i>')),
     position: 'right',
 }
 ]);

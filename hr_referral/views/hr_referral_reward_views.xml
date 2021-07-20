@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <t t-raw="record.description.raw_value"/>
+                                    <t t-out="record.description.value"/>
                                 </div>
                                 <div groups="base.group_multi_company">
                                     <i><field name="company_id"/></i>

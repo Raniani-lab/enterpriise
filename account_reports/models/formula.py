@@ -342,45 +342,61 @@ class FormulaSolver:
         return formula
 
     def get_formula_popup(self, financial_line):
-        ''' Helper to get the formula with injected html to be used inside the popup. '''
+        """ Helper to enrich the formula with relevant cross-linking metadata.
 
-        def inject_in_formula(formula, other_line):
-            financial_report = other_line._get_financial_report()
-            code = other_line.code
+        Each cross-linkable code in the formula of ``financial_line`` gets
+        converted to a node ``{type: internal, code: ...}`` if it comes from a
+        line from the same report as ``financial_line``, or
+        ``{type: external, id: current_report_id, target: report_id, code: ...}``
+        otherwise.
 
-            # Regex to search the code inside the formula using:
-            # - negative lookbehind assertion to match if the previous character is not a letter.
-            # - lookahead assertion to match if the following character is not a letter or the end of the string.
-            regex = r'(?<!\w)%s(?=(\W|$))' % code
-
-            if not re.search(regex, formula):
-                return formula
-
-            if not financial_report or financial_report == self.financial_report:
-                code_as_html = '''<span class="js_popup_formula">%s</span>''' % code
-            else:
-                code_as_html = '''<button data-id="%s" data-target="%s" class="btn btn-sm btn-secondary js_popup_open_report">%s</button>''' % \
-                               (self.financial_report.id, financial_report.id, code)
-
-            return re.sub(regex, code_as_html, formula)
-
+        Content which is not cross-linkable is converted to
+        ``{type: literal, text: ...}``, this includes both non-code contents and
+        codes which could not be resolved.
+        """
         results = self.get_results(financial_line)
 
         formula = financial_line.formulas
 
         if not formula:
-            return ''
+            return []
 
-        for code in results.get('sub_codes', []):
+        codes = results.get('sub_codes')
+        if not codes:
+            return [formula]
+
+        items = []
+        prev = 0
+        for m in re.finditer(r'\b' + '|'.join(codes) + r'\b', formula):
+            code = m[0]
+            # line might have no code as the field is optional
             other_line = self.cache_line_by_code[code]
-
-            # A financial line could have no code since the field is not required.
             if not other_line.code:
                 continue
 
-            formula = inject_in_formula(formula, other_line)
+            if m.start() != prev:
+                items.append({'type': 'literal', 'text': formula[prev:m.start()]})
+            prev = m.end()
 
-        return formula
+            financial_report = other_line._get_financial_report()
+            if not financial_report or financial_report == self.financial_report:
+                items.append({
+                    'type': 'internal',
+                    'code': other_line.code,
+                })
+            else:
+                items.append({
+                    'type': 'external',
+                    'id': self.financial_report.id,
+                    'target': financial_report.id,
+                    'code': other_line.code,
+                })
+
+        rest = formula[prev:]
+        if rest:
+            items.append(rest)
+
+        return items
 
     def _get_involved_sub_financial_line_domains(self, financial_line):
         """ Recursively goes through each line's sub lines in order to find their respective domain.

@@ -6,6 +6,7 @@ odoo.define("industry_fsm_report.tour", function (require) {
 var tour = require('web_tour.tour');
     require('industry_fsm.tour');
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var _t = core._t;
 
 var fsmStartStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {
@@ -19,13 +20,13 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: 'bottom',
 }, {
     trigger: ".o_form_button_save",
-    content: _t('Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this form to your needs and create as many templates as you want.</i>'),
+    content: Markup(_t('Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this form to your needs and create as many templates as you want.</i>')),
     extra_trigger: '.o_form_view',
     position: 'bottom'
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: '.o_form_view',
-    content: _t("Use the breadcrumbs to go back to your <b>task</b>."),
+    content: Markup(_t("Use the breadcrumbs to go back to your <b>task</b>.")),
     position: 'bottom'
 
 });

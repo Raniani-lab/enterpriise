@@ -35,19 +35,31 @@
         <table>
             <tr>
                 <td><strong>Name: </strong></td>
-                <td style="text-align:right;"><t t-esc="name"/></td>
+                <td style="text-align:right;"><t t-out="name"/></td>
             </tr>
             <tr>
                 <td><strong>Code: </strong></td>
-                <td style="text-align:right;"><t t-esc="code"/></td>
+                <td style="text-align:right;"><t t-out="code"/></td>
             </tr>
             <tr>
                 <td><strong>Formula: </strong></td>
-                <td style="text-align:right;"><t t-raw="formula"/></td>
+                <td style="text-align:right;">
+                    <t t-foreach="formula" t-as="token">
+                        <t t-if="token.type === 'internal'">
+                            <span class="js_popup_formula" t-out="token.code"/>
+                        </t>
+                        <t t-elif="token.type === 'external'">
+                            <button class="btn btn-sm btn-secondary js_popup_open_report"
+                                    t-att-data-id="token.id" t-att-data-target="token.target"
+                                    t-out="token.code"/>
+                        </t>
+                        <t t-else=""><t t-out="token.text"/></t>
+                    </t>
+                </td>
             </tr>
             <tr t-if="domain">
                 <td><strong>Domain: </strong></td>
-                <td style="text-align:right;"><t t-esc="domain"/></td>
+                <td style="text-align:right;"><t t-out="domain"/></td>
             </tr>
             <tr t-if="display_button">
                <td style="text-align:center;"
@@ -58,11 +70,11 @@
             </tr>
             <tr t-if="formula_with_values != formula_balance">
                <td> = </td>
-                <td style="text-align:right;"><t t-esc="formula_with_values"/></td>
+                <td style="text-align:right;"><t t-out="formula_with_values"/></td>
             </tr>
             <tr>
                <td> = </td>
-                <td style="text-align:right;"><t t-esc="formula_balance"/></td>
+                <td style="text-align:right;"><t t-out="formula_balance"/></td>
             </tr>
         </table>
     </t>

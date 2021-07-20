@@ -42,7 +42,7 @@
                             </div>
                             <div class="o_kanban_card_content container">
                                 <div class="pb-2">
-                                    <t t-raw="record.description.raw_value" class="text-muted"/>
+                                    <t t-out="record.description.value" class="text-muted"/>
                                 </div>
                                 <div>
                                     <div class="o_button_referral">

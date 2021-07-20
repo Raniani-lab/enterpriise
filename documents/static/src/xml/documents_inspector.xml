@@ -8,7 +8,7 @@
         <div class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
             <div t-if="nbPreviews === 0">
                 <t t-if="widget.currentFolder">
-                    <div class="o_inspector_folder_description"><t t-if="widget.currentFolder.description" t-raw="widget.currentFolder.description"/></div>
+                    <div class="o_inspector_folder_description"><t t-if="widget.currentFolder.description" t-out="widget.currentFolder.description"/></div>
                 </t>
             </div>
             <t t-else="" t-call="documents.DocumentsInspector.previews"/>

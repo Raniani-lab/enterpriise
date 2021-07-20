@@ -7,6 +7,7 @@ odoo.define('documents.DocumentsInspector', function (require) {
  */
 
 const { _t, qweb } = require('web.core');
+const {Markup} = require('web.utils');
 const fieldRegistry = require('web.field_registry');
 const session = require('web.session');
 const { str_to_datetime } = require('web.time');
@@ -59,6 +60,9 @@ const DocumentsInspector = Widget.extend({
         this.size = params.state.size;
         this.focusTagInput = params.focusTagInput;
         this.currentFolder = _.findWhere(params.folders, {id: params.folderId});
+        if (this.currentFolder && this.currentFolder['description']) {
+            this.currentFolder.description = Markup(this.currentFolder['description']);
+        }
         this.recordsData = {};
         this.shareAliases = params.shareAliases;
 

@@ -9,6 +9,7 @@ const { ChatterContainer } = require('@mail/components/chatter_container/chatter
 
 const { _t, qweb } = require('web.core');
 const config = require('web.config');
+const { Markup } = require('web.utils');
 const fileUploadMixin = require('web.fileUploadMixin');
 const session = require('web.session');
 const { ComponentWrapper } = require('web.OwlCompatibility');
@@ -391,12 +392,11 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         }
         if (_.isObject(result)) {
             if (result.hasOwnProperty('warning')) {
-                let documents = result['warning']['documents'].map((d) => `<li>${owl.utils.escape(d)}</li>`);
+                let documents = Markup(result['warning']['documents'].map((d) => Markup`<li>${d}</li>`).join(''));
                 this.displayNotification({
                     title: result['warning']['title'],
-                    message: `<ul>${documents.join('')}</ul>`,
+                    message: Markup`<ul>${documents}</ul>`,
                     type: 'danger',
-                    messageIsHtml: true, // dynamic parts of the message are escaped above
                 });
                 this.reload();
             } else {

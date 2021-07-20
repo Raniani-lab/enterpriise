@@ -164,13 +164,14 @@
                                 <field name="level" eval="2"/>
                                 <field name="sequence" eval="4"/>
                                 <field name="domain" eval="
-             [
-                 '|', ('account_id.code', '=like', '5130%'),
-                 '|', ('account_id.code', '=like', '5131%'),
-                 '|', ('account_id.code', '=like', '516%'),
-                 '|', ('account_id.code', '=like', '5171%'),
-                 ('account_id.code', '=like', '518%')
-             ]"/>
+                                [
+                                    '|', ('account_id.code', '=like', '5130%'),
+                                    '|', ('account_id.code', '=like', '5131%'),
+                                    '|', ('account_id.code', '=like', '516%'),
+                                    '|', ('account_id.code', '=like', '5170%'),
+                                    '|', ('account_id.code', '=like', '5171%'),
+                                    ('account_id.code', '=like', '518%')
+                                ]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">sum</field>
                             </record>
@@ -247,8 +248,9 @@
                                 <field name="code">LU_BSABR_319</field>
                                 <field name="level" eval="2"/>
                                 <field name="sequence" eval="5"/>
-                                <field name="domain" eval="[('account_id.code', '=like', '141%')]"/>
-                                <field name="groupby">account_id</field>
+                                <field name="domain" eval="['|', ('account_id.user_type_id.internal_group', 'in', ['income', 'expense']), ('account_id.code', '=like', '141%')]"/>
+                                <field name="groupby"/>
+                                <field name="special_date_changer">to_beginning_of_period</field>
                                 <field name="formulas">-sum</field>
                             </record>
                             <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_6" model="account.financial.html.report.line">
@@ -256,9 +258,9 @@
                                 <field name="code">LU_BSABR_321</field>
                                 <field name="level" eval="2"/>
                                 <field name="sequence" eval="6"/>
-                                <field name="domain" eval="['|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_other_income'), ref('account.data_account_type_revenue'), ref('account.data_account_type_depreciation'), ref('account.data_account_type_expenses'), ref('account.data_account_type_direct_costs')]), ('account_id.code', '=like', '142%')]"/>
+                                <field name="domain" eval="['|', ('account_id.user_type_id.internal_group', 'in', ['income', 'expense']), ('account_id.code', '=like', '142%')]"/>
                                 <field name="groupby"/>
-                                <field name="special_date_changer">from_beginning</field>
+                                <field name="special_date_changer">from_fiscalyear</field>
                                 <field name="formulas">-sum</field>
                                 <field name="action_id" ref="account_financial_report_l10n_lu_pl_abr_action"/>
                             </record>

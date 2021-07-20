@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+# pylint: disable=C0326
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
@@ -76,14 +77,15 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
                 ('4. Other debtors',                            136.0),
                 ('a) becoming due and payable within one year', 136.0),
                 ('TOTAL (ASSETS)',                              1306.0),
-                ('A. Capital and reserves',                      200.0),
+                ('A. Capital and reserves',                      400.0),
+                ('V. Profit or loss brought forward',            200.0),
                 ('VI. Profit or loss for the financial year',    200.0),
                 ('C. Creditors',                                 1106.0),
                 ('4. Trade creditors',                           936.0),
                 ('a) becoming due and payable within one year',  936.0),
                 ('8. Other creditors',                           170.0),
                 ('a) Tax authorities',                           170.0),
-                ('TOTAL (CAPITAL, RESERVES AND LIABILITIES)',    1306.0),
+                ('TOTAL (CAPITAL, RESERVES AND LIABILITIES)',    1506.0),
             ],
         )
 

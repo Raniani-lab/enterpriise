@@ -815,7 +815,7 @@
                             <record id="balance_full_line_21000" model="account.financial.html.report.line">
                                 <field name="name">A-1) Fondos propios</field>
                                 <field name="code">l10n_es_full_line_21000</field>
-                                <field name="formulas">l10n_es_full_line_21100 + l10n_es_full_line_21200 + l10n_es_full_line_21300 + l10n_es_full_line_21400 + l10n_es_full_line_21500 + l10n_es_full_line_21600 + l10n_es_full_line_21700 + l10n_es_full_line_21800 + l10n_es_full_line_21900</field>
+                                <field name="formulas">l10n_es_full_line_21100 + l10n_es_full_line_21200 + l10n_es_full_line_21300 + l10n_es_full_line_21400 + l10n_es_full_line_21600 + l10n_es_full_line_21700 + l10n_es_full_line_21800 + l10n_es_full_line_21900</field>
                                 <field name="sequence" eval="76"/>
                                 <field name="level" eval="2"/>
                                 <field name="children_ids">
@@ -911,31 +911,14 @@
                                     <record id="balance_full_line_21500" model="account.financial.html.report.line">
                                         <field name="name">V. Resultados de ejercicios anteriores</field>
                                         <field name="code">l10n_es_full_line_21500</field>
-                                        <field name="formulas">l10n_es_full_line_21510 + l10n_es_full_line_21520</field>
+                                        <field name="domain" eval="['|', '|', ('account_id.code','=like','120%'),
+                                        ('account_id.code','=like','121%'), ('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
+                                        <field name="formulas">-sum</field>
+                                        <field name="groupby"/>
+                                        <field name="show_domain">foldable</field>
+                                        <field name="special_date_changer">to_beginning_of_period</field>
                                         <field name="sequence" eval="85"/>
                                         <field name="level" eval="3"/>
-                                        <field name="children_ids">
-                                            <record id="balance_full_line_21510" model="account.financial.html.report.line">
-                                                <field name="name">1. Remanente</field>
-                                                <field name="code">l10n_es_full_line_21510</field>
-                                                <field name="domain" eval="[('account_id.code','=like','120%')]"/>
-                                                <field name="formulas">-sum</field>
-                                                <field name="groupby">account_id</field>
-                                                <field name="show_domain">foldable</field>
-                                                <field name="sequence" eval="86"/>
-                                                <field name="level" eval="4"/>
-                                            </record>
-                                            <record id="balance_full_line_21520" model="account.financial.html.report.line">
-                                                <field name="name">2. (Resultados negativos de ejercicios anteriores)</field>
-                                                <field name="code">l10n_es_full_line_21520</field>
-                                                <field name="domain" eval="[('account_id.code','=like','121%')]"/>
-                                                <field name="formulas">-sum</field>
-                                                <field name="groupby">account_id</field>
-                                                <field name="show_domain">foldable</field>
-                                                <field name="sequence" eval="87"/>
-                                                <field name="level" eval="4"/>
-                                            </record>
-                                        </field>
                                     </record>
                                     <record id="balance_full_line_21600" model="account.financial.html.report.line">
                                         <field name="name">VI. Otras aportaciones de socios</field>
@@ -951,14 +934,14 @@
                                         <field name="name">VII. Resultado del ejercicio</field>
                                         <field name="code">l10n_es_full_line_21700</field>
                                         <field name="domain" eval="['|', ('account_id.code','=like','129%'),
-                                         '|', ('account_id.code','=like','6%'),
-                                         ('account_id.code','=like','7%')]"/>
+                                         ('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
                                         <field name="formulas">-sum</field>
-                                        <field name="special_date_changer">from_beginning</field>
-                                        <field name="groupby">account_id</field>
+                                        <field name="special_date_changer">from_fiscalyear</field>
+                                        <field name="groupby"/>
                                         <field name="show_domain">foldable</field>
                                         <field name="sequence" eval="89"/>
                                         <field name="level" eval="3"/>
+                                        <field name="action_id" ref="account_financial_report_l10n_es_pl_action"/>
                                     </record>
                                     <record id="balance_full_line_21800" model="account.financial.html.report.line">
                                         <field name="name">VIII. (Dividendo a cuenta)</field>
@@ -1236,8 +1219,7 @@
                             <record id="balance_full_line_31700" model="account.financial.html.report.line">
                                 <field name="name">VII. Deuda con características especiales a largo plazo</field>
                                 <field name="code">l10n_es_full_line_31700</field>
-                                <field name="domain" eval="['|', ('account_id.code','=like','15%'),
-                                         ('account_id.code','=like','5585%')]"/>
+                                <field name="domain" eval="[('account_id.code','=like','15%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -1403,7 +1385,11 @@
                                     <record id="balance_full_line_32550" model="account.financial.html.report.line">
                                         <field name="name">5. Pasivos por impuesto corriente</field>
                                         <field name="code">l10n_es_full_line_32550</field>
-                                        <field name="domain" eval="[('account_id.code','=like','4752%')]"/>
+                                        <field name="domain" eval="[
+                                            '|', ('account_id.code','=like','4750%'),
+                                            '|', ('account_id.code','=like','4751%'),
+                                            ('account_id.code','=like','4752%')
+                                        ]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="groupby">account_id</field>
                                         <field name="show_domain">foldable</field>
@@ -1413,12 +1399,12 @@
                                     <record id="balance_full_line_32560" model="account.financial.html.report.line">
                                         <field name="name">6. Otras deudas con las Administraciones Públicas</field>
                                         <field name="code">l10n_es_full_line_32560</field>
-                                        <field name="domain" eval="['|', ('account_id.code','=like','4750%'),
-                                         '|', ('account_id.code','=like','4751%'),
-                                         '|', ('account_id.code','=like','4758%'),
-                                         '|', ('account_id.code','=like','4759%'),
-                                         '|', ('account_id.code','=like','476%'),
-                                         ('account_id.code','=like','477%')]"/>
+                                        <field name="domain" eval="[
+                                             '|', ('account_id.code','=like','4758%'),
+                                             '|', ('account_id.code','=like','4759%'),
+                                             '|', ('account_id.code','=like','476%'),
+                                             ('account_id.code','=like','477%')
+                                         ]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="groupby">account_id</field>
                                         <field name="show_domain">foldable</field>
@@ -1535,6 +1521,7 @@
                                          '|', ('account_id.code','=like','555%'),
                                          '|', ('account_id.code','=like','5565%'),
                                          '|', ('account_id.code','=like','5566%'),
+                                         '|', ('account_id.code','=like','5585%'),
                                          '|', ('account_id.code','=like','560%'),
                                          '|', ('account_id.code','=like','561%'),
                                          ('account_id.code','=like','569%')]"/>

@@ -340,11 +340,17 @@
                                     <record id="balance_pymes_line_21500" model="account.financial.html.report.line">
                                         <field name="name">V. Resultados de ejercicios anteriores</field>
                                         <field name="code">l10n_es_pymes_line_21500</field>
-                                        <field name="domain" eval="['|', ('account_id.code','=like','120%'),
-                                        ('account_id.code','=like','121%')]"/>
+                                        <field name="domain" eval="[
+                                            '|', '|',
+                                            ('account_id.code','=like','120%'),
+                                            ('account_id.code','=like','121%'),
+                                            ('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])
+                                        ]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="groupby">account_id</field>
                                         <field name="show_domain">foldable</field>
+                                        <field name="special_date_changer">to_beginning_of_period</field>
+                                        <field name="groupby"/>
                                         <field name="sequence" eval="30"/>
                                         <field name="level" eval="3"/>
                                     </record>
@@ -361,15 +367,18 @@
                                     <record id="balance_pymes_line_21700" model="account.financial.html.report.line">
                                         <field name="name">VII. Resultado del ejercicio</field>
                                         <field name="code">l10n_es_pymes_line_21700</field>
-                                        <field name="domain" eval="['|', ('account_id.code','=like','129%'),
-                                         '|', ('account_id.code','=like','6%'),
-                                         ('account_id.code','=like','7%')]"/>
+                                        <field name="domain" eval="[
+                                            '|',
+                                            ('account_id.code','=like','129%'),
+                                            ('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])
+                                        ]"/>
                                         <field name="formulas">-sum</field>
-                                        <field name="special_date_changer">from_beginning</field>
-                                        <field name="groupby">account_id</field>
+                                        <field name="special_date_changer">from_fiscalyear</field>
+                                        <field name="groupby"/>
                                         <field name="show_domain">foldable</field>
                                         <field name="sequence" eval="32"/>
                                         <field name="level" eval="3"/>
+                                        <field name="action_id" ref="account_financial_report_l10n_es_pl_action"/>
                                     </record>
                                     <record id="balance_pymes_line_21800" model="account.financial.html.report.line">
                                         <field name="name">VIII. (Dividendo a cuenta)</field>
@@ -525,8 +534,7 @@
                             <record id="balance_pymes_line_31700" model="account.financial.html.report.line">
                                 <field name="name">VII. Deuda con características especiales a largo plazo</field>
                                 <field name="code">l10n_es_pymes_line_31700</field>
-                                <field name="domain" eval="['|', ('account_id.code','=like','15%'),
-                                        ('account_id.code','=like','5585%')]"/>
+                                <field name="domain" eval="[('account_id.code','=like','15%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -775,6 +783,7 @@
                                          '|', ('account_id.code','=like','555%'),
                                          '|', ('account_id.code','=like','5565%'),
                                          '|', ('account_id.code','=like','5566%'),
+                                         '|', ('account_id.code','=like','5585%'),
                                          '|', ('account_id.code','=like','5595%'),
                                          '|', ('account_id.code','=like','560%'),
                                          ('account_id.code','=like','561%')]"/>

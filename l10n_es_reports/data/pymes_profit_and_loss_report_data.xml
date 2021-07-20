@@ -83,7 +83,8 @@
                         <field name="code">es_profit_and_loss_line_5</field>
                         <field name="domain" eval="['|', ('account_id.code', '=like', '740%'),
                                      '|', ('account_id.code', '=like', '747%'),
-                                     ('account_id.code', '=like', '75%')]"/>
+                                     '|', ('account_id.code', '=like', '75%'),
+                                     ('account_id.code', '=like', '95%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -112,7 +113,8 @@
                                      '|', ('account_id.code','=like','694%'),
                                      '|', ('account_id.code','=like','695%'),
                                      '|', ('account_id.code','=like','794%'),
-                                     ('account_id.code','=like','7954%')]"/>
+                                     '|', ('account_id.code','=like','7954%'),
+                                     ('account_id.code','=like','85%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -144,7 +146,10 @@
                         <field name="code">es_profit_and_loss_line_10</field>
                         <field name="domain" eval="['|', ('account_id.code','=like','7951%'),
                                      '|', ('account_id.code','=like','7952%'),
-                                     ('account_id.code','=like','7955%')]"/>
+                                     '|', ('account_id.code','=like','7955%'),
+                                     '|', ('account_id.code','=like','7950%'),
+                                     '|', ('account_id.code','=like','7956%'),
+                                     ('account_id.code','=like','7957%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -164,7 +169,9 @@
                                      '|', ('account_id.code', '=like', '772%'),
                                      '|', ('account_id.code', '=like', '790%'),
                                      '|', ('account_id.code', '=like', '791%'),
-                                     ('account_id.code', '=like', '792%')]"/>
+                                     '|', ('account_id.code', '=like', '792%'),
+                                     '|', ('account_id.code', '=like', '86%'),
+                                     ('account_id.code', '=like', '96%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -175,6 +182,7 @@
                         <field name="name">12. Otros resultados</field>
                         <field name="code">es_profit_and_loss_line_12</field>
                         <field name="domain" eval="['|',('account_id.code', '=like', '678%'),
+                                     '|', ('account_id.code', '=like', '774%'),
                                      ('account_id.code', '=like', '778%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
@@ -201,7 +209,12 @@
                             <record id="es_profit_and_loss_line_13a" model="account.financial.html.report.line">
                                 <field name="name">a) Imputación de subvenciones, donaciones y legados de carácter financiero</field>
                                 <field name="code">es_profit_and_loss_line_13a</field>
-                                <field name="domain" eval="[('account_id.code', '=like', '7461%')]"/>
+                                <field name="domain" eval="[
+                                    '|', ('account_id.code', '=like', '7461%'),
+                                    '|', ('account_id.code', '=like', '84%'),
+                                    '|', ('account_id.code', '=like', '94%'),
+                                    ('account_id.code', '=like', '72%'),
+                                ]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -214,6 +227,7 @@
                                 <field name="domain" eval="['|', ('account_id.code', '=like', '760%'),
                                      '|', ('account_id.code', '=like', '761%'),
                                      '|', ('account_id.code', '=like', '762%'),
+                                     '|', ('account_id.code', '=like', '767%'),
                                      ('account_id.code', '=like', '769%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -229,6 +243,7 @@
                         <field name="domain" eval="['|', ('account_id.code','=like','660%'),
                                      '|', ('account_id.code','=like','661%'),
                                      '|', ('account_id.code','=like','662%'),
+                                     '|', ('account_id.code','=like','664%'),
                                      '|', ('account_id.code','=like','665%'),
                                      ('account_id.code','=like','669%')]"/>
                         <field name="formulas">-sum</field>
@@ -241,7 +256,9 @@
                         <field name="name">15. Variación de valor razonable en instrumentos financieros</field>
                         <field name="code">es_profit_and_loss_line_15</field>
                         <field name="domain" eval="['|', ('account_id.code','=like','663%'),
-                                     ('account_id.code','=like','763%')]"/>
+                                     '|', ('account_id.code','=like','763%'),
+                                     '|', ('account_id.code','=like','80%'),
+                                     ('account_id.code','=like','90%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -252,7 +269,9 @@
                         <field name="name">16. Diferencias de cambio</field>
                         <field name="code">es_profit_and_loss_line_16</field>
                         <field name="domain" eval="['|', ('account_id.code','=like','668%'),
-                                     ('account_id.code','=like','768%')]"/>
+                                     '|', ('account_id.code','=like','768%'),
+                                     '|', ('account_id.code','=like','82%'),
+                                     ('account_id.code','=like','92%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -266,6 +285,7 @@
                                      '|', ('account_id.code','=like','667%'),
                                      '|', ('account_id.code','=like','673%'),
                                      '|', ('account_id.code','=like','675%'),
+                                     '|', ('account_id.code','=like','692%'),
                                      '|', ('account_id.code','=like','696%'),
                                      '|', ('account_id.code','=like','697%'),
                                      '|', ('account_id.code','=like','698%'),
@@ -276,7 +296,14 @@
                                      '|', ('account_id.code','=like','796%'),
                                      '|', ('account_id.code','=like','797%'),
                                      '|', ('account_id.code','=like','798%'),
-                                     ('account_id.code','=like','799%')]"/>
+                                     '|', ('account_id.code','=like','799%'),
+                                     '|', ('account_id.code','=like','81%'),
+                                     '|', ('account_id.code','=like','89%'),
+                                     '|', ('account_id.code','=like','91%'),
+                                     '|', ('account_id.code','=like','991%'),
+                                     '|', ('account_id.code','=like','992%'),
+                                     '|', ('account_id.code','=like','993%'),
+                                     ('account_id.code','=like','994%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -295,6 +322,7 @@
             <record id="es_profit_and_loss_line_sum_d" model="account.financial.html.report.line">
                 <field name="name">D) RESULTADO DEL EJERCICIO (C + 18)</field>
                 <field name="formulas">es_profit_and_loss_sum_c + es_profit_and_loss_line_18</field>
+                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
                 <field name="sequence" eval="4"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">
@@ -304,7 +332,8 @@
                         <field name="domain" eval="['|', ('account_id.code','=like','6300%'),
                                      '|', ('account_id.code','=like','6301%'),
                                      '|', ('account_id.code','=like','633%'),
-                                     ('account_id.code','=like','638%')]"/>
+                                     '|', ('account_id.code','=like','638%'),
+                                     ('account_id.code','=like','83%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -314,5 +343,10 @@
                 </field>
             </record>
         </field>
+    </record>
+    <record id="account_financial_report_l10n_es_pl_action" model="ir.actions.client">
+        <field name="name">Pérdidas y Ganancias</field>
+        <field name="context" eval="{'model': 'account.financial.html.report', 'id': ref('financial_report_es_profit_and_loss')}"/>
+        <field name="tag">account_report</field>
     </record>
 </odoo>

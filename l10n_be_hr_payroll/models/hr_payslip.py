@@ -419,12 +419,12 @@ class Payslip(models.Model):
             return 0.0
 
         basic = self.contract_id._get_contract_wage()
-        if self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
+        force_months = self.input_line_ids.filtered(lambda l: l.code == 'MONTHS')
+        if force_months or self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
             year = self.date_from.year - 1
             date_from = date(year, 1, 1)
             date_to = date(year, 12, 31)
 
-            force_months = self.input_line_ids.filtered(lambda l: l.code == 'MONTHS')
             if force_months:
                 n_months = force_months[0].amount
                 presence_prorata = 1

@@ -18,6 +18,7 @@
                     <record id="account_financial_report_fr_bilan_actif_total" model="account.financial.html.report.line">
                         <field name="name">TOTAL ACTIF (I + II + III + IV + V)</field>
                         <field name="code">ACTIF_TOT</field>
+                        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
                         <field name="level" eval="0"/>
                         <field name="sequence" eval="1"/>
                         <field name="formulas">ACTIF_TOTAL_I + ACTIF_TOTAL_II + CHARGES_EXERCICES + PRIMES_EMPRUNTS + ECARTS_ACTIF</field>
@@ -50,7 +51,7 @@
                                         <field name="sequence" eval="3"/>
                                         <field name="children_ids">
                                             <record id="account_financial_report_line_03_0_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Frais d'établissement - NET</field>
+                                                <field name="name">Frais d'établissement</field>
                                                 <field name="code">FRAIS_ETABLISS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
@@ -79,7 +80,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_0_2_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Frais de recherche et de développement - NET</field>
+                                                <field name="name">Frais de recherche et de développement</field>
                                                 <field name="code">FRAIS_DEVELOPEMENT</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
@@ -108,7 +109,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_0_3_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Concessions, brevets, licences, marques, droits et valeurs similaires - NET</field>
+                                                <field name="name">Concessions, brevets, licences, marques, droits et valeurs similaires</field>
                                                 <field name="code">CONCESSION_SIMILAIRES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="3"/>
@@ -120,6 +121,7 @@
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="1"/>
                                                         <field name="domain" eval="[('account_id.code', '=like', '205%')]"/>
+                                                        <field name="groupby">account_id</field>
                                                         <field name="formulas">sum</field>
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
@@ -137,7 +139,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_0_4_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Fonds commercial - NET</field>
+                                                <field name="name">Fonds commercial</field>
                                                 <field name="code">AUTRES_INCORPO</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="4"/>
@@ -159,7 +161,9 @@
                                                         <field name="code">AUTRES_INCORPO_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
-                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '2807%'),
+                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '2806%'),
+                                    '|', ('account_id.code', '=like', '2807%'),
+                                    '|', ('account_id.code', '=like', '2906%'),
                                     ('account_id.code', '=like', '2907%')]"/>
                                                         <field name="groupby">account_id</field>
                                                         <field name="formulas">- sum</field>
@@ -168,7 +172,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_0_5_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Autres - NET</field>
+                                                <field name="name">Autres</field>
                                                 <field name="code">FONDS_COMMERCIAL</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="5"/>
@@ -198,7 +202,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_0_6_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Immobilisations incorporelles en cours - NET</field>
+                                                <field name="name">Immobilisations incorporelles en cours</field>
                                                 <field name="code">IMMOBILIS_COURS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="6"/>
@@ -227,7 +231,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_0_7_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Avances et acomptes - NET</field>
+                                                <field name="name">Avances et acomptes</field>
                                                 <field name="code">AVANCES_ACOMPTES_CORPORE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="7"/>
@@ -263,7 +267,7 @@
                                         <field name="sequence" eval="4"/>
                                         <field name="children_ids">
                                             <record id="account_financial_report_line_03_1_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Terrains - NET</field>
+                                                <field name="name">Terrains</field>
                                                 <field name="code">TERRAINS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
@@ -295,7 +299,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_1_2_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Constructions - NET</field>
+                                                <field name="name">Constructions</field>
                                                 <field name="code">CONSTRUCTIONS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
@@ -326,7 +330,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_1_3_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Installations techniques,matériel et outillage - NET</field>
+                                                <field name="name">Installations techniques,matériel et outillage</field>
                                                 <field name="code">INSTALLATION_OUTILLAGE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="3"/>
@@ -355,7 +359,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_1_4_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Autres - NET</field>
+                                                <field name="name">Autres</field>
                                                 <field name="code">AUTRES_CORPORE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="4"/>
@@ -366,7 +370,7 @@
                                                         <field name="code">AUTRES_CORPORE_BRUT</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="1"/>
-                                                        <field name="domain" eval="[('account_id.code', '=like', '218%')]"/>
+                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '218%'), ('account_id.code', '=like', '22%')]"/>
                                                         <field name="groupby">account_id</field>
                                                         <field name="formulas">sum</field>
                                                         <field name="hide_if_zero" eval="True"/>
@@ -376,8 +380,13 @@
                                                         <field name="code">AUTRES_CORPORE_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
-                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '2818%'),
-                                    ('account_id.code', '=like', '282%')]"/>
+                                                        <field name="domain" eval="[
+                                                            '|', ('account_id.code', '=like', '2818%'),
+                                                            '|', ('account_id.code', '=like', '282%'),
+                                                            '|', ('account_id.code', '=like', '2918%'),
+                                                            '|', ('account_id.code', '=like', '292%'),
+                                                            ('account_id.code', '=like', '2978%')
+                                                        ]"/>
                                                         <field name="groupby">account_id</field>
                                                         <field name="formulas">- sum</field>
                                                         <field name="hide_if_zero" eval="True"/>
@@ -385,7 +394,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_1_5_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Immobilisations corporelles en cours - NET</field>
+                                                <field name="name">Immobilisations corporelles en cours</field>
                                                 <field name="code">IMMOBILLIS_COURS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="5"/>
@@ -414,7 +423,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_1_6_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Avances et acomptes - NET</field>
+                                                <field name="name">Avances et acomptes</field>
                                                 <field name="code">AVANCES_ACOMPTES_CORP</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="6"/>
@@ -450,7 +459,7 @@
                                         <field name="sequence" eval="5"/>
                                         <field name="children_ids">
                                             <record id="account_financial_report_line_03_2_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Participations - NET</field>
+                                                <field name="name">Participations</field>
                                                 <field name="code">PARTICIPATIONS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
@@ -482,7 +491,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_2_2_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Créances rattachées à des participations - NET</field>
+                                                <field name="name">Créances rattachées à des participations</field>
                                                 <field name="code">CREANCES_PARTICIPATIONS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
@@ -503,7 +512,7 @@
                                                         <field name="code">CREANCES_PARTICIPATIONS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
-                                                        <field name="domain" eval="[('account_id.code', '=like', '2967%')]"/>
+                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '2967%'), ('account_id.code', '=like', '2967%')]"/>
                                                         <field name="groupby">account_id</field>
                                                         <field name="formulas">- sum</field>
                                                         <field name="hide_if_zero" eval="True"/>
@@ -511,7 +520,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_2_3_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Titres immobilisés de l'activité de portefeuille - NET</field>
+                                                <field name="name">Titres immobilisés de l'activité de portefeuille</field>
                                                 <field name="code">TITRES_PORTEFEUILLE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="3"/>
@@ -540,7 +549,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_2_4_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Autres titres immobilisés - NET</field>
+                                                <field name="name">Autres titres immobilisés</field>
                                                 <field name="code">AUTRES_IMMOBILISES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="4"/>
@@ -573,7 +582,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_2_5_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Prêts - NET</field>
+                                                <field name="name">Prêts</field>
                                                 <field name="code">PRETS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="5"/>
@@ -603,7 +612,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_2_6_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Autres - NET</field>
+                                                <field name="name">Autres</field>
                                                 <field name="code">AUTRES_FINANCIAL</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="6"/>
@@ -658,7 +667,7 @@
                                         <field name="sequence" eval="8"/>
                                         <field name="children_ids">
                                             <record id="account_financial_report_line_03_3_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Matières premières et autres approvisionnements - NET</field>
+                                                <field name="name">Matières premières et autres approvisionnements</field>
                                                 <field name="code">MATIERES_APPROVI</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
@@ -689,7 +698,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_3_2_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">En-cours de production [biens et services] - NET</field>
+                                                <field name="name">En-cours de production [biens et services]</field>
                                                 <field name="code">EN_COURS_PRODUCTION</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
@@ -720,7 +729,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_3_3_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Produits intermédiaires et finis - NET</field>
+                                                <field name="name">Produits intermédiaires et finis</field>
                                                 <field name="code">PRODUITS_FINIS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="3"/>
@@ -748,11 +757,20 @@
                                                     </record>
                                                 </field>
                                             </record>
-                                            <record id="account_financial_report_line_03_3_4_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Marchandises - NET</field>
-                                                <field name="code">MARCHANDISES</field>
+                                            <record id="account_financial_report_line_03_3_6_fr_bilan_actif" model="account.financial.html.report.line">
+                                                <field name="name">Stocks provenant d'immobilisations</field>
+                                                <field name="code">STOCK_IMMO</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="4"/>
+                                                <field name="domain" eval="[('account_id.code', '=like', '36%')]"/>
+                                                <field name="groupby">account_id</field>
+                                                <field name="formulas">sum</field>
+                                            </record>
+                                            <record id="account_financial_report_line_03_3_4_fr_bilan_actif" model="account.financial.html.report.line">
+                                                <field name="name">Marchandises</field>
+                                                <field name="code">MARCHANDISES</field>
+                                                <field name="level" eval="3"/>
+                                                <field name="sequence" eval="5"/>
                                                 <field name="formulas">MARCHANDISES_BRUT - MARCHANDISES_AMOR</field>
                                                 <field name="children_ids">
                                                     <record id="account_financial_report_line_03_3_4b_fr_bilan_actif" model="account.financial.html.report.line">
@@ -777,11 +795,20 @@
                                                     </record>
                                                 </field>
                                             </record>
+                                            <record id="account_financial_report_line_03_3_7_fr_bilan_actif" model="account.financial.html.report.line">
+                                                <field name="name">Stocks en voie d'acheminement</field>
+                                                <field name="code">STOCK_ACHEM</field>
+                                                <field name="level" eval="3"/>
+                                                <field name="sequence" eval="6"/>
+                                                <field name="domain" eval="[('account_id.code', '=like', '38%')]"/>
+                                                <field name="groupby">account_id</field>
+                                                <field name="formulas">sum</field>
+                                            </record>
                                             <record id="account_financial_report_line_03_3_5_fr_bilan_actif" model="account.financial.html.report.line">
                                                 <field name="name">Avances et acomptes versés sur commandes</field>
                                                 <field name="code">ADVANCES_COMMANDES</field>
                                                 <field name="level" eval="3"/>
-                                                <field name="sequence" eval="5"/>
+                                                <field name="sequence" eval="7"/>
                                                 <field name="domain" eval="[('account_id.code', '=like', '4091%')]"/>
                                                 <field name="groupby">account_id</field>
                                                 <field name="formulas">sum</field>
@@ -795,7 +822,7 @@
                                         <field name="sequence" eval="9"/>
                                         <field name="children_ids">
                                             <record id="account_financial_report_line_03_4_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Clients et comptes rattachés - NET</field>
+                                                <field name="name">Clients et comptes rattachés</field>
                                                 <field name="code">CREANCES_RATTACHES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
@@ -829,7 +856,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_4_2_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Autres créances - NET</field>
+                                                <field name="name">Autres créances</field>
                                                 <field name="code">AUTRES_CREANCES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
@@ -840,19 +867,22 @@
                                                         <field name="code">AUTRES_CREANCES_BRUT</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="1"/>
-                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '4096%'),
-                                    '|', ('account_id.code', '=like', '4097%'),
-                                    '|', ('account_id.code', '=like', '4098%'),
-                                    '|', ('account_id.code', '=like', '425%'),
-                                    '|', ('account_id.code', '=like', '4287%'),
-                                    '|', ('account_id.code', '=like', '441%'),
-                                    '|', ('account_id.code', '=like', '462%'),
-                                    '|', ('account_id.code', '=like', '465%'),
-                                    '|', ('account_id.code', '=like', '471%'),
-                                    '|', ('account_id.code', '=like', '472%'),
-                                    '|', ('account_id.code', '=like', '473%'),
-                                    '|', ('account_id.code', '=like', '474%'),
-                                    ('account_id.code', '=like', '475%')]"/>
+                                                        <field name="domain" eval="[
+                                                            '|', ('account_id.code', '=like', '4096%'),
+                                                            '|', ('account_id.code', '=like', '4097%'),
+                                                            '|', ('account_id.code', '=like', '4098%'),
+                                                            '|', ('account_id.code', '=like', '425%'),
+                                                            '|', ('account_id.code', '=like', '4287%'),
+                                                            '|', ('account_id.code', '=like', '441%'),
+                                                            '|', ('account_id.code', '=like', '4456%'),
+                                                            '|', ('account_id.code', '=like', '462%'),
+                                                            '|', ('account_id.code', '=like', '465%'),
+                                                            '|', ('account_id.code', '=like', '471%'),
+                                                            '|', ('account_id.code', '=like', '472%'),
+                                                            '|', ('account_id.code', '=like', '473%'),
+                                                            '|', ('account_id.code', '=like', '474%'),
+                                                            ('account_id.code', '=like', '475%')
+                                                        ]"/>
                                                         <field name="groupby">account_id</field>
                                                         <field name="formulas">sum + AUTRES_CREANCES_BRUTD</field>
                                                         <field name="hide_if_zero" eval="True"/>
@@ -888,7 +918,7 @@
                                         <field name="sequence" eval="10"/>
                                         <field name="children_ids">
                                             <record id="account_financial_report_line_03_5_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Actions propres - NET</field>
+                                                <field name="name">Actions propres</field>
                                                 <field name="code">ACTIONS_PROPRES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
@@ -917,7 +947,7 @@
                                                 </field>
                                             </record>
                                             <record id="account_financial_report_line_03_5_2_fr_bilan_actif" model="account.financial.html.report.line">
-                                                <field name="name">Autres titres - NET</field>
+                                                <field name="name">Autres titres</field>
                                                 <field name="code">AUTRES_TITRES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
@@ -976,7 +1006,7 @@
                                                 <field name="code">CHARGES_DAVANCE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="9"/>
-                                                <field name="domain" eval="[('account_id.code', '=like', '486%')]"/>
+                                                <field name="domain" eval="['|', ('account_id.code', '=like', '486%'), ('account_id.code', '=like', '4886%')]"/>
                                                 <field name="groupby">account_id</field>
                                                 <field name="formulas">sum</field>
                                             </record>
@@ -987,10 +1017,10 @@
                                         <field name="code">ACTIF_TOTAL_II</field>
                                         <field name="level" eval="2"/>
                                         <field name="sequence" eval="11"/>
-                                        <field name="formulas">MATIERES_APPROVI + EN_COURS_PRODUCTION + PRODUITS_FINIS + MARCHANDISES + ADVANCES_COMMANDES + CREANCES_RATTACHES + AUTRES_CREANCES + CAPITAL_NON_VERSE + ACTIONS_PROPRES + AUTRES_TITRES + INSTRMENTS_TRESORERIE + DISPONIBILITES + CHARGES_DAVANCE</field>
+                                        <field name="formulas">MATIERES_APPROVI + EN_COURS_PRODUCTION + PRODUITS_FINIS + STOCK_IMMO + MARCHANDISES + STOCK_ACHEM + ADVANCES_COMMANDES + CREANCES_RATTACHES + AUTRES_CREANCES + CAPITAL_NON_VERSE + ACTIONS_PROPRES + AUTRES_TITRES + INSTRMENTS_TRESORERIE + DISPONIBILITES + CHARGES_DAVANCE</field>
                                     </record>
                                     <record id="account_financial_report_line_3_02_1_fr_bilan_actif" model="account.financial.html.report.line">
-                                        <field name="name">Charges à répartir sur plusieurs exercices</field>
+                                        <field name="name">Charges à répartir sur plusieurs exercices (III)</field>
                                         <field name="code">CHARGES_EXERCICES</field>
                                         <field name="level" eval="2"/>
                                         <field name="sequence" eval="12"/>
@@ -1002,7 +1032,7 @@
                                         <field name="name">Primes de remboursement des emprunts (IV)</field>
                                         <field name="code">PRIMES_EMPRUNTS</field>
                                         <field name="level" eval="2"/>
-                                        <field name="sequence" eval="13"/>
+                                        <field name="sequence" eval="14"/>
                                         <field name="domain" eval="[('account_id.code', '=like', '169%')]"/>
                                         <field name="groupby">account_id</field>
                                         <field name="formulas">sum</field>
@@ -1011,7 +1041,7 @@
                                         <field name="name">Écarts de conversion actif (V)</field>
                                         <field name="code">ECARTS_ACTIF</field>
                                         <field name="level" eval="2"/>
-                                        <field name="sequence" eval="14"/>
+                                        <field name="sequence" eval="15"/>
                                         <field name="domain" eval="[('account_id.code', '=like', '476%')]"/>
                                         <field name="groupby">account_id</field>
                                         <field name="formulas">sum</field>
@@ -1023,6 +1053,7 @@
                     <record id="account_financial_report_fr_bilan_passif_total" model="account.financial.html.report.line">
                         <field name="name">TOTAL PASSIF (I + II + III + IV + V)</field>
                         <field name="code">PASSIF_TOT</field>
+                        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
                         <field name="level" eval="0"/>
                         <field name="sequence" eval="1"/>
                         <field name="formulas">PASSIF_TOTAL_I + PASSIF_TOTAL_II + PASSIF_TOTAL_III +  PASSIF_TOTAL_IV + ECARTS_PASSIF</field>
@@ -1144,25 +1175,31 @@
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="6"/>
                                                 <field name="domain" eval="[
-                                    '|', ('account_id.code', '=like', '7%'),
-                                    '|', ('account_id.code', '=like', '6%'),
-                                    '|', ('account_id.code', '=like', '11%'),
-                                    ('account_id.code', '=like', '12%')
-                                    ]"/>
-                                                <field name="groupby">account_id</field>
-                                                <field name="formulas">-sum - RESULT_LEXERCICE</field>
+                                                    '|', ('account_id.code', '=like', '7%'),
+                                                    '|', ('account_id.code', '=like', '6%'),
+                                                    ('account_id.code', '=like', '11%'),
+                                                ]"/>
+                                                <field name="groupby"/>
+                                                <field name="formulas">-sum</field>
                                                 <field name="show_domain">never</field>
-                                                <field name="special_date_changer">from_beginning</field>
+                                                <field name="special_date_changer">to_beginning_of_period</field>
                                             </record>
                                             <record id="account_financial_report_line_03_1_7_fr_bilan_passif" model="account.financial.html.report.line">
                                                 <field name="name">Résultat de l'exercice</field>
                                                 <field name="code">RESULT_LEXERCICE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="7"/>
-                                                <field name="domain" eval="['|', ('account_id.code', '=like', '7%'), ('account_id.code', '=like', '6%')]"/>
+                                                <field name="domain" eval="[
+                                                    '|', '|',
+                                                    ('account_id.code', '=like', '7%'),
+                                                    ('account_id.code', '=like', '6%'),
+                                                    ('account_id.code', '=like', '12%'),
+                                                ]"/>
+                                                <field name="groupby"/>
                                                 <field name="formulas">-sum</field>
                                                 <field name="show_domain">never</field>
                                                 <field name="special_date_changer">from_fiscalyear</field>
+                                                <field name="action_id" ref="account_financial_report_l10n_fr_cdr_action"/>
                                             </record>
                                             <record id="account_financial_report_line_03_1_8_fr_bilan_passif" model="account.financial.html.report.line">
                                                 <field name="name">Subventions d'investissement</field>
@@ -1189,7 +1226,7 @@
                                         <field name="code">PASSIF_TOTAL_I</field>
                                         <field name="level" eval="2"/>
                                         <field name="sequence" eval="3"/>
-                                        <field name="formulas">CAPITAL + FONDS_FIDUCIAIRES + PRIMES_DAPPORT + ECARTS_REEVALUTION + ECART_EQUIVALENCE + RESERVE_LEGALE + RESERVE_CONTRACT + RESERVE_REGLEMENT + AUTRES_RESERVEs + REPORT_NOUVEAU + RESULT_LEXERCICE + SUBVENTIONS_INVEST + PROVISIONS_REGLEMENT</field>
+                                        <field name="formulas">CAPITAL + FONDS_FIDUCIAIRES + PRIMES_DAPPORT + ECARTS_REEVALUTION + ECART_EQUIVALENCE + RESERVE_LEGALE + RESERVE_INDISPONIBLE + RESERVE_CONTRACT + RESERVE_REGLEMENT + AUTRES_RESERVEs + REPORT_NOUVEAU + RESULT_LEXERCICE + SUBVENTIONS_INVEST + PROVISIONS_REGLEMENT</field>
                                     </record>
                                     <record id="account_financial_report_line_02_9_fr_bilan_passif" model="account.financial.html.report.line">
                                         <field name="name">Autres fonds propres</field>
@@ -1202,8 +1239,11 @@
                                                 <field name="code">MONTANT_EMISSIONS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="1"/>
-                                                <field name="domain" eval="['|', ('account_id.code', '=', '1670'),
-                                    ('account_id.code', '=', '1671')]"/>
+                                                <field name="domain" eval="[
+                                                    '|',
+                                                    ('account_id.code', '=like', '1670%'),
+                                                    ('account_id.code', '=like', '1671%')
+                                                ]"/>
                                                 <field name="groupby">account_id</field>
                                                 <field name="formulas">-sum</field>
                                             </record>
@@ -1212,10 +1252,13 @@
                                                 <field name="code">AVANCES_CONDITIONNEES</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="2"/>
-                                                <field name="domain" eval="['|', ('account_id.code', '=', '1672'),
-                                    '|', ('account_id.code', '=', '1673'),
-                                    '|', ('account_id.code', '=', '1674'),
-                                    ('account_id.code', '=', '1675')]"/>
+                                                <field name="domain" eval="[
+                                                    '|', '|', '|',
+                                                    ('account_id.code', '=like', '1672%'),
+                                                    ('account_id.code', '=like', '1673%'),
+                                                    ('account_id.code', '=like', '1674%'),
+                                                    ('account_id.code', '=like', '1675%')
+                                                ]"/>
                                                 <field name="groupby">account_id</field>
                                                 <field name="formulas">-sum</field>
                                             </record>
@@ -1224,7 +1267,7 @@
                                                 <field name="code">COMPTES_LIAISONS</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="3"/>
-                                                <field name="domain" eval="[('account_id.code', '=', '18')]"/>
+                                                <field name="domain" eval="[('account_id.code', '=like', '18%')]"/>
                                                 <field name="groupby">account_id</field>
                                                 <field name="formulas">-sum</field>
                                             </record>
@@ -1403,7 +1446,7 @@
                                                 <field name="code">PRODUITS_DAVANCE</field>
                                                 <field name="level" eval="3"/>
                                                 <field name="sequence" eval="11"/>
-                                                <field name="domain" eval="[('account_id.code', '=like', '487%')]"/>
+                                                <field name="domain" eval="['|', ('account_id.code', '=like', '487%'), ('account_id.code', '=like', '4887%')]"/>
                                                 <field name="groupby">account_id</field>
                                                 <field name="formulas">-sum</field>
                                             </record>
@@ -1417,7 +1460,7 @@
                                         <field name="formulas">EMPRUNTS_CONVERT + AUTRES_OBLIGATAIRES + EMPRUNTS_CREDIT + EMPRUNTS_DIVERSES + AVANCES_COURS + DETTES_RATTACHES + DETTES_SOCIALES + DETTES_SUR_RATTACHES + AUTRES_DETTES + PRODUITS_DAVANCE</field>
                                     </record>
                                     <record id="account_financial_report_line_02_8_fr_bilan_passif" model="account.financial.html.report.line">
-                                        <field name="name">Écarts de conversion passif (IV)</field>
+                                        <field name="name">Écarts de conversion passif (V)</field>
                                         <field name="code">ECARTS_PASSIF</field>
                                         <field name="level" eval="2"/>
                                         <field name="sequence" eval="10"/>
@@ -1454,9 +1497,11 @@
                                     '|', ('account_id.code', '=like', '444%'),
                                     '|', ('account_id.code', '=like', '445%'),
                                     '|', ('account_id.code', '=like', '448%'),
+                                    '|', ('account_id.code', '=like', '449%'),
                                     '|', ('account_id.code', '=like', '451%'),
                                     '|', ('account_id.code', '=like', '455%'),
                                     '|', ('account_id.code', '=like', '456%'),
+                                    '|', ('account_id.code', '=like', '458%'),
                                     '|', ('account_id.code', '=like', '467%'),
                                     '|', ('account_id.code', '=like', '468%'),
                                     '|', ('account_id.code', '=like', '470%'),
@@ -1519,6 +1564,7 @@
                                     '|', ('account_id.code', '=like', '443%'),
                                     '|', ('account_id.code', '=like', '444%'),
                                     '|', ('account_id.code', '=like', '448%'),
+                                    '|', ('account_id.code', '=like', '449%'),
                                     '|', ('account_id.code', '=like', '4457%'),
                                     ('account_id.code', '=like', '4458%'),
                                     '!', '|', ('account_id.code', '=like', '4287%'),

@@ -11,6 +11,7 @@
                 <field name="name">Produits d'exploitation (I)</field>
                 <field name="level" eval="1"/>
                 <field name="sequence" eval="2"/>
+                <field name="parent_id" eval="False"/>
                 <field name="code">I</field>
                 <field name="formulas">i_1 + i_2 + i_3 + i_4 + i_5 + i_6 + i_7</field>
                 <field name="children_ids">
@@ -362,7 +363,7 @@
                 <field name="level" eval="1"/>
                 <field name="sequence" eval="10"/>
                 <field name="code">VII</field>
-                <field name="formulas">vii_1 + vii_2 + vii_3 + vii_4</field>
+                <field name="formulas">vii_1 + vii_2 + vii_3 + vii_4 + vii_5</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_fr_cdrp15" model="account.financial.html.report.line">
                         <field name="name">Sur opérations de gestion</field>
@@ -382,10 +383,19 @@
                         <field name="domain" eval="[('account_id.code', '=like', '772%')]"/>
                         <field name="groupby">account_id</field>
                     </record>
+                    <record id="p_n_l_produits_fiducie" model="account.financial.html.report.line">
+                        <field name="name">Sur opérations liées à la fiducie</field>
+                        <field name="level" eval="2"/>
+                        <field name="sequence" eval="3"/>
+                        <field name="code">vii_5</field>
+                        <field name="formulas">-sum</field>
+                        <field name="domain" eval="[('account_id.code', '=like', '774%')]"/>
+                        <field name="groupby">account_id</field>
+                    </record>
                     <record id="account_financial_report_line_fr_cdrp16" model="account.financial.html.report.line">
                         <field name="name">Sur opérations au capital</field>
                         <field name="level" eval="2"/>
-                        <field name="sequence" eval="3"/>
+                        <field name="sequence" eval="4"/>
                         <field name="code">vii_3</field>
                         <field name="formulas">-sum</field>
                         <field name="domain" eval="[ '|', ('account_id.code', '=like', '775%'), '|', ('account_id.code', '=like', '777%'), ('account_id.code', '=like', '778%')]"/>
@@ -394,7 +404,7 @@
                     <record id="account_financial_report_line_fr_cdrp17" model="account.financial.html.report.line">
                         <field name="name">Reprises sur provisions et transferts de charges</field>
                         <field name="level" eval="2"/>
-                        <field name="sequence" eval="4"/>
+                        <field name="sequence" eval="5"/>
                         <field name="code">vii_4</field>
                         <field name="formulas">-sum</field>
                         <field name="domain" eval="[ '|', ('account_id.code', '=like', '787%'), ('account_id.code', '=like', '797%')]"/>
@@ -407,7 +417,7 @@
                 <field name="level" eval="1"/>
                 <field name="sequence" eval="11"/>
                 <field name="code">VIII</field>
-                <field name="formulas">viii_1 + viii_2 + viii_3</field>
+                <field name="formulas">viii_1 + viii_2 + viii_3 + viii_4</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_fr_cdrc21" model="account.financial.html.report.line">
                         <field name="name">Sur opérations de gestion</field>
@@ -418,10 +428,19 @@
                         <field name="domain" eval="[ ('account_id.code', '=like', '671%')]"/>
                         <field name="groupby">account_id</field>
                     </record>
+                    <record id="p_n_l_charges_fiducie" model="account.financial.html.report.line">
+                        <field name="name">Sur opérations liées à la fiducie</field>
+                        <field name="level" eval="2"/>
+                        <field name="sequence" eval="2"/>
+                        <field name="code">viii_4</field>
+                        <field name="formulas">-sum</field>
+                        <field name="domain" eval="[('account_id.code', '=like', '674%')]"/>
+                        <field name="groupby">account_id</field>
+                    </record>
                     <record id="account_financial_report_line_fr_cdrc22" model="account.financial.html.report.line">
                         <field name="name">Sur opérations au capital</field>
                         <field name="level" eval="2"/>
-                        <field name="sequence" eval="2"/>
+                        <field name="sequence" eval="3"/>
                         <field name="code">viii_2</field>
                         <field name="formulas">sum</field>
                         <field name="domain" eval="[ '|', ('account_id.code', '=like', '675%'), ('account_id.code', '=like', '678%')]"/>
@@ -430,7 +449,7 @@
                     <record id="account_financial_report_line_fr_cdrc23" model="account.financial.html.report.line">
                         <field name="name">Dotations aux amortissements et aux provisions</field>
                         <field name="level" eval="2"/>
-                        <field name="sequence" eval="3"/>
+                        <field name="sequence" eval="4"/>
                         <field name="code">viii_3</field>
                         <field name="formulas">sum</field>
                         <field name="domain" eval="[ ('account_id.code', '=like', '687%')]"/>
@@ -482,8 +501,14 @@
                 <field name="name">Bénéfice ou perte</field>
                 <field name="level" eval="1"/>
                 <field name="sequence" eval="15"/>
+                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
                 <field name="formulas">total_products - total_charges</field>
             </record>
         </field>
+    </record>
+    <record id="account_financial_report_l10n_fr_cdr_action" model="ir.actions.client">
+        <field name="name">Compte de résultats</field>
+        <field name="context" eval="{'model': 'account.financial.html.report', 'id': ref('account_financial_report_l10n_fr_cdr')}"/>
+        <field name="tag">account_report</field>
     </record>
 </odoo>

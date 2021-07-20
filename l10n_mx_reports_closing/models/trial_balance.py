@@ -68,7 +68,7 @@ class MxClosingReportAccountTrial(models.AbstractModel):
         cols += [initial_balances.get(account, 0.0) + total_periods]
         return cols
 
-    def get_report_name(self):
+    def _get_report_name(self):
         context = self.env.context
         date_report = fields.datetime.strptime(
             context['date_from'], DEFAULT_SERVER_DATE_FORMAT) if context.get(

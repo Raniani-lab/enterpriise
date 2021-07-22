@@ -327,8 +327,8 @@ class AnalyticLine(models.Model):
         analytic_lines = self.filtered_domain(self._get_domain_for_validation_timesheets())
         if not analytic_lines:
             notification['params'].update({
-                'title': _("There are no timesheets to validate."),
-                'type': 'warning',
+                'title': _("You cannot validate the timesheets from employees that are not part of your team or there are no timesheets to validate."),
+                'type': 'danger',
             })
             return notification
 

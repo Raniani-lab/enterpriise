@@ -25,6 +25,7 @@ class ReturnPicking(models.TransientModel):
 
     def create_returns(self):
         res = super(ReturnPicking, self).create_returns()
+        res['context'].update({'create': False})
         picking_id = self.env['stock.picking'].browse(res['res_id'])
         if self.ticket_id:
             self.ticket_id.picking_ids |= picking_id

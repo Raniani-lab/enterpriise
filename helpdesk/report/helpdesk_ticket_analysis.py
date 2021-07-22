@@ -29,6 +29,10 @@ class HelpdeskTicketReport(models.Model):
     active = fields.Boolean("Active", readonly=True)
     team_id = fields.Many2one('helpdesk.team', string='Team', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True)
+    kanban_state = fields.Selection([
+        ('normal', 'Grey'),
+        ('done', 'Green'),
+        ('blocked', 'Red')], string='Kanban State', readonly=True)
 
     def _select(self):
         select_str = """
@@ -49,7 +53,8 @@ class HelpdeskTicketReport(models.Model):
                    NULLIF(T.rating_last_value, 0) AS rating_last_value,
                    T.active AS active,
                    T.team_id AS team_id,
-                   T.company_id AS company_id
+                   T.company_id AS company_id,
+                   T.kanban_state AS kanban_state
         """
         return select_str
 

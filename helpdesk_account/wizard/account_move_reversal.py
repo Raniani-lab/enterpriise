@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from ast import literal_eval
 
 from odoo import models, fields, api, _
 
@@ -35,6 +36,7 @@ class AccountMoveReversal(models.TransientModel):
         res = super(AccountMoveReversal, self).reverse_moves()
 
         if self.helpdesk_ticket_id:
+            res['context'] = dict(literal_eval(res.get('context', '{}')), create=False)
             self.helpdesk_ticket_id.invoice_ids |= self.new_move_ids
 
         return res

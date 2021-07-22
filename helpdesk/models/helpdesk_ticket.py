@@ -26,7 +26,7 @@ class HelpdeskTag(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     color = fields.Integer('Color', default=_get_default_color)
 
     _sql_constraints = [
@@ -120,7 +120,7 @@ class HelpdeskSLAStatus(models.Model):
         positive_domain = {
             'failed': ['|', '&', ('reached_datetime', '=', True), ('deadline', '<=', 'reached_datetime'), '&', ('reached_datetime', '=', False), ('deadline', '<=', fields.Datetime.to_string(datetime_now))],
             'reached': ['&', ('reached_datetime', '=', True), ('reached_datetime', '<', 'deadline')],
-            'ongoing': ['&', ('reached_datetime', '=', False), ('deadline', '<=', fields.Datetime.to_string(datetime_now))]
+            'ongoing': ['|', ('deadline', '=', False), '&', ('reached_datetime', '=', False), ('deadline', '>', fields.Datetime.to_string(datetime_now))]
         }
         # in/not in case: we treat value as a list of selection item
         if not isinstance(value, list):
@@ -243,7 +243,6 @@ class HelpdeskTicket(models.Model):
     partner_id = fields.Many2one('res.partner', string='Customer')
     partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
-    attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_name', store=True, readonly=False)
     partner_email = fields.Char(string='Customer Email', compute='_compute_partner_email', store=True, readonly=False)
@@ -313,14 +312,6 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.access_url = '/my/ticket/%s' % ticket.id
 
-    def _compute_attachment_number(self):
-        read_group_res = self.env['ir.attachment'].read_group(
-            [('res_model', '=', 'helpdesk.ticket'), ('res_id', 'in', self.ids)],
-            ['res_id'], ['res_id'])
-        attach_data = { res['res_id']: res['res_id_count'] for res in read_group_res }
-        for record in self:
-            record.attachment_number = attach_data.get(record.id, 0)
-
     @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
     def _compute_sla_reached_late(self):
         """ Required to do it in SQL since we need to compare 2 columns value """
@@ -373,7 +364,7 @@ class HelpdeskTicket(models.Model):
     def _search_sla_success(self, operator, value):
         datetime_now = fields.Datetime.now()
         if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is failed
-            return [[('sla_status_ids.reached_datetime', '>', datetime_now), ('sla_reached_late', '!=', False)]]
+            return [('sla_status_ids.reached_datetime', '>', datetime_now), ('sla_reached_late', '!=', False)]
         return [('sla_status_ids.reached_datetime', '<', datetime_now), ('sla_reached_late', '=', False)]  # is success
 
     @api.depends('team_id')
@@ -738,11 +729,6 @@ class HelpdeskTicket(models.Model):
     def assign_ticket_to_self(self):
         self.ensure_one()
         self.user_id = self.env.user
-
-    def action_get_attachment_tree_view(self):
-        action = self.env['ir.actions.act_window']._for_xml_id('base.action_attachment')
-        action['domain'] = str(['&', ('res_model', '=', self._name), ('res_id', 'in', self.ids)])
-        return action
 
     def action_open_helpdesk_ticket(self):
         self.ensure_one()

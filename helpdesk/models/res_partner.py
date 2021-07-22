@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     ticket_count = fields.Integer("Tickets", compute='_compute_ticket_count')
+    sla_ids = fields.Many2many(
+        'helpdesk.sla', 'helpdesk_sla_res_partner_rel',
+        'res_partner_id', 'helpdesk_sla_id', string='SLA Policies')
 
     def _compute_ticket_count(self):
         # retrieve all children partners and prefetch 'parent_id' on them

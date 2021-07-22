@@ -593,6 +593,15 @@ class HelpdeskStage(models.Model):
     legend_normal = fields.Char(
         'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
         help='Override the default value displayed for the normal state for kanban selection, when the task or issue is in that stage.')
+    ticket_count = fields.Integer(compute='_compute_ticket_count')
+
+    def _compute_ticket_count(self):
+        res = self.env['helpdesk.ticket'].read_group(
+            [('stage_id', 'in', self.ids)],
+            ['stage_id'], ['stage_id'])
+        stage_data = {r['stage_id'][0]: r['stage_id_count'] for r in res}
+        for stage in self:
+            stage.ticket_count = stage_data.get(stage.id, 0)
 
     def write(self, vals):
         if 'active' in vals and not vals['active']:
@@ -610,14 +619,25 @@ class HelpdeskStage(models.Model):
                 stages = self.filtered(lambda x: x not in shared_stages)
         return super(HelpdeskStage, stages).unlink()
 
+    def action_open_helpdesk_ticket(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_main_tree")
+        action.update({
+            'domain': [('stage_id', 'in', self.ids)],
+            'context': {
+                'default_stage_id': self.id,
+            },
+        })
+        return action
+
 
 class HelpdeskSLA(models.Model):
     _name = "helpdesk.sla"
     _order = "name"
     _description = "Helpdesk SLA Policies"
 
-    name = fields.Char(required=True, index=True)
-    description = fields.Html('SLA Policy Description')
+    name = fields.Char(required=True, index=True, translate=True)
+    description = fields.Html('SLA Policy Description', translate=True)
     active = fields.Boolean('Active', default=True)
     team_id = fields.Many2one('helpdesk.team', 'Helpdesk Team', required=True)
     ticket_type_id = fields.Many2one(
@@ -642,3 +662,24 @@ class HelpdeskSLA(models.Model):
         help="This SLA Policy will apply to any tickets from the selected customers. Leave empty to apply this SLA Policy to any ticket without distinction.")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
     time = fields.Float('In', help='Time to reach given stage based on ticket creation date', default=0, required=True)
+    ticket_count = fields.Integer(compute='_compute_ticket_count')
+
+    def _compute_ticket_count(self):
+        res = self.env['helpdesk.ticket'].read_group(
+            [('sla_ids', 'in', self.ids), ('stage_id.is_close', '=', False)],
+            ['sla_ids'], ['sla_ids'])
+        sla_data = {r['sla_ids']: r['sla_ids_count'] for r in res}
+        for sla in self:
+            sla.ticket_count = sla_data.get(sla.id, 0)
+
+    def action_open_helpdesk_ticket(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_main_tree")
+        action.update({
+            'domain': [('sla_ids', 'in', self.ids)],
+            'context': {
+                'search_default_is_open': True,
+                'create': False,
+            },
+        })
+        return action

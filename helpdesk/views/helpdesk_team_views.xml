@@ -10,8 +10,8 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name" string="Name"/>
                 <field name="use_alias" invisible="1"/>
-                <field name="display_alias_name" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="display_alias_name" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}" readonly="1"/>
+                <field name="company_id" groups="base.group_multi_company" readonly="1" context="{'create': False}"/>
             </tree>
         </field>
     </record>
@@ -79,7 +79,7 @@
                     <field name="description" placeholder="Description for customer portal"/>
                     <group>
                         <group>
-                            <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1"/>
+                            <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1" context="{'create': False}"/>
                         </group>
                     </group>
                     <h2>Assignment &amp; Visibility</h2>
@@ -416,7 +416,15 @@
         <field name="arch" type="xml">
             <search string="Team Search">
                 <field name="name"/>
+                <field name="member_ids"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="My Teams" domain="[('member_ids', 'in', [uid])]" name="my_team"/>
+                <filter string="Followed Teams" domain="[('message_is_follower', '=', True)]" name="my_follow_team"/>
+                <separator/>
                 <filter string="Archived" domain="[('active', '=', False)]" name="archived"/>
+                <group expand="0" string="Group By">
+                    <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
             </search>
         </field>
     </record>

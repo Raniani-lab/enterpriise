@@ -36,6 +36,9 @@ class HelpdeskTicket(models.Model):
         action = {
             'type': 'ir.actions.act_window',
             'res_model': 'project.task',
+            'context': {
+                'create': False,
+            },
         }
 
         if len(self.fsm_task_ids) == 1:

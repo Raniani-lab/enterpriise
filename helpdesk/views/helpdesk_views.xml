@@ -15,10 +15,27 @@
         <field name="name">helpdesk.tags.tree</field>
         <field name="model">helpdesk.tag</field>
         <field name="arch" type="xml">
-            <tree editable="top" string="Tag" sample="1">
+            <tree editable="top" string="Tag" sample="1" multi_edit="1">
                 <field name="name"/>
                 <field name="color" widget="color_picker"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="helpdesk_tag_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.tags.form</field>
+        <field name="model">helpdesk.tag</field>
+        <field name="arch" type="xml">
+            <form string="Tags">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 
@@ -90,6 +107,7 @@
             <search>
                 <field name="name"/>
                 <field name="team_ids"/>
+                <field name="template_id" domain="[('model', '=', 'helpdesk.ticket')]"/>
                 <filter string="Archived" name="active" domain="[('active', '=' ,False)]"/>
             </search>
         </field>
@@ -122,10 +140,15 @@
         <field name="arch" type="xml">
             <form string="Stage Search">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">
+                            <field name="ticket_count" widget="statinfo" string="Tickets"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="template_id" options="{'no_create': True}"/>
+                            <field name="template_id" context="{'default_model': 'helpdesk.ticket'}"/>
                             <field name="sequence" groups="base.group_no_one"/>
                         </group>
                         <group>
@@ -199,15 +222,16 @@
         <field name="model">helpdesk.sla</field>
         <field name="arch" type="xml">
             <tree string="SLA Policies" multi_edit="1" sample="1">
+                <field name="company_id" invisible="1"/>
                 <field name="name"/>
-                <field name="team_id" optional="show"/>
+                <field name="team_id" optional="show" readonly="1"/>
                 <field name="priority" optional="show" widget="priority"/>
-                <field name="ticket_type_id" optional="show"/>
+                <field name="ticket_type_id" options="{'no_create_edit': True}" optional="show"/>
                 <field name="tag_ids" widget="many2many_tags" optional="hide" options="{'color_field': 'color'}"/>
-                <field name="partner_ids" widget="many2many_tags" optional="hide"/>
-                <field name="stage_id" optional="show" string="Reach Stage"/>
+                <field name="partner_ids" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="many2many_tags" optional="hide"/>
+                <field name="stage_id" optional="show" string="Reach Stage" readonly="1"/>
                 <field name="time" optional="show" widget="float_time"/>
-                <field name="exclude_stage_ids" widget="many2many_tags" optional="hide"/>
+                <field name="exclude_stage_ids" widget="many2many_tags" optional="hide" readonly="1"/>
             </tree>
         </field>
     </record>
@@ -238,9 +262,28 @@
         <field name="model">helpdesk.sla</field>
         <field name="arch" type="xml">
             <search string="Search SLA Policies">
+                <field name="name"/>
                 <field name="team_id"/>
+                <field name="ticket_type_id"/>
+                <field name="tag_ids"/>
+                <field name="partner_ids"/>
+                <field name="stage_id" string="Reach Stage"/>
+                <field name="exclude_stage_ids"/>
+                <filter string="My Teams" domain="['|', ('team_id.member_ids', 'in', [uid]), ('team_id.member_ids', '=', False)]" name="my_team"/>
+                <filter string="Followed Teams" domain="[('team_id.message_is_follower', '=', True)]" name="my_follow_team"/>
+                <separator/>
+                <filter string="Urgent" domain="[('priority', '=', 3)]" name="urgent_priority"/>
+                <filter string="High Priority" domain="[('priority', '=', 2)]" name="high_priority"/>
+                <filter string="Medium Priority" domain="[('priority', '=', 1)]" name="low_priority"/>
+                <filter string="Low Priority" domain="[('priority', '=', 0)]" name="all_priority"/>
                 <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
+                    <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
+                    <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    <filter string="Reach Stage" name="stage" context="{'group_by': 'stage_id'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -252,6 +295,11 @@
             <form string="SLA Policy">
                 <sheet>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">
+                            <field name="ticket_count" widget="statinfo" string="Tickets"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="e.g. Close urgent tickets within 36 hours"/>
@@ -271,12 +319,12 @@
                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
 
                             <separator colspan="2" string="Target" class="mt32"/>
-                            <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" required="1"/>
+                            <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" required="1" context="{'default_team_ids': team_id and [(6, 0, [team_id])]}"/>
                             <label for="time" string="In"/>
                             <div class="o_row">
                                 <field name="time" widget="float_time"/><span class="o_field_widget o_readonly_modifier">Working Hours</span>
                             </div>
-                            <field name="exclude_stage_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('id', '!=', stage_id), ('team_ids', '=', team_id)]"/>
+                            <field name="exclude_stage_ids" widget="many2many_tags" domain="[('id', '!=', stage_id), ('team_ids', '=', team_id)]" context="{'default_team_ids': team_id and [(6, 0, [team_id])]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -356,25 +404,42 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <search string="Tickets Search">
-                <field name="name"/>
+                <field name="name" string="Ticket"/>
                 <field name="id" string="Ticket ID"/>
                 <field name="tag_ids"/>
-                <field name="team_id"/>
                 <field name="user_id"/>
-                <field name="partner_id"/>
+                <field name="partner_id" filter_domain="['|', '|', '|', ('partner_id', 'ilike', self), ('partner_email', 'ilike', self), ('partner_phone', 'ilike', self), ('partner_name', 'ilike', self)]"/>
+                <field name="team_id" invisible="context.get('default_team_id', False)"/>
+                <field name="ticket_type_id"/>
+                <field name="stage_id"/>
+                <field name="sla_ids" groups="helpdesk.group_use_sla"/>
+                <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
                 <field name="priority" invisible="1"/>
                 <field name="sla_deadline" groups="helpdesk.group_use_sla"/>
 
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
+                <filter string="Followed" domain="[('message_is_follower', '=', True)]" name="my_follow_ticket"/>
                 <filter string="Unassigned" domain="[('user_id','=',False)]" name="unassigned"/>
+                <separator/>
+                <filter string="Urgent" domain="[('priority', '=', 3)]" name="urgent_priority"/>
+                <filter string="High Priority" domain="[('priority', '=', 2)]" name="high_priority"/>
+                <filter string="Medium Priority" domain="[('priority', '=', 1)]" name="medium_priority"/>
+                <filter string="Low Priority" domain="[('priority', '=', 0)]" name="low_priority"/>
+                <separator groups="helpdesk.group_use_sla"/>
+                <filter string="SLA Success" domain="[('sla_success', '=', True)]" name="sla_success" groups="helpdesk.group_use_sla"/>
+                <filter string="SLA in Progress" domain="[('sla_status_ids.status', '=', 'ongoing')]" name="sla_inprogress" groups="helpdesk.group_use_sla"/>
+                <filter string="SLA Failed" domain="[('sla_fail', '=', True)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
+                <separator/>
+                <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction"/>
                 <separator/>
                 <filter string="Open" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
                 <filter string="Closed" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
                 <separator/>
-                <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction"/>
+                <filter string="Rated Tickets" domain="[('rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>
+                <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
                     domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>
@@ -383,16 +448,16 @@
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                         domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
                         ]"/>
-                <separator/>
-                <filter string="Upcoming SLA Fail" domain="[('sla_deadline','!=',False),('sla_deadline', '&lt;=', (datetime.date.today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" name="upcoming_sla_fail" groups="helpdesk.group_use_sla"/>
-                <filter string="SLA Failed" domain="[('sla_fail','=', True)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
-                <separator/>
-                <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <group expand="0" string="Group By">
                     <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
-                    <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
-                    <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
+                    <filter string="Team" name="team" context="{'group_by':'team_id'}" invisible="context.get('default_team_id', False)"/>
                     <filter string="Stage" name="stage" context="{'group_by':'stage_id'}"/>
+                    <filter string="Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
+                    <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
+                    <filter string="Status" name="state" context="{'group_by': 'kanban_state'}"/>
+                    <filter string="Customer" name="partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    <filter string="Create Date" name="created_by" context="{'group_by': 'create_date'}"/>
                 </group>
             </search>
         </field>
@@ -434,18 +499,18 @@
                 <field name="display_name" string="Name" readonly="1"/>
                 <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
-                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
-                <field name="partner_id" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user" options="{'no_quick_create': True}"/>
+                <field name="partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" optional="show"/>
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
-                <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide"/>
+                <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
                 <field name="sla_deadline" attrs="{'invisible': [('use_sla', '=', False)]}" optional="show" widget="remaining_days"/>
-                <field name="ticket_type_id" optional="hide"/>
+                <field name="ticket_type_id" options="{'no_create_edit': True}" optional="hide"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="kanban_state" optional="hide" readonly="1" widget="state_selection"/>
-                <field name="stage_id" optional="show" readonly="1"/>
+                <field name="stage_id" optional="show" readonly="not context.get('default_team_id', False)"/>
             </tree>
         </field>
     </record>
@@ -562,10 +627,6 @@
                     <field name="legend_normal" invisible="1"/>
                     <field name="legend_done" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_get_attachment_tree_view" class="oe_stat_button" icon="fa-book"
-                            type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
-                            <field name="attachment_number" widget="statinfo" string="Documents"/>
-                        </button>
                         <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': ['|', ('partner_id', '=', False), ('partner_ticket_count', '=', 0)]}">
                             <field name="partner_ticket_count" widget="statinfo" string="Tickets"/>
                         </button>
@@ -587,7 +648,7 @@
                             <field name="priority" widget="priority"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="sla_deadline" widget="remaining_days" attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
                         </group>
                         <group>
                             <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_name': partner_name, 'default_email': partner_email, 'default_phone': partner_phone}"/>

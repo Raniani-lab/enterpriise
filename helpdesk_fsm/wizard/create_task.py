@@ -34,6 +34,7 @@ class CreateTask(models.TransientModel):
             'helpdesk_ticket_id': self.helpdesk_ticket_id.id,
             'project_id': self.project_id.id,
             'partner_id': self.partner_id.id,
+            'description': self.helpdesk_ticket_id.description,
         }
 
     def action_generate_task(self):
@@ -52,5 +53,6 @@ class CreateTask(models.TransientModel):
             'view_id': self.env.ref('project.view_task_form2').id,
             'context': {
                 'fsm_mode': True,
+                'create': False,
             }
         }

@@ -17,7 +17,7 @@
         <field name="arch" type="xml">
             <tree editable="top" string="Tag" sample="1" multi_edit="1">
                 <field name="name"/>
-                <field name="color" widget="color_picker"/>
+                <field name="color" widget="color_picker" optional="show"/>
             </tree>
         </field>
     </record>
@@ -62,9 +62,22 @@
         <field name="model">helpdesk.ticket.type</field>
         <field name="arch" type="xml">
             <tree editable="top" string="Tag" sample="1">
-                <field name="sequence" widget="handle" groups="base.group_no_one"/>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_type_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.type.form</field>
+        <field name="model">helpdesk.ticket.type</field>
+        <field name="arch" type="xml">
+            <form string="Tag">
+                <group>
+                    <field name="sequence" invisible="1"/>
+                    <field name="name"/>
+                </group>
+            </form>
         </field>
     </record>
 
@@ -227,7 +240,7 @@
                 <field name="name"/>
                 <field name="team_id" optional="show" readonly="1"/>
                 <field name="priority" optional="show" widget="priority"/>
-                <field name="ticket_type_id" options="{'no_create_edit': True}" optional="show"/>
+                <field name="ticket_type_ids" options="{'no_create_edit': True}" optional="show" widget="many2many_tags"/>
                 <field name="tag_ids" widget="many2many_tags" optional="hide" options="{'color_field': 'color'}"/>
                 <field name="partner_ids" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="many2many_tags" optional="hide"/>
                 <field name="stage_id" optional="show" string="Reach Stage" readonly="1"/>
@@ -265,7 +278,7 @@
             <search string="Search SLA Policies">
                 <field name="name"/>
                 <field name="team_id"/>
-                <field name="ticket_type_id"/>
+                <field name="ticket_type_ids"/>
                 <field name="tag_ids"/>
                 <field name="partner_ids"/>
                 <field name="stage_id" string="Reach Stage"/>
@@ -314,8 +327,8 @@
                             <separator colspan="2" string="Criteria"/>
                             <field name="team_id" domain="[('use_sla', '=', True)]"/>
                             <field name="priority" widget="priority"/>
-                            <field name="ticket_type_id" options="{'no_open': True, 'no_create': True}"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="ticket_type_ids" options="{'no_open': True}" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="partner_ids" widget="many2many_tags"
                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
 
@@ -560,7 +573,7 @@
                 <field name="use_rating"/>
                 <field name="rating_last_value"/>
                 <field name="rating_ids"/>
-                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger", "normal": "muted"}'/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
@@ -646,24 +659,39 @@
                     <div class="oe_title">
                         <h1><field name="name" class="field_name" placeholder="Subject..."/></h1>
                         <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
+                        <span attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
+                            <i class="fa fa-lg fa-clock-o mr-2" aria-label="Sla Deadline" title="Sla Deadline"/>
+                            <field name="sla_deadline" widget="remaining_days"/>
+                        </span>
                     </div>
                     <group>
                         <group>
                             <field name="active" invisible="1"/>
-                            <field name="team_id" required="1"/>
+                            <field name="team_id" required="1" context="{'default_use_sla': True}"/>
                             <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
                             <field name="domain_user_ids" invisible="1"/>
-                            <field name="ticket_type_id"/>
                             <field name="priority" widget="priority"/>
+                            <field name="ticket_type_id"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="sla_deadline" widget="remaining_days" attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla"/>
                             <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
                         </group>
                         <group>
                             <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_name': partner_name, 'default_email': partner_email, 'default_phone': partner_phone}"/>
                             <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
-                            <field name="partner_email" widget="email" string="Email"/>
-                            <field name="partner_phone" widget="phone" string="Phone"/>
+                            <field name="is_partner_email_update" invisible="1"/>
+                            <field name="is_partner_phone_update" invisible="1"/>
+                            <label for="partner_email" string="Email"/>
+                            <div class="o_row o_row_readonly">
+                                <field name="partner_email" widget="email" string="email"/>
+                                <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
+                                title="By saving this change, the customer email will also be updated." attrs="{'invisible': [('is_partner_email_update', '=', False)]}"/>
+                            </div>
+                            <label for="partner_phone" string="Phone"/>
+                            <div class="o_row o_row_readonly">
+                                <field name="partner_phone" widget="phone" string="Phone"/>
+                                <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
+                                title="By saving this change, the customer phone number will also be updated." attrs="{'invisible': [('is_partner_phone_update', '=', False)]}"/>
+                            </div>
                             <field name="email_cc" groups="base.group_no_one"/>
                         </group>
                     </group>

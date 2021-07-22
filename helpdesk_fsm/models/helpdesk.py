@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
+from ast import literal_eval
 
 from odoo import models, api, fields, _
 
@@ -42,20 +43,14 @@ class HelpdeskTicket(models.Model):
             ticket.fsm_task_count = ticket_count_mapping.get(ticket.id, 0)
 
     def action_view_fsm_tasks(self):
-        fsm_form_view = self.env.ref('project.view_task_form2')
-        fsm_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
-        action = {
-            'type': 'ir.actions.act_window',
-            'res_model': 'project.task',
-            'context': {
-                'create': False,
-            },
-        }
+        action = self.env['ir.actions.act_window']._for_xml_id('industry_fsm.project_task_action_all_fsm')
+        action['context'] = dict(literal_eval(action.get('context', '{}')), create=False)
 
         if len(self.fsm_task_ids) == 1:
+            fsm_form_view = self.env.ref('project.view_task_form2')
             action.update(res_id=self.fsm_task_ids[0].id, views=[(fsm_form_view.id, 'form')])
         else:
-            action.update(domain=[('id', 'in', self.fsm_task_ids.ids)], views=[(fsm_list_view.id, 'tree'), (fsm_form_view.id, 'form')], name=_('Tasks from Tickets'))
+            action.update(domain=[('id', 'in', self.fsm_task_ids.ids)], name=_('Tasks'))
         return action
 
     def action_generate_fsm_task(self):

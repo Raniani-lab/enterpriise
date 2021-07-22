@@ -6,9 +6,8 @@ import datetime
 
 from dateutil import relativedelta
 from collections import defaultdict
-from odoo import api, fields, models, _
+from odoo import api, Command, fields, models, _
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
-from odoo.addons.http_routing.models.ir_http import slug
 from odoo.addons.web.controllers.main import clean_action
 from odoo.osv import expression
 
@@ -25,14 +24,18 @@ class HelpdeskTeam(models.Model):
                          'Cannot show ratings in portal if not using them'), ]
 
     def _default_stage_ids(self):
-        default_stage = self.env['helpdesk.stage'].search([('name', '=', _('New'))], limit=1)
-        if not default_stage:
-            default_stage = self.env['helpdesk.stage'].create({
+        default_stages = self.env['helpdesk.stage']
+        for xml_id in ['stage_new', 'stage_in_progress', 'stage_solved', 'stage_cancelled']:
+            stage = self.env.ref('helpdesk.%s' % xml_id, raise_if_not_found=False)
+            if stage:
+                default_stages += stage
+        if not default_stages:
+            default_stages = self.env['helpdesk.stage'].create({
                 'name': _("New"),
                 'sequence': 0,
                 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False).id or None
             })
-        return [(4, default_stage.id)]
+        return [Command.set(default_stages.ids)]
 
     def _default_domain_member_ids(self):
         return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]
@@ -126,7 +129,7 @@ class HelpdeskTeam(models.Model):
             stage_ids = sorted([
                 (val, stage_id) for stage_id, val in stages_dict.items() if stage_id in team.stage_ids.ids
             ])
-            team.to_stage_id = stage_ids[0][1] if stage_ids else team.stage_ids.ids[-1]
+            team.to_stage_id = stage_ids[0][1] if stage_ids else team.stage_ids and team.stage_ids.ids[-1]
 
     @api.depends('alias_name', 'alias_domain')
     def _compute_display_alias_name(self):
@@ -618,7 +621,7 @@ class HelpdeskStage(models.Model):
         'Folded in Kanban',
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     team_ids = fields.Many2many(
-        'helpdesk.team', relation='team_stage_rel', string='Helpdesk Teams',
+        'helpdesk.team', relation='team_stage_rel', string='Teams',
         default=_default_team_ids,
         help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
     template_id = fields.Many2one(
@@ -680,9 +683,9 @@ class HelpdeskSLA(models.Model):
     name = fields.Char(required=True, index=True, translate=True)
     description = fields.Html('SLA Policy Description', translate=True)
     active = fields.Boolean('Active', default=True)
-    team_id = fields.Many2one('helpdesk.team', 'Helpdesk Team', required=True)
-    ticket_type_id = fields.Many2one(
-        'helpdesk.ticket.type', "Type",
+    team_id = fields.Many2one('helpdesk.team', 'Team', required=True)
+    ticket_type_ids = fields.Many2many(
+        'helpdesk.ticket.type', string='Types',
         help="Only apply the SLA to a specific ticket type. If left empty it will apply to all types.")
     tag_ids = fields.Many2many(
         'helpdesk.tag', string='Tags',
@@ -696,7 +699,7 @@ class HelpdeskSLA(models.Model):
         help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
     priority = fields.Selection(
         TICKET_PRIORITY, string='Minimum Priority',
-        default='0', required=True,
+        default='1', required=True,
         help='Tickets under this priority will not be taken into account.')
     partner_ids = fields.Many2many(
         'res.partner', string="Customers",

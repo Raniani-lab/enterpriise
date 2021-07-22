@@ -5,7 +5,7 @@ from unittest.mock import patch
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
-from odoo import fields
+from odoo import Command, fields
 from odoo.tests.common import TransactionCase
 
 NOW = datetime(2018, 10, 10, 9, 18)
@@ -172,7 +172,7 @@ class HelpdeskSLA(TransactionCase):
 
     def test_sla_tag_and_ticket_type(self):
         self.sla.tag_ids = [(6, False, self.tag_urgent.ids)]
-        self.sla.ticket_type_id = self.type_question
+        self.sla.ticket_type_ids = [Command.link(self.type_question.id)]
         ticket = self.create_ticket(tag_ids=self.tag_urgent)
         self.assertFalse(ticket.sla_status_ids, "SLA should not have been applied yet")
         ticket.ticket_type_id = self.type_question

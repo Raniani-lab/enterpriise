@@ -58,7 +58,7 @@
         <field name="inherit_id" ref="helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_line_id']" position="attributes">
-                <attribute name="context">{'with_remaining_hours': True, 'with_price_unit': True, 'create': False}</attribute>
+                <attribute name="context">{'with_remaining_hours': True, 'with_price_unit': True, 'create': False, 'edit': False}</attribute>
                 <attribute name="options">{"no_create": True}</attribute>
             </xpath>
             <xpath expr="//field[@name='total_hours_spent']" position="after">

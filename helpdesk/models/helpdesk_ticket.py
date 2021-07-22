@@ -11,8 +11,8 @@ from odoo.osv import expression
 from odoo.exceptions import AccessError
 
 TICKET_PRIORITY = [
-    ('0', 'All'),
-    ('1', 'Low priority'),
+    ('0', 'Low priority'),
+    ('1', 'Medium priority'),
     ('2', 'High priority'),
     ('3', 'Urgent'),
 ]
@@ -218,7 +218,7 @@ class HelpdeskTicket(models.Model):
         return stages.search(search_domain, order=order)
 
     name = fields.Char(string='Subject', required=True, index=True)
-    team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True)
+    team_id = fields.Many2one('helpdesk.team', string='Team', default=_default_team_id, index=True)
     use_sla = fields.Boolean(related='team_id.use_sla')
     team_privacy_visibility = fields.Selection(related='team_id.privacy_visibility', string="Team Visibility")
     description = fields.Html()
@@ -246,13 +246,13 @@ class HelpdeskTicket(models.Model):
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_name', store=True, readonly=False)
-    partner_email = fields.Char(string='Customer Email', compute='_compute_partner_email', store=True, readonly=False)
-    partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_phone', store=True, readonly=False)
+    partner_email = fields.Char(string='Customer Email', compute='_compute_partner_email', inverse="_inverse_partner_email", store=True, readonly=False)
+    partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_phone', inverse="_inverse_partner_phone", store=True, readonly=False)
     commercial_partner_id = fields.Many2one(related="partner_id.commercial_partner_id")
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
-    priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0')
+    priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='1')
     stage_id = fields.Many2one(
         'helpdesk.stage', string='Stage', compute='_compute_user_and_stage_ids', store=True,
         readonly=False, ondelete='restrict', tracking=True, group_expand='_read_group_stage_ids',
@@ -278,6 +278,8 @@ class HelpdeskTicket(models.Model):
     use_product_repairs = fields.Boolean(related='team_id.use_product_repairs', string='Use Repairs')
     use_rating = fields.Boolean(related='team_id.use_rating', string='Use Customer Ratings')
 
+    is_partner_email_update = fields.Boolean('Partner Email will Update', compute='_compute_is_partner_email_update')
+    is_partner_phone_update = fields.Boolean('Partner Phone will Update', compute='_compute_is_partner_phone_update')
     # customer portal: include comment and incoming emails in communication history
     website_message_ids = fields.One2many(domain=lambda self: [('model', '=', self._name), ('message_type', 'in', ['email', 'comment'])])
 
@@ -351,6 +353,16 @@ class HelpdeskTicket(models.Model):
             else:
                 ticket.sla_fail = ticket.sla_reached_late
 
+    @api.depends('partner_email', 'partner_id')
+    def _compute_is_partner_email_update(self):
+        for ticket in self:
+            ticket.is_partner_email_update = ticket._get_partner_email_update()
+
+    @api.depends('partner_phone', 'partner_id')
+    def _compute_is_partner_phone_update(self):
+        for ticket in self:
+            ticket.is_partner_phone_update = ticket._get_partner_phone_update()
+
     @api.model
     def _search_sla_fail(self, operator, value):
         datetime_now = fields.Datetime.now()
@@ -385,17 +397,27 @@ class HelpdeskTicket(models.Model):
             if ticket.partner_id:
                 ticket.partner_name = ticket.partner_id.name
 
-    @api.depends('partner_id')
+    @api.depends('partner_id.email')
     def _compute_partner_email(self):
         for ticket in self:
             if ticket.partner_id:
                 ticket.partner_email = ticket.partner_id.email
 
-    @api.depends('partner_id')
+    def _inverse_partner_email(self):
+        for ticket in self:
+            if ticket._get_partner_email_update():
+                ticket.partner_id.email = ticket.partner_email
+
+    @api.depends('partner_id.phone')
     def _compute_partner_phone(self):
         for ticket in self:
             if ticket.partner_id:
                 ticket.partner_phone = ticket.partner_id.phone
+
+    def _inverse_partner_phone(self):
+        for ticket in self:
+            if ticket._get_partner_phone_update():
+                ticket.partner_id.phone = ticket.partner_phone
 
     @api.depends('partner_id', 'partner_email', 'partner_phone')
     def _compute_partner_ticket_count(self):
@@ -466,6 +488,22 @@ class HelpdeskTicket(models.Model):
             d1 = expression.AND([[('close_date', '=', False)], subdomain])
             d2 = ['&', ('close_date', '!=', False), ('close_hours', operator, value)]
         return expression.OR([d1, d2])
+
+    def _get_partner_email_update(self):
+        self.ensure_one()
+        if self.partner_id and self.partner_email != self.partner_id.email:
+            ticket_email_normalized = tools.email_normalize(self.partner_email) or self.partner_email or False
+            partner_email_normalized = tools.email_normalize(self.partner_id.email) or self.partner_id.email or False
+            return ticket_email_normalized != partner_email_normalized
+        return False
+
+    def _get_partner_phone_update(self):
+        self.ensure_one()
+        if self.partner_id and self.partner_phone != self.partner_id.phone:
+            ticket_phone_formatted = self.partner_phone or False
+            partner_phone_formatted = self.partner_id.phone or False
+            return ticket_phone_formatted != partner_phone_formatted
+        return False
 
     # ------------------------------------------------------------
     # ORM overrides
@@ -695,7 +733,7 @@ class HelpdeskTicket(models.Model):
                     sla_domain_map[key] = expression.AND([[
                         ('team_id', '=', ticket.team_id.id), ('priority', '<=', ticket.priority),
                         ('stage_id.sequence', '>=', ticket.stage_id.sequence),
-                        '|', ('ticket_type_id', '=', ticket.ticket_type_id.id), ('ticket_type_id', '=', False)], ticket._sla_find_extra_domain()])
+                        '|', ('ticket_type_ids', 'in', ticket.ticket_type_id.ids), ('ticket_type_ids', '=', False)], ticket._sla_find_extra_domain()])
 
         result = {}
         for key, tickets in tickets_map.items():  # only one search per ticket group

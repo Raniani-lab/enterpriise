@@ -508,9 +508,10 @@
     </record>
 
     <record id="helpdesk_team_action" model="ir.actions.act_window">
-        <field name="name">Helpdesk Teams</field>
+        <field name="name">Teams</field>
         <field name="res_model">helpdesk.team</field>
         <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{'default_use_sla': True}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
                 No teams found
@@ -535,7 +536,7 @@
         <field name="act_window_id" ref="helpdesk_team_action"/>
     </record>
 
-    <menuitem id="helpdesk_team_menu" name="Helpdesk Teams" action="helpdesk_team_action"
+    <menuitem id="helpdesk_team_menu" name="Teams" action="helpdesk_team_action"
         sequence="0" parent="helpdesk.helpdesk_menu_config"
         groups="helpdesk.group_helpdesk_manager"/>
 

@@ -6,7 +6,7 @@
     </record>
 
     <record id="product.product_product_1" model="product.product">
-        <field name="project_id" ref="project.project_project_1"/>
+        <field name="project_id" model="product.product" eval="obj().env.ref('helpdesk.helpdesk_team3').project_id.id"/>
     </record>
 
     <!-- timesheet on ticket -->
@@ -43,7 +43,7 @@
     <function model="sale.order" name="action_confirm" eval="[ref('sale_order_helpdesk_sale_timesheet_1')]"/>
     <record id="helpdesk.helpdesk_ticket_17" model="helpdesk.ticket">
         <field name="sale_order_id" ref="sale_order_helpdesk_sale_timesheet_1"/>
-        <field name="project_id" ref="project.project_project_1"/>
+        <field name="project_id" model="helpdesk.ticket" eval="obj().env.ref('helpdesk.helpdesk_team3').project_id.id"/>
     </record>
     <!-- make project allow_billable True as project is already created from another module -->
     <function model="project.project" name="write">

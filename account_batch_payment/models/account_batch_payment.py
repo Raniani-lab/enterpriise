@@ -72,7 +72,7 @@ class AccountBatchPayment(models.Model):
     @api.depends('payment_ids.move_id.is_move_sent', 'payment_ids.is_matched')
     def _compute_state(self):
         for batch in self:
-            if batch.payment_ids and all(pay.is_matched for pay in batch.payment_ids):
+            if batch.payment_ids and all(pay.is_matched and pay.is_move_sent for pay in batch.payment_ids):
                 batch.state = 'reconciled'
             elif batch.payment_ids and all(pay.is_move_sent for pay in batch.payment_ids):
                 batch.state = 'sent'
@@ -252,8 +252,16 @@ class AccountBatchPayment(models.Model):
                 'records': sent_payments,
             })
 
+        if self.batch_type == 'inbound':
+            pmls = self.journal_id.inbound_payment_method_line_ids
+            default_payment_account = self.journal_id.company_id.account_journal_payment_debit_account_id
+        else:
+            pmls = self.journal_id.outbound_payment_method_line_ids
+            default_payment_account = self.journal_id.company_id.account_journal_payment_credit_account_id
+        pmls = pmls.filtered(lambda x: x.payment_method_id == self.payment_method_id)
+        no_statement_reconciliation = self.journal_id.default_account_id == (pmls.payment_account_id[:1] or default_payment_account)
         bank_reconciled_payments = self.payment_ids.filtered(lambda x: x.is_matched)
-        if bank_reconciled_payments:
+        if bank_reconciled_payments and not no_statement_reconciliation:
             rslt.append({
                 'title': _("Some payments have already been matched with a bank statement."),
                 'records': bank_reconciled_payments,

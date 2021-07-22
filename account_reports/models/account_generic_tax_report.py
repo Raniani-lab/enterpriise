@@ -107,6 +107,11 @@ class generic_tax_report(models.AbstractModel):
             tax_unit = available_tax_units.filtered(lambda x: x.id == options['tax_unit'])
             options['multi_company'] = [{'name': company.name, 'id': company.id} for company in tax_unit.company_ids]
 
+    def _init_filter_date(self, options, previous_options=None):
+        # OVERRIDE
+        super()._init_filter_date(options, previous_options=previous_options)
+        options['date']['strict_range'] = True
+
     @api.model
     def _is_generic_report(self, options):
         return isinstance(options['tax_report'], str) and options['tax_report'].startswith('generic')
@@ -121,11 +126,6 @@ class generic_tax_report(models.AbstractModel):
 
         tax_report_id = int(options['tax_report'])
         return self.env['account.tax.report'].browse(tax_report_id).country_id
-
-    def _get_options(self, previous_options=None):
-        rslt = super(generic_tax_report, self)._get_options(previous_options)
-        rslt['date']['strict_range'] = True
-        return rslt
 
     def _get_forced_filter_init_sequence_map(self):
         rslt = super()._get_forced_filter_init_sequence_map()

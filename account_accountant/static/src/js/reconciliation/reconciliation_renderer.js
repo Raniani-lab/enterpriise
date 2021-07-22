@@ -522,10 +522,12 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             relation: 'account.analytic.account',
             type: 'many2one',
             name: 'analytic_account_id',
+            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
         }, {
             relation: 'account.analytic.tag',
             type: 'many2many',
             name: 'analytic_tag_ids',
+            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
         }, {
             type: 'boolean',
             name: 'force_tax_included',

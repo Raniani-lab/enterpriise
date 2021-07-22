@@ -24,7 +24,6 @@
             <field name="name">Done</field>
             <field name="legend_blocked">Blocked</field>
             <field name="fold" eval="True"/>
-            <field name="is_closed" eval="True"/>
         </record>
 
         <record id="planning_project_stage_4" model="project.task.type">
@@ -32,7 +31,6 @@
             <field name="name">Cancelled</field>
             <field name="legend_blocked">Blocked</field>
             <field name="fold" eval="True"/>
-            <field name="is_closed" eval="True"/>
         </record>
 
         <record id="fsm_project" model="project.project">

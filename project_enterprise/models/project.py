@@ -61,7 +61,7 @@ class Task(models.Model):
     @api.depends('stage_id')
     def _compute_display_warning_dependency_in_gantt(self):
         for task in self:
-            task.display_warning_dependency_in_gantt = not (task.stage_id.is_closed or task.stage_id.fold)
+            task.display_warning_dependency_in_gantt = not task.is_closed
 
     @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
     def _compute_planning_overlap(self):
@@ -173,8 +173,7 @@ class Task(models.Model):
         :rtype: bool
         """
         self.ensure_one()
-        task_is_done = self.stage_id.fold or self.stage_id.is_closed
-        return self.project_id and self.project_id.allow_task_dependencies and not task_is_done and \
+        return self.project_id and self.project_id.allow_task_dependencies and not self.is_closed and \
                self.planned_date_begin and self.planned_date_end and self.planned_date_begin > datetime.now()
 
     def _get_tasks_by_resource_calendar_dict(self):

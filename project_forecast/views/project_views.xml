@@ -65,7 +65,7 @@
                             </span>
                             <span class="o_stat_value">Hours</span>
                         </div>
-                        <span class="o_stat_text">Forecast</span>
+                        <span class="o_stat_text">Planned</span>
                     </div>
                 </button>
             </xpath>
@@ -92,7 +92,7 @@
                             </span>
                             <span class="o_stat_value">Hours</span>
                         </div>
-                        <div>Forecast</div>
+                        <div>Planned</div>
                     </div>
                 </button>
             </xpath>

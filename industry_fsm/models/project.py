@@ -251,10 +251,8 @@ class Task(models.Model):
         return users
 
     def _compute_fsm_done(self):
-        for task in self:
-            closed_stage = task.project_id.type_ids.filtered('is_closed')
-            if closed_stage:
-                task.fsm_done = task.stage_id in closed_stage
+        closed_tasks = self.filtered('is_closed')
+        closed_tasks.fsm_done = True
 
     def action_fsm_worksheet(self):
         self.ensure_one()
@@ -293,7 +291,7 @@ class Task(models.Model):
         self._stop_all_timers_and_create_timesheets()
         closed_stage_by_project = {
             project.id:
-                project.type_ids.filtered(lambda stage: stage.is_closed)[:1] or project.type_ids[-1:]
+                project.type_ids.filtered(lambda stage: stage.fold)[:1] or project.type_ids[-1:]
             for project in self.project_id
         }
         for task in self:
@@ -408,7 +406,3 @@ class Task(models.Model):
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.env.context.get('fsm_mark_as_sent') and not self.fsm_is_sent:
             self.fsm_is_sent = True
-
-    @api.model
-    def get_unusual_days(self, date_from, date_to=None):
-        return self.env.user.employee_id._get_unusual_days(date_from, date_to)

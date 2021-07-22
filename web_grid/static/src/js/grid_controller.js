@@ -129,6 +129,35 @@ var GridController = AbstractController.extend({
 
         var self = this;
         return this.mutex.exec(function () {
+            if (self.adjustment === 'action') {
+                const actionData = {
+                    type: self.adjustment,
+                    name: self.adjustName,
+                    context: self.model.getContext({
+                        grid_adjust: { // context for type=action
+                            row_domain: domain,
+                            column_field: state.colField,
+                            column_value: cell.col.values[state.colField][0],
+                            cell_field: state.cellField,
+                            change: difference,
+                        },
+                    }),
+                };
+                return self.trigger_up('execute_action', {
+                    action_data: actionData,
+                    env: {
+                        context: self.model.getContext(),
+                        model: self.modelName
+                    },
+                    on_success: async function () {
+                        let state = self.model.get();
+                        await self.model.reloadCell(cell, state.cellField, state.colField);
+                        state = self.model.get();
+                        await self.renderer.update(state);
+                        self.updateButtons(state);
+                    },
+                });
+            }
             return self._rpc({
                 model: self.modelName,
                 method: self.adjustName,

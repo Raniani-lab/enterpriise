@@ -1919,5 +1919,50 @@ QUnit.module('Views', {
         assert.containsN(grid, '.o_grid_unavailable', 4, "should have 4 unavailable elements");
         grid.destroy();
     });
+
+    QUnit.test('adjustment of type action should execute given action', async function (assert) {
+        assert.expect(9);
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `
+                <grid string="Timesheet" adjustment="action" adjust_name="123">
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_toggle" options="{'factor': 0.125, 'range': [0.0, 0.5, 1.0]}"/>
+                </grid>`,
+            currentDate: "2017-01-31",
+            intercepts: {
+                execute_action: function (event) {
+                    const data = event.data;
+                    const context = data.action_data.context;
+                    assert.strictEqual(data.env.model, 'analytic.line', "should have correct model");
+                    assert.strictEqual(data.action_data.name, '123', "should call correct action id");
+                    assert.ok(context.grid_adjust.row_domain, 'row_domain should be in action context');
+                    assert.ok(context.grid_adjust.column_field, 'column_field should be in action context');
+                    assert.ok(context.grid_adjust.column_value, 'column_value should be in action context');
+                    assert.ok(context.grid_adjust.cell_field, 'cell_field should be in action context');
+                    assert.ok(context.grid_adjust.change, 'change should be in action context');
+                }
+            },
+        });
+
+        const $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(0) button');
+        assert.strictEqual($button.text(), '0.00');
+
+        $button.focus();
+        $button.click();
+        $button.blur(); // will trigger the adjustment call
+        await testUtils.nextTick();
+
+        assert.strictEqual($button.text(), '0.50');
+        grid.destroy();
+    });
 });
 });

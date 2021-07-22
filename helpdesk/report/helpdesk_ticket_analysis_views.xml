@@ -13,6 +13,80 @@
         </field>
     </record>
 
+    <record id="helpdesk_ticket_view_pivot_7days_analysis_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.pivot.7days.analysis.inherit</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="replace">
+                <field name="close_date" interval="day" type="row"/>
+            </xpath>
+            <field name="ticket_close_hours" position="replace"/>
+            <field name="ticket_open_hours" position="replace"/>
+            <field name="ticket_assignation_hours" position="replace"/>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_pivot_analysis_success_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.pivot.analysis.success.inherit</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_pivot_7days_analysis_inherit_dashboard"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='close_date']" position="replace">
+                <field name="ticket_id" type="row"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_pivot_analysis_7dayssuccess_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.pivot.analysis.7dayssuccess.inherit</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_pivot_7days_analysis_inherit_dashboard"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='close_date']" position="attributes">
+                <attribute name="name">create_date</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_pivot_analysis_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.pivot.analysis.inherit</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_pivot_analysis_7dayssuccess_inherit_dashboard"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//pivot" position="attributes">
+                <attribute name="display_quantity">1</attribute>
+            </xpath>
+            <field name="create_date" position="after">
+                <field name="ticket_open_hours" widget="float_time" type="measure"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_list_analysis" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.list</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="arch" type="xml">
+            <tree string="Tickets" multi_edit="1" sample="1">
+                <field name="ticket_id" string="Name" readonly="1"/>
+                <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
+                <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="partner_id" optional="show"/>
+                <field name="ticket_type_id" optional="hide"/>
+                <field name="priority" optional="show" widget="priority"/>
+                <field name="ticket_stage_id" optional="show" readonly="1"/>
+                <field name="ticket_deadline" optional="show" widget="remaining_days"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="helpdesk_ticket_view_graph_analysis" model="ir.ui.view">
         <field name="name">helpdesk.ticket.report.analysis.graph</field>
         <field name="model">helpdesk.ticket.report.analysis</field>
@@ -20,7 +94,39 @@
             <graph string="Tickets Analysis" sample="1" disable_linking="1">
                 <field name="team_id"/>
                 <field name="ticket_stage_id"/>
+                <field name="ticket_open_hours" widget="float_time" type="measure"/>
             </graph>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.graph.7days.analysis.inherit</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_graph_analysis"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="replace">
+                <field name="close_date" interval="day"/>
+            </xpath>
+            <field name="ticket_stage_id" position="replace"/>
+            <field name="ticket_open_hours" position="replace"/>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_graph_analysis_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.graph.analysis.inherit</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_graph_analysis"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//graph" position="attributes">
+                <attribute name="stacked">False</attribute>
+                <attribute name="order">DESC</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="replace">
+                <field name="create_date" interval="day"/>
+            </xpath>
+            <field name="ticket_stage_id" position="replace"/>
         </field>
     </record>
 
@@ -28,7 +134,7 @@
         <field name="name">helpdesk.ticket.report.analysis.cohort</field>
         <field name="model">helpdesk.ticket.report.analysis</field>
         <field name="arch" type="xml">
-            <cohort string="Tickets Analysis" date_start="create_date" date_stop="close_date" interval="week" sample="1"/>
+            <cohort string="Tickets Analysis" date_start="create_date" date_stop="close_date" interval="day" sample="1" measure="ticket_open_hours"/>
         </field>
     </record>
 
@@ -62,6 +168,8 @@
                 <filter string="Closed" domain="['|', ('ticket_stage_id.is_close', '=', True), ('ticket_stage_id.fold', '=', True)]" name="is_close"/>
                 <separator/>
                 <filter string="Rated Tickets" domain="[('rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
+                <separator/>
+                <filter string="Last 7 days" name="last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>

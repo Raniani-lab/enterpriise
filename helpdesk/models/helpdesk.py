@@ -9,6 +9,7 @@ from collections import defaultdict
 from odoo import api, Command, fields, models, _
 from odoo.tools import float_round
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
+from odoo.addons.rating.models.rating import RATING_LIMIT_MIN
 from odoo.addons.web.controllers.main import clean_action
 from odoo.osv import expression
 
@@ -499,20 +500,32 @@ class HelpdeskTeam(models.Model):
             :param period: either 'today' or 'seven_days' to include (or not) the tickets closed in this period
             :param only_my_closed: True will include only the ticket of the current user in a closed stage
         """
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.rating_rating_action_helpdesk")
+        action = clean_action(action, self.env)
         domain = [('team_id', 'in', self.ids)]
-
+        context = dict(ast.literal_eval(action.get('context', {})), search_default_my_ratings=True)
+        update_views = {}
         if period == 'seven_days':
             domain += [('close_date', '>=', fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6))))]
-        elif period == 'today':
-            domain += [('close_date', '>=', fields.Datetime.to_string(datetime.date.today()))]
+            update_views[self.env.ref("helpdesk.rating_rating_view_seven_days_pivot_inherit_helpdesk").id] = 'pivot'
+            update_views[self.env.ref('helpdesk.rating_rating_view_seven_days_graph_inherit_helpdesk').id] = 'graph'
+            context['search_default_last_7days'] = True
 
+        elif period == 'today':
+            if '__count__' in context.get('pivot_measures', {}):
+                context.get('pivot_measures').remove('__count__')
+            domain += [('close_date', '>=', fields.Datetime.to_string(datetime.date.today()))]
+            update_views[self.env.ref("helpdesk.rating_rating_view_today_pivot_inherit_helpdesk").id] = 'pivot'
+            update_views[self.env.ref('helpdesk.rating_rating_view_today_graph_inherit_helpdesk').id] = 'graph'
+        action['views'] = [(state, view) for state, view in action['views'] if view not in update_views.values()] + list(update_views.items())
         if only_my_closed:
             domain += [('user_id', '=', self._uid), ('stage_id.is_close', '=', True)]
 
         ticket_ids = self.env['helpdesk.ticket'].search(domain).ids
-        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.rating_rating_action_helpdesk")
-        action = clean_action(action, self.env)
-        action['domain'] = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
+        action.update({
+            'context': context,
+            'domain': [('res_id', 'in', ticket_ids), ('rating', '>=', RATING_LIMIT_MIN), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)],
+        })
         return action
 
     def action_view_ticket(self):

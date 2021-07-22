@@ -775,21 +775,43 @@
     </record>
 
     <!-- Reporting action for dashboard -->
+    <record id="helpdesk_ticket_action_close_analysis_pivot_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.close.analysis.pivot.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_pivot_main"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="create_date" position="replace">
+                <field name="name" type="row"/>
+            </field>
+            <field name="stage_id" position="replace"/>
+        </field>
+    </record>
+    <record id="helpdesk_ticket_action_close_analysis_graph_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.close.analysis.graph.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_graph_main"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//graph" position="attributes">
+                <attribute name="type">bar</attribute>
+            </xpath>
+            <field name="create_date" position="replace">
+                <field name="name"/>
+            </field>
+            <field name="stage_id" position="replace"/>
+        </field>
+    </record>
     <record id="helpdesk_ticket_action_close_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
-        <field name="res_model">helpdesk.ticket.report.analysis</field>
-        <field name="view_mode">pivot,graph</field>
-        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
         <field name="context">{
             'search_default_my_ticket': True,
-            'pivot_measures': ['__count__'],
-            'pivot_row_groupby': ['create_date:day'],
+            'search_default_is_close': True,
         }</field>
-        <field name="view_ids"
-                   eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
-                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet ! 
@@ -798,6 +820,24 @@
             </p>
         </field>
     </record>
+    <record id="helpdesk_ticket_action_close_analysis_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="helpdesk_tickets_view_tree"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_close_analysis"/>
+    </record>
+    <record id="helpdesk_ticket_action_close_analysis_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="18"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk_ticket_action_close_analysis_pivot_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_close_analysis"/>
+    </record>
+    <record id="helpdesk_ticket_action_close_analysis_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk_ticket_action_close_analysis_graph_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_close_analysis"/>
+    </record>
 
     <record id="helpdesk_ticket_action_7days_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
@@ -805,15 +845,11 @@
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="view_ids"
-                   eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
-                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
         <field name="context">{
             'search_default_my_ticket': True,
             'search_default_is_close': True,
+            'search_default_last_7days': True,
             'pivot_measures': ['__count__'],
-            'pivot_row_groupby': ['create_date:day'],
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
@@ -822,6 +858,18 @@
                 Create tickets to get statistics.
             </p>
         </field>
+    </record>
+    <record id="helpdesk_ticket_action_7days_analysis_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="17"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_7days_analysis_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_analysis"/>
+    </record>
+    <record id="helpdesk_ticket_action_7days_analysis_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="27"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_analysis"/>
     </record>
 
     <!-- action for halpdask team -->
@@ -950,19 +998,14 @@
     <record id="helpdesk_ticket_action_success" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
         <field name="res_model">helpdesk.ticket.report.analysis</field>
-        <field name="view_mode">pivot,graph</field>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
+        <field name="view_mode">tree,pivot,graph</field>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
         <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
         <field name="context">{
             'search_default_is_close': True,
             'search_default_my_ticket': True,
-            'search_default_not_sla_failed': True,
+            'search_default_sla_success': True,
             'pivot_measures': ['__count__'],
-            'pivot_row_groupby': ['create_date:day'],
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
@@ -972,23 +1015,37 @@
             </p>
         </field>
     </record>
+    <record id="helpdesk_ticket_action_success_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="16"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_list_analysis"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
+    </record>
+    <record id="helpdesk_ticket_action_success_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
+    </record>
+    <record id="helpdesk_ticket_action_success_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="18"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis_success_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
+    </record>
 
     <record id="helpdesk_ticket_action_7dayssuccess" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
         <field name="res_model">helpdesk.ticket.report.analysis</field>
         <field name="view_mode">pivot,graph</field>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk.helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk.helpdesk_ticket_view_pivot_analysis')})]"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
         <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
         <field name="context">{
             'search_default_is_close': True,
             'search_default_my_ticket': True,
-            'search_default_not_sla_failed': True,
+            'search_default_sla_success': True,
+            'search_default_last_7days': True,
             'pivot_measures': ['__count__'],
-            'pivot_row_groupby': ['create_date:day'],
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
@@ -998,18 +1055,29 @@
             </p>
         </field>
     </record>
+    <record id="helpdesk_ticket_action_7dayssuccess_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="19"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis_7dayssuccess_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7dayssuccess"/>
+    </record>
+    <record id="helpdesk_ticket_action_7dayssuccess_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="29"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7dayssuccess"/>
+    </record>
 
     <record id="helpdesk_ticket_action_dashboard" model="ir.actions.act_window">
         <field name="name">Ticket Analysis</field>
-        <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">pivot,graph</field>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
-        <field name="domain">[('stage_id.is_close', '=', False)]</field>
-        <field name="context">{'search_default_my_ticket': True, 'pivot_measures': ['close_hours', '__count__']}</field>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_team_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_team_view_pivot_analysis')})]"/>
+        <field name="res_model">helpdesk.ticket.report.analysis</field>
+        <field name="view_mode">pivot,graph,cohort</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
+        <field name="domain">[('ticket_stage_id.is_close', '=', False)]</field>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_is_open': True,
+        }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet! 
@@ -1017,6 +1085,18 @@
                 Create tickets to get statistics.
             </p>
         </field>
+    </record>
+    <record id="helpdesk_ticket_action_dashboard_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="16"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_dashboard"/>
+    </record>
+    <record id="helpdesk_ticket_action_dashboard_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_analysis_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_dashboard"/>
     </record>
 
     <menuitem id="helpdesk_ticket_menu_main" name="Tickets"

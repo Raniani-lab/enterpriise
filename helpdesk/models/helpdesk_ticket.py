@@ -7,6 +7,7 @@ from random import randint
 
 from odoo import api, Command, fields, models, tools, _
 from odoo.addons.iap.tools import iap_tools
+from odoo.addons.web.controllers.main import clean_action
 from odoo.osv import expression
 from odoo.exceptions import AccessError
 
@@ -519,11 +520,13 @@ class HelpdeskTicket(models.Model):
     @api.model
     def create_action(self, action_ref, title, search_view_ref):
         action = self.env["ir.actions.actions"]._for_xml_id(action_ref)
+        action = clean_action(action, self.env)
         if title:
             action['display_name'] = title
         if search_view_ref:
             action['search_view_id'] = self.env.ref(search_view_ref).read()[0]
-        action['views'] = [(False, view) for view in action['view_mode'].split(",")]
+        if 'views' not in action:
+            action['views'] = [(False, view) for view in action['view_mode'].split(",")]
 
         return {'action': action}
 

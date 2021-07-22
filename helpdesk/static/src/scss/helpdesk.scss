@@ -123,16 +123,16 @@
                         }
                     }
                     &.o_warning {
-                        background-color: orange;
+                        background-color: lighten($warning, 20%);
                         &:hover {
-                            background-color: darken(orange, 10%);
+                            background-color: darken($warning, 10%);
                         }
                         a {
-                            color: white;
+                            color: black;
                         }
                         &.o_demo{
                             &:hover {
-                                background-color: orange;
+                                background-color: lighten($warning, 20%);
                             }
                         }
                     }
@@ -140,6 +140,12 @@
                         background-color: $o-brand-lightsecondary;
                         &:hover {
                             background-color: darken($o-brand-lightsecondary, 10%);
+                            i {
+                                visibility: visible;
+                            }
+                        }
+                        i {
+                            visibility: hidden;
                         }
                         a {
                             color: black;

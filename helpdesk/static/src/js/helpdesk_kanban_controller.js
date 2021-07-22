@@ -99,6 +99,9 @@ export const HelpdeskKanbanController = KanbanController.extend({
                 args: [[session.uid], values],
             });
             await this.reload();
+            if (e.data.callback) {
+                e.data.callback();
+            }
         }
     },
     /**

@@ -7,7 +7,7 @@ from odoo import fields, models
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
-    helpdesk_target_closed = fields.Float(string='Target Tickets to Close', default=1)
+    helpdesk_target_closed = fields.Integer(string='Target Tickets to Close', default=1)
     helpdesk_target_rating = fields.Float(string='Target Customer Rating', default=100)
     helpdesk_target_success = fields.Float(string='Target Success Rate', default=100)
 

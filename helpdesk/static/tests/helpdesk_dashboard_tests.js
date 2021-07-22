@@ -65,10 +65,10 @@ QUnit.test('dashboard basic rendering', async function(assert) {
             "should render the dashboard");
     assert.strictEqual(kanban.$(".o_helpdesk_content > .o_helpdesk_banner").length, 1,
         "dashboard should be sibling of renderer element");
-    assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), '12.00',
+    assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), '12',
         "should have written correct target");
-    assert.hasAttrValue(kanban.$('.o_target_to_set'), 'value', '12.00',
-        "target's value is 12.00");
+    assert.hasAttrValue(kanban.$('.o_target_to_set'), 'value', '12',
+        "target's value is 12");
     kanban.destroy();
 });
 
@@ -110,7 +110,7 @@ QUnit.test('edit the target', async function(assert) {
     await testUtils.fields.editAndTrigger(kanban.$('.o_helpdesk_banner input'),
         1200, [$.Event('keyup', {which: $.ui.keyCode.ENTER})]); // set the target
 
-    assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), "1200.00",
+    assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), "1200",
         "should have correct target");
     kanban.destroy();
 });

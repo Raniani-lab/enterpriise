@@ -18,6 +18,32 @@
         </field>
     </record>
 
+    <record id="rating_rating_view_today_pivot_inherit_helpdesk" model="ir.ui.view">
+        <field name="name">rating.rating.today.pivot.helpdesk</field>
+        <field name="model">rating.rating</field>
+        <field name="inherit_id" ref="rating.rating_rating_view_pivot"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='rated_partner_id']" position="attributes">
+                <attribute name="name">res_name</attribute>
+            </xpath>
+            <field name="create_date" position="replace"/>
+        </field>
+    </record>
+
+    <record id="rating_rating_view_seven_days_pivot_inherit_helpdesk" model="ir.ui.view">
+        <field name="name">rating.rating.seven.days.pivot.helpdesk</field>
+        <field name="model">rating.rating</field>
+        <field name="inherit_id" ref="rating.rating_rating_view_pivot"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="create_date" type="col" position="replace"/>
+            <xpath expr="//field[@name='rated_partner_id']" position="replace">
+                <field name="create_date" interval="day" type="row"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="rating_rating_view_graph_inherit_helpdesk" model="ir.ui.view">
         <field name="name">rating.rating.graph.helpdesk</field>
         <field name="model">rating.rating</field>
@@ -26,6 +52,30 @@
         <field name="arch" type="xml">
             <xpath expr="//graph" position="attributes">
                 <attribute name="order">desc</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="rating_rating_view_today_graph_inherit_helpdesk" model="ir.ui.view">
+        <field name="name">rating.rating.graph.today.helpdesk</field>
+        <field name="model">rating.rating</field>
+        <field name="inherit_id" ref="rating_rating_view_graph_inherit_helpdesk"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="name">res_name</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="rating_rating_view_seven_days_graph_inherit_helpdesk" model="ir.ui.view">
+        <field name="name">rating.rating.graph.seven.days.helpdesk</field>
+        <field name="model">rating.rating</field>
+        <field name="inherit_id" ref="rating_rating_view_graph_inherit_helpdesk"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="interval">day</attribute>
             </xpath>
         </field>
     </record>

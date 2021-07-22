@@ -32,10 +32,11 @@ export const HelpdeskDashboardWidget = Widget.extend({
      * @param {string} target_name the name of the changed target
      * @param {string} value the new value
      */
-    _notifyTargetChange(target_name, value) {
+    _notifyTargetChange(target_name, value, callback) {
         this.trigger_up('dashboard_edit_target', {
             target_name: target_name,
             target_value: value,
+            callback: callback,
         });
     },
     /**
@@ -99,9 +100,17 @@ export const HelpdeskDashboardWidget = Widget.extend({
         const targetName = target.getAttribute('name');
         const targetValue = target.getAttribute('value');
 
+        if (this.blurProm) {
+            await this.blurProm;
+            this.blurProm = undefined;
+            document.querySelector('[name=' + targetName +']').click();
+            return;
+        }
         const input = document.createElement('input');
         input.type = 'text';
         input.name = targetName;
+        input.className = 'text-center';
+        input.style.padding = '0px';
 
         if (targetValue) {
             input.value = targetValue;
@@ -112,7 +121,11 @@ export const HelpdeskDashboardWidget = Widget.extend({
             }
         });
         input.addEventListener('blur', () => {
-            this._notifyTargetChange(targetName, input.value);
+            this.blurProm = new Promise((resolve, reject) => {
+                this._notifyTargetChange(targetName, input.value, () => {
+                    resolve();
+                });
+            });
         });
         target.replaceWith(input);
         input.focus();

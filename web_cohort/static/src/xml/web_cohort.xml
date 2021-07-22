@@ -128,7 +128,7 @@
                             <t t-set="measure" t-value="props.measures[props.measure]"/>
                             <div class="o_cohort_highlight"
                                 t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
-                                t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
+                                t-attf-style="background-color: rgba(0, 160, 157, {{col.percentage/100.0}}); color: {{col.percentage gt 50 and '#FFFFFF' or 'inherit'}}"
                                 t-att-class="{o_cohort_value: col.value !== '-'}">
                                 <t t-esc="_formatPercentage(col.percentage / 100.0)"/>
                             </div>

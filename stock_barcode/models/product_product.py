@@ -76,5 +76,5 @@ class Product(models.Model):
                 ['package_id', 'owner_id'],
                 limit=1,
             )
-            res['quant'] = quant[0]
+            res['quant'] = quant and quant[0]
         return res

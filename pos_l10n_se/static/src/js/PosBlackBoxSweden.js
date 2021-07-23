@@ -13,7 +13,7 @@ odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
             return !!this.config.iface_sweden_fiscal_data_module;
         },
         disallowLineQuantityChange() {
-            let result = posModelSuper.disallowLineQuantityChange();
+            let result = posModelSuper.disallowLineQuantityChange.bind(this)();
             return this.useBlackBoxSweden() || result;
         },
         push_single_order: async function (order, opts) {

@@ -7,7 +7,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
     const { createView, dom, mock } = require('web.test_utils');
 
     const FieldMany2OneBarcode = require('web_mobile.barcode_fields');
-    const mobile = require('web_mobile.core');
+    const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
 
     const NAME_SEARCH = "name_search";
     const PRODUCT_PRODUCT = 'product.product';
@@ -73,12 +73,9 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             // simulate a mobile environment
             fieldRegistry.add('many2one_barcode', FieldMany2OneBarcode);
-            mock.patch(mobile.methods, {
-                scanBarcode: async () => ({
-                    data: this.data[PRODUCT_PRODUCT].records[0].barcode
-                }),
-                showToast: () => {},
-                vibrate: () => {},
+            mock.patch(BarcodeScanner, {
+                isBarcodeScannerSupported: () => true,
+                scanBarcode: async () => this.data[PRODUCT_PRODUCT].records[0].barcode,
             });
 
             const form = await createView({
@@ -107,7 +104,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             form.destroy();
             fieldRegistry.add('many2one_barcode', FieldMany2One);
-            mock.unpatch(mobile.methods);
+            mock.unpatch(BarcodeScanner);
         });
 
         QUnit.test("web_mobile: barcode button in a mobile environment with multiple results", async function (assert) {
@@ -115,12 +112,9 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             // simulate a mobile environment
             fieldRegistry.add('many2one_barcode', FieldMany2OneBarcode);
-            mock.patch(mobile.methods, {
-                scanBarcode: async () => ({
-                    data: "mask"
-                }),
-                showToast: () => {},
-                vibrate: () => {},
+            mock.patch(BarcodeScanner, {
+                isBarcodeScannerSupported: () => true,
+                scanBarcode: async () => "mask"
             });
 
             const form = await createView({
@@ -157,7 +151,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             form.destroy();
             fieldRegistry.add('many2one_barcode', FieldMany2One);
-            mock.unpatch(mobile.methods);
+            mock.unpatch(BarcodeScanner);
         });
     });
 });

@@ -255,7 +255,7 @@
         <record id="pos_config_view_form_inherit_blackbox_be" model="ir.ui.view">
             <field name="name">pos.config.form.inherit.blackbox.be</field>
             <field name="model">pos.config</field>
-            <field name="inherit_id" ref="pos_restaurant.pos_config_view_form_inherit_restaurant"/>
+            <field name="inherit_id" ref="pos_iot.pos_iot_config_view_form"/>
             <field name="arch" type="xml">
                 <xpath position="inside"
                     expr="//div[@id='posbox_reference']/div/div[hasclass('o_setting_right_pane')]/div[hasclass('content-group')]">
@@ -583,25 +583,6 @@
         </template>
         <template id="user_report_template_z">
             <t t-call="pos_blackbox_be.user_report_template"/>
-        </template>
-
-        <template id="include_vat_notice_report_external_header" inherit_id="web.external_layout_standard">
-            <xpath expr="//div[@name='moto']" position="replace">
-                <div class="col-5 text-center" style="margin-top:20px;">
-                    <strong>THIS IS NOT A VALID VAT TICKET</strong>
-                </div>
-                <div class="col-4 text-right" style="margin-top:20px;" t-field="company.report_header"/>
-            </xpath>
-        </template>
-
-        <template id="include_vat_notice_report_internal" inherit_id="web.internal_layout">
-            <xpath expr="//div[hasclass('row')]" position="before">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <strong>THIS IS NOT A VALID VAT TICKET</strong>
-                    </div>
-                </div>
-            </xpath>
         </template>
 
         <record id="view_pos_pro_forma_filter" model="ir.ui.view">

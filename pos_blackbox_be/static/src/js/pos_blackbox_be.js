@@ -1254,50 +1254,6 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
                     reject("");
                 }
             }
-        },
-
-        request_fdm_identification: function () {
-            var self = this;
-            var fdm = this.pos.iot_device_proxies.fiscal_data_module;
-            return new Promise(function (resolve, reject) {
-                fdm.add_listener(self._check_and_parse_fdm_identification_response.bind(self, resolve, reject));
-                fdm.action({
-                    action: 'request',
-                    high_level_message: self._build_fdm_identification_request().to_string(),
-                    response_size: 59
-                });
-            });
-        },
-
-        _retry_request_fdm_hash_and_sign: function (packet, hide_error) {
-            var self = this;
-
-            if (!hide_error) {
-                self._show_could_not_connect_error();
-            }
-
-            return new Promise(function (resolve, reject) {
-                // rate limit the retries to 1 every 2 sec
-                // because the blackbox freaks out if we send messages too fast
-                setTimeout(function () {
-                    resolve();
-                }, 5000);
-            }).then(function () {
-                return self.request_fdm_hash_and_sign(packet, "hide error");
-            });
-        },
-
-        request_fdm_hash_and_sign: function (packet, hide_error) {
-            var self = this;
-            var fdm = this.pos.iot_device_proxies.fiscal_data_module;
-            return new Promise(function (resolve, reject) {
-                fdm.add_listener(self._check_and_parse_fdm_hash_and_sign_response.bind(self, resolve, reject, hide_error));
-                fdm.action({
-                    action: 'request',
-                    high_level_message: packet.to_string(),
-                    response_size: 109
-                });
-            });
         }
     });
 

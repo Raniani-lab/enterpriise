@@ -8,6 +8,7 @@ from markupsafe import Markup
 
 from odoo import http
 from odoo.http import request
+from odoo.osv.expression import AND
 
 from odoo.addons.point_of_sale.controllers.main import PosController
 
@@ -70,12 +71,19 @@ class GovCertificationController(http.Controller):
 
 class BlackboxPOSController(PosController):
     @http.route()
-    def pos_web(self, **k):
+    def pos_web(self, config_id=False, **k):
         response = super(BlackboxPOSController, self).pos_web(**k)
 
         if response.status_code == 200:
             pos_session = request.env['pos.session']
-            active_pos_session = pos_session.search([('state', '=', 'opened'), ('user_id', '=', request.session.uid)], limit=1)
+            domain = [
+                    ('state', '=', 'opened'),
+                    ('user_id', '=', request.session.uid),
+                    ('rescue', '=', False)
+                    ]
+            if config_id:
+                domain = AND([domain, [('config_id', '=', int(config_id))]])
+            active_pos_session = pos_session.search(domain, limit=1)
             response.qcontext.update({
                 'blackbox': active_pos_session.config_id.blackbox_pos_production_id
             })

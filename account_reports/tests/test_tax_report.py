@@ -5,6 +5,7 @@ from unittest.mock import patch
 from .common import TestAccountReportsCommon
 from odoo import fields, Command
 from odoo.tests import tagged
+from odoo.tests.common import Form
 from odoo.exceptions import UserError
 
 
@@ -293,7 +294,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 tax_tag = tax_report_line.tag_ids.filtered(lambda x: x.tax_negate == tax_negate)
 
                 repartition_vals.append(Command.create({
-                    'account_id': account.id,
+                    'account_id': account.id if account else None,
                     'factor_percent': factor_percent,
                     'use_in_tax_closing': use_in_tax_closing,
                     'tag_ids': tax_tag.ids,
@@ -987,20 +988,10 @@ class TestTaxReport(TestAccountReportsCommon):
 
         self.assertLinesValues(inv_report_lines, expected_columns, expected_lines)
 
-
     def test_tax_report_grid_cash_basis(self):
         """ Cash basis moves create for taxes based on payments are handled differently
         by the report; we want to ensure their sign is managed properly.
         """
-        def register_payment_for_invoice(invoice):
-            """ Fully pay the invoice, so that the cash basis entries are created
-            """
-            payment_method_id = self.inbound_payment_method_line if invoice.is_inbound() else self.outbound_payment_method_line
-            self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
-                'payment_date': invoice.date,
-                'payment_method_line_id': payment_method_id.id,
-            })._create_payments()
-
         # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
         self._run_caba_generic_test(
             #   Name                      Balance
@@ -1009,8 +1000,15 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Sale',                     15),
                 ('Purchase',                 15),
             ],
-            on_invoice_created=register_payment_for_invoice
+            on_invoice_created=self._register_full_payment_for_invoice
         )
+
+    def _register_full_payment_for_invoice(self, invoice):
+        """ Fully pay the invoice, so that the cash basis entries are created
+        """
+        self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+            'payment_date': invoice.date,
+        })._create_payments()
 
     def test_tax_report_grid_cash_basis_refund(self):
         """ Cash basis moves create for taxes based on payments are handled differently
@@ -1076,6 +1074,442 @@ class TestTaxReport(TestAccountReportsCommon):
             on_invoice_created=reconcile_with_misc_pmt
         )
 
+    def test_caba_no_payment(self):
+        """ The cash basis taxes of an unpaid invoice should
+        never impact the report.
+        """
+        self._run_caba_generic_test(
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                ('Sale',                     0),
+                ('Purchase',                 0),
+            ]
+        )
+
+    def test_caba_half_payment(self):
+        """ Paying half the amount of the invoice should report half the
+        base and tax amounts.
+        """
+        def register_half_payment_for_invoice(invoice):
+            """ Fully pay the invoice, so that the cash basis entries are created
+            """
+            payment_method_id = self.inbound_payment_method_line if invoice.is_inbound() else self.outbound_payment_method_line
+            self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+                'amount': invoice.amount_residual / 2,
+                'payment_date': invoice.date,
+                'payment_method_line_id': payment_method_id.id,
+            })._create_payments()
+
+        # 50 (base, invoice) - 50 (base, refund) + 10 (tax, invoice) - 2.5 (25% tax, refund) = 7.5
+        self._run_caba_generic_test(
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                ('Sale',                     7.5),
+                ('Purchase',                 7.5),
+            ],
+            on_invoice_created=register_half_payment_for_invoice
+        )
+
+    def test_caba_mixed_generic_report(self):
+        """ Tests mixing taxes with different tax exigibilities displays correct amounts
+        in the generic tax report.
+        """
+        # Create taxes
+        regular_tax = self.env['account.tax'].create({
+            'name': 'Regular',
+            'amount': 42,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        caba_tax = self.env['account.tax'].create({
+            'name': 'Cash Basis',
+            'amount': 10,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'tax_exigibility': 'on_payment',
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        # Create an invoice using them, and post it
+        invoice = self.init_invoice(
+            'out_invoice',
+            invoice_date='2021-07-01',
+            post=True,
+            amounts=[100],
+            taxes=regular_tax + caba_tax,
+            company=self.company_data['company'],
+        )
+
+        # Check the report only contains non-caba things
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, invoice.date, invoice.date, {'tax_report': 'generic'})
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                         Net              Tax
+            [   0,                             1,               2],
+            [
+                ("Sales",                     '',              42),
+                ("Regular (42.0%)",          100,              42),
+            ],
+        )
+
+        # Pay half of the invoice
+        self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+            'amount': 76,
+            'payment_date': invoice.date,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
+        })._create_payments()
+
+        # Check the report again: half the cash basis should be there
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                         Net              Tax
+            [   0,                             1,               2],
+            [
+                ("Sales",                     '',              47),
+                ("Regular (42.0%)",          100,              42),
+                ("Cash Basis (10.0%)",        50,               5),
+            ],
+        )
+
+        # Pay the rest
+        self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+            'amount': 76,
+            'payment_date': invoice.date,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
+        })._create_payments()
+
+        # Check everything is in the report
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                         Net              Tax
+            [   0,                             1,               2],
+            [
+                ("Sales",                     '',              52),
+                ("Regular (42.0%)",          100,              42),
+                ("Cash Basis (10.0%)",       100,              10),
+            ],
+        )
+
+    def test_tax_report_mixed_exigibility_affect_base_generic_invoice(self):
+        """ Tests mixing caba and non-caba taxes with one of them affecting the base
+        of the other worcs properly on invoices for generic report.
+        """
+        # Create taxes
+        regular_tax = self.env['account.tax'].create({
+            'name': 'Regular',
+            'amount': 42,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'include_base_amount': True,
+            'sequence': 0,
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        caba_tax = self.env['account.tax'].create({
+            'name': 'Cash Basis',
+            'amount': 10,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'tax_exigibility': 'on_payment',
+            'include_base_amount': True,
+            'sequence': 1,
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        # Case 1: on_invoice tax affecting on_payment tax's base
+        self._run_check_suite_mixed_exigibility_affect_base(
+            regular_tax + caba_tax,
+            '2021-07-01',
+            'generic',
+            # Name, Net, Tax
+            [   0,                             1,               2],
+            # Before payment
+            [
+                ("Sales",                     '',              42),
+                ("Regular (42.0%)",          100,              42),
+            ],
+            # After paying 30%
+            [
+                ("Sales",                     '',            46.26),
+                ("Regular (42.0%)",          100,              42),
+                ("Cash Basis (10.0%)",        42.6,             4.26),
+            ],
+            # After full payment
+            [
+                ("Sales",                     '',              56.2),
+                ("Regular (42.0%)",          100,              42),
+                ("Cash Basis (10.0%)",       142,              14.2),
+            ]
+        )
+
+        # Change sequence
+        caba_tax.sequence = 0
+        regular_tax.sequence = 1
+
+        # Case 2: on_payment tax affecting on_invoice tax's base
+        self._run_check_suite_mixed_exigibility_affect_base(
+            regular_tax + caba_tax,
+            '2021-07-02',
+            'generic',
+            #   Name                         Net              Tax
+            [   0,                             1,               2],
+            # Before payment
+            [
+                ("Sales",                     '',              46.2),
+                ("Regular (42.0%)",          110,              46.2),
+            ],
+            # After paying 30%
+            [
+                ("Sales",                     '',              49.2),
+                ("Cash Basis (10.0%)",        30,               3),
+                ("Regular (42.0%)",          110,              46.2),
+            ],
+            # After full payment
+            [
+                ("Sales",                     '',              56.2),
+                ("Cash Basis (10.0%)",       100,              10),
+                ("Regular (42.0%)",          110,              46.2),
+            ]
+        )
+
+    def test_tax_report_mixed_exigibility_affect_base_tags(self):
+        """ Tests mixing caba and non-caba taxes with one of them affecting the base
+        of the other worcs properly on invoices for tax report.
+        """
+        # Create taxes
+        tax_report = self.env['account.tax.report'].create({
+            'name': "Sokovia Accords",
+            'country_id': self.fiscal_country.id
+        })
+
+        regular_tax = self._add_basic_tax_for_report(tax_report, 42, 'sale', self.tax_group_1, [(100, None, True)])
+        caba_tax = self._add_basic_tax_for_report(tax_report, 10, 'sale', self.tax_group_1, [(100, None, True)])
+
+        regular_tax.write({
+            'include_base_amount': True,
+            'sequence': 0,
+        })
+        caba_tax.write({
+            'include_base_amount': True,
+            'tax_exigibility': 'on_payment',
+            'sequence': 1,
+        })
+
+        # Case 1: on_invoice tax affecting on_payment tax's base
+        self._run_check_suite_mixed_exigibility_affect_base(
+            regular_tax + caba_tax,
+            '2021-07-01',
+            tax_report.id,
+            #   Name                                       Balance
+            [   0,                                               1],
+            # Before payment
+            [
+                ('%s-invoice-base' % regular_tax.id,          100),
+                ('%s-invoice-100' % regular_tax.id,            42),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,               0),
+                ('%s-invoice-100' % caba_tax.id,                0),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+            # After paying 30%
+            [
+                ('%s-invoice-base' % regular_tax.id,          100),
+                ('%s-invoice-100' % regular_tax.id,            42),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,              42.6),
+                ('%s-invoice-100' % caba_tax.id,                4.26),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+            # After full payment
+            [
+                ('%s-invoice-base' % regular_tax.id,          100),
+                ('%s-invoice-100' % regular_tax.id,            42),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,             142),
+                ('%s-invoice-100' % caba_tax.id,               14.2),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+        )
+
+        # Change sequence
+        caba_tax.sequence = 0
+        regular_tax.sequence = 1
+
+        # Case 2: on_payment tax affecting on_invoice tax's base
+        self._run_check_suite_mixed_exigibility_affect_base(
+            regular_tax + caba_tax,
+            '2021-07-02',
+            tax_report.id,
+            #   Name                                       Balance
+            [   0,                                               1],
+            # Before payment
+            [
+                ('%s-invoice-base' % regular_tax.id,          110),
+                ('%s-invoice-100' % regular_tax.id,            46.2),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,               0),
+                ('%s-invoice-100' % caba_tax.id,                0),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+            # After paying 30%
+            [
+                ('%s-invoice-base' % regular_tax.id,          110),
+                ('%s-invoice-100' % regular_tax.id,            46.2),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,              30),
+                ('%s-invoice-100' % caba_tax.id,                3),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+            # After full payment
+            [
+                ('%s-invoice-base' % regular_tax.id,          110),
+                ('%s-invoice-100' % regular_tax.id,            46.2),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,             100),
+                ('%s-invoice-100' % caba_tax.id,               10),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+        )
+
+    def _run_check_suite_mixed_exigibility_affect_base(self, taxes, invoice_date, tax_report_option, report_columns, vals_not_paid, vals_30_percent_paid, vals_fully_paid):
+        # Create an invoice using them
+        invoice = self.init_invoice(
+            'out_invoice',
+            invoice_date=invoice_date,
+            post=True,
+            amounts=[100],
+            taxes=taxes,
+            company=self.company_data['company'],
+        )
+
+        # Check the report
+        report = self.env['account.generic.tax.report']
+        report_options = self._init_options(report, invoice.date, invoice.date, {'tax_report': tax_report_option})
+        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_not_paid)
+
+        # Pay 30% of the invoice
+        self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+            'amount': invoice.amount_residual * 0.3,
+            'payment_date': invoice.date,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
+        })._create_payments()
+
+        # Check the report again: 30% of the caba amounts should be there
+        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_30_percent_paid)
+
+        # Pay the rest: total caba amounts should be there
+        self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+            'payment_date': invoice.date,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
+        })._create_payments()
+
+        # Check the report
+        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_fully_paid)
+
+    def test_caba_always_exigible(self):
+        """ Misc operations without payable nor receivable lines must always be exigible,
+        whatever the tax_exigibility configured on their taxes.
+        """
+        tax_report = self.env['account.tax.report'].create({
+            'name': "Laplace's Box",
+            'country_id': self.fiscal_country.id
+        })
+
+        regular_tax = self._add_basic_tax_for_report(tax_report, 42, 'sale', self.tax_group_1, [(100, None, True)])
+        caba_tax = self._add_basic_tax_for_report(tax_report, 10, 'sale', self.tax_group_1, [(100, None, True)])
+
+        regular_tax.write({
+            'include_base_amount': True,
+            'sequence': 0,
+        })
+        caba_tax.write({
+            'tax_exigibility': 'on_payment',
+            'sequence': 1,
+        })
+
+        # Create a misc operation using various combinations of our taxes
+        move_form = Form(self.env['account.move'] \
+                    .with_company(self.company_data['company']) \
+                    .with_context(default_move_type='entry', account_predictive_bills_disable_prediction=True))
+        move_form.date = '2021-08-01'
+        move_form.journal_id = self.company_data['default_journal_misc']
+        for taxes in (caba_tax, regular_tax, caba_tax + regular_tax):
+            with move_form.line_ids.new() as line_form:
+                line_form.name = "Test with %s" % ', '.join(taxes.mapped('name'))
+                line_form.account_id = self.company_data['default_account_revenue']
+                line_form.credit = 100
+                line_form.tax_ids.clear()
+                for tax in taxes:
+                    line_form.tax_ids.add(tax)
+
+        with move_form.line_ids.new() as balancing_line:
+            balancing_line.name = "Balancing line"
+            balancing_line.account_id = self.company_data['default_account_assets']
+            # Rely on automatic value to balance the entry
+            balancing_line.tax_ids.clear()
+
+        move = move_form.save()
+        move.action_post()
+
+        self.assertTrue(move.always_tax_exigible, "A move without payable/receivable line should always be exigible, whatever its taxes.")
+
+        # Check tax report by grid
+        report = self.env['account.generic.tax.report']
+        report_options = self._init_options(report, move.date, move.date, {'tax_report': tax_report.id})
+        self.assertLinesValues(
+            report._get_lines(report_options),
+            #   Name                                      Balance
+            [   0,                                              1],
+            [
+                ('%s-invoice-base' % regular_tax.id,          200),
+                ('%s-invoice-100' % regular_tax.id,            84),
+                ('%s-refund-base' % regular_tax.id,             0),
+                ('%s-refund-100' % regular_tax.id,              0),
+
+                ('%s-invoice-base' % caba_tax.id,             242),
+                ('%s-invoice-100' % caba_tax.id,               24.2),
+                ('%s-refund-base' % caba_tax.id,                0),
+                ('%s-refund-100' % caba_tax.id,                 0),
+            ],
+        )
+
+
+        # Check generic tax report
+        report_options['tax_report'] = 'generic'
+        self.assertLinesValues(
+            report._get_lines(report_options),
+            #   Name                                 Net              Tax
+            [   0,                                     1,               2],
+            [
+                ("Sales",                            '',              108.2),
+                ("%s (42.0%%)" % regular_tax.name,   200,              84),
+                ("%s (10.0%%)" % caba_tax.name,      242,              24.2),
+            ],
+        )
+
     def test_tax_report_grid_caba_negative_inv_line(self):
         """ Tests cash basis taxes work properly in case a line of the invoice
         has been made with a negative quantities and taxes (causing debit and
@@ -1109,15 +1543,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ],
             })
 
-        def register_payment_for_invoice(invoice):
-            """ Fully pay the invoice, so that the cash basis entries are created
-            """
-            payment_method_id = self.inbound_payment_method_line if invoice.is_inbound() else self.outbound_payment_method_line
-            self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
-                'payment_date': invoice.date,
-                'payment_method_line_id': payment_method_id.id,
-            })._create_payments()
-
         # -100 (base, invoice) + 100 (base, refund) - 20 (tax, invoice) + 5 (25% tax, refund) = -15
         self._run_caba_generic_test(
             #   Name                      Balance
@@ -1126,7 +1551,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Sale',                     -15),
                 ('Purchase',                 -15),
             ],
-            on_invoice_created=register_payment_for_invoice,
+            on_invoice_created=self._register_full_payment_for_invoice,
             invoice_generator=neg_line_invoice_generator,
         )
 

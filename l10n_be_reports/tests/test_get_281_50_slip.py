@@ -31,7 +31,6 @@ class TestResPartner(AccountTestInvoicingCommon):
             'debit': 1000.0,
             'credit': 0.0,
             'date_maturity': False,
-            'tax_exigible': True,
         }
         cls.tax_line_vals_1 = {
             'name': cls.tax_purchase_a.name,
@@ -51,7 +50,6 @@ class TestResPartner(AccountTestInvoicingCommon):
             'debit': 150,
             'credit': 0.0,
             'date_maturity': False,
-            'tax_exigible': True,
         }
         cls.term_line_vals_1 = {
             'name': '',
@@ -71,7 +69,6 @@ class TestResPartner(AccountTestInvoicingCommon):
             'debit': 0.0,
             'credit': 1150.0,
             'date_maturity': fields.Date.from_string('2000-05-12'),
-            'tax_exigible': True,
         }
         cls.partner_a.write({
             'street': 'Rue du Jacobet, 9',

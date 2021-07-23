@@ -117,6 +117,12 @@ class AccountGenericTaxReport(models.AbstractModel):
     def _is_grouped_report(self, options):
         return isinstance(options['tax_report'], str) and options['tax_report'].startswith('generic_grouped')
 
+    @api.model
+    def _get_options_domain(self, options):
+        # Overridden to always filter on tax exigibility
+        rslt = super()._get_options_domain(options)
+        return rslt + self.env['account.move.line']._get_tax_exigible_domain()
+
     def _get_country_for_fiscal_position_filter(self, options):
         if self._is_generic_report(options):
             return None
@@ -166,25 +172,36 @@ class AccountGenericTaxReport(models.AbstractModel):
         """
         tax = self.env['account.tax'].browse(tax_id or [])
 
+        if tax.tax_exigibility == 'on_payment':
+            # Cash basis taxes mixed with non-cash basis taxes on the same base
+            # line are a trickier case: the line will be exigible because
+            # of the non-cash basis tax, but we still don't want to show it when
+            # auditing the cash basis tax.
+            additional_base_line_domain = [
+                '|', ('move_id.tax_cash_basis_rec_id', '!=', False),
+                ('move_id.always_tax_exigible', '=', True),
+            ]
+        else:
+            additional_base_line_domain = []
+
         domain = self._get_options_domain(options) + expression.OR((
             # Base lines
             [
                 ('tax_ids', 'in', tax.ids),
                 ('tax_ids.type_tax_use', '=', type_tax_use),
                 ('tax_repartition_line_id', '=', False),
-                ('tax_exigible', '=', True),
+                *additional_base_line_domain,
             ],
             # Tax lines
             [
                 ('group_tax_id', '=', tax.id) if tax.amount_type == 'group' else ('tax_line_id', '=', tax.id),
-                ('tax_exigible', '=', True),
             ],
             # Tax lines acting as base lines
             [
                 ('tax_ids', 'in', (tax.children_tax_ids if tax.amount_type == 'group' else tax).ids),
                 ('tax_ids.type_tax_use', '=', type_tax_use),
                 ('tax_repartition_line_id', '!=', False),
-                ('tax_exigible', '=', True),
+                *additional_base_line_domain,
             ],
         ))
 
@@ -473,7 +490,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         # first, for each tax group, gather the tax entries per tax and account
         self.env['account.tax'].flush(['name', 'tax_group_id'])
         self.env['account.tax.repartition.line'].flush(['use_in_tax_closing'])
-        self.env['account.move.line'].flush(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'tax_exigible', 'company_id', 'display_type'])
+        self.env['account.move.line'].flush(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'company_id', 'display_type'])
         self.env['account.move'].flush(['state'])
         sql = """
             SELECT "account_move_line".tax_line_id as tax_id,
@@ -483,7 +500,6 @@ class AccountGenericTaxReport(models.AbstractModel):
                     COALESCE(SUM("account_move_line".balance), 0) as amount
             FROM account_tax tax, account_tax_repartition_line repartition, %s
             WHERE %s
-              AND "account_move_line".tax_exigible
               AND tax.id = "account_move_line".tax_line_id
               AND repartition.id = "account_move_line".tax_repartition_line_id
               AND repartition.use_in_tax_closing
@@ -801,11 +817,9 @@ class AccountGenericTaxReport(models.AbstractModel):
                 ON account_tax_report_line_tags_rel.account_tax_report_line_id = report_line.id
              WHERE """ + where_clause + """
                AND report_line.report_id = %s
-               AND account_move_line.tax_exigible
                AND account_journal.id = account_move_line.journal_id
              GROUP BY account_tax_report_line_tags_rel.account_tax_report_line_id
         """
-
         params = where_params + [options['tax_report']]
         self.env.cr.execute(sql, params)
         for account_tax_report_line_id, balance in self.env.cr.fetchall():
@@ -816,6 +830,7 @@ class AccountGenericTaxReport(models.AbstractModel):
     @api.model
     def _get_lines(self, options, line_id=None):
         self.flush()
+
         if self._is_generic_layout(options):
             return self._get_lines_default_tax_report(options)
 

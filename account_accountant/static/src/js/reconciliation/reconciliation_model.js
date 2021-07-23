@@ -966,7 +966,6 @@ var StatementModel = BasicModel.extend({
                                 '__focus': false
                             });
 
-                            prop.tax_exigible = tax.tax_exigibility === 'on_payment' ? true : undefined;
                             prop.amount = tax.base;
                             prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
                             prop.invalid = !self._isValid(prop);
@@ -1380,7 +1379,6 @@ var StatementModel = BasicModel.extend({
         var result = {
             name : prop.name,
             balance : amount,
-            tax_exigible: prop.tax_exigible,
             analytic_tag_ids: [[6, null, _.pluck(prop.analytic_tag_ids, 'id')]]
         };
         if (!isNaN(prop.id)) {

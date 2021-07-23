@@ -69,7 +69,7 @@ class ReportAccountFinancialReport(models.Model):
         help="The menu item generated for this report, or None if there isn't any."
     )
     parent_id = fields.Many2one('ir.ui.menu', related="generated_menu_id.parent_id", readonly=False)
-    tax_report = fields.Boolean('Tax Report', help="Set to True to automatically filter out journal items that have the boolean field 'tax_exigible' set to False")
+    tax_report = fields.Boolean('Tax Report', help="Set to True to automatically filter out journal items that are not tax exigible.")
     applicable_filters_ids = fields.Many2many('ir.filters', domain="[('model_id', '=', 'account.move.line')]",
                                               help='Filters that can be used to filter and group lines in this report. This uses saved filters on journal items.')
     country_id = fields.Many2one(string="Country", comodel_name='res.country', help="The country this report is intended to.")
@@ -1084,7 +1084,8 @@ class AccountFinancialReportLine(models.Model):
         # Take care of the tax exigibility.
         # /!\ Still needed as there are still some custom tax reports in localizations.
         if financial_report.tax_report:
-            domain.append(('tax_exigible', '=', True))
+            domain += self.env['account.move.line']._get_tax_exigible_domain()
+
         return domain
 
     # -------------------------------------------------------------------------

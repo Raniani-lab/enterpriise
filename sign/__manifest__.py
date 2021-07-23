@@ -33,6 +33,7 @@ Let your customers follow the signature process easily.
         'views/sign_pdf_iframe_templates.xml',
         'views/terms_views.xml',
         'report/sign_log_reports.xml',
+        'report/green_saving_reports.xml'
     ],
     'demo': [
         'data/sign_demo.xml',
@@ -63,6 +64,9 @@ Let your customers follow the signature process easily.
             'sign/static/src/css/iframe.css',
             'web/static/src/legacy/scss/secondary_variables.scss',
             'sign/static/src/scss/iframe.scss',
+        ],
+        'sign.assets_green_report': [
+            'sign/report/green_saving_reports.scss'
         ],
         'web.assets_common': [
             'sign/static/src/js/sign_common.js',

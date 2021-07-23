@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>    
+    <template id="green_savings_report">
+        <t t-call="web.basic_layout">
+            <t t-call="web.html_container"/>
+            <t t-call-assets="sign.assets_green_report" t-js="false"/>
+            <t t-set="green_report_page_class" t-value="'green-savings-page' if report_type == 'html' else 'green-savings-page-pdf'"/>
+            <t t-set="green_report_card_class" t-value="'green-savings-card' if report_type == 'html' else 'green-savings-card-pdf'"/>
+            
+            <t t-if="report_type == 'pdf'">
+                <h3>Green Savings Report</h3>
+            </t>
+
+            <section t-attf-class="{{green_report_page_class}}">
+                <article id="water" t-attf-class="{{green_report_card_class}}">
+                    <h3><i class="fa fa-recycle" aria-hidden="true"></i> Paper Savings</h3>
+                    <h4><t t-out="sheets_sum"/> sheets of paper saved</h4>
+                </article>
+
+                <article id="water" t-attf-class="{{green_report_card_class}}">
+                    <h3><i class="fa fa-tint" aria-hidden="true"></i> Water</h3>
+                    <h4><t t-out="water"/> L of water saved</h4>
+                    <t t-if="showers > 1">
+                        <p>like <t t-out="showers"/> showers</p>
+                    </t>
+                    <t t-elif="showers == 1">
+                        <p>like <t t-out="showers"/> shower</p>
+                    </t>
+                </article>
+
+                <article id="wood" t-attf-class="{{green_report_card_class}}">
+                    <h3><i class="fa fa-tree" aria-hidden="true"></i> Wood</h3>
+                    <h4><t t-out="wood"/> kg of wood saved</h4>
+                    <t t-if="trees > 1">
+                        <p>like <t t-out="trees"/> trees</p>
+                    </t>
+                    <t t-elif="trees == 1">
+                        <p>like <t t-out="trees"/> tree</p>
+                    </t>
+                </article>
+
+                <article id="carbon" t-attf-class="{{green_report_card_class}}">
+                    <h3><i class="fa fa-car" aria-hidden="true"></i> Carbon</h3>
+                    <h4><t t-out="carbon"/> kg of carbon sparred</h4>
+                    <t t-if="gas_fuel > 1">
+                        <p>like <t t-out="gas_fuel"/> liters of car fuel</p>
+                    </t>
+                    <t t-elif="gas_fuel == 1">
+                        <p>like <t t-out="gas_fuel"/> liter of car fuel</p>
+                    </t>
+                </article>
+
+                <article id="waste" t-attf-class="{{green_report_card_class}}">
+                    <h3><i class="fa fa-trash" aria-hidden="true"></i> Waste</h3>
+                    <h4><t t-out="waste"/> kg of waste sparred</h4>
+                    <t t-if="cans > 1">
+                        <p>like <t t-out="cans"/> cans</p>
+                    </t>
+                    <t t-elif="cans == 1">
+                        <p>like <t t-out="cans"/> can</p>
+                    </t>
+                </article>
+
+                <article id="energy" t-attf-class="{{green_report_card_class}}">
+                    <h3><i class="fa fa-bolt" aria-hidden="true"></i> Energy</h3>
+                    <h4><t t-out="energy"/> kWh of energy sparred</h4>
+                    <t t-if="computer_hours > 1">
+                        <p>like <t t-out="computer_hours"/> hours using the computer</p>
+                    </t>
+                    <t t-elif="computer_hours == 1">
+                        <p>like <t t-out="computer_hours"/> hour using the computer</p>
+                    </t>
+                </article>
+            </section>
+        </t>
+
+        <button class="btn btn-sm float-right" name='modal_green_savings' data-toggle="modal" data-target=".modal_green_savings" aria-label="Green Savings Summary">
+            How are these results calculated?
+        </button>
+
+        <div role="dialog" class="modal_green_savings modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>How do we calculate?</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times" aria-hidden="true"/>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            <li>The computation is based on the website <a href="https://c.environmentalpaper.org/">https://c.environmentalpaper.org/</a></li>
+                            <li>The total of sheets you saved is based on: the number of sent sign requests x number of sheets in the document x (number of contacts who need to sign + number of followers if the sign request is signed) = total of pages. We assume that one page weights 0.005 kilograms.</li>
+                        </ul>
+                        <h3>I've got a total weight, and now?</h3>
+                        <ol>
+                            <li>Based on <a href="https://c.environmentalpaper.org/">https://c.environmentalpaper.org/</a> we've got a list of consumption for 1000 kg of paper usage.</li>
+                            <li>We display to you a ratio based on the saved weight versus 1000 kg of paper usage.</li>
+                            <li>
+                            For 1000kg of paper usage, with 10% of recycled paper, environmental savings are based on <a href="https://c.environmentalpaper.org/">https://c.environmentalpaper.org/</a> and:
+                                <ol>
+                                    <li>Wood Use: 4 US Short Tons = 4*907.18474 = 3628.73 kg</li>
+                                    <li>Total Energy: 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh</li>
+                                    <li>Gas: 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg</li>
+                                    <li>Water: 23,400 Gallons = 23,400*3.78541 = 88578.59 L</li>
+                                    <li>Solid Waste: 1290 Pounds = 1290*0.4536 = 585.14 kg</li>
+                                </ol>
+                            </li>
+                        </ol>
+                        <h3>What about those conversions I see?</h3>
+                            Based on various websites, here are our comparisons
+                            <ul>
+                                <li>A shower uses approximately 65 L of water</li>
+                                <li>To produce 1000 kg of wood, we have to cut 12 trees</li>
+                                <li>One liter of gas fuel will produce 8.9 kg of CO²</li>
+                                <li>One can weights 15 g</li>
+                                <li>An average computer will consume 750 Wh</li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

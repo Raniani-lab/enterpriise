@@ -23,6 +23,7 @@ class SignTemplate(models.Model):
 
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
     name = fields.Char(related='attachment_id.name', readonly=False)
+    num_pages = fields.Integer('Number of pages', compute="_compute_num_pages", readonly=True, store=True)
     datas = fields.Binary(related='attachment_id.datas', readonly=False)
     sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
@@ -59,6 +60,20 @@ class SignTemplate(models.Model):
             raise AccessError(_("Do not have access to create templates"))
 
         return super(SignTemplate, self).create(vals)
+
+    @api.depends('attachment_id')
+    def _compute_num_pages(self):
+        for record in self:
+            record.num_pages = record._get_number_of_pages(record.attachment_id.id)
+
+    @api.model
+    def _get_number_of_pages(self, attachment_id):
+        try:
+            attachment = self.env['ir.attachment'].browse(attachment_id)
+            file_pdf = PdfFileReader(io.BytesIO(base64.b64decode(attachment.datas)), strict=False, overwriteWarnings=False)
+            return file_pdf.getNumPages()
+        except Exception:
+            return 0
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):

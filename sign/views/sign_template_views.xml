@@ -333,14 +333,28 @@
         <field name="context">{'module' : 'sign', 'bin_size': False}</field>
     </record>
 
+    <record id="sign_report_green_savings_action" model="ir.actions.report">
+        <field name="name">Ecological Savings by using Electronical Signatures</field>
+        <field name="model">sign.template</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">sign.green_savings_report</field>
+        <field name="report_file">sign.green_savings_report</field>
+        <field name="multi" eval="True"/>
+        <field name="paperformat_id" ref="base.paperformat_batch_deposit"/>
+        <field name="binding_model_id" ref="model_sign_template"/>
+        <field name="binding_type">report</field>
+    </record>
+
     <!-- Menus -->
     <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.png" groups="sign.group_sign_employee" sequence="180"/>
     <menuitem id="sign.sign_template_menu" name="Dashboard" parent="sign.menu_document" action="sign_template_action" sequence="10"/>
     <menuitem id="sign_request_menu" name="Documents" parent="menu_document" action="sign_request_action" groups="sign.group_sign_employee" sequence="20"/>
+    <menuitem id="sign_reports" name="Reports" parent="menu_document" sequence="99"/>
     <menuitem id="menu_sign_configuration" sequence="100" name="Configuration" parent="menu_document"/>
     <!-- Menus -->
     <menuitem id="sign.sign_item_type_menu" name="Field Types" parent="sign.menu_sign_configuration" action="sign_item_type_action" groups="base.group_no_one"/>
     <menuitem id="sign.sign_item_settings_menu" name="Settings" parent="sign.menu_sign_configuration" action="sign_settings_action" groups="sign.group_sign_manager"/>
     <menuitem id="sign.sign_item_role_menu" name="Roles" parent="sign.menu_sign_configuration" action="sign_item_role_action" groups="sign.group_sign_manager"/>
     <menuitem id="sign_request_item_menu" name="Signature Requests Items" parent="menu_sign_configuration" action="sign_request_item_action" groups="base.group_no_one" sequence="30"/>
+    <menuitem id="sign_report_green_savings" name="Green Savings" parent="sign_reports" action="sign.sign_report_green_savings_action"/>
 </odoo>

@@ -1,0 +1,33 @@
+.green-savings-page {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(20em, 1fr) );
+}
+.green-savings-card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    border-radius: .5em;
+    text-decoration: none;
+    background: white;
+    margin: 1em;
+    padding: 2.75em 2.5em;
+    box-shadow: 0 1.5em 2.5em -.5em rgba(black, .1);
+}
+
+.green-savings-page-pdf {
+    text-align:center;
+}
+.green-savings-card-pdf {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background: white;
+    margin: 1em;
+    padding: 2.75em 2.5em;
+    border: 1px black solid;
+    width: 350px;
+    overflow: hidden;
+    height: 200px;
+}

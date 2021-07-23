@@ -10,9 +10,9 @@
     height: 20px;
 
     // Optimized version to avoid blurred icons on HiDPI screens
-    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 196dpi) {
         background-image: url('/web_studio/static/src/img/ui/studio_icons@2x.png');
-        background-size: 20px 440px;
+        background-size: 20px auto;
     }
 }
 

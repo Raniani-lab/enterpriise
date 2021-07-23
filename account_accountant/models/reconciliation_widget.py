@@ -580,22 +580,22 @@ class AccountReconciliation(models.AbstractModel):
     def _get_query_reconciliation_widget_liquidity_lines(self, statement_line, domain=[]):
         journal = statement_line.journal_id
 
-        account_ids = []
+        account_ids = set()
 
-        inbound_account_ids = journal._get_journal_inbound_outstanding_payment_accounts() - journal.default_account_id
-        outbound_account_ids = journal._get_journal_outbound_outstanding_payment_accounts() - journal.default_account_id
+        inbound_accounts = journal._get_journal_inbound_outstanding_payment_accounts() - journal.default_account_id
+        outbound_accounts = journal._get_journal_outbound_outstanding_payment_accounts() - journal.default_account_id
 
         # Matching on debit account.
-        if inbound_account_ids:
-            account_ids.append(tuple(inbound_account_ids.ids))
+        for account in inbound_accounts:
+            account_ids.add(account.id)
 
         # Matching on credit account.
-        if outbound_account_ids:
-            account_ids.append(tuple(outbound_account_ids.ids))
+        for account in outbound_accounts:
+            account_ids.add(account.id)
 
         domain = domain + [
             ('journal_id.type', 'in', ('bank', 'cash')),
-            ('account_id', 'in', account_ids),
+            ('account_id', 'in', list(account_ids)),
         ]
 
         tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
@@ -657,24 +657,24 @@ class AccountReconciliation(models.AbstractModel):
         '''
         journal = statement_line.journal_id
 
-        account_ids = []
+        account_ids = set()
 
-        inbound_account_ids = journal._get_journal_inbound_outstanding_payment_accounts() - journal.default_account_id
-        outbound_account_ids = journal._get_journal_outbound_outstanding_payment_accounts() - journal.default_account_id
+        inbound_accounts = journal._get_journal_inbound_outstanding_payment_accounts() - journal.default_account_id
+        outbound_accounts = journal._get_journal_outbound_outstanding_payment_accounts() - journal.default_account_id
 
         # Matching on debit account.
-        if inbound_account_ids:
-            account_ids.append(tuple(inbound_account_ids.ids))
+        for account in inbound_accounts:
+            account_ids.add(account.id)
 
         # Matching on credit account.
-        if outbound_account_ids:
-            account_ids.append(tuple(outbound_account_ids.ids))
+        for account in outbound_accounts:
+            account_ids.add(account.id)
 
         domain = domain + [
             ('account_id.internal_type', 'not in', ('receivable', 'payable')),
             '|',
             ('journal_id.type', 'not in', ('bank', 'cash')),
-            ('account_id', 'not in', account_ids),
+            ('account_id', 'not in', list(account_ids)),
         ]
         tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
 

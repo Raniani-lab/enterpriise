@@ -32,7 +32,6 @@
         <attribute name="class" value="o_manual_statement" />
     </t>
     <t t-jquery=".o_view_noreconciliation p" t-operation="replace"></t>
-    <t t-jquery=".o_filter_input_wrapper" t-operation="replace"></t>
     <t t-jquery=".o_view_noreconciliation" t-operation="append">
         <p><b>Good Job!</b> There is nothing to reconcile.</p>
         <p>All invoices and payments have been matched, your accounts' balances are clean.</p>

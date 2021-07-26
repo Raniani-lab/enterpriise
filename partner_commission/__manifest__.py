@@ -25,4 +25,5 @@ This module allows to configure commissions for resellers.
         'views/sale_order_views.xml',
         'views/sale_subscription_views.xml',
     ],
+    'license': 'OEEL-1',
 }

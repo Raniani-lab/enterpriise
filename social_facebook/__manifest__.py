@@ -29,5 +29,6 @@
         'web.assets_qweb': [
             'social_facebook/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

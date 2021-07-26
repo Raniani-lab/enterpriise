@@ -41,5 +41,6 @@ Allows use of stock application to manage rentals inventory
         'web.assets_qweb': [
             'sale_stock_renting/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

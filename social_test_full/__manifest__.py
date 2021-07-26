@@ -17,4 +17,5 @@ and social-related sub modules. It will test interactions between all those modu
     ],
     'installable': True,
     'application': False,
+    'license': 'OEEL-1',
 }

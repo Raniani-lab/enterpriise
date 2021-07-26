@@ -19,4 +19,5 @@ Contains advanced features for purchase management
     'installable': True,
     'application': False,
     'auto_install': ['purchase'],
+    'license': 'OEEL-1',
 }

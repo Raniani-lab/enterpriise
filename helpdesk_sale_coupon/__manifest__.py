@@ -16,4 +16,5 @@ Generate Coupons from Helpdesks tickets
         'views/helpdesk_views.xml',
     ],
     'demo': ['data/helpdesk_sale_coupon_demo.xml'],
+    'license': 'OEEL-1',
 }

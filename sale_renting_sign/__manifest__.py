@@ -22,4 +22,5 @@
         "data/demo.xml",
     ],
     "auto_install": False,
+    'license': 'OEEL-1',
 }

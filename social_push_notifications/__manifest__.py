@@ -35,5 +35,6 @@
             'social_push_notifications/static/src/scss/social_push_notifications.scss',
             'social_push_notifications/static/src/js/push_preview.js',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

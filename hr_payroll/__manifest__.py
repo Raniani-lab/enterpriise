@@ -57,5 +57,6 @@
         'web.assets_qweb': [
             'hr_payroll/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

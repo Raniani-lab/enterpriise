@@ -41,5 +41,6 @@ Create Sales order with timesheets and products from tasks
         'web.assets_qweb': [
             'industry_fsm_sale/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

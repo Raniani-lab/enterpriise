@@ -32,5 +32,6 @@ Create Reports for Field Service
             'industry_fsm/static/src/js/tours/industry_fsm_tour.js',
             'industry_fsm_report/static/src/js/tours/industry_fsm_report.js',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

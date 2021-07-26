@@ -15,4 +15,5 @@ Manage Product returns from helpdesk tickets
         'views/helpdesk_views.xml',
     ],
     'demo': ['data/helpdesk_stock_demo.xml'],
+    'license': 'OEEL-1',
 }

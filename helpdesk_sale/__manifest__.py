@@ -14,4 +14,5 @@ Manage the after sale of the products from helpdesk tickets.
         'views/helpdesk_views.xml',
     ],
     'demo': ['data/helpdesk_sale_demo.xml'],
+    'license': 'OEEL-1',
 }

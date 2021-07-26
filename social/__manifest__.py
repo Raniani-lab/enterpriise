@@ -53,5 +53,6 @@
         'web.assets_qweb': [
             'social/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

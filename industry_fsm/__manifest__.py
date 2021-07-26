@@ -39,5 +39,6 @@ Adds the following options:
         'web.assets_backend': [
             'industry_fsm/static/src/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

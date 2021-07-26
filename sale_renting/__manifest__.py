@@ -42,5 +42,6 @@
         'web.assets_backend': [
             'sale_renting/static/src/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

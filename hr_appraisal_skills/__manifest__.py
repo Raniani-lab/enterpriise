@@ -32,5 +32,6 @@
         'web.assets_qweb': [
             'hr_appraisal_skills/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

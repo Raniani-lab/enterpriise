@@ -16,4 +16,5 @@ Add a dynamic report about contracts and employees.
     ],
     'installable': True,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -37,5 +37,6 @@
         'web.assets_qweb': [
             'stock_barcode_picking_batch/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

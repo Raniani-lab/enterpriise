@@ -29,4 +29,5 @@
         ],
     },
     'installable': True,
+    'license': 'OEEL-1',
 }

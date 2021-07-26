@@ -24,5 +24,6 @@ OFX and QIF imports are available in Enterprise version.""",
         'web.assets_backend': [
             'account_bank_statement_import/static/src/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

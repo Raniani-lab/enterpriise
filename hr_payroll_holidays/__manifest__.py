@@ -27,5 +27,6 @@
         'web.assets_qweb': [
             'hr_payroll_holidays/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

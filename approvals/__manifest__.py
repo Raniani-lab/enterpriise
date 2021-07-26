@@ -60,5 +60,6 @@ creates next activities for the related approvers.
             'approvals/static/src/components/approval/approval.xml',
             'approvals/static/src/xml/*.xml',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

@@ -64,4 +64,5 @@ This code allows to generate the DTE document for Chilean invoicing.
     'installable': True,
     'auto_install': True,
     'application': False,
+    'license': 'OEEL-1',
 }

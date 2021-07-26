@@ -17,4 +17,5 @@ tests independently to functional aspects of other models. """,
     ],
     'installable': True,
     'application': False,
+    'license': 'OEEL-1',
 }

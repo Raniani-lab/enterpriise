@@ -37,4 +37,5 @@ Indian Payroll Salary Rules.
         'views/report_hr_yearly_salary_detail_template.xml',
         'views/report_payroll_advice_template.xml',
     ],
+    'license': 'OEEL-1',
 }

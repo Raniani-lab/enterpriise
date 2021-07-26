@@ -27,5 +27,6 @@
         'web.assets_frontend': [
             'website_event_social/static/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

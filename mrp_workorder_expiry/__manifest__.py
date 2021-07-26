@@ -21,5 +21,6 @@ Technical module.
         'web.assets_backend': [
             'mrp_workorder_expiry/static/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

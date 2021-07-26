@@ -47,5 +47,6 @@
         'web.assets_qweb': [
             'hr_referral/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

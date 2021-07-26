@@ -12,4 +12,5 @@
         'views/hr_payroll_account_sepa_views.xml',
         'wizard/hr_payroll_account_sepa_wizard_views.xml',
     ],
+    'license': 'OEEL-1',
 }

@@ -16,4 +16,5 @@
     'web.assets_backend': [
         'helpdesk_mail_plugin/static/src/to_translate/**/*',
     ],
+    'license': 'OEEL-1',
 }

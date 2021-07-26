@@ -16,5 +16,6 @@ Demo data for account automatic transfers module
         'data/data.xml'
     ],
     'application': False,
-    'auto_install': True
+    'auto_install': True,
+    'license': 'OEEL-1',
 }

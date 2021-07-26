@@ -21,4 +21,5 @@ This application allows you to integrate time off in payslips.
     'installable': True,
     'application': False,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -25,4 +25,5 @@
     ],
     'test': ['../account/test/account_minimal_test.xml'],
     'installable': True,
+    'license': 'OEEL-1',
 }

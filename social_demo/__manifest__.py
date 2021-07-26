@@ -23,5 +23,6 @@
         'web.assets_backend': [
             'social_demo/static/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

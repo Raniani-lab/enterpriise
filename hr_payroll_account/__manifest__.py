@@ -17,4 +17,5 @@ Generic Payroll system Integrated with Accounting.
         'report/hr_contract_history_report_views.xml'],
     'demo': ['data/hr_payroll_account_demo.xml'],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

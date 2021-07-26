@@ -21,4 +21,5 @@ or generate a ticket from a business inquiry
     ],
     'depends': ['crm', 'helpdesk'],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

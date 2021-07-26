@@ -14,4 +14,5 @@
         'data/ir_model_data.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -36,4 +36,5 @@ The report uses tax tags ``Service`` and ``Tax Withheld`` in order to find adequ
     ],
     'installable': True,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

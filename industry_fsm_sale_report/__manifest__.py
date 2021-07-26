@@ -17,4 +17,5 @@
         'data/industry_fsm_sale_report_demo.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

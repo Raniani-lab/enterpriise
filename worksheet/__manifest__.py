@@ -21,5 +21,6 @@ Create customizable worksheet
         'web.assets_backend': [
             'worksheet/static/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

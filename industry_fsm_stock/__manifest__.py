@@ -16,4 +16,5 @@ Validate stock moves for Field Service
         'wizard/fsm_stock_tracking_views.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

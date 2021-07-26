@@ -32,5 +32,6 @@
         'web.assets_qweb': [
             'social_youtube/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

@@ -16,4 +16,5 @@ Add a dynamic report about recruitment.
     ],
     'installable': True,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

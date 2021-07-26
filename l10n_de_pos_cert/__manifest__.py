@@ -44,4 +44,5 @@ Install this if you are using the Point of Sale app in Germany.
             'l10n_de_pos_cert/static/src/xml/**/*',
         ],
     },
+    'license': 'OEEL-1',
 }

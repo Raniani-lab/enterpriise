@@ -15,4 +15,5 @@ Repair Products from helpdesk tickets
         'views/repair_views.xml',
     ],
     'demo': ['data/helpdesk_repair_demo.xml'],
+    'license': 'OEEL-1',
 }

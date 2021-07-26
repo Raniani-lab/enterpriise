@@ -39,5 +39,6 @@
         'web.assets_qweb': [
             'account_consolidation/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

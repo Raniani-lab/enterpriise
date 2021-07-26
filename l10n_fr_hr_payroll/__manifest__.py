@@ -35,4 +35,5 @@ TODO:
         'report/report_l10n_fr_fiche_paye.xml',
         'report/l10n_fr_hr_payroll_report.xml',
     ],
+    'license': 'OEEL-1',
 }

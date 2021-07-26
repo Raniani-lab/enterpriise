@@ -20,5 +20,6 @@
         'web.assets_backend': [
             'hr_work_entry_contract_enterprise/static/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

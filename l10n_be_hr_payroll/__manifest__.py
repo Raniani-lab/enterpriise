@@ -104,5 +104,6 @@ Belgian Payroll Rules.
         'web.assets_qweb': [
             'l10n_be_hr_payroll/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

@@ -12,4 +12,5 @@ Allows to use tracking numbers for products sold on Amazon
     'depends': ['sale_amazon', 'delivery'],
     'application': False,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

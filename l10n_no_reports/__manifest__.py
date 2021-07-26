@@ -18,4 +18,5 @@ Accounting reports for Norway
     'demo': [],
     'auto_install': True,
     'installable': True,
+    'license': 'OEEL-1',
 }

@@ -13,4 +13,5 @@ This module allows you to schedule social posts from the event communication."""
         'security/ir.model.access.csv',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

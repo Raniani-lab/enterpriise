@@ -30,4 +30,5 @@ in order to test the whole mail codebase. """,
     ],
     'installable': True,
     'application': False,
+    'license': 'OEEL-1',
 }

@@ -29,5 +29,6 @@
         'web.assets_qweb': [
             'data_cleaning/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

@@ -21,4 +21,5 @@ Allow to generate lead from Scheduled Appointments through your Website
     ],
     'application': False,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

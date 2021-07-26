@@ -28,4 +28,5 @@
         'security/ir.model.access.csv',
         'views/views.xml',
     ],
+    'license': 'OEEL-1',
 }

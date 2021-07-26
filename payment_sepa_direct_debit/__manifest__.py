@@ -21,5 +21,6 @@
             'payment_sepa_direct_debit/static/src/js/payment_form.js',
             'payment_sepa_direct_debit/static/src/js/signature_form.js',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

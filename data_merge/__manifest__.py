@@ -32,5 +32,6 @@
         'web.assets_qweb': [
             'data_merge/static/src/xml/**/*',
         ],
-    }
+    },
+    'license': 'OEEL-1',
 }

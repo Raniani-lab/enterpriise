@@ -101,4 +101,5 @@ For Development information go to http://www.afip.gob.ar/fe/documentos/WSBFEv1%2
     'installable': True,
     'auto_install': False,
     'application': False,
+    'license': 'OEEL-1',
 }

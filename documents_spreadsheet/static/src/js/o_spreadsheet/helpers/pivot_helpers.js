@@ -174,7 +174,7 @@ export function sanitizePivot(payload) {
     measures = payload.measures.map((measure) => {
         const fieldName = measure.split(":")[0];
         const fieldDesc = payload.fields[fieldName];
-        const operator = (fieldDesc.group_operator && fieldDesc.group_operator.toLowerCase()) || "sum";
+        const operator = (fieldDesc.group_operator && fieldDesc.group_operator.toLowerCase()) || (fieldDesc.type === "many2one" ? "count_distinct" : "sum");
         return {
             field: measure,
             operator,

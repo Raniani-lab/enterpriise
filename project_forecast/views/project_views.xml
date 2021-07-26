@@ -79,10 +79,8 @@
         <field name="priority" eval="15"/>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='rating_count']" position="after">
+            <xpath expr="//button[@name='%(project.project_task_action_sub_task)d']" position="before">
                 <field name="allow_forecast" invisible="1"/>
-            </xpath>
-            <xpath expr="//span[@id='end_rating_buttons']" position="after">
                 <button class="oe_stat_button" name="action_get_project_forecast_by_user"
                     type="object" icon="fa-tasks" context="{'default_task_id': id, 'default_project_id': project_id}" help="Forecasts" attrs="{'invisible': [('allow_forecast', '=', False)]}">
                     <div class="o_stat_info">

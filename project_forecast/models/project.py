@@ -100,6 +100,7 @@ class Task(models.Model):
         first_slot = self.env['planning.slot'].search([('start_datetime', '>=', datetime.datetime.now()), ('task_id', 'in', allowed_tasks.ids)], limit=1, order="start_datetime")
         action_context = {
             'group_by': ['task_id', 'resource_id'],
+            'search_default_task_id': self.id,
         }
         if first_slot:
             action_context.update({'initialDate': first_slot.start_datetime})
@@ -108,7 +109,6 @@ class Task(models.Model):
             if min_date and min_date > datetime.datetime.now():
                 action_context.update({'initialDate': min_date})
         action['context'] = action_context
-        action['domain'] = [('task_id', 'in', allowed_tasks.ids)]
         return action
 
     # -------------------------------------------

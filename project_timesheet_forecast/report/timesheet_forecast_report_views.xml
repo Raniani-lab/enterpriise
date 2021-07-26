@@ -98,6 +98,7 @@
 
     <menuitem id="menu_project_timesheet_forecast_report_analysis"
         name="Timesheets and Planning Analysis"
+        sequence="15"
         parent="project.menu_project_report"
         action="project_timesheet_forecast_report_action"/>
 

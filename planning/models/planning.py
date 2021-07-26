@@ -457,7 +457,7 @@ class Planning(models.Model):
         work_interval = company.resource_calendar_id._work_intervals_batch(start, end)[False]
         intervals = [(date_start, date_stop) for date_start, date_stop, attendance in work_interval]
         start_datetime, end_datetime = (start, end)
-        if intervals:  # Then we want the first working day and keep the end hours of this day
+        if intervals and (end_datetime-start_datetime).days == 0: # Then we want the first working day and keep the end hours of this day
             start_datetime = intervals[0][0]
             end_datetime = [stop for start, stop in intervals if stop.date() == start_datetime.date()][-1]
 

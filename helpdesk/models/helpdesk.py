@@ -7,6 +7,7 @@ import datetime
 from dateutil import relativedelta
 from collections import defaultdict
 from odoo import api, Command, fields, models, _
+from odoo.tools import float_round
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
 from odoo.addons.web.controllers.main import clean_action
 from odoo.osv import expression
@@ -99,13 +100,17 @@ class HelpdeskTeam(models.Model):
         'Public Rating', compute='_compute_portal_show_rating', store=True,
         readonly=False)
     use_sla = fields.Boolean('SLA Policies')
-    upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
         default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="Working hours used to determine the deadline of SLA Policies.")
     open_ticket_count = fields.Integer("# Open Tickets", compute='_compute_open_ticket_count')
     sla_policy_count = fields.Integer("# SLA Policy", compute='_compute_sla_policy_count')
+    ticket_closed = fields.Integer(string='Ticket Closed', compute='_compute_ticket_closed')
+    success_rate = fields.Float(string='Success Rate', compute='_compute_success_rate', groups="helpdesk.group_use_sla")
+    customer_satisfaction = fields.Float(string='Customer Satisfaction', compute='_compute_customer_satisfaction')
+    urgent_ticket = fields.Integer(string='# Urgent Ticket', compute='_compute_urgent_ticket')
+    sla_failed = fields.Integer(string='Failed SLA Ticket', compute='_compute_sla_failed')
     # auto close ticket
     auto_close_ticket = fields.Boolean('Automatic Closing')
     auto_close_day = fields.Integer('Inactive Period(days)',
@@ -142,21 +147,92 @@ class HelpdeskTeam(models.Model):
     def _compute_has_external_mail_server(self):
         self.has_external_mail_server = self.env['ir.config_parameter'].sudo().get_param('base_setup.default_external_email_server')
 
-    def _compute_upcoming_sla_fail_tickets(self):
+    def _compute_unassigned_tickets(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
+            ('user_id', '=', False),
             ('team_id', 'in', self.ids),
-            ('sla_deadline', '!=', False),
-            ('sla_deadline', '<=', fields.Datetime.to_string((datetime.date.today() + relativedelta.relativedelta(days=1)))),
+            ('stage_id.is_close', '=', False),
+            ('stage_id.fold', '=', False),
         ], ['team_id'], ['team_id'])
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
         for team in self:
-            team.upcoming_sla_fail_tickets = mapped_data.get(team.id, 0)
+            team.unassigned_tickets = mapped_data.get(team.id, 0)
 
-    def _compute_unassigned_tickets(self):
-        ticket_data = self.env['helpdesk.ticket'].read_group([('user_id', '=', False), ('team_id', 'in', self.ids), ('stage_id.is_close', '!=', True)], ['team_id'], ['team_id'])
+    def _compute_ticket_closed(self):
+        dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.min)
+        ticket_data = self.env['helpdesk.ticket'].read_group([
+            ('team_id', 'in', self.ids),
+            '|',
+            ('stage_id.is_close', '=', True),
+            ('stage_id.fold', '=', True),
+            ('close_date', '>=', dt)],
+            ['team_id'], ['team_id'])
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
         for team in self:
-            team.unassigned_tickets = mapped_data.get(team.id, 0)
+            team.ticket_closed = mapped_data.get(team.id, 0)
+
+    def _compute_success_rate(self):
+        dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.min)
+        tickets_read = self.env['helpdesk.ticket'].search_read([
+            ('team_id.use_sla', '=', True),
+            '|',
+            ('stage_id.is_close', '=', True),
+            ('stage_id.fold', '=', True),
+            ('close_date', '>=', dt)],
+            ['team_id', 'sla_deadline', 'sla_reached_late']
+        )
+        is_failed_tickets_per_team = defaultdict(list)  # key: helpdesk_team_id and value: list of bool (True if ticket is failed)
+        today = fields.Datetime.now()
+        for res in tickets_read:
+            deadline = res.get('sla_deadline', False)
+            is_failed_tickets_per_team[res['team_id'][0]].append(
+                (deadline and today > deadline) or res.get('sla_reached_late', False)
+            )
+        for team in self:
+            is_failed_tickets = is_failed_tickets_per_team.get(team.id, [])
+            success_count = len([ticket for ticket in is_failed_tickets if not ticket])
+            total_count = len(is_failed_tickets)
+            team.success_rate = float_round(success_count * 100 / total_count, 2) if total_count else 0.0
+
+    def _compute_customer_satisfaction(self):
+        dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.max)
+        tickets_read_group = self.env['helpdesk.ticket'].read_group(
+            [('team_id.use_rating', '=', True), '|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True), ('close_date', '>=', dt)],
+            ['team_id', 'ids:array_agg(id)'],
+            ['team_id'],
+        )
+        tickets_per_team = {
+            res['team_id'][0]: self.env['helpdesk.ticket'].browse(res['ids'])
+            for res in tickets_read_group
+        }
+        for team in self:
+            tickets = tickets_per_team.get(team.id, self.env['helpdesk.ticket'])
+            activity = tickets.rating_get_grades()
+            total_rating = self._compute_activity_avg(activity)
+            total_activity_values = sum(activity.values())
+            team.customer_satisfaction = float_round((total_rating / total_activity_values if total_activity_values else 0), 2) * 20
+
+    def _compute_urgent_ticket(self):
+        ticket_data = self.env['helpdesk.ticket'].read_group([
+            ('team_id', 'in', self.ids),
+            ('stage_id.is_close', '=', False),
+            ('stage_id.fold', "=", False),
+            ('priority', '=', 3)],
+            ['team_id'], ['team_id'])
+        mapped_data = {data['team_id'][0]: data['team_id_count'] for data in ticket_data}
+        for team in self:
+            team.urgent_ticket = mapped_data.get(team.id, 0)
+
+    def _compute_sla_failed(self):
+        ticket_data = self.env['helpdesk.ticket'].read_group([
+            ('team_id', 'in', self.ids),
+            ('stage_id.is_close', '=', False),
+            ('stage_id.fold', '=', False),
+            ('sla_fail', '=', True)],
+            ['team_id'], ['team_id'])
+        mapped_data = {data['team_id'][0]: data['team_id_count'] for data in ticket_data}
+        for team in self:
+            team.sla_failed = mapped_data.get(team.id, 0)
 
     def _compute_open_ticket_count(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
@@ -442,6 +518,93 @@ class HelpdeskTeam(models.Model):
     def action_view_ticket(self):
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_team")
         action['display_name'] = self.name
+        return action
+
+    def _get_action_view_ticket_params(self, is_ticket_closed=False):
+        """ Get common params for the actions
+
+            :param is_ticket_closed: Boolean if True, then we want to see the tickets closed in last 7 days
+            :returns dict containing the params to update into the action.
+        """
+        is_ticket_closed_domain_operator = '|' if is_ticket_closed else '&'
+        domain = [
+            is_ticket_closed_domain_operator,
+            ('stage_id.is_close', '=', is_ticket_closed),
+            ('stage_id.fold', '=', is_ticket_closed),
+            ('team_id', 'in', self.ids),
+        ]
+        context = {
+            'search_default_is_open': not is_ticket_closed,
+            'default_team_id': self.id,
+        }
+        view_mode = 'tree,kanban,activity'
+        if is_ticket_closed:
+            domain = expression.AND([domain, [
+                ('close_date', '>=', datetime.date.today() - datetime.timedelta(days=6)),
+            ]])
+            context.update(search_default_closed_last_7days=True)
+        return {
+            'domain': domain,
+            'context': context,
+            'view_mode': view_mode,
+        }
+
+    def action_view_closed_ticket(self):
+        action = self.action_view_ticket()
+        action.update(self._get_action_view_ticket_params(True))
+        return action
+
+    def action_view_success_rate(self):
+        action = self.action_view_ticket()
+        action_params = self._get_action_view_ticket_params(True)
+        action.update(
+            domain=expression.AND([
+                action_params['domain'],
+                [('sla_fail', "!=", True), ('team_id', 'in', self.ids)],
+            ]),
+            context={
+                **action_params['context'],
+                'search_default_sla_success': True,
+            },
+            view_mode=action_params['view_mode'],
+        )
+        return action
+
+    def action_view_customer_satisfaction(self):
+        action = self._action_view_rating(period='seven_days')
+        action.update({
+            'context': dict(self.env.context, search_default_my_ratings=True, search_default_last_7days=True),
+        })
+        return action
+
+    def action_view_open_ticket(self):
+        action = self.action_view_ticket()
+        action_params = self._get_action_view_ticket_params()
+        action.update({
+            'context': action_params['context'],
+            'domain': action_params['domain'],
+        })
+        return action
+
+    def action_view_urgent(self):
+        action = self.action_view_ticket()
+        action_params = self._get_action_view_ticket_params()
+        action.update({
+            'context': action_params['context'],
+            'domain': expression.AND([action_params['domain'], [('priority', '=', 3)]]),
+        })
+        return action
+
+    def action_view_sla_failed(self):
+        action = self.action_view_ticket()
+        action_params = self._get_action_view_ticket_params()
+        action.update({
+            'context': {
+                **action_params['context'],
+                'search_default_sla_failed': True,
+            },
+            'domain': expression.AND(action_params['domain'], [('sla_fail', '=', True)]),
+        })
         return action
 
     @api.model

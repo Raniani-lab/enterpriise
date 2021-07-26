@@ -21,6 +21,7 @@ class HelpdeskSLAReport(models.Model):
     ticket_deadline = fields.Datetime("Ticket Deadline", readonly=True)
     ticket_failed = fields.Boolean("Ticket Failed", group_operator="bool_or", readonly=True)
     ticket_closed = fields.Boolean("Ticket Closed", readonly=True)
+    ticket_fold = fields.Boolean("Ticket Fold", readonly=True)
     ticket_close_hours = fields.Integer("Time to close (hours)", group_operator="avg", readonly=True)
     ticket_open_hours = fields.Integer("Open Time (hours)", group_operator="avg", readonly=True)
     ticket_assignation_hours = fields.Integer("Time to first assignment (hours)", group_operator="avg", readonly=True)
@@ -56,6 +57,7 @@ class HelpdeskSLAReport(models.Model):
                    T.assign_hours AS ticket_assignation_hours,
                    T.close_date AS close_date,
                    STA.is_close AS ticket_closed,
+                   STA.fold AS ticket_fold,
                    ST.sla_id,
                    SLA.stage_id AS sla_stage_id,
                    ST.deadline AS sla_deadline,

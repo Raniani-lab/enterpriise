@@ -446,12 +446,14 @@
                 <separator/>
                 <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction"/>
                 <separator/>
-                <filter string="Open" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
-                <filter string="Closed" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
+                <filter string="Open" domain="[('stage_id.is_close', '=', False), ('stage_id.fold', '=', False)]" name="is_open"/>
+                <filter string="Closed" domain="['|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True)]" name="is_close"/>
                 <separator/>
                 <filter string="Rated Tickets" domain="[('rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
+                <separator/>
+                <filter string="Closed in Last 7 days" name="closed_last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
                 <separator/>
                 <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
@@ -736,20 +738,6 @@
         </field>
     </record>
 
-    <record id="action_upcoming_sla_fail_all_tickets" model="ir.actions.act_window">
-        <field name="name">Tickets</field>
-        <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">kanban,list,form,pivot,graph</field>
-        <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
-        <field name="context">{'search_default_upcoming_sla_fail': True}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Congratulations! 
-                </p><p>You completed all your tickets on time.
-            </p>
-        </field>
-    </record>
-
     <!-- Action for dashboard button -->
     <record id="helpdesk_my_ticket_action_no_create" model="ir.actions.act_window">
         <field name="name">Tickets</field>
@@ -852,7 +840,7 @@
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_mode">kanban,list,form,activity</field>
-        <field name="context">{'search_default_team_id': active_id, 'search_default_unassigned': True}</field>
+        <field name="context">{'search_default_unassigned': True, 'search_default_is_open': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

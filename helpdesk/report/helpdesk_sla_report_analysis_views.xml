@@ -52,8 +52,8 @@
                 <filter string="SLA in Progress" domain="[('sla_status', '=', 'ongoing')]" name="sla_inprogress" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Failed" domain="[('sla_status', '=', 'failed')]" name="sla_failed" groups="helpdesk.group_use_sla"/>
                 <separator/>
-                <filter string="Open" domain="[('ticket_closed', '=', False)]" name="is_open"/>
-                <filter string="Closed" domain="[('ticket_closed', '=', True)]" name="is_close"/>
+                <filter string="Open" domain="[('ticket_closed', '=', False), ('ticket_fold', '=', False)]" name="is_open"/>
+                <filter string="Closed" domain="['|', ('ticket_closed', '=', True), ('ticket_fold', '=', True)]" name="is_close"/>
                 <separator/>
                 <filter string="Rated Tickets" domain="[('ticket_id.rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
                 <separator/>

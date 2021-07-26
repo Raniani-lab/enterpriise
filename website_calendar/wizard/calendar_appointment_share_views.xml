@@ -34,7 +34,7 @@
             </xpath>
             <xpath expr="//footer" position="replace">
                 <footer>
-                    <button string="Save button" class="btn btn-primary o_share_link_save"/>
+                    <button string="Insert link" class="btn btn-primary o_share_link_save"/>
                     <button string="Discard" class="btn btn-secondary o_share_link_discard"/>
                 </footer>
             </xpath>

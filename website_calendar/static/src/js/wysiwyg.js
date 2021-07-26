@@ -28,7 +28,7 @@ Wysiwyg.include({
                             default_appointment_type_ids: [],
                             default_employee_ids: [],
                         },
-                        title: "Add appointment link",
+                        title: "Insert Appointment Link",
                         view_id: id,
                         readonly: false,
                     });

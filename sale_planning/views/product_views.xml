@@ -7,11 +7,11 @@
         <field name="inherit_id" ref="sale.product_template_form_view_invoice_policy"/>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='service_type']" position="after">
-                <label for="planning_enabled"/>
-                <div>
-                    <field name="planning_enabled" attrs="{'invisible': [('type', '!=', 'service')]}" class="oe_inline"/>
-                    <span attrs="{'invisible': [('planning_enabled', '=', False)]}" class="oe_inline">
+            <xpath expr="//field[@name='invoice_policy']" position="after">
+                <label for="planning_enabled" attrs="{'invisible': [('type', '!=', 'service')]}"/>
+                <div attrs="{'invisible': [('type', '!=', 'service')]}">
+                    <field name="planning_enabled" class="oe_inline"/>
+                    <span attrs="{'invisible': [('planning_enabled', '=', False)]}" class="oe_inline mr-2">
                         as
                     </span>
                     <field name="planning_role_id"

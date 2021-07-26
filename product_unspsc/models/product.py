@@ -9,14 +9,14 @@ from odoo.osv import expression
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    unspsc_code_id = fields.Many2one('product.unspsc.code', 'UNSPSC Product Category', domain=[('applies_to', '=', 'product')],
+    unspsc_code_id = fields.Many2one('product.unspsc.code', 'UNSPSC Category', domain=[('applies_to', '=', 'product')],
         help='The UNSPSC code related to this product.  Used for edi in Colombia, Peru and Mexico')
 
 
 class UomUom(models.Model):
     _inherit = 'uom.uom'
 
-    unspsc_code_id = fields.Many2one('product.unspsc.code', 'UNSPSC Product Category',
+    unspsc_code_id = fields.Many2one('product.unspsc.code', 'UNSPSC Category',
                                                 domain=[('applies_to', '=', 'uom')],
                                                 help='The UNSPSC code related to this UoM. ')
 

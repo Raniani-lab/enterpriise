@@ -21,12 +21,12 @@
                 <attribute name="attrs">{'invisible': [('sale_ok', '=', False), ('recurring_invoice', '=', False)]}</attribute>
                 <attribute name="class">page_sales</attribute>
             </page>
-            <xpath expr="//group[@name='invoicing']" position="after">
-                <group name="subscription" string="Subscriptions">
-                    <field name="recurring_invoice" />
-                    <field name="subscription_template_id" class="field_sub_template_id" attrs="{'invisible': [('recurring_invoice', '=', False)], 'required': [('recurring_invoice','=', True)]}"/>
-                </group>
-            </xpath>
+            <div name="options" position="inside">
+                <span class="d-inline-block">
+                    <field name="recurring_invoice"/>
+                    <label for="recurring_invoice" string="Recurring"/>
+                </span>
+            </div>
         </field>
     </record>
 

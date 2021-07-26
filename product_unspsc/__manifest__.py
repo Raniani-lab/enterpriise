@@ -9,7 +9,7 @@
         Countries like Colombia, Peru and Mexico need to be able to use the
         UNSPSC code for their products and uoms.
     """,
-    'depends': ['product'],
+    'depends': ['account'],
     'data': ['views/product_views.xml',
              'security/ir.model.access.csv'],
     "post_init_hook": "post_init_hook",

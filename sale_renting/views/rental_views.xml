@@ -43,12 +43,12 @@
             <field name="activity_state" position="after">
                 <field name="rental_pricing_ids"/>
             </field>
-            <field name="lst_price" position="replace">
+            <field name="list_price" position="replace">
                 <t t-if="record.rental_pricing_ids.value">
                   <field name="display_price"/>
                 </t>
                 <t t-else="">
-                    <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                    <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
                 </t>
             </field>
         </field>

@@ -13,7 +13,7 @@
             <field name="categ_id" ref="product.product_category_3"/>
             <field name="standard_price">14</field>
             <field name="list_price">20</field>
-            <field name="type">service</field>
+            <field name="detailed_type">service</field>
             <field name="planning_enabled" eval="True"/>
             <field name="planning_role_id" ref="planning_role_housekeeper"/>
             <field name="uom_id" ref="uom.product_uom_unit"/>
@@ -25,7 +25,7 @@
             <field name="categ_id" ref="product.product_category_3"/>
             <field name="standard_price">150</field>
             <field name="list_price">200</field>
-            <field name="type">service</field>
+            <field name="detailed_type">service</field>
             <field name="planning_enabled" eval="True"/>
             <field name="planning_role_id" ref="planning.planning_role_bartender"/>
             <field name="uom_id" ref="uom.product_uom_unit"/>

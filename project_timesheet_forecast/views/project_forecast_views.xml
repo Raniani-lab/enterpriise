@@ -12,7 +12,37 @@
             <xpath expr="//field[@name='allocated_hours']" position="after">
                 <field name="allow_timesheets" invisible="1"/>
                 <field name="allocation_type" invisible="1"/>
-                <field name="effective_hours" widget="float_time" attrs="{'invisible': ['|', '|', '|', '|', ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False), ('resource_type', '!=', 'user')]}" decoration-danger="forecast_hours &gt; 0 and effective_hours > forecast_hours"/>
+                <field name="timesheet_ids" invisible="1"/>
+                <field name="can_open_timesheets" invisible="1"/>
+                <field name="encode_uom_in_days" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='is_assigned_to_me']" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <!-- Clickable -->
+                    <button type="object" name="action_open_timesheets" icon="fa-clock-o"
+                        attrs="{'invisible': ['|', '|', '|', '|', ('can_open_timesheets', '=', False), ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="effective_hours" widget="timesheet_uom"/>
+                                <span attrs="{'invisible': [('encode_uom_in_days', '=', True)]}"> Hours</span>
+                                <span attrs="{'invisible': [('encode_uom_in_days', '=', False)]}"> Days</span>
+                            </span>
+                            <span class="o_stat_text">Recorded</span>
+                        </div>
+                    </button>
+                    <!-- Non Clickable -->
+                    <button icon="fa-clock-o" disabled="1" class="o_debounce_disabled"
+                        attrs="{'invisible': ['|', '|', '|', '|', ('can_open_timesheets', '=', True), ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="effective_hours" widget="timesheet_uom"/>
+                                <span attrs="{'invisible': [('encode_uom_in_days', '=', True)]}"> Hours</span>
+                                <span attrs="{'invisible': [('encode_uom_in_days', '=', False)]}"> Days</span>
+                            </span>
+                            <span class="o_stat_text">Recorded</span>
+                        </div>
+                    </button>
+                </div>
             </xpath>
         </field>
     </record>

@@ -32,8 +32,9 @@ class TestPlanningLeaves(TestCommon):
 
         self.assertNotEqual(slot_1.leave_warning, False,
                             "employee is on leave, should have a warning")
-        self.assertTrue(slot_1.leave_warning.startswith(
-            "patrick is on time off on that day"))
+        # The warning should display the whole concerned leave period
+        self.assertEqual(slot_1.leave_warning,
+                         "patrick is on time off from the 01/01/2020 at 09:00:00 to the 01/01/2020 at 18:00:00.")
 
         self.assertEqual(slot_2.leave_warning, False,
                          "employee is not on leave, no warning")
@@ -61,8 +62,9 @@ class TestPlanningLeaves(TestCommon):
 
         self.assertNotEqual(slot_1.leave_warning, False,
                             "employee is on leave, should have a warning")
-        self.assertTrue(slot_1.leave_warning.startswith(
-            "patrick is on time off on that day"), "single day slot, should show 'on that day'")
+        # The warning should display the whole concerned leave period
+        self.assertEqual(slot_1.leave_warning,
+                         "patrick is on time off from the 01/06/2020 to the 01/07/2020.")
 
         slot_2 = self.env['planning.slot'].create({
             'resource_id': self.res_patrick.id,

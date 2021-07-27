@@ -7,7 +7,7 @@
     'category': 'Hidden',
     'sequence': 50,
     'summary': 'Compare timesheets and plannings',
-    'depends': ['hr_timesheet', 'project_forecast'],
+    'depends': ['timesheet_grid', 'project_forecast'],
     'description': """
 Compare timesheets and plannings
 ================================

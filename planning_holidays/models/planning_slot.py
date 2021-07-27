@@ -41,17 +41,24 @@ class Slot(models.Model):
 
         slot_min_datetime = min(self.mapped('start_datetime'))
         slot_max_datetime = max(self.mapped('end_datetime'))
-        employee_ids = self.mapped('employee_id').ids
 
-        leaves_query = self.env['hr.leave'].search([
-            ('employee_id', 'in', employee_ids),
-            ('state', '=', 'validate'),
+        # Validated hr.leave create a resource.calendar.leaves
+        calendar_leaves = self.env['resource.calendar.leaves'].search([
+            ('time_type', '=', 'leave'),
+            '|', ('company_id', 'in', self.employee_id.company_id.ids),
+                 ('company_id', '=', False),
+            '|', ('resource_id', 'in', self.employee_id.resource_id.ids),
+                 ('resource_id', '=', False),
             ('date_from', '<=', slot_max_datetime),
-            ('date_to', '>=', slot_min_datetime)
+            ('date_to', '>=', slot_min_datetime),
         ], order='date_from')
-        leaves = defaultdict(lambda: self.env['hr.leave'])
-        for leave in leaves_query:
-            leaves[leave.employee_id.id] |= leave
+        leaves = defaultdict(list)
+        for leave in calendar_leaves:
+            for employee in self.employee_id:
+                if (not leave.company_id or leave.company_id == employee.company_id) and\
+                   (not leave.resource_id or leave.resource_id == employee.resource_id) and\
+                   (not leave.calendar_id or leave.calendar_id == employee.resource_calendar_id):
+                    leaves[employee.id].append(leave)
 
         for slot in assigned_slots:
             warning = False
@@ -61,46 +68,26 @@ class Slot(models.Model):
                 periods = self._group_leaves(leaves.get(slot.employee_id.id), slot.employee_id, slot.start_datetime, slot.end_datetime)
 
                 for period in periods:
-                    dfrom = max(period.get('from'), slot.start_datetime)
-                    dto = min(period.get('to'), slot.end_datetime)
-                    same_day_leave = dfrom.date() == dto.date()
+                    dfrom = period['from']
+                    dto = period['to']
                     prefix = ''
                     if period != periods[0]:
                         if period == periods[-1]:
                             prefix = _(' and')
                         else:
                             prefix = ','
-
-                    if period.get('show_hours'):
-                        if same_day_leave:
-                            date = ''
-                            if single_day_slot:
-                                date = _(' on that day')
-                            elif period == periods[0]:
-                                date = _(' on the %(date)s', date=format_date(self.env, period.get('from')))
-
-                            period_leaves += _('%(prefix)s%(date)s from the %(dfrom)s to the %(dto)s',
-                                               prefix=prefix,
-                                               date=date,
-                                               dfrom=format_time(self.env, localize(period.get('from'))),
-                                               dto=format_time(self.env, localize(period.get('to'))))
-                        else:
-                            period_leaves += _('%(prefix)s from the %(dfrom)s %(tfrom)s to the %(dto)s %(tto)s',
-                                               prefix=prefix,
-                                               dfrom=format_date(self.env, dfrom),
-                                               tfrom=format_time(self.env, localize(dfrom)),
-                                               dto=format_date(self.env, dto),
-                                               tto=format_time(self.env, localize(dto)))
+                    if period.get('show_hours', False):
+                        period_leaves += _('%(prefix)s from the %(dfrom_date)s at %(dfrom)s to the %(dto_date)s at %(dto)s',
+                                            prefix=prefix,
+                                            dfrom_date=format_date(self.env, localize(dfrom)),
+                                            dfrom=format_time(self.env, localize(dfrom)),
+                                            dto_date=format_date(self.env, localize(dto)),
+                                            dto=format_time(self.env, localize(dto)))
                     else:
-                        if same_day_leave:
-                            period_leaves += _('%(prefix)s on %(dfrom)s',
-                                               prefix=prefix,
-                                               dfrom=_('that day') if single_day_slot else format_date(self.env, period.get('from')))
-                        else:
-                            period_leaves += _('%(prefix)s from the %(dfrom)s to the %(dto)s',
-                                               prefix=prefix,
-                                               dfrom=format_date(self.env, period.get('from')),
-                                               dto=format_date(self.env, period.get('to')))
+                        period_leaves += _('%(prefix)s from the %(dfrom)s to the %(dto)s',
+                                            prefix=prefix,
+                                            dfrom=format_date(self.env, localize(dfrom)),
+                                            dto=format_date(self.env, localize(dto)))
 
                 warning = _('%(employee)s is on time off%(period_leaves)s.',
                             employee=slot.employee_id.name, period_leaves=period_leaves)
@@ -157,9 +144,17 @@ class Slot(models.Model):
             if leave.date_from > end_datetime or leave.date_to < start_datetime:
                 continue
 
+            # Can handle both hr.leave and resource.calendar.leaves
+            number_of_days = 0
+            if issubclass(type(leave), self.pool['hr.leave']):
+                number_of_days = leave.number_of_days
+            else:
+                dt_delta = (leave.date_to - leave.date_from)
+                number_of_days = dt_delta.days + ((dt_delta.seconds / 3600) / 24)
+
             if not periods or has_working_hours(periods[-1]['from'], leave.date_to):
-                periods.append({'from': leave.date_from, 'to': leave.date_to, 'show_hours': leave.number_of_days % 1 != 0})
+                periods.append({'from': leave.date_from, 'to': leave.date_to, 'show_hours': number_of_days <= 1})
             else:
                 periods[-1]['to'] = leave.date_to
-                periods[-1]['show_hours'] = periods[-1].get('show_hours') or leave.number_of_days % 1 != 0
+                periods[-1]['show_hours'] = periods[-1].get('show_hours') or number_of_days <= 1
         return periods

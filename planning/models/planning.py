@@ -46,6 +46,7 @@ class Planning(models.Model):
     resource_type = fields.Selection(related='resource_id.resource_type')
     employee_id = fields.Many2one('hr.employee', 'Employee', compute='_compute_employee_id', store=True)
     work_email = fields.Char("Work Email", related='employee_id.work_email')
+    work_address_id = fields.Many2one(related='employee_id.address_id', store=True)
     department_id = fields.Many2one(related='employee_id.department_id', store=True)
     user_id = fields.Many2one('res.users', string="User", related='resource_id.user_id', store=True, readonly=True)
     manager_id = fields.Many2one(related='employee_id.parent_id')
@@ -258,7 +259,27 @@ class Planning(models.Model):
                 slot.overlap_slot_count = len(slot_result)
                 slot.conflicting_slot_ids = [(6, 0, slot_result)]
         else:
-            self.overlap_slot_count = 0
+            # Allow fetching overlap without id if there is only one record
+            # This is to allow displaying the warning when creating a new record without having an ID yet
+            if len(self) == 1 and self.employee_id and self.start_datetime and self.end_datetime:
+                query = """
+                    SELECT ARRAY_AGG(s.id) as conflict_ids
+                      FROM planning_slot s
+                     WHERE s.employee_id = %s
+                       AND s.start_datetime < %s
+                       AND s.end_datetime > %s
+                       AND s.allocated_percentage + %s > 100
+                """
+                self.env.cr.execute(query, (self.employee_id.id, self.end_datetime,
+                                            self.start_datetime, self.allocated_percentage))
+                overlaps = self.env.cr.dictfetchall()
+                if overlaps[0]['conflict_ids']:
+                    self.overlap_slot_count = len(overlaps[0]['conflict_ids'])
+                    self.conflicting_slot_ids = [(6, 0, overlaps[0]['conflict_ids'])]
+                else:
+                    self.overlap_slot_count = False
+            else:
+                self.overlap_slot_count = False
 
     @api.model
     def _search_overlap_slot_count(self, operator, value):
@@ -1085,7 +1106,7 @@ class PlanningRole(models.Model):
         return randint(1, 11)
 
     active = fields.Boolean('Active', default=True)
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Name', required=True, translate=True)
     color = fields.Integer("Color", default=_get_default_color)
     employee_ids = fields.Many2many('hr.employee', string='Resources')
     sequence = fields.Integer()

@@ -86,9 +86,10 @@ odoo.define('planning.PlanningGanttRenderer', function (require) {
 
                 // Start & End Times
                 if (!spanAccrossDays && ['week', 'month'].includes(scale)) {
+                    const allocHoursElem = (Math.floor(pill.allocated_hours) + (pill.allocated_hours % 1.0) * 0.6);
                     labelElements.push(
                         localStartDateTime.format('LT'),
-                        localEndDateTime.format('LT')
+                        localEndDateTime.format('LT') + ' (' + (allocHoursElem % 1 != 0 ? allocHoursElem.toFixed(2).replace('.', 'h') : allocHoursElem + 'h') + ')'
                     );
                 }
 

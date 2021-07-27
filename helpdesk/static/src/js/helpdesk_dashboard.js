@@ -239,7 +239,13 @@ var HelpdeskDashboardController = KanbanController.extend({
             return this._rpc({model: this.modelName, method: action_name})
                 .then(function (data) {
                     if (data) {
-                    return self.do_action(data);
+                        // Rename 'tree' to 'list' in the views
+                        for (let view of data.views) {
+                            if (view[1] === 'tree') {
+                                view[1] = 'list';
+                            }
+                        }
+                        return self.do_action(data);
                     }
                 });
         }

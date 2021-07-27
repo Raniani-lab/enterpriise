@@ -34,7 +34,7 @@ class AccountPaymentRegister(models.TransientModel):
         for wizard in self:
             if wizard.can_edit_wizard:
                 batches = wizard._get_batches()
-                wizard.l10n_mx_edi_payment_method_id = batches[0]['key_values']['l10n_mx_edi_payment_method_id']
+                wizard.l10n_mx_edi_payment_method_id = batches[0]['payment_values']['l10n_mx_edi_payment_method_id']
             else:
                 wizard.l10n_mx_edi_payment_method_id = False
 
@@ -51,5 +51,5 @@ class AccountPaymentRegister(models.TransientModel):
     def _create_payment_vals_from_batch(self, batch_result):
         # OVERRIDE
         payment_vals = super()._create_payment_vals_from_batch(batch_result)
-        payment_vals['l10n_mx_edi_payment_method_id'] = batch_result['key_values']['l10n_mx_edi_payment_method_id']
+        payment_vals['l10n_mx_edi_payment_method_id'] = batch_result['payment_values']['l10n_mx_edi_payment_method_id']
         return payment_vals

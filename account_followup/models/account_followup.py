@@ -57,7 +57,7 @@ Best Regards,
             if line.description:
                 try:
                     line.description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': '', 'amount_due': ''}
-                except KeyError:
+                except (TypeError, ValueError, KeyError):
                     raise Warning(_('Your description is invalid, use the right legend or %% if you want to use the percent character.'))
 
     @api.constrains('email_subject')
@@ -75,7 +75,7 @@ Best Regards,
             if line.sms_description:
                 try:
                     line.sms_description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': '', 'amount_due': ''}
-                except KeyError:
+                except (TypeError, ValueError, KeyError):
                     raise Warning(_('Your sms description is invalid, use the right legend or %% if you want to use the percent character.'))
 
     @api.onchange('auto_execute')

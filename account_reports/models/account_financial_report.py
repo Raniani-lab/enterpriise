@@ -17,7 +17,7 @@ class ReportAccountFinancialReport(models.Model):
     _inherit = "account.report"
 
     filter_all_entries = False
-    filter_hierarchy = True
+    filter_hierarchy = False
 
     @property
     def filter_date(self):

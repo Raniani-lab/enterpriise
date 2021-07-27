@@ -948,6 +948,7 @@ class SaleSubscription(models.Model):
                 sub_ids = [s['id'] for s in sub_data if s['company_id'][0] == company_id]
                 subs = self.with_company(company_id).with_context(company_id=company_id).browse(sub_ids)
                 Invoice = self.env['account.move'].with_context(move_type='out_invoice', company_id=company_id).with_company(company_id)
+                subs_order_lines = self.env['sale.order.line'].search([('subscription_id', 'in', sub_ids)])
                 for subscription in subs:
                     subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
                     if automatic and auto_commit:
@@ -1059,6 +1060,10 @@ class SaleSubscription(models.Model):
                                             line.analytic_account_id = subscription.analytic_account_id
                                         if subscription.tag_ids:
                                             line.analytic_tag_ids = subscription.tag_ids
+                                sub_so = subs_order_lines.filtered(lambda ol: ol.subscription_id.id == subscription.id).order_id
+                                sub_so_renewal = sub_so.filtered(lambda so: so.subscription_management == 'renew')
+                                reference_so = max(sub_so_renewal, key=lambda so: so.date_order, default=False) or min(sub_so, key=lambda so: so.date_order, default=False)
+                                new_invoice.ref = reference_so.client_order_ref if reference_so else False
                                 new_invoice.message_post_with_view(
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},

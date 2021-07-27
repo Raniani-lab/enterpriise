@@ -22,6 +22,7 @@ cp $odoo_path/addons/web/static/src/legacy/js/core/bus.js extension/web/static/s
 cp $odoo_path/addons/web/static/src/legacy/js/core/class.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/concurrency.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/context.js extension/web/static/src/js/core
+cp $odoo_path/addons/web/static/src/legacy/js/core/cookie_utils.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/local_storage.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/mixins.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/legacy/js/core/py_utils.js extension/web/static/src/js/core

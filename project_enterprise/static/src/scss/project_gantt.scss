@@ -1,10 +1,10 @@
-.o_view_sample_data .o_gantt_view_container .o_sample_data_disabled {
+.o_view_sample_data .o_project_gantt .o_gantt_view_container .o_sample_data_disabled {
     opacity: 1;
     pointer-events: auto;
     user-select: auto;
-} 
+}
 
-.o_gantt_view_container .o_sample_data_disabled {
+.o_project_gantt .o_gantt_view_container .o_sample_data_disabled {
     > *:first-child:not(.o_gantt_today) {
         pointer-events: auto;
     }

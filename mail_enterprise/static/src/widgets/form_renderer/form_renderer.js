@@ -226,7 +226,7 @@ FormRenderer.include({
         if (config.device.size_class < config.device.SIZES.XXL) {
             return;
         }
-        if (!this.$attachmentPreview) {
+        if (!this.$attachmentPreview || this.$attachmentPreview.hasClass('o_invisible_modifier')) {
             return;
         }
         var self = this;
@@ -277,7 +277,7 @@ FormRenderer.include({
                             self.attachmentPreviewWidth = ui.size.width;
                         },
                     });
-                    self._interchangeChatter(!self.$attachmentPreview.hasClass('o_invisible_modifier'));
+                    self._interchangeChatter(true);
                 });
             }
         }

@@ -504,6 +504,7 @@ _amount_getters = [
 # These are pair of getters: (getter for the exchange rate, getter for the target currency)
 _rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
     (partial(_generic_get, xpath='ns:XchgRate/text()'), partial(_generic_get, xpath='ns:TrgtCcy/text()')),
 ]
 

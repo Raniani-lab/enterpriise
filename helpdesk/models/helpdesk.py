@@ -548,7 +548,6 @@ class HelpdeskSLA(models.Model):
     description = fields.Html('SLA Policy Description')
     active = fields.Boolean('Active', default=True)
     team_id = fields.Many2one('helpdesk.team', 'Helpdesk Team', required=True)
-    target_type = fields.Selection([('stage', 'Reaching Stage'), ('assigning', 'Assigning Ticket')], default='stage', required=True)
     ticket_type_id = fields.Many2one(
         'helpdesk.ticket.type', "Type",
         help="Only apply the SLA to a specific ticket type. If left empty it will apply to all types.")
@@ -559,8 +558,7 @@ class HelpdeskSLA(models.Model):
         'helpdesk.stage', 'Target Stage',
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
     exclude_stage_ids = fields.Many2many(
-        'helpdesk.stage', string='Excluding Stages',
-        compute='_compute_exclude_stage_ids', store=True, readonly=False, copy=True,
+        'helpdesk.stage', string='Excluding Stages', copy=True,
         domain="[('id', '!=', stage_id.id)]",
         help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
     priority = fields.Selection(
@@ -572,7 +570,3 @@ class HelpdeskSLA(models.Model):
         help="This SLA Policy will apply to any tickets from the selected customers. Leave empty to apply this SLA Policy to any ticket without distinction.")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
     time = fields.Float('In', help='Time to reach given stage based on ticket creation date', default=0, required=True)
-
-    @api.depends('target_type')
-    def _compute_exclude_stage_ids(self):
-        self.update({'exclude_stage_ids': False})

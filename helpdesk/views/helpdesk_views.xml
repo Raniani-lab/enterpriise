@@ -264,20 +264,12 @@
                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
 
                             <separator colspan="2" string="Target" class="mt32"/>
-                            <field name="target_type" widget="radio"/>
-                            <div class="o_td_label">
-                                <label string="Reach Stage" for="stage_id" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
-                                <label string="Applies To Stage" for="stage_id" attrs="{'invisible': [('target_type', '=', 'stage')]}"/>
-                            </div>
-                            <field name="stage_id" nolabel="1" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" attrs="{'required': [('target_type', '=', 'stage')]}"/>
-                            <div class="o_td_label">
-                                <label for="time" string="In" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
-                                <label for="time" string="Within" attrs="{'invisible': [('target_type', '=', 'stage')]}"/>
-                            </div>
+                            <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" required="1"/>
+                            <label for="time" string="In"/>
                             <div class="o_row">
                                 <field name="time" widget="float_time"/><span class="o_field_widget o_readonly_modifier">Working Hours</span>
                             </div>
-                            <field name="exclude_stage_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('id', '!=', stage_id), ('team_ids', '=', team_id)]" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
+                            <field name="exclude_stage_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('id', '!=', stage_id), ('team_ids', '=', team_id)]"/>
                         </group>
                     </group>
                 </sheet>

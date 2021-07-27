@@ -57,7 +57,6 @@ class HelpdeskSLAStatus(models.Model):
     ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket', required=True, ondelete='cascade', index=True)
     sla_id = fields.Many2one('helpdesk.sla', required=True, ondelete='cascade')
     sla_stage_id = fields.Many2one('helpdesk.stage', related='sla_id.stage_id', store=True)  # need to be stored for the search in `_sla_reach`
-    target_type = fields.Selection(related='sla_id.target_type', store=True)
     deadline = fields.Datetime("Deadline", compute='_compute_deadline', compute_sudo=True, store=True)
     reached_datetime = fields.Datetime("Reached Date", help="Datetime at which the SLA stage was reached for the first time")
     status = fields.Selection([('failed', 'Failed'), ('reached', 'Reached'), ('ongoing', 'Ongoing')], string="Status", compute='_compute_status', compute_sudo=True, search='_search_status')
@@ -67,22 +66,16 @@ class HelpdeskSLAStatus(models.Model):
     @api.depends('ticket_id.create_date', 'sla_id', 'ticket_id.stage_id')
     def _compute_deadline(self):
         for status in self:
-            if (status.deadline and status.reached_datetime) or (status.deadline and status.target_type == 'stage' and not status.sla_id.exclude_stage_ids) or (status.status == 'failed'):
+            if (status.deadline and status.reached_datetime) or (status.deadline and not status.sla_id.exclude_stage_ids) or (status.status == 'failed'):
                 continue
-            if status.target_type == 'assigning' and status.sla_stage_id == status.ticket_id.stage_id:
-                deadline = fields.Datetime.now()
-            elif status.target_type == 'assigning' and status.sla_stage_id:
-                status.deadline = False
-                continue
-            else:
-                deadline = status.ticket_id.create_date
+            deadline = status.ticket_id.create_date
             working_calendar = status.ticket_id.team_id.resource_calendar_id
             if not working_calendar:
                 # Normally, having a working_calendar is mandatory
                 status.deadline = deadline
                 continue
 
-            if status.target_type == 'stage' and status.sla_id.exclude_stage_ids:
+            if status.sla_id.exclude_stage_ids:
                 if status.ticket_id.stage_id in status.sla_id.exclude_stage_ids:
                     # We are in the freezed time stage: No deadline
                     status.deadline = False
@@ -90,20 +83,16 @@ class HelpdeskSLAStatus(models.Model):
 
             avg_hour = working_calendar.hours_per_day or 8 #default to 8 working hours/day
             time_days = math.floor(status.sla_id.time / avg_hour)
-            if time_days and (status.sla_id.target_type == 'stage' or status.sla_id.target_type == 'assigning' and not status.sla_id.stage_id):
+            if time_days > 0:
                 deadline = working_calendar.plan_days(time_days + 1, deadline, compute_leaves=True)
                 # We should also depend on ticket creation time, otherwise for 1 day SLA, all tickets
                 # created on monday will have their deadline filled with tuesday 8:00
                 create_dt = status.ticket_id.create_date
                 deadline = deadline.replace(hour=create_dt.hour, minute=create_dt.minute, second=create_dt.second, microsecond=create_dt.microsecond)
-            elif time_days and status.target_type == 'assigning' and status.sla_stage_id == status.ticket_id.stage_id:
-                deadline = working_calendar.plan_days(time_days + 1, deadline, compute_leaves=True)
-                reached_stage_dt = fields.Datetime.now()
-                deadline = deadline.replace(hour=reached_stage_dt.hour, minute=reached_stage_dt.minute, second=reached_stage_dt.second, microsecond=reached_stage_dt.microsecond)
 
             sla_hours = status.sla_id.time % avg_hour
 
-            if status.target_type == 'stage' and status.sla_id.exclude_stage_ids:
+            if status.sla_id.exclude_stage_ids:
                 sla_hours += status._get_freezed_hours(working_calendar)
 
                 # Except if ticket creation time is later than the end time of the working day
@@ -618,9 +607,6 @@ class HelpdeskTicket(models.Model):
         if 'stage_id' in vals:
             self.sudo()._sla_reach(vals['stage_id'])
 
-        if 'stage_id' in vals or 'user_id' in vals:
-            self.filtered(lambda ticket: ticket.user_id).sudo()._sla_assigning_reach()
-
         return res
 
     # ------------------------------------------------------------
@@ -694,9 +680,7 @@ class HelpdeskTicket(models.Model):
                 if key not in sla_domain_map:
                     sla_domain_map[key] = expression.AND([[
                         ('team_id', '=', ticket.team_id.id), ('priority', '<=', ticket.priority),
-                        '|',
-                            '&', ('stage_id.sequence', '>=', ticket.stage_id.sequence), ('target_type', '=', 'stage'),
-                            ('target_type', '=', 'assigning'),
+                        ('stage_id.sequence', '>=', ticket.stage_id.sequence),
                         '|', ('ticket_type_id', '=', ticket.ticket_type_id.id), ('ticket_type_id', '=', False)], ticket._sla_find_extra_domain()])
 
         result = {}
@@ -722,32 +706,13 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             for sla in slas:
                 if not (keep_reached and sla.id in status_to_keep[ticket.id]):
-                    if sla.target_type == 'stage' and ticket.stage_id == sla.stage_id:
-                        # in case of SLA of type stage and on first stage
-                        reached_datetime = fields.Datetime.now()
-                    elif sla.target_type == 'assigning' and (not sla.stage_id or ticket.stage_id == sla.stage_id) and ticket.user_id:
-                        # in case of SLA of type assigning and ticket is already assigned
-                        reached_datetime = fields.Datetime.now()
-                    else:
-                        reached_datetime = False
                     result.append({
                         'ticket_id': ticket.id,
                         'sla_id': sla.id,
-                        'reached_datetime': reached_datetime
+                        'reached_datetime': fields.Datetime.now() if ticket.stage_id == sla.stage_id else False # in case of SLA on first stage
                     })
 
         return result
-
-    def _sla_assigning_reach(self):
-        """ Flag the SLA status of current ticket for the given stage_id as reached, and even the unreached SLA applied
-            on stage having a sequence lower than the given one.
-        """
-        self.env['helpdesk.sla.status'].search([
-            ('ticket_id', 'in', self.ids),
-            ('reached_datetime', '=', False),
-            ('deadline', '!=', False),
-            ('target_type', '=', 'assigning')
-        ]).write({'reached_datetime': fields.Datetime.now()})
 
     def _sla_reach(self, stage_id):
         """ Flag the SLA status of current ticket for the given stage_id as reached, and even the unreached SLA applied
@@ -759,17 +724,7 @@ class HelpdeskTicket(models.Model):
             ('ticket_id', 'in', self.ids),
             ('sla_stage_id', 'in', stages.ids),
             ('reached_datetime', '=', False),
-            ('target_type', '=', 'stage')
         ]).write({'reached_datetime': fields.Datetime.now()})
-
-        # For all SLA of type assigning, we compute deadline if they are not succeded (is succeded = has a reach_datetime)
-        # and if they are linked to a specific stage.
-        self.env['helpdesk.sla.status'].search([
-            ('ticket_id', 'in', self.ids),
-            ('sla_stage_id', '!=', False),
-            ('reached_datetime', '=', False),
-            ('target_type', '=', 'assigning')
-        ])._compute_deadline()
 
     def assign_ticket_to_self(self):
         self.ensure_one()

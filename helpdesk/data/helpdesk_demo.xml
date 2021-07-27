@@ -51,17 +51,6 @@
         <field name="time">56</field>
     </record>
 
-    <record id="helpdesk_sla_3" model="helpdesk.sla">
-        <field name="name">Assigned within 24 hrs</field>
-        <field name="team_id" ref="helpdesk.helpdesk_team3"/>
-        <field name="stage_id" ref="helpdesk.stage_new"/>
-        <field name="time">8</field>
-        <field name="priority">3</field>
-        <field name="ticket_type_id" ref="helpdesk.type_incident"/>
-        <field name="tag_ids" eval="[(6,0,[ref('helpdesk.tag_service'),ref('helpdesk.tag_repair')])]"/>
-        <field name="target_type">assigning</field>
-    </record>
-
     <!-- Tickets -->
     <record id="helpdesk_ticket_1" model="helpdesk.ticket">
         <field name="name">Kitchen collapsing</field>

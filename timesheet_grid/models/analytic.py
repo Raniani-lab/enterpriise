@@ -768,22 +768,35 @@ class AnalyticLine(models.Model):
 
         name = _('Timesheets to Validate')
         action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.act_hr_timesheet_report")
+        # The purpose of this view is only to store the view order that can be edited with studio without impacting
+        # `act_hr_timesheet_report`. Because `act_hr_timesheet_report` may contain more view_types than the action we will return,
+        # editing with studio in the to validate view can cause the loss of some views in `act_hr_timesheet_report`.
+        action_validate_id = self.env.ref('timesheet_grid.timesheet_grid_to_validate_action', raise_if_not_found=False)
+        if action_validate_id:
+            action_validate = action_validate_id.sudo().read(['id', 'views'])[0]
+        else:
+            action_validate = {'id': action['id']}
         #We want the pivot view to group by week and not by month in weekly mode
         if type_view == 'week':
             pivot_view_id = self.env.ref('timesheet_grid.timesheet_grid_pivot_view_weekly_validate').id
         else:
             pivot_view_id = self.env.ref('hr_timesheet.view_hr_timesheet_line_pivot').id
+        # 'views' contain an array of (id, view_name) in the order they will be displayed on screen.
+        view_order = [view[1] for view in action_validate.get('views', [])]
+        views = [
+            [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
+            [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
+            [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
+            [pivot_view_id, 'pivot'],
+            [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
+            [self.env.ref('hr_timesheet.view_kanban_account_analytic_line').id, 'kanban'],
+        ]
+        views.sort(key=lambda v: view_order.index(v[1]) if v[1] in view_order else 10000)
         action.update({
+            'id': action_validate['id'],
             "name": name,
             "display_name": name,
-            "views": [
-                [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
-                [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
-                [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
-                [pivot_view_id, 'pivot'],
-                [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
-                [self.env.ref('hr_timesheet.view_kanban_account_analytic_line').id, 'kanban']
-            ],
+            "views": views,
             "view_mode": 'grid,tree,pivot,graph,kanban',
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],

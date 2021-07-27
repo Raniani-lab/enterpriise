@@ -47,6 +47,28 @@
         </field>
     </record>
 
+    <record id="workcenter_line_graph_inherit_workorder" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.graph.inherit.mrp.workorder</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.workcenter_line_graph"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='duration_expected']" position="after">
+                <field name="worksheet_page" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="workcenter_line_pivot_inherit_workorder" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.pivot.inherit.mrp.workorder</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.workcenter_line_graph"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='duration_expected']" position="after">
+                <field name="worksheet_page" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
     <!-- MRP.WORKORDER TABLET VIEW -->
     <record id="mrp_workorder_view_form_tablet" model="ir.ui.view">
         <field name="name">mrp.workorder.view.form.inherit.quality.tablet.new</field>

@@ -14,7 +14,7 @@ class AppraisalSurvey(Survey):
         user_input_domain = super()._get_user_input_domain(survey, line_filter_domain, **post)
         if not post.get('appraisal_id'):
             return user_input_domain
-        appraisal = request.env['hr.appraisal'].browse(int(post.get('appraisal_id')))
+        appraisal = request.env['hr.appraisal'].sudo().browse(int(post.get('appraisal_id')))
         user = request.env.user
         if user in appraisal.manager_ids.mapped('user_id') or user.has_group('hr_appraisal.group_hr_appraisal_user'):
             return expression.AND([[('appraisal_id', '=', appraisal.id)], user_input_domain])
@@ -30,7 +30,7 @@ class AppraisalSurvey(Survey):
         """ Display survey Results & Statistics for given appraisal.
         """
         # check access rigths using token, get back survey if granted
-        appraisal = request.env['hr.appraisal'].browse(int(appraisal_id))
+        appraisal = request.env['hr.appraisal'].sudo().browse(int(appraisal_id))
         if appraisal.employee_id.user_id == request.env.user:
             return request.render(
                 'http_routing.http_error',

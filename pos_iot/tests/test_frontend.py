@@ -33,9 +33,9 @@ class TestUi(TestPointOfSaleHttpCommon):
         self.main_pos_config.write({
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
-                'is_cash_count': False,
                 'use_payment_terminal': 'ingenico',
                 'iot_device_id': payment_terminal_device.id,
+                'journal_id': self.bank_journal.id,
             })],
         })
 

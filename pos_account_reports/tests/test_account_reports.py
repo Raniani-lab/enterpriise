@@ -114,6 +114,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
         cls.pos_payment_method = cls.env['pos.payment.method'].create({
             'name': 'POS test payment method',
             'receivable_account_id': cls.company_data['default_account_receivable'].id,
+            'journal_id': cls.company_data['default_journal_cash'].id,
         })
 
         # Add the payment method to the pos_config

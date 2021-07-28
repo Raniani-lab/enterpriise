@@ -61,7 +61,7 @@ class Task(models.Model):
             satisfied = task.display_satisfied_conditions_count
             enabled += 1 if task.allow_worksheets else 0
             satisfied += 1 if task.allow_worksheets and task.worksheet_count else 0
-            task.write({
+            task.update({
                 'display_enabled_conditions_count': enabled,
                 'display_satisfied_conditions_count': satisfied
             })

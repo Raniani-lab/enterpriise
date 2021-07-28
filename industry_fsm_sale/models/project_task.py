@@ -31,7 +31,7 @@ class Task(models.Model):
             satisfied = task.display_satisfied_conditions_count
             enabled += 1 if task.allow_material else 0
             satisfied += 1 if task.allow_material and task.material_line_product_count else 0
-            task.write({
+            task.update({
                 'display_enabled_conditions_count': enabled,
                 'display_satisfied_conditions_count': satisfied
             })

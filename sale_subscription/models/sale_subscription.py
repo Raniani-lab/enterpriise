@@ -549,7 +549,10 @@ class SaleSubscription(models.Model):
             stage = search([('category', '=', 'closed'), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
             if not stage:
                 stage = search([('category', '=', 'closed')], limit=1)
-            sub.write({'stage_id': stage.id, 'to_renew': False, 'date': today})
+            values = {'stage_id': stage.id, 'to_renew': False}
+            if sub.recurring_rule_boundary == 'unlimited' or today < sub.date:
+                values['date'] = today
+            sub.write(values)
         return True
 
     def set_open(self):

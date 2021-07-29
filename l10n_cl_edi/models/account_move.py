@@ -582,12 +582,14 @@ class AccountMove(models.Model):
             'vat_amount': self.currency_id.round(sum(vat_taxes.mapped('price_subtotal'))),
             # Sum of the subtotal amount affected by tax
             'subtotal_amount_taxable': sum(lines_with_taxes.mapped('price_subtotal')) if (
-                    lines_with_taxes and not self.l10n_latam_document_type_id._is_doc_type_voucher()) else False,
+                    lines_with_taxes and (self.l10n_latam_document_type_id.code == '39' or
+                    not self.l10n_latam_document_type_id._is_doc_type_voucher())) else False,
             # Sum of the subtotal amount not affected by tax
             'subtotal_amount_exempt': sum(lines_without_taxes.mapped('price_subtotal')) if lines_without_taxes else False,
             'vat_percent': (
                 '%.2f' % (vat_taxes[0].tax_line_id.mapped('amount')[0])
-                if vat_taxes and not self.l10n_latam_document_type_id._is_doc_type_voucher() and
+                if vat_taxes and (self.l10n_latam_document_type_id.code == '39' or not
+                self.l10n_latam_document_type_id._is_doc_type_voucher()) and
                    not self.l10n_latam_document_type_id._is_doc_type_exempt() else False
             ),
             'total_amount': self.currency_id.round(self.amount_total),
@@ -746,7 +748,7 @@ class AccountMoveLine(models.Model):
         values = {
             'price_item': float(
                 self.price_total / self.quantity) if self.move_id.l10n_latam_document_type_id._is_doc_type_voucher(
-                ) else self.price_unit,
+                ) and self.l10n_latam_document_type_id.code not in ['39', '41'] else self.price_unit,
             'total_discount': '{:.0f}'.format(self.price_unit * self.quantity * self.discount / 100.0),
         }
         if self.move_id.currency_id != self.move_id.company_id.currency_id:

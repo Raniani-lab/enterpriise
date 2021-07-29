@@ -413,7 +413,7 @@
                         </field>
                     </record>
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl17" model="account.report.line">
-                        <field name="name">17. Ergebnis der gewöhnlichen Geschäftstätigkeit (Zwischensumme aus Z 9 und Z 16)</field>
+                        <field name="name">17. Ergebnis vor Steuern (Zwischensumme aus Z 9 und Z 16)</field>
                         <field name="code">EBT</field>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl17_balance" model="account.report.expression">
@@ -489,7 +489,7 @@
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl22_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">domain</field>
-                                <field name="formula">False</field>
+                                <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_at.account_tag_l10n_at_RCR')])]"/>
                                 <field name="date_scope">normal</field>
                                 <field name="subformula">-sum</field>
                             </record>
@@ -504,7 +504,7 @@
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl23_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">domain</field>
-                                <field name="formula">False</field>
+                                <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_at.account_tag_l10n_at_RRR')])]"/>
                                 <field name="date_scope">normal</field>
                                 <field name="subformula">-sum</field>
                             </record>
@@ -519,7 +519,7 @@
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl24_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">domain</field>
-                                <field name="formula">False</field>
+                                <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_at.account_tag_l10n_at_ARR')])]"/>
                                 <field name="date_scope">normal</field>
                                 <field name="subformula">-sum</field>
                             </record>

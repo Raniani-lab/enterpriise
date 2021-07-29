@@ -414,15 +414,15 @@ class L10nARVatBook(models.AbstractModel):
             else:
                 row.append(self._format_amount(0.0 if inv.company_id.l10n_ar_computable_tax_credit == 'global' else vat_amount))  # Field 21: Crédito Fiscal Computable
 
-                liquido_type = inv.l10n_latam_document_type_id.code in ['033', '058', '059', '060', '063']
+                liquido_type = inv.l10n_latam_document_type_id.code in ['33', '58', '59', '60', '63']
                 row += [
                     self._format_amount(other_taxes_amount),  # Field 22: Otros Tributos
 
                     # NOTE: still not implemented on this three fields for use case with third pary commisioner
 
                     # Field 23: CUIT Emisor / Corredor
-                    # It will be reported only if the field 'Tipo de Comprobante' contains '033', '058', '059', '060' or '063'. if there is no intervention of third party in the operation then the informant VAT number will be reported. For the rest of the vouchers it will be completed with zeros
-                    self._format_amount(liquido_type and inv.company_id.partner_id.ensure_vat() or 0, padding=11),
+                    # It will be reported only if the field 'Tipo de Comprobante' contains '33', '58', '59', '60' or '63'. if there is no intervention of third party in the operation then the informant VAT number will be reported. For the rest of the vouchers it will be completed with zeros
+                    liquido_type and inv.company_id.partner_id.ensure_vat() or '0' * 11,
 
                     (liquido_type and inv.company_id.name or '').ljust(30, ' ')[:30],  # Field 24: Denominación Emisor / Corredor
 

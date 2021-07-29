@@ -148,7 +148,9 @@ class ShareRoute(http.Controller):
                 except Exception as e:
                     logger.exception("Fail to upload document %s" % ufile.filename)
                     result = {'error': str(e)}
-            documents = request.env['documents.document'].create(vals_list)
+            cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
+            allowed_company_ids = [int(cid) for cid in cids.split(',')]
+            documents = request.env['documents.document'].with_context(allowed_company_ids=allowed_company_ids).create(vals_list)
             result['ids'] = documents.ids
 
         return json.dumps(result)

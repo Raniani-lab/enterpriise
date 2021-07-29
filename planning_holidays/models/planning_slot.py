@@ -71,3 +71,7 @@ class Slot(models.Model):
         if operator == '!=':
             value = not value
         return [('id', 'in' if value else 'not in', slot_ids)]
+
+    @api.model
+    def _get_calendar_model_blacklist(self):
+        return super()._get_calendar_model_blacklist() + ['hr.leave']

@@ -903,13 +903,14 @@ class Planning(models.Model):
 
     def action_planning_publish_and_send(self):
         notif_type = "success"
-        if all(shift.state == 'published' for shift in self):
+        start, end = min(self.mapped('start_datetime')), max(self.mapped('end_datetime'))
+        if all(shift.state == 'published' for shift in self) or not start or not end:
             notif_type = "warning"
             message = _('There are no shifts to publish and send.')
         else:
             planning = self.env['planning.planning'].create({
-                'start_datetime': min(self.mapped('start_datetime')),
-                'end_datetime': max(self.mapped('end_datetime')),
+                'start_datetime': start,
+                'end_datetime': end,
                 'slot_ids': [(6, 0, self.ids)],
             })
             planning._send_planning()

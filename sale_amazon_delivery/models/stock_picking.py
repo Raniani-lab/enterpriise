@@ -14,7 +14,8 @@ class StockPicking(models.Model):
 
     def _check_carrier_details_compliance(self):
         amazon_pickings_sudo = self.sudo().filtered(
-            lambda p: p.sale_id and p.sale_id.amazon_order_ref
+            lambda p: p.sale_id and p.sale_id.amazon_order_ref \
+                      and p.location_dest_id.usage == 'customer'
         )  # In sudo mode to read the field on sale.order
         for picking_sudo in amazon_pickings_sudo:
             carrier_sudo, carrier_tracking_ref = picking_sudo._get_carrier_details()
@@ -32,4 +33,3 @@ class StockPicking(models.Model):
                     "please, enter one manualy."
                 ))
         return super()._check_carrier_details_compliance()
-            

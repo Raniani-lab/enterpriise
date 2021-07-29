@@ -309,11 +309,9 @@ var accountReportsWidget = AbstractAction.extend({
         this.render_template();
         this.render_footnotes();
         this.render_searchview_buttons();
-        this.$('.js_account_report_foldable').each(function() {
-            if(!$(this).data('unfolded')) {
-                self.fold($(this));
-            }
-        });
+        this.batch_fold(this.$('.js_account_report_foldable').filter(function() {
+            return !$(this).data('unfolded');
+        }));
     },
     render_template: function() {
         this.$('.o_content').html(this.main_html);
@@ -952,12 +950,53 @@ var accountReportsWidget = AbstractAction.extend({
         e.preventDefault();
         var line = $(e.target).parents('td');
         if (line.length === 0) {line = $(e.target);}
-        var method = line[0].dataset.unfolded === 'True' ? this.fold(line) : this.unfold(line);
+        var method = line[0].dataset.unfolded === 'True' ? this.batch_fold(line) : this.unfold(line);
         Promise.resolve(method).then(function() {
             self.render_footnotes();
             self.persist_options();
         });
     },
+    /**
+     * batch implementation of fold.
+     * Useful for 'render' function when
+     * number of lines > 5000.
+     */
+    batch_fold: function(lines) {
+        var parent_ids = new Map();
+        lines.each((it, line) => {
+            let $line = $(line);
+            $line.find('.fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
+            $line.toggleClass('folded');
+            $line.parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
+            parent_ids.set($line.data('id'), $line);
+            var index = this.report_options.unfolded_lines.indexOf($line.data('id'));
+            if (index > -1) {
+                this.report_options.unfolded_lines.splice(index, 1);
+            }
+        });
+        var rows = this.$el.find('tr');
+        var children = rows.map((it, row) => {
+            let $row = $(row);
+            if (parent_ids.has($row.data('parent-id'))) {
+                parent_ids.get($row.data('parent-id'))[0].dataset.unfolded = 'False';
+                $row.find('.js_account_report_line_footnote').addClass('folded');
+                $row.hide();
+                var child = $row.find('[data-id]:first');
+                if (child) {
+                    return child;
+                }
+            }
+        });
+        if (children.length > 0) {
+            this.batch_fold(children);
+        }
+    },
+    /**
+     * 
+     * @deprecated 
+     * Use batch_fold to fold lines.
+     * To be removed in master.
+     */
     fold: function(line) {
         var self = this;
         var line_id = line.data('id');

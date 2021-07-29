@@ -7,7 +7,7 @@
             <t t-set="cfdi_vals" t-value="o._l10n_mx_edi_decode_cfdi()"/>
             <t t-set="is_cfdi_signed" t-value="bool(o._get_l10n_mx_edi_signed_edi_document())"/>
 
-            <t t-if="o.l10n_mx_edi_cfdi_request in ('on_invoice', 'on_refund') and not is_cfdi_signed">
+            <t t-if="o.l10n_mx_edi_cfdi_request in ('on_invoice', 'on_refund') and not is_cfdi_signed and o.edi_state != 'cancelled'">
                 <!-- due to HTML preview for device responsive -->
                 <button t-attf-class="btn-danger #{'btn' if report_type != 'html' else ''}">
                     <strong>A signature of this invoice is required, but it is not signed.</strong>

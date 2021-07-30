@@ -214,7 +214,7 @@ class QualityCheck(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _check_company_auto = True
 
-    name = fields.Char('Name', default=lambda self: _('New'))
+    name = fields.Char('Reference', default=lambda self: _('New'))
     point_id = fields.Many2one(
         'quality.point', 'Control Point', check_company=True)
     title = fields.Char('Title', compute='_compute_title')

@@ -3,6 +3,7 @@
 import { ExpirationPanel } from "./expiration_panel";
 import { useService } from "@web/core/service_hook";
 import { isIosApp } from "@web/core/browser/feature_detection";
+import { fuzzyLookup } from "@web/core/utils/search";
 
 const { Component, hooks } = owl;
 const { useExternalListener, useState, useRef } = hooks;
@@ -42,7 +43,7 @@ export class HomeMenu extends Component {
         this.menus = useService("menu");
 
         this.homeMenuService = useService("home_menu");
-        this.ui = useService('ui');
+        this.ui = useService("ui");
 
         this.availableApps = this.props.apps;
         this.displayedMenuItems = [];
@@ -141,10 +142,9 @@ export class HomeMenu extends Component {
      * @returns {Object[]}
      */
     _filter(array) {
-        const options = {
-            extract: (el) => (el.parents + " / " + el.label).split("/").reverse().join("/"),
-        };
-        return fuzzy.filter(this.state.query, array, options).map((el) => el.original);
+        return fuzzyLookup(this.state.query, array, (el) =>
+            (el.parents + " / " + el.label).split("/").reverse().join("/")
+        );
     }
 
     /**

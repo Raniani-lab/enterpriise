@@ -7,6 +7,7 @@ var dom = require('web.dom');
 var emojis = require('@mail/js/emojis')[Symbol.for("default")];
 var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
 var MailEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
+const {Markup} = require('web.utils');
 var SocialStreamPostFormatterMixin = require('social.post_formatter_mixin');
 var time = require('web.time');
 
@@ -576,7 +577,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
      * @private
      */
     _formatCommentStreamPost: function (message) {
-        return this._formatPost(message);
+        return Markup(this._formatPost(message));
     },
 
     _getTargetTextElement($emoji) {

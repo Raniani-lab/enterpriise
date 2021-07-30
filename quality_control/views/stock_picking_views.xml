@@ -30,10 +30,14 @@
                         <span class="o_stat_text">Quality Alert</span>
                     </div>
                 </button>
-                <button name="action_open_quality_check_picking" attrs="{'invisible': [('check_ids', '=', [])]}" type="object" class="oe_stat_button" icon="fa-check">
-                    <span class="o_stat_text" attrs="{'invisible': ['|', ('quality_check_fail', '=', True), ('quality_check_todo', '!=', True)]}">Quality Checks</span>
-                    <span class="o_stat_text text-success" attrs="{'invisible': ['|', ('quality_check_fail', '=', True), ('quality_check_todo', '=', True)]}">Quality Checks</span>
-                    <span class="o_stat_text text-danger" attrs="{'invisible': [('quality_check_fail', '!=', True)]}">Quality Checks</span>
+                <button name="action_open_quality_check_picking" attrs="{'invisible': ['|', '|', ('check_ids', '=', []), ('quality_check_fail', '=', True), ('quality_check_todo', '!=', True)]}" type="object" class="oe_stat_button" icon="fa-check">
+                    <span class="o_stat_text">Quality Checks</span>
+                </button>
+                <button name="action_open_quality_check_picking" attrs="{'invisible': ['|', '|', ('check_ids', '=', []), ('quality_check_fail', '=', True), ('quality_check_todo', '=', True)]}" type="object" class="oe_stat_button text-success" icon="fa-check">
+                    <span class="o_stat_text text-success">Quality Checks</span>
+                </button>
+                <button name="action_open_quality_check_picking" attrs="{'invisible': ['|', ('check_ids', '=', []), ('quality_check_fail', '!=', True)]}" type="object" class="oe_stat_button text-danger" icon="fa-check">
+                    <span class="o_stat_text text-danger">Quality Checks</span>
                 </button>
             </div>
         </field>

@@ -101,7 +101,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
         <field name="arch" type="xml">
             <field name='partner_id' position="after">
-                <field name="sale_line_id" optional="hide"/>
+                <field name="sale_line_id" readonly="1" optional="hide"/>
             </field>
         </field>
     </record>

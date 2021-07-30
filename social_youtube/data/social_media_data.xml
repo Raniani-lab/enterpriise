@@ -4,7 +4,7 @@
         <record id="social_media_youtube" model="social.media">
             <field name="name">YouTube</field>
             <field name="media_type">youtube</field>
-            <field name="description" type="html"><p>Manage your YouTube videos and schedule video uploads</p></field>
+            <field name="media_description">Manage your YouTube videos and schedule video uploads</field>
             <field name="image" type="base64" file="social_youtube/static/src/img/youtube.svg"/>
         </record>
 

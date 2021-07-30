@@ -21,7 +21,7 @@ class SocialMedia(models.Model):
     _DEFAULT_SOCIAL_IAP_ENDPOINT = 'https://social.api.odoo.com'
 
     name = fields.Char('Name', readonly=True, required=True, translate=True)
-    description = fields.Char('Description', readonly=True)
+    media_description = fields.Char('Description', readonly=True)
     image = fields.Binary('Image', readonly=True)
     media_type = fields.Selection([], readonly=True,
         help="Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...).")

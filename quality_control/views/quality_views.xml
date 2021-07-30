@@ -851,7 +851,7 @@
             </xpath>
             <xpath expr="//field[@name='test_type']" position="before">
                 <field name="measure_on"/>
-                <field name="measure_frequency_type"/>
+                <field name="measure_frequency_type" string="Control Frequency"/>
                 <label for="measure_frequency_value" string="" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}"/>
                 <div class="o_row" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">
                     <span attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">Every </span>

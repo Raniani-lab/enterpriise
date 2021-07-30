@@ -221,8 +221,8 @@
                     <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" string="Fail" data-hotkey="w"/>
                     <button name="do_fail" type="object" attrs="{'invisible': [('quality_state', '!=', 'pass')]}" groups="quality.group_quality_manager" string="Fail" data-hotkey="w"/>
                     <button name="do_measure" type="object" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('quality_state', '!=', 'none')]}" string="Measure" data-hotkey="v"/>
-                    <button name="do_alert" type="object" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'pass')]}" string="Make Alert" data-hotkey="g"/>
-                    <button name="do_alert" type="object" class="btn-primary" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'fail')]}" string="Make Alert" data-hotkey="g"/>
+                    <button name="do_alert" type="object" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'pass')]}" string="Create Alert" data-hotkey="g"/>
+                    <button name="do_alert" type="object" class="btn-primary" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'fail')]}" string="Create Alert" data-hotkey="g"/>
                     <field name="quality_state" widget="statusbar"/>
                 </header>
                 <sheet>

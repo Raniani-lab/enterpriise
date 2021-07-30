@@ -7,7 +7,6 @@ import {
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
 import { doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
-import { debugService } from "@web/core/debug/debug_service";
 import { registry } from "@web/core/registry";
 import { editView } from "@web/legacy/debug_manager";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
@@ -367,10 +366,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         "debug manager resets to global items when home menu is displayed",
         async function (assert) {
             assert.expect(9);
-            serviceRegistry.add("debug", debugService);
             const debugRegistry = registry.category("debug");
             debugRegistry.category("view").add("editView", editView);
-            debugRegistry.add("item_1", () => {
+            debugRegistry.category("default").add("item_1", () => {
                 return {
                     type: "item",
                     description: "globalItem",

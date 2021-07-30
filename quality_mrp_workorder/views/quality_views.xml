@@ -43,6 +43,20 @@
         </field>
     </record>
 
+    <record id="quality_check_view_search_inherit_quality_mrp_workorder" model="ir.ui.view">
+        <field name="name">quality.check.view.search.inherit.quality.mrp.workorder</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_search"/>
+        <field name="arch" type="xml">
+            <field name="lot_id" position="after">
+                <field name="finished_lot_id"/>
+            </field>
+            <filter name="groupby_team_id" position="before">
+                <filter string="Finished Lot/Serial" name="groupby_finished_lot_id" context="{'group_by': 'finished_lot_id'}"/>
+            </filter>
+        </field>
+    </record>
+
     <record id="quality_check_view_form_inherit_mrp_workorder" model="ir.ui.view">
         <field name="name">quality.check.view.form.inherit.mrp.workorder</field>
         <field name="model">quality.check</field>

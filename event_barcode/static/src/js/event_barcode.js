@@ -165,7 +165,7 @@ var EventScanView = AbstractAction.extend({
         this.do_action({
             type: 'ir.actions.report',
             report_type: 'qweb-pdf',
-            report_name: `event.event_registration_report_template_badge/${this.registrationId}`,
+            report_name: `event.event_registration_report_template_foldable_badge/${this.registrationId}`,
         });
     },
 

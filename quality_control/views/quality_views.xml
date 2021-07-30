@@ -335,7 +335,7 @@
         <field name="name">quality.check.view.tree</field>
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
-            <tree sample="1" decoration-info="quality_state == 'none'">
+            <tree default_order="id desc" sample="1" decoration-info="quality_state == 'none'">
                 <field name="name" decoration-bf="1"/>
                 <field name="measure_on" optional="show"/>
                 <field name='product_id' optional="show"/>
@@ -888,7 +888,6 @@
         <field name="res_model">quality.point</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="quality_point_view_search"/>
-        <field name="context">{'search_default_groupby_team_id': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
               No quality control point found

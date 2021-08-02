@@ -8,33 +8,27 @@ from odoo.tools.sql import column_exists, create_column
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    def _auto_init(self):
-        if not column_exists(self.env.cr, "product_template", "worksheet_template_id"):
-            create_column(self.env.cr, "product_template", "worksheet_template_id", "int4")
-
-            # This module is auto-installated, so the only way to get non-empty
-            # values in the new field is having demo data on installing module
-            # dependencies. So, filter the products and call compute method on
-            # them only to avoid iterating over all products
-            templates = self.search([
-                ('service_tracking', 'in', ['task_global_project', 'task_new_project']),
-                ('project_id.is_fsm', '=', True),
-            ])
-            templates._compute_worksheet_template_id()
-
-        return super()._auto_init()
-
+    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', readonly=True)
     worksheet_template_id = fields.Many2one(
-        'worksheet.template', string="Worksheet Template",
-        compute='_compute_worksheet_template_id', store=True, readonly=False)
+        'worksheet.template', string="Worksheet Template", company_dependent=True)
 
-    @api.depends('service_tracking', 'project_id')
-    def _compute_worksheet_template_id(self):
+    def _compute_worksheet_template_id(self, keep_template=False):
         for template in self:
-            if template.service_tracking not in ['task_global_project', 'task_new_project']:
+            if not template.allow_worksheets or template.service_tracking not in ['task_global_project', 'task_new_project'] or not template.project_id.is_fsm:
                 template.worksheet_template_id = False
-
-            if template.project_id.is_fsm:
-                template.worksheet_template_id = template.project_id.worksheet_template_id
             else:
-                template.worksheet_template_id = False
+                # Keep the old template if `keep_template` is true, this only applies if the template would have been non 0
+                old_template = template.worksheet_template_id if keep_template else False
+                template.worksheet_template_id = old_template or template.project_id.worksheet_template_id
+
+    @api.model_create_multi
+    def create(self, create_vals):
+        res = super().create(create_vals)
+        res.filtered(lambda t: not t.worksheet_template_id)._compute_worksheet_template_id()
+        return res
+
+    def write(self, vals):
+        res = super().write(vals)
+        if ('service_tracking' in vals or 'project_id' in vals):
+            self._compute_worksheet_template_id(keep_template=('worksheet_template_id' in vals))
+        return res

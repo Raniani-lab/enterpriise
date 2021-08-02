@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="sale_project.product_template_form_view_invoice_policy_inherit_sale_project"/>
         <field name="arch" type="xml">
             <field name="project_template_id" position="after">
-                <field name="worksheet_template_id" attrs="{'invisible': ['|', ('worksheet_template_id', '=', False), ('service_tracking', 'not in', ['task_global_project', 'task_new_project'])]}" />
+                <field name="allow_worksheets" invisible="1"/>
+                <field name="worksheet_template_id" attrs="{'invisible': ['|', ('allow_worksheets', '=', False), ('service_tracking', 'not in', ['task_global_project', 'task_new_project'])]}"/>
             </field>
         </field>
     </record>

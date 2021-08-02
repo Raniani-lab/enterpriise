@@ -1,7 +1,8 @@
 odoo.define('approvals/static/src/components/approval/approval.js', function (require) {
 'use strict';
 
-const { useStore } = require('@mail/component_hooks/use_store/use_store');
+const { useModels } = require('@mail/component_hooks/use_models/use_models');
+const { useShouldUpdateBasedOnProps } = require('@mail/component_hooks/use_should_update_based_on_props/use_should_update_based_on_props');
 
 const { Component } = owl;
 
@@ -12,12 +13,8 @@ class Approval extends Component {
      */
     constructor(...args) {
         super(...args);
-        useStore(props => {
-            const approval = this.env.models['approvals.approval'].get(props.approvalLocalId);
-            return {
-                approval: approval ? approval.__state : undefined,
-            };
-        });
+        useModels();
+        useShouldUpdateBasedOnProps();
     }
 
     //--------------------------------------------------------------------------

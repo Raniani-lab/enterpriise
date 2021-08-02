@@ -121,11 +121,22 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                 }
                 return this._super.apply(this, arguments);
             },
+            waitUntilEvent: {
+                eventName: 'o-thread-view-hint-processed',
+                message: "should wait until account.move 2 thread displayed its messages",
+                predicate: ({ hint, threadViewer }) => {
+                    return (
+                        hint.type === 'messages-loaded' &&
+                        threadViewer.thread.model === 'account.move' &&
+                        threadViewer.thread.id === 2
+                    );
+                },
+            },
         });
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        await testUtils.dom.click($('.o_form_button_edit'));
+        await afterNextRender(() => testUtils.dom.click($('.o_form_button_edit')));
 
         let $attachmentPreview = form.$('.o_attachment_preview_img');
 
@@ -239,6 +250,17 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                 }
                 return this._super.apply(this, arguments);
             },
+            waitUntilEvent: {
+                eventName: 'o-thread-view-hint-processed',
+                message: "should wait until account.move 2 thread displayed its messages",
+                predicate: ({ hint, threadViewer }) => {
+                    return (
+                        hint.type === 'messages-loaded' &&
+                        threadViewer.thread.model === 'account.move' &&
+                        threadViewer.thread.id === 2
+                    );
+                },
+            },
         });
 
         await nextAnimationFrame();
@@ -325,11 +347,22 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                 }
                 return this._super.apply(this, arguments);
             },
+            waitUntilEvent: {
+                eventName: 'o-thread-view-hint-processed',
+                message: "should wait until account.move 2 thread displayed its messages",
+                predicate: ({ hint, threadViewer }) => {
+                    return (
+                        hint.type === 'messages-loaded' &&
+                        threadViewer.thread.model === 'account.move' &&
+                        threadViewer.thread.id === 2
+                    );
+                },
+            },
         });
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        await testUtils.form.clickEdit(form);
+        await afterNextRender(() => testUtils.form.clickEdit(form));
 
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
             'VAT_Number', "should have 'VAT_Number' as the active field");
@@ -399,6 +432,17 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                     return true;
                 }
                 return this._super(...arguments);
+            },
+            waitUntilEvent: {
+                eventName: 'o-thread-view-hint-processed',
+                message: "should wait until account.move 2 thread displayed its messages",
+                predicate: ({ hint, threadViewer }) => {
+                    return (
+                        hint.type === 'messages-loaded' &&
+                        threadViewer.thread.model === 'account.move' &&
+                        threadViewer.thread.id === 2
+                    );
+                },
             },
         });
 

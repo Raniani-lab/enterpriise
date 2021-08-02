@@ -138,6 +138,7 @@
             <field name="sequence" eval="2"/>
             <field name="show_on_dashboard" eval="False"/>
             <field name="chart_id" ref="test_chart"/>
+            <field name="invert_sign" eval="True"/>
         </record>
         <record id="expense_section" model="consolidation.group">
             <field name="name">Expense</field>

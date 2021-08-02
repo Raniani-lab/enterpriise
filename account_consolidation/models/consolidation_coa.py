@@ -24,6 +24,8 @@ class ConsolidationChart(models.Model):
                                     'parent_ids', string="Sub-consolidations")
     parents_ids = fields.Many2many('consolidation.chart', 'account_consolidation_inner_rel', 'parent_ids',
                                    'children_ids', string="Consolidated In")
+    invert_sign = fields.Boolean('Invert Balance Sign', default=False)
+    sign = fields.Integer(compute='_compute_sign')
 
     # COMPUTEDS
     @api.depends('account_ids')
@@ -49,6 +51,11 @@ class ConsolidationChart(models.Model):
         """
         for record in self:
             record.period_ids_count = len(record.period_ids)
+
+    @api.depends('invert_sign')
+    def _compute_sign(self):
+        for chart in self:
+            chart.sign = -1 if chart.invert_sign else 1
 
     def copy(self, default=None):
         default = dict(default or {})
@@ -148,6 +155,8 @@ class ConsolidationAccount(models.Model):
 
     linked_chart_ids = fields.Many2many('consolidation.chart', store=False, related="chart_id.children_ids")
     company_ids = fields.Many2many('res.company', store=False, related="chart_id.company_ids")
+    invert_sign = fields.Boolean('Invert Balance Sign', default=False)
+    sign = fields.Integer(compute='_compute_sign')
 
     # HIERARCHY
     #TODO I've no idea what this is for...
@@ -228,6 +237,11 @@ class ConsolidationAccount(models.Model):
         else:
             return [('used_in_ids', operator, operand)]
 
+    @api.depends('group_id.sign', 'invert_sign', 'chart_id.sign')
+    def _compute_sign(self):
+        for record in self:
+            record.sign = (-1 if record.invert_sign else 1) * (record.group_id or record.chart_id).sign
+
     # ORM OVERRIDES
 
     def name_get(self):
@@ -269,6 +283,8 @@ class ConsolidationGroup(models.Model):
     account_ids = fields.One2many('consolidation.account', 'group_id', 'Consolidation Account')
     line_ids = fields.One2many('consolidation.journal.line', 'group_id', 'Journal lines',
                                related="account_ids.line_ids")
+    invert_sign = fields.Boolean('Invert Balance Sign', default=False)
+    sign = fields.Integer(compute='_compute_sign', recursive=True)
 
     # CONSTRAINTS
     @api.constrains('child_ids', 'account_ids')
@@ -290,3 +306,8 @@ class ConsolidationGroup(models.Model):
                 name = section.name + " / " + name
             ret_list.append((orig_section.id, name))
         return ret_list
+
+    @api.depends('parent_id.sign', 'invert_sign', 'chart_id.sign')
+    def _compute_sign(self):
+        for group in self:
+            group.sign = (-1 if group.invert_sign else 1) * (group.parent_id or group.chart_id).sign

@@ -10,6 +10,7 @@
                     <field name="currency_id"/>
                     <field name="period_ids"/>
                     <field name="account_ids"/>
+                    <field name="invert_sign" widget="boolean_toggle" optional="hide"/>
                 </tree>
             </field>
         </record>
@@ -51,6 +52,8 @@
                         <group>
                             <group>
                                 <field name="currency_id"/>
+                                <field name="invert_sign"/>
+                                <field name="sign" invisible="1"/>
                             </group>
                         </group>
                         <!-- COMPANIES -->

@@ -256,7 +256,7 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             })
 
         expected = [4242.42, 8484.84]
-        actual = self.builder._compute_account_totals(account.id, period_ids=[p.id for p in periods])
+        actual = self.builder._compute_account_totals(account, period_ids=[p.id for p in periods])
         self.assertListEqual(expected, actual)
 
     def test__get_default_line_totals(self):
@@ -506,7 +506,7 @@ class TestDefaultBuilder(AccountConsolidationTestCase):
         self.assertListEqual(res['period_ids'], [self.ap.id])
 
     def test__compute_account_totals(self):
-        res = self.builder._compute_account_totals(self.consolidation_account.id)
+        res = self.builder._compute_account_totals(self.consolidation_account)
         expected = [4242.4, 3901.0, 8143.4]
         self.assertEqual(res, expected)
 

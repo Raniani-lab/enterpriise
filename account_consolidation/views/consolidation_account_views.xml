@@ -18,6 +18,7 @@
                            invisible="context.get('from_conso_account', False)"/>
                     <field name="using_ids" widget="many2many_tags" optional="hide"
                            groups="base.group_no_one" invisible="context.get('from_conso_account', False)"/>
+                    <field name="invert_sign" widget="boolean_toggle" optional="hide"/>
                 </tree>
             </field>
         </record>
@@ -55,6 +56,8 @@
                                 <field name="chart_id" string="Consolidation"
                                        invisible="context.get('default_chart_id', False)"/>
                                 <field name="currency_mode"/>
+                                <field name="invert_sign"/>
+                                <field name="sign" invisible="1"/>
                             </group>
                             <group name="display">
                                 <field name="code"/>

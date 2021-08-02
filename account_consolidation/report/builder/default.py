@@ -24,7 +24,7 @@ class DefaultBuilder(AbstractBuilder):
         })
         return params
 
-    def _compute_account_totals(self, account_id: int, **kwargs) -> list:
+    def _compute_account_totals(self, account, **kwargs) -> list:
         totals = []
         line_total = 0
         JournalLine = self.env['consolidation.journal.line']
@@ -32,10 +32,10 @@ class DefaultBuilder(AbstractBuilder):
         # Computing columns
         for journal in self.journals:
             # Check if a journal line exists
-            domain = [('account_id', '=', account_id), ('journal_id', '=', journal.id)]
+            domain = [('account_id', '=', account.id), ('journal_id', '=', journal.id)]
             groupby_res = JournalLine.read_group(domain, ['amount:sum', 'journal_id'], ['journal_id'])
             journal_total_balance = groupby_res[0]['amount'] if len(groupby_res) > 0 else 0
-
+            journal_total_balance *= account.sign
             # Update totals
             totals.append(journal_total_balance)
             line_total += journal_total_balance

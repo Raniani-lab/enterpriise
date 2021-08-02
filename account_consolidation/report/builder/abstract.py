@@ -185,7 +185,7 @@ class AbstractBuilder(ABC):
         lines = []
         if accounts and len(accounts) > 0:
             for account in accounts:
-                totals = self._compute_account_totals(account.id, **kwargs)
+                totals = self._compute_account_totals(account, **kwargs)
                 if len(totals) > 0:
                     # Handle TOTALS
                     all_totals = [x + y for x, y in zip(all_totals, totals)] if all_totals is not None else totals
@@ -243,7 +243,7 @@ class AbstractBuilder(ABC):
             domain.append(('chart_id', 'in', kwargs['chart_ids']))
         return self.env['consolidation.account'].search(domain)
 
-    def _compute_account_totals(self, account_id: int, **kwargs) -> list:
+    def _compute_account_totals(self, account, **kwargs) -> list:
         """
         Compute the totals for a given consolidation account and given periods
         :param account_id: the id of the consolidation account
@@ -328,7 +328,7 @@ class AbstractBuilder(ABC):
         # HANDLE ACCOUNTS
         if len(section.account_ids) > 0:
             for child_account in section.account_ids:
-                account_totals = self._compute_account_totals(child_account.id, **kwargs)
+                account_totals = self._compute_account_totals(child_account, **kwargs)
                 account_line = self._format_account_line(child_account, level + 1, account_totals, options, **kwargs)
                 section_totals = [x + y for x, y in
                                   zip(section_totals, account_totals)] if section_totals is not None else account_totals

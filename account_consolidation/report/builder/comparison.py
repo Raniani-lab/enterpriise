@@ -22,9 +22,9 @@ class ComparisonBuilder(AbstractBuilder):
     def _output_will_be_empty(self, period_ids: list, options: dict, line_id: str = None) -> bool:
         return len(period_ids) == 0
 
-    def _compute_account_totals(self, account_id: int, **kwargs) -> list:
+    def _compute_account_totals(self, account, **kwargs) -> list:
         domain = [
-            ('account_id', '=', account_id),
+            ('account_id', '=', account.id),
             ('period_id', 'in', kwargs.get('period_ids', []))
         ]
         groupby = ('period_id',)
@@ -35,8 +35,7 @@ class ComparisonBuilder(AbstractBuilder):
         total_dict = {line['period_id'][0]: line['total'] for line in total_lines}
         # Need to keep the order of periods as nothing in DB can order them
         for period_id in kwargs.get('period_ids', []):
-            append_amount = total_dict.get(period_id, 0.0)
-            totals.append(append_amount)
+            totals.append(account.sign * total_dict.get(period_id, 0.0))
         return totals
 
     def _get_default_line_totals(self, options: dict, **kwargs) -> list:

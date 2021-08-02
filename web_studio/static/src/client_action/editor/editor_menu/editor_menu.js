@@ -1,7 +1,6 @@
 /** @odoo-module */
 
-import { useService } from "@web/core/service_hook";
-import { useBus } from "@web/core/bus_hook";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { _lt } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { localization } from "@web/core/l10n/localization";

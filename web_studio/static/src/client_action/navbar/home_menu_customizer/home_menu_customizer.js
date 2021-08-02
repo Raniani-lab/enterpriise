@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { browser } from "@web/core/browser/browser";
 import { download } from "@web/core/network/download";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";

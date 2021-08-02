@@ -3,7 +3,7 @@
 import { _lt } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 
 export class IconCreatorDialog extends Dialog {
     setup() {

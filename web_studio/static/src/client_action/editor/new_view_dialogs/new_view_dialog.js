@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 

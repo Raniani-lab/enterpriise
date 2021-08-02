@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
-import { useBus } from "@web/core/bus_hook";
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/service_hook";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { cleanDomFromBootstrap } from "@web/legacy/utils";
 import { computeHomeMenuProps } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { ComponentAdapter } from "web.OwlCompatibility";

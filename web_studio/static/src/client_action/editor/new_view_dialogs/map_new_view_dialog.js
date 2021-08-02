@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { NewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/new_view_dialog";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class MapNewViewDialog extends NewViewDialog {

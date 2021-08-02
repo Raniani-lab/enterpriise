@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { browser } from "@web/core/browser/browser";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 
 const { Component, hooks } = owl;
 const { useState, useRef } = hooks;

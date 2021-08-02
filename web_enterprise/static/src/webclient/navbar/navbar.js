@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { NavBar } from "@web/webclient/navbar/navbar";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { isMobileOS } from "@web/core/browser/feature_detection";
 
 const { hooks } = owl;

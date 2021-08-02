@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { ComponentAdapter } from "web.OwlCompatibility";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { NewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/new_view_dialog";
 import { MapNewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/map_new_view_dialog";

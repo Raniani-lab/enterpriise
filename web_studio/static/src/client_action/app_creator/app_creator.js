@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { useAutofocus } from "@web/core/autofocus_hook";
+import { useAutofocus } from "@web/core/utils/hooks";
 import { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } from "web.OwlCompatibility";
 import Widget from "web.Widget";
 import { COLORS, BG_COLORS, ICONS } from "@web_studio/utils";
@@ -13,7 +13,7 @@ const { useExternalListener } = hooks;
 
 class ModelSelector extends ComponentAdapter {
     constructor(parent, props) {
-        Object.assign(props, {Component: FieldMany2One});
+        Object.assign(props, { Component: FieldMany2One });
         super(parent, props);
     }
     updateWidget(nextProps) {}

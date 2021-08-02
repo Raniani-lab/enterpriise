@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { ComponentAdapter } from "web.OwlCompatibility";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 
 import FormManager from "website_studio.FormManager";

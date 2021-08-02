@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { WebClient } from "@web/webclient/webclient";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { EnterpriseNavBar } from "./navbar/navbar";
 import { hasTouch } from "@web/core/browser/feature_detection";
 

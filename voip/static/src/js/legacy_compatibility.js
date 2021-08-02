@@ -9,7 +9,7 @@ import { ComponentAdapter } from "web.OwlCompatibility";
 import core from "web.core";
 import { registry } from "@web/core/registry";
 import { sprintf } from "@web/core/utils/strings";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 
 const serviceRegistry = registry.category("services");
 

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { Mutex } from "@web/core/utils/concurrency";
 import { ControllerNotFoundError } from "@web/webclient/actions/action_service";
 import { HomeMenu } from "./home_menu";

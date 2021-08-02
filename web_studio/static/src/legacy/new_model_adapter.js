@@ -2,7 +2,7 @@
 
 import NewModel from "web_studio.NewModel";
 import { ComponentAdapter } from "web.OwlCompatibility";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 
 export class NewModelItem extends owl.Component {
     setup() {

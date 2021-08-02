@@ -2,7 +2,7 @@
 import { COLORS, BG_COLORS, ICONS } from "@web_studio/utils";
 import { FileInput } from "@web/core/file_input/file_input";
 import CustomFileInput from "web.CustomFileInput";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 
 const { Component, hooks } = owl;
 const { useRef, useState, onWillUpdateProps } = hooks;

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { MenuItem } from "web_studio.EditMenu";
 

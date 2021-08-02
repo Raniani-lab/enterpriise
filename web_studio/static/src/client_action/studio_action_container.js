@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { ActionContainer } from "@web/webclient/actions/action_container";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 
 export class StudioActionContainer extends ActionContainer {
     setup() {

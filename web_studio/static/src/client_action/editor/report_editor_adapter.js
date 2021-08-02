@@ -1,7 +1,7 @@
 /** @odoo-module **/
 import { ComponentAdapter } from "web.OwlCompatibility";
 import ReportEditorManager from "web_studio.ReportEditorManager";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 
 class ReportEditorAdapter extends ComponentAdapter {

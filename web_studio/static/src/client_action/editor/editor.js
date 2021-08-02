@@ -2,8 +2,7 @@
 
 import { StudioActionContainer } from "../studio_action_container";
 import { actionService } from "@web/webclient/actions/action_service";
-import { useService } from "@web/core/service_hook";
-import { useBus } from "@web/core/bus_hook";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 
 import { EditorMenu } from "./editor_menu/editor_menu";

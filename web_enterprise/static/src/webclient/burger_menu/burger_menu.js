@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { BurgerUserMenu } from "./user_menu/user_menu";
 import { MobileSwitchCompanyMenu } from "./mobile_switch_company_menu/mobile_switch_company_menu";

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { ExpirationPanel } from "./expiration_panel";
-import { useService } from "@web/core/service_hook";
+import { useService } from "@web/core/utils/hooks";
 import { isIosApp } from "@web/core/browser/feature_detection";
 import { fuzzyLookup } from "@web/core/utils/search";
 

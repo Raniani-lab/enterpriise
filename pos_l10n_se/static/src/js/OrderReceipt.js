@@ -23,12 +23,17 @@ odoo.define('pos_l10n_se.OrderReceipt', function(require) {
                 }
                 return super.receiptEnv;
             }
-            isService(line) {
-                if (this.env.pos.useBlackBoxSweden()) {
-                    return line.product_type === "service";
-                }
-                return true;
+            getProductlines(){
+                return _.filter(this.receiptEnv.receipt.orderlines, function (orderline) {
+                    return orderline.product_type !== "service";
+                });
             }
+            getServicelines(){
+                return _.filter(this.receiptEnv.receipt.orderlines, function (orderline) {
+                    return orderline.product_type === "service";
+                });
+            }
+
         };
 
     Registries.Component.extend(OrderReceipt, PosSwedenOrderReceipt);

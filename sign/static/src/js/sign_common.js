@@ -183,7 +183,9 @@ odoo.define('sign.PDFIframe', function (require) {
             var is_all_signed = signature_keys.filter(key=>this.signatureItems[key].value).length == signature_keys.length
             this.setElement(this.$iframe.contents().find('html'));
 
-            this.$('#openFile, #pageRotateCw, #pageRotateCcw, #pageRotateCcw, #presentationMode, #viewBookmark, #print, #download').add(this.$('#lastPage').next()).hide();
+            this.$('#pageRotateCw, #pageRotateCcw, ' +
+            '#openFile, #presentationMode, #viewBookmark, #print, #download, ' +
+            '#secondaryOpenFile, #secondaryPresentationMode, #secondaryViewBookmark, #secondaryPrint, #secondaryDownload').add(this.$('#lastPage').next()).hide();
             this.$('button#print').prop('title', _t("Print original document"));
             this.$('button#download').prop('title', _t("Download original document"));
             if (this.readonlyFields && !this.editMode && is_all_signed) {

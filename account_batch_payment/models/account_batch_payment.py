@@ -40,8 +40,8 @@ class AccountBatchPayment(models.Model):
 
     @api.depends('batch_type', 'journal_id', 'payment_ids')
     def _compute_payment_method_id(self):
-        ''' Compute the 'payment_method_line_id' field.
-        This field is not computed in '_compute_available_payment_method_line_ids' because it's a stored editable one.
+        ''' Compute the 'payment_method_id' field.
+        This field is not computed in '_compute_available_payment_method_ids' because it's a stored editable one.
         '''
         for batch in self:
             if batch.payment_ids:
@@ -126,7 +126,7 @@ class AccountBatchPayment(models.Model):
             all_types = set(record.payment_ids.mapped('payment_type'))
             if all_types and record.batch_type not in all_types:
                 raise ValidationError(_("The batch must have the same type as the payments it contains."))
-            all_payment_methods = set(record.payment_ids.mapped('payment_method_line_id').mapped('payment_method_id'))
+            all_payment_methods = record.payment_ids.payment_method_id
             if len(all_payment_methods) > 1:
                 raise ValidationError(_("All payments in the batch must share the same payment method."))
             if all_payment_methods and record.payment_method_id not in all_payment_methods:

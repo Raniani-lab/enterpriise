@@ -34,7 +34,7 @@ class AccountPayment(models.Model):
         batch = self.env['account.batch.payment'].create({
             'journal_id': self[0].journal_id.id,
             'payment_ids': [(4, payment.id, None) for payment in self],
-            'payment_method_line_id': self[0].payment_method_line_id.id,
+            'payment_method_id': self[0].payment_method_id.id,
             'batch_type': self[0].payment_type,
         })
 

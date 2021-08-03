@@ -13,6 +13,7 @@ var StreamPostFacebookComments = StreamPostComments.extend({
             commentName: _t('comment/reply')
         });
 
+        this.commentsCount = options.commentsCount;
         this.accountId = options.accountId;
         this.totalLoadedComments = options.comments.length;
         this.nextRecordsToken = options.nextRecordsToken;
@@ -83,7 +84,7 @@ var StreamPostFacebookComments = StreamPostComments.extend({
     },
 
     getDeleteCommentEndpoint: function () {
-        return 'delete_facebook_comment';
+        return '/social_facebook/delete_comment';
     },
 
     showMoreComments: function (result) {
@@ -100,9 +101,12 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         var $target = $(ev.currentTarget);
         var userLikes = $target.data('userLikes');
         this._rpc({
-            model: 'social.stream.post',
-            method: 'like_facebook_comment',
-            args: [[this.postId], $target.data('commentId'), !userLikes]
+            route: '/social_facebook/like_comment',
+            params: {
+                stream_post_id: this.postId,
+                comment_id: $target.data('commentId'),
+                like: !userLikes
+            }
         });
 
         $target.toggleClass('o_social_comment_user_likes');
@@ -114,9 +118,12 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         ev.preventDefault();
 
         this._rpc({
-            model: 'social.stream.post',
-            method: 'get_facebook_comments',
-            args: [[this.postId], this.nextRecordsToken]
+            route: '/social_facebook/get_comments',
+            params: {
+                stream_post_id: this.postId,
+                next_records_token: this.nextRecordsToken,
+                comments_count: this.commentsCount
+            },
         }).then(function (result) {
             var $moreComments = $(QWeb.render("social.StreamPostCommentsWrapper", {
                 widget: self,

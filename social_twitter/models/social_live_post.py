@@ -31,8 +31,9 @@ class SocialLivePostTwitter(models.Model):
             )
             result = requests.get(
                 tweets_endpoint_url,
-                query_params,
-                headers=headers
+                params=query_params,
+                headers=headers,
+                timeout=5
             )
 
             result_tweets = result.json()
@@ -85,8 +86,9 @@ class SocialLivePostTwitter(models.Model):
             )
             result = requests.post(
                 post_endpoint_url,
-                params,
-                headers=headers
+                data=params,
+                headers=headers,
+                timeout=5
             )
 
             if (result.status_code == 200):

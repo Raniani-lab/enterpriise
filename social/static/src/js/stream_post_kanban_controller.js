@@ -10,6 +10,7 @@ var utils = require('web.utils');
 
 var _t = core._t;
 var QWeb = core.qweb;
+var DEFAULT_COMMENTS_COUNT = 20;
 
 var StreamPostKanbanController = KanbanController.extend({
     events: _.extend({}, KanbanController.prototype.events, {
@@ -49,6 +50,16 @@ var StreamPostKanbanController = KanbanController.extend({
         });
 
         return Promise.all([superPromise, isSocialManagerPromise, hasAccountsPromise]);
+    },
+
+    /**
+     * Init the number of comments displayed in stream.post comments popups.
+     *
+     * @override
+     */
+    init: function (parent, options) {
+        this._super.apply(this, arguments);
+        this.commentsCount = options && options.commentsCount ? options.commentsCount : DEFAULT_COMMENTS_COUNT;
     },
 
     //--------------------------------------------------------------------------

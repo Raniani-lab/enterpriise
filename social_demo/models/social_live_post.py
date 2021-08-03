@@ -21,6 +21,15 @@ class DemoSocialLivePost(models.Model):
                 'facebook_post_id': self.id
             })
 
+    def _post_instagram(self):
+        instagram_stream = self.env.ref('social_demo.social_stream_instagram_account', raise_if_not_found=False)
+        if instagram_stream:
+            # make instagram_post_id of live_post & stream_post match
+            self.write({'instagram_post_id': self.id})
+            self._post_demo(instagram_stream.id, {
+                'instagram_post_id': self.id
+            })
+
     def _post_twitter(self):
         """ In addition to '_post_demo', we also create stream.posts in the "keyword stream" if the message contains the keyword. """
 

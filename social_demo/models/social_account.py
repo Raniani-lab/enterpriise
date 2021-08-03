@@ -28,6 +28,10 @@ class DemoSocialAccount(models.Model):
         """ Overridden to bypass third-party API calls. """
         return
 
+    def _create_default_stream_instagram(self):
+        """ Overridden to bypass third-party API calls. """
+        return
+
     def twitter_search_users(self, query):
         """ Returns some fake suggestions """
         res_partners = [

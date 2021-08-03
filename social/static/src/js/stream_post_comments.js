@@ -431,7 +431,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         var formData = new FormData($replyEl.find('form').first()[0]);
 
         formData.append('csrf_token', odoo.csrf_token);
-        formData.append('post_id', this.postId);
+        formData.append('stream_post_id', this.postId);
         if (isEdit) {
             formData.append('is_edit', isEdit);
         }

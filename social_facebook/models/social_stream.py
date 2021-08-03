@@ -12,12 +12,11 @@ class SocialStreamFacebook(models.Model):
     _inherit = 'social.stream'
 
     def _apply_default_name(self):
-        for stream in self:
-            if stream.media_id.media_type == 'facebook':
-                if stream.account_id:
-                    stream.write({'name': '%s: %s' % (stream.stream_type_id.name, stream.account_id.name)})
-            else:
-                super(SocialStreamFacebook, stream)._apply_default_name()
+        facebook_streams = self.filtered(lambda s: s.media_id.media_type == 'facebook')
+        super(SocialStreamFacebook, (self - facebook_streams))._apply_default_name()
+
+        for stream in facebook_streams:
+            stream.write({'name': '%s: %s' % (stream.stream_type_id.name, stream.account_id.name)})
 
     def _fetch_stream_data(self):
         if self.media_id.media_type != 'facebook':
@@ -46,10 +45,13 @@ class SocialStreamFacebook(models.Model):
             facebook_fields.append('insights.metric(post_impressions)')
 
         posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (self.account_id.facebook_account_id, endpoint_name))
-        result = requests.get(posts_endpoint_url, {
-            'access_token': self.account_id.facebook_access_token,
-            'fields': ','.join(facebook_fields)
-        })
+        result = requests.get(posts_endpoint_url,
+            params={
+                'access_token': self.account_id.facebook_access_token,
+                'fields': ','.join(facebook_fields)
+            },
+            timeout=5
+        )
 
         result_posts = result.json().get('data')
         if not result_posts:
@@ -57,7 +59,7 @@ class SocialStreamFacebook(models.Model):
             return False
 
         facebook_post_ids = [post.get('id') for post in result_posts]
-        existing_posts = self.env['social.stream.post'].sudo().search([
+        existing_posts = self.env['social.stream.post'].search([
             ('stream_id', '=', self.id),
             ('facebook_post_id', 'in', facebook_post_ids)
         ])
@@ -70,9 +72,9 @@ class SocialStreamFacebook(models.Model):
             values = {
                 'stream_id': self.id,
                 'message': self._format_facebook_message(post.get('message'), post.get('message_tags')),
-                'author_name': post.get('from').get('name'),
-                'facebook_author_id': post.get('from').get('id'),
-                'published_date': fields.Datetime.from_string(dateutil.parser.parse(post.get('created_time')).strftime('%Y-%m-%d %H:%M:%S')),
+                'author_name': post.get('from', {}).get('name', ''),
+                'facebook_author_id': post.get('from', {}).get('id'),
+                'published_date': dateutil.parser.parse(post.get('created_time'), ignoretz=True),
                 'facebook_shares_count': post.get('shares', {}).get('count'),
                 'facebook_likes_count': post.get('likes', {}).get('summary', {}).get('total_count'),
                 'facebook_user_likes': post.get('likes', {}).get('summary', {}).get('has_liked'),

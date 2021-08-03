@@ -74,6 +74,9 @@ class SocialStreamPost(models.Model):
         for post in self:
             post.formatted_published_date = self._format_published_date(post.published_date) if post.published_date else False
 
+    def _filter_by_media_types(self, media_types):
+        return self.filtered(lambda post: post.media_type in media_types)
+
     @api.model
     def _format_published_date(self, published_date):
         """ Formats to '5 minutes' instead of date if not older than 12 hours. """

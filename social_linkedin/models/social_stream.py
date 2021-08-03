@@ -15,10 +15,11 @@ class SocialStreamLinkedIn(models.Model):
     _inherit = 'social.stream'
 
     def _apply_default_name(self):
-        linkedin_streams = self.filtered(lambda stream: stream.media_id.media_type == 'linkedin' and stream.account_id)
+        linkedin_streams = self.filtered(lambda s: s.media_id.media_type == 'linkedin')
+        super(SocialStreamLinkedIn, (self - linkedin_streams))._apply_default_name()
+
         for stream in linkedin_streams:
             stream.write({'name': '%s: %s' % (stream.stream_type_id.name, stream.account_id.name)})
-        super(SocialStreamLinkedIn, self - linkedin_streams)._apply_default_name()
 
     def _fetch_stream_data(self):
         """Fetch stream data, return True if new data.
@@ -42,7 +43,7 @@ class SocialStreamLinkedIn(models.Model):
         posts_response = requests.get(
             posts_endpoint, params={'q': 'authors', 'projection': projection, 'count': 100},
             headers=self.account_id._linkedin_bearer_headers(),
-            timeout=10)
+            timeout=5)
 
         if posts_response.status_code != 200 or 'elements' not in posts_response.json():
             self.sudo().account_id.is_media_disconnected = True
@@ -57,7 +58,7 @@ class SocialStreamLinkedIn(models.Model):
         stats_endpoint = url_join(
             self.env['social.media']._LINKEDIN_ENDPOINT,
             'socialActions?ids=List(%s)' % ','.join([quote(urn) for urn in linkedin_post_data]))
-        stats_response = requests.get(stats_endpoint, params={'count': 100}, headers=self.account_id._linkedin_bearer_headers(), timeout=10).json()
+        stats_response = requests.get(stats_endpoint, params={'count': 100}, headers=self.account_id._linkedin_bearer_headers(), timeout=5).json()
 
         if 'results' in stats_response:
             for post_urn, post_data in stats_response['results'].items():

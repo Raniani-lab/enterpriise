@@ -14,7 +14,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
     var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
 
     if (mediaType === 'youtube' || mediaType === 'youtube_preview') {
-        formattedValue = formattedValue.replace(/\B#([a-zA-Z\d-_]+)/g,
+        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
                 `<a href='https://www.youtube.com/results?search_query=%23$1' target='_blank'>#$1</a>`);
     }
     return formattedValue;

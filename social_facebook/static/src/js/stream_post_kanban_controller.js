@@ -20,13 +20,16 @@ StreamPostKanbanController.include({
 
         var postId = $target.data('postId');
         this._rpc({
-            model: 'social.stream.post',
-            method: 'get_facebook_comments',
-            args: [[postId]]
+            route: '/social_facebook/get_comments',
+            params: {
+                stream_post_id: postId,
+                comments_count: this.commentsCount
+            }
         }).then(function (result) {
             new StreamPostFacebookComments(
                 self,
                 {
+                    commentsCount: self.commentsCount,
                     postId: postId,
                     accountId: $target.data('facebookPageId'),
                     originalPost: $target.data(),
@@ -44,9 +47,11 @@ StreamPostKanbanController.include({
         var $target = $(ev.currentTarget);
         var userLikes = $target.data('userLikes');
         this._rpc({
-            model: 'social.stream.post',
-            method: 'like_facebook_post',
-            args: [[$target.data('postId')], !userLikes]
+            route: '/social_facebook/like_post',
+            params: {
+                stream_post_id: $target.data('postId'),
+                like: !userLikes
+            }
         });
 
         this._updateLikesCount($target);

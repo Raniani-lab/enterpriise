@@ -17,11 +17,14 @@ class SocialPostTemplate(models.Model):
 
     @api.depends(lambda self: ['message', 'image_ids'] + self._get_post_message_modifying_fields())
     def _compute_twitter_preview(self):
-        for post in self.with_context(bin_size=False):
+        for post in self:
             post.twitter_preview = self.env.ref('social_twitter.twitter_preview')._render({
                 'message': post._prepare_post_content(
                     post.message,
                     'twitter',
                     **{field: post[field] for field in post._get_post_message_modifying_fields()}),
-                'images': [image.datas for image in post.image_ids],
+                'images': [
+                    image.with_context(bin_size=False).datas
+                    for image in post.image_ids.sorted(lambda image: image._origin.id or image.id, reverse=True)
+                ]
             })

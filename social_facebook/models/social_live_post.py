@@ -19,10 +19,13 @@ class SocialLivePostFacebook(models.Model):
 
         for account in accounts:
             posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (account.facebook_account_id, 'feed'))
-            result = requests.get(posts_endpoint_url, {
-                'access_token': account.facebook_access_token,
-                'fields': 'id,shares,insights.metric(post_impressions),likes.limit(1).summary(true),comments.summary(true)'
-            })
+            result = requests.get(posts_endpoint_url,
+                params={
+                    'access_token': account.facebook_access_token,
+                    'fields': 'id,shares,insights.metric(post_impressions),likes.limit(1).summary(true),comments.summary(true)'
+                },
+                timeout=5
+            )
 
             result_posts = result.json().get('data')
             if not result_posts:
@@ -85,7 +88,7 @@ class SocialLivePostFacebook(models.Model):
                 )
                 params['caption'] = params['message']
 
-            result = requests.request('POST', endpoint_url, params=params,
+            result = requests.request('POST', endpoint_url, params=params, timeout=15,
                 files={'source': (image.name, open(image._full_path(image.store_fname), 'rb'), image.mimetype)})
         else:
             if post.image_ids:
@@ -99,7 +102,7 @@ class SocialLivePostFacebook(models.Model):
             if link_url and not post.image_ids:
                 params.update({'link': link_url})
 
-            result = requests.post(post_endpoint_url, params)
+            result = requests.post(post_endpoint_url, data=params, timeout=15)
 
         if (result.status_code == 200):
             result_json = result.json()

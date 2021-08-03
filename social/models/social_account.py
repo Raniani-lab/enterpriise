@@ -109,11 +109,15 @@ class SocialAccount(models.Model):
             'stories_trend': account.stories_trend,
             'has_trends': account.has_trends,
             'media_id': [account.media_id.id],
+            'media_type': account.media_id.media_type,
             'stats_link': account.stats_link
         } for account in all_accounts]
 
     def _compute_trend(self, value, delta_30d):
         return 0.0 if value - delta_30d <= 0 else (delta_30d / (value - delta_30d)) * 100
+
+    def _filter_by_media_types(self, media_types):
+        return self.filtered(lambda account: account.media_type in media_types)
 
     def _get_multi_company_error_message(self):
         """Return an error message if the social accounts information can not be updated by the current user."""

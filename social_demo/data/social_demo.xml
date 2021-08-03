@@ -100,6 +100,19 @@
         <field name="linkedin_account_urn">urn:li:organization:31337</field>
     </record>
 
+    <record id="social_account_instagram" model="social.account">
+        <field name="name">My Company</field>
+        <field name="audience">1487</field>
+        <field name="audience_trend">12</field>
+        <field name="engagement">14781</field>
+        <field name="engagement_trend">6</field>
+        <field name="stories">-1</field>
+        <field name="stories_trend">-1</field>
+        <field name="has_trends" eval="True" />
+        <field name="image" type="base64" file="base/static/img/res_partner_2-image.png"/>
+        <field name="media_id" ref="social_instagram.social_media_instagram"/>
+    </record>
+
     <!-- GLOBAL POSTS -->
 
     <record id="social_post_global" model="social.post">
@@ -110,6 +123,24 @@
         <field name="account_ids" eval="[(6, 0, [ref('social_demo.social_account_facebook'), ref('social_demo.social_account_twitter'), ref('social_demo.social_account_linkedin')])]" />
     </record>
 
+    <record id="social_post_global_2_image_1" model="ir.attachment">
+        <field name="name">Table Model 1</field>
+        <field name="datas" type="base64" file="social_demo/static/img/table01.jpg"/>
+        <field name="mimetype">image/jpeg</field>
+    </record>
+
+    <record id="social_post_global_2_image_2" model="ir.attachment">
+        <field name="name">Table Model 2</field>
+        <field name="datas" type="base64" file="product/static/img/table02.png"/>
+        <field name="mimetype">image/png</field>
+    </record>
+
+    <record id="social_post_global_2_image_3" model="ir.attachment">
+        <field name="name">Table Model 3</field>
+        <field name="datas" type="base64" file="product/static/img/table03.png"/>
+        <field name="mimetype">image/png</field>
+    </record>
+
     <record id="social_post_global_2" model="social.post">
         <field name="message">Get 20% out of your purchases on https://mycompany.com/shop
 Better run to our website while it lasts 🏃</field>
@@ -117,7 +148,8 @@ Better run to our website while it lasts 🏃</field>
         <field name="published_date" eval="time.strftime('%Y-01-07 09:00:00')"/>
         <field name="state">posted</field>
         <field name="utm_campaign_id" ref="social_utm_campaign" />
-        <field name="account_ids" eval="[(6, 0, [ref('social_demo.social_account_facebook'), ref('social_demo.social_account_twitter'), ref('social_demo.social_account_linkedin')])]" />
+        <field name="account_ids" eval="[(6, 0, [ref('social_demo.social_account_facebook'), ref('social_demo.social_account_twitter'), ref('social_demo.social_account_linkedin'), ref('social_demo.social_account_instagram')])]" />
+        <field name="image_ids" eval="[(6, 0, [ref('social_demo.social_post_global_2_image_1'), ref('social_demo.social_post_global_2_image_2'), ref('social_demo.social_post_global_2_image_3')])]"/>
     </record>
 
     <record id="social_post_global_3" model="social.post">

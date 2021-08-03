@@ -39,12 +39,15 @@ class SocialLivePostYoutube(models.Model):
 
             YOUTUBE_BATCH_SIZE = 50  # can only fetch videos 50 by 50 maximum, limited by YouTube API
             for video_ids_batch in tools.split_every(YOUTUBE_BATCH_SIZE, youtube_video_ids):
-                result = requests.get(video_endpoint_url, params={
-                    'id': ','.join(video_ids_batch),
-                    'access_token': account.youtube_access_token,
-                    'part': 'statistics',
-                    'maxResults': YOUTUBE_BATCH_SIZE,
-                })
+                result = requests.get(video_endpoint_url,
+                    params={
+                        'id': ','.join(video_ids_batch),
+                        'access_token': account.youtube_access_token,
+                        'part': 'statistics',
+                        'maxResults': YOUTUBE_BATCH_SIZE,
+                    },
+                    timeout=5
+                )
 
                 if not result.ok:
                     account.sudo().write({'is_media_disconnected': True})
@@ -87,22 +90,26 @@ class SocialLivePostYoutube(models.Model):
                     self._get_utm_values())
 
         video_endpoint_url = url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/videos")
-        result = requests.put(video_endpoint_url, params={
-            'access_token': self.account_id.youtube_access_token,
-            'part': 'snippet,status',
-        }, json={
-            'id': self.youtube_video_id,
-            'snippet': {
-                'title': self.post_id.youtube_title,
-                'description': youtube_description,
-                # for some reason the category ID is required, even if we never change it
-                'categoryId': self.post_id.youtube_video_category_id,
+        result = requests.put(video_endpoint_url,
+            params={
+                'access_token': self.account_id.youtube_access_token,
+                'part': 'snippet,status',
             },
-            'status': {
-                'privacyStatus': 'public',
-                'embeddable': True
-            }
-        })
+            json={
+                'id': self.youtube_video_id,
+                'snippet': {
+                    'title': self.post_id.youtube_title,
+                    'description': youtube_description,
+                    # for some reason the category ID is required, even if we never change it
+                    'categoryId': self.post_id.youtube_video_category_id,
+                },
+                'status': {
+                    'privacyStatus': 'public',
+                    'embeddable': True
+                }
+            },
+            timeout=5
+        )
 
         if (result.ok):
             values = {

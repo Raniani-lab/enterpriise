@@ -36,7 +36,7 @@
         <field name="linkedin_comments_count">94</field>
         <field name="linkedin_likes_count">4584</field>
         <field name="author_name">My Company Page</field>
-        <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
+        <field name="twitter_profile_image_url" eval="'/web/image/res.partner/%s/image_128' % ref('social_demo.res_partner_1')" />
         <field name="message">Our new product has been released 🎉 Check it out!</field>
         <field name="published_date" eval="time.strftime('%Y-01-05 08:00:00')"/>
         <field name="linkedin_author_urn">XX:XX:XX</field>
@@ -48,7 +48,7 @@
         <field name="linkedin_comments_count">87</field>
         <field name="linkedin_likes_count">7489</field>
         <field name="author_name">My Company Page</field>
-        <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
+        <field name="twitter_profile_image_url" eval="'/web/image/res.partner/%s/image_128' % ref('social_demo.res_partner_1')" />
         <field name="message">Our company wishes a happy new year to everyone on LinkedIn!</field>
         <field name="published_date" eval="time.strftime('%Y-01-01 00:01:00')"/>
         <field name="linkedin_author_urn">XX:XX:XX</field>
@@ -59,7 +59,7 @@
         <field name="linkedin_comments_count">77</field>
         <field name="linkedin_likes_count">1325</field>
         <field name="author_name">My Company Page</field>
-        <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
+        <field name="twitter_profile_image_url" eval="'/web/image/res.partner/%s/image_128' % ref('social_demo.res_partner_1')" />
         <field name="message">Get 20% out of your purchases on https://mycompany.com/shop
 Better run to our website while it lasts 🏃</field>
         <field name="published_date" eval="time.strftime('%Y-01-07 08:00:00')"/>

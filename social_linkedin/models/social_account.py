@@ -30,14 +30,14 @@ class SocialAccountLinkedin(models.Model):
                 social_account.linkedin_account_id = False
 
     def _compute_stats_link(self):
-        linkedin_accounts = self.filtered(lambda account: account.media_type == 'linkedin')
+        linkedin_accounts = self._filter_by_media_types(['linkedin'])
         super(SocialAccountLinkedin, (self - linkedin_accounts))._compute_stats_link()
 
         for account in linkedin_accounts:
             account.stats_link = 'https://www.linkedin.com/company/%s/admin/analytics/visitors/' % account.linkedin_account_id
 
     def _compute_statistics(self):
-        linkedin_accounts = self.filtered(lambda account: account.media_type == 'linkedin')
+        linkedin_accounts = self._filter_by_media_types(['linkedin'])
         super(SocialAccountLinkedin, (self - linkedin_accounts))._compute_statistics()
 
         for account in linkedin_accounts:
@@ -80,7 +80,7 @@ class SocialAccountLinkedin(models.Model):
             endpoint,
             params=params,
             headers=self._linkedin_bearer_headers(),
-            timeout=10)
+            timeout=5)
 
         if response.status_code != 200:
             return {}
@@ -122,7 +122,7 @@ class SocialAccountLinkedin(models.Model):
                 'projection': '(elements*(*,organization~(%s)))' % self.env['social.media']._LINKEDIN_ORGANIZATION_PROJECTION,
             },
             headers=self._linkedin_bearer_headers(linkedin_access_token),
-            timeout=10).json()
+            timeout=5).json()
 
         accounts = []
         if 'elements' in response and isinstance(response.get('elements'), list):

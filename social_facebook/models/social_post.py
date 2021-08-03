@@ -3,7 +3,7 @@
 
 import requests
 
-from odoo import models, api, fields
+from odoo import api, models
 from odoo.osv import expression
 from werkzeug.urls import url_join
 
@@ -14,12 +14,6 @@ class SocialPostFacebook(models.Model):
     @api.depends('live_post_ids.facebook_post_id')
     def _compute_stream_posts_count(self):
         super(SocialPostFacebook, self)._compute_stream_posts_count()
-        for post in self:
-            facebook_post_ids = [facebook_post_id for facebook_post_id in post.live_post_ids.mapped('facebook_post_id') if facebook_post_id]
-            if facebook_post_ids:
-                post.stream_posts_count += self.env['social.stream.post'].search_count(
-                    [('facebook_post_id', 'in', facebook_post_ids)]
-                )
 
     def _get_stream_post_domain(self):
         domain = super(SocialPostFacebook, self)._get_stream_post_domain()
@@ -36,10 +30,14 @@ class SocialPostFacebook(models.Model):
         for image in self.image_ids:
             facebook_photo_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, '/v10.0/%s/photos' % facebook_account_id)
 
-            post_result = requests.request('POST', facebook_photo_endpoint_url, params={
-                'published': 'false',
-                'access_token': facebook_access_token
-            }, files={'source': ('source', open(image._full_path(image.store_fname), 'rb'), image.mimetype)})
+            post_result = requests.request('POST', facebook_photo_endpoint_url,
+                params={
+                    'published': 'false',
+                    'access_token': facebook_access_token
+                },
+                files={'source': ('source', open(image._full_path(image.store_fname), 'rb'), image.mimetype)},
+                timeout=15
+            )
 
             formatted_images.append({'media_fbid': post_result.json().get('id')})
 

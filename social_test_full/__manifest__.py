@@ -10,12 +10,18 @@
 and social-related sub modules. It will test interactions between all those modules.""",
     'depends': [
         'social_facebook',
-        'social_twitter',
+        'social_instagram',
         'social_linkedin',
         'social_push_notifications',
+        'social_twitter',
         'social_youtube',
     ],
     'installable': True,
     'application': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.qunit_suite_tests': [
+            'social_test_full/static/src/js/tests/**/*',
+        ],
+    }
 }

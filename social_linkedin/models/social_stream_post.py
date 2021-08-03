@@ -49,58 +49,11 @@ class SocialStreamPostLinkedIn(models.Model):
             else:
                 post.post_link = False
 
-    def get_linkedin_comments(self, comment_urn=None, offset=0, count=20):
-        """Retrieve comments on a LinkedIn element.
+    # ========================================================
+    # COMMENTS / LIKES
+    # ========================================================
 
-        :param element_urn: URN of the element (UGC Post or Comment) on which we want to retrieve comments
-            If no specified, retrieve comments on the current post
-        :param offset: Used to scroll over the comments, position of the first retrieved comment
-        :param count: Number of comments returned
-        """
-        element_urn = comment_urn or self.linkedin_post_urn
-
-        response = requests.get(
-            url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'socialActions/%s/comments/' % quote(element_urn)),
-            params={
-                'start': offset,
-                'count': count,
-                'projection': '(paging,elements*(%s))' % self.env['social.media']._LINKEDIN_COMMENT_PROJECTION
-            },
-            headers=self.account_id._linkedin_bearer_headers(),
-            timeout=10).json()
-
-        if 'elements' not in response:
-            self.sudo().account_id.is_media_disconnected = True
-
-        comments = [self._format_linkedin_comment(comment) for comment in response.get('elements', [])]
-        if 'comment' in element_urn:
-            # replies on comments should be sorted chronologically
-            comments = comments[::-1]
-
-        return {
-            'postAuthorImage': self.linkedin_author_image_url,
-            'currentUserUrn': self.account_id.linkedin_account_urn,
-            'accountId': self.account_id.id,
-            'comments': comments,
-            'offset': offset + count,
-            'summary': {'total_count': response.get('paging', {}).get('total', 0)},
-        }
-
-    def delete_linkedin_comment(self, comment_urn):
-        comment_id = re.search(r'urn:li:comment:\(urn:li:activity:\w+,(\w+)\)', comment_urn).group(1)
-        endpoint = url_join(
-            self.env['social.media']._LINKEDIN_ENDPOINT,
-            'socialActions/%s/comments/%s' % (quote(self.linkedin_post_urn), quote(comment_id)))
-
-        response = requests.request(
-            'DELETE', endpoint, params={'actor': self.account_id.linkedin_account_urn},
-            headers=self.account_id._linkedin_bearer_headers(),
-            timeout=10)
-
-        if response.status_code != 204:
-            self.sudo().account_id.is_media_disconnected = True
-
-    def _add_linkedin_comment(self, message, comment_urn=None):
+    def _linkedin_comment_add(self, message, comment_urn=None):
         data = {
             'actor': self.account_id.linkedin_account_urn,
             'message': {
@@ -119,15 +72,70 @@ class SocialStreamPostLinkedIn(models.Model):
             params={'projection': '(%s)' % self.env['social.media']._LINKEDIN_COMMENT_PROJECTION},
             json=data,
             headers=self.account_id._linkedin_bearer_headers(),
-            timeout=10).json()
+            timeout=5).json()
 
         if 'created' not in response:
             self.sudo().account_id.is_media_disconnected = True
             return {}
 
-        return self._format_linkedin_comment(response)
+        return self._linkedin_format_comment(response)
 
-    def _format_linkedin_comment(self, json_data):
+    def _linkedin_comment_delete(self, comment_urn):
+        comment_id = re.search(r'urn:li:comment:\(urn:li:activity:\w+,(\w+)\)', comment_urn).group(1)
+        endpoint = url_join(
+            self.env['social.media']._LINKEDIN_ENDPOINT,
+            'socialActions/%s/comments/%s' % (quote(self.linkedin_post_urn), quote(comment_id)))
+
+        response = requests.request(
+            'DELETE', endpoint, params={'actor': self.account_id.linkedin_account_urn},
+            headers=self.account_id._linkedin_bearer_headers(),
+            timeout=5)
+
+        if response.status_code != 204:
+            self.sudo().account_id.is_media_disconnected = True
+
+    def _linkedin_comment_fetch(self, comment_urn=None, offset=0, count=20):
+        """Retrieve comments on a LinkedIn element.
+
+        :param element_urn: URN of the element (UGC Post or Comment) on which we want to retrieve comments
+            If no specified, retrieve comments on the current post
+        :param offset: Used to scroll over the comments, position of the first retrieved comment
+        :param count: Number of comments returned
+        """
+        element_urn = comment_urn or self.linkedin_post_urn
+
+        response = requests.get(
+            url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'socialActions/%s/comments/' % quote(element_urn)),
+            params={
+                'start': offset,
+                'count': count,
+                'projection': '(paging,elements*(%s))' % self.env['social.media']._LINKEDIN_COMMENT_PROJECTION
+            },
+            headers=self.account_id._linkedin_bearer_headers(),
+            timeout=5).json()
+
+        if 'elements' not in response:
+            self.sudo().account_id.is_media_disconnected = True
+
+        comments = [self._linkedin_format_comment(comment) for comment in response.get('elements', [])]
+        if 'comment' in element_urn:
+            # replies on comments should be sorted chronologically
+            comments = comments[::-1]
+
+        return {
+            'postAuthorImage': self.linkedin_author_image_url,
+            'currentUserUrn': self.account_id.linkedin_account_urn,
+            'accountId': self.account_id.id,
+            'comments': comments,
+            'offset': offset + count,
+            'summary': {'total_count': response.get('paging', {}).get('total', 0)},
+        }
+
+    # ========================================================
+    # MISC / UTILITY
+    # ========================================================
+
+    def _linkedin_format_comment(self, json_data):
         """Formats a comment returned by the LinkedIn API to a dict that will be interpreted by our frontend."""
         data = {
             'id': json_data.get('$URN'),

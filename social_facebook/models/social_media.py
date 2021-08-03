@@ -64,13 +64,16 @@ class SocialMediaFacebook(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
-        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/facebook/1/add_accounts'), params={
-            'returning_url': url_join(self.get_base_url(), 'social_facebook/callback'),
-            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-        }).text
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/facebook/1/add_accounts'),
+            params={
+                'returning_url': url_join(self.get_base_url(), 'social_facebook/callback'),
+                'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
+            },
+            timeout=5
+        ).text
 
         if iap_add_accounts_url == 'unauthorized':
-            raise UserError(_("You don't have an active subscription. Please buy one here: %s") % 'https://www.odoo.com/buy')
+            raise UserError(_("You don't have an active subscription. Please buy one here: %s", 'https://www.odoo.com/buy'))
 
         return {
             'type': 'ir.actions.act_url',

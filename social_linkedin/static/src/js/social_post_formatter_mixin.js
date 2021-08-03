@@ -13,7 +13,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
     formattedValue = _superFormatPost.apply(this, arguments);
     var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
     if (mediaType === 'linkedin') {
-       formattedValue = formattedValue.replace(/\B#([a-zA-Z\d-_]+)/g,
+       formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
                 `<a href='https://www.linkedin.com/feed/hashtag/$1' target='_blank'>#$1</a>`);
     }
     return formattedValue;

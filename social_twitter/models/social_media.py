@@ -51,7 +51,7 @@ class SocialMediaTwitter(models.Model):
             twitter_oauth_url,
             headers={'oauth_callback': url_join(self.get_base_url(), "social_twitter/callback")}
         )
-        response = requests.post(twitter_oauth_url, headers=headers)
+        response = requests.post(twitter_oauth_url, headers=headers, timeout=5)
         if response.status_code != 200:
             raise UserError(self._extract_error_message(response))
 
@@ -75,13 +75,16 @@ class SocialMediaTwitter(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
-        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/twitter/1/add_accounts'), params={
-            'returning_url': url_join(self.get_base_url(), 'social_twitter/callback'),
-            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-        }).text
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/twitter/1/add_accounts'),
+            params={
+                'returning_url': url_join(self.get_base_url(), 'social_twitter/callback'),
+                'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
+            },
+            timeout=5
+        ).text
 
         if iap_add_accounts_url == 'unauthorized':
-            raise UserError(_("You don't have an active subscription. Please buy one here: %s") % 'https://www.odoo.com/buy')
+            raise UserError(_("You don't have an active subscription. Please buy one here: %s", 'https://www.odoo.com/buy'))
         elif iap_add_accounts_url == 'wrong_configuration':
             raise UserError(_("The url that this service requested returned an error. Please contact the author of the app."))
 

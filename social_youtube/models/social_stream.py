@@ -44,12 +44,15 @@ class SocialStreamYoutube(models.Model):
         # 1. get the playlist items from the "all uploads" playlist
         # results are returned by published desc by default
         playlist_items_endpoint = url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/playlistItems")
-        playlist_items_response = requests.get(playlist_items_endpoint, params={
-            'access_token': self.account_id.youtube_access_token,
-            'playlistId': self.account_id.youtube_upload_playlist_id,
-            'part': 'snippet,status',
-            'maxResults': 50,
-        }).json()
+        playlist_items_response = requests.get(playlist_items_endpoint,
+            params={
+                'access_token': self.account_id.youtube_access_token,
+                'playlistId': self.account_id.youtube_upload_playlist_id,
+                'part': 'snippet,status',
+                'maxResults': 50,
+            },
+            timeout=5
+        ).json()
 
         if playlist_items_response.get('error'):
             self.account_id.write({'is_media_disconnected': True})
@@ -65,11 +68,14 @@ class SocialStreamYoutube(models.Model):
 
         # 2. get the videos information from the playlist items retrieved at step 1.
         video_endpoint = url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/videos")
-        video_items_response = requests.get(video_endpoint, params={
-            'access_token': self.account_id.youtube_access_token,
-            'part': 'id,snippet,statistics,contentDetails',
-            'id': ','.join(youtube_video_ids),
-        }).json()
+        video_items_response = requests.get(video_endpoint,
+            params={
+                'access_token': self.account_id.youtube_access_token,
+                'part': 'id,snippet,statistics,contentDetails',
+                'id': ','.join(youtube_video_ids),
+            },
+            timeout=5
+        ).json()
 
         if video_items_response.get('error'):
             self.account_id.write({'is_media_disconnected': True})
@@ -78,7 +84,7 @@ class SocialStreamYoutube(models.Model):
             return False
 
         # 3. create or update social.stream.post based on fetched videos
-        existing_posts = self.env['social.stream.post'].sudo().search([
+        existing_posts = self.env['social.stream.post'].search([
             ('stream_id', '=', self.id),
             ('youtube_video_id', 'in', youtube_video_ids)
         ])

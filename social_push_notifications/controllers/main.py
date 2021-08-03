@@ -48,9 +48,12 @@ class SocialPushNotificationsController(http.Controller):
             'social.social_iap_endpoint',
             request.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
-        result = requests.get(url_join(social_iap_endpoint, 'iap/social_push_notifications/get_firebase_info'), {
-            'db_uuid': request.env['ir.config_parameter'].sudo().get_param('database.uuid')
-        })
+        result = requests.get(url_join(social_iap_endpoint, 'iap/social_push_notifications/get_firebase_info'),
+            params={
+                'db_uuid': request.env['ir.config_parameter'].sudo().get_param('database.uuid')
+            },
+            timeout=5
+        )
 
         if result.status_code == 200:
             result_json = result.json()

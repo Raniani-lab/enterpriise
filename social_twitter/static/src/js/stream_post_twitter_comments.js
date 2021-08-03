@@ -12,7 +12,8 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             this.hasMoreComments = options.hasMoreComments;
             this.page = 1;
             this.allComments = options.allComments;
-            this.comments = this.allComments.slice(0, 20);
+            this.commentsCount = options.commentsCount;
+            this.comments = this.allComments.slice(0, this.commentsCount);
             this.mediaType = 'twitter';
 
             this.options = _.defaults(options || {}, {
@@ -75,7 +76,7 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
         },
 
         getDeleteCommentEndpoint: function () {
-            return 'delete_tweet';
+            return '/social_twitter/delete_tweet';
         },
 
         isCommentEditable: function () {
@@ -83,7 +84,7 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
         },
 
         showMoreComments: function (result) {
-            return this.page * 20 < this.allComments.length;
+            return this.page * this.commentsCount < this.allComments.length;
         },
 
         //--------------------------------------------------------------------------
@@ -112,8 +113,8 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             ev.preventDefault();
 
             this.page += 1;
-            var start = (this.page - 1) * 20;
-            var end = start + 20;
+            var start = (this.page - 1) * this.commentsCount;
+            var end = start + this.commentsCount;
             var $moreComments = $(QWeb.render("social.StreamPostCommentsWrapper", {
                 widget: this,
                 comments: this.allComments.slice(start, end)

@@ -83,7 +83,10 @@ class HrContract(models.Model):
     def _compute_bike_id(self):
         for contract in self:
             if contract.new_bike or contract.new_bike_model_id:
-                contract.bike_id = False
+                contract.update({
+                    'bike_id': False,
+                    'transport_mode_bike': False
+                })
 
     @api.depends('bike_id')
     def _compute_new_bike_model_id(self):
@@ -207,11 +210,20 @@ class HrContract(models.Model):
         for contract in self:
             contract.max_unused_cars = 999999 if contract.env.context.get('is_applicant') else int(max_unused_cars)
 
-    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public')
+    @api.onchange('new_car', 'transport_mode_car')
+    def _onchange_transport_mode_car(self):
+        if self.new_car:
+            self.transport_mode_car = False
+            self.car_id = False
+
+    @api.onchange('transport_mode_bike', 'transport_mode_car', 'transport_mode_train', 'transport_mode_public')
     def _onchange_transport_mode(self):
         super(HrContract, self)._onchange_transport_mode()
-        if not self.transport_mode_car:
-            self.car_id = False
+        if self.transport_mode_bike:
+            self.new_bike = False
+            self.new_bike_model_id = False
+        if self.transport_mode_car:
+            self.new_car = False
             self.new_car_model_id = False
 
     def _get_fields_that_recompute_payslip(self):

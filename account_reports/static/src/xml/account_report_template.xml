@@ -58,9 +58,21 @@
                     </t>
                 </td>
             </tr>
+            <tr t-if="formula_with_values != formula_balance">
+               <td> = </td>
+                <td style="text-align:right;"><t t-out="formula_with_values"/></td>
+            </tr>
+            <tr>
+               <td> = </td>
+                <td style="text-align:right;"><t t-out="formula_balance"/></td>
+            </tr>
             <tr t-if="domain">
                 <td><strong>Domain: </strong></td>
                 <td style="text-align:right;"><t t-out="domain"/></td>
+            </tr>
+            <tr t-if="control_domain">
+                <td><strong>Control Domain: </strong></td>
+                <td style="text-align:right;"><t t-out="control_domain"/></td>
             </tr>
             <tr t-if="display_button">
                <td style="text-align:center;"
@@ -69,13 +81,14 @@
                            class="btn btn-sm btn-secondary js_view_entries">View Journal Entries</button>
                </td>
             </tr>
-            <tr t-if="formula_with_values != formula_balance">
-               <td> = </td>
-                <td style="text-align:right;"><t t-out="formula_with_values"/></td>
-            </tr>
-            <tr>
-               <td> = </td>
-                <td style="text-align:right;"><t t-out="formula_balance"/></td>
+            <tr t-if="control_domain">
+               <td style="text-align:center;"
+                   colspan="2">
+                   <button t-att-data-id="id"
+                           class="btn btn-sm btn-secondary float-left js_view_coa">Accounts</button>
+                   <button t-att-data-id="id"
+                           class="btn btn-sm btn-secondary float-right js_view_line_computation">Report Line Computation</button>
+               </td>
             </tr>
         </table>
     </t>

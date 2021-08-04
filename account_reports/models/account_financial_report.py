@@ -4,10 +4,10 @@ import ast
 import json
 
 from .formula import FormulaSolver, PROTECTED_KEYWORDS
+from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _
 from odoo.tools import float_is_zero, ustr
-from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
 from odoo.osv import expression
 
 
@@ -180,7 +180,7 @@ class ReportAccountFinancialReport(models.Model):
     def _get_templates(self):
         # Update the report_financial templates to include the buttons for the missing / excess journal items.
         templates = super()._get_templates()
-        templates['line_template'] = 'account_reports.line_template_control_domain'
+        templates['main_template'] = 'account_reports.main_template_control_domain'
         return templates
 
     # -------------------------------------------------------------------------
@@ -259,6 +259,7 @@ class ReportAccountFinancialReport(models.Model):
         '''
         if financial_line.formulas:
             results = solver.get_results(financial_line)
+            failed_control_domain = financial_line.id in options.get('control_domain_missing_ids', []) + options.get('control_domain_excess_ids', [])
             return {
                 'style': 'width: 1%; text-align: right;',
                 'template': 'account_reports.cell_template_debug_popup_financial_reports',
@@ -274,6 +275,7 @@ class ReportAccountFinancialReport(models.Model):
                     'formula_with_values': solver.get_formula_string(financial_line),
                     'formula_balance': self._format_cell_value(financial_line, sum(results['formula'].values())),
                     'domain': str(financial_line.domain) if solver.is_leaf(financial_line) and financial_line.domain else '',
+                    'control_domain': failed_control_domain and str(financial_line.control_domain),
                     'display_button': solver.has_move_lines(financial_line),
                 }),
             }
@@ -662,10 +664,6 @@ class ReportAccountFinancialReport(models.Model):
                 green_on_positive=financial_line.green_on_positive
             ))
 
-        # Debug info columns.
-        if self._display_debug_info(options):
-            columns.append(self._compute_debug_info_column(options, solver, financial_line))
-
         financial_report_line = {
             'id': report_line_id,
             'name': financial_line.name,
@@ -679,18 +677,31 @@ class ReportAccountFinancialReport(models.Model):
             'action_id': financial_line.action_id.id,
         }
 
-        # If a financial line has a control domain, a check is made to detect any potential discrepancy
-        if financial_line.control_domain:
-            if not financial_line._check_control_domain(options, results, self):
-                # If a discrenpancy is found, a check is made to see if the current line is
-                # missing items or has items appearing more than once.
-                has_missing = solver._has_missing_control_domain(options, financial_line)
-                has_excess = solver._has_excess_control_domain(options, financial_line)
-                financial_report_line['has_missing'] = has_missing
-                financial_report_line['has_excess'] = has_excess
-                # In either case, the line is colored in red.
-                if has_missing or has_excess:
-                    financial_report_line['class'] += ' alert alert-danger'
+        # Only run the checks in debug mode
+        if self.user_has_groups('base.group_no_one'):
+            # If a financial line has a control domain, a check is made to detect any potential discrepancy
+            if financial_line.control_domain:
+                if not financial_line._check_control_domain(options, results, self):
+                    # If a discrepancy is found, a check is made to see if the current line is
+                    # missing items or has items appearing more than once.
+                    has_missing = solver._has_missing_control_domain(options, financial_line)
+                    has_excess = solver._has_excess_control_domain(options, financial_line)
+                    financial_report_line['has_missing'] = has_missing
+                    financial_report_line['has_excess'] = has_excess
+                    # In either case, the line is colored in red.
+                    # The ids of the missing / excess report lines are stored in the options for the top yellow banner
+                    if has_missing:
+                        financial_report_line['class'] += ' alert alert-danger'
+                        options.setdefault('control_domain_missing_ids', [])
+                        options['control_domain_missing_ids'].append(financial_line.id)
+                    if has_excess:
+                        financial_report_line['class'] += ' alert alert-danger'
+                        options.setdefault('control_domain_excess_ids', [])
+                        options['control_domain_excess_ids'].append(financial_line.id)
+
+        # Debug info columns.
+        if self._display_debug_info(options):
+            columns.append(self._compute_debug_info_column(options, solver, financial_line))
 
         # Custom caret_options for tax report.
         if self.tax_report and financial_line.domain and not financial_line.action_id:
@@ -861,17 +872,18 @@ class ReportAccountFinancialReport(models.Model):
             name += ' ' + _('(copy)')
         return name
 
-    def _prepare_control_domain_action(self, options, params):
-        """ Prepare the html report line, the solver and the action for the control domain buttons.
-        :return:    The report line, the solver and the action.
+    def _prepare_control_domain_action(self, options, missing=True):
+        """ Prepare the report lines, the solver and the action for the control domain buttons.
+        Depending on the button used, 'active_ids' will include either the 'control_domain_missing_ids'
+        or the 'control_domain_excess_ids'
+        :return:    The missing / excess report lines, the solver and the action.
         """
 
-        active_id = self._get_model_info_from_id(params.get('id'))
-        line = self.env['account.financial.html.report.line'].browse(active_id[-1])
-
+        active_ids = options.get('control_domain_missing_ids') if missing else options.get('control_domain_excess_ids')
+        lines = self.env['account.financial.html.report.line'].browse(active_ids)
         options_list = self._get_options_periods_list(options)
         solver = FormulaSolver(options_list, self)
-        solver.fetch_lines(line)
+        solver.fetch_lines(lines)
 
         action = {
             'type': 'ir.actions.act_window',
@@ -887,30 +899,30 @@ class ReportAccountFinancialReport(models.Model):
             },
         }
 
-        return line, solver, action
+        return lines, solver, action
 
     def open_control_domain_missing(self, options, params=None):
-        """ Action when clicking the link on the report line that is shown
-        when it fails the control domain check because of missing journal items.
+        """ Action when clicking the link on the banner at the top that is shown
+        when the control domain check fails because of missing journal items.
         :return:    A tree view with the missing items.
         """
         self.ensure_one()
 
-        line, solver, action = self._prepare_control_domain_action(options, params)
-        action['domain'] += solver._get_missing_control_domain(options, line)
+        lines, solver, action = self._prepare_control_domain_action(options)
+        action['domain'] += expression.OR([solver._get_missing_control_domain(options, line) for line in lines])
         action['name'] = _('Missing Journal Items')
 
         return action
 
     def open_control_domain_excess(self, options, params=None):
-        """ Action when clicking the link on the report line that is shown
-        when it fails the control domain check because of excess journal items.
+        """ Action when clicking the link on the banner at the top that is shown
+        when the control domain check fails because of missing journal items.
         :return:    A tree view with the excess items.
         """
         self.ensure_one()
 
-        line, solver, action = self._prepare_control_domain_action(options, params)
-        action['domain'] += solver._get_excess_control_domain(options, line)
+        lines, solver, action = self._prepare_control_domain_action(options, missing=False)
+        action['domain'] += expression.OR([solver._get_excess_control_domain(options, line) for line in lines])
         action['name'] = _('Excess Journal Items')
 
         return action
@@ -1407,4 +1419,41 @@ class AccountFinancialReportLine(models.Model):
             'views': [[self.env.ref('account.view_move_line_tree').id, 'list']],
             'domain': domain,
             'context': {**parent_financial_report._set_context(options)},
+        }
+
+    def action_view_coa(self, options):
+        """ Action when clicking on the "Accounts" button in the debug info popup."""
+        self.ensure_one()
+
+        options_list = self._get_financial_report()._get_options_periods_list(options)
+        solver = FormulaSolver(options_list, self)
+        solver.fetch_lines(self)
+
+        missing_amls = solver._get_missing_control_domain(options, self)
+        excess_amls = solver._get_excess_control_domain(options, self)
+        amls = self.env['account.move.line'].search(missing_amls + excess_amls)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Chart of Accounts'),
+            'res_model': 'account.account',
+            'view_mode': 'tree',
+            'limit': 99999999,
+            'search_view_id': [self.env.ref('account.view_account_search').id],
+            'views': [[self.env.ref('account_reports.view_account_coa').id, 'list']],
+            'domain': [('id', 'in', amls.mapped('account_id.id'))],
+        }
+
+    def action_view_line_computation(self):
+        """ Action when clicking on the "Report Line Computation" button in the debug info popup."""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Computation: %s', self.name),
+            'res_model': 'account.financial.html.report.line',
+            'view_mode': 'form',
+            'views': [[False, 'form']],
+            'target': 'new',
+            'res_id': self.id,
+            'context': {'create': False},
         }

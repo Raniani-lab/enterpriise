@@ -110,5 +110,23 @@
         </record>
         <menuitem id="menu_account_financial_reports_tree" name="Financial Reports" sequence="6" parent="account.account_management_menu" action="account_reports.action_account_financial_report_tree" groups="base.group_no_one"/>
 
+        <record id="view_account_coa" model="ir.ui.view">
+            <field name="name">account.view.coa</field>
+            <field name="model">account.account</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="1" delete="1">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="user_type_id" widget="account_hierarchy_selection"/>
+                    <field name="current_balance"/>
+                    <field name="tax_ids" optional="hide" widget="many2many_tags"/>
+                    <field name="tag_ids" optional="hide" widget="many2many_tags"/>
+                    <field name="allowed_journal_ids" optional="hide" widget="many2many_tags"/>
+                    <button name="action_read_account" type="object" string="Setup" class="float-right btn-secondary"/>
+                </tree>
+            </field>
+        </record>
+
     </data>
 </odoo>

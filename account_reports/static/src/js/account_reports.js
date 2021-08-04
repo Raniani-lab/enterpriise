@@ -361,6 +361,32 @@ var accountReportsWidget = AbstractAction.extend({
                         })
                     });
 
+                    // Bind the 'Accounts' button with the 'action_view_coa' python method.
+                    $content.find('.js_view_coa').on('click', function(event){
+                        self._rpc({
+                            model: 'account.financial.html.report.line',
+                            method: 'action_view_coa',
+                            args: [$(event.target).data('id'), self.report_options],
+                            context: self.odoo_context,
+                        })
+                        .then(function(result){
+                            return self.do_action(result);
+                        })
+                    });
+
+                    // Bind the 'Report Line Computation' button with the 'action_view_line_computation' python method.
+                    $content.find('.js_view_line_computation').on('click', function(event){
+                        self._rpc({
+                            model: 'account.financial.html.report.line',
+                            method: 'action_view_line_computation',
+                            args: [$(event.target).data('id')],
+                            context: self.odoo_context,
+                        })
+                        .then(function(result){
+                            return self.do_action(result);
+                        })
+                    });
+
                     // Bind the 'view carryover lines' button with the 'action_view_carryover_lines' python method.
                     $content.find('.js_view_carryover_lines').on('click', function(event){
                         self._rpc({

@@ -336,10 +336,23 @@
 </template>
 
 <!-- Control domain templates -->
-<template id="line_template_control_domain" inherit_id="account_reports.line_template" primary="True">
-    <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-        &amp;nbsp;<a t-if="line.get('has_missing')" t-att-data-id="line['id']" action="open_control_domain_missing" class="no_print oe_link_reports"> ⇒ Missing journal items</a>
-        &amp;nbsp;<a t-if="line.get('has_excess')" t-att-data-id="line['id']" action="open_control_domain_excess" class="no_print oe_link_reports"> ⇒ Excess journal items</a>
+<!-- Warning (banner) on top, related to control domains -->
+<template id="main_template_control_domain" inherit_id="account_reports.main_template" primary="True">
+    <xpath expr="//div[@id='warnings_div']" position="inside">
+        <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('control_domain_missing_ids')">
+            <span>
+                Journal Items on the
+                <a action="open_control_domain_missing" class="no_print oe_link_reports">following accounts</a>
+                might be missing from the proper section of the report.
+            </span>
+        </div>
+        <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('control_domain_excess_ids')">
+            <span>
+                Journal items on the
+                <a action="open_control_domain_excess" class="no_print oe_link_reports">following accounts</a>
+                might be listed in an incorrect section of the report.
+            </span>
+        </div>
     </xpath>
 </template>
 

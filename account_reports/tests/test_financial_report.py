@@ -387,39 +387,42 @@ class TestFinancialReport(TestAccountReportsCommon):
         options['unfold_all'] = True
         options.pop('multi_company', None)
 
-        # 1. Test for each scenario separately
-        report_line = self.env.ref('account_reports.account_financial_report_current_assets_view0')
-        line_id_current_assets = self.env['account.financial.html.report']._get_generic_line_id(
-            'account.financial.html.report.line',
-            report_line.id,
-        )
+        # Activate debug mode to enable control domain feature
+        with self.debug_mode(self.report):
 
-        # 1.0. Base case : no control domain
-        lines = self.report._get_table(options)[1]
-        check_missing_exceeding(lines, {}, {})
+            # 1. Test for each scenario separately
+            report_line = self.env.ref('account_reports.account_financial_report_current_assets_view0')
+            line_id_current_assets = self.env['account.financial.html.report']._get_generic_line_id(
+                'account.financial.html.report.line',
+                report_line.id,
+            )
 
-        # 1.1. Base case : nothing missing or in excess
-        report_line.control_domain = OR([ast.literal_eval(ustr(line.domain)) for line in report_line.children_ids])
-        lines = self.report._get_table(options)[1]
-        check_missing_exceeding(lines, {}, {})
+            # 1.0. Base case : no control domain
+            lines = self.report._get_table(options)[1]
+            check_missing_exceeding(lines, {}, {})
 
-        # 1.2. Excess journal items
-        report_line.control_domain = "[('account_id', '=', False)]"
-        lines = self.report._get_table(options)[1]
-        check_missing_exceeding(lines, {}, {line_id_current_assets})
+            # 1.1. Base case : nothing missing or in excess
+            report_line.control_domain = OR([ast.literal_eval(ustr(line.domain)) for line in report_line.children_ids])
+            lines = self.report._get_table(options)[1]
+            check_missing_exceeding(lines, {}, {})
 
-        # 1.3. Missing journal items
-        report_line.control_domain = "[('account_id', '!=', False)]"
-        lines = self.report._get_table(options)[1]
-        check_missing_exceeding(lines, {line_id_current_assets}, {})
+            # 1.2. Excess journal items
+            report_line.control_domain = "[('account_id', '=', False)]"
+            lines = self.report._get_table(options)[1]
+            check_missing_exceeding(lines, {}, {line_id_current_assets})
 
-        # 2. Test for both missing and excess journal items
-        report_line = self.env.ref('account_reports.account_financial_unaffected_earnings0')
-        line_id_unaffected_earnings = self.env['account.financial.html.report']._get_generic_line_id(
-            'account.financial.html.report.line',
-            report_line.id,
-        )
+            # 1.3. Missing journal items
+            report_line.control_domain = "[('account_id', '!=', False)]"
+            lines = self.report._get_table(options)[1]
+            check_missing_exceeding(lines, {line_id_current_assets}, {})
 
-        report_line.control_domain = "[('account_id', '!=', False)]"
-        lines = self.report._get_table(options)[1]
-        check_missing_exceeding(lines, {line_id_current_assets, line_id_unaffected_earnings}, {line_id_unaffected_earnings})
+            # 2. Test for both missing and excess journal items
+            report_line = self.env.ref('account_reports.account_financial_unaffected_earnings0')
+            line_id_unaffected_earnings = self.env['account.financial.html.report']._get_generic_line_id(
+                'account.financial.html.report.line',
+                report_line.id,
+            )
+
+            report_line.control_domain = "[('account_id', '!=', False)]"
+            lines = self.report._get_table(options)[1]
+            check_missing_exceeding(lines, {line_id_current_assets, line_id_unaffected_earnings}, {line_id_unaffected_earnings})

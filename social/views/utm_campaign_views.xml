@@ -17,7 +17,7 @@
                     attrs="{'invisible': [('social_posts_count', '=', 0)]}">
                     <field name="social_posts_count" widget="statinfo" string="Posts"/>
                 </button>
-                <button icon="fa-thumbs-up">
+                <button icon="fa-thumbs-up" disabled="disabled">
                     <field name="social_engagement" widget="statinfo" string="Engagement"/>
                 </button>
             </xpath>

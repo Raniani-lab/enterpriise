@@ -197,7 +197,7 @@
                         <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
                     </button>
                     <button class="oe_stat_button" icon="fa-thumbs-up"
-                        attrs="{'invisible': [('engagement', '=', 0)]}">
+                        attrs="{'invisible': [('engagement', '=', 0)]}" disabled="disabled">
                         <field string="Engagement" name="engagement" widget="statinfo" />
                     </button>
                     <button class="oe_stat_button order-4" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">

@@ -1148,14 +1148,12 @@ class SaleSubscriptionLine(models.Model):
         """
         Compute the amounts of the Subscription line.
         """
-        AccountTax = self.env['account.tax']
         for line in self:
-            price = AccountTax._fix_tax_included_price_company(line.price_unit, line.product_id.sudo().taxes_id, AccountTax, line.company_id)
-            price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
-            if line.analytic_account_id.pricelist_id.sudo().currency_id:
-                price_subtotal = line.analytic_account_id.pricelist_id.sudo().currency_id.round(price_subtotal)
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.product_id.sudo().taxes_id.filtered(lambda tax: tax.company_id == self.company_id)
+            amounts = taxes.compute_all(price, line.currency_id, line.quantity, product=line.product_id, partner=self.analytic_account_id.partner_id)
             line.update({
-                'price_subtotal': price_subtotal,
+                'price_subtotal': amounts['total_excluded'],
             })
 
     @api.onchange('product_id')

@@ -90,8 +90,6 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="planning_overlap"/>
                 <field name="is_fsm"/>
-                <field name="project_id"/>
-                <field name="user_id"/>
             </xpath>
             <xpath expr="//gantt" position="attributes">
                 <attribute name="decoration-danger">is_fsm and planning_overlap &gt; 0</attribute>

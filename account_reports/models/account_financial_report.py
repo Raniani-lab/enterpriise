@@ -594,7 +594,7 @@ class ReportAccountFinancialReport(models.Model):
         financial_line = self.env['account.financial.html.report.line'].browse(model_id)
         formula_solver = FormulaSolver(options_list, self)
         formula_solver.fetch_lines(financial_line)
-        sorted_groupby_keys = [tuple(key) for key in options['sorted_groupby_keys']]
+        sorted_groupby_keys = [tuple(key) for key in options.get('sorted_groupby_keys', [(0,)])]
         lines = self._build_lines_hierarchy(options_list, financial_line, formula_solver, sorted_groupby_keys)
 
         return lines

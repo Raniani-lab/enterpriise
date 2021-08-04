@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import api, fields, models
 
 
 class MrpCostStructure(models.AbstractModel):
@@ -12,6 +12,7 @@ class MrpCostStructure(models.AbstractModel):
         ProductProduct = self.env['product.product']
         StockMove = self.env['stock.move']
         res = []
+        currency_table = self.env['res.currency']._get_query_currency_table({'multi_company': True, 'date': {'date_to': fields.Date.today()}})
         for product in productions.mapped('product_id'):
             mos = productions.filtered(lambda m: m.product_id == product)
             total_cost = 0.0
@@ -20,20 +21,21 @@ class MrpCostStructure(models.AbstractModel):
             operations = []
             Workorders = self.env['mrp.workorder'].search([('production_id', 'in', mos.ids)])
             if Workorders:
-                query_str = """SELECT wo.id, op.id, wo.name, partner.name, sum(t.duration), wc.costs_hour
+                query_str = """SELECT wo.id, op.id, wo.name, partner.name, sum(t.duration), wc.costs_hour, currency_table.rate
                                 FROM mrp_workcenter_productivity t
                                 LEFT JOIN mrp_workorder wo ON (wo.id = t.workorder_id)
                                 LEFT JOIN mrp_workcenter wc ON (wc.id = t.workcenter_id)
                                 LEFT JOIN res_users u ON (t.user_id = u.id)
                                 LEFT JOIN res_partner partner ON (u.partner_id = partner.id)
                                 LEFT JOIN mrp_routing_workcenter op ON (wo.operation_id = op.id)
+                                LEFT JOIN {currency_table} ON currency_table.company_id = t.company_id
                                 WHERE t.workorder_id IS NOT NULL AND t.workorder_id IN %s
-                                GROUP BY wo.id, op.id, wo.name, wc.costs_hour, partner.name, t.user_id
+                                GROUP BY wo.id, op.id, wo.name, wc.costs_hour, partner.name, t.user_id, currency_table.rate
                                 ORDER BY wo.name, partner.name
-                            """
+                            """.format(currency_table=currency_table,)
                 self.env.cr.execute(query_str, (tuple(Workorders.ids), ))
-                for wo_id, op_id, wo_name, user, duration, cost_hour in self.env.cr.fetchall():
-                    operations.append([user, op_id, wo_name, duration / 60.0, cost_hour])
+                for wo_id, op_id, wo_name, user, duration, cost_hour, currency_rate in self.env.cr.fetchall():
+                    operations.append([user, op_id, wo_name, duration / 60.0, cost_hour * currency_rate])
 
             # Get the cost of raw material effectively used
             raw_material_moves = []
@@ -41,14 +43,17 @@ class MrpCostStructure(models.AbstractModel):
                                 sm.product_id,
                                 mo.id,
                                 abs(SUM(svl.quantity)),
-                                abs(SUM(svl.value))
+                                abs(SUM(svl.value)),
+                                currency_table.rate
                              FROM stock_move AS sm
                        INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
                        LEFT JOIN mrp_production AS mo on sm.raw_material_production_id = mo.id
+                       LEFT JOIN {currency_table} ON currency_table.company_id = mo.company_id
                             WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0 AND scrapped != 't'
-                         GROUP BY sm.product_id, mo.id"""
+                         GROUP BY sm.product_id, mo.id, currency_table.rate""".format(currency_table=currency_table,)
             self.env.cr.execute(query_str, (tuple(mos.ids), ))
-            for product_id, mo_id, qty, cost in self.env.cr.fetchall():
+            for product_id, mo_id, qty, cost, currency_rate in self.env.cr.fetchall():
+                cost *= currency_rate
                 raw_material_moves.append({
                     'qty': qty,
                     'cost': cost,

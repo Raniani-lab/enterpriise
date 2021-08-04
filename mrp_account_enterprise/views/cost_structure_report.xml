@@ -98,7 +98,7 @@
                                         <span> <t t-esc="row[3]" t-options='{"widget": "float", "precision": 4}'/> hours</span>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="row[4]" />
+                                        <span t-esc="row[4]" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                     <td class="text-right">
                                         <span t-esc="row[3] * row[4]" t-options='{"widget": "monetary", "display_currency": currency}'/>

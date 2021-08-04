@@ -437,7 +437,7 @@ class AccountJournal(models.Model):
         if (
             partner_bank_id.acc_type != 'iban'
             or (partner_bank_id.sanitized_acc_number or '')[:2] != 'CH'
-            or partner_bank_id.company_id.id not in (False, payment.company_id.id)
+            or partner_bank_id.company_id.id not in (False, payment['company_id'])
             or len(iban) < 9
         ):
             return False
@@ -454,7 +454,7 @@ class AccountJournal(models.Model):
         partner_bank_id = self.env['res.partner.bank'].browse(payment['partner_bank_id'])
         if (
             partner_bank_id.acc_type == 'postal'
-            and partner_bank_id.company_id.id in (False, payment.company_id.id)
+            and partner_bank_id.company_id.id in (False, payment['company_id'])
             and self._has_isr_ref(payment['ref'])
         ):
             return 'CH01'

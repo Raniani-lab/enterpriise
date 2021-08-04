@@ -138,6 +138,7 @@ class AccountBatchPayment(models.Model):
                 'ref' : payment.ref,
                 'partner_id' : payment.partner_id.id,
                 'partner_bank_id': payment.partner_bank_id.id,
+                'company_id': payment.company_id.id,
             }
 
             payment_dicts.append(payment_dict)

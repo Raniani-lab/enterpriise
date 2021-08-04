@@ -232,10 +232,10 @@ class ShareRoute(http.Controller):
         try:
             content = image_process(image, size=(int(width), int(height)), crop=crop)
         except Exception:
-            return request.not_found()
+            raise request.not_found()
 
         if not content:
-            return request.not_found()
+            raise request.not_found()
 
         headers = http.set_safe_image_headers(headers, content)
         response = request.make_response(content, headers)

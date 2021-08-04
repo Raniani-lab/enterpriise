@@ -3,7 +3,6 @@
 
 from odoo import http
 from odoo.http import content_disposition, request
-from odoo.addons.web.controllers.main import _serialize_exception
 from odoo.tools import html_escape
 
 import json
@@ -13,7 +12,7 @@ class FinancialReportController(http.Controller):
 
     @http.route('/account_reports', type='http', auth='user', methods=['POST'], csrf=False)
     def get_report(self, model, options, output_format, financial_id=None, **kw):
-        uid = request.session.uid
+        uid = request.uid
         account_report_model = request.env['account.report']
         options = json.loads(options)
         cids = kw.get('allowed_company_ids')
@@ -97,7 +96,7 @@ class FinancialReportController(http.Controller):
                 response.direct_passthrough = True
             return response
         except Exception as e:
-            se = _serialize_exception(e)
+            se = http.serialize_exception(e)
             error = {
                 'code': 200,
                 'message': 'Odoo Server Error',

@@ -7,7 +7,6 @@ import logging
 
 from odoo import http, fields
 from odoo.http import request, content_disposition
-from odoo.addons.web.controllers.main import _serialize_exception
 from odoo.tools import html_escape
 
 _logger = logging.getLogger(__name__)
@@ -73,7 +72,7 @@ class SalemanDashboard(http.Controller):
                 )
             return response
         except Exception as e:
-            se = _serialize_exception(e)
+            se = http.serialize_exception(e)
             error = {
                 'code': 200,
                 'message': 'Odoo Server Error',

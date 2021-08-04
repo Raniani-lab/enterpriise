@@ -258,9 +258,7 @@ class WebStudioController(http.Controller):
         menu_values.update(self._get_icon_fields(icon))
         menu_values['child_id'] = child_menu_vals
 
-        new_context = dict(request.context)
-        new_context.update({'ir.ui.menu.full_list': True})  # allows to create a menu without action
-        new_menu = request.env['ir.ui.menu'].with_context(new_context).create(menu_values)
+        new_menu = request.env['ir.ui.menu'].with_context(**{'ir.ui.menu.full_list': True}).create(menu_values)
 
         return {
             'menu_id': new_menu.id,

@@ -130,10 +130,7 @@ class MobileRoutesTest(HttpCase):
         error = data["error"]
         self.assertEqual(error["code"], 200)
         self.assertEqual(error["message"], "Odoo Server Error")
-        self.assertEqual(error["data"]["name"], "psycopg2.OperationalError")
-        regex = re.compile("database .* does not exist")
-        self.assertTrue(regex.search(error["data"]["message"]),
-            "Error message %r doesn't contain regex %r" % (error["data"]["message"], regex.pattern))
+        self.assertEqual(error["data"]["name"], "odoo.exceptions.AccessError")
 
     def test_avatar(self):
         """

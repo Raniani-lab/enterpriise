@@ -38,7 +38,7 @@ class HelpDeskPortal(HttpCase):
             'partner_email': 'jean@michel.com',
             'team_id': self.team_with_sla.id,
             'description': 'Your product is broken',
-            'csrf_token': http.WebRequest.csrf_token(self),
+            'csrf_token': http.Request.csrf_token(self),
         }
         files = [('file', ('test.txt', b'test', 'plain/text'))]
         response = self.url_open('/website/form/helpdesk.ticket', data=ticket_data, files=files)

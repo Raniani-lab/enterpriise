@@ -27,6 +27,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
             'company_registry': '123456',
             'phone': '+47 11 11 11 11',
             'country_id': cls.env.ref('base.no').id,
+            'l10n_no_bronnoysund_number': '987654325',
         })
 
         cls.product_a.default_code = 'PA'

@@ -412,6 +412,18 @@
         </field>
     </record>
 
+    <record id="planning_view_gantt_no_sample" model="ir.ui.view">
+        <field name="name">planning.slot.gantt.inherit.nosample</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="/gantt" position="attributes">
+                <attribute name="sample">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!--
         Actions
     -->
@@ -466,7 +478,7 @@
         <record id="planning_action_schedule_by_employee_view_gantt" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="planning_view_gantt"/>
+            <field name="view_id" ref="planning_view_gantt_no_sample"/>
             <field name="act_window_id" ref="planning_action_schedule_by_employee"/>
         </record>
 

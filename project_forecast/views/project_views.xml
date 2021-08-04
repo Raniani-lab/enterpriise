@@ -98,7 +98,7 @@
         <field name="name">View Planning</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt</field>
-        <field name="view_id" ref="project_forecast.planning_view_gantt_no_sample"/>
+        <field name="view_id" ref="planning.planning_view_gantt_no_sample"/>
         <field name="domain">[('task_id', 'in', active_ids)]</field>
         <field name="context">{'search_default_group_by_task': 1, 'hide_open_shift': 1, 'show_tasks_without_slot': 1}</field>
         <field name="binding_model_id" ref="model_project_task"/>

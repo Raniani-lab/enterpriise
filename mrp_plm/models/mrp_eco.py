@@ -558,7 +558,7 @@ class MrpEco(models.Model):
     def action_new_revision(self):
         IrAttachment = self.env['ir.attachment']
         for eco in self:
-            if eco.type in ('bom', 'both'):
+            if eco.type == 'bom':
                 eco.new_bom_id = eco.bom_id.copy(default={
                     'version': eco.bom_id.version + 1,
                     'active': False,
@@ -568,45 +568,28 @@ class MrpEco(models.Model):
                                                    ('res_id', '=', eco.bom_id.id)])
                 for attachment in attachments:
                     attachment.copy(default={'res_id':eco.new_bom_id.id})
-            if eco.type in ('routing', 'both'):
-                eco.new_routing_id = eco.routing_id.copy(default={
-                    'version': eco.routing_id.version + 1,
-                    'active': False,
-                    'previous_routing_id': eco.routing_id.id
-                }).id
-                attachments = IrAttachment.search([('res_model', '=', 'mrp.routing'),
-                                                   ('res_id', '=', eco.routing_id.id)])
-                for attachment in attachments:
-                    attachment.copy(default={'res_id':eco.new_routing_id.id})
-            if eco.type == 'both':
-                eco.new_bom_id.routing_id = eco.new_routing_id.id
-                for line in eco.new_bom_id.bom_line_ids:
-                    line.operation_id = eco.new_routing_id.operation_ids.filtered(lambda x: x.name == line.operation_id.name).id
             # duplicate all attachment on the product
-            if eco.type in ('bom', 'both', 'product'):
-                attachments = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', eco.product_tmpl_id.id)])
-                for attach in attachments:
-                    attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
+            attachments = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', eco.product_tmpl_id.id)])
+            for attach in attachments:
+                attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
         self.write({'state': 'progress'})
 
     def action_apply(self):
         self.ensure_one()
         self._check_company()
         self.mapped('new_bom_id').apply_new_version()
-        if self.type in ('bom', 'both', 'product'):
-            documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
-            documents.mapped('ir_attachment_id').unlink()
-            for attach in self.with_context(active_test=False).mrp_document_ids:
-                product_attach = attach.copy({
-                    'res_model': 'product.template',
-                    'res_id': self.product_tmpl_id.id,
+        documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
+        documents.mapped('ir_attachment_id').unlink()
+        for attach in self.with_context(active_test=False).mrp_document_ids:
+            product_attach = attach.copy({
+                'res_model': 'product.template',
+                'res_id': self.product_tmpl_id.id,
+            })
+            if not attach.active:
+                product_attach.write({
+                    'name': attach.name + '(v'+str(self.product_tmpl_id.version)+')'
                 })
-                if not attach.active:
-                    product_attach.write({
-                        'name': attach.name + '(v'+str(self.product_tmpl_id.version)+')'
-                    })
-        if self.type in ('product', 'bom', 'both'):
-            self.product_tmpl_id.version = self.product_tmpl_id.version + 1
+        self.product_tmpl_id.version = self.product_tmpl_id.version + 1
         vals = {'state': 'done'}
         stage_id = self.env['mrp.eco.stage'].search([('final_stage', '=', True), ('type_id', '=', self.type_id.id)], limit=1).id
         if stage_id:
@@ -643,16 +626,6 @@ class MrpEco(models.Model):
             'target': 'current',
             'res_id': self.new_bom_id.id,
             'context': dict(default_product_tmpl_id=self.product_tmpl_id.id, default_product_id=self.product_tmpl_id.product_variant_id.id)}
-
-    def open_new_routing(self):
-        self.ensure_one()
-        return {
-            'name': _('Eco Routing'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'mrp.routing',
-            'target': 'current',
-            'res_id': self.new_routing_id.id}
 
 
 class MrpEcoBomChange(models.Model):

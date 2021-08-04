@@ -6,14 +6,14 @@
     'version': '1.0',
     'category': 'Manufacturing/Product Lifecycle Management (PLM)',
     'sequence': 155,
-    'summary': """Manage engineering change orders on products, bills of material and routings""",
+    'summary': """Manage engineering change orders on products, bills of material""",
     'website': 'https://www.odoo.com/app/plm',
     'depends': ['mrp'],
     'description': """
 Product Life Management
 =======================
 
-* Versioning of Bill of Materials and Routings
+* Versioning of Bill of Materials and Products
 * Different approval flows possible depending on the type of change order
 
 """,

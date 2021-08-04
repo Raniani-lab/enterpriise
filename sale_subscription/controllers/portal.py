@@ -203,14 +203,15 @@ class SaleSubscription(http.Controller):
 class PaymentPortal(payment_portal.PaymentPortal):
 
     @http.route('/my/subscription/transaction/<int:subscription_id>', type='json', auth='public')
-    def subscription_transaction(self, subscription_id, validation_route, access_token, **kwargs):
+    def subscription_transaction(
+        self, subscription_id, access_token, is_validation=False, **kwargs
+    ):
         """ Create a draft transaction and return its processing values.
 
         :param int subscription_id: The subscription for which a transaction is made, as a
                                     `sale.subscription` id
-        :param str validation_route: The route the user is redirected to in order to refund a
-                                     validation transaction
         :param str access_token: The UUID of the subscription used to authenticate the partner
+        :param bool is_validation: Whether the operation is a validation
         :param dict kwargs: Locally unused data passed to `_create_transaction`
         :return: The mandatory values for the processing of the transaction
         :rtype: dict
@@ -228,16 +229,13 @@ class PaymentPortal(payment_portal.PaymentPortal):
         if not subscription or access_token != subscription.sudo().uuid:
             raise ValidationError("The subscription id or the access token is invalid.")
 
-        kwargs.update({
-            'partner_id': subscription.partner_id.id,
-            'validation_route': validation_route,
-        })
+        kwargs.update(partner_id=subscription.partner_id.id)
         kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
         common_callback_values = {
             'callback_model_id': request.env['ir.model']._get_id(subscription._name),
             'callback_res_id': subscription.id,
         }
-        if not validation_route:  # Renewal transaction
+        if not is_validation:  # Renewal transaction
             # Create an invoice to compute the total amount with tax, and the currency
             invoice_values = subscription.sudo().with_context(lang=subscription.partner_id.lang) \
                 ._prepare_invoice()  # In sudo mode to read on account.fiscal.position fields
@@ -259,6 +257,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
                     **common_callback_values,
                     'callback_method': '_reconcile_and_assign_token',
                 },
+                is_validation=is_validation,
                 **kwargs
             )
         else:  # Validation transaction
@@ -270,32 +269,11 @@ class PaymentPortal(payment_portal.PaymentPortal):
                     **common_callback_values,
                     'callback_method': '_assign_token',
                 },
+                is_validation=is_validation,
                 **kwargs
             )
 
         return tx_sudo._get_processing_values()
-
-    @http.route(
-        '/my/subscription/validation/<int:subscription_id>/<string:access_token>', type='http',
-        methods=['GET'], auth='user', website=True
-    )
-    def subscription_validation_transaction(self, subscription_id, tx_id, access_token):
-        """ Refund a validation transaction and redirect the user.
-
-        :param int subscription_id: The subscription for which a new token is created, as a
-                                    `sale.subscription` id
-        :param str tx_id: The validation transaction, as a `payment.transaction` id
-        :param str access_token: The access token used to verify the user
-        """
-        # Check the access token against the subscription uuid
-        # The fields of the subscription are accessed in sudo mode in case the user is logged but
-        # has no read access on the record.
-        subscription = request.env['sale.subscription'].browse(subscription_id).exists()
-        if not subscription or access_token != subscription.sudo().uuid:
-            raise ValidationError("The subscription id or the access token is invalid.")
-
-        tx = self._refund_validation_transaction(tx_id)
-        return request.redirect(tx.landing_route)
 
     @http.route('/my/subscription/assign_token/<int:subscription_id>', type='json', auth='user')
     def subscription_assign_token(self, subscription_id, token_id):

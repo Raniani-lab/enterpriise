@@ -260,8 +260,6 @@
                                                 <t t-call="payment.manage">
                                                     <t t-set="assign_token_route"
                                                        t-value="'/my/subscription/assign_token/' + str(account.id)"/>
-                                                    <t t-set="validation_route"
-                                                       t-value="'/my/subscription/validation/' + str(account.id) + '/' + str(account.uuid)"/>
                                                     <t t-set="landing_route"
                                                        t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid) + '?message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
                                                 </t>

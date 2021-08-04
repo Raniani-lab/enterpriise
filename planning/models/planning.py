@@ -145,7 +145,7 @@ class Planning(models.Model):
     def _compute_past_shift(self):
         now = fields.Datetime.now()
         for slot in self:
-            slot.is_past = slot.end_datetime < now
+            slot.is_past = slot.end_datetime < now if slot.end_datetime else False
 
     @api.depends('employee_id', 'template_id')
     def _compute_role_id(self):
@@ -322,6 +322,10 @@ class Planning(models.Model):
     @api.depends('template_id', 'role_id', 'allocated_hours')
     def _compute_allow_template_creation(self):
         for slot in self:
+            if not (slot.start_datetime and slot.end_datetime):
+                slot.allow_template_creation = False
+                continue
+
             values = self._prepare_template_values()
             domain = [(x, '=', values[x]) for x in values.keys()]
             existing_templates = self.env['planning.slot.template'].search(domain, limit=1)

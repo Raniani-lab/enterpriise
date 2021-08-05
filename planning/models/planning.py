@@ -366,9 +366,13 @@ class Planning(models.Model):
     def _inverse_repeat(self):
         for slot in self:
             if slot.repeat and not slot.recurrency_id.id:  # create the recurrence
+                repeat_until = False
+                if slot.repeat_type == "until":
+                    repeat_until = datetime.combine(slot.repeat_until, datetime.max.time())
+                    repeat_until = repeat_until.replace(tzinfo=pytz.timezone(slot.company_id.resource_calendar_id.tz or 'UTC')).astimezone(pytz.utc).replace(tzinfo=None)
                 recurrency_values = {
                     'repeat_interval': slot.repeat_interval,
-                    'repeat_until': slot.repeat_until if slot.repeat_type == 'until' else False,
+                    'repeat_until': repeat_until,
                     'repeat_type': slot.repeat_type,
                     'company_id': slot.company_id.id,
                 }
@@ -561,6 +565,9 @@ class Planning(models.Model):
                 if slot.recurrency_id and values.get('repeat') is None:
                     repeat_type = values.get('repeat_type') or slot.recurrency_id.repeat_type
                     repeat_until = values.get('repeat_until') or slot.recurrency_id.repeat_until
+                    if repeat_type == 'until':
+                        repeat_until = datetime.combine(repeat_until, datetime.max.time())
+                        repeat_until = repeat_until.replace(tzinfo=pytz.timezone(slot.company_id.resource_calendar_id.tz or 'UTC')).astimezone(pytz.utc).replace(tzinfo=None)
                     recurrency_values = {
                         'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
                         'repeat_until': repeat_until if repeat_type == 'until' else False,

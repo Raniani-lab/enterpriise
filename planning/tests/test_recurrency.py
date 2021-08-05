@@ -123,7 +123,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             first run:
                 now :                   2019-06-27
                 initial_start :         2019-06-27
-                repeat_end :            2019-07-11  recurrency's repeat_until
+                repeat_end :            2019-07-10  recurrency's repeat_until
                 generated slots:
                                         2019-06-27
                                         2019-07-4
@@ -131,7 +131,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             first cron:
                 now:                    2019-07-12
                 last generated start:   2019-07-4
-                repeat_end:             2019-07-11  still recurrency's repeat_until
+                repeat_end:             2019-07-10  still recurrency's repeat_until
                 generated slots:
                                         NOT 2019-07-11 because it still hits the repeat end
         """
@@ -148,7 +148,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
                 'repeat': True,
                 'repeat_type': 'until',
                 'repeat_interval': 1,
-                'repeat_until': datetime(2019, 7, 11, 8, 0, 0),
+                'repeat_until': datetime(2019, 7, 10, 8, 0, 0),
             })
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 2, 'initial run should have generated 2 slots')
 

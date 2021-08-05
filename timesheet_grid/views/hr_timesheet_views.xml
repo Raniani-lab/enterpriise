@@ -72,7 +72,7 @@
                 </xpath>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
                     <div>
-                        <span t-att-class="'o_status_bubble mx-0 float-right mt-1 o_color_bubble_' + (record.validated.raw_value ? 10 : 4)"
+                        <span t-att-class="'o_status_bubble mx-0 float-right mt-1 o_color_bubble_' + (record.validated.raw_value ? 10 : 0)"
                             class="o_timesheet_status_bubble" t-att-title="record.validated.raw_value ? 'Validated': 'Draft'"/>
                     </div>
                 </xpath>

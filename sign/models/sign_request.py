@@ -440,7 +440,7 @@ class SignRequest(models.Model):
             height = float(abs(page.mediaBox.getHeight()))
 
             # Set page orientation (either 0, 90, 180 or 270)
-            rotation = page.get('/Rotate')
+            rotation = page['/Rotate'] if '/Rotate' in page else 0
             if rotation:
                 can.rotate(rotation)
                 # Translate system so that elements are placed correctly

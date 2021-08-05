@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
      <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
-        <xpath expr="//tr" position="inside">
+        <xpath expr="//td[hasclass('client-line-email')]" position="after">
             <td t-if="env.pos.config.module_pos_loyalty">
                 <t t-esc='props.partner.loyalty_points or 0' />
                 <span t-if="highlight"><br/></span>
@@ -11,7 +11,7 @@
     </t>
 
     <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
-        <xpath expr="//tr" position="inside">
+        <xpath expr="//th[hasclass('client-line-email')]" position="after">
             <th t-if="env.pos.config.module_pos_loyalty">Points</th>
         </xpath>
     </t>

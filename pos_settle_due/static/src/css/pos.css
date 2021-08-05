@@ -1,0 +1,14 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* So that the displayed amount doesn't show in multiple line */
+.pos .client-line td.customer-due,
+.pos .client-list thead th.customer-due {
+    white-space:nowrap;
+}
+
+.client-line-open-link.highlight a {
+    color: white;
+    text-decoration: underline;
+}

@@ -79,7 +79,7 @@ class BpostRequest():
             street = '%s %s' % (partner.street, partner.street2)
         else:
             street = partner.street or partner.street2
-        match = re.match(r'^(.*?)(\S*\d+\S*)?\s*$', street)
+        match = re.match(r'^(.*?)(\S*\d+\S*)?\s*$', street, re.DOTALL)
         street = match.group(1)
         street_number = match.group(2)  # None if no number found
         if street_number and len(street_number) > 8:

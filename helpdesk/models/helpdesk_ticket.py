@@ -864,3 +864,19 @@ class HelpdeskTicket(models.Model):
 
     def _rating_get_parent_field_name(self):
         return 'team_id'
+
+    # ---------------------------------------------------
+    # Mail gateway
+    # ---------------------------------------------------
+
+    def _mail_get_message_subtypes(self):
+        res = super()._mail_get_message_subtypes()
+        if len(self) == 1 and self.team_id:
+            team = self.team_id
+            optional_subtypes = [('use_credit_notes', self.env.ref('helpdesk.mt_ticket_refund_posted')),
+                                 ('use_product_returns', self.env.ref('helpdesk.mt_ticket_return_done')),
+                                 ('use_product_repairs', self.env.ref('helpdesk.mt_ticket_repair_done'))]
+            for field, subtype in optional_subtypes:
+                if not team[field] and subtype in res:
+                    res -= subtype
+        return res

@@ -15,6 +15,17 @@ class HelpdeskTeam(models.Model):
     fsm_project_id = fields.Many2one('project.project', string='FSM Project', domain=[('is_fsm', '=', True)],
     default=_default_fsm_project_id)
 
+    # ---------------------------------------------------
+    # Mail gateway
+    # ---------------------------------------------------
+
+    def _mail_get_message_subtypes(self):
+        res = super()._mail_get_message_subtypes()
+        if len(self) == 1:
+            task_done_subtype = self.env.ref('helpdesk_fsm.mt_team_ticket_task_done')
+            if not self.use_fsm and task_done_subtype in res:
+                res -= task_done_subtype
+        return res
 
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
@@ -64,3 +75,15 @@ class HelpdeskTicket(models.Model):
                 'default_project_id': self.team_id.fsm_project_id.id,
             }
         }
+
+    # ---------------------------------------------------
+    # Mail gateway
+    # ---------------------------------------------------
+
+    def _mail_get_message_subtypes(self):
+        res = super()._mail_get_message_subtypes()
+        if len(self) == 1 and self.team_id:
+            task_done_subtype = self.env.ref('helpdesk_fsm.mt_ticket_task_done')
+            if not self.team_id.use_fsm and task_done_subtype in res:
+                res -= task_done_subtype
+        return res

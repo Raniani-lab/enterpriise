@@ -554,6 +554,20 @@ class HelpdeskTeam(models.Model):
             if teams_dict[ticket.team_id.id]['to_stage_id']:
                 ticket.write({'stage_id': teams_dict[ticket.team_id.id]['to_stage_id'][0]})
 
+    # ---------------------------------------------------
+    # Mail gateway
+    # ---------------------------------------------------
+
+    def _mail_get_message_subtypes(self):
+        res = super()._mail_get_message_subtypes()
+        if len(self) == 1:
+            optional_subtypes = [('use_credit_notes', self.env.ref('helpdesk.mt_team_ticket_refund_posted')),
+                                 ('use_product_returns', self.env.ref('helpdesk.mt_team_ticket_return_done')),
+                                 ('use_product_repairs', self.env.ref('helpdesk.mt_team_ticket_repair_done'))]
+            for field, subtype in optional_subtypes:
+                if not self[field] and subtype in res:
+                    res -= subtype
+        return res
 
 class HelpdeskStage(models.Model):
     _name = 'helpdesk.stage'

@@ -44,16 +44,16 @@ def _generate_feed_base(seller_key, message_type):
 
 
 def generate_order_fulfillment_feed(
-        seller_key, amazon_order_ref, items_data, carrier_name=None, tracking_number=None):
+    seller_key, amazon_order_ref, carrier_name, tracking_number, items_data
+):
     """ Build the XML message to be sent as an order fulfillment feed. """
     root, message = _generate_feed_base(seller_key, "OrderFulfillment")
     order_fulfillment = ElementTree.SubElement(message, 'OrderFulfillment')
     ElementTree.SubElement(order_fulfillment, 'AmazonOrderID').text = amazon_order_ref
     ElementTree.SubElement(order_fulfillment, 'FulfillmentDate').text = datetime.now().isoformat()
-    if carrier_name and tracking_number:
-        fulfillment_data = ElementTree.SubElement(order_fulfillment, 'FulfillmentData')
-        ElementTree.SubElement(fulfillment_data, 'CarrierName').text = carrier_name
-        ElementTree.SubElement(fulfillment_data, 'ShipperTrackingNumber').text = tracking_number
+    fulfillment_data = ElementTree.SubElement(order_fulfillment, 'FulfillmentData')
+    ElementTree.SubElement(fulfillment_data, 'CarrierName').text = carrier_name
+    ElementTree.SubElement(fulfillment_data, 'ShipperTrackingNumber').text = tracking_number
     for amazon_item_ref, item_quantity in items_data:
         item = ElementTree.SubElement(order_fulfillment, 'Item')
         ElementTree.SubElement(item, 'AmazonOrderItemCode').text = amazon_item_ref
@@ -75,12 +75,12 @@ def do_account_credentials_check(sellers_api, error_message):
 def get_available_marketplace_api_refs(sellers_api, error_message):
     """ Return all the API ids of marketplaces that can be reached from a seller account. """
     marketplace_api_refs = []
-    
+
     # Orders are fetched one batch (of up to 100 orders) at a time.
     # If the fetched batch is full, a next_token is generated and can be used
     # to fetch the next batch with the same query params as the previous one.
     has_next, next_token = True, None
-    
+
     rate_limit_reached = False
     while has_next and not rate_limit_reached:
         request_response, rate_limit_reached = _send_request(
@@ -180,7 +180,7 @@ def _send_request(api_function, api_section, error_message, **kwargs):
     except mws.MWSError as error:
         if not _is_sent_by_amazon(error):
             # Don't try to parse response content as an XML because it's not
-            _raise_requests_error(error_message, error.response) 
+            _raise_requests_error(error_message, error.response)
         if _is_request_throttled(error, api_section):
             rate_limit_reached = True
         else:
@@ -190,7 +190,7 @@ def _send_request(api_function, api_section, error_message, **kwargs):
 
 def _is_sent_by_amazon(mws_error):
     """ Return True if the embedded response contains an XML-formatted error message.
-    
+
     Useful to check if an error happened on Amazon's side or on the proxy.
     """
     if 700 <= mws_error.response.status_code <= 799:  # Custom Odoo proxy error
@@ -209,7 +209,7 @@ def _is_sent_by_amazon(mws_error):
         else:  # This is unexpected, we should probably have a custom message for this code
             raise exceptions.UserError(_("The Odoo proxy encountered an unhandled error."))
     else:  # not a proxy problem, check if response is consistent with what we expect from Amazon
-        return 'xml' in mws_error.response.text 
+        return 'xml' in mws_error.response.text
 
 
 def _is_request_throttled(mws_error, api_section):

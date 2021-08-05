@@ -20,7 +20,7 @@ Key Features
     'sequence': 320,
     'version': '1.1',
     'application': True,
-    'depends': ['sale_management', 'stock'],
+    'depends': ['sale_management', 'stock', 'delivery'],
     'data': [
         'security/ir.model.access.csv',
         'security/sale_amazon_security.xml',

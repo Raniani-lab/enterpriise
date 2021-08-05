@@ -3,80 +3,19 @@
 from datetime import datetime
 from unittest.mock import patch, Mock
 
-from odoo.tests import TransactionCase
 from odoo.tools import mute_logger
 
-BASE_ORDER_DATA = {
-    'AmazonOrderId': {'value': '123456789'},
-    'PurchaseDate': {'value': '1378-04-08T00:00:00.000Z'},
-    'LastUpdateDate': {'value': '1976-08-21T07:00:00.000Z'},
-    'OrderStatus': {'value': 'Unshipped'},
-    'FulfillmentChannel': {'value': 'MFN'},
-    'ShipServiceLevel': {'value': 'SHIPPING-CODE'},
-    'ShippingAddress': {
-        'City': {'value': 'OdooCity'},
-        'AddressType': {'value': 'Commercial'},
-        'PostalCode': {'value': '12345-1234'},
-        'StateOrRegion': {'value': 'CA'},
-        'Phone': {'value': '+1 234-567-8910 ext. 12345'},
-        'CountryCode': {'value': 'US'},
-        'Name': {'value': 'Gederic Frilson'},
-        'AddressLine1': {'value': '123 RainBowMan Street'},
-    },
-    'OrderTotal': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'MarketplaceId': {'value': 'ATVPDKIKX0DER'},
-    'BuyerEmail': {'value': 'iliketurtles@marketplace.amazon.com'},
-    'BuyerName': {'value': 'Gederic Frilson'},
-    'EarliestDeliveryDate': {'value': '1979-04-20T00:00:00.000Z'},
-}
-
-BASE_ITEM_DATA = {
-    'OrderItemId': {'value': '123456789'},
-    'SellerSKU': {'value': 'SKU'},
-    'ConditionId': {'value': 'Used'},
-    'ConditionSubtypeId': {'value': 'Good'},
-    'Title': {'value': 'OdooBike Spare Wheel, 26x2.1, Pink, 200-Pack'},
-    'QuantityOrdered': {'value': '2'},
-    'ItemPrice': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '100.00'}},
-    'ShippingPrice': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '12.50'}},
-    'GiftWrapPrice': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '3.33'}},
-    'ItemTax': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'ShippingTax': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'GiftWrapTax': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'ShippingDiscount': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'PromotionDiscount': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'IsGift': {'value': 'true'},
-    'GiftWrapLevel': {'value': 'WRAP-CODE'},
-    'GiftMessageText': {'value': 'Hi,\nEnjoy your gift!\nFrom Gederic Frilson'},
-}
+from odoo.addons.sale_amazon.tests.common import TestAmazonCommon, BASE_ORDER_DATA, BASE_ITEM_DATA
 
 
-class TestAmazon(TransactionCase):
-
-    def setUp(self):
-
-        def _get_available_marketplace_api_refs_mock(*_args, **_kwargs):
-            """ Return the API ref of all marketplaces without calling MWS API. """
-            return self.env['amazon.marketplace'].search([]).mapped('api_ref'), False
-
-        super(TestAmazon, self).setUp()
-        with patch('odoo.addons.sale_amazon.models.mws_connector.get_api_connector',
-                   new=lambda *args, **kwargs: None), \
-             patch('odoo.addons.sale_amazon.models.mws_connector.get_available_marketplace_api_refs',
-                   new=_get_available_marketplace_api_refs_mock):
-            self.account = self.env['amazon.account'].create({
-                'name': "TestAccountName",
-                **dict.fromkeys(('seller_key', 'auth_token'), ''),
-                'base_marketplace_id': 1,
-                'company_id': self.env.company.id,
-            })
+class TestAmazon(TestAmazonCommon):
 
     def test_check_credentials_succeed(self):
         """ Test the credentials check with valid credentials. """
         with patch(
                 'odoo.addons.sale_amazon.models.mws_connector.do_account_credentials_check',
                 new=lambda *args, **kwargs: False):
-            self.assertTrue(self.account.action_check_credentials()) 
+            self.assertTrue(self.account.action_check_credentials())
 
     def test_update_marketplaces_no_change(self):
         """ Test the available marketplaces synchronization with no change. """
@@ -430,6 +369,8 @@ class TestAmazon(TransactionCase):
             picking = self.env['stock.picking'].search([('sale_id', '=', order.id)])
             for ml in picking.move_line_ids:
                 ml.qty_done = ml.product_uom_qty
+            picking.carrier_id = self.carrier
+            picking.carrier_tracking_ref = "dummy tracking ref"
             picking._action_done()
             self.assertEqual(picking.state, 'done')
 
@@ -462,13 +403,15 @@ class TestAmazon(TransactionCase):
             order = self.env['sale.order'].search([('amazon_order_ref', '=', '123456789')])
             picking = self.env['stock.picking'].search([('sale_id', '=', order.id)])
             self.assertEqual(len(picking), 1, "FBM orders should generate exactly one picking")
+            picking.carrier_id = self.carrier
+            picking.carrier_tracking_ref = "dummy tracking ref"
             picking._action_done()
             self.assertTrue(picking.amazon_sync_pending)
             picking._sync_pickings(account_ids=(self.account.id,))
             self.assertEqual(mock.call_count, 1, "an order fulfillment feed should be sent to "
                                                  "Amazon for each confirmed picking")
             self.assertFalse(picking.amazon_sync_pending)
-    
+
     def test_get_product_search(self):
         """ Test the product search based on the internal reference. """
         self.env['product.product'].create({
@@ -704,7 +647,7 @@ class TestAmazon(TransactionCase):
                          "a contact partner should always be created when the amazon email is "
                          "missing")
         self.assertFalse(contact.amazon_email)
-    
+
     def test_get_partners_arbitrary_fields(self):
         """ Test the partners search with all PII filled but in arbitrary fields. """
         contact, _delivery = self.account._get_partners(dict(
@@ -718,7 +661,7 @@ class TestAmazon(TransactionCase):
         self.assertTrue(contact.street2)
         self.assertTrue(contact.phone)
         self.assertTrue(contact.customer_rank)
-        self.assertTrue(contact.amazon_email) 
+        self.assertTrue(contact.amazon_email)
 
     def test_get_amazon_offer_search(self):
         """ Test the offer search. """

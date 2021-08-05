@@ -18,7 +18,7 @@ var _t = core._t;
  *  {
  *      valuenow: integer
  *      valuenow: valuemax
- *      [bank_statement_line_id]: {
+ *      [bank_statement_id]: {
  *          id: integer
  *          display_name: string
  *      }
@@ -283,10 +283,7 @@ var StatementModel = BasicModel.extend({
         return this._rpc({
                 model: 'account.bank.statement',
                 method: 'button_validate',
-                args: [self.statement.statement_id],
-            })
-            .then(function () {
-                return self.statement.statement_id;
+                args: [self.bank_statement_id.id],
             });
     },
     /**
@@ -403,7 +400,7 @@ var StatementModel = BasicModel.extend({
             })
             .then(function (statement) {
                 self.statement = statement;
-                self.bank_statement_line_id = self.statement_line_ids.length === 1 ? {id: self.statement_line_ids[0], display_name: statement.statement_name} : false;
+                self.bank_statement_id = statement.statement_id ? {id: statement.statement_id, display_name: statement.statement_name} : false;
                 self.valuenow = self.valuenow || statement.value_min;
                 self.valuemax = self.valuemax || statement.value_max;
                 self.context.journal_id = statement.journal_id;

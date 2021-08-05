@@ -67,6 +67,7 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
                 number: number,
                 timePerTransaction: timePerTransaction,
                 context: state.context,
+                bank_statement_id: state.bank_statement_id,
                 onButtonBackToStatementClicked: (journalId) => this._onGoToBankStatement(journalId),
                 onButtonCloseStatementClicked: () => this._onCloseBankStatement(),
             },

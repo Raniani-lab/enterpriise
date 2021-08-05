@@ -75,7 +75,7 @@
             <t t-if="props.context.journal_id">
                 <button t-on-click="props.onButtonBackToStatementClicked(props.context.journal_id)" class="button_back_to_statement btn btn-secondary">Go to bank statement(s)</button>
             </t>
-            <t t-if="props.context['active_model'] === 'account.bank.statement'">
+            <t t-if="props.bank_statement_id">
                 <button t-on-click="props.onButtonCloseStatementClicked" class="button_close_statement btn btn-primary" style="display: inline-block;">Close statement</button>
             </t>
         </p>

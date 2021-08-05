@@ -466,6 +466,7 @@
             <t t-call-assets="account_reports.assets_financial_report" t-js="False"/>
         </head>
         <body class="o_account_reports_body_print">
+            <t t-out="body_html"/>
         </body>
     </html>
 </template>

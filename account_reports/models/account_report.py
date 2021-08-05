@@ -1394,13 +1394,13 @@ class AccountReport(models.AbstractModel):
             for k,v in self._replace_class().items():
                 html = html.replace(k, v)
             # append footnote as well
-            html = html.replace('<div class="js_account_report_footnotes"></div>', self.get_html_footnotes(footnotes_to_render))
-        return markupsafe.Markup(html)
+            html = html.replace(markupsafe.Markup('<div class="js_account_report_footnotes"></div>'), self.get_html_footnotes(footnotes_to_render))
+        return html
 
     def get_html_footnotes(self, footnotes):
         template = self._get_templates().get('footnotes_template', 'account_reports.footnotes_template')
         rcontext = {'footnotes': footnotes, 'context': self.env.context}
-        html = self.env['ir.ui.view']._render_template(template, values=dict(rcontext))
+        html = self.env['ir.ui.view']._render_template(template, values=rcontext)
         return html
 
     def _get_reports_buttons_in_sequence(self, options):
@@ -1528,7 +1528,12 @@ class AccountReport(models.AbstractModel):
         """When printing pdf, we sometime want to remove/add/replace class for the report to look a bit different on paper
         this method is used for this, it will replace occurence of value key by the dict value in the generated pdf
         """
-        return {'o_account_reports_no_print': '', 'table-responsive': '', '<a': '<span', '</a>': '</span>'}
+        return {
+            'o_account_reports_no_print': '',
+            'table-responsive': '',
+            markupsafe.Markup('<a'): markupsafe.Markup('<span'),
+            markupsafe.Markup('</a>'): markupsafe.Markup('</span>')
+        }
 
     def get_pdf(self, options, minimal_layout=True):
         # As the assets are generated during the same transaction as the rendering of the
@@ -1549,13 +1554,11 @@ class AccountReport(models.AbstractModel):
             'company': self.env.company,
         }
 
+        body_html = self.with_context(print_mode=True).get_html(options)
         body = self.env['ir.ui.view']._render_template(
             "account_reports.print_template",
-            values=dict(rcontext),
+            values=dict(rcontext, body_html=body_html),
         )
-        body_html = self.with_context(print_mode=True).get_html(options)
-
-        body = body.replace(b'<body class="o_account_reports_body_print">', b'<body class="o_account_reports_body_print">' + body_html)
         if minimal_layout:
             header = ''
             footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)

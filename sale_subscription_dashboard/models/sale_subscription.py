@@ -336,10 +336,9 @@ class SaleSubscription(models.Model):
             'mode': 'print',
             'base_url': base_url,
             'company': self.env.company,
+            'body_html': body_html,
         }
         body = self.env['ir.ui.view']._render_template("sale_subscription_dashboard.print_template", values=dict(rcontext))
-        body_html = str.encode(body_html)
-        body = body.replace(b'<body class="o_sale_subscription_dashboard_reports_body_print">', b'<body class="o_sale_subscription_dashboard_reports_body_print">' + body_html)
         if minimal_layout:
             header = ''
             footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)

@@ -5,6 +5,8 @@ import json
 from datetime import datetime
 import logging
 
+import markupsafe
+
 from odoo import http, fields
 from odoo.http import request, content_disposition
 from odoo.addons.web.controllers.main import _serialize_exception
@@ -64,7 +66,7 @@ class SalemanDashboard(http.Controller):
         try:
             if output_format == 'pdf':
                 response = request.make_response(
-                    report_obj.get_pdf(body_html),
+                    report_obj.get_pdf(markupsafe.Markup(body_html)),
                     headers=[
                         ('Content-Type', report_obj.get_export_mime_type('pdf')),
                         ('Content-Disposition', content_disposition(report_name + '.pdf'))

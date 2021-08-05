@@ -118,7 +118,7 @@ class TestAgedReport(TestAccountReportsCommon):
         (move_3 + move_4).action_post()
         (move_3 + move_4).line_ids.filtered(lambda line: line.account_id == receivable_4).reconcile()
         (move_3 + move_4).line_ids.filtered(lambda line: line.account_id == receivable_5).reconcile()
-
+        cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
         company_ids = (cls.company_data['company'] + cls.company_data_2['company']).ids
         cls.report = cls.env['account.aged.receivable'].with_context(allowed_company_ids=company_ids)
 

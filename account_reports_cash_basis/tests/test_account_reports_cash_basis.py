@@ -67,6 +67,7 @@ class TestAccountReports(TestAccountReportsCommon):
 
     def test_general_ledger_cash_basis(self):
         # Check the cash basis option.
+        self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
         report = self.env['account.general.ledger']
         options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
         options['cash_basis'] = True

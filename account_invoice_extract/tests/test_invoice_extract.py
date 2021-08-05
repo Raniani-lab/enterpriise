@@ -201,14 +201,15 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         self.assertFalse(invoice.partner_id)
 
     def test_multi_currency(self):
-        # test that if the multi currency isn't disabled, the currency isn't changed
+        # test that if the multi currency is disabled, the currency isn't changed
+        self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         test_user = self.env['res.users'].create({
             'login': "test_user",
             'name': "Test User",
         })
         usd_currency = self.env['res.currency'].search([('name', '=', 'USD')])
-        eur_currency = self.env['res.currency'].search([('name', '=', 'EUR')])
+        eur_currency = self.env['res.currency'].with_context({'active_test': False}).search([('name', '=', 'EUR')])
         invoice.currency_id = usd_currency.id
         extract_response = self.get_default_extract_response()
 
@@ -218,10 +219,8 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         self.assertEqual(invoice.currency_id, usd_currency)
 
         # test that if multi currency is enabled, the currency is changed
-        group_multi_currency = self.env.ref('base.group_multi_currency')
-        test_user.write({
-            'groups_id': [(4, group_multi_currency.id)],
-        })
+        # group_multi_currency is automatically activated on currency activation
+        eur_currency.active = True
 
         # test with the name of the currency
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
@@ -246,6 +245,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_tax_adjustments(self):
         # test that if the total computed by Odoo doesn't exactly match the total found by the OCR, the tax are adjusted accordingly
+        self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['total']['selected_value']['content'] += 0.01

@@ -72,6 +72,8 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
 
         # Archive 'default_journal_bank' to ensure archived entries are not filtered out.
         cls.company_data_2['default_journal_bank'].active = False
+        # Deactive all currencies to ensure group_multi_currency is disabled.
+        cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
 
     # -------------------------------------------------------------------------
     # TESTS: General Ledger

@@ -79,6 +79,8 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
             ],
         })
         cls.move_2017_2.action_post()
+        # Deactive all currencies to ensure group_multi_currency is disabled.
+        cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
 
     def test_partner_ledger_unfold_1_whole_report(self):
         ''' Test unfolding a line when rendering the whole report. '''

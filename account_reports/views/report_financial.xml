@@ -461,7 +461,7 @@
 <template id="print_template">
     <html>
         <head>
-            <base t-att-ref="base_url"/>
+            <base t-att-href="base_url"/>
             <meta http-equiv="content-type" content="text/html; charset=utf-8" />
             <t t-call-assets="account_reports.assets_financial_report" t-js="False"/>
         </head>

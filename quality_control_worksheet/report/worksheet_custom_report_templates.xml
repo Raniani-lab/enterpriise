@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <template id="worksheet_custom_page">
-            <div class="page">
-                <h1 class="mt-4 mb-4"> Quality Check: <span t-field="doc.name"/></h1>
-                <div name="worksheet_map" t-if="doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)" style="page-break-inside: avoid">
-                    <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
-                    <h2>Worksheet</h2>
-                    <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
-                    <br/>
+        <template id="worksheet_custom_page" inherit_id="quality_control.worksheet_page">
+            <xpath expr="//t[@name='qc_content']" position="inside">
+                <div t-if="doc.test_type == 'worksheet' and doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)">
+                    <hr/>
+                    <div name="worksheet_map" style="page-break-inside: avoid">
+                        <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
+                        <h2>Worksheet</h2>
+                        <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
+                        <br/>
+                    </div>
                 </div>
-            </div>
-        </template>
-
-        <template id="worksheet_custom">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="doc">
-                    <t t-call="web.external_layout">
-                        <t t-call="quality_control_worksheet.worksheet_custom_page" t-lang="doc.partner_id.lang"/>
-                    </t>
-                </t>
-            </t>
+            </xpath>
         </template>
     </data>
 </odoo>

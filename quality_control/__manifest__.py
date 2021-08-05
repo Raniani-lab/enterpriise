@@ -20,6 +20,8 @@ Quality Control
 """,
     'data': [
         'data/quality_control_data.xml',
+        'report/worksheet_custom_reports.xml',
+        'report/worksheet_custom_report_templates.xml',
         'views/quality_views.xml',
         'views/product_views.xml',
         'views/stock_move_views.xml',

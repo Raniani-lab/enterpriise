@@ -5,8 +5,8 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     const Dialog = require("web.OwlDialog");
     var framework = require('web.framework');
 
-    const PivotDialog =require("documents_spreadsheet.PivotDialog")
     const { jsonToBase64 } = require("documents_spreadsheet.pivot_utils");
+    const PivotDialog = require("documents_spreadsheet.PivotDialog")
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -69,7 +69,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             if (this.props.initCallback) {
                 this.props.initCallback(this.spreadsheet.comp.model);
             }
-            if (this.props.download){
+            if (this.props.download) {
                 this._download();
             }
         }
@@ -162,8 +162,8 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             if (this.pivot) {
                 const getters = this.spreadsheet.comp.model.getters;
                 const name = getters.isCacheLoaded(this.pivot.id)
-                                ? getters.getCache(this.pivot.id).getModelLabel()
-                                : this.pivot.model;
+                    ? getters.getCache(this.pivot.id).getModelLabel()
+                    : this.pivot.model;
                 const id = this.pivot.id;
                 return `${name} (#${id})`;
             }
@@ -268,7 +268,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.state.dialog.isDisplayed = true;
         }
 
-        openPivotDialog(ev){
+        openPivotDialog(ev) {
             this.pivot = this.spreadsheet.comp.model.getters.getPivot(ev.pivotId);
             this.cache = this.spreadsheet.comp.model.getters.getCache(ev.pivotId);
             this.insertPivotValueCallback = ev.insertPivotValueCallback;

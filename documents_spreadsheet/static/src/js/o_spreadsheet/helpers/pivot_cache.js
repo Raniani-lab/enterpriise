@@ -1,9 +1,28 @@
 /** @odoo-module alias=documents_spreadsheet.PivotCache */
 
+import { _t } from "web.core";
+import Domain from "web.Domain";
+import pyUtils from "web.py_utils";
 import spreadsheet from "../o_spreadsheet_loader";
-import {_t} from "web.core";
-
 const { toString} = spreadsheet.helpers;
+
+
+/**
+ * Chunk array elements two by two
+ * chunkBy2([1, 2, 3, 4])
+ * >> [[1, 2], [3, 4]]
+ */
+function chunkBy2(arr) {
+    return Array.from({length: arr.length / 2}, () => arr.splice(0,2));
+}
+
+/**
+ * groupDomainElements(["stage_id", "1", "create_date:month", "11/2021"])
+ * >> ["stage_id,1", "create_date:month,11/2021"]
+ */
+function groupDomainElements(pivotFormulaDomainArgs) {
+    return chunkBy2(pivotFormulaDomainArgs).map((chunk) => chunk.join(","));
+}
 
 export default class PivotCache {
     constructor(data) {
@@ -157,6 +176,10 @@ export default class PivotCache {
          * Is used to know if a pivot cell is missing or not
          * */
         this._usedHeaderDomains = new Set();
+        /**
+         * for each individual cell map the domain of a cell to its formula
+         * */
+        this._formulaToDomain = data.formulaToDomain;
     }
 
     getRows() {
@@ -403,6 +426,23 @@ export default class PivotCache {
      */
     addLabel(field, fieldValue, label) {
         this._labels[field] = { ...this._labels[field], [fieldValue]: label };
+    }
+
+    /**
+     * Return the domain as it is used in odoo, based on the args of a Pivot formula.
+     * an exemple of args would be:
+     * ["1","expected_revenue","create_date:month","08/2021","stage_id","1"]
+     * @param {Array} args
+     * @returns {Array}
+     */
+    getDomainFromFormula(args) {
+        const parsedFormulaDomain = groupDomainElements(args.slice(2));
+        const formulaDomains = Object.keys(this._formulaToDomain).filter((cellDomain) => {
+            const parsedCellDomain = groupDomainElements(cellDomain.split(","));
+            return parsedFormulaDomain.every(v => parsedCellDomain.includes(v))
+        })
+        const domains = formulaDomains.map((formulaDomain) => Domain.prototype.arrayToString(this._formulaToDomain[formulaDomain]));
+        return pyUtils.assembleDomains(domains, "OR");
     }
 
     //--------------------------------------------------------------------------

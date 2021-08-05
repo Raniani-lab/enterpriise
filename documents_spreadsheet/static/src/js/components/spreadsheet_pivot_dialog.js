@@ -455,7 +455,6 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
          * @param {string} args Args of the pivot formula
          */
         _getLabel(args) {
-            const pivot = this.pivot;
             let domain = args.split('","');
             domain.shift();
             const len = domain.length;

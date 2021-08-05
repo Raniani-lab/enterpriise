@@ -153,7 +153,6 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
             serviceRegistry: legacyServicesRegistry,
         },
     });
-
     const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
     await doAction(webClient, {
         type: "ir.actions.client",

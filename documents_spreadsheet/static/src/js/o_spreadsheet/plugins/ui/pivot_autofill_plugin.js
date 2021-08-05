@@ -1,13 +1,14 @@
 /** @odoo-module alias=documents_spreadsheet.PivotAutofillPlugin */
 
-import core from "web.core";
 import pivotUtils from "documents_spreadsheet.pivot_utils";
 import spreadsheet from "documents_spreadsheet.spreadsheet";
 import {
-    getNumberOfPivotFormulas,
-    getFormulaNameAndArgs,
+    getFormulaNameAndArgs, getNumberOfPivotFormulas
 } from "documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js";
 
+import core from "web.core";
+
+const { astToFormula } = spreadsheet;
 const _t = core._t;
 
 export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
@@ -25,11 +26,13 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns Autofilled value
      */
     getNextValue(formula, isColumn, increment) {
-        if (getNumberOfPivotFormulas(formula) !== 1) {
+        if (getNumberOfPivotFormulas(formula, false) !== 1) {
             return formula;
         }
         const { functionName, args } = getFormulaNameAndArgs(formula);
-        const pivot = this.getters.getPivot(args[0]);
+        const evaluatedArgs = args.map(astToFormula).map((arg) => this.getters.evaluateFormula(arg));
+        const pivotId = evaluatedArgs[0];
+        const pivot = this.getters.getPivot(pivotId);
         if (!pivot || !this.getters.isCacheLoaded(pivot.id)) {
             return formula;
         }
@@ -46,14 +49,14 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     // UP-DOWN
                     builder = this._autofillPivotColHeader.bind(this);
                 }
-            } else if (pivot.rowGroupBys.includes(args[1])) {
+            } else if (pivot.rowGroupBys.includes(evaluatedArgs[1])) {
                 builder = this._autofillPivotRowHeader.bind(this);
             } else {
                 builder = this._autofillPivotColHeader.bind(this);
             }
         }
         if (builder) {
-            return builder(pivot, args, isColumn, increment);
+            return builder(pivot, evaluatedArgs, isColumn, increment);
         }
         return formula;
     }
@@ -70,14 +73,15 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             return [];
         }
         const { functionName, args } = getFormulaNameAndArgs(formula);
-        const pivot = this.getters.getPivot(args[0]);
+        const evaluatedArgs = args.map(astToFormula).map((arg) => this.getters.evaluateFormula(arg));
+        const pivot = this.getters.getPivot(evaluatedArgs[0]);
         if (!pivot) {
             return [];
         }
         if (functionName === "PIVOT") {
-            return this._tooltipFormatPivot(pivot, args, isColumn);
+            return this._tooltipFormatPivot(pivot, evaluatedArgs, isColumn);
         } else if (functionName === "PIVOT.HEADER") {
-            return this._tooltipFormatPivotHeader(pivot, args);
+            return this._tooltipFormatPivotHeader(pivot, evaluatedArgs);
         }
         return [];
     }

@@ -242,6 +242,7 @@ export async function getDataFromTemplate(rpc, templateId) {
  * @returns {PivotCache} Cache for pivot object
  */
 async function _createCache(readGroupResult, fieldsGetResult, modelLabel, pivot, rpc) {
+    const formulaToDomain = {};
     const groupBys = {};
     const labels = {};
     const values = [];
@@ -258,6 +259,7 @@ async function _createCache(readGroupResult, fieldsGetResult, modelLabel, pivot,
             value[field] = readGroup[field];
         }
         value["count"] = readGroup["__count"];
+        const formulaDomain = []
         const index = values.push(value) - 1;
         for (let fieldName of fieldNames) {
             const { label, id } = _formatValue(
@@ -271,7 +273,9 @@ async function _createCache(readGroupResult, fieldsGetResult, modelLabel, pivot,
             vals.push(index);
             groupBy[id] = vals;
             groupBys[fieldName] = groupBy;
+            formulaDomain.push(`${fieldName},${id}`)
         }
+        formulaToDomain[formulaDomain.join(",")] = readGroup["__domain"]
     }
     const orderedValues = await _getOrderedValues(pivot, groupBys, fieldsGetResult, rpc);
     const orderedMeasureIds = {};
@@ -295,6 +299,7 @@ async function _createCache(readGroupResult, fieldsGetResult, modelLabel, pivot,
         modelLabel,
         rows,
         values,
+        formulaToDomain,
     });
 }
 

@@ -252,27 +252,37 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                 model.getters.getAsyncCache(pivot.id)
             )
         );
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A3")), [{
+        let tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "A3"))
+        assert.deepEqual(tooltip, [{
             "title": "Date (Year)",
             "value": "2016"
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B3")), [{
+        
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B3"))
+        assert.deepEqual(tooltip, [{
             "title": "Date (Year)",
             "value": "2016"
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "E3")), [{
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "E3"))
+        assert.deepEqual(tooltip, [{
             "title": "Date (Year)",
             "value": "2016"
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "F3")), [{
+
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "F3"))
+        assert.deepEqual(tooltip, [{
             "title": "Date (Year)",
             "value": "2016"
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B1")), [{
+
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B1"))
+        assert.deepEqual(tooltip, [{
             "title": "Foo",
             "value": 1
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B2")), [{
+
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B2"))
+        assert.deepEqual(tooltip, [{
             "title": "Foo",
             "value": 1
         }, {
@@ -300,15 +310,20 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                 model.getters.getAsyncCache(pivot.id)
             )
         );
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A3")), [{
+        let tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "A3"))
+        assert.deepEqual(tooltip, [{
             "title": "Date (Year)",
             "value": "2016"
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B3")), [{
+
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "B3"))
+        assert.deepEqual(tooltip, [{
             "title": "Date (Year)",
             "value": "2016"
         }]);
-        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "C3"), true), [{
+
+        tooltip = await model.getters.getTooltipFormula(getCellFormula(model, "C3"), true)
+        assert.deepEqual(tooltip, [{
             "title": "name",
             "value": "Undefined"
         }, {

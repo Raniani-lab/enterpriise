@@ -16,6 +16,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const { getFormulaNameAndArgs } = require("documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js");
     const { pivotFormulaRegex } = require("documents_spreadsheet.pivot_utils");
+    const { astToFormula } = spreadsheet;
 
     class PivotPlugin extends spreadsheet.CorePlugin {
         constructor(getters, history, range, dispatch, config) {
@@ -71,12 +72,12 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          * @param {number} col Index of the col
          * @param {number} row Index of the row
          */
-        getPivotFromPosition(col, row) {
+        async getPivotFromPosition(col, row) {
             const sheetId = this.getters.getActiveSheetId();
             const cell = this.getters.getCell(sheetId, col, row);
             if (cell && cell.type === "formula" && cell.formula.text.match(pivotFormulaRegex)) {
                 const { args } = getFormulaNameAndArgs(cell.formula.text);
-                const id = args[0];
+                const id = await this.getters.evaluateFormula(astToFormula(args[0]));
                 return id;
             } else {
                 return undefined;

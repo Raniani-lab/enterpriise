@@ -11,63 +11,53 @@ odoo.define("documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.j
      */
     function getFormulaNameAndArgs(formula) {
         const ast = parse(formula);
-        return _parseFormulaHelper(ast, [])[0];
+        return _parseFormulaHelper(ast)[0];
     }
 
     /**
-     * Parse a pivot formula, returns the name of the functions and the 
-     * corresponding args
+     * get the number of pivot formulas in a formula.
      *
      * @param {string} formula
+     * @param {boolean} onlyPivot Only count the "=PIVOT" and not the "PIVOT.HEADER"
      *
      * @returns {number}
      */
-     function getNumberOfPivotFormulas(formula) {
+     function getNumberOfPivotFormulas(formula, onlyPivot = true) {
         const ast = parse(formula);
-        return _parseFormulaHelper(ast, []).length;
+        const parsedFormulas = _parseFormulaHelper(ast, []);
+        return onlyPivot 
+            ? parsedFormulas.filter(parsedFormula => parsedFormula.functionName === "PIVOT").length 
+            : parsedFormulas.length
+        ;
     }
 
     /**
      * Takes an AST and returns a Array of objects
-     * containing the name of the PIVOT functions and their args
+     * containing the name of the PIVOT functions and their args (not evaluated)
      *
      * @param {string} formula
      *
      * @private
      * @returns {Array} functionName: name of the function, args: array of string
      */
-     function _parseFormulaHelper(ast, pivots) {
+     function _parseFormulaHelper(ast) {
         switch (ast.type) {
             case "UNARY_OPERATION":
-                return _parseFormulaHelper(ast.right, pivots);
+                return _parseFormulaHelper(ast.right)
             case "BIN_OPERATION": {
-                const left = _parseFormulaHelper(ast.left, []);
-                const right = _parseFormulaHelper(ast.right, []);
-                return [
-                    ...pivots,
-                    ...(Array.isArray(left) ? left : []),
-                    ...(Array.isArray(right) ? right : []),
-                ];
+                return _parseFormulaHelper(ast.left).concat(_parseFormulaHelper(ast.right))
             }
             case "FUNCALL":
             case "ASYNC_FUNCALL": {
                 const functionName = ast.value;
-                const parsedFormulaArgs = ast.args.map((arg) => _parseFormulaHelper(arg, []));
-                if (["PIVOT", "PIVOT.HEADER", "PIVOT.POSITION"].includes(functionName)) {
-                    return [{ functionName, args: parsedFormulaArgs }];
-                } else {
-                    parsedFormulaArgs.forEach(arg => {
-                        pivots.push(arg[0]);
-                    });
-                    return pivots;
+                    if (["PIVOT", "PIVOT.HEADER", "PIVOT.POSITION"].includes(functionName)) {
+                        return [{ functionName, args: ast.args }]
+                    } else {
+                        return ast.args.map((arg) => _parseFormulaHelper(arg)).flat();
                 }
             }
-            case "NUMBER":
-                return ast.value.toString();
-            case "STRING":
-                return ast.value.slice(1, -1);
             default :
-                return pivots;
+                return [];
         }
     }
 

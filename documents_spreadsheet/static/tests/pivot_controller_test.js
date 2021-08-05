@@ -571,7 +571,7 @@ test("can select a Pivot from cell formula", async function (assert) {
             </pivot>`,
         }
     });
-    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    const pivotId = await model.getters.getPivotFromPosition(2, 2);
     model.dispatch("SELECT_PIVOT", { pivotId});
     const selectedPivot = model.getters.getSelectedPivot();
     assert.strictEqual(
@@ -599,7 +599,7 @@ test("can select a Pivot from cell formula with '-' before the formula", async f
         xc: "C3",
         text: `=-PIVOT("1","probability","bar","false","foo","2")`,
     });
-    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    const pivotId = await model.getters.getPivotFromPosition(2, 2);
     model.dispatch("SELECT_PIVOT", { pivotId});
     const selectedPivot = model.getters.getSelectedPivot();
     assert.strictEqual(
@@ -627,7 +627,7 @@ test("can select a Pivot from cell formula with other numerical values", async f
         xc: "C3",
         text: `=3*PIVOT("1","probability","bar","false","foo","2")+2`,
     });
-    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    const pivotId = await model.getters.getPivotFromPosition(2, 2);
     model.dispatch("SELECT_PIVOT", { pivotId});
     const selectedPivot = model.getters.getSelectedPivot();
     assert.strictEqual(
@@ -655,7 +655,7 @@ test("can select a Pivot from cell formula where pivot is in a function call", a
         xc: "C3",
         text: `=SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))`,
     });
-    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    const pivotId = await model.getters.getPivotFromPosition(2, 2);
     model.dispatch("SELECT_PIVOT", { pivotId});
     const selectedPivot = model.getters.getSelectedPivot();
     assert.strictEqual(
@@ -694,7 +694,7 @@ test("can select a Pivot from cell formula (Mix of test scenarios above)", async
         xc: "C3",
         text: `=3*SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))+2*PIVOT("1","probability","bar","false","foo","2")`,
     });
-    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    const pivotId = await model.getters.getPivotFromPosition(2, 2);
     model.dispatch("SELECT_PIVOT", { pivotId});
     const selectedPivot = model.getters.getSelectedPivot();
     assert.strictEqual(

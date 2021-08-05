@@ -17,6 +17,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const PivotRPC = require("documents_spreadsheet.PivotRPC");
+    const { astToFormula } = spreadsheet;
     const {
         getFormulaNameAndArgs,
     } = require("documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js");
@@ -588,7 +589,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @private
          * @returns {string}
          */
-        _getHeaderText(cell, cache) {
+        async _getHeaderText(cell, cache) {
             if (cell.type !== "formula" || !cell.formula.text.startsWith("=PIVOT.HEADER")) {
                 return "";
             }
@@ -597,8 +598,8 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
             if (len === 1) {
                 return _t("Total");
             }
-            const field = args[len - 2];
-            const value = args[len - 1];
+            const field = await this.getters.evaluateFormula(astToFormula(args[len - 2]));
+            const value = await this.getters.evaluateFormula(astToFormula(args[len - 1]));
             return pivotUtils.formatHeader(cache, field, value);
         }
         /**

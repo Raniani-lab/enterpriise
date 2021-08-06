@@ -79,7 +79,7 @@ class QualityPoint(models.Model):
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     product_ids = fields.Many2many(
         default=_default_product_ids,
-        domain="is_workorder_step and [('id', 'in', bom_product_ids)] or [('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="(is_workorder_step and operation_id) and [('id', 'in', bom_product_ids)] or [('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     bom_product_ids = fields.One2many('product.product', compute="_compute_bom_product_ids")
     test_type_id = fields.Many2one(
         'quality.point.test_type',
@@ -95,7 +95,7 @@ class QualityPoint(models.Model):
 
     @api.onchange('bom_product_ids', 'is_workorder_step')
     def _onchange_bom_product_ids(self):
-        if self.is_workorder_step:
+        if self.is_workorder_step and self.bom_product_ids:
             self.product_ids = self.product_ids._origin & self.bom_product_ids
 
     @api.depends('bom_id.product_id', 'bom_id.product_tmpl_id.product_variant_ids', 'is_workorder_step', 'bom_id')

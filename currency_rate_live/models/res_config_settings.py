@@ -16,6 +16,71 @@ from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 BANXICO_DATE_FORMAT = '%d/%m/%Y'
+CBUAE_URL = "https://www.centralbank.ae/en/fx-rates"
+CBUAE_CURRENCIES = {
+    'US Dollar': 'USD',
+    'Argentine Peso': 'ARS',
+    'Australian Dollar': 'AUD',
+    'Bangladesh Taka': 'BDT',
+    'Bahrani Dinar': 'BHD',
+    'Brunei Dollar': 'BND',
+    'Brazilian Real': 'BRL',
+    'Botswana Pula': 'BWP',
+    'Belarus Rouble': 'BYN',
+    'Canadian Dollar': 'CAD',
+    'Swiss Franc': 'CHF',
+    'Chilean Peso': 'CLP',
+    'Chinese Yuan - Offshore': 'CNY',
+    'Chinese Yuan': 'CNY',
+    'Colombian Peso': 'COP',
+    'Czech Koruna': 'CZK',
+    'Danish Krone': 'DKK',
+    'Algerian Dinar': 'DZD',
+    'Egypt Pound': 'EGP',
+    'Euro': 'EUR',
+    'GB Pound': 'GBP',
+    'Hongkong Dollar': 'HKD',
+    'Hungarian Forint': 'HUF',
+    'Indonesia Rupiah': 'IDR',
+    'Indian Rupee': 'INR',
+    'Iceland Krona': 'ISK',
+    'Jordan Dinar': 'JOD',
+    'Japanese Yen': 'JPY',
+    'Kenya Shilling': 'KES',
+    'Korean Won': 'KRW',
+    'Kuwaiti Dinar': 'KWD',
+    'Kazakhstan Tenge': 'KZT',
+    'Lebanon Pound': 'LBP',
+    'Sri Lanka Rupee': 'LKR',
+    'Moroccan Dirham': 'MAD',
+    'Macedonia Denar': 'MKD',
+    'Mexican Peso': 'MXN',
+    'Malaysia Ringgit': 'MYR',
+    'Nigerian Naira': 'NGN',
+    'Norwegian Krone': 'NOK',
+    'NewZealand Dollar': 'NZD',
+    'Omani Rial': 'OMR',
+    'Peru Sol': 'PEN',
+    'Philippine Piso': 'PHP',
+    'Pakistan Rupee': 'PKR',
+    'Polish Zloty': 'PLN',
+    'Qatari Riyal': 'QAR',
+    'Serbian Dinar': 'RSD',
+    'Russia Rouble': 'RUB',
+    'Saudi Riyal': 'SAR',
+    'Swedish Krona': 'SWK',
+    'Singapore Dollar': 'SGD',
+    'Thai Baht': 'THB',
+    'Tunisian Dinar': 'TND',
+    'Turkish Lira': 'TRY',
+    'Trin Tob Dollar': 'TTD',
+    'Taiwan Dollar': 'TWD',
+    'Tanzania Shilling': 'TZS',
+    'Uganda Shilling': 'UGX',
+    'Vietnam Dong': 'VND',
+    'South Africa Rand': 'ZAR',
+    'Zambian Kwacha': 'ZMW',
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -38,13 +103,14 @@ class ResCompany(models.Model):
         ('bnr', 'National Bank Of Romania'),
         ('mindicador', 'Chilean mindicador.cl'),
         ('bcrp', 'Bank of Peru'),
+        ('cbuae', 'UAE Central Bank'),
     ], default='ecb', string='Service Provider')
 
     @api.model
     def create(self, vals):
         ''' Change the default provider depending on the company data.'''
         if vals.get('country_id') and 'currency_provider' not in vals:
-            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador', 'PE': 'bcrp'}
+            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador', 'PE': 'bcrp', 'AE': 'cbuae'}
             cc = self.env['res.country'].browse(vals['country_id']).code.upper()
             if cc in code_providers:
                 vals['currency_provider'] = code_providers[cc]
@@ -61,6 +127,7 @@ class ResCompany(models.Model):
             'RO': 'bnr',
             'CL': 'mindicador',
             'PE': 'bcrp',
+            'AE': 'cbuae',
         }
         for company in all_companies:
             company.currency_provider = currency_providers.get(company.country_id.code, 'ecb')
@@ -203,6 +270,31 @@ class ResCompany(models.Model):
         if rslt and 'EUR' in available_currency_names:
             rslt['EUR'] = (1.0, fields.Date.today())
 
+        return rslt
+
+    def _parse_cbuae_data(self, available_currencies):
+        ''' This method is used to update the currencies by using UAE Central Bank service provider.
+            Exchange rates are expressed as 1 unit of the foreign currency converted into AED
+        '''
+        try:
+            fetched_data = requests.get(CBUAE_URL, timeout=30)
+            fetched_data.raise_for_status()
+        except Exception:
+            return False
+
+        htmlelem = etree.fromstring(fetched_data.content, etree.HTMLParser())
+        rates_entries = htmlelem.xpath("//table[@id='ratesDateTable']/tbody/tr")
+        available_currency_names = set(available_currencies.mapped('name'))
+        rslt = {}
+        for rate_entry in rates_entries:
+            # line structure is <td>Currency Description</td><td>rate</td>
+            currency_code = CBUAE_CURRENCIES.get(rate_entry[0].text)
+            rate = float(rate_entry[1].text)
+            if currency_code in available_currency_names:
+                rslt[currency_code] = (1.0/rate, fields.Date.today())
+
+        if 'AED' in available_currency_names:
+            rslt['AED'] = (1.0, fields.Date.today())
         return rslt
 
     def _parse_boc_data(self, available_currencies):

@@ -14,12 +14,16 @@
             <field name="name">fsm.worksheet.template2.form.inherit</field>
             <field name="type">form</field>
             <field name="model" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.model"/>
-            <field name="inherit_id" model="ir.ui.view" search="[('name','ilike', obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.model),('type', '=', 'form')]"/>
+            <field name="inherit_id" model="ir.ui.view" search="[('model', '=', obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.model), ('type', '=', 'form')]"/>
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet" position="replace">
                     <sheet>
                         <group invisible="context.get('studio') or context.get('default_x_project_task_id')">
-                            <field name="x_project_task_id" domain="[('is_fsm', '=', True)]"/>
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="x_project_task_id" domain="[('is_fsm', '=', True)]" readonly="1"/>
+                                </h1>
+                            </div>
                         </group>
                         <group class="o_fsm_worksheet_form">
                             <field name="x_name"/>

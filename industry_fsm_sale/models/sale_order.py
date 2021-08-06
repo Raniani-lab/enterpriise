@@ -1,13 +1,25 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+from odoo import api, models, fields, _
 
 
 class SaleOrder(models.Model):
     _inherit = ['sale.order']
 
     task_id = fields.Many2one('project.task', string="Task", help="Task from which quotation have been created")
+
+    @api.model_create_multi
+    def create(self, vals):
+        orders = super().create(vals)
+        for sale_order in orders:
+            if sale_order.task_id:
+                message = _(
+                    "Quotation created: %s",
+                    "<a href=# data-oe-model=sale.order data-oe-id=%d>%s</a>" % (sale_order.id, sale_order.display_name))
+                sale_order.task_id.message_post(body=message)
+        return orders
+
 
 class SaleOrderLine(models.Model):
     _inherit = ['sale.order.line']

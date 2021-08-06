@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, _
+from odoo import Command, models, api, _
 
 
 class ResCompany(models.Model):
@@ -9,14 +9,13 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     def _get_field_service_project_values(self):
-        project_name = _("Field Service")
-        type_ids = [
-            (4, self.env.ref('industry_fsm.planning_project_stage_0').id),
-            (4, self.env.ref('industry_fsm.planning_project_stage_1').id)]
+        stage_ids = self.env['ir.model.data'].sudo().search_read([('module', '=', 'industry_fsm'), ('name', 'like', 'planning_project_stage_')], ['res_id'])
+        type_ids = [Command.link(stage_id['res_id']) for stage_id in stage_ids]
         return [{
-            'name': project_name,
+            'name': _("Field Service - %s", company.name),
             'is_fsm': True,
             'allow_timesheets': True,
+            'allow_worksheets': True,
             'type_ids': type_ids,
             'company_id': company.id
         } for company in self]

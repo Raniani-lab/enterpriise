@@ -167,11 +167,17 @@ class WorksheetTemplate(models.Model):
         # create the view to extend by 'studio' and add the user custom fields
         form_view_values = self._prepare_default_form_view_values(model)
         form_view = self.env['ir.ui.view'].sudo().create(form_view_values)
+        tree_view_values = self._prepare_default_tree_view_values(model)
+        tree_view = self.env['ir.ui.view'].sudo().create(tree_view_values)
+        search_view_values = self._prepare_default_search_view_values(model)
+        search_view = self.env['ir.ui.view'].sudo().create(search_view_values)
         action = self.env['ir.actions.act_window'].sudo().create({
             'name': 'Worksheets',
             'res_model': model.model,
             'view_mode': 'tree,form',
+            'views': [(tree_view.id, 'tree'), (form_view.id, 'form')],
             'target': 'current',
+            'search_view_id': search_view.id,
             'context': {
                 'edit': False,
                 'create': False,
@@ -268,6 +274,39 @@ class WorksheetTemplate(models.Model):
             """ % (res_model_name, res_model_name)
         }
 
+    def _prepare_default_tree_view_values(self, model):
+        """Create a default list view for the model created from the template."""
+        res_model_name = self.res_model.replace('.', '_')
+        tree_arch_func = getattr(self, f'_default_{res_model_name}_worksheet_tree_arch', False)
+        return {
+            'type': 'tree',
+            'name': 'tree_view_' + self.name.replace(' ', '_'),
+            'model': model.model,
+            'arch': tree_arch_func and tree_arch_func() or """
+                <tree>
+                    <field name="create_date" widget="date"/>
+                    <field name="x_name"/>
+                </tree>
+            """
+        }
+
+    def _prepare_default_search_view_values(self, model):
+        """Create a default search view for the model created from the template."""
+        res_model_name = self.res_model.replace('.', '_')
+        search_arch_func = getattr(self, f'_default_{res_model_name}_worksheet_search_arch', False)
+        return {
+            'type': 'search',
+            'name': 'search_view_' + self.name.replace(' ', '_'),
+            'model': model.model,
+            'arch': search_arch_func and search_arch_func() or """
+                <search>
+                    <field name="x_name"/>
+                    <filter string="Created on" date="create_date" name="create_date"/>
+                    <filter name="group_by_month" string="Created on" context="{'group_by': 'create_date:month'}"/>
+                </search>
+            """
+        }
+
     @api.model
     def _get_models_to_check_dict(self):
         """To be override in the module using it. It returns a dictionary contains
@@ -284,14 +323,18 @@ class WorksheetTemplate(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'graph,pivot,list,form',
             'res_model': self.sudo().model_id.model,
+            'context': "{'search_default_group_by_month': True}",
         }
 
     def action_view_worksheets(self):
         action = self.action_id.sudo().read()[0]
         # modify context to force no create/import button
-        context = literal_eval(action.get('context', '{}'))
-        context['create'] = 0
-        action['context'] = context
+        action['context'] = dict(literal_eval(action.get('context', '{}')), search_default_group_by_month=True)
+        if self.worksheet_count == 1:
+            action.update({
+                'views': [(False, 'form')],
+                'res_id': self.env[action['res_model']].search([], limit=1).id,
+            })
         return action
 
     # ---------------------------------------------------------

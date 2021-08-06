@@ -127,10 +127,16 @@ class Task(models.Model):
         # redirect create invoice wizard (of the Sales Order)
         action = self.env["ir.actions.actions"]._for_xml_id("sale.action_view_sale_advance_payment_inv")
         context = literal_eval(action.get('context', "{}"))
+        so_task_mapping = defaultdict(list)
+        for task in self:
+            if task.sale_order_id:
+                # As the key is anyway stringified in the JS, we casted the key here to make it clear.
+                so_task_mapping[str(task.sale_order_id.id)].append(task.id)
         context.update({
             'active_id': self.sale_order_id.id if len(self) == 1 else False,
             'active_ids': self.mapped('sale_order_id').ids,
             'default_company_id': self.company_id.id,
+            'industry_fsm_message_post_task_id': so_task_mapping,
         })
         action['context'] = context
         return action
@@ -185,6 +191,7 @@ class Task(models.Model):
                 'default_partner_id': self.partner_id.id,
                 'default_task_id': self.id,
                 'default_company_id': self.company_id.id,
+                'default_origin': _('%s - %s') % (self.project_id.name, self.name),
             },
         })
         return action
@@ -288,6 +295,7 @@ class Task(models.Model):
             'task_id': self.id,
             'analytic_account_id': self._get_task_analytic_account_id().id,
             'team_id': team.id if team else False,
+            'origin': _('%s - %s') % (self.project_id.name, self.name),
         })
         # update after creation since onchange_partner_id sets the current user
         sale_order.user_id = user_id.id

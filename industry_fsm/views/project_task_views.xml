@@ -49,7 +49,7 @@
                     attrs="{'invisible': ['|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('comment', '!=', False)]}">
                 </button>
                 <button
-                    string="Worksheet Completed"
+                    string="Worksheet Complete"
                     class="oe_stat_button oe_worksheet_completed text-success"
                     name="action_fsm_worksheet"
                     icon="fa-check" type="object"

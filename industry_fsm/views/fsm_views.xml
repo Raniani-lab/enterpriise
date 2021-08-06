@@ -38,6 +38,7 @@
                 <field name="name" string="Tasks"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="user_ids" context="{'active_test': False}"/>
+                <field name="project_id"/>
                 <field name="active"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_ids', 'in', uid)]"/>
                 <separator />
@@ -663,14 +664,13 @@
             groups="industry_fsm.group_fsm_manager"/>
 
     <menuitem id="fsm_menu_settings"
-        name="Configuration"
-        sequence="50"
-        parent="industry_fsm.fsm_menu_root"
-        groups="industry_fsm.group_fsm_manager"/>
+              name="Configuration"
+              sequence="50"
+              parent="industry_fsm.fsm_menu_root"
+              groups="industry_fsm.group_fsm_manager">
 
         <menuitem id="fsm_menu_settings_res_config"
             name="Settings"
-            parent="fsm_menu_settings"
             sequence="0"
             action="industry_fsm.res_config_settings_action_fsm"
             groups="base.group_system"/>
@@ -679,21 +679,26 @@
             name="Projects"
             sequence="10"
             action="project_project_action_only_fsm"
-            parent="fsm_menu_settings"
+            groups="industry_fsm.group_fsm_manager"/>
+
+        <menuitem id="fsm_menu_settings_stage"
+            name="Stages"
+            sequence="15"
+            action="industry_fsm.project_task_type_action_fsm"
             groups="industry_fsm.group_fsm_manager"/>
 
         <menuitem id="menu_project_tags_act"
             name="Tags"
             sequence="40"
             action="project.project_tags_action"
-            parent="fsm_menu_settings"
             groups="industry_fsm.group_fsm_manager"/>
 
-        <menuitem id="fsm_menu_settings_stage"
-            name="Stages"
-            sequence="10"
-            action="industry_fsm.project_task_type_action_fsm"
-            parent="fsm_menu_settings"
+        <menuitem id="fsm_menu_config_activity_type"
+            name="Activity Types"
+            sequence="45"
+            action="project.mail_activity_type_action_config_project_types"
             groups="industry_fsm.group_fsm_manager"/>
+
+    </menuitem>
 
 </odoo>

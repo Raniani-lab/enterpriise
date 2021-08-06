@@ -32,7 +32,8 @@ class Task(models.Model):
     worksheet_template_id = fields.Many2one(
         'worksheet.template', string="Worksheet Template",
         compute='_compute_worksheet_template_id', store=True, readonly=False,
-        domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
+        domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]",
+        group_expand='_read_group_worksheet_template_id')
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     worksheet_color = fields.Integer(related='worksheet_template_id.color')
 
@@ -86,6 +87,15 @@ class Task(models.Model):
                     Worksheet = Worksheet.sudo()
                 worksheet_count = Worksheet.search_count([('x_project_task_id', '=', record.id)])
             record.worksheet_count = worksheet_count
+
+    @api.model
+    def _read_group_worksheet_template_id(self, worksheets, domain, order):
+        if self._context.get('fsm_mode'):
+            dom_tuples = [dom for dom in domain if isinstance(dom, (list, tuple)) and len(dom) == 3]
+            if any(d[0] == 'worksheet_template_id' and d[1] in ('=', 'ilike') for d in dom_tuples):
+                filter_domain = self._expand_domain_m2o_groupby(dom_tuples, 'worksheet_template_id')
+                return self.env['worksheet.template'].search(filter_domain, order=order)
+        return worksheets
 
     def action_fsm_worksheet(self):
         # We check that comment is not empty, otherwise it means that a `worksheet` has been generated

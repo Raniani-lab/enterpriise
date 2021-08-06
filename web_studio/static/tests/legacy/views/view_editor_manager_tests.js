@@ -3493,6 +3493,67 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('many2many field can be dropped in "Group by" sections', async function (assert) {
+        assert.expect(3);
+
+        let fieldsView;
+        const arch =
+            `<search>
+                <field name='display_name'/>
+                <filter string='My Name' name='my_name' domain='[("display_name","=",coucou)]' />
+                <group expand='0' string='Filters'>
+                    <filter string='My Name2' name='my_name2' domain='[("display_name","=",coucou2)]'/>
+                </group>
+                <group expand='0' string='Group By'>
+                    <filter name='groupby_display_name' domain='[]' context="{'group_by':'display_name'}"/>
+                    <filter name='groupby_m2m' domain='[]' context="{'group_by':'m2m'}"/>
+                </group>
+            </search>`;
+        this.data.product.fields.m2m.store = true;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'product',
+            arch:
+                `<search>
+                    <field name='display_name'/>
+                    <filter string='My Name' name='my_name' domain='[("display_name","=",coucou)]' />
+                    <group expand='0' string='Filters'>
+                        <filter string='My Name2' name='my_name2' domain='[("display_name","=",coucou2)]'/>
+                    </group>
+                    <group expand='0' string='Group By'>
+                        <filter name='groupby_display_name' domain='[]' context="{'group_by':'display_name'}"/>
+                    </group>
+                </search>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].node.attrs.context, "{'group_by': 'm2m'}",
+                        "should date attribute in attrs when adding a date/datetime field");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            search: fieldsView,
+                        }
+                    });
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        fieldsView = Object.assign({}, vem.fields_view);
+
+        assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_group_by [data-node-id]', 1,
+            'should have 1 group inside groupby dropdown');
+
+        // try to add many2many field in groupby
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .o_web_studio_field_many2many:first'), $('.o_web_studio_search_group_by .o_web_studio_hook:first'));
+        assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_group_by [data-node-id]', 2,
+            'should have 2 group inside groupby dropdown');
+
+        vem.destroy();
+    });
+
     QUnit.test('indicate that separators can not be dropped in "Automcompletion Fields" and "Group by" sections', async function (assert) {
         assert.expect(3);
 

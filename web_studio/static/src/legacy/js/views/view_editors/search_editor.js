@@ -30,7 +30,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
         this.node_id = 1;
         this.show_invisible = params.show_invisible;
         this.FILTER_TYPES = ['date', 'datetime'];
-        this.GROUPABLE_TYPES = ['many2one', 'char', 'boolean', 'selection', 'date', 'datetime'];
+        this.GROUPABLE_TYPES = ['many2one', 'many2many', 'char', 'boolean', 'selection', 'date', 'datetime'];
     },
 
     //--------------------------------------------------------------------------

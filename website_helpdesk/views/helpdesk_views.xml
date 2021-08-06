@@ -8,6 +8,15 @@
             <xpath expr="//button[@name='action_view_sla_policy']" position="after">
                 <field name="is_published" widget="website_redirect_button" attrs="{'invisible': [('use_website_helpdesk_form', '=', False), ('use_website_helpdesk_forum', '=', False), ('use_website_helpdesk_slides', '=', False)]}"/>
             </xpath>
+            <xpath expr="//div[@id='website_form']" position="replace">
+                <div id='website_form' attrs="{'invisible': [('use_website_helpdesk_form','=',False)]}">
+                    <div attrs="{'invisible': ['|', ('use_website_helpdesk_form', '=', False), ('feature_form_url','=',False)]}" class="mt16">
+                        <button role="button" class="btn-link" icon="fa-arrow-right">
+                            <field name="feature_form_url" readonly="1" class="oe_inline" widget="url" text="View the ticket submission page"/>
+                        </button>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

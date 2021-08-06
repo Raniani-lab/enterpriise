@@ -1,4 +1,4 @@
-odoo.define('website_helpdesk_form.form', function (require) {
+odoo.define('website_helpdesk.form', function (require) {
 'use strict';
 
 var core = require('web.core');

@@ -382,7 +382,7 @@ class HelpdeskTeam(models.Model):
     def _get_field_modules(self):
         # mapping of field names to module names
         return {
-            'use_website_helpdesk_form': 'website_helpdesk_form',
+            'use_website_helpdesk_form': 'website_helpdesk',
             'use_website_helpdesk_livechat': 'website_helpdesk_livechat',
             'use_website_helpdesk_forum': 'website_helpdesk_forum',
             'use_website_helpdesk_slides': 'website_helpdesk_slides',

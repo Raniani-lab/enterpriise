@@ -78,7 +78,7 @@ class SocialStreamLinkedIn(models.Model):
         post_to_create = []
         for post_urn in linkedin_post_data:
             if post_urn in existing_post_urns:
-                existing_post_urns[post_urn].write(linkedin_post_data[post_urn])
+                existing_post_urns[post_urn].sudo().write(linkedin_post_data[post_urn])
             else:
                 post_to_create.append(linkedin_post_data[post_urn])
 

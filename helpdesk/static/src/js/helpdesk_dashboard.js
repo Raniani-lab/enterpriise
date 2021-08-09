@@ -187,6 +187,7 @@ var HelpdeskDashboardModel = KanbanModel.extend({
         var dashboard_def = this._rpc({
             model: 'helpdesk.team',
             method: 'retrieve_dashboard',
+            context: session.user_context,
         });
         return Promise.all([super_def, dashboard_def]).then(function(results) {
             var id = results[0];

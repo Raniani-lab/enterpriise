@@ -7,8 +7,8 @@ from odoo import models, fields
 class SocialPost(models.Model):
     _inherit = 'social.post'
 
-    sale_quotation_count = fields.Integer('Quotation Count', compute='_compute_sale_quotation_count')
-    sale_invoiced_amount = fields.Integer('Invoiced Amount', compute='_compute_sale_invoiced_amount')
+    sale_quotation_count = fields.Integer('Quotation Count', compute='_compute_sale_quotation_count', groups='sales_team.group_sale_salesman')
+    sale_invoiced_amount = fields.Integer('Invoiced Amount', compute='_compute_sale_invoiced_amount', groups='sales_team.group_sale_salesman')
 
     def _compute_sale_quotation_count(self):
         has_so_access = self.env['sale.order'].check_access_rights('read', raise_exception=False)

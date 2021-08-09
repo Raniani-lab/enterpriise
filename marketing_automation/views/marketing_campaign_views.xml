@@ -42,7 +42,7 @@
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
             <form js_class="marketing_automation_campaign_form" string="Campaign">
-                <header>
+                <header attrs="{'invisible': [('active', '=', False)]}">
                     <button name="action_start_campaign" type="object" states="draft,stopped" class="btn-primary" string="Start" />
                     <button name="action_stop_campaign" type="object" states="running" class="btn-primary" string="Stop" />
                     <button name="%(marketing_campaign_test_action)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-secondary" string="Launch a Test" />
@@ -62,24 +62,27 @@
                 </div>
                 <sheet>
                     <div name="button_box" class="oe_button_box">
-                        <button name="action_view_mailings" type="object" icon="fa-envelope-o" class="oe_stat_button">
+                        <button name="action_view_mailings" type="object" icon="fa-envelope-o" class="oe_stat_button"
+                            attrs="{'invisible': [('mass_mailing_count', '=', 0)]}">
                             <field name="mass_mailing_count" widget="statinfo" string="Templates"/>
                         </button>
-                        <button name="action_view_tracker_statistics" type="object" icon="fa-link" class="oe_stat_button">
+                        <button name="action_view_tracker_statistics" type="object" icon="fa-mouse-pointer" class="oe_stat_button"
+                            attrs="{'invisible': [('link_tracker_click_count', '=', 0), ('state', '=', 'draft')]}">
                             <field name="link_tracker_click_count" widget="statinfo" string="Clicks"/>
                         </button>
                         <button name="%(marketing_participant_action_campaign_test)d" type="action"
-                            icon="fa-flask" class="oe_stat_button" attrs="{'invisible': [('test_participant_count', '=', 0)]}">
+                            icon="fa-flask" class="oe_stat_button" attrs="{'invisible': ['|', ('test_participant_count', '=', 0), ('state', '=', 'draft')]}">
                             <field name="test_participant_count" widget="statinfo" string="Tests" />
                         </button>
                         <button name="%(marketing_participant_action_campaign)d" type="action"
-                            icon="fa-code-fork fa-rotate-180 fa-flip-vertical" class="oe_stat_button">
+                            icon="fa-code-fork fa-rotate-180 fa-flip-vertical" class="oe_stat_button"
+                            attrs="{'invisible': [('total_participant_count', '=', 0), ('state', '=', 'draft')]}">
                             <field name="total_participant_count" widget="statinfo" string="Participants" />
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
-                        <h1><field class="o_text_overflow" name="name" required="1" placeholder="e.g. eCommerce Offers" /></h1>
+                        <h1><field class="o_text_overflow" name="name" required="1" placeholder="e.g. eCommerce Offers Plan" /></h1>
                     </div>
                     <group>
                         <field name="model_id"
@@ -90,7 +93,7 @@
                             context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                         <field name="active" invisible="1"/>
                         <field name="model_name" invisible="1"/>
-                        <field name="unique_field_id" string="Unicity based on " options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline"/>
+                        <field name="unique_field_id" string="Unicity based on " options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
                         <field name="domain" widget="domain" options="{'model': 'model_name'}"/>
                         <field name="utm_campaign_id" required="0" invisible="1"/>
                     </group>
@@ -284,10 +287,10 @@
             <tree string="Campaign" sample="1">
                 <field name="name" />
                 <field name="model_id" string="Target" attrs="{'readonly' :[('state' , '!=', 'draft')]}"/>
+                <field name="mass_mailing_count" string="Mailings"/>
+                <field name="link_tracker_click_count" string="Clicks"/>
+                <field name="total_participant_count" string="Participants"/>
                 <field name="state" readonly="True" decoration-info="state == 'draft'" decoration-success="state == 'running'" decoration-muted="state == 'stopped'" widget="badge"/>
-                <field name="mass_mailing_count" />
-                <field name="link_tracker_click_count" />
-                <field name="total_participant_count" />
             </tree>
         </field>
     </record>

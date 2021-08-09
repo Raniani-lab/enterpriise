@@ -51,11 +51,10 @@
                 <field name="effective_hours"/>
                 <field name="task_id"/>
             </xpath>
-            <xpath expr="//li[@id='allocated_hours']" position="after">
-                <li t-if="task_id" id="effective_hours">
-                    <strong>Effective Hours: </strong>
-                    <t t-esc="effectiveHoursFormatted"/>
-                </li>
+            <xpath expr="//div[@id='allocated_hours']" position="after">
+                <div t-if="task_id" id="effective_hours">
+                    <strong>Effective Hours — </strong><t t-esc="effectiveHoursFormatted"/>
+                </div>
             </xpath>
         </field>
     </record>

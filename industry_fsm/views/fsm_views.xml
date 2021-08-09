@@ -97,14 +97,10 @@
                 <attribute name="decoration-danger">is_fsm and planning_overlap &gt; 0</attribute>
                 <attribute name="total_row">True</attribute>
             </xpath>
-            <xpath expr="//ul" position="inside">
+            <xpath expr="//div[@t-name='gantt-popover']" position="inside">
                 <div class="text-danger mt-2" t-if="planning_overlap">
                     <t t-esc="planning_overlap"/> other task<span t-if="planning_overlap &gt; 1">s</span> for this employee at the same time.
                 </div>
-            </xpath>
-            <xpath expr="//ul/li" position="before">
-                <li t-if="project_id"><strong>Project: </strong> <t t-esc="project_id[1]"/></li>
-                <li t-if="user_id"><strong>Assigned To: </strong> <t t-esc="user_id[1]"/></li>
             </xpath>
         </field>
     </record>

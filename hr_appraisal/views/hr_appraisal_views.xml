@@ -363,7 +363,13 @@
                 color="employee_id"
                 date_start="date_close"
                 date_stop="date_close"
-                default_group_by='department_id'/>
+                default_group_by='department_id'>
+                <templates>
+                    <div t-name="gantt-popover">
+                        <div><strong>Date — </strong><t t-esc="userTimezoneStartDate.format('l LT')"/></div>
+                    </div>
+                </templates>
+            </gantt>
         </field>
     </record>
 

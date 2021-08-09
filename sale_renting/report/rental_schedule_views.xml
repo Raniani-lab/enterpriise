@@ -63,39 +63,33 @@
                  thumbnails="{'product_id': 'image_128', 'partner_id': 'avatar_128', 'user_id': 'avatar_128'}"
                  sample="1">
                  <templates>
-                     <div t-name="gantt-popover" class="container-fluid">
-                         <div class="row no-gutters">
-                             <div class="col">
-                                 <ul class="pl-1 mb-0">
-                                     <li><strong>Order #: </strong> <t t-esc="name"/></li>
-                                     <li><strong>Pickup : </strong> <t t-esc="userTimezoneStartDate.format('L LT')"/></li>
-                                     <li><strong>Return : </strong> <t t-esc="userTimezoneStopDate.format('L LT')"/></li>
-                                     <li><strong>Status : </strong> <t t-field="report_line_status"/>
-                                        <!-- t-field doesn't work, report_line_status isn't a field but a string -->
-                                        <t t-if="late">
-                                            Late
-                                            <t t-if="report_line_status == 'reserved'">
-                                                Pickup
-                                            </t>
-                                            <t t-elif="report_line_status == 'pickedup'">
-                                                Return
-                                            </t>
-                                        </t>
-                                        <t t-else="">
-                                          <t t-if="report_line_status == 'pickedup'">
-                                              Picked-Up
-                                          </t>
-                                          <t t-elif="report_line_status == 'returned'">
-                                              Returned
-                                          </t>
-                                          <t t-else="">
-                                              Reserved
-                                          </t>
-                                        </t>
-                                     </li>
-                                 </ul>
-                             </div>
-                         </div>
+                     <div t-name="gantt-popover">
+                      <div><strong>Order # — </strong> <t t-esc="name"/></div>
+                      <div><strong>Pickup  — </strong> <t t-esc="userTimezoneStartDate.format('L LT')"/></div>
+                      <div><strong>Return — </strong> <t t-esc="userTimezoneStopDate.format('L LT')"/></div>
+                      <div><strong>Status — </strong> <t t-field="report_line_status"/>
+                        <!-- t-field doesn't work, report_line_status isn't a field but a string -->
+                        <t t-if="late">
+                            Late
+                            <t t-if="report_line_status == 'reserved'">
+                                Pickup
+                            </t>
+                            <t t-elif="report_line_status == 'pickedup'">
+                                Return
+                            </t>
+                        </t>
+                        <t t-else="">
+                          <t t-if="report_line_status == 'pickedup'">
+                              Picked-Up
+                          </t>
+                          <t t-elif="report_line_status == 'returned'">
+                              Returned
+                          </t>
+                          <t t-else="">
+                              Reserved
+                          </t>
+                        </t>
+                      </div>
                      </div>
                  </templates>
               <field name="name"/>

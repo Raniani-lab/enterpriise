@@ -19,18 +19,11 @@
                 sample="1"
                 precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:full'}">
                 <templates>
-                    <div t-name="gantt-popover" class="container-fluid">
-                        <div class="row no-gutters">
-                            <div class="col">
-                                <ul class="pl-1 mb-0">
-                                    <li t-if="project_id"><strong>Project: </strong> <t t-esc="project_id[1]"/></li>
-                                    <li t-if="user_id"><strong>Assigned to: </strong> <t t-esc="user_id[1]"/></li>
-                                    <li t-if="partner_id"><strong>Customer: </strong> <t t-esc="partner_id[1]"/></li>
-                                    <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('L LTS')"/></li>
-                                    <li><strong>End Date: </strong> <t t-esc="userTimezoneStopDate.format('L LTS')"/></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div t-name="gantt-popover">
+                        <div t-if="project_id"><strong>Project — </strong> <t t-esc="project_id[1]"/></div>
+                        <div t-if="user_id"><strong>Assignee — </strong> <t t-esc="user_id[1]"/></div>
+                        <div t-if="partner_id"><strong>Customer — </strong> <t t-esc="partner_id[1]"/></div>
+                        <div><t t-esc="userTimezoneStartDate.format('l LT ')"/><i class="fa fa-long-arrow-right" title="Arrow"/><t t-esc="userTimezoneStopDate.format(' l LT')"/></div>
                     </div>
                 </templates>
                 <field name="project_id"/>

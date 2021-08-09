@@ -62,7 +62,7 @@ class MailChannel(models.Model):
                 for message in self.message_ids.sorted(key=lambda r: r.id):
                     name = message.author_id.name or 'Anonymous'
                     description += '%s: ' % name + '%s\n' % re.sub('<[^>]*>', '', message.body)
-                team = self.env['helpdesk.team'].search([('member_ids', 'in', self._uid)], order='sequence', limit=1)
+                team = self.env['helpdesk.team'].search([('use_website_helpdesk_livechat', '=', True)], order='sequence', limit=1)
                 team_id = team.id if team else False
                 helpdesk_ticket = self.env['helpdesk.ticket'].create({
                     'name': ' '.join(list_value),

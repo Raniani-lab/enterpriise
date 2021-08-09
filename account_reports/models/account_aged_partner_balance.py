@@ -199,11 +199,11 @@ class ReportAccountAgedPartner(models.AbstractModel):
         ]
 
     def _show_line(self, report_dict, value_dict, current, options):
-        # Don't display an aml report line with all zero amounts.
+        # Don't display an aml report line (except the header) with all zero amounts.
         all_zero = all(
             self.env.company.currency_id.is_zero(value_dict[f])
             for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5']
-        )
+        ) and not value_dict.get('__count')
         return super()._show_line(report_dict, value_dict, current, options) and not all_zero
 
     def _format_partner_id_line(self, res, value_dict, options):

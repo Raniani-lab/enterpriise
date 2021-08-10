@@ -75,9 +75,9 @@ class ReportAccountFinancialReport(models.Model):
 
                 required = line['level'] == 0  # Required fields all have level 0
                 # current year balance
-                _report_useful_fields(columns[0]['no_format'], split_line_code[2], parent_code, required)
+                _report_useful_fields(columns[0].get('no_format', 0.0), split_line_code[2], parent_code, required)
                 # previous year balance
-                _report_useful_fields(columns[1]['no_format'], str(int(split_line_code[2]) + 1), parent_code and str(int(parent_code) + 1), required)
+                _report_useful_fields(columns[1].get('no_format', 0.0), str(int(split_line_code[2]) + 1), parent_code and str(int(parent_code) + 1), required)
 
         lu_template_values.update({
             'forms': [{

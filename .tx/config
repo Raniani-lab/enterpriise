@@ -487,11 +487,6 @@ file_filter = mail_enterprise/i18n/<lang>.po
 source_file = mail_enterprise/i18n/mail_enterprise.pot
 source_lang = en
 
-[odoo-master.mail_github]
-file_filter = mail_github/i18n/<lang>.po
-source_file = mail_github/i18n/mail_github.pot
-source_lang = en
-
 [odoo-master.mail_mobile]
 file_filter = mail_mobile/i18n/<lang>.po
 source_file = mail_mobile/i18n/mail_mobile.pot

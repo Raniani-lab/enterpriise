@@ -46,7 +46,11 @@ class QualityPoint(models.Model):
         default=_get_default_team_id, required=True)
     product_ids = fields.Many2many(
         'product.product', string='Products',
-        domain="[('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="[('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        help="Quality Point will apply to every selected Products.")
+    product_category_ids = fields.Many2many(
+        'product.category', string='Product Categories',
+        help="Quality Point will apply to every Products in the selected Product Categories.")
 
     picking_type_ids = fields.Many2many(
         'stock.picking.type', string='Operation Types', required=True, check_company=True)
@@ -94,7 +98,11 @@ class QualityPoint(models.Model):
                 continue
             point_products = point.product_ids
 
-            if not point.product_ids:
+            if point.product_category_ids:
+                point_product_from_categories = self.env['product.product'].search([('categ_id', 'child_of', point.product_category_ids.ids), ('id', 'in', products.ids)])
+                point_products |= point_product_from_categories
+
+            if not point.product_ids and not point.product_category_ids:
                 point_products |= products
 
             for product in point_products:
@@ -116,8 +124,9 @@ class QualityPoint(models.Model):
     def _get_domain(self, product_ids, picking_type_id, measure_on='operation'):
         """ Helper that returns a domain for quality.point based on the products and picking type
         pass as arguments. It will search for quality point having:
-        - No product_ids
+        - No product_ids and no product_category_id
         - At least one variant from product_ids
+        - At least one category that is a parent of the product_ids categories
 
         :param product_ids: the products that could require a quality check
         :type product: :class:`~odoo.addons.product.models.product.ProductProduct`
@@ -126,11 +135,13 @@ class QualityPoint(models.Model):
         :return: the domain for quality point with given picking_type_id for all the product_ids
         :rtype: list
         """
-        return [
-            ('picking_type_ids', 'in', picking_type_id.ids),
-            '|', ('product_ids', '=', False), ('product_ids', 'in', product_ids.ids),
-            ('measure_on', '=', measure_on)
-        ]
+        domain = [('picking_type_ids', 'in', picking_type_id.ids)]
+        domain_in_products_or_categs = ['|', ('product_ids', 'in', product_ids.ids), ('product_category_ids', 'parent_of', product_ids.categ_id.ids)]
+        domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
+        domain += OR([domain_in_products_or_categs, domain_no_products_and_categs])
+        domain += [('measure_on', '=', measure_on)]
+
+        return domain
 
     def _get_type_default_domain(self):
         return []

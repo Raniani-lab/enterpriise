@@ -202,3 +202,208 @@ class TestQualityCheck(TestQualityCommon):
         check_line2.do_measure()
         self.assertTrue(check_line1.quality_state == 'fail', "Quality Check of type 'measure' not failing on move line")
         self.assertTrue(check_line2.quality_state == 'pass', "Quality Check of type 'measure' not passing on move line")
+
+    def test_04_picking_quality_check_creation_no_products_no_categories(self):
+
+        """ Test Quality Check creation on incoming shipment from a Quality Point
+        with no products and no product_categories set
+        """
+        # Create Quality Point for incoming shipment with no product or product_category set.
+        self.quality_point_test = self.env['quality.point'].create({
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+        # Check that Quality Point has been created.
+        self.assertTrue(self.quality_point_test, "Quality Point not created.")
+        # Create incoming shipment.
+        self.picking_in = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'partner_id': self.partner_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        self.env['stock.move'].create({
+            'name': self.product.name,
+            'product_id': self.product.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Check that incoming shipment has been created.
+        self.assertTrue(self.picking_in, "Incoming shipment not created.")
+        # Confirm incoming shipment.
+        self.picking_in.action_confirm()
+        # Check that Quality Check for incoming shipment has been created.
+        self.assertEqual(len(self.picking_in.check_ids), 1)
+
+    def test_05_picking_quality_check_creation_with_product_no_categories(self):
+
+        """ Test Quality Check creation on incoming shipment from a Quality Point
+        with products and no product_categories set
+        """
+        # Create Quality Point for incoming shipment with only a product set.
+        self.quality_point_test = self.env['quality.point'].create({
+            'product_ids': [(4, self.product.id)],
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+        # Check that Quality Point has been created.
+        self.assertTrue(self.quality_point_test, "Quality Point not created.")
+        # Create incoming shipment.
+        self.picking_in = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'partner_id': self.partner_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with right product.
+        self.env['stock.move'].create({
+            'name': self.product.name,
+            'product_id': self.product.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with wrong product.
+        self.env['stock.move'].create({
+            'name': self.product_2.name,
+            'product_id': self.product_2.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_2.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Check that incoming shipment has been created.
+        self.assertTrue(self.picking_in, "Incoming shipment not created.")
+        # Confirm incoming shipment.
+        self.picking_in.action_confirm()
+        # Check that only one Quality Check for incoming shipment has been created for the right product.
+        self.assertEqual(len(self.picking_in.check_ids), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product.id)), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_2.id)), 0)
+
+    def test_06_picking_quality_check_creation_no_product_with_categories(self):
+
+        """ Test Quality Check creation on incoming shipment from a Quality Point
+        with no products and product_categories set
+        """
+        # Create Quality Point for incoming shipment with only a product_category set.
+        self.quality_point_test = self.env['quality.point'].create({
+            'product_category_ids': [(4, self.product_category_base.id)],
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+        # Check that Quality Point has been created.
+        self.assertTrue(self.quality_point_test, "Quality Point not created.")
+        # Create incoming shipment.
+        self.picking_in = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'partner_id': self.partner_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with product having right category (child of Quality Point set category).
+        self.env['stock.move'].create({
+            'name': self.product.name,
+            'product_id': self.product.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with product having wrong category (parent of Quality Point set category).
+        self.env['stock.move'].create({
+            'name': self.product_2.name,
+            'product_id': self.product_2.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_2.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Check that incoming shipment has been created.
+        self.assertTrue(self.picking_in, "Incoming shipment not created.")
+        # Confirm incoming shipment.
+        self.picking_in.action_confirm()
+        # Check that only one Quality Check for incoming shipment has been created for the right category.
+        self.assertEqual(len(self.picking_in.check_ids), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product.id)), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_2.id)), 0)
+
+    def test_07_picking_quality_check_creation_with_product_and_categories(self):
+
+        """ Test Quality Check creation on incoming shipment from a Quality Point
+        with both products and product_categories set
+        """
+        # Create Quality Point for incoming shipment with only a product_category set.
+        self.quality_point_test = self.env['quality.point'].create({
+            'product_ids': [(4, self.product_2.id), (4, self.product_4.id)],
+            'product_category_ids': [(4, self.product_category_base.id)],
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+        # Check that Quality Point has been created.
+        self.assertTrue(self.quality_point_test, "Quality Point not created.")
+        # Create incoming shipment.
+        self.picking_in = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'partner_id': self.partner_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with wrong product but having right category (child of Quality Point set category.
+        self.env['stock.move'].create({
+            'name': self.product.name,
+            'product_id': self.product.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with right product but having wrong category (parent of Quality Point set category).
+        self.env['stock.move'].create({
+            'name': self.product_2.name,
+            'product_id': self.product_2.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_2.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with wrong product and having wrong category (parent of Quality Point set category).
+        self.env['stock.move'].create({
+            'name': self.product_3.name,
+            'product_id': self.product_3.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_3.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with right product having right category
+        self.env['stock.move'].create({
+            'name': self.product_4.name,
+            'product_id': self.product_4.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_4.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Check that incoming shipment has been created.
+        self.assertTrue(self.picking_in, "Incoming shipment not created.")
+        # Confirm incoming shipment.
+        self.picking_in.action_confirm()
+        # Check that Quality Check for incoming shipment have been created only for the right product / category.
+        self.assertEqual(len(self.picking_in.check_ids), 3)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product.id)), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_2.id)), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_3.id)), 0)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_4.id)), 1)

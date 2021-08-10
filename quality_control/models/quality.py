@@ -8,6 +8,7 @@ import random
 
 from odoo import api, models, fields, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round
+from odoo.osv.expression import OR
 
 
 class QualityPoint(models.Model):
@@ -332,45 +333,19 @@ class ProductTemplate(models.Model):
 
     @api.depends('product_variant_ids')
     def _compute_quality_check_qty(self):
-        self.quality_fail_qty = 0
-        self.quality_pass_qty = 0
-        self.quality_control_point_qty = 0
-
         for product_tmpl in self:
-            quality_checks_by_state = self.env['quality.check'].read_group(
-                [('product_id', 'in', product_tmpl.product_variant_ids.ids), ('company_id', '=', self.env.company.id)],
-                ['product_id'],
-                ['quality_state']
-            )
-            for checks_data in quality_checks_by_state:
-                if checks_data['quality_state'] == 'fail':
-                    product_tmpl.quality_fail_qty = checks_data['quality_state_count']
-                elif checks_data['quality_state'] == 'pass':
-                    product_tmpl.quality_pass_qty = checks_data['quality_state_count']
-            query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
-            self.env['quality.point']._apply_ir_rules(query, 'read')
-            _, where_clause, where_clause_args = query.get_sql()
-            self.env.cr.execute(
-            """
-                SELECT COUNT(*)
-                    FROM quality_point
-                    WHERE %s
-                    AND (
-                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = ANY(%%s))
-                        OR
-                        NOT EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
-                        )
-            """ % (where_clause,), where_clause_args + [list(product_tmpl.product_variant_ids.ids)]
-            )
-            product_tmpl.quality_control_point_qty = self.env.cr.fetchone()[0]
+            product_tmpl.quality_fail_qty, product_tmpl.quality_pass_qty = product_tmpl.product_variant_ids._count_quality_checks()
+            product_tmpl.quality_control_point_qty = product_tmpl.with_context(active_test=product_tmpl.active).product_variant_ids._count_quality_points()
 
     def action_see_quality_control_points(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_point_action")
         action['context'] = dict(self.env.context, default_product_ids=self.product_variant_ids.ids)
-        action['domain'] = [
-            '|', ('product_ids', '=', False), ('product_ids', 'in', self.product_variant_ids.ids)
-        ]
+
+        domain_in_products_or_categs = ['|', ('product_ids', 'in', self.product_variant_ids.ids), ('product_category_ids', 'parent_of', self.categ_id.ids)]
+        domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
+        action['domain'] = OR([domain_in_products_or_categs, domain_no_products_and_categs])
+
         return action
 
     def action_see_quality_checks(self):
@@ -389,45 +364,68 @@ class ProductProduct(models.Model):
     quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
 
     def _compute_quality_check_qty(self):
-        self.quality_fail_qty = 0
-        self.quality_pass_qty = 0
-        self.quality_control_point_qty = 0
         for product in self:
-            quality_checks_by_state = self.env['quality.check'].read_group(
-                [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)],
-                ['product_id'],
-                ['quality_state']
-            )
-            for checks_data in quality_checks_by_state:
-                if checks_data['quality_state'] == 'fail':
-                    product.quality_fail_qty = checks_data['quality_state_count']
-                elif checks_data['quality_state'] == 'pass':
-                    product.quality_pass_qty = checks_data['quality_state_count']
-            query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
-            self.env['quality.point']._apply_ir_rules(query, 'read')
-            _, where_clause, where_clause_args = query.get_sql()
-            self.env.cr.execute(
-            """
-                SELECT COUNT(*)
-                    FROM quality_point
-                    WHERE %s
-                    AND (
-                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = %%s)
-                        OR
-                        NOT EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
-                        )
-            """ % (where_clause,), where_clause_args + [product.id]
-            )
-            product.quality_control_point_qty = self.env.cr.fetchone()[0]
+            product.quality_fail_qty, product.quality_pass_qty = product._count_quality_checks()
+            product.quality_control_point_qty = product._count_quality_points()
 
+    def _count_quality_checks(self):
+        quality_fail_qty = 0
+        quality_pass_qty = 0
+        quality_checks_by_state = self.env['quality.check'].read_group(
+            [('product_id', 'in', self.ids), ('company_id', '=', self.env.company.id), ('quality_state', '!=', 'none')],
+            ['product_id'],
+            ['quality_state']
+        )
+        for checks_data in quality_checks_by_state:
+            if checks_data['quality_state'] == 'fail':
+                quality_fail_qty = checks_data['quality_state_count']
+            elif checks_data['quality_state'] == 'pass':
+                quality_pass_qty = checks_data['quality_state_count']
+
+        return quality_fail_qty, quality_pass_qty
+
+    def _count_quality_points(self):
+        """ Compute the count of all related quality points, which means quality points that have either
+        the product in common, a product category parent of this product's category or no product/category
+        set at all.
+        """
+
+        query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
+        self.env['quality.point']._apply_ir_rules(query, 'read')
+        _, where_clause, where_clause_args = query.get_sql()
+        parent_category_ids = [int(parent_id) for parent_id in self.categ_id.parent_path.split('/')[:-1]] if self.categ_id else []
+
+        self.env.cr.execute("""
+            SELECT COUNT(*)
+                FROM quality_point
+                WHERE %s
+                AND (
+                    (
+                        -- QP has at least one linked product and one is right
+                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = ANY(%%s))
+                        -- Or QP has at least one linked product category and one is right
+                        OR EXISTS (SELECT 1 FROM product_category_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_category_id = ANY(%%s))
+                    )
+                    OR (
+                        -- QP has no linked products
+                        NOT EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
+                        -- And QP has no linked product categories
+                        AND NOT EXISTS (SELECT 1 FROM product_category_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
+                    )
+                )
+        """ % (where_clause,), where_clause_args + [self.ids, parent_category_ids]
+        )
+        return self.env.cr.fetchone()[0]
 
     def action_see_quality_control_points(self):
         self.ensure_one()
         action = self.product_tmpl_id.action_see_quality_control_points()
         action['context'].update(default_product_ids=self.ids)
-        action['domain'] = [
-            '|', ('product_ids', '=', False), ('product_ids', 'in', self.ids)
-        ]
+
+        domain_in_products_or_categs = ['|', ('product_ids', 'in', self.ids), ('product_category_ids', 'parent_of', self.categ_id.ids)]
+        domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
+        action['domain'] = OR([domain_in_products_or_categs, domain_no_products_and_categs])
+
         return action
 
     def action_see_quality_checks(self):

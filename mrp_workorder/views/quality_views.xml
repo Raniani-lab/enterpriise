@@ -19,6 +19,14 @@
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('is_workorder_step', '=', False), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
             </field>
+            <field name="product_category_ids" position="attributes">
+                <attribute name="attrs">{
+                    'invisible': [
+                        ('is_workorder_step', '=', True),
+                        ('operation_id', '!=', False)
+                    ]}
+                </attribute>
+            </field>
         </field>
     </record>
 

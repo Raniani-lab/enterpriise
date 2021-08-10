@@ -502,10 +502,17 @@ _amount_getters = [
 ]
 
 # These are pair of getters: (getter for the exchange rate, getter for the target currency)
-_rate_getters = [
+_target_rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
     (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
     (partial(_generic_get, xpath='ns:XchgRate/text()'), partial(_generic_get, xpath='ns:TrgtCcy/text()')),
+]
+
+# These are pair of getters: (getter for the exchange rate, getter for the source currency)
+_source_rate_getters = [
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:SrcCcy/text()')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:SrcCcy/text()')),
+    (partial(_generic_get, xpath='ns:XchgRate/text()'), partial(_generic_get, xpath='ns:SrcCcy/text()')),
 ]
 
 _get_credit_debit_indicator = partial(_generic_get,
@@ -547,14 +554,23 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     # journal_currency is not necessarily journal.currency_id, because currency_id is not required
     # In such a case, journal_currency can be defined with journal.company_id.currency_id
     # (Therefore, journal_currency will never be empty)
-    def get_value_and_currency_name(node, getters):
-        value = currency_name = None
+    def get_value_and_currency_name(node, getters, target_currency=None):
         for value_getter, currency_getter in getters:
             value = value_getter(node, namespaces=namespaces)
             currency_name = currency_getter(node, namespaces=namespaces)
-            if value:
-                break
-        return value, currency_name
+            if value and (target_currency is None or currency_name == target_currency):
+                return float(value), currency_name
+        return None, None
+
+    def get_rate(*entries, target_currency):
+        for entry in entries:
+            rate = get_value_and_currency_name(entry, _target_rate_getters, target_currency=target_currency)[0]
+            if not rate:
+                rate = get_value_and_currency_name(entry, _source_rate_getters, target_currency=target_currency)[0]
+                rate = rate and 1 / rate
+            if rate:
+                return rate
+        return None
 
     entry_details = nodes[0]
     entry = nodes[1] if len(nodes) > 1 else nodes[0]
@@ -562,19 +578,12 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters)
     if not amount:
         amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters)
-        entry_details = entry
-    rate, rate_currency_name = get_value_and_currency_name(entry_details, _rate_getters)
 
-    amount = float(amount)
-    rate = float(rate) if rate and amount_currency_name != rate_currency_name else 1.0
-
-    if journal_currency and amount_currency_name == journal_currency.name:
+    if amount_currency_name == journal_currency.name:
         rate = 1.0
-    elif journal_currency and rate_currency_name != journal_currency.name:
-        entry_rate, entry_rate_currency_name = get_value_and_currency_name(entry, _rate_getters)
-        if entry_rate and entry_rate_currency_name == journal_currency.name:
-            rate = float(entry_rate)
-        else:
+    else:
+        rate = get_rate(entry_details, entry, target_currency=journal_currency.name)
+        if not rate:
             raise ValidationError(_("No exchange rate was found to convert an amount into the currency of the journal"))
 
     sign = 1 if _get_credit_debit_indicator(*nodes, namespaces=namespaces) == "CRDT" else -1

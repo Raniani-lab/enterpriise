@@ -2,7 +2,7 @@
 <odoo>
     <record id="account_balance_report_l10n_dk_balance" model="account.financial.html.report">
         <field name="name">Balance</field>
-        <field name="date_range" eval="1"/>
+        <field name="date_range" eval="False"/>
         <field name="unfold_all_filter" eval="True"/>
         <field name="show_journal_filter" eval="True"/>
         <field name="analytic" eval="True"/>
@@ -169,24 +169,77 @@
         <field name="code">EGEN</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="9"/>
-        <field name="formulas">EGEN2 + AARES</field>
+        <field name="formulas">AFR + EGEN2 + PREV_YEAR_EARNINGS_DK</field>
     </record>
 
-    <record id="account_financial_current_year_earnings_line_1" model="account.financial.html.report.line">
+    <!--   equivalent to account_financial_current_year_earnings0 from account_financial_report_data.xml -->
+    <record id="account_balance_report_l10n_dk_earnings" model="account.financial.html.report.line">
         <field name="name">Årets foreløbige resultat</field>
-        <field name="code">AARES</field>
+        <field name="code">AFR</field>
+        <field name="formulas">IAI + ALLOCATED_EARNINGS_CURRENT_YEAR_DK</field>
+        <field name="parent_id" ref='account_balance_report_l10n_egenkapital'/>
+        <field name="sequence" eval="1"/>
+        <field name="level" eval="3"/>
+    </record>
+
+    <!--  equivalent to account_financial_current_year_earnings_line_1 from account_financial_report_data.xml -->
+    <record id="account_balance_report_l10n_dk_current_year_earnings" model="account.financial.html.report.line">
+        <field name="name">Indeværende års indtjening</field>
+        <field name="code">IAI</field>
+        <field name="parent_id" ref="account_balance_report_l10n_dk_earnings"/>
+        <field name="domain" eval="[('account_id.user_type_id', 'in', [
+        ref('account.data_account_type_revenue'),
+        ref('account.data_account_type_other_income'),
+        ref('account.data_account_type_direct_costs'),
+        ref('account.data_account_type_expenses'),
+        ref('account.data_account_type_depreciation')
+    ])]"/>
+        <field name="formulas">-sum</field>
+        <field name="sequence" eval="10"/>
+        <field name="special_date_changer">from_fiscalyear</field>
+        <field name="level" eval="4"/>
+    </record>
+
+    <!--       equivalent to account_financial_current_year_earnings_line_2 from account_financial_report_data.xml-->
+    <record id="account_balance_report_l10n_dk_current_year_allocated_earnings"
+            model="account.financial.html.report.line">
+        <field name="name">Aktuelt års allokerede indtjening</field>
+        <field name="code">ALLOCATED_EARNINGS_CURRENT_YEAR_DK</field>
+        <field name="parent_id" ref='account_balance_report_l10n_dk_earnings'/>
+        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+        <field name="formulas">-sum</field>
+        <field name="special_date_changer">from_fiscalyear</field>
+        <field name="sequence" eval="2"/>
+        <field name="level" eval="4"/>
+    </record>
+
+    <!--   equivalent to account_financial_allocated_earnings from account_financial_report_data.xml -->
+    <record id="account_balance_report_l10n_dk_allocated_earnings_test" model="account.financial.html.report.line">
+        <field name="name">Allocated Earnings</field>
+        <field name="code">ALLOCATED_EARNINGS_DK</field>
+        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+        <field name="formulas">-sum</field>
+        <field name="sequence" eval="2"/>
+        <field name="special_date_changer">from_beginning</field>
+        <field name="level" eval="4"/>
+    </record>
+
+    <!--  equivalent to account_financial_previous_year_earnings0 from account_financial_report_data.xml -->
+    <record id="account_balance_report_l10n_dk_previous_year_earnings" model="account.financial.html.report.line">
+        <field name="name">Tidligere års resultat</field>
+        <field name="code">PREV_YEAR_EARNINGS_DK</field>
         <field name="domain" eval="[('account_id.user_type_id', 'in', [
             ref('account.data_account_type_revenue'),
             ref('account.data_account_type_other_income'),
             ref('account.data_account_type_direct_costs'),
             ref('account.data_account_type_expenses'),
             ref('account.data_account_type_depreciation')
-        ])]" />
-        <field name="formulas">sum</field>
-        <field name="sequence" eval="10"/>
+        ])]"/>
+        <field name="formulas">-sum + ALLOCATED_EARNINGS_DK - AFR</field>
+        <field name="sequence" eval="2"/>
+        <field name="special_date_changer">from_beginning</field>
         <field name="parent_id" ref='account_balance_report_l10n_egenkapital'/>
-        <field name="special_date_changer">from_fiscalyear</field>
-        <field name="level" eval="3" />
+        <field name="level" eval="3"/>
     </record>
 
     <record id="account_balance_report_l10n_egenkapital2" model="account.financial.html.report.line">
@@ -200,7 +253,7 @@
             ref('l10n_dk.account_tag_equity_corporations')
         ])]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -221,7 +274,7 @@
         <field name="sequence" eval="17"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_credit_institutions'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -242,7 +295,7 @@
         <field name="sequence" eval="19"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_bank_loans'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -254,7 +307,7 @@
         <field name="sequence" eval="19"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_prepayments_from_customers'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
     <record id="account_balance_report_l10n_leverandørgæld" model="account.financial.html.report.line">
@@ -265,7 +318,7 @@
         <field name="sequence" eval="20"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_payable'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -277,7 +330,7 @@
         <field name="sequence" eval="21"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_vat_taxes'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -289,7 +342,7 @@
         <field name="sequence" eval="22"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_Payroll_related_liabilities'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -301,7 +354,7 @@
         <field name="sequence" eval="23"/>
         <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_other_current_liabilities'))]"/>
         <field name="show_domain">foldable</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
     </record>
 
@@ -311,6 +364,6 @@
         <field name="code">NUL</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="24"/>
-        <field name="formulas">PAS + AKT</field>
+        <field name="formulas">AKT - PAS</field>
     </record>
 </odoo>

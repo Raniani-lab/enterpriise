@@ -85,7 +85,7 @@ class Planning(models.Model):
         compute='_compute_allocated_percentage', store=True, readonly=False,
         help="Percentage of time the employee is supposed to work during the shift.",
         group_operator="avg")
-    working_days_count = fields.Integer("Number of Working Days", compute='_compute_working_days_count', store=True)
+    working_days_count = fields.Float("Number of Working Days", compute='_compute_working_days_count', store=True)
     duration = fields.Float("Duration", compute="_compute_slot_duration")
 
     # publication and sending
@@ -230,9 +230,9 @@ class Planning(models.Model):
     def _compute_working_days_count(self):
         for slot in self:
             if slot.employee_id:
-                slot.working_days_count = ceil(slot.employee_id._get_work_days_data_batch(
+                slot.working_days_count = slot.employee_id._get_work_days_data_batch(
                     slot.start_datetime, slot.end_datetime, compute_leaves=True
-                )[slot.employee_id.id]['days'])
+                )[slot.employee_id.id]['days']
             else:
                 slot.working_days_count = 0
 

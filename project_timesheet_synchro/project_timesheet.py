@@ -212,7 +212,7 @@ class account_analytic_line(models.Model):
         aals_on_hold = []
         for ls_aal in ls_aals:
             sv_aal = sv_aals.get(str(ls_aal['id']))
-            sv_project = str(ls_aal.get('project_id')) in sv_projects or self.env["ir.model.data"].xmlid_to_object(str(ls_aal['project_id']))  # Fallback condition: when the project created after the sql select and thus is not in the list.
+            sv_project = str(ls_aal.get('project_id')) in sv_projects or self.env.ref(str(ls_aal['project_id']), raise_if_not_found=False)  # Fallback condition: when the project created after the sql select and thus is not in the list.
 
             if sv_aal and sv_aal['user_id'] != self.env.uid:  # The user on the activity has been changed
                 ls_aals_to_remove.append(str(ls_aal['id']))

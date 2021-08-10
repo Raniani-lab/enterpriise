@@ -1012,7 +1012,7 @@ class AccountReport(models.AbstractModel):
             module, view_name = view_name.split('.')
 
         # Redirect
-        view_id = self.env['ir.model.data'].get_object_reference(module, view_name)[1]
+        view_id = self.env['ir.model.data']._xmlid_lookup("%s.%s" % (module, view_name))[2]
         return {
             'type': 'ir.actions.act_window',
             'view_mode': 'form',

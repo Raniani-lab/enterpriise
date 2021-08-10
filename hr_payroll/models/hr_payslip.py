@@ -895,7 +895,7 @@ class HrPayslip(models.Model):
             'res_model': 'hr.payroll.edit.payslip.lines.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'binding_model_id': self.env['ir.model.data'].xmlid_to_res_id('hr_payroll.model_hr_payslip'),
+            'binding_model_id': self.env['ir.model.data']._xmlid_to_res_id('hr_payroll.model_hr_payslip'),
             'binding_view_types': 'form',
             'res_id': wizard.id
         }

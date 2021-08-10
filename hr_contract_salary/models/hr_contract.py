@@ -141,7 +141,7 @@ class HrContract(models.Model):
         advantages = self.env['hr.contract.salary.advantage'].search([
             ('impacts_net_salary', '=', True),
             ('structure_type_id', '=', self.structure_type_id.id),
-            ('cost_field', '!=', False),
+            ('cost_res_field_id', '!=', False),
         ])
         if not advantages:
             return 0

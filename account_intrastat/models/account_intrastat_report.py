@@ -204,7 +204,7 @@ class IntrastatReport(models.AbstractModel):
             'date_from': date_from,
             'date_to': date_to,
             'journal_ids': tuple(journal_ids),
-            'weight_category_id': self.env['ir.model.data'].xmlid_to_res_id('uom.product_uom_categ_kgm'),
+            'weight_category_id': self.env['ir.model.data']._xmlid_to_res_id('uom.product_uom_categ_kgm'),
         }
         if with_vat:
             where += ' AND partner.vat IS NOT NULL '

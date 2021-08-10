@@ -134,7 +134,7 @@ class MxReportPartnerLedger(models.AbstractModel):
     def get_taxes_with_financial_tag(self, tag_xmlid, allowed_tax_ids):
          rep_lines = self.env['account.tax.repartition.line'].search([
              '|', ('invoice_tax_id', 'in', allowed_tax_ids), ('refund_tax_id', 'in', allowed_tax_ids),
-             ('tag_ids', 'in', self.env['ir.model.data'].xmlid_to_res_id(tag_xmlid))])
+             ('tag_ids', 'in', self.env['ir.model.data']._xmlid_to_res_id(tag_xmlid))])
 
          return rep_lines.mapped('invoice_tax_id') | rep_lines.mapped('refund_tax_id')
 

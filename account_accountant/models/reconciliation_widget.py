@@ -1076,7 +1076,7 @@ class AccountReconciliation(models.AbstractModel):
         else:
             line_vals = []
 
-        view_id = self.env['ir.model.data'].xmlid_to_res_id('account_accountant.view_account_reconcile_model_widget_wizard')
+        view_id = self.env['ir.model.data']._xmlid_to_res_id('account_accountant.view_account_reconcile_model_widget_wizard')
         return {
             'type': 'ir.actions.act_window',
             'name': _("Create Reconciliation Model"),

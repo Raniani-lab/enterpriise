@@ -935,8 +935,6 @@ class SaleSubscription(models.Model):
         cr = self.env.cr
         invoices = self.env['account.move']
         current_date = datetime.date.today()
-        imd_res = self.env['ir.model.data']
-        template_res = self.env['mail.template']
         if len(self) > 0:
             subscriptions = self
         else:
@@ -1018,18 +1016,16 @@ class SaleSubscription(models.Model):
                                     'auto_close_limit': auto_close_limit
                                 })
                                 if close_subscription:
-                                    model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_close')
-                                    template = template_res.browse(template_id)
+                                    template = self.env.ref('sale_subscription.email_payment_close')
                                     template.with_context(email_context).send_mail(subscription.id)
                                     _logger.debug("Sending Subscription Closure Mail to %s for subscription %s and closing subscription", subscription.partner_id.email, subscription.id)
                                     msg_body = _('Automatic payment failed after multiple attempts. Subscription closed automatically.')
                                     subscription.message_post(body=msg_body)
                                     subscription.set_close()
                                 else:
-                                    model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_reminder')
+                                    template = self.env.ref('sale_subscription.email_payment_reminder')
                                     msg_body = _('Automatic payment failed. Subscription set to "To Renew".')
                                     if (datetime.date.today() - subscription.recurring_next_date).days in [0, 3, 7, 14]:
-                                        template = template_res.browse(template_id)
                                         template.with_context(email_context).send_mail(subscription.id)
                                         _logger.debug("Sending Payment Failure Mail to %s for subscription %s and setting subscription to pending", subscription.partner_id.email, subscription.id)
                                         msg_body += _(' E-mail sent to customer.')
@@ -1084,8 +1080,6 @@ class SaleSubscription(models.Model):
         return invoices
 
     def send_success_mail(self, tx, invoice):
-        imd_res = self.env['ir.model.data']
-        template_res = self.env['mail.template']
         current_date = datetime.date.today()
         next_date = self.recurring_next_date or current_date
         # if no recurring next date, have next invoice be today + interval
@@ -1093,7 +1087,6 @@ class SaleSubscription(models.Model):
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
             invoicing_period = relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval})
             next_date = next_date + invoicing_period
-        _, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_success')
         email_context = self.env.context.copy()
         email_context.update({
             'payment_token': self.payment_token_id.name,
@@ -1107,7 +1100,7 @@ class SaleSubscription(models.Model):
             'date_end': self.date,
         })
         _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
-        template = template_res.browse(template_id)
+        template = self.env.ref('sale_subscription.email_payment_success')
         return template.with_context(email_context).send_mail(invoice.id)
 
     def validate_and_send_invoice(self, invoice):

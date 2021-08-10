@@ -57,14 +57,14 @@ class CalendarEvent(models.Model):
             booked_template = self.env.ref('website_calendar.appointment_booked_mail_template').sudo()
             res['appointment_type_id'] = (booked_template, {
                 'auto_delete_message': True,
-                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('website_calendar.mt_calendar_event_booked'),
+                'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('website_calendar.mt_calendar_event_booked'),
                 'email_layout_xmlid': 'mail.mail_notification_light'
             })
         if 'active' in changes and not self.active and self.appointment_type_id and self.start > fields.Datetime.now():
             canceled_template = self.env.ref('website_calendar.appointment_canceled_mail_template').sudo()
             res['active'] = (canceled_template, {
                 'auto_delete_message': True,
-                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('website_calendar.mt_calendar_event_canceled'),
+                'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('website_calendar.mt_calendar_event_canceled'),
                 'email_layout_xmlid': 'mail.mail_notification_light'
             })
         return res

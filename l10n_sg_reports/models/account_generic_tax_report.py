@@ -27,7 +27,7 @@ class GenericTaxReport(models.AbstractModel):
                                   and aml.date >= %(date_from)s
                                   and move.company_id in %(company_ids)s;"""
 
-            account_types = tuple(self.env['ir.model.data'].xmlid_to_res_id(xmlid) for xmlid in ['account.data_account_type_revenue', 'account.data_account_type_expenses', 'account.data_account_type_depreciation'])
+            account_types = tuple(self.env['ir.model.data']._xmlid_to_res_id(xmlid) for xmlid in ['account.data_account_type_revenue', 'account.data_account_type_expenses', 'account.data_account_type_depreciation'])
             params = {
                 'account_types': account_types,
                 'show_draft': options['all_entries'],

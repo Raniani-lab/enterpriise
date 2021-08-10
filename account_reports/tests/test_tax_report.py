@@ -1294,7 +1294,7 @@ class TestTaxReport(TestAccountReportsCommon):
             tax_account = self.env['account.account'].create({
                 'name': 'Tax unit test tax account',
                 'code': 'test_tax_unit',
-                'user_type_id': self.env['ir.model.data'].xmlid_to_res_id('account.data_account_type_current_assets'),
+                'user_type_id': self.env['ir.model.data']._xmlid_to_res_id('account.data_account_type_current_assets'),
                 'company_id': company.id,
             })
 

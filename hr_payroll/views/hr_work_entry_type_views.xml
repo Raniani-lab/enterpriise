@@ -12,10 +12,8 @@
                         <field name="round_days"/>
                         <field name="round_days_type" attrs="{'invisible': [('round_days', '=', 'NO')]}"/>
                     </group>
-                    <group name="time_off" position="after">
-                        <group string="Unpaid">
-                            <field name="unpaid_structure_ids" widget="many2many_tags"/>
-                        </group>
+                    <group string="Unpaid">
+                        <field name="unpaid_structure_ids" widget="many2many_tags"/>
                     </group>
                 </group>
             </xpath>

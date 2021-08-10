@@ -74,7 +74,8 @@ class SaleSubscriptionRenewWizardReplaceOption(models.TransientModel):
                                  ondelete="cascade")
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure", required=True, ondelete="cascade",
                              domain="[('category_id', '=', product_uom_category_id)]",
-                             compute='_compute_product_attributes')
+                             compute='_compute_product_attributes',
+                             readonly=False)
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True)
     quantity = fields.Float(default=1.0)
 

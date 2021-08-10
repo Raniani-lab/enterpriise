@@ -16,6 +16,7 @@
                             <field name="name" readonly="1"/>
                             <field name="quantity" readonly="1"/>
                             <field name="renew_product"/>
+                            <field name="product_id" invisible="1"/>
                         </tree>
                     </field>
                     <div attrs="{'invisible': [('display_replacement_lines', '=', False)]}">

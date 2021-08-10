@@ -228,6 +228,7 @@ class AccountTaxReportHandler(models.AbstractModel):
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         results = self.env.cr.dictfetchall()
+        results = self._postprocess_vat_closing_entry_results(company, new_options, results)
 
         tax_group_ids = [r['tax_group_id'] for r in results]
         tax_groups = {}
@@ -305,6 +306,10 @@ class AccountTaxReportHandler(models.AbstractModel):
 
     def _get_vat_closing_entry_additional_domain(self):
         return []
+
+    def _postprocess_vat_closing_entry_results(self, company, options, results):
+        # Override this to, for example, apply a rounding to the lines of the closing entry
+        return results
 
     @api.model
     def _add_tax_group_closing_items(self, tax_group_subtotal, end_date):

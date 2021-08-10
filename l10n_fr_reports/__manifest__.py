@@ -16,6 +16,8 @@ Accounting reports for France
         'data/balance_sheet.xml',
         'data/profit_loss.xml',
         'data/intermediate_management_balances.xml',
+        'data/tax_report.xml',
+        'views/res_config_settings_views.xml'
     ],
     'auto_install': ['l10n_fr', 'account_reports'],
     'installable': True,

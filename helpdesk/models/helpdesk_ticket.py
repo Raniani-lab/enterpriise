@@ -220,6 +220,7 @@ class HelpdeskTicket(models.Model):
     name = fields.Char(string='Subject', required=True, index=True)
     team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True)
     use_sla = fields.Boolean(related='team_id.use_sla')
+    team_privacy_visibility = fields.Selection(related='team_id.privacy_visibility', string="Team Visibility")
     description = fields.Html()
     active = fields.Boolean(default=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Type")
@@ -301,9 +302,11 @@ class HelpdeskTicket(models.Model):
         )
         mapped_data = {data['groups_id'][0]: data['ids'] for data in users_data}
         for ticket in self:
-            if ticket.team_id and ticket.team_id.privacy == 'invite' and ticket.team_id.visibility_member_ids:
+            ticket_sudo = ticket.sudo()
+            if ticket_sudo.team_id and ticket_sudo.team_id.privacy_visibility == 'invited_internal':
                 manager_ids = mapped_data.get(helpdesk_manager_group_id, [])
-                ticket.domain_user_ids = [Command.set(manager_ids + ticket.team_id.visibility_member_ids.ids)]
+                follower_users = ticket_sudo.team_id.message_partner_ids.user_ids.filtered(lambda u: self.env.ref('helpdesk.group_helpdesk_user') in u.groups_id)
+                ticket.domain_user_ids = [Command.set(manager_ids + follower_users.ids)]
             else:
                 user_ids = mapped_data.get(helpdesk_user_group_id, [])
                 ticket.domain_user_ids = [Command.set(user_ids)]
@@ -609,6 +612,16 @@ class HelpdeskTicket(models.Model):
             self.sudo()._sla_reach(vals['stage_id'])
 
         return res
+
+    def message_subscribe(self, partner_ids=None, subtype_ids=None):
+        res = super(HelpdeskTicket, self).message_subscribe(partner_ids=partner_ids, subtype_ids=subtype_ids)
+        tickets_to_unsubscribe = self.filtered(lambda t: t.team_privacy_visibility != 'portal')
+        tickets_to_unsubscribe._unsubscribe_portal_users()
+        return res
+
+    def _unsubscribe_portal_users(self):
+        portal_users = self.message_partner_ids.user_ids.filtered('share')
+        self.message_unsubscribe(partner_ids=portal_users.partner_id.ids)
 
     # ------------------------------------------------------------
     # Actions and Business methods

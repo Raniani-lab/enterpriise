@@ -43,10 +43,6 @@ class HelpdeskTeam(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     sequence = fields.Integer("Sequence", default=10)
     color = fields.Integer('Color Index', default=1)
-    privacy = fields.Selection([
-        ('user', 'All Users'),
-        ('invite', 'Invited Users')],
-        string="Users Assign", default="user")
 
     stage_ids = fields.Many2many(
         'helpdesk.stage', relation='team_stage_rel', string='Stages',
@@ -61,8 +57,18 @@ class HelpdeskTeam(models.Model):
              '\tRandomly: randomly but everyone gets the same amount\n'
              '\tBalanced: to the person with the least amount of open tickets')
     member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(), default=lambda self: self.env.user, required=True)
-    visibility_member_ids = fields.Many2many('res.users', 'helpdesk_visibility_team', string='Team Visibility', domain=lambda self: self._default_domain_member_ids(),
-        help="Team Members to whom this team will be visible. Keep empty for everyone to see this team.")
+    privacy_visibility = fields.Selection([
+        ('invited_internal', 'Invited internal users'),
+        ('internal', 'All internal users'),
+        ('portal', 'Invited portal users and all internal users')],
+        string='Visibility', required=True,
+        default='portal',
+        help="Defines the visibility of the tasks of the project:\n"
+            "- Invited portal users and all internal users:"
+            "  Invited portal users may see project and tasks followed by them or by someone of their company.\n"
+            "  Internal users with corresponding access rights may see all teams and tickets.\n"
+            "- All internal users: users with corresponding access rights may see all teams and tickets.\n"
+            "- Invited internal users: users with corresponding access rights may only see the followed project and tasks.")
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email Alias', default=True)
@@ -201,6 +207,8 @@ class HelpdeskTeam(models.Model):
         result = super(HelpdeskTeam, self).write(vals)
         if 'active' in vals:
             self.with_context(active_test=False).mapped('ticket_ids').write({'active': vals['active']})
+        if vals.get('privacy_visibility'):
+            self._change_privacy_visibility()
         self.sudo()._check_sla_group()
         self.sudo()._check_modules_to_install()
         if 'auto_close_ticket' in vals:
@@ -212,6 +220,21 @@ class HelpdeskTeam(models.Model):
         stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)  # remove stages that only belong to team in self
         stages.unlink()
         return super(HelpdeskTeam, self).unlink()
+
+    def _change_privacy_visibility(self):
+        """
+        Unsubscribe non-internal users from the team and tickets if the project privacy visibility
+        goes to a value different than 'portal'.
+        If the privacy visibility is set to 'portal', subscribe back ticket partners.
+        """
+        for team in self:
+            if team.privacy_visibility == 'portal':
+                for ticket in team.mapped('ticket_ids').filtered('partner_id'):
+                    ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
+            else:
+                portal_users = team.message_partner_ids.user_ids.filtered('share')
+                team.message_unsubscribe(partner_ids=portal_users.partner_id.ids)
+                team.mapped('ticket_ids')._unsubscribe_portal_users()
 
     @api.model
     def _update_cron(self):

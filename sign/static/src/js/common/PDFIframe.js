@@ -100,6 +100,8 @@ export const PDFIframe = Widget.extend(
       this.normalSize = () => this.$(".page").first().innerHeight() * 0.015;
       this.role = role || 0;
       this.configuration = {};
+      this.deletedSignItemIds = [];
+      this.minID = -(2 ** 30);
 
       let _res, _rej;
       this.fullyLoaded = new Promise(function (resolve, reject) {
@@ -301,7 +303,8 @@ export const PDFIframe = Widget.extend(
             el.name,
             el.responsible_name ? el.responsible_name : "",
             el.alignment,
-            false
+            false,
+            false,
           );
           $signatureItem.data({ itemId: el.id, order: i });
           self.configuration[parseInt(el.page)].push($signatureItem);
@@ -311,7 +314,7 @@ export const PDFIframe = Widget.extend(
         refresh_interval();
 
         self.$(".o_sign_sign_item").each(function (i, el) {
-          self.updateSignItem($(el));
+          self.updateSignItem($(el), false);
         });
         self.updateFontSize();
 
@@ -450,7 +453,8 @@ export const PDFIframe = Widget.extend(
       name,
       tooltip,
       alignment,
-      isSignItemEditable
+      isSignItemEditable,
+      updated=true
     ) {
       // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
       if (value === 0) {
@@ -493,6 +497,7 @@ export const PDFIframe = Widget.extend(
       }
       return $signatureItem
         .data({
+          itemId: Math.floor(Math.random() * this.minID) - 1,
           type: type.id,
           required: required,
           responsible: responsible,
@@ -505,7 +510,8 @@ export const PDFIframe = Widget.extend(
           alignment: alignment,
         })
         .data("hasValue", !!value)
-        .toggle(!!value || this.requestState != "signed");
+        .toggle(!!value || this.requestState != "signed")
+        .data({ updated: updated });
     },
 
     /**
@@ -513,17 +519,10 @@ export const PDFIframe = Widget.extend(
      * @param { jQuery } $item sign item to be deleted or detached
      * @param { Boolean } detach if set to true, sign item will be detached instead of removed
      */
-    deleteSignItem: function ($item, detach = false) {
-      const pageNo = parseInt($item.parent().data("page-number"));
-      detach ? $item.detach() : $item.remove();
-      for (let i = 0; i < this.configuration[pageNo].length; i++) {
-        if (
-          this.configuration[pageNo][i].data("posx") === $item.data("posx") &&
-          this.configuration[pageNo][i].data("posy") === $item.data("posy")
-        ) {
-          this.configuration[pageNo].splice(i, 1);
-        }
-      }
+    deleteSignItem: function ($signItem) {
+      this.deleteSignItemFromConfiguration($signItem);
+      this.deletedSignItemIds.push($signItem.data('itemId'));
+      $signItem.remove();
     },
 
     /**
@@ -531,10 +530,21 @@ export const PDFIframe = Widget.extend(
      * @param {jQuery} $signItem the signItem to be detached
      */
     detachSignItem: function ($signItem) {
-      this.deleteSignItem($signItem, true);
+      this.deleteSignItemFromConfiguration($signItem);
+      $signItem.detach();
     },
 
-    updateSignItem: function ($signatureItem) {
+    deleteSignItemFromConfiguration: function ($signItem) {
+      const pageNo = parseInt($signItem.parent().data('page-number'));
+      for(let i = 0 ; i < this.configuration[pageNo].length ; i++) {
+        if(this.configuration[pageNo][i].data('itemId') === $signItem.data('itemId')) {
+          this.configuration[pageNo].splice(i, 1);
+          break;
+        }
+      }
+    },
+
+    updateSignItem: function ($signatureItem, updated=true) {
       const setPosition = (pos, dimension) => {
         if (pos < 0) {
           return 0;
@@ -573,6 +583,7 @@ export const PDFIframe = Widget.extend(
       $signatureItem
         .toggleClass("o_sign_sign_item_required", isSignItemRequired)
         .toggleClass("o_sign_sign_item_pdfview", isSignItemNotSigned);
+      $signatureItem.data({'updated': updated});
     },
 
     disableItems: function () {

@@ -814,7 +814,11 @@ class SignRequestItem(models.Model):
             # edit request template while signing
             if new_sign_ids and self.env['sign.request'].check_request_edit_during_sign(request.id) and check_new_sign_item_types(new_sign_items):
                 old_template = request.template_id
-                request.template_id = self.env['sign.template']._copy_edited_template(old_template.id, request.create_uid.id)
+                request.template_id = old_template.copy({
+                    'favorited_ids': [Command.link(request.create_uid.id), Command.link(self.env.user.id)],
+                    'active': False,
+                    'sign_item_ids': []
+                })
 
                 new_items_signature = dict(filter(lambda item: int(item[0]) not in authorised_ids, signature.items()))
                 old_items_signature = dict(filter(lambda item: int(item[0]) in authorised_ids, signature.items()))

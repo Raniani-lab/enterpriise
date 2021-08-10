@@ -35,7 +35,7 @@ class SignTemplate(models.Model):
                                     "- On Invitation: only invited users can view and use the template\n"
                                     "Invited users can always edit the document template.\n"
                                     "Existing requests based on this template will not be affected by changes.")
-    favorited_ids = fields.Many2many('res.users', string="Invited Users", default=lambda s: s._default_favorited_ids())
+    favorited_ids = fields.Many2many('res.users', string="Invited Users", default=lambda s: s._default_favorited_ids(), copy=False)
     user_id = fields.Many2one('res.users', string="Responsible", default=lambda self: self.env.user)
 
     share_link = fields.Char(string="Share Link", copy=False)
@@ -110,6 +110,14 @@ class SignTemplate(models.Model):
             return '<p class="o_view_nocontent_smiling_face">%s</p>' % _('Upload a PDF')
         return super().get_empty_list_help(help)
 
+    def copy(self, default=None):
+        self.ensure_one()
+        default = default or {}
+        if "attachment_id" not in default:
+            new_attachment = self.attachment_id.copy({"name": self._get_copy_name(self.name)})
+            default["attachment_id"] = new_attachment.id
+        return super().copy(default)
+
     def go_to_custom_template(self, sign_directly_without_mail=False):
         self.ensure_one()
         return {
@@ -156,56 +164,53 @@ class SignTemplate(models.Model):
 
         return {'template': template.id, 'attachment': attachment.id}
 
-    @api.model
-    def update_from_pdfviewer(self, template_id=None, duplicate=None, sign_items=None, name=None):
-        template = self.browse(template_id)
-        if not duplicate and len(template.sign_request_ids) > 0:
+    def update_from_pdfviewer(self, sign_items=None, deleted_sign_item_ids=None, name=None):
+        """ Update a sign.template from the pdfviewer
+        :param dict sign_items: {id (str): values (dict)}
+            id: positive: sign.item's id in database (the sign item is already in the database and should be update)
+                negative: negative random itemId(transaction_id) in pdfviewer (the sign item is new created in the pdfviewer and should be created in database)
+            values: values to update/create
+        :param list(str) deleted_sign_item_ids: list of ids of deleted sign items. These deleted ids may be
+            positive: the sign item exists in the database
+            negative: the sign item is new created in pdfviewer but removed before a successful transaction
+        :return: dict new_id_to_item_id_map: {negative itemId(transaction_id) in pdfviewer (str): positive id in database (int)}
+        """
+        self.ensure_one()
+        if len(self.sign_request_ids) > 0:
             return False
+        if sign_items is None:
+            sign_items = {}
 
-        if duplicate:
-            new_attachment = template.attachment_id.copy()
-            new_attachment.name = template._get_copy_name(name)
-            template = template.copy({
-                'attachment_id': new_attachment.id,
-                'favorited_ids': [(4, self.env.user.id)]
-            })
+        # The name may be "" and None here. And the attachment_id.name is forcely written here to retry the method and
+        # avoid recreating new sign items when two RPCs arrive at the same time
+        self.attachment_id.name = name if name else self.attachment_id.name
 
-        elif name:
-            template.attachment_id.name = name
+        # update new_sign_items to avoid recreating sign items
+        new_sign_items = dict(sign_items)
+        sign_items_exist = self.sign_item_ids.filtered(lambda r: str(r.transaction_id) in sign_items)
+        for sign_item in sign_items_exist:
+            new_sign_items[str(sign_item.id)] = new_sign_items.pop(str(sign_item.transaction_id))
+        new_id_to_item_id_map = {str(sign_item.transaction_id): sign_item.id for sign_item in sign_items_exist}
 
-        item_ids = {
-            it
-            for it in map(int, sign_items)
-            if it > 0
-        }
-        template.sign_item_ids.filtered(lambda r: r.id not in item_ids).unlink()
-        for item in template.sign_item_ids:
-            values = sign_items.pop(str(item.id))
-            values['option_ids'] = [(6, False, [int(op) for op in values.get('option_ids', [])])]
-            item.write(values)
-        for item in sign_items.values():
-            item['template_id'] = template.id
-            item['option_ids'] = [(6, False, [int(op) for op in item.get('option_ids', [])])]
-            self.env['sign.item'].create(item)
+        # unlink sign items
+        deleted_sign_item_ids = set() if deleted_sign_item_ids is None else set(deleted_sign_item_ids)
+        self.sign_item_ids.filtered(lambda r: r.id in deleted_sign_item_ids or (r.transaction_id in deleted_sign_item_ids)).unlink()
 
-        if len(template.sign_item_ids.mapped('responsible_id')) > 1:
-            template.share_link = None
+        # update existing sign items
+        for item in self.sign_item_ids.filtered(lambda r: str(r.id) in new_sign_items):
+            item.write(new_sign_items.pop(str(item.id)))
 
-        return template.id
+        # create new sign items
+        new_values_list = []
+        for key, values in new_sign_items.items():
+            if int(key) < 0:
+                values['template_id'] = self.id
+                new_values_list.append(values)
+        new_id_to_item_id_map.update(zip(new_sign_items.keys(), self.env['sign.item'].create(new_values_list).ids))
+        if len(self.sign_item_ids.mapped('responsible_id')) > 1:
+            self.share_link = None
 
-    @api.model
-    def _copy_edited_template(self, template_id, sign_request_sender):
-        template = self.sudo().browse(template_id)
-
-        new_attachment = template.attachment_id.copy()
-        new_attachment.name = template._get_copy_name(template.attachment_id.name)
-        template = template.copy({
-            'attachment_id': new_attachment.id,
-            'favorited_ids': [(4, sign_request_sender), (4, self.env.user.id)],
-            'active': False,
-            'sign_item_ids': []
-        })
-        return template.id
+        return new_id_to_item_id_map
 
     @api.model
     def _get_copy_name(self, name):
@@ -284,6 +289,8 @@ class SignItem(models.Model):
     width = fields.Float(digits=(4, 3), required=True)
     height = fields.Float(digits=(4, 3), required=True)
     alignment = fields.Char(default="center", required=True)
+
+    transaction_id = fields.Integer(copy=False)
 
     def getByPage(self):
         items = {}

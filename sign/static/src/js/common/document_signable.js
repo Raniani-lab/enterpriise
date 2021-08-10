@@ -1095,7 +1095,8 @@ const SignablePDFIframe = PDFIframe.extend({
     name,
     tooltip,
     alignment,
-    isSignItemEditable
+    isSignItemEditable,
+    update = true
   ) {
     // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
     if (value === 0) {

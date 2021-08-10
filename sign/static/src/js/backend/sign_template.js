@@ -97,7 +97,7 @@ PDFIframe.include({
         posx: posX,
         posy: posY,
         isEditMode: true,
-        itemId: Math.min(...Object.keys(self.signatureItems), 0) - 1,
+        itemId: Math.floor(Math.random() * self.minID) - 1,
         order: defineOrder(self.configuration[targetPage]),
       });
       self.signatureItems[signItem.data("item-id")] = signItem.data();
@@ -403,6 +403,7 @@ const EditablePDFIframe = PDFIframe.extend({
           );
           if (!hasSignatureInPage) {
             const $newElem = $target.clone(true);
+            $newElem.data({itemId: Math.floor(Math.random() * this.minID) - 1});
             this.enableCustom($newElem);
             this.configuration[i].push($newElem);
           }
@@ -1003,7 +1004,7 @@ const Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
     },
 
     "click .o_sign_template_duplicate": function (e) {
-      this.saveTemplate(true);
+      this.duplicateTemplate();
     },
   },
   custom_events: Object.assign({}, StandaloneFieldManagerMixin.custom_events, {
@@ -1437,16 +1438,20 @@ const Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
 
   prepareTemplateData: function () {
     this.rolesToChoose = {};
-    let data = {},
-      newId = 0;
+    let updatedSignItems = {},
+      Id2UpdatedItem = {};
     const configuration = this.iframeWidget
       ? this.iframeWidget.configuration
       : {};
     for (let page in configuration) {
       configuration[page].forEach((signItem) => {
-        const id = signItem.data("item-id") || newId--;
+        if (signItem.data('updated') !== true) {
+          return;
+        }
+        const id = signItem.data('item-id');
+        Id2UpdatedItem[id] = signItem;
         const resp = signItem.data("responsible");
-        data[id] = {
+        updatedSignItems[id] = {
           type_id: signItem.data("type"),
           required: signItem.data("required"),
           name: signItem.data("name"),
@@ -1459,26 +1464,30 @@ const Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
           width: signItem.data("width"),
           height: signItem.data("height"),
         };
+        if (id < 0) {
+          updatedSignItems[id]["transaction_id"] = id;
+        }
         this.rolesToChoose[resp] = this.iframeWidget.parties[resp];
       });
     }
-    return data;
+    return [updatedSignItems, Id2UpdatedItem];
   },
 
-  saveTemplate: function (duplicate = false) {
-    const data = this.prepareTemplateData();
+  saveTemplate: function () {
+    const [updatedSignItems, Id2UpdatedItem] = this.prepareTemplateData();
     const $majInfo = this.$(".o_sign_template_saved_info").first();
+    const newTemplateName = this.$templateNameInput.val();
     this._rpc({
       model: "sign.template",
       method: "update_from_pdfviewer",
       args: [
         this.templateID,
-        !!duplicate,
-        data,
-        this.$templateNameInput.val() || this.initialTemplateName,
+        updatedSignItems,
+        this.iframeWidget.deletedSignItemIds,
+        newTemplateName == this.initialTemplateName ? "" : newTemplateName,
       ],
-    }).then((templateID) => {
-      if (!templateID) {
+    }).then((result) => {
+      if (!result) {
         Dialog.alert(
           this,
           _t("Somebody is already filling a document which uses this template"),
@@ -1489,18 +1498,34 @@ const Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
           }
         );
       }
-      if (duplicate) {
-        this.do_action({
-          type: "ir.actions.client",
-          tag: "sign.Template",
-          name: _t("Duplicated Template"),
-          context: {
-            id: templateID,
-          },
-        });
-      } else {
-        $majInfo.stop().css("opacity", 1).animate({ opacity: 0 }, 1500);
+      const newId2ItemIdMap = result;
+      for (let [newId, itemId] of Object.entries(newId2ItemIdMap)) {
+          Id2UpdatedItem[newId].data({'itemId': itemId});
       }
+      Object.entries(Id2UpdatedItem).forEach(([id,item]) => {
+          item.data({'updated': false});
+      })
+      this.iframeWidget.deletedSignItemIds = [];
+      this.initialTemplateName = newTemplateName;
+      $majInfo.stop().css("opacity", 1).animate({ opacity: 0 }, 1500);
+    });
+  },
+
+  duplicateTemplate: function () {
+    this._rpc({
+      model: 'sign.template',
+      method: 'copy',
+      args: [[this.templateID]],
+    })
+    .then((templateID) => {
+      this.do_action({
+        type: "ir.actions.client",
+        tag: 'sign.Template',
+        name: _t("Duplicated Template"),
+        context: {
+            id: templateID,
+        },
+      });
     });
   },
 });

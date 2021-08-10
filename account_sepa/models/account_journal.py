@@ -426,18 +426,19 @@ class AccountJournal(models.Model):
             return ref == mod10r(ref[:-1])
         return False
 
-    def _is_qr_iban(self, payment):
+    def _is_qr_iban(self, payment_dict):
         """ Tells if the bank account linked to the payment has a QR-IBAN account number.
         QR-IBANs are specific identifiers used in Switzerland as references in
         QR-codes. They are formed like regular IBANs, but are actually something
         different.
         """
-        partner_bank_id = self.env['res.partner.bank'].browse(payment['partner_bank_id'])
-        iban = partner_bank_id.sanitized_acc_number
+        partner_bank = self.env['res.partner.bank'].browse(payment_dict['partner_bank_id'])
+        company = self.env['account.journal'].browse(payment_dict['journal_id']).company_id
+        iban = partner_bank.sanitized_acc_number
         if (
-            partner_bank_id.acc_type != 'iban'
-            or (partner_bank_id.sanitized_acc_number or '')[:2] != 'CH'
-            or partner_bank_id.company_id.id not in (False, payment['company_id'])
+            partner_bank.acc_type != 'iban'
+            or (partner_bank.sanitized_acc_number or '')[:2] != 'CH'
+            or partner_bank.company_id.id not in (False, company.id)
             or len(iban) < 9
         ):
             return False
@@ -447,15 +448,16 @@ class AccountJournal(models.Model):
         return re.match('\d+', iid) \
             and 30000 <= int(iid) <= 31999 # Those values for iid are reserved for QR-IBANs only
 
-    def _get_local_instrument(self, payment):
+    def _get_local_instrument(self, payment_dict):
         """ Local instrument node is used to indicate the use of some regional
         variant, such as in Switzerland.
         """
-        partner_bank_id = self.env['res.partner.bank'].browse(payment['partner_bank_id'])
+        partner_bank = self.env['res.partner.bank'].browse(payment_dict['partner_bank_id'])
+        company = self.env['account.journal'].browse(payment_dict['journal_id']).company_id
         if (
-            partner_bank_id.acc_type == 'postal'
-            and partner_bank_id.company_id.id in (False, payment['company_id'])
-            and self._has_isr_ref(payment['ref'])
+            partner_bank.acc_type == 'postal'
+            and partner_bank.company_id.id in (False, company.id)
+            and self._has_isr_ref(payment_dict['ref'])
         ):
             return 'CH01'
         return None

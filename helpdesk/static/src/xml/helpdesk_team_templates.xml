@@ -132,7 +132,7 @@
                             </a>
                         </td>
                         <td t-if="success_rate_enable" 
-                            title="Today's Success Rate" 
+                            title="Percentage of tickets that were closed without failing any SLAs."
                             t-att-class="'o_dashboard_action ' + demo_class + ((values and values['helpdesk_target_success'] and values['helpdesk_target_success'] &lt;= values['today']['success'])?'o_main':'o_secondary')"
                             name="helpdesk.helpdesk_ticket_action_success" 
                             t-attr-show_demo="{{show_demo}}">
@@ -157,7 +157,7 @@
                                 <t t-esc="values['7days']['rating']"/> %
                             </a>
                         </td>
-                        <td t-if="success_rate_enable" title="Avg 7 Success Rate" t-att-class="demo_class + 'o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_7dayssuccess" t-attr-show_demo="{{show_demo}}">
+                        <td t-if="success_rate_enable" title="Percentage of tickets that were closed without failing any SLAs." t-att-class="demo_class + 'o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_7dayssuccess" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
                                 <t t-esc="values['7days']['success']"/>%
                             </a>

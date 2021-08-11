@@ -166,7 +166,7 @@ class Sign(http.Controller):
         })
 
         request_item = http.request.env['sign.request.item'].sudo().create({'sign_request_id': sign_request.id, 'role_id': template.sign_item_ids.mapped('responsible_id').id})
-        sign_request.action_sent()
+        sign_request.action_sent_without_mail()
 
         return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': request_item.access_token})
 

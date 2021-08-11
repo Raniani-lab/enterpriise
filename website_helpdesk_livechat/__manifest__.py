@@ -25,4 +25,9 @@ Features:
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'website_helpdesk_livechat/static/src/models/*/*.js',
+        ],
+    },
 }

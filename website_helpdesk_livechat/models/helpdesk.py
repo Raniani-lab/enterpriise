@@ -37,10 +37,7 @@ class MailChannel(models.Model):
     #  Commands
     # ------------------------------------------------------
 
-    def _define_command_helpdesk(self):
-        return {'help': _("Create a new helpdesk ticket")}
-
-    def _execute_command_helpdesk(self, **kwargs):
+    def execute_command_helpdesk(self, **kwargs):
         key = kwargs.get('body').split()
         msg = _('Something is missing or wrong in command')
         channel_partners = self.channel_partner_ids.filtered(lambda partner: partner != self.env.user.partner_id)
@@ -78,10 +75,7 @@ class MailChannel(models.Model):
                 msg = _("Created a new ticket and request: %s", link_ticket)
         return self._send_transient_message(self.env.user.partner_id, msg)
 
-    def _define_command_helpdesk_search(self):
-        return {'help': _("Search for a helpdesk ticket")}
-
-    def _execute_command_helpdesk_search(self, **kwargs):
+    def execute_command_helpdesk_search(self, **kwargs):
         key = kwargs.get('body').split()
         partner = self.env.user.partner_id
         msg = _('Something is missing or wrong in command')

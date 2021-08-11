@@ -12,6 +12,7 @@
                 <field name="product_uom_qty" invisible="1" />
                 <field name="move_id" invisible="1" />
                 <field name="state" invisible="1" />
+                <field name="tracking" invisible="1" />
                 <field name="product_uom_category_id" invisible="1" />
                 <field name="picking_code" invisible="1"/>
                 <div class="col-12 d-flex align-items-baseline">
@@ -32,6 +33,12 @@
                     <i class="fa mr-3" attrs="{'invisible': [('product_uom_qty', '!=', 0.0)]}"/>
                     <field name="product_uom_id" placeholder="Unit of Measure"
                         attrs="{'readonly': [('product_uom_qty', '!=', 0.0)]}"/>
+                </div>
+            </div>
+            <div class="row justify-content-center justify-content-md-start">
+                <div class="col-10 col-md-8 my-2 ml-md-5 align-items-baseline"
+                    attrs="{'invisible': [('tracking', '=', 'serial')]}">
+                    <widget name="digipad" quantity_field="qty_done"/>
                 </div>
             </div>
             <div class="row" groups="stock.group_stock_multi_locations">

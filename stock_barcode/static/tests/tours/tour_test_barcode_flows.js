@@ -1818,12 +1818,12 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         }
     },
 
-    // On the first line, press +1 button.
+    // On the first line, goes on the form view and press digipad +1 button.
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    { trigger: '.o_digipad_button[data-button="increase"]' },
+    { trigger: '.o_save' },
     {
-        trigger: '.o_barcode_line:first-child .o_add_unit'
-    },
-    {
-        trigger: '.o_barcode_line:first-child .qty-done:contains("1")',
+        trigger: '.o_barcode_lines',
         run: function() {
             const $line = $('.o_barcode_line:first-child');
             helper.assert($line.find('.o_add_unit').length, 1);
@@ -1899,12 +1899,12 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
         }
     },
-    // Press +1 button, then checks the quantities.
+    // Goes on the form view and press digipad +1 button.
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    { trigger: '.o_digipad_button[data-button="increase"]' },
+    { trigger: '.o_save' },
     {
-        trigger: '.o_barcode_line:first-child .o_add_unit'
-    },
-    {
-        trigger: '.o_barcode_line:first-child .qty-done:contains("2")',
+        trigger: '.o_barcode_lines',
         run: function() {
             helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
             helper.assertLineQuantityOnReservedQty(0, '2 / 4');

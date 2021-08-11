@@ -31,6 +31,9 @@ var GanttView = AbstractView.extend({
     init: function (viewInfo, params) {
         this._super.apply(this, arguments);
 
+        const { domain } = params.action || {};
+        this.controllerParams.actionDomain = domain || [];
+
         this.SCALES = {
             day: { string: _t('Day'), cellPrecisions: { full: 60, half: 30, quarter: 15 }, defaultPrecision: 'full', time: 'minutes', interval: 'hour' },
             week: { string: _t('Week'), cellPrecisions: { full: 24, half: 12 }, defaultPrecision: 'half', time: 'hours', interval: 'day' },

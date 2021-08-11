@@ -4202,5 +4202,76 @@ QUnit.module('Views', {
 
         gantt.destroy();
     });
+
+    QUnit.test("plan dialog initial domain has the action domain as its only base",
+        async function (assert) {
+            assert.expect(14);
+            const unpatchDate = patchDate(2018, 11, 20, 8, 0, 0);
+            const views = {
+                "tasks,false,gantt": `<gantt date_start="start" date_stop="stop"/>`,
+                "tasks,false,list": `<tree><field name="name"/></tree>`,
+                "tasks,false,search": `
+                    <search>
+                        <filter name="project_one" domain="[('project_id', '=', 1)]"/>
+                    </search>
+                `,
+            };
+            const serverData = {
+                models: this.data,
+                views,
+            };
+            const webClient = await createWebClient({
+                serverData,
+                mockRPC: function (route, args) {
+                    if (route === "/web/dataset/search_read") {
+                        assert.step(args.domain.toString());
+                    }
+                },
+            });
+
+            const ganttAction = {
+                name: "Tasks Gantt",
+                res_model: "tasks",
+                type: "ir.actions.act_window",
+                views: [[false, "gantt"]],
+            };
+
+            // Load action without domain and open plan dialog
+            await doAction(webClient, ganttAction);
+            assert.verifySteps(["start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
+
+            await testUtils.dom.triggerMouseEvent($(webClient.el).find(".o_gantt_cell_plan:first"), "click");
+            await nextTick();
+            assert.verifySteps(["|,start,=,false,stop,=,false"]);
+
+            // Load action WITH domain and open plan dialog
+            await doAction(webClient, {
+                ...ganttAction,
+                domain: [["project_id", "=", 1]],
+            });
+            assert.verifySteps(["project_id,=,1,start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
+
+            await testUtils.dom.triggerMouseEvent($(webClient.el).find(".o_gantt_cell_plan:first"), "click");
+            await nextTick();
+            assert.verifySteps(["&,project_id,=,1,|,start,=,false,stop,=,false"]);
+
+            // Load action without domain, activate a filter and then open plan dialog
+            await doAction(webClient, ganttAction);
+            assert.verifySteps(["start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
+
+            await testUtils.dom.click($('.o_control_panel .o_filter_menu .o_dropdown_toggler'));
+            await nextTick();
+            await testUtils.dom.click($('.o_control_panel .o_filter_menu a:contains(project_one)'));
+            await nextTick();
+            assert.verifySteps(["project_id,=,1,start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
+
+            await testUtils.dom.triggerMouseEvent($(webClient.el).find(".o_gantt_cell_plan:first"), "click");
+            await nextTick();
+            assert.verifySteps(["|,start,=,false,stop,=,false"]);
+
+            webClient.destroy();
+            unpatchDate();
+        }
+    );
 });
 });

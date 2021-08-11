@@ -53,6 +53,7 @@ var GanttController = AbstractController.extend({
         this.allowedScales = params.allowedScales;
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.createAction = params.createAction;
+        this.actionDomain = params.actionDomain;
 
         this.isRTL = _t.database.parameters.direction === "rtl";
     },
@@ -239,7 +240,7 @@ var GanttController = AbstractController.extend({
         new dialogs.SelectCreateDialog(this, {
             title: _t("Plan"),
             res_model: this.modelName,
-            domain: this.model.domain.concat(domain),
+            domain: this.actionDomain.concat(domain),
             views: this.dialogViews,
             context: _.extend({}, this.context, context),
             on_selected: function (records) {

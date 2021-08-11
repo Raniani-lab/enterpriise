@@ -413,7 +413,7 @@ class HelpdeskTicket(models.Model):
             if domain:
                 partner_ticket = self.search(domain)
             ticket.partner_ticket_ids = partner_ticket
-            ticket.partner_ticket_count = len(partner_ticket) - 1
+            ticket.partner_ticket_count = len(partner_ticket) - 1 if partner_ticket else 0
 
     @api.depends('assign_date')
     def _compute_assign_hours(self):

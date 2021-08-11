@@ -6,9 +6,9 @@
         <field name="arch" type="xml">
             <pivot string="Ticket Analysis" disable_linking="True" sample="1">
                 <field name="team_id" type="row"/>
-                <field name="ticket_close_hours" widget="timesheet_uom" type="measure"/>
-                <field name="ticket_open_hours" widget="timesheet_uom" type="measure"/>
-                <field name="ticket_assignation_hours" widget="timesheet_uom" type="measure"/>
+                <field name="ticket_close_hours" widget="float_time" type="measure"/>
+                <field name="ticket_open_hours" widget="float_time" type="measure"/>
+                <field name="ticket_assignation_hours" widget="float_time" type="measure"/>
             </pivot>
         </field>
     </record>

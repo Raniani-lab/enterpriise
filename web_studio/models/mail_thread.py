@@ -12,7 +12,8 @@ class MailThread(models.AbstractModel):
         list."""
         result = super(MailThread, self)._message_get_suggested_recipients()
         # TODO: also support x_studio_user_id?
-        if 'x_studio_partner_id' in self._fields:
+        field = self._fields.get('x_studio_partner_id')
+        if field and field.type == 'many2one' and field.comodel_name == 'res.partner':
             for obj in self:
                 if not obj.x_studio_partner_id:
                     continue
@@ -22,6 +23,7 @@ class MailThread(models.AbstractModel):
     def _sms_get_partner_fields(self):
         """Include partner field set automatically by studio as an SMS recipient."""
         fields = super()._sms_get_partner_fields()
-        if 'x_studio_partner_id' in self._fields:
+        field = self._fields.get('x_studio_partner_id')
+        if field and field.type == 'many2one' and field.comodel_name == 'res.partner':
             fields.append('x_studio_partner_id')
         return fields

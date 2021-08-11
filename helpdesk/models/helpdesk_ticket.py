@@ -398,7 +398,7 @@ class HelpdeskTicket(models.Model):
 
         def _get_email_to_search(email):
             domain = tools.email_domain_extract(email)
-            return ("@" + domain) if domain not in iap_tools._MAIL_DOMAIN_BLACKLIST else email
+            return ("@" + domain) if domain and domain not in iap_tools._MAIL_DOMAIN_BLACKLIST else email
 
         for ticket in self:
             domain = []

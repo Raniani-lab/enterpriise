@@ -86,7 +86,7 @@ class SocialStreamFacebook(models.Model):
 
             existing_post = existing_posts_by_facebook_post_id.get(post.get('id'))
             if existing_post:
-                existing_post.write(values)
+                existing_post.sudo().write(values)
             else:
                 # attachments are only extracted for new posts
                 attachments = self._extract_facebook_attachments(post)

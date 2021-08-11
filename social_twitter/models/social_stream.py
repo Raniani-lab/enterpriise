@@ -136,7 +136,7 @@ class SocialStreamTwitter(models.Model):
 
             existing_tweet = existing_tweets_by_tweet_id.get(tweet.get('id_str'))
             if existing_tweet:
-                existing_tweet.write(values)
+                existing_tweet.sudo().write(values)
             else:
                 # attachments are only extracted for new posts
                 values.update(self._extract_twitter_attachments(tweet))

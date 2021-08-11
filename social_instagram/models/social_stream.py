@@ -57,7 +57,7 @@ class SocialStreamInstagram(models.Model):
             }
 
             if values['instagram_post_id'] in existing_posts:
-                existing_posts[values['instagram_post_id']].write(values)
+                existing_posts[values['instagram_post_id']].sudo().write(values)
             else:
                 media_url = post.get('media_url')
                 if media_url:

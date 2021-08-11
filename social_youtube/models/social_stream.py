@@ -127,7 +127,7 @@ class SocialStreamYoutube(models.Model):
                 values['youtube_video_duration'] = seconds / 60 + minutes + (hours * 60) + (days * 1440)
 
             if existing_post:
-                existing_post.write(values)
+                existing_post.sudo().write(values)
             else:
                 posts_to_create.append(values)
 

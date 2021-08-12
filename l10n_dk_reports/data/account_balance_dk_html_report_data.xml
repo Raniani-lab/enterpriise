@@ -12,6 +12,7 @@
             <record id="account_balance_report_l10n_dk_aktiver" model="account.financial.html.report.line">
                 <field name="name">Aktiver</field>
                 <field name="code">AKT</field>
+                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="1"/>
                 <field name="formulas">IMAK + ANAK + OMAK</field>
@@ -28,7 +29,7 @@
                                 <field name="code">GOOD</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="3"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_Goodwill_licenses_etc'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '520%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -47,7 +48,7 @@
                                 <field name="code">GBYG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="5"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_land_buildings'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '551%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -57,7 +58,7 @@
                                 <field name="code">AADI</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="6"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_other_equipment_tools_inventory'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '570%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -76,7 +77,11 @@
                                 <field name="code">VABE</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="8"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_inventories'))]"/>
+                                <field name="domain" eval="[
+                                    '|', ('account_id.code', '=like', '651%'),
+                                    '|', ('account_id.code', '=like', '652%'),
+                                    ('account_id.code', '=like', '653%')
+                                ]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -86,7 +91,7 @@
                                 <field name="code">IGANG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="9"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_work_in_progress'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '654%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -96,7 +101,7 @@
                                 <field name="code">FORUD</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="10"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_prepayments'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '658%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -106,7 +111,7 @@
                                 <field name="code">TILG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="11"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_receivable'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '661%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -116,7 +121,12 @@
                                 <field name="code">ATIL</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="12"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_other_receivables'))]"/>
+                                <field name="domain" eval="[
+                                    '|', ('account_id.code', '=like', '664%'),
+                                    '|', ('account_id.code', '=like', '665%'),
+                                    '|', ('account_id.code', '=like', '667%'),
+                                    ('account_id.code', '=like', '668%')
+                                ]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -126,7 +136,7 @@
                                 <field name="code">LIKBE</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="13"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_liquidity'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '68%'), ('account_id.code', '!=', '6821')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
@@ -138,6 +148,7 @@
             <record id="account_balance_report_l10n_dk_passiver" model="account.financial.html.report.line">
                 <field name="name">Passiver</field>
                 <field name="code">PAS</field>
+                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="14"/>
                 <field name="formulas">EGEN + LANG + KORT</field>
@@ -160,16 +171,17 @@
                                         <field name="name">Indeværende års indtjening</field>
                                         <field name="code">IAI</field>
                                         <field name="domain" eval="[('account_id.user_type_id', 'in', [
-         ref('account.data_account_type_revenue'),
-         ref('account.data_account_type_other_income'),
-         ref('account.data_account_type_direct_costs'),
-         ref('account.data_account_type_expenses'),
-         ref('account.data_account_type_depreciation')
-     ])]"/>
+                                            ref('account.data_account_type_revenue'),
+                                            ref('account.data_account_type_other_income'),
+                                            ref('account.data_account_type_direct_costs'),
+                                            ref('account.data_account_type_expenses'),
+                                            ref('account.data_account_type_depreciation')
+                                        ])]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="sequence" eval="10"/>
                                         <field name="special_date_changer">from_fiscalyear</field>
                                         <field name="level" eval="4"/>
+                                        <field name="action_id" ref="account_financial_report_l10n_lu_dk_action"/>
                                     </record>
                                     <record id="account_balance_report_l10n_dk_current_year_allocated_earnings" model="account.financial.html.report.line">
                                         <field name="name">Aktuelt års allokerede indtjening</field>
@@ -186,12 +198,12 @@
                                 <field name="name">Tidligere års resultat</field>
                                 <field name="code">PREV_YEAR_EARNINGS_DK</field>
                                 <field name="domain" eval="[('account_id.user_type_id', 'in', [
-             ref('account.data_account_type_revenue'),
-             ref('account.data_account_type_other_income'),
-             ref('account.data_account_type_direct_costs'),
-             ref('account.data_account_type_expenses'),
-             ref('account.data_account_type_depreciation')
-         ])]"/>
+                                    ref('account.data_account_type_revenue'),
+                                    ref('account.data_account_type_other_income'),
+                                    ref('account.data_account_type_direct_costs'),
+                                    ref('account.data_account_type_expenses'),
+                                    ref('account.data_account_type_depreciation')
+                                ])]"/>
                                 <field name="formulas">-sum + ALLOCATED_EARNINGS_DK - AFR</field>
                                 <field name="sequence" eval="2"/>
                                 <field name="special_date_changer">from_beginning</field>
@@ -202,10 +214,7 @@
                                 <field name="code">EGEN2</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="15"/>
-                                <field name="domain" eval="[('account_id.tag_ids', 'in', [
-             ref('l10n_dk.account_tag_equity_individual_enterprises'),
-             ref('l10n_dk.account_tag_equity_corporations')
-         ])]"/>
+                                <field name="domain" eval="['|', ('account_id.code', '=like', '72%'), ('account_id.code', '=like', '74%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -224,7 +233,7 @@
                                 <field name="code">KREIN</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="17"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_credit_institutions'))]"/>
+                                <field name="domain" eval="['|', ('account_id.code', '=like', '77%'), ('account_id.code', '=like', '840%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -243,7 +252,7 @@
                                 <field name="code">BNKG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="19"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_bank_loans'))]"/>
+                                <field name="domain" eval="['|', ('account_id.code', '=like', '841%'), ('account_id.code', '=like', '843%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -263,7 +272,11 @@
                                 <field name="code">LEVG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="20"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_payable'))]"/>
+                                <field name="domain" eval="[
+                                    '|', ('account_id.code', '=like', '844%'),
+                                    '|', ('account_id.code', '=like', '845%'),
+                                    ('account_id.code', '=like', '847%')
+                                ]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -273,7 +286,7 @@
                                 <field name="code">MOAF</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="21"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_vat_taxes'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '87%')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -283,7 +296,12 @@
                                 <field name="code">LRG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="22"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_Payroll_related_liabilities'))]"/>
+                                <field name="domain" eval="[
+                                    '|', ('account_id.code', '=like', '880%'),
+                                    '|', ('account_id.code', '=like', '881%'),
+                                    '|', ('account_id.code', '=like', '882%'),
+                                    ('account_id.code', '=like', '884%')
+                                ]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -293,7 +311,7 @@
                                 <field name="code">AKFG</field>
                                 <field name="level" eval="3"/>
                                 <field name="sequence" eval="23"/>
-                                <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_dk.account_tag_other_current_liabilities'))]"/>
+                                <field name="domain" eval="['|', '|', ('account_id.code', '=like', '885%'), ('account_id.code', '=like', '886%'), ('account_id.code', '=', '6821')]"/>
                                 <field name="show_domain">foldable</field>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>

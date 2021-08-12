@@ -219,8 +219,8 @@ class PaymentAcquirer(models.Model):
         )
         return token
 
-    def _get_default_payment_method(self):
+    def _get_default_payment_method_id(self):
         self.ensure_one()
         if self.provider != 'sepa_direct_debit':
-            return super()._get_default_payment_method()
+            return super()._get_default_payment_method_id()
         return self.env.ref('payment_sepa_direct_debit.payment_method_sepa_direct_debit').id

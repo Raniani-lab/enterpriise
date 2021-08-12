@@ -14,7 +14,7 @@
                         <field name="name">Ventas Netas Gravadas IVA</field>
                         <field name="code">CL_VNGI</field>
                         <field name="sequence" eval="1"/>
-                        <field name="domain" eval="[('account_id.tag_ids', 'in', [ref('l10n_cl.tag_cl_sale_mnt_neto'), ref('l10n_cl.tag_cl_sale_valor_neto_comis')]), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '310115'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">-sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="level" eval="2"/>
@@ -24,7 +24,7 @@
                         <field name="name">Ventas Exentas</field>
                         <field name="code">CL_VEX</field>
                         <field name="sequence" eval="2"/>
-                        <field name="domain" eval="[('account_id.tag_ids', 'in', [ref('l10n_cl.tag_cl_sale_mnt_exe'), ref('l10n_cl.tag_cl_sale_valor_comisiones_no_afecto'),ref('l10n_cl.tag_cl_sale_exento_vta_pasajes_nacional'), ref('l10n_cl.tag_cl_sale_exento_vta_pasajes_internacional')]), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '310120'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">-sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="level" eval="2"/>
@@ -75,7 +75,7 @@
                         <field name="name">Compras Netas Gravadas IVA Recuperable</field>
                         <field name="code">CL_COMPNGIR</field>
                         <field name="sequence" eval="1"/>
-                        <field name="domain" eval="[('account_id.tag_ids', 'in', [ref('l10n_cl.tag_cl_purchase_mnt_neto'), ref('l10n_cl.tag_cl_purchase_tab_puros'),ref('l10n_cl.tag_cl_purchase_tab_cigar'), ref('l10n_cl.tag_cl_purchase_tab_elab')]), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', 'in', ['410230', '410235']), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="special_date_changer">strict_range</field>
@@ -85,7 +85,7 @@
                         <field name="name">Compra Netas Gravadas IVA Uso Comun</field>
                         <field name="code">CL_COMPNGIUC</field>
                         <field name="sequence" eval="2"/>
-                        <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_uso_comun')), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '410231'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="level" eval="2"/>
@@ -94,7 +94,7 @@
                         <field name="name">Compras Iva No Recuperable</field>
                         <field name="code">CL_COMPINR</field>
                         <field name="sequence" eval="3"/>
-                        <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_no_recup')), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '410232'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="special_date_changer">strict_range</field>
@@ -104,7 +104,7 @@
                         <field name="name">Compras Supermercado</field>
                         <field name="code">CL_COMPS</field>
                         <field name="sequence" eval="4"/>
-                        <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_supermercado')), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '410233'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="special_date_changer">strict_range</field>
@@ -114,7 +114,7 @@
                         <field name="name">Compras de Activo Fijo</field>
                         <field name="code">CL_COMPAF</field>
                         <field name="sequence" eval="5"/>
-                        <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_actf')), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="['|', '|', ('account_id.code', '=like', '1211%'), ('account_id.code', '=like', '1212%'), ('account_id.code', '=', '121330')]"/>
                         <field name="formulas">sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="special_date_changer">strict_range</field>
@@ -280,7 +280,7 @@
                         <field name="name">Remanente de CF</field>
                         <field name="code">CL_RCF</field>
                         <field name="sequence" eval="3"/>
-                        <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_remanente_cf')), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '110720'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="level" eval="2"/>
@@ -290,7 +290,7 @@
                         <field name="name">Impuesto a los Trabajadores</field>
                         <field name="code">CL_IMPT</field>
                         <field name="sequence" eval="4"/>
-                        <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_impuesto_unico_trabajadores')), ('tax_line_id', '=', False)]"/>
+                        <field name="domain" eval="[('account_id.code', '=', '210730'), ('tax_line_id', '=', False)]"/>
                         <field name="formulas">-sum</field>
                         <field name="green_on_positive" eval="False"/>
                         <field name="special_date_changer">strict_range</field>

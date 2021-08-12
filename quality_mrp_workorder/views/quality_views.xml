@@ -83,4 +83,40 @@
             </field>
         </field>
     </record>
+
+    <record id="quality_point_view_search_inherit_mrp_workorder" model="ir.ui.view">
+        <field name="name">quality.point.view.search.inherit.mrp.workorder</field>
+        <field name="model">quality.point</field>
+        <field name="inherit_id" ref="quality_control.quality_point_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator/>
+                <filter string="Quality Points" name="quality_points" domain="[('operation_id', '=', False)]"/>
+                <filter string="Manufacturing Steps" name="manufacturing_steps" domain="[('operation_id', '!=', False)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="quality_control.quality_point_action" model="ir.actions.act_window">
+        <field name="context">{'search_default_quality_points': 1}</field>
+    </record>
+
+    <record id="quality_check_view_search_inherit_mrp_workorder" model="ir.ui.view">
+        <field name="name">quality.check.view.search.inherit.mrp.workorder</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="control_date" position="after">
+                <separator/>
+                <filter string="Quality Checks" name="quality_checks"
+                    domain="['|', ('point_id', '=', False), ('point_id.operation_id', '=', False), ('test_type', 'not in', ('register_consumed_materials', 'register_byproducts', 'print_label'))]"/>
+                <filter string="Manufacturing Steps" name="manufacturing_steps"
+                    domain="['|', ('point_id.operation_id', '!=', False), ('test_type', 'in', ('register_consumed_materials', 'register_byproducts', 'print_label'))]"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="quality_control.quality_check_action_main" model="ir.actions.act_window">
+        <field name="context">{'search_default_quality_checks': 1}</field>
+    </record>
 </odoo>

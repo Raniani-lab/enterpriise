@@ -3,7 +3,8 @@
 
 import odoo.tests
 from datetime import timedelta
-
+from dateutil.relativedelta import relativedelta
+from odoo import fields
 
 class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
 
@@ -82,6 +83,58 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
     def test_pricing_advanced(self):
         # with pricings applied only to some variants ...
         return
+
+    def test_pricelists(self):
+        partner = self.env['res.partner'].create({'name': 'A partner'})
+        pricelist_A = self.env['product.pricelist'].create({
+            'name': 'Pricelist A',
+        })
+        pricelist_B = self.env['product.pricelist'].create({
+            'name': 'Pricelist B',
+        })
+
+        PRICINGS = [
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+                'pricelist_id': pricelist_A.id,
+            }, {
+                'duration': 5.0,
+                'unit': 'hour',
+                'price': 15.0,
+                'pricelist_id': pricelist_B.id,
+            }
+        ]
+        self.product_template_id.rental_pricing_ids.unlink()
+        for pricing in PRICINGS:
+            pricing.update(product_template_id=self.product_template_id.id)
+            pricing = self.env['rental.pricing'].create(pricing)
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner.id,
+        })
+
+        reservation_begin = fields.Datetime.now()
+        pickup_date = reservation_begin + relativedelta(days=1)
+        return_date = pickup_date + relativedelta(hours=1)
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'product_uom_qty': 1,
+            'order_id': sale_order.id,
+            'reservation_begin': reservation_begin,
+            'pickup_date': pickup_date,
+            'return_date': return_date,
+            'is_rental': True,
+        })
+
+        sale_order.write({'pricelist_id': pricelist_A.id})
+        sale_order.update_prices()
+        self.assertEqual(sol.price_unit, 3.5, "Pricing should take into account pricelist A")
+        sale_order.write({'pricelist_id': pricelist_B.id})
+        sale_order.update_prices()
+        self.assertEqual(sol.price_unit, 15, "Pricing should take into account pricelist B")
 
     def test_delay_pricing(self):
         # Return Products late and verify duration is correct.

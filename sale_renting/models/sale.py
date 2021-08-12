@@ -79,6 +79,29 @@ class RentalOrder(models.Model):
             lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
         return self._open_rental_wizard(status, lines_to_return.ids)
 
+    def update_prices(self):
+        super().update_prices()
+        # Apply correct rental prices with respect to pricelist
+        for sol in self.order_line.filtered(lambda line: line.is_rental):
+            pricing = sol.product_id._get_best_pricing_rule(
+                pickup_date=sol.pickup_date,
+                return_date=sol.return_date,
+                pricelist=self.pricelist_id,
+                currency=self.currency_id,
+                company=self.company_id
+            )
+            duration_dict = self.env['rental.pricing']._compute_duration_vals(sol.pickup_date, sol.return_date)
+            price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
+
+            if pricing.currency_id != self.currency_id:
+                price = pricing.currency_id._convert(
+                    from_amount=price,
+                    to_currency=self.currency_id,
+                    company=self.company_id,
+                    date=date.today(),
+                )
+            sol.price_unit = price
+
     def _open_rental_wizard(self, status, order_line_ids):
         context = {
             'order_line_ids': order_line_ids,

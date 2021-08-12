@@ -16,6 +16,7 @@
         'views/helpdesk_portal_templates.xml',
         'views/project_project_views.xml',
         'views/product_views.xml',
+        'views/sale_views.xml',
     ],
     'demo': ['data/helpdesk_sale_timesheet_demo.xml'],
     'license': 'OEEL-1',

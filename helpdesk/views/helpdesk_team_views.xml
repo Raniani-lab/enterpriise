@@ -436,6 +436,7 @@
         <field name="arch" type="xml">
             <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban" group_create="0" create="0" js_class="helpdesk_dashboard">
                 <field name="name"/>
+                <field name="sequence" widget="handle"/>
                 <field name="color"/>
                 <field name="use_alias"/>
                 <field name="alias_name"/>
@@ -447,7 +448,7 @@
                 <field name="unassigned_tickets"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div t-attf-class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
@@ -461,7 +462,7 @@
                             <div class="container o_kanban_card_content" t-if="!selection_mode">
                                 <div class="row">
                                     <div class="col-6 o_kanban_primary_left">
-                                        <button class="btn btn-primary" name="action_view_ticket" type="object">Tickets</button>
+                                        <button class="btn btn-primary o_helpdesk_ticket_btn" name="action_view_ticket" type="object">Tickets</button>
                                     </div>
                                     <div class="col-6 o_kanban_primary_right">
                                         <div class="mb4" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">

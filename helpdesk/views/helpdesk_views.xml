@@ -118,6 +118,7 @@
         <field name="model">helpdesk.stage</field>
         <field name="arch" type="xml">
             <kanban>
+                <field name="sequence" widget="handle"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click oe_kanban_content">

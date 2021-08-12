@@ -14,6 +14,7 @@ var KanbanController = require('web.KanbanController');
 var KanbanModel = require('web.KanbanModel');
 var KanbanRenderer = require('web.KanbanRenderer');
 var KanbanView = require('web.KanbanView');
+var KanbanRecord = require('web.KanbanRecord');
 var session = require('web.session');
 var view_registry = require('web.view_registry');
 
@@ -21,6 +22,25 @@ var QWeb = core.qweb;
 
 var _t = core._t;
 var _lt = core._lt;
+
+KanbanRecord.include({
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     * @private
+     */
+    _openRecord() {
+        const kanbanTicketElement = this.el.querySelectorAll('.o_helpdesk_ticket_btn');
+        if (this.selectionMode !== true && this.modelName === 'helpdesk.team' && kanbanTicketElement.length) {
+            kanbanTicketElement[0].click();
+        } else {
+            this._super.apply(this, arguments);
+        }
+    },
+});
 
 var HelpdeskDashboardRenderer = KanbanRenderer.extend({
 

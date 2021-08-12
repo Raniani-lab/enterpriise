@@ -455,6 +455,11 @@
         <field name="arch" type="xml">
             <form>
                 <group>
+                    <field name="stage_id" invisible="1"/>
+                    <field name="team_id" invisible="1"/>
+                    <field name="legend_normal" invisible="1"/>
+                    <field name="legend_blocked" invisible="1"/>
+                    <field name="legend_done" invisible="1"/>
                     <field name="name"/>
                     <field name="domain_user_ids" invisible="1"/>
                     <field name="team_id" required="1" invisible="context.get('default_team_id')"  options="{'no_open': True}"/>

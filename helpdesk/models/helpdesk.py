@@ -8,6 +8,7 @@ from dateutil import relativedelta
 from collections import defaultdict
 from odoo import api, Command, fields, models, _
 from odoo.tools import float_round
+from odoo.exceptions import ValidationError
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
 from odoo.addons.rating.models.rating import RATING_LIMIT_MIN
 from odoo.addons.web.controllers.main import clean_action
@@ -87,6 +88,7 @@ class HelpdeskTeam(models.Model):
     use_helpdesk_timesheet = fields.Boolean(
         'Timesheets', compute='_compute_use_helpdesk_timesheet',
         store=True, readonly=False, help="This requires to have project module installed.")
+    show_knowledge_base = fields.Boolean(compute='_compute_show_knowledge_base')
     use_helpdesk_sale_timesheet = fields.Boolean(
         'Time Billing', compute='_compute_use_helpdesk_sale_timesheet', store=True,
         readonly=False, help="Reinvoice the time spent on ticket through tasks.")
@@ -98,7 +100,7 @@ class HelpdeskTeam(models.Model):
     use_twitter = fields.Boolean('Twitter')
     use_rating = fields.Boolean('Customer Ratings')
     portal_show_rating = fields.Boolean(
-        'Public Rating', compute='_compute_portal_show_rating', store=True,
+        'Ratings on Website', compute='_compute_portal_show_rating', store=True,
         readonly=False)
     use_sla = fields.Boolean('SLA Policies')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
@@ -126,6 +128,11 @@ class HelpdeskTeam(models.Model):
         domain="[('id', 'in', stage_ids)]",
         help="Stage to which inactive tickets will be automatically moved once the period of inactivity is reached.")
     display_alias_name = fields.Char(string='Alias email', compute='_compute_display_alias_name')
+
+    @api.constrains('use_website_helpdesk_form', 'privacy_visibility')
+    def _check_website_privacy(self):
+        if any(t.use_website_helpdesk_form and t.privacy_visibility != 'portal' for t in self):
+            raise ValidationError(_('The visibility of the team needs to be set as "Invited portal users and all internal users" in order to use the website form.'))
 
     @api.depends('auto_close_ticket', 'stage_ids')
     def _compute_assign_stage_id(self):
@@ -249,6 +256,13 @@ class HelpdeskTeam(models.Model):
     def _compute_use_helpdesk_sale_timesheet(self):
         without_timesheet = self.filtered(lambda t: not t.use_helpdesk_timesheet)
         without_timesheet.update({'use_helpdesk_sale_timesheet': False})
+
+    def _compute_show_knowledge_base(self):
+        self.show_knowledge_base = False
+
+    def get_knowledge_base_url(self):
+        self.ensure_one()
+        return self.get_portal_url()
 
     # ------------------------------------------------------------
     # ORM overrides
@@ -684,6 +698,8 @@ class HelpdeskTeam(models.Model):
                 'view_mode': 'form',
                 'views': [(False, 'form')],
             })
+        else:
+            action['context'] = {'search_default_rating_last_30_days': 1}
         return action
 
     def action_view_open_ticket_view(self):

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import api, SUPERUSER_ID
+
 from . import controllers
 from . import models
 from . import tests
@@ -13,7 +15,6 @@ def post_install_hook_ensure_team_forms(cr, registry):
               In that case, the override on write/create that invokes the form generation does not apply yet
               and the team does not get its form generated.
     """
-    from odoo import api, SUPERUSER_ID
 
     env = api.Environment(cr, SUPERUSER_ID, {})
     teams = env['helpdesk.team'].search([('use_website_helpdesk_form', '=', True)])

@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <template id="website_helpdesk_slides.slides_page" name="Top 10 Posts">
-        <p t-if="slides">
-            <p class="question-block" t-foreach="slides" t-as="slide" >
-                <div class="media">
-                    <a t-attf-href="/slides/slide/#{slug(slide)}">
-                        <img class="mr-3 oe_slides_apart_small" t-att-src="website.image_url(slide, 'image_128')" alt="Slide image"/>
-                    </a>
-                    <div class="media-body">
-                        <a t-attf-href="/slides/slide/#{slug(slide)}"><h5 class="mt-0" t-esc="slide.name"/></a>
-                        <small class="text-muted">
-                            <t t-esc="slide.total_views"/> Views . <timeago class="timeago" t-att-datetime="slide.create_date"></timeago>
-                        </small>
-                    </div>
-                </div>
-            </p>
-        </p>
-        <p t-if="slides_limit &gt; 7">
-            <a t-attf-href="/slides/#{ slug(channel) }?search=#{search}">Click here to view more result...</a>
-        </p>
-    </template>
-
-    <template id="website_helpdesk_slides_team_page" inherit_id="website_helpdesk.team">
-        <xpath expr="//div[@id='oe_structure_website_helpdesk_links']" position="inside">
-            <t t-if="channel and team.use_website_helpdesk_slides">
-                <a t-attf-href="#{team.elearning_url}">
-                    <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mt-2 mb-2">View our Courses</button>
-                </a>
-            </t>
+    <template id="knowledge_base_slides_card" inherit_id="website_helpdesk.knowledge_base">
+        <xpath expr="//div[@id='o_knowledge_base_sections']" position="inside">
+            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.use_website_helpdesk_slides">
+                <i class="fa fa-3x rounded bg-o-color-5 m-3 fa-mortar-board fa-3x rounded bg-o-color-5 m-3">​</i>
+                <h3>
+                    <span style="font-weight: bolder; font-size: 18px;">Courses</span>
+                </h3>
+                <p>
+                    <span style="font-size: 18px;">Level up your skills with training videos and tutorials</span>
+                </p>
+                <a href="/slides" class="btn btn-outline-primary" data-original-title="" title="">Take Courses</a>
+            </div>
         </xpath>
     </template>
 
+    <template id="search_result" name="Knowledge Base: Slides Search Result">
+        <div class="pb8 w-100">
+            <p class="font-weight-bold text-800"><i class="fa fa-fw fa-mortar-board" title="eLearning" /> <a t-att-href="url" class="text-800"><t t-out="record.name" /></a></p>
+            <div class="text-o-color-2" t-if="record.description and (record.is_preview or record.channel_id.is_member)"><t t-out="record.description" /></div>
+            <p>
+                <t t-foreach="record.tag_ids" t-as="tag">
+                    <a t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-outline-secondary btn-sm" t-out="tag.name"/>
+                </t>
+            </p>
+            <p class="text-o-color-2">
+                <time t-field="record.date_published" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="font-weight-bold"><t t-out="record.user_id.name" /></a>
+
+                | <t t-out="record.total_views" /> Views
+                | <t t-out="record.likes" /> Likes
+                | <t t-out="record.comments_count" /> Comments
+                | <i class="fa fa-folder-open-o" /> <a class="font-weight-bold" t-attf-href="{{record.channel_id.website_url}}" t-out="record.channel_id.name" />
+            </p>
+        </div>
+    </template>
+
+    <template id="channel_search_result" name="Knowledge Base: Slide Channel Search Result">
+        <div class="pb8 w-100">
+            <p class="font-weight-bold text-800"><i class="fa fa-fw fa-mortar-board" title="eLearning Course" /> <a t-att-href="url" class="text-800"><t t-out="record.name" /></a></p>
+            <div class="text-o-color-2 whelpdesk_search_description" t-if="record.description"><t t-out="record.description" /></div>
+            <p>
+                <t t-foreach="record.tag_ids" t-as="tag">
+                    <a t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-outline-secondary btn-sm" t-out="tag.name"/>
+                </t>
+            </p>
+            <p class="text-o-color-2">
+                <time t-field="record.slide_last_update" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="font-weight-bold"><t t-out="record.user_id.name" /></a>
+                | <t t-out="record.members_count"/> Members
+                | <t t-out="record.rating_count"/> Reviews
+            </p>
+        </div>
+    </template>
 </odoo>

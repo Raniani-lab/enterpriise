@@ -1,0 +1,27 @@
+.whelpdesk_tags_dropdown {
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.whelpdesk_search_results {
+    p {
+        margin-bottom: 0.3rem;
+    }
+
+    .whelpdesk_result {
+        margin-bottom: 1rem;
+
+        .whelpdesk_search_description {
+            display: -webkit-box;
+            word-break: break-word;
+            max-height: 80px;
+            line-height: 20px;
+            overflow: hidden;
+            line-clamp: 4;
+            -moz-box-orient: vertical;
+            -moz-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+        }
+    }
+}

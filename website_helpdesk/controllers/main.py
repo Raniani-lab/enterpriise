@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import http
-from odoo.http import request
-from odoo.tools import is_html_empty
-
-from odoo.addons.website.controllers import form
-
 from werkzeug.exceptions import NotFound
 from werkzeug.utils import redirect
+
+from odoo import http, _
+from odoo.http import request
+from odoo.osv import expression
+
+from odoo.addons.website.controllers import form
 
 class WebsiteHelpdesk(http.Controller):
 
@@ -18,16 +18,22 @@ class WebsiteHelpdesk(http.Controller):
     @http.route(['/helpdesk', '/helpdesk/<model("helpdesk.team"):team>'], type='http', auth="public", website=True, sitemap=True)
     def website_helpdesk_teams(self, team=None, **kwargs):
         search = kwargs.get('search')
-        # For breadcrumb index: get all team
-        teams = request.env['helpdesk.team'].search(['|', '|', ('use_website_helpdesk_form', '=', True), ('use_website_helpdesk_forum', '=', True), ('use_website_helpdesk_slides', '=', True)], order="id asc")
+
+        teams_domain = [('use_website_helpdesk_form', '=', True)]
         if not request.env.user.has_group('helpdesk.group_helpdesk_manager'):
-            teams = teams.filtered(lambda team: team.website_published)
+            if team and not team.is_published:
+                raise NotFound()
+            teams_domain = expression.AND([teams_domain, [('website_published', '=', True)]])
+
+        if team and team.show_knowledge_base and not kwargs.get('contact_form'):
+            return redirect(team.website_url + '/knowledgebase')
+
+        teams = request.env['helpdesk.team'].search(teams_domain, order="id asc")
         if not teams:
-            return request.render("website_helpdesk.not_published_any_team")
+            raise NotFound()
+
         result = self.get_helpdesk_team_data(team or teams[0], search=search)
-        # For breadcrumb index: get all team
-        result['teams'] = teams
-        result['is_html_empty'] = is_html_empty
+        result['multiple_teams'] = len(teams) > 1
         return request.render("website_helpdesk.team", result)
 
     @http.route(['/helpdesk/<model("helpdesk.team"):team>/knowledgebase'], type='http', auth="public", website=True, sitemap=True)
@@ -57,6 +63,7 @@ class WebsiteHelpdesk(http.Controller):
             return request.render("website_helpdesk.search_results", {
                 'team': team,
                 'search': search,
+                'search_count': len(results),
                 'searches': searches,
                 'available_types': types,
                 'current_type': types[searches['type']] if searches.get('type') else False,
@@ -100,10 +107,10 @@ class WebsiteHelpdesk(http.Controller):
                 if count:
                     for all_results in results:
                         if all_results.get('results', False):
-                            search_results += self._format_search_results(search_type, all_results['results'])
+                            search_results += self._format_search_results(search_type, all_results['results'], options)
         return sorted(search_results, key=lambda res: res.get('score', 0), reverse=True)
 
-    def _format_search_results(self, search_type, records):
+    def _format_search_results(self, search_type, records, options):
         return []
 
 class WebsiteForm(form.WebsiteForm):

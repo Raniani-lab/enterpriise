@@ -113,6 +113,11 @@
             <xpath expr="//filter[@name='resource']" position="after">
                 <filter name="rating_text" position="move"/>
             </xpath>
+            <xpath expr="/search" position="inside">
+                <filter string="Last 30 Days" name="rating_last_30_days" domain="[
+                    ('create_date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))
+                ]" />
+            </xpath>
         </field>
     </record>
 

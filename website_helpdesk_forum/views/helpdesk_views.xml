@@ -8,13 +8,15 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">
                 <field name="use_website_helpdesk_forum" invisible="1"/>
-                <field name="forum_post_id" invisible="1" />
+                <field name="can_share_forum" invisible="1"/>
             </xpath>
             <xpath expr="//header" position="inside">
-                <button name="forum_post_new" attrs="{'invisible': ['|', ('use_website_helpdesk_forum','=',False), ('forum_post_id','!=',False)]}" type="object" string="Share on Forum" />
+                <button name="action_share_ticket_on_forum" attrs="{'invisible': [('can_share_forum', '=', False)]}" type="object" string="Share on Forum" />
             </xpath>
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
-                <button name="forum_post_open" type="object" class="oe_stat_button" icon="fa-comments" attrs="{'invisible': ['|', ('use_website_helpdesk_forum', '=', False), ('forum_post_id', '=', False)]}" string="Forum Post"/>
+                <button name="action_open_forum_posts" type="object" class="oe_stat_button" icon="fa-comments" attrs="{'invisible': ['|', ('use_website_helpdesk_forum', '=', False), ('forum_post_count', '=', 0)]}">
+                    <field name="forum_post_count" string="Forum Posts" widget="statinfo" />
+                </button>
             </xpath>
         </field>
     </record>
@@ -24,12 +26,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='use_website_helpdesk_forum']" position="replace">
-                <div attrs="{'invisible': [('use_website_helpdesk_forum', '=', False),  ('forum_id','=',False)]}" class="mt16">
-                    <b>Forum</b>
-                    <field name="forum_id" class="ml-2" attrs="{'required': [('use_website_helpdesk_forum', '=', True)]}" context="{'default_name': name}"/>
-                </div>
-            </xpath>
+            <xpath expr="//div[@id='use_website_helpdesk_forum']" position="replace" />
         </field>
     </record>
 </odoo>

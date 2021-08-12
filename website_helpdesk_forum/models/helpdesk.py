@@ -9,73 +9,71 @@ from odoo.exceptions import UserError
 class HelpdeskTeam(models.Model):
     _inherit = "helpdesk.team"
 
-    forum_id = fields.Many2one('forum.forum', string='Help Center Forum')
-    forum_url = fields.Char(string='Help Center Forum URL', readonly=True, compute='_compute_forum_url')
-
-    def _compute_forum_url(self):
-        for team in self:
-            if team.forum_id and team.id:
-                team.forum_url = '%s/forum/%s' % (team.get_base_url(), slug(team.forum_id))
-            else:
-                team.forum_url = False
-
-    @api.onchange('use_website_helpdesk_forum')
-    def _onchange_use_website_helpdesk_forum(self):
-        if self.use_website_helpdesk_forum:
-            self.forum_id = self.env.ref('website_forum.forum_help', raise_if_not_found=False)
+    def _ensure_help_center_is_activated(self):
+        self.ensure_one()
         if not self.use_website_helpdesk_forum:
-            self.forum_id = False
+            raise UserError(_('Help Center not active for this team.'))
+        return True
 
-    def _init_column(self, column_name):
-        """ Initialize the value of the given column for existing rows.
-            Overridden here because we need the forum_id to be set during the installationg of this module
-            only on records (teams) that have use_website_helpdesk_forum set as True
-        """
-        if column_name != "forum_id" or not self.env.ref('website_forum.forum_help', raise_if_not_found=False):
-            super(HelpdeskTeam, self)._init_column(column_name)
-        else:
-            default_value = self.env.ref('website_forum.forum_help').id
+    @api.model
+    def _get_knowledge_base_fields(self):
+        return super()._get_knowledge_base_fields() + ['use_website_helpdesk_forum']
 
-            self.env.cr.execute("""
-            UPDATE {}
-               SET forum_id = %s
-             WHERE use_website_helpdesk_forum AND forum_id IS NULL
-            """.format(self._table), [default_value])
+    def _helpcenter_filter_types(self):
+        res = super()._helpcenter_filter_types()
+        if not self.use_website_helpdesk_forum:
+            return res
 
+        res['forum_posts_only'] = _('Forum Posts')
+        return res
+
+    def _helpcenter_filter_tags(self):
+        res = super()._helpcenter_filter_tags()
+        if not self.use_website_helpdesk_forum:
+            return res
+
+        tags = self.env['forum.tag'].search([
+            ('posts_count', '>', 0),
+        ], order='posts_count desc', limit=20)
+        return res + tags.mapped(lambda t: t.name and t.name.lower())
 
 class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
-    forum_post_id = fields.Many2one('forum.post', string="Forum Post", copy=False)
+    forum_post_ids = fields.Many2many('forum.post', string="Forum Posts", copy=False)
+    forum_post_count = fields.Integer(compute='_compute_forum_post_count')
     use_website_helpdesk_forum = fields.Boolean(related='team_id.use_website_helpdesk_forum', string='Help Center Active', readonly=True)
+    can_share_forum = fields.Boolean(compute='_compute_can_share_forum')
 
-    def forum_post_new(self):
+    @api.depends_context('uid')
+    @api.depends('use_website_helpdesk_forum')
+    def _compute_can_share_forum(self):
+        forum_count = self.env['forum.forum'].search_count([])
+        for ticket in self:
+            ticket.can_share_forum = ticket.use_website_helpdesk_forum and forum_count
+
+    @api.depends_context('uid')
+    @api.depends('forum_post_ids')
+    def _compute_forum_post_count(self):
+        rg = self.env['forum.post'].read_group([('can_view', '=', True), ('id', 'in', self.forum_post_ids.ids)], ['ticket_id'], ['ticket_id'])
+        posts_count = {r['ticket_id'][0]: r['ticket_id_count'] for r in rg}
+        for ticket in self:
+            ticket.forum_post_count = posts_count.get(ticket.id, 0)
+
+    def action_share_ticket_on_forum(self):
         self.ensure_one()
-        if not self.team_id.forum_id:
-            raise UserError(_('Help Center not active for this team.'))
-        forum_post = self.env['forum.post'].search([('name', 'ilike', self.name)])
-        for post in forum_post:
-            if post.name.lower() == self.name.lower():
-                self.forum_post_id = post.id
-                break
+        self.team_id._ensure_help_center_is_activated()
+        return self.env['ir.actions.actions']._for_xml_id('website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_action')
 
-        if not self.forum_post_id:
-            self.forum_post_id = self.env['forum.post'].create({
-                'name': self.name,
-                'forum_id': self.team_id.forum_id.id,
-                'content': self.description or '',
-            }).id
-        self.message_post(body=_('Ticket has been shared on the %s forum.') % (self.forum_post_id.forum_id.name,))
-        return self.forum_post_open()
-
-    def forum_post_open(self):
+    def action_open_forum_posts(self, edit=False):
         self.ensure_one()
-        if not self.team_id.forum_id:
-            raise UserError(_('Help Center not active for this team.'))
-        if not self.forum_post_id:
-            raise UserError(_('No post associated to this ticket.'))
-        return {
-            'type': 'ir.actions.act_url',
-            'url': '/forum/' + str(self.team_id.forum_id.id) + '/question/' + str(self.forum_post_id.id),
-            'target': 'self',
-        }
+        self.team_id._ensure_help_center_is_activated()
+        if not self.forum_post_ids:
+            raise UserError(_('No posts associated to this ticket.'))
+
+        if len(self.forum_post_ids) > 1:
+            action = self.env['ir.actions.actions']._for_xml_id('website_forum.action_forum_posts')
+            action['domain'] = [('id', 'in', self.forum_post_ids.ids)]
+            return action
+
+        return self.forum_post_ids.open_forum_post(edit)

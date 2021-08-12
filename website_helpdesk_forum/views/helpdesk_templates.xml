@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <template id="website_helpdesk_forum_team_page" inherit_id="website_helpdesk.team">
-        <xpath expr="//div[@id='oe_structure_website_helpdesk_links']" position="inside">
-            <t t-if="forum and team.use_website_helpdesk_forum">
-                <a t-attf-href="#{team.forum_url}">
-                    <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mt-2 mb-2">Visit our Help Center</button>
-                </a>
-            </t>
+    <template id="knowledge_base_forum_card" inherit_id="website_helpdesk.knowledge_base">
+        <xpath expr="//div[@id='o_knowledge_base_sections']" position="inside">
+            <t t-set="hide_community_button" t-value="True"/>
+            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.use_website_helpdesk_forum">
+                <i class="fa fa-3x rounded bg-secondary m-3 fa-comments fa-3x rounded bg-secondary m-3">​</i>
+                <h3>
+                    <span style="font-weight: bolder; font-size: 18px;">Community</span>
+                </h3>
+                <p>
+                    <span style="font-size: 18px;">Ask questions and discuss tips with fellow members in a forum</span>
+                </p>
+                <a href="/forum" class="btn btn-outline-primary" data-original-title="" title="">Ask the Community</a>
+            </div>
         </xpath>
     </template>
 
+    <template id="search_result" name="Knowledge Base: Forum Search Result">
+        <div class="pb8 website_forum w-100">
+            <p class="font-weight-bold text-800"><i class="fa fa-fw fa-comments" title="Forum Post" /> <a t-att-href="url" class="text-800"><t t-out="record.name" /></a> <t t-if="record.has_validated_answer"><i class="fa fa-check-circle text-success" title="Solved" /></t></p>
+            <div class="text-o-color-2 whelpdesk_search_description" t-if="not is_html_empty(record.content)"><t t-out="record.content" /></div>
+            <p>
+                <t t-foreach="record.tag_ids" t-as="tag">
+                    <a t-attf-href="/forum/#{slug(tag.forum_id)}/tag/#{slug(tag)}/questions?filters=tag" class="btn btn-outline-secondary btn-sm"><t t-out="tag.name" /></a>
+                </t>
+            </p>
+            <p class="text-o-color-2">
+                <t t-call="website_forum.vote">
+                    <t t-set="post" t-value="record" />
+                </t>
+                <time t-field="record.create_date" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/forum/{{slug(record.forum_id)}}/user/{{record.create_uid.id}}?forum_origin={{team.website_url}}" class="font-weight-bold"><t t-out="record.create_uid.name" /></a>
+                <t t-if="record.child_count">
+                | <a t-att-href="url" class="font-weight-bold"><t t-out="record.child_count" /> Answers</a>
+                </t>
+                <t t-else="">
+                | 0 Answer
+                </t>
+                | <t t-out="record.views" /> Views
+            </p>
+        </div>
+    </template>
+
+    <template id="website_helpdesk_forum.question_dropdown" inherit_id="website_forum.question_dropdown">
+        <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
+            <a groups="helpdesk.group_helpdesk_user" t-if="question and question.show_ticket" class="dropdown-item pl-3" t-attf-href="/web#id=#{question.ticket_id.id}&amp;view_type=form&amp;model=helpdesk.ticket&amp;menu_id=#{question.env.ref('helpdesk.menu_helpdesk_root').id}">
+                <i class="fa fa-life-ring fa-fw text-muted" />
+                View Ticket
+            </a>
+        </xpath>
+    </template>
+
+    <template id="footer" inherit_id="website_helpdesk.footer">
+        <xpath expr="//p[@id='footer_buttons']" position="inside">
+            <a class="btn btn-secondary btn-lg mb-2" href="/forum" t-if="team.use_website_helpdesk_forum and not hide_community_button">Ask the Community</a>
+        </xpath>
+    </template>
 </odoo>

@@ -13,9 +13,9 @@
     ],
     'data': [
         'data/helpdesk_data.xml',
-        'views/assets.xml',
         'views/helpdesk_views.xml',
         'views/helpdesk_templates.xml',
+        'security/website_helpdesk_security.xml',
     ],
     'license': 'OEEL-1',
     'post_init_hook': 'post_install_hook_ensure_team_forms',

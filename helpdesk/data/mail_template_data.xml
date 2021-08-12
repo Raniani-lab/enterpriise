@@ -23,6 +23,11 @@
 
     To add additional comments, reply to this email.<br/><br/>
 
+    <t t-if="object.team_id.show_knowledge_base">
+        Please, don't hesitate to visit our <a t-attf-href="{{ object.team_id.get_knowledge_base_url() }}">Help Center</a>. You might find the answer to your question.
+        <br/><br/>
+    </t>
+
     Thank you,<br/><br/>
     <t t-out="object.team_id.name or 'Helpdesk'">Helpdesk</t> Team.
 </div>

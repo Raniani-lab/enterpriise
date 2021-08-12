@@ -78,7 +78,7 @@
                         <h1 id="name"><field name="name" placeholder="e.g. Customer Care"/></h1>
                     </div>
                     <field name="active" invisible="1"/>
-                    <field name="description" placeholder="Description for customer portal"/>
+                    <field name="description" placeholder="Describe your team..."/>
                     <group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1" context="{'create': False}"/>
@@ -273,7 +273,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_website_helpdesk_slides" string="eLearning"/>
                                 <div class="text-muted">
-                                    Share presentation and videos, and organize into courses
+                                    Share presentations and videos, and organize them into courses
                                 </div>
                                 <div id="use_website_helpdesk_slides" attrs="{'invisible': [('use_website_helpdesk_slides', '=', False)]}">
                                     <div class="text-warning mb4 mt16" id="o_slide_option">

@@ -23,5 +23,4 @@ Website Slides integration for the helpdesk module
     ],
     'auto_install': True,
     'license': 'OEEL-1',
-    'post_init_hook': '_website_helpdesk_slides_post_init',
 }

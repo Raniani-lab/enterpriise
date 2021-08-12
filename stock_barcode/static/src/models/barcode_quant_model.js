@@ -186,6 +186,13 @@ export default class BarcodeQuantModel extends BarcodeModel {
         return {};
     }
 
+    _groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone) {
+        return Object.assign(super._groupSublines(...arguments), {
+            inventory_quantity: qtyDone,
+            quantity: qtyDemand,
+        });
+    }
+
     _lineIsNotComplete(line) {
         return line.inventory_quantity === 0;
     }

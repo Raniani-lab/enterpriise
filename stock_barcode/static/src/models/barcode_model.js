@@ -11,6 +11,7 @@ export default class BarcodeModel extends owl.core.EventBus {
     constructor(params) {
         super();
         this.params = params;
+        this.unfoldLineKey = false;
     }
 
     setData(data) {
@@ -173,6 +174,56 @@ export default class BarcodeModel extends owl.core.EventBus {
         return this.groups.group_stock_multi_locations;
     }
 
+    groupKey(line) {
+        return `${line.product_id.id}`;
+    }
+
+    /**
+     * Returns the page's lines but with tracked products grouped by product id.
+     *
+     * @returns
+     */
+     get groupedLines() {
+        if (!this.groups.group_production_lot) {
+            return this._sortLine(this.pageLines);
+        }
+
+        const lines = [...this.pageLines];
+        const groupedLinesByKey = {};
+        for (let index = lines.length - 1; index >= 0; index--) {
+            const line = lines[index];
+            if (line.product_id.tracking === 'none' || line.lines) {
+                // Don't try to group this line if it's not tracked or already grouped.
+                continue;
+            }
+            const key = this.groupKey(line);
+            if (!groupedLinesByKey[key]) {
+                groupedLinesByKey[key] = [];
+            }
+            groupedLinesByKey[key].push(...lines.splice(index, 1));
+        }
+        for (const [key, sublines] of Object.entries(groupedLinesByKey)) {
+            if (sublines.length === 1) {
+                lines.push(...sublines);
+                continue;
+            }
+            const ids = [];
+            const virtual_ids = [];
+            let [qtyDemand, qtyDone] = [0, 0];
+            for (const subline of sublines) {
+                ids.push(subline.id);
+                virtual_ids.push(subline.virtual_id);
+                qtyDemand += this.getQtyDemand(subline);
+                qtyDone += this.getQtyDone(subline);
+            }
+            const groupedLine = this._groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone);
+            lines.push(groupedLine);
+        }
+        // Before to return the line, we sort them to have new lines always on
+        // top and complete lines always on the bottom.
+        return this._sortLine(lines);
+    }
+
     get highlightNextButton() {
         return false;
     }
@@ -217,8 +268,6 @@ export default class BarcodeModel extends owl.core.EventBus {
         if (this.record.picking_type_entire_packs) {
             lines = lines.filter(line => !line.package_id);
         }
-        // Before to return the line, we sort them to have new lines always on
-        // top and complete lines always on the bottom.
         return this._sortLine(lines);
     }
 
@@ -464,12 +513,18 @@ export default class BarcodeModel extends owl.core.EventBus {
         if (this.selectedLineVirtualId === virtualId) {
             return;
         }
-        this.selectedLineVirtualId = virtualId;
-        this.scannedLinesVirtualId.push(virtualId);
+        this._selectLine(line);
     }
 
     selectPackageLine(packageId) {
         this.lastScannedPackage = packageId;
+    }
+
+    toggleSublines(line) {
+        const productId = line.product_id.id;
+        const lineKey = this.groupKey(line);
+        this.unfoldLineKey = this.unfoldLineKey === lineKey ? false : lineKey;
+        this.trigger('update');
     }
 
     async updateLine(line, args) {
@@ -745,6 +800,15 @@ export default class BarcodeModel extends owl.core.EventBus {
             pages.push(page);
         }
         this.pages = pages;
+    }
+
+    _groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone) {
+        return Object.assign({}, sublines[0], {
+            ids,
+            lines: this._sortLine(sublines),
+            opened: false,
+            virtual_ids,
+        });
     }
 
     async _goToMainMenu() {
@@ -1170,6 +1234,14 @@ export default class BarcodeModel extends owl.core.EventBus {
 
     async _processPackage(barcodeData) {
         throw new Error('Not Implemented');
+    }
+
+    _selectLine(line) {
+        const virtualId = line.virtual_id;
+        this.selectedLineVirtualId = virtualId;
+        this.scannedLinesVirtualId.push(virtualId);
+        // Unfolds the group where the line is, folds other lines' group.
+        this.unfoldLineKey = this.groupKey(line);
     }
 
     _setLocationFromBarcode(result, location) {

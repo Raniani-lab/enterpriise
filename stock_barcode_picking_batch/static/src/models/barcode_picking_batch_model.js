@@ -123,6 +123,10 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         }
     }
 
+    groupKey(line) {
+        return `${line.picking_id.id}_${line.product_id.id}`;
+    }
+
     get needPickings() {
         return this.record.state === 'draft' && this.record.picking_ids.length === 0;
     }

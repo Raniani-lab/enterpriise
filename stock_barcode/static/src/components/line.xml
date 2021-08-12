@@ -10,23 +10,26 @@
                 {{isSelected ? 'o_selected o_highlight' : ''}}
             ">
             <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
-                <t t-if="line.product_id.default_code">
-                    <div class="o_barcode_line_title">
-                        <i class="fa fa-fw fa-tags"/>
-                        <span class="o_barcode_product_ref">
-                            <b>[<t t-esc="line.product_id.default_code"/>]</b>
-                        </span>
-                    </div>
-                    <div>
-                        <i class="fa fa-fw"/>
-                        <span class="product-label" t-esc="line.product_id.display_name"/>
-                    </div>
-                </t>
-                <t t-else="">
-                    <div class="o_barcode_line_title pb-1">
-                        <i class="fa fa-fw fa-tags"/>
-                        <span class="product-label" t-esc="line.product_id.display_name"/>
-                    </div>
+                <!-- Hides product's name if it's a subline, as it is already on the parent line. -->
+                <t t-if="!props.subline">
+                    <t t-if="line.product_id.default_code">
+                        <div class="o_barcode_line_title">
+                            <i class="fa fa-fw fa-tags"/>
+                            <span class="o_barcode_product_ref">
+                                <b>[<t t-esc="line.product_id.default_code"/>]</b>
+                            </span>
+                        </div>
+                        <div>
+                            <i class="fa fa-fw"/>
+                            <span class="product-label" t-esc="line.product_id.display_name"/>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="o_barcode_line_title pb-1">
+                            <i class="fa fa-fw fa-tags"/>
+                            <span class="product-label" t-esc="line.product_id.display_name"/>
+                        </div>
+                    </t>
                 </t>
                 <div name="quantity">
                     <i class="fa fa-fw fa-cube" t-attf-class="{{nextExpected === 'quantity' ? 'o_next_expected' : ''}}"/>

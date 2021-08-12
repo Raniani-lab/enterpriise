@@ -1464,13 +1464,16 @@ tour.register('test_receipt_reserved_2', {test: true}, [
 ]);
 
 tour.register('test_delivery_lot_with_package', {test: true}, [
+    // Unfold grouped lines.
+    { trigger: '.o_line_button.o_toggle_sublines' },
     {
         trigger: '.o_barcode_client_action:contains("sn2")',
         run: function() {
-            helper.assertLinesCount(2);
+            helper.assertLinesCount(1);
+            helper.assertSublinesCount(2);
             helper.assertScanMessage('scan_product');
-            var $line1 = $('.o_barcode_line').eq(0);
-            var $line2 = $('.o_barcode_line').eq(1);
+            var $line1 = $('.o_sublines .o_barcode_line').eq(0);
+            var $line2 = $('.o_sublines .o_barcode_line').eq(1);
             helper.assert($line1.find('.o_line_lot_name').text(), 'sn1');
             helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
             helper.assert($line2.find('.o_line_lot_name').text(), 'sn2');
@@ -1494,12 +1497,13 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
     {
         trigger: '.o_barcode_client_action:contains("sn4")',
         run: function() {
-            helper.assertLinesCount(4);
+            helper.assertLinesCount(1);
+            helper.assertSublinesCount(4);
             helper.assertScanMessage('scan_product');
-            var $line1 = $('.o_barcode_line').eq(0);
-            var $line2 = $('.o_barcode_line').eq(1);
-            var $line3 = $('.o_barcode_line').eq(2);
-            var $line4 = $('.o_barcode_line').eq(3);
+            var $line1 = $('.o_sublines .o_barcode_line').eq(0);
+            var $line2 = $('.o_sublines .o_barcode_line').eq(1);
+            var $line3 = $('.o_sublines .o_barcode_line').eq(2);
+            var $line4 = $('.o_sublines .o_barcode_line').eq(3);
             helper.assert($line1.find('.o_line_lot_name').text(), 'sn4');
             helper.assert($line1.find('.fa-user-o').parent().text().trim(), "Particulier");
             helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_2"), true);
@@ -1517,7 +1521,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
 
     // Open the form view to trigger a save
     {
-        trigger: '.o_barcode_line:eq(0) .fa-pencil',
+        trigger: '.o_sublines .o_barcode_line:eq(0) .fa-pencil',
     },
     {
         trigger: '.o_field_widget[name="product_id"]',
@@ -2981,9 +2985,10 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_line:nth-child(4)',
+        trigger: '.o_sublines .o_barcode_line:nth-child(3)',
         run: function () {
-            helper.assertLinesCount(4);
+            helper.assertLinesCount(2);
+            helper.assertSublinesCount(3);
         },
     },
 
@@ -3001,9 +3006,10 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
 
     // Scan tracked by lots product, then scan new lots.
     {
-        trigger: '.o_barcode_line:nth-child(4)',
+        trigger: '.o_sublines .o_barcode_line:nth-child(3)',
         run: function () {
-            helper.assertLinesCount(4);
+            helper.assertLinesCount(2);
+            helper.assertSublinesCount(3);
         },
     },
 
@@ -3020,11 +3026,13 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         run: 'scan lot3',
     },
 
-    // Must have 6 lines (lot1, serial1, serial2, serial3, lot2, lot3).
+    // Must have 6 lines in two groups: lot1, lot2, lot3 and serial1, serial2, serial3.
+    // Line groupd for `productlot1` should be unfolded.
     {
-        trigger: '.o_barcode_line:nth-child(6)',
+        trigger: '.o_barcode_line:contains("productlot1") .o_sublines .o_barcode_line:nth-child(3)',
         run: function () {
-            helper.assertLinesCount(6);
+            helper.assertLinesCount(2);
+            helper.assertSublinesCount(3);
         }
     },
 

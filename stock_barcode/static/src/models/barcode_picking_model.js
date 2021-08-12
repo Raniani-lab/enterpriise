@@ -416,6 +416,13 @@ export default class BarcodePickingModel extends BarcodeModel {
         return {};
     }
 
+    _groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone) {
+        return Object.assign(super._groupSublines(...arguments), {
+            product_uom_qty: qtyDemand,
+            qty_done: qtyDone,
+        });
+    }
+
     _incrementTrackedLine() {
         return !(this.record.use_create_lots || this.record.use_existing_lots);
     }

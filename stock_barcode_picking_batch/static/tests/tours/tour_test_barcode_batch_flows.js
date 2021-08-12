@@ -63,10 +63,10 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             currentViewState = updateState(defaultViewState, {
-                linesCount: 5,
+                linesCount: 4,
                 pager: '1/1',
                 pageSummary: 'To WH/Stock',
-                previous: {isVisible: true},
+                previous: {isVisible: false},
                 scanMessage: 'scan_product',
                 validate: {
                     isEnabled: true,
@@ -74,11 +74,20 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
                 },
             });
             checkState(currentViewState);
-            const $linesFromFirstPicking = $(helper.getLines({index: [1, 4, 5]}));
+            const $linesFromFirstPicking = $(helper.getLines({index: [1, 4]}));
             const $linesFromSecondPicking = $(helper.getLines({from: 2, to: 3}));
             helper.assertLinesBelongTo($linesFromFirstPicking, 'picking_receipt_1');
             helper.assertLinesBelongTo($linesFromSecondPicking, 'picking_receipt_2');
         },
+    },
+    // Unfolds grouped lines for product tracked by SN.
+    { trigger: '.o_line_button.o_toggle_sublines' },
+    {
+        trigger: '.o_sublines .o_barcode_line',
+        run: function () {
+            const sublines = document.querySelectorAll('.o_sublines .o_barcode_line');
+            helper.assert(sublines.length, 2, 'it should have 2 sublines');
+        }
     },
 
     //Check show information.
@@ -140,9 +149,9 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(6)',
+        trigger: '.o_barcode_line:nth-child(5)',
         run: function() {
-            currentViewState.linesCount = 6;
+            currentViewState.linesCount = 5;
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'product1'});
             helper.assert($lines.length, 3, "Expect 3 lines for product1");
@@ -169,14 +178,12 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: function() {
             currentViewState.scanMessage = 'scan_serial';
             checkState(currentViewState);
-            const $lines =  helper.getLines({barcode: 'productserial1'});
-            helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
-            const $line1 = $($lines[0]);
-            const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '0');
-            helper.assertLineIsHighlighted($line1, true);
-            helper.assertLineQty($line2, '0');
-            helper.assertLineIsHighlighted($line2, false);
+            const sublines = document.querySelectorAll('.o_barcode_line.o_selected .o_sublines .o_barcode_line');
+            helper.assert(sublines.length, 2);
+            helper.assertLineQty($(sublines[0]), '0');
+            helper.assertLineIsHighlighted($(sublines[0]), true);
+            helper.assertLineQty($(sublines[1]), '0');
+            helper.assertLineIsHighlighted($(sublines[1]), false);
         }
     },
 
@@ -190,12 +197,10 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: function() {
             currentViewState.scanMessage = 'scan_product_or_dest';
             checkState(currentViewState);
-            const $lines =  helper.getLines({barcode: 'productserial1'});
-            helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
-            const $line1 = $($lines[0]);
-            const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '0');
-            helper.assertLineQty($line2, '1');
+            const sublines = document.querySelectorAll('.o_sublines [data-barcode=productserial1]');
+            helper.assert(sublines.length, 2, "Expect 2 lines for productserial1");
+            helper.assertLineQty($(sublines[0]), '0');
+            helper.assertLineQty($(sublines[1]), '1');
         }
     },
     {
@@ -206,12 +211,10 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]:contains("SN-OQPAPT")',
         run: function() {
             checkState(currentViewState);
-            const $lines =  helper.getLines({barcode: 'productserial1'});
-            helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
-            const $line1 = $($lines[0]);
-            const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '1');
-            helper.assertLineQty($line2, '1');
+            const sublines = document.querySelectorAll('.o_sublines [data-barcode=productserial1]');
+            helper.assert(sublines.length, 2, "Expect 2 lines for productserial1");
+            helper.assertLineQty($(sublines[0]), '1');
+            helper.assertLineQty($(sublines[1]), '1');
         }
     },
 
@@ -302,18 +305,16 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: '.o_save',
     },
     {
-        trigger: '.o_barcode_line:nth-child(7)',
+        trigger: '.o_barcode_line:nth-child(5)',
         run: function() {
-            currentViewState.linesCount = 7;
+            currentViewState.linesCount = 5;
             checkState(currentViewState);
-            const $lines =  helper.getLines({barcode: 'productlot1'});
-            helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
-            const $line1 = $($lines[0]);
-            const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '4'); // Previous line (4/8).
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line2, '0'); // New created line.
-            helper.assertLineIsHighlighted($line2, true);
+            const sublines = document.querySelectorAll('.o_sublines [data-barcode=productlot1]');
+            helper.assert(sublines.length, 2, "Expect 2 lines for productlot1");
+            helper.assertLineQty($(sublines[0]), '4'); // Previous line (4/8).
+            helper.assertLineIsHighlighted($(sublines[0]), false);
+            helper.assertLineQty($(sublines[1]), '0'); // New created line.
+            helper.assertLineIsHighlighted($(sublines[1]), true);
         },
     },
 
@@ -325,16 +326,13 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     {
         trigger: '.o_scan_message_scan_lot',
         run: function() {
-            currentViewState.scanMessage = 'scan_lot';
             checkState(currentViewState);
-            const $lines =  helper.getLines({barcode: 'productlot1'});
-            helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
-            const $line1 = $($lines[0]);
-            const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '4'); // Previous line (4/8).
-            helper.assertLineIsHighlighted($line1, true);
-            helper.assertLineQty($line2, '0'); // New created line.
-            helper.assertLineIsHighlighted($line2, false);
+            const sublines = document.querySelectorAll('.o_sublines [data-barcode=productlot1]');
+            helper.assert(sublines.length, 2, "Expect 2 lines for productlot1");
+            helper.assertLineQty($(sublines[0]), '4'); // Previous line (4/8).
+            helper.assertLineIsHighlighted($(sublines[0]), true);
+            helper.assertLineQty($(sublines[1]), '0'); // New created line.
+            helper.assertLineIsHighlighted($(sublines[1]), false);
         }
     },
     // ... then scan lot0002 x4
@@ -355,16 +353,14 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0002'
     },
     {
-        trigger: '.o_barcode_line.o_highlight:contains("lot0002") .qty-done:contains("4")',
+        trigger: '.o_sublines .o_barcode_line.o_highlight:contains("lot0002") .qty-done:contains("4")',
         run: function() {
-            const $lines =  helper.getLines({barcode: 'productlot1'});
-            helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
-            const $line1 = $($lines[0]);
-            const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '4');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line2, '4');
-            helper.assertLineIsHighlighted($line2, true);
+            const sublines = document.querySelectorAll('.o_sublines [data-barcode=productlot1]');
+            helper.assert(sublines.length, 2, "Expect 2 lines for productlot1");
+            helper.assertLineQty($(sublines[0]), '4');
+            helper.assertLineIsHighlighted($(sublines[0]), false);
+            helper.assertLineQty($(sublines[1]), '4');
+            helper.assertLineIsHighlighted($(sublines[1]), true);
         }
     },
 ]);

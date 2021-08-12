@@ -3,6 +3,7 @@
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
 import core from 'web.core';
+import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import LocationButton from '@stock_barcode/components/location_button';
 import PackageLineComponent from '@stock_barcode/components/package_line';
@@ -175,7 +176,7 @@ class MainComponent extends Component {
     }
 
     get lines() {
-        return this.env.model.pageLines;
+        return this.env.model.groupedLines;
     }
 
     get mobileScanner() {
@@ -407,6 +408,7 @@ class MainComponent extends Component {
 }
 MainComponent.template = 'stock_barcode.MainComponent';
 MainComponent.components = {
+    GroupedLineComponent,
     LineComponent,
     LocationButton,
     PackageLineComponent,

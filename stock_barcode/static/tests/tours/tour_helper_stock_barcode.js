@@ -9,7 +9,7 @@ function fail (errorMessage) {
 
 function getLine (description) {
     var $res;
-    $('.o_barcode_line').each(function () {
+    $('.o_barcode_lines > .o_barcode_line').each(function () {
         var $line = $(this);
         const barcode = $line[0].dataset.barcode.trim();
         if (description.barcode === barcode) {
@@ -140,7 +140,7 @@ function assertValidateIsHighlighted (expected) {
 }
 
 function assertLinesCount(expected) {
-    const current = document.querySelectorAll('.o_barcode_line').length;
+    const current = document.querySelectorAll('.o_barcode_lines > .o_barcode_line').length;
     assert(current, expected, `Should have ${expected} line(s)`);
 }
 
@@ -150,6 +150,11 @@ function assertScanMessage (expected) {
     if (! $help.length || $help.hasClass('o_hidden')) {
         fail('assertScanMessage: "' + expected + '" is not displayed');
     }
+}
+
+function assertSublinesCount(expected) {
+    const current = document.querySelectorAll('.o_sublines > .o_barcode_line').length;
+    assert(current, expected, `Should have ${expected} subline(s), found ${current}`);
 }
 
 function assertLocationHighlight (expected) {
@@ -172,7 +177,7 @@ function assertLineIsHighlighted ($line, expected) {
 }
 
 function assertLineQty($line, qty) {
-    assert($line.find('.qty-done,.inventory_quantity').text(), qty, 'line quantity is wrong');
+    assert($line[0].querySelector('.qty-done,.inventory_quantity').innerText, qty, 'line quantity is wrong');
 }
 
 /**
@@ -260,6 +265,7 @@ return {
     assertPreviousVisible: assertPreviousVisible,
     assertQuantsCount: assertQuantsCount,
     assertScanMessage: assertScanMessage,
+    assertSublinesCount,
     assertValidateEnabled: assertValidateEnabled,
     assertValidateIsHighlighted: assertValidateIsHighlighted,
     assertValidateVisible: assertValidateVisible,

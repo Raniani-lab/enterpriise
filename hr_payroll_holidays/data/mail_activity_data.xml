@@ -5,7 +5,7 @@
             <field name="name">Leave to Defer</field>
             <field name="icon">fa-plane</field>
             <field name="sequence">100</field>
-            <field name="res_model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="res_model">hr.leave</field>
         </record>
     </data>
 </odoo>

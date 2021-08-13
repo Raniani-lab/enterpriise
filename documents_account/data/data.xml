@@ -120,7 +120,7 @@
             <field name="name">Tax Statement</field>
             <field name="delay_count">3</field>
             <field name="delay_unit">months</field>
-            <field name="res_model_id" ref="base.model_ir_attachment"/>
+            <field name="res_model">documents.document</field>
             <field name="delay_from">previous_activity</field>
         </record>
 
@@ -134,7 +134,7 @@
             <field name="name">Financial Statement</field>
             <field name="delay_count">12</field>
             <field name="delay_unit">months</field>
-            <field name="res_model_id" ref="base.model_res_partner"/>
+            <field name="res_model">res.partner</field>
             <field name="delay_from">previous_activity</field>
         </record>
 

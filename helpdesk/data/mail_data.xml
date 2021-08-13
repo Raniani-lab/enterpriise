@@ -5,7 +5,7 @@
     <record id="mail_act_helpdesk_handle" model="mail.activity.type">
         <field name="name">Handle Ticket</field>
         <field name="icon">fa-life-ring</field>
-        <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="res_model">helpdesk.ticket</field>
     </record>
 
     <!-- Ticket related subtypes for messaging / Chatter -->

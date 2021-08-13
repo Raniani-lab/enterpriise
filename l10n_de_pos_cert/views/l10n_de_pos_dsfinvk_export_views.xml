@@ -100,7 +100,7 @@
                         }
                     ],
                     "payment_types":[
-                        <t t-if="total_cash">
+                        <t t-if="total_cash or not total_bank">
                             {
                                 "type": "Bar",
                                 "currency_code": "EUR",

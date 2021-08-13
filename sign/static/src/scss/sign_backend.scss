@@ -181,7 +181,8 @@
     
     .o_popover_offset {
         top: 159px !important;
-        left: 4px !important;
+        left: -4px !important #{"/*rtl:ignore*/"};
+        left: 4px !important #{"/*rtl:remove*/"};
     }
 
     .o_sign_item_custom_popover{

@@ -264,6 +264,8 @@ odoo.define('sign.template', function(require) {
             this.$currentTarget = $targetEl;
             this.$elPopover = $("<div class='o_sign_item_popover'/>");
             var buttonClose = '<button class="o_sign_close_button">&times;</button>';
+            var isRTL = _t.database.parameters.direction === "rtl";
+
             this.appendTo(this.$elPopover).then(function() {
                 var options = {
                     title: self.title + buttonClose,
@@ -271,7 +273,7 @@ odoo.define('sign.template', function(require) {
                         return self.$el;
                     },
                     html: true,
-                    placement: 'right',
+                    placement: isRTL ? 'left': 'right',
                     trigger:'focus',
                 };
                 self.$currentTarget.popover(options).one('inserted.bs.popover', function (e) {

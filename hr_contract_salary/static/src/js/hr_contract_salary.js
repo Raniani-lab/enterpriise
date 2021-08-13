@@ -120,6 +120,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             'bank_account': {},
         };
         advantages.employee.job_title = $("input[name='job_title']").val();
+        advantages.employee.employee_job_id = $("input[name='employee_job_id']").val();
+        advantages.employee.department_id = $("input[name='department_id']").val();
         $('input')
             .toArray()
             .filter(input => input.hasAttribute('applies-on'))

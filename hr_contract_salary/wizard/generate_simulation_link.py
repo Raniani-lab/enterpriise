@@ -39,6 +39,7 @@ class GenerateSimulationLink(models.TransientModel):
             contract = applicant.job_id.default_contract_id
             result['contract_id'] = applicant.job_id.default_contract_id.id
             if applicant.job_id:
+                result['employee_job_id'] = applicant.job_id
                 result['job_title'] = applicant.job_id.name
         if not result.get('applicant_id') and not contract.contract_update_template_id or result.get('applicant_id') and not contract.sign_template_id:
             raise ValidationError(_('No signature template defined on the contract.'))
@@ -64,6 +65,19 @@ class GenerateSimulationLink(models.TransientModel):
     currency_id = fields.Many2one(related='contract_id.currency_id')
     applicant_id = fields.Many2one('hr.applicant')
     job_title = fields.Char("Job Title", compute='_compute_from_contract_id', store=True, readonly=False)
+    company_id = fields.Many2one(related="contract_id.company_id")
+    employee_job_id = fields.Many2one(
+        'hr.job', string="Job Position",
+        compute='_compute_from_contract_id',
+        store=True,
+        readonly=False,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    department_id = fields.Many2one(
+        'hr.department', string="Department",
+        compute='_compute_from_contract_id',
+        store=True,
+        readonly=False,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_start_date = fields.Date("Contract Start Date", default=fields.Date.context_today)
 
     contract_start_date = fields.Date()
@@ -80,7 +94,7 @@ class GenerateSimulationLink(models.TransientModel):
                 wizard.email_to = wizard.applicant_id.email_from
 
     def _get_url_triggers(self):
-        return ['applicant_id', 'final_yearly_costs', 'employee_contract_id', 'job_title', 'contract_start_date']
+        return ['applicant_id', 'final_yearly_costs', 'employee_contract_id', 'job_title', 'employee_job_id', 'department_id', 'contract_start_date']
 
     @api.depends(lambda self: [key for key in self._fields.keys()])
     def _compute_url(self):
@@ -104,6 +118,10 @@ class GenerateSimulationLink(models.TransientModel):
             wizard.final_yearly_costs = wizard.contract_id.final_yearly_costs
             if not wizard.job_title or (wizard.applicant_id and wizard.applicant_id.job_id and wizard.job_title != wizard.applicant_id.job_id.name):
                 wizard.job_title = wizard.contract_id.employee_id.job_title or wizard.contract_id.job_id.name
+            if not wizard.employee_job_id or (wizard.applicant_id and wizard.applicant_id.job_id and wizard.employee_job_id != wizard.applicant_id.job_id):
+                wizard.employee_job_id = wizard.contract_id.job_id or wizard.contract_id.employee_id.job_id
+            if not wizard.department_id or (wizard.applicant_id and wizard.applicant_id.department_id and wizard.department_id != wizard.applicant_id.department_id):
+                wizard.department_id = wizard.contract_id.department_id or wizard.contract_id.employee_id.department_id
 
     def name_get(self):
         return [(w.id, w.employee_id.name or w.applicant_id.partner_name) for w in self]

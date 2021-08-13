@@ -200,6 +200,8 @@ class HrContractSalary(http.Controller):
         contract_type_id = False
         employee_contract_id = False
         job_title = False
+        employee_job_id = False
+        department_id = False
         whitelist = False
 
         final_yearly_costs = contract.final_yearly_costs
@@ -214,8 +216,12 @@ class HrContractSalary(http.Controller):
                 employee_contract_id = value
             elif field_name == 'contract_type_id':
                 contract_type_id = value
+            elif field_name == 'employee_job_id':
+                employee_job_id = value
             elif field_name == 'job_title':
                 job_title = value
+            elif field_name == 'department_id':
+                department_id = value
             elif field_name in old_value:
                 old_value = old_value[field_name]
             elif field_name == 'allow':
@@ -246,6 +252,8 @@ class HrContractSalary(http.Controller):
             'employee_contract_id': employee_contract_id,
             'contract_type_id': contract_type_id,
             'job_title': job_title,
+            'employee_job_id': employee_job_id,
+            'department_id': department_id,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
             'original_link': get_current_url(request.httprequest.environ),
             'whitelist': whitelist,
@@ -397,7 +405,8 @@ class HrContractSalary(http.Controller):
         contract_vals = {
             'active': False,
             'name': contract.name if contract.state == 'draft' else "Package Simulation",
-            'job_id': contract.job_id.id,
+            'job_id': employee.job_id.id or contract.job_id.id,
+            'department_id': employee.department_id.id,
             'company_id': contract.company_id.id,
             'currency_id': contract.company_id.currency_id.id,
             'employee_id': employee.id,
@@ -447,7 +456,19 @@ class HrContractSalary(http.Controller):
         employee_infos = personal_infos_values['employee']
         address_infos = personal_infos_values['address']
         bank_account_infos = personal_infos_values['bank_account']
-        employee_vals = {'job_title': employee_infos['job_title']}
+
+        for key in ['employee_job_id', 'department_id']:
+            try:
+                employee_infos[key] = int(employee_infos[key])
+            except ValueError:
+                employee_infos[key] = None
+
+        if not employee_infos['job_title']:
+            employee_infos['job_title'] = request.env['hr.job'].sudo().browse(employee_infos['employee_job_id']).name
+
+        employee_vals = {'job_title': employee_infos['job_title'],
+                         'job_id': employee_infos['employee_job_id'],
+                         'department_id': employee_infos['department_id']}
         address_home_vals = {}
         bank_account_vals = {}
         attachment_create_vals = []

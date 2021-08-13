@@ -3,6 +3,7 @@
 
 from . import analytic
 from . import hr_employee
+from . import ir_module
 from . import project
 from . import res_config_settings
 from . import res_company

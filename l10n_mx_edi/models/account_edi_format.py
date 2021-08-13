@@ -155,7 +155,7 @@ class AccountEdiFormat(models.Model):
             **self._l10n_mx_edi_get_serie_and_folio(move),
             'certificate': certificate,
             'certificate_number': certificate.serial_number,
-            'certificate_key': certificate.sudo().get_data()[0],
+            'certificate_key': certificate.sudo().get_data()[0].decode('utf-8'),
             'record': move,
             'supplier': supplier,
             'customer': customer,

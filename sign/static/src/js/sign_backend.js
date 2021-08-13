@@ -512,10 +512,14 @@ odoo.define('sign.template', function(require) {
                             accept: '*',
                             tolerance: 'touch',
                             drop: function(e, ui) {
-                                // only existing sign items or sign items created from the left sign item type bar can be dropped
-                                if(!ui.draggable.hasClass('o_sign_sign_item') && !ui.helper.hasClass('o_sign_sign_item_to_add')) {
+                                // the 'o_sign_sign_item_to_add' is added once a sign item is dragged.
+                                // two consecutive pages have overlaps borders,
+                                // we remove the o_sign_sign_item_to_add once the sign item is dropped
+                                // to make sure ths sign item will not be dropped into multiple pages
+                                if(!ui.helper.hasClass('o_sign_sign_item_to_add')) {
                                     return true;
                                 }
+                                ui.helper.removeClass('o_sign_sign_item_to_add');
 
                                 const $parent = $(e.target);
                                 const pageNo = parseInt($parent.data('page-number'));
@@ -628,6 +632,7 @@ odoo.define('sign.template', function(require) {
                 jQueryDraggableOptions: {
                     containment: $('#viewerContainer'),
                     distance: 0,
+                    classes: {"ui-draggable-dragging": "o_sign_sign_item_to_add"},
                     handle: ".o_sign_config_handle",
                     scroll: false,
                 }

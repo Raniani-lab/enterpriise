@@ -430,6 +430,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <tree string="Tickets" multi_edit="1" sample="1">
+                <field name="use_sla" invisible="1"/>
                 <field name="display_name" string="Name" readonly="1"/>
                 <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
@@ -439,8 +440,8 @@
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
-                <field name="sla_status_ids" widget="many2many_tags" options="{'color_field': 'color'}" string="SLAs" optional="hide"/>
-                <field name="sla_deadline" optional="show" widget="remaining_days"/>
+                <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide"/>
+                <field name="sla_deadline" attrs="{'invisible': [('use_sla', '=', False)]}" optional="show" widget="remaining_days"/>
                 <field name="ticket_type_id" optional="hide"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="kanban_state" optional="hide" readonly="1" widget="state_selection"/>
@@ -519,7 +520,8 @@
                                 <div>
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
-                                <div t-if="record.sla_deadline.raw_value">
+                                <field name="use_sla" invisible="1"/>
+                                <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value">
                                     <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())" t-set="red" t-value="'oe_kanban_text_red'"/>
                                     <span t-attf-class="{{red}}">
                                         <field name="sla_deadline" widget="remaining_days"/>
@@ -570,9 +572,10 @@
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>
+                    <field name="use_sla" invisible="1"/>
                     <div class="oe_title">
                         <h1><field name="name" class="field_name" placeholder="Subject..."/></h1>
-                        <field name="sla_status_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
+                        <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
                     </div>
                     <group>
                         <group>
@@ -583,7 +586,7 @@
                             <field name="ticket_type_id"/>
                             <field name="priority" widget="priority"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="sla_deadline" widget="remaining_days" attrs="{'invisible': [('sla_deadline', '=', False)]}" groups="helpdesk.group_use_sla"/>
+                            <field name="sla_deadline" widget="remaining_days" attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>

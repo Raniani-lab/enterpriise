@@ -1172,6 +1172,8 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         this.barGraph = {};
         this.migrationDate = false;
         this.currentCompany = $.bbq.getState('cids') && parseInt($.bbq.getState('cids').split(',')[0]);
+        this.pdf_values = {'salespersons_statistics': {}, 'salesman_ids': [],'graphs': {}, 'company': this.currentCompany}
+
         // Chart.js requires the canvas to be in the DOM when the chart is rendered (s.t. it is able
         // to compute positions and stuff), so we use the following promise to ensure that we don't
         // try to render a chart before being in the DOM.
@@ -1205,6 +1207,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                 params: {context: session.user_context,},
             }).then(function(result) {
                 self.salesman_ids = result.salesman_ids;
+                self.pdf_values.salesman_ids = result.salesman_ids;
                 self.salesman = result.default_salesman || [];
                 self.currency_id = result.currency_id;
                 self.migrationDate = moment(result.migration_date, 'YYYY-MM-DD');
@@ -1241,6 +1244,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         }, {shadow: true}).then(async function (result) {
             await self._mountedProm;
             var salespersons_statistics = result.salespersons_statistics;
+            self.pdf_values['salespersons_statistics'] = result.salespersons_statistics;
             Object.keys(salespersons_statistics).forEach(element => {
                 var cur_salesman = self.salesman_ids.find(val => val.id === Number(element));
                 self.$('.o_salesman_loop').append(QWeb.render("sale_subscription_dashboard.salesman", {
@@ -1402,16 +1406,9 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
             .then(function (result) {
                 for (var key in self.barGraph) {
                     var base64Image = self.barGraph[key].toBase64Image();
-                    base64Image = '<img src="data:image/png;base64' + base64Image + '" alt="graphic" />';
-                    $(".o_salesmen_dashboard").find(".canvas_" + key).replaceWith(base64Image).html();
+                    self.pdf_values.graphs[key] = base64Image;
                 }
-                // Save banner text and table propertie before PDF rendering
-                var bannerContent = $(".o_subscription_dashboard_warning").text();
-                // We do not want the warning in the report.
-                $(".o_subscription_dashboard_warning").text('');
-                result.data.body_html = $(".o_salesmen_dashboard").html();
-                // get back the warning message if it exists
-                $(".o_subscription_dashboard_warning").text(bannerContent);
+                result.data.rendering_values = JSON.stringify(self.pdf_values);
                 var doActionProm = self.do_action(result);
                 return doActionProm;
             });

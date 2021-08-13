@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from markupsafe import Markup
 
 from odoo import api, fields, models, _
-from odoo.tools import config, date_utils
+from odoo.tools import config, date_utils, misc
 
 from itertools import groupby
 from operator import itemgetter
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 
 
 class SaleSubscription(models.Model):
@@ -54,6 +54,7 @@ class SaleSubscription(models.Model):
             'contract_modifications': mrr_res['contract_modifications'],
             'nrr': nrr_res['nrr'],
             'nrr_invoices': nrr_res['nrr_invoices'],
+            'company_ids': mrr_res['company_ids'] + nrr_res['company_ids'],
         }
 
     def _get_log_type(self, event_type, amount_signed):
@@ -77,8 +78,10 @@ class SaleSubscription(models.Model):
                            'event_date', 'id', 'recurring_monthly', 'subscription_id']
         subscription_log_ids = self.env['sale.subscription.log'].search_read(domain, fields=searched_fields,
                                                                              order='subscription_id')
+
+        subscription_ids = self.env['sale.subscription'].browse(map(lambda s: s['subscription_id'][0], subscription_log_ids))
         for log in subscription_log_ids:
-            subscription_id = self.env['sale.subscription'].browse(log['subscription_id'][0])
+            subscription_id = subscription_ids.filtered(lambda s: s.id == log['subscription_id'][0])
             date = log['event_date']
             currency_id = self.env['res.currency'].browse(log['currency_id'][0])
             recurring_monthly = currency_id._convert(
@@ -107,6 +110,7 @@ class SaleSubscription(models.Model):
             'down': -metrics['down_mrr'],
             'net_new': metrics['net_new_mrr'],
             'contract_modifications': contracts_clean,
+            'company_ids': subscription_ids.mapped('company_id').ids,
         }
 
     def metrics_calculation(self, contract_log):
@@ -243,7 +247,6 @@ class SaleSubscription(models.Model):
         For example if the log sequence is create, up1 down1 churn, create up2 down2, we need to merge
         up1 and down1 together and then up2 with down2 together.
         :param contract_log_by_date: The whole list of contract logs sorted by date.
-        :param used_logs: the logs already used in the result.
         :return: a list of date interval: {'start': Datetime, 'stop': Datetime}
         :rtype:
         """
@@ -276,7 +279,7 @@ class SaleSubscription(models.Model):
             ('move_id.invoice_date', '<=', end_date),
             ('subscription_mrr', '=', 0), ('exclude_from_invoice_tab', '=', False)
         ], fields=searched_fields, order='move_id')
-
+        company_ids = self.env['res.company']
         for k, invoice_lines_it in groupby(invoice_line_ids, key=lambda x: x['move_id']):
             invoice_lines = list(invoice_lines_it)
             total_invoice = sum([d['price_subtotal'] for d in invoice_lines])
@@ -290,6 +293,7 @@ class SaleSubscription(models.Model):
                 from_amount=total_invoice, date=invoice_id.date,
                 to_currency=self.env.company.currency_id, company=self.env.company)
             total_nrr += nrr
+            company_ids |= invoice_id.company_id
             nrr_invoice_ids.append({
                 'date': invoice_id.date,
                 'partner': invoice_id.partner_id.name,
@@ -303,6 +307,7 @@ class SaleSubscription(models.Model):
         return {
             'nrr': total_nrr,
             'nrr_invoices': nrr_invoice_ids,
+            'company_ids': company_ids.ids,
         }
 
     def get_salespersons_statistics(self, salesmen_ids, start_date, end_date):
@@ -320,7 +325,7 @@ class SaleSubscription(models.Model):
                      }
         }
 
-    def get_pdf(self, body_html):
+    def get_pdf(self, rendering_values):
         # As the assets are generated during the same transaction as the rendering of the
         # templates calling them, there is a scenario where the assets are unreachable: when
         # you make a request to read the assets while the transaction creating them is not done.
@@ -333,27 +338,52 @@ class SaleSubscription(models.Model):
             self = self.with_context(commit_assetsbundle=True)
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('report.url') or self.get_base_url()
+        body_html = self.with_context(print_mode=True)._get_body_html(rendering_values)
         rcontext = {
             'mode': 'print',
             'base_url': base_url,
             'company': self.env.company,
+            'body_html': body_html,
         }
-
-        body = self.env['ir.ui.view']._render_template(
-            "sale_subscription_dashboard.print_template",
-            values=dict(rcontext, body_html=body_html)
-        )
+        body = self.env['ir.ui.view']._render_template("sale_subscription_dashboard.print_template", values=rcontext)
+        # generate small footers with the date time, current company and page number.
         footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
-        footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=Markup(footer.decode())))
-
+        footer = self.env['ir.actions.report']._render_template("web.minimal_layout",
+                                                                values=dict(rcontext, subst=True,
+                                                                            body=Markup(footer.decode())
+                                                                            ))
         return self.env['ir.actions.report']._run_wkhtmltopdf(
             [body],
-            footer=footer.decode(),
+            header='', footer=footer.decode(),
+            landscape=False,
             specific_paperformat_args={
                 'data-report-margin-top': 10,
                 'data-report-header-spacing': 10
             }
         )
+
+    def _get_body_html(self, rendering_values):
+        company = self.env['res.company'].browse(rendering_values.get('company'))
+        pdf_rendering_values = {'statistics': [],
+                                'currency_symbol': company.currency_id.symbol,
+                                }
+        company_ids = set()
+        for user_id, stats in rendering_values['salespersons_statistics'].items():
+            user_id = int(user_id)
+            [saleman] = (it for it in rendering_values['salesman_ids'] if it['id'] == user_id)
+            stats['saleman'] = saleman
+            stats['net_mrr_str'] = misc.formatLang(self.env, stats['net_new'], currency_obj=company.currency_id)
+            stats['net_nrr_str'] = misc.formatLang(self.env, stats['nrr'], currency_obj=company.currency_id)
+            stats['n_modifications'] = len(stats['contract_modifications'])
+            stats['n_invoices'] = len(stats['nrr_invoices'])
+            company_ids.update(stats['company_ids'])
+            pdf_rendering_values['statistics'].append(stats)
+            stats['image'] = rendering_values['graphs'][str(user_id)]
+
+        pdf_rendering_values['n_companies'] = len(company_ids)
+        template = self.env.ref('sale_subscription_dashboard.sales_men_pdf_template')
+        body_html = template._render(pdf_rendering_values)
+        return body_html
 
     def get_report_filename(self,):
         """The name that will be used for the file when downloading pdf,xlsx,..."""

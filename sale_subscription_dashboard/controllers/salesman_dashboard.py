@@ -5,8 +5,6 @@ import json
 from datetime import datetime
 import logging
 
-import markupsafe
-
 from odoo import http, fields
 from odoo.http import request, content_disposition
 from odoo.addons.web.controllers.main import _serialize_exception
@@ -59,14 +57,15 @@ class SalemanDashboard(http.Controller):
         return {'salespersons_statistics': request.env['sale.subscription'].get_salespersons_statistics(salesman_ids, start_date, end_date)}
 
     @http.route('/salesman_subscription_reports', type='http', auth='user', methods=['POST'], csrf=False)
-    def get_report(self, body_html, output_format, **kw):
+    def get_report(self, output_format, **kw):
         uid = request.session.uid
         report_obj = request.env['sale.subscription'].with_user(uid)
         report_name = report_obj.get_report_filename()
+        rendering_values = json.loads(kw.get('rendering_values', '{}'))
         try:
             if output_format == 'pdf':
                 response = request.make_response(
-                    report_obj.get_pdf(markupsafe.Markup(body_html)),
+                    report_obj.get_pdf(rendering_values),
                     headers=[
                         ('Content-Type', report_obj.get_export_mime_type('pdf')),
                         ('Content-Disposition', content_disposition(report_name + '.pdf'))

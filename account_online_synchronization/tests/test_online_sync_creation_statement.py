@@ -11,7 +11,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
     def setUp(self):
         super(TestSynchStatementCreation, self).setUp()
         self.bnk_stmt = self.env['account.bank.statement']
-
+        self.env.ref('base.EUR').active = True
         # Create an account.online.link and account.online.account and associate to journal bank
         self.bank_journal = self.env['account.journal'].create({
             'name': 'Bank_Online', 

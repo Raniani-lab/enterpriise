@@ -104,6 +104,7 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         # USD Statement
         self._test_minimal_camt_file_import('camt_053_several_minimal_stmt_different_currency.xml', usd_currency)
         # EUR Statement
+        eur_currency.active = True
         self._test_minimal_camt_file_import('camt_053_several_minimal_stmt_different_currency.xml', eur_currency,
                                             start_balance=2000, end_balance=3000)
 
@@ -113,6 +114,7 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         that also uses EUR while the company's currency is USD.
         """
         self.assertEqual(self.env.company.currency_id.id, self.env.ref('base.USD').id)
+        self.env.ref('base.EUR').active = True
         self._test_minimal_camt_file_import('camt_053_minimal_EUR.xml', self.env.ref('base.EUR'))
 
     def _import_camt_file(self, camt_file_name, currency):

@@ -12,7 +12,7 @@ class QualityPoint(models.Model):
 
     worksheet_template_id = fields.Many2one(
         'worksheet.template', 'Template',
-        domain="[('res_model_id.model', '=', 'quality.check'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
+        domain="[('res_model', '=', 'quality.check'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
     worksheet_model_name = fields.Char(
         'Model Name', related='worksheet_template_id.model_id.model', readonly=True, store=True,
         help="tech field used by quality_field_domain widget")
@@ -24,7 +24,7 @@ class QualityCheck(models.Model):
 
     worksheet_template_id = fields.Many2one(
         'worksheet.template', 'Quality Template',
-        domain="[('res_model_id.model', '=', 'quality.check'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
+        domain="[('res_model', '=', 'quality.check'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
 
     @api.onchange('point_id')
@@ -36,7 +36,7 @@ class QualityCheck(models.Model):
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):
         for rec in self:
-            rec.worksheet_count = rec.worksheet_template_id and rec.env[rec.worksheet_template_id.model_id.model].search_count([('x_quality_check_id', '=', rec.id)]) or 0
+            rec.worksheet_count = rec.worksheet_template_id and rec.env[rec.worksheet_template_id.model_id.sudo().model].search_count([('x_quality_check_id', '=', rec.id)]) or 0
 
     @api.model
     def create(self, vals):
@@ -47,8 +47,8 @@ class QualityCheck(models.Model):
         return super(QualityCheck, self).create(vals)
 
     def action_quality_worksheet(self):
-        action = self.worksheet_template_id.action_id.read()[0]
-        worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_quality_check_id', '=', self.id)])
+        action = self.worksheet_template_id.action_id.sudo().read()[0]
+        worksheet = self.env[self.worksheet_template_id.model_id.sudo().model].search([('x_quality_check_id', '=', self.id)])
         context = literal_eval(action.get('context', '{}'))
         action.update({
             'res_id': worksheet.id if worksheet else False,

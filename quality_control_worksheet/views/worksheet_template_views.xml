@@ -4,10 +4,10 @@
         <field name="name">Quality Worksheet Templates</field>
         <field name="res_model">worksheet.template</field>
         <field name="view_mode">tree,graph,pivot,form</field>
-        <field name="domain">[('res_model_id.model', '=', 'quality.check')]</field>
+        <field name="domain">[('res_model', '=', 'quality.check')]</field>
         <field name="context">
             {
-                'default_res_model_name': 'quality.check',
+                'default_res_model': 'quality.check',
             }
         </field>
     </record>

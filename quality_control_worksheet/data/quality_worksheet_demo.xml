@@ -5,7 +5,7 @@
         <record id="quality_control_worksheet_template1" model="worksheet.template">
             <field name="name">Quality Issues</field>
             <field name="color">3</field>
-            <field name="res_model_id" ref="quality.model_quality_check"/>
+            <field name="res_model">quality.check</field>
         </record>
 
         <record id="quality_control_worksheet_template_field1" model="ir.model.fields">

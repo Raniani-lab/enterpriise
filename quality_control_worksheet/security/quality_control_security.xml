@@ -5,7 +5,7 @@
             <field name="name">Worksheet Template: Quality Only</field>
             <field name="model_id" ref="model_worksheet_template"/>
             <field name="groups" eval="[(4, ref('quality.group_quality_user')), (4, ref('quality.group_quality_manager'))]"/>
-            <field name="domain_force">[('res_model_id.model', '=', 'quality.check')]</field>
+            <field name="domain_force">[('res_model', '=', 'quality.check')]</field>
         </record>
     </data>
 </odoo>

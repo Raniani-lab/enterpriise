@@ -14,16 +14,6 @@ class WorksheetTemplate(models.Model):
     _name = 'worksheet.template'
     _description = 'Worksheet Template'
 
-    @api.model
-    def _default_res_model_id(self):
-        if self.env.context.get('default_res_model_name'):
-            model = self.env['ir.model'].search([
-                ('model', '=', self.env.context.get('default_res_model_name'))
-            ], limit=1).id
-            if model:
-                return model
-        return False
-
     def _get_default_color(self):
         return randint(1, 11)
 
@@ -36,9 +26,7 @@ class WorksheetTemplate(models.Model):
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
     color = fields.Integer('Color', default=_get_default_color)
     active = fields.Boolean(default=True)
-    res_model_id = fields.Many2one(
-        'ir.model', 'Host Model', help="The model that is using this template",
-        default=_default_res_model_id)
+    res_model = fields.Char('Host Model', help="The model that is using this template")
 
     def _compute_worksheet_count(self):
         for record in self:
@@ -50,6 +38,13 @@ class WorksheetTemplate(models.Model):
             if worksheet_template.model_id and worksheet_template.report_view_id:
                 if worksheet_template.report_view_id.type != 'qweb':
                     raise ValidationError(_('The template to print this worksheet template should be a QWeb template.'))
+
+    @api.constrains('res_model')
+    def _check_res_model_exists(self):
+        res_models = self.mapped('res_model')
+        ir_model_names = [res['model'] for res in self.env['ir.model'].sudo().search_read([('model', 'in', res_models)], ['model'])]
+        if any(model_name not in ir_model_names for model_name in res_models):
+            raise ValidationError(_('The host model name should be an existing model.'))
 
     @api.model
     def create(self, vals):
@@ -63,7 +58,7 @@ class WorksheetTemplate(models.Model):
         if 'company_ids' in vals:
             template_dict = defaultdict(lambda: self.env['worksheet.template'])
             for template in self:
-                template_dict[template.res_model_id.model] |= template
+                template_dict[template.res_model] |= template
             for res_model, templates in template_dict.items():
                 for model, name in self._get_models_to_check_dict()[res_model]:
                     records = self.env[model].search([('worksheet_template_id', 'in', templates.ids)])
@@ -108,7 +103,7 @@ class WorksheetTemplate(models.Model):
 
     def _generate_worksheet_model(self):
         self.ensure_one()
-        res_model = self.res_model_id.model.replace('.', '_')
+        res_model = self.res_model.replace('.', '_')
         name = 'x_%s_worksheet_template_%d' % (res_model, self.id)
         # while creating model it will initialize the init_models method from create of ir.model
         # and there is related field of model_id in mail template so it's going to recursive loop while recompute so used flush
@@ -221,8 +216,8 @@ class WorksheetTemplate(models.Model):
         self.sudo()._generate_qweb_report_template()
 
         # Add unique constraint on the x_model_id field since we want one worksheet per host record
-        conname = '%s_x_%s_id_uniq' % (name, self.res_model_id.model.replace('.', '_'))
-        concode = 'unique(x_%s_id)' % (self.res_model_id.model.replace('.', '_'))
+        conname = '%s_x_%s_id_uniq' % (name, res_model)
+        concode = 'unique(x_%s_id)' % (res_model)
         tools.add_constraint(self.env.cr, name, conname, concode)
 
     def _prepare_default_fields_values(self):
@@ -231,14 +226,14 @@ class WorksheetTemplate(models.Model):
         shouldn't be put here, they should be created after the creation of these
         fields.
         """
-        res_model_name = self.res_model_id.model.replace('.', '_')
+        res_model_name = self.res_model.replace('.', '_')
         fields_func = getattr(self, '_default_%s_template_fields' % res_model_name, False)
         return [
             (0, 0, {
                 'name': 'x_%s_id' % (res_model_name),
-                'field_description': self.env[self.res_model_id.model]._description,
+                'field_description': self.env[self.res_model]._description,
                 'ttype': 'many2one',
-                'relation': self.res_model_id.model,
+                'relation': self.res_model,
                 'required': True,
                 'on_delete': 'cascade',
             }),
@@ -252,7 +247,7 @@ class WorksheetTemplate(models.Model):
     def _prepare_default_form_view_values(self, model):
         """Create a default form view for the model created from the template.
         """
-        res_model_name = self.res_model_id.model.replace('.', '_')
+        res_model_name = self.res_model.replace('.', '_')
         form_arch_func = getattr(self, '_default_%s_worksheet_form_arch' % res_model_name, False)
         return {
             'type': 'form',
@@ -287,7 +282,7 @@ class WorksheetTemplate(models.Model):
             'name': _('Analysis'),
             'type': 'ir.actions.act_window',
             'view_mode': 'graph,pivot,list,form',
-            'res_model': self.model_id.model,
+            'res_model': self.sudo().model_id.model,
         }
 
     def action_view_worksheets(self):
@@ -306,14 +301,14 @@ class WorksheetTemplate(models.Model):
         action = self.action_id.read()[0]
         action.update({
             'views': [[False, "form"]],
-            'context': {'default_x_%s_id' % self.res_model_id.model.replace('.', '_'): True,  # to hide model_id from view
+            'context': {'default_x_%s_id' % self.res_model.replace('.', '_'): True,  # to hide model_id from view
                         'form_view_initial_mode': 'readonly'}  # to avoid edit mode at studio exit
         })
         return action
 
     def _get_qweb_arch_omitted_fields(self):
         return [
-            'x_%s_id' % self.res_model_id.model.replace('.', '_'), 'x_name',  # redundant
+            'x_%s_id' % self.res_model.replace('.', '_'), 'x_name',  # redundant
         ]
 
     def _add_field_node_to_container(self, field_node, form_view_fields, container_col):
@@ -418,7 +413,7 @@ class WorksheetTemplate(models.Model):
                 })
                 self.env['ir.model.data'].create({
                     'name': 'report_custom_%s' % (report_name,),
-                    'module': getattr(self, '_get_%s_module_name' % self.res_model_id.model.replace('.', '_'))(),
+                    'module': getattr(self, '_get_%s_module_name' % self.res_model.replace('.', '_'))(),
                     'res_id': report_view.id,
                     'model': 'ir.ui.view',
                     'noupdate': True,

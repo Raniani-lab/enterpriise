@@ -322,6 +322,50 @@ QUnit.module("Studio", (hooks) => {
         wrapper.destroy();
     });
 
+    QUnit.test("app creator: has 'lines' options to auto-create a one2many", async function (assert) {
+        assert.expect(7);
+
+        const { wrapper, appCreator } = await createAppCreator({
+            env: {
+                services: {
+                    blockUI: () => {},
+                    unblockUI: () => {},
+                },
+            },
+            rpc: async (route, params) => {
+                if (route === "/web_studio/create_new_app") {
+                    const { app_name, menu_name, model_choice, model_id, model_options } = params;
+                    assert.strictEqual(app_name, "testApp", "App name should be correct");
+                    assert.strictEqual(menu_name, "testMenu", "Menu name should be correct");
+                    assert.notOk(model_id, "Should not have a model id");
+                    assert.strictEqual(model_choice, "new", "Model choice should be 'new'");
+                    assert.deepEqual(
+                        model_options,
+                        ["lines", "use_sequence", "use_mail", "use_active"],
+                        "Model options should include the defaults and 'lines'"
+                    );
+                    return Promise.resolve();
+                }
+            },
+        });
+
+        await testUtils.dom.click(appCreator.el.querySelector(".o_web_studio_app_creator_next"));
+        await testUtils.fields.editInput(appCreator.el.querySelector("input[id='appName']"), "testApp");
+        await testUtils.dom.click(appCreator.el.querySelector(".o_web_studio_app_creator_next"));
+        await testUtils.fields.editInput(appCreator.el.querySelector("input[id='menuName']"), "testMenu");
+        await testUtils.dom.click(appCreator.el.querySelector(".o_web_studio_app_creator_next"));
+
+        assert.containsOnce(appCreator, ".o_web_studio_model_configurator_option input[type='checkbox'][name='lines'][id='lines']");
+        assert.strictEqual(
+            appCreator.el.querySelector("label[for='lines']").textContent,
+            "LinesAdd details to your records with an embedded list view"
+        );
+
+        await testUtils.dom.click(appCreator.el.querySelector(".o_web_studio_model_configurator_option input[type='checkbox'][name='lines']"));
+        await testUtils.dom.click(appCreator.el.querySelector(".o_web_studio_model_configurator_next"));
+        wrapper.destroy();
+    });
+
     QUnit.test("app creator: debug flow with existing model", async function (assert) {
         assert.expect(16);
 

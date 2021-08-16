@@ -496,7 +496,10 @@ tour.register('web_studio_model_option_value_tour', {
 }, {
     // check monetary value in model configurator
     trigger: 'input[name="use_value"]',
-},{
+}, {
+    // check lines value in model configurator
+    trigger: 'input[name="lines"]',
+}, {
     trigger: '.o_web_studio_model_configurator_next',
 }, {
     trigger: '.o_web_studio_menu .o_web_studio_views_icons > a[title="Graph"]',

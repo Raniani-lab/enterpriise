@@ -54,6 +54,11 @@ odoo.define("web_studio.ModelConfigurator", function (require) {
                         help: this.env._t("Attach a picture to a record"),
                         value: false,
                     },
+                    lines: {
+                        label: this.env._t('Lines'),
+                        help: this.env._t('Add details to your records with an embedded list view'),
+                        value: false
+                    },
                     use_notes: {
                         label: this.env._t("Notes"),
                         help: this.env._t("Write additional notes or comments"),

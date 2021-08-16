@@ -151,9 +151,8 @@
                         <page string="Availability" name="slots">
                             <field name="slot_ids">
                                 <tree editable="bottom" class="o_wcalendar_slots_list">
-                                    <field name="weekday" string="Every" class="w-100"/>
+                                    <field name="weekday" string="Every"/>
                                     <field name="start_hour" string="From" widget="float_time"/>
-                                    <button name="durationArrow" class="fa fa-long-arrow-right text-center" title="Until (max)"/>
                                     <field name="end_hour" string="To" widget="float_time"/>
                                 </tree>
                             </field>

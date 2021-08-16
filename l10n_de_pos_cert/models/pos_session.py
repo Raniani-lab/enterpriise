@@ -58,8 +58,10 @@ class PosSession(models.Model):
 
         self.env.cr.execute("""
             SELECT pm.is_cash_count, sum(p.amount) AS amount
-            FROM pos_payment p LEFT JOIN pos_payment_method pm ON p.payment_method_id=pm.id
-            WHERE p.session_id=%s
+            FROM pos_payment p
+                LEFT JOIN pos_payment_method pm ON p.payment_method_id=pm.id
+                JOIN account_journal journal ON pm.journal_id=journal.id
+            WHERE p.session_id=%s AND journal.type IN ('cash', 'bank')
             GROUP BY pm.is_cash_count 
         """, [self.id])
         total_payment_result = self.env.cr.dictfetchall()

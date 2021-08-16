@@ -53,8 +53,10 @@ class PosOrder(models.Model):
         """
         self.env.cr.execute("""
             SELECT pm.is_cash_count, sum(p.amount) AS amount
-            FROM pos_payment p LEFT JOIN pos_payment_method pm ON p.payment_method_id=pm.id
-            WHERE p.pos_order_id=%s
+            FROM pos_payment p
+                LEFT JOIN pos_payment_method pm ON p.payment_method_id=pm.id
+                JOIN account_journal journal ON pm.journal_id=journal.id
+            WHERE p.pos_order_id=%s AND journal.type in ('cash', 'bank')
             GROUP BY pm.is_cash_count 
         """, [self.id])
 

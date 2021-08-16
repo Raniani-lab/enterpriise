@@ -6,6 +6,7 @@ import datetime
 
 from dateutil import relativedelta
 from collections import defaultdict
+from pytz import timezone
 from odoo import api, Command, fields, models, _
 from odoo.tools import float_round
 from odoo.exceptions import ValidationError
@@ -725,14 +726,58 @@ class HelpdeskTeam(models.Model):
         })
         return action
 
+    @api.model
+    def _get_working_user_interval(self, start_dt, end_dt, calendar, users, compute_leaves=True):
+        # This method is intended to be overridden in hr_holidays in order to take non-validated leaves into account
+        return calendar._work_intervals_batch(
+            start_dt,
+            end_dt,
+            resources=users.resource_ids,
+            compute_leaves=compute_leaves
+        )
+
+    def _get_working_users_per_first_working_day(self):
+        tz = timezone(self._context.get('tz', 'UTC'))
+        start_dt = fields.Datetime.now().astimezone(tz)
+        end_dt = start_dt + relativedelta.relativedelta(days=7, hour=23, minute=59, second=59)
+        workers_per_first_working_date = defaultdict(list)
+        members_per_calendar = defaultdict(lambda: self.env['res.users'])
+        company_calendar = self.env.company.resource_calendar_id
+        for member in self.member_ids:
+            calendar = member.resource_calendar_id or company_calendar
+            members_per_calendar[calendar] |= member
+        for calendar, users in members_per_calendar.items():
+            work_intervals_per_resource = self._get_working_user_interval(start_dt, end_dt, calendar, users)
+            for user in users:
+                for resource_id in user.resource_ids.ids:
+                    intervals = work_intervals_per_resource[resource_id]
+                    if intervals:
+                        # select the start_date of the first interval to get the first working day for this user
+                        workers_per_first_working_date[(intervals._items)[0][0].date()].append(user.id)
+                        break
+                # if the user doesn't linked to any employee then add according to company calendar
+                if user.id and not user.resource_ids:
+                    intervals = work_intervals_per_resource[False]
+                    if intervals:
+                        workers_per_first_working_date[(intervals._items)[0][0].date()].append(user.id)
+        return [value for key, value in sorted(workers_per_first_working_date.items())]
+
     def _determine_user_to_assign(self):
         """ Get a dict with the user (per team) that should be assign to the nearly created ticket according to the team policy
             :returns a mapping of team identifier with the "to assign" user (maybe an empty record).
             :rtype : dict (key=team_id, value=record of res.users)
         """
+        team_without_manually = self.filtered(lambda x: x.assign_method in ['randomly', 'balanced'])
+        users_per_working_days = team_without_manually._get_working_users_per_first_working_day()
         result = dict.fromkeys(self.ids, self.env['res.users'])
-        for team in self:
-            member_ids = sorted(team.member_ids.ids)
+        for team in team_without_manually:
+            member_ids = team.member_ids.ids  # By default, all members of the team
+            for user_ids in users_per_working_days:
+                if any(user_id in team.member_ids.ids for user_id in user_ids):
+                    # filter members in team to get the ones working in the nearest date of today.
+                    member_ids = [user_id for user_id in user_ids if user_id in self.member_ids.ids]
+                    break
+
             if team.assign_method == 'randomly':  # randomly means new tickets get uniformly distributed
                 last_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', team.id)], order='create_date desc, id desc', limit=1).user_id
                 index = 0

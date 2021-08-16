@@ -1155,8 +1155,8 @@ class SaleSubscriptionLine(models.Model):
         """
         for line in self:
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.product_id.sudo().taxes_id.filtered(lambda tax: tax.company_id == self.company_id)
-            amounts = taxes.compute_all(price, line.currency_id, line.quantity, product=line.product_id, partner=self.analytic_account_id.partner_id)
+            taxes = line.product_id.sudo().taxes_id.filtered(lambda tax: tax.company_id == line.company_id)
+            amounts = taxes.compute_all(price, line.currency_id, line.quantity, product=line.product_id, partner=line.analytic_account_id.partner_id)
             line.update({
                 'price_subtotal': amounts['total_excluded'],
             })

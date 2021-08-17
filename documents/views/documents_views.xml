@@ -344,6 +344,8 @@
                             <group>
                                 <group string="Write Access">
                                     <field name="group_ids" widget="many2many_tags"/>
+                                    <field name="user_specific_write" string="Own Documents Only"
+                                        attrs="{'invisible': ['|', ('user_specific', '=', False), ('group_ids', '=', [])]}"/>
                                 </group>
                                 <group string="Read Access">
                                     <field name="read_group_ids" widget="many2many_tags"/>

@@ -88,7 +88,11 @@
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
             <field name="domain_force">[
                 '|',
-                    ('folder_id.group_ids', 'in', [g.id for g in user.groups_id]),
+                    '&amp;',
+                        ('folder_id.group_ids', 'in', [g.id for g in user.groups_id]),
+                        '|',
+                            ('folder_id.user_specific_write', '=', False),
+                            ('owner_id', '=', user.id),
                     '&amp;',
                         ('folder_id.read_group_ids', '=', False),
                         ('folder_id.group_ids', '=', False)]

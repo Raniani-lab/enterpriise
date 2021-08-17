@@ -9,6 +9,11 @@ class DocumentFolder(models.Model):
     _parent_name = 'parent_folder_id'
     _order = 'sequence'
 
+    _sql_constraints = [
+        ('check_user_specific', 'CHECK(not ((NOT user_specific OR user_specific IS NULL) and user_specific_write))',
+            'Own Documents Only may not be enabled for write groups if it is not enabled for read groups.')
+    ]
+
     @api.constrains('parent_folder_id')
     def _check_parent_folder_id(self):
         if not self._check_recursion():
@@ -54,10 +59,19 @@ class DocumentFolder(models.Model):
 
     user_specific = fields.Boolean(string="Own Documents Only",
                                    help="Limit Read Groups to the documents of which they are owner.")
+    user_specific_write = fields.Boolean(string="Own Documents Only (Write)",
+                                    compute='_compute_user_specific_write', store=True, readonly=False,
+                                    help="Limit Write Groups to the documents of which they are owner.")
 
     #stat buttons
     action_count = fields.Integer('Action Count', compute='_compute_action_count')
     document_count = fields.Integer('Document Count', compute='_compute_document_count')
+
+    @api.depends('user_specific')
+    def _compute_user_specific_write(self):
+        for folder in self:
+            if not folder.user_specific:
+                folder.user_specific_write = False
 
     def _compute_action_count(self):
         read_group_var = self.env['documents.workflow.rule'].read_group(

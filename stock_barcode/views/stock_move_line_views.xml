@@ -25,13 +25,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 my-2 d-flex align-items-baseline">
+                <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
                     <i class="fa fa-fw fa-lg fa-cube mr-3" title="Quantity"/>
-                    <field name="qty_done" options="{'type': 'number'}" placeholder="Quantity"/>
+                    <field name="qty_done" class="w-50 w-md-100" options="{'type': 'number'}" placeholder="Quantity"/>
+                    <widget name="set_reserved_qty_button"
+                        attrs="{'invisible': [('product_uom_qty', '=', 0)]}"/>
                 </div>
-                <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom">
+                <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom"
+                    attrs="{'invisible': [('product_uom_qty', '!=', 0)]}">
                     <i class="fa mr-3" attrs="{'invisible': [('product_uom_qty', '!=', 0.0)]}"/>
                     <field name="product_uom_id" placeholder="Unit of Measure"
+                        options="{'no_open': True}"
                         attrs="{'readonly': [('product_uom_qty', '!=', 0.0)]}"/>
                 </div>
             </div>

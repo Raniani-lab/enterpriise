@@ -246,6 +246,13 @@
                 padding-top: 8px;
             }
 
+            // Avoids to make the UoM field as long as the quantity done field.
+            .o_field_widget[name="product_uom_id"] input {
+                @include media-breakpoint-up(sm) {
+                    min-width: 0;
+                }
+            }
+
             & > div {
                 .o_input {
                     padding: 8px;

@@ -119,6 +119,7 @@ class FleetVehicle(models.Model):
                 'vehicle_id': res.id,
                 'recurring_cost_amount_depreciated': res.model_id.default_recurring_cost_amount_depreciated,
                 'purchaser_id': res.driver_id.id,
+                'company_id': res.company_id.id,
             })
         return res
 

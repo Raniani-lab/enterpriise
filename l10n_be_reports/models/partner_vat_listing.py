@@ -137,7 +137,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         buttons = super(ReportL10nBePartnerVatListing, self)._get_reports_buttons(options)
-        buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
+        buttons += [{'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 
     def get_xml(self, options):

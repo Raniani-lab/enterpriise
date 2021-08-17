@@ -132,7 +132,7 @@ class TaxReport(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         buttons = super(TaxReport, self)._get_reports_buttons(options)
-        return buttons + [{'name': _('Export (TPAR)'), 'sequence': 3, 'action': 'print_txt', 'file_export_type': _('TPAR')}]
+        return buttons + [{'name': _('TPAR'), 'sequence': 3, 'action': 'print_txt', 'file_export_type': _('TPAR')}]
 
     def get_txt(self, options):
         sender_data = {

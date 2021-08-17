@@ -15,7 +15,7 @@ class AccountGeneralLedger(models.AbstractModel):
         buttons = super()._get_reports_buttons()
         if self.env.company.account_tax_fiscal_country_id.code == 'MX':
             buttons.append({
-                'name': _('Export (XML Polizas)'),
+                'name': _('XML (Polizas)'),
                 'sequence': 3,
                 'action': 'l10n_mx_open_xml_export_wizard',
                 'file_export_type': _('XML')

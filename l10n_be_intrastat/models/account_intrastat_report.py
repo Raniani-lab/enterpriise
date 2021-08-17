@@ -13,7 +13,7 @@ class IntrastatReport(models.AbstractModel):
     def _get_reports_buttons(self, options):
         res = super(IntrastatReport, self)._get_reports_buttons(options)
         if self._get_report_country_code(options) == "BE":
-            res += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
+            res += [{'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return res
 
     @api.model

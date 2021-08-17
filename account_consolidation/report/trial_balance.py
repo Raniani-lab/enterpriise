@@ -142,8 +142,8 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
             ap = self.env['consolidation.period'].browse(ap_id)
             ap_is_closed = ap.state == 'closed'
         buttons = [
-            {'name': _('Print Preview'), 'sequence': 1, 'action': 'print_pdf', 'file_export_type': _('PDF')},
-            {'name': _('Export (XLSX)'), 'sequence': 2, 'action': 'print_xlsx', 'file_export_type': _('XLSX')}
+            {'name': _('PDF'), 'sequence': 1, 'action': 'print_pdf', 'file_export_type': _('PDF')},
+            {'name': _('XLSX'), 'sequence': 2, 'action': 'print_xlsx', 'file_export_type': _('XLSX')}
         ]
         if not ap_is_closed:
             buttons.append({'name': _('Edit'), 'sequence': 10, 'action': 'action_open_view_grid'})

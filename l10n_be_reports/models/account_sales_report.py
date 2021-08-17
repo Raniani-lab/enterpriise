@@ -118,7 +118,7 @@ class ECSalesReport(models.AbstractModel):
             return super(ECSalesReport, self)._get_reports_buttons(options)
 
         return super(ECSalesReport, self)._get_reports_buttons(options) + [
-            {'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}
+            {'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}
         ]
 
     def get_xml(self, options):

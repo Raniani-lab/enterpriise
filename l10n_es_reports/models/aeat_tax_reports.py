@@ -125,7 +125,7 @@ class AEATAccountFinancialReport(models.Model):
         """
         rslt = super(AEATAccountFinancialReport, self)._get_reports_buttons(options)
         if self.l10n_es_reports_modelo_number:
-            rslt.append({'name': _('Export (BOE)'), 'sequence': 0, 'action': 'print_boe', 'file_export_type': _('BOE')})
+            rslt.append({'name': _('BOE'), 'sequence': 0, 'action': 'print_boe', 'file_export_type': _('BOE')})
         return rslt
 
     def print_boe(self, options):

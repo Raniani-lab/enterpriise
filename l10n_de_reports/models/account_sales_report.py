@@ -54,7 +54,7 @@ class ECSalesReport(models.AbstractModel):
             return super(ECSalesReport, self)._get_reports_buttons(options)
 
         return super(ECSalesReport, self)._get_reports_buttons(options) + [
-            {'name': _('Export (CSV)'), 'sequence': 3, 'action': 'print_de_csvs_zip', 'file_export_type': _('ZIP')}
+            {'name': _('CSV'), 'sequence': 3, 'action': 'print_de_csvs_zip', 'file_export_type': _('ZIP')}
         ]
 
     def print_de_csvs_zip(self, options):

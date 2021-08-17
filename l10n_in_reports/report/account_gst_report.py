@@ -37,8 +37,8 @@ class L10nInReportAccount(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         return [
-            {'name': _('Print Preview'), 'action': 'print_pdf'},
-            {'name': _('Export (CSV)'), 'action': 'print_csv'}]
+            {'name': _('PDF'), 'action': 'print_pdf'},
+            {'name': _('CSV'), 'action': 'print_csv'}]
 
     def print_csv(self, options):
         return {

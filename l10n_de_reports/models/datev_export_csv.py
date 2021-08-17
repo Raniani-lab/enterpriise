@@ -189,7 +189,7 @@ class DatevExportCSV(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         buttons = super(DatevExportCSV, self)._get_reports_buttons(options)
-        buttons += [{'name': _('Export Datev (zip)'), 'sequence': 3, 'action': 'print_zip', 'file_export_type': _('Datev zip')}]
+        buttons += [{'name': _('Datev (zip)'), 'sequence': 3, 'action': 'print_zip', 'file_export_type': _('Datev zip')}]
         return buttons
 
     # This will be removed in master as export CSV is not needed anymore

@@ -459,7 +459,7 @@ class AccountGenericTaxReport(models.AbstractModel):
     def _get_reports_buttons(self, options):
         res = super()._get_reports_buttons(options)
         if self.env.user.has_group('account.group_account_user'):
-            res.append({'name': _('Closing Journal Entry'), 'action': 'periodic_vat_entries', 'sequence': 8})
+            res.append({'name': _('Closing Entry'), 'action': 'periodic_vat_entries', 'sequence': 8})
         return res
 
     def _compute_vat_closing_entry(self, company, options):

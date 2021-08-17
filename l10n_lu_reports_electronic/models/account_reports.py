@@ -17,7 +17,7 @@ class AccountReport(models.AbstractModel):
         # disable XML export for users belonging to companies other than Luxembourg country
         if not self._is_lu_electronic_report(options) or self._get_report_country_code(options) != 'LU':
             return res
-        res += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
+        res += [{'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return res
 
     def get_report_filename(self, options):

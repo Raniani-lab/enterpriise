@@ -13,7 +13,7 @@ class AccountGeneralLedger(models.AbstractModel):
         # OVERRIDE
         buttons = super()._get_reports_buttons()
         if self.env.company.account_fiscal_country_id.code == 'NO':
-            buttons.append({'name': _('Export SAF-T (Norway)'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
+            buttons.append({'name': _('SAF-T'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
         return buttons
 
     @api.model

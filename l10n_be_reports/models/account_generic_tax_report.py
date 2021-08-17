@@ -10,7 +10,7 @@ class AccountGenericTaxReport(models.AbstractModel):
     def _get_reports_buttons(self, options):
         buttons = super(AccountGenericTaxReport, self)._get_reports_buttons(options)
         if self._get_report_country_code(options) == 'BE':
-            buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'l10n_be_print_xml', 'file_export_type': _('XML')}]
+            buttons += [{'name': _('XML'), 'sequence': 3, 'action': 'l10n_be_print_xml', 'file_export_type': _('XML')}]
         return buttons
 
     def l10n_be_print_xml(self, options):

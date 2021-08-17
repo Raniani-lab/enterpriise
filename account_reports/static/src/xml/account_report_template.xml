@@ -10,7 +10,8 @@
 
     <t t-name="accountReports.buttons">
         <t t-foreach="buttons" t-as="button">
-            <button type="button" class="btn btn-primary" t-att-action="button.action"><t t-esc="button.name"/></button>
+            <button t-if="button.sequence == 1" type="button" class="btn btn-primary" t-att-action="button.action"><t t-esc="button.name"/></button>
+            <button t-else="" type="button" class="btn btn-secondary" t-att-action="button.action"><t t-esc="button.name"/></button>
         </t>
     </t>
 

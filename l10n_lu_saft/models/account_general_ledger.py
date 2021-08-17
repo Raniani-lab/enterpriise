@@ -14,7 +14,7 @@ class AccountGeneralLedger(models.AbstractModel):
     def _get_reports_buttons(self, options):
         buttons = super()._get_reports_buttons(options)
         if self.env.company.account_fiscal_country_id.code == 'LU':
-            buttons.append({'name': _('Export SAF-T (Luxembourg)'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
+            buttons.append({'name': _('FAIA'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
         return buttons
 
     @api.model

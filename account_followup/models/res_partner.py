@@ -80,7 +80,7 @@ class ResPartner(models.Model):
                 ('company_id', '=', self.env.company.id),
                 ('commercial_partner_id', '=', record.id),
                 ('state', '=', 'posted'),
-                ('payment_state', 'not in', ('paid', 'in_payment')),
+                ('payment_state', 'in', ('not_paid', 'partial')),
                 ('move_type', 'in', self.env['account.move'].get_sale_types())
             ]).filtered(lambda inv: not any(inv.line_ids.mapped('blocked')))
 

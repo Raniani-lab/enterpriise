@@ -1442,7 +1442,7 @@ class AccountReport(models.AbstractModel):
         type_mapping = {
             'xlsx': 'application/vnd.ms-excel',
             'pdf': 'application/pdf',
-            'xml': 'application/vnd.sun.xml.writer',
+            'xml': 'application/xml',
             'xaf': 'application/vnd.sun.xml.writer',
             'txt': 'text/plain',
             'csv': 'text/csv',

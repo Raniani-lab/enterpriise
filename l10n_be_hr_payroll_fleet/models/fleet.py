@@ -131,7 +131,7 @@ class FleetVehicle(models.Model):
 
     @api.model
     def _get_car_atn_from_values(self, acquisition_date, car_value, fuel_type, co2, date=None):
-        if not self or not self._from_be():
+        if not self._from_be():
             return 0
         # Compute the correction coefficient from the age of the car
         date = date or Date.today()

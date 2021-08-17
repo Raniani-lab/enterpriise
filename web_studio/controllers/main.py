@@ -961,7 +961,7 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         # There is a counter on the button ; as the related field is a many2one, we need
         # to create a new computed field that counts the number of records in the one2many
-        button_count_field_name = 'x_%s__%s_count' % (field.name, field.model.replace('.', '_'))[0:63]
+        button_count_field_name = 'x_%s_%s_count' % (field.name, field.model.replace('.', '_'))[0:63]
         button_count_field = request.env['ir.model.fields'].search([('name', '=', button_count_field_name), ('model_id', '=', model.id)])
         if not button_count_field:
             compute_function = """

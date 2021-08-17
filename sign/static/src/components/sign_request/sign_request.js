@@ -1,6 +1,8 @@
 odoo.define('sign/static/src/components/sign_request/sign_request.js', function (require) {
 'use strict';
 
+const { registerMessagingComponent } = require('@mail/utils/messaging_component');
+
 const { Component } = owl;
 
 class SignRequest extends Component {
@@ -55,6 +57,8 @@ Object.assign(SignRequest, {
     },
     template: 'sign.SignRequest',
 });
+
+registerMessagingComponent(SignRequest);
 
 return SignRequest;
 

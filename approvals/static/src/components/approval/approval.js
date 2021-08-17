@@ -1,21 +1,11 @@
 odoo.define('approvals/static/src/components/approval/approval.js', function (require) {
 'use strict';
 
-const { useModels } = require('@mail/component_hooks/use_models/use_models');
-const { useShouldUpdateBasedOnProps } = require('@mail/component_hooks/use_should_update_based_on_props/use_should_update_based_on_props');
+const { registerMessagingComponent } = require('@mail/utils/messaging_component');
 
 const { Component } = owl;
 
 class Approval extends Component {
-
-    /**
-     * @override
-     */
-    constructor(...args) {
-        super(...args);
-        useModels();
-        useShouldUpdateBasedOnProps();
-    }
 
     //--------------------------------------------------------------------------
     // Public
@@ -56,6 +46,8 @@ Object.assign(Approval, {
     },
     template: 'approvals.Approval',
 });
+
+registerMessagingComponent(Approval);
 
 return Approval;
 

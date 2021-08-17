@@ -1,14 +1,12 @@
 odoo.define('voip/static/src/components/activity/activity_tests.js', function (require) {
 'use strict';
 
-const { Activity } = require('@mail/components/activity/activity');
+const { getMessagingComponent } = require('@mail/utils/messaging_component');
 const {
     afterEach,
     beforeEach,
     start,
 } = require('@mail/utils/test_utils');
-
-const components = { Activity };
 
 QUnit.module('voip', {}, function () {
 QUnit.module('components', {}, function () {
@@ -18,7 +16,7 @@ QUnit.module('activity_tests.js', {
         beforeEach(this);
 
         this.createActivityComponent = async activity => {
-            const ActivityComponent = components.Activity;
+            const ActivityComponent = getMessagingComponent('Activity');
             ActivityComponent.env = this.env;
             this.component = new ActivityComponent(null, {
                 activityLocalId: activity.localId,

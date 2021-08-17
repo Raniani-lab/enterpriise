@@ -1,20 +1,17 @@
 odoo.define('mail_enterprise/static/src/components/attachment/attachment_tests.js', function (require) {
 'use strict';
 
-const { Attachment } = require('@mail/components/attachment/attachment');
 const {
     afterEach,
     afterNextRender,
     beforeEach,
-    createRootComponent,
+    createRootMessagingComponent,
     start,
 } = require('@mail/utils/test_utils');
 
 const { mock } = require('web.test_utils');
 
 const { methods } = require('web_mobile.core');
-
-const components = { Attachment };
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
@@ -25,7 +22,7 @@ QUnit.module('attachment_tests.js', {
 
         this.createAttachmentComponent = async (attachment, otherProps) => {
             const props = Object.assign({ attachmentLocalId: attachment.localId }, otherProps);
-            await createRootComponent(this, components.Attachment, {
+            await createRootMessagingComponent(this, 'Attachment', {
                 props,
                 target: this.widget.el,
             });

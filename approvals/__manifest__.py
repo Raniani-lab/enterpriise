@@ -39,7 +39,6 @@ creates next activities for the related approvers.
     'auto_install': False,
     'assets': {
         'web.assets_backend': [
-            'approvals/static/src/components/activity/activity.js',
             'approvals/static/src/components/approval/approval.js',
             'approvals/static/src/models/activity/activity.js',
             'approvals/static/src/models/approval/approval.js',

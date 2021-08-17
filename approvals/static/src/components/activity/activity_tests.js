@@ -1,16 +1,12 @@
 odoo.define('approvals/static/src/components/activity/activity_tests.js', function (require) {
 'use strict';
 
-const { Activity } = require('@mail/components/activity/activity');
-
 const {
     afterEach,
     beforeEach,
-    createRootComponent,
+    createRootMessagingComponent,
     start,
 } = require('@mail/utils/test_utils');
-
-const components = { Activity };
 
 QUnit.module('approvals', {}, function () {
 QUnit.module('components', {}, function () {
@@ -20,7 +16,7 @@ QUnit.module('activity_tests.js', {
         beforeEach(this);
 
         this.createActivityComponent = async activity => {
-            await createRootComponent(this, components.Activity, {
+            await createRootMessagingComponent(this, 'Activity', {
                 props: { activityLocalId: activity.localId },
                 target: this.widget.el,
             });

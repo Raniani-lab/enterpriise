@@ -280,8 +280,9 @@ class L10nBe274XX(models.Model):
         district = payslips[0].company_id.l10n_be_revenue_code[:2]
         office = payslips[0].company_id.l10n_be_revenue_code[-2:]
 
-        if any(payslip.date_from != date_from or payslip.date_to != date_to for payslip in payslips):
-            raise UserError(_('The payslips should cover the same period'))
+        invalid_payslips = payslips.filtered(lambda p: p.date_from != date_from or p.date_to != date_to)
+        if invalid_payslips:
+            raise UserError(_('The payslips should cover the same period:\n%s', '\n'.join(invalid_payslips.mapped('name'))))
 
         declaration_10 = {
             'declaration_number': 10000010,

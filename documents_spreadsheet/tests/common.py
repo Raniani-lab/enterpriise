@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 from uuid import uuid4
 import base64
 
@@ -15,6 +15,9 @@ class SpreadsheetTestCommon(TransactionCase):
     def setUpClass(cls):
         super(SpreadsheetTestCommon, cls).setUpClass()
         cls.folder = cls.env["documents.folder"].create({"name": "Test folder"})
+        cls.spreadsheet_user = new_test_user(
+            cls.env, login="spreadsheetDude", groups="documents.group_documents_user"
+        )
 
     def create_spreadsheet(self, values=None, *, user=None):
         if values is None:

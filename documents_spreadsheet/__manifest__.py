@@ -15,6 +15,10 @@
         'views/documents_templates.xml',
         'wizard/save_spreadsheet_template.xml',
     ],
+    'demo': [
+        'demo/documents_demo_data.xml'
+    ],
+
     'application': False,
     'installable': True,
     'auto_install': True,

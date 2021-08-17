@@ -1,0 +1,345 @@
+{
+  "version": 9,
+  "sheets": [
+    {
+      "id": "Sheet1",
+      "name": "Sheet1",
+      "colNumber": 26,
+      "rowNumber": 100,
+      "rows": {},
+      "cols": { "0": { "size": 127.36083984375 } },
+      "merges": [],
+      "cells": {
+        "A1": { "style": 1 },
+        "A2": { "style": 1 },
+        "A3": { "style": 1 },
+        "B1": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"user_id\",\"false\")",
+            "dependencies": [],
+            "value": "(Undefined)"
+          }
+        },
+        "B2": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": "United States"
+          }
+        },
+        "B3": {
+          "style": 3,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"user_id\",\"false\",\"country_id\",\"233\",\"measure\",\"__count\")",
+            "dependencies": [],
+            "value": "Count"
+          }
+        },
+        "C2": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\")",
+            "dependencies": [],
+            "value": "Total"
+          }
+        },
+        "C3": {
+          "style": 3,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"measure\",\"__count\")",
+            "dependencies": [],
+            "value": "Count"
+          }
+        },
+        "C1": { "style": 1 },
+        "A4": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"14\")",
+            "dependencies": [],
+            "value": "Azure Interior"
+          }
+        },
+        "A5": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"10\")",
+            "dependencies": [],
+            "value": "Deco Addict"
+          }
+        },
+        "A6": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"11\")",
+            "dependencies": [],
+            "value": "Gemini Furniture"
+          }
+        },
+        "A7": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"15\")",
+            "dependencies": [],
+            "value": "Lumber Inc"
+          }
+        },
+        "A8": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"12\")",
+            "dependencies": [],
+            "value": "Ready Mat"
+          }
+        },
+        "A9": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"13\")",
+            "dependencies": [],
+            "value": "The Jackson Group"
+          }
+        },
+        "A10": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"9\")",
+            "dependencies": [],
+            "value": "Wood Corner"
+          }
+        },
+        "A11": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"1\")",
+            "dependencies": [],
+            "value": "YourCompany"
+          }
+        },
+        "A12": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\",\"parent_id\",\"false\")",
+            "dependencies": [],
+            "value": "(Undefined)"
+          }
+        },
+        "A13": {
+          "style": 2,
+          "formula": {
+            "text": "=PIVOT.HEADER(\"1\")",
+            "dependencies": [],
+            "value": "Total"
+          }
+        },
+        "B4": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"14\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 3
+          }
+        },
+        "B5": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"10\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 3
+          }
+        },
+        "B6": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"11\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 4
+          }
+        },
+        "B7": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"15\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 1
+          }
+        },
+        "B8": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"12\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 7
+          }
+        },
+        "B9": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"13\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 2
+          }
+        },
+        "B10": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"9\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 3
+          }
+        },
+        "B11": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"1\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 2
+          }
+        },
+        "B12": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"false\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 11
+          }
+        },
+        "B13": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"user_id\",\"false\",\"country_id\",\"233\")",
+            "dependencies": [],
+            "value": 36
+          }
+        },
+        "C4": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"14\")",
+            "dependencies": [],
+            "value": 3
+          }
+        },
+        "C5": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"10\")",
+            "dependencies": [],
+            "value": 3
+          }
+        },
+        "C6": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"11\")",
+            "dependencies": [],
+            "value": 4
+          }
+        },
+        "C7": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"15\")",
+            "dependencies": [],
+            "value": 1
+          }
+        },
+        "C8": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"12\")",
+            "dependencies": [],
+            "value": 7
+          }
+        },
+        "C9": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"13\")",
+            "dependencies": [],
+            "value": 2
+          }
+        },
+        "C10": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"9\")",
+            "dependencies": [],
+            "value": 3
+          }
+        },
+        "C11": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"1\")",
+            "dependencies": [],
+            "value": 2
+          }
+        },
+        "C12": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\",\"parent_id\",\"false\")",
+            "dependencies": [],
+            "value": 11
+          }
+        },
+        "C13": {
+          "format": "#,##0.00",
+          "formula": {
+            "text": "=PIVOT(\"1\",\"__count\")",
+            "dependencies": [],
+            "value": 36
+          }
+        }
+      },
+      "conditionalFormats": [],
+      "figures": [],
+      "areGridLinesVisible": true
+    }
+  ],
+  "entities": {},
+  "styles": {
+    "1": { "fillColor": "#f2f2f2" },
+    "2": { "fillColor": "#f2f2f2", "bold": true },
+    "3": { "fillColor": "#f2f2f2", "textColor": "#756f6f" }
+  },
+  "borders": {},
+  "revisionId": "69676d06-03fa-4dd1-99c0-a7c5cfc1e428",
+  "pivots": {
+    "1": {
+      "model": "res.partner",
+      "rowGroupBys": ["parent_id"],
+      "colGroupBys": ["user_id", "country_id"],
+      "measures": [{ "field": "__count", "operator": "sum" }],
+      "domain": [],
+      "context": {
+        "lang": "en_US",
+        "tz": "Europe/Brussels",
+        "uid": 2,
+        "default_is_company": true
+      },
+      "id": 1
+    }
+  },
+  "globalFilters": [
+    {
+        "id": "de5794c5-75fe-4f74-b9cb-6c59937a2c69",
+        "label": "MyFilter1",
+        "type": "relation",
+        "rangeType": "year",
+        "fields": {
+            "1": {
+                "field": "parent_id",
+                "type": "many2one"
+            }
+        },
+        "defaultValue": [
+            14
+        ],
+        "modelName": "res.partner"
+    }
+]
+}

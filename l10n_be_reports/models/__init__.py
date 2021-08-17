@@ -7,4 +7,5 @@ from . import account_tax_report
 from . import partner_vat_listing
 from . import assets_report
 from . import res_partner
+from . import res_company
 from . import account_sales_report

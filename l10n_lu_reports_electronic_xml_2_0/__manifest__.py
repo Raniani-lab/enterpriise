@@ -64,16 +64,14 @@ Available reports:
     'data': [
             'data/ir_cron_data.xml',
             'views/l10n_lu_electronic_report_2_0_template.xml',
-            'views/res_company_views.xml',
             'views/l10n_lu_stored_sales_report_views.xml',
             'views/l10n_lu_yearly_tax_report_manual_views.xml',
-            'wizard/l10n_lu_generate_xml.xml',
             'wizard/l10n_lu_generate_accounts_report.xml',
             'wizard/l10n_lu_generate_tax_report.xml',
             'wizard/l10n_lu_generate_sales_report.xml',
             'security/ir.model.access.csv',
     ],
-    'demo': ['data/demo_company.xml'],
+    'demo': ['demo/demo_company.xml'],
     'license': 'OEEL-1',
     'auto_install': True,
     'installable': True

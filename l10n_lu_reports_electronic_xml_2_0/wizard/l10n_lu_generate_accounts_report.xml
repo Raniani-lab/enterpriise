@@ -18,8 +18,6 @@
                         <field name="pl" attrs="{'invisible':['|', ('coa_only', '=', True), ('size', '=', 'large')]}" nolabel="1"/>
                         <label for="coa_only" string="Generate Chart of Accounts only (Non-automated generation of the balance sheet and the profit and loss account)" colspan="2"/>
                         <field name="coa_only" nolabel="1"/>
-                        <label for="by_fidu" string="Declaration filled in by the fiduciary" colspan="2"/>
-                        <field name="by_fidu" nolabel="1"/>
                         <label for="import_notes_as_references" colspan="2"/>
                         <field name="import_notes_as_references" nolabel="1"/>
                         <field name="optional_remarks" class="form-control" colspan="3"/>

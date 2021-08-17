@@ -35,7 +35,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         if self._get_report_country_code(options) != 'BE':
             return super(AccountGenericTaxReport, self).get_xml(options)
 
-        vat_no, country_from_vat = self._check_vat_number(self.get_vat_for_export(options))
+        vat_no, country_from_vat = self._split_vat_number_and_country_code(self.get_vat_for_export(options))
 
         sender_company = self._get_sender_company_for_export(options)
         default_address = sender_company.partner_id.address_get()
@@ -46,9 +46,6 @@ class AccountGenericTaxReport(models.AbstractModel):
             raise UserError(_('No phone associated with company %s.', sender_company.name))
 
         # Compute xml
-
-        default_address = sender_company.partner_id.address_get()
-        address = self.env['res.partner'].browse(default_address.get("default", sender_company.partner_id.id))
 
         issued_by = vat_no
         dt_from = options['date'].get('date_from')
@@ -173,7 +170,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         return rslt.encode()
 
-    def _check_vat_number(self, vat_number):
+    def _split_vat_number_and_country_code(self, vat_number):
         """
         Even with base_vat, the vat number doesn't necessarily starts
         with the country code

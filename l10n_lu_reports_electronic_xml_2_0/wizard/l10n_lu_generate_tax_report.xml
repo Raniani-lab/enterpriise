@@ -8,8 +8,7 @@
                 <form>
                     <group>
                         <field name="period" invisible="1"/>
-                        <field name="simplified_declaration" attrs="{'invisible': ['|', ('period', '=', 'T'), ('period', '=', 'M')]}"/>
-                        <field name="by_fidu"/>
+                        <field name="simplified_declaration"/>
                     </group>
                     <footer>
                         <button name="get_xml" string="EXPORT XML" type="object" class="oe_highlight" attrs="{'invisible': ['&amp;', ('simplified_declaration', '=', False), ('period', '=', 'A')]}"/>

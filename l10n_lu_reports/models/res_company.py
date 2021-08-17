@@ -7,3 +7,8 @@ class ResCompany(models.Model):
 
     matr_number = fields.Char(string="Matr Number")
     ecdf_prefix = fields.Char(string="eCDF Prefix")
+
+    def _get_countries_allowing_tax_representative(self):
+        rslt = super()._get_countries_allowing_tax_representative()
+        rslt.add(self.env.ref('base.lu').code)
+        return rslt

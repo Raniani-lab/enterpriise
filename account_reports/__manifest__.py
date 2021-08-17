@@ -15,6 +15,7 @@ Accounting Reports
         'data/mail_data.xml',
         'views/account_report_view.xml',
         'views/report_financial.xml',
+        'views/res_company_views.xml',
         'views/search_template_view.xml',
         'views/partner_view.xml',
         'views/account_journal_dashboard_view.xml',

@@ -275,7 +275,7 @@ class LuxembourgSalesReportComparisonsTest(TestAccountReportsCommon):
         asset_report = self.env['account.assets.report'].with_context({'model': 'account.assets.report'})
         options = asset_report._get_options(None)
         wizard = self.env['l10n_lu.generate.xml'].create({})
-        wizard.with_context(asset_report.l10n_lu_open_report_export_wizard(options)['context']).get_xml()
+        wizard.with_context({'model': 'account.assets.report', 'account_report_generation_options': options}).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
         with self.assertRaises(ValidationError):
             report._get_correction_data(options, comparison_files=[('', declaration_to_compare)])

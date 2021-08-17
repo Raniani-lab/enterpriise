@@ -15,7 +15,6 @@ class AccountGenericTaxReport(models.AbstractModel):
                 if re.get('action') == 'print_xml':
                     # deactivate xml export & saving
                     # and allow export of the XML declaration from the wizard
-                    re['name'] = _('EXPORT ECDF DECLARATION')
                     re['action'] = 'l10n_lu_open_report_export_wizard'
                     del re['file_export_type']
         return res
@@ -24,6 +23,9 @@ class AccountGenericTaxReport(models.AbstractModel):
         """ Creates a new export wizard for this report."""
         new_context = self.env.context.copy()
         new_context['tax_report_options'] = options
+        tax_report = self.env['l10n_lu.generate.tax.report'].with_context(new_context).create({})
+        if tax_report.period != 'A':
+            return tax_report.get_xml()
         return {
             'type': 'ir.actions.act_window',
             'name': _('Export'),

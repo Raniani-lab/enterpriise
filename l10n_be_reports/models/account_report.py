@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import RedirectWarning
+import re
 
 
 class AccountReport(models.AbstractModel):
@@ -12,46 +13,53 @@ class AccountReport(models.AbstractModel):
         and tax declaration. It is used in case the company isn't submitting its report directly,
         but through an external accountant.
 
-        This function relies on a config parameter to get the representative, since this feature
-        was introduced in stable.
-
         :return: The string containing the complete <Representative> node or an empty string,
                  in case no representative has been configured.
         """
-        representative_id = int(self.env['ir.config_parameter'].sudo().get_param('l10n_be_reports.xml_export_representative_%s' % self.env.company.id))
-        if representative_id:
-            representative = self.env['res.partner'].browse(representative_id)
-            representative_country_code = representative.country_id.code.upper()
-
+        representative = self.env.company.account_representative_id
+        if representative:
+            vat_no, country_from_vat = self.env['account.generic.tax.report']._split_vat_number_and_country_code(representative.vat or "")
+            country = self.env['res.country'].search([('code', '=', country_from_vat)], limit=1)
+            phone = representative.phone or representative.mobile
             node_values = {
-                'vat': representative.vat[2:] if representative.vat[:2] == representative_country_code else representative.vat,
+                'vat': vat_no,
                 'name': representative.name,
-                'street': (representative.street or '') + (' ' + representative.street2 if representative.street2 else ''),
+                'street': "%s %s" % (representative.street or "", representative.street2 or ""),
                 'zip': representative.zip,
                 'city': representative.city,
-                'country_code': representative_country_code,
-                'mail': representative.email,
-                'phone': representative.phone or representative.mobile,
+                'country_code': (country or representative.country_id).code,
+                'email': representative.email,
+                # exclude what's not a number
+                'phone': phone and re.sub(r'[./()\s]', '', phone),
             }
 
-            if any(not value for value in node_values.values()):
-                raise UserError(_("Please first fill in the full coordinates (address, VAT, mail and phone) of the representative configured for your xml export (%s)") % representative.name)
-
-            vat_country_code = representative.vat[:2].upper()
-            countries_count = self.env['res.country'].search([('code', 'ilike', vat_country_code)], count=True)
-            node_values['vat_country_code'] = vat_country_code if countries_count else node_values['country_code']
+            missing_fields = [k for k, v in node_values.items() if not v]
+            if missing_fields:
+                message = _('Some fields required for the export are missing. Please specify them.')
+                action = {
+                    'name': _("Company : %s", representative.name),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'res_model': 'res.partner',
+                    'views': [[False, 'form']],
+                    'target': 'new',
+                    'res_id': representative.id,
+                }
+                button_text = _('Specify')
+                additional_context = {'required_fields': missing_fields}
+                raise RedirectWarning(message, action, button_text, additional_context)
 
             return """
-                <ns2:Representative>
-                    <RepresentativeID identificationType="NVAT" issuedBy="%(vat_country_code)s">%(vat)s</RepresentativeID>
-                    <Name>%(name)s</Name>
-                    <Street>%(street)s</Street>
-                    <PostCode>%(zip)s</PostCode>
-                    <City>%(city)s</City>
-                    <CountryCode>%(country_code)s</CountryCode>
-                    <EmailAddress>%(mail)s</EmailAddress>
-                    <Phone>%(phone)s</Phone>
-                </ns2:Representative>
+    <ns2:Representative>
+        <RepresentativeID identificationType="NVAT" issuedBy="%(country_code)s">%(vat)s</RepresentativeID>
+        <Name>%(name)s</Name>
+        <Street>%(street)s</Street>
+        <PostCode>%(zip)s</PostCode>
+        <City>%(city)s</City>
+        <CountryCode>%(country_code)s</CountryCode>
+        <EmailAddress>%(email)s</EmailAddress>
+        <Phone>%(phone)s</Phone>
+    </ns2:Representative>
             """ % node_values
 
         return ""

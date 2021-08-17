@@ -39,7 +39,6 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
         # As no values are in the report, we only find the grid 71 which is always expected to be present.
         expected_xml = """
         <ns2:VATConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/VATConsignment" VATDeclarationsNbr="1">
-
             <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%s">
                 <ns2:Declarant>
                     <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">0477472701</VATNumber>
@@ -64,6 +63,73 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
             </ns2:VATDeclaration>
         </ns2:VATConsignment>
         """ % ref
+
+        self.assertXmlTreeEqual(
+            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(expected_xml)
+        )
+
+    @freeze_time('2019-12-31')
+    def test_generate_xml_minimal_with_representative(self):
+        company = self.env.company
+        report = self.env['account.generic.tax.report']
+        options = report._get_options(None)
+
+        # Create a new partner for the representative and link it to the company.
+        representative = self.env['res.partner'].create({
+            'company_type': 'company',
+            'name': 'Fidu BE',
+            'street': 'Fidu Street 123',
+            'city': 'Brussels',
+            'zip': '1000',
+            'country_id': self.env.ref('base.be').id,
+            'vat': 'BE0477472701',
+            'mobile': '+32470123456',
+            'email': 'info@fidu.be',
+        })
+        company.account_representative_id = representative.id
+
+        # The partner_id is changing between execution of the test so we need to append it manually to the reference.
+        ref = str(company.partner_id.id) + '112019'
+
+        # This is the minimum expected from the belgian tax report XML.
+        # Only the representative node has been added to make sure it appears in the XML.
+        expected_xml = """
+            <ns2:VATConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/VATConsignment" VATDeclarationsNbr="1">
+                <ns2:Representative>
+                    <RepresentativeID identificationType="NVAT" issuedBy="BE">0477472701</RepresentativeID>
+                    <Name>Fidu BE</Name>
+                    <Street>Fidu Street 123</Street>
+                    <PostCode>1000</PostCode>
+                    <City>Brussels</City>
+                    <CountryCode>BE</CountryCode>
+                    <EmailAddress>info@fidu.be</EmailAddress>
+                    <Phone>+32470123456</Phone>
+                </ns2:Representative>
+                <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%s">
+                    <ns2:Declarant>
+                        <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">0477472701</VATNumber>
+                        <Name>company 1 data</Name>
+                        <Street></Street>
+                        <PostCode></PostCode>
+                        <City></City>
+                        <CountryCode>BE</CountryCode>
+                        <EmailAddress>jsmith@mail.com</EmailAddress>
+                        <Phone>+32475123456</Phone>
+                    </ns2:Declarant>
+                    <ns2:Period>
+                        <ns2:Month>11</ns2:Month>
+                        <ns2:Year>2019</ns2:Year>
+                    </ns2:Period>
+                    <ns2:Data>	
+                        <ns2:Amount GridNumber="71">0.00</ns2:Amount>
+                    </ns2:Data>
+                    <ns2:ClientListingNihil>NO</ns2:ClientListingNihil>
+                    <ns2:Ask Restitution="NO" Payment="NO"/>
+                    <ns2:Comment></ns2:Comment>
+                </ns2:VATDeclaration> 
+            </ns2:VATConsignment>
+            """ % ref
 
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(report.get_xml(options)),

@@ -8,7 +8,6 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <field name="by_fidu"/>
                         <field name="l10n_lu_stored_report_ids" string="Old declarations to update/correct" widget="many2many_tags" options="{'no_create_edit': True, 'no_create': True}"/>
                         <field name="save_report"/>
                     </group>

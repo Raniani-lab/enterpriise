@@ -6,7 +6,8 @@ import re
 from io import BytesIO
 from datetime import datetime
 from odoo import models, fields, tools, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import RedirectWarning
+
 
 class L10nLuGenerateXML(models.TransientModel):
     """
@@ -16,9 +17,6 @@ class L10nLuGenerateXML(models.TransientModel):
     _name = 'l10n_lu.generate.xml'
     _description = 'Generate Xml 2.0'
 
-    # since the only required agent's field is the Matr. Number, if it is given, use Agent's information
-    by_fidu = fields.Boolean(string="Declaration Filled in by Fiduciary",
-                             default=lambda self: self.env.company.l10n_lu_agent_matr_number)
     report_data = fields.Binary('Report file', readonly=True, attachment=False)
     filename = fields.Char(string='Filename', size=256, readonly=True)
 
@@ -36,23 +34,37 @@ class L10nLuGenerateXML(models.TransientModel):
         Generates the XML report.
         """
         company = self.env.company
-        if self.by_fidu and not company.l10n_lu_agent_ecdf_prefix:
-            raise ValidationError(_("The accouning firm's ECDF Prefix still hasn't been defined! "
-                                    "Either uncheck 'Declarations and Filings done by the Accounting Firm' "
-                                    "or add the accounting firm's information in the company's information."))
+        agent = company.account_representative_id
+
+        # Check for agent's required fields
+        if agent:
+            ecdf_not_ok = not agent.l10n_lu_agent_ecdf_prefix or not re.match('[0-9A-Z]{6}', agent.l10n_lu_agent_ecdf_prefix)
+            matr_not_ok = not agent.l10n_lu_agent_matr_number or not re.match('[0-9]{11,13}', agent.l10n_lu_agent_matr_number)
+            if ecdf_not_ok or matr_not_ok:
+                raise RedirectWarning(
+                    message=_("Some fields required for the export are missing or invalid. Please verify them."),
+                    action={
+                        'name': _("Company : %s", agent.name),
+                        'type': 'ir.actions.act_window',
+                        'view_mode': 'form',
+                        'res_model': 'res.partner',
+                        'views': [[False, 'form']],
+                        'target': 'new',
+                        'res_id': company.id,
+                    },
+                    button_text=_('Verify'),
+                    additional_context={'required_fields': [ecdf_not_ok and 'l10n_lu_agent_ecdf_prefix',
+                                                            matr_not_ok and 'l10n_lu_agent_matr_number']}
+                )
+
         now_datetime = datetime.now()
         file_ref_data = {
-            'ecdf_prefix': company.l10n_lu_agent_ecdf_prefix if self.by_fidu else company.ecdf_prefix,
+            'ecdf_prefix': agent.l10n_lu_agent_ecdf_prefix if agent else company.ecdf_prefix,
             'datetime': now_datetime.strftime('%Y%m%dT%H%M%S%f')[:-4]
         }
         filename = '{ecdf_prefix}X{datetime}'.format(**file_ref_data)
 
-        # The Matr. Number is required
-        if self.by_fidu and not company.l10n_lu_agent_matr_number:
-            raise ValidationError(_("The accouning firm's Matr. Number still hasn't been defined! "
-                                    "Either uncheck 'Declarations and Filings done by the Accounting Firm' "
-                                    "or add the accounting firm's information in the company's information."))
-        vat = company.l10n_lu_agent_vat if self.by_fidu else self._get_export_vat()
+        vat = agent.vat if agent else self._get_export_vat()
         if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
             vat = vat[2:]
         language = self.env.context.get('lang', '').split('_')[0].upper()
@@ -64,8 +76,8 @@ class L10nLuGenerateXML(models.TransientModel):
             'lang': language,
             'interface': 'MODL5',
             'agent_vat': vat or "NE",
-            'agent_matr_number': (company.l10n_lu_agent_matr_number if self.by_fidu else company.matr_number) or "NE",
-            'agent_rcs_number': (company.l10n_lu_agent_rcs_number if self.by_fidu else company.company_registry) or "NE",
+            'agent_matr_number': agent.l10n_lu_agent_matr_number or company.matr_number or "NE",
+            'agent_rcs_number': agent.l10n_lu_agent_rcs_number or company.company_registry or "NE",
             'declarations': []
         }
         vat = self._get_export_vat()
@@ -73,8 +85,23 @@ class L10nLuGenerateXML(models.TransientModel):
             vat = vat[2:]
         # The Matr. Number is required
         if not company.matr_number:
-            raise ValidationError(_("The company's Matr. Number still hasn't been defined! "
-                                    "Add it in the company's information."))
+            raise RedirectWarning(
+                message=_(
+                    "The company's Matr. Number hasn't been defined. Please configure it in the company's information."
+                ),
+                action={
+                    'name': _("Company : %s", company.name),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'res_model': 'res.company',
+                    'views': [[False, 'form']],
+                    'target': 'new',
+                    'res_id': company.id,
+                },
+                button_text=_('Configure'),
+                additional_context={'required_fields': ['matr_number']}
+            )
+
         declaration_template_values = {
             'vat_number': vat or "NE",
             'matr_number': company.matr_number or "NE",

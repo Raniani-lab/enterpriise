@@ -4,6 +4,7 @@
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
+from dateutil.relativedelta import relativedelta
 
 from ..models.l10n_lu_tax_report_data import YEARLY_SIMPLIFIED_NEW_TOTALS, YEARLY_SIMPLIFIED_FIELDS
 from ..models.l10n_lu_tax_report_data import YEARLY_NEW_TOTALS, YEARLY_MONTHLY_FIELDS_TO_DELETE
@@ -28,14 +29,18 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         options = self.env.context['tax_report_options']
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))
-        date_from_quarter = tools.date_utils.get_quarter_number(date_from)
-        date_to_quarter = tools.date_utils.get_quarter_number(date_to)
-        if date_from.month == date_to.month:
-            rec['period'] = 'M'
-        elif date_from_quarter == date_to_quarter:
-            rec['period'] = 'T'
-        else:
-            rec['period'] = 'A'
+
+        mapping = {
+            date_from + relativedelta(months=12, days=-1): 'A',
+            date_from + relativedelta(months=3, days=-1): 'T',
+            date_from + relativedelta(months=1, days=-1): 'M',
+        }
+
+        rec['period'] = mapping.get(date_to)
+        if not rec['period']:
+            raise ValidationError(
+                _("The fiscal period you have selected is invalid, please verify. Valid periods are : Month, Quarter and Year."))
+
         return rec
 
     def _get_export_vat(self):

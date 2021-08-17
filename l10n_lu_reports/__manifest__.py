@@ -17,6 +17,7 @@ Accounting reports for Luxembourg
         'data/account_financial_html_report_bs_abr.xml',
         'data/ec_sales_list_report.xml',
         'views/account_ec_sales_xml_template.xml',
+        'views/res_partner_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

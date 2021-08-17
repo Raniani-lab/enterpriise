@@ -39,6 +39,12 @@ class AccountReport(models.AbstractModel):
     def _is_lu_electronic_report(self, options):
         return False
 
+    def _get_report_country_code(self, options):
+        # Overridden in order to use the fiscal country of the current company
+        if not self.env.company.account_fiscal_country_id.code == 'LU':
+            return super()._get_report_country_code(options)
+        return self.env.company.account_fiscal_country_id.code or None
+
     def _get_lu_electronic_report_values(self, options):
         company = self.env.company
         vat = self.get_vat_for_export(options)

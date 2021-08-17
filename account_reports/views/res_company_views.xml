@@ -11,6 +11,10 @@
                     <field name="account_tax_unit_ids"/>
                 </page>
             </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="account_display_representative_field" invisible="1"/>
+                <field name="account_representative_id" attrs="{'invisible': [('account_display_representative_field', '=', False)]}"/>
+            </xpath>
         </field>
     </record>
 

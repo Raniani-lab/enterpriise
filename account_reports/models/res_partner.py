@@ -8,6 +8,8 @@ class ResPartner(models.Model):
     _name = 'res.partner'
     _inherit = 'res.partner'
 
+    account_represented_company_ids = fields.One2many('res.company', 'account_representative_id')
+
     def change_expected_date(self, options=False):
         if not options or 'expected_pay_date' not in options or 'move_line_id' not in options:
             return True

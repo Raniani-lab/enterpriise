@@ -30,6 +30,22 @@ class ResCompany(models.Model):
     account_revaluation_expense_provision_account_id = fields.Many2one('account.account', string='Expense Provision Account')
     account_revaluation_income_provision_account_id = fields.Many2one('account.account', string='Income Provision Account')
     account_tax_unit_ids = fields.Many2many(string="Tax Units", comodel_name='account.tax.unit', help="The tax units this company belongs to.")
+    account_representative_id = fields.Many2one('res.partner', string='Accounting Firm',
+                                                help="Specify an Accounting Firm that will act as a representative when exporting reports.")
+    account_display_representative_field = fields.Boolean(compute='_compute_account_display_representative_field')
+
+    @api.depends('account_fiscal_country_id.code')
+    def _compute_account_display_representative_field(self):
+        country_set = self._get_countries_allowing_tax_representative()
+        for record in self:
+            record.account_display_representative_field = record.account_fiscal_country_id.code in country_set
+
+    def _get_countries_allowing_tax_representative(self):
+        """ Returns a set containing the country codes of the countries for which
+        it is possible to use a representative to submit the tax report.
+        This function is a hook that needs to be overridden in localisation modules.
+        """
+        return set()
 
     def _get_default_misc_journal(self):
         """ Returns a default 'miscellanous' journal to use for

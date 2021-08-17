@@ -17,7 +17,6 @@ class ReportAccountFinancialReport(models.Model):
                 if re.get('action') == 'print_xml':
                     # deactivate xml export & saving
                     # and allow export of the XML declaration from the wizard
-                    re['name'] = _('EXPORT ECDF DECLARATION')
                     re['action'] = 'l10n_lu_open_report_export_wizard'
                     del re['file_export_type']
         return res

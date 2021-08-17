@@ -15,7 +15,7 @@ class TestPayrollAllocatingPaidTimeOff(TestPayrollCommon):
         super(TestPayrollAllocatingPaidTimeOff, self).setUp()
 
         today = date.today()
-        self.paid_time_off_type = self.holiday_leave_types.filtered(lambda leave_type: leave_type.validity_start == date(today.year, 1, 1) and leave_type.validity_stop == date(today.year, 12, 31))
+        self.paid_time_off_type = self.holiday_leave_types #self.holiday_leave_types.filtered(lambda leave_type: leave_type.validity_start == date(today.year, 1, 1) and leave_type.validity_stop == date(today.year, 12, 31))
 
         self.wizard = self.env['hr.payroll.alloc.paid.leave'].create({
             'year': today.year - 1,

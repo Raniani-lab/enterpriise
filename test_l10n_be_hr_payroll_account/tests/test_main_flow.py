@@ -10,7 +10,7 @@ from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Date, Datetime
 from odoo.tests import common, Form, tagged
-
+import time
 
 @contextmanager
 def additional_groups(user, groups):
@@ -56,23 +56,25 @@ class TestHR(common.TransactionCase):
         user.tz = employee.tz
         return user
 
-    def create_leave_type(self, user, name='Leave Type', allocation='no', request_unit='day', validation='no_validation', allocation_validation='hr'):
+    def create_leave_type(self, user, name='Leave Type', requires_allocation='no', employee_requests='yes', request_unit='day', validation='no_validation', allocation_validation='officer'):
         leave_type_form = Form(self.env['hr.leave.type'].with_user(user))
         leave_type_form.name = name
-        leave_type_form.allocation_type = allocation
+        leave_type_form.requires_allocation = requires_allocation
+        leave_type_form.employee_requests = employee_requests
         leave_type_form.request_unit = request_unit
         leave_type_form.leave_validation_type = validation
         leave_type_form.allocation_validation_type = allocation_validation
         leave_type_form.responsible_id = user
-        leave_type_form.validity_start = False
         return leave_type_form.save()
 
     def create_allocation(self, user, employee, leave_type, number_of_days=10):
         allocation_form = Form(self.env['hr.leave.allocation'].with_user(user))
         allocation_form.number_of_days = number_of_days
         allocation_form.employee_id = employee
-        allocation_form.holiday_status_id = leave_type
         allocation_form.name = 'New Request'
+        allocation_form.date_from = time.strftime('2015-1-1')
+        allocation_form.date_to = time.strftime('%Y-12-31')
+        allocation_form.holiday_status_id = leave_type
         return allocation_form.save()
 
     def create_leave(self, user, leave_type, start, end, employee=None):
@@ -90,24 +92,26 @@ class TestHR(common.TransactionCase):
         self.leave_type_1 = self.create_leave_type(
             user=self.hr_holidays_manager,
             name='Leave Type (no allocation, validation HR, day)',
-            allocation='no',
             request_unit='day',
             validation='hr',
         )
         self.leave_type_2 = self.create_leave_type(
             user=self.hr_holidays_manager,
             name='Leave Type (allocation by HR, no validation, half day)',
-            allocation='fixed',
+            requires_allocation='yes',
+            employee_requests='no',
+            allocation_validation='set',
             request_unit='half_day',
             validation='no_validation',
         )
         self.leave_type_3 = self.create_leave_type(
             user=self.hr_holidays_manager,
             name='Leave Type (allocation request, validation both, hour)',
-            allocation='fixed_allocation',
+            requires_allocation='yes',
+            employee_requests='yes',
             request_unit='hour',
             validation='both',
-            allocation_validation='both',
+            allocation_validation='officer',
         )
 
         # --------------------------------------------------
@@ -119,6 +123,8 @@ class TestHR(common.TransactionCase):
             leave_type=self.leave_type_2,
         )
 
+        allocation_no_validation.action_confirm()
+
         # Holiday user refuse allocation
         allocation_no_validation.action_refuse()
         self.assertEqual(allocation_no_validation.state, 'refuse')
@@ -129,9 +135,9 @@ class TestHR(common.TransactionCase):
 
         # Holiday user approve allocation
         allocation_no_validation.action_confirm()
-        allocation_no_validation.action_approve()
+        allocation_no_validation.action_validate()
         self.assertEqual(allocation_no_validation.state, 'validate')
-        self.assertEqual(allocation_no_validation.first_approver_id, self.hr_holidays_user.employee_id)
+        self.assertEqual(allocation_no_validation.approver_id, self.hr_holidays_user.employee_id)
 
         # --------------------------------------------------
         # User: Allocation request
@@ -143,17 +149,13 @@ class TestHR(common.TransactionCase):
             employee=self.user.employee_id,
             leave_type=self.leave_type_3,
         )
-        self.assertEqual(allocation.state, 'confirm')
-
-        # Employee's manager approves
-        allocation.with_user(self.user_leave_team_leader).action_approve()
-        self.assertEqual(allocation.state, 'validate1')
-        self.assertEqual(allocation.first_approver_id, self.user_leave_team_leader.employee_id)
+        self.assertEqual(allocation.state, 'draft')
+        allocation.action_confirm()
 
         # Holiday Manager validates
         allocation.with_user(self.hr_holidays_manager).action_validate()
         self.assertEqual(allocation.state, 'validate')
-        self.assertEqual(allocation.second_approver_id, self.hr_holidays_manager.employee_id)
+        self.assertEqual(allocation.approver_id, self.hr_holidays_manager.employee_id)
 
         # --------------------------------------------------
         # User: Leave request
@@ -186,7 +188,7 @@ class TestHR(common.TransactionCase):
         )
         self.assertEqual(leave.state, 'confirm', "Should be in `confirm` state")
 
-        # Team leader approves
+        # # Team leader approves
         leave.with_user(self.user_leave_team_leader).action_approve()
         self.assertEqual(leave.state, 'validate1')
         self.assertEqual(leave.first_approver_id, self.user_leave_team_leader.employee_id)
@@ -336,8 +338,8 @@ class TestHR(common.TransactionCase):
         conflicting_leave = work_entries_with_error.filtered(lambda b: b.leave_id and b.leave_id.state != 'validate')
 
         # this user need "group_hr_timesheet_approver" to access timesheets of other user
-        with additional_groups(self.hr_payroll_user, 'hr_timesheet.group_hr_timesheet_approver'):
-            conflicting_leave.mapped('leave_id').with_user(self.hr_payroll_user).action_approve()
+        # with additional_groups(self.hr_payroll_user, 'hr_timesheet.group_hr_timesheet_approver'):
+        #     conflicting_leave.mapped('leave_id').with_user(self.hr_payroll_user).action_approve()
 
         # Reload work_entries (some might have been deleted/created when approving leaves)
         work_entries = self.env['hr.work.entry'].with_user(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])

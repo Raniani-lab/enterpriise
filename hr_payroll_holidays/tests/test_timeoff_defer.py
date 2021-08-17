@@ -31,7 +31,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         })
         leave.action_approve()
 
-        self.assertFalse(leave.to_defer, 'Leave should not be to defer')
+        self.assertNotEqual(leave.payslip_state, 'blocked', 'Leave should not be to defer')
 
     def test_to_defer(self):
         #create payslip
@@ -44,7 +44,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         payslip.compute_sheet()
         payslip.action_payslip_done()
 
-        #create a time off for our employee, validating it now should not put it as to_defer
+        #create a time off for our employee, validating it now should put it as to_defer
         leave = self.env['hr.leave'].create({
             'name': 'Golf time',
             'holiday_status_id': self.leave_type.id,
@@ -54,8 +54,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
             'number_of_days': 3,
         })
         leave.action_approve()
-
-        self.assertTrue(leave.to_defer, 'Leave should be to defer')
+        self.assertEqual(leave.payslip_state, 'blocked', 'Leave should be to defer')
 
     def test_multi_payslip_defer(self):
         #A leave should only be set to defer if ALL colliding with the time period of the time off are in a done state
@@ -89,4 +88,4 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         })
         leave.action_approve()
 
-        self.assertFalse(leave.to_defer, 'Leave should not be to defer')
+        self.assertNotEqual(leave.payslip_state, 'blocked', 'Leave should not be to defer')

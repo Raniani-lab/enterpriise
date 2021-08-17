@@ -7,7 +7,11 @@ from odoo import fields, models, _
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
 
-    to_defer = fields.Boolean(help="Whether this time off has been validated after the validation of the related payslip. This means that this time off should be deferred to a next month.")
+    payslip_state = fields.Selection([
+        ('normal', 'To compute in next payslip'),
+        ('done', 'Computed in current payslip'),
+        ('blocked', 'To defer to next payslip')], string='Payslip State',
+        copy=False, default='normal', required=True)
 
     def action_validate(self):
         # Get employees payslips
@@ -26,7 +30,7 @@ class HrLeave(models.Model):
                     and not any(payslip.employee_id == leave.employee_id \
                 and (payslip.date_from <= leave.date_to.date() \
                 and payslip.date_to >= leave.date_from.date()) for payslip in waiting_payslips):
-                leave.to_defer = True
+                leave.payslip_state = 'blocked'
         res = super().action_validate()
         self._recompute_payslips()
         return res
@@ -58,7 +62,7 @@ class HrLeave(models.Model):
 
 
     def _cancel_work_entry_conflict(self):
-        leaves_to_defer = self.filtered(lambda l: l.to_defer)
+        leaves_to_defer = self.filtered(lambda l: l.payslip_state == 'blocked')
         for leave in leaves_to_defer:
             leave.activity_schedule(
                 'hr_payroll_holidays.mail_activity_data_hr_leave_to_defer',
@@ -70,5 +74,5 @@ class HrLeave(models.Model):
 
     def activity_feedback(self, act_type_xmlids, user_id=None, feedback=None):
         if 'hr_payroll_holidays.mail_activity_data_hr_leave_to_defer' in act_type_xmlids:
-            self.write({'to_defer': False})
+            self.write({'payslip_state': 'done'})
         return super().activity_feedback(act_type_xmlids, user_id=user_id, feedback=feedback)

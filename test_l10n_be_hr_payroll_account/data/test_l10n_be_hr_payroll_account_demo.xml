@@ -44,7 +44,7 @@
 
     <record id="l10n_be_leave_type_training" model="hr.leave.type">
         <field name="name">Training</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_training"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
@@ -1775,12 +1775,12 @@
     <!-- Casual leave -->
     <record id="holiday_status_cl" model="hr.leave.type">
         <field name="name">Paid Time Off</field>
-        <field name="allocation_type">fixed</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">no</field>
+        <field name="allocation_validation_type">set</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
@@ -1789,9 +1789,7 @@
     <!-- Sick leave -->
     <record id="holiday_status_sl" model="hr.leave.type">
         <field name="name">Sick Time Off</field>
-        <field name="allocation_type">no</field>
-        <field name="color_name">red</field>
-        <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
+        <field name="requires_allocation">no</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_sick"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1801,11 +1799,11 @@
     <!-- Compensatory Days -->
     <record id="holiday_status_comp" model="hr.leave.type">
         <field name="name">Compensatory Days</field>
-        <field name="allocation_type">fixed_allocation</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">yes</field>
         <field name="leave_validation_type">both</field>
         <field name="request_unit">hour</field>
         <field name="color_name">lavender</field>
-        <field name="validity_start" eval="False"/>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1815,12 +1813,11 @@
     <!--Unpaid Leave -->
     <record id="holiday_status_unpaid" model="hr.leave.type">
         <field name="name">Unpaid</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">brown</field>
         <field name="request_unit">hour</field>
         <field name="unpaid" eval="True"/>
-        <field name="validity_start" eval="False"/>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_unpaid"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1829,10 +1826,11 @@
 
     <record id="hr_holiday_status_dv" model="hr.leave.type">
         <field name="name">Parental Leaves</field>
-        <field name="allocation_type">fixed</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">no</field>
+        <field name="allocation_validation_type">set</field>
         <field name="color_name">brown</field>
         <field name="leave_validation_type">both</field>
-        <field name="validity_start" eval="False"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave"></field>
@@ -1841,36 +1839,33 @@
     <!-- YTI TODO master: move this in data -->
     <record id="holiday_status_bank_holiday" model="hr.leave.type">
         <field name="name">Public Holiday</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_bank_holiday"/>
     </record>
 
     <record id="holiday_status_phc" model="hr.leave.type">
         <field name="name">Public Holiday Compensation</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_phc"/>
     </record>
 
     <record id="holiday_status_small_unemployment" model="hr.leave.type">
         <field name="name">Small Unemployment (Brief Holiday)</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_small_unemployment"/>
     </record>
@@ -1880,6 +1875,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_admin"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_int_tour" model="hr.leave.allocation">
@@ -1887,6 +1884,8 @@
         <field name="holiday_status_id" ref="holiday_status_comp"/>
         <field name="number_of_days">7</field>
         <field name="employee_id" ref="employee_admin"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc" model="hr.leave.allocation">
@@ -1894,6 +1893,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">7</field>
         <field name="employee_id" ref="employee_admin"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id='hr_holidays_cl_allocation' model="hr.leave.allocation">
@@ -1901,6 +1902,8 @@
         <field name="holiday_status_id" ref="holiday_status_comp"/>
         <field name="number_of_days">12</field>
         <field name="employee_id" ref="employee_admin"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_cl_al" model="hr.leave.allocation">
@@ -1908,6 +1911,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_al"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_pl_al" model="hr.leave.allocation">
@@ -1915,6 +1920,8 @@
         <field name="holiday_status_id" ref="hr_holiday_status_dv"/>
         <field name="number_of_days">10</field>
         <field name="employee_id" ref="employee_al"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc_al" model="hr.leave.allocation">
@@ -1922,6 +1929,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">12</field>
         <field name="employee_id" ref="employee_al"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_cl_mit" model="hr.leave.allocation">
@@ -1929,6 +1938,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_mit"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc_mit" model="hr.leave.allocation">
@@ -1936,6 +1947,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">7</field>
         <field name="employee_id" ref="employee_mit"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_cl_qdp" model="hr.leave.allocation">
@@ -1943,6 +1956,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_qdp"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc_qdp" model="hr.leave.allocation">
@@ -1950,6 +1965,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">7</field>
         <field name="employee_id" ref="employee_qdp"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_cl_fpi" model="hr.leave.allocation">
@@ -1957,6 +1974,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_fpi"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc_fpi" model="hr.leave.allocation">
@@ -1964,6 +1983,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">7</field>
         <field name="employee_id" ref="employee_fpi"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_cl_vad" model="hr.leave.allocation">
@@ -1971,6 +1992,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_niv"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc_vad" model="hr.leave.allocation">
@@ -1978,6 +2001,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">5</field>
         <field name="employee_id" ref="employee_niv"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_cl_kim" model="hr.leave.allocation">
@@ -1985,6 +2010,8 @@
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_jve"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <record id="hr_holidays_vc_kim" model="hr.leave.allocation">
@@ -1992,6 +2019,8 @@
         <field name="holiday_status_id" ref="holiday_status_unpaid"/>
         <field name="number_of_days">5</field>
         <field name="employee_id" ref="employee_jve"/>
+        <field name="date_from" eval="time.strftime('%Y-1-1')"/>
+        <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
     <!-- approve leave allocations -->
@@ -1999,12 +2028,8 @@
         <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'draft'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
     </function>
 
-    <function model="hr.leave.allocation" name="action_approve">
-        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'confirm'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
-    </function>
-
     <function model="hr.leave.allocation" name="action_validate">
-        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'validate1'),('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
+        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'confirm'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
     </function>
 
     <record id="hr_holidays_cl" model="hr.leave">
@@ -2283,12 +2308,13 @@
 
     <record id="holiday_status_paid_time_off_2019" model="hr.leave.type">
         <field name="name">Paid Time Off 2019</field>
-        <field name="allocation_type">fixed</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">no</field>
+        <field name="allocation_validation_type">set</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="validity_start" eval="time.strftime('2019-01-01')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
@@ -2296,12 +2322,13 @@
 
     <record id="holiday_status_paid_time_off_2020" model="hr.leave.type">
         <field name="name">Paid Time Off 2020</field>
-        <field name="allocation_type">fixed</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">no</field>
+        <field name="allocation_validation_type">set</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="validity_start" eval="time.strftime('2020-01-01')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
@@ -2313,6 +2340,8 @@
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="hr_employee_joseph_noluck"/>
         <field name="create_date" eval="time.strftime('2019-01-01')"/>
+        <field name="date_from" eval="time.strftime('2019-1-1')"/>
+        <field name="date_to" eval="time.strftime('2019-12-31')"/>
     </record>
 
     <record id="hr_holidays_allocation_joseph_noluck_2020" model="hr.leave.allocation">
@@ -2321,6 +2350,8 @@
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="hr_employee_joseph_noluck"/>
         <field name="create_date" eval="time.strftime('2020-01-01')"/>
+        <field name="date_from" eval="time.strftime('2020-1-1')"/>
+        <field name="date_to" eval="time.strftime('2020-12-31')"/>
     </record>
 
     <function model="hr.leave.allocation" name="action_confirm">
@@ -2332,18 +2363,9 @@
         ]).ids"/>
     </function>
 
-    <function model="hr.leave.allocation" name="action_approve">
-        <value model="hr.leave.allocation" eval="obj().search([
-            ('state', '=', 'confirm'),
-            ('id', 'in', [
-                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2019'),
-                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2020')])
-        ]).ids"/>
-    </function>
-
     <function model="hr.leave.allocation" name="action_validate">
         <value model="hr.leave.allocation" eval="obj().search([
-            ('state', '=', 'validate1'),
+            ('state', '=', 'confirm'),
             ('id', 'in', [
                 ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2019'),
                 ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2020')])

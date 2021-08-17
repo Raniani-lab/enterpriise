@@ -56,6 +56,7 @@
                     default_group_by="employee_id"
                     decoration-info="state in ['confirm', 'validate1']"
                     color="employee_id"
+                    total_row="True"
                     display_unavailability="True"
                     sample="1">
                     <field name="name"/>

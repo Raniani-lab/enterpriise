@@ -32,7 +32,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
 
     holiday_status_id = fields.Many2one(
         "hr.leave.type", string="Time Off Type", required=True,
-        domain=[('valid', '=', True), ('allocation_type', '!=', 'no')])
+        domain=[('has_valid_allocation', '=', True), ('requires_allocation', '=', 'yes')]) #TODO JUD test this!
 
     company_id = fields.Many2one(
         'res.company', string='Company', required=True, default=lambda self: self.env.company)

@@ -113,11 +113,10 @@ class TestEcoVouchers(TransactionCase):
 
         unpaid_time_off_type = self.env['hr.leave.type'].create({
             'name': 'Unpaid',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'leave_validation_type': 'both',
             'request_unit': 'hour',
             'unpaid': True,
-            'validity_start': False,
             'company_id': self.env.company.id,
             'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave').id,
         })

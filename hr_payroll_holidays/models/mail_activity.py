@@ -10,5 +10,5 @@ class MailActivity(models.Model):
     def _action_done(self, feedback=False, attachment_ids=None):
         leave_to_defer_activity_type = self.env.ref('hr_payroll_holidays.mail_activity_data_hr_leave_to_defer')
         res_ids = self.filtered(lambda a: a.activity_type_id == leave_to_defer_activity_type).mapped('res_id')
-        self.env['hr.leave'].browse(res_ids).write({'to_defer': False})
+        self.env['hr.leave'].browse(res_ids).write({'payslip_state': 'done'}) #done or normal??? to check
         return super()._action_done(feedback=feedback, attachment_ids=attachment_ids)

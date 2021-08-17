@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import unittest
+import time
 
 from odoo.tests.common import TransactionCase
 
@@ -24,7 +24,7 @@ class TestCommon(TransactionCase):
         # Leave type
         self.leave_type = self.env['hr.leave.type'].create({
             'name': 'time off',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'request_unit': 'hour',
         })
 
@@ -33,9 +33,13 @@ class TestCommon(TransactionCase):
             'state': 'validate',
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.patrick.id,
+            'date_from': time.strftime('%Y-01-01'),
+            'date_to': time.strftime('%Y-12-31'),
         })
         self.allocation_bob = self.env['hr.leave.allocation'].create({
             'state': 'validate',
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.bob.id,
+            'date_from': time.strftime('%Y-01-01'),
+            'date_to': time.strftime('%Y-12-31'),
         })

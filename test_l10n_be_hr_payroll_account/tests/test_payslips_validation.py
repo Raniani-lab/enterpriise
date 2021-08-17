@@ -279,48 +279,49 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.sick_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'Sick Time Off',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_sick_leave').id,
         })
 
         cls.long_term_sick_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'Sick Time Off',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick').id,
         })
 
         cls.paid_time_off_type_2019 = cls.env['hr.leave.type'].create({
             'name': "Paid Time Off 2019",
-            'allocation_type': 'fixed',
+            'requires_allocation': 'yes',
+            'employee_requests': 'no',
+            'allocation_validation_type': 'set',
             'leave_validation_type': 'both',
-            'validity_start': datetime.date(2019, 1, 1),
             'company_id': cls.env.company.id,
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id,
         })
 
         cls.paid_time_off_type_2020 = cls.env['hr.leave.type'].create({
             'name': "Paid Time Off 2020",
-            'allocation_type': 'fixed',
+            'requires_allocation': 'yes',
+            'employee_requests': 'no',
+            'allocation_validation_type': 'set',
             'leave_validation_type': 'both',
-            'validity_start': datetime.date(2020, 1, 1),
             'company_id': cls.env.company.id,
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id,
         })
 
         cls.unpaid_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'Unpaid',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'leave_validation_type': 'both',
             'request_unit': 'hour',
             'unpaid': True,
-            'validity_start': False,
             'company_id': cls.env.company.id,
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave').id,
         })
 
         cls.european_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'European Time Off',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'leave_validation_type': 'both',
             'request_unit': 'half_day',
             'company_id': cls.env.company.id,
@@ -329,7 +330,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.economic_unemployment_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'Economic Unemployment',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'leave_validation_type': 'both',
             'request_unit': 'half_day',
             'company_id': cls.env.company.id,
@@ -396,6 +397,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'number_of_days': 20,
             'employee_id': cls.employee.id,
             'create_date': datetime.date(2019, 1, 1),
+            'date_from': datetime.date(2015, 1, 1),
+            'date_to': datetime.date(2025, 12, 31),
         })
 
         cls.allocation_2020 = cls.env['hr.leave.allocation'].create({
@@ -404,9 +407,12 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'number_of_days': 20,
             'employee_id': cls.employee.id,
             'create_date': datetime.date(2020, 1, 1),
+            'date_from': datetime.date(2015, 1, 1),
+            'date_to': datetime.date(2025, 12, 31),
         })
 
-        (cls.allocation_2019 + cls.allocation_2020).action_approve()
+        (cls.allocation_2019 + cls.allocation_2020).action_confirm()
+        (cls.allocation_2019 + cls.allocation_2020).action_validate()
 
         cls.unpaid_leave_2019 = cls.env['hr.leave'].create({
             'name': 'Unpaid Time Off 2019',
@@ -441,7 +447,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'employee_id': cls.employee.id,
         })
 
-        (cls.unpaid_leave_2019 + cls.legal_leave_2019 + cls.legal_leave_2020).action_approve()
         (cls.unpaid_leave_2019 + cls.legal_leave_2019 + cls.legal_leave_2020).action_validate()
 
         cls.contract_2019._generate_work_entries(datetime.date(2019, 1, 1), datetime.date(2019, 12, 31))
@@ -5236,7 +5241,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'number_of_days': 1,
             'employee_id': self.employee.id,
         })
-        european_time_off.action_approve()
         european_time_off.action_validate()
 
         european_payslip = self.env['hr.payslip'].create({
@@ -5299,7 +5303,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'number_of_days': 20,
             'employee_id': self.employee.id,
         })
-        european_time_off.action_approve()
         european_time_off.action_validate()
 
         european_payslip = self.env['hr.payslip'].create({

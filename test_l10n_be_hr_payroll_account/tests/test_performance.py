@@ -156,13 +156,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.sick_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'Sick Time Off',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_sick_leave').id,
         })
 
         cls.long_term_sick_time_off_type = cls.env['hr.leave.type'].create({
             'name': 'Sick Time Off',
-            'allocation_type': 'no',
+            'requires_allocation': 'no',
             'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick').id,
         })
 

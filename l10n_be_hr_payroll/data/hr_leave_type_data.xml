@@ -2,7 +2,8 @@
 <odoo>
     <record id="holiday_type_small_unemployment" model="hr.leave.type">
         <field name="name">Small Unemployment</field>
-        <field name="allocation_type">fixed_allocation</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
@@ -12,7 +13,7 @@
 
     <record id="holiday_type_maternity" model="hr.leave.type">
         <field name="name">Maternity Time Off</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="leave_validation_type">no_validation</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
@@ -23,7 +24,7 @@
 
     <record id="holiday_type_unpredictable" model="hr.leave.type">
         <field name="name">Unpredictable Reason</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
@@ -33,7 +34,8 @@
 
     <record id="holiday_type_training" model="hr.leave.type">
         <field name="name">Training Time Off</field>
-        <field name="allocation_type">fixed_allocation</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
@@ -47,7 +49,8 @@
 
     <record id="holiday_type_extra_legal" model="hr.leave.type">
         <field name="name">Extra Legal Time Off</field>
-        <field name="allocation_type">fixed_allocation</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
@@ -57,7 +60,8 @@
 
     <record id="holiday_type_recovery" model="hr.leave.type">
         <field name="name">Recovery Bank Holiday</field>
-        <field name="allocation_type">fixed_allocation</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">yes</field>
         <field name="request_unit">day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
@@ -67,7 +71,8 @@
 
     <record id="holiday_type_european" model="hr.leave.type">
         <field name="name">European Time Off</field>
-        <field name="allocation_type">fixed_allocation</field>
+        <field name="requires_allocation">yes</field>
+        <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
@@ -77,7 +82,7 @@
 
     <record id="holiday_type_credit_time" model="hr.leave.type">
         <field name="name">Credit Time</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="request_unit">half_day</field>
         <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
@@ -87,7 +92,7 @@
 
     <record id="holiday_status_work_accident" model="hr.leave.type">
         <field name="name">Work Accident Time Off</field>
-        <field name="allocation_type">no</field>
+        <field name="requires_allocation">no</field>
         <field name="color_name">red</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_work_accident"/>

@@ -17,7 +17,7 @@ odoo.define('hr_payroll_holidays.WorkEntryPayrollHolidaysControllerMixin', funct
             this._rpc({
                 model: 'hr.leave',
                 method: 'search',
-                args: [[['to_defer', '=', true]]],
+                args: [[['payslip_state', '=', 'blocked']]],
             }).then(function (result) {
                 if(!_.isEmpty(result)) {
                     var $warning = $(QWeb.render("warning.time.off.to.defer", {}));                

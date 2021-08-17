@@ -15,7 +15,6 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
     def setUpClass(cls):
         super(SpreadsheetDocuments, cls).setUpClass()
         cls.folder = cls.env["documents.folder"].create({"name": "Test folder"})
-        cls.default_data_folder = cls.env.ref('documents_spreadsheet.documents_spreadsheet_folder', raise_if_not_found=False)
 
     def archive_existing_spreadsheet(self):
         """Existing spreadsheet in the database can influence some test results"""
@@ -29,9 +28,23 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         })
         self.assertEqual(
             document.folder_id,
-            self.default_data_folder,
+            self.env.company.documents_spreadsheet_folder_id,
             "It should have been assigned the default Spreadsheet Folder"
         )
+        self.env.company.documents_spreadsheet_folder_id = self.env['documents.folder'].create({
+            'name': 'Spreadsheet - Test Folder',
+        })
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        self.assertEqual(
+            document.folder_id,
+            self.env.company.documents_spreadsheet_folder_id,
+            "It should have been assigned the default Spreadsheet Folder"
+        )
+
 
     def test_normal_doc_default_folder(self):
         """Default spreadsheet folder is not assigned to normal documents"""

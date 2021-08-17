@@ -78,7 +78,9 @@ class Document(models.Model):
         """Make sure spreadsheet values have a `folder_id`. Assign the
         default spreadsheet folder if there is none.
         """
-        default_folder = self.env.ref('documents_spreadsheet.documents_spreadsheet_folder', raise_if_not_found=False)
+        # Use the current company's spreadsheet workspace, since `company_id` on `documents.document` is a related field
+        # on `folder_id` we do not need to check vals_list for different companies.
+        default_folder = self.env.company.documents_spreadsheet_folder_id
         if not default_folder:
             default_folder = self.env['documents.folder'].search([], limit=1, order="sequence asc")
         return [

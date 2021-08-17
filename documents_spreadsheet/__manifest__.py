@@ -13,6 +13,7 @@
         'security/security.xml',
         'views/documents_views.xml',
         'views/documents_templates.xml',
+        'views/res_config_settings_views.xml',
         'wizard/save_spreadsheet_template.xml',
     ],
     'demo': [

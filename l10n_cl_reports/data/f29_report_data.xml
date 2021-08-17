@@ -317,7 +317,7 @@
             <field name="sequence" eval="4"/>
             <field name="parent_id" ref='account_financial_report_f29_line_06'/>
             <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_impuesto_unico_trabajadores')), ('tax_line_id', '=', False)]" />
-            <field name="formulas">sum</field>
+            <field name="formulas">-sum</field>
             <field name="green_on_positive" eval="False"/>
             <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />

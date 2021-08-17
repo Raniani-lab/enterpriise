@@ -120,7 +120,7 @@ class L10nBe273S(models.Model):
 
         # The first threshold is at 16320 € of gross IP, so we only consider the rate at 7.5 %.
         # YTI TODO: Handle different thresholds in master
-        line_values = payslips._get_line_values(['IP', 'IP.DED'])
+        line_values = payslips._get_line_values(['IP', 'IP.DED'], compute_sum=True)
 
         gross_amount = line_values['IP']['sum']['total']
         tax_amount = - line_values['IP.DED']['sum']['total']

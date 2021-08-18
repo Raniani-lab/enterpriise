@@ -42,11 +42,14 @@ class CL8ColumnsReport(models.AbstractModel):
                    SUM(account_move_line.credit) AS haber,
                    GREATEST(SUM(account_move_line.balance), 0) AS deudor,
                    GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
-                   SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
-                   SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
-                   SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
-                   SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
-                   SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
+                   CASE WHEN aa.internal_group IN ('asset', 'liability', 'equity')
+                      THEN GREATEST(SUM(account_move_line.balance), 0) ELSE 0 END AS activo,
+                   CASE WHEN aa.internal_group IN ('asset', 'liability', 'equity')
+                      THEN GREATEST(SUM(-account_move_line.balance), 0) ELSE 0 END AS pasivo,
+                   CASE WHEN aa.internal_group IN ('expense', 'income')
+                      THEN GREATEST(SUM(account_move_line.balance), 0) ELSE 0 END AS perdida,
+                   CASE WHEN aa.internal_group IN ('expense', 'income')
+                      THEN GREATEST(SUM(-account_move_line.balance), 0) ELSE 0 END AS ganancia
             FROM account_account AS aa, """ + tables + """
             WHERE """ + where_clause + """
             AND aa.id = account_move_line.account_id

@@ -4,7 +4,7 @@
     'icon': '/l10n_pe/static/description/icon.png',
     'version': '0.1',
     'summary': 'Electronic Invoicing for Peru (OSE method) and UBL 2.1',
-    'category': 'Localization',
+    'category': 'Accounting/Localizations/EDI',
     'author': 'Vauxoo',
     'license': 'OEEL-1',
 'description': """

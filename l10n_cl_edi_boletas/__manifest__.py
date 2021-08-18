@@ -2,7 +2,7 @@
 {
     "name": """Chile - Electronic Receipt""",
     'version': '1.0',
-    'category': 'Localization/Chile',
+    'category': 'Accounting/Localizations/EDI',
     'sequence': 12,
     'author': 'Blanco Martín & Asociados',
     'website': 'http://blancomartin.cl',

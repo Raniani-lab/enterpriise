@@ -202,6 +202,7 @@ class Task(models.Model):
             If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.
         """
+        self._stop_all_timers_and_create_timesheets()
         closed_stage_by_project = {
             project.id:
                 project.type_ids.filtered(lambda stage: stage.is_closed)[:1] or project.type_ids[-1:]
@@ -215,6 +216,31 @@ class Task(models.Model):
                 values['stage_id'] = closed_stage.id
 
             task.write(values)
+
+    def _stop_all_timers_and_create_timesheets(self):
+        ConfigParameter = self.env['ir.config_parameter'].sudo()
+        Timesheet = self.env['account.analytic.line']
+
+        running_timer_ids = self.env['timer.timer'].sudo().search([('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)])
+        if not running_timer_ids:
+            return Timesheet
+
+        task_dict = {task.id: task for task in self}
+        minimum_duration = int(ConfigParameter.get_param('hr_timesheet.timesheet_min_duration', 0))
+        rounding = int(ConfigParameter.get_param('hr_timesheet.timesheet_rounding', 0))
+        timesheets = []
+        for timer in running_timer_ids:
+            minutes_spent = timer._get_minutes_spent()
+            time_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding) / 60
+            task = task_dict[timer.res_id]
+            timesheets.append({
+                'task_id': task.id,
+                'project_id': task.project_id.id,
+                'user_id': timer.user_id.id,
+                'unit_amount': time_spent,
+            })
+        running_timer_ids.unlink()
+        return Timesheet.create(timesheets)
 
     def action_fsm_navigate(self):
         if not self.partner_id.partner_latitude and not self.partner_id.partner_longitude:

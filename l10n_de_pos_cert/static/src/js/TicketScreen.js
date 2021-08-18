@@ -6,11 +6,16 @@ odoo.define('l10n_de_pos_cert.TicketScreen', function(require) {
 
     const PosDeTicketScreen = TicketScreen => class extends TicketScreen {
         // @Override
-        async _canDeleteOrder(order) {
-            if (this.env.pos.isCountryGermany() && order.isTransactionStarted()) {
-                return order.cancelTransaction().catch(error => this._triggerFiskalyError(error));
+        async _onBeforeDeleteOrder(order) {
+            try {
+                if (this.env.pos.isCountryGermany() && order.isTransactionStarted()) {
+                    await order.cancelTransaction();
+                }
+                return super._onBeforeDeleteOrder(...arguments);
+            } catch (error) {
+                this._triggerFiskalyError(error)
+                return false;
             }
-            return super._canDeleteOrder(...arguments);
         }
          _triggerFiskalyError(error) {
             const message = {
@@ -24,8 +29,6 @@ odoo.define('l10n_de_pos_cert.TicketScreen', function(require) {
                 )
             };
             this.trigger('fiskaly-error', { error, message });
-            // throw an error to stop the execution of deleteOrder(order), line 93 point_of_sale.TicketScreen
-            return Promise.reject();
         }
     };
 

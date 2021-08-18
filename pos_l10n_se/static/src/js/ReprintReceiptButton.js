@@ -3,9 +3,6 @@ odoo.define('pos_l10n_se.ReprintReceiptButton', function(require) {
 
     const ReprintReceiptButton = require('point_of_sale.ReprintReceiptButton');
     const Registries = require('point_of_sale.Registries');
-    const OrderReceipt = require('point_of_sale.OrderReceipt');
-    const { useContext } = owl.hooks;
-    const contexts = require('point_of_sale.PosContext');
     const { Gui } = require('point_of_sale.Gui');
     var core    = require('web.core');
     var _t      = core._t;
@@ -14,12 +11,11 @@ odoo.define('pos_l10n_se.ReprintReceiptButton', function(require) {
         class extends ReprintReceiptButton {
             constructor() {
                 super(...arguments);
-                this.orderManagementContext = useContext(contexts.orderManagement);
             }
 
             async _onClick() {
                 if(this.env.pos.useBlackBoxSweden()) {
-                    let order = this.orderManagementContext.selectedOrder;
+                    let order = this.props.order;
 
                     if(order) {
                         let isReprint = await this.rpc({

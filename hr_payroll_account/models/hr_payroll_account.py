@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+from markupsafe import Markup
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -71,7 +72,7 @@ class HrPayslip(models.Model):
 
                 for slip in slip_mapped_data[journal_id][slip_date]:
                     move_dict['narration'] += plaintext2html(slip.number or '' + ' - ' + slip.employee_id.name or '')
-                    move_dict['narration'] += '<br/>'
+                    move_dict['narration'] += Markup('<br/>')
                     for line in slip.line_ids.filtered(lambda line: line.category_id):
                         amount = line.total
                         if line.code == 'NET': # Check if the line is the 'Net Salary'.

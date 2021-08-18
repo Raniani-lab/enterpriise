@@ -77,11 +77,11 @@
                     % if object.videocall_location:
                     <li>Join Video Call: <a href="${object.videocall_location}" target="_blank">${object.videocall_location}</a></li>
                     % endif
+                    % if not is_html_empty(object.description):
+                       <li>Description of the event:
+                       ${object.description | safe}</li>
+                    % endif
                 </ul>
-                % if not is_html_empty(object.description):
-                   <p><strong>Description of the event</strong></p>
-                   ${object.description | safe}
-                % endif
             </td>
     </tr></table>
 </div>
@@ -158,11 +158,11 @@
                         % if object.videocall_location:
                         <li>Join Video Call: <a href="${object.videocall_location}" target="_blank">${object.videocall_location}</a></li>
                         % endif
+                        % if not is_html_empty(object.description):
+                            <li>Description of the event:
+                            ${object.description | safe}</li>
+                        % endif
                     </ul>
-                    % if not is_html_empty(object.description):
-                        <p><strong>Description of the event</strong></p>
-                        ${object.description | safe}
-                    % endif
                 </del>
             </td>
     </tr></table>

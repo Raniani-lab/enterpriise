@@ -161,7 +161,7 @@
                         attrs="{'invisible': [('allow_quotations', '=', False)]}" groups="sales_team.group_sale_salesman,industry_fsm.group_fsm_quotation_from_task"
                         title="Create new quotation" data-hotkey="x"/>
             </xpath>
-            <xpath expr="//button[@name='action_open_parent_task']" position="before">
+            <xpath expr="//span[@id='button_products']" position="replace">
                 <button class="oe_stat_button" name="action_fsm_view_material"
                     type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
                     <div class="o_stat_info">
@@ -201,7 +201,7 @@
                     <field name="warning_message"/>
                 </div>
             </xpath>
-            <xpath expr="//div[@name='button_box']" position="inside">
+            <xpath expr="//span[@id='end_button_box']" position="before">
                 <button name="action_fsm_view_quotations"
                     type="object"
                     class="oe_stat_button"

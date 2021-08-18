@@ -51,8 +51,7 @@ class HelpdeskTeam(models.Model):
         return self.env['project.project'].create({
             'name': name,
             'type_ids': [
-                (0, 0, {'name': _('In Progress')}),
-                (0, 0, {'name': _('Closed'), 'is_closed': True})
+                (0, 0, {'name': _('New')}),
             ],
             'allow_timesheets': True,
             **other,

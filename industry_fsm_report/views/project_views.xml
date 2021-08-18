@@ -234,7 +234,7 @@
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
                     attrs="{'invisible': [('display_send_report_secondary', '=', False)]}" data-hotkey="g"/>
             </xpath>
-            <xpath expr="//button[@name='action_recurring_tasks']" position="before">
+            <xpath expr="//span[@id='button_worksheet']" position="replace">
                 <field name="worksheet_count" invisible="1"/>
                 <button
                     string="Worksheet"
@@ -253,7 +253,7 @@
                     attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}">
                 </button>
             </xpath>
-            <xpath expr="//button[@name='action_view_timesheets']" position="after">
+            <xpath expr="//span[@id='end_button_box']" position="after">
                 <field name="worksheet_signature" invisible="1"/>
                 <button
                     string="Customer Preview"

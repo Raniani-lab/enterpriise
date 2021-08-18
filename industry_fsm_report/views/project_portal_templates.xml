@@ -85,13 +85,19 @@
 
 
     <template id="portal_my_task" inherit_id="project.portal_my_task">
+        <xpath expr="//li[@id='nav-report']" position="attributes">
+            <attribute name="t-if">(not task.is_fsm and timesheets and allow_timesheets) or (task.is_fsm and task.allow_worksheets and task.worksheet_count)</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_download_pdf')]" position="before">
+            <a t-if="task.is_fsm and task.allow_worksheets and task.worksheet_count" role="button" class="btn btn-primary btn-block" t-attf-href="#{task.get_portal_url(suffix='/worksheet')}">
+                <i class="fa fa-check mr-1"/>View Worksheet
+            </a>
+        </xpath>
+        <xpath expr="//div[hasclass('o_download_pdf')]" position="attributes">
+            <attribute name="t-if">(not task.is_fsm and timesheets and allow_timesheets)</attribute>
+        </xpath>
         <xpath expr="//t[@t-set='backend_url']" position="after">
             <t t-if="task.is_fsm" t-set="backend_url" t-value="'/web#model=project.task&amp;id=%s&amp;action=%s&amp;view_type=form' % (task.id, task.env.ref('industry_fsm.project_task_action_fsm').id)"/>
-        </xpath>
-        <xpath expr="//t[@t-call='portal.portal_record_layout']" position="after">
-            <div t-if="task.allow_worksheets and task.worksheet_count" class="row justify-content-center text-center d-print-none pt-1 pb-4">
-                <a role="button" class="btn btn-primary m-3" t-attf-href="#{task.get_portal_url(suffix='/worksheet')}">View Worksheet</a>
-            </div>
         </xpath>
     </template>
 

@@ -155,6 +155,7 @@
             'search_default_groupby_planned_date_begin': True,
             'default_mode': 'day',
             'default_scale': 'day',
+            'default_user_ids': [(4, uid)],
         }</field>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>No tasks found. Let's create one!</p>
@@ -208,6 +209,7 @@
             'search_default_my_tasks': True,
             'search_default_planned_today': True,
             'fsm_task_kanban_whole_date':False,
+            'default_user_ids': [(4, uid)],
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

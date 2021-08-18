@@ -146,6 +146,7 @@ class Task(models.Model):
         invoices = self.mapped('sale_order_id.invoice_ids')
         # prevent view with onboarding banner
         list_view = self.env.ref('account.view_move_tree')
+        kanban_view = self.env.ref('account.view_account_move_kanban')
         form_view = self.env.ref('account.view_move_form')
         if len(invoices) == 1:
             return {
@@ -155,14 +156,20 @@ class Task(models.Model):
                 'view_mode': 'form',
                 'views': [[form_view.id, 'form']],
                 'res_id': invoices.id,
+                'context': {
+                    'create': False,
+                }
             }
         return {
             'type': 'ir.actions.act_window',
             'name': _('Invoices'),
             'res_model': 'account.move',
-            'view_mode': 'list,form',
-            'views': [[list_view.id, 'list'], [form_view.id, 'form']],
+            'view_mode': 'list,kanban,form',
+            'views': [[list_view.id, 'list'], [kanban_view.id, 'kanban'], [form_view.id, 'form']],
             'domain': [('id', 'in', invoices.ids)],
+            'context': {
+                'create': False,
+            }
         }
 
     def action_fsm_create_quotation(self):

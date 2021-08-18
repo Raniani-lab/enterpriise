@@ -5,7 +5,7 @@
     <record id="project_forecast_action_from_project" model="ir.actions.act_window">
         <field name="name">Planning</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,tree,form,pivot</field>
+        <field name="view_mode">gantt,calendar,tree,form,pivot</field>
         <field name="context">{
             'group_by': ['employee_id'],
             'search_default_group_by_resource': 1,

@@ -22,7 +22,7 @@ class Task(models.Model):
     _inherit = "project.task"
 
     planned_date_begin = fields.Datetime("Start date", tracking=True, task_dependency_tracking=True)
-    planned_date_end = fields.Datetime("End date")
+    planned_date_end = fields.Datetime("End date", tracking=True)
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)

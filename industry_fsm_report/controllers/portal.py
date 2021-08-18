@@ -5,6 +5,7 @@ from odoo import http, _
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
 from odoo.addons.portal.controllers import portal
+from odoo.addons.project.controllers.portal import ProjectCustomerPortal
 
 import binascii
 
@@ -62,3 +63,11 @@ class CustomerPortal(portal.CustomerPortal):
             'force_refresh': True,
             'redirect_url': task_sudo.get_portal_url(suffix='/worksheet/%s' % source, query_string=query_string),
         }
+
+class TimesheetProjectCustomerPortal(ProjectCustomerPortal):
+
+    def _show_task_report(self, task_sudo, report_type, download):
+        if not task_sudo.is_fsm:
+            return super()._show_task_report(task_sudo, report_type, download)
+        return self._show_report(model=task_sudo,
+            report_type=report_type, report_ref='industry_fsm_report.task_custom_report', download=download)

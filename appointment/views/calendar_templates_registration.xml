@@ -13,7 +13,7 @@
                     <section class="s_text_block">
                         <div class="container">
                             <p>
-                                <span t-field="appointment_type.name"/> on <strong t-esc="datetime_locale"/>
+                                <span t-field="appointment_type.name"/> on <strong t-out="datetime_locale"/>
                             </p>
                         </div>
                     </section>
@@ -53,7 +53,7 @@
 
                             <t t-foreach="appointment_type.question_ids" t-as="question">
                                 <div class="form-group row col-xl-8 mx-auto" t-if="question.question_type!='text'">
-                                    <label t-attf-for="question_#{question.id}" class="col-md-4 col-form-label" t-esc="' '.join([question.name, '*' if question.question_required else ''])"/>
+                                    <label t-attf-for="question_#{question.id}" class="col-md-4 col-form-label" t-out="' '.join([question.name, '*' if question.question_required else ''])"/>
                                     <div class="col-md-8">
                                         <t t-if="question.question_type == 'char'">
                                             <input type="char" class="form-control"
@@ -66,7 +66,7 @@
                                                 t-att-required="question.question_required or None"
                                                 t-att-placeholder="question.placeholder">
                                                 <t t-foreach="question.answer_ids or []" t-as="answer">
-                                                    <option t-att-value="answer.name"><t t-esc="answer.name"/></option>
+                                                    <option t-att-value="answer.name"><t t-out="answer.name"/></option>
                                                 </t>
                                             </select>
                                         </t>
@@ -75,7 +75,7 @@
                                                 <label>
                                                     <input type="radio" t-attf-name="question_#{question.id}"
                                                         t-att-required="question.question_required or None"
-                                                        t-att-value="answer.name" class="mr-1"/> <t t-esc="answer.name"/>
+                                                        t-att-value="answer.name" class="mr-1"/> <t t-out="answer.name"/>
                                                 </label>
                                             </div>
                                         </t>
@@ -84,7 +84,7 @@
                                                 <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
                                                     <label>
                                                         <input type="checkbox" t-attf-name="question_#{question.id}_answer_#{answer.id}"
-                                                            t-att-value="answer.name" class="mr-2"/><t t-esc="answer.name"/>
+                                                            t-att-value="answer.name" class="mr-2"/><t t-out="answer.name"/>
                                                     </label>
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row col-xl-8 mx-auto" t-if="question.question_type == 'text'">
-                                    <label t-attf-for="question_#{question.id}" class="col-md-4 col-form-label" t-esc="question.name"/>
+                                    <label t-attf-for="question_#{question.id}" class="col-md-4 col-form-label" t-out="question.name"/>
                                     <div class="col-md-8">
                                         <textarea class="form-control" rows="8"
                                             t-att-required="question.question_required or None"

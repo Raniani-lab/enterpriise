@@ -47,11 +47,11 @@
                         <t t-set="appts" t-value="appts[1]"/>
                         <tr class="thead-light">
                             <th>
-                                <em class="font-weight-normal text-muted">Appointments by <t t-esc="searchbar_groupby[groupby]['label']"/>:</em>
+                                <em class="font-weight-normal text-muted">Appointments by <t t-out="searchbar_groupby[groupby]['label']"/>:</em>
                                 <span t-field="groupby_record.name"/>
                             </th>
                             <th class="text-right">
-                                Total: <span class="text-muted" t-esc="len(appts)"/>
+                                Total: <span class="text-muted" t-out="len(appts)"/>
                             </th>
                         </tr>
                         <tr>
@@ -64,7 +64,7 @@
                             <tr>
                                 <td>
                                     <a t-attf-href="/calendar/view/#{appointment.access_token}?partner_id=#{request.env.user.partner_id.id}">
-                                        <t t-esc="appointment.appointment_type_id.name"/> with <t t-esc="appointment.user_id.name"/>
+                                        <t t-out="appointment.appointment_type_id.name"/> with <t t-out="appointment.user_id.name"/>
                                     </a>
                                 </td>
                                 <td class="text-right"><span t-field="appointment.start"/></td>

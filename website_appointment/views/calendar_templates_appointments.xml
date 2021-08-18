@@ -60,7 +60,7 @@
                     <span class="navbar-brand h4 my-0 mr-auto">Appointments</span>
                     <div class="d-flex flex-wrap pl-sm-3 pr-0">
                         <t t-call="website_appointment.appointments_search_box">
-                            <t t-set="_placeholder"><t t-esc="'Search an appointment...'"/></t>
+                            <t t-set="_placeholder"><t t-out="'Search an appointment...'"/></t>
                         </t>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                                 </h5>
                                 <!-- Location -->
                                 <div t-if="appointment.location" itemprop="location" t-att-title="appointment.location" class="mt-3 text-truncate">
-                                    <i class="fa fa-map-marker mr-2"/><t t-esc="appointment.location"/>
+                                    <i class="fa fa-map-marker mr-2"/><t t-out="appointment.location"/>
                                 </div>
                             </main>
                         </div>

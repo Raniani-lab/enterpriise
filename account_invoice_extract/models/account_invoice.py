@@ -89,12 +89,12 @@ class AccountMove(models.Model):
                 if warnings:
                     warnings_messages = []
                     if WARNING_DUPLICATE_VENDOR_REFERENCE in warnings:
-                        warnings_messages.append(WARNING_MESSAGES[WARNING_DUPLICATE_VENDOR_REFERENCE] % record.duplicated_vendor_ref)
+                        warnings_messages.append(str(WARNING_MESSAGES[WARNING_DUPLICATE_VENDOR_REFERENCE]) % record.duplicated_vendor_ref)
                     if WARNING_DATE_PRIOR_OF_LOCK_DATE in warnings:
-                        warnings_messages.append(WARNING_MESSAGES[WARNING_DATE_PRIOR_OF_LOCK_DATE])
+                        warnings_messages.append(str(WARNING_MESSAGES[WARNING_DATE_PRIOR_OF_LOCK_DATE]))
                     record.extract_error_message = '\n'.join(warnings_messages)
                 else:
-                    record.extract_error_message = ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL])
+                    record.extract_error_message = str(ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL]))
             else:
                 record.extract_error_message = ''
 

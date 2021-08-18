@@ -68,21 +68,22 @@ class MarketingActivity(models.Model):
         else:
             failed_stats = self.env['mailing.trace'].sudo().search([
                 ('marketing_trace_id', 'in', traces.ids),
-                '|', ('exception', '!=', False), ('ignored', '!=', False)])
-            ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.ignored]
-            error_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]
+                ('trace_status', 'in', ['error', 'cancel'])
+            ])
+            cancel_doc_ids = [stat.res_id for stat in failed_stats if stat.trace_status == 'cancel']
+            error_doc_ids = [stat.res_id for stat in failed_stats if stat.trace_status == 'error']
 
             processed_traces = traces
-            ignored_traces = traces.filtered(lambda trace: trace.res_id in ignored_doc_ids)
+            canceled_traces = traces.filtered(lambda trace: trace.res_id in cancel_doc_ids)
             error_traces = traces.filtered(lambda trace: trace.res_id in error_doc_ids)
 
-            if ignored_traces:
-                ignored_traces.write({
+            if canceled_traces:
+                canceled_traces.write({
                     'state': 'canceled',
                     'schedule_date': Datetime.now(),
-                    'state_msg': _('SMS ignored')
+                    'state_msg': _('SMS canceled')
                 })
-                processed_traces = processed_traces - ignored_traces
+                processed_traces = processed_traces - canceled_traces
             if error_traces:
                 error_traces.write({
                     'state': 'error',

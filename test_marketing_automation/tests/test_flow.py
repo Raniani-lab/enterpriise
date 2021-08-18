@@ -150,11 +150,12 @@ for record in records:
             'trace_status': 'sent',
             'schedule_date': date_reference,
         }, {
-            'status': 'error',
+            'status': 'canceled',
             'records': test_records_1_ko,
             'schedule_date': date_reference,
-            # no email -> trace set as ignored
-            'trace_status': 'ignored',
+            # no email -> trace set as canceled
+            'trace_status': 'cancel',
+            'failure_type': 'mail_email_missing',
         }], act1)
 
         # Child traces should have been generated for all traces of parent activity as activity_domain
@@ -190,7 +191,7 @@ for record in records:
         self.assertMarketAutoTraces([{
             'status': 'processed',
             'records': test_records_1_replied,
-            'trace_status': 'replied',
+            'trace_status': 'reply',
             'schedule_date': date_reference,
         }, {
             'status': 'processed',
@@ -198,11 +199,12 @@ for record in records:
             'trace_status': 'sent',
             'schedule_date': date_reference,
         }, {
-            'status': 'error',
+            'status': 'canceled',
             'records': test_records_1_ko,
             'schedule_date': date_reference,
-            # no email -> trace set as ignored
-            'trace_status': 'ignored',
+            # no email -> trace set as canceled
+            'trace_status': 'cancel',
+            'failure_type': 'mail_email_missing',
         }], act1)
 
         # Replied records -> SMS scheduled

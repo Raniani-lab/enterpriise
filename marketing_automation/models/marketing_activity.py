@@ -234,13 +234,13 @@ class MarketingActivity(models.Model):
         self.env.cr.execute("""
             SELECT
                 trace.activity_id,
-                COUNT(CASE WHEN stat.sent IS NOT NULL THEN 1 ELSE null END) AS total_sent,
-                COUNT(CASE WHEN stat.clicked IS NOT NULL THEN 1 ELSE null END) AS total_click,
-                COUNT(CASE WHEN stat.replied IS NOT NULL THEN 1 ELSE null END) AS total_reply,
-                COUNT(CASE WHEN stat.opened IS NOT NULL THEN 1 ELSE null END) AS total_open,
-                COUNT(CASE WHEN stat.bounced IS NOT NULL THEN 1 ELSE null END) AS total_bounce,
-                COUNT(CASE WHEN trace.state = 'processed' THEN 1 ELSE null END) AS processed,
-                COUNT(CASE WHEN trace.state = 'rejected' THEN 1 ELSE null END) AS rejected
+                COUNT(stat.sent_datetime) AS total_sent,
+                COUNT(stat.links_click_datetime) AS total_click,
+                COUNT(stat.trace_status) FILTER (WHERE stat.trace_status = 'reply') AS total_reply,
+                COUNT(stat.trace_status) FILTER (WHERE stat.trace_status in ('open', 'reply')) AS total_open,
+                COUNT(stat.trace_status) FILTER (WHERE stat.trace_status = 'bounce') AS total_bounce,
+                COUNT(trace.state) FILTER (WHERE trace.state = 'processed') AS processed,
+                COUNT(trace.state) FILTER (WHERE trace.state = 'rejected') AS rejected
             FROM
                 marketing_trace AS trace
             LEFT JOIN
@@ -434,23 +434,25 @@ class MarketingActivity(models.Model):
                 'state_msg': _('Exception in mass mailing: %s', e),
             })
         else:
+            # TDE Note: bounce is not really set at launch, let us consider it as an error
             failed_stats = self.env['mailing.trace'].sudo().search([
                 ('marketing_trace_id', 'in', traces.ids),
-                '|', ('exception', '!=', False), ('ignored', '!=', False)])
-            ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]
-            error_doc_ids = [stat.res_id for stat in failed_stats if stat.ignored]
+                ('trace_status', 'in', ['error', 'bounce', 'cancel'])
+            ])
+            error_doc_ids = [stat.res_id for stat in failed_stats if stat.trace_status in ('error', 'bounce')]
+            cancel_doc_ids = [stat.res_id for stat in failed_stats if stat.trace_status == 'cancel']
 
             processed_traces = traces
-            ignored_traces = traces.filtered(lambda trace: trace.res_id in ignored_doc_ids)
+            canceled_traces = traces.filtered(lambda trace: trace.res_id in cancel_doc_ids)
             error_traces = traces.filtered(lambda trace: trace.res_id in error_doc_ids)
 
-            if ignored_traces:
-                ignored_traces.write({
+            if canceled_traces:
+                canceled_traces.write({
                     'state': 'canceled',
                     'schedule_date': Datetime.now(),
-                    'state_msg': _('Email ignored')
+                    'state_msg': _('Email canceled')
                 })
-                processed_traces = processed_traces - ignored_traces
+                processed_traces = processed_traces - canceled_traces
             if error_traces:
                 error_traces.write({
                     'state': 'error',
@@ -488,22 +490,32 @@ class MarketingActivity(models.Model):
         return self._action_view_documents_filtered('sent')
 
     def action_view_replied(self):
-        return self._action_view_documents_filtered('replied')
+        return self._action_view_documents_filtered('reply')
 
     def action_view_clicked(self):
-        return self._action_view_documents_filtered('clicked')
+        return self._action_view_documents_filtered('click')
 
     def action_view_bounced(self):
-        return self._action_view_documents_filtered('bounced')
+        return self._action_view_documents_filtered('bounce')
 
     def _action_view_documents_filtered(self, view_filter):
         if not self.mass_mailing_id:  # Only available for mass mailing
             return False
         action = self.env["ir.actions.actions"]._for_xml_id("marketing_automation.marketing_participants_action_mail")
-        participant_ids = self.trace_ids.filtered(lambda stat: stat[view_filter]).mapped("participant_id").ids
+
+        if view_filter in ('reply', 'bounce'):
+            found_traces = self.trace_ids.filtered(lambda trace: trace.mailing_trace_status == view_filter)
+        elif view_filter == 'sent':
+            found_traces = self.trace_ids.filtered(lambda trace: trace.mailing_trace_ids.sent_datetime)
+        elif view_filter == 'click':
+            found_traces = self.trace_ids.filtered(lambda trace: trace.mailing_trace_ids.links_click_datetime)
+        else:
+            found_traces = self.env['marketing.trace']
+
+        participants = found_traces.participant_id
         action.update({
             'display_name': _('Participants of %s (%s)') % (self.name, view_filter),
-            'domain': [('id', 'in', participant_ids)],
+            'domain': [('id', 'in', participants.ids)],
             'context': dict(self._context, create=False)
         })
         return action

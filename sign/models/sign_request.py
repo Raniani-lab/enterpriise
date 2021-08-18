@@ -552,7 +552,7 @@ class SignRequest(models.Model):
         body_html = notif_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = sign_request.env['mail.render.mixin']._replace_local_links(body_html)
 
-        mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
+        mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, **mail_values))
         if force_send:
             mail.send()
         return mail

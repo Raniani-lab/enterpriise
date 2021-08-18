@@ -41,7 +41,6 @@ class HrReferralSendMail(models.TransientModel):
 
         self.env['mail.mail'].sudo().create({
             'body_html': self.body_html,
-            'state': 'outgoing',
             'author_id': self.env.user.partner_id.id,
             'email_from': self.env.user.email_formatted,
             'email_to': self.email_to,

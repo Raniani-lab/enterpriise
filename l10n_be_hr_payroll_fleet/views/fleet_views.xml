@@ -6,24 +6,20 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='horsepower_tax']" position="before">
-                <span attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <field name="atn" widget="monetary" attrs="{'invisible': [('vehicle_type', '!=', 'car')]}"/>
-                    <field name="tax_deduction" widget="percentage"/>
-                    <label for="co2_fee" attrs="{'invisible': [('vehicle_type', '!=', 'car')]}"/>
-                    <div class="o_row" attrs="{'invisible': [('vehicle_type', '!=', 'car')]}">
-                        <field name="co2_fee" widget="monetary"/>
-                        <span> / month</span>
-                    </div>
-                </span>
+                <field name="atn" widget="monetary" attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), ('vehicle_type', '!=', 'car')]}"/>
+                <field name="tax_deduction" widget="percentage" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
+                <label for="co2_fee" attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), ('vehicle_type', '!=', 'car')]}"/>
+                <div class="o_row" attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), ('vehicle_type', '!=', 'car')]}">
+                    <field name="co2_fee" widget="monetary"/>
+                    <span> / month</span>
+                </div>
             </xpath>
             <xpath expr="//field[@name='residual_value']" position="after">
-                <span attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <label for="total_depreciated_cost"/>
-                    <div class="o_row">
-                        <field name="total_depreciated_cost" nolabel="1" widget="monetary"/>
-                        <span>/ month</span>
-                    </div>
-                </span>
+                <label for="total_depreciated_cost" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
+                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                    <field name="total_depreciated_cost" nolabel="1" widget="monetary"/>
+                    <span>/ month</span>
+                </div>
             </xpath>
         </field>
     </record>

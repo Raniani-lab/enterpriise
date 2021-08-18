@@ -21,16 +21,6 @@ MrpBomReport.include({
             views: [[false, 'kanban'], [false, 'list'], [false, 'form']],
             target: 'current',
         });
-    },
-    _reload_report_type: function () {
-        this._super.apply(this, arguments);
-
-        if (this.given_context.report_type === 'bom_cost') {
-            this.$('.o_mrp_bom_ver, .o_mrp_ecos').addClass('o_hidden');
-        }
-        else {
-            this.$('.o_mrp_bom_ver, .o_mrp_ecos').removeClass('o_hidden');
-        }
     }
 });
 

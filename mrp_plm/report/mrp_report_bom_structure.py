@@ -37,3 +37,6 @@ class ReportBomStructure(models.AbstractModel):
         data = super(ReportBomStructure, self)._get_pdf_line(bom_id, product_id, qty, child_bom_ids, unfolded)
         self._add_version_and_ecos(data['lines'])
         return data
+
+    def _get_extra_column_count(self):
+        return super()._get_extra_column_count() + 2

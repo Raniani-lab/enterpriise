@@ -479,6 +479,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'vat': '123456789',
         })
         currency_usd = self.env.ref('base.USD')
+        currency_usd.active = True
         self.env['res.currency.rate'].create({
             'name': '2019-10-22',
             'company_id': self.company_data['company'].id,

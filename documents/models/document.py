@@ -302,7 +302,7 @@ class Document(models.Model):
 
     def toggle_favorited(self):
         self.ensure_one()
-        self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
+        self.sudo().write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
 
     def access_content(self):
         self.ensure_one()

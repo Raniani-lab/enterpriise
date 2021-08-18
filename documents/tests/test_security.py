@@ -138,6 +138,9 @@ class TestCaseSecurity(TransactionCase):
         with self.assertRaises(AccessError):
             document_b.with_user(self.test_group_user).write({'name': 'nameChangedB'})
 
+        document_b.with_user(self.test_group_user).toggle_favorited()
+        self.assertFalse(document_b.is_favorited)
+
         test_group_user_document_b_name = document_b.with_user(self.test_group_user).read(['name'])
         self.assertEqual(test_group_user_document_b_name, [{'id': document_b.id, 'name': 'document B'}],
                          'test_group_user should be able to read document_b')

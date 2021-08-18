@@ -45,7 +45,7 @@ QUnit.test('activity with approval to be made by logged user', async function (a
         approver_status: 'pending',
         can_write: true,
         id: 10,
-        user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
+        user_id: [this.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
     await this.createActivityComponent(activity);
@@ -239,7 +239,7 @@ QUnit.test('approve approval', async function (assert) {
         approver_status: 'pending',
         can_write: true,
         id: 10,
-        user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
+        user_id: [this.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
     await this.createActivityComponent(activity);
@@ -279,7 +279,7 @@ QUnit.test('refuse approval', async function (assert) {
         approver_status: 'pending',
         can_write: true,
         id: 10,
-        user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
+        user_id: [this.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
     await this.createActivityComponent(activity);

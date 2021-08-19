@@ -135,21 +135,23 @@ textarea.o_sign_sign_item {
 
 .o_sign_select_options_display {
     height: 100%;
-    width: 100%;
-    display: flex;
-    margin-top: -22px;
+    width: calc(100% - 25px);
     align-items: center;
     justify-content: left;
+    padding-left: 25px;
+}
+
+.o_sign_select_options_display_edit{
+    display: flex;
+    padding-left: 0;
 }
 
 .o_sign_item_option {
-    padding: 5px 5px 5px 30px; /* padding left for sign_config_handle */
-    /* font-size: 12pt; */
+    padding: 5px;
 }
 
 .o_sign_option_separator {
     padding: 5px;
-    /* font-size: 12pt; */
 }
 
 .o_sign_selected_option {

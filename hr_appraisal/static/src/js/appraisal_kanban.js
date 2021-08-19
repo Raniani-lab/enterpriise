@@ -18,11 +18,11 @@ const AppraisalKanbanRecord = KanbanRecord.extend({
         });
     },
 
-    _onOpenChat: function(ev) {
+    async _onOpenChat(ev) {
         ev.preventDefault();
         ev.stopImmediatePropagation();
-        const env = Component.env;
-        env.messaging.openChat({ employeeId: $(ev.target).data('id') });
+        const messaging = await Component.env.services.messaging.get();
+        messaging.openChat({ employeeId: $(ev.target).data('id') });
     },
 });
 

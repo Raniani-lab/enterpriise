@@ -15,7 +15,7 @@ class SignRequest extends Component {
      * @returns {mail.activity}
      */
     get activity() {
-        return this.env.models['mail.activity'].get(this.props.activityLocalId);
+        return this.messaging && this.messaging.models['mail.activity'].get(this.props.activityLocalId);
     }
 
     //--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ class SignRequest extends Component {
                     'default_activity_id': this.activity.id,
                 },
                 on_close: () => {
-                    var activity = this.env.models['mail.activity'].get(this.props.activityLocalId);
+                    var activity = this.messaging.models['mail.activity'].get(this.props.activityLocalId);
                     activity.update();
                     this.trigger('reload');
                 },

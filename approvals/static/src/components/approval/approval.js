@@ -15,7 +15,7 @@ class Approval extends Component {
      * @returns {approvals.approval}
      */
     get approval() {
-        return this.env.models['approvals.approval'].get(this.props.approvalLocalId);
+        return this.messaging && this.messaging.models['approvals.approval'].get(this.props.approvalLocalId);
     }
 
     //--------------------------------------------------------------------------

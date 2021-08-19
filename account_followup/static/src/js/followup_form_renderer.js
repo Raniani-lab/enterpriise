@@ -45,8 +45,8 @@ var FollowupFormRenderer = FormRenderer.extend({
      * Remove the mail alert above the report.
      */
     removeMailAlert: function () {
-        if (owl.Component.env.isMessagingInitialized()) {
-            const thread = owl.Component.env.models['mail.thread'].findFromIdentifyingData({
+        owl.Component.env.services.messaging.get().then(messaging => {
+            const thread = messaging.models['mail.thread'].findFromIdentifyingData({
                 id: this.state.res_id,
                 model: this.state.model,
             });
@@ -55,7 +55,7 @@ var FollowupFormRenderer = FormRenderer.extend({
                 thread.refreshActivities();
                 thread.refreshFollowers();
             }
-        }
+        });
         this.$('div.alert.alert-info.alert-dismissible').remove();
     },
     /**

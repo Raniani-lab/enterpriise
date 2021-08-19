@@ -643,3 +643,71 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('400000 (2) Product Sales',            0.0,        0.0,        1000.0,     300.0,      0.0,        0.0),
             ],
         )
+
+    def test_affect_base_with_repetitions(self):
+        affecting_tax = self.env['account.tax'].create({
+            'name': 'Affecting',
+            'amount': 42,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'include_base_amount': True,
+            'sequence': 0,
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        affected_tax = self.env['account.tax'].create({
+            'name': 'Affected',
+            'amount': 10,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'sequence': 1
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        # Create an invoice combining our taxes (1 line with each alone, and 1 line with both)
+        move = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2021-08-01',
+            'invoice_line_ids': [
+                Command.create({
+                    'name': "affecting",
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'quantity': 1.0,
+                    'price_unit': 100.0,
+                    'tax_ids': affecting_tax.ids,
+                }),
+
+                Command.create({
+                    'name': "affected",
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'quantity': 1.0,
+                    'price_unit': 100.0,
+                    'tax_ids': affected_tax.ids,
+                }),
+
+                Command.create({
+                    'name': "affecting + affected",
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'quantity': 1.0,
+                    'price_unit': 100.0,
+                    'tax_ids': (affecting_tax + affected_tax).ids,
+                }),
+            ]
+        })
+
+        move.action_post()
+
+        # Check generic tax report
+        report = self.env['account.generic.tax.report']
+        report_options = self._init_options(report, move.date, move.date, {'tax_report': 'generic'})
+        self.assertLinesValues(
+            report._get_lines(report_options),
+            #   Name                                   Net              Tax
+            [   0,                                       1,               2],
+            [
+                ("Sales",                               '',             108.2),
+                ("%s (42.0%%)" % affecting_tax.name,   200,              84),
+                ("%s (10.0%%)" % affected_tax.name,    242,              24.2),
+            ],
+        )

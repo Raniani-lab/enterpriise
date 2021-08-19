@@ -14,6 +14,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
     'depends': ['web'],
     'auto_install': True,
     'data': [
+        'views/partner_view.xml',
         'views/webclient_templates.xml',
     ],
     'assets': {

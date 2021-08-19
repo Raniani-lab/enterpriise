@@ -23,15 +23,7 @@
             <field name="name">TOTAL DE L'ACTIF</field>
             <field name="code">BE_ACTIF</field>
             <field name="parent_id" ref='account_financial_report_be_actif_title0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '2%'),
-                '|', ('account_id.code', '=like', '3%'),
-                '|', ('account_id.code', '=like', '40%'),
-                '|', ('account_id.code', '=like', '41%'),
-                '|', ('account_id.code', '=like', '490%'),
-                '|', ('account_id.code', '=like', '491%'),
-                     ('account_id.code', '=like', '5%')
-            ]" />
+            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]" />
             <field name="formulas">BE_20_28 + BE_29_58</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="0" />
@@ -40,17 +32,6 @@
             <field name="name">20/28 - Actifs immobilisés</field>
             <field name="code">BE_20_28</field>
             <field name="parent_id" ref='account_financial_report_be_actif_title0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '20%'),
-                '|', ('account_id.code', '=like', '21%'),
-                '|', ('account_id.code', '=like', '22%'),
-                '|', ('account_id.code', '=like', '23%'),
-                '|', ('account_id.code', '=like', '24%'),
-                '|', ('account_id.code', '=like', '25%'),
-                '|', ('account_id.code', '=like', '26%'),
-                '|', ('account_id.code', '=like', '27%'),
-                     ('account_id.code', '=like', '28%')
-            ]" />
             <field name="formulas">BE_20 + BE_21 + BE_22_27 + BE_28</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="1" />
@@ -79,14 +60,6 @@
             <field name="name">22/27 - Immobilisations corporelles</field>
             <field name="code">BE_22_27</field>
             <field name="parent_id" ref='account_financial_report_be_actif_imm0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '22%'),
-                '|', ('account_id.code', '=like', '23%'),
-                '|', ('account_id.code', '=like', '24%'),
-                '|', ('account_id.code', '=like', '25%'),
-                '|', ('account_id.code', '=like', '26%'),
-                     ('account_id.code', '=like', '27%')
-            ]" />
             <field name="formulas">BE_22 + BE_23 + BE_24 + BE_25 + BE_26 + BE_27</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2" />
@@ -165,16 +138,7 @@
             <field name="name">29/58 - Actif circulants</field>
             <field name="code">BE_29_58</field>
             <field name="parent_id" ref='account_financial_report_be_actif_title0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '29%'),
-                '|', ('account_id.code', '=like', '3%'),
-                '|', ('account_id.code', '=like', '40%'),
-                '|', ('account_id.code', '=like', '41%'),
-                '|', ('account_id.code', '=like', '490%'),
-                '|', ('account_id.code', '=like', '491%'),
-                     ('account_id.code', '=like', '5%')
-            ]" />
-            <field name="formulas">BE_29 + BE_3 + BE_40_41 + BE_50_53 + BE_54_58 + BE_490_1</field>
+            <field name="formulas">BE_29 + BE_3 + BE_40_41 + BE_50_53 + BE_54_58 + BE_490_1_6</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="1" />
         </record>
@@ -182,7 +146,6 @@
             <field name="name">29 - Créances à plus d'un an</field>
             <field name="code">BE_29</field>
             <field name="parent_id" ref='account_financial_report_be_actif_circ0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '29%')]" />
             <field name="formulas">BE_290 + BE_291</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2" />
@@ -211,7 +174,6 @@
             <field name="name">3 - Stocks et commandes en cours d'exécution</field>
             <field name="code">BE_3</field>
             <field name="parent_id" ref='account_financial_report_be_actif_circ0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '3%')]" />
             <field name="formulas">BE_30_36 + BE_37</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2" />
@@ -240,10 +202,6 @@
             <field name="name">40/41 - Créances à un an au plus</field>
             <field name="code">BE_40_41</field>
             <field name="parent_id" ref='account_financial_report_be_actif_circ0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '40%'),
-                     ('account_id.code', '=like', '41%')
-            ]" />
             <field name="formulas">BE_40 + BE_41</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2" />
@@ -289,10 +247,14 @@
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_be_regularisation0" model="account.financial.html.report.line">
-            <field name="name">490/1 - Comptes de régularisation</field>
-            <field name="code">BE_490_1</field>
+            <field name="name">490/1/6 - Comptes de régularisation</field>
+            <field name="code">BE_490_1_6</field>
             <field name="parent_id" ref='account_financial_report_be_actif_circ0'/>
-            <field name="domain" eval="['|', ('account_id.code', '=like', '490%'), ('account_id.code', '=like', '491%')]" />
+            <field name="domain" eval="[
+                '|', ('account_id.code', '=like', '490%'),
+                '|', ('account_id.code', '=like', '491%'),
+                     ('account_id.code', '=like', '496%')
+            ]" />
             <field name="groupby">account_id</field>
             <field name="formulas">sum</field>
             <field name="sequence" eval="6"/>
@@ -335,7 +297,6 @@
             <field name="name">10 - Capital</field>
             <field name="code">BE_10</field>
             <field name="parent_id" ref='account_financial_report_be_capitaux_propres0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '10%')]" />
             <field name="formulas">BE_100 + BE_101</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2" />
@@ -384,7 +345,6 @@
             <field name="name">13 - Réserves</field>
             <field name="code">BE_13</field>
             <field name="parent_id" ref='account_financial_report_be_capitaux_propres0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '13%')]" />
             <field name="formulas">BE_130 + BE_131 + BE_132 + BE_133</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="2" />
@@ -403,7 +363,6 @@
             <field name="name">131 - Réserves indisponibles</field>
             <field name="code">BE_131</field>
             <field name="parent_id" ref='account_financial_report_be_reserves0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '131%')]" />
             <field name="formulas">BE_1310 + BE_1311</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="3" />
@@ -493,7 +452,6 @@
             <field name="name">16 - Provisions et impôts différés</field>
             <field name="code">BE_16</field>
             <field name="parent_id" ref='account_financial_report_be_passif_title0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '16%')]" />
             <field name="formulas">BE_160_5 + BE_168</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="1" />
@@ -522,7 +480,6 @@
             <field name="name">17/49 - Dettes</field>
             <field name="code">BE_17_49</field>
             <field name="parent_id" ref='account_financial_report_be_passif_title0'/>
-            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'liability'), '!', ('account_id.code', '=like', '16%')]" />
             <field name="formulas">BE_17 + BE_42_48 + BE_49</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="1" />
@@ -531,7 +488,6 @@
             <field name="name">17 - Dettes à plus d'un an</field>
             <field name="code">BE_17</field>
             <field name="parent_id" ref='account_financial_report_be_dettes0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '17%')]" />
             <field name="formulas">BE_170_4 + BE_175 + BE_176 + BE_178_9 + BE_171</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2" />
@@ -540,12 +496,6 @@
             <field name="name">170/4 - Dettes financières</field>
             <field name="code">BE_170_4</field>
             <field name="parent_id" ref='account_financial_report_be_dettes_plus_un_an0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '170%'),
-                '|', ('account_id.code', '=like', '172%'),
-                '|', ('account_id.code', '=like', '173%'),
-                     ('account_id.code', '=like', '174%')
-            ]" />
             <field name="formulas">BE_172_3 + BE_174_0</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="3" />
@@ -614,15 +564,6 @@
             <field name="name">42/48 - Dettes à un an au plus</field>
             <field name="code">BE_42_48</field>
             <field name="parent_id" ref='account_financial_report_be_dettes0'/>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '42%'),
-                '|', ('account_id.code', '=like', '43%'),
-                '|', ('account_id.code', '=like', '44%'),
-                '|', ('account_id.code', '=like', '45%'),
-                '|', ('account_id.code', '=like', '46%'),
-                '|', ('account_id.code', '=like', '47%'),
-                     ('account_id.code', '=like', '48%')
-            ]" />
             <field name="formulas">BE_42 + BE_43 + BE_44 + BE_46 + BE_45 + BE_47_8</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2" />
@@ -641,7 +582,6 @@
             <field name="name">43 - Dettes financières</field>
             <field name="code">BE_43</field>
             <field name="parent_id" ref='account_financial_report_be_dettes_un_an_au_plus0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '43%')]" />
             <field name="formulas">BE_430_8 + BE_439</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="3" />
@@ -670,7 +610,6 @@
             <field name="name">44 - Dettes commerciales</field>
             <field name="code">BE_44</field>
             <field name="parent_id" ref='account_financial_report_be_dettes_un_an_au_plus0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '44%')]" />
             <field name="formulas">BE_440_4 + BE_441</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="3" />
@@ -709,7 +648,6 @@
             <field name="name">45 - Dettes fiscales, salariales et sociales</field>
             <field name="code">BE_45</field>
             <field name="parent_id" ref='account_financial_report_be_dettes_un_an_au_plus0'/>
-            <field name="control_domain" eval="[('account_id.code', '=like', '45%')]" />
             <field name="formulas">BE_450_3 + BE_454_9</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="3" />
@@ -749,11 +687,6 @@
             <field name="code">BE_49</field>
             <field name="parent_id" ref='account_financial_report_be_dettes0'/>
             <field name="groupby">account_id</field>
-            <field name="control_domain" eval="[
-                '|', ('account_id.code', '=like', '492%'),
-                '|', ('account_id.code', '=like', '493%'),
-                     ('account_id.code', '=like', '499%')
-            ]" />
             <field name="formulas">BE_492_3 + BE_499</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2" />
@@ -934,7 +867,7 @@
             <field name="name">Différence sur les comptes 4</field>
             <field name="code">BE_4_CONTROL</field>
             <field name="financial_report_id" ref="account_financial_report_be_balancesheet0"/>
-            <field name="formulas">BE_4_TOTAL - BE_40_41 + BE_42_48 - BE_490_1 + BE_49</field>
+            <field name="formulas">BE_4_TOTAL - BE_40_41 + BE_42_48 - BE_490_1_6 + BE_49</field>
             <field name="sequence" eval="40"/>
             <field name="level" eval="1"/>
             <field name="hide_if_zero" eval="True" />

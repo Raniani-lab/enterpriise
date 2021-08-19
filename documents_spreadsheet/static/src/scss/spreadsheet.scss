@@ -24,17 +24,18 @@
         font-style: italic;
     }
 }
-
-.o_content {
-    .o_spreadsheet_action {
+.o_spreadsheet_action {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+        display: flex;
+        flex-flow: column;
         height: 100%;
-
         .o_spreadsheet_container {
-            height: 100%;
-
+            flex: 1 1 auto;
             .o-spreadsheet {
                 height: 100%;
-
                 .o_spreadsheet_pivot_side_panel, .o_spreadsheet_filter_editor_side_panel, .o_spreadsheet_global_filters_side_panel {
                     .o_side_panel_section {
                         background-color: #fff;
@@ -118,11 +119,10 @@
 
             }
         }
-    }
 }
 
 
-.o_spreadsheet_cp {
+.o_spreadsheet_action .o_control_panel {
     a.o_spreadsheet_favorite {
         margin: 0px 5px;
         @include o-hover-text-color($gray-400, $o-main-favorite-color);
@@ -166,30 +166,16 @@
         }
     }
 
-    .o_spreadsheet_sync_status {
+    .o_spreadsheet_status {
         display: inline-block;
         font-size: small;
         padding-right: 10px;
         padding-top: 4px;
     }
 
-    .o_spreadsheet_number_users {
-        display: inline-block;
-        font-size: small;
-    }
-
-    .o_cp_top_left {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-
-        .breadcrumb {
-            flex-grow: 2;
-        }
-    }
-
     .o_cp_top_right {
-        width: 0%;
+        display: flex;
+        justify-content: flex-end;
     }
 }
 

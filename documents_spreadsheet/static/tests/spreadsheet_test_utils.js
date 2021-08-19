@@ -10,7 +10,10 @@ import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborativ
 import { getBasicArch, getTestData } from "./spreadsheet_test_data";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { ClientActionAdapter } from "@web/legacy/action_adapters";
+import { SpreadsheetAction } from "../src/actions/spreadsheet/spreadsheet_action";
+import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/spreadsheet_template_action";
+import { UNTITLED_SPREADSHEET_NAME } from "../src/constants";
+
 
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
@@ -102,8 +105,7 @@ export function setCellContent(model, xc, content, sheetId = undefined) {
  * @returns {Component}
  */
 function getSpreadsheetComponent(actionManager) {
-    return  actionManager
-        .spreadsheetComponent.componentRef.comp;
+    return  actionManager.spreadsheetRef.comp;
 }
 
 /**
@@ -136,23 +138,28 @@ function getSpreadsheetActionEnv(actionManager) {
 }
 
 export async function createSpreadsheetAction(actionTag, params = {}) {
-    let { spreadsheetId, data, arch, mockRPC, legacyServicesRegistry } = params;
+    let { spreadsheetId, data, arch, mockRPC, legacyServicesRegistry, webClient } = params;
     let spreadsheetAction;
-    patchWithCleanup(ClientActionAdapter.prototype, {
-        mounted() {
+    const SpreadsheetActionComponent =
+        actionTag === "action_open_spreadsheet" ? SpreadsheetAction : SpreadsheetTemplateAction;
+    patchWithCleanup(SpreadsheetActionComponent.prototype, {
+        setup() {
             this._super();
-            spreadsheetAction = this.widget;
-        }
-    });
-    const serverData = {models: data, views: arch}
-    const webClient = await createWebClient({
-        serverData,
-        mockRPC,
-        legacyParams: {
-            withLegacyMockServer: true,
-            serviceRegistry: legacyServicesRegistry,
+            spreadsheetAction = this;
         },
     });
+    const serverData = {models: data, views: arch}
+    if (!webClient) {
+        webClient = await createWebClient({
+            serverData,
+            mockRPC,
+            legacyParams: {
+                withLegacyMockServer: true,
+                serviceRegistry: legacyServicesRegistry,
+            },
+        });
+    }
+
     const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
     await doAction(webClient, {
         type: "ir.actions.client",
@@ -175,7 +182,7 @@ export async function createSpreadsheet(params = {}) {
         const spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
         documents.push({
             id: spreadsheetId,
-            name: "pivot spreadsheet",
+            name: UNTITLED_SPREADSHEET_NAME,
             raw: "{}",
         });
         params = {...params, spreadsheetId }
@@ -187,11 +194,11 @@ export async function createSpreadsheetTemplate(params = {}) {
     if (!params.spreadsheetId) {
         const templates = params.data["spreadsheet.template"].records;
         const spreadsheetId = Math.max(...templates.map((d) => d.id)) + 1;
-        templates.push([{
+        templates.push({
             id: spreadsheetId,
             name: "test template",
             data: jsonToBase64({}),
-        }]);
+        });
         params = {...params, spreadsheetId }
     }
     return createSpreadsheetAction("action_open_template", params);
@@ -203,15 +210,16 @@ export async function createSpreadsheetTemplate(params = {}) {
  * the pivot data
  */
 export async function createSpreadsheetFromPivot(params = {}) {
-  let { actions, pivotView, webClient } = params;
-  if (!pivotView) {
-      pivotView = {};
-  }    let spreadsheetAction = {};
-    patchWithCleanup(ClientActionAdapter.prototype, {
-        mounted() {
+    let { actions, pivotView, webClient } = params;
+    if (!pivotView) {
+        pivotView = {};
+    }
+    let spreadsheetAction = {};
+    patchWithCleanup(SpreadsheetAction.prototype, {
+        setup() {
             this._super();
-            spreadsheetAction = this.widget;
-        }
+            spreadsheetAction = this;
+        },
     });
     pivotView = {
         arch: getBasicArch(),
@@ -259,7 +267,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
             initCallback: await controller._getCallbackBuildPivot(true)
         },
     });
-    const spreadSheetComponent = spreadsheetAction.spreadsheetComponent.componentRef.comp
+    const spreadSheetComponent = spreadsheetAction.spreadsheetRef.comp
     const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp
     const model = oSpreadsheetComponent.model;
     const env = Object.assign(spreadSheetComponent.env, {

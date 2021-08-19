@@ -9,6 +9,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const SpreadsheetSelectorDialog = require("documents_spreadsheet.SpreadsheetSelectorDialog");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const { UNTITLED_SPREADSHEET_NAME } = require("@documents_spreadsheet/constants");
 
     const _t = core._t;
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -87,7 +88,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 method: "create",
                 args: [
                     {
-                        name: _t("Untitled spreadsheet"),
+                        name: UNTITLED_SPREADSHEET_NAME,
                         mimetype: "application/o-spreadsheet",
                         handler: "spreadsheet",
                         raw: "{}",

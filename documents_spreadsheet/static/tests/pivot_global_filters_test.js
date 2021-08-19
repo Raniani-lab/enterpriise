@@ -234,16 +234,10 @@ module("documents_spreadsheet > pivot_global_filters", {
     test("Can export/import filters", async function (assert) {
         assert.expect(4);
 
-        const { model } = await createSpreadsheetFromPivot();
+        const { model, env } = await createSpreadsheetFromPivot();
         model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
         const newModel = new Model(model.exportData(), {
-            evalContext: {
-                env: {
-                    services: {
-                        rpc: () => [],
-                    },
-                },
-            },
+            evalContext: { env },
         });
         assert.equal(newModel.getters.getGlobalFilters().length, 1);
         const [filter] = newModel.getters.getGlobalFilters();
@@ -477,12 +471,14 @@ module("documents_spreadsheet > pivot_global_filters", {
                 evalContext: {
                     env: {
                         services: {
-                            rpc: async (params) => {
-                                const resId = params.args[0][0]
-                                assert.step(`name_get_${resId}`)
-                                return resId === 1
-                                    ? [[1, "Jean-Jacques"]]
-                                    : [[2, "Raoul Grosbedon"]]
+                            orm: {
+                                call: async (model, method, args) => {
+                                    const resId = args[0][0]
+                                    assert.step(`name_get_${resId}`)
+                                    return resId === 1
+                                        ? [[1, "Jean-Jacques"]]
+                                        : [[2, "Raoul Grosbedon"]]
+                                }
                             }
                         },
                     },

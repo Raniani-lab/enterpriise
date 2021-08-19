@@ -78,6 +78,9 @@ odoo.define("documents_spreadsheet.model_selector_widget", function (require) {
     });
 
     class ModelSelectorWidgetAdapter extends ComponentAdapter {
+        setup() {
+            this.env = owl.Component.env;
+        }
         /**
          * @override
          */

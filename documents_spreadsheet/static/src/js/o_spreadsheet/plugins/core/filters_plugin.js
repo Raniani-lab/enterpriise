@@ -50,7 +50,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
     class FiltersPlugin extends spreadsheet.CorePlugin {
         constructor(getters, history, range, dispatch, config) {
             super(...arguments);
-            this.rpc = config.evalContext.env ? config.evalContext.env.services.rpc : undefined;
+            this.orm = config.evalContext.env ? config.evalContext.env.services.orm : undefined;
             this.globalFilters = [];
 
             /**
@@ -179,14 +179,14 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                         .map((period) => period.description)
                         .join(" ");
                 case "relation":
-                    if (!filter.value || !this.rpc) return "";
+                    if (!filter.value || !this.orm) return "";
                     if (!this.recordsDisplayName[filter.id]) {
                         // store the promise resolving to the list of display names
-                        this.recordsDisplayName[filter.id] = this.rpc({
-                            model: filter.modelName,
-                            method: "name_get",
-                            args: [filter.value],
-                        }).then((result) => result.map(([id, name]) => name));
+                        this.recordsDisplayName[filter.id] = this.orm.call(
+                            filter.modelName,
+                            "name_get",
+                            [filter.value],
+                        ).then((result) => result.map(([id, name]) => name));
                     }
                     const names = await this.recordsDisplayName[filter.id];
                     return names.join(", ");

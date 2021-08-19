@@ -17,7 +17,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         TagSelectorWidget,
         TagSelectorWidgetAdapter,
     } = require("documents_spreadsheet.tag_selector_widget");
-
+    const { useService } = require("@web/core/utils/hooks");
     const _t = core._t;
     const { useState } = owl.hooks;
     const sidePanelRegistry = spreadsheet.registries.sidePanelRegistry;
@@ -61,6 +61,8 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.ModelSelectorWidget = ModelSelectorWidget;
             this.TagSelectorWidget = TagSelectorWidget;
             this.getters = this.env.getters;
+            this.orm = useService("orm");
+            this.notification = useService("notification");
         }
 
         /**
@@ -150,12 +152,11 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 this.state.relation.relatedModelID = undefined;
                 return;
             }
-            const result = await this.rpc({
-                model: "ir.model",
-                method: "search_read",
-                fields: ["id", "name"],
-                domain: [["model", "=", this.state.relation.relatedModelName]],
-            });
+            const result = await this.orm.searchRead(
+                "ir.model",
+                [["model", "=", this.state.relation.relatedModelName]],
+                ["id", "name"],
+            );
             this.state.relation.relatedModelID = result[0] && result[0].id;
             if (!this.state.label) {
                 this.state.label = result[0] && result[0].name;
@@ -167,12 +168,12 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 this.state.relation.relatedModelName = undefined;
                 return;
             }
-            const result = await this.rpc({
-                model: "ir.model",
-                method: "search_read",
-                fields: ["model", "name"],
-                domain: [["id", "=", this.state.relation.relatedModelID]],
-            });
+            const result = await this.orm.searchRead(
+                "ir.model",
+                [["id", "=", this.state.relation.relatedModelID]],
+                ["model", "name"],
+            );
+
             this.state.relation.relatedModelName = result[0] && result[0].model;
             if (!this.state.label) {
                 this.state.label = result[0] && result[0].name;
@@ -195,11 +196,10 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         onSave() {
             this.state.saved = true;
             if (this.missingLabel || this.missingField || this.missingModel) {
-                this.env.services.notification.notify({
-                    type: "danger",
-                    title: this.env._t("Some required fields are not valid"),
-                    sticky: false,
-                });
+                this.notification.add(
+                    this.env._t("Some required fields are not valid"),
+                    { type: "danger", sticky: false }
+                );
                 return;
             }
             const cmd = this.id ? "EDIT_PIVOT_FILTER" : "ADD_PIVOT_FILTER";
@@ -216,11 +216,10 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             };
             const result = this.env.dispatch(cmd, { id, filter });
             if (result=== CommandResult.DuplicatedFilterLabel) {
-                this.env.services.notification.notify({
-                    type: "danger",
-                    title: this.env._t("Duplicated Label"),
-                    sticky: false,
-                });
+                this.notification.add(
+                    this.env._t("Duplicated Label"),
+                    { type: "danger", sticky: false }
+                );
                 return;
             }
             this.env.openSidePanel("GLOBAL_FILTERS_SIDE_PANEL", {});

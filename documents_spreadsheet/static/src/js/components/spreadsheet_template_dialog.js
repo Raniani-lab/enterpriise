@@ -6,6 +6,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
     const Pager = require("web.Pager");
     const ActionModel = require("web.ActionModel");
 
+    const { UNTITLED_SPREADSHEET_NAME } = require("@documents_spreadsheet/constants");
     const { getDataFromTemplate } = require("documents_spreadsheet.pivot_utils");
     const { DropPrevious } = require("web.concurrency");
 
@@ -99,7 +100,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
             const name =
                 templateId !== null
                     ? this.state.templates.find((template) => template.id === templateId).name
-                    : this.env._t("Untitled spreadsheet");
+                    : UNTITLED_SPREADSHEET_NAME;
             const spreadsheetId = await this.env.services.rpc({
                 model: "documents.document",
                 method: "create",

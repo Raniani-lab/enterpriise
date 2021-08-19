@@ -3,11 +3,11 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
     const core = require("web.core");
     const Dialog = require("web.OwlDialog");
-    var framework = require('web.framework');
 
     const { jsonToBase64 } = require("documents_spreadsheet.pivot_utils");
     const PivotDialog = require("documents_spreadsheet.PivotDialog")
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const { useService } = require("@web/core/utils/hooks");
 
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -19,6 +19,8 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     class SpreadsheetComponent extends owl.Component {
         constructor(parent, props) {
             super(...arguments);
+            const user = useService("user");
+            this.ui = useService("ui");
             useSubEnv({
                 newSpreadsheet: this.newSpreadsheet.bind(this),
                 saveAsTemplate: this._saveAsTemplate.bind(this),
@@ -47,8 +49,8 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.res_id = props.res_id;
             this.client = {
                 id: uuidGenerator.uuidv4(),
-                name: this.env.session.name,
-                userId: this.env.session.uid,
+                name: user.name,
+                userId: user.userId,
             }
             this.transportService = this.props.transportService;
             useExternalListener(window, "beforeunload", this._onLeave.bind(this));
@@ -187,7 +189,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          */
         makeCopy() {
             const { data, thumbnail } = this.getSaveData();
-            this.trigger("make_copy", {
+            this.trigger("make-copy", {
                 data,
                 thumbnail,
             });
@@ -196,7 +198,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          * Create a new spreadsheet
          */
         newSpreadsheet() {
-            this.trigger("new_spreadsheet");
+            this.trigger("new-spreadsheet");
         }
 
         /**
@@ -210,7 +212,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             })));
             await Promise.all(model.getters.getGlobalFilters().map((filter) => model.getters.getFilterDisplayValue(filter.label)));
 
-            framework.blockUI();
+            this.ui.block();
             try {
                 const { files } = await this.spreadsheet.comp.env.exportXLSX();
                 this.trigger("download", {
@@ -219,7 +221,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 });
             }
             finally {
-                framework.unblockUI();
+                this.ui.unblock();
             }
         }
 
@@ -228,15 +230,10 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          * @returns {Promise}
          */
         async _saveAsTemplate() {
-            const rpc = this.env.services.rpc;
             const model = new Model(
                 this.spreadsheet.comp.model.exportData(), {
                 mode: "headless",
-                evalContext: {
-                    env: {
-                        services: { rpc },
-                    },
-                }
+                evalContext: { env: this.env }
             });
             await Promise.all(model.getters.getPivots().map((pivot) => model.getters.getAsyncCache(pivot.id, {
                 initialDomain: true,
@@ -280,7 +277,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             }
             this.alreadyLeft = true;
             this.spreadsheet.comp.model.off("update", this);
-            this.trigger("spreadsheet_saved", this.getSaveData());
+            this.trigger("spreadsheet-saved", this.getSaveData());
         }
     }
 

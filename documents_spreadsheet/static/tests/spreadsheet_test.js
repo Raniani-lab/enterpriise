@@ -6,6 +6,7 @@ import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
 import * as BusService from "bus.BusService";
 import spreadsheet from "documents_spreadsheet.spreadsheet";
+import { mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import PivotView from "web.PivotView";
 import * as RamStorage from "web.RamStorage";
@@ -28,7 +29,7 @@ const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
 
-const { module, test } = QUnit;
+const { module, test, debug } = QUnit;
 
 function getConnectedUsersEl(webClient) {
   const numberUsers = $(webClient.el).find(".o_spreadsheet_number_users");
@@ -264,13 +265,14 @@ module(
     });
 
     test("untitled spreadsheet", async function (assert) {
-      assert.expect(2);
+      assert.expect(3);
       const { webClient } = await createSpreadsheet({
         data: this.data,
         spreadsheetId: 2,
       });
       const input = $(webClient.el).find(".breadcrumb-item input")[0];
       assert.equal(input.value, "", "It should be empty");
+      assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
       assert.equal(
         input.placeholder,
         "Untitled spreadsheet",
@@ -278,6 +280,19 @@ module(
       );
       await nextTick();
     });
+
+    test("spreadsheet with generic untitled name is styled", async function (assert) {
+        assert.expect(4);
+        const { webClient } = await createSpreadsheet({ data: this.data });
+        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
+        await fields.editInput(input, "My");
+        assert.doesNotHaveClass(input, "o-spreadsheet-untitled", "It should not be styled as untitled");
+        await fields.editInput(input, "Untitled spreadsheet");
+        assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
+        await fields.editInput(input, "");
+        assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
+    })
 
     test("input width changes when content changes", async function (assert) {
       assert.expect(2);
@@ -1100,6 +1115,20 @@ module(
       assert.equal(getCellValue(model, "D3"), 2);
     });
 
+    test("Can download xlsx file", async function (assert) {
+        assert.expect(4);
+        mockDownload((options) => {
+            assert.step(options.url);
+            assert.ok(options.data.zip_name);
+            assert.ok(options.data.files);
+        });
+        const { env } = await createSpreadsheet({ data: this.data });
+        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
+        const download = file.children.find((item) => item.id === "download");
+        await download.action(env);
+        assert.verifySteps(["/documents/xlsx"]);
+    });
+
     test("Can make a copy", async function (assert) {
       assert.expect(4);
       const LocalStorageService = AbstractStorageService.extend({
@@ -1122,15 +1151,16 @@ module(
           if (args.method === "copy" && args.model === "documents.document") {
             assert.step("copy");
             assert.equal(
-              args.args[1].raw,
+              args.kwargs.default.raw,
               JSON.stringify(model.exportData()),
               "It should copy the data"
             );
             assert.equal(
-              args.args[1].spreadsheet_snapshot,
+              args.kwargs.default.spreadsheet_snapshot,
               false,
               "It should reset the snapshot"
             );
+            return 1; // random spreadsheet id
           }
         },
       });
@@ -1139,6 +1169,7 @@ module(
         .find((item) => item.id === "file");
       const makeCopy = file.children.find((item) => item.id === "make_copy");
       makeCopy.action(env);
+
       assert.verifySteps(["copy"]);
     });
 

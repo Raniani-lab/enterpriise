@@ -101,6 +101,9 @@ odoo.define("documents_spreadsheet.tag_selector_widget", function (require) {
     });
 
     class TagSelectorWidgetAdapter extends ComponentAdapter {
+        setup() {
+            this.env = owl.Component.env;
+        }
         /**
          * @override
          */

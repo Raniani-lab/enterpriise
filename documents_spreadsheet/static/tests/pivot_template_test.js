@@ -6,21 +6,22 @@ import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
 import CommandResult from "documents_spreadsheet.CommandResult";
 import DocumentsListView from "documents_spreadsheet.ListView";
 import { registry } from "@web/core/registry";
+import { ormService } from "@web/core/orm_service";
 import TemplateListView from "documents_spreadsheet.TemplateListView";
 import { afterEach, beforeEach } from "@mail/utils/test_utils";
 import { createDocumentsView } from "documents.test_utils";
 import spreadsheet from "documents_spreadsheet.spreadsheet_extended";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/spreadsheet_template_action";
 
-import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel"
 import {
-    createSpreadsheetActionManager,
     createSpreadsheetFromPivot,
     setCellContent,
     getCellContent,
     getCellValue,
     getCellFormula,
     createSpreadsheetTemplate,
+    createSpreadsheet,
 } from "./spreadsheet_test_utils";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -36,7 +37,7 @@ const { module, test } = QUnit;
 let serverData;
 
 async function convertFormula(config) {
-  const { spreadsheetAction, model: m1 } = await createSpreadsheetFromPivot({
+  const { env, model: m1 } = await createSpreadsheetFromPivot({
     pivotView: {
         model: "partner",
         data: config.data,
@@ -45,15 +46,10 @@ async function convertFormula(config) {
     webClient: config.webClient,
 });
 
-    const rpc = spreadsheetAction._rpc.bind(spreadsheetAction);
     //reload the model in headless mode, with the conversion plugin
     const model = new Model(m1.exportData(), {
         mode: "headless",
-        evalContext: {
-            env: {
-                services: { rpc },
-            },
-        }
+        evalContext: { env }
     });
     await Promise.all(
         model.getters.getPivots().map((pivot) =>
@@ -256,16 +252,11 @@ module(
         module("Template");
         test("Dispatch template command is not allowed if cache is not loaded", async function (assert) {
             assert.expect(2);
-            const { model: m1, spreadsheetAction } = await createSpreadsheetFromPivot();
-            const rpc = spreadsheetAction._rpc.bind(spreadsheetAction);
+            const { model: m1, env } = await createSpreadsheetFromPivot();
             //reload the model in headless mode, with the conversion plugin
             const model = new Model(m1.exportData(), {
                 mode: "headless",
-                evalContext: {
-                    env: {
-                        services: { rpc },
-                    },
-                }
+                evalContext: { env }
             });
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [CommandResult.PivotCacheNotLoaded]);
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE").reasons, [CommandResult.PivotCacheNotLoaded]);
@@ -511,52 +502,29 @@ module(
             }
         );
 
-        test("Will convert additional template position to id -1", async function (
+        test("Will ignore overflowing template position", async function (
             assert
         ) {
             assert.expect(1);
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
-                    mockRPC: async function (route, args) {
-                        if (route.includes("join_spreadsheet_session")) {
-                            return Promise.resolve({ raw: "{}", revisions: [] });
-                        }
-                        if (route.includes("dispatch_spreadsheet_message")) {
-                            return Promise.resolve();
-                        }
-                        if (args.method === "search_read" && args.model === "ir.model") {
-                            return [{ name: "partner" }];
-                        }
-                        if (
-                            args.method === "read" &&
-                            args.model === "spreadsheet.template"
-                        ) {
-                            return [{ data: btoa(JSON.stringify(model.exportData())) }];
-                        }
-                        if (this) {
-                            return this._super.apply(this, arguments);
-                        }
-                    },
-                },
+            const arch = `
+                <pivot string="Partners">
+                <field name="bar" type="col"/>
+                <field name="product_id" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`;
+            Object.assign(serverData, {views: arch});
+            const webClient = await createWebClient({
+                serverData,
+                legacyParams: { withLegacyMockServer: true },
             });
-            const { pivots } = model.exportData();
-            await Promise.all(Object.values(pivots).map(async(pivot) => {
-                await model.getters.getAsyncCache(pivot.id);
-            }));
-            setCellContent(model, "A1", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar","110")`);
-            const data = await pivotUtils.getDataFromTemplate(
-                env.services.rpc,
-                "this is a fake id"
-            );
-            assert.notOk(data.sheets[0].cells.A1);
+            const result = await convertFormula({
+                webClient,
+                data: this.data,
+                arch,
+                formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar","110")`,
+                convert: "CONVERT_PIVOT_FROM_TEMPLATE",
+            });
+            assert.equal(result, "");
         });
 
         test(
@@ -837,6 +805,50 @@ module(
             saveAsTemplate.action(env);
             await nextTick();
             assert.verifySteps(["create_template_wizard"]);
+        });
+
+        test("copy template menu", async function (assert) {
+            const serviceRegistry = registry.category("services");
+            serviceRegistry.add("actionMain", actionService);
+            const fakeActionService = {
+                dependencies: ["actionMain"],
+                start(env, { actionMain }) {
+                    return {
+                        ...actionMain,
+                        doAction: (actionRequest, options = {}) => {
+                            if (actionRequest.tag === "action_open_template" && actionRequest.params.active_id === 111) {
+                                assert.step("redirect");
+                            }
+                            return actionMain.doAction(actionRequest, options);
+                        },
+                    };
+                },
+            };
+            serviceRegistry.add("action", fakeActionService, { force: true });
+            const serverData = this.data;
+            const { env } = await createSpreadsheetTemplate({
+                data: serverData,
+                mockRPC: function (route, args) {
+                    if (args.model == "spreadsheet.template" && args.method === "copy") {
+                        assert.step("template_copied")
+                        const { data, thumbnail } = args.kwargs.default;
+                        assert.ok(data);
+                        assert.ok(thumbnail);
+                        serverData["spreadsheet.template"].records.push({
+                            id: 111,
+                            name: "template",
+                            data,
+                            thumbnail,
+                        });
+                        return 111;
+                    }
+                },
+            });
+            const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
+            const makeACopy = file.children.find((item) => item.id === "make_copy");
+            makeACopy.action(env);
+            await nextTick();
+            assert.verifySteps(["template_copied", "redirect"]);
         });
 
         test("Autofill template position", async function (assert) {
@@ -1380,28 +1392,15 @@ module(
                             "It should be named after the spreadsheet"
                         );
                     }
-                    if (route.includes("join_spreadsheet_session")) {
-                        return Promise.resolve({ raw: "{}", revisions: [] });
-                    }
-                    if (route.includes("dispatch_spreadsheet_message")) {
-                        return Promise.resolve();
-                    }
                 },
             });
-            await doAction(webClient, {
-                type: "ir.actions.client",
-                tag: "action_open_spreadsheet",
-                params: {
-                    active_id: 2,
-                    transportService: new MockSpreadsheetCollaborativeChannel(),
-                },
-            });
+            const { env } = await createSpreadsheet({ spreadsheetId: 2, webClient });
             const input = $(webClient.el).find(".breadcrumb-item input");
             await fields.editInput(input, "My spreadsheet");
             await dom.triggerEvent(input, "change");
             const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
             const saveAsTemplate = file.children.find((item) => item.id === "save_as_template");
-            saveAsTemplate.action(spreadSheetComponent.env);
+            saveAsTemplate.action(env);
             await nextTick();
 
             assert.verifySteps(["create_template_wizard"]);
@@ -1703,10 +1702,10 @@ module(
                 data: jsonToBase64(templateModel.exportData()),
             }];
             let spreadSheetComponent;
-            patchWithCleanup(ClientActionAdapter.prototype, {
+            patchWithCleanup(SpreadsheetTemplateAction.prototype, {
                 mounted() {
                   this._super();
-                  spreadSheetComponent = this.widget.spreadsheetComponent.componentRef.comp;
+                  spreadSheetComponent = this.spreadsheetRef.comp;
                 }
             });
             const { model, webClient } = await createSpreadsheetTemplate({
@@ -1731,7 +1730,7 @@ module(
             })
 
             setCellContent(model, 'B1', 'Name');
-            await spreadSheetComponent.trigger("spreadsheet_saved", spreadSheetComponent.getSaveData());
+            await spreadSheetComponent.trigger("spreadsheet-saved", spreadSheetComponent.getSaveData());
             await doAction(webClient, {
                 type: 'ir.actions.client',
                 tag: 'action_open_template',

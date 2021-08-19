@@ -3,6 +3,9 @@
 /**
  * This class is used to collect and regroup all the RPCs requests that are
  * executed in Spreadsheet. It contributes to reduce the number of requests.
+ *
+ * LUL TODO convert to use the `orm` service. I already have a working implementation
+ * but it currently doesn't fit well with some other non-converted elements (views, helpers).
  */
 export default class PivotRPC {
     /**

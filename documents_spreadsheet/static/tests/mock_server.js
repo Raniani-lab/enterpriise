@@ -1,31 +1,20 @@
-/** @odoo-module alias=documents_spreadsheet.MockServer */
+/** @odoo-module */
 
-import MockServer from "web.MockServer";
+import { registry } from "@web/core/registry";
 
-MockServer.include({
-    /**
-     * @override
-     * @private
-     * @returns {Promise}
-     */
-    async _performRpc(route, args) {
-        const { model, method } = args;
-        if (model === "documents.document" && method === "join_spreadsheet_session") {
-            const [id] = args.args;
-            const record = this.data[model].records.find((r) => r.id === id);
-            if (!record) {
-                throw new Error(`Spreadsheet ${id} does not exist`)
-            }
-            return {
-                raw: record.raw,
-                name: record.name,
-                is_favorited: record.is_favorited,
-                revisions: [],
-            }
+registry
+    .category("mock_server")
+    .add("documents.document/join_spreadsheet_session", function (route, args) {
+        const [id] = args.args;
+        const record = this.models["documents.document"].records.find((record) => record.id === id);
+        if (!record) {
+            throw new Error(`Spreadsheet ${id} does not exist`);
         }
-        else if (route.includes("dispatch_spreadsheet_message")) {
-            return false;
-        }
-        return this._super(...arguments);
-    },
-});
+        return {
+            raw: record.raw,
+            name: record.name,
+            is_favorited: record.is_favorited,
+            revisions: [],
+        };
+    })
+    .add("documents.document/dispatch_spreadsheet_message", () => false);

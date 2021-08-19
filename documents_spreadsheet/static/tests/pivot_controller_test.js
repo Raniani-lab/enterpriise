@@ -2,7 +2,7 @@
 
 import PivotView from "web.PivotView";
 import testUtils from "web.test_utils";
-import { getBasicArch, getTestData } from "./spreadsheet_test_data";
+import { getTestData } from "./spreadsheet_test_data";
 import {
     createSpreadsheetFromPivot,
     getCell,
@@ -362,16 +362,13 @@ QUnit.test("Can save a pivot in existing spreadsheet", async (assert) => {
 
 test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
     assert.expect(4);
-    const pivot = await createView({
-        View: PivotView,
-        model: "partner",
-        data: getTestData(),
-        arch: getBasicArch(),
-        session: { user_has_group: async () => true },
+
+    let callback;
+    const { model } = await createSpreadsheetFromPivot({
+        async actions(pivot) {
+            callback = await pivot._getCallbackBuildPivot(false);
+        },
     });
-    const callback = await pivot._getCallbackBuildPivot(false);
-    pivot.destroy();
-    const { model } = await createSpreadsheetFromPivot();
     model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
     const activeSheetId = model.getters.getActiveSheetId();
     assert.deepEqual(model.getters.getVisibleSheets(), [activeSheetId, "42"]);

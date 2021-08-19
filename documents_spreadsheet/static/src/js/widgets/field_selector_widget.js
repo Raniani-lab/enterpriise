@@ -15,6 +15,10 @@ odoo.define("documents_spreadsheet.field_selector_widget", function (require) {
      * It uses a FieldSelectorWidget.
      */
     class FieldSelectorAdapter extends ComponentAdapter {
+
+        setup() {
+            this.env = owl.Component.env;
+        }
         /**
          * Only display the relevant fields
          * @param {Array} fields Fields to filter

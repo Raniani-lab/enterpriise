@@ -35,8 +35,15 @@ class AccountEdiFormat(models.Model):
             ext_trade_total_price_subtotal_usd = 0.0
             ext_trade_goods_details = []
             for product, line_vals_list in invoice_lines_gb_products.items():
+                if len(line_vals_list) > 1:
+                    weighted_prices = sum(line_vals['line'].l10n_mx_edi_price_unit_umt * line_vals['line'].l10n_mx_edi_qty_umt for line_vals in line_vals_list)
+                    weights = sum(line_vals['line'].l10n_mx_edi_qty_umt for line_vals in line_vals_list) or 1
+                    amount = round(weighted_prices/weights, 2)
+                else:
+                    amount = line_vals_list[0]['line'].l10n_mx_edi_price_unit_umt if line_vals_list else 0
+
                 price_unit_usd = invoice.currency_id._convert(
-                    sum(line_vals['line'].l10n_mx_edi_price_unit_umt for line_vals in line_vals_list),
+                    amount,
                     usd,
                     invoice.company_id,
                     invoice.date,

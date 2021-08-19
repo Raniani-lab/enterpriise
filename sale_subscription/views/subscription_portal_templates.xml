@@ -23,7 +23,10 @@
                             <li class="list-group-item flex-grow-1">
                                 <div><strong>Next Invoice: <span t-field="account.recurring_next_date"/></strong></div>
                                 <div><strong>Amount: <span t-field="account.recurring_total_incl" t-options='{"widget": "monetary","display_currency": account.pricelist_id.currency_id}'/></strong></div>
-                                <a t-if="account.stage_category == 'progress' and not account.to_renew and account.template_id and display_change_plan" role="button" class="mt8 btn btn-primary" t-att-href="'/my/subscription/'+str(account.id)+'/change'+'?uuid='+str(account.uuid)">Change plan</a>
+                                <a t-if="account.stage_category == 'progress' and not account.to_renew and account.template_id and display_change_plan"
+                                    role="button" class="mt8 btn btn-primary" t-att-href="account.get_portal_url()">
+                                        Change plan
+                                </a>
                                 <div t-if="account.payment_token_id">Payment method:
                                     <t t-if="account.payment_token_id.name" t-esc="account.payment_token_id.name"/>
                                     <t t-else="">Unknown token</t>
@@ -48,7 +51,7 @@
                                     <!-- User is logged out -->
                                     <a t-elif="acquirers or tokens"
                                        title="You must be logged in to manage your payment methods."
-                                       t-attf-href="/web/login?redirect=/my/subscription/{{account.id}}/{{account.uuid}}"
+                                       t-attf-href="/web/login?redirect={{account.get_portal_url()}}"
                                        role="button"
                                        class="mt-8 btn btn-secondary">
                                         Manage Payment Methods
@@ -140,7 +143,10 @@
                                     <h5 class="mb-1">Your Details</h5>
                                     <hr class="my-0"/>
                                     <div t-field="account.partner_id" t-options='{ "widget": "contact", "fields": [ "name", "address", "phone", "email"]}'/>
-                                    <a t-if="user.partner_id == account.partner_id" class="small" t-attf-href="/my/account?redirect=/my/subscription/#{account.id}/#{account.uuid}">(Wrong address?)</a>
+                                    <a t-if="user.partner_id == account.partner_id"
+                                        class="small" t-attf-href="/my/account?redirect={{account.get_portal_url()}}">
+                                            (Wrong address?)
+                                    </a>
                                 </div>
                             </div>
 
@@ -240,7 +246,7 @@
                                         <hr class="my-0"/>
                                         <t t-call="payment.checkout">
                                             <t t-set="landing_route"
-                                               t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid)"/>
+                                               t-value="account.get_portal_url()"/>
                                         </t>
                                     </div>
                                 </div>
@@ -261,7 +267,7 @@
                                                     <t t-set="assign_token_route"
                                                        t-value="'/my/subscription/assign_token/' + str(account.id)"/>
                                                     <t t-set="landing_route"
-                                                       t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid) + '?message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
+                                                       t-value="account.get_portal_url() + '&amp;message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
                                                 </t>
                                             </div>
                                         </main>
@@ -295,7 +301,7 @@
                             <header class="modal-header">
                                 <h4 class="modal-title">Close Subscription</h4>
                             </header>
-                            <form method="post" t-attf-action="/my/subscription/#{account.id}/close/?uuid=#{account.uuid}">
+                            <form method="post" t-attf-action="/my/subscription/#{account.id}/close/?access_token=#{account._portal_ensure_token()">
                                 <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <main class="modal-body">
                                     <p>If you confirm, your subscription will be closed right away. Your current invoicing period is valid until <span t-field="account.recurring_next_date"/>.</p>
@@ -364,7 +370,7 @@
                 <t t-foreach="accounts" t-as="account">
                     <tr>
                         <td>
-                            <a t-att-href="'/my/subscription/'+str(account.id)+'/'+str(account.uuid)+'?'+keep_query()"><t t-esc="account.display_name"/></a>
+                            <a t-att-href="account.get_portal_url()+'&amp;'+keep_query()"><t t-esc="account.display_name"/></a>
                         </td>
                         <td class="text-center" id="subscription_state">
                             <t t-if="account.stage_category == 'progress' and not account.to_renew">

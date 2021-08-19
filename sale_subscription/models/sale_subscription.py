@@ -31,7 +31,7 @@ PERIODS = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'y
 class SaleSubscription(models.Model):
     _name = "sale.subscription"
     _description = "Subscription"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin', "portal.mixin"]
     _check_company_auto = True
     _mail_post_access = 'read'
 
@@ -96,8 +96,6 @@ class SaleSubscription(models.Model):
     industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id', store=True, readonly=False)
     sale_order_count = fields.Integer(compute='_compute_sale_order_count')
     # customer portal
-    uuid = fields.Char('Account UUID', default=lambda self: str(uuid4()), copy=False, required=True)
-    website_url = fields.Char('Website URL', compute='_website_url', help='The full URL to access the document through the website.')
     commercial_partner_id = fields.Many2one('res.partner', related='partner_id.commercial_partner_id', store=False)
     payment_token_id = fields.Many2one(
         'payment.token', 'Payment Token', check_company=True,
@@ -129,9 +127,6 @@ class SaleSubscription(models.Model):
     medium_id = fields.Many2one(ondelete='set null')
     source_id = fields.Many2one(ondelete='set null')
 
-    _sql_constraints = [
-        ('uuid_uniq', 'unique (uuid)', """UUIDs (Universally Unique IDentifier) for Sale Subscriptions should be unique!"""),
-    ]
 
     @api.depends('rating_ids.rating')
     def _compute_percentage_satisfaction(self):
@@ -270,10 +265,10 @@ class SaleSubscription(models.Model):
                 sub.recurring_total * INTERVAL_FACTOR[sub.recurring_rule_type] / sub.recurring_interval
             ) if sub.template_id else 0
 
-    @api.depends('uuid')
-    def _website_url(self):
+    def _compute_access_url(self):
+        super()._compute_access_url()
         for account in self:
-            account.website_url = '/my/subscription/%s/%s' % (account.id, account.uuid)
+            account.access_url = '/my/subscription/%s' % (account.id)
 
     @api.depends('recurring_invoice_line_ids.price_subtotal')
     def _amount_all(self):
@@ -383,21 +378,6 @@ class SaleSubscription(models.Model):
                 if diff_partner or subscription.stage_category != "progress":
                     subscription.message_unsubscribe([old_partners[subscription.id]])
         return result
-
-    def _init_column(self, column_name):
-        # to avoid generating a single default uuid when installing the module,
-        # we need to set the default row by row for this column
-        if column_name == "uuid":
-            _logger.debug("Table '%s': setting default value of new column %s to unique values for each row",
-                          self._table, column_name)
-            self.env.cr.execute("SELECT id FROM %s WHERE uuid IS NULL" % self._table)
-            acc_ids = self.env.cr.dictfetchall()
-            query_list = [{'id': acc_id['id'], 'uuid': str(uuid4())} for acc_id in acc_ids]
-            query = 'UPDATE ' + self._table + ' SET uuid = %(uuid)s WHERE id = %(id)s;'
-            self.env.cr._obj.executemany(query, query_list)
-
-        else:
-            super(SaleSubscription, self)._init_column(column_name)
 
     def name_get(self):
         res = []
@@ -814,10 +794,10 @@ class SaleSubscription(models.Model):
         lines.unlink()
         return True
 
-    def open_website_url(self):
+    def open_access_url(self):
         return {
             'type': 'ir.actions.act_url',
-            'url': self.website_url,
+            'url': self.get_portal_url(),
             'target': 'self',
         }
 

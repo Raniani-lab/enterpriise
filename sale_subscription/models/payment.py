@@ -76,6 +76,6 @@ class PaymentToken(models.Model):
                 'description': subscriptions._description,
                 'id': sub.id,
                 'name': sub.name,
-                'url': f'/my/subscription/{sub.id}/{sub.uuid}'
+                'url': sub.get_portal_url()
             })
         return res

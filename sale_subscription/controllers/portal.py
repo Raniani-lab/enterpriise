@@ -5,7 +5,7 @@ from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
 
 from odoo import http
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, MissingError, ValidationError
 from odoo.http import request
 from odoo.tools.translate import _
 
@@ -90,9 +90,6 @@ class CustomerPortal(portal.CustomerPortal):
         })
         return request.render("sale_subscription.portal_my_subscriptions", values)
 
-
-class SaleSubscription(http.Controller):
-
     @http.route(
         ['/my/subscription/<int:subscription_id>',
          '/my/subscription/<int:subscription_id>/<string:access_token>'],
@@ -100,53 +97,46 @@ class SaleSubscription(http.Controller):
     )
     def subscription(self, subscription_id, access_token='', message='', message_class='', **kw):
         logged_in = not request.env.user.sudo()._is_public()
-        Subscription = request.env['sale.subscription']
-        if access_token or not logged_in:
-            subscription = Subscription.sudo().browse(subscription_id).exists()
-            if access_token != subscription.uuid:
-                raise werkzeug.exceptions.NotFound()
-            if request.uid == subscription.partner_id.user_id.id:
-                subscription = Subscription.browse(subscription_id).exists()
-        else:
-            subscription = Subscription.browse(subscription_id).exists()
-        if not subscription:
+        try:
+            subscription_sudo = self._document_check_access('sale.subscription', subscription_id, access_token)
+        except (AccessError, MissingError):
             return request.redirect('/my')
 
         acquirers_sudo = request.env['payment.acquirer'].sudo()._get_compatible_acquirers(
-            subscription.company_id.id,
-            subscription.partner_id.id,
-            currency_id=subscription.currency_id.id,
+            subscription_sudo.company_id.id,
+            subscription_sudo.partner_id.id,
+            currency_id=subscription_sudo.currency_id.id,
             force_tokenization=True,
-            is_validation=not subscription.to_renew,
+            is_validation=not subscription_sudo.to_renew,
         )  # In sudo mode to read the fields of acquirers and partner (if not logged in)
         # The tokens are filtered based on the partner hierarchy to allow managing tokens of any
         # sibling partners. As a result, a partner can manage any token belonging to partners of its
         # own company from a subscription.
         tokens = request.env['payment.token'].search([
             ('acquirer_id', 'in', acquirers_sudo.ids),
-            ('partner_id', 'child_of', subscription.partner_id.commercial_partner_id.id),
+            ('partner_id', 'child_of', subscription_sudo.partner_id.commercial_partner_id.id),
         ]) if logged_in else request.env['payment.token']
         fees_by_acquirer = {
             acquirer: acquirer._compute_fees(
-                subscription.recurring_total_incl,
-                subscription.currency_id,
-                subscription.partner_id.country_id
+                subscription_sudo.recurring_total_incl,
+                subscription_sudo.currency_id,
+                subscription_sudo.partner_id.country_id
             ) for acquirer in acquirers_sudo.filtered('fees_active')
         }
-        active_plan_sudo = subscription.template_id.sudo()
-        display_close = active_plan_sudo.user_closable and subscription.stage_category == 'progress'
-        is_follower = request.env.user.partner_id in subscription.message_follower_ids.partner_id
+        active_plan_sudo = subscription_sudo.template_id.sudo()
+        display_close = active_plan_sudo.user_closable and subscription_sudo.stage_category == 'progress'
+        is_follower = request.env.user.partner_id in subscription_sudo.message_follower_ids.partner_id
         periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-        if subscription.recurring_rule_type != 'weekly':
-            rel_period = relativedelta(datetime.datetime.today(), subscription.recurring_next_date)
-            missing_periods = getattr(rel_period, periods[subscription.recurring_rule_type]) + 1
+        if subscription_sudo.recurring_rule_type != 'weekly':
+            rel_period = relativedelta(datetime.datetime.today(), subscription_sudo.recurring_next_date)
+            missing_periods = getattr(rel_period, periods[subscription_sudo.recurring_rule_type]) + 1
         else:
-            delta = datetime.date.today() - subscription.recurring_next_date
+            delta = datetime.date.today() - subscription_sudo.recurring_next_date
             missing_periods = delta.days / 7
         action = request.env.ref('sale_subscription.sale_subscription_action')
         values = {
-            'account': subscription,
-            'template': subscription.template_id.sudo(),
+            'account': subscription_sudo,
+            'template': subscription_sudo.template_id.sudo(),
             'display_close': display_close,
             'is_follower': is_follower,
             'close_reasons': request.env['sale.subscription.close.reason'].search([]),
@@ -157,46 +147,42 @@ class SaleSubscription(http.Controller):
             'action': action,
             'message': message,
             'message_class': message_class,
-            'pricelist': subscription.pricelist_id.sudo(),
+            'pricelist': subscription_sudo.pricelist_id.sudo(),
         }
         payment_values = {
             'acquirers': acquirers_sudo,
             'tokens': tokens,
-            'default_token_id': subscription.payment_token_id.id,
+            'default_token_id': subscription_sudo.payment_token_id.id,
             'fees_by_acquirer': fees_by_acquirer,
             'show_tokenize_input': False,  # Tokenization is always performed for subscriptions
             'amount': None,  # Determined by the generated invoice
-            'currency': subscription.pricelist_id.currency_id,
-            'partner_id': subscription.partner_id.id,
-            'access_token': subscription.uuid,
-            'transaction_route': f'/my/subscription/transaction/{subscription.id}'
+            'currency': subscription_sudo.pricelist_id.currency_id,
+            'partner_id': subscription_sudo.partner_id.id,
+            'access_token': subscription_sudo.access_token,
+            'transaction_route': f'/my/subscription/transaction/{subscription_sudo.id}'
             # Operation-dependent values are defined in the view
         }
         values.update(payment_values)
 
         history = request.session.get('my_subscriptions_history', [])
-        values.update(get_records_pager(history, subscription))
+        values.update(get_records_pager(history, subscription_sudo))
 
         return request.render("sale_subscription.subscription", values)
 
     @http.route(['/my/subscription/<int:account_id>/close'], type='http', methods=["POST"], auth="public", website=True)
-    def close_account(self, account_id, uuid=None, **kw):
-        account_res = request.env['sale.subscription']
+    def close_account(self, account_id, access_token=None, **kw):
+        try:
+            subscription_sudo = self._document_check_access('sale.subscription', account_id, access_token)
+        except (AccessError, MissingError):
+            raise werkzeug.exceptions.NotFound()
 
-        if uuid:
-            account = account_res.sudo().browse(account_id)
-            if uuid != account.uuid:
-                raise werkzeug.exceptions.NotFound()
-        else:
-            account = account_res.browse(account_id)
-
-        if account.sudo().template_id.user_closable:
+        if subscription_sudo.template_id.user_closable:
             close_reason = request.env['sale.subscription.close.reason'].browse(int(kw.get('close_reason_id')))
-            account.close_reason_id = close_reason
+            subscription_sudo.close_reason_id = close_reason
             if kw.get('closing_text'):
-                account.message_post(body=_('Closing text: %s', kw.get('closing_text')))
-            account.set_close()
-            account.date = datetime.date.today().strftime('%Y-%m-%d')
+                subscription_sudo.message_post(body=_('Closing text: %s', kw.get('closing_text')))
+            subscription_sudo.set_close()
+            subscription_sudo.date = datetime.date.today().strftime('%Y-%m-%d')
         return request.redirect('/my/home')
 
 
@@ -210,38 +196,31 @@ class PaymentPortal(payment_portal.PaymentPortal):
 
         :param int subscription_id: The subscription for which a transaction is made, as a
                                     `sale.subscription` id
-        :param str access_token: The UUID of the subscription used to authenticate the partner
+        :param str access_token: The access token of the subscription used to authenticate the partner
         :param bool is_validation: Whether the operation is a validation
         :param dict kwargs: Locally unused data passed to `_create_transaction`
         :return: The mandatory values for the processing of the transaction
         :rtype: dict
         :raise: ValidationError if the subscription id or the access token is invalid
         """
-        Subscription = request.env['sale.subscription']
-        user = request.env.user
-        if user._is_public():  # The user is not logged in
-            Subscription = Subscription.sudo()
-        subscription = Subscription.browse(subscription_id).exists()
-
-        # Check the access token against the subscription uuid
-        # The fields of the subscription are accessed in sudo mode in case the user is logged but
-        # has no read access on the record.
-        if not subscription or access_token != subscription.sudo().uuid:
+        try:
+            subscription_sudo = self._document_check_access('sale.subscription', subscription_id, access_token)
+        except (AccessError, MissingError):
             raise ValidationError("The subscription id or the access token is invalid.")
 
-        kwargs.update(partner_id=subscription.partner_id.id)
+        kwargs.update(partner_id=subscription_sudo.partner_id.id)
         kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
         common_callback_values = {
-            'callback_model_id': request.env['ir.model']._get_id(subscription._name),
-            'callback_res_id': subscription.id,
+            'callback_model_id': request.env['ir.model']._get_id(subscription_sudo._name),
+            'callback_res_id': subscription_sudo.id,
         }
         if not is_validation:  # Renewal transaction
             # Create an invoice to compute the total amount with tax, and the currency
-            invoice_values = subscription.sudo().with_context(lang=subscription.partner_id.lang) \
+            invoice_values = subscription_sudo.with_context(lang=subscription_sudo.partner_id.lang) \
                 ._prepare_invoice()  # In sudo mode to read on account.fiscal.position fields
             invoice_sudo = request.env['account.move'].sudo().create(invoice_values)
             kwargs.update({
-                'reference_prefix': subscription.code,  # There is no sub_id field to rely on
+                'reference_prefix': subscription_sudo.code,  # There is no sub_id field to rely on
                 'amount': invoice_sudo.amount_total,
                 'currency_id': invoice_sudo.currency_id.id,
                 'tokenization_requested': True,  # Renewal transactions are always tokenized

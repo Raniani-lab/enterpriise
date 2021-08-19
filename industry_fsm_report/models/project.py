@@ -132,8 +132,15 @@ class Task(models.Model):
 
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):
+        is_portal_user = self.env.user.share
         for record in self:
-            record.worksheet_count = record.worksheet_template_id and self.env[record.worksheet_template_id.sudo().model_id.model].search_count([('x_project_task_id', '=', record.id)]) or 0
+            worksheet_count = 0
+            if record.worksheet_template_id:
+                Worksheet = self.env[record.worksheet_template_id.sudo().model_id.model]
+                if is_portal_user:
+                    Worksheet = Worksheet.sudo()
+                worksheet_count = Worksheet.search_count([('x_project_task_id', '=', record.id)])
+            record.worksheet_count = worksheet_count
 
     def has_to_be_signed(self):
         return self.allow_worksheets and not self.worksheet_signature

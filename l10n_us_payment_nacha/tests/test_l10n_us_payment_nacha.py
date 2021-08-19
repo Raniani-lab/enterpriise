@@ -54,13 +54,13 @@ class TestNacha(AccountTestInvoicingCommon):
             # batch header for payment "test1"
             "5225company_1_data                      COMPANY_IDPPDtest1     201130201130   1ORIGINAT0000000",
             # entry detail for payment "test1"
-            "627123456789987654321        0000012300               partner_a               0ORIGINAT0000000",
+            "622123456789987654321        0000012300               partner_a               0ORIGINAT0000000",
             # batch control record for payment "test1"
             "82250000010000000036000000012300000000000000COMPANY_ID                         ORIGINAT0000000",
             # batch header for payment "test2"
             "5225company_1_data                      COMPANY_IDPPDtest2     201130201130   1ORIGINAT0000001",
             # entry detail for payment "test2"
-            "627123456789987654321        0000045600               partner_b               0ORIGINAT0000000",
+            "622123456789987654321        0000045600               partner_b               0ORIGINAT0000000",
             # batch control record for payment "test2"
             "82250000010000000036000000045600000000000000COMPANY_ID                         ORIGINAT0000001",
             # file control record

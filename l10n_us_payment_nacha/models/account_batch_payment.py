@@ -86,7 +86,7 @@ class AccountBatchPayment(models.Model):
         bank = payment.partner_bank_id
         entry = []
         entry.append("6")  # Record Type Code (PPD)
-        entry.append("27")  # Transaction Code
+        entry.append("22")  # Transaction Code
         entry.append("{:8.8}".format(bank.aba_routing[:-1]))  # RDFI Routing Transit Number
         entry.append("{:1.1}".format(bank.aba_routing[-1]))  # Check Digit
         entry.append("{:17.17}".format(bank.acc_number))  # DFI Account Number

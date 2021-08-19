@@ -56,11 +56,13 @@
                 box-shadow: none !important;
                 border: none !important;
             }
-            tbody > tr > td:nth-child(1) {
+            tbody > tr > td.o_list_many2one:nth-child(1) {
                 width: 150px !important;
                 @include media-breakpoint-down(md) {
+                    width: 100px !important;
+                }
+                @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
                     display: block;
-                    width: 100% !important;
                     font-weight: normal;
                     color: $o-brand-secondary!important;
                     > span {
@@ -74,8 +76,8 @@
                 border: none;
                 border-bottom: none
             }
-            tbody > tr > td:nth-child(2) {
-                @include media-breakpoint-down(md) {
+            tbody > tr > td.o_list_many2one:nth-child(2) {
+                @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
                     display: block;
                     min-height: 47px;
                 }

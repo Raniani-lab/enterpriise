@@ -73,7 +73,7 @@
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
                     <div>
                         <span t-att-class="'o_status_bubble mx-0 float-right mt-1 o_color_bubble_' + (record.validated.raw_value ? 10 : 4)"
-                            class="o_timesheet_status_bubble" title="Status"/>
+                            class="o_timesheet_status_bubble" t-att-title="record.validated.raw_value ? 'Validated': 'Draft'"/>
                     </div>
                 </xpath>
             </field>
@@ -155,7 +155,7 @@
             <field name="priority">4567</field>
             <field name="arch" type="xml">
                 <form string="Add a Task">
-                    <header>
+                    <header invisible="context.get('view_grid_add_line', False)">
                         <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
                             attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
                         <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"

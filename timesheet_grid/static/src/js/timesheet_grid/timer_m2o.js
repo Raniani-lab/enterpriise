@@ -43,7 +43,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
             relation: 'project.task',
             type: 'many2one',
             value: this.taskId,
-            domain: [['project_id', '=', this.projectId]]
+            domain: this.projectId ? [['project_id', '=', this.projectId]] : []
         }]);
     },
     /**
@@ -124,7 +124,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
                 this.taskMany2one.value = [];
                 this.taskMany2one.m2o_value = this.taskMany2one._formatValue([]);
                 this.taskMany2one._render();
-                this.taskMany2one.field.domain = [['project_id', '=', newId]];
+                this.taskMany2one.field.domain = [['project_id', '=?', newId]];
                 this.trigger_up('timer-edit-project', {'projectId': newId});
                 this._updateRequiredField();
             }
@@ -132,8 +132,18 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
             record = this.model.get(this.task);
             const newId = record.data.task_id && record.data.task_id.res_id;
             if (task !== newId) {
+                let project_id = this.projectId;
+                if (!project_id) {
+                    const task_data = await this._rpc({
+                        model: 'project.task',
+                        method: 'search_read',
+                        args: [[['id', '=', newId]], ['project_id']],
+                    });
+                    project_id = task_data[0].project_id[0];
+                }
+
                 this.taskId = false;
-                this.trigger_up('timer-edit-task', {'taskId': newId});
+                this.trigger_up('timer-edit-task', {'taskId': newId, 'projectId': project_id});
             }
         }
     },

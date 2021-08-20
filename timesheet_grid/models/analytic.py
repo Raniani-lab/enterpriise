@@ -120,7 +120,9 @@ class AnalyticLine(models.Model):
         last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
         domain_search = [
             ('project_id', '!=', False),
-            ('task_id.active', '=', True),
+            '|',
+                ('task_id.active', '=', True),
+                ('task_id', '=', False),
             ('date', '>=', last_week),
             ('date', '<=', grid_anchor)
         ]

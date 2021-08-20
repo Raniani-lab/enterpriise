@@ -126,6 +126,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             this._onChangeProjectTaskDebounce(data.detail.projectId, undefined);
         }
         async _onSetTask(data) {
+            this.stateTimer.projectId = data.detail.projectId;
             this.stateTimer.taskId = data.detail.taskId || undefined;
             this._onChangeProjectTaskDebounce(this.stateTimer.projectId, data.detail.taskId);
         }

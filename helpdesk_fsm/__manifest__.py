@@ -12,7 +12,6 @@
         'security/ir.model.access.csv',
         'data/mail_data.xml',
         'views/helpdesk_views.xml',
-        'views/project_task_views.xml',
         'views/project_sharing_views.xml',
         'wizard/create_task_views.xml',
     ],

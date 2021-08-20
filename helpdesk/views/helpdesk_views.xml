@@ -557,6 +557,9 @@
                 <field name="legend_blocked"/>
                 <field name="legend_normal"/>
                 <field name="legend_done"/>
+                <field name="use_rating"/>
+                <field name="rating_last_value"/>
+                <field name="rating_ids"/>
                 <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
                 <templates>
                     <t t-name="kanban-box">
@@ -597,6 +600,11 @@
                                     <div class="oe_kanban_bottom_left">
                                         <field name="priority" widget="priority"/>
                                         <field name="activity_ids" widget="kanban_activity"/>
+                                        <b t-if="record.use_rating.raw_value and record.rating_ids.raw_value.length">
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_last_value.value == 5" title="Latest Rating: Satisfied" role="img" aria-label="Happy face"/>
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-if="record.rating_last_value.value == 3" title="Latest Rating: Okay" role="img" aria-label="Neutral face"/>
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-frown-o text-danger" t-if="record.rating_last_value.value == 1" title="Latest Rating: Dissatisfied" role="img" aria-label="Sad face"/>
+                                        </b>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
                                         <field name="kanban_state" widget="state_selection" groups="base.group_user"/>

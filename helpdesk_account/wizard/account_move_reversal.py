@@ -38,5 +38,7 @@ class AccountMoveReversal(models.TransientModel):
         if self.helpdesk_ticket_id:
             res['context'] = dict(literal_eval(res.get('context', '{}')), create=False)
             self.helpdesk_ticket_id.invoice_ids |= self.new_move_ids
+            for move_id in self.new_move_ids:
+                move_id.message_post_with_view('helpdesk.ticket_creation', values={'self': move_id, 'ticket': self.helpdesk_ticket_id}, subtype_id=self.env.ref('mail.mt_note').id)
 
         return res

@@ -65,6 +65,20 @@ class MrpBom(models.Model):
         }
         return action
 
+    def _get_active_version(self):
+        self.ensure_one()
+        boms = self.with_context(active_test=False).search([
+            ('product_id', '=', self.product_id.id),
+            ('version', '>', self.version)], order='version')
+        previous_boms = self
+        for bom in boms:
+            if bom.previous_bom_id not in previous_boms:
+                continue
+            previous_boms += bom
+            if bom.active:
+                return bom
+        return False
+
 
 class MrpBomLine(models.Model):
     _inherit = 'mrp.bom.line'

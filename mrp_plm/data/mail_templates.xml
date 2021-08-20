@@ -5,4 +5,9 @@
         was <t t-esc="approval.status"/>
         by <t t-esc="approval.user_id.name"/>
     </template>
+
+    <record id="mail_activity_eco_approval" model="mail.activity.type">
+        <field name="name">ECO Approval</field>
+        <field name="res_model_id" ref="mrp_plm.model_mrp_eco"/>
+    </record>
 </odoo>

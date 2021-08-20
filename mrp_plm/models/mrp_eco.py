@@ -3,6 +3,7 @@
 
 import ast
 
+from collections import defaultdict
 from random import randint
 
 from odoo import api, fields, models, tools, SUPERUSER_ID, _
@@ -23,7 +24,7 @@ class MrpEcoType(models.Model):
     nb_approvals_my = fields.Integer('Waiting my Approvals', compute='_compute_nb')
     nb_validation = fields.Integer('To Apply', compute='_compute_nb')
     color = fields.Integer('Color', default=1)
-    stage_ids = fields.One2many('mrp.eco.stage', 'type_id', 'Stages')
+    stage_ids = fields.Many2many('mrp.eco.stage', 'mrp_eco_stage_type_rel', 'type_id', 'stage_id', string='Stages')
 
     def _compute_nb(self):
         # TDE FIXME: this seems not good for performances, to check (replace by read_group later on)
@@ -33,16 +34,16 @@ class MrpEcoType(models.Model):
                 ('type_id', '=', eco_type.id), ('state', '!=', 'done')
             ])
             eco_type.nb_validation = MrpEco.search_count([
-                ('stage_id.type_id', '=', eco_type.id),
+                ('type_id', '=', eco_type.id),
                 ('stage_id.allow_apply_change', '=', True),
                 ('state', '=', 'progress')
             ])
             eco_type.nb_approvals = MrpEco.search_count([
-                ('stage_id.type_id', '=', eco_type.id),
+                ('type_id', '=', eco_type.id),
                 ('approval_ids.status', '=', 'none')
             ])
             eco_type.nb_approvals_my = MrpEco.search_count([
-                ('stage_id.type_id', '=', eco_type.id),
+                ('type_id', '=', eco_type.id),
                 ('approval_ids.status', '=', 'none'),
                 ('approval_ids.required_user_ids', '=', self.env.user.id)
             ])
@@ -68,7 +69,7 @@ class MrpEcoApprovalTemplate(models.Model):
         ('mandatory', 'Is required to approve'),
         ('comment', 'Comments only')], 'Approval Type',
         default='mandatory', required=True)
-    user_ids = fields.Many2many('res.users', string='Users', required=True)
+    user_ids = fields.Many2many('res.users', string='Users', domain=lambda self: [('groups_id', 'in', self.env.ref('mrp_plm.group_plm_user').id)], required=True)
     stage_id = fields.Many2one('mrp.eco.stage', 'Stage', required=True)
 
 
@@ -142,10 +143,20 @@ class MrpEcoStage(models.Model):
     folded = fields.Boolean('Folded in kanban view')
     allow_apply_change = fields.Boolean(string='Allow to apply changes', help='Allow to apply changes from this stage.')
     final_stage = fields.Boolean(string='Final Stage', help='Once the changes are applied, the ECOs will be moved to this stage.')
-    type_id = fields.Many2one('mrp.eco.type', 'Type', required=True, default=lambda self: self.env['mrp.eco.type'].search([], limit=1))
+    type_ids = fields.Many2many('mrp.eco.type', 'mrp_eco_stage_type_rel', 'stage_id', 'type_id', string='Types', required=True)
     approval_template_ids = fields.One2many('mrp.eco.approval.template', 'stage_id', 'Approvals')
     approval_roles = fields.Char('Approval Roles', compute='_compute_approvals', store=True)
     is_blocking = fields.Boolean('Blocking Stage', compute='_compute_is_blocking', store=True)
+    legend_blocked = fields.Char(
+        'Red Kanban Label', default=lambda s: _('Blocked'), translate=True, required=True,
+        help='Override the default value displayed for the blocked state for kanban selection, when the ECO is in that stage.')
+    legend_done = fields.Char(
+        'Green Kanban Label', default=lambda s: _('Ready'), translate=True, required=True,
+        help='Override the default value displayed for the done state for kanban selection, when the ECO is in that stage.')
+    legend_normal = fields.Char(
+        'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
+        help='Override the default value displayed for the normal state for kanban selection, when the ECO is in that stage.')
+    description = fields.Text(help="Description and tooltips of the stage states.")
 
     @api.depends('approval_template_ids.name')
     def _compute_approvals(self):
@@ -165,18 +176,17 @@ class MrpEco(models.Model):
 
     @api.model
     def _get_type_selection(self):
-        types = [
-            ('product', _('Product Only')),
-            ('bom', _('Bill of Materials'))]
-        return types
+        return [
+            ('bom', _('Bill of Materials')),
+            ('product', _('Product Only'))]
 
     name = fields.Char('Reference', copy=False, required=True)
     user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, tracking=True, check_company=True)
     type_id = fields.Many2one('mrp.eco.type', 'Type', required=True)
     stage_id = fields.Many2one(
-        'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_id', '=', type_id)]",
+        'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_ids', 'in', type_id)]",
         group_expand='_read_group_stage_ids', tracking=True,
-        default=lambda self: self.env['mrp.eco.stage'].search([('type_id', '=', self._context.get('default_type_id'))], limit=1))
+        default=lambda self: self.env['mrp.eco.stage'].search([('type_ids', 'in', self._context.get('default_type_id'))], limit=1))
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     tag_ids = fields.Many2many('mrp.eco.tag', string='Tags')
     priority = fields.Selection([
@@ -186,10 +196,10 @@ class MrpEco(models.Model):
     note = fields.Html('Note')
     effectivity = fields.Selection([
         ('asap', 'As soon as possible'),
-        ('date', 'At Date')], string='Effectivity',  # Is this English ?
+        ('date', 'At Date')], string='Effective',  # Is this English ?
         compute='_compute_effectivity', inverse='_set_effectivity', store=True,
         help='Date on which the changes should be applied. For reference only.')
-    effectivity_date = fields.Datetime('Effectivity Date', tracking=True, help="For reference only.")
+    effectivity_date = fields.Datetime('Effective Date', tracking=True, help="For reference only.")
     approval_ids = fields.One2many('mrp.eco.approval', 'eco_id', 'Approvals', help='Approvals by stage')
 
     state = fields.Selection([
@@ -209,7 +219,13 @@ class MrpEco(models.Model):
         ('normal', 'In Progress'),
         ('done', 'Approved'),
         ('blocked', 'Blocked')], string='Kanban State',
-        copy=False, compute='_compute_kanban_state', store=True)
+        copy=False, compute='_compute_kanban_state', store=True, readonly=False)
+    legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked Explanation', related_sudo=False)
+    legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', related_sudo=False)
+    legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', related_sudo=False)
+    kanban_state_label = fields.Char(compute='_compute_kanban_state_label', string='Kanban State Label', tracking=True)
+    allow_change_kanban_state = fields.Boolean(
+        'Allow Change Kanban State', compute='_compute_allow_change_kanban_state')
     allow_change_stage = fields.Boolean(
         'Allow Change Stage', compute='_compute_allow_change_stage')
     allow_apply_change = fields.Boolean(
@@ -217,7 +233,7 @@ class MrpEco(models.Model):
 
     product_tmpl_id = fields.Many2one('product.template', "Product", check_company=True)
     type = fields.Selection(selection=_get_type_selection, string='Apply on',
-        default='product', required=True)
+        default='bom', required=True)
     bom_id = fields.Many2one(
         'mrp.bom', "Bill of Materials",
         domain="[('product_tmpl_id', '=', product_tmpl_id)]", check_company=True)  # Should at least have bom or routing on which it is applied?
@@ -231,7 +247,7 @@ class MrpEco(models.Model):
     bom_rebase_ids = fields.One2many('mrp.eco.bom.change', 'rebase_id', string="BoM Rebase")
     routing_change_ids = fields.One2many(
         'mrp.eco.routing.change', 'eco_id', string="ECO Routing Changes",
-        compute='_compute_routing_change_ids', help='Difference between old routing and new routing revision', store=True)
+        compute='_compute_routing_change_ids', help='Difference between old operation and new operation revision', store=True)
     mrp_document_count = fields.Integer('# Attachments', compute='_compute_attachments')
     mrp_document_ids = fields.One2many(
         'mrp.document', 'res_id', string='Attachments',
@@ -374,33 +390,49 @@ class MrpEco(models.Model):
     @api.depends('bom_id.operation_ids', 'new_bom_id.operation_ids')
     def _compute_routing_change_ids(self):
         for rec in self:
-            # TDE TODO: should we add workcenter logic ?
+            if rec.state == 'confirmed' or rec.type == 'product':
+                continue
             new_routing_commands = [(5,)]
-            old_routing_lines = dict(((op.workcenter_id,), op) for op in rec.bom_id.operation_ids)
+            old_routing_lines = defaultdict(list)
+            for op in rec.bom_id.operation_ids:
+                old_routing_lines[op.workcenter_id.id].append(op)
             if rec.new_bom_id and rec.bom_id:
                 for operation in rec.new_bom_id.operation_ids:
-                    key = (operation.workcenter_id,)
-                    old_op = old_routing_lines.pop(key, None)
-                    if old_op and tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
-                        new_routing_commands += [(0, 0, {
-                            'change_type': 'update',
-                            'workcenter_id': operation.workcenter_id.id,
-                            'new_time_cycle_manual': operation.time_cycle_manual,
-                            'old_time_cycle_manual': old_op.time_cycle_manual
-                        })]
-                    elif not old_op:
+                    old_ops = old_routing_lines[operation.workcenter_id.id]
+                    if old_ops:
+                        old_op = old_ops.pop(0)
+                        if not old_ops:
+                            old_routing_lines.pop(operation.workcenter_id.id)
+                        if tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
+                            new_routing_commands += [(0, 0, {
+                                'change_type': 'update',
+                                'workcenter_id': operation.workcenter_id.id,
+                                'new_time_cycle_manual': operation.time_cycle_manual,
+                                'old_time_cycle_manual': old_op.time_cycle_manual,
+                                'operation_id': operation.id,
+                            })]
+                        new_routing_commands += self._prepare_detailed_change_commands(operation, old_op)
+                    else:
                         new_routing_commands += [(0, 0, {
                             'change_type': 'add',
                             'workcenter_id': operation.workcenter_id.id,
-                            'new_time_cycle_manual': operation.time_cycle_manual
+                            'new_time_cycle_manual': operation.time_cycle_manual,
+                            'operation_id': operation.id,
                         })]
-                for key, old_op in old_routing_lines.items():
+                        new_routing_commands += self._prepare_detailed_change_commands(operation, None)
+            for old_ops in old_routing_lines.values():
+                for old_op in old_ops:
                     new_routing_commands += [(0, 0, {
                         'change_type': 'remove',
                         'workcenter_id': old_op.workcenter_id.id,
-                        'old_time_cycle_manual': old_op.time_cycle_manual
+                        'old_time_cycle_manual': old_op.time_cycle_manual,
+                        'operation_id': old_op.id,
                     })]
             rec.routing_change_ids = new_routing_commands
+
+    def _prepare_detailed_change_commands(self, new, old):
+        """Necessary for overrides to track change of quality checks"""
+        return []
 
     def _compute_user_approval(self):
         for eco in self:
@@ -439,6 +471,21 @@ class MrpEco(models.Model):
         for rec in self:
             rec.allow_apply_change = rec.stage_id.allow_apply_change and rec.state in ('confirmed', 'progress')
 
+    @api.depends('stage_id.approval_template_ids')
+    def _compute_allow_change_kanban_state(self):
+        for rec in self:
+            rec.allow_change_kanban_state = False if rec.stage_id.approval_template_ids else True
+
+    @api.depends('stage_id', 'kanban_state')
+    def _compute_kanban_state_label(self):
+        for eco in self:
+            if eco.kanban_state == 'normal':
+                eco.kanban_state_label = eco.legend_normal
+            elif eco.kanban_state == 'blocked':
+                eco.kanban_state_label = eco.legend_blocked
+            else:
+                eco.kanban_state_label = eco.legend_done
+
     @api.onchange('product_tmpl_id')
     def onchange_product_tmpl_id(self):
         if self.product_tmpl_id.bom_ids:
@@ -446,7 +493,7 @@ class MrpEco(models.Model):
 
     @api.onchange('type_id')
     def onchange_type_id(self):
-        self.stage_id = self.env['mrp.eco.stage'].search([('type_id', '=', self.type_id.id)], limit=1).id
+        self.stage_id = self.env['mrp.eco.stage'].search([('type_ids', 'in', self.type_id.id)], limit=1).id
 
     @api.model
     def create(self, vals):
@@ -467,7 +514,7 @@ class MrpEco(models.Model):
                     has_blocking_stages = self.env['mrp.eco.stage'].search_count([
                         ('sequence', '>=', eco.stage_id.sequence),
                         ('sequence', '<=', newstage.sequence),
-                        ('type_id', '=', eco.type_id.id),
+                        ('type_ids', 'in', eco.type_id.id),
                         ('id', 'not in', [eco.stage_id.id] + [vals['stage_id']]),
                         ('is_blocking', '=', True)])
                     if has_blocking_stages:
@@ -486,8 +533,8 @@ class MrpEco(models.Model):
         in the Kanban view, even if there is no ECO in that stage
         """
         search_domain = []
-        if self._context.get('default_type_id'):
-            search_domain = [('type_id', '=', self._context['default_type_id'])]
+        if self._context.get('default_type_ids'):
+            search_domain = [('type_ids', 'in', self._context['default_type_ids'])]
 
         stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
         return stages.browse(stage_ids)
@@ -506,14 +553,25 @@ class MrpEco(models.Model):
         return message
 
     def _create_approvals(self):
+        approval_vals = []
+        activity_vals = []
         for eco in self:
             for approval_template in eco.stage_id.approval_template_ids:
                 approval = eco.approval_ids.filtered(lambda app: app.approval_template_id == approval_template and not app.is_closed)
                 if not approval:
-                    self.env['mrp.eco.approval'].create({
+                    approval_vals.append({
                         'eco_id': eco.id,
                         'approval_template_id': approval_template.id,
                     })
+                    for user in approval_template.user_ids:
+                        activity_vals.append({
+                            'activity_type_id': self.env.ref('mrp_plm.mail_activity_eco_approval').id,
+                            'user_id': user.id,
+                            'res_id': eco.id,
+                            'res_model_id': self.env.ref('mrp_plm.model_mrp_eco').id,
+                        })
+        self.env['mrp.eco.approval'].create(approval_vals)
+        self.env['mail.activity'].create(activity_vals)
 
     def _create_or_update_approval(self, status):
         for eco in self:
@@ -558,7 +616,7 @@ class MrpEco(models.Model):
     def action_new_revision(self):
         IrAttachment = self.env['ir.attachment']
         for eco in self:
-            if eco.type in ('bom', 'both'):
+            if eco.type == 'bom':
                 eco.new_bom_id = eco.bom_id.copy(default={
                     'version': eco.bom_id.version + 1,
                     'active': False,
@@ -566,56 +624,83 @@ class MrpEco(models.Model):
                 })
                 attachments = IrAttachment.search([('res_model', '=', 'mrp.bom'),
                                                    ('res_id', '=', eco.bom_id.id)])
-                for attachment in attachments:
-                    attachment.copy(default={'res_id':eco.new_bom_id.id})
-            if eco.type in ('routing', 'both'):
-                eco.new_routing_id = eco.routing_id.copy(default={
-                    'version': eco.routing_id.version + 1,
-                    'active': False,
-                    'previous_routing_id': eco.routing_id.id
-                }).id
-                attachments = IrAttachment.search([('res_model', '=', 'mrp.routing'),
-                                                   ('res_id', '=', eco.routing_id.id)])
-                for attachment in attachments:
-                    attachment.copy(default={'res_id':eco.new_routing_id.id})
-            if eco.type == 'both':
-                eco.new_bom_id.routing_id = eco.new_routing_id.id
-                for line in eco.new_bom_id.bom_line_ids:
-                    line.operation_id = eco.new_routing_id.operation_ids.filtered(lambda x: x.name == line.operation_id.name).id
-            # duplicate all attachment on the product
-            if eco.type in ('bom', 'both', 'product'):
-                attachments = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', eco.product_tmpl_id.id)])
-                for attach in attachments:
-                    attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
+            else:
+                attachments = IrAttachment.search([('res_model', '=', 'product.template'),
+                                                   ('res_id', '=', eco.product_tmpl_id.id)])
+            for attach in attachments:
+                new_attach = attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
+                self.env['mrp.document'].create({'ir_attachment_id': new_attach.id, 'origin_attachment_id': attach.id})
         self.write({'state': 'progress'})
 
     def action_apply(self):
-        self.ensure_one()
         self._check_company()
-        self.mapped('new_bom_id').apply_new_version()
-        if self.type in ('bom', 'both', 'product'):
-            documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
-            documents.mapped('ir_attachment_id').unlink()
-            for attach in self.with_context(active_test=False).mrp_document_ids:
-                product_attach = attach.copy({
-                    'res_model': 'product.template',
-                    'res_id': self.product_tmpl_id.id,
-                })
-                if not attach.active:
-                    product_attach.write({
-                        'name': attach.name + '(v'+str(self.product_tmpl_id.version)+')'
-                    })
-        if self.type in ('product', 'bom', 'both'):
-            self.product_tmpl_id.version = self.product_tmpl_id.version + 1
-        vals = {'state': 'done'}
-        stage_id = self.env['mrp.eco.stage'].search([('final_stage', '=', True), ('type_id', '=', self.type_id.id)], limit=1).id
-        if stage_id:
-            vals['stage_id'] = stage_id
-        self.write(vals)
+        eco_need_action = self.env['mrp.eco']
+        for eco in self:
+            if eco.state == 'done':
+                continue
+            if eco.state == 'rebase':
+                eco.apply_rebase()
+            if eco.allow_apply_change:
+                if eco.type == 'product':
+                    for attach in eco.with_context(active_test=False).mrp_document_ids:
+                        origin = attach.origin_attachment_id
+                        if not attach.active:
+                            origin.unlink()
+                            continue
+                        if origin._compute_checksum(origin.raw) == origin._compute_checksum(attach.raw):
+                            if attach.origin_attachment_id.name != attach.name:
+                                attach.origin_attachment_id.name = attach.name
+                            if attach.origin_attachment_id.company_id != attach.company_id:
+                                attach.origin_attachment_id.company_id = attach.company_id
+                            continue
+                        attach.ir_attachment_id.copy({
+                            'res_model': 'product.template',
+                            'res_id': eco.product_tmpl_id.id,
+                        })
+                        eco.product_tmpl_id.version = eco.product_tmpl_id.version + 1
+                else:
+                    eco.mapped('new_bom_id').apply_new_version()
+                    for attach in eco.mrp_document_ids:
+                        attach.ir_attachment_id.copy({
+                            'res_model': 'mrp.bom',
+                            'res_id': eco.new_bom_id.id,
+                        })
+                vals = {'state': 'done'}
+                stage_id = eco.env['mrp.eco.stage'].search([
+                    ('final_stage', '=', True),
+                    ('type_ids', 'in', eco.type_id.id)], limit=1).id
+                if stage_id:
+                    vals['stage_id'] = stage_id
+                eco.write(vals)
+            else:
+                eco_need_action |= eco
+        if eco_need_action:
+            return {
+                'name': _('Eco'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree, form',
+                'views': [[False, 'tree'], [False, 'form']],
+                'res_model': 'mrp.eco',
+                'target': 'current',
+                'domain': [('id', 'in', eco_need_action.ids)],
+                'context': {'search_default_changetoapply': False},
+            }
 
     def action_see_attachments(self):
+        self.ensure_one()
         domain = ['&', ('res_model', '=', self._name), ('res_id', '=', self.id)]
-        attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')
+        attachment_view = self.env.ref('mrp_plm.view_document_file_kanban_mrp_plm')
+        context = {
+            'default_res_model': self._name,
+            'default_res_id': self.id,
+            'default_company_id': self.company_id.id,
+            'search_default_all': 1,
+            'create': self.state != 'done',
+            'edit': self.state != 'done',
+            'delete': self.state != 'done',
+        }
+        if self.state == 'done':
+            context.update({'search_default_all': 0, 'no_banner': True})
         return {
             'name': _('Attachments'),
             'domain': domain,
@@ -630,7 +715,7 @@ class MrpEco(models.Model):
                         Use this feature to store any files, like drawings or specifications.
                     </p>'''),
             'limit': 80,
-            'context': "{'default_res_model': '%s','default_res_id': %d, 'default_company_id': %s}" % (self._name, self.id, self.company_id.id)
+            'context': context,
         }
 
     def open_new_bom(self):
@@ -642,17 +727,14 @@ class MrpEco(models.Model):
             'res_model': 'mrp.bom',
             'target': 'current',
             'res_id': self.new_bom_id.id,
-            'context': dict(default_product_tmpl_id=self.product_tmpl_id.id, default_product_id=self.product_tmpl_id.product_variant_id.id)}
-
-    def open_new_routing(self):
-        self.ensure_one()
-        return {
-            'name': _('Eco Routing'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'mrp.routing',
-            'target': 'current',
-            'res_id': self.new_routing_id.id}
+            'context': {
+                'default_product_tmpl_id': self.product_tmpl_id.id,
+                'default_product_id': self.product_tmpl_id.product_variant_id.id,
+                'create': self.state != 'done',
+                'edit': self.state != 'done',
+                'delete': self.state != 'done',
+            },
+        }
 
 
 class MrpEcoBomChange(models.Model):
@@ -697,6 +779,8 @@ class MrpEcoRoutingChange(models.Model):
     old_time_cycle_manual = fields.Float('Old manual duration', default=0)
     new_time_cycle_manual = fields.Float('New manual duration', default=0)
     upd_time_cycle_manual = fields.Float('Manual Duration Change', compute='_compute_upd_time_cycle_manual', store=True)
+    operation_id = fields.Many2one('mrp.routing.workcenter', 'New or Previous Operation')
+    operation_name = fields.Char(related='operation_id.name', string='Operation')
 
     @api.depends('new_time_cycle_manual', 'old_time_cycle_manual')
     def _compute_upd_time_cycle_manual(self):

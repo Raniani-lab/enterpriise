@@ -6,7 +6,7 @@
         <field name="res_model">mrp.eco</field>
         <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
-        <field name="context">{'search_default_type_id': [active_id], 'default_type_id': active_id}</field>
+        <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
               No engineering change order found
@@ -22,7 +22,7 @@
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
         <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
-        <field name="context">{'search_default_type_id': [active_id], 'default_type_id': active_id, 'search_default_toapprove_my': True}</field>
+        <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id, 'search_default_toapprove_my': True}</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -39,7 +39,7 @@
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
         <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
-        <field name="context">{'search_default_type_id': [active_id], 'default_type_id': active_id, 'search_default_toapprove': True}</field>
+        <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id, 'search_default_toapprove': True}</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -56,7 +56,7 @@
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
         <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
-        <field name="context">{'search_default_type_id': [active_id], 'default_type_id': active_id, 'search_default_changetoapply': True}</field>
+        <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id, 'search_default_changetoapply': True}</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -243,12 +243,18 @@
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
             <tree sample="1">
+                <header>
+                    <button name="action_apply" type="object" string="Apply Changes"/>
+                </header>
                 <field name="name"/>
+                <field name="product_tmpl_id" optional="hide"/>
                 <field name="bom_id"/>
                 <field name="user_id" widget='many2one_avatar_user'/>
-                <field name="effectivity_date"/>
-                <field name="state" invisible="1"/>
+                <field name="type" optional="hide"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags"/>
                 <field name="stage_id"/>
+                <field name="effectivity" optional="hide"/>
+                <field name="effectivity_date"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
@@ -320,6 +326,10 @@
                 <field name="type"/>
                 <field name="activity_ids" />
                 <field name="activity_state" />
+                <field name="allow_change_kanban_state"/>
+                <field name="legend_blocked"/>
+                <field name="legend_normal"/>
+                <field name="legend_done"/>
                 <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger"}'/>
                 <templates>
                     <t t-name="kanban-box">
@@ -361,9 +371,7 @@
                                 <div class="oe_kanban_bottom_right">
                                     <div class="float-left mr4" groups="base.group_user">
                                         <field name="activity_ids" widget="kanban_activity"/>
-                                        <span t-if="record.kanban_state.raw_value == 'normal'" class="o_status o_status_grey" title="Waiting for Approvals" role="img" aria-label="Waiting for Approvals"/>
-                                        <span t-if="record.kanban_state.raw_value == 'done'" class="o_status o_status_green" title="All Approvals have be done" role="img" aria-label="All Approvals have be done"/>
-                                        <span t-if="record.kanban_state.raw_value == 'blocked'" class="o_status o_status_red" title="Someone rejected this change" role="img" aria-label="Someone rejected this change"/>
+                                        <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
                                     </div>
                                     <field name="user_id" widget="many2one_avatar_user"/>
                                 </div>
@@ -387,8 +395,8 @@
                 <field name="user_can_reject" invisible="1"/>
                 <field name="allow_apply_change" invisible="1"/>
                 <header>
-                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': [('active', '=', False)]}"/>
-                    <button string="Start New Revision" name="action_new_revision" type="object"
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': ['|', ('active', '=', False), ('state', '=', 'confirmed')]}"/>
+                    <button string="Start Revision" name="action_new_revision" type="object"
                             class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
                     <button string="Apply Rebase" name="apply_rebase" help="Rebase new revision of BoM with previous eco bom and old bom changes." type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'rebase')]}"/>
                     <button string="Conflict Resolved" name="conflict_resolve" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'conflict')]}" confirm="System will automatically resolved the conflict(s) and apply changes. Do you agree?"/>
@@ -397,11 +405,12 @@
                     <button string="Reject" name="reject" type="object"
                             class="oe_highlight" attrs="{'invisible': [('user_can_reject', '=', False)]}"/>
                     <button string="Apply Changes" name="action_apply" type="object"
-                            class="oe_highlight" attrs="{'invisible': [('allow_apply_change', '=', False)]}"/>
-                    <button name="action_see_attachments" type="object" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}" string="Update Documents"/>
-                    <button name="open_new_bom" type="object" attrs="{'invisible': ['|', ('new_bom_id', '=', False), ('state', '=', 'done')]}" string="Update BoM"/>
+                            class="oe_highlight" attrs="{'invisible': ['|', ('allow_apply_change', '=', False), ('state', '=', 'done')]}"/>
                 </header>
                 <sheet>
+                    <field name="legend_blocked" invisible="1"/>
+                    <field name="legend_normal" invisible="1"/>
+                    <field name="legend_done" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-file-text-o" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}">
                             <field string="Documents" name="mrp_document_count" widget="statinfo"/>
@@ -409,16 +418,17 @@
                         <button name="open_new_bom" icon="fa-flask" type="object" attrs="{'invisible': [('new_bom_id', '=', False)]}" class="oe_stat_button">
                         <div class="o_field_widget o_stat_info mr4">
                             <div>
-                                <span>BOM</span><br/>
-                                <span>Revision :<field name="new_bom_revision" readonly="True"/> </span>
+                                <span>Revision</span><br/>
+                                <span>V<field name="new_bom_revision" readonly="True"/> </span>
                             </div>
                         </div>
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <field name="kanban_state" widget="state_selection"/>
+                    <field name="allow_change_kanban_state" invisible="1"/>
+                    <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
                     <div class="oe_title">
-                        <label for="name" string="Short Summary"/>
+                        <label for="name" string="Description"/>
                         <h2><field name="name" placeholder="e.g. Awesome Product 2.0" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
                     </div>
                     <group>
@@ -451,7 +461,7 @@
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
                                     <field name="change_type"/>
                                     <field name="product_id"/>
-                                    <field name="upd_product_qty"/>
+                                    <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                 </tree>
@@ -462,7 +472,7 @@
                                 <tree decoration-danger="conflict">
                                     <field name="change_type"/>
                                     <field name="product_id"/>
-                                    <field name="upd_product_qty"/>
+                                    <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                     <field name="conflict" invisible="1"/>
@@ -476,21 +486,22 @@
                                 <tree decoration-danger="conflict">
                                     <field name="change_type"/>
                                     <field name="product_id"/>
-                                    <field name="upd_product_qty"/>
+                                    <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                     <field name="conflict" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
-                        <page string="Routing Changes" name="routing_changes"
-                            attrs="{'invisible': [('state', '=', 'confirmed')]}"
-                            help="Changes made on the routing.">
+                        <page string="Operation Changes" name="operation_changes"
+                            attrs="{'invisible': [('routing_change_ids', '=', [])]}"
+                            help="Changes made on the operation.">
                             <field name="routing_change_ids">
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
+                                    <field name="operation_name"/>
                                     <field name="change_type"/>
                                     <field name="workcenter_id"/>
-                                    <field name="upd_time_cycle_manual"/>
+                                    <field name="upd_time_cycle_manual" widget="plm_upd_qty"/>
                                 </tree>
                             </field>
                         </page>
@@ -646,7 +657,7 @@
             <form>
                 <group>
                     <group string="Duration">
-                        <field name="upd_time_cycle_manual"/>
+                        <field name="upd_time_cycle_manual" widget="plm_upd_qty"/>
                         <field name="old_time_cycle_manual"/>
                         <field name="new_time_cycle_manual"/>
                     </group>
@@ -669,6 +680,7 @@
                 <field name="name"/>
                 <field name="approval_roles"/>
                 <field name="folded"/>
+                <field name="type_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -701,7 +713,7 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="type_id"/>
+                            <field name="type_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <field name="folded"/>
@@ -709,15 +721,39 @@
                             <field name="final_stage"/>
                         </group>
                     </group>
-                    <h2>Approvals</h2>
-                    <field name="approval_template_ids">
-                        <tree editable="bottom">
-                            <field name="sequence" widget="handle"/>
-                            <field name="name" placeholder="e.g. Engineering Department"/>
-                            <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="approval_type"/>
-                        </tree>
-                    </field>
+                    <group name="approvals" string="Approvals">
+                        <field name="approval_template_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name" placeholder="e.g. Engineering Department"/>
+                                <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="approval_type"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group name="stage_state_config" string="Stage Description and Tooltips">
+                        <p class="text-muted" colspan="2">
+                            You can define here labels that will be displayed for the state instead
+                            of the default labels.
+                        </p>
+                        <label for="legend_normal" string=" " class="o_status oe_project_kanban_legend"
+                            title="Task in progress. Click to block or set as done."
+                            aria-label="Task in progress. Click to block or set as done." role="img"/>
+                        <field name="legend_normal" nolabel="1"/>
+                        <label for="legend_blocked" string=" " class="o_status o_status_red oe_project_kanban_legend"
+                            title="Task is blocked. Click to unblock or set as done."
+                            aria-label="Task is blocked. Click to unblock or set as done." role="img"/>
+                        <field name="legend_blocked" nolabel="1"/>
+                        <label for="legend_done" string=" " class="o_status o_status_green oe_project_kanban_legend"
+                            title="This step is done. Click to block or set in progress."
+                            aria-label="This step is done. Click to block or set in progress." role="img"/>
+                        <field name="legend_done" nolabel="1"/>
+
+                        <p class="text-muted" colspan="2">
+                            You can also add a description to help your coworkers understand the meaning and purpose of the stage.
+                        </p>
+                        <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
+                    </group>
                 </sheet>
             </form>
         </field>

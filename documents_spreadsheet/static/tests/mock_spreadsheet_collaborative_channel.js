@@ -1,7 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.MockSpreadsheetCollaborativeChannel **/
 
 export default class MockSpreadsheetCollaborativeChannel {
-
     constructor() {
         this.listeners = [];
         this.pendingMessages = [];
@@ -10,11 +9,12 @@ export default class MockSpreadsheetCollaborativeChannel {
     }
 
     onNewMessage(id, callback) {
-      this.listeners.push({ id, callback });
+        this.leave(id);
+        this.listeners.push({ id, callback });
     }
 
     leave(id) {
-      this.listeners.filter((listener) => listener.id !== id);
+        this.listeners = this.listeners.filter((listener) => listener.id !== id);
     }
 
     sendMessage(message) {

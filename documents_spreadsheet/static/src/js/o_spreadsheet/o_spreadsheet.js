@@ -2515,8 +2515,12 @@
             .toUpperCase();
     }
 
-    //------------------------------------------------------------------------------
-    // Coordinate
+    /**
+     * Regex that detect cell reference and a range reference (without the sheetName)
+     */
+    const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
+    const rangeReference = new RegExp(/^\s*(.*!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}\s*(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7}\s*)?$/, "i");
+
     //------------------------------------------------------------------------------
     /**
      * Convert a (col) number to the corresponding letter.
@@ -2563,7 +2567,7 @@
      */
     function toCartesian(xc) {
         xc = xc.toUpperCase().trim();
-        const [m, letters, numbers] = xc.match(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/);
+        const [m, letters, numbers] = xc.match(cellReference);
         if (m !== xc) {
             throw new Error(`Invalid cell description: ${xc}`);
         }
@@ -7593,8 +7597,6 @@
         }
         throw new Error(_lt("Unknown token: %s", token.value));
     }
-    const cellReference = new RegExp(/\$?[A-Z]+\$?[0-9]+/, "i");
-    const rangeReference = new RegExp(/^\s*(.*!)?\$?[A-Z]+\$?[0-9]+\s*(\s*:\s*\$?[A-Z]+\$?[0-9]+\s*)?$/, "i");
     function parsePrefix(current, tokens) {
         switch (current.type) {
             case "DEBUGGER":
@@ -15440,7 +15442,7 @@
                     break;
                 case "PASTE":
                     if (!this.state) {
-                        throw new Error("Clipboard state is empty");
+                        break;
                     }
                     const pasteOption = cmd.pasteOption || (this._isPaintingFormat ? "onlyFormat" : undefined);
                     this._isPaintingFormat = false;
@@ -15483,6 +15485,10 @@
                     this._isPaintingFormat = true;
                     this.status = "visible";
                     break;
+                default:
+                    if (isCoreCommand(cmd)) {
+                        this.status = "invisible";
+                    }
             }
         }
         // ---------------------------------------------------------------------------
@@ -16186,6 +16192,12 @@
                 case "SELECT_FIGURE":
                     this.selectedFigureId = cmd.id;
                     break;
+                case "ACTIVATE_NEXT_SHEET":
+                    this.activateNextSheet("right");
+                    break;
+                case "ACTIVATE_PREVIOUS_SHEET":
+                    this.activateNextSheet("left");
+                    break;
             }
         }
         // ---------------------------------------------------------------------------
@@ -16623,6 +16635,16 @@
                 zones[index] = newZone;
             }
             return zones;
+        }
+        activateNextSheet(direction) {
+            const sheetIds = this.getters.getSheets().map((sheet) => sheet.id);
+            const oldSheetPosition = sheetIds.findIndex((id) => id === this.activeSheet.id);
+            const delta = direction === "left" ? sheetIds.length - 1 : 1;
+            const newPosition = (oldSheetPosition + delta) % sheetIds.length;
+            this.dispatch("ACTIVATE_SHEET", {
+                sheetIdFrom: this.getActiveSheetId(),
+                sheetIdTo: sheetIds[newPosition],
+            });
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -19730,6 +19752,356 @@
     SelectionInputPlugin.layers = [1 /* Highlights */];
     SelectionInputPlugin.getters = ["getSelectionInput", "getSelectionInputValue", "isRangeValid"];
 
+    /**
+     * This is a generic event bus based on the Owl event bus.
+     * This bus however ensures type safety across events and subscription callbacks.
+     */
+    class EventBus {
+        constructor() {
+            this.bus = new owl__namespace.core.EventBus();
+        }
+        on(type, owner, callback) {
+            this.bus.on(type, owner, callback);
+        }
+        trigger(type, payload) {
+            this.bus.trigger(type, payload);
+        }
+        off(eventType, owner) {
+            this.bus.off(eventType, owner);
+        }
+        clear() {
+            this.bus.clear();
+        }
+    }
+
+    class Revision {
+        /**
+         * A revision represents a whole client action (Create a sheet, merge a Zone, Undo, ...).
+         * A revision contains the following information:
+         *  - id: ID of the revision
+         *  - commands: CoreCommands that are linked to the action, and should be
+         *              dispatched in other clients
+         *  - clientId: Client who initiated the action
+         *  - changes: List of changes applied on the state.
+         */
+        constructor(id, clientId, commands, changes) {
+            this._commands = [];
+            this._changes = [];
+            this.id = id;
+            this.clientId = clientId;
+            this._commands = [...commands];
+            this._changes = changes ? [...changes] : [];
+        }
+        setChanges(changes) {
+            this._changes = changes;
+        }
+        get commands() {
+            return this._commands;
+        }
+        get changes() {
+            return this._changes;
+        }
+    }
+
+    class ClientDisconnectedError extends Error {
+    }
+    class Session extends EventBus {
+        /**
+         * Manages the collaboration between multiple users on the same spreadsheet.
+         * It can forward local state changes to other users to ensure they all eventually
+         * reach the same state.
+         * It also manages the positions of each clients in the spreadsheet to provide
+         * a visual indication of what other users are doing in the spreadsheet.
+         *
+         * @param revisions
+         * @param transportService communication channel used to send and receive messages
+         * between all connected clients
+         * @param client the client connected locally
+         * @param serverRevisionId
+         */
+        constructor(revisions, transportService, serverRevisionId = DEFAULT_REVISION_ID) {
+            super();
+            this.revisions = revisions;
+            this.transportService = transportService;
+            this.serverRevisionId = serverRevisionId;
+            /**
+             * Positions of the others client.
+             */
+            this.clients = {};
+            this.clientId = "local";
+            this.pendingMessages = [];
+            this.waitingAck = false;
+            this.processedRevisions = new Set();
+            this.uuidGenerator = new UuidGenerator();
+            this.debouncedMove = owl__namespace.utils.debounce(this._move.bind(this), DEBOUNCE_TIME);
+        }
+        /**
+         * Add a new revision to the collaborative session.
+         * It will be transmitted to all other connected clients.
+         */
+        save(commands, changes) {
+            if (!commands.length || !changes.length)
+                return;
+            const revision = new Revision(this.uuidGenerator.uuidv4(), this.clientId, commands, changes);
+            this.revisions.append(revision.id, revision);
+            this.trigger("new-local-state-update", { id: revision.id });
+            this.sendUpdateMessage({
+                type: "REMOTE_REVISION",
+                version: MESSAGE_VERSION,
+                serverRevisionId: this.serverRevisionId,
+                nextRevisionId: revision.id,
+                clientId: revision.clientId,
+                commands: revision.commands,
+            });
+        }
+        undo(revisionId) {
+            this.sendUpdateMessage({
+                type: "REVISION_UNDONE",
+                version: MESSAGE_VERSION,
+                serverRevisionId: this.serverRevisionId,
+                nextRevisionId: this.uuidGenerator.uuidv4(),
+                undoneRevisionId: revisionId,
+            });
+        }
+        redo(revisionId) {
+            this.sendUpdateMessage({
+                type: "REVISION_REDONE",
+                version: MESSAGE_VERSION,
+                serverRevisionId: this.serverRevisionId,
+                nextRevisionId: this.uuidGenerator.uuidv4(),
+                redoneRevisionId: revisionId,
+            });
+        }
+        /**
+         * Notify that the position of the client has changed
+         */
+        move(position) {
+            this.debouncedMove(position);
+        }
+        join(client) {
+            if (client) {
+                this.clients[client.id] = client;
+                this.clientId = client.id;
+            }
+            else {
+                this.clients["local"] = { id: "local", name: "local" };
+                this.clientId = "local";
+            }
+            this.transportService.onNewMessage(this.clientId, this.onMessageReceived.bind(this));
+        }
+        loadInitialMessages(messages) {
+            this.on("unexpected-revision-id", this, ({ revisionId }) => {
+                throw new Error(`The spreadsheet could not be loaded. Revision ${revisionId} is corrupted.`);
+            });
+            for (const message of messages) {
+                this.onMessageReceived(message);
+            }
+            this.off("unexpected-revision-id", this);
+        }
+        /**
+         * Notify the server that the user client left the collaborative session
+         */
+        leave() {
+            delete this.clients[this.clientId];
+            this.transportService.leave(this.clientId);
+            this.transportService.sendMessage({
+                type: "CLIENT_LEFT",
+                clientId: this.clientId,
+                version: MESSAGE_VERSION,
+            });
+        }
+        /**
+         * Send a snapshot of the spreadsheet to the collaboration server
+         */
+        snapshot(data) {
+            const snapshotId = this.uuidGenerator.uuidv4();
+            this.transportService.sendMessage({
+                type: "SNAPSHOT",
+                nextRevisionId: snapshotId,
+                serverRevisionId: this.serverRevisionId,
+                data: { ...data, revisionId: snapshotId },
+                version: MESSAGE_VERSION,
+            });
+        }
+        getClient() {
+            const client = this.clients[this.clientId];
+            if (!client) {
+                throw new ClientDisconnectedError("The client left the session");
+            }
+            return client;
+        }
+        getConnectedClients() {
+            return new Set(Object.values(this.clients).filter(isDefined));
+        }
+        getRevisionId() {
+            return this.serverRevisionId;
+        }
+        isFullySynchronized() {
+            return this.pendingMessages.length === 0;
+        }
+        _move(position) {
+            var _a;
+            // this method is debounced and might be called after the client
+            // left the session.
+            if (!this.clients[this.clientId])
+                return;
+            const currentPosition = (_a = this.clients[this.clientId]) === null || _a === void 0 ? void 0 : _a.position;
+            if ((currentPosition === null || currentPosition === void 0 ? void 0 : currentPosition.col) === position.col &&
+                currentPosition.row === position.row &&
+                currentPosition.sheetId === position.sheetId) {
+                return;
+            }
+            const type = currentPosition ? "CLIENT_MOVED" : "CLIENT_JOINED";
+            const client = this.getClient();
+            this.clients[this.clientId] = { ...client, position };
+            this.transportService.sendMessage({
+                type,
+                version: MESSAGE_VERSION,
+                client: { ...client, position },
+            });
+        }
+        /**
+         * Handles messages received from other clients in the collaborative
+         * session.
+         */
+        onMessageReceived(message) {
+            if (this.isAlreadyProcessed(message))
+                return;
+            switch (message.type) {
+                case "CLIENT_MOVED":
+                    this.onClientMoved(message);
+                    break;
+                case "CLIENT_JOINED":
+                    this.onClientJoined(message);
+                    break;
+                case "CLIENT_LEFT":
+                    this.onClientLeft(message);
+                    break;
+                case "REVISION_REDONE": {
+                    this.waitingAck = false;
+                    this.revisions.redo(message.redoneRevisionId, message.nextRevisionId);
+                    this.trigger("revision-redone", {
+                        revisionId: message.redoneRevisionId,
+                        commands: this.revisions.get(message.redoneRevisionId).commands,
+                    });
+                    break;
+                }
+                case "REVISION_UNDONE":
+                    this.waitingAck = false;
+                    this.revisions.undo(message.undoneRevisionId, message.nextRevisionId);
+                    this.trigger("revision-undone", {
+                        revisionId: message.undoneRevisionId,
+                        commands: this.revisions.get(message.undoneRevisionId).commands,
+                    });
+                    break;
+                case "REMOTE_REVISION":
+                    this.waitingAck = false;
+                    if (message.serverRevisionId !== this.serverRevisionId) {
+                        this.trigger("unexpected-revision-id", { revisionId: message.serverRevisionId });
+                        return;
+                    }
+                    const { clientId, commands } = message;
+                    const revision = new Revision(message.nextRevisionId, clientId, commands);
+                    if (revision.clientId !== this.clientId) {
+                        this.revisions.insert(revision.id, revision, message.serverRevisionId);
+                        this.trigger("remote-revision-received", { commands });
+                    }
+                    break;
+                case "SNAPSHOT_CREATED": {
+                    this.waitingAck = false;
+                    const revision = new Revision(message.nextRevisionId, "server", []);
+                    this.revisions.insert(revision.id, revision, message.serverRevisionId);
+                    this.dropPendingHistoryMessages();
+                    this.trigger("snapshot");
+                    break;
+                }
+            }
+            this.acknowledge(message);
+            this.trigger("collaborative-event-received");
+        }
+        onClientMoved(message) {
+            if (message.client.id !== this.clientId) {
+                this.clients[message.client.id] = message.client;
+            }
+        }
+        /**
+         * Register the new client and send your
+         * own position back.
+         */
+        onClientJoined(message) {
+            if (message.client.id !== this.clientId) {
+                this.clients[message.client.id] = message.client;
+                const client = this.clients[this.clientId];
+                if (client) {
+                    const { position } = client;
+                    if (position) {
+                        this.transportService.sendMessage({
+                            type: "CLIENT_MOVED",
+                            version: MESSAGE_VERSION,
+                            client: { ...client, position },
+                        });
+                    }
+                }
+            }
+        }
+        onClientLeft(message) {
+            if (message.clientId !== this.clientId) {
+                delete this.clients[message.clientId];
+            }
+        }
+        sendUpdateMessage(message) {
+            this.pendingMessages.push(message);
+            if (this.waitingAck) {
+                return;
+            }
+            this.waitingAck = true;
+            this.sendPendingMessage();
+        }
+        sendPendingMessage() {
+            let message = this.pendingMessages[0];
+            if (!message)
+                return;
+            if (message.type === "REMOTE_REVISION") {
+                const revision = this.revisions.get(message.nextRevisionId);
+                message = {
+                    ...message,
+                    clientId: revision.clientId,
+                    commands: revision.commands,
+                };
+            }
+            this.transportService.sendMessage({
+                ...message,
+                serverRevisionId: this.serverRevisionId,
+            });
+        }
+        acknowledge(message) {
+            switch (message.type) {
+                case "REMOTE_REVISION":
+                case "REVISION_REDONE":
+                case "REVISION_UNDONE":
+                case "SNAPSHOT_CREATED":
+                    this.pendingMessages = this.pendingMessages.filter((msg) => msg.nextRevisionId !== message.nextRevisionId);
+                    this.serverRevisionId = message.nextRevisionId;
+                    this.processedRevisions.add(message.nextRevisionId);
+                    this.sendPendingMessage();
+                    break;
+            }
+        }
+        isAlreadyProcessed(message) {
+            switch (message.type) {
+                case "REMOTE_REVISION":
+                case "REVISION_REDONE":
+                case "REVISION_UNDONE":
+                    return this.processedRevisions.has(message.nextRevisionId);
+                default:
+                    return false;
+            }
+        }
+        dropPendingHistoryMessages() {
+            this.pendingMessages = this.pendingMessages.filter(({ type }) => type !== "REVISION_REDONE" && type !== "REVISION_UNDONE");
+        }
+    }
+
     function randomChoice(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
     }
@@ -19770,6 +20142,17 @@
          * and with a valid position
          */
         getClientsToDisplay() {
+            try {
+                this.getters.getClient();
+            }
+            catch (e) {
+                if (e instanceof ClientDisconnectedError) {
+                    return [];
+                }
+                else {
+                    throw e;
+                }
+            }
             const sheetId = this.getters.getActiveSheetId();
             const clients = [];
             for (const client of this.getters.getConnectedClients()) {
@@ -20639,7 +21022,7 @@
             const { cols, rows } = sheet;
             const adjustedViewport = this.getSnappedViewport(sheetId);
             position = position || this.getters.getSheetPosition(sheetId);
-            const [col, row] = this.getters.getMainCell(sheetId, ...getNextVisibleCellCoords(sheet, position[0], position[1]));
+            const [col, row] = getNextVisibleCellCoords(sheet, ...this.getters.getMainCell(sheetId, position[0], position[1]));
             while (cols[col].end > adjustedViewport.offsetX + this.clientWidth - HEADER_WIDTH &&
                 adjustedViewport.offsetX < cols[col].start) {
                 adjustedViewport.offsetX = cols[adjustedViewport.left].end;
@@ -20722,35 +21105,6 @@
         .add("automatic_sum", AutomaticSumPlugin)
         .add("selection_multiuser", SelectionMultiUserPlugin);
 
-    class Revision {
-        /**
-         * A revision represents a whole client action (Create a sheet, merge a Zone, Undo, ...).
-         * A revision contains the following information:
-         *  - id: ID of the revision
-         *  - commands: CoreCommands that are linked to the action, and should be
-         *              dispatched in other clients
-         *  - clientId: Client who initiated the action
-         *  - changes: List of changes applied on the state.
-         */
-        constructor(id, clientId, commands, changes) {
-            this._commands = [];
-            this._changes = [];
-            this.id = id;
-            this.clientId = clientId;
-            this._commands = [...commands];
-            this._changes = changes ? [...changes] : [];
-        }
-        setChanges(changes) {
-            this._changes = changes;
-        }
-        get commands() {
-            return this._commands;
-        }
-        get changes() {
-            return this._changes;
-        }
-    }
-
     class LocalTransportService {
         constructor() {
             this.listeners = [];
@@ -20765,316 +21119,6 @@
         }
         leave(id) {
             this.listeners = this.listeners.filter((listener) => listener.id !== id);
-        }
-    }
-
-    /**
-     * This is a generic event bus based on the Owl event bus.
-     * This bus however ensures type safety across events and subscription callbacks.
-     */
-    class EventBus {
-        constructor() {
-            this.bus = new owl__namespace.core.EventBus();
-        }
-        on(type, owner, callback) {
-            this.bus.on(type, owner, callback);
-        }
-        trigger(type, payload) {
-            this.bus.trigger(type, payload);
-        }
-        off(eventType, owner) {
-            this.bus.off(eventType, owner);
-        }
-        clear() {
-            this.bus.clear();
-        }
-    }
-
-    class Session extends EventBus {
-        /**
-         * Manages the collaboration between multiple users on the same spreadsheet.
-         * It can forward local state changes to other users to ensure they all eventually
-         * reach the same state.
-         * It also manages the positions of each clients in the spreadsheet to provide
-         * a visual indication of what other users are doing in the spreadsheet.
-         *
-         * @param revisions
-         * @param transportService communication channel used to send and receive messages
-         * between all connected clients
-         * @param client the client connected locally
-         * @param serverRevisionId
-         */
-        constructor(revisions, transportService, client, serverRevisionId = DEFAULT_REVISION_ID) {
-            super();
-            this.revisions = revisions;
-            this.transportService = transportService;
-            this.serverRevisionId = serverRevisionId;
-            /**
-             * Positions of the others client.
-             */
-            this.clients = {};
-            this.pendingMessages = [];
-            this.waitingAck = false;
-            this.processedRevisions = new Set();
-            this.uuidGenerator = new UuidGenerator();
-            this.clients[client.id] = client;
-            this.clientId = client.id;
-            this.debouncedMove = owl__namespace.utils.debounce(this._move.bind(this), DEBOUNCE_TIME);
-        }
-        /**
-         * Add a new revision to the collaborative session.
-         * It will be transmitted to all other connected clients.
-         */
-        save(commands, changes) {
-            if (!commands.length || !changes.length)
-                return;
-            const revision = new Revision(this.uuidGenerator.uuidv4(), this.clientId, commands, changes);
-            this.revisions.append(revision.id, revision);
-            this.trigger("new-local-state-update", { id: revision.id });
-            this.sendUpdateMessage({
-                type: "REMOTE_REVISION",
-                version: MESSAGE_VERSION,
-                serverRevisionId: this.serverRevisionId,
-                nextRevisionId: revision.id,
-                clientId: revision.clientId,
-                commands: revision.commands,
-            });
-        }
-        undo(revisionId) {
-            this.sendUpdateMessage({
-                type: "REVISION_UNDONE",
-                version: MESSAGE_VERSION,
-                serverRevisionId: this.serverRevisionId,
-                nextRevisionId: this.uuidGenerator.uuidv4(),
-                undoneRevisionId: revisionId,
-            });
-        }
-        redo(revisionId) {
-            this.sendUpdateMessage({
-                type: "REVISION_REDONE",
-                version: MESSAGE_VERSION,
-                serverRevisionId: this.serverRevisionId,
-                nextRevisionId: this.uuidGenerator.uuidv4(),
-                redoneRevisionId: revisionId,
-            });
-        }
-        /**
-         * Notify that the position of the client has changed
-         */
-        move(position) {
-            this.debouncedMove(position);
-        }
-        join(messages) {
-            this.on("unexpected-revision-id", this, ({ revisionId }) => {
-                throw new Error(`The spreadsheet could not be loaded. Revision ${revisionId} is corrupted.`);
-            });
-            for (const message of messages) {
-                this.onMessageReceived(message);
-            }
-            this.off("unexpected-revision-id", this);
-            this.transportService.onNewMessage(this.clientId, this.onMessageReceived.bind(this));
-        }
-        /**
-         * Notify the server that the user client left the collaborative session
-         */
-        leave() {
-            delete this.clients[this.clientId];
-            this.transportService.leave(this.clientId);
-            this.transportService.sendMessage({
-                type: "CLIENT_LEFT",
-                clientId: this.clientId,
-                version: MESSAGE_VERSION,
-            });
-        }
-        /**
-         * Send a snapshot of the spreadsheet to the collaboration server
-         */
-        snapshot(data) {
-            const snapshotId = this.uuidGenerator.uuidv4();
-            this.transportService.sendMessage({
-                type: "SNAPSHOT",
-                nextRevisionId: snapshotId,
-                serverRevisionId: this.serverRevisionId,
-                data: { ...data, revisionId: snapshotId },
-                version: MESSAGE_VERSION,
-            });
-        }
-        getClient() {
-            const client = this.clients[this.clientId];
-            if (!client) {
-                throw new Error("The client left the session");
-            }
-            return client;
-        }
-        getConnectedClients() {
-            return new Set(Object.values(this.clients).filter(isDefined));
-        }
-        getRevisionId() {
-            return this.serverRevisionId;
-        }
-        isFullySynchronized() {
-            return this.pendingMessages.length === 0;
-        }
-        _move(position) {
-            var _a;
-            // this method is debounced and might be called after the client
-            // left the session.
-            if (!this.clients[this.clientId])
-                return;
-            const currentPosition = (_a = this.clients[this.clientId]) === null || _a === void 0 ? void 0 : _a.position;
-            if ((currentPosition === null || currentPosition === void 0 ? void 0 : currentPosition.col) === position.col &&
-                currentPosition.row === position.row &&
-                currentPosition.sheetId === position.sheetId) {
-                return;
-            }
-            const type = currentPosition ? "CLIENT_MOVED" : "CLIENT_JOINED";
-            const client = this.getClient();
-            this.clients[this.clientId] = { ...client, position };
-            this.transportService.sendMessage({
-                type,
-                version: MESSAGE_VERSION,
-                client: { ...client, position },
-            });
-        }
-        /**
-         * Handles messages received from other clients in the collaborative
-         * session.
-         */
-        onMessageReceived(message) {
-            if (this.isAlreadyProcessed(message))
-                return;
-            switch (message.type) {
-                case "CLIENT_MOVED":
-                    this.onClientMoved(message);
-                    break;
-                case "CLIENT_JOINED":
-                    this.onClientJoined(message);
-                    break;
-                case "CLIENT_LEFT":
-                    this.onClientLeft(message);
-                    break;
-                case "REVISION_REDONE": {
-                    this.waitingAck = false;
-                    this.revisions.redo(message.redoneRevisionId, message.nextRevisionId);
-                    this.trigger("revision-redone", {
-                        revisionId: message.redoneRevisionId,
-                        commands: this.revisions.get(message.redoneRevisionId).commands,
-                    });
-                    break;
-                }
-                case "REVISION_UNDONE":
-                    this.waitingAck = false;
-                    this.revisions.undo(message.undoneRevisionId, message.nextRevisionId);
-                    this.trigger("revision-undone", {
-                        revisionId: message.undoneRevisionId,
-                        commands: this.revisions.get(message.undoneRevisionId).commands,
-                    });
-                    break;
-                case "REMOTE_REVISION":
-                    this.waitingAck = false;
-                    if (message.serverRevisionId !== this.serverRevisionId) {
-                        this.trigger("unexpected-revision-id", { revisionId: message.serverRevisionId });
-                        return;
-                    }
-                    const { clientId, commands } = message;
-                    const revision = new Revision(message.nextRevisionId, clientId, commands);
-                    if (revision.clientId !== this.clientId) {
-                        this.revisions.insert(revision.id, revision, message.serverRevisionId);
-                        this.trigger("remote-revision-received", { commands });
-                    }
-                    break;
-                case "SNAPSHOT_CREATED": {
-                    this.waitingAck = false;
-                    const revision = new Revision(message.nextRevisionId, "server", []);
-                    this.revisions.insert(revision.id, revision, message.serverRevisionId);
-                    this.dropPendingHistoryMessages();
-                    this.trigger("snapshot");
-                    break;
-                }
-            }
-            this.acknowledge(message);
-            this.trigger("collaborative-event-received");
-        }
-        onClientMoved(message) {
-            if (message.client.id !== this.clientId) {
-                this.clients[message.client.id] = message.client;
-            }
-        }
-        /**
-         * Register the new client and send your
-         * own position back.
-         */
-        onClientJoined(message) {
-            if (message.client.id !== this.clientId) {
-                this.clients[message.client.id] = message.client;
-                const client = this.clients[this.clientId];
-                if (client) {
-                    const { position } = client;
-                    if (position) {
-                        this.transportService.sendMessage({
-                            type: "CLIENT_MOVED",
-                            version: MESSAGE_VERSION,
-                            client: { ...client, position },
-                        });
-                    }
-                }
-            }
-        }
-        onClientLeft(message) {
-            if (message.clientId !== this.clientId) {
-                delete this.clients[message.clientId];
-            }
-        }
-        sendUpdateMessage(message) {
-            this.pendingMessages.push(message);
-            if (this.waitingAck) {
-                return;
-            }
-            this.waitingAck = true;
-            this.sendPendingMessage();
-        }
-        sendPendingMessage() {
-            let message = this.pendingMessages[0];
-            if (!message)
-                return;
-            if (message.type === "REMOTE_REVISION") {
-                const revision = this.revisions.get(message.nextRevisionId);
-                message = {
-                    ...message,
-                    clientId: revision.clientId,
-                    commands: revision.commands,
-                };
-            }
-            this.transportService.sendMessage({
-                ...message,
-                serverRevisionId: this.serverRevisionId,
-            });
-        }
-        acknowledge(message) {
-            switch (message.type) {
-                case "REMOTE_REVISION":
-                case "REVISION_REDONE":
-                case "REVISION_UNDONE":
-                case "SNAPSHOT_CREATED":
-                    this.pendingMessages = this.pendingMessages.filter((msg) => msg.nextRevisionId !== message.nextRevisionId);
-                    this.serverRevisionId = message.nextRevisionId;
-                    this.processedRevisions.add(message.nextRevisionId);
-                    this.sendPendingMessage();
-                    break;
-            }
-        }
-        isAlreadyProcessed(message) {
-            switch (message.type) {
-                case "REMOTE_REVISION":
-                case "REVISION_REDONE":
-                case "REVISION_UNDONE":
-                    return this.processedRevisions.has(message.nextRevisionId);
-                default:
-                    return false;
-            }
-        }
-        dropPendingHistoryMessages() {
-            this.pendingMessages = this.pendingMessages.filter(({ type }) => type !== "REVISION_REDONE" && type !== "REVISION_UNDONE");
         }
     }
 
@@ -24593,13 +24637,17 @@
             // events
             this.setupSessionEvents();
             // Load the initial revisions
-            this.session.join(stateUpdateMessages);
+            this.session.loadInitialMessages(stateUpdateMessages);
+            this.joinSession(config.client);
             if (config.snapshotRequested) {
                 this.session.snapshot(this.exportData());
             }
         }
         get handlers() {
             return [this.range, ...this.corePlugins, ...this.uiPlugins, this.history];
+        }
+        joinSession(client) {
+            this.session.join(client);
         }
         leaveSession() {
             this.session.leave();
@@ -24648,7 +24696,7 @@
             this.finalize();
         }
         setupSession(revisionId) {
-            const session = new Session(buildRevisionLog(revisionId, this.state.recordChanges.bind(this.state), (command) => this.dispatchToHandlers([this.range, ...this.corePlugins], command)), this.config.transportService, this.config.client, revisionId);
+            const session = new Session(buildRevisionLog(revisionId, this.state.recordChanges.bind(this.state), (command) => this.dispatchToHandlers([this.range, ...this.corePlugins], command)), this.config.transportService, revisionId);
             return session;
         }
         setupSessionEvents() {
@@ -27641,6 +27689,44 @@
                         this.dispatch("SUM_SELECTION");
                     }
                 },
+                "CTRL+HOME": () => {
+                    const sheet = this.getters.getActiveSheet();
+                    const [col, row] = getNextVisibleCellCoords(sheet, 0, 0);
+                    this.dispatch("SELECT_CELL", { col, row });
+                },
+                "CTRL+END": () => {
+                    const sheet = this.getters.getActiveSheet();
+                    const col = findVisibleHeader(sheet, "cols", range(0, sheet.cols.length).reverse());
+                    const row = findVisibleHeader(sheet, "rows", range(0, sheet.rows.length).reverse());
+                    this.dispatch("SELECT_CELL", { col, row });
+                },
+                "SHIFT+ ": () => {
+                    const { cols } = this.getters.getActiveSheet();
+                    const newZone = { ...this.getters.getSelectedZone(), left: 0, right: cols.length - 1 };
+                    this.dispatch("SET_SELECTION", {
+                        anchor: this.getters.getPosition(),
+                        zones: [newZone],
+                        anchorZone: newZone,
+                    });
+                },
+                "CTRL+ ": () => {
+                    const { rows } = this.getters.getActiveSheet();
+                    const newZone = { ...this.getters.getSelectedZone(), top: 0, bottom: rows.length - 1 };
+                    this.dispatch("SET_SELECTION", {
+                        anchor: this.getters.getPosition(),
+                        zones: [newZone],
+                        anchorZone: newZone,
+                    });
+                },
+                "CTRL+SHIFT+ ": () => {
+                    this.dispatch("SELECT_ALL");
+                },
+                "SHIFT+PAGEDOWN": () => {
+                    this.dispatch("ACTIVATE_NEXT_SHEET");
+                },
+                "SHIFT+PAGEUP": () => {
+                    this.dispatch("ACTIVATE_PREVIOUS_SHEET");
+                },
             };
             this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
             this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
@@ -28734,6 +28820,9 @@
         mounted() {
             this.model.on("update", this, this.render);
             this.model.on("unexpected-revision-id", this, () => this.trigger("unexpected-revision-id"));
+            if (this.props.client) {
+                this.model.joinSession(this.props.client);
+            }
         }
         willUnmount() {
             this.leaveCollaborativeSession();
@@ -28931,8 +29020,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-11T11:39:32.512Z';
-    exports.__info__.hash = '98d87a5';
+    exports.__info__.date = '2021-08-20T08:36:11.821Z';
+    exports.__info__.hash = '8603318';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -1,6 +1,7 @@
 odoo.define("web_mobile.datepicker", function (require) {
     "use strict";
 
+    const config = require("web.config");
     const mobile = require("web_mobile.core");
     const web_datepicker = require("web.datepicker");
     const Widget = require("web.Widget");
@@ -16,7 +17,7 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          */
         start() {
-            if (!mobile.methods.requestDateTimePicker) {
+            if (!mobile.methods.requestDateTimePicker || (this.type_of_date === 'datetime' && config.device.isIOS)) {
                 return this._super(...arguments);
             }
             this.$input = this.$("input.o_datepicker_input");
@@ -31,7 +32,7 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          */
         destroy() {
-            if (!mobile.methods.requestDateTimePicker) {
+            if (!mobile.methods.requestDateTimePicker || (this.type_of_date === 'datetime' && config.device.isIOS)) {
                 return this._super(...arguments);
             }
             Widget.prototype.destroy.apply(this, arguments);
@@ -41,7 +42,7 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          */
         maxDate() {
-            if (!mobile.methods.requestDateTimePicker) {
+            if (!mobile.methods.requestDateTimePicker || (this.type_of_date === 'datetime' && config.device.isIOS)) {
                 return this._super(...arguments);
             }
             console.warn("Unsupported in the mobile applications");
@@ -51,7 +52,7 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          */
         minDate() {
-            if (!mobile.methods.requestDateTimePicker) {
+            if (!mobile.methods.requestDateTimePicker || (this.type_of_date === 'datetime' && config.device.isIOS)) {
                 return this._super(...arguments);
             }
             console.warn("Unsupported in the mobile applications");
@@ -66,7 +67,7 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @private
          */
         _setLibInputValue() {
-            if (!mobile.methods.requestDateTimePicker) {
+            if (!mobile.methods.requestDateTimePicker || (this.type_of_date === 'datetime' && config.device.isIOS)) {
                 return this._super(...arguments);
             }
         },
@@ -94,7 +95,7 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          */
         _onInputClicked: function () {
-            if (!mobile.methods.requestDateTimePicker) {
+            if (!mobile.methods.requestDateTimePicker || (this.type_of_date === 'datetime' && config.device.isIOS)) {
                 return this._super(...arguments);
             }
         },

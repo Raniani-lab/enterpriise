@@ -14,7 +14,7 @@ from odoo.addons.resource.models.resource import Intervals
 class Task(models.Model):
     _inherit = "project.task"
 
-    planned_date_begin = fields.Datetime("Start date")
+    planned_date_begin = fields.Datetime("Start date", tracking=True, task_dependency_tracking=True)
     planned_date_end = fields.Datetime("End date")
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)

@@ -249,6 +249,7 @@ const DocumentsInspector = Widget.extend({
             viewType: this._viewType,
         });
         const fieldWidget = new FieldWidget(this, fieldName, record, options);
+        fieldWidget.nodeOptions.no_quick_create = true; // nodeOptions for many2one fields
         const prom = fieldWidget.appendTo($row.find('.o_inspector_value')).then(function() {
             fieldWidget.getFocusableElement().attr('id', fieldName);
             if (type === 'many2one' && values.length > 1) {

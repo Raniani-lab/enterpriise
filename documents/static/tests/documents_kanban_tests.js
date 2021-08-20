@@ -2079,6 +2079,34 @@ QUnit.module('documents_kanban_tests.js', {
         kanban.destroy();
     });
 
+    QUnit.test('document inspector: quick create not enabled in dropdown', async function (assert) {
+        assert.expect(2);
+
+       var kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+        });
+        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await testUtils.nextTick();
+        await testUtils.fields.many2one.clickOpenDropdown('partner_id');
+        await testUtils.fields.editInput(kanban.$('.o_field_widget[name=partner_id] input'), "Dupont");
+        assert.strictEqual($('.ui-autocomplete .o_m2o_dropdown_option').length, 1,
+            "Dropdown should be opened and have only one item");
+        assert.notEqual(
+            $('.ui-autocomplete .o_m2o_dropdown_option')[0].textContent,
+            'Create "Dupont"',
+            'there should not be a quick create in dropdown'
+        );
+        kanban.destroy();
+    });
+
     QUnit.module('DocumentChatter');
 
     QUnit.test('document chatter: open and close chatter', async function (assert) {

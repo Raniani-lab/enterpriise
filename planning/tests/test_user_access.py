@@ -90,7 +90,7 @@ class TestUserAccess(TransactionCase):
             'employee_id': self.hr_internal_user.id,
             'state': 'draft',
         })
-        unpublished_count = self.env['planning.slot'].with_user(self.internal_user).search_count([('is_published', '=', False)])
+        unpublished_count = self.env['planning.slot'].with_user(self.internal_user).search_count([('state', '=', 'draft')])
         self.assertEqual(unpublished_count, 0, "An internal user shouldn't see unpublished slots")
 
     def test_02_internal_user_read_other_slots(self):
@@ -120,10 +120,10 @@ class TestUserAccess(TransactionCase):
             'employee_id': self.hr_planning_user.id,
             'state': 'draft',
         })
-        unpublished_count = self.env['planning.slot'].with_user(self.planning_user).search_count([('is_published', '=', False)])
+        unpublished_count = self.env['planning.slot'].with_user(self.planning_user).search_count([('state', '=', 'draft')])
         self.assertEqual(unpublished_count, 0, "A planning user shouldn't see unpublished slots")
 
-        mgr_unpublished_count = self.env['planning.slot'].with_user(self.planning_mgr).search_count([('is_published', '=', False)])
+        mgr_unpublished_count = self.env['planning.slot'].with_user(self.planning_mgr).search_count([('state', '=', 'draft')])
         self.assertNotEqual(mgr_unpublished_count, 0, "A planning manager should see unpublished slots")
 
     def test_03_internal_user_write_own_slots(self):

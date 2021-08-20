@@ -90,8 +90,6 @@ class Planning(models.Model):
     duration = fields.Float("Duration", compute="_compute_slot_duration")
 
     # publication and sending
-    is_published = fields.Boolean("Is The Shift Sent", default=False, compute='_compute_is_published', search='_search_is_published',
-        help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
     publication_warning = fields.Boolean(
         "Modified Since Last Publication", default=False, compute='_compute_publication_warning',
         store=True, readonly=True, copy=False,
@@ -120,22 +118,6 @@ class Planning(models.Model):
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
-
-    @api.model
-    def _search_is_published(self, operator, value):
-        if operator not in ['=', '!='] or not isinstance(value, bool):
-            raise NotImplementedError('Operation not supported')
-
-        domain = [('state', operator, 'draft')]
-        if value:
-            domain.insert(0, expression.NOT_OPERATOR)
-            domain = expression.distribute_not(domain)
-        return domain
-
-    @api.depends('state')
-    def _compute_is_published(self):
-        for slot in self:
-            slot.is_published = slot.state == 'published'
 
     @api.depends('repeat_until')
     def _compute_confirm_delete(self):
@@ -470,7 +452,7 @@ class Planning(models.Model):
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_publication_warning(self):
-        with_warning = self.filtered(lambda t: t.employee_id and t.is_published)
+        with_warning = self.filtered(lambda t: t.employee_id and t.state == 'published')
         with_warning.update({'publication_warning': True})
 
     def _company_working_hours(self, start, end):
@@ -808,7 +790,7 @@ class Planning(models.Model):
 
     def action_planning_publish(self):
         notif_type = "success"
-        unpublished_shifts = self.filtered(lambda shift: not shift.is_published)
+        unpublished_shifts = self.filtered(lambda shift: shift.state == 'draft')
         if not unpublished_shifts:
             notif_type = "warning"
             message = _('There are no shifts to publish.')
@@ -819,7 +801,7 @@ class Planning(models.Model):
 
     def action_planning_publish_and_send(self):
         notif_type = "success"
-        if all(self.mapped('is_published')):
+        if all(shift.state == 'published' for shift in self):
             notif_type = "warning"
             message = _('There are no shifts to publish and send.')
         else:
@@ -851,7 +833,7 @@ class Planning(models.Model):
     def action_unpublish(self):
         if not self.env.user.has_group('planning.group_planning_manager'):
             raise AccessError(_('You are not allowed to reset to draft shifts.'))
-        published_shifts = self.filtered('is_published')
+        published_shifts = self.filtered(lambda shift: shift.state == 'published')
         if published_shifts:
             published_shifts.write({'state': 'draft'})
             notif_type = "success"

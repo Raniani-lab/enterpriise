@@ -246,8 +246,8 @@
                 <filter string="Human" name="human" domain="[('resource_type','=', 'user')]"/>
                 <filter string="Material" name="material" domain="[('resource_type','=', 'material')]"/>
                 <separator/>
-                <filter name="published_shifts" string="Published" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
-                <filter name="unpublished_shifts" string="Unpublished" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
+                <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
+                <filter name="unpublished_shifts" string="Unpublished" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
                 <filter name="future" string="Future" domain="[('start_datetime', '>=', time.strftime('%%Y-%%m-%%d 00:00:00'))]" />
                 <filter name="past" string="Past" domain="[('start_datetime', '&lt;=', time.strftime('%%Y-%%m-%%d 23:59:59'))]" />
@@ -269,6 +269,7 @@
         <field name="arch" type="xml">
             <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_inherit)d" event_open_popup="true" quick_add="False" js_class="planning_calendar" mode="month" show_unusual_days="True">
                 <field name="resource_id" avatar_field="avatar_128"/>
+                <field name="is_hatched" invisible="1" />
                 <field name="role_id" filters="1" color="color"/>
                 <field name="allocated_hours" invisible="1"/>
                 <field name="allocated_percentage" invisible="1"/>

@@ -17,12 +17,6 @@ class Product(models.Model):
             'uom.uom': self.uom_id.read(self.env['uom.uom']._get_fields_stock_barcode(), load=False)
         }
 
-    @api.model
-    def _get_product_field_by_barcode(self, barcode, field='id'):
-        product = self.search_read([('barcode', '=', barcode)], [field], limit=1)
-        if product:
-            return product[0][field]
-
     def prefilled_owner_package_stock_barcode(self, lot_id=False, lot_name=False):
         quant = self.env['stock.quant'].search_read(
             [

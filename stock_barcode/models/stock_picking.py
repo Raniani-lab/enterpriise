@@ -388,18 +388,20 @@ class StockPicking(models.Model):
 
     @api.model
     def filter_on_product(self, barcode):
-        """ Search for a product corresponding to the scanned barcode and return
-        the picking kanban view filtered on this product.
+        """ Search for ready pickings for the scanned product. If at least one
+        picking is found, returns the picking kanban view filtered on this product.
         """
-        product_id = self.env['product.product']._get_product_field_by_barcode(barcode)
-        if product_id:
+        product = self.env['product.product'].search_read([('barcode', '=', barcode)], ['id'], limit=1)
+        if product:
+            product_id = product[0]['id']
             picking_type = self.env['stock.picking.type'].search_read(
                 [('id', '=', self.env.context.get('active_id'))],
                 ['name'],
             )[0]
             if not self.search_count([
                 ('product_id', '=', product_id),
-                ('picking_type_id', '=', picking_type['id'])
+                ('picking_type_id', '=', picking_type['id']),
+                ('state', 'not in', ['cancel', 'done', 'draft']),
             ]):
                 return {'warning': {
                     'title': _("No %s ready for this product", picking_type['name']),

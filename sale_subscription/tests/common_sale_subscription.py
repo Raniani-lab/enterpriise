@@ -172,4 +172,4 @@ class TestSubscriptionCommon(TestSaleCommon):
 
     def flush_tracking(self):
         self.env['base'].flush()
-        self.cr.precommit.run()
+        self.cr.flush()

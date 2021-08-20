@@ -216,14 +216,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         } for i in range(self.EMPLOYEES_COUNT)]
 
         # Payslip Creation
-        with self.assertQueryCount(admin=1216):
+        with self.assertQueryCount(admin=1223):
             start_time = time.time()
             payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
             # --- 0.3016078472137451 seconds ---
             _logger.info("Payslips Creation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Computation
-        with self.assertQueryCount(admin=3151):
+        with self.assertQueryCount(admin=3149):
             start_time = time.time()
             payslips.compute_sheet()
             # --- 9.298089027404785 seconds ---
@@ -275,7 +275,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         declaration_281_45 = self.env['l10n_be.281_45'].with_context(allowed_company_ids=self.company.ids).create({
             'reference_year': str(self.date_from.year),
         })
-        with self.assertQueryCount(admin=9):
+        with self.assertQueryCount(admin=7):
             start_time = time.time()
             declaration_281_45.action_generate_xml()
             # --- 0.027942657470703125 seconds ---
@@ -287,7 +287,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_from': self.date_from + relativedelta(day=1, month=1),
             'date_to': self.date_from + relativedelta(day=31, month=12),
         })
-        with self.assertQueryCount(admin=26):
+        with self.assertQueryCount(admin=24):
             start_time = time.time()
             social_security_certificate.print_report()
             # --- 0.1080021858215332 seconds ---

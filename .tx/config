@@ -142,6 +142,11 @@ file_filter = analytic_enterprise/i18n/<lang>.po
 source_file = analytic_enterprise/i18n/analytic_enterprise.pot
 source_lang = en
 
+[odoo-master.appointment_crm]
+file_filter = appointment_crm/i18n/<lang>.po
+source_file = appointment_crm/i18n/appointment_crm.pot
+source_lang = en
+
 [odoo-master.approvals]
 file_filter = approvals/i18n/<lang>.po
 source_file = approvals/i18n/approvals.pot
@@ -917,14 +922,9 @@ file_filter = web_studio/i18n/<lang>.po
 source_file = web_studio/i18n/web_studio.pot
 source_lang = en
 
-[odoo-master.website_calendar]
-file_filter = website_calendar/i18n/<lang>.po
-source_file = website_calendar/i18n/website_calendar.pot
-source_lang = en
-
-[odoo-master.website_calendar_crm]
-file_filter = website_calendar_crm/i18n/<lang>.po
-source_file = website_calendar_crm/i18n/website_calendar_crm.pot
+[odoo-master.website_appointment]
+file_filter = website_appointment/i18n/<lang>.po
+source_file = website_appointment/i18n/website_appointment.pot
 source_lang = en
 
 [odoo-master.website_delivery_ups]

@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import _, models
 
 
 class Project(models.Model):
     _inherit = "project.project"
+
+    def check_can_start_timer(self):
+        self.ensure_one()
+        if self.company_id.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('You cannot start the timer for a project in a company encoding its timesheets in days.'),
+                    'type': 'danger',
+                    'sticky': False,
+                }
+            }
+        return True
 
     def write(self, values):
         result = super(Project, self).write(values)

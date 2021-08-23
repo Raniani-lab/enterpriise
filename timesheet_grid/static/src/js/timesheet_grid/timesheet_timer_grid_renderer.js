@@ -164,6 +164,17 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             this._match_line();
         }
         async _onClickLineButton(taskId, projectId) {
+            // Check that we can create timers for the selected project.
+            // This is an edge case in multi-company environment.
+            const canStartTimerResult = await this.rpc({
+                model: 'project.project',
+                method: 'check_can_start_timer',
+                args: [[projectId]],
+            });
+            if (canStartTimerResult !== true) {
+                this.trigger('do_action', {action: canStartTimerResult})
+                return;
+            }
             if (this.stateTimer.addTimeMode === true) {
                 this.timesheetId = await this.rpc({
                     model: 'account.analytic.line',

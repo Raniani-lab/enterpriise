@@ -6,6 +6,7 @@ const core = require('web.core');
 const relational_fields = require('web.relational_fields');
 const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 const Widget = require('web.Widget');
+const session = require('web.session');
 
 const Many2One = relational_fields.FieldMany2One;
 const TaskWithHours = require('hr_timesheet.task_with_hours');
@@ -30,12 +31,21 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
     willStart: async function () {
         await this._super(...arguments);
 
+        let projectDomain = [['allow_timesheet_timer', '=', true]];
+        if (session.user_companies) {
+            // As the TimerHeaderComponent (in which TimerHeaderM2O is injected) is not injected unless the current
+            // company timesheet UOM is hours, we can assume that current_uom_id is always hours UOM. Thus,
+            // the bellow domain ensures that we only get projects of companies that uses hours UOM as timesheet UOM.
+            const currentUOMId = session.user_companies.allowed_companies[session.company_id].timesheet_uom_id;
+            projectDomain.push(['timesheet_encode_uom_id', '=', currentUOMId]);
+        }
+
         this.project = await this.model.makeRecord('account.analytic.line', [{
             name: 'project_id',
             relation: 'project.project',
             type: 'many2one',
             value: this.projectId,
-            domain: [['allow_timesheets', '=', true]],
+            domain: projectDomain,
         }]);
 
         this.task = await this.model.makeRecord('account.analytic.line', [{

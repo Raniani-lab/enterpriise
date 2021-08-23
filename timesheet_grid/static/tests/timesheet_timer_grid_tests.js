@@ -325,6 +325,8 @@ QUnit.module('Views', {
                         {id: 6, project_id: 31, task_id: false, date: "2017-01-25", unit_amount: 0.5},
                     )
                     return Promise.resolve(78);
+                } else if (args.method === 'check_can_start_timer') {
+                    return Promise.resolve(true);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -386,6 +388,8 @@ QUnit.module('Views', {
                     return Promise.resolve();
                 } else if (args.method === 'action_timer_stop') {
                     return Promise.resolve();
+                } else if (args.method === 'check_can_start_timer') {
+                    return Promise.resolve(true);
                 }
                 return this._super.apply(this, arguments);
             },

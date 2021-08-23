@@ -10,9 +10,9 @@ class AccountChangeLockDate(models.TransientModel):
     _description = 'Change Lock Date'
 
     period_lock_date = fields.Date(
-        string='Invoice/Bill Lock Date',
+        string='Journal Entries Lock Date',
         default=lambda self: self.env.company.period_lock_date,
-        help='Prevents Bills or Invoices creation prior to the defined date. Except for Advisors users.')
+        help='Prevents Journal entries creation prior to the defined date. Except for Advisors users.')
     fiscalyear_lock_date = fields.Date(
         string='All Users Lock Date',
         default=lambda self: self.env.company.fiscalyear_lock_date,

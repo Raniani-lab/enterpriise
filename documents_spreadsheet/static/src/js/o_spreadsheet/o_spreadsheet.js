@@ -25920,7 +25920,7 @@
     t-on-click.stop="onClick"
   />
 
-  <div t-if="props.focus and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
+  <div t-if="props.focus !== 'inactive' and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
     class="o-composer-assistant" t-att-style="assistantStyle">
     <TextValueProvider
         t-if="autoCompleteState.showProvider"
@@ -26060,6 +26060,9 @@
                 this.functionDescriptionState.showDescription = false;
                 return;
             }
+            if (this.props.focus === "cellFocus" && !this.autoCompleteState.showProvider) {
+                return;
+            }
             ev.stopPropagation();
             const autoCompleteComp = this.autoCompleteRef.comp;
             if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
@@ -26132,7 +26135,7 @@
          * Triggered automatically by the content-editable between the keydown and key up
          * */
         onInput() {
-            if (!this.props.focus || !this.shouldProcessInputEvents) {
+            if (this.props.focus === "inactive" || !this.shouldProcessInputEvents) {
                 return;
             }
             this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
@@ -26144,7 +26147,7 @@
         }
         onKeyup(ev) {
             this.isKeyStillDown = false;
-            if (!this.props.focus || ["Control", "Shift", "Tab", "Enter"].includes(ev.key)) {
+            if (this.props.focus === "inactive" || ["Control", "Shift", "Tab", "Enter"].includes(ev.key)) {
                 return;
             }
             if (this.autoCompleteState.showProvider && ["ArrowUp", "ArrowDown"].includes(ev.key)) {
@@ -26180,8 +26183,8 @@
         onClick() {
             const newSelection = this.contentHelper.getCurrentSelection();
             this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            if (!this.props.focus) {
-                this.trigger("composer-focused", {
+            if (this.props.focus === "inactive") {
+                this.trigger("composer-content-focused", {
                     selection: newSelection,
                 });
             }
@@ -26197,14 +26200,14 @@
         processContent() {
             this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
             this.shouldProcessInputEvents = false;
-            if (this.props.focus) {
+            if (this.props.focus !== "inactive") {
                 this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
             }
             const content = this.getContent();
             if (content.length !== 0) {
                 this.contentHelper.setText(content);
                 const { start, end } = this.getters.getComposerSelection();
-                if (this.props.focus) {
+                if (this.props.focus !== "inactive") {
                     // Put the cursor back where it was before the rendering
                     this.contentHelper.selectRange(start, end);
                 }
@@ -26359,7 +26362,7 @@
     Composer.components = { TextValueProvider, FunctionDescriptionProvider };
     Composer.defaultProps = {
         inputStyle: "",
-        focus: false,
+        focus: "inactive",
     };
 
     const { Component: Component$5 } = owl__namespace;
@@ -27644,10 +27647,14 @@
             // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
             // down itself
             this.keyDownMapping = {
-                ENTER: () => this.trigger("composer-focused"),
+                ENTER: () => this.isEmptyCell
+                    ? this.trigger("composer-cell-focused")
+                    : this.trigger("composer-content-focused"),
                 TAB: () => this.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
                 "SHIFT+TAB": () => this.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
-                F2: () => this.trigger("composer-focused"),
+                F2: () => this.isEmptyCell
+                    ? this.trigger("composer-cell-focused")
+                    : this.trigger("composer-content-focused"),
                 DELETE: () => {
                     this.dispatch("DELETE_CONTENT", {
                         sheetId: this.getters.getActiveSheetId(),
@@ -27680,7 +27687,7 @@
                         const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
                         const zoneXc = zone ? this.getters.zoneToXC(sheetId, sums[0].zone) : "";
                         const formula = `=SUM(${zoneXc})`;
-                        this.trigger("composer-focused", {
+                        this.trigger("composer-cell-focused", {
                             content: formula,
                             selection: { start: 5, end: 5 + zoneXc.length },
                         });
@@ -27756,6 +27763,10 @@
                 };
             }
             return { isOpen: false };
+        }
+        get isEmptyCell() {
+            const cell = this.getters.getActiveCell();
+            return !cell || cell.type === CellType.empty;
         }
         mounted() {
             this.vScrollbar.el = this.vScrollbarRef.el;
@@ -27960,7 +27971,9 @@
         onDoubleClick(ev) {
             const [col, row] = this.getCartesianCoordinates(ev);
             if (this.clickedCol === col && this.clickedRow === row) {
-                this.trigger("composer-focused");
+                this.isEmptyCell
+                    ? this.trigger("composer-cell-focused")
+                    : this.trigger("composer-content-focused");
             }
         }
         // ---------------------------------------------------------------------------
@@ -28032,7 +28045,7 @@
                     // character
                     ev.preventDefault();
                     ev.stopPropagation();
-                    this.trigger("composer-focused", { content: ev.key });
+                    this.trigger("composer-cell-focused", { content: ev.key });
                 }
             }
         }
@@ -28713,17 +28726,18 @@
     // -----------------------------------------------------------------------------
     const TEMPLATE = xml /* xml */ `
   <div class="o-spreadsheet" t-on-save-requested="save" t-on-keydown="onKeydown">
-    <TopBar
-      t-on-click="focusGrid"
-      t-on-composer-focused="onTopBarComposerFocused"
-      focusComposer="focusTopBarComposer"
-      class="o-two-columns"/>
+  <TopBar
+  t-on-click="focusGrid"
+  t-on-composer-content-focused="onTopBarComposerFocused"
+  focusComposer="focusTopBarComposer"
+  class="o-two-columns"/>
     <Grid
       model="model"
       sidePanelIsOpen="sidePanel.isOpen"
       t-ref="grid"
       focusComposer="focusGridComposer"
-      t-on-composer-focused="onGridComposerFocused"
+      t-on-composer-content-focused="onGridComposerContentFocused"
+      t-on-composer-cell-focused="onGridComposerCellFocused"
       t-att-class="{'o-two-columns': !sidePanel.isOpen}"/>
     <SidePanel t-if="sidePanel.isOpen"
            t-on-close-side-panel="sidePanel.isOpen = false"
@@ -28781,8 +28795,8 @@
             this.grid = useRef("grid");
             this.sidePanel = useState({ isOpen: false, panelProps: {} });
             this.composer = useState({
-                topBar: false,
-                grid: false,
+                topBarFocus: "inactive",
+                gridFocusMode: "inactive",
             });
             // last string that was cut or copied. It is necessary so we can make the
             // difference between a paste coming from the sheet itself, or from the
@@ -28812,10 +28826,14 @@
             useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
         }
         get focusTopBarComposer() {
-            return this.model.getters.getEditionMode() !== "inactive" && this.composer.topBar;
+            return this.model.getters.getEditionMode() === "inactive"
+                ? "inactive"
+                : this.composer.topBarFocus;
         }
         get focusGridComposer() {
-            return this.model.getters.getEditionMode() !== "inactive" && this.composer.grid;
+            return this.model.getters.getEditionMode() === "inactive"
+                ? "inactive"
+                : this.composer.gridFocusMode;
         }
         mounted() {
             this.model.on("update", this, this.render);
@@ -28923,13 +28941,18 @@
             }
         }
         onTopBarComposerFocused(ev) {
-            this.composer.grid = false;
-            this.composer.topBar = true;
+            this.composer.topBarFocus = "contentFocus";
+            this.composer.gridFocusMode = "inactive";
             this.setComposerContent(ev.detail || {});
         }
-        onGridComposerFocused(ev) {
-            this.composer.topBar = false;
-            this.composer.grid = true;
+        onGridComposerContentFocused(ev) {
+            this.composer.topBarFocus = "inactive";
+            this.composer.gridFocusMode = "contentFocus";
+            this.setComposerContent(ev.detail || {});
+        }
+        onGridComposerCellFocused(ev) {
+            this.composer.topBarFocus = "inactive";
+            this.composer.gridFocusMode = "cellFocus";
             this.setComposerContent(ev.detail || {});
         }
         /**
@@ -29020,8 +29043,9 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-20T08:36:11.821Z';
-    exports.__info__.hash = '8603318';
+    exports.__info__.date = '2021-08-23T15:35:36.028Z';
+    exports.__info__.hash = '4551c89';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map
+

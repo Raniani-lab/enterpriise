@@ -374,7 +374,9 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
+            # In the 2 formula's below, we need to multiply at the end by (100 / MAX_SCORING)
+            # where MAX_SCORING is defined in _compute_activity_avg as the value for a "great" rating.
+            team_satisfaction = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 20
             if team_satisfaction:
                 result['today']['rating'] = team_satisfaction
 
@@ -384,7 +386,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction_7days = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
+            team_satisfaction_7days = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 20
             if team_satisfaction_7days:
                 result['7days']['rating'] = team_satisfaction_7days
         return result

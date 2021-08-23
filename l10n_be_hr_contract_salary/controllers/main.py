@@ -27,7 +27,6 @@ class SignContract(Sign):
                     'state_id': state_new_request and state_new_request.id,
                     'future_driver_id': contract.employee_id.address_home_id.id,
                     'company_id': contract.company_id.id,
-                    'fleet_id': contract.company_id.internal_fleet_category_id.id,
                 }
                 contracts_vals = {
                     'cost_frequency': 'no',

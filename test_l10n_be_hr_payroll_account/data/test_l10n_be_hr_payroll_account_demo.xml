@@ -2217,7 +2217,6 @@
         <field name="acquisition_date" eval="time.strftime('2019-01-01')"/>
         <field name="co2">88</field>
         <field name="driver_employee_id" ref="hr_employee_joseph_noluck"/>
-        <field name="fleet_id" ref="l10n_be_hr_contract_salary.fleet_belgian_category"/>
         <field name="car_value">38000</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>

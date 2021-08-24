@@ -33,6 +33,7 @@ Belgian Payroll Rules.
         'wizard/hr_payroll_generate_warrant_payslips_views.xml',
         'wizard/l10n_be_hr_payroll_schedule_change_wizard_views.xml',
         'wizard/hr_payroll_allocating_paid_time_off_views.xml',
+        'views/l10n_be_double_pay_recovery_line_views.xml',
         'views/l10n_be_meal_voucher_report_views.xml',
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',

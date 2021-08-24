@@ -51,6 +51,12 @@
             <field name="study_school" position="after">
                 <field name="l10n_be_scale_seniority" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </field>
+            <group name="payroll_group" position="after">
+                <group id="recovery_pay_lines" class="mt-3" colspan="2">
+                    <strong class="o_horizontal_separator" colspan="2">Previous Occupations</strong>
+                    <field name="double_pay_line_ids" colspan="2" nolabel="1"/>
+                </group>
+            </group>
         </field>
     </record>
 </odoo>

@@ -29,7 +29,8 @@ class L10nBeDoublePayRecoveryWizard(models.TransientModel):
     contract_id = fields.Many2one('hr.contract')
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one(related='company_id.currency_id')
-    line_ids = fields.One2many('l10n.be.double.pay.recovery.line.wizard', 'wizard_id', string="Occupation Lines")
+    line_ids = fields.One2many('l10n.be.double.pay.recovery.line.wizard', 'wizard_id', string="Occupation Lines",
+        compute='_compute_line_ids', readonly=False, store=True)
     gross_salary = fields.Monetary(compute='_compute_gross_salary', store=True, readonly=False)
     company_calendar = fields.Many2one(related='company_id.resource_calendar_id')
     months_count = fields.Float(string="Current Occupation Duration (Months)", compute='_compute_months_count')
@@ -51,6 +52,14 @@ class L10nBeDoublePayRecoveryWizard(models.TransientModel):
                 wizard.months_count_description = _('The employee is occupied from the %s to the %s. There is nothing to recover as the employee is there for more than 12 months', format_date(self.env, date_from), format_date(self.env, wizard.payslip_id.date_to))
             else:
                 wizard.months_count_description = _('The employee is occupied from the %s to the %s.', format_date(self.env, date_from), format_date(self.env, wizard.payslip_id.date_to))
+
+    @api.depends('employee_id')
+    def _compute_line_ids(self):
+        # Copy the employee lines, but some fields only exist on the employee version not the wizard version
+        fields_to_copy = (self.env['l10n.be.double.pay.recovery.line']._fields.keys() - {'employee_id', 'company_id'})
+        for wizard in self:
+            wizard.write({'line_ids': [fields.Command.clear()] + [fields.Command.create(read_result)\
+                for read_result in wizard.employee_id.double_pay_line_ids.read(fields=fields_to_copy)]})
 
     @api.depends('contract_id')
     def _compute_gross_salary(self):

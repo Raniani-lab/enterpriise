@@ -56,14 +56,11 @@
             </xpath>
             <xpath expr="//label[@for='contact_list_ids']" position="replace"/>
             <xpath expr="//field[@name='contact_list_ids']" position="replace"/>
-            <xpath expr="//label[@for='schedule_type']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//div[@name='schedule_block']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
             <xpath expr="//field[@name='source_id']" position="after">
                 <field name="marketing_activity_ids" string="Activities" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//page[@name='ab_testing']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>

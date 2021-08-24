@@ -528,6 +528,8 @@ _get_statement_date = partial(_generic_get,
            " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Dt/ns:DtTm/text()"
            " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Dt/ns:Dt/text()"
            " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Dt/ns:DtTm/text()"
+           " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='ITBD']/../../ns:Dt/ns:Dt/text()"
+           " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='ITBD']/../../ns:Dt/ns:DtTm/text()"
            ))
 
 _get_partner_name = partial(_generic_get,
@@ -787,23 +789,32 @@ class AccountBankStatementImport(models.TransientModel):
 
             # Start Balance
             # any (OPBD, PRCD, ITBD):
-            #   OPBD : Opening Balance
+            #   OPBD : Opening Booked
             #   PRCD : Previous Closing Balance
-            #   ITBD : Interim Balance (in the case of preceeding pagination)
-            start_amount = float(statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='OPBD' or ns:Cd='PRCD' or ns:Cd='ITBD' or ns:Cd='OPAV']/../../ns:Amt/text()",
-                                                              namespaces=ns)[0])
+            #   OPAV : Opening Available
+            #   ITBD : Interim Booked (in the case of preceeding pagination)
+            start_amount = float(statement.xpath(
+                "ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='OPBD' or ns:Cd='PRCD' or ns:Cd='OPAV' or ns:Cd='ITBD']/../../ns:Amt/text()",
+                namespaces=ns)[0])
             # Credit Or Debit Indicator 1..1
-            sign = statement.xpath('ns:Bal/ns:CdtDbtInd/text()', namespaces=ns)[0]
+            sign = statement.xpath(
+                "ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='OPBD' or ns:Cd='PRCD' or ns:Cd='OPAV' or ns:Cd='ITBD']/../../ns:CdtDbtInd/text()",
+                namespaces=ns)[0]
             if sign == 'DBIT':
                 start_amount *= -1
             statement_vals['balance_start'] = start_amount
+
             # Ending Balance
-            # Statement Date
-            # 'CLBD', otherwise 'CLAV'
-            #   CLBD : Closing Balance
+            # any (CLBD, CLAV, ITBD)
+            #   CLBD : Closing Booked
             #   CLAV : Closing Available
-            end_amount = float((statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Amt/text()", namespaces=ns) or statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Amt/text()", namespaces=ns))[0])
-            sign = (statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:CdtDbtInd/text()", namespaces=ns) or statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:CdtDbtInd/text()", namespaces=ns))[0]
+            #   ITBD : Interim Booked
+            end_amount = float(statement.xpath(
+                "ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD' or ns:Cd='CLAV' or ns:Cd='ITBD']/../../ns:Amt/text()",
+                namespaces=ns)[0])
+            sign = statement.xpath(
+                "ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD' or ns:Cd='CLAV' or ns:Cd='ITBD']/../../ns:CdtDbtInd/text()",
+                namespaces=ns)[0]
             if sign == 'DBIT':
                 end_amount *= -1
             statement_vals['balance_end_real'] = end_amount

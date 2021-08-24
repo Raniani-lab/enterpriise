@@ -280,3 +280,12 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         usd_currency = self.env.ref('base.USD')
         self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
         self._test_minimal_camt_file_import('camt_053_minimal_datetime.xml', usd_currency)
+
+    def test_intraday_camt_file_import(self):
+        """
+        This test aims to import a statement having only an ITBD balance, where we have
+        only one date, corresponding to the same opening and closing amount.
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal_intraday.xml', usd_currency)

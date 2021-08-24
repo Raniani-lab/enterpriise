@@ -139,12 +139,12 @@ class SignLog(models.Model):
 
     def _update_vals_with_http_request(self, vals):
         vals.update({
-            'user_id': request.env.user.id if not request.env.user._is_public() else None,
+            'user_id': self.env.user.id if not self.env.user._is_public() else None,
             'ip': request.httprequest.remote_addr,
         })
         if not vals.get('partner_id', False):
             vals.update({
-                'partner_id': request.env.user.partner_id.id if not request.env.user._is_public() else None
+                'partner_id': self.env.user.partner_id.id if not self.env.user._is_public() else None
             })
         # NOTE: during signing, this method is always called after the log is generated based on the
         # request item. This means that if the signer accepted the browser geolocation request, the `vals`
@@ -158,7 +158,7 @@ class SignLog(models.Model):
         return vals
 
     def _create_log(self, record, action, is_request=False, **kwargs):
-        Log = request.env['sign.log'].sudo()
+        Log = self.env['sign.log'].sudo()
         vals = Log._prepare_vals_from_request(record) if is_request else Log._prepare_vals_from_item(record)
         vals['action'] = action
         vals.update(kwargs)

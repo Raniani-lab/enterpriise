@@ -169,7 +169,7 @@ class SignRequest(models.Model):
                 'sign_token': request_item.access_token if request_item and request_item.state == "sent" else None,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
-                'request_item_states': dict((item.id, item.is_mail_sent) for item in self.request_item_ids),
+                'request_item_states': {str(item.id): item.is_mail_sent for item in self.request_item_ids},
             },
         }
 
@@ -255,7 +255,7 @@ class SignRequest(models.Model):
         for sign_request in self:
             for sign_request_item in sign_request.request_item_ids:
                 sign_request_item.write({'state':'sent'})
-                Log = http.request.env['sign.log'].sudo()
+                Log = self.env['sign.log'].sudo()
                 vals = Log._prepare_vals_from_request(sign_request)
                 vals['action'] = 'create'
                 vals = Log._update_vals_with_http_request(vals)

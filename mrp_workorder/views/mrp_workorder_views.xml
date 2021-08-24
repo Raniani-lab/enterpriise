@@ -250,6 +250,7 @@
                             </div>
                         </div>
                     </div>
+                    <field name="operation_note" attrs="{'invisible': ['|', ('worksheet_type', '!=', 'text'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
                 </div>
                 <div class="workorder_pdf">
                     <field name="worksheet_type" invisible="1"/>

@@ -75,7 +75,7 @@ odoo.define('timer.Timer', function (require) {
                 seconds: this.display2digits(this.seconds)
             };
 
-            return `${time.hours}:${time.minutes}:${time.seconds}`;
+            return moment(time).format("HH:mm:ss");
         }
     }
 
@@ -104,11 +104,16 @@ odoo.define('timer.Timer', function (require) {
         Timer.createTimer = function (unit_amount, timer_start, serverTime) {
             const timer = this.convertFloatToTime(unit_amount);
 
+            const time_moment = moment.utc(Math.abs(moment.utc(serverTime)
+                .diff(moment.utc(timer_start))
+            ));
+            const time = {
+                hours: timer.display2digits(time_moment.hours()),
+                minutes: timer.display2digits(time_moment.minutes()),
+                seconds: timer.display2digits(time_moment.seconds())
+            };
             timer.addTime(
-                moment.utc(
-                    Math.abs(moment.utc(serverTime)
-                        .diff(moment.utc(timer_start))
-                    )).format("HH:mm:ss")
+                `${time.hours}:${time.minutes}:${time.seconds}`
             );
 
             return timer;

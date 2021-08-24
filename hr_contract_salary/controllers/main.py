@@ -450,6 +450,7 @@ class HrContractSalary(http.Controller):
         employee_vals = {'job_title': employee_infos['job_title']}
         address_home_vals = {}
         bank_account_vals = {}
+        attachment_create_vals = []
         for personal_info in personal_infos:
             field_name = personal_info.field
 
@@ -457,7 +458,17 @@ class HrContractSalary(http.Controller):
                 continue
 
             if field_name in employee_infos and personal_info.applies_on == 'employee':
-                employee_vals[field_name] = resolve_value(field_name, employee_infos)
+                special_document_fields = ('id_card', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice')
+                if employee._origin and field_name in special_document_fields:
+                    attachment_create_vals.append({
+                        'name': field_name,
+                        'res_model': 'hr.employee',
+                        'res_id': employee.id,
+                        'type': 'binary',
+                        'datas': employee_infos.get(field_name),
+                    })
+                else:
+                    employee_vals[field_name] = resolve_value(field_name, employee_infos)
             elif field_name in address_infos and personal_info.applies_on == 'address':
                 address_home_vals[field_name] = resolve_value(field_name, address_infos)
             elif field_name in bank_account_infos and personal_info.applies_on == 'bank_account':
@@ -495,6 +506,8 @@ class HrContractSalary(http.Controller):
         if not no_name_write:
             employee_vals['name'] = employee_infos['name']
         employee.write(employee_vals)
+        if attachment_create_vals:
+            request.env['ir.attachment'].sudo().create(attachment_create_vals)
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):
         # Generate a new contract with the current modifications

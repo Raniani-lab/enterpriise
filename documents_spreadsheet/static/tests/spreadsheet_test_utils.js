@@ -165,6 +165,7 @@ function getSpreadsheetActionEnv(actionManager) {
         dispatch: model.dispatch,
         services: model.config.evalContext.env.services,
         openSidePanel: oComponent.openSidePanel.bind(oComponent),
+        openLinkEditor: oComponent.openLinkEditor.bind(oComponent),
     };
 }
 
@@ -179,7 +180,8 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
             spreadsheetAction = this;
         },
     });
-    const serverData = { models: data, views: arch };
+    // TODO convert tests to use "serverData"
+    const serverData = params.serverData || { models: data, views: arch };
     if (!webClient) {
         webClient = await createWebClient({
             serverData,
@@ -209,7 +211,8 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
 
 export async function createSpreadsheet(params = {}) {
     if (!params.spreadsheetId) {
-        const documents = params.data["documents.document"].records;
+        const models = params.serverData ? params.serverData.models : params.data
+        const documents = models["documents.document"].records;
         const spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
         documents.push({
             id: spreadsheetId,

@@ -20,6 +20,8 @@ import PivotStructurePlugin from "./plugins/ui/pivot_structure_plugin";
 import PivotTemplatePlugin from "documents_spreadsheet.PivotTemplatePlugin";
 import PivotAutofillPlugin from "./plugins/ui/pivot_autofill_plugin";
 import ListStructurePlugin from "./plugins/ui/list_structure_plugin";
+import IrMenuPlugin from "./plugins/ui/ir_ui_menu_plugin";
+
 
 /** Side panels */
 import PivotSidePanel from "../../side_panels/pivot/pivot_list_side_panel";
@@ -40,6 +42,7 @@ uiPluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
 uiPluginRegistry.add("odooListAutofillPlugin", ListAutofillPlugin);
 uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
 uiPluginRegistry.add("odooFiltersEvaluationPlugin", FiltersEvaluationPlugin);
+uiPluginRegistry.add("odooIrMenuPlugin", IrMenuPlugin);
 
 coreTypes.add("ADD_PIVOT");
 coreTypes.add("ADD_PIVOT_FORMULA");

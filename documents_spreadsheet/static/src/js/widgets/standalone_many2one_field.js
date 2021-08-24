@@ -13,13 +13,14 @@ const StandaloneMany2OneField = Widget.extend(StandaloneFieldManagerMixin, {
     /**
      * @constructor
      */
-    init: function (parent, modelName, value, domain) {
+    init: function (parent, modelName, value, domain, attrs = {}) {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
         this.widget = undefined;
         this.modelName = modelName;
         this.value = value;
         this.domain = domain;
+        this.attrs = attrs;
     },
     /**
      * @override
@@ -70,6 +71,7 @@ const StandaloneMany2OneField = Widget.extend(StandaloneFieldManagerMixin, {
                 can_create: false,
                 can_write: false,
                 options: { no_open: true },
+                ...this.attrs,
             },
         });
         this._registerWidget(recordID, this.modelName, this.widget);

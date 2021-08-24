@@ -12,9 +12,9 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         FieldSelectorAdapter,
     } = require("documents_spreadsheet.field_selector_widget");
     const {
-        ModelSelectorWidget,
         ModelSelectorWidgetAdapter,
     } = require("documents_spreadsheet.model_selector_widget");
+    const { StandaloneMany2OneField } = require("@documents_spreadsheet/js/widgets/standalone_many2one_field");
     const {
         TagSelectorWidget,
         TagSelectorWidgetAdapter,
@@ -67,7 +67,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.loadValues(props);
             // Widgets
             this.FieldSelectorWidget = FieldSelectorWidget;
-            this.ModelSelectorWidget = ModelSelectorWidget;
+            this.StandaloneMany2OneField = StandaloneMany2OneField;
             this.TagSelectorWidget = TagSelectorWidget;
             this.orm = useService("orm");
             this.notification = useService("notification");

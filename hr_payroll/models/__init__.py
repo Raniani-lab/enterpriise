@@ -15,7 +15,6 @@ from . import hr_payslip_worked_days
 from . import hr_payslip_input
 from . import hr_payslip_input_type
 from . import hr_payslip_run
-from . import hr_plan
 from . import resource_calendar
 from . import hr_rule_parameter
 from . import hr_work_entry

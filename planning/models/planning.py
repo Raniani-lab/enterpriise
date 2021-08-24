@@ -216,17 +216,48 @@ class Planning(models.Model):
     def _compute_allocated_hours(self):
         percentage_field = self._fields['allocated_percentage']
         self.env.remove_to_compute(percentage_field, self)
-        for slot in self:
-            if slot.start_datetime and slot.end_datetime:
+        planning_slots = self.filtered(lambda s: s.allocation_type == 'planning')
+        forecast_slots = self - planning_slots
+        for slot in planning_slots:
+            # for each planning slot, compute the duration
+            ratio = slot.allocated_percentage / 100.0 or 1
+            slot.allocated_hours = slot._get_slot_duration() * ratio
+        if forecast_slots:
+            # for forecasted slots, compute the Conjonction of the slot resource's work intervals and the slot.
+            unplanned_forecast_slots = forecast_slots.filtered_domain([
+                '|', ('start_datetime', "=", False), ('end_datetime', "=", False),
+            ])
+            # Unplanned slots will have allocated hours set to 0.0 as there are no enough information
+            # to compute the allocated hours (start or end datetime are mandatory for this computation)
+            for slot in unplanned_forecast_slots:
+                slot.allocated_hours = 0.0
+            planned_forecast_slots = forecast_slots - unplanned_forecast_slots
+            if not planned_forecast_slots:
+                return
+            # if there are at least one slot having start or end date, call the _get_work_intervals_batch
+            start_utc = pytz.utc.localize(min(planned_forecast_slots.mapped('start_datetime')))
+            end_utc = pytz.utc.localize(max(planned_forecast_slots.mapped('end_datetime')))
+            # work intervals per resource are retrieved with a batch
+            work_intervals_per_resource = forecast_slots.resource_id._get_work_intervals_batch(start_utc, end_utc)
+            for slot in planned_forecast_slots:
                 ratio = slot.allocated_percentage / 100.0 or 1
-                if slot.allocation_type == 'planning':
-                    slot.allocated_hours = slot._get_slot_duration() * ratio
-                else:
-                    calendar = slot.resource_id.calendar_id or slot.company_id.resource_calendar_id
+                if not slot.resource_id:
+                    # if there are no resource on the slot, use the company calendar
+                    calendar = slot.company_id.resource_calendar_id
                     hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime) if calendar else slot._get_slot_duration()
                     slot.allocated_hours = hours * ratio
-            else:
-                slot.allocated_hours = 0.0
+                else:
+                    interval = Intervals([(
+                        pytz.utc.localize(slot.start_datetime),
+                        pytz.utc.localize(slot.end_datetime),
+                        self.env['resource.calendar.attendance']
+                    )])
+                    # Conjonction between work_intervals and the slot interval.
+                    work_intervals = interval & work_intervals_per_resource[slot.resource_id.id]
+                    slot.allocated_hours = sum(
+                        (stop - start).total_seconds() / 3600
+                        for start, stop, _resource in work_intervals
+                    ) * ratio
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_working_days_count(self):

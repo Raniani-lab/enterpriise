@@ -33,14 +33,15 @@ class Slot(models.Model):
                 loc_cache[date] = utc.localize(date).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None)
             return loc_cache.get(date)
 
-        assigned_slots = self.filtered(lambda s: s.employee_id)
+        assigned_slots = self.filtered(lambda s: s.employee_id and s.start_datetime)
         (self - assigned_slots).leave_warning = False
+        (self - assigned_slots).is_absent = False
 
         if not assigned_slots:
             return
 
-        slot_min_datetime = min(self.mapped('start_datetime'))
-        slot_max_datetime = max(self.mapped('end_datetime'))
+        slot_min_datetime = min(assigned_slots.mapped('start_datetime'))
+        slot_max_datetime = max(assigned_slots.mapped('end_datetime'))
 
         # Validated hr.leave create a resource.calendar.leaves
         calendar_leaves = self.env['resource.calendar.leaves'].search([

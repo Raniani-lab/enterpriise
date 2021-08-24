@@ -68,9 +68,9 @@
                                 t-att-TipoCambioDR="format_float(invoice_vals['exchange_rate'], 6)"
                                 t-att-MetodoDePagoDR="invoice_vals['payment_policy']"
                                 t-att-NumParcialidad="invoice_vals['number_of_payments']"
-                                t-att-ImpSaldoAnt="format_float(invoice.amount_residual + invoice_vals['amount_paid'], invoice.currency_id.decimal_places)"
+                                t-att-ImpSaldoAnt="format_float(invoice_vals['amount_before_paid'], invoice.currency_id.decimal_places)"
                                 t-att-ImpPagado="format_float(invoice_vals['amount_paid'], invoice.currency_id.decimal_places)"
-                                t-att-ImpSaldoInsoluto="format_float(invoice.amount_residual, invoice.currency_id.decimal_places)"/>
+                                t-att-ImpSaldoInsoluto="format_float(invoice_vals['amount_before_paid'] - invoice_vals['amount_paid'], invoice.currency_id.decimal_places)"/>
                         </t>
                     </pago10:Pago>
                 </pago10:Pagos>

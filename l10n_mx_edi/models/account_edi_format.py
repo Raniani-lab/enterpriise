@@ -309,16 +309,19 @@ class AccountEdiFormat(models.Model):
         pay_rec_lines = move.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
         paid_amount = abs(sum(pay_rec_lines.mapped('amount_currency')))
 
-        # Exclude the write-off if necessary.
-        if paid_amount > total_amount:
-            paid_amount = total_amount
+        mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
+        if move.currency_id == mxn_currency:
+            rate_payment_curr_mxn = None
+            paid_amount_comp_curr = paid_amount
+        else:
+            rate_payment_curr_mxn = move.currency_id._convert(1.0, mxn_currency, move.company_id, move.date, round=False)
+            paid_amount_comp_curr = move.company_currency_id.round(paid_amount * rate_payment_curr_mxn)
 
         for field1, field2 in (('debit', 'credit'), ('credit', 'debit')):
             for partial in pay_rec_lines[f'matched_{field1}_ids']:
                 payment_line = partial[f'{field2}_move_id']
                 invoice_line = partial[f'{field1}_move_id']
                 invoice_amount = partial[f'{field1}_amount_currency']
-                payment_amount = partial[f'{field2}_amount_currency']
                 exchange_move = invoice_line.full_reconcile_id.exchange_move_id
                 invoice = invoice_line.move_id
 
@@ -337,10 +340,11 @@ class AccountEdiFormat(models.Model):
                     exchange_rate = None
                 else:
                     # It needs to be how much invoice currency you pay for one payment currency
+                    amount_paid_invoice_comp_curr = payment_line.company_currency_id.round(
+                        total_amount * (partial.amount / paid_amount_comp_curr))
                     invoice_rate = abs(invoice_line.amount_currency) / abs(invoice_line.balance)
                     amount_paid_invoice_curr = invoice_line.currency_id.round(partial.amount * invoice_rate)
-                    payment_amount_with_writeoff = total_amount * (payment_amount / paid_amount)
-                    exchange_rate = invoice_amount / payment_amount_with_writeoff
+                    exchange_rate = amount_paid_invoice_curr / amount_paid_invoice_comp_curr
 
                 invoice_vals_list.append({
                     'invoice': invoice,
@@ -348,14 +352,9 @@ class AccountEdiFormat(models.Model):
                     'payment_policy': invoice.l10n_mx_edi_payment_policy,
                     'number_of_payments': len(invoice._get_reconciled_payments()) + len(invoice._get_reconciled_statement_lines()),
                     'amount_paid': amount_paid_invoice_curr,
+                    'amount_before_paid': min(invoice.amount_residual + amount_paid_invoice_curr, invoice.amount_total),
                     **self._l10n_mx_edi_get_serie_and_folio(invoice),
                 })
-
-        mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
-        if move.currency_id == mxn_currency:
-            rate_payment_curr_mxn = None
-        else:
-            rate_payment_curr_mxn = move.currency_id._convert(1.0, mxn_currency, move.company_id, move.date, round=False)
 
         payment_method_code = move.l10n_mx_edi_payment_method_id.code
         is_payment_code_emitter_ok = payment_method_code in ('02', '03', '04', '05', '06', '28', '29', '99')

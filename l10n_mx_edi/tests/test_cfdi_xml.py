@@ -446,6 +446,90 @@ class TestEdiResults(TestMxEdiCommon):
             )
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
+    def test_payment_cfdi_multi_currency_invoice_partial_payment(self):
+        ''' Test the following partial payment:
+        - Invoice of 750 GOL / 250 MXN in 2016.
+        - Payment of 100 MXN partially paying invoice without write-off in 2017.
+        '''
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
+
+            invoice = self.env['account.move'].with_context(edi_test_mode=True).create({
+                'move_type': 'out_invoice',
+                'partner_id': self.partner_a.id,
+                'currency_id': self.currency_data['currency'].id,
+                'invoice_date': '2016-12-31',
+                'date': '2016-12-31',
+                'invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'price_unit': 750.0})],
+            })
+            invoice.action_post()
+
+            payment = self.env['account.payment.register']\
+                .with_context(
+                    active_model='account.move',
+                    active_ids=invoice.ids,
+                    default_l10n_mx_edi_force_generate_cfdi=True,
+                )\
+                .create({
+                    'amount': 100.0,
+                    'payment_date': '2017-01-01',
+                    'currency_id': invoice.company_currency_id.id,
+                    'payment_difference_handling': 'open',
+                })\
+                ._create_payments()
+
+            receivable_lines = (payment.move_id + invoice).line_ids\
+                .filtered(lambda x: x.account_id.internal_type == 'receivable')
+            self.assertEqual(len(receivable_lines.filtered(lambda r: r.reconciled)), 1)
+            self.assertEqual(len(receivable_lines.filtered(lambda r: not r.reconciled)), 1)
+
+            self._process_documents_web_services(invoice)
+            invoice.l10n_mx_edi_cfdi_uuid = '123456789'
+
+            generated_files = self._process_documents_web_services(payment.move_id, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_payment_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                        <attribute name="Folio">2</attribute>
+                    </xpath>
+                    <xpath expr="//Complemento" position="replace">
+                        <Complemento>
+                            <Pagos
+                                Version="1.0">
+                                <Pago
+                                    FechaPago="2017-01-01T12:00:00"
+                                    MonedaP="MXN"
+                                    Monto="100.00"
+                                    NumOperacion="INV/2016/00001"
+                                    FormaDePagoP="99">
+                                    <DoctoRelacionado
+                                        Folio="1"
+                                        IdDocumento="123456789"
+                                        ImpPagado="300.000"
+                                        ImpSaldoAnt="750.000"
+                                        ImpSaldoInsoluto="450.000"
+                                        MetodoDePagoDR="PUE"
+                                        MonedaDR="Gol"
+                                        TipoCambioDR="3.000000"
+                                        NumParcialidad="1"
+                                        Serie="INV/2016/"/>
+                                </Pago>
+                            </Pagos>
+                        </Complemento>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
     def test_payment_cfdi_rate(self):
         with freeze_time(self.frozen_today), \
              mute_logger('py.warnings'), \

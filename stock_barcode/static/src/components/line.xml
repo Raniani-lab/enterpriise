@@ -41,6 +41,10 @@
                     <span t-if="line.package_id" class="package" t-esc="line.package_id.name"/>
                     <i t-if="displayResultPackage" class="fa fa-long-arrow-right mx-1"/>
                     <span t-if="line.result_package_id" class="result-package" t-esc="line.result_package_id.name"/>
+                    <span t-if="line.result_package_id &amp;&amp; line.result_package_id.package_type_id"
+                        class="font-italic text-muted">
+                        (<t t-esc="line.result_package_id.package_type_id.name"/>)
+                    </span>
                 </div>
                 <div t-if="line.owner_id">
                     <i class="fa fa-fw fa-user-o"/>

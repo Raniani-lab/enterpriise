@@ -19,7 +19,7 @@ class QuantPackage(models.Model):
 
     @api.model
     def _get_fields_stock_barcode(self):
-        return ['name', 'location_id', 'quant_ids']
+        return ['name', 'location_id', 'package_type_id', 'quant_ids']
 
     @api.model
     def _get_usable_packages(self):

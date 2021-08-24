@@ -71,14 +71,16 @@ class StockQuant(models.Model):
     def _get_stock_barcode_data(self):
         locations = self.env['stock.location']
         company_id = self.env.company.id
+        package_types = self.env['stock.package.type']
         if not self:
             # When we open the inventory adjustment.
+            quants = self.env['stock.quant'].search([('user_id', '=?', self.env.user.id), ('location_id', 'in', locations.ids), ('inventory_date', '<=', fields.Date.today())])
             if self.env.user.has_group('stock.group_stock_multi_locations'):
                 locations = self.env['stock.location'].search([('usage', 'in', ['internal', 'transit']), ('company_id', '=', company_id)], order='id')
             else:
                 locations = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
-
-            quants = self.env['stock.quant'].search([('user_id', '=?', self.env.user.id), ('location_id', 'in', locations.ids), ('inventory_date', '<=', fields.Date.today())])
+            if self.env.user.has_group('stock.group_tracking_lot'):
+                package_types = package_types.search([])
         else:
             # After quants were saved from `stock_barcode`.
             quants = self
@@ -86,6 +88,8 @@ class StockQuant(models.Model):
         data = quants.get_stock_barcode_data_records()
         if locations:
             data["records"]["stock.location"] = locations.read(locations._get_fields_stock_barcode(), load=False)
+        if package_types:
+            data["records"]["stock.package.type"] = package_types.read(package_types._get_fields_stock_barcode(), load=False)
         return data
 
     def get_stock_barcode_data_records(self):

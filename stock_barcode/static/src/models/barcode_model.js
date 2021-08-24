@@ -29,6 +29,14 @@ export default class BarcodeModel extends owl.core.EventBus {
         this.actionMutex = new Mutex();
         this.groups = data.groups;
 
+        this.packageTypes = [];
+        if (this.groups.group_tracking_lot) { // Get the package types by barcode.
+            const packageTypes = this.cache.dbBarcodeCache['stock.package.type'] || {};
+            for (const [barcode, ids] of Object.entries(packageTypes)) {
+                this.packageTypes.push([barcode, ids[0]]);
+            }
+        }
+
         this._createState();
         this.linesToSave = [];
         this.selectedLineVirtualId = false;
@@ -841,9 +849,19 @@ export default class BarcodeModel extends owl.core.EventBus {
                         if (stockPackage) {
                             result.package = stockPackage;
                         } else {
-                            await this._scanNewPackage(result, value);
+                            // Will be used to force package's name when put in pack.
+                            result.packageName = value;
                         }
                         result.match = true;
+                    } else if (rule.type === 'package_type') {
+                        const packageType = await this.cache.getRecordByBarcode(value, 'stock.package.type');
+                        if (packageType) {
+                            result.packageType = packageType;
+                            result.match = true;
+                        } else {
+                            const message = _t("An unexisting package type was scanned. This part of the barcode can't be processed.");
+                            this.notification.add(message, { type: 'warning' });
+                        }
                     } else if (rule.type === 'product') {
                         const product = await this.cache.getRecordByBarcode(value, 'product.product');
                         if (product) {
@@ -891,10 +909,15 @@ export default class BarcodeModel extends owl.core.EventBus {
         }
 
         if (this.groups.group_tracking_lot) {
+            const packageType = recordByData.get('stock.package.type');
             const stockPackage = recordByData.get('stock.quant.package');
             if (stockPackage) {
                 // TODO: should take packages only in current (sub)location.
                 result.package = stockPackage;
+                result.match = true;
+            }
+            if (packageType) {
+                result.packageType = packageType;
                 result.match = true;
             }
         }
@@ -915,6 +938,18 @@ export default class BarcodeModel extends owl.core.EventBus {
         if (this.groups.group_tracking_lot && quantPackage) {
             result.package = quantPackage;
             result.match = true;
+        }
+
+        if (!result.match && this.packageTypes.length) {
+            // If no match, check if the barcode begins with a package type's barcode.
+            for (const [packageTypeBarcode, packageTypeId] of this.packageTypes) {
+                if (barcode.indexOf(packageTypeBarcode) === 0) {
+                    result.packageType = await this.cache.getRecord('stock.package.type', packageTypeId);
+                    result.packageName = barcode;
+                    result.match = true;
+                    break;
+                }
+            }
         }
         return result;
     }
@@ -1134,85 +1169,6 @@ export default class BarcodeModel extends owl.core.EventBus {
     }
 
     async _processPackage(barcodeData) {
-        const recPackage = barcodeData.package;
-        this.lastScannedPackage = false;
-        if (!recPackage || (
-            recPackage.location_id && recPackage.location_id != this.currentLocationId
-        )) {
-            return;
-        }
-        // TODO: can check if quants already in cache to avoid to make a RPC if
-        // there is all in it (or make the RPC only on missing quants).
-        const res = await this.orm.call(
-            'stock.quant',
-            'get_stock_barcode_data_records',
-            [recPackage.quant_ids]
-        );
-        const quants = res.records['stock.quant'];
-        if (!quants.length) { // Empty package => Assigns it to the last scanned line.
-            const currentLine = this.selectedLine || this.lastScannedLine;
-            if (currentLine && !currentLine.package_id && !currentLine.result_package_id) {
-                const fieldsParams = this._convertDataToFieldsParams({
-                    resultPackage: recPackage,
-                });
-                await this.updateLine(currentLine, fieldsParams);
-                barcodeData.stopped = true;
-                this.selectedLineVirtualId = false;
-                this.lastScannedPackage = recPackage.id;
-                this.trigger('update');
-            }
-            return;
-        }
-        this.cache.setCache(res.records);
-
-        // Checks if the package is already scanned.
-        let alreadyExisting = 0;
-        for (const line of this.pages[this.pageIndex].lines) {
-            if (line.package_id && line.package_id.id === recPackage.id &&
-                this.getQtyDone(line) > 0) {
-                alreadyExisting++;
-            }
-        }
-        if (alreadyExisting === quants.length) {
-            barcodeData.error = _t("This package is already scanned.");
-            return;
-        }
-        // For each quants, creates or increments a barcode line.
-        for (const quant of quants) {
-            const product = this.cache.getRecord('product.product', quant.product_id);
-            const searchLineParams = Object.assign({}, barcodeData, { product });
-            const currentLine = this._findLine(searchLineParams);
-            if (currentLine) { // Updates an existing line.
-                const fieldsParams = this._convertDataToFieldsParams({
-                    qty: quant.quantity,
-                    lotName: barcodeData.lotName,
-                    lot: barcodeData.lot,
-                    package: recPackage,
-                    owner: barcodeData.owner,
-                });
-                await this.updateLine(currentLine, fieldsParams);
-            } else { // Creates a new line.
-                const fieldsParams = this._convertDataToFieldsParams({
-                    product,
-                    qty: quant.quantity,
-                    lot: quant.lot_id,
-                    package: quant.package_id,
-                    resultPackage: quant.package_id,
-                    owner: quant.owner_id,
-                });
-                await this._createNewLine({ fieldsParams });
-            }
-        }
-        barcodeData.stopped = true;
-        this.selectedLineVirtualId = false;
-        this.lastScannedPackage = recPackage.id;
-        this.trigger('update');
-    }
-
-    /**
-     * Called when a non-existing package is specificaly scanned with a GS1 barcode.
-     */
-    async _scanNewPackage() {
         throw new Error('Not Implemented');
     }
 

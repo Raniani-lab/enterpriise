@@ -816,7 +816,7 @@ module(
                     return {
                         ...actionMain,
                         doAction: (actionRequest, options = {}) => {
-                            if (actionRequest.tag === "action_open_template" && actionRequest.params.active_id === 111) {
+                            if (actionRequest.tag === "action_open_template" && actionRequest.params.spreadsheet_id === 111) {
                                 assert.step("redirect");
                             }
                             return actionMain.doAction(actionRequest, options);
@@ -1531,7 +1531,7 @@ module(
                                 type: "ir.actions.client",
                                 tag: "action_open_template",
                                 params: {
-                                    active_id: 1,
+                                    spreadsheet_id: 1,
                                     showFormulas: true,
                                 },
                             }
@@ -1595,7 +1595,7 @@ module(
                             type: "ir.actions.client",
                             tag: "action_open_spreadsheet",
                             params: {
-                                active_id: 42,
+                                spreadsheet_id: 42,
                             },
                         });
                         assert.step("redirect_to_spreadsheet");
@@ -1616,7 +1616,7 @@ module(
             await doAction(webClient, {
                 type: "ir.actions.client",
                 tag: "action_open_template",
-                params: { active_id: 1 },
+                params: { spreadsheet_id: 1 },
             });
             assert.containsNone(webClient, ".o_spreadsheet_sync_status");
             assert.containsNone(webClient, ".o_spreadsheet_number_users");
@@ -1639,7 +1639,7 @@ module(
             await doAction(webClient, {
                 type: "ir.actions.client",
                 tag: "action_open_template",
-                params: { active_id: 1 },
+                params: { spreadsheet_id: 1 },
             });
             assert.ok(true);
         });
@@ -1734,7 +1734,7 @@ module(
             await doAction(webClient, {
                 type: 'ir.actions.client',
                 tag: 'action_open_template',
-                params: { active_id: id },
+                params: { spreadsheet_id: id },
             });
         })
     }

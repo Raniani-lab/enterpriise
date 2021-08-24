@@ -243,7 +243,7 @@ module(
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
-          active_id: 1,
+          spreadsheet_id: 1,
           transportService: new MockSpreadsheetCollaborativeChannel(),
         },
       });
@@ -494,6 +494,29 @@ module(
     });
 
     module("Spreadsheet");
+
+    test("open spreadsheet with deprecated `active_id` params", async function (assert) {
+        assert.expect(4);
+        const webClient = await createWebClient({
+            serverData: { models: this.data },
+            mockRPC: async function (route, args) {
+                if (args.method === "join_spreadsheet_session") {
+                    assert.step("spreadsheet-loaded");
+                    assert.equal(args.args[0], 1, "It should load the correct spreadsheet")
+                }
+            },
+        });
+        await doAction(webClient, {
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: {
+                active_id: 1,
+                transportService: new MockSpreadsheetCollaborativeChannel(),
+            },
+        });
+        assert.containsOnce(webClient, ".o-spreadsheet", "It should have opened the spreadsheet");
+        assert.verifySteps(["spreadsheet-loaded"]);
+    })
 
     test("relational PIVOT.HEADER with missing id", async function (assert) {
       assert.expect(2);

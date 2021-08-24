@@ -82,7 +82,7 @@ odoo.define("documents_spreadsheet.DocumentsControllerMixin", function (require)
                 type: "ir.actions.client",
                 tag: "action_open_spreadsheet",
                 params: {
-                    active_id: ev.data.spreadsheetId,
+                    spreadsheet_id: ev.data.spreadsheetId,
                 },
             });
         },

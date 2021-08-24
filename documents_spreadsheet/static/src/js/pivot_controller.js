@@ -171,7 +171,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 type: "ir.actions.client",
                 tag: "action_open_spreadsheet",
                 params: {
-                    active_id: documentId,
+                    spreadsheet_id: documentId,
                     initCallback,
                 },
             });

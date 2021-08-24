@@ -58,7 +58,7 @@ odoo.define("spreadsheet.DocumentsInspector", function (require) {
                     type: "ir.actions.client",
                     tag: "action_open_spreadsheet",
                     params: {
-                        active_id: activeId,
+                        spreadsheet_id: activeId,
                     },
                 });
             }
@@ -74,7 +74,7 @@ odoo.define("spreadsheet.DocumentsInspector", function (require) {
                         type: "ir.actions.client",
                         tag: "action_open_spreadsheet",
                         params: {
-                            active_id: this.records[0].data.id,
+                            spreadsheet_id: this.records[0].data.id,
                             download: true,
                         },
                     });

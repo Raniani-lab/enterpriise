@@ -165,7 +165,7 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
         type: "ir.actions.client",
         tag: actionTag,
         params: {
-            active_id: spreadsheetId,
+            spreadsheet_id: spreadsheetId,
             transportService,
         },
     });
@@ -262,7 +262,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
-            active_id: id,
+            spreadsheet_id: id,
             transportService,
             initCallback: await controller._getCallbackBuildPivot(true)
         },

@@ -28,7 +28,7 @@ odoo.define("spreadsheet.DocumentsKanbanRecord", function (require) {
                         type: "ir.actions.client",
                         tag: "action_open_spreadsheet",
                         params: {
-                            active_id: activeId,
+                            spreadsheet_id: activeId,
                         },
                     });
                 }

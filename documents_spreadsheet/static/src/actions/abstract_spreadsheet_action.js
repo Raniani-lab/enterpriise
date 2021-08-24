@@ -7,7 +7,8 @@ const { useState } = owl.hooks;
 
 export class AbstractSpreadsheetAction extends owl.Component {
     setup() {
-        this.resId = this.props.action.params.active_id;
+        const params = this.props.action.params
+        this.resId = params.spreadsheet_id || params.active_id; // backward compatibility. spreadsheet_id used to be active_id
         this.router = useService("router");
         this.actionService = useService("action");
         this.notifications = useService("notification");
@@ -26,7 +27,7 @@ export class AbstractSpreadsheetAction extends owl.Component {
     }
 
     mounted() {
-        this.router.pushState({ active_id : this.resId });
+        this.router.pushState({ spreadsheet_id : this.resId });
         this.trigger("controller-title-updated", this.state.spreadsheetName);
     }
 
@@ -72,7 +73,7 @@ export class AbstractSpreadsheetAction extends owl.Component {
      * Open a spreadsheet
      * @private
      */
-    _openSpreadsheet(active_id) {
+    _openSpreadsheet(spreadsheet_id) {
         this.notifications.add(this.notificationMessage, {
             type: "info",
             sticky: false,
@@ -81,7 +82,7 @@ export class AbstractSpreadsheetAction extends owl.Component {
             {
                 type: "ir.actions.client",
                 tag: this.props.action.tag,
-                params: { active_id },
+                params: { spreadsheet_id },
             },
             { clear_breadcrumbs: true }
         );

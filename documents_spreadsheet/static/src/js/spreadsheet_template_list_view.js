@@ -40,7 +40,7 @@ odoo.define("documents_spreadsheet.TemplateListView", function (require) {
                 type: "ir.actions.client",
                 tag: "action_open_spreadsheet",
                 params: {
-                    active_id: spreadsheetId,
+                    spreadsheet_id: spreadsheetId,
                 },
             });
         },
@@ -50,7 +50,7 @@ odoo.define("documents_spreadsheet.TemplateListView", function (require) {
                 type: "ir.actions.client",
                 tag: "action_open_template",
                 params: {
-                    active_id: record.data.id,
+                    spreadsheet_id: record.data.id,
                     showFormulas: true,
                 },
             });

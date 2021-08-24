@@ -19,6 +19,7 @@ In your project plan, you can compare your timesheets and your forecast to bette
     ],
     'demo': [
         'data/product_demo.xml',
+        'data/forecast_demo.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

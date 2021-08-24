@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
-from odoo.tools import float_round, format_duration
+from odoo.tools import float_round, format_duration, float_compare
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -47,6 +48,14 @@ class SaleOrderLine(models.Model):
     # -----------------------------------------------------------------
     # ORM Override
     # -----------------------------------------------------------------
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        for line in lines:
+            if line.state == 'sale' and not line.is_expense:
+                line.sudo()._planning_slot_generation()
+        return lines
 
     def write(self, vals):
         res = super().write(vals)
@@ -114,3 +123,31 @@ class SaleOrderLine(models.Model):
                         slots_to_recompute |= slot
             slots_to_recompute.sudo()._compute_allocated_hours()
             slots_to_unlink.unlink()
+
+    def _planning_slot_generation(self):
+        """
+            For SO service lines with slot generation, create the planning slot.
+        """
+        vals_list = []
+        for so_line in self:
+            if (so_line.product_id.type == 'service'
+               and so_line.product_id.planning_enabled
+               and not so_line.planning_slot_ids
+               and float_compare(
+                    so_line.planning_hours_to_plan,
+                    so_line.planning_hours_planned,
+                    precision_digits=2) == 1):
+                vals_list.append(so_line._planning_slot_values())
+        self.env['planning.slot'].create(vals_list)
+
+    def _planning_slot_values(self):
+        return {
+            'start_datetime': False,
+            'end_datetime': False,
+            'role_id': self.product_id.planning_role_id.id,
+            'sale_line_id': self.id,
+            'sale_order_id': self.order_id.id,
+            'allocated_hours': self.planning_hours_to_plan - self.planning_hours_planned,
+            'allocated_percentage': 100,
+            'company_id': self.company_id.id,
+        }

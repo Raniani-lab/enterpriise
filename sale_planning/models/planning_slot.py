@@ -16,6 +16,7 @@ class PlanningSlot(models.Model):
     sale_order_id = fields.Many2one('sale.order', string='Sales Order', related='sale_line_id.order_id', store=True)
     role_product_ids = fields.One2many('product.template', related='role_id.product_ids')
     sale_line_plannable = fields.Boolean(related='sale_line_id.product_id.planning_enabled')
+    allocated_hours = fields.Float(compute_sudo=True)
 
     _sql_constraints = [
         ('check_datetimes_set_or_plannable_slot',
@@ -31,9 +32,15 @@ class PlanningSlot(models.Model):
                 slot.role_id = slot.sale_line_id.product_id.planning_role_id
         super(PlanningSlot, self - slot_with_sol)._compute_role_id()
 
-    @api.depends('start_datetime')
+    @api.depends('start_datetime', 'sale_line_id.planning_hours_to_plan', 'sale_line_id.planning_hours_planned')
     def _compute_allocated_hours(self):
         planned_slots = self.filtered('start_datetime')
+        for slot in self - planned_slots:
+            if slot.sale_line_id:
+                slot.allocated_hours = max(
+                    slot.sale_line_id.planning_hours_to_plan - slot.sale_line_id.planning_hours_planned,
+                    0.0
+                )
         super(PlanningSlot, planned_slots)._compute_allocated_hours()
 
     @api.depends('start_datetime')

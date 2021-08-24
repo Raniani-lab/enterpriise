@@ -272,3 +272,11 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
             "Please set the IBAN account on your bank journal.\n\n"
             "This CAMT file is targeting several IBAN accounts but none match the current journal."
         ))
+
+    def test_date_and_time_format_camt_file_import(self):
+        """
+        This test aims to import a statement having dates specified in datetime format.
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal_datetime.xml', usd_currency)

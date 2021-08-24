@@ -523,6 +523,13 @@ _get_transaction_date = partial(_generic_get,
            '| ns:BookgDt/ns:Dt/text()'
            '| ns:BookgDt/ns:DtTm/text()'))
 
+_get_statement_date = partial(_generic_get,
+    xpath=("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Dt/ns:Dt/text()"
+           " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Dt/ns:DtTm/text()"
+           " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Dt/ns:Dt/text()"
+           " | ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Dt/ns:DtTm/text()"
+           ))
+
 _get_partner_name = partial(_generic_get,
     xpath='.//ns:RltdPties/ns:{placeholder}/ns:Nm/text()')
 
@@ -694,7 +701,7 @@ class AccountBankStatementImport(models.TransientModel):
         for statement in root[0].findall('ns:Stmt', ns):
             statement_vals = {}
             statement_vals['name'] = statement.xpath('ns:Id/text()', namespaces=ns)[0]
-            statement_vals['date'] = (statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Dt/ns:Dt/text()", namespaces=ns) or statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Dt/ns:Dt/text()", namespaces=ns))[0]
+            statement_vals['date'] = _get_statement_date(statement, namespaces=ns)
 
             # Transaction Entries 0..n
             transactions = []

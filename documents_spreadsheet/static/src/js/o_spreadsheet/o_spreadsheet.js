@@ -81,6 +81,7 @@
     const UNHIDE_ICON_EDGE_LENGTH = 14;
     const MIN_CF_ICON_MARGIN = 4;
     const MIN_CELL_TEXT_MARGIN = 4;
+    const CF_ICON_EDGE_LENGTH = 15;
     const FIGURE_BORDER_SIZE = 1;
     // Fonts
     const DEFAULT_FONT_WEIGHT = "400";
@@ -26679,7 +26680,7 @@
         }
         get composerStyle() {
             return `
-      line-height:${DEFAULT_CELL_HEIGHT}px;
+      line-height:${DEFAULT_CELL_HEIGHT - 2 * COMPOSER_BORDER_WIDTH}px;
       max-height: inherit;
       overflow: hidden;
     `;
@@ -29049,6 +29050,7 @@
       display: flex;
       flex-direction: column;
       font-size: 13px;
+      line-height: 1.2;
 
       .o-topbar-top {
         border-bottom: 1px solid #e0e2e4;
@@ -29089,7 +29091,7 @@
         .o-toolbar-tools {
           display: flex;
           flex-shrink: 0;
-          margin-left: 20px;
+          margin-left: 16px;
           color: #333;
           cursor: default;
 
@@ -29269,11 +29271,12 @@
     width: ${ICON_EDGE_LENGTH}px;
     height: ${ICON_EDGE_LENGTH}px;
     opacity: 0.6;
+    vertical-align: middle;
   }
 
   .o-cf-icon {
-    width: 15px;
-    height: 15px;
+    width: ${CF_ICON_EDGE_LENGTH}px;
+    height: ${CF_ICON_EDGE_LENGTH}px;
     vertical-align: sub;
   }
 `;
@@ -29545,8 +29548,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-31T06:40:09.560Z';
-    exports.__info__.hash = '9ce99fa';
+    exports.__info__.date = '2021-08-31T06:42:40.130Z';
+    exports.__info__.hash = 'd05514b';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

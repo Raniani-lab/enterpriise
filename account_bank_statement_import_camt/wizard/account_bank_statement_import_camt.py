@@ -11,6 +11,7 @@ from lxml import etree
 
 from odoo import models, _
 from odoo.exceptions import UserError, ValidationError
+from odoo.addons.base.models.res_bank import sanitize_account_number
 
 _logger = logging.getLogger(__name__)
 
@@ -821,7 +822,8 @@ class AccountBankStatementImport(models.TransientModel):
 
             # Account Number    1..1
             # if not IBAN value then... <Othr><Id> would have.
-            account_no = statement.xpath('ns:Acct/ns:Id/ns:IBAN/text() | ns:Acct/ns:Id/ns:Othr/ns:Id/text()', namespaces=ns)[0]
+            account_no = sanitize_account_number(statement.xpath('ns:Acct/ns:Id/ns:IBAN/text() | ns:Acct/ns:Id/ns:Othr/ns:Id/text()',
+                namespaces=ns)[0])
 
             # Save statements and currency
             statements_per_iban.setdefault(account_no, []).append(statement_vals)
@@ -829,7 +831,7 @@ class AccountBankStatementImport(models.TransientModel):
 
         # If statements target multiple journals, returns thoses targeting the current journal
         if len(statements_per_iban) > 1:
-            account_no = self.env['account.journal'].browse(self.env.context.get('journal_id')).bank_acc_number
+            account_no = sanitize_account_number(self.env['account.journal'].browse(self.env.context.get('journal_id')).bank_acc_number)
             _logger.warning("The following statements will not be imported because they are targeting another journal (current journal id: %s):\n- %s",
                             account_no, "\n- ".join("{}: {} statement(s)".format(iban, len(statements)) for iban, statements in statements_per_iban.items() if iban != account_no))
             if not account_no:

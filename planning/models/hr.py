@@ -77,7 +77,6 @@ class Employee(models.Model):
 
         return res
 
-
 class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"
 

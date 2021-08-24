@@ -58,6 +58,9 @@
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_gantt"/>
         <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="plan">true</attribute>
+            </xpath>
             <xpath expr="//gantt" position="inside">
                 <field name="sale_line_id" />
             </xpath>

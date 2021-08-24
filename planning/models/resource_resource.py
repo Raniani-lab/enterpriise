@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
 from random import randint
 
 from odoo import api, fields, models
 
+from odoo.addons.resource.models.resource import Intervals
 
-class ResourceResource(models.BaseModel):
+class ResourceResource(models.Model):
     _inherit = 'resource.resource'
 
     def _default_color(self):
@@ -31,3 +33,26 @@ class ResourceResource(models.BaseModel):
                 })
             self.env['hr.employee'].sudo().create(create_vals)
         return resources
+
+    # -----------------------------------------
+    # Business Methods
+    # -----------------------------------------
+
+    def _get_calendars_validity_within_period(self, start, end, default_company=None):
+        """
+            Returns a dict of dict with resource's id as first key and resource's calendar as secondary key
+            The value is the validity interval of the calendar for the given resource.
+
+            Here the validity interval for each calendar is the whole interval but it's meant to be overriden in further modules
+            handling resource's employee contracts.
+        """
+        assert start.tzinfo and end.tzinfo
+        calendars_within_period_per_resource = defaultdict(lambda: defaultdict(Intervals))  # keys are [resource id:integer][calendar:self.env['resource.calendar']]
+        default_calendar = default_company and default_company.resource_calendar_id or self.env.company.resource_calendar_id
+        if not self:
+            # if no resource, add the company resource calendar.
+            calendars_within_period_per_resource[False][default_calendar] = Intervals([(start, end, self.env['resource.calendar.attendance'])])
+        for resource in self:
+            calendar = resource.calendar_id or resource.company_id.resource_calendar_id or default_calendar
+            calendars_within_period_per_resource[resource.id][calendar] = Intervals([(start, end, self.env['resource.calendar.attendance'])])
+        return calendars_within_period_per_resource

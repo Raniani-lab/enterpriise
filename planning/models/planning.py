@@ -1099,6 +1099,124 @@ class Planning(models.Model):
             'publication_warning': False,
         })
 
+    # ---------------------------------------------------
+    # Slots generation/copy
+    # ---------------------------------------------------
+
+    @api.model
+    def _merge_slots_values(self, slots_to_merge, unforecastable_intervals):
+        """
+            Return a list of merged slots
+
+            - `slots_to_merge` is a sorted list of slots
+            - `unforecastable_intervals` are the intervals where the employee cannot work
+
+            Example:
+                slots_to_merge = [{
+                    'start_datetime': '2021-08-01 08:00:00',
+                    'end_datetime': '2021-08-01 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-01 13:00:00',
+                    'end_datetime': '2021-08-01 17:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-02 08:00:00',
+                    'end_datetime': '2021-08-02 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-03 08:00:00',
+                    'end_datetime': '2021-08-03 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-04 13:00:00',
+                    'end_datetime': '2021-08-04 17:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }]
+                unforecastable = Intervals([(
+                    datetime.datetime(2021, 8, 2, 13, 0, 0, tzinfo='UTC')',
+                    datetime.datetime(2021, 8, 2, 17, 0, 0, tzinfo='UTC')',
+                    self.env['resource.calendar.attendance'],
+                )])
+
+                result : [{
+                    'start_datetime': '2021-08-01 08:00:00',
+                    'end_datetime': '2021-08-02 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 12.0,
+                }, {
+                    'start_datetime': '2021-08-03 08:00:00',
+                    'end_datetime': '2021-08-03 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-04 13:00:00',
+                    'end_datetime': '2021-08-04 17:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }]
+
+            :return list of merged slots
+        """
+        if not slots_to_merge:
+            return slots_to_merge
+        # resulting vals_list of the merged slots
+        new_slots_vals_list = []
+        # accumulator for mergeable slots
+        sum_allocated_hours = 0
+        to_merge = []
+        # invariants for mergeable slots
+        common_allocated_percentage = slots_to_merge[0]['allocated_percentage']
+        resource_id = slots_to_merge[0].get('resource_id')
+        start_datetime = slots_to_merge[0]['start_datetime']
+        previous_end_datetime = start_datetime
+        for slot in slots_to_merge:
+            mergeable = True
+            if (not slot['start_datetime']
+               or common_allocated_percentage != slot['allocated_percentage']
+               or resource_id != slot['resource_id']
+               or (slot['start_datetime'] - previous_end_datetime).total_seconds() > 3600 * 24):
+                # last condition means the elapsed time between the previous end time and the
+                # start datetime of the current slot should not be bigger than 24hours
+                # if it's the case, then the slot can not be merged.
+                mergeable = False
+            if mergeable:
+                end_datetime = slot['end_datetime']
+                interval = Intervals([(
+                    pytz.utc.localize(start_datetime),
+                    pytz.utc.localize(end_datetime),
+                    self.env['resource.calendar.attendance']
+                )])
+                if not (interval & unforecastable_intervals):
+                    sum_allocated_hours += slot['allocated_hours']
+                    if (end_datetime - start_datetime).total_seconds() < 3600 * 24:
+                        # If the elapsed time between the first start_datetime and the
+                        # current end_datetime is not higher than 24hours,
+                        # slots cannot be merged as it won't be a forecast
+                        to_merge.append(slot)
+                    else:
+                        to_merge = [{
+                            **slot,
+                            'start_datetime': start_datetime,
+                            'allocated_hours': sum_allocated_hours,
+                        }]
+                else:
+                    mergeable = False
+            if not mergeable:
+                new_slots_vals_list += to_merge
+                to_merge = [slot]
+                start_datetime = slot['start_datetime']
+                common_allocated_percentage = slot['allocated_percentage']
+                resource_id = slot.get('resource_id')
+                sum_allocated_hours = slot['allocated_hours']
+            previous_end_datetime = slot['end_datetime']
+        new_slots_vals_list += to_merge
+        return new_slots_vals_list
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

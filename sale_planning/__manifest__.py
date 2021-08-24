@@ -27,6 +27,9 @@
         'data/product_demo.xml',
     ],
     'assets': {
+        'web.assets_backend': [
+            'sale_planning/static/src/js/backend/**/*',
+        ],
         'web.assets_frontend': [
             'sale_planning/static/src/js/frontend/**/*',
         ],

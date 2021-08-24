@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
+from collections import defaultdict
+from datetime import datetime, timedelta
+import pytz
 
 from odoo import api, fields, models
 from odoo.osv import expression
+from odoo.tools import float_utils, DEFAULT_SERVER_DATETIME_FORMAT
+
+from odoo.addons.resource.models.resource import Intervals
 
 class PlanningSlot(models.Model):
     _inherit = 'planning.slot'
@@ -116,6 +121,50 @@ class PlanningSlot(models.Model):
         """ List of fields that can be displayed in the name_get """
         return super()._name_get_fields() + ['sale_line_id']
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        if res.sale_line_id:
+            res.sale_line_id.sudo()._post_process_planning_sale_line(ids_to_exclude=res.ids)
+        return res
+
+    def write(self, vals):
+        sale_order_slots_to_plan = []
+        slots_to_write = self.env['planning.slot']
+        slots_written = False
+        if vals.get('start_datetime'):
+            # if the previous start_datetime was False, it means the slot has been selected from the
+            # unscheduled slots. In this case, slots must be generated automatically to fill the gantt period
+            # with the hours remaining to plan of the linked sale order as a limit of hours to allocate.
+            slot_vals_list_per_employee = defaultdict(list)
+            for slot in self:
+                if slot.sale_line_plannable and not slot.start_datetime:
+                    # This method will generate the planning slots for the given employee and following the numbers of hours still to plan
+                    # for the given slot's sale order line.
+                    new_vals, tmp_sale_order_slots_to_plan, resource = slot._get_sale_order_slots_to_plan(vals, slot_vals_list_per_employee)
+                    if new_vals:
+                        # Call the write method of the parent
+                        super(PlanningSlot, slot).write(new_vals[0])
+                        slots_written = True
+                        sale_order_slots_to_plan += tmp_sale_order_slots_to_plan
+                        if resource:
+                            slot_vals_list_per_employee[resource] += new_vals + tmp_sale_order_slots_to_plan
+                else:
+                    slots_to_write |= slot
+        else:
+            slots_to_write |= self
+        super(PlanningSlot, slots_to_write).write(vals)
+        if sale_order_slots_to_plan:
+            self.create(sale_order_slots_to_plan)
+        slots_to_unlink = self.env['planning.slot']
+        for slot in self:
+            if slot.sale_line_id and not slot.start_datetime and float_utils.float_compare(slot.allocated_hours, 0.0, precision_digits=2) < 1:
+                slots_to_unlink |= slot
+        if (self - slots_to_unlink).sale_line_id:
+            (self - slots_to_unlink).sale_line_id.sudo()._post_process_planning_sale_line(ids_to_exclude=self.ids)
+        slots_to_unlink.unlink()
+        return bool(slots_to_write) or slots_written
+
     # -----------------------------------------------------------------
     # Actions
     # -----------------------------------------------------------------
@@ -135,3 +184,225 @@ class PlanningSlot(models.Model):
         if self.sale_line_plannable:
             domain = expression.AND([domain, ['|', ('role_id', '=', self.sale_line_id.product_id.planning_role_id.id), ('role_id', '=', False)]])
         return domain
+
+    def _get_sale_order_slots_to_plan(self, vals, slot_vals_list_per_resource):
+        """
+            Returns the vals which will be used to update self, a vals_list of the slots
+            to create for the same related sale_order_line and the resource.
+
+            :param vals: the vals passed to the write orm method.
+            :param slot_vals_list_per_resource: a dict of vals list of slots to be created, sorted per resource
+                This dict is used to be aware of the slots which will be created and are not in the database yet.
+        """
+        # Gets work interval in order to know if the employee can work or not
+        # Gets its slots which are partially allocated (allocated_percentage < 100) in order to avoid planning slots in conflict.
+        self.ensure_one()
+        to_allocate = self.sale_line_id.planning_hours_to_plan - self.sale_line_id.planning_hours_planned
+        if to_allocate < 0.0:
+            return [], [], None
+        work_intervals, unforecastable_intervals, resource, partial_interval_slots = self._get_resource_work_info(vals, slot_vals_list_per_resource)
+        following_slots_vals_list = []
+        if work_intervals:
+            following_slots_vals_list = self._get_slots_values(
+                vals, work_intervals, partial_interval_slots, unforecastable_intervals, to_allocate=to_allocate, resource=resource
+            )
+            if following_slots_vals_list:
+                # In order to have slots on multiple days, the slots filling the resource's work intervals must be
+                # merged. The consequence is that it will be forecasted slots (regarding `allocation_type`) rather than short planning slots
+                following_slots_vals_list = self._merge_slots_values(following_slots_vals_list, unforecastable_intervals)
+                return following_slots_vals_list[:1], following_slots_vals_list[1:], resource
+        return [], [], resource
+
+    def _get_slots_values(self, vals, work_intervals, partial_interval_slots, unforecastable_intervals, to_allocate, resource):
+        """
+            This method returns the generated slots values related to self.sale_line_id for the given resource.
+
+            Params :
+                - `vals` : the vals sent in the write/reschedule call;
+                - `work_intervals`: Intervals during which resource works/is available
+                - `partial_interval_slots`: Intervals during which the resource have slots partially planned (`allocated_percentage` < 100)
+                - `unforecastable_intervals`: Intervals during which the resource cannot have a slot with `allocation_type` == 'forecast'
+                                          (see _merge_slots_values for further explanation)
+                - `to_allocate`: The number of hours there is still to allocate for this self.sale_line_id
+                - `resource`: The recordset of the resource for whom the information are given and who will be assigned to the slots
+                                 If None, the information is the one of the company.
+
+            Algorithm :
+                - General principle :
+                    - For each work interval, a planning slot is assigned to the employee, until there are no more hours to allocate
+                - Details :
+                    - If the interval is in conflict with a partial_interval_slots, the algorithm must find each time the sum of allocated_percentage increases/decreases:
+                        - The algorithm retrieve this information by building a dict where the keys are the datetime where the allocated_percentage changes :
+                            - The algorithm adds start and end of the interval in the dict with 0 as value to increase/decrease
+                            - For each slot conflicting with the work_interval:
+                                - allocated_percentage is added with start_datetime as a key,
+                                - allocated_percentage is substracted with end_datetime as a key
+                            - For each datetime where the allocated_percentage changes:
+                                - if there are no allocated percentage change (sum = 0) in the next allocated percentage change:
+                                    - It will create a merged slot and not divide it in small parts
+                                - the allocable percentage (default=100) is decreased by the value in the dict for the previous datetime (which will be the start datetime of the slot)
+                                - if there are still time to allocate
+                                    - Otherwise, it continues with the next datetime with allocated percentage change.
+                                - if the datetimes are contained in the interval
+                                    - Otherwise, it continues with the next datetime with allocated percentage change.
+                                - The slot is build with the previous datetime with allocated percentage change and the actual datetime.
+                    - Otherwise,
+                        - Take the start of the interval as the start_datetime of the slot
+                        - Take the min value between the end of the interval and the sum of the interval start and to_allocate hours.
+                - Generate an unplanned slot if there are still hours to allocate.
+
+            Returns :
+                - A vals_list with slots to create :
+                    NB : The first item of the list will be used to update the current slot.
+        """
+        self.ensure_one()
+        following_slots_vals_list = []
+        for interval in work_intervals:
+            if float_utils.float_compare(to_allocate, 0.0, precision_digits=2) < 1:
+                break
+            start_interval = interval[0].astimezone(pytz.utc).replace(tzinfo=None)
+            end_interval = interval[1].astimezone(pytz.utc).replace(tzinfo=None)
+            if partial_interval_slots[interval]:
+                # here we'll create slots with partially allocated hours - which is not trivial btw - read above the full explanation
+                # 1. Create a dict with a datetime as `key`, which represent the total *increment* of allocated time, starting from time: `key`
+                #    So for each slot, the increment is increased with allocated percentage at start datetime and decrease it at end datetime
+                # 2. Create a list with all the start and end dates (allocated_dict keys), which will be sorted in order to have all the intervals.
+                # 3. Allocable percentage are tracked by decreasing previous allocable percentage with the *increment* of allocated time.
+                allocated_dict = defaultdict(float)
+                allocated_dict.update({
+                    start_interval: 0,
+                    end_interval: 0,
+                })
+                for slot in partial_interval_slots[interval]:
+                    allocated_dict[slot['start_datetime']] += float_utils.float_round(slot['allocated_percentage'], precision_digits=1)
+                    allocated_dict[slot['end_datetime']] += float_utils.float_round(-slot['allocated_percentage'], precision_digits=1)
+                datetime_list = list(allocated_dict.keys())
+                datetime_list.sort()
+                allocable = 100.0
+                for i in range(1, len(datetime_list)):
+                    start_dt = datetime_list[i - 1]
+                    end_dt = datetime_list[i]
+                    if i != len(datetime_list) - 1 and float_utils.float_is_zero(allocated_dict[datetime_list[i]], precision_digits=2):
+                        # there is no increment so we will build a single slot with the same allocated_percentage
+                        datetime_list[i] = datetime_list[i - 1]
+                        continue
+                    allocable -= float_utils.float_round(allocated_dict[datetime_list[i - 1]], precision_digits=1)
+                    if float_utils.float_compare(allocable, 0.0, precision_digits=2) < 1:
+                        unforecastable_intervals |= Intervals([(
+                            pytz.utc.localize(start_dt),
+                            pytz.utc.localize(end_dt),
+                            self.env['resource.calendar.leaves'])])
+                        continue
+                    if end_dt <= start_interval or start_dt >= end_interval:
+                        continue
+                    start_dt = max(start_dt, start_interval)
+                    end_dt = min(end_dt, end_interval)
+                    end_dt = min(end_dt, start_dt + timedelta(hours=to_allocate * (100.0 / allocable)))
+                    to_allocate -= ((end_dt - start_dt).total_seconds() / 3600.0) * (allocable / 100.0)
+                    self._add_slot_to_list(start_dt, end_dt, resource, following_slots_vals_list, allocable=allocable)
+            else:
+                end_dt = min(start_interval + timedelta(hours=to_allocate), end_interval)
+                to_allocate -= (end_dt - start_interval).total_seconds() / 3600.0
+                self._add_slot_to_list(start_interval, end_dt, resource, following_slots_vals_list)
+
+        if float_utils.float_compare(to_allocate, 0.0, precision_digits=2) == 1 and following_slots_vals_list:
+            planning_slot_values = self.sale_line_id._planning_slot_values()
+            planning_slot_values.update(allocated_hours=to_allocate)
+            following_slots_vals_list.append(planning_slot_values)
+
+        return following_slots_vals_list
+
+    def _add_slot_to_list(self, start_datetime, end_datetime, resource, following_slots_vals_list, allocable=100.0):
+        allocated_hours = ((end_datetime - start_datetime).total_seconds() / 3600.0) * (allocable / 100.0)
+        following_slots_vals_list.append({
+            **self.sale_line_id._planning_slot_values(),
+            'start_datetime': start_datetime,
+            'end_datetime': end_datetime,
+            'allocated_percentage': allocable,
+            'allocated_hours': allocated_hours,
+            'resource_id': resource.id,
+        })
+
+    def _get_resource_work_info(self, vals, slot_vals_list_per_resource):
+        """
+            This method returns the resource work intervals and a dict representing
+            the work_intervals which has conflicting partial slots (slot with allocated percentage < 100.0).
+
+            It retrieves the work intervals and removes the intervals where a complete
+            slot exists (allocated_percentage == 100.0).
+            It takes into account the slots already added to the vals list.
+
+            :param vals: the vals dict passed to the write method
+            :param slot_vals_list_per_resource: a dict with the vals list that will be passed to the create method - sorted per key:resource_id
+        """
+        self.ensure_one()
+        assert self.env.context.get('stop_date')
+        if isinstance(vals['start_datetime'], str):
+            start_dt = pytz.utc.localize(datetime.strptime(vals['start_datetime'], DEFAULT_SERVER_DATETIME_FORMAT))
+        else:
+            start_dt = pytz.utc.localize(vals['start_datetime'])
+        end_dt = pytz.utc.localize(datetime.strptime(self.env.context['stop_date'], DEFAULT_SERVER_DATETIME_FORMAT))
+        # retrieve the resource and its calendar validity intervals
+        resource_calendar_validity_intervals, resource = self._get_slot_calendar_and_resource(vals, start_dt, end_dt)
+        attendance_intervals = Intervals()
+        unavailability_intervals = Intervals()
+        # retrieves attendances and unavailabilities of the resource
+        for calendar in resource_calendar_validity_intervals.keys():
+            attendance = calendar._attendance_intervals_batch(
+                start_dt, end_dt, resources=resource)[resource.id]
+            leaves = calendar._leave_intervals_batch(
+                start_dt, end_dt, resources=resource)[resource.id]
+            # The calendar is valid only during its validity interval (see resource_resource:_get_calendars_validity_within_period)
+            attendance_intervals |= attendance & resource_calendar_validity_intervals[calendar]
+            unavailability_intervals |= leaves & resource_calendar_validity_intervals[calendar]
+        partial_slots = {}
+        partial_interval_slots = defaultdict(list)
+        if resource:
+            # gets slots which exists in the period [start_dt;end_dt]
+            slots = self.search_read([
+                ('resource_id', '=', resource.id),
+                ('start_datetime', '<', end_dt.replace(tzinfo=None)),
+                ('end_datetime', '>', start_dt.replace(tzinfo=None)),
+            ], ['start_datetime', 'end_datetime', 'allocated_percentage'])
+            # add the vals list of the resource (slots that will be created at the end of the write method.)
+            slots += slot_vals_list_per_resource[resource]
+            planning_slots_intervals = Intervals()
+            partial_slots = []
+            # generate partial intervals and complete intervals
+            for slot in slots:
+                if not slot['start_datetime']:
+                    # this slot is a future unscheduled slots coming from the slot_vals_list_per_resource[resource]
+                    continue
+                if float_utils.float_compare(slot['allocated_percentage'], 100.0, precision_digits=0) < 0:
+                    partial_slots.append(slot)
+                else:
+                    interval = Intervals([(
+                        pytz.utc.localize(slot['start_datetime']),
+                        pytz.utc.localize(slot['end_datetime']),
+                        self.env['resource.calendar.leaves']
+                    )])
+                    planning_slots_intervals |= interval
+            # adds the full planning_slots to the unavailibility intervals
+            unavailability_intervals |= planning_slots_intervals
+            work_intervals = attendance_intervals - unavailability_intervals
+            if partial_slots:
+                # for the partial slots, add it to a list with key = interval, value = list of slots which exists during the interval (at least during a while).
+                for interval in work_intervals:
+                    # for each interval, add partial slots that conflict.
+                    for slot in partial_slots:
+                        if pytz.utc.localize(slot['start_datetime']) < interval[1] and pytz.utc.localize(slot['end_datetime']) > interval[0]:
+                            partial_interval_slots[interval].append(slot)
+        else:
+            work_intervals = attendance_intervals - unavailability_intervals
+        return work_intervals, unavailability_intervals, resource, partial_interval_slots
+
+    def _get_slot_calendar_and_resource(self, vals, start, end):
+        """
+            This method is meant to access easily to slot's resource and the resource's calendars with their validity
+        """
+        self.ensure_one()
+        resource = self.resource_id
+        if vals.get('resource_id'):
+            resource = self.env['resource.resource'].browse(vals.get('resource_id'))
+        resource_calendar_validity_intervals = resource._get_calendars_validity_within_period(start, end, default_company=self.company_id)[resource.id]
+        return resource_calendar_validity_intervals, resource

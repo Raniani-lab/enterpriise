@@ -47,7 +47,8 @@ var OpenStudioButton = Widget.extend({
             return self.do_action(act);
         })
         .then(function () {
-            self.trigger_up('studio_icon_clicked');
+            const studioOpenEvent = new Event('studio-icon-clicked');
+            window.dispatchEvent(studioOpenEvent);
         });
     }
 });

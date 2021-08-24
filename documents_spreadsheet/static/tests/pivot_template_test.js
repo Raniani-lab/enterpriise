@@ -267,8 +267,8 @@ module(
                     },
                 }
             });
-            assert.equal(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE"), CommandResult.PivotCacheNotLoaded);
-            assert.equal(model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE"), CommandResult.PivotCacheNotLoaded);
+            assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [CommandResult.PivotCacheNotLoaded]);
+            assert.deepEqual(model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE").reasons, [CommandResult.PivotCacheNotLoaded]);
         });
 
         test("Don't change formula if not many2one", async function (assert) {

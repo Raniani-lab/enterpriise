@@ -146,7 +146,7 @@
     <div t-name="documents_spreadsheet.FilterEditorSidePanel" class="o_spreadsheet_filter_editor_side_panel" owl="1">
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Label</div>
-            <div t-att-class="missingLabel ? 'o_field_invalid' : ''">
+            <div t-att-class="missingLabel ? 'o_field_invalid' : ''" class="o_required_modifier">
                 <input
                     class="o_input o_global_filter_label"
                     t-model="state.label"
@@ -155,7 +155,7 @@
         </div>
         <div class="o_side_panel_section" t-if="state.type === 'relation'">
             <div class="o_side_panel_title">Related Model</div>
-            <div t-att-class="missingModel ? 'o_field_invalid' : ''">
+            <div t-att-class="missingModel ? 'o_field_invalid' : ''" class="o_required_modifier">
                 <ModelSelectorWidgetAdapter
                     Component="ModelSelectorWidget"
                     modelID="state.relation.relatedModelID"
@@ -198,9 +198,8 @@
             <div class="text-muted">
                 For each pivot, match this filter to the relevant field
             </div>
-            <div t-foreach="pivots" t-as="pivot" t-key="pivot.id" t-att-class="missingField ? 'o_field_invalid' : ''" class="o_pivot_field_matching">
+            <div t-foreach="pivots" t-as="pivot" t-key="pivot.id" t-att-class="missingField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_modifier">
                 <t t-set="cache" t-value="getters.getCache(pivot.id)"/>
-                
                 <div><t t-esc="cache and cache.getModelLabel() or pivot.model"/> <span class="o_pivot_model_technical_name text-muted">(<t t-esc="pivot.model"/>, #<t t-esc="pivot.id"/>)</span></div>
                 <FieldSelectorAdapter
                     Component="FieldSelectorWidget"

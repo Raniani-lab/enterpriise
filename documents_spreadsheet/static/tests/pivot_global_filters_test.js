@@ -12,7 +12,7 @@ import {
 
 import { getBasicArch, getTestData } from "./spreadsheet_test_data";
 
-const { Model } = spreadsheet;
+const { Model, DispatchResult } = spreadsheet;
 const {cellMenuRegistry } = spreadsheet.registries;
 const { module, test } = QUnit;
 
@@ -57,10 +57,10 @@ module("documents_spreadsheet > pivot_global_filters", {
         assert.expect(4);
 
         const { model } = await createSpreadsheetFromPivot();
-        assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: 1 }), CommandResult.FilterNotFound);
+        assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: 1 }).reasons, [CommandResult.FilterNotFound]);
         model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
         const gf = model.getters.getGlobalFilters()[0];
-        assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: gf.id }), CommandResult.Success);
+        assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: gf.id }), DispatchResult.Success);
         assert.equal(model.getters.getGlobalFilters().length, 0);
         const [ pivot ] = model.getters.getPivots();
         assert.equal(pivot.computedDomain.length, 0);
@@ -71,11 +71,11 @@ module("documents_spreadsheet > pivot_global_filters", {
 
         const { model } = await createSpreadsheetFromPivot();
         const gfDef = { ...THIS_YEAR_FILTER, id: 1 };
-        assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef), CommandResult.FilterNotFound);
+        assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef).reasons, [CommandResult.FilterNotFound]);
         model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
         const gf = model.getters.getGlobalFilters()[0];
         gfDef.id = gf.id;
-        assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef), CommandResult.Success);
+        assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef), DispatchResult.Success);
         assert.equal(model.getters.getGlobalFilters().length, 1);
         assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "this_year");
     });
@@ -201,18 +201,18 @@ module("documents_spreadsheet > pivot_global_filters", {
 
         // Add filter with same name
         let result = model.dispatch("ADD_PIVOT_FILTER", Object.assign({ id: "456" }, { filter }));
-        assert.deepEqual(result, CommandResult.DuplicatedFilterLabel);
+        assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
         assert.equal(model.getters.getGlobalFilters().length, 1);
 
         // Edit to set same name as other filter
         model.dispatch("ADD_PIVOT_FILTER", { filter: Object.assign({ id: "789" }, filter, { label: "Other name" }) });
         assert.equal(model.getters.getGlobalFilters().length, 2);
         result = model.dispatch("EDIT_PIVOT_FILTER", {id: "789", filter: Object.assign({}, filter, { label: "Hello" }) });
-        assert.deepEqual(result, CommandResult.DuplicatedFilterLabel);
+        assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
 
         // Edit to set same name
         result = model.dispatch("EDIT_PIVOT_FILTER", {id: "789", filter: Object.assign({}, filter, { label: "Other name" }) });
-        assert.deepEqual(result, CommandResult.Success);
+        assert.deepEqual(result, DispatchResult.Success);
     });
 
     test("Can save a value to an existing global filter", async function (assert) {
@@ -221,11 +221,11 @@ module("documents_spreadsheet > pivot_global_filters", {
         const { model } = await createSpreadsheetFromPivot();
         model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
         const gf = model.getters.getGlobalFilters()[0];
-        assert.deepEqual(model.dispatch("SET_PIVOT_FILTER_VALUE", { id: gf.id, value: { period: "last_month" } }), CommandResult.Success);
+        assert.deepEqual(model.dispatch("SET_PIVOT_FILTER_VALUE", { id: gf.id, value: { period: "last_month" } }), DispatchResult.Success);
         assert.equal(model.getters.getGlobalFilters().length, 1);
         assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "last_year");
         assert.deepEqual(model.getters.getGlobalFilters()[0].value.period, "last_month");
-        assert.deepEqual(model.dispatch("SET_PIVOT_FILTER_VALUE", { id: gf.id, value: { period: "this_month" } }), CommandResult.Success);
+        assert.deepEqual(model.dispatch("SET_PIVOT_FILTER_VALUE", { id: gf.id, value: { period: "this_month" } }), DispatchResult.Success);
         assert.deepEqual(model.getters.getGlobalFilters()[0].value.period, "this_month");
         const [ pivot ] = model.getters.getPivots();
         assert.equal(pivot.computedDomain.length, 3);

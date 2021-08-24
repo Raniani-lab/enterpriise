@@ -197,7 +197,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             if (this.missingLabel || this.missingField || this.missingModel) {
                 this.env.services.notification.notify({
                     type: "danger",
-                    title: this.env._t("Invalid fields"),
+                    title: this.env._t("Some required fields are not valid"),
                     sticky: false,
                 });
                 return;

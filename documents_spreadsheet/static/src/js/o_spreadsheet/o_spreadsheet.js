@@ -1256,6 +1256,36 @@
     function canExecuteInReadonly(cmd) {
         return readonlyAllowedCommands.has(cmd.type);
     }
+    /**
+     * Holds the result of a command dispatch.
+     * The command may have been successfully dispatched or cancelled
+     * for one or more reasons.
+     */
+    class DispatchResult {
+        constructor(results = []) {
+            if (!Array.isArray(results)) {
+                results = [results];
+            }
+            results = [...new Set(results)];
+            this.reasons = results.filter((result) => result !== 0 /* Success */);
+        }
+        /**
+         * Static helper which returns a successful DispatchResult
+         */
+        static get Success() {
+            return new DispatchResult();
+        }
+        get isSuccessful() {
+            return this.reasons.length === 0;
+        }
+        /**
+         * Check if the dispatch has been cancelled because of
+         * the given reason.
+         */
+        isCancelledBecause(reason) {
+            return this.reasons.includes(reason);
+        }
+    }
     exports.CommandResult = void 0;
     (function (CommandResult) {
         CommandResult[CommandResult["Success"] = 0] = "Success";
@@ -1277,43 +1307,45 @@
         CommandResult[CommandResult["TargetOutOfSheet"] = 16] = "TargetOutOfSheet";
         CommandResult[CommandResult["WrongPasteSelection"] = 17] = "WrongPasteSelection";
         CommandResult[CommandResult["EmptyClipboard"] = 18] = "EmptyClipboard";
-        CommandResult[CommandResult["InvalidRange"] = 19] = "InvalidRange";
-        CommandResult[CommandResult["InvalidSheetId"] = 20] = "InvalidSheetId";
-        CommandResult[CommandResult["InputAlreadyFocused"] = 21] = "InputAlreadyFocused";
-        CommandResult[CommandResult["MaximumRangesReached"] = 22] = "MaximumRangesReached";
-        CommandResult[CommandResult["InvalidChartDefinition"] = 23] = "InvalidChartDefinition";
-        CommandResult[CommandResult["EmptyDataSet"] = 24] = "EmptyDataSet";
-        CommandResult[CommandResult["InvalidDataSet"] = 25] = "InvalidDataSet";
-        CommandResult[CommandResult["InvalidLabelRange"] = 26] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 27] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 28] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 29] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 30] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 31] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 32] = "MinBiggerThanMid";
-        CommandResult[CommandResult["InvalidNumberOfArgs"] = 33] = "InvalidNumberOfArgs";
-        CommandResult[CommandResult["MinNaN"] = 34] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 35] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 36] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 37] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 38] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 39] = "MinAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 40] = "MidAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 41] = "MaxAsyncFormulaNotSupported";
-        CommandResult[CommandResult["ValueUpperAsyncFormulaNotSupported"] = 42] = "ValueUpperAsyncFormulaNotSupported";
-        CommandResult[CommandResult["ValueLowerAsyncFormulaNotSupported"] = 43] = "ValueLowerAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MinInvalidFormula"] = 44] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 45] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 46] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 47] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 48] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 49] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 50] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 51] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 52] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 53] = "Readonly";
-        CommandResult[CommandResult["InvalidOffset"] = 54] = "InvalidOffset";
-        CommandResult[CommandResult["InvalidViewportSize"] = 55] = "InvalidViewportSize";
+        CommandResult[CommandResult["EmptyRange"] = 19] = "EmptyRange";
+        CommandResult[CommandResult["InvalidRange"] = 20] = "InvalidRange";
+        CommandResult[CommandResult["InvalidSheetId"] = 21] = "InvalidSheetId";
+        CommandResult[CommandResult["InputAlreadyFocused"] = 22] = "InputAlreadyFocused";
+        CommandResult[CommandResult["MaximumRangesReached"] = 23] = "MaximumRangesReached";
+        CommandResult[CommandResult["InvalidChartDefinition"] = 24] = "InvalidChartDefinition";
+        CommandResult[CommandResult["EmptyDataSet"] = 25] = "EmptyDataSet";
+        CommandResult[CommandResult["InvalidDataSet"] = 26] = "InvalidDataSet";
+        CommandResult[CommandResult["InvalidLabelRange"] = 27] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 28] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 29] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 30] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 31] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 32] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 33] = "MinBiggerThanMid";
+        CommandResult[CommandResult["FirstArgMissing"] = 34] = "FirstArgMissing";
+        CommandResult[CommandResult["SecondArgMissing"] = 35] = "SecondArgMissing";
+        CommandResult[CommandResult["MinNaN"] = 36] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 37] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 38] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 39] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 40] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 41] = "MinAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 42] = "MidAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 43] = "MaxAsyncFormulaNotSupported";
+        CommandResult[CommandResult["ValueUpperAsyncFormulaNotSupported"] = 44] = "ValueUpperAsyncFormulaNotSupported";
+        CommandResult[CommandResult["ValueLowerAsyncFormulaNotSupported"] = 45] = "ValueLowerAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MinInvalidFormula"] = 46] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 47] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 48] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 49] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 50] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 51] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 52] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 53] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 54] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 55] = "Readonly";
+        CommandResult[CommandResult["InvalidOffset"] = 56] = "InvalidOffset";
+        CommandResult[CommandResult["InvalidViewportSize"] = 57] = "InvalidViewportSize";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -6854,20 +6886,34 @@
          */
         finalize() { }
         /**
-         * Combine multiple validation functions into a single function.
+         * Combine multiple validation functions into a single function
+         * returning the list of result of every validation.
          */
-        combineValidations(...validations) {
+        batchValidations(...validations) {
+            return (toValidate) => validations.map((validation) => validation.call(this, toValidate)).flat();
+        }
+        /**
+         * Combine multiple validation functions. Every validation is executed one after
+         * the other. As soon as one validation fails, it stops and the cancelled reason
+         * is returned.
+         */
+        chainValidations(...validations) {
             return (toValidate) => {
                 for (const validation of validations) {
-                    const result = validation.call(this, toValidate);
-                    if (result !== 0 /* Success */)
-                        return result;
+                    let results = validation.call(this, toValidate);
+                    if (!Array.isArray(results)) {
+                        results = [results];
+                    }
+                    const cancelledReasons = results.filter((result) => result !== 0 /* Success */);
+                    if (cancelledReasons.length) {
+                        return cancelledReasons;
+                    }
                 }
                 return 0 /* Success */;
             };
         }
         checkValidations(command, ...validations) {
-            return this.combineValidations(...validations)(command);
+            return this.batchValidations(...validations)(command);
         }
     }
     BasePlugin.getters = [];
@@ -8940,7 +8986,9 @@
             return this.NULL_FORMAT;
         }
         checkCellOutOfSheet(sheetId, col, row) {
-            const sheet = this.getters.getSheet(sheetId);
+            const sheet = this.getters.tryGetSheet(sheetId);
+            if (!sheet)
+                return 21 /* InvalidSheetId */;
             const sheetZone = {
                 top: 0,
                 left: 0,
@@ -9025,7 +9073,7 @@
             switch (cmd.type) {
                 case "UPDATE_CHART":
                 case "CREATE_CHART":
-                    return this.checkValidations(cmd, this.checkEmptyDataset, this.checkDataset, this.checkLabelRange);
+                    return this.checkValidations(cmd, this.chainValidations(this.checkEmptyDataset, this.checkDataset), this.checkLabelRange);
                 default:
                     return success;
             }
@@ -9324,7 +9372,7 @@
         }
         checkEmptyDataset(cmd) {
             return cmd.definition.dataSets && cmd.definition.dataSets.length === 0
-                ? 24 /* EmptyDataSet */
+                ? 25 /* EmptyDataSet */
                 : 0 /* Success */;
         }
         checkDataset(cmd) {
@@ -9332,18 +9380,24 @@
                 return 0 /* Success */;
             }
             const invalidRanges = cmd.definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
-            return invalidRanges ? 25 /* InvalidDataSet */ : 0 /* Success */;
+            return invalidRanges ? 26 /* InvalidDataSet */ : 0 /* Success */;
         }
         checkLabelRange(cmd) {
             if (!cmd.definition.labelRange) {
                 return 0 /* Success */;
             }
             const invalidLabels = !rangeReference.test(cmd.definition.labelRange || "");
-            return invalidLabels ? 26 /* InvalidLabelRange */ : 0 /* Success */;
+            return invalidLabels ? 27 /* InvalidLabelRange */ : 0 /* Success */;
         }
     }
     ChartPlugin.getters = ["getChartDefinition", "getChartDefinitionUI", "getChartsIdBySheet"];
 
+    // -----------------------------------------------------------------------------
+    // Constants
+    // -----------------------------------------------------------------------------
+    function stringToNumber(value) {
+        return value === "" ? NaN : Number(value);
+    }
     class ConditionalFormatPlugin extends CorePlugin {
         constructor() {
             super(...arguments);
@@ -9388,7 +9442,7 @@
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
             if (cmd.type === "ADD_CONDITIONAL_FORMAT") {
-                return this.checkCFRule(cmd.cf.rule);
+                return this.checkValidations(cmd, this.checkCFRule, this.checkEmptyRange);
             }
             return 0 /* Success */;
         }
@@ -9513,10 +9567,14 @@
             }
             this.history.update("cfRules", sheet, currentCF);
         }
-        checkCFRule(rule) {
+        checkEmptyRange(cmd) {
+            return cmd.target.length ? 0 /* Success */ : 19 /* EmptyRange */;
+        }
+        checkCFRule(cmd) {
+            const rule = cmd.cf.rule;
             switch (rule.type) {
                 case "CellIsRule":
-                    return this.checkValidations(rule, this.checkOperatorArgsNumber(2, ["Between", "NotBetween"]), this.checkOperatorArgsNumberEqual(["Equal", "NotEqual"]), this.checkOperatorArgsNumber(1, [
+                    return this.checkValidations(rule, this.checkOperatorArgsNumber(2, ["Between", "NotBetween"]), this.checkOperatorArgsNumber(1, [
                         "BeginsWith",
                         "ContainsText",
                         "EndsWith",
@@ -9527,34 +9585,31 @@
                         "NotContains",
                     ]), this.checkOperatorArgsNumber(0, ["IsEmpty", "IsNotEmpty"]));
                 case "ColorScaleRule": {
-                    return this.checkValidations(rule, this.checkThresholds(this.checkNaN), this.checkThresholds(this.checkFormulaCompilation), this.checkThresholds(this.checkAsyncFormula), this.checkMinBiggerThanMax, this.checkMinBiggerThanMid, this.checkMidBiggerThanMax
+                    return this.checkValidations(rule, this.chainValidations(this.checkThresholds(this.checkFormulaCompilation), this.checkThresholds(this.checkAsyncFormula)), this.chainValidations(this.checkThresholds(this.checkNaN), this.batchValidations(this.checkMinBiggerThanMax, this.checkMinBiggerThanMid, this.checkMidBiggerThanMax
                     // ☝️ Those three validations can be factorized further
-                    );
+                    )));
                 }
                 case "IconSetRule": {
-                    return this.checkValidations(rule, this.checkInflectionPoints(this.checkNaN), this.checkInflectionPoints(this.checkFormulaCompilation), this.checkInflectionPoints(this.checkAsyncFormula), this.checkLowerBiggerThanUpper);
+                    return this.checkValidations(rule, this.chainValidations(this.checkInflectionPoints(this.checkNaN), this.checkLowerBiggerThanUpper), this.chainValidations(this.checkInflectionPoints(this.checkFormulaCompilation), this.checkInflectionPoints(this.checkAsyncFormula)));
                 }
             }
             return 0 /* Success */;
         }
-        checkOperatorArgsNumberEqual(operators) {
-            return (rule) => {
-                const isEmpty = (value) => value === "" || value === undefined;
-                if (operators.includes(rule.operator) &&
-                    (!isEmpty(rule.values[1]) || rule.values.length > 2)) {
-                    return 33 /* InvalidNumberOfArgs */;
-                }
-                return 0 /* Success */;
-            };
-        }
         checkOperatorArgsNumber(expectedNumber, operators) {
+            if (expectedNumber > 2) {
+                throw new Error("Checking more than 2 arguments is currently not supported. Add the appropriate CommandResult if you want to.");
+            }
             return (rule) => {
                 if (operators.includes(rule.operator)) {
-                    for (let i = 0; i < expectedNumber; i++) {
-                        if (rule.values[i] === undefined || rule.values[i] === "") {
-                            return 33 /* InvalidNumberOfArgs */;
-                        }
+                    const errors = [];
+                    const isEmpty = (value) => value === undefined || value === "";
+                    if (expectedNumber >= 1 && isEmpty(rule.values[0])) {
+                        errors.push(34 /* FirstArgMissing */);
                     }
+                    if (expectedNumber >= 2 && isEmpty(rule.values[1])) {
+                        errors.push(35 /* SecondArgMissing */);
+                    }
+                    return errors.length ? errors : 0 /* Success */;
                 }
                 return 0 /* Success */;
             };
@@ -9564,15 +9619,15 @@
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 34 /* MinNaN */;
+                        return 36 /* MinNaN */;
                     case "max":
-                        return 36 /* MaxNaN */;
+                        return 38 /* MaxNaN */;
                     case "mid":
-                        return 35 /* MidNaN */;
+                        return 37 /* MidNaN */;
                     case "upperInflectionPoint":
-                        return 37 /* ValueUpperInflectionNaN */;
+                        return 39 /* ValueUpperInflectionNaN */;
                     case "lowerInflectionPoint":
-                        return 38 /* ValueLowerInflectionNaN */;
+                        return 40 /* ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* Success */;
@@ -9586,15 +9641,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 44 /* MinInvalidFormula */;
+                        return 46 /* MinInvalidFormula */;
                     case "max":
-                        return 46 /* MaxInvalidFormula */;
+                        return 48 /* MaxInvalidFormula */;
                     case "mid":
-                        return 45 /* MidInvalidFormula */;
+                        return 47 /* MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 47 /* ValueUpperInvalidFormula */;
+                        return 49 /* ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 48 /* ValueLowerInvalidFormula */;
+                        return 50 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -9606,24 +9661,24 @@
             if (compiledFormula.async) {
                 switch (thresholdName) {
                     case "min":
-                        return 39 /* MinAsyncFormulaNotSupported */;
+                        return 41 /* MinAsyncFormulaNotSupported */;
                     case "max":
-                        return 41 /* MaxAsyncFormulaNotSupported */;
+                        return 43 /* MaxAsyncFormulaNotSupported */;
                     case "mid":
-                        return 40 /* MidAsyncFormulaNotSupported */;
+                        return 42 /* MidAsyncFormulaNotSupported */;
                     case "upperInflectionPoint":
-                        return 42 /* ValueUpperAsyncFormulaNotSupported */;
+                        return 44 /* ValueUpperAsyncFormulaNotSupported */;
                     case "lowerInflectionPoint":
-                        return 43 /* ValueLowerAsyncFormulaNotSupported */;
+                        return 45 /* ValueLowerAsyncFormulaNotSupported */;
                 }
             }
             return 0 /* Success */;
         }
         checkThresholds(check) {
-            return this.combineValidations((rule) => check(rule.minimum, "min"), (rule) => check(rule.maximum, "max"), (rule) => (rule.midpoint ? check(rule.midpoint, "mid") : 0 /* Success */));
+            return this.batchValidations((rule) => check(rule.minimum, "min"), (rule) => check(rule.maximum, "max"), (rule) => (rule.midpoint ? check(rule.midpoint, "mid") : 0 /* Success */));
         }
         checkInflectionPoints(check) {
-            return this.combineValidations((rule) => check(rule.lowerInflectionPoint, "lowerInflectionPoint"), (rule) => check(rule.upperInflectionPoint, "upperInflectionPoint"));
+            return this.batchValidations((rule) => check(rule.lowerInflectionPoint, "lowerInflectionPoint"), (rule) => check(rule.upperInflectionPoint, "upperInflectionPoint"));
         }
         checkLowerBiggerThanUpper(rule) {
             const minValue = rule.lowerInflectionPoint.value;
@@ -9631,7 +9686,7 @@
             if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
                 rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
                 Number(minValue) > Number(maxValue)) {
-                return 30 /* LowerBiggerThanUpper */;
+                return 31 /* LowerBiggerThanUpper */;
             }
             return 0 /* Success */;
         }
@@ -9640,8 +9695,8 @@
             const maxValue = rule.maximum.value;
             if (["number", "percentage", "percentile"].includes(rule.minimum.type) &&
                 rule.minimum.type === rule.maximum.type &&
-                Number(minValue) >= Number(maxValue)) {
-                return 29 /* MinBiggerThanMax */;
+                stringToNumber(minValue) >= stringToNumber(maxValue)) {
+                return 30 /* MinBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -9652,8 +9707,8 @@
             if (rule.midpoint &&
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
-                Number(midValue) >= Number(maxValue)) {
-                return 31 /* MidBiggerThanMax */;
+                stringToNumber(midValue) >= stringToNumber(maxValue)) {
+                return 32 /* MidBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -9664,8 +9719,8 @@
             if (rule.midpoint &&
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
-                Number(minValue) >= Number(midValue)) {
-                return 32 /* MinBiggerThanMid */;
+                stringToNumber(minValue) >= stringToNumber(midValue)) {
+                return 33 /* MinBiggerThanMid */;
             }
             return 0 /* Success */;
         }
@@ -9980,7 +10035,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 51 /* MergeOverlap */;
+                        return 53 /* MergeOverlap */;
                     }
                 }
             }
@@ -10165,7 +10220,7 @@
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
-            const genericChecks = this.checkValidations(cmd, this.checkSheetExists, this.checkZones);
+            const genericChecks = this.chainValidations(this.checkSheetExists, this.checkZones)(cmd);
             if (genericChecks !== 0 /* Success */) {
                 return genericChecks;
             }
@@ -10201,7 +10256,7 @@
                     const elements = cmd.dimension === "COL" ? sheet.cols : sheet.rows;
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements.length
                         ? 0 /* Success */
-                        : 52 /* TooManyHiddenElements */;
+                        : 54 /* TooManyHiddenElements */;
                 }
                 default:
                     return 0 /* Success */;
@@ -10960,7 +11015,7 @@
          */
         checkSheetExists(cmd) {
             if (cmd.type !== "CREATE_SHEET" && "sheetId" in cmd && this.sheets[cmd.sheetId] === undefined) {
-                return 20 /* InvalidSheetId */;
+                return 21 /* InvalidSheetId */;
             }
             return 0 /* Success */;
         }
@@ -10977,7 +11032,7 @@
                 zones.push(...cmd.target);
             }
             if (!zones.every(isZoneValid)) {
-                return 19 /* InvalidRange */;
+                return 20 /* InvalidRange */;
             }
             else if (zones.length && "sheetId" in cmd) {
                 const sheet = this.getSheet(cmd.sheetId);
@@ -12834,7 +12889,7 @@
         },
     };
 
-    const { Component: Component$j } = owl__namespace;
+    const { Component: Component$j, useState: useState$j } = owl__namespace;
     const { xml: xml$m, css: css$m } = owl__namespace.tags;
     const uuidGenerator = new UuidGenerator();
     const TEMPLATE$j = xml$m /* xml */ `
@@ -12846,8 +12901,12 @@
         t-on-change="onInputChanged(range.id)"
         t-on-focus="focus(range.id)"
         t-att-value="range.xc"
-        t-att-style="getStyle(range)"
-        t-att-class="range.isFocused ? 'o-focused' : ''"
+        t-att-style="getColor(range)"
+        t-att-class="{
+          'o-focused' : range.isFocused,
+          'o-required': props.required,
+          'o-invalid': isInvalid || !range.isValidRange,
+        }"
       />
       <button
         class="o-btn o-remove-selection"
@@ -12886,10 +12945,16 @@
       input:focus {
         outline: none;
       }
+      input.o-required,
       input.o-focused {
-        border-color: #3266ca;
         border-width: 2px;
         padding: 3px 5px;
+      }
+      input.o-focused {
+        border-color: #3266ca;
+      }
+      input.o-invalid {
+        border-color: red;
       }
       button.o-btn {
         background: transparent;
@@ -12926,6 +12991,9 @@
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.originSheet = this.env.getters.getActiveSheetId();
+            this.state = useState$j({
+                isMissing: false,
+            });
         }
         get ranges() {
             const existingSelectionRange = this.getters.getSelectionInput(this.id);
@@ -12949,6 +13017,9 @@
         get canAddRange() {
             return !this.props.maximumRanges || this.ranges.length < this.props.maximumRanges;
         }
+        get isInvalid() {
+            return this.props.isInvalid || this.state.isMissing;
+        }
         mounted() {
             this.dispatch("ENABLE_NEW_SELECTION_INPUT", {
                 id: this.id,
@@ -12965,13 +13036,9 @@
                 this.triggerChange();
             }
         }
-        getStyle(range) {
+        getColor(range) {
             const color = range.color || "#000";
-            let style = "color: " + color + ";";
-            if (!range.isValidRange) {
-                return style + "border-color: red;";
-            }
-            return style;
+            return "color: " + color + ";";
         }
         triggerChange() {
             const ranges = this.getters.getSelectionInputValue(this.id);
@@ -12979,6 +13046,7 @@
             this.previousRanges = ranges;
         }
         focus(rangeId) {
+            this.state.isMissing = false;
             this.dispatch("FOCUS_RANGE", {
                 id: this.id,
                 rangeId,
@@ -13007,6 +13075,10 @@
                 id: this.id,
                 rangeId: null,
             });
+            const ranges = this.getters.getSelectionInputValue(this.id);
+            if (this.props.required && ranges.length === 0) {
+                this.state.isMissing = true;
+            }
             const activeSheetId = this.getters.getActiveSheetId();
             if (this.originSheet !== activeSheetId) {
                 this.dispatch("ACTIVATE_SHEET", {
@@ -13033,27 +13105,29 @@
         SAVE: _lt("Save"),
         PREVIEW_TEXT: _lt("Preview text"),
         Errors: {
-            [19 /* InvalidRange */]: _lt("The range is invalid"),
-            [33 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
-            [34 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [35 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [36 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [37 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [38 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [29 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [32 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [31 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [30 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
-            [44 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [46 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [45 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [47 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [48 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
-            [39 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
-            [41 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
-            [40 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
-            [42 /* ValueUpperAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the upper inflection point"),
-            [43 /* ValueLowerAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the lower inflection point"),
+            [20 /* InvalidRange */]: _lt("The range is invalid"),
+            [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [35 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [36 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [37 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [38 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [39 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [40 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [30 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
+            [46 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [48 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [47 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [49 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [50 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [41 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
+            [43 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
+            [42 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
+            [44 /* ValueUpperAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the upper inflection point"),
+            [45 /* ValueLowerAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the lower inflection point"),
+            [19 /* EmptyRange */]: _lt("A range needs to be defined"),
             unexpected: _lt("The rule is invalid for an unknown reason"),
         },
         SingleColor: _lt("Single color"),
@@ -13125,9 +13199,9 @@
         Exponential: _lt("Exponential"),
         Logarithmic: _lt("Logarithmic"),
         Errors: {
-            [24 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
-            [25 /* InvalidDataSet */]: _lt("The dataset is invalid"),
-            [26 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
+            [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
+            [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
             unexpected: _lt("The chart definition is invalid for an unknown reason"),
         },
     };
@@ -13181,6 +13255,8 @@
         <SelectionInput
           t-key="getKey('dataSets')"
           ranges="state.dataSets"
+          isInvalid="isDatasetInvalid"
+          required="true"
           t-on-selection-changed="onSeriesChanged"
           t-on-selection-confirmed="updateDataSet"
         />
@@ -13191,13 +13267,16 @@
           <SelectionInput
             t-key="getKey('label')"
             ranges="[state.labelRange || '']"
+            isInvalid="isLabelInvalid"
             t-on-selection-changed="onLabelRangeChanged"
             t-on-selection-confirmed="updateLabelRange"
             maximumRanges="1"
           />
       </div>
-      <div class="o-section o-sidepanel-error" t-if="state.error">
-          <t t-esc="state.error"/>
+      <div class="o-section o-sidepanel-error" t-if="errorMessages">
+        <div t-foreach="errorMessages" t-as="error">
+          <t t-esc="error"/>
+        </div>
       </div>
       </t>
       <t t-else="">
@@ -13284,11 +13363,27 @@
                 this.state = this.initialState(nextProps.figure);
             }
         }
+        get errorMessages() {
+            var _a, _b;
+            const cancelledReasons = [
+                ...(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || []),
+                ...(((_b = this.state.labelsDispatchResult) === null || _b === void 0 ? void 0 : _b.reasons) || []),
+            ];
+            return cancelledReasons.map((error) => this.env._t(chartTerms.Errors[error] || chartTerms.Errors.unexpected));
+        }
+        get isDatasetInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) || ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
+        }
+        get isLabelInvalid() {
+            var _a;
+            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(27 /* InvalidLabelRange */));
+        }
         onSeriesChanged(ev) {
             this.state.dataSets = ev.detail.ranges;
         }
         updateDataSet() {
-            this.updateChart({
+            this.state.datasetDispatchResult = this.updateChart({
                 dataSets: this.state.dataSets,
                 dataSetsHaveTitle: this.state.dataSetsHaveTitle,
             });
@@ -13304,18 +13399,16 @@
             this.updateChart({ [attr]: ev.target.value });
         }
         updateLabelRange() {
-            this.updateChart({ labelRange: this.state.labelRange || null });
+            this.state.labelsDispatchResult = this.updateChart({
+                labelRange: this.state.labelRange || null,
+            });
         }
         updateChart(definition) {
-            const result = this.env.dispatch("UPDATE_CHART", {
+            return this.env.dispatch("UPDATE_CHART", {
                 id: this.props.figure.id,
                 sheetId: this.getters.getActiveSheetId(),
                 definition,
             });
-            this.state.error =
-                result !== 0 /* Success */
-                    ? this.env._t(chartTerms.Errors[result] || chartTerms.Errors.unexpected)
-                    : undefined;
         }
         onLabelRangeChanged(ev) {
             this.state.labelRange = ev.detail.ranges[0];
@@ -13371,12 +13464,14 @@
       <input type="text"
              placeholder="Value"
              t-model="state.condition.value1"
-             class="o-input o-cell-is-value"/>
+             t-att-class="{ 'o-invalid': isValue1Invalid }"
+             class="o-input o-cell-is-value o-required"/>
       <t t-if="state.condition.operator === 'Between' || state.condition.operator === 'NotBetween'">
           <input type="text"
                  placeholder="and value"
                  t-model="state.condition.value2"
-                 class="o-input o-cell-is-value"/>
+                 t-att-class="{ 'o-invalid': isValue2Invalid }"
+                 class="o-input o-cell-is-value o-required"/>
       </t>
     </t>
     <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.FORMATTING_STYLE}')"></div>
@@ -13463,6 +13558,14 @@
             });
             useExternalListener$6(window, "click", this.closeMenus);
         }
+        get isValue1Invalid() {
+            var _a;
+            return !!((_a = this.props.errors) === null || _a === void 0 ? void 0 : _a.includes(34 /* FirstArgMissing */));
+        }
+        get isValue2Invalid() {
+            var _a;
+            return !!((_a = this.props.errors) === null || _a === void 0 ? void 0 : _a.includes(35 /* SecondArgMissing */));
+        }
         getRule() {
             const newStyle = {};
             const style = this.state.style;
@@ -13521,6 +13624,9 @@
     CellIsRuleEditor.template = TEMPLATE$h;
     CellIsRuleEditor.style = CSS$h;
     CellIsRuleEditor.components = { ColorPicker };
+    CellIsRuleEditor.defaultProps = {
+        errors: [],
+    };
 
     const { Component: Component$g, useState: useState$g, hooks: hooks$2 } = owl__namespace;
     const { useExternalListener: useExternalListener$5 } = hooks$2;
@@ -13552,8 +13658,9 @@
           <t t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
         </option>
       </select>
-      <input type="text" class="o-input o-threshold-value"
+      <input type="text" class="o-input o-threshold-value o-required"
         t-model="stateColorScale[thresholdType].value"
+        t-att-class="{ 'o-invalid': isValueInvalid(thresholdType) }"
         t-if="['number', 'percentage', 'percentile', 'formula'].includes(threshold.type)"
       />
       <input type="text" class="o-input o-threshold-value"
@@ -13663,6 +13770,27 @@
                 ? baseString + minColor + ", #" + maxColor + ")"
                 : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
         }
+        isValueInvalid(threshold) {
+            switch (threshold) {
+                case "minimum":
+                    return (this.props.errors.includes(41 /* MinAsyncFormulaNotSupported */) ||
+                        this.props.errors.includes(46 /* MinInvalidFormula */) ||
+                        this.props.errors.includes(33 /* MinBiggerThanMid */) ||
+                        this.props.errors.includes(30 /* MinBiggerThanMax */) ||
+                        this.props.errors.includes(36 /* MinNaN */));
+                case "midpoint":
+                    return (this.props.errors.includes(42 /* MidAsyncFormulaNotSupported */) ||
+                        this.props.errors.includes(47 /* MidInvalidFormula */) ||
+                        this.props.errors.includes(37 /* MidNaN */) ||
+                        this.props.errors.includes(32 /* MidBiggerThanMax */));
+                case "maximum":
+                    return (this.props.errors.includes(43 /* MaxAsyncFormulaNotSupported */) ||
+                        this.props.errors.includes(48 /* MaxInvalidFormula */) ||
+                        this.props.errors.includes(38 /* MaxNaN */));
+                default:
+                    return false;
+            }
+        }
         closeMenus() {
             this.stateColorScale.minimumColorTool = false;
             this.stateColorScale.midpointColorTool = false;
@@ -13683,6 +13811,9 @@
     ColorScaleRuleEditor.template = TEMPLATE$g;
     ColorScaleRuleEditor.style = CSS$g;
     ColorScaleRuleEditor.components = { ColorPicker };
+    ColorScaleRuleEditor.defaultProps = {
+        errors: [],
+    };
 
     const { Component: Component$f } = owl__namespace;
     const { css: css$i, xml: xml$i } = owl__namespace.tags;
@@ -13783,6 +13914,7 @@
     </td>
     <td>
       <input type="text" class="o-input"
+        t-att-class="{ 'o-invalid': isInflectionPointInvalid(inflectionPoint) }"
         t-model="stateIconSetCF[inflectionPoint].value"
       />
     </td>
@@ -13956,6 +14088,22 @@
             });
             useExternalListener$4(window, "click", this.closeMenus);
         }
+        isInflectionPointInvalid(inflectionPoint) {
+            switch (inflectionPoint) {
+                case "lowerInflectionPoint":
+                    return (this.props.errors.includes(40 /* ValueLowerInflectionNaN */) ||
+                        this.props.errors.includes(45 /* ValueLowerAsyncFormulaNotSupported */) ||
+                        this.props.errors.includes(50 /* ValueLowerInvalidFormula */) ||
+                        this.props.errors.includes(31 /* LowerBiggerThanUpper */));
+                case "upperInflectionPoint":
+                    return (this.props.errors.includes(39 /* ValueUpperInflectionNaN */) ||
+                        this.props.errors.includes(44 /* ValueUpperAsyncFormulaNotSupported */) ||
+                        this.props.errors.includes(49 /* ValueUpperInvalidFormula */) ||
+                        this.props.errors.includes(31 /* LowerBiggerThanUpper */));
+                default:
+                    return true;
+            }
+        }
         toggleMenu(tool) {
             const current = this.stateIconSetCF[tool];
             this.closeMenus();
@@ -14078,7 +14226,12 @@
             <div class="o-section o-cf-range">
               <div class="o-section-title">Apply to range</div>
               <div class="o-selection-cf">
-                <SelectionInput ranges="state.currentCF.ranges" class="o-range" t-on-selection-changed="onRangesChanged"/>
+                <SelectionInput
+                  ranges="state.currentCF.ranges"
+                  class="o-range"
+                  isInvalid="isRangeValid"
+                  t-on-selection-changed="onRangesChanged"
+                  required="true"/>
               </div>
               <div class="o-section-title" t-esc="env._t('${conditionalFormattingTerms.CF_TITLE}')"></div>
               <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
@@ -14106,12 +14259,17 @@
             <div class="o-section o-cf-editor">
               <t t-component="editors[state.currentCFType]"
                  t-ref="editorRef"
+                 errors="state.errors"
                  t-key="state.currentCF.id + state.currentCFType"
                  rule="state.rules[state.currentCFType]"/>
-              <div class="o-cf-error" t-if="state.error" t-esc="state.error"/>
               <div class="o-sidePanelButtons">
                 <button t-on-click="switchToList" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${conditionalFormattingTerms.CANCEL}')"></button>
                 <button t-on-click="saveConditionalFormat" class="o-sidePanelButton o-cf-save" t-esc="env._t('${conditionalFormattingTerms.SAVE}')"></button>
+              </div>
+            </div>
+            <div class="o-section">
+              <div class="o-cf-error" t-foreach="state.errors || []" t-as="error">
+                <t t-esc="errorMessage(error)"/>
               </div>
             </div>
         </div>
@@ -14320,6 +14478,7 @@
             this.state = useState$e({
                 mode: "list",
                 rules: {},
+                errors: [],
             });
             this.editors = {
                 CellIsRule: CellIsRuleEditor,
@@ -14337,6 +14496,12 @@
         }
         get conditionalFormats() {
             return this.getters.getConditionalFormats(this.getters.getActiveSheetId());
+        }
+        get isRangeValid() {
+            return this.state.errors.includes(19 /* EmptyRange */);
+        }
+        errorMessage(error) {
+            return this.env._t(conditionalFormattingTerms.Errors[error] || conditionalFormattingTerms.Errors.unexpected);
         }
         async willUpdateProps(nextProps) {
             if (nextProps.selection !== this.props.selection) {
@@ -14360,7 +14525,7 @@
             this.state.mode = "list";
             this.state.currentCF = undefined;
             this.state.currentCFType = undefined;
-            this.state.error = undefined;
+            this.state.errors = [];
             this.state.rules = {};
         }
         getStyle(rule) {
@@ -14404,7 +14569,7 @@
             if (this.state.currentCF) {
                 const invalidRanges = this.state.currentCF.ranges.some((xc) => !xc.match(rangeReference));
                 if (invalidRanges) {
-                    this.state.error = this.env._t(conditionalFormattingTerms.Errors[19 /* InvalidRange */]);
+                    this.state.errors = [20 /* InvalidRange */];
                     return;
                 }
                 const result = this.env.dispatch("ADD_CONDITIONAL_FORMAT", {
@@ -14415,8 +14580,8 @@
                     target: this.state.currentCF.ranges.map(toZone),
                     sheetId: this.getters.getActiveSheetId(),
                 });
-                if (result !== 0 /* Success */) {
-                    this.state.error = this.env._t(conditionalFormattingTerms.Errors[result] || conditionalFormattingTerms.Errors.unexpected);
+                if (!result.isSuccessful) {
+                    this.state.errors = result.reasons;
                 }
                 else {
                     this.switchToList();
@@ -14473,6 +14638,7 @@
             if (this.state.currentCFType) {
                 this.state.rules[this.state.currentCFType] = this.getEditorRule();
             }
+            this.state.errors = [];
             this.state.currentCFType = ruleType;
             if (!(ruleType in this.state.rules)) {
                 switch (ruleType) {
@@ -14810,7 +14976,7 @@
                     if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
                         return 0 /* Success */;
                     }
-                    return 27 /* InvalidAutofillSelection */;
+                    return 28 /* InvalidAutofillSelection */;
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -16070,7 +16236,7 @@
                         break;
                     }
                     catch (error) {
-                        return 20 /* InvalidSheetId */;
+                        return 21 /* InvalidSheetId */;
                     }
             }
             return 0 /* Success */;
@@ -16918,7 +17084,7 @@
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* Success */
-                : 28 /* WrongComposerSelection */;
+                : 29 /* WrongComposerSelection */;
         }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
@@ -19432,12 +19598,12 @@
                 case "FOCUS_RANGE":
                     const index = this.getIndex(cmd.id, cmd.rangeId);
                     if (this.focusedInputId === cmd.id && this.focusedRange === index) {
-                        return 21 /* InputAlreadyFocused */;
+                        return 22 /* InputAlreadyFocused */;
                     }
                     break;
                 case "ADD_EMPTY_RANGE":
                     if (this.inputs[cmd.id].length === this.inputMaximums[cmd.id]) {
-                        return 22 /* MaximumRangesReached */;
+                        return 23 /* MaximumRangesReached */;
                     }
                     break;
             }
@@ -20263,7 +20429,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 49 /* InvalidSortZone */;
+                        return 51 /* InvalidSortZone */;
                     }
                 }
             }
@@ -20284,12 +20450,12 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 49 /* InvalidSortZone */;
+                return 51 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
         interactiveSortSelection(sheetId, anchor, zone, sortDirection) {
-            let result = 0 /* Success */;
+            let result = DispatchResult.Success;
             //several columns => bypass the contiguity check
             let multiColumns = zone.right > zone.left;
             if (this.getters.doesIntersectMerge(sheetId, zone)) {
@@ -20343,17 +20509,13 @@
                     });
                 }
             }
-            if (result !== 0 /* Success */) {
-                switch (result) {
-                    case 49 /* InvalidSortZone */:
-                        this.dispatch("SET_SELECTION", {
-                            anchor: anchor,
-                            zones: [zone],
-                            anchorZone: zone,
-                        });
-                        this.ui.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
-                        break;
-                }
+            if (result.isCancelledBecause(51 /* InvalidSortZone */)) {
+                this.dispatch("SET_SELECTION", {
+                    anchor: anchor,
+                    zones: [zone],
+                    anchorZone: zone,
+                });
+                this.ui.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
             }
         }
         // getContiguousZone helpers
@@ -20646,7 +20808,7 @@
                         break;
                     }
                     catch (error) {
-                        return 20 /* InvalidSheetId */;
+                        return 21 /* InvalidSheetId */;
                     }
             }
             return 0 /* Success */;
@@ -20737,7 +20899,7 @@
                 }
                 const result = this.dispatch("RENAME_SHEET", { sheetId: sheetId, name });
                 const sheetName = this.getters.getSheetName(sheetId);
-                if (result !== 0 /* Success */ && sheetName !== name) {
+                if (!result.isSuccessful && sheetName !== name) {
                     this.interactiveRenameSheet(sheetId, _lt("Please enter a valid sheet name"));
                 }
             });
@@ -20749,8 +20911,8 @@
         }
         interactiveMerge(sheet, target) {
             const result = this.dispatch("ADD_MERGE", { sheetId: sheet, target });
-            if (result !== 0 /* Success */) {
-                if (result === 3 /* MergeIsDestructive */) {
+            if (!result.isSuccessful) {
+                if (result.isCancelledBecause(3 /* MergeIsDestructive */)) {
                     this.ui.askConfirmation(_lt("Merging these cells will only preserve the top-leftmost value. Merge anyway?"), () => {
                         this.dispatch("ADD_MERGE", { sheetId: sheet, target, force: true });
                     });
@@ -20795,7 +20957,7 @@
                     return this.checkOffsetValidity(cmd.offsetX, cmd.offsetY);
                 case "RESIZE_VIEWPORT":
                     if (cmd.width < 0 || cmd.height < 0) {
-                        return 55 /* InvalidViewportSize */;
+                        return 57 /* InvalidViewportSize */;
                     }
                     return 0 /* Success */;
                 default:
@@ -20888,7 +21050,7 @@
                 offsetY < 0 ||
                 this.clientHeight - HEADER_HEIGHT + offsetY > height ||
                 this.clientWidth - HEADER_WIDTH + offsetX > width) {
-                return 54 /* InvalidOffset */;
+                return 56 /* InvalidOffset */;
             }
             return 0 /* Success */;
         }
@@ -22399,7 +22561,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 50 /* WaitingSessionConfirmation */;
+                return 52 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -24542,13 +24704,13 @@
                 const command = { type, ...payload };
                 let status = command.interactive ? 4 /* Interactive */ : this.status;
                 if (this.config.isReadonly && !canExecuteInReadonly(command)) {
-                    return 53 /* Readonly */;
+                    return new DispatchResult(55 /* Readonly */);
                 }
                 switch (status) {
                     case 0 /* Ready */:
-                        const error = this.checkDispatchAllowed(command);
-                        if (error) {
-                            return error;
+                        const result = this.checkDispatchAllowed(command);
+                        if (!result.isSuccessful) {
+                            return result;
                         }
                         this.status = 1 /* Running */;
                         const { changes, commands } = this.state.recordChanges(() => {
@@ -24566,9 +24728,9 @@
                         break;
                     case 1 /* Running */:
                         if (isCoreCommand(command)) {
-                            const cancelledReason = this.checkDispatchAllowed(command);
-                            if (cancelledReason) {
-                                return cancelledReason;
+                            const dispatchResult = this.checkDispatchAllowed(command);
+                            if (!dispatchResult.isSuccessful) {
+                                return dispatchResult;
                             }
                             this.state.addCommand(command);
                             this.dispatchToHandlers(this.handlers, command);
@@ -24588,7 +24750,7 @@
                     case 2 /* RunningCore */:
                         throw new Error("A UI plugin cannot dispatch while handling a core command");
                 }
-                return 0 /* Success */;
+                return DispatchResult.Success;
             };
             /**
              * Dispatch a command from a Core Plugin (or the History).
@@ -24600,7 +24762,7 @@
                 this.status = 2 /* RunningCore */;
                 this.dispatchToHandlers(this.handlers, command);
                 this.status = previousStatus;
-                return 0 /* Success */;
+                return DispatchResult.Success;
             };
             DEBUG.model = this;
             const workbookData = load(data);
@@ -24738,13 +24900,8 @@
          * Check if the given command is allowed by all the plugins and the history.
          */
         checkDispatchAllowed(command) {
-            for (let handler of this.handlers) {
-                const allowDispatch = handler.allowDispatch(command);
-                if (allowDispatch !== 0 /* Success */) {
-                    return allowDispatch;
-                }
-            }
-            return undefined;
+            const results = this.handlers.map((handler) => handler.allowDispatch(command));
+            return new DispatchResult(results.flat());
         }
         finalize() {
             this.status = 3 /* Finalizing */;
@@ -28192,6 +28349,12 @@
         background-position: right 5px top 11px;
       }
     }
+    input.o-required {
+      border-color: #4c4c4c;
+    }
+    input.o-invalid {
+      border-color: red;
+    }
     select.o-input {
       background-color: white;
       text-align: left;
@@ -29023,6 +29186,7 @@
 
     exports.CorePlugin = CorePlugin;
     exports.DATETIME_FORMAT = DATETIME_FORMAT;
+    exports.DispatchResult = DispatchResult;
     exports.Model = Model;
     exports.Revision = Revision;
     exports.SPREADSHEET_DIMENSIONS = SPREADSHEET_DIMENSIONS;
@@ -29043,9 +29207,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-23T15:35:36.028Z';
-    exports.__info__.hash = '4551c89';
+    exports.__info__.date = '2021-08-24T11:35:07.419Z';
+    exports.__info__.hash = 'e1834f2';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map
-

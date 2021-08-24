@@ -1,10 +1,9 @@
-odoo.define('social.form_field_post_preview', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var FieldHtml = require('web_editor.field.html');
-var fieldRegistry = require('web.field_registry');
-var MailEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
-var SocialPostFormatterMixin = require('social.post_formatter_mixin');
+import FieldHtml from 'web_editor.field.html';
+import fieldRegistry from 'web.field_registry';
+import MailEmojisMixin from '@mail/js/emojis_mixin';
+import SocialPostFormatterMixin from 'social.post_formatter_mixin';
 
 /**
  * Simple FieldHtml extension that will just wrap the emojis correctly.
@@ -23,6 +22,4 @@ var FieldPostPreview = FieldHtml.extend(MailEmojisMixin, SocialPostFormatterMixi
 
 fieldRegistry.add('social_post_preview', FieldPostPreview);
 
-return FieldPostPreview;
-
-});
+export default FieldPostPreview;

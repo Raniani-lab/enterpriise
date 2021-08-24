@@ -1,10 +1,9 @@
-odoo.define('documents.systray.ActivityMenuTests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var ActivityMenu = require('@mail/js/systray/systray_activity_menu')[Symbol.for("default")];
-const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
+import ActivityMenu from '@mail/js/systray/systray_activity_menu';
+import { afterEach, beforeEach, start } from '@mail/utils/test_utils';
 
-var testUtils = require('web.test_utils');
+import testUtils from 'web.test_utils';
 
 QUnit.module('documents', {}, function () {
     QUnit.module('documents_systray_activity_menu_tests.js', {
@@ -58,5 +57,4 @@ QUnit.module('documents', {}, function () {
 
         widget.destroy();
     });
-});
 });

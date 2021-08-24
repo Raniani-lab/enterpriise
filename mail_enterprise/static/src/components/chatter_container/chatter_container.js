@@ -1,7 +1,6 @@
-odoo.define('mail_enterprise/static/src/components/chatter_container/chatter_container.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { ChatterContainer } = require('@mail/components/chatter_container/chatter_container');
+import { ChatterContainer } from '@mail/components/chatter_container/chatter_container';
 
 Object.assign(ChatterContainer, {
     defaultProps: Object.assign(ChatterContainer.defaultProps || {}, {
@@ -12,6 +11,4 @@ Object.assign(ChatterContainer, {
             type: Boolean,
         },
     })
-});
-
 });

@@ -1,25 +1,20 @@
-odoo.define('social.social_post_kanban_comments', function (require) {
+/** @odoo-module **/
 
-var BasicFields = require('web.basic_fields');
-var core = require('web.core');
-var Dialog = require('web.Dialog');
-var dom = require('web.dom');
-var emojis = require('@mail/js/emojis')[Symbol.for("default")];
-var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
-var MailEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
-const {Markup} = require('web.utils');
-var SocialStreamPostFormatterMixin = require('social.post_formatter_mixin');
-var time = require('web.time');
+import BasicFields from 'web.basic_fields';
+import { qweb as QWeb, _t } from 'web.core';
+import Dialog from 'web.Dialog';
+import dom from 'web.dom';
+import emojis from '@mail/js/emojis';
+import PostKanbanImagesCarousel from 'social.social_post_kanban_images_carousel';
+import MailEmojisMixin from '@mail/js/emojis_mixin';
+import { Markup } from 'web.utils';
+import SocialStreamPostFormatterMixin from 'social.post_formatter_mixin';
+import StreamPostCommentDelete from 'social.social_post_kanban_comments_delete';
+import time from 'web.time';
 
-
-var _t = core._t;
 var FieldBinaryImage = BasicFields.FieldBinaryImage;
-var QWeb = core.qweb;
 
 var DATE_TIME_FORMAT = time.getLangDatetimeFormat();
-
-
-var StreamPostCommentDelete = require('social.social_post_kanban_comments_delete');
 
 /**
  * Base implementation of a comments window for social media implementations.
@@ -585,6 +580,4 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
     }
 });
 
-return StreamPostComments;
-
-});
+export default StreamPostComments;

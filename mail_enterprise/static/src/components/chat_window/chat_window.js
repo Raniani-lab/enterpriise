@@ -1,9 +1,9 @@
-odoo.define('mail_enterprise/static/src/components/chat_window/chat_window.js', function (require) {
+/** @odoo-module **/
 
-const { ChatWindow } = require('@mail/components/chat_window/chat_window');
+import { ChatWindow } from '@mail/components/chat_window/chat_window';
 
-const { useBackButton } = require('web_mobile.hooks');
-const { patch } = require('web.utils');
+import { useBackButton } from 'web_mobile.hooks';
+import { patch } from 'web.utils';
 
 patch(ChatWindow.prototype, 'mail_enterprise/static/src/components/chat_window/chat_window.js', {
     /**
@@ -32,6 +32,4 @@ patch(ChatWindow.prototype, 'mail_enterprise/static/src/components/chat_window/c
         }
         this.chatWindow.close();
     },
-});
-
 });

@@ -1,12 +1,11 @@
-odoo.define('voip/static/src/models/activity/activity.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const {
+import {
     registerClassPatchModel,
     registerFieldPatchModel,
     registerInstancePatchModel,
-} = require('@mail/model/model_core');
-const { attr } = require('@mail/model/model_field');
+} from '@mail/model/model_core';
+import { attr } from '@mail/model/model_field';
 
 registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
     //----------------------------------------------------------------------
@@ -71,6 +70,4 @@ registerInstancePatchModel('mail.activity', 'voip/static/src/models/activity/act
         this.thread.refreshActivities();
         this.thread.refresh();
     },
-});
-
 });

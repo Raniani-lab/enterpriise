@@ -1,7 +1,6 @@
-odoo.define('approvals/static/src/components/approval/approval.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { registerMessagingComponent } = require('@mail/utils/messaging_component');
+import { registerMessagingComponent } from '@mail/utils/messaging_component';
 
 const { Component } = owl;
 
@@ -49,6 +48,4 @@ Object.assign(Approval, {
 
 registerMessagingComponent(Approval);
 
-return Approval;
-
-});
+export default Approval;

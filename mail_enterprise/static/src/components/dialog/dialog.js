@@ -1,8 +1,8 @@
-odoo.define('mail_enterprise/static/src/components/dialog/dialog.js', function (require) {
+/** @odoo-module **/
 
-const { Dialog } = require('@mail/components/dialog/dialog');
-const { useBackButton } = require('web_mobile.hooks');
-const { patch } = require('web.utils');
+import { Dialog } from '@mail/components/dialog/dialog';
+import { useBackButton } from 'web_mobile.hooks';
+import { patch } from 'web.utils';
 
 patch(Dialog.prototype, 'mail_enterprise/static/src/components/dialog/dialog.js', {
     /**
@@ -31,6 +31,4 @@ patch(Dialog.prototype, 'mail_enterprise/static/src/components/dialog/dialog.js'
         }
         this.dialog.delete();
     },
-});
-
 });

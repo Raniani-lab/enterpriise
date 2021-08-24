@@ -1,9 +1,8 @@
-odoo.define('documents.systray.ActivityMenu', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var ActivityMenu = require('@mail/js/systray/systray_activity_menu')[Symbol.for("default")];
+import ActivityMenu from '@mail/js/systray/systray_activity_menu';
 
-const session = require('web.session');
+import session from 'web.session';
 
 ActivityMenu.include({
     events: _.extend({}, ActivityMenu.prototype.events, {
@@ -32,5 +31,4 @@ ActivityMenu.include({
         this.$('.dropdown-toggle').dropdown('toggle');
         this.do_action('documents.action_request_form');
     },
-});
 });

@@ -1,12 +1,11 @@
-odoo.define('voip/static/src/components/activity/activity_tests.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { getMessagingComponent } = require('@mail/utils/messaging_component');
-const {
+import { getMessagingComponent } from '@mail/utils/messaging_component';
+import {
     afterEach,
     beforeEach,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
 QUnit.module('voip', {}, function () {
 QUnit.module('components', {}, function () {
@@ -219,6 +218,4 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
 
 });
 });
-});
-
 });

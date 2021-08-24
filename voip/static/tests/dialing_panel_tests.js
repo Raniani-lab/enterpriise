@@ -1,13 +1,12 @@
-odoo.define('voip.tests_panel', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
+import { afterEach, beforeEach, start } from '@mail/utils/test_utils';
 
-const mobile = require('web_mobile.core');
-const DialingPanel = require('voip.DialingPanel');
-const UserAgent = require('voip.UserAgent');
+import mobile from 'web_mobile.core';
+import DialingPanel from 'voip.DialingPanel';
+import UserAgent from 'voip.UserAgent';
 
-const testUtils = require('web.test_utils');
+import testUtils from 'web.test_utils';
 
 /**
  * Create a dialing Panel and attach it to a parent. Uses params to create the parent
@@ -616,6 +615,5 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
     testUtils.mock.unpatch(mobile.methods);
 });
 
-});
 });
 });

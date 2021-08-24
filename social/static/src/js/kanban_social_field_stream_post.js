@@ -1,10 +1,9 @@
-odoo.define('social.kanban_field_stream_post', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var FieldRegistry = require('web.field_registry');
-var FieldText = require('web.basic_fields').FieldText;
-var MailEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
-var SocialStreamPostFormatterMixin = require('social.post_formatter_mixin');
+import FieldRegistry from 'web.field_registry';
+import { FieldText } from 'web.basic_fields';
+import MailEmojisMixin from '@mail/js/emojis_mixin';
+import SocialStreamPostFormatterMixin from 'social.post_formatter_mixin';
 
 var SocialKanbanMessageWrapper = FieldText.extend(MailEmojisMixin, SocialStreamPostFormatterMixin, {
     /**
@@ -21,6 +20,4 @@ var SocialKanbanMessageWrapper = FieldText.extend(MailEmojisMixin, SocialStreamP
 
 FieldRegistry.add('social_kanban_field_stream_post', SocialKanbanMessageWrapper);
 
-return SocialKanbanMessageWrapper;
-
-});
+export default SocialKanbanMessageWrapper;

@@ -1,7 +1,6 @@
-odoo.define('mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.js', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const tour = require('web_tour.tour');
+import tour from 'web_tour.tour';
 
 /**
  * This tour depends on data created by python test in charge of launching it.
@@ -19,5 +18,3 @@ tour.register('mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.
     trigger: '.o_Discuss .o_Message_content:contains("test-message-mail-channel-expand-tour")',
     run: () => {},
 }]);
-
-});

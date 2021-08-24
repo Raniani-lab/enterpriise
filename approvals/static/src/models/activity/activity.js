@@ -1,12 +1,11 @@
-odoo.define('approvals/static/src/models/activity/activity.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const {
+import {
     registerClassPatchModel,
     registerFieldPatchModel,
-} = require('@mail/model/model_core');
-const { one2one } = require('@mail/model/model_field');
-const { insert, unlinkAll } = require('@mail/model/model_field_command');
+} from '@mail/model/model_core';
+import { one2one } from '@mail/model/model_field';
+import { insert, unlinkAll } from '@mail/model/model_field_command';
 
 registerClassPatchModel('mail.activity', 'approvals/static/src/models/activity/activity.js', {
     //----------------------------------------------------------------------
@@ -35,6 +34,4 @@ registerFieldPatchModel('mail.activity', 'approvals/static/src/models/activity/a
     approval: one2one('approvals.approval', {
         inverse: 'activity',
     }),
-});
-
 });

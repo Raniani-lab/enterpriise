@@ -1,9 +1,8 @@
-odoo.define('mail_enterprise.AttachmentViewer', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var core = require('web.core');
-var Widget = require('web.Widget');
-var { hidePDFJSButtons } = require('@web/legacy/js/libs/pdfjs');
+import core from 'web.core';
+import Widget from 'web.Widget';
+import { hidePDFJSButtons } from '@web/legacy/js/libs/pdfjs';
 
 var QWeb = core.qweb;
 
@@ -134,5 +133,4 @@ var AttachmentViewer = Widget.extend({
     },
 });
 
-return AttachmentViewer;
-});
+export default AttachmentViewer;

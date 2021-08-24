@@ -1,6 +1,6 @@
 /** @odoo-module alias=timesheet_grid.TimesheetM2OAvatarEmployee **/
 import field_utils from 'web.field_utils';
-import StandaloneM2OAvatarEmployee from 'hr.StandaloneM2OAvatarEmployee';
+import StandaloneM2OAvatarEmployee from '@hr/js/standalone_m2o_avatar_employee';
 import { qweb, _lt } from 'web.core';
 
     /**

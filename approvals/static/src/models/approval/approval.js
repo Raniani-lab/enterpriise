@@ -1,8 +1,7 @@
-odoo.define('approvals/static/src/models/approval/approval.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { registerNewModel } = require('@mail/model/model_core');
-const { attr, one2one } = require('@mail/model/model_field');
+import { registerNewModel } from '@mail/model/model_core';
+import { attr, one2one } from '@mail/model/model_field';
 
 function factory(dependencies) {
 
@@ -75,5 +74,3 @@ function factory(dependencies) {
 }
 
 registerNewModel('approvals.approval', factory);
-
-});

@@ -3,7 +3,7 @@ odoo.define('social_facebook.test_comments', function (require) {
 
 var StreamPostFacebookComments = require('social.social_facebook_post_kanban_comments')
 var StreamPostKanbanView = require('social.social_stream_post_kanban_view');
-var StreamPostComments = require('social.social_post_kanban_comments');
+var StreamPostComments = require('@social/js/stream_post_comments')[Symbol.for("default")];
 var testUtils = require('web.test_utils');
 var createView = testUtils.createView;
 

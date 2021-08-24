@@ -1,20 +1,19 @@
-odoo.define('account_invoice_extract.FormViewTests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const {
+import {
     afterEach,
     afterNextRender,
     beforeEach,
     nextAnimationFrame,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
-const FormRenderer = require('account_invoice_extract.FormRenderer');
-const FormView = require('account_invoice_extract.FormView');
-const invoiceExtractTestUtils = require('account_invoice_extract.testUtils');
+import FormRenderer from '@account_invoice_extract/js/invoice_extract_form_renderer';
+import FormView from '@account_invoice_extract/js/invoice_extract_form_view';
+import invoiceExtractTestUtils from '@account_invoice_extract/tests/helpers/invoice_extract_test_utils';
 
-const config = require('web.config');
-const testUtils = require('web.test_utils');
+import config from 'web.config';
+import testUtils from 'web.test_utils';
 
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('invoice_extract_form_view_tests.js', {
@@ -473,6 +472,5 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         await testUtils.nextTick();
         form.destroy();
     });
-});
 });
 });

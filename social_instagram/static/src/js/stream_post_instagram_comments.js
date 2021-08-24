@@ -4,7 +4,7 @@ var core = require('web.core');
 var _t = core._t;
 var QWeb = core.qweb;
 
-var StreamPostComments = require('social.social_post_kanban_comments');
+var StreamPostComments = require('@social/js/stream_post_comments')[Symbol.for("default")];
 
 var StreamPostInstagramComments = StreamPostComments.extend({
     init: function (parent, options) {

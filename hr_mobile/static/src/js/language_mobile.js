@@ -1,8 +1,6 @@
-odoo.define('web_mobile.employee_language', function (require) {
-    'use strict';
+/** @odoo-module **/
 
-    const EmployeeProfileFormView = require('hr.employee_language');
-    const { UpdateDeviceAccountControllerMixin } = require('web_mobile.mixins');
+    import EmployeeProfileFormView from '@hr/js/language';
+    import { UpdateDeviceAccountControllerMixin } from 'web_mobile.mixins';
 
     EmployeeProfileFormView.prototype.config.Controller.include(UpdateDeviceAccountControllerMixin);
-});

@@ -1,16 +1,13 @@
-odoo.define('account_invoice_extract.Fields', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var core = require('web.core');
+import { _t } from 'web.core';
 
-var InvoiceExtractField = require('account_invoice_extract.Field');
+import InvoiceExtractField from '@account_invoice_extract/js/invoice_extract_field';
 
-var Class = require('web.Class');
-var Mixins = require('web.mixins');
-var ServicesMixin = require('web.ServicesMixin');
-var session = require('web.session');
-
-var _t = core._t;
+import Class from 'web.Class';
+import Mixins from 'web.mixins';
+import ServicesMixin from 'web.ServicesMixin';
+import session from 'web.session';
 
 /**
  * This class groups the fields that are supported by the OCR. Also, it manages
@@ -143,6 +140,4 @@ var InvoiceExtractFields = Class.extend(Mixins.EventDispatcherMixin, ServicesMix
     },
 });
 
-return InvoiceExtractFields;
-
-});
+export default InvoiceExtractFields;

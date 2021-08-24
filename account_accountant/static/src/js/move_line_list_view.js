@@ -1,7 +1,7 @@
 odoo.define('account_accountant.MoveLineListView', function (require) {
 "use strict";
 
-    var AttachmentViewer = require('mail_enterprise.AttachmentViewer');
+    var AttachmentViewer = require('@mail_enterprise/js/attachment_viewer')[Symbol.for("default")];
     var config = require('web.config');
     var core = require('web.core');
     var ListController = require('web.ListController');

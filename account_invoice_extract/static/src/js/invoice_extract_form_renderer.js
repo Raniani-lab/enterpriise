@@ -1,10 +1,9 @@
-odoo.define('account_invoice_extract.FormRenderer', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var InvoiceExtractBoxLayer = require('account_invoice_extract.BoxLayer');
-var InvoiceExtractFields = require('account_invoice_extract.Fields');
+import InvoiceExtractBoxLayer from '@account_invoice_extract/js/invoice_extract_box_layer';
+import InvoiceExtractFields from '@account_invoice_extract/js/invoice_extract_fields';
 
-var FormRenderer = require('web.FormRenderer');
+import FormRenderer from 'web.FormRenderer';
 
 /**
  * This is the renderer of the subview that adds OCR features on the attachment
@@ -421,6 +420,4 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     },
 });
 
-return InvoiceExtractFormRenderer;
-
-});
+export default InvoiceExtractFormRenderer;

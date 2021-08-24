@@ -1,9 +1,8 @@
-odoo.define('account_invoice_extract.BoxTests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var InvoiceExtractBox = require('account_invoice_extract.Box');
+import InvoiceExtractBox from '@account_invoice_extract/js/invoice_extract_box';
 
-var testUtils = require('web.test_utils');
+import testUtils from 'web.test_utils';
 
 /**
  * @returns {$.Element}
@@ -318,6 +317,5 @@ QUnit.module('Box', {
         parent.destroy();
     });
 
-});
 });
 });

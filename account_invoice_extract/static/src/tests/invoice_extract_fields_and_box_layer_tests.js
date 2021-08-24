@@ -1,14 +1,13 @@
-odoo.define('account_invoice_extract.FieldsAndBoxLayerTests', function (require) {
-"use strict";
+/** @odoo-module **/
 
 /**
  * This test suite tests the integration of box layers with fields (including
  * field buttons), without relying on a form view.
  */
-var InvoiceExtractFields = require('account_invoice_extract.Fields');
-var invoiceExtractTestUtils = require('account_invoice_extract.testUtils');
+import InvoiceExtractFields from '@account_invoice_extract/js/invoice_extract_fields';
+import invoiceExtractTestUtils from '@account_invoice_extract/tests/helpers/invoice_extract_test_utils';
 
-var testUtils = require('web.test_utils');
+import testUtils from 'web.test_utils';
 
 /**
  * @param {Object} params
@@ -361,6 +360,5 @@ QUnit.module('Fields & BoxLayer integration', {
         parent.destroy();
     });
 
-});
 });
 });

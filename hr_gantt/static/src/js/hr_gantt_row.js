@@ -2,7 +2,7 @@ odoo.define('hr_gantt.GanttRow', function (require) {
     'use strict';
 
     const GanttRow = require('web_gantt.GanttRow');
-    const StandaloneM2OAvatarEmployee = require('hr.StandaloneM2OAvatarEmployee');
+    const StandaloneM2OAvatarEmployee = require('@hr/js/standalone_m2o_avatar_employee')[Symbol.for("default")];
 
     const HrGanttRow = GanttRow.extend({
         template: 'HrGanttView.Row',

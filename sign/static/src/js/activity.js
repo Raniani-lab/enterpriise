@@ -1,8 +1,8 @@
-odoo.define('sign.Activity', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const field_registry = require('web.field_registry');
-require('@mail/js/activity');
+import field_registry from 'web.field_registry';
+import '@mail/js/activity';
+
 const KanbanActivity = field_registry.get('kanban_activity');
 const ListActivity = field_registry.get('list_activity');
 
@@ -35,5 +35,3 @@ function applyInclude(Activity) {
 
 applyInclude(KanbanActivity);
 applyInclude(ListActivity);
-
-});

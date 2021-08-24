@@ -1,8 +1,7 @@
-odoo.define('mail_enterprise/static/src/models/chatter/chatter.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { attr } = require('@mail/model/model_field');
-const { registerFieldPatchModel } = require('@mail/model/model_core');
+import { attr } from '@mail/model/model_field';
+import { registerFieldPatchModel } from '@mail/model/model_core';
 
 /**
  * This should be moved inside the mail_enterprise
@@ -15,6 +14,4 @@ registerFieldPatchModel('mail.chatter', 'mail/static/src/models/chatter/chatter.
     isInFormSheetBg: attr({
         default: false,
     }),
-});
-
 });

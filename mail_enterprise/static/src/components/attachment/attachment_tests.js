@@ -1,17 +1,16 @@
-odoo.define('mail_enterprise/static/src/components/attachment/attachment_tests.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const {
+import {
     afterEach,
     afterNextRender,
     beforeEach,
     createRootMessagingComponent,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
-const { mock } = require('web.test_utils');
+import { mock } from 'web.test_utils';
 
-const { methods } = require('web_mobile.core');
+import { methods } from 'web_mobile.core';
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
@@ -137,6 +136,4 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
 
 });
 });
-});
-
 });

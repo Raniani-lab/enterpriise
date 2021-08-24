@@ -3,7 +3,7 @@ odoo.define('social_linkedin.social_linkedin_post_kanban_comments', function (re
 var core = require('web.core');
 var _t = core._t;
 var QWeb = core.qweb;
-var StreamPostComments = require('social.social_post_kanban_comments');
+var StreamPostComments = require('@social/js/stream_post_comments')[Symbol.for("default")];
 
 
 var StreamPostLinkedInComments = StreamPostComments.extend({
@@ -103,7 +103,6 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
             if (self.totalLoadedComments >= self.summary.total_count) {
                 self.$('.o_social_load_more_comments').hide();
             }
-
             self.offset = result.offset;
         });
     },

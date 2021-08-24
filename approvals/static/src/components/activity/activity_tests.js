@@ -1,12 +1,11 @@
-odoo.define('approvals/static/src/components/activity/activity_tests.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const {
+import {
     afterEach,
     beforeEach,
     createRootMessagingComponent,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
 QUnit.module('approvals', {}, function () {
 QUnit.module('components', {}, function () {
@@ -301,6 +300,4 @@ QUnit.test('refuse approval', async function (assert) {
 
 });
 });
-});
-
 });

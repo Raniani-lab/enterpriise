@@ -16,7 +16,7 @@ var _t = core._t;
 const { ComponentWrapper } = require('web.OwlCompatibility');
 
 // ensure `.include()` on `mail_enterprise` is applied before `web_studio`
-require('mail_enterprise/static/src/widgets/form_renderer/form_renderer.js');
+require('@mail_enterprise/widgets/form_renderer/form_renderer');
 
 class ChatterContainerWrapperComponent extends ComponentWrapper {}
 

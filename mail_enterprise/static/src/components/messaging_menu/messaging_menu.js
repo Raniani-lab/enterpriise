@@ -1,9 +1,9 @@
-odoo.define('mail_enterprise/static/src/components/messaging_menu/messaging_menu.js', function (require) {
+/** @odoo-module **/
 
-const { MessagingMenu } = require('@mail/components/messaging_menu/messaging_menu');
+import { MessagingMenu } from '@mail/components/messaging_menu/messaging_menu';
 
-const { useBackButton } = require('web_mobile.hooks');
-const { patch } = require('web.utils');
+import { useBackButton } from 'web_mobile.hooks';
+import { patch } from 'web.utils';
 
 patch(MessagingMenu.prototype, 'mail_enterprise/static/src/components/chat_window/chat_window.js', {
     /**
@@ -32,6 +32,4 @@ patch(MessagingMenu.prototype, 'mail_enterprise/static/src/components/chat_windo
         }
         this.messagingMenu.close();
     },
-});
-
 });

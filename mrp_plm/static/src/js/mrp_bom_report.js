@@ -4,7 +4,7 @@ odoo.define('mrp_plm.mrp_bom_report', function (require) {
 var core = require('web.core');
 var _t = core._t;
 
-var MrpBomReport = require('mrp.mrp_bom_report');
+var MrpBomReport = require('@mrp/js/mrp_bom_report')[Symbol.for("default")];
 
 MrpBomReport.include({
     events: _.extend({}, MrpBomReport.prototype.events, {

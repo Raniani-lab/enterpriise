@@ -1,18 +1,17 @@
-odoo.define('mail_enterprise/static/tests/attachment_preview_tests.js', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const {
+import {
     afterEach,
     afterNextRender,
     beforeEach,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
-const { file: { createFile, inputFiles } } = require('web.test_utils');
-
-var config = require('web.config');
-var FormView = require('web.FormView');
-var testUtils = require('web.test_utils');
+import { file } from 'web.test_utils';
+import config from 'web.config';
+import FormView from 'web.FormView';
+import testUtils from 'web.test_utils';
+const { createFile, inputFiles } = file;
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('attachment_preview_tests.js', {
@@ -316,6 +315,4 @@ QUnit.module('attachment_preview_tests.js', {
         form.destroy();
     });
 });
-});
-
 });

@@ -1,9 +1,8 @@
-odoo.define('account_invoice_extract.FieldButtonTests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var InvoiceExtractFieldButton = require('account_invoice_extract.FieldButton');
+import InvoiceExtractFieldButton from '@account_invoice_extract/js/invoice_extract_field_button';
 
-var testUtils = require('web.test_utils');
+import testUtils from 'web.test_utils';
 
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('FieldButton', {}, function () {
@@ -109,6 +108,5 @@ QUnit.module('FieldButton', {}, function () {
         parent.destroy();
     });
 
-});
 });
 });

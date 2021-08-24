@@ -1,18 +1,16 @@
-odoo.define('mail_enterprise/static/src/widgets/form_renderer/form_renderer_tests.js', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const {
+import {
     afterEach,
     afterNextRender,
     beforeEach,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
-const config = require('web.config');
-const FormView = require('web.FormView');
-const {
-    fields: { editInput },
-} = require('web.test_utils');
+import config from 'web.config';
+import FormView from 'web.FormView';
+import { fields } from 'web.test_utils';
+const { editInput } = fields;
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('widgets', {}, function () {
@@ -306,6 +304,4 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
 });
 });
 });
-});
-
 });

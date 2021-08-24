@@ -1,10 +1,9 @@
-odoo.define('approvals/static/src/widgets/form_renderer/form_renderer.js', function (require) {
-"use strict";
+/** @odoo-module **/
 
 // ensure `.include()` on `mail` is applied before `approvals`
-require('@mail/widgets/form_renderer/form_renderer');
+import '@mail/widgets/form_renderer/form_renderer';
 
-const FormRenderer = require('web.FormRenderer');
+import FormRenderer from 'web.FormRenderer';
 
 
 /**
@@ -32,6 +31,4 @@ FormRenderer.include({
         this.on('o_approval_approved', this, ev => this.trigger_up('reload', { keepChanges: true }));
         this.on('o_approval_refused', this, ev => this.trigger_up('reload', { keepChanges: true }));
     },
-});
-
 });

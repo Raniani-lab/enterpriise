@@ -1,14 +1,13 @@
-odoo.define('mail_enterprise/static/src/widgets/form_renderer/form_renderer.js', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var config = require('web.config');
-var dom = require('web.dom');
-var pyUtils = require('web.py_utils');
-var FormRenderer = require('web.FormRenderer');
-var AttachmentViewer = require('mail_enterprise.AttachmentViewer');
+import config from 'web.config';
+import dom from 'web.dom';
+import pyUtils from 'web.py_utils';
+import FormRenderer from 'web.FormRenderer';
+import AttachmentViewer from '@mail_enterprise/js/attachment_viewer';
 
 // ensure `.include()` on `mail` is applied before `mail_enterprise`
-require('@mail/widgets/form_renderer/form_renderer');
+import '@mail/widgets/form_renderer/form_renderer';
 
 /**
  * Display attachment preview on side of form view for large screen devices.
@@ -298,7 +297,5 @@ FormRenderer.include({
         }
         this._applyFormSizeClass();
     }
-
-});
 
 });

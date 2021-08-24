@@ -1,8 +1,7 @@
-odoo.define('documents.MockServer', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const Domain = require('web.Domain');
-var MockServer = require('web.MockServer');
+import Domain from 'web.Domain';
+import MockServer from 'web.MockServer';
 
 MockServer.include({
     //--------------------------------------------------------------------------
@@ -152,6 +151,4 @@ MockServer.include({
         }
         return this._super(...arguments);
     },
-});
-
 });

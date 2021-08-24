@@ -1,7 +1,7 @@
 odoo.define('hr_mobile.language_mobile_tests', function (require) {
     "use strict";
     
-    const EmployeeProfileFormView = require('hr.employee_language');
+    const EmployeeProfileFormView = require('@hr/js/language')[Symbol.for("default")];
     const session = require('web.session');
     const testUtils = require('web.test_utils');
 

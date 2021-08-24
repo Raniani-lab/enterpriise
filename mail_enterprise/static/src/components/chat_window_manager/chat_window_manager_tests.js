@@ -1,16 +1,15 @@
-odoo.define('mail_enterprise/static/src/components/chat_window_manager/chat_window_manager_tests.js', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const {
+import {
     afterEach,
     afterNextRender,
     beforeEach,
     start,
-} = require('@mail/utils/test_utils');
+} from '@mail/utils/test_utils';
 
-const { mock } = require('web.test_utils');
+import { mock } from 'web.test_utils';
 
-const { methods } = require('web_mobile.core');
+import { methods } from 'web_mobile.core';
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
@@ -115,6 +114,4 @@ QUnit.test('[technical] chat window should properly override the back button', a
 
 });
 });
-});
-
 });

@@ -78,6 +78,10 @@ def l10n_cl_edi_retry(max_retries=MAX_RETRIES, logger=None, custom_msg=None):
     return deco_retry
 
 
+class UnexpectedXMLResponse(Exception):
+    pass
+
+
 class L10nClEdiUtilMixin(models.AbstractModel):
     _name = 'l10n_cl.edi.util'
     _description = 'Utility Methods for Chilean Electronic Invoicing'
@@ -161,6 +165,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             return 'accepted'
         if objected and int(objected) >= 1:
             return 'objected'
+
+        raise UnexpectedXMLResponse()
 
     def _sign_message(self, message, private_key):
         """

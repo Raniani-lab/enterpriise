@@ -11,6 +11,7 @@ from io import BytesIO
 from lxml import etree
 
 from odoo import fields, models, api
+from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 from odoo.tools.float_utils import float_repr
@@ -242,7 +243,16 @@ class AccountMove(models.Model):
             return None
 
         response_parsed = etree.fromstring(response.encode('utf-8'))
-        self.l10n_cl_dte_status = self._analyze_sii_result(response_parsed)
+
+        try:
+            self.l10n_cl_dte_status = self._analyze_sii_result(response_parsed)
+        except UnexpectedXMLResponse:
+            # The assumption here is that the unexpected input is intermittent,
+            # so we'll retry later. If the same input appears regularly, it should
+            # be handled properly in _analyze_sii_result.
+            _logger.error("Unexpected XML response:\n%s", response)
+            return
+
         if self.l10n_cl_dte_status in ['accepted', 'objected']:
             self.l10n_cl_dte_partner_status = 'not_sent'
             if send_dte_to_partner:

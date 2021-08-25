@@ -19,6 +19,9 @@ class Task(models.Model):
     partner_street = fields.Char(related='partner_id.street', readonly=False)
     project_color = fields.Integer('Project color', related='project_id.color')
 
+    # Task Dependencies fields
+    display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
+
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
     ]
@@ -32,6 +35,10 @@ class Task(models.Model):
             planned_date_begin, planned_date_end = self._calculate_planned_dates(planned_date_begin, planned_date_end, user_id)
             result.update(planned_date_begin=planned_date_begin, planned_date_end=planned_date_end)
         return result
+
+    def _compute_display_warning_dependency_in_gantt(self):
+        for task in self:
+            task.display_warning_dependency_in_gantt = not (task.stage_id.is_closed or task.stage_id.fold)
 
     @api.model
     def _calculate_planned_dates(self, date_start, date_stop, user_id=None, calendar=None):

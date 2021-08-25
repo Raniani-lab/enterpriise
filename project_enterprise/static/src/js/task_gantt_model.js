@@ -3,7 +3,8 @@
 import GanttModel from 'web_gantt.GanttModel';
 import { _t } from 'web.core';
 
-export const TaskGanttModel = GanttModel.extend({
+
+const TaskGanttModel = GanttModel.extend({
     /**
      * @private
      * @override
@@ -62,3 +63,5 @@ export const TaskGanttModel = GanttModel.extend({
         }
     },
 });
+
+export default TaskGanttModel;

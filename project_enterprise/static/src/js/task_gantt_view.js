@@ -4,7 +4,7 @@ import viewRegistry from 'web.view_registry';
 import GanttView from 'web_gantt.GanttView';
 import GanttController from 'web_gantt.GanttController';
 import GanttRenderer from 'web_gantt.GanttRenderer';
-import { TaskGanttModel } from '@project_enterprise/js/task_gantt_model';
+import TaskGanttModel from './task_gantt_model';
 import { ProjectControlPanel } from '@project/js/project_control_panel';
 
 export const ProjectGanttRenderer = GanttRenderer.extend({

@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="project_task_view_form" model="ir.ui.view">
+        <field name="name">project.task.view.form.inherit.project.enterprise</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="before">
+                <label for="planned_date_begin" string="Planned Date"/>
+                <div class="w-100">
+                    <div class="o_row">
+                        <field name="planned_date_begin" widget="daterange" options='{"related_end_date": "planned_date_end"}'/>
+                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
+                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow" attrs="{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}"/>
+                        <field name="planned_date_end" widget="daterange" options='{"related_start_date": "planned_date_begin"}'/>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Adding manager gantt view to Project -->
     <record id="project_task_view_gantt" model="ir.ui.view">
         <field name="name">project.task.view.gantt</field>
@@ -31,6 +50,19 @@
                 <field name="partner_id"/>
                 <field name="project_color" />
             </gantt>
+        </field>
+    </record>
+
+    <!-- Adding dependency gantt view to Project -->
+    <record id="project_task_dependency_view_gantt" model="ir.ui.view">
+        <field name="name">project.task.dependency.view.gantt</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="js_class">task_gantt_connector</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -115,6 +147,7 @@
         <field name="sequence" eval="70"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
+        <field name="view_id" ref="project_enterprise.project_task_dependency_view_gantt"/>
     </record>
 
     <record id="project_all_task_activity_action_view" model="ir.actions.act_window.view">

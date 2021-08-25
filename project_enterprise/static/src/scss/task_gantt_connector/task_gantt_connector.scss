@@ -1,0 +1,98 @@
+:root {
+    --o-connector-creator-size: 8px;
+    --o-connector-creator-bulet-radius: 3px;
+    --o-connector-creator-bulet-diameter: calc(2 * var(--o-connector-creator-bulet-radius));
+    --o-connector-wrapper-height: calc(var(--o-connector-creator-size) + var(--o-connector-creator-bulet-radius))
+}
+.o_gantt_slots_container {
+    .o_gantt_cell {
+        .o_gantt_pill_wrapper {
+            // used for `color` attribute on <gantt>
+            @for $index from 1 through length($o-colors-complete) - 1 {
+                // @for $index from 3 through length($o-colors) {
+                .o_gantt_pill {
+                    &.highlight {
+                        z-index: 2;
+                    }
+                    &.o_gantt_color_#{$index - 1} {
+                        $color: nth($o-colors-complete, $index);
+                        &.highlight {
+                            background-color: $color;
+                            color: color-yiq($color);
+                        }
+                    }
+                }
+                .o_connector_creator_wrapper {
+                    &.o_gantt_color_#{$index - 1} {
+                        $color: nth($o-colors-complete, $index);
+                        .o_connector_creator_bullet {
+                            background-color: $color;
+                            color: color-yiq($color);
+                            cursor: move; /* fallback if grab cursor is unsupported */
+                            cursor: grab;
+                        }
+                        .o_connector_creator_top {
+                            border-top: solid 1px $color;
+                        }
+                        .o_connector_creator_right {
+                            border-left: solid 1px $color;
+                        }
+                        .o_connector_creator_bottom {
+                            border-bottom: solid 1px $color;
+                        }
+                        .o_connector_creator_left {
+                            border-right: solid 1px $color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.o_connector_creator_wrapper {
+    z-index: 3;
+    position: absolute;
+    height: var(--o-connector-wrapper-height);
+    width: 100%
+}
+.o_connector_creator_wrapper_top {
+    top: calc(-1 * var(--o-connector-wrapper-height));
+}
+.o_connector_creator_wrapper_bottom {
+    bottom: calc(-1 * var(--o-connector-wrapper-height));
+}
+.o_connector_creator {
+    position: absolute;
+    height: var(--o-connector-creator-size);
+    width: var(--o-connector-creator-size);
+}
+.o_connector_creator_bullet {
+    height: var(--o-connector-creator-bulet-diameter);
+    width: var(--o-connector-creator-bulet-diameter);
+    position: absolute;
+    border-radius: calc(var(--o-connector-creator-bulet-diameter) / 2);
+}
+.o_connector_creator_top {
+    bottom: 0;
+    .o_connector_creator_bullet {
+        top: calc(-0.5 * var(--o-connector-creator-bulet-diameter));
+    }
+}
+.o_connector_creator_right {
+    right: var(--o-connector-creator-size);
+    .o_connector_creator_bullet {
+        right: calc(-0.5 * var(--o-connector-creator-bulet-diameter));
+    }
+}
+.o_connector_creator_bottom {
+    top: 0;
+    .o_connector_creator_bullet {
+        bottom: calc(-0.5 * var(--o-connector-creator-bulet-diameter));
+    }
+}
+.o_connector_creator_left {
+    left: var(--o-connector-creator-size);
+    .o_connector_creator_bullet {
+        left: calc(-0.5 * var(--o-connector-creator-bulet-diameter));
+    }
+}

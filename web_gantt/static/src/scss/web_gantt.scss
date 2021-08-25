@@ -228,6 +228,7 @@ $gantt-unavailability-bg: $gray-200;
             @include o-gantt-hoverable-colors(nth($o-colors-complete, 1));
             overflow: hidden;
             user-select: none;
+            box-sizing: content-box;
 
             &.ui-resizable-resizing, &.ui-draggable-dragging {
                 z-index: 2;  // other pills show not hide these ones

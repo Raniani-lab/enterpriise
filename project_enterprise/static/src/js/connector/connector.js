@@ -16,6 +16,14 @@ const STYLE = css`
                 z-index: 1;
             }
         }
+        .connector_stroke_button{
+            stroke: rgb(9, 17, 36);
+            stroke-width: 24px;
+            &:hover{
+                stroke: #00a09d;
+                fill: #e6f6f5;
+            }
+        }
 `;
 
 class Connector extends Component {

@@ -1,12 +1,11 @@
 /** @odoo-module **/
 
 import WebGanttRow from 'web_gantt.GanttRow';
+import TaskGanttConnectorRow from '@project_enterprise/js/task_gantt_connector/task_gantt_connector_row';
 import { ProjectGanttRenderer } from '@project_enterprise/js/task_gantt_view';
 import fieldUtils from 'web.field_utils';
 
-const TaskGanttRow = WebGanttRow.extend({
-    template: 'TaskGanttView.Row',
-
+const TimesheetGridTaskGanttRowOverride = {
     _getPopoverContext: function () {
         const data = this._super.apply(this, arguments);
         if (data.allow_subtasks) {
@@ -17,10 +16,20 @@ const TaskGanttRow = WebGanttRow.extend({
         data.progressFormatted = Math.round(data.progress);
         return data;
     },
-});
+};
+
+const TimesheetGridTaskGanttRow = WebGanttRow.extend(
+    Object.assign(
+        {},
+        TimesheetGridTaskGanttRowOverride,
+        {template: 'TimesheetGridTaskGanttView.Row'}
+    )
+);
+
+const TimesheetGridTaskGanttConnectorRow = TaskGanttConnectorRow.include(TimesheetGridTaskGanttRowOverride);
 
 ProjectGanttRenderer.include({
     config: Object.assign({}, ProjectGanttRenderer.prototype.config, {
-        GanttRow: TaskGanttRow,
+        GanttRow: TimesheetGridTaskGanttRow,
     }),
 });

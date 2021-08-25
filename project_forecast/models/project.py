@@ -5,6 +5,7 @@ import datetime
 
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import UserError
+from odoo.osv import expression
 
 
 class Project(models.Model):
@@ -38,7 +39,11 @@ class Task(models.Model):
     forecast_hours = fields.Integer('Forecast Hours', compute='_compute_forecast_hours', help="Number of hours forecast for this task (and its sub-tasks), rounded to the unit.")
 
     def _compute_forecast_hours(self):
-        forecast_data = self.env['planning.slot'].read_group([('task_id', 'in', self.ids + self._get_all_subtasks().ids)], ['allocated_hours', 'task_id'], ['task_id'])
+        domain = expression.AND([
+            self._get_domain_compute_forecast_hours(),
+            [('task_id', 'in', self.ids + self._get_all_subtasks().ids)]
+        ])
+        forecast_data = self.env['planning.slot'].read_group(domain, ['allocated_hours', 'task_id'], ['task_id'])
         mapped_data = dict([(f['task_id'][0], f['allocated_hours']) for f in forecast_data])
         for task in self:
             hours = mapped_data.get(task.id, 0) + sum(mapped_data.get(child_task.id, 0) for child_task in task._get_all_subtasks())
@@ -61,3 +66,11 @@ class Task(models.Model):
         action['context'] = action_context
         action['domain'] = [('task_id', 'in', allowed_task_ids)]
         return action
+
+    # -------------------------------------------
+    # Utils method
+    # -------------------------------------------
+
+    @api.model
+    def _get_domain_compute_forecast_hours(self):
+        return []

@@ -9,7 +9,7 @@
             t-attf-style="width:#{pill.progress ? pill.progress : 0}%;">&amp;nbsp;
         </span>
     </t>
-    <t t-name="TimesheetGridTaskGanttView.Row" t-extend="GanttView.Row">
+    <t t-extend="TaskGanttMilestonesView.Row">
         <!-- Add a span to convert the gantt cells into progress bars -->
         <t t-jquery='.o_gantt_pill_title' t-operation="before">
             <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->

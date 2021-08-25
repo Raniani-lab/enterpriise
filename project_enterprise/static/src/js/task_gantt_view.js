@@ -2,22 +2,15 @@
 
 import viewRegistry from 'web.view_registry';
 import GanttView from 'web_gantt.GanttView';
-import GanttController from 'web_gantt.GanttController';
-import GanttRenderer from 'web_gantt.GanttRenderer';
+import TaskGanttController from './task_gantt_controller';
+import TaskGanttRenderer from './task_gantt_renderer';
 import TaskGanttModel from './task_gantt_model';
 import { ProjectControlPanel } from '@project/js/project_control_panel';
 
-export const ProjectGanttRenderer = GanttRenderer.extend({
-    async _renderView() {
-        await this._super(...arguments);
-        this.el.classList.add('o_project_gantt');
-    },
-});
-
 export const TaskGanttView = GanttView.extend({
     config: Object.assign({}, GanttView.prototype.config, {
-        Controller: GanttController,
-        Renderer: ProjectGanttRenderer,
+        Controller: TaskGanttController,
+        Renderer: TaskGanttRenderer,
         Model: TaskGanttModel,
         ControlPanel: ProjectControlPanel,
     }),

@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import GanttRow from 'web_gantt.GanttRow';
+import TaskGanttRow from "../task_gantt_row";
 
 
-const TaskGanttConnectorRow = GanttRow.extend({
+const TaskGanttConnectorRow = TaskGanttRow.extend({
     template: 'TaskGanttConnectorView.Row',
 });
 

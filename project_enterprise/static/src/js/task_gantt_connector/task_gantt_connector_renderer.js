@@ -1,18 +1,18 @@
 /** @odoo-module **/
 
 import ConnectorContainer from '../connector/connector_container';
-import TaskGanttConnectorRow from './task_gantt_connector_row';
 import { device } from 'web.config';
 import { ComponentWrapper, WidgetAdapterMixin } from 'web.OwlCompatibility';
 import { throttle } from "@web/core/utils/timing";
-import GanttRenderer from 'web_gantt.GanttRenderer';
+import TaskGanttRenderer from '../task_gantt_renderer';
+import TaskGanttConnectorRow from "./task_gantt_connector_row";
 
 
-const TaskGanttConnectorRenderer = GanttRenderer.extend(WidgetAdapterMixin, {
+const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, {
     config: {
         GanttRow: TaskGanttConnectorRow,
     },
-    custom_events: Object.assign({ }, GanttRenderer.prototype.custom_events || { }, {
+    custom_events: Object.assign({ }, TaskGanttRenderer.prototype.custom_events || { }, {
         connector_creation_abort: '_onConnectorCreationAbort',
         connector_creation_done: '_onConnectorCreationDone',
         connector_creation_start: '_onConnectorCreationStart',
@@ -20,7 +20,7 @@ const TaskGanttConnectorRenderer = GanttRenderer.extend(WidgetAdapterMixin, {
         connector_mouseover: '_onConnectorMouseOver',
         connector_remove_button_click: '_onConnectorRemoveButtonClick',
     }),
-    events: Object.assign({ }, GanttRenderer.prototype.events || { }, {
+    events: Object.assign({ }, TaskGanttRenderer.prototype.events || { }, {
         'mouseenter .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseEnter',
         'mouseleave .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseLeave',
     }),

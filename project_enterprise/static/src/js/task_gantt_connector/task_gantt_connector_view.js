@@ -22,7 +22,7 @@ export const TaskGanttConnectorView = TaskGanttView.extend({
      */
     init: function (viewInfo, params) {
         this._super.apply(this, arguments);
-        const taskDependenciesFields = ['allow_task_dependencies', 'depend_on_ids', 'display_warning_dependency_in_gantt'];
+        const taskDependenciesFields = ['allow_task_dependencies', 'depend_on_ids', 'display_warning_dependency_in_gantt', 'project_id'];
         this.loadParams.decorationFields.push(...taskDependenciesFields);
     }
 });

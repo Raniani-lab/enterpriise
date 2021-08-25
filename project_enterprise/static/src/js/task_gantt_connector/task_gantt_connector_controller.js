@@ -1,13 +1,14 @@
 /** @odoo-module **/
 
-import GanttController from 'web_gantt.GanttController';
+import TaskGanttController from '../task_gantt_controller';
 
 
-const TaskGanttConnectorController = GanttController.extend({
+const TaskGanttConnectorController = TaskGanttController.extend({
     custom_events: Object.assign(
         { },
-        GanttController.prototype.custom_events,
+        TaskGanttController.prototype.custom_events,
         {
+            display_milestone_popover: '_onDisplayMilestonePopover',
             on_remove_connector: '_onRemoveConnector',
             on_create_connector: '_onCreateConnector',
             on_pill_highlight: '_onPillHighlight',
@@ -31,6 +32,20 @@ const TaskGanttConnectorController = GanttController.extend({
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     * @param {OdooEvent} ev
+     * @private
+     */
+    _onDisplayMilestonePopover: function (ev) {
+        Object.assign(
+            ev.data.popoverData,
+            {
+                display_project_name: !!this.context.search_default_my_tasks,
+            });
+        this.renderer.display_milestone_popover(ev.data.popoverData, ev.data.targetElement);
+    },
 
     /**
      * @override

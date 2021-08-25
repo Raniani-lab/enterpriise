@@ -14,6 +14,12 @@ const ganttViewParams = {
     model: "task",
     View: TaskGanttView,
     viewOptions: { initialDate },
+    mockRPC: function (route, args) {
+        if (args.method === 'read_group' && args.model === 'project.task' && args.kwargs.groupby[0] === 'project_id') {
+            return Promise.resolve([]);
+        }
+        return this._super.apply(this, arguments);
+    },
 };
 
 QUnit.module("Views > GanttView > TaskGantt", {

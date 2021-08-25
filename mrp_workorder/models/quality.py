@@ -141,7 +141,8 @@ class QualityPoint(models.Model):
 
     @api.onchange('operation_id')
     def _onchange_operation_id(self):
-        self._change_product_ids_for_bom(self.bom_id)
+        if self.operation_id:
+            self._change_product_ids_for_bom(self.bom_id)
 
 
 class QualityAlert(models.Model):

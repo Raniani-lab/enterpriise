@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { cleanDomFromBootstrap } from "@web/legacy/utils";
-import { computeHomeMenuProps } from "@web_enterprise/webclient/home_menu/home_menu_service";
+import { computeAppsAndMenuItems } from "@web/webclient/menu_service";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { AppCreatorWrapper } from "./app_creator/app_creator";
 import { Editor } from "./editor/editor";
@@ -22,9 +22,9 @@ export class StudioClientAction extends Component {
 
         this.menus = useService("menu");
         this.actionService = useService("action");
-        this.homeMenuProps = computeHomeMenuProps(this.menus.getMenuAsTree("root"));
+        this.homeMenuProps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root"));
         useBus(this.env.bus, "MENUS:APP-CHANGED", () => {
-            this.homeMenuProps = computeHomeMenuProps(this.menus.getMenuAsTree("root"));
+            this.homeMenuProps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root"));
             this.render();
         });
 

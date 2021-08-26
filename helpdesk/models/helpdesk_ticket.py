@@ -258,6 +258,7 @@ class HelpdeskTicket(models.Model):
         readonly=False, ondelete='restrict', tracking=True, group_expand='_read_group_stage_ids',
         copy=False, index=True, domain="[('team_ids', '=', team_id)]")
     date_last_stage_update = fields.Datetime("Last Stage Update", copy=False, readonly=True)
+    ticket_ref = fields.Char(string='Ticket IDs Sequence', copy=False, readonly=True)
     # next 4 fields are computed in write (or create)
     assign_date = fields.Datetime("First assignment date")
     assign_hours = fields.Integer("Time to first assignment (hours)", compute='_compute_assign_hours', store=True, help="This duration is based on the working calendar of the team")
@@ -512,7 +513,7 @@ class HelpdeskTicket(models.Model):
     def name_get(self):
         result = []
         for ticket in self:
-            result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket._origin.id)))
+            result.append((ticket.id, "%s (#%s)" % (ticket.name, ticket.ticket_ref)))
         return result
 
     @api.model
@@ -567,6 +568,7 @@ class HelpdeskTicket(models.Model):
         partner_name_map = {partner.id: partner.name for partner in partners}
 
         for vals in list_value:
+            vals['ticket_ref'] = self.env['ir.sequence'].sudo().next_by_code('helpdesk.ticket')
             if vals.get('team_id'):
                 team_default = team_default_map[vals['team_id']]
                 if 'stage_id' not in vals:

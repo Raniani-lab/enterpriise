@@ -379,7 +379,7 @@
                                     <field name="name" display="full"/>
                                 </div>
                                 <div class="flex-shrink-0">
-                                    #<field name="id"/>
+                                    #<field name="ticket_ref"/>
                                 </div>
                             </div>
                             <field name="partner_id" muted="1" display="full"/>
@@ -419,7 +419,7 @@
         <field name="arch" type="xml">
             <search string="Tickets Search">
                 <field name="name" string="Ticket"/>
-                <field name="id" string="Ticket ID"/>
+                <field name="ticket_ref" string="Ticket ID"/>
                 <field name="tag_ids"/>
                 <field name="user_id"/>
                 <field name="partner_id" filter_domain="['|', '|', '|', ('partner_id', 'ilike', self), ('partner_email', 'ilike', self), ('partner_phone', 'ilike', self), ('partner_name', 'ilike', self)]"/>
@@ -591,7 +591,7 @@
                             </div>
                             <div class="oe_kanban_content">
                                 <div>
-                                    <strong><field name="name"/> (#<field name="id"/>)</strong>
+                                    <strong><field name="name"/> (#<field name="ticket_ref"/>)</strong>
                                 </div>
                                 <div>
                                     <field name="commercial_partner_id"/>

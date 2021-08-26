@@ -15,7 +15,9 @@ odoo.define('pos_hr_mobile.LoginScreen', function (require) {
             const data = await BarcodeScanner.scanBarcode();
             if (data) {
                 this.env.pos.barcode_reader.scan(data);
-                mobile.methods.vibrate({'duration': 100});
+                if ('vibrate' in window.navigator) {
+                    window.navigator.vibrate(100);
+                }
             } else {
                 mobile.methods.showToast({'message': 'Please, Scan again !!'});
             }

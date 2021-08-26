@@ -32,7 +32,9 @@ const MainMenu = AbstractAction.extend({
             const barcode = await BarcodeScanner.scanBarcode();
             if (barcode){
                 this._onBarcodeScanned(barcode);
-                mobile.methods.vibrate({'duration': 100});
+                if ('vibrate' in window.navigator) {
+                    window.navigator.vibrate(100);
+                }
             } else {
                 mobile.methods.showToast({'message':_t("Please, Scan again !")});
             }

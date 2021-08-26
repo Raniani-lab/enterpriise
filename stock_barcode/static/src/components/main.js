@@ -254,7 +254,9 @@ class MainComponent extends Component {
         const barcode = await BarcodeScanner.scanBarcode();
         if (barcode) {
             this.env.model.processBarcode(barcode);
-            mobile.methods.vibrate({duration: 100});
+            if ('vibrate' in window.navigator) {
+                window.navigator.vibrate(100);
+            }
         } else {
             mobile.methods.showToast({message: this.env._t("Please, Scan again !")});
         }

@@ -63,6 +63,7 @@ export class SpreadsheetService {
         await this.orm.write("documents.document", [documentId], {
             thumbnail,
             raw: JSON.stringify(data),
+            mimetype: "application/o-spreadsheet",
         });
     }
 

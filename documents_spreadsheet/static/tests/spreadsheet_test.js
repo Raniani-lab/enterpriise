@@ -57,6 +57,7 @@ module(
                         name: { string: "Name", type: "char" },
                         raw: { string: "Data", type: "text" },
                         thumbnail: { string: "Thumbnail", type: "text" },
+                        mimetype: { string: "Mimetype", type: "char" },
                         favorited_ids: { string: "Name", type: "many2many" },
                         is_favorited: { string: "Name", type: "boolean" },
                     },

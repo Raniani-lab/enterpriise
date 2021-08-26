@@ -367,3 +367,9 @@ article.spreadsheet_fade {
         }
     }
 }
+
+.o_image {
+    &[data-mimetype='application/o-spreadsheet'] {
+        background-image: url('/documents_spreadsheet/static/img/spreadsheet.svg');
+    }
+}

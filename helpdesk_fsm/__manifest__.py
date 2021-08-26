@@ -12,6 +12,7 @@
         'security/ir.model.access.csv',
         'views/helpdesk_views.xml',
         'views/project_task_views.xml',
+        'views/project_sharing_views.xml',
         'wizard/create_task_views.xml',
     ],
     'demo': ['data/helpdesk_fsm_demo.xml'],

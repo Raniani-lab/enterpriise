@@ -16,6 +16,7 @@ Create Reports for Field Service
         'security/ir.model.access.csv',
         'views/project_views.xml',
         'views/project_portal_templates.xml',
+        'views/project_sharing_views.xml',
         'report/worksheet_custom_reports.xml',
         'report/worksheet_custom_report_templates.xml',
         'data/mail_template_data.xml',

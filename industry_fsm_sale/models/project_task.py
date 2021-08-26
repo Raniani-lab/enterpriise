@@ -23,6 +23,17 @@ class Task(models.Model):
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
 
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS | {'allow_material',
+                                              'allow_quotations',
+                                              'quotation_count',
+                                              'material_line_product_count',
+                                              'material_line_total_price',
+                                              'currency_id',
+                                              'invoice_count',
+                                              'warning_message'}
+
     @api.depends('allow_material', 'material_line_product_count')
     def _compute_display_conditions_count(self):
         super(Task, self)._compute_display_conditions_count()
@@ -54,14 +65,21 @@ class Task(models.Model):
             is_task_related = sale_line_id.task_id == task
             return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so, is_task_related])
 
-        employee_mapping_timesheet_product_ids = defaultdict(lambda: set([]))  # keys = project_id, value = list of timesheet_product_id
+        employee_mapping_timesheet_product_ids = {}  # keys = project_id, value = list of timesheet_product_id
         fsm_tasks = self.filtered('is_fsm')
         if fsm_tasks:
-            employee_mappings = self.env['project.sale.line.employee.map'].search([('project_id', 'in', fsm_tasks.mapped('project_id.id'))])
-            for mapping in employee_mappings:
-                employee_mapping_timesheet_product_ids[mapping.project_id.id].add(mapping.timesheet_product_id.id)
+            employee_mapping_read_group = self.env['project.sale.line.employee.map'].sudo().read_group(
+                [('project_id', 'in', fsm_tasks.project_id.ids)],
+                ['project_id', 'timesheet_product_ids:array_agg(timesheet_product_id)'],
+                ['project_id'],
+            )
+            employee_mapping_timesheet_product_ids = {res['project_id']: res['timesheet_product_ids'] for res in employee_mapping_read_group}
+        sols = self.env['sale.order.line'].sudo().search([('order_id', 'in', self.sudo().sale_order_id.ids)])
+        sols_by_so = defaultdict(lambda: self.env['sale.order.line'])
+        for sol in sols:
+            sols_by_so[sol.order_id.id] |= sol
         for task in self:
-            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task, employee_mapping_timesheet_product_ids[task.project_id.id]))
+            material_sale_lines = sols_by_so[task.sudo().sale_order_id.id].sudo().filtered(lambda sol: if_fsm_material_line(sol, task, employee_mapping_timesheet_product_ids.get(task.project_id.id)))
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
 

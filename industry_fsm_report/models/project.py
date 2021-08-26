@@ -40,7 +40,7 @@ class Task(models.Model):
 
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     worksheet_template_id = fields.Many2one(
-        'worksheet.template', string="Worksheet Template", 
+        'worksheet.template', string="Worksheet Template",
         compute='_compute_worksheet_template_id', store=True, readonly=False,
         domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
@@ -52,6 +52,20 @@ class Task(models.Model):
     display_sign_report_secondary = fields.Boolean(compute='_compute_display_sign_report_buttons')
     display_send_report_primary = fields.Boolean(compute='_compute_display_send_report_buttons')
     display_send_report_secondary = fields.Boolean(compute='_compute_display_send_report_buttons')
+
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS | {
+            'allow_worksheets',
+            'worksheet_count',
+            'worksheet_signature',
+        }
+
+    @property
+    def SELF_WRITABLE_FIELDS(self):
+        return super().SELF_WRITABLE_FIELDS | {
+            'worksheet_template_id',
+        }
 
     @api.depends('allow_worksheets', 'worksheet_count')
     def _compute_display_conditions_count(self):
@@ -118,8 +132,15 @@ class Task(models.Model):
 
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):
+        is_portal_user = self.env.user.share
         for record in self:
-            record.worksheet_count = record.worksheet_template_id and self.env[record.worksheet_template_id.sudo().model_id.model].search_count([('x_project_task_id', '=', record.id)]) or 0
+            worksheet_count = 0
+            if record.worksheet_template_id:
+                Worksheet = self.env[record.worksheet_template_id.sudo().model_id.model]
+                if is_portal_user:
+                    Worksheet = Worksheet.sudo()
+                worksheet_count = Worksheet.search_count([('x_project_task_id', '=', record.id)])
+            record.worksheet_count = worksheet_count
 
     def has_to_be_signed(self):
         return self.allow_worksheets and not self.worksheet_signature

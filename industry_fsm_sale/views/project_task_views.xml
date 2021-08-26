@@ -175,6 +175,7 @@
         </field>
     </record>
 
+    <!-- FIXME: normally the attributes in partner_id field does not change because same definition set in industry_fsm module -->
         <record id="view_task_form2_inherit_sale_timesheet" model="ir.ui.view">
         <field name="name">view.task.form2.inherit</field>
         <field name="model">project.task</field>

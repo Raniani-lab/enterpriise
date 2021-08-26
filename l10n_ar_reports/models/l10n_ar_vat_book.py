@@ -412,7 +412,7 @@ class L10nARVatBook(models.AbstractModel):
                     inv.l10n_latam_document_type_id.code in document_codes and '00000000' or inv.invoice_date_due.strftime('%Y%m%d')
                 ]
             else:
-                row.append(self._format_amount(vat_amount))  # Field 21: Crédito Fiscal Computable
+                row.append(self._format_amount(0.0 if inv.company_id.l10n_ar_computable_tax_credit == 'global' else vat_amount))  # Field 21: Crédito Fiscal Computable
 
                 liquido_type = inv.l10n_latam_document_type_id.code in ['033', '058', '059', '060', '063']
                 row += [

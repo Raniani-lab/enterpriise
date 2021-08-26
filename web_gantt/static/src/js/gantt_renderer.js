@@ -298,7 +298,6 @@ var GanttRenderer = AbstractRenderer.extend({
         }
         rows.forEach(function (row) {
             var pillsInfo = {
-                groupId: row.groupId,
                 resId: row.resId,
                 pills: row.records,
                 groupLevel: groupLevel,
@@ -319,6 +318,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 disableResize: disableResize,
                 disableDragdrop: self.disableDragdrop,
                 rowId: row.id,
+                fromServer: row.fromServer,
                 scales: self.SCALES,
                 unavailabilities: row.unavailabilities,
             };
@@ -360,7 +360,6 @@ var GanttRenderer = AbstractRenderer.extend({
      */
     _renderTotalRow: function () {
         var pillsInfo = {
-            groupId: "groupTotal",
             pills: this.state.records,
             groupLevel: 0,
             groupName: "Total"

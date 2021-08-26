@@ -133,23 +133,24 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} event
      */
-    _getDialogContext: function (date, groupId) {
+    _getDialogContext: function (date, rowId) {
         var state = this.model.get();
         var context = {};
         context[state.dateStartField] = date.clone();
         context[state.dateStopField] = date.clone().endOf(this.SCALES[state.scale].interval);
-
-        if (groupId) {
+        if (rowId) {
             // Default values of the group this cell belongs in
             // We can read them from any pill in this group row
             _.each(state.groupedBy, function (fieldName) {
-                var groupValue = _.find(state.groups, function (group) {
-                    return group.id === groupId;
-                });
+                const groupValue = Object.assign({}, ...JSON.parse(rowId));
                 var value = groupValue[fieldName];
-                // If many2one field then extract id from array
-                if (_.isArray(value)) {
-                    value = value[0];
+                if (Array.isArray(value)) {
+                    const { type: fieldType } = state.fields[fieldName];
+                    if (fieldType === "many2many") {
+                        value = [value[0]];
+                    } else if (fieldType === "many2one") {
+                        value = value[0];
+                    }
                 }
                 context[fieldName] = value;
             });
@@ -304,7 +305,7 @@ var GanttController = AbstractController.extend({
      */
     _onCellAddClicked: function (ev) {
         ev.stopPropagation();
-        var context = this._getDialogContext(ev.data.date, ev.data.groupId);
+        const context = this._getDialogContext(ev.data.date, ev.data.rowId);
         for (var k in context) {
             context[_.str.sprintf('default_%s', k)] = context[k];
         }
@@ -401,8 +402,8 @@ var GanttController = AbstractController.extend({
      * @param {integer} [ev.data.diff]
      * @param {integer} [ev.data.groupLevel]
      * @param {string} [ev.data.pillId]
-     * @param {string} [ev.data.newGroupId]
-     * @param {string} [ev.data.oldGroupId]
+     * @param {string} [ev.data.newRowId]
+     * @param {string} [ev.data.oldRowId]
      * @param {'copy'|'reschedule'} [ev.data.action]
      */
     _onPillDropped: function (ev) {
@@ -425,20 +426,24 @@ var GanttController = AbstractController.extend({
             schedule[state.dateStopField] = pill[state.dateStopField].clone();
         }
 
-        if (ev.data.newGroupId && ev.data.newGroupId !== ev.data.oldGroupId) {
-            var group = _.findWhere(state.groups, { id: ev.data.newGroupId });
+        if (ev.data.newRowId && ev.data.newRowId !== ev.data.oldRowId) {
+            const groupValue = Object.assign({}, ...JSON.parse(ev.data.newRowId));
 
             // if the pill is dragged in a top level group, we only want to
             // write on fields linked to this top level group
             var fieldsToWrite = state.groupedBy.slice(0, ev.data.groupLevel + 1);
             _.each(fieldsToWrite, function (fieldName) {
                 // TODO: maybe not write if the value hasn't changed?
-                schedule[fieldName] = group[fieldName];
-
-                // TODO: maybe check if field.type === 'many2one' instead
-                if (_.isArray(schedule[fieldName])) {
-                    schedule[fieldName] = schedule[fieldName][0];
+                let valueToWrite = groupValue[fieldName];
+                if (Array.isArray(valueToWrite)) {
+                    const { type: fieldType } = state.fields[fieldName];
+                    if (fieldType === "many2many") {
+                        valueToWrite = [valueToWrite[0]];
+                    } else if (fieldType === "many2one") {
+                        valueToWrite = valueToWrite[0];
+                    }
                 }
+                schedule[fieldName] = valueToWrite;
             });
         }
         if (ev.data.action === 'copy') {
@@ -483,7 +488,7 @@ var GanttController = AbstractController.extend({
      */
     _onCellPlanClicked: function (ev) {
         ev.stopPropagation();
-        var context = this._getDialogContext(ev.data.date, ev.data.groupId);
+        const context = this._getDialogContext(ev.data.date, ev.data.rowId);
         this._openPlanDialog(context);
     },
     /**

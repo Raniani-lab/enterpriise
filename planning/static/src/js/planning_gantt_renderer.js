@@ -10,7 +10,7 @@ odoo.define('planning.PlanningGanttRenderer', function (require) {
         }),
 
         sampleDataTargets: [
-            '.o_gantt_row[data-group-id]',
+            '.o_gantt_row[data-from-server=true]',
         ],
         async _renderView() {
             await this._super(...arguments);

@@ -13,8 +13,7 @@ odoo.define('hr_gantt.GanttRow', function (require) {
         init(parent, pillsInfo, viewInfo, options) {
             this._super(...arguments);
             const isGroupedByEmployee = pillsInfo.groupedByField === 'employee_id';
-            const isEmptyGroup = pillsInfo.groupId === 'empty';
-            this.showEmployeeAvatar = (isGroupedByEmployee && !isEmptyGroup && !!pillsInfo.resId);
+            this.showEmployeeAvatar = isGroupedByEmployee && !!pillsInfo.resId;
         },
 
         /**

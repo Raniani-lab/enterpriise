@@ -299,13 +299,10 @@ var GanttModel = AbstractModel.extend({
 
         return this.dp.add(Promise.all([groupsDef, dataDef])).then(function (results) {
             const groups = results[0] || [];
+            groups.forEach((g) => (g.fromServer = true));
             var searchReadResult = results[1];
-            _.each(groups, function (group) {
-                group.id = _.uniqueId('group');
-            });
             var oldRows = self.allRows;
             self.allRows = {};
-            self.ganttData.groups = groups;
             self.ganttData.records = self._parseServerData(searchReadResult.records);
             self.ganttData.rows = self._generateRows({
                 groupedBy: self.ganttData.groupedBy,
@@ -415,7 +412,6 @@ var GanttModel = AbstractModel.extend({
         if (!groupedBy.length || !groups.length) {
             const row = {
                 groupLevel,
-                groupId: groups && groups.length && groups[0].id,
                 id: JSON.stringify([...parentPath, {}]),
                 isGroup: false,
                 name: "",
@@ -429,7 +425,6 @@ var GanttModel = AbstractModel.extend({
         // Some groups might be empty (thanks to expand_groups), so we can't
         // simply group the data, we need to keep all returned groups
         const groupedByField = groupedBy[0];
-        const groupedRecords = groupBy(records || [], groupedByField);
         const currentLevelGroups = groupBy(groups, group => {
             if (group[groupedByField] === undefined) {
                 // Here we change undefined value to false as:
@@ -444,14 +439,33 @@ var GanttModel = AbstractModel.extend({
             }
             return group[groupedByField];
         });
+        const isM2MGrouped = this.ganttData.fields[groupedByField].type === "many2many";
+        let groupedRecords;
+        if (isM2MGrouped) {
+            groupedRecords = {};
+            for (const [key, currentGroup] of Object.entries(currentLevelGroups)) {
+                groupedRecords[key] = [];
+                const value = currentGroup[0][groupedByField];
+                for (const r of records || []) {
+                    if (
+                        !value && r[groupedByField].length === 0 ||
+                        value && r[groupedByField].includes(value[0])
+                    ) {
+                        groupedRecords[key].push(r)
+                    }
+                }
+            }
+        } else {
+            groupedRecords = groupBy(records || [], groupedByField);
+        }
 
         for (const key in currentLevelGroups) {
             const subGroups = currentLevelGroups[key];
             const groupRecords = groupedRecords[key];
-            // For empty groups, we can't look at the record to get the
-            // formatted value of the field, we have to trust expand_groups
+            // For empty groups (or when groupedByField is a m2m), we can't look at the record to get the
+            // formatted value of the field, we have to trust expand_groups.
             let value;
-            if (groupRecords && groupRecords.length) {
+            if (groupRecords && groupRecords.length && !isM2MGrouped) {
                 value = groupRecords[0][groupedByField];
             } else {
                 value = subGroups[0][groupedByField];
@@ -463,15 +477,16 @@ var GanttModel = AbstractModel.extend({
             const resId = Array.isArray(value) ? value[0] : value;
             const minNbGroups = this.collapseFirstLevel ? 0 : 1;
             const isGroup = groupedBy.length > minNbGroups;
+            const fromServer = subGroups.some((g) => g.fromServer);
             const row = {
                 name: this._getRowName(groupedByField, value),
-                groupId: subGroups[0].id,
                 groupedBy,
                 groupedByField,
                 groupLevel,
                 id,
                 resId,
                 isGroup,
+                fromServer,
                 isOpen: !findWhere(oldRows, { id: JSON.stringify(parentPath), isOpen: false }),
                 records: groupRecords,
             };
@@ -551,8 +566,13 @@ var GanttModel = AbstractModel.extend({
         if (field.type === 'boolean') {
             options = {forceString: true};
         }
-        var formattedValue = fieldUtils.format[field.type](value, field, options);
-        return formattedValue || _.str.sprintf(_t('Undefined %s'), field.string);
+        let label;
+        if (field.type === "many2many") {
+            label = Array.isArray(value) ? value[1] : value;
+        } else {
+            label = fieldUtils.format[field.type](value, field, options);
+        }
+        return label || _.str.sprintf(_t('Undefined %s'), field.string);
     },
     /**
      * @param {string} groupedByField

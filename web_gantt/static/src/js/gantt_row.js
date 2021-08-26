@@ -47,7 +47,6 @@ var GanttRow = Widget.extend({
         var self = this;
 
         this.name = pillsInfo.groupName;
-        this.groupId = pillsInfo.groupId;
         this.groupLevel = pillsInfo.groupLevel;
         this.groupedByField = pillsInfo.groupedByField;
         this.pills = _.map(pillsInfo.pills, _.clone);
@@ -63,6 +62,7 @@ var GanttRow = Widget.extend({
         this.isGroup = options.isGroup;
         this.isOpen = options.isOpen;
         this.rowId = options.rowId;
+        this.fromServer = options.fromServer;
         this.unavailabilities = (options.unavailabilities || []).map(u => {
             return {
                 startDate: self._convertToUserTime(u.start),
@@ -82,7 +82,7 @@ var GanttRow = Widget.extend({
         }
 
         // the total row has some special behaviour
-        this.isTotal = this.groupId === 'groupTotal';
+        this.isTotal = this.rowId === '__total_row__';
 
         this._adaptPills();
         this._snapToGrid(this.pills);
@@ -153,10 +153,10 @@ var GanttRow = Widget.extend({
             drop: function (event, ui) {
                 var diff = self._getDiff(resizeSnappingWidth, ui.position.left);
                 var $pill = ui.draggable;
-                var oldGroupId = $pill.closest('.o_gantt_row').data('group-id');
-                if (diff || (self.groupId !== oldGroupId)) { // do not perform write if nothing change
+                const oldRowId = $pill.closest('.o_gantt_row')[0].dataset.rowId;
+                if (diff || (self.rowId !== oldRowId)) { // do not perform write if nothing change
                     const action = event.ctrlKey || event.metaKey ? 'copy': 'reschedule';
-                    self._saveDragChanges($pill.data('id'), diff, oldGroupId, self.groupId, action);
+                    self._saveDragChanges($pill.data('id'), diff, oldRowId, self.rowId, action);
                 } else {
                     ui.helper.animate({
                         left: 0,
@@ -669,16 +669,16 @@ var GanttRow = Widget.extend({
      * @private
      * @param {integer} pillID
      * @param {integer} diff
-     * @param {string} oldGroupId
-     * @param {string} newGroupId
+     * @param {string} oldRowId
+     * @param {string} newRowId
      * @param {'copy'|'reschedule'} action
      */
-    _saveDragChanges: function (pillId, diff, oldGroupId, newGroupId, action) {
+    _saveDragChanges: function (pillId, diff, oldRowId, newRowId, action) {
         this.trigger_up('pill_dropped', {
             pillId: pillId,
             diff: diff,
-            oldGroupId: oldGroupId,
-            newGroupId: newGroupId,
+            oldRowId: oldRowId,
+            newRowId: newRowId,
             groupLevel: this.groupLevel,
             action: action,
         });
@@ -1001,7 +1001,7 @@ var GanttRow = Widget.extend({
         var date = moment($(ev.currentTarget).closest('.o_gantt_cell').data('date'));
         this.trigger_up('add_button_clicked', {
             date: date,
-            groupId: this.groupId,
+            rowId: this.rowId,
         });
     },
     /**
@@ -1014,7 +1014,7 @@ var GanttRow = Widget.extend({
         var date = moment($(ev.currentTarget).closest('.o_gantt_cell').data('date'));
         this.trigger_up('plan_button_clicked', {
             date: date,
-            groupId: this.groupId,
+            rowId: this.rowId,
         });
     },
     /**

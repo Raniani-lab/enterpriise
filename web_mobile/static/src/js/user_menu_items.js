@@ -17,7 +17,7 @@ export function shortcutItem(env) {
                     web_icon: menu && menu.webIconData,
                 });
             } else {
-                mobile.methods.showToast({
+                env.services.notification.notify({
                     message: env._t("No shortcut for Home Menu"),
                 });
             }

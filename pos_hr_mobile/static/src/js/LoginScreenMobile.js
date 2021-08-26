@@ -19,7 +19,10 @@ odoo.define('pos_hr_mobile.LoginScreen', function (require) {
                     window.navigator.vibrate(100);
                 }
             } else {
-                mobile.methods.showToast({'message': 'Please, Scan again !!'});
+                this.env.services.notification.notify({
+                    type: 'warning',
+                    message: 'Please, Scan again !',
+                });
             }
         }
     };

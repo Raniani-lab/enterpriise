@@ -258,7 +258,10 @@ class MainComponent extends Component {
                 window.navigator.vibrate(100);
             }
         } else {
-            mobile.methods.showToast({message: this.env._t("Please, Scan again !")});
+            this.env.services.notification.notify({
+                type: 'warning',
+                message: this.env._t("Please, Scan again !"),
+            });
         }
     }
 

@@ -22,7 +22,10 @@ return {
                 window.navigator.vibrate(100);
             }
         } else {
-            mobile.methods.showToast({'message': 'Please, Scan again !!'});
+            this.displayNotification({
+                type: 'warning',
+                message: 'Please, Scan again !',
+            });
         }
     }
 };

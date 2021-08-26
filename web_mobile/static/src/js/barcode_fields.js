@@ -86,8 +86,9 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
                 window.navigator.vibrate(100);
             }
         } else {
-            mobile.methods.showToast({
-                message: 'Please, scan again !!',
+            this.displayNotification({
+                type: 'warning',
+                message: 'Please, scan again !',
             });
         }
     },

@@ -36,7 +36,10 @@ const MainMenu = AbstractAction.extend({
                     window.navigator.vibrate(100);
                 }
             } else {
-                mobile.methods.showToast({'message':_t("Please, Scan again !")});
+                this.displayNotification({
+                    type: 'warning',
+                    message:_t("Please, Scan again !"),
+                });
             }
         }
     },

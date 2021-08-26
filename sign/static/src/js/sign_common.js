@@ -1634,7 +1634,7 @@ odoo.define('sign.document_signing', function (require) {
                                     }
                                     if(signDialog.nameAndSignature.signatureChanged) {
                                         self._rpc({
-                                            route: 'sign/update_user_signature/',
+                                            route: '/sign/update_user_signature/',
                                             params: {
                                                 signature_type: type.item_type === 'signature' ? 'sign_signature' : 'sign_initials',
                                                 datas: signature

@@ -39,6 +39,8 @@ class PlanningSlot(models.Model):
 
     @api.depends('start_datetime', 'sale_line_id.planning_hours_to_plan', 'sale_line_id.planning_hours_planned')
     def _compute_allocated_hours(self):
+        if self.env.context.get('sale_planning_prevent_recompute'):
+            return
         planned_slots = self.filtered('start_datetime')
         for slot in self - planned_slots:
             if slot.sale_line_id:

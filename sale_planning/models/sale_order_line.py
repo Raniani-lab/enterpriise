@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
-from odoo.tools import float_round, format_duration, float_compare
+from odoo.tools import float_round, format_duration, float_compare, float_is_zero
 
 
 class SaleOrderLine(models.Model):
@@ -32,10 +32,11 @@ class SaleOrderLine(models.Model):
 
     @api.depends('planning_slot_ids.allocated_hours', 'state')
     def _compute_planning_hours_planned(self):
+        PlanningSlot = self.env['planning.slot']
         sol_planning = self.filtered_domain([('product_id.planning_enabled', '=', True), ('state', 'not in', ['draft', 'sent'])])
         if sol_planning:
             # For every confirmed SO service lines with slot generation, the allocated hours on planned slots are summed
-            group_data = self.env['planning.slot'].read_group([
+            group_data = PlanningSlot.with_context(sale_planning_prevent_recompute=True).read_group([
                 ('sale_line_id', 'in', sol_planning.ids),
                 ('start_datetime', '!=', False)
             ], ['sale_line_id', 'allocated_hours:sum'], ['sale_line_id'])
@@ -44,6 +45,10 @@ class SaleOrderLine(models.Model):
                 line.planning_hours_planned = mapped_data.get(line.id, 0.0)
         for line in self - sol_planning:
             line.planning_hours_planned = 0.0
+        self.env.add_to_compute(PlanningSlot._fields['allocated_hours'], PlanningSlot.search([
+            ('start_datetime', '=', False),
+            ('sale_line_id', 'in', self.ids),
+        ]))
 
     # -----------------------------------------------------------------
     # ORM Override
@@ -96,7 +101,6 @@ class SaleOrderLine(models.Model):
 
             :param ids_to_exclude: the ids of the slots already being recomputed/written.
         """
-        # TODO TLE : This method costs a lot in terms of performances
         sol_planning = self.filtered('product_id.planning_enabled')
         if sol_planning:
             unscheduled_slots = self.env['planning.slot'].sudo().search([
@@ -105,7 +109,6 @@ class SaleOrderLine(models.Model):
             ])
             sol_with_unscheduled_slot = set()
             slots_to_unlink = self.env['planning.slot']
-            slots_to_recompute = self.env['planning.slot']
             for slot in unscheduled_slots:
                 if slot.sale_line_id.id in sol_with_unscheduled_slot:
                     # This slot has to be unlinked as an other exists for the
@@ -117,11 +120,8 @@ class SaleOrderLine(models.Model):
                     slots_to_unlink |= slot
                 else:
                     sol_with_unscheduled_slot.add(slot.sale_line_id.id)
-                    if not ids_to_exclude or slot.id not in ids_to_exclude:
-                        # do not recompute the ids already being recomputed and passed in
-                        # ids_to_recompute
-                        slots_to_recompute |= slot
-            slots_to_recompute.sudo()._compute_allocated_hours()
+                    if float_is_zero(slot.allocated_hours, precision_digits=2):
+                        slots_to_unlink |= slot
             slots_to_unlink.unlink()
 
     def _planning_slot_generation(self):

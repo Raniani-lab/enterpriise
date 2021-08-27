@@ -387,7 +387,7 @@ class Planning(models.Model):
                         return True
         return False
 
-    @api.depends('template_id', 'role_id', 'allocated_hours', 'start_datetime')
+    @api.depends('template_id', 'role_id', 'allocated_hours', 'start_datetime', 'end_datetime')
     def _compute_allow_template_creation(self):
         for slot in self:
             if not (slot.start_datetime and slot.end_datetime):

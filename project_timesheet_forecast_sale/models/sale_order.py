@@ -14,6 +14,7 @@ class SaleOrderLine(models.Model):
 
     @api.depends('analytic_line_ids.unit_amount', 'analytic_line_ids.validated', 'planning_slot_ids.allocated_hours', 'task_id', 'project_id')
     def _compute_planning_hours_planned(self):
+        PlanningSlot = self.env['planning.slot']
         planning_forecast_sols = self.filtered_domain([
             ('product_id.planning_enabled', '!=', False),
             '|', ('task_id.allow_timesheets', '=', True), ('project_id.allow_timesheets', '=', True),
@@ -44,8 +45,10 @@ class SaleOrderLine(models.Model):
                 else:
                     planning_domain = [('sale_line_id', 'in', sol_without_validated_aal), ('start_datetime', '!=', False)]
             # Search for the allocated hours on the slots in the domain
-            group_allocated_hours = self.env['planning.slot'].read_group(
-                expression.AND([[('start_datetime', '!=', False)], planning_domain]), ['sale_line_id', 'allocated_hours'], ['sale_line_id'])
+            group_allocated_hours = PlanningSlot.with_context(sale_planning_prevent_recompute=True).read_group(
+                expression.AND([[('start_datetime', '!=', False)], planning_domain]),
+                ['sale_line_id', 'allocated_hours'],
+                ['sale_line_id'])
             mapped_allocated_hours = {data['sale_line_id'][0]: data['allocated_hours'] for data in group_allocated_hours}
             uom_hour = self.env.ref('uom.product_uom_hour')
             for sol in planning_forecast_sols:
@@ -53,3 +56,7 @@ class SaleOrderLine(models.Model):
                 converted_unit_amount = sol.company_id.project_time_mode_id._compute_quantity(mapped_unit_amount.get(sol.id, 0.0), uom_hour)
                 # update the planning hours planned
                 sol.planning_hours_planned = mapped_allocated_hours.get(sol.id, 0.0) + converted_unit_amount
+            self.env.add_to_compute(PlanningSlot._fields['allocated_hours'], PlanningSlot.search([
+                ('start_datetime', '=', False),
+                ('sale_line_id', 'in', self.ids),
+            ]))

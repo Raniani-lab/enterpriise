@@ -494,7 +494,9 @@ class Planning(models.Model):
 
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        res = super().read_group(domain, fields, groupby, offset, limit, orderby, False)
+        res = super().read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        if lazy:
+            return res
 
         null_fields = [f for f in self._read_group_fields_nullify() if any(f2.startswith(f) for f2 in fields)]
         if null_fields:

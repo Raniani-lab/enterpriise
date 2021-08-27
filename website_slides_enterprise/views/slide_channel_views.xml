@@ -1,0 +1,17 @@
+<odoo>
+    <record id="slide_channel_view_dashboard" model="ir.ui.view">
+        <field name="name">slide.channel.view.dashboard</field>
+        <field name="model">slide.channel</field>
+        <field name="arch" type="xml">
+            <dashboard>
+                <view type="graph" ref="slide.slide_channel_view_graph"/>
+                <view type="pivot" ref="slide.slide_channel_view_pivot"/>
+            </dashboard>
+        </field>
+    </record>
+    <record id="website_slides.slide_channel_action_report" model="ir.actions.act_window">
+        <field name="view_mode">dashboard,tree,graph,pivot,form</field>
+        <field name="view_id" ref="slide_channel_view_dashboard"/>
+    </record>
+
+</odoo>

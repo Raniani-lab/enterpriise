@@ -122,13 +122,18 @@ class SignLog(models.Model):
 
 
     def _prepare_vals_from_item(self, request_item):
-        request = request_item.sign_request_id
+        sign_request = request_item.sign_request_id
+        # NOTE: We update request_item.latitude/longitude when the request_item is opened and not 'completed'
+        # And If the signer accepted the browser geolocation request, the coordinates will be more precise.
+        # We should forcely use the GeoIP ones only if the the request_item is 'completed'
+        latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state == 'completed' else request_item.latitude
+        longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state == 'completed' else request_item.longitude
         return dict(
             sign_request_item_id=request_item.id,
-            sign_request_id=request.id,
-            request_state=request.state,
-            latitude=request_item.latitude or 0.0,
-            longitude=request_item.longitude or 0.0,
+            sign_request_id=sign_request.id,
+            request_state=sign_request.state,
+            latitude=latitude,
+            longitude=longitude,
             partner_id=request_item.partner_id.id)
 
     def _prepare_vals_from_request(self, sign_request):
@@ -145,15 +150,6 @@ class SignLog(models.Model):
         if not vals.get('partner_id', False):
             vals.update({
                 'partner_id': self.env.user.partner_id.id if not self.env.user._is_public() else None
-            })
-        # NOTE: during signing, this method is always called after the log is generated based on the
-        # request item. This means that if the signer accepted the browser geolocation request, the `vals`
-        # will already contain much more precise coordinates. We should use the GeoIP ones only if the
-        # browser did not send anything
-        if 'geoip' in request.session and not (vals.get('latitude') and vals.get('longitude')):
-            vals.update({
-                'latitude': request.session['geoip'].get('latitude') or 0.0,
-                'longitude': request.session['geoip'].get('longitude') or 0.0,
             })
         return vals
 

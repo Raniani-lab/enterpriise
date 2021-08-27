@@ -22,9 +22,11 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.actionService = useService("action");
         this.spreadsheetRef = useRef("spreadsheet");
         this.notificationMessage = this.env._t("New spreadsheet created in Documents");
-        this.transportService =
-            this.props.action.params.transportService ||
-            new SpreadsheetCollaborativeChannel(owl.Component.env, this.resId);
+        if (this.props.action.params.transportService) {
+            this.transportService = this.props.action.params.transportService;
+        } else if (owl.Component.env.services.bus_service) {
+            this.transportService = new SpreadsheetCollaborativeChannel(owl.Component.env, this.resId);
+        }
         this.state = useState({
             numberOfConnectedUsers: 1,
             isSynced: true,
@@ -36,7 +38,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     /**
      * @override
      */
-    async _loadData(record) {
+    _loadData(record) {
         this.state.isFavorited = record.is_favorited;
         this.spreadsheetData = JSON.parse(record.raw);
         this.stateUpdateMessages = record.revisions;

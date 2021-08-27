@@ -49,6 +49,7 @@ export function getBasicData() {
         "documents.document": {
             fields: {
                 name: { string: "Name", type: "char" },
+                mimetype: { string: "mimetype", type: "char" },
                 raw: { string: "Data", type: "text" },
                 thumbnail: { string: "Thumbnail", type: "text" },
                 favorited_ids: { string: "Name", type: "many2many" },

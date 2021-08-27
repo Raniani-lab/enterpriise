@@ -30,7 +30,7 @@
             'documents_spreadsheet/static/src/scss/**/*',
         ],
         'web.qunit_suite_tests': [
-            'documents_spreadsheet/static/tests/*',
+            'documents_spreadsheet/static/tests/**/*',
         ],
         'web.assets_tests': [
             'documents_spreadsheet/static/tests/tours/**/*',

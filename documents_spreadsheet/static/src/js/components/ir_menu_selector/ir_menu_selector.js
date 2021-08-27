@@ -24,6 +24,8 @@ class MenuSelectorWidgetAdapter extends ComponentAdapter {
     get widgetArgs() {
         const domain = [
             ["action", "!=", false],
+            "|",
+            ["groups_id", "=", false],
             ["groups_id", "in", this.props.userGroups],
         ]
         const attrs = {

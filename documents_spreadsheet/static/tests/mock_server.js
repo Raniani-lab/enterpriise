@@ -4,6 +4,14 @@ import { registry } from "@web/core/registry";
 
 registry
     .category("mock_server")
+    .add("documents.document/get_spreadsheets_to_display", function (route, args) {
+        return this.models["documents.document"].records
+            .filter((document) => document.handler === "spreadsheet")
+            .map((spreadsheet) => ({
+                name: spreadsheet.name,
+                id: spreadsheet.id,
+            }));
+    })
     .add("documents.document/join_spreadsheet_session", function (route, args) {
         const [id] = args.args;
         const record = this.models["documents.document"].records.find((record) => record.id === id);

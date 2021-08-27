@@ -6,9 +6,9 @@ import { actionService } from "@web/webclient/actions/action_service";
 import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { createSpreadsheet, getCell, setCellContent } from "./spreadsheet_test_utils";
-import spreadsheet from "../src/js/o_spreadsheet/o_spreadsheet_extended";
-import { getBasicData } from "./spreadsheet_test_data";
+import { createSpreadsheet, getCell, setCellContent } from "../spreadsheet_test_utils";
+import spreadsheet from "../../src/js/o_spreadsheet/o_spreadsheet_extended";
+import { getBasicData } from "../spreadsheet_test_data";
 
 const { registries, Model } = spreadsheet;
 const { cellMenuRegistry } = registries;

@@ -18,6 +18,7 @@ import { UNTITLED_SPREADSHEET_NAME } from "../src/constants";
 const { Model } = spreadsheet;
 const { toCartesian, toZone, isFormula } = spreadsheet.helpers;
 const { jsonToBase64 } = pivotUtils;
+const { loadJS } = owl.utils;
 
 /**
  * Get the value of the given cell
@@ -170,6 +171,7 @@ function getSpreadsheetActionEnv(actionManager) {
 }
 
 export async function createSpreadsheetAction(actionTag, params = {}) {
+    await loadJS("/web/static/lib/Chart/Chart.js");
     let { spreadsheetId, data, arch, mockRPC, legacyServicesRegistry, webClient } = params;
     let spreadsheetAction;
     const SpreadsheetActionComponent =
@@ -242,6 +244,7 @@ export async function createSpreadsheetTemplate(params = {}) {
  * Create a spreadsheet model from a List controller
  */
 export async function createSpreadsheetFromList(params = {}) {
+    await loadJS("/web/static/lib/Chart/Chart.js");
     let { actions, listView, webClient, linesNumber } = params;
     if (linesNumber === undefined) {
         linesNumber = 10;
@@ -364,6 +367,7 @@ export async function createSpreadsheetWithPivotAndList() {
  * the pivot data
  */
 export async function createSpreadsheetFromPivot(params = {}) {
+    await loadJS("/web/static/lib/Chart/Chart.js");
     let { actions, pivotView, webClient } = params;
     if (!pivotView) {
         pivotView = {};

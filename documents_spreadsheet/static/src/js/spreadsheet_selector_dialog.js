@@ -56,6 +56,7 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
             const threshold = this.threshold
                 ? Math.min(this.el.querySelector("input[id='threshold']").value, this.maxThreshold)
                 : 0;
+            // TODO `selectedSpreadsheet` is not actually an id
             this.trigger("confirm", { id: selectedSpreadsheet, threshold });
         },
         /**

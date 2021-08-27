@@ -77,11 +77,7 @@ export class SpreadsheetTemplateService {
      * @returns {Object}
      */
     async fetchData(spreadsheetTemplateId) {
-        const records = await this.orm.read(
-            "spreadsheet.template",
-            [spreadsheetTemplateId],
-            ["name", "data"]
-        );
-        return records[0];
+        return this.orm.call("spreadsheet.template", "fetch_template_data", [spreadsheetTemplateId]);
+
     }
 }

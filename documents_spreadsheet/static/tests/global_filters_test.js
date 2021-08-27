@@ -163,13 +163,15 @@ module(
         test("Create a new date filter without specifying the year", async function (assert) {
             assert.expect(9);
             const { webClient, model } = await createSpreadsheetFromPivot({
-                arch: `
-                <pivot string="Partners">
-                    <field name="date" interval="month" type="row"/>
-                    <field name="id" type="col"/>
-                    <field name="probability" type="measure"/>
-                </pivot>
-            `,
+                pivotView: {
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="date" interval="month" type="row"/>
+                            <field name="id" type="col"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>
+                        `,
+                }
             });
             await testUtils.nextTick();
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
@@ -211,6 +213,142 @@ module(
             assert.equal(globalFilter.rangeType, "month");
             assert.equal(globalFilter.type, "date");
         });
+
+        test("Readonly user can update text filter values",  async function (assert) {
+            assert.expect(5);
+            const { webClient, model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    arch: `
+                        <pivot string="Partners">
+                            <field name="name" type="col"/>
+                            <field name="date" interval="month" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>
+                    `,
+                }
+            });
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "text",
+                    label: "Text Filter",
+                    defaultValue: "abc",
+                    pivotFields: {},
+                    listFields: {}
+                },
+            });
+            model.updateReadOnly(true);
+            await testUtils.nextTick();
+
+            const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+            await testUtils.dom.click(searchIcon);
+
+            const pivots = webClient.el.querySelectorAll(".pivot_filter_section");
+            assert.containsOnce(webClient, ".pivot_filter_section");
+            assert.containsNone(webClient, "i.o_side_panel_filter_icon");
+            assert.equal(pivots[0].querySelector(".o_side_panel_filter_label").textContent, "Text Filter");
+
+            const input = pivots[0].querySelector(".pivot_filter_input input");
+            assert.equal(input.value, "abc");
+
+            await testUtils.fields.editAndTrigger(input, "something", ["change"]);
+
+            assert.equal(model.getters.getGlobalFilterValue("42"), "something");
+        })
+
+        test("Readonly user can update date filter values",  async function (assert) {
+            assert.expect(9);
+            const { webClient, model } = await createSpreadsheetFromPivot({
+                arch: `
+                    <pivot string="Partners">
+                        <field name="name" type="col"/>
+                        <field name="date" interval="month" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+            });
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: {
+                    id: "43",
+                    type: "date",
+                    label: "Date Filter",
+                    rangeType: "quarter",
+                    defaultValue: {year: "this_year", period: "fourth_quarter"},
+                    pivotFields: {1: {field: "date", type: "date"}},
+                    listFields: {}
+                },
+            });
+            model.updateReadOnly(true);
+            await testUtils.nextTick();
+
+            const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+            await testUtils.dom.click(searchIcon);
+            await testUtils.nextTick();
+
+            const pivots = webClient.el.querySelectorAll(".pivot_filter_section");
+            assert.containsOnce(webClient, ".pivot_filter_section");
+            assert.containsNone(webClient, "i.o_side_panel_filter_icon");
+            assert.equal(pivots[0].querySelector(".o_side_panel_filter_label").textContent, "Date Filter");
+
+            const selections = pivots[0].querySelectorAll(".pivot_filter_input div.date_filter_values select");
+            assert.containsN(pivots[0], ".pivot_filter_input div.date_filter_values select", 2);
+
+            const [quarter, year] = selections;
+            assert.equal(quarter.value, "fourth_quarter");
+            assert.equal(year.value, "this_year");
+
+            await testUtils.fields.editSelect(quarter, "second_quarter");
+            await testUtils.fields.editSelect(year, "last_year");
+
+            assert.equal(quarter.value, "second_quarter");
+            assert.equal(year.value, "last_year");
+
+            assert.deepEqual(model.getters.getGlobalFilterValue("43"), {year: "last_year", period: "second_quarter"});
+        })
+
+        test("Readonly user can update relation filter values",  async function (assert) {
+            assert.expect(8);
+            const tagSelector = ".o_field_many2manytags .badge";
+            const { webClient, model } = await createSpreadsheetFromPivot({
+                arch: `
+                    <pivot string="Partners">
+                        <field name="name" type="col"/>
+                        <field name="date" interval="month" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+            });
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "Relation Filter",
+                    modelName: "product",
+                    defaultValue: [41],
+                    pivotFields: {1: {field: "product_id", type: "many2one"}},
+                    listFields: {}
+                },
+            });
+            assert.equal(model.getters.getGlobalFilters().length, 1);
+            model.updateReadOnly(true);
+            await testUtils.nextTick();
+
+            const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+            await testUtils.dom.click(searchIcon);
+
+            const pivot = webClient.el.querySelector(".pivot_filter_section");
+            assert.containsOnce(webClient, ".pivot_filter_section");
+            assert.containsNone(webClient, "i.o_side_panel_filter_icon");
+            assert.equal(pivot.querySelector(".o_side_panel_filter_label").textContent, "Relation Filter");
+            assert.containsOnce(pivot, tagSelector);
+            assert.deepEqual([...pivot.querySelectorAll(tagSelector)].map(el => el.textContent.trim()), ['xpad']);
+
+            await testUtils.dom.click(pivot.querySelector('.pivot_filter_input input.ui-autocomplete-input'));
+            await testUtils.dom.click(document.querySelector('ul.ui-autocomplete li:first-child'));
+
+            assert.containsN(pivot, tagSelector, 2);
+            assert.deepEqual([...pivot.querySelectorAll(tagSelector)].map(el => el.textContent.trim()), ['xpad', 'xphone']);
+        })
 
         test("Cannot have duplicated names", async function (assert) {
             assert.expect(6);

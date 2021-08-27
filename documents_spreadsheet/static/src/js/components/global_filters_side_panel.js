@@ -28,6 +28,10 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
             this.getters = this.env.getters;
         }
 
+        get isReadonly() {
+            return this.env.getters.isReadonly();
+        }
+
         get filters() {
             return this.env.getters.getGlobalFilters();
         }

@@ -50,6 +50,17 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
             return [this.props.year, this.props.period].includes(periodId);
         }
 
+        getCurrentDateFilterValue() {
+            const period = dateOptions(this.props.type).filter(period => this.isSelected(period.id))
+            let value = period.length && period[0].description || ""
+
+            if (!this.isYear()){
+                const year = dateOptions("year").filter(period => this.isSelected(period.id))
+                value += ` ${year.length && year[0].description || ""}`
+            }
+            return value
+        }
+
         onPeriodChanged(ev) {
             const value = ev.target.value;
             this.trigger("time-range-changed", {

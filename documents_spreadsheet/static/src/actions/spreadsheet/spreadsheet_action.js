@@ -42,6 +42,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.stateUpdateMessages = record.revisions;
         this.snapshotRequested = record.snapshot_requested;
         this.state.spreadsheetName = record.name;
+        this.isReadonly = record.isReadonly;
     }
 
     /**

@@ -100,12 +100,13 @@ class Document(models.Model):
                 self.env['spreadsheet.contributor']._update(self.env.user, document)
 
     def join_spreadsheet_session(self):
-        """Join a spreadsheet session. Increment the number of
-        connected clients by one and return the necessary data:
+        """Join a spreadsheet session.
+        Returns the following data::
         - the last snapshot
         - pending revisions since the last snapshot
         - the spreadsheet name
         - whether the user favorited the spreadsheet or not
+        - whether the user can edit the content of the spreadsheet or not
         """
         self.ensure_one()
         self._check_collaborative_spreadsheet_access("read")
@@ -116,6 +117,7 @@ class Document(models.Model):
             "raw": self._get_spreadsheet_snapshot(),
             "revisions": self.sudo()._build_spreadsheet_messages(),
             "snapshot_requested": can_write and self._should_be_snapshotted(),
+            "isReadonly": not can_write,
         }
 
     def dispatch_spreadsheet_message(self, message: CollaborationMessage):

@@ -22,5 +22,8 @@ FilterComponent.components = { Menu };
 
 topbarComponentRegistry.add("filter_component", {
     component: FilterComponent,
-    isVisible: (env) => env.getters.getPivotIds().length + env.getters.getListIds().length,
+    isVisible: (env) => {
+        return (!env.getters.isReadonly() && (env.getters.getPivotIds().length + env.getters.getListIds().length)) ||
+        (env.getters.isReadonly() && env.getters.getGlobalFilters().length)
+    },
 });

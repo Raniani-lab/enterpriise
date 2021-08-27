@@ -49,5 +49,9 @@ SpreadsheetControlPanel.props = {
     numberOfConnectedUsers: {
         type: Number,
         optional: true
-    }
+    },
+    isReadonly: {
+        type: Boolean,
+        optional: true
+    },
 };

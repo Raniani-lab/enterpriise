@@ -27,7 +27,7 @@ import ListingAllSidePanel from "../../side_panels/list/listing_all_side_panel";
 import ListAutofillPlugin from "./plugins/ui/list_autofill_plugin";
 import FiltersEvaluationPlugin from "./plugins/ui/filters_evaluation_plugin";
 
-const { coreTypes, invalidateEvaluationCommands } = spreadsheet;
+const { coreTypes, invalidateEvaluationCommands, readonlyAllowedCommands } = spreadsheet;
 const { corePluginRegistry, uiPluginRegistry, sidePanelRegistry } = spreadsheet.registries;
 
 corePluginRegistry.add("odooPivotPlugin", PivotPlugin);
@@ -53,6 +53,10 @@ invalidateEvaluationCommands.add("ADD_GLOBAL_FILTER");
 invalidateEvaluationCommands.add("EDIT_GLOBAL_FILTER");
 invalidateEvaluationCommands.add("REMOVE_GLOBAL_FILTER");
 invalidateEvaluationCommands.add("SET_GLOBAL_FILTER_VALUE");
+
+readonlyAllowedCommands.add("SET_GLOBAL_FILTER_VALUE");
+readonlyAllowedCommands.add("ADD_PIVOT_DOMAIN");
+readonlyAllowedCommands.add("ADD_LIST_DOMAIN");
 
 sidePanelRegistry.add("PIVOT_PROPERTIES_PANEL", {
     title: () => _t("Pivot properties"),

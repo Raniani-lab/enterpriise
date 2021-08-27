@@ -633,5 +633,5 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     }
 }
 
-PivotAutofillPlugin.modes = ["normal", "headless", "readonly"];
+PivotAutofillPlugin.modes = ["normal", "headless"];
 PivotAutofillPlugin.getters = ["getPivotNextAutofillValue", "getTooltipFormula"];

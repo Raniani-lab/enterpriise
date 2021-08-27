@@ -106,5 +106,5 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
     }
 }
 
-ListAutofillPlugin.modes = ["normal", "headless", "readonly"];
+ListAutofillPlugin.modes = ["normal", "headless"];
 ListAutofillPlugin.getters = ["getNextListValue", "getTooltipListFormula"];

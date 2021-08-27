@@ -9,6 +9,7 @@
             t-att-placeholder="placeholder"
             t-on-input="_onInput"
             t-att-class="state.isUntitled ? 'o-spreadsheet-untitled' : ''"
-            t-on-change="_onNameChanged"/>
+            t-on-change="_onNameChanged"
+            t-att-disabled="props.isReadonly"/>
     </div>
 </templates>

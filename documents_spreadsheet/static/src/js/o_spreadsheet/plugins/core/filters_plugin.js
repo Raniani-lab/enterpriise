@@ -319,7 +319,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
     }
 }
 
-FiltersPlugin.modes = ["normal", "headless", "readonly"];
+FiltersPlugin.modes = ["normal", "headless"];
 FiltersPlugin.getters = [
     "getGlobalFilter",
     "getGlobalFilters",

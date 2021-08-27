@@ -106,4 +106,5 @@ export class SpreadsheetName extends owl.Component {
 SpreadsheetName.template = "documents_spreadsheet.SpreadsheetName";
 SpreadsheetName.props = {
   name: String,
+  isReadonly: Boolean
 };

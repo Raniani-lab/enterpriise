@@ -407,7 +407,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     }
 }
 
-ListStructurePlugin.modes = ["normal", "headless", "readonly"];
+ListStructurePlugin.modes = ["normal", "headless"];
 ListStructurePlugin.getters = [
     "getListComputedDomain",
     "getListDisplayName",

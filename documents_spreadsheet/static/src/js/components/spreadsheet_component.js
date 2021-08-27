@@ -91,6 +91,7 @@ export default class SpreadsheetComponent extends owl.Component {
             name: user.name,
             userId: user.uid,
         };
+        this.isReadonly = props.isReadonly;
         this.transportService = this.props.transportService;
         useExternalListener(window, "beforeunload", this._onLeave.bind(this));
     }
@@ -327,7 +328,9 @@ export default class SpreadsheetComponent extends owl.Component {
         }
         this.alreadyLeft = true;
         this.spreadsheet.comp.model.off("update", this);
-        this.trigger("spreadsheet-saved", this.getSaveData());
+        if (!this.isReadonly){
+            this.trigger("spreadsheet-saved", this.getSaveData());
+        }
     }
 }
 

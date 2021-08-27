@@ -22,6 +22,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
     _loadData(record) {
         this.spreadsheetData = base64ToJson(record.data);
         this.state.spreadsheetName = record.name;
+        this.isReadonly = record.isReadonly;
     }
 }
 SpreadsheetTemplateAction.template = "documents_spreadsheet.SpreadsheetTemplateAction"

@@ -228,7 +228,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     }
 }
 
-PivotPlugin.modes = ["normal", "headless", "readonly"];
+PivotPlugin.modes = ["normal", "headless"];
 PivotPlugin.getters = [
     "getNextPivotId",
     "getPivotColGroupBys",

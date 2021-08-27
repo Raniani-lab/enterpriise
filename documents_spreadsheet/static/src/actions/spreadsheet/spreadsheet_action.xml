@@ -5,6 +5,7 @@
     <SpreadsheetControlPanel
         spreadsheetName="state.spreadsheetName"
         breadcrumbs="props.breadcrumbs"
+        isReadonly="isReadonly"
         t-on-favorite-toggled="_onSpreadSheetFavoriteToggled"
         isFavorited="state.isFavorited"
         isSpreadsheetSynced="state.isSynced"
@@ -15,6 +16,7 @@
         name="state.spreadsheetName"
         res_id="props.resId"
         data="spreadsheetData"
+        isReadonly="isReadonly"
         thumbnailSize="750"
         stateUpdateMessages="stateUpdateMessages"
         initCallback="props.action.params.initCallback"

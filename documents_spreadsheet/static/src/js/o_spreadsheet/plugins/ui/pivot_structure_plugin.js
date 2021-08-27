@@ -866,7 +866,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     }
 }
 
-PivotStructurePlugin.modes = ["normal", "headless", "readonly"];
+PivotStructurePlugin.modes = ["normal", "headless"];
 PivotStructurePlugin.getters = [
     "getPivotComputedDomain",
     "getPivotDisplayName",

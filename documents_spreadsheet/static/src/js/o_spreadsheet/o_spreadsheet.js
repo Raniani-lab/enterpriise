@@ -65,6 +65,7 @@
     const HEADER_BORDER_COLOR = "#C0C0C0";
     const CELL_BORDER_COLOR = "#E2E3E3";
     const BACKGROUND_CHART_COLOR = "#FFFFFF";
+    const MENU_ITEM_DISABLED_COLOR = "#CACACA";
     // Dimensions
     const MIN_ROW_HEIGHT = 10;
     const MIN_COL_WIDTH = 5;
@@ -8222,7 +8223,7 @@
         }
     }
     BasePlugin.getters = [];
-    BasePlugin.modes = ["headless", "normal", "readonly"];
+    BasePlugin.modes = ["headless", "normal"];
 
     /**
      * Core plugins handle spreadsheet data.
@@ -13667,7 +13668,7 @@
         cursor: pointer;
         border-right: 1px solid darkgray;
         &.inactive {
-          background-color: #f8f9fa;
+          background-color: ${BACKGROUND_HEADER_COLOR};
           border-bottom: 1px solid darkgray;
         }
         .fa {
@@ -15648,7 +15649,7 @@
     }
     AutofillPlugin.layers = [6 /* Autofill */];
     AutofillPlugin.getters = ["getAutofillTooltip"];
-    AutofillPlugin.modes = ["normal", "readonly"];
+    AutofillPlugin.modes = ["normal"];
 
     class AutomaticSumPlugin extends UIPlugin {
         handle(cmd) {
@@ -16484,7 +16485,7 @@
     }
     ClipboardPlugin.layers = [2 /* Clipboard */];
     ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
-    ClipboardPlugin.modes = ["normal", "readonly"];
+    ClipboardPlugin.modes = ["normal"];
 
     var SelectionMode;
     (function (SelectionMode) {
@@ -17263,7 +17264,7 @@
         }
     }
     SelectionPlugin.layers = [5 /* Selection */];
-    SelectionPlugin.modes = ["normal", "readonly"];
+    SelectionPlugin.modes = ["normal"];
     SelectionPlugin.getters = [
         "getActiveSheet",
         "getActiveSheetId",
@@ -17808,7 +17809,7 @@
         "getCurrentTokens",
         "getTokenAtCursor",
     ];
-    EditionPlugin.modes = ["normal", "readonly"];
+    EditionPlugin.modes = ["normal"];
 
     function* makeObjectIterator(obj) {
         for (let i in obj) {
@@ -18042,7 +18043,7 @@
         }
     }
     EvaluationPlugin.getters = ["evaluateFormula", "getRangeFormattedValues", "getRangeValues"];
-    EvaluationPlugin.modes = ["normal", "readonly"];
+    EvaluationPlugin.modes = ["normal"];
 
     const GraphColors = [
         // the same colors as those used in odoo reporting
@@ -18399,7 +18400,7 @@
         }
     }
     EvaluationChartPlugin.getters = ["getChartRuntime"];
-    EvaluationChartPlugin.modes = ["normal", "readonly"];
+    EvaluationChartPlugin.modes = ["normal"];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -18772,7 +18773,7 @@
         }
     }
     EvaluationConditionalFormatPlugin.getters = ["getConditionalStyle", "getConditionalIcon"];
-    EvaluationConditionalFormatPlugin.modes = ["normal", "readonly"];
+    EvaluationConditionalFormatPlugin.modes = ["normal"];
 
     const BORDER_COLOR = "#8B008B";
     const BACKGROUND_COLOR = "#8B008B33";
@@ -19224,7 +19225,7 @@
             }
         }
     }
-    HighlightPlugin.modes = ["normal", "readonly"];
+    HighlightPlugin.modes = ["normal"];
     HighlightPlugin.layers = [1 /* Highlights */];
     HighlightPlugin.getters = ["getHighlights"];
 
@@ -19856,7 +19857,7 @@
         "getEdgeScrollCol",
         "getEdgeScrollRow",
     ];
-    RendererPlugin.modes = ["normal", "readonly"];
+    RendererPlugin.modes = ["normal"];
 
     /**
      * Selection input Plugin
@@ -20197,7 +20198,7 @@
             return index >= 0 ? index : null;
         }
     }
-    SelectionInputPlugin.modes = ["normal", "readonly"];
+    SelectionInputPlugin.modes = ["normal"];
     SelectionInputPlugin.layers = [1 /* Highlights */];
     SelectionInputPlugin.getters = ["getSelectionInput", "getSelectionInputValue", "isRangeValid"];
 
@@ -20652,7 +20653,7 @@
     }
     SelectionMultiUserPlugin.getters = ["getClientsToDisplay"];
     SelectionMultiUserPlugin.layers = [5 /* Selection */];
-    SelectionMultiUserPlugin.modes = ["normal", "readonly"];
+    SelectionMultiUserPlugin.modes = ["normal"];
 
     class SortPlugin extends UIPlugin {
         allowDispatch(cmd) {
@@ -21048,7 +21049,7 @@
             return this.showFormulas;
         }
     }
-    UIOptionsPlugin.modes = ["normal", "readonly"];
+    UIOptionsPlugin.modes = ["normal"];
     UIOptionsPlugin.getters = ["shouldShowFormulas"];
 
     class SheetUIPlugin extends UIPlugin {
@@ -21507,7 +21508,7 @@
         "getViewportDimension",
         "getGridDimension",
     ];
-    ViewportPlugin.modes = ["normal", "readonly"];
+    ViewportPlugin.modes = ["normal"];
 
     const corePluginRegistry = new Registry()
         .add("sheet", SheetPlugin)
@@ -25326,7 +25327,7 @@
                 client,
                 moveClient: () => { },
                 isHeadless: config.mode === "headless" || false,
-                isReadonly: config.mode === "readonly" || false,
+                isReadonly: config.isReadonly || false,
                 snapshotRequested: false,
                 dataSources: this.dataSources,
             };
@@ -25603,21 +25604,9 @@
       text-overflow: ellipsis;
       cursor: pointer;
 
-      &:hover {
-        background-color: #ebebeb;
-      }
-
-      &.disabled {
-        color: grey;
-        cursor: not-allowed;
-      }
-
       &.o-menu-root {
         display: flex;
         justify-content: space-between;
-      }
-      .o-menu-item-shortcut {
-        color: grey;
       }
       .o-menu-item-icon {
         margin-top: auto;
@@ -25625,6 +25614,19 @@
       }
       .o-icon {
         width: 10px;
+      }
+
+      &:not(.disabled) {
+        &:hover {
+          background-color: #ebebeb;
+        }
+        .o-menu-item-shortcut {
+          color: grey;
+        }
+      }
+      &.disabled {
+        color: ${MENU_ITEM_DISABLED_COLOR};
+        cursor: not-allowed;
       }
     }
 
@@ -25783,7 +25785,7 @@
     // -----------------------------------------------------------------------------
     const TEMPLATE$h = xml$j /* xml */ `
   <div class="o-spreadsheet-bottom-bar">
-    <div class="o-sheet-item o-add-sheet" t-on-click="addSheet">${PLUS}</div>
+    <div class="o-sheet-item o-add-sheet" t-att-class="{'disabled': getters.isReadonly()}" t-on-click="addSheet">${PLUS}</div>
     <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
     <div class="o-all-sheets">
       <t t-foreach="getters.getSheets()" t-as="sheet" t-key="sheet.id">
@@ -25817,6 +25819,10 @@
     .o-add-sheet,
     .o-list-sheets {
       margin-right: 5px;
+    }
+
+    .o-add-sheet.disabled {
+      cursor: not-allowed;
     }
 
     .o-sheet-item {
@@ -26603,11 +26609,12 @@
     };
     const TEMPLATE$c = xml$e /* xml */ `
 <div class="o-composer-container">
-  <div class="o-composer"
+  <div
+    t-att-class="{ 'o-composer': true, 'text-muted': getters.isReadonly(), 'unfocusable': getters.isReadonly() }"
     t-att-style="props.inputStyle"
     t-ref="o_composer"
     tabindex="1"
-    contenteditable="true"
+    t-att-contenteditable="getters.isReadonly() ? 'false' : 'true'"
     spellcheck="false"
 
     t-on-keydown="onKeydown"
@@ -26653,6 +26660,9 @@
       word-break: break-all;
       &:focus {
         outline: none;
+      }
+      &.unfocusable {
+        pointer-events: none;
       }
       span {
         white-space: pre;
@@ -26878,6 +26888,9 @@
             this.contentHelper.removeSelection();
         }
         onClick() {
+            if (this.getters.isReadonly()) {
+                return;
+            }
             const newSelection = this.contentHelper.getCurrentSelection();
             this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             if (this.props.focus === "inactive") {
@@ -26921,7 +26934,7 @@
                 content = this.getColoredTokens();
             }
             else {
-                content = [{ value, color: "#000" }];
+                content = [{ value }];
             }
             return content;
         }
@@ -27184,10 +27197,8 @@
 `;
     const CSS$9 = css$b /* scss */ `
   .o-error-tooltip {
-    position: absolute;
     font-size: 13px;
     background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
     border-left: 3px solid red;
     padding: 10px;
   }
@@ -27873,12 +27884,10 @@
 `;
     const CSS$4 = css$6 /* scss */ `
   .o-link-tool {
-    border
     font-size: 13px;
     background-color: white;
     box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    margin: 2px 10px 2px 10px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
@@ -27949,7 +27958,7 @@
     const { useRef: useRef$3 } = hooks$1;
     const MENU_OFFSET_X = 320;
     const MENU_OFFSET_Y = 100;
-    const PADDING = 10;
+    const PADDING = 12;
     const TEMPLATE$3 = xml$5 /* xml */ `
     <div class="o-link-editor" t-on-click.stop="menu.isOpen=false" t-on-keydown.stop="onKeyDown">
       <div class="o-section">
@@ -27986,7 +27995,6 @@
     font-size: 13px;
     background-color: white;
     box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    margin: 2px 10px 2px 10px;
     padding: ${PADDING}px;
     display: flex;
     flex-direction: column;
@@ -29601,7 +29609,7 @@
     .o-sidePanelHeader {
       padding: 6px;
       height: 30px;
-      background-color: #f8f9fa;
+      background-color: ${BACKGROUND_HEADER_COLOR};
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -29751,6 +29759,7 @@
             this.menuRef = useRef$1("menuRef");
             this.composerStyle = `
     line-height: 34px;
+    height: 34px;
     border-bottom: 1px solid #e0e2e4;
     border-left: 1px solid #e0e2e4;
     background-color: white;
@@ -29942,7 +29951,12 @@
       <!-- Toolbar and Cell Content -->
       <div class="o-topbar-toolbar">
         <!-- Toolbar -->
-        <div class="o-toolbar-tools">
+        <div t-if="getters.isReadonly()" class="o-readonly-toolbar text-muted">
+          <span>
+            <i class="fa fa-eye" /> <t t-esc="env._t('Readonly Access')" />
+          </span>
+        </div>
+        <div t-else="" class="o-toolbar-tools">
           <div class="o-tool" title="Undo" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
           <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="Redo"  t-on-click="redo">${REDO_ICON}</div>
           <div class="o-tool" title="Paint Format" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
@@ -30062,8 +30076,12 @@
         border-bottom: 1px solid #e0e2e4;
         display: flex;
 
-        .o-composer-container {
-          height: 34px;
+        .o-readonly-toolbar {
+          display: flex;
+          align-items: center;
+          background-color: ${BACKGROUND_HEADER_COLOR};
+          padding-left: 18px;
+          padding-right: 18px;
         }
 
         /* Toolbar */
@@ -30435,16 +30453,25 @@
             }
         }
         onTopBarComposerFocused(ev) {
+            if (this.model.getters.isReadonly()) {
+                return;
+            }
             this.composer.topBarFocus = "contentFocus";
             this.composer.gridFocusMode = "inactive";
             this.setComposerContent(ev.detail || {});
         }
         onGridComposerContentFocused(ev) {
+            if (this.model.getters.isReadonly()) {
+                return;
+            }
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "contentFocus";
             this.setComposerContent(ev.detail || {});
         }
         onGridComposerCellFocused(ev) {
+            if (this.model.getters.isReadonly()) {
+                return;
+            }
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "cellFocus";
             this.setComposerContent(ev.detail || {});
@@ -30550,8 +30577,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-09-01T16:32:17.762Z';
-    exports.__info__.hash = 'c120503';
+    exports.__info__.date = '2021-09-02T12:40:12.070Z';
+    exports.__info__.hash = 'c807948';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

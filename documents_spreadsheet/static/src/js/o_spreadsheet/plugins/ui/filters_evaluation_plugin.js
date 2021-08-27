@@ -195,7 +195,6 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             );
             this.dispatch("ADD_LIST_DOMAIN", { id: listId, domain, refresh: true });
         }
-        this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
     }
 
     // -------------------------------------------------------------------------
@@ -322,7 +321,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     }
 }
 
-FiltersEvaluationPlugin.modes = ["normal", "readonly"];
+FiltersEvaluationPlugin.modes = ["normal"];
 FiltersEvaluationPlugin.getters = [
     "getFilterDisplayValue",
     "getGlobalFilterValue",

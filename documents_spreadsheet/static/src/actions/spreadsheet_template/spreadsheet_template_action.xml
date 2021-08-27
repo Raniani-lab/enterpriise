@@ -6,11 +6,13 @@
         spreadsheetName="state.spreadsheetName"
         breadcrumbs="props.breadcrumbs"
         t-on-spreadsheet-name-changed="_onSpreadSheetNameChanged"
-    />
+        isReadonly="isReadonly"
+        />
     <SpreadsheetComponent
         name="state.spreadsheetName"
         res_id="props.resId"
         data="spreadsheetData"
+        isReadonly="isReadonly"
         showFormulas="showFormulas"
         thumbnailSize="750"
         t-on-make-copy="_onMakeCopy"

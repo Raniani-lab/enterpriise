@@ -20,3 +20,19 @@ class SpreadsheetTemplate(models.Model):
         new_name = chosen_name or _("%s (copy)", self.name)
         default = dict(default or {}, name=new_name)
         return super().copy(default)
+
+    def fetch_template_data(self):
+        """ Method called on template load
+        Returns the following data:
+        - the template name
+        - its raw data
+        - whether the user can edit the content of the template or not
+        """
+        self.ensure_one()
+        can_write = self.check_access_rights("write", raise_exception=False) \
+            and self.check_access_rule("write")
+        return {
+            "name": self.name,
+            "data": self.data,
+            "isReadonly": not can_write,
+        }

@@ -34,6 +34,7 @@ topbarMenuRegistry.addChild("download", ["file"], {
     name: _t("Download"),
     sequence: 50,
     action: (env) => env.download(),
+    isReadonlyAllowed:true,
 });
 topbarMenuRegistry.add("data", {
     name: _t("Data"),

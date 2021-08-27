@@ -123,16 +123,14 @@ cellMenuRegistry.add("reinsert_pivot", {
         const pivot = env.getters.getPivot(pivotId)
         const cache = await env.getters.getAsyncCache(pivotId);
         const domain = cache.getDomainFromFormula(evaluatedArgs);
-        env.bus.trigger("do-action", {
-            action: {
-                type: "ir.actions.act_window",
-                name: cache.getModelLabel(),
-                res_model: pivot.model,
-                view_mode: 'list',
-                views: [[false, 'list']],
-                target: 'current',
-                domain,
-            },
+        await env.services.action.doAction({
+            type: "ir.actions.act_window",
+            name: cache.getModelLabel(),
+            res_model: pivot.model,
+            view_mode: 'list',
+            views: [[false, 'list']],
+            target: 'current',
+            domain,
         });
     },
     isVisible: (env) => {

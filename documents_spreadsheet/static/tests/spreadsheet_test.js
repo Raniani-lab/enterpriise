@@ -1235,7 +1235,7 @@ module(
     });
 
     test("Can rebuild the Odoo domain of records based on the according pivot cell", async function (assert) {
-      assert.expect(7);
+      assert.expect(1);
       const arch = `
             <pivot string="Partners">
                 <field name="product" type="col"/>
@@ -1252,29 +1252,20 @@ module(
             "partner,false,search": `<Search/>`,
           },
         },
-      });
-      env.bus.on("do-action", this, (payload) => {
-        assert.step("see records");
-        assert.equal(payload.action.name, "partner");
-        assert.equal(payload.action.res_model, "partner");
-        assert.equal(payload.action.type, "ir.actions.act_window");
-        assert.deepEqual(payload.action.views, [[false, "list"]]);
-        assert.equal(
-          payload.action.domain,
-          `["&", ["product", "=", 41], ["bar", "=", 110]]`
-        );
       });
       env.dispatch("SELECT_CELL", { col: 2, row: 2 });
       await nextTick();
-      const root = cellMenuRegistry
-        .getAll()
-        .find((item) => item.id === "see records");
+      const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
       await root.action(env);
-      assert.verifySteps(["see records"]);
+      const currentAction = env.services.action.currentController.action;
+      assert.equal(
+          JSON.stringify(currentAction.domain),
+          `["&",["product","=",41],["bar","=",110]]`
+      );
     });
 
     test("Can rebuild the Odoo domain of records based on a cell containing the total of pivots cells (in a column)", async function (assert) {
-      assert.expect(7);
+      assert.expect(1);
       const arch = `
             <pivot string="Partners">
                 <field name="product" type="col"/>
@@ -1291,29 +1282,20 @@ module(
             "partner,false,search": `<Search/>`,
           },
         },
-      });
-      env.bus.on("do-action", this, (payload) => {
-        assert.step("see records");
-        assert.equal(payload.action.name, "partner");
-        assert.equal(payload.action.res_model, "partner");
-        assert.equal(payload.action.type, "ir.actions.act_window");
-        assert.deepEqual(payload.action.views[0], [false, "list"]);
-        assert.equal(
-          payload.action.domain,
-          `["&", ["product", "=", 37], ["bar", "=", 110]]`
-        );
       });
       env.dispatch("SELECT_CELL", { col: 1, row: 3 });
       await nextTick();
-      const root = cellMenuRegistry
-        .getAll()
-        .find((item) => item.id === "see records");
+      const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
       await root.action(env);
-      assert.verifySteps(["see records"]);
+      const currentAction = env.services.action.currentController.action;
+      assert.equal(
+          JSON.stringify(currentAction.domain),
+          `["&",["product","=",37],["bar","=",110]]`
+      );
     });
 
     test("Can rebuild the Odoo domain of records based on a cell containing the total of pivots cells (in a row)", async function (assert) {
-      assert.expect(7);
+      assert.expect(4);
       const arch = `
             <pivot string="Partners">
                 <field name="product" type="col"/>
@@ -1330,29 +1312,23 @@ module(
             "partner,false,search": `<Search/>`,
           },
         },
-      });
-      env.bus.on("do-action", this, (payload) => {
-        assert.step("see records");
-        assert.equal(payload.action.name, "partner");
-        assert.equal(payload.action.res_model, "partner");
-        assert.equal(payload.action.type, "ir.actions.act_window");
-        assert.deepEqual(payload.action.views[0], [false, "list"]);
-        assert.equal(
-          payload.action.domain,
-          `["|", "&", ["product", "=", 37], ["bar", "=", 110], "&", ["product", "=", 41], ["bar", "=", 110]]`
-        );
       });
       env.dispatch("SELECT_CELL", { col: 3, row: 2 });
       await nextTick();
-      const root = cellMenuRegistry
-        .getAll()
-        .find((item) => item.id === "see records");
+      const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
       await root.action(env);
-      assert.verifySteps(["see records"]);
+      const currentAction = env.services.action.currentController.action;
+      assert.equal(
+          JSON.stringify(currentAction.domain),
+          `["|","&",["product","=",37],["bar","=",110],"&",["product","=",41],["bar","=",110]]`
+      );
+      assert.strictEqual(currentAction.res_model, "partner");
+      assert.strictEqual(currentAction.view_mode, "list");
+      assert.strictEqual(currentAction.type, "ir.actions.act_window");
     });
 
     test("Can rebuild the Odoo domain of records based on a total of all pivot cells", async function (assert) {
-      assert.expect(7);
+      assert.expect(1);
       const arch = `
             <pivot string="Partners">
                 <field name="product" type="col"/>
@@ -1370,24 +1346,15 @@ module(
           },
         },
       });
-      env.bus.on("do-action", this, (payload) => {
-        assert.step("see records");
-        assert.equal(payload.action.name, "partner");
-        assert.equal(payload.action.res_model, "partner");
-        assert.equal(payload.action.type, "ir.actions.act_window");
-        assert.deepEqual(payload.action.views[0], [false, "list"]);
-        assert.equal(
-          payload.action.domain,
-          `["|", "&", ["product", "=", 37], ["bar", "=", 110], "&", ["product", "=", 41], ["bar", "=", 110]]`
-        );
-      });
       env.dispatch("SELECT_CELL", { col: 3, row: 3 });
       await nextTick();
-      const root = cellMenuRegistry
-        .getAll()
-        .find((item) => item.id === "see records");
+      const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
       await root.action(env);
-      assert.verifySteps(["see records"]);
+      const currentAction = env.services.action.currentController.action;
+      assert.equal(
+          JSON.stringify(currentAction.domain),
+          `["|","&",["product","=",37],["bar","=",110],"&",["product","=",41],["bar","=",110]]`
+      );
     });
 
     module("Global filters panel");

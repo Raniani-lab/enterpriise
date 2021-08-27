@@ -5,7 +5,7 @@
         <record id="field_service_project_stage_0" model="project.task.type">
             <field name="sequence">15</field>
             <field name="name">To Invoice</field>
-            <field name="legend_blocked">Not validated</field>
+            <field name="legend_blocked">Blocked</field>
         </record>
 
         <record id="industry_fsm.fsm_project" model="project.project">

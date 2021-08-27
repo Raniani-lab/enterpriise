@@ -33,24 +33,40 @@ class ProductProduct(models.Model):
         task = self._get_contextual_fsm_task()
         if task:
             for product in self:
-                sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', product.id), ('task_id', '=', task.id), '|', '|', ('qty_delivered', '=', 0.0), ('qty_delivered_method', '=', 'manual'), ('state', '!=', 'done')], limit=1)
-                if sale_line:  # existing line: change ordered qty (and delivered, if delivered method)
-                    vals = {
-                        'product_uom_qty': product.fsm_quantity
-                    }
-                    if sale_line.qty_delivered_method == 'manual':
-                        vals['qty_delivered'] = product.fsm_quantity
-                    sale_line.with_context(fsm_no_message_post=True).write(vals)
-                else:  # create new SOL
+                sale_lines = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', product.id), ('task_id', '=', task.id)])
+                all_editable_lines = sale_lines.filtered(lambda l: l.qty_delivered == 0 or l.qty_delivered_method == 'manual' or l.state != 'done')
+                diff_qty = product.fsm_quantity - sum(sale_lines.mapped('product_uom_qty'))
+                if all_editable_lines:  # existing line: change ordered qty (and delivered, if delivered method)
+                    if diff_qty > 0:
+                        vals = {
+                            'product_uom_qty': all_editable_lines[0].product_uom_qty + diff_qty,
+                        }
+                        if product.service_type == 'manual':
+                            vals['qty_delivered'] = all_editable_lines[0].product_uom_qty + diff_qty
+                        all_editable_lines[0].with_context(fsm_no_message_post=True).write(vals)
+                        continue
+                    # diff_qty is negative, we remove the quantities from existing editable lines:
+                    for line in all_editable_lines:
+                        new_line_qty = max(0, line.product_uom_qty + diff_qty)
+                        diff_qty += line.product_uom_qty - new_line_qty
+                        vals = {
+                            'product_uom_qty': new_line_qty
+                        }
+                        if product.service_type == 'manual':
+                            vals['qty_delivered'] = new_line_qty
+                        line.write(vals)
+                        if diff_qty == 0:
+                            break
+                elif diff_qty > 0:  # create new SOL
                     vals = {
                         'order_id': task.sale_order_id.id,
                         'product_id': product.id,
-                        'product_uom_qty': product.fsm_quantity,
+                        'product_uom_qty': diff_qty,
                         'product_uom': product.uom_id.id,
                         'task_id': task.id
                     }
                     if product.service_type == 'manual':
-                        vals['qty_delivered'] = product.fsm_quantity
+                        vals['qty_delivered'] = diff_qty
 
                     if task.sale_order_id.pricelist_id.discount_policy == 'without_discount':
                         sol = self.env['sale.order.line'].new(vals)

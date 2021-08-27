@@ -76,3 +76,30 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         self.assertEqual(self.task.quotation_count, 1, "1 quotation should be linked to the task")
         quotation = self.env['sale.order'].search([('state', '!=', 'cancel'), ('task_id', '=', self.task.id)])
         self.assertEqual(self.task.action_fsm_view_quotations()['res_id'], quotation.id, "Created quotation id should be in the action")
+
+    def test_change_product_selection(self):
+        self.task.write({'partner_id': self.partner_1.id})
+        product = self.product_ordered.with_context({'fsm_task_id': self.task.id})
+        product.set_fsm_quantity(5)
+
+        so = self.task.sale_order_id
+        sol01 = so.order_line[-1]
+        self.assertEqual(sol01.product_uom_qty, 5)
+
+        # Manually add a line for the same product
+        sol02 = self.env['sale.order.line'].create({
+            'order_id': so.id,
+            'product_id': product.id,
+            'product_uom_qty': 3,
+            'product_uom': product.uom_id.id,
+            'task_id': self.task.id
+        })
+        product.sudo()._compute_fsm_quantity()
+        self.assertEqual(sol02.product_uom_qty, 3)
+        self.assertEqual(product.fsm_quantity, 8)
+
+        product.set_fsm_quantity(2)
+        product.sudo()._compute_fsm_quantity()
+        self.assertEqual(product.fsm_quantity, 2)
+        self.assertEqual(sol01.product_uom_qty, 0)
+        self.assertEqual(sol02.product_uom_qty, 2)

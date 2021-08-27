@@ -278,3 +278,21 @@ class TestFsmFlowStock(TestFsmFlowSale):
         self.assertEqual(product.fsm_quantity, 0)
         self.assertEqual(action.get('type'), 'ir.actions.act_window', "It should redirect to the tracking wizard")
         self.assertEqual(action.get('res_model'), 'fsm.stock.tracking', "It should redirect to the tracking wizard")
+
+    def test_set_quantity_with_done_so(self):
+        self.task.write({'partner_id': self.partner_1.id})
+        product = self.product_ordered.with_context({'fsm_task_id': self.task.id})
+        product.type = 'consu'
+        product.set_fsm_quantity(1)
+
+        so = self.task.sale_order_id
+        line01 = so.order_line[-1]
+        self.assertEqual(line01.product_uom_qty, 1)
+        so.action_confirm()
+        so.picking_ids.button_validate()
+        validate_form_data = so.picking_ids.button_validate()
+        validate_form = Form(self.env[validate_form_data['res_model']].with_context(validate_form_data['context'])).save()
+        validate_form.process()
+
+        product.set_fsm_quantity(3)
+        self.assertEqual(line01.product_uom_qty, 3)

@@ -868,7 +868,7 @@ export default class BarcodeModel extends owl.core.EventBus {
                             result.product = product;
                             result.match = true;
                         }
-                    } else if (rule.type === 'qty_done') { // TODO: replace `qty_done` by 'quantity' in the GS1 rules ('barcodes_gs1_rules.xml').
+                    } else if (rule.type === 'quantity') {
                         result.quantity = value;
                         // The quantity is usually associated to an UoM, but we
                         // ignore this info if the UoM setting is disabled.

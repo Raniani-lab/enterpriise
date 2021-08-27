@@ -69,7 +69,7 @@ class res_company(models.Model):
             raise UserError(_("Company %s does not have the apikey, business_id or the journal_id set") % (self.name))
 
         from_formated_datetime = self.l10n_au_kp_lock_date and datetime.combine(self.l10n_au_kp_lock_date, datetime.min.time()).replace(hour=23, minute=59, second=59)
-        from_formated_datetime = format_datetime(self.env, from_formated_datetime, dt_format="yyyy-MM-dd'T'HH:mm:ss")
+        from_formated_datetime = format_datetime(self.env, from_formated_datetime, dt_format="yyyy-MM-dd'T'HH:mm:ss", tz='UTC')
         filter = "$filter=DatePaid gt datetime'%s'&" % (from_formated_datetime) if from_formated_datetime else ''
         skip = 0
         top = 100

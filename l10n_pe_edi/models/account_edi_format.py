@@ -215,11 +215,9 @@ class AccountEdiFormat(models.Model):
         values = {
             **invoice._prepare_edi_vals_to_export(),
             'spot': invoice._l10n_pe_edi_get_spot(),
-            'is_refund': invoice.move_type in ('out_refund', 'in_refund'),
             'PaymentMeansID': invoice._l10n_pe_edi_get_payment_means(),
-            'invoice_date_due_vals': invoice.line_ids.filtered(lambda l: l.account_internal_type=='receivable'),
-            'invoice_lines_vals': [],
-            'certificate_date': self.env['l10n_pe_edi.certificate']._get_pe_current_datetime().date(),
+            'is_refund': invoice.move_type in ('out_refund', 'in_refund'),
+            'certificate_date': invoice.invoice_date,
             'format_float': format_float,
         }
 

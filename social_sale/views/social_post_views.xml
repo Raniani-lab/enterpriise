@@ -10,7 +10,7 @@
                 <button class="oe_stat_button order-1" name="action_redirect_to_invoiced"  type="object" icon="fa-usd">
                     <field name="sale_invoiced_amount" string="Revenues" widget="statinfo"/>
                 </button>
-                <button class="oe_stat_button order-2" name="action_redirect_to_quotations"  type="object" icon="fa-money">
+                <button class="oe_stat_button order-2" name="action_redirect_to_quotations"  type="object" icon="fa-pencil-square-o">
                     <field name="sale_quotation_count" string="Quotations" widget="statinfo"/>
                 </button>
             </xpath>

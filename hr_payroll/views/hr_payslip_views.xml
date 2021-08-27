@@ -83,7 +83,7 @@
                         icon="fa-calendar" name="action_open_work_entries" string="Work Entries">
                     </button>
                     <button type="object" class="oe_stat_button" name="action_open_salary_attachments" id="open_salary_attachments"
-                        icon="fa-credit-card" attrs="{'invisible': [('salary_attachment_count', '=', 0)]}">
+                        icon="fa-files-o" attrs="{'invisible': [('salary_attachment_count', '=', 0)]}">
                         <field name="salary_attachment_count" widget="statinfo" string="Salary Attachments"/>
                     </button>
                 </div>

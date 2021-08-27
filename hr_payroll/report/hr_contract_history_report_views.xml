@@ -15,7 +15,7 @@
                 </button>
                 <button name="action_open_salary_attachments"
                     class="oe_stat_button"
-                    icon="fa-credit-card"
+                    icon="fa-files-o"
                     type="object"
                     groups="hr_payroll.group_hr_payroll_user">
                     <field name="salary_attachment_count" string="Salary Attachments" widget="statinfo"/>

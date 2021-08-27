@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.tools.float_utils import float_compare
+from odoo.tools import html2plaintext, is_html_empty
 
 
 class StockPicking(models.Model):
@@ -114,6 +115,9 @@ class StockPicking(models.Model):
             "source_location_ids": source_locations.ids,
             "destination_locations_ids": destination_locations.ids,
         }
+        # Extracts pickings' note if it's empty HTML.
+        for picking in data['records']['stock.picking']:
+            picking['note'] = False if is_html_empty(picking['note']) else html2plaintext(picking['note'])
         return data
 
     def get_po_to_split_from_barcode(self, barcode):

@@ -694,12 +694,12 @@ module(
                 `,
                 },
             });
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "relation",
                     label: "Filter",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "product",
                             type: "many2one",
@@ -707,7 +707,8 @@ module(
                     },
                 },
             });
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            await nextTick();
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: "42",
                 value: [41],
             });
@@ -1311,8 +1312,8 @@ module(
                 },
             });
             const label = "This year";
-            model.dispatch("ADD_PIVOT_FILTER", {
-                filter: { id: "42", type: "date", label, fields: {}, defaultValue: {} },
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: { id: "42", type: "date", label, pivotFields: {}, defaultValue: {} },
             });
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
             await dom.click(searchIcon);
@@ -1405,7 +1406,7 @@ module(
             let globalFilter = model.getters.getGlobalFilters()[0];
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
-            assert.deepEqual(globalFilter.fields[1], { field: "product", type: "many2one" });
+            assert.deepEqual(globalFilter.pivotFields[1], { field: "product", type: "many2one" });
         });
 
         QUnit.test(
@@ -1469,13 +1470,13 @@ module(
                 type: "relation",
                 modelName: "product",
                 label,
-                fields: {
+                pivotFields: {
                     1: { type: "many2one", field: "product" }, // first pivotId
                     2: { type: "many2one", field: "product" }, // second pivotId
                 },
                 defaultValue: [],
             };
-            model.dispatch("ADD_PIVOT_FILTER", { filter });
+            model.dispatch("ADD_GLOBAL_FILTER", { filter });
             const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
             await dom.click(searchIcon);
             const items = webClient.el.querySelectorAll(
@@ -1554,8 +1555,8 @@ module(
             });
             const label = "This year";
             const defaultValue = "value";
-            model.dispatch("ADD_PIVOT_FILTER", {
-                filter: { id: "42", type: "text", label, defaultValue, fields: {} },
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: { id: "42", type: "text", label, defaultValue, pivotFields: {} },
             });
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
             await dom.click(searchIcon);
@@ -1589,11 +1590,11 @@ module(
             });
             const label = "This year";
             const defaultValue = "value";
-            model.dispatch("ADD_PIVOT_FILTER", {
-                filter: { id: "42", type: "text", label, defaultValue, fields: {} },
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: { id: "42", type: "text", label, defaultValue, pivotFields: {} },
             });
             const [filter] = model.getters.getGlobalFilters();
-            assert.equal(filter.value, defaultValue);
+            assert.equal(model.getters.getGlobalFilterValue(filter.id), defaultValue);
         });
 
         test("Default value defines value at model loading", async function (assert) {
@@ -1601,10 +1602,10 @@ module(
             const label = "This year";
             const defaultValue = "value";
             const model = new Model({
-                globalFilters: [{ type: "text", label, defaultValue, fields: {} }],
+                globalFilters: [{ type: "text", label, defaultValue, fields: {}, id: "1" }],
             });
             const [filter] = model.getters.getGlobalFilters();
-            assert.equal(filter.value, defaultValue);
+            assert.equal(model.getters.getGlobalFilterValue(filter.id), defaultValue);
         });
 
         test("Name is only fetched once", async function (assert) {
@@ -1648,12 +1649,12 @@ module(
                     },
                 },
             });
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "relation",
                     label: "Filter",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "product",
                             type: "many2one",
@@ -1679,7 +1680,7 @@ module(
                 getCellFormula(model, "A8"),
                 `=PIVOT.HEADER("1","foo","12","product","41")`
             );
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: "42",
                 value: [17],
             });
@@ -1714,12 +1715,12 @@ module(
                     },
                 },
             });
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "relation",
                     label: "Filter",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "product",
                             type: "many2one",
@@ -1737,7 +1738,7 @@ module(
                 getCellFormula(model, "A6"),
                 `=PIVOT.HEADER("1","foo","12","product","false")`
             );
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: "42",
                 value: [17],
             });

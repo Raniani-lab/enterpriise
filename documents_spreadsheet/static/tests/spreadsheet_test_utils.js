@@ -323,6 +323,39 @@ export async function createSpreadsheetFromList(params = {}) {
 }
 
 /**
+ * Create a spreadsheet with both a pivot and a list view.
+ * The pivot is on the first sheet, the list is on the second.
+ */
+export async function createSpreadsheetWithPivotAndList() {
+    const { model: listModel, webClient: listWebClient } = await createSpreadsheetFromList();
+    const { model, webClient, env } = await createSpreadsheetFromPivot({
+        webClient: listWebClient,
+    });
+
+    model.dispatch("CREATE_SHEET", {
+        sheetId: "LIST",
+        position: model.getters.getVisibleSheets().length,
+    });
+    const list = listModel.getters.getListForRPC("1");
+    list.id = "1";
+    const types = {
+        foo: "integer",
+        bar: "boolean",
+        date: "date",
+        product_id: "many2one",
+    };
+    model.dispatch("BUILD_ODOO_LIST", {
+        sheetId: "LIST",
+        anchor: [0, 0],
+        list,
+        linesNumber: 10,
+        types,
+    });
+    await model.waitForIdle();
+    return { model, webClient, env };
+}
+
+/**
  * Create a spreadsheet model from a Pivot controller
  * @param {*} params
  * the pivot data

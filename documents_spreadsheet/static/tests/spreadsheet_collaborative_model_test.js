@@ -140,7 +140,7 @@ QUnit.test("Add a filter with a default value", async (assert) => {
         type: "relation",
         label: "41",
         defaultValue: [41],
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
         modelName: undefined,
         rangeType: undefined,
     };
@@ -150,12 +150,12 @@ QUnit.test("Add a filter with a default value", async (assert) => {
         (user) => getCellValue(user, "D4"),
         10
     );
-    alice.dispatch("ADD_PIVOT_FILTER", { filter });
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
     await nextTick();
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
-        (user) => user.getters.getGlobalFilters(),
-        [{ ...filter, value: [41] }]
+        (user) => user.getters.getGlobalFilterValue(filter.id),
+        [41]
     );
     // the default value should be applied immediately
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "D4"), "");
@@ -175,10 +175,10 @@ QUnit.test("Setting a filter value is only applied locally", async (assert) => {
         id: "41",
         type: "relation",
         label: "a relational filter",
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
     };
-    alice.dispatch("ADD_PIVOT_FILTER", { filter });
-    bob.dispatch("SET_PIVOT_FILTER_VALUE", {
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
+    bob.dispatch("SET_GLOBAL_FILTER_VALUE", {
         id: filter.id,
         value: [1],
     });
@@ -202,7 +202,7 @@ QUnit.test("Edit a filter", async (assert) => {
         type: "relation",
         label: "41",
         defaultValue: [41],
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
         modelID: undefined,
         modelName: undefined,
         rangeType: undefined,
@@ -213,14 +213,14 @@ QUnit.test("Edit a filter", async (assert) => {
         (user) => getCellValue(user, "B4"),
         11
     );
-    alice.dispatch("ADD_PIVOT_FILTER", { filter });
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
     await nextTick();
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "B4"),
         11
     );
-    alice.dispatch("EDIT_PIVOT_FILTER", {
+    alice.dispatch("EDIT_GLOBAL_FILTER", {
         id: "41",
         filter: { ...filter, defaultValue: [37] },
     });
@@ -235,18 +235,18 @@ QUnit.test("Edit a filter and remove it concurrently", async (assert) => {
         type: "relation",
         label: "41",
         defaultValue: [41],
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
         modelID: undefined,
         modelName: undefined,
         rangeType: undefined,
     };
-    alice.dispatch("ADD_PIVOT_FILTER", { filter });
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
     await network.concurrent(() => {
-        charlie.dispatch("EDIT_PIVOT_FILTER", {
+        charlie.dispatch("EDIT_GLOBAL_FILTER", {
             id: "41",
             filter: { ...filter, defaultValue: [37] },
         });
-        bob.dispatch("REMOVE_PIVOT_FILTER", { id: "41" });
+        bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
     });
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
@@ -262,15 +262,15 @@ QUnit.test("Remove a filter and edit it concurrently", async (assert) => {
         type: "relation",
         label: "41",
         defaultValue: [41],
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
         modelID: undefined,
         modelName: undefined,
         rangeType: undefined,
     };
-    alice.dispatch("ADD_PIVOT_FILTER", { filter });
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
     await network.concurrent(() => {
-        bob.dispatch("REMOVE_PIVOT_FILTER", { id: "41" });
-        charlie.dispatch("EDIT_PIVOT_FILTER", {
+        bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
+        charlie.dispatch("EDIT_GLOBAL_FILTER", {
             id: "41",
             filter: { ...filter, defaultValue: [37] },
         });
@@ -289,7 +289,7 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
         type: "relation",
         label: "41",
         defaultValue: [41],
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
         modelID: undefined,
         modelName: undefined,
         rangeType: undefined,
@@ -299,16 +299,16 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
         type: "relation",
         label: "37",
         defaultValue: [37],
-        fields: { 1: { field: "product_id", type: "many2one" } },
+        pivotFields: { 1: { field: "product_id", type: "many2one" } },
         modelID: undefined,
         modelName: undefined,
         rangeType: undefined,
     };
-    alice.dispatch("ADD_PIVOT_FILTER", { filter: filter1 });
-    alice.dispatch("ADD_PIVOT_FILTER", { filter: filter2 });
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter: filter1 });
+    alice.dispatch("ADD_GLOBAL_FILTER", { filter: filter2 });
     await network.concurrent(() => {
-        bob.dispatch("REMOVE_PIVOT_FILTER", { id: "41" });
-        charlie.dispatch("EDIT_PIVOT_FILTER", {
+        bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
+        charlie.dispatch("EDIT_GLOBAL_FILTER", {
             id: "37",
             filter: { ...filter2, defaultValue: [74] },
         });

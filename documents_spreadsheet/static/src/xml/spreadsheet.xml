@@ -55,23 +55,24 @@
                     <span class="o_side_panel_filter_label" t-esc="filter.label"/>
                 </div>
                 <div class="o_side_panel_title pivot_filter_input">
+                    <t t-set="filterValue" t-value="getters.getGlobalFilterValue(filter.id)"/>
                     <input t-if="filter.type === 'text'"
                         class="o_input"
-                        t-model="filter.value"
+                        t-att-value="filterValue"
                         t-on-change="onTextInput(filter.id)"/>
                     <TagSelectorWidgetAdapter
                         t-if="filter.type === 'relation'"
                         Component="TagSelectorWidget"
                         relatedModel="filter.modelName"
-                        selectedValues="filter.value"
+                        selectedValues="filterValue"
                         t-on-value-changed="onTagSelected(filter.id)"
                         t-on-click.stop=""
                         t-key="filter.id + filter.modelName"/>
                     <DateFilterValue
                         t-if="filter.type === 'date'"
                         t-on-time-range-changed="onDateInput(filter.id)"
-                        year="filter.value &amp;&amp; filter.value.year"
-                        period="filter.value &amp;&amp; filter.value.period"
+                        year="filterValue &amp;&amp; filterValue.year"
+                        period="filterValue &amp;&amp; filterValue.period"
                         type="filter.rangeType"/>
                     <i class="fa fa-cog btn btn-link text-muted o_side_panel_filter_icon" title="Edit" t-on-click="onEdit(filter.id)"/>
                 </div>
@@ -104,13 +105,13 @@
                     t-att-placeholder="placeholder"/>
             </div>
         </div>
-        <div class="o_side_panel_section" t-if="state.type === 'relation'">
+        <div class="o_side_panel_section o_side_panel_related_model" t-if="state.type === 'relation'">
             <div class="o_side_panel_title">Related Model</div>
             <div t-att-class="missingModel ? 'o_field_invalid' : ''" class="o_required_modifier">
                 <ModelSelectorWidgetAdapter
                     Component="ModelSelectorWidget"
                     modelID="state.relation.relatedModelID"
-                    models="getters.getPivotRelationalFields()"
+                    models="relatedModels"
                     t-on-model-selected="onModelSelected"/>
             </div>
         </div>
@@ -147,10 +148,10 @@
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModelName">
             <div class="o_side_panel_title o_field_matching_title">Field Matching</div>
             <div class="text-muted">
-                For each pivot, match this filter to the relevant field
+                Match this filter to a field for each pivot/list
             </div>
-            <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <div><t t-esc="getters.getPivotModelDisplayName(pivotId)"/> <span class="o_pivot_model_technical_name text-muted">(<t t-esc="getters.getPivotModel(pivotId)"/>, #<t t-esc="pivotId"/>)</span></div>
+            <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
+                <div><t t-esc="getters.getPivotModelDisplayName(pivotId)"/> <span class="o_pivot_model_technical_name text-muted">(Pivot #<t t-esc="pivotId"/>)</span></div>
                 <FieldSelectorAdapter
                     Component="FieldSelectorWidget"
                     model="getters.getPivotModel(pivotId)"
@@ -159,7 +160,20 @@
                     relatedModel="state.relation.relatedModelName"
                     selected="state.pivotFields[pivotId]"
                     t-key="pivotId + (state.relation.relatedModelName or 'not_defined')"
-                    t-on-field-chain-changed="onSelectedField(pivotId)"
+                    t-on-field-chain-changed="onSelectedPivotField(pivotId)"
+                    />
+            </div>
+            <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
+                <div><t t-esc="getters.getListModelDisplayName(listId)"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>
+                <FieldSelectorAdapter
+                    Component="FieldSelectorWidget"
+                    model="getters.getListModel(listId)"
+                    fields="getters.getListFields(listId)"
+                    type="state.type"
+                    relatedModel="state.relation.relatedModelName"
+                    selected="state.listFields[listId]"
+                    t-key="listId + (state.relation.relatedModelName or 'not_defined')"
+                    t-on-field-chain-changed="onSelectedListField(listId)"
                     />
             </div>
         </div>

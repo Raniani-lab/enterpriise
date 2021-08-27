@@ -1,5 +1,7 @@
 /** @odoo-module */
 import spreadsheet from "../../o_spreadsheet_loader";
+import Domain from "web.Domain";
+import pyUtils from "web.py_utils";
 import ListDataSource from "../../helpers/list_data_source";
 
 import { TOP_LEVEL_STYLE } from "../../constants";
@@ -7,6 +9,7 @@ import { TOP_LEVEL_STYLE } from "../../constants";
 /**
  * @typedef {import("../core/list_plugin").SpreadsheetListForRPC} SpreadsheetListForRPC
  * @typedef {import("../core/list_plugin").SpreadsheetList} SpreadsheetList
+ * @typedef {import("../../helpers/basic_data_source").Field} Field
  */
 
 export default class ListStructurePlugin extends spreadsheet.UIPlugin {
@@ -61,6 +64,9 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
             case "REFRESH_ALL_DATA_SOURCES":
                 this._refreshOdooLists();
                 break;
+            case "ADD_LIST_DOMAIN":
+                this._addDomain(cmd.id, cmd.domain, cmd.refresh);
+                break;
         }
     }
 
@@ -68,6 +74,29 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     // Handlers
     // -------------------------------------------------------------------------
 
+    /**
+     * Add an additional domain to a pivot
+     *
+     * @private
+     *
+     * @param {string} listId pivot id
+     * @param {Array<Array<any>>} domain
+     * @param {boolean} refresh whether the cache should be reloaded or not
+     */
+    _addDomain(listId, domain, refresh = true) {
+        domain = pyUtils.assembleDomains(
+            [
+                Domain.prototype.arrayToString(this.getters.getListDomain(listId)),
+                Domain.prototype.arrayToString(domain),
+            ],
+            "AND"
+        );
+        const computedDomain = pyUtils.eval("domain", domain, {});
+        this._getDataSource(listId).setComputedDomain(computedDomain);
+        if (refresh) {
+            this._refreshOdooList(listId);
+        }
+    }
     /**
      * Build an Odoo List
      * @param {string} sheetId Sheet id on which the list is built
@@ -126,6 +155,16 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     // -------------------------------------------------------------------------
 
     /**
+     * Get the computed domain of a list
+     *
+     * @param {string} listId Id of the list
+     * @returns {Array}
+     */
+    getListComputedDomain(listId) {
+        return this._getDataSource(listId).getComputedDomain();
+    }
+
+    /**
      * Get the display name of the list
      *
      * @param {string} listId List Id
@@ -138,6 +177,18 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     }
 
     /**
+     * Get the field with the given field name
+     *
+     * @param {string} listId Id of the list
+     * @param {string} fieldName Field name
+     *
+     * @returns {Field|undefined}
+     */
+    getListField(listId, fieldName) {
+        return this._getDataSource(listId).getField(fieldName);
+    }
+
+    /**
      * Get the display name of a field. If the display name is not yet available,
      * returns the technical name
      * @param {string} listId Id of the list
@@ -147,6 +198,15 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      */
     getListFieldName(listId, fieldName) {
         return this._getDataSource(listId).getFieldName(fieldName) || fieldName;
+    }
+
+    /**
+     * Get the field definitions of a list
+     * @param {string} listId Id of the list
+     * @returns {Object.<string, Field>}
+     */
+    getListFields(listId) {
+        return this._getDataSource(listId).getFields();
     }
 
     /**
@@ -349,8 +409,11 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
 
 ListStructurePlugin.modes = ["normal", "headless", "readonly"];
 ListStructurePlugin.getters = [
+    "getListComputedDomain",
     "getListDisplayName",
     "getListFieldName",
+    "getListFields",
+    "getListField",
     "getListHeader",
     "getListLastUpdate",
     "getListModelDisplayName",

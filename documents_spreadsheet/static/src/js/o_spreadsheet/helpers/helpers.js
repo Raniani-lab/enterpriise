@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { UNTITLED_SPREADSHEET_NAME } from "../../../constants";
+import CommandResult from "../plugins/cancelled_reason";
 
 /**
  * Get the intersection of two arrays
@@ -55,4 +56,28 @@ export function getMaxObjectId(o) {
     const nums = keys.map((id) => parseInt(id, 10));
     const max = Math.max(...nums);
     return max;
+}
+
+export function checkFiltersTypeValueCombination(type, value) {
+    if (value !== undefined) {
+        switch (type) {
+            case "text":
+                if (typeof value !== "string") {
+                    return CommandResult.InvalidValueTypeCombination;
+                }
+                break;
+            case "date":
+                if (typeof value !== "object" || Array.isArray(value)) {
+                    // not a date
+                    return CommandResult.InvalidValueTypeCombination;
+                }
+                break;
+            case "relation":
+                if (!Array.isArray(value)) {
+                    return CommandResult.InvalidValueTypeCombination;
+                }
+                break;
+        }
+    }
+    return CommandResult.Success;
 }

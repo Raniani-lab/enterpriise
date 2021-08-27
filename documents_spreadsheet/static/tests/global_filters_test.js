@@ -1,4 +1,5 @@
 /** @odoo-module alias=documents_spreadsheet.PivotGlobalFilterTests */
+/* global $ moment */
 
 import testUtils from "web.test_utils";
 import CommandResult from "../src/js/o_spreadsheet/plugins/cancelled_reason";
@@ -8,6 +9,7 @@ import {
     setCellContent,
     getCellFormula,
     getCellValue,
+    createSpreadsheetWithPivotAndList,
 } from "./spreadsheet_test_utils";
 
 import { getBasicPivotArch, getBasicData } from "./spreadsheet_test_data";
@@ -22,7 +24,8 @@ const LAST_YEAR_FILTER = {
         type: "date",
         label: "Last Year",
         defaultValue: { year: "last_year" },
-        fields: { 1: { field: "date", type: "date" } },
+        pivotFields: { 1: { field: "date", type: "date" } },
+        listFields: { 1: { field: "date", type: "date" } },
     },
 };
 
@@ -31,12 +34,13 @@ const THIS_YEAR_FILTER = {
         type: "date",
         label: "This Year",
         defaultValue: { year: "this_year" },
-        fields: { 1: { field: "date", type: "date" } },
+        pivotFields: { 1: { field: "date", type: "date" } },
+        listFields: { 1: { field: "date", type: "date" } },
     },
 };
 
 module(
-    "documents_spreadsheet > pivot_global_filters",
+    "documents_spreadsheet > global_filters",
     {
         beforeEach() {
             this.data = getBasicData();
@@ -47,9 +51,9 @@ module(
         test("Can add a global filter", async function (assert) {
             assert.expect(4);
 
-            const { model } = await createSpreadsheetFromPivot();
+            const { model } = await createSpreadsheetWithPivotAndList();
             assert.equal(model.getters.getGlobalFilters().length, 0);
-            model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
             assert.equal(model.getters.getGlobalFilters().length, 1);
             const computedDomain = model.getters.getPivotComputedDomain("1");
             assert.equal(computedDomain.length, 3);
@@ -59,14 +63,14 @@ module(
         test("Can delete a global filter", async function (assert) {
             assert.expect(4);
 
-            const { model } = await createSpreadsheetFromPivot();
-            assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: 1 }).reasons, [
+            const { model } = await createSpreadsheetWithPivotAndList();
+            assert.deepEqual(model.dispatch("REMOVE_GLOBAL_FILTER", { id: 1 }).reasons, [
                 CommandResult.FilterNotFound,
             ]);
-            model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
             const gf = model.getters.getGlobalFilters()[0];
             assert.deepEqual(
-                model.dispatch("REMOVE_PIVOT_FILTER", { id: gf.id }),
+                model.dispatch("REMOVE_GLOBAL_FILTER", { id: gf.id }),
                 DispatchResult.Success
             );
             assert.equal(model.getters.getGlobalFilters().length, 0);
@@ -77,15 +81,15 @@ module(
         test("Can edit a global filter", async function (assert) {
             assert.expect(4);
 
-            const { model } = await createSpreadsheetFromPivot();
+            const { model } = await createSpreadsheetWithPivotAndList();
             const gfDef = { ...THIS_YEAR_FILTER, id: 1 };
-            assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef).reasons, [
+            assert.deepEqual(model.dispatch("EDIT_GLOBAL_FILTER", gfDef).reasons, [
                 CommandResult.FilterNotFound,
             ]);
-            model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
             const gf = model.getters.getGlobalFilters()[0];
             gfDef.id = gf.id;
-            assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef), DispatchResult.Success);
+            assert.deepEqual(model.dispatch("EDIT_GLOBAL_FILTER", gfDef), DispatchResult.Success);
             assert.equal(model.getters.getGlobalFilters().length, 1);
             assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "this_year");
         });
@@ -211,71 +215,70 @@ module(
         test("Cannot have duplicated names", async function (assert) {
             assert.expect(6);
 
-            const { model } = await createSpreadsheetFromPivot();
-            const filter = Object.assign({}, THIS_YEAR_FILTER.filter, { label: "Hello" });
-            model.dispatch("ADD_PIVOT_FILTER", { filter });
+            const { model } = await createSpreadsheetWithPivotAndList();
+            const filter = { ...THIS_YEAR_FILTER.filter, label: "Hello" };
+            model.dispatch("ADD_GLOBAL_FILTER", { filter });
             assert.equal(model.getters.getGlobalFilters().length, 1);
 
             // Add filter with same name
-            let result = model.dispatch(
-                "ADD_PIVOT_FILTER",
-                Object.assign({ id: "456" }, { filter })
-            );
+            let result = model.dispatch("ADD_GLOBAL_FILTER", { filter: { ...filter, id: "456" } });
             assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
             assert.equal(model.getters.getGlobalFilters().length, 1);
 
             // Edit to set same name as other filter
-            model.dispatch("ADD_PIVOT_FILTER", {
-                filter: Object.assign({ id: "789" }, filter, { label: "Other name" }),
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: { ...filter, id: "789", label: "Other name" },
             });
             assert.equal(model.getters.getGlobalFilters().length, 2);
-            result = model.dispatch("EDIT_PIVOT_FILTER", {
+            result = model.dispatch("EDIT_GLOBAL_FILTER", {
                 id: "789",
-                filter: Object.assign({}, filter, { label: "Hello" }),
+                filter: { ...filter, label: "Hello" },
             });
             assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
 
             // Edit to set same name
-            result = model.dispatch("EDIT_PIVOT_FILTER", {
+            result = model.dispatch("EDIT_GLOBAL_FILTER", {
                 id: "789",
-                filter: Object.assign({}, filter, { label: "Other name" }),
+                filter: { ...filter, label: "Other name" },
             });
             assert.deepEqual(result, DispatchResult.Success);
         });
 
         test("Can save a value to an existing global filter", async function (assert) {
-            assert.expect(7);
+            assert.expect(8);
 
-            const { model } = await createSpreadsheetFromPivot();
-            model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+            const { model } = await createSpreadsheetWithPivotAndList();
+            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
             const gf = model.getters.getGlobalFilters()[0];
             assert.deepEqual(
-                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                     id: gf.id,
                     value: { period: "last_month" },
                 }),
                 DispatchResult.Success
             );
             assert.equal(model.getters.getGlobalFilters().length, 1);
-            assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "last_year");
-            assert.deepEqual(model.getters.getGlobalFilters()[0].value.period, "last_month");
+            assert.deepEqual(model.getters.getGlobalFilterDefaultValue(gf.id).year, "last_year");
+            assert.deepEqual(model.getters.getGlobalFilterValue(gf.id).period, "last_month");
             assert.deepEqual(
-                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                     id: gf.id,
                     value: { period: "this_month" },
                 }),
                 DispatchResult.Success
             );
-            assert.deepEqual(model.getters.getGlobalFilters()[0].value.period, "this_month");
+            assert.deepEqual(model.getters.getGlobalFilterValue(gf.id).period, "this_month");
             const computedDomain = model.getters.getPivotComputedDomain("1");
             assert.equal(computedDomain.length, 3);
+            const listDomain = model.getters.getListComputedDomain("1");
+            assert.equal(listDomain.length, 3);
         });
 
         test("Can export/import filters", async function (assert) {
-            assert.expect(4);
+            assert.expect(5);
 
-            const { model, env } = await createSpreadsheetFromPivot();
-            model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+            const { model, env } = await createSpreadsheetWithPivotAndList();
+            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
             const newModel = new Model(model.exportData(), {
                 evalContext: { env },
             });
@@ -283,25 +286,27 @@ module(
             const [filter] = newModel.getters.getGlobalFilters();
             assert.deepEqual(filter.defaultValue.year, "last_year");
             assert.deepEqual(
-                filter.value.year,
+                newModel.getters.getGlobalFilterValue(filter.id).year,
                 "last_year",
                 "it should have applied the default value"
             );
 
             const computedDomain = newModel.getters.getPivotComputedDomain("1");
             assert.equal(computedDomain.length, 3, "it should have updated the pivot domain");
+            const listDomain = newModel.getters.getListComputedDomain("1");
+            assert.equal(listDomain.length, 3, "it should have updated the list domain");
         });
 
         test("Relational filter with undefined value", async function (assert) {
             assert.expect(1);
 
             const { model } = await createSpreadsheetFromPivot();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "relation",
                     label: "Relation Filter",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "foo",
                             type: "char",
@@ -310,7 +315,7 @@ module(
                 },
             });
             const [filter] = model.getters.getGlobalFilters();
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: undefined,
             });
@@ -322,14 +327,14 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Text Filter",
                 },
             });
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "43",
                     type: "date",
@@ -337,16 +342,16 @@ module(
                     rangeType: "quarter",
                 },
             });
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "44",
                     type: "relation",
                     label: "Relation Filter",
                 },
             });
-            const [text, date, relation] = model.getters.getGlobalFilters();
+            const [text] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: text.id,
                 value: "Hello",
             });
@@ -357,7 +362,7 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
@@ -366,7 +371,7 @@ module(
             });
             const [filter] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: "Hello",
             });
@@ -377,7 +382,7 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -386,7 +391,7 @@ module(
             });
             const [filter] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: [1],
             });
@@ -397,7 +402,7 @@ module(
             assert.expect(4);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "date",
@@ -407,7 +412,7 @@ module(
             });
             const [filter] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: {
                     year: "this_year",
@@ -415,7 +420,7 @@ module(
                 },
             });
             assert.equal(model.getters.getActiveFilterCount(), true);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: {
                     year: undefined,
@@ -423,7 +428,7 @@ module(
                 },
             });
             assert.equal(model.getters.getActiveFilterCount(), true);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: {
                     year: "this_year",
@@ -440,12 +445,12 @@ module(
             setCellContent(model, "A10", `=FILTER.VALUE("Text Filter")`);
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A10"), "#ERROR");
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Text Filter",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -456,7 +461,7 @@ module(
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A10"), "");
             const [filter] = model.getters.getGlobalFilters();
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: "Hello",
             });
@@ -470,12 +475,12 @@ module(
             const model = new Model();
             setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
             await testUtils.nextTick();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "date",
                     label: "Date Filter",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -485,7 +490,7 @@ module(
             });
             await testUtils.nextTick();
             const [filter] = model.getters.getGlobalFilters();
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 rangeType: "quarter",
                 value: {
@@ -495,7 +500,7 @@ module(
             });
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A10"), `Q1 ${moment().year()}`);
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 rangeType: "year",
                 value: {
@@ -531,7 +536,7 @@ module(
             );
             setCellContent(model, "A10", `=FILTER.VALUE("Relation Filter")`);
             await testUtils.nextTick();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -543,7 +548,7 @@ module(
             const [filter] = model.getters.getGlobalFilters();
 
             // One record; displayNames not defined => rpc
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: [1],
             });
@@ -551,7 +556,7 @@ module(
             assert.equal(getCellValue(model, "A10"), "Jean-Jacques");
 
             // Two records; displayNames defined => no rpc
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: [1, 2],
                 displayNames: ["Jean-Jacques", "Raoul Grosbedon"],
@@ -560,7 +565,7 @@ module(
             assert.equal(getCellValue(model, "A10"), "Jean-Jacques, Raoul Grosbedon");
 
             // another record; displayNames not defined => rpc
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: filter.id,
                 value: [2],
             });
@@ -573,12 +578,12 @@ module(
             assert.expect(1);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "date",
                     label: "Cuillère",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -591,14 +596,14 @@ module(
             const newFilter = {
                 type: "date",
                 label: "Interprete",
-                fields: {
+                pivotFields: {
                     1: {
                         field: "name",
                         type: "char",
                     },
                 },
             };
-            model.dispatch("EDIT_PIVOT_FILTER", { id: filter.id, filter: newFilter });
+            model.dispatch("EDIT_GLOBAL_FILTER", { id: filter.id, filter: newFilter });
             assert.equal(
                 getCellFormula(model, "A10"),
                 `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
@@ -609,12 +614,12 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Cuillère",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -622,14 +627,14 @@ module(
                     },
                 },
             });
-            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id: "42",
                 value: "Hello export bug",
             });
             const [filter] = model.getters.getGlobalFilters();
-            assert.equal(filter.value, "Hello export bug");
+            assert.equal(model.getters.getGlobalFilterValue(filter.id), "Hello export bug");
             model.exportData();
-            assert.equal(filter.value, "Hello export bug");
+            assert.equal(model.getters.getGlobalFilterValue(filter.id), "Hello export bug");
         });
 
         test("Re-insert a pivot with a global filter should re-insert the full pivot", async function (assert) {
@@ -648,13 +653,13 @@ module(
                 },
             });
             await model.waitForIdle();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "41",
                     type: "relation",
                     label: "41",
                     defaultValue: [41],
-                    fields: { 1: { field: "product_id", type: "many2one" } },
+                    pivotFields: { 1: { field: "product_id", type: "many2one" } },
                 },
             });
             await model.waitForIdle();
@@ -666,16 +671,16 @@ module(
             assert.equal(getCellFormula(model, "B6"), getCellFormula(model, "B1"));
         });
 
-        test("Can undo-redo a add_pivot_filter", async function (assert) {
+        test("Can undo-redo a ADD_GLOBAL_FILTER", async function (assert) {
             assert.expect(3);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Cuillère",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -690,16 +695,16 @@ module(
             assert.equal(model.getters.getGlobalFilters().length, 1);
         });
 
-        test("Can undo-redo a remove_pivot_filter", async function (assert) {
+        test("Can undo-redo a REMOVE_GLOBAL_FILTER", async function (assert) {
             assert.expect(3);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Cuillère",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -707,7 +712,7 @@ module(
                     },
                 },
             });
-            model.dispatch("REMOVE_PIVOT_FILTER", { id: "42" });
+            model.dispatch("REMOVE_GLOBAL_FILTER", { id: "42" });
             assert.equal(model.getters.getGlobalFilters().length, 0);
             model.dispatch("REQUEST_UNDO");
             assert.equal(model.getters.getGlobalFilters().length, 1);
@@ -715,16 +720,16 @@ module(
             assert.equal(model.getters.getGlobalFilters().length, 0);
         });
 
-        test("Can undo-redo a edit_pivot_filter", async function (assert) {
+        test("Can undo-redo a EDIT_GLOBAL_FILTER", async function (assert) {
             assert.expect(3);
 
             const model = new Model();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Cuillère",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -732,13 +737,13 @@ module(
                     },
                 },
             });
-            model.dispatch("EDIT_PIVOT_FILTER", {
+            model.dispatch("EDIT_GLOBAL_FILTER", {
                 id: "42",
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Arthouuuuuur",
-                    fields: {
+                    pivotFields: {
                         1: {
                             field: "name",
                             type: "char",
@@ -757,13 +762,13 @@ module(
             assert.expect(1);
 
             const { webClient, model } = await createSpreadsheetFromPivot();
-            model.dispatch("ADD_PIVOT_FILTER", {
+            model.dispatch("ADD_GLOBAL_FILTER", {
                 filter: {
                     id: "42",
                     type: "date",
                     rangeType: "month",
                     label: "This month",
-                    fields: {
+                    pivotFields: {
                         1: { field: "create_date", type: "datetime" },
                     },
                     defaultValue: {

@@ -14,7 +14,7 @@ odoo.define('documents_spreadsheet.open_pivot_sheet_tour', function (require) {
         tour._consume_tour(tour.running_tour, errorMessage);
     }
 
-    const SHEETNAME = "Partner Pivot Test"
+    const SHEETNAME = "Partner Spreadsheet Test"
     tour.register('spreadsheet_open_pivot_sheet', {
         test: true,
     }, [

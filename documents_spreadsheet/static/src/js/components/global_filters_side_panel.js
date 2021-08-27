@@ -25,6 +25,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
             super(...arguments);
             this.TagSelectorWidget = TagSelectorWidget;
             this.periodOptions = getPeriodOptions(moment());
+            this.getters = this.env.getters;
         }
 
         get filters() {
@@ -49,17 +50,18 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
 
         onDateInput(id, event) {
             const value = event.detail;
-            this.env.dispatch("SET_PIVOT_FILTER_VALUE", { id, value });
+            this.env.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
         }
 
         onTextInput(id, event) {
             const value = event.target.value;
-            this.env.dispatch("SET_PIVOT_FILTER_VALUE", { id, value });
+            this.env.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
         }
 
         onTagSelected(id, event) {
             const values = event.detail.value;
-            this.env.dispatch("SET_PIVOT_FILTER_VALUE", { id,
+            this.env.dispatch("SET_GLOBAL_FILTER_VALUE", {
+                id,
                 value: values.map((record) => record.id),
                 displayNames: values.map((record) => record.display_name),
             });
@@ -67,7 +69,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
 
         onDelete() {
             if (this.id) {
-                this.env.dispatch("REMOVE_PIVOT_FILTER", { id: this.id });
+                this.env.dispatch("REMOVE_GLOBAL_FILTER", { id: this.id });
             }
             this.trigger("close-side-panel");
         }

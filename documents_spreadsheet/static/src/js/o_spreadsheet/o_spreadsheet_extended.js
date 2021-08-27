@@ -12,8 +12,8 @@ import spreadsheet from "./o_spreadsheet_loader";
 
 /** Core */
 import PivotPlugin from "./plugins/core/pivot_plugin";
-import FiltersPlugin from "documents_spreadsheet.FiltersPlugin";
 import ListPlugin from "./plugins/core/list_plugin";
+import FiltersPlugin from "./plugins/core/filters_plugin";
 
 /** UI */
 import PivotStructurePlugin from "./plugins/ui/pivot_structure_plugin";
@@ -27,27 +27,32 @@ import ListingAllSidePanel from "../../side_panels/list/listing_all_side_panel";
 import ListAutofillPlugin from "./plugins/ui/list_autofill_plugin";
 import FiltersEvaluationPlugin from "./plugins/ui/filters_evaluation_plugin";
 
-const { coreTypes } = spreadsheet;
+const { coreTypes, invalidateEvaluationCommands } = spreadsheet;
 const { corePluginRegistry, uiPluginRegistry, sidePanelRegistry } = spreadsheet.registries;
 
 corePluginRegistry.add("odooPivotPlugin", PivotPlugin);
-corePluginRegistry.add("odooFiltersPlugin", FiltersPlugin);
 corePluginRegistry.add("odooListPlugin", ListPlugin);
+corePluginRegistry.add("odooFiltersPlugin", FiltersPlugin);
 
 uiPluginRegistry.add("odooPivotStructurePlugin", PivotStructurePlugin);
-uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
-uiPluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
-uiPluginRegistry.add("odooFiltersEvaluationPlugin", FiltersEvaluationPlugin);
 uiPluginRegistry.add("odooListStructurePlugin", ListStructurePlugin);
+uiPluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
 uiPluginRegistry.add("odooListAutofillPlugin", ListAutofillPlugin);
+uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
+uiPluginRegistry.add("odooFiltersEvaluationPlugin", FiltersEvaluationPlugin);
 
 coreTypes.add("ADD_PIVOT");
 coreTypes.add("ADD_PIVOT_FORMULA");
-coreTypes.add("ADD_PIVOT_FILTER");
-coreTypes.add("EDIT_PIVOT_FILTER");
-coreTypes.add("REMOVE_PIVOT_FILTER");
+coreTypes.add("ADD_GLOBAL_FILTER");
+coreTypes.add("EDIT_GLOBAL_FILTER");
+coreTypes.add("REMOVE_GLOBAL_FILTER");
 coreTypes.add("ADD_ODOO_LIST");
 coreTypes.add("ADD_ODOO_LIST_FORMULA");
+
+invalidateEvaluationCommands.add("ADD_GLOBAL_FILTER");
+invalidateEvaluationCommands.add("EDIT_GLOBAL_FILTER");
+invalidateEvaluationCommands.add("REMOVE_GLOBAL_FILTER");
+invalidateEvaluationCommands.add("SET_GLOBAL_FILTER_VALUE");
 
 sidePanelRegistry.add("PIVOT_PROPERTIES_PANEL", {
     title: () => _t("Pivot properties"),

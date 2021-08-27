@@ -25,6 +25,7 @@ export default class ListDataSource extends BasicDataSource {
         this.limit = params.limit || 0;
         this.definition = params.definition;
         this.setTimeoutPromise = undefined;
+        this.computedDomain = this.definition.domain;
     }
 
     async _fetch() {
@@ -32,7 +33,7 @@ export default class ListDataSource extends BasicDataSource {
             model: this.definition.model,
             method: "search_read",
             context: this.definition.context,
-            domain: this.definition.domain,
+            domain: this.computedDomain,
             fields: this.definition.columns,
             orderBy: this.definition.orderBy,
             limit: this.limit,
@@ -53,6 +54,23 @@ export default class ListDataSource extends BasicDataSource {
         }
         await Promise.all(proms);
         return data;
+    }
+
+    /**
+     * Get the computed domain of this source
+     * @returns {Array}
+     */
+    getComputedDomain() {
+        return this.computedDomain;
+    }
+
+    /**
+     * Set the computed domain
+     *
+     * @param {Array} computedDomain
+     */
+    setComputedDomain(computedDomain) {
+        this.computedDomain = computedDomain;
     }
 
     /**

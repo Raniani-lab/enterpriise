@@ -8,7 +8,7 @@ function identity(cmd) {
 }
 
 otRegistry
-    .addTransformation("REMOVE_PIVOT_FILTER", ["EDIT_PIVOT_FILTER"], (toTransform, executed) =>
+    .addTransformation("REMOVE_GLOBAL_FILTER", ["EDIT_GLOBAL_FILTER"], (toTransform, executed) =>
         toTransform.id === executed.id ? undefined : toTransform
     )
     .addTransformation("ADD_PIVOT", ["ADD_PIVOT"], (toTransform) => ({
@@ -30,18 +30,18 @@ otRegistry
     }));
 
 inverseCommandRegistry
-    .add("ADD_PIVOT_FILTER", (cmd) => {
+    .add("ADD_GLOBAL_FILTER", (cmd) => {
         return [
             {
-                type: "REMOVE_PIVOT_FILTER",
+                type: "REMOVE_GLOBAL_FILTER",
                 id: cmd.id,
             },
         ];
     })
-    .add("REMOVE_PIVOT_FILTER", (cmd) => {
+    .add("REMOVE_GLOBAL_FILTER", (cmd) => {
         return [
             {
-                type: "ADD_PIVOT_FILTER",
+                type: "ADD_GLOBAL_FILTER",
                 id: cmd.id,
                 filter: {},
             },

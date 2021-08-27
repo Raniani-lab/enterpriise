@@ -7,17 +7,20 @@ from datetime import datetime
 import random
 
 from odoo import api, models, fields, _
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round
 
 
 class QualityPoint(models.Model):
     _inherit = "quality.point"
 
     failure_message = fields.Html('Failure Message')
+    measure_on = fields.Selection([
+        ('operation', 'Operation'),
+        ('product', 'Product')], string="Control per", default='operation', required=True, help="Defines if the Quality Check is done at the Operation level or at a more granular Lot/SN level")
     measure_frequency_type = fields.Selection([
-        ('all', 'All Operations'),
+        ('all', 'All'),
         ('random', 'Randomly'),
-        ('periodical', 'Periodically')], string="Type of Frequency",
+        ('periodical', 'Periodically')], string="Control Frequency",
         default='all', required=True)
     measure_frequency_value = fields.Float('Percentage')  # TDE RENAME ?
     measure_frequency_unit_value = fields.Integer('Frequency Unit Value')  # TDE RENAME ?
@@ -25,6 +28,8 @@ class QualityPoint(models.Model):
         ('day', 'Days'),
         ('week', 'Weeks'),
         ('month', 'Months')], default="day")  # TDE RENAME ?
+    is_lot_tested_fractionally = fields.Boolean(string="Lot Tested Fractionally", help="Determines if only a fraction of the lot should be tested")
+    testing_percentage_within_lot = fields.Float(help="Defines the percentage within a lot that should be tested")
     norm = fields.Float('Norm', digits='Quality Tests')  # TDE RENAME ?
     tolerance_min = fields.Float('Min Tolerance', digits='Quality Tests')
     tolerance_max = fields.Float('Max Tolerance', digits='Quality Tests')
@@ -124,6 +129,20 @@ class QualityCheck(models.Model):
     tolerance_max = fields.Float('Max Tolerance', related='point_id.tolerance_max', readonly=True)
     warning_message = fields.Text(compute='_compute_warning_message')
     norm_unit = fields.Char(related='point_id.norm_unit', readonly=True)
+    qty_to_test = fields.Float(compute="_compute_qty_to_test", string="Quantity to Test", help="Quantity of product to test within the lot")
+    qty_tested = fields.Float(string="Quantity Tested", help="Quantity of product tested within the lot")
+    measure_on = fields.Selection([
+        ('operation', 'Operation'),
+        ('product', 'Product')], string="Control per", default='operation', required=True, help="Defines if the Quality Check is done at the Operation level or at a more granular Lot/SN level")
+    move_line_id = fields.Many2one('stock.move.line', 'Stock Move Line', check_company=True, help="In case of Quality Check by Lot/SN, Move Line on which the Quality Check applies")
+    lot_name = fields.Char('Lot/Serial Number Name')
+    lot_line_id = fields.Many2one('stock.production.lot', store=True, compute='_compute_lot_line_id')
+    qty_line = fields.Float(compute='_compute_qty_line', string="Quantity")
+    uom_id = fields.Many2one(related='product_id.uom_id', string="Product Unit of Measure")
+    show_lot_text = fields.Boolean(compute='_compute_show_lot_text')
+    is_lot_tested_fractionally = fields.Boolean(related='point_id.is_lot_tested_fractionally')
+    testing_percentage_within_lot = fields.Float(related="point_id.testing_percentage_within_lot")
+    product_tracking = fields.Selection(related='product_id.tracking')
 
     @api.depends('measure_success')
     def _compute_warning_message(self):
@@ -135,6 +154,18 @@ class QualityCheck(models.Model):
                 )
             else:
                 rec.warning_message = ''
+
+    @api.depends('move_line_id.qty_done')
+    def _compute_qty_line(self):
+        for qc in self:
+            qc.qty_line = qc.move_line_id.qty_done
+
+    @api.depends('move_line_id.lot_id')
+    def _compute_lot_line_id(self):
+        for qc in self:
+            qc.lot_line_id = qc.move_line_id.lot_id
+            if qc.lot_line_id:
+                qc.lot_id = qc.lot_line_id
 
     @api.depends('measure')
     def _compute_measure_success(self):
@@ -151,6 +182,22 @@ class QualityCheck(models.Model):
     @api.depends('picture')
     def _compute_result(self):
         super(QualityCheck, self)._compute_result()
+
+    @api.depends('qty_line', 'testing_percentage_within_lot', 'is_lot_tested_fractionally')
+    def _compute_qty_to_test(self):
+        for qc in self:
+            if qc.is_lot_tested_fractionally:
+                qc.qty_to_test = float_round(qc.qty_line * qc.testing_percentage_within_lot / 100, precision_rounding=self.product_id.uom_id.rounding, rounding_method="UP")
+            else:
+                qc.qty_to_test = qc.qty_line
+
+    @api.depends('lot_line_id', 'move_line_id')
+    def _compute_show_lot_text(self):
+        for qc in self:
+            if qc.lot_line_id or not qc.move_line_id:
+                qc.show_lot_text = False
+            else:
+                qc.show_lot_text = True
 
     def _is_pass_fail_applicable(self):
         if self.test_type in ['passfail', 'measure']:
@@ -220,58 +267,17 @@ class QualityCheck(models.Model):
             action['context'] = dict(self._context, default_check_id=self.id)
             return action
 
-    def _get_next_check_action(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
-        action['context'] = self.env.context
-        action['res_id'] = self.ids[0]
+    def action_open_quality_check_wizard(self, current_check_id=None):
+        check_ids = sorted(self.ids)
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.action_quality_check_wizard")
+        action['context'] = self.env.context.copy()
+        action['context'].update({
+            'default_check_ids': check_ids,
+            'default_current_check_id': current_check_id or check_ids[0],
+        })
         return action
 
-    def redirect_after_pass_fail(self):
-        check = self[0]
-        if check.quality_state == 'fail' and check._is_pass_fail_applicable() and (check.failure_message or check.warning_message):
-            return self.show_failure_message()
-        if check.picking_id:
-            checkable_products = check.picking_id.mapped('move_line_ids').mapped('product_id')
-            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none' and x.product_id in checkable_products)
-            if checks:
-                return checks[0]._get_next_check_action()
-            if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
-                pickings_to_check_quality = check.picking_id.browse(self.env.context['pickings_to_check_quality'])
-                remaining_pickings_to_check_quality = pickings_to_check_quality._check_for_quality_checks()
-                if remaining_pickings_to_check_quality:
-                    return remaining_pickings_to_check_quality[0].check_quality()
-                else:
-                    pickings_to_check_quality.button_validate()
-        return super(QualityCheck, self).redirect_after_pass_fail()
 
-    def redirect_after_failure(self):
-        check = self[0]
-        if check.picking_id:
-            checkable_products = check.picking_id.mapped('move_line_ids').mapped('product_id')
-            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none' and x.product_id in checkable_products)
-            if checks:
-                action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
-                action['res_id'] = checks.ids[0]
-                return action
-            if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
-                pickings_to_check_quality = check.picking_id.browse(self.env.context['pickings_to_check_quality'])
-                remaining_pickings_to_check_quality = pickings_to_check_quality._check_for_quality_checks()
-                if remaining_pickings_to_check_quality:
-                    return remaining_pickings_to_check_quality[0].check_quality()
-                else:
-                    pickings_to_check_quality.button_validate()
-        return super(QualityCheck, self).redirect_after_pass_fail()
-
-    def show_failure_message(self):
-        return {
-            'name': _('Quality Check Failed'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'quality.check',
-            'views': [(self.env.ref('quality_control.quality_check_view_form_failure').id, 'form')],
-            'target': 'new',
-            'res_id': self.id,
-            'context': self.env.context,
-        }
 class QualityAlert(models.Model):
     _inherit = "quality.alert"
 

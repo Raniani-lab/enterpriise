@@ -216,11 +216,11 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="do_pass" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Pass" data-hotkey="q"/>
-                    <button name="do_pass" type="object" attrs="{'invisible': [('quality_state', '!=', 'fail')]}" groups="quality.group_quality_manager" context="{'no_redirect': True}" string="Pass" data-hotkey="q"/>
-                    <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Fail" data-hotkey="w"/>
-                    <button name="do_fail" type="object" attrs="{'invisible': [('quality_state', '!=', 'pass')]}" groups="quality.group_quality_manager" context="{'no_redirect': True}" string="Fail" data-hotkey="w"/>
-                    <button name="do_measure" type="object" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('quality_state', '!=', 'none')]}" context="{'no_redirect': True}" string="Measure" data-hotkey="v"/>
+                    <button name="do_pass" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" string="Pass" data-hotkey="q"/>
+                    <button name="do_pass" type="object" attrs="{'invisible': [('quality_state', '!=', 'fail')]}" groups="quality.group_quality_manager" string="Pass" data-hotkey="q"/>
+                    <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" string="Fail" data-hotkey="w"/>
+                    <button name="do_fail" type="object" attrs="{'invisible': [('quality_state', '!=', 'pass')]}" groups="quality.group_quality_manager" string="Fail" data-hotkey="w"/>
+                    <button name="do_measure" type="object" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('quality_state', '!=', 'none')]}" string="Measure" data-hotkey="v"/>
                     <button name="do_alert" type="object" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'pass')]}" string="Make Alert" data-hotkey="g"/>
                     <button name="do_alert" type="object" class="btn-primary" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'fail')]}" string="Make Alert" data-hotkey="g"/>
                     <field name="quality_state" widget="statusbar"/>
@@ -234,6 +234,27 @@
                     <group>
                         <group>
                             <field name="product_id"/>
+                            <field name="measure_on" attrs="{'readonly': [('point_id', '!=', False)]}"/>
+                            <field name="show_lot_text" invisible="1"/>
+                            <field name="move_line_id" invisible="1"/>
+                            <field name="product_tracking" invisible="1"/>
+                            <field name="lot_name" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', False), '|', ('measure_on', '!=', 'product'), ('move_line_id', '=', False)]}"/>
+                            <field name="lot_id" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', True), ('measure_on', '!=', 'product')]}"/>
+                            <label for="qty_line" attrs="{'invisible': [('move_line_id', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': [('move_line_id', '=', False)]}">
+                                <field name="qty_line"/> 
+                                <field name="uom_id"/>
+                            </div>
+                            <label for="qty_to_test" attrs="{'invisible': ['|', ('move_line_id', '=', False), ('measure_on', '!=', 'product')]}"/>
+                            <div class="o_row" attrs="{'invisible': ['|', ('move_line_id', '=', False), ('measure_on', '!=', 'product')]}">
+                                <field name="qty_to_test"/> 
+                                <field name="uom_id"/>
+                            </div>
+                            <label for="qty_tested" attrs="{'invisible': [('measure_on', '!=', 'product')]}"/>
+                            <div class="o_row" attrs="{'invisible': [('measure_on', '!=', 'product')]}">
+                                <field name="qty_tested" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/> 
+                                <field name="uom_id"/>
+                            </div>
                             <field name="test_type" invisible="1"/>
                             <field name="measure" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
                             <field name="alert_ids" invisible="1"/>
@@ -266,82 +287,6 @@
                     <field name="activity_ids"/>
                     <field name="message_ids"/>
                 </div>
-            </form>
-        </field>
-    </record>
-
-    <record id="quality_check_view_form_small" model="ir.ui.view">
-        <field name="name">quality.check.view.form.small</field>
-        <field name="model">quality.check</field>
-        <field name="arch" type="xml">
-            <form string="Quality Checks">
-                <h2 class="o_row">
-                    <span>
-                        <field name="product_id" readonly="1" options="{'no_open': True}"/>
-                        :
-                        <field name="name" readonly="1"/>
-                        <field class="ml8" name="title" readonly="1"/>
-                    </span>
-                </h2>
-                <field name="note" readonly="1"/>
-                <field name="team_id" invisible="1"/>
-                <field name="picking_id" invisible="1"/>
-                <field name="point_id" invisible="1"/>
-                <field name="test_type" invisible="1"/>
-                <field name="measure_success" invisible="1"/>
-                <field name="company_id" invisible="1"/>
-                <group>
-                    <group>
-                        <label for="measure" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
-                        <div attrs="{'invisible': [('test_type', '!=', 'measure')]}" class="o_row">
-                            <field name="measure" attrs="{'required': [('test_type', '=', 'measure')]}"/>
-                            <field name="norm_unit" string="Unit of Measure"/>
-                        </div>
-                    </group>
-                </group>
-                <label for="picture" invisible="1"/>
-                <div attrs="{'invisible': [('test_type', '!=', 'picture')]}">
-                    <field name="picture" widget="image" attrs="{'required': [('test_type', '=', 'picture')]}"/>
-                </div>
-                <group>
-                    <field name="additional_note"/>
-                </group>
-                <footer>
-                    <button name="do_measure" type="object" class="btn-primary" string="Validate"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
-                    <button name="do_pass" type="object" class="btn-primary" string="Validate"
-                        attrs="{'invisible': [ '|' , ('test_type', '=', 'passfail'), ('test_type', '=', 'measure')]}" data-hotkey="w"/>
-                    <button name="do_pass" type="object" class="btn-primary" string="Pass"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
-                    <button name="do_fail" type="object" class="btn-primary" string="Fail"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="x"/>
-                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
-                </footer>
-            </form>
-        </field>
-    </record>
-
-    <record id="quality_check_view_form_failure" model="ir.ui.view">
-        <field name="name">quality.check.view.form.failure</field>
-        <field name="priority">1000</field>
-        <field name="model">quality.check</field>
-        <field name="arch" type="xml">
-            <form string="Quality Check Failed">
-                <field name="test_type" invisible="1"/>
-                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('test_type', '!=', 'measure')]}" >
-                    <field name="warning_message"/>
-                </div>
-                <div>
-                    <field name="failure_message"/>
-                </div>
-                <footer>
-                    <button name="correct_measure" type="object" class="btn-primary" string="Correct Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
-                    <button name="redirect_after_failure" type="object" string="Confirm Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="w"/>
-                    <button name="redirect_after_failure" type="object" class="btn-primary" string="OK"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
-                </footer>
             </form>
         </field>
     </record>
@@ -392,7 +337,10 @@
         <field name="arch" type="xml">
             <tree sample="1" decoration-info="quality_state == 'none'">
                 <field name="name" decoration-bf="1"/>
+                <field name="measure_on" optional="show"/>
                 <field name='product_id' optional="show"/>
+                <field name="lot_id" invisible="context.get('show_lots_text')"/>
+                <field name="lot_name" invisible="not context.get('show_lots_text')"/>
                 <field name="picking_id" optional="hide" string="Transfer"/>
                 <field name="control_date" string="Checked Date" optional="show"/>
                 <field name="user_id" string="Checked By" optional="show" widget='many2one_avatar_user'/>
@@ -486,10 +434,7 @@
         <field name="name">Quality Checks</field>
         <field name="res_model">quality.check</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{
-            'search_default_picking_id': [active_id],
-            'default_picking_id': active_id}
-        </field>
+        <field name="context">{}</field>
     </record>
 
     <record id="quality_check_action_production_lot" model="ir.actions.act_window">
@@ -515,14 +460,6 @@
               quality checks at the right logistic operation: transfers, manufacturing orders.
             </p>
         </field>
-    </record>
-
-    <record id="quality_check_action_small" model="ir.actions.act_window">
-        <field name="name">Quality Checks</field>
-        <field name="res_model">quality.check</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-        <field name="view_id" ref="quality_check_view_form_small"/>
     </record>
 
     <record model="ir.actions.act_window" id="quality_check_action_report">
@@ -835,7 +772,10 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='test_type_id']" position="before">
-                <field name="measure_frequency_type" optional="hide" string="Control Type"/>
+                <field name="measure_on" optional="show"/>
+                <field name="measure_frequency_type" optional="hide"/>
+                <field name="is_lot_tested_fractionally" optional="hide"/>
+                <field name="testing_percentage_within_lot" optional="hide" string="Testing % Within Lot"/>
             </xpath>
         </field>
     </record>
@@ -910,14 +850,22 @@
                 </page>
             </xpath>
             <xpath expr="//field[@name='test_type']" position="before">
-                <field name="measure_frequency_type" string="Control Type"/>
-                <label for="measure_frequency_value" string="Control Frequency" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}"/>
+                <field name="measure_on"/>
+                <field name="measure_frequency_type"/>
+                <label for="measure_frequency_value" string="" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}"/>
                 <div class="o_row" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">
                     <span attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">Every </span>
                     <field name="measure_frequency_value" nolabel="1" attrs="{'invisible': [('measure_frequency_type', '!=', 'random')]}"/>
-                    <label for="measure_frequency_value" string="% of operations" attrs="{'invisible': [('measure_frequency_type', '!=', 'random')]}"/>
+                    <label for="measure_frequency_value" string="% of Operations" attrs="{'invisible': ['|', ('measure_on', '=', 'product'), ('measure_frequency_type', '!=', 'random')]}"/>
+                    <label for="measure_frequency_value" string="% of Transfers" attrs="{'invisible': ['|', ('measure_on', '!=', 'product'), ('measure_frequency_type', '!=', 'random')]}"/>
                     <field name="measure_frequency_unit_value" string="Frequency" nolabel="1" attrs="{'invisible': [('measure_frequency_type', '!=', 'periodical')]}"/>
                     <field name="measure_frequency_unit" attrs="{'invisible': [('measure_frequency_type', '!=', 'periodical')]}"/>
+                </div>
+                <field name="is_lot_tested_fractionally" attrs="{'invisible': [('measure_on', '!=', 'product')]}" string="Partial Transfert Test"/>
+                <label for="testing_percentage_within_lot" attrs="{'invisible': ['|', ('measure_on', '!=', 'product'), ('is_lot_tested_fractionally', '!=', True)]}" string="Percentage"/>
+                <div class="o_row" attrs="{'invisible': ['|', ('measure_on', '!=', 'product'), ('is_lot_tested_fractionally', '!=', True)]}">
+                    <field name="testing_percentage_within_lot" nolabel="1"/>
+                    <label for="testing_percentage_within_lot" string="%"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='test_type_id']" position="after">

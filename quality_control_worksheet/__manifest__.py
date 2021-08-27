@@ -16,6 +16,7 @@
         'data/quality_control_data.xml',
         'views/quality_views.xml',
         'views/worksheet_template_views.xml',
+        'wizard/quality_check_wizard_views.xml',
         'report/worksheet_custom_reports.xml',
         'report/worksheet_custom_report_templates.xml',
     ],

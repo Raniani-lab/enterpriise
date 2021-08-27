@@ -4,5 +4,5 @@ import BarcodePickingBatchModel from '@stock_barcode_picking_batch/models/barcod
 import { patch } from 'web.utils';
 
 patch(BarcodePickingBatchModel.prototype, 'stock_barcode_quality_control_picking_batch', {
-    openQualityChecksMethod: 'action_open_quality_check',
+    openQualityChecksMethod: 'action_open_quality_check_wizard',
 });

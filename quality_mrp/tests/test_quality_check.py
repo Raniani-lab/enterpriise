@@ -54,3 +54,29 @@ class TestQualityCheck(TestQualityMrpCommon):
 
         # Now check state of quality check.
         self.assertEqual(self.mrp_production_qc_test1.check_ids.quality_state, 'pass')
+
+    def test_01_production_quality_check_lot(self):
+        """ Test quality check on production order with type lot
+        """
+
+        # Create Quality Point for product Laptop Customized with Manufacturing Operation Type.
+        self.env['quality.point'].create({
+            'product_ids': [self.product_id],
+            'picking_type_ids': [self.picking_type_id],
+            'measure_on': 'product',
+            'is_lot_tested_fractionally': True,
+            'testing_percentage_within_lot': 50,
+        })
+
+        # Create Production Order of Laptop Customized to produce 5.0 Unit.
+        production_form = Form(self.env['mrp.production'])
+        production_form.product_id = self.product
+        production_form.product_qty = 5.0
+        production = production_form.save()
+        production.action_confirm()
+        production.qty_producing = 4.0
+        production.action_generate_serial()
+
+        # Check that the Quality Check was created and has correct values
+        self.assertEqual(len(production.check_ids), 1)
+        self.assertEqual(production.check_ids[0].qty_to_test, 2)

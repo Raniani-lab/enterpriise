@@ -48,10 +48,14 @@
         <field name="model">quality.check</field>
         <field name="inherit_id" ref="quality_control.quality_check_view_form"/>
         <field name="arch" type="xml">
-            <field name="product_id" position="after">
-                <field name="lot_id"/>
-                <field name="finished_lot_id"/>
+            <field name="lot_id" position="after">
+                <field name="workorder_id" invisible="1"/>
+                <field name="production_id" invisible="1"/>
+                <field name="finished_lot_id" attrs="{'invisible': [('finished_lot_id', '=', False)]}"/>
             </field>
+            <xpath expr="//field[@name='lot_id']" position="after">
+                <field name="lot_id" attrs="{'invisible': [('workorder_id', '=', False)]}" string="Component Lot/Serial"/>
+            </xpath>
         </field>
     </record>
 
@@ -60,8 +64,7 @@
         <field name="model">quality.check</field>
         <field name="inherit_id" ref="quality_control.quality_check_view_tree"/>
         <field name="arch" type="xml">
-            <field name="product_id" position="after">
-                <field name="lot_id" optional="show"/>
+            <field name="lot_name" position="after">
                 <field name="finished_lot_id" optional="show"/>
             </field>
         </field>

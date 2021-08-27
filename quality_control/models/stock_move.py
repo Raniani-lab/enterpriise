@@ -22,7 +22,7 @@ class StockMove(models.Model):
             if move.picking_id:
                 pick_moves[move.picking_id] |= move
         for picking, moves in pick_moves.items():
-            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, picking.picking_type_id)
+            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, picking.picking_type_id, measure_on='operation')
             quality_points = self.env['quality.point'].sudo().search(quality_points_domain)
 
             if not quality_points:

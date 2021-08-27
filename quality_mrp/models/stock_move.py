@@ -19,7 +19,7 @@ class StockMove(models.Model):
             if move.production_id:
                 mo_moves[move.production_id] |= move
         for production, moves in mo_moves.items():
-            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, production.picking_type_id)
+            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, production.picking_type_id, measure_on='operation')
             quality_points_domain = self.env['quality.point']._get_domain_for_production(quality_points_domain)
             quality_points = self.env['quality.point'].sudo().search(quality_points_domain)
 

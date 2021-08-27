@@ -32,6 +32,25 @@ class MrpProduction(models.Model):
             production.quality_check_fail = fail
             production.quality_check_todo = todo
 
+    # Crap but we should remove it after freeze due to brutal modification it will bring
+    def write(self, vals):
+        res = super(MrpProduction, self).write(vals)
+        for production in self:
+            if production.state in ['to_close', 'progress'] and 'lot_producing_id' in vals:
+                finished_product_move = production.move_finished_ids.filtered(
+                    lambda move: move.product_id == production.product_id)
+                if not finished_product_move.move_line_ids:
+                    move_line_vals = finished_product_move._prepare_move_line_vals()
+                    move_line_vals.update({
+                        'lot_id': vals.get('lot_producing_id'),
+                        'production_id': production.id,
+                    })
+                    self.env['stock.move.line'].create(move_line_vals)
+                else:
+                    finished_product_move.move_line_ids.write(
+                        {'lot_id': vals.get('lot_producing_id')})
+        return res
+
     def button_quality_alert(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
@@ -70,7 +89,7 @@ class MrpProduction(models.Model):
         self.ensure_one()
         checks = self.check_ids.filtered(lambda x: x.quality_state == 'none')
         if checks:
-            return checks._get_next_check_action()
+            return checks.action_open_quality_check_wizard()
 
     def action_cancel(self):
         res = super(MrpProduction, self).action_cancel()

@@ -38,7 +38,7 @@ class StockPicking(models.Model):
         checkable_products = self.mapped('move_line_ids').mapped('product_id')
         checks = self.check_ids.filtered(lambda check: check.quality_state == 'none' and check.product_id in checkable_products)
         if checks:
-            return checks._get_next_check_action()
+            return checks.action_open_quality_check_wizard()
         return False
 
     def _create_backorder(self):
@@ -77,6 +77,16 @@ class StockPicking(models.Model):
         res = super(StockPicking, self).action_cancel()
         self.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
         return res
+
+    def action_open_quality_check_picking(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_picking")
+        action['context'] = self.env.context.copy()
+        action['context'].update({
+            'search_default_picking_id': [self.id],
+            'default_picking_id': self.id,
+            'show_lots_text': self.show_lots_text,
+        })
+        return action
 
     def button_quality_alert(self):
         self.ensure_one()

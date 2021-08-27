@@ -32,7 +32,17 @@ class MrpProductionWorkcenterLine(models.Model):
         old_check_id = self.current_quality_check_id
         result = super(MrpProductionWorkcenterLine, self)._next(continue_production=continue_production)
         if old_check_id.quality_state == 'fail':
-            return old_check_id.show_failure_message()
+            return {
+                'name': _('Quality Check Failed'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'quality.check.wizard',
+                'views': [(self.env.ref('quality_control.quality_check_wizard_form_failure').id, 'form')],
+                'target': 'new',
+                'context': {**self.env.context, **{
+                    'default_check_ids': [old_check_id.id],
+                    'default_current_check_id': old_check_id.id,
+                }},
+            }
         return result
 
     def button_quality_alert(self):

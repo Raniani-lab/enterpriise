@@ -10,7 +10,7 @@ Use devices connected to an IoT Box to control the quality of your products.
 """,
     'depends': ['quality_control', 'iot'],
     'data': [
-        'views/quality_views.xml',
+        'wizard/quality_check_wizard_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

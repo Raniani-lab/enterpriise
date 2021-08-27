@@ -113,7 +113,7 @@ class QualityPoint(models.Model):
         return point_values
 
     @api.model
-    def _get_domain(self, product_ids, picking_type_id):
+    def _get_domain(self, product_ids, picking_type_id, measure_on='operation'):
         """ Helper that returns a domain for quality.point based on the products and picking type
         pass as arguments. It will search for quality point having:
         - No product_ids
@@ -129,6 +129,7 @@ class QualityPoint(models.Model):
         return [
             ('picking_type_ids', 'in', picking_type_id.ids),
             '|', ('product_ids', '=', False), ('product_ids', 'in', product_ids.ids),
+            ('measure_on', '=', measure_on)
         ]
 
     def _get_type_default_domain(self):
@@ -230,7 +231,7 @@ class QualityCheck(models.Model):
     partner_id = fields.Many2one(
         related='picking_id.partner_id', string='Partner')
     lot_id = fields.Many2one(
-        'stock.production.lot', 'Component Lot/Serial',
+        'stock.production.lot', 'Lot/Serial',
         domain="[('product_id', '=', product_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     user_id = fields.Many2one('res.users', 'Responsible', tracking=True)
     team_id = fields.Many2one(
@@ -283,20 +284,11 @@ class QualityCheck(models.Model):
             'quality_state': 'fail',
             'user_id': self.env.user.id,
             'control_date': datetime.now()})
-        if self.env.context.get('no_redirect'):
-            return True
-        return self.redirect_after_pass_fail()
 
     def do_pass(self):
         self.write({'quality_state': 'pass',
                     'user_id': self.env.user.id,
                     'control_date': datetime.now()})
-        if self.env.context.get('no_redirect'):
-            return True
-        return self.redirect_after_pass_fail()
-
-    def redirect_after_pass_fail(self):
-        return {'type': 'ir.actions.act_window_close'}
 
 
 class QualityAlert(models.Model):

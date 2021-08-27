@@ -71,28 +71,51 @@ class QualityCheck(models.Model):
             domain = literal_eval(self.point_id.worksheet_success_conditions or '[]')
             model = self.env[self.worksheet_template_id.model_id.model]
             if model.search(expression.AND([domain, [('x_quality_check_id', '=', self.id)]])):
-                return self.do_pass()
+                self.do_pass()
+                return self.action_generate_next_window()
             else:
                 # TODO: Write fail message ?
-                return self.do_fail()
+                self.do_fail()
+                if self.quality_state == 'fail' and self._is_pass_fail_applicable() and (self.failure_message or self.warning_message):
+                    return self.show_failure_message()
+                return self.action_generate_next_window()
 
-    def correct_measure(self):
+    def action_worksheet_discard(self):
+        check_ids = self.env.context.get('check_ids')
+        if check_ids:
+            return self.env['quality.check'].search([('id', 'in', check_ids)]).action_open_quality_check_wizard(
+                current_check_id=self.env.context.get('current_check_id')
+            )
+        return {'type': 'ir.actions.act_window_close'}
+
+    def action_generate_next_window(self):
+        check_ids = self.env.context.get('check_ids')
+        current_check_id = self.env.context.get('current_check_id')
+        if check_ids and current_check_id:
+            position_next_check_id = check_ids.index(current_check_id) + 1
+            if position_next_check_id < len(check_ids):
+                next_check_id = check_ids[position_next_check_id]
+                return self.env['quality.check'].browse(check_ids).action_open_quality_check_wizard(next_check_id)
+        return {'type': 'ir.actions.act_window_close'}
+
+    def correct_worksheet(self):
         self.ensure_one()
         if self.worksheet_template_id:
-            return self._get_next_check_action()
-        else:
-            return super().correct_measure()
-
-    def _get_next_check_action(self):
-        check = self[0]
-        # If the QC is linked to a worksheet, returns directly this worksheet instead of the QC.
-        if check.worksheet_template_id:
-            action = check.action_quality_worksheet()
-            action['name'] = "%s : %s %s" % (check.product_id.display_name, check.name, check.title or '')
+            action = self.action_quality_worksheet()
+            action['name'] = "%s : %s %s" % (self.product_id.display_name, self.name, self.title or '')
             action['context']['hide_check_button'] = False
             return action
-        else:
-            return super()._get_next_check_action()
 
     def _is_pass_fail_applicable(self):
         return self.test_type == 'worksheet' and True or super()._is_pass_fail_applicable()
+
+    def show_failure_message(self):
+        return {
+            'name': _('Quality Check Failed'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'quality.check',
+            'views': [(self.env.ref('quality_control_worksheet.quality_check_view_form_failure_worksheet').id, 'form')],
+            'target': 'new',
+            'res_id': self.id,
+            'context': self.env.context,
+        }

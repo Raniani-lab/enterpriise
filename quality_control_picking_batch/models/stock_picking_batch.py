@@ -14,12 +14,6 @@ class StockPickingBatch(models.Model):
         for batch in self:
             batch.quality_check_todo = any(batch.picking_ids.mapped('quality_check_todo'))
 
-    def action_open_quality_check(self):
-        self.ensure_one()
-        checks = self.picking_ids.check_ids.filtered(lambda check: check.quality_state == 'none')
-        if checks:
-            action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
-            action['context'] = self.env.context
-            action['res_id'] = checks.ids[0]
-            return action
-        return False
+    def action_open_quality_check_wizard(self):
+        check_ids = self.picking_ids.check_ids.filtered(lambda check: check.quality_state == 'none')
+        return check_ids.action_open_quality_check_wizard()

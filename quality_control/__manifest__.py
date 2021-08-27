@@ -21,7 +21,10 @@ Quality Control
     'data': [
         'data/quality_control_data.xml',
         'views/quality_views.xml',
+        'views/stock_move_views.xml',
         'views/stock_picking_views.xml',
+        'wizard/quality_check_wizard_views.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
         'data/quality_control_demo.xml',

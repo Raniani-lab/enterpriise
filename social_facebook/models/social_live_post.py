@@ -89,7 +89,7 @@ class SocialLivePostFacebook(models.Model):
                 params['caption'] = params['message']
 
             result = requests.request('POST', endpoint_url, params=params, timeout=15,
-                files={'source': (image.name, open(image._full_path(image.store_fname), 'rb'), image.mimetype)})
+                files={'source': (image.name, image.with_context(bin_size=False).raw, image.mimetype)})
         else:
             if post.image_ids:
                 images_attachments = post._format_images_facebook(facebook_target_id, account.facebook_access_token)

@@ -157,12 +157,12 @@ class SocialLivePostLinkedin(models.Model):
         upload_url = response['value']['uploadMechanism']['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest']['uploadUrl']
         image_urn = response['value']['asset']
 
-        file = open(image_id._full_path(image_id.store_fname), 'rb').read()
+        data = image_id.with_context(bin_size=False).raw
 
         headers = account_id._linkedin_bearer_headers()
         headers['Content-Type'] = 'application/octet-stream'
 
-        response = requests.request('POST', upload_url, data=file, headers=headers, timeout=15)
+        response = requests.request('POST', upload_url, data=data, headers=headers, timeout=15)
 
         if response.status_code != 201:
             raise UserError(_('Failed during image upload'))

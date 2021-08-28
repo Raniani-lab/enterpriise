@@ -35,7 +35,7 @@ class SocialPostFacebook(models.Model):
                     'published': 'false',
                     'access_token': facebook_access_token
                 },
-                files={'source': ('source', open(image._full_path(image.store_fname), 'rb'), image.mimetype)},
+                files={'source': ('source', image.with_context(bin_size=False).raw, image.mimetype)},
                 timeout=15
             )
 

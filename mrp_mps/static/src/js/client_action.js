@@ -64,10 +64,11 @@ var ClientAction = AbstractAction.extend({
     },
 
     async willStart() {
-        var _super = this._super;
+        await this._super(...arguments);
+        const searchQuery = this.controlPanelProps.searchModel.get("query");
+        this.domain = searchQuery.domain;
         await this._getRecordIds();
         await this._getState();
-        return _super.apply(this, arguments);
     },
 
     start: async function () {

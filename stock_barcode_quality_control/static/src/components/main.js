@@ -15,11 +15,11 @@ patch(MainComponent.prototype, 'stock_barcode_quality_control', {
     async checkQuality(ev) {
         ev.stopPropagation();
         await this.env.model.save();
-        const res = await this.rpc({
-            model: this.props.model,
-            method: this.env.model.openQualityChecksMethod,
-            args: [[this.props.id]],
-        });
+        const res = await this.orm.call(
+            this.props.model,
+            this.env.model.openQualityChecksMethod,
+            [[this.props.id]]
+        );
         if (typeof res === 'object' && res !== null) {
             return this.trigger('do-action', {
                 action: res,

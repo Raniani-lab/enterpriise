@@ -355,7 +355,9 @@ class MainComponent extends Component {
      * @param {string} barcode
      */
     _onBarcodeScanned(barcode) {
-        this.env.model.processBarcode(barcode);
+        if (this.displayBarcodeApplication) {
+            this.env.model.processBarcode(barcode);
+        }
     }
 
     async _onDoAction(ev) {

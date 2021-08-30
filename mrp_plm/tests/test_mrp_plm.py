@@ -248,3 +248,57 @@ class TestMrpPlm(TestPlmCommon):
         self.eco_stage_folded.folded = False
         eco1.new_bom_id.invalidate_cache()
         self.assertEqual(eco1.new_bom_id.eco_count, 2)
+
+    def test_do_not_merge_bom_lines(self):
+        """
+        Test that when applying a mrp.eco on a BoM for which the same product is present twice in the bom lines
+        (same product, multiple operations), the BoM changes are correctly computed
+        """
+        workcenter = self.env['mrp.workcenter'].create({'name': 'A center'})
+        product_a = self.env['product.product'].create({'name': 'a_product'})
+        product_b = self.env['product.product'].create({'name': 'b_product'})
+        bom = self.env['mrp.bom'].create({
+            'product_id': product_a.id,
+            'product_tmpl_id': product_a.product_tmpl_id.id,
+            'product_qty': 1,
+            'type': 'normal',
+            'bom_line_ids': [
+                (0, 0, {'product_id': product_b.id, 'product_qty': 2}),
+                (0, 0, {'product_id': product_b.id, 'product_qty': 3}),
+            ]
+        })
+        operation_a = self.env['mrp.routing.workcenter'].create({
+            'name': 'Some operation',
+            'workcenter_id': workcenter.id,
+            'bom_id': bom.id
+        })
+        operation_b = self.env['mrp.routing.workcenter'].create({
+            'name': 'Other operation',
+            'workcenter_id': workcenter.id,
+            'bom_id': bom.id
+        })
+        bom.bom_line_ids[0].operation_id = operation_a.id
+        bom.bom_line_ids[1].operation_id = operation_b.id
+        type_id = self.env['mrp.eco.type'].search([], limit=1).id
+        mrp_eco = self.env['mrp.eco'].create({
+            'name': 'a plm',
+            'bom_id': bom.id,
+            'product_tmpl_id': bom.product_tmpl_id.id,
+            'type_id': type_id,
+            'type': 'bom'
+        })
+        mrp_eco.action_new_revision()
+        # Default BoM Changes behavior in 14.0
+        self.assertRecordValues(mrp_eco.bom_change_ids, [
+            {'change_type': 'add', 'upd_product_qty': 2},
+            {'change_type': 'add', 'upd_product_qty': 3},
+            {'change_type': 'remove', 'upd_product_qty': -2},
+            {'change_type': 'remove', 'upd_product_qty': -3},
+        ])
+        mrp_eco.new_bom_id.bom_line_ids[0].product_qty = 13  # Change from 2 to 13
+        self.assertRecordValues(mrp_eco.bom_change_ids, [
+            {'change_type': 'add', 'upd_product_qty': 13},
+            {'change_type': 'add', 'upd_product_qty': 3},
+            {'change_type': 'remove', 'upd_product_qty': -2},
+            {'change_type': 'remove', 'upd_product_qty': -3},
+        ])

@@ -17,10 +17,7 @@ class ResConfigSettings(models.TransientModel):
     l10n_ar_afip_ws_key_fname = fields.Char('Private Key name', default='private_key.pem')
     l10n_ar_afip_ws_crt_fname = fields.Char(related='company_id.l10n_ar_afip_ws_crt_fname')
 
-    l10n_ar_afip_fce_transmission = fields.Selection(
-        [('SCA', 'SCA - TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA'), ('ADC', 'ADC - AGENTE DE DEPOSITO COLECTIVO')],
-        'FCE: Transmission Option', config_parameter='l10n_ar_edi.fce_transmission',
-        help="This field only need to be set when you are reporting a MiPyME FCE documents")
+    l10n_ar_fce_transmission_type = fields.Selection(related="company_id.l10n_ar_fce_transmission_type", readonly=False)
 
     def l10n_ar_action_create_certificate_request(self):
         self.ensure_one()

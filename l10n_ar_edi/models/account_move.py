@@ -53,12 +53,27 @@ class AccountMove(models.Model):
     l10n_ar_afip_verification_result = fields.Selection([('A', 'Approved'), ('O', 'Observed'), ('R', 'Rejected')],
         string='AFIP Verification result', copy=False, readonly=True)
 
+    # FCE related fields
     l10n_ar_afip_fce_is_cancellation = fields.Boolean(string='FCE: Is Cancellation?', readonly=True, states={'draft': [('readonly', False)]},
         copy=False, help='When informing a MiPyMEs (FCE) debit/credit notes in AFIP it is require to sent information about if the'
         ' original document has been explicitly rejected by the buyer. More information here'
         ' http://www.afip.gob.ar/facturadecreditoelectronica/preguntasFrecuentes/emisor-factura.asp')
+    l10n_ar_fce_transmission_type = fields.Selection(
+        [('SCA', 'SCA - TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA'), ('ADC', 'ADC - AGENTE DE DEPOSITO COLECTIVO')],
+        string='FCE: Transmission Option', compute="_compute_l10n_ar_fce_transmission_type", store=True, states={'draft': [('readonly', False)]},
+        help="This field only need to be set when you are reporting a MiPyME FCE documents. Default value can be set in the Accouting Settings")
 
     # Compute methods
+
+    @api.depends('l10n_latam_document_type_id')
+    def _compute_l10n_ar_fce_transmission_type(self):
+        """ Automatically set the default value on the l10n_ar_fce_transmission_type field if the invoice is a mipyme
+        one with the default value set in the company """
+        mipyme_fce_docs = self.filtered(lambda x: x._is_mipyme_fce() or x._is_mipyme_fce_refund())
+        for rec in mipyme_fce_docs:
+            rec.l10n_ar_fce_transmission_type = rec.company_id.l10n_ar_fce_transmission_type
+        remaining = self - mipyme_fce_docs
+        remaining.l10n_ar_fce_transmission_type = False
 
     @api.depends('l10n_ar_afip_auth_code')
     def _compute_l10n_ar_afip_qr_code(self):
@@ -503,8 +518,7 @@ class AccountMove(models.Model):
         if self._is_mipyme_fce_refund():
             optionals.append({'Id': 22, 'Valor': self.l10n_ar_afip_fce_is_cancellation and 'S' or 'N'})
 
-        transmission_type = self.env['ir.config_parameter'].sudo().get_param(
-            'l10n_ar_edi.fce_transmission', '')
+        transmission_type = self.l10n_ar_fce_transmission_type
         if self._is_mipyme_fce() and transmission_type:
             optionals.append({'Id': 27, 'Valor': transmission_type})
         return optionals

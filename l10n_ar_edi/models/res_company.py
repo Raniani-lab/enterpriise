@@ -45,6 +45,11 @@ class ResCompany(models.Model):
         " Please upload here the AFIP certificate in PEM format. You can get your certificate from your AFIP Portal")
     l10n_ar_afip_ws_crt_fname = fields.Char('Certificate name', compute="_compute_l10n_ar_afip_ws_crt_fname", store=True)
 
+    l10n_ar_fce_transmission_type = fields.Selection(
+        [('SCA', 'SCA - TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA'), ('ADC', 'ADC - AGENTE DE DEPOSITO COLECTIVO')],
+        'FCE: Transmission Option Default',
+        help='Default value for "FCE: Transmission Option" on electronic invoices')
+
     @api.depends('l10n_ar_afip_ws_crt')
     def _compute_l10n_ar_afip_ws_crt_fname(self):
         """ Set the certificate name in the company. Needed in unit tests, solved by a similar onchange method in res.config.settings while setting the certificate via web interface """

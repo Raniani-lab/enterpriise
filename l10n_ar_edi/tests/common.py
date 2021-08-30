@@ -147,7 +147,7 @@ class TestEdi(SingleTransactionCase):
         if 'mipyme' in document_type:
             values.update({'document_type': expected_document, 'lines': [{'price_unit': 150000}]})
             # We need to define the default value for Optional 27 - Transmission Type
-            self.env['ir.config_parameter'].sudo().set_param('l10n_ar_edi.fce_transmission', 'SCA')
+            self.env.company.l10n_ar_fce_transmission_type = 'SCA'
 
             if '_a' in document_type or '_c' in document_type:
                 values.update({'partner': self.partner_mipyme})

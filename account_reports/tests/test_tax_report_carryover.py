@@ -2,6 +2,7 @@
 from unittest.mock import patch
 
 from .common import TestAccountReportsCommon
+from odoo import fields
 from odoo.tests import tagged
 from odoo.tests.common import Form
 
@@ -230,51 +231,35 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
                                                                                        self.tax_42_line])
         self._check_carryover_test_result(invoice, report, self.company_data, -42.0, self.tax_42_line)
 
-    def test_tax_report_carry_over_persistent(self):
-        report, taxes, _ = self._trigger_carryover_line_creation(self.company_data, [self.tax_27_line], False)
-        company_data = self.company_data
+    def test_tax_report_carry_over_non_persistent_and_used_in_balance(self):
+        # Create a move with 100$ 21% tax
+        report, dummy, invoice = self._trigger_carryover_line_creation(self.company_data, [self.tax_27_line], False)
 
-        # Trigger the creation of a carryover line for the selected company
-        invoice = self.env['account.move'].create({
-            'move_type': 'in_invoice',
-            'partner_id': self.partner_a.id,
-            'journal_id': company_data['default_journal_purchase'].id,
-            'invoice_date': '2020-03-31',
-            'invoice_line_ids': [
-                (0, 0, {
-                    'name': 'Turlututu',
-                    'price_unit': 100.0,
-                    'quantity': 1,
-                    'account_id': company_data['default_account_expense'].id,
-                    'tax_ids': [(6, 0, taxes[0].ids)]}),
-            ],
-        })
-        # Create the vat closing and make sure of the value
-        # Line 27 carry over to line 22, so we check this one.
+        # Then close the period to trigger the carryover line creation
+        # Line 27 carry over to line 22, so we check this one and make sure it has a carryover balance of 27
         self._check_carryover_test_result(invoice, report, self.company_data, 27.0, self.tax_22_line)
-        invoice_2 = self.env['account.move'].create({
-            'move_type': 'in_invoice',
-            'partner_id': self.partner_a.id,
-            'journal_id': company_data['default_journal_purchase'].id,
-            'invoice_date': '2020-04-30',
-            'invoice_line_ids': [
-                (0, 0, {
-                    'name': 'Turlututu',
-                    'price_unit': 50.0,
-                    'quantity': 1,
-                    'account_id': company_data['default_account_expense'].id,
-                    'tax_ids': [(6, 0, taxes[0].ids)]}),
-            ],
-        })
-        invoice.action_post()
-        invoice_2.action_post()
-        options = self._init_options(report, invoice_2.date, invoice_2.date)
 
-        # In the report, because we marked the line as such, the line 22 should be affected by the carryover
-        # of the line 27
+        # Get the report for the next period to test that the carryover is used in the balance
+        options = self._init_options(report, fields.Date.from_string('2020-04-30'),
+                                     fields.Date.from_string('2020-04-30'))
         lines = report._get_lines(options)
         line_id = report._get_generic_line_id('account.tax.report.line', self.tax_22_line.id)
         line_22 = [line for line in lines if line['id'] == line_id][0]
 
         # The balance of the line 22 for the next period is the balance of its carryover from last period.
         self.assertEqual(line_22['columns'][0]['balance'], 27.0)
+
+        # Close the current period again. It should trigger a carryover from line 27 to line 22.
+        # even if it is empty, to reset the balance since it is not persistent and should be at 0 if there
+        # as been nothing in a period.
+        with patch.object(type(report), '_get_vat_report_attachments', autospec=True,
+                          side_effect=lambda *args, **kwargs: []):
+            vat_closing_move = report._generate_tax_closing_entries(options)
+            vat_closing_move.action_post()
+
+            # Directly check the carryover lines. Because no move has been made during the last period,
+            # it should have been balanced to go back to 0
+            domain = self.tax_22_line.with_company(self.company_data['company'])._get_carryover_lines_domain(options)
+            carryover_lines = self.env['account.tax.carryover.line'].search(domain)
+            carried_over_sum = sum([line.amount for line in carryover_lines])
+            self.assertEqual(carried_over_sum, 0)

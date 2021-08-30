@@ -187,10 +187,10 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         return vat_number, country_code
 
-    def _get_popup_messages(self, line_balance, carryover_balance, options):
+    def _get_popup_messages(self, line_balance, carryover_balance, options, tax_report_line):
         country_id = self.env['account.tax.report'].browse(options['tax_report']).country_id
         if country_id.code != 'BE':
-            return super()._get_popup_messages(line_balance, carryover_balance, options)
+            return super()._get_popup_messages(line_balance, carryover_balance, options, tax_report_line)
         return {
             'positive': {
                 'description1': _("This amount in the XML file will be increased by the positive amount from"),

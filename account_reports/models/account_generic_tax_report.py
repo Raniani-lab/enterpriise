@@ -1164,7 +1164,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         # When we are not printing (on the web page) we'll show a contextual tooltip.
         if not self.env.context.get('print_mode') and carryover_bounds is not None:
             popup_data = {}
-            messages = self._get_popup_messages(line_balance, carryover_balance, options)
+            messages = self._get_popup_messages(line_balance, carryover_balance, options, tax_report_line)
             column_styles = self._get_column_styles(line)
             column_style = column_styles.get('base_style', '')
 
@@ -1211,7 +1211,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             'below_bound_style': ' color:red;',
         }
 
-    def _get_popup_messages(self, line_balance, carryover_balance, options):
+    def _get_popup_messages(self, line_balance, carryover_balance, options, tax_report_line):
         return {
             'positive': {
                 'description1': _("This amount will be increased by the positive amount from"),
@@ -1230,7 +1230,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             'balance': _("The carried over balance will be : %s", carryover_balance),
         }
 
-    def get_amounts_after_carryover(self, tax_report_line, amount, carryover_bounds, options, period):
+    def get_amounts_after_carryover(self, tax_report_line, amount, carryover_bounds, options, period, persistent=True):
         """
         Adapt the line amount based on the carried over balance for this line.
         If the amount is outside of the bounds, it'll be set to the nearest one and the difference will be
@@ -1247,6 +1247,10 @@ class AccountGenericTaxReport(models.AbstractModel):
         """
         if carryover_bounds is None:
             return amount, self.get_carried_over_balance_before_date(tax_report_line, options, period)
+
+        # Non-persistent carryover always bring the carryover balance to the balance of the line
+        if not persistent:
+            return amount, amount
 
         delta = 0
 

@@ -650,7 +650,7 @@ export default class BarcodeModel extends owl.core.EventBus {
         const newLine = Object.assign(
             {},
             params.copyOf,
-            this._getNewLineDefaultValues()
+            this._getNewLineDefaultValues(params.fieldsParams)
         );
         await this.updateLine(newLine, params.fieldsParams);
         this.currentState.lines.push(newLine);
@@ -711,9 +711,9 @@ export default class BarcodeModel extends owl.core.EventBus {
         return false;
     }
 
-    _getNewLineDefaultValues(args) {
+    _getNewLineDefaultValues(fieldsParams) {
         return {
-            id: false,
+            id: (fieldsParams && fieldsParams.id) || false,
             virtual_id: this._uniqueVirtualId,
             location_id: this.location.id,
         };

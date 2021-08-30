@@ -93,7 +93,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
     _createCommandVals(line) {
         const values = {
             dummy_id: line.virtual_id,
-            inventory_date: new Date(),
+            inventory_date: line.inventory_date,
             inventory_quantity: line.inventory_quantity,
             location_id: line.location_id,
             lot_id: line.lot_id,
@@ -123,16 +123,21 @@ export default class BarcodeQuantModel extends BarcodeModel {
         if (params.fieldsParams.package_id) {
             domain.push(['package_id', '=', params.fieldsParams.package_id]);
         }
-        const quantity = await this.orm.searchRead(
+        const quant = await this.orm.searchRead(
             'stock.quant',
             domain,
-            ['id', 'quantity'],
+            ['id', 'inventory_date', 'inventory_quantity', 'quantity', 'user_id'],
             { limit: 1 }
         );
-        if (quantity.length) {
-            params.fieldsParams = Object.assign(params.fieldsParams, quantity[0]);
+        if (quant.length) {
+            Object.assign(params.fieldsParams, quant[0], { inventory_quantity: 1 });
         }
         const newLine = await super._createNewLine(params);
+        if (quant.length) {
+            // If the quant already exits, we add it into the `initialState` to
+            // avoid comparison issue with the `currentState` when the save occurs.
+            this.initialState.lines.push(Object.assign({}, newLine, quant[0]));
+        }
         return newLine;
     }
 
@@ -149,17 +154,20 @@ export default class BarcodeQuantModel extends BarcodeModel {
         return params;
     }
 
-    _getNewLineDefaultValues(args) {
-        const defaultValues = super._getNewLineDefaultValues();
+    _getNewLineDefaultValues(fieldsParams) {
+        const defaultValues = super._getNewLineDefaultValues(...arguments);
         return Object.assign(defaultValues, {
+            inventory_date: new Date().toISOString().slice(0, 10),
             inventory_quantity: 0,
-            quantity: 0,
+            inventory_quantity_set: true,
+            quantity: (fieldsParams && fieldsParams.quantity) || 0,
             user_id: this.userId,
         });
     }
 
     _getFieldToWrite() {
         return [
+            'inventory_date',
             'inventory_quantity',
             'user_id',
             'location_id',
@@ -314,7 +322,8 @@ export default class BarcodeQuantModel extends BarcodeModel {
                     resultPackage: quant.package_id,
                     owner: quant.owner_id,
                 });
-                await this._createNewLine({ fieldsParams });
+                const newLine = await this._createNewLine({ fieldsParams });
+                newLine.inventory_quantity = quant.quantity;
             }
         }
         barcodeData.stopped = true;

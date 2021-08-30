@@ -2007,6 +2007,9 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         """ Creates an inventory from scratch, then scans products and verifies
         the buttons behavior is right.
         """
+        # Adds some quantities for product2.
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 10)
+
         action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
         url = "/web#action=" + str(action_id.id)
 

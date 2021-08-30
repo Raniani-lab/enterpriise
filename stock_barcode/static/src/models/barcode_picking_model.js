@@ -41,7 +41,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                     line.location_dest_id = id;
                     this._markLineAsDirty(line);
                 } else { // ... otherwise, we split it to a new line.
-                    const newLine = Object.assign({}, line, this._getNewLineDefaultValues());
+                    const newLine = Object.assign({}, line, this._getNewLineDefaultValues({}));
                     this.currentState.lines.push(newLine);
                     newLine.qty_done = line.qty_done;
                     line.qty_done = 0;
@@ -377,8 +377,8 @@ export default class BarcodePickingModel extends BarcodeModel {
         return this.cache.getRecord(this.params.model, this.params.id);
     }
 
-    _getNewLineDefaultValues() {
-        const defaultValues = super._getNewLineDefaultValues();
+    _getNewLineDefaultValues(fieldsParams) {
+        const defaultValues = super._getNewLineDefaultValues(...arguments);
         return Object.assign(defaultValues, {
             location_dest_id: this.destLocation.id,
             product_uom_qty: false,

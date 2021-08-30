@@ -3995,6 +3995,20 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         }
     },
 
+    // Scans product2 => Should retrieve the quantity on hand and display 1/10.
+    { trigger: '.o_barcode_client_action', run: 'scan product2' },
+    {
+        trigger: '.o_barcode_line:contains("product2")',
+        run: function () {
+            helper.assertLinesCount(4);
+            const $line = helper.getLine({barcode: 'product2'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQuantityOnReservedQty(3, '1 / 10');
+            helper.assertButtonIsVisible($line, 'add_quantity');
+            helper.assertButtonIsVisible($line, 'remove_unit');
+        }
+    },
+
     // Validates the inventory.
     {
         trigger: '.o_validate_page'

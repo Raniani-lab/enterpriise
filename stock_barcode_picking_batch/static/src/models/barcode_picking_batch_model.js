@@ -216,9 +216,9 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         return this.picking && this.picking.location_dest_id;
     }
 
-    _getNewLineDefaultValues() {
+    _getNewLineDefaultValues(fieldsParams) {
         // Adds the default picking id and its corresponding color on the line.
-        const defaultValues = super._getNewLineDefaultValues();
+        const defaultValues = super._getNewLineDefaultValues(...arguments);
         let line = this.selectedLine;
         if (!line) {
             if (this.lastScannedPackage) {

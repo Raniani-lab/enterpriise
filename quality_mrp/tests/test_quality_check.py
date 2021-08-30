@@ -109,3 +109,35 @@ class TestQualityCheck(TestQualityMrpCommon):
 
         # Check that the Quality Check was created
         self.assertEqual(len(production2.check_ids), 1)
+
+    def test_02_quality_check_scrapped(self):
+        """
+        Test that when scrapping a manufacturing order, no quality check is created for that move
+        """
+        product = self.env['product.product'].create({'name': 'Time'})
+        component = self.env['product.product'].create({'name': 'Money'})
+
+        # Create a quality point for Manufacturing on All Operations (All Operations is set by default)
+        qp = self.env['quality.point'].create({'picking_type_ids': [(4, self.picking_type_id)]})
+        # Create a Manufacturing order for a product
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = product
+        mri_form = mo_form.move_raw_ids.new()
+        mri_form.product_id = component
+        mri_form.product_uom_qty = 1
+        mri_form.save()
+        mo = mo_form.save()
+        mo.action_confirm()
+        # Delete the created quality check
+        qc = self.env['quality.check'].search([('product_id', '=', product.id), ('point_id', '=', qp.id)])
+        qc.unlink()
+
+        # Scrap the Manufacturing Order
+        scrap = self.env['stock.scrap'].with_context(active_model='mrp.production', active_id=mo.id).create({
+            'product_id': product.id,
+            'scrap_qty': 1.0,
+            'product_uom_id': product.uom_id.id,
+            'production_id': mo.id
+        })
+        scrap.do_scrap()
+        self.assertEqual(len(self.env['quality.check'].search([('product_id', '=', product.id), ('point_id', '=', qp.id)])), 0, "Quality checks should not be created for scrap moves")

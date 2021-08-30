@@ -16,7 +16,7 @@ class StockMove(models.Model):
         mo_moves = defaultdict(lambda: self.env['stock.move'])
         check_vals_list = []
         for move in moves:
-            if move.production_id:
+            if move.production_id and not move.scrapped:
                 mo_moves[move.production_id] |= move
         for production, moves in mo_moves.items():
             quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, production.picking_type_id, measure_on='operation')

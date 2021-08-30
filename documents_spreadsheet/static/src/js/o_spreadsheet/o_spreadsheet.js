@@ -19214,7 +19214,7 @@
                             if (conditionalStyle) {
                                 style = Object.assign({}, style, conditionalStyle);
                             }
-                            const align = text
+                            let align = text
                                 ? (style && style.align) || computeAlign(cell, showFormula)
                                 : undefined;
                             let clipRect = null;
@@ -19225,6 +19225,9 @@
                             const iconBoxWidth = iconStyle ? iconWidth + 2 * MIN_CF_ICON_MARGIN : 0;
                             const contentWidth = iconBoxWidth + textWidth;
                             const isOverflowing = contentWidth > cols[colNumber].size || fontSizeMap[fontsize] > row.size;
+                            if (isOverflowing && typeof cell.value === "number") {
+                                align = align !== "center" ? "left" : align;
+                            }
                             if (iconStyle) {
                                 const colWidth = col.end - col.start;
                                 clipRect = [
@@ -19376,6 +19379,12 @@
                     const fontsize = style.fontSize || DEFAULT_FONT_SIZE;
                     const iconWidth = fontSizeMap[fontsize];
                     const iconBoxWidth = iconStyle ? 2 * MIN_CF_ICON_MARGIN + iconWidth : 0;
+                    /** alignment of a number cell should be put to left once the text overflows from the cell */
+                    const contentWidth = iconBoxWidth + textWidth;
+                    align =
+                        text && typeof refCell.value === "number" && contentWidth > width && align !== "center"
+                            ? "left"
+                            : align;
                     const clipRect = iconStyle
                         ? [x + iconBoxWidth, y, Math.max(0, width - iconBoxWidth), height]
                         : [x, y, width, height];
@@ -29166,8 +29175,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-27T13:49:57.966Z';
-    exports.__info__.hash = '1b28eb4';
+    exports.__info__.date = '2021-08-30T08:01:23.718Z';
+    exports.__info__.hash = '84d695b';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

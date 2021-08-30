@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Roles -->
+        <record id="planning_role_junior_architect" model="planning.role">
+            <field name="name">Software Junior Architect</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="planning_role_senior_architect" model="planning.role">
+            <field name="name">Software Senior Architect</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="planning_role_consultant" model="planning.role">
+            <field name="name">Consultant</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="hr.employee_niv" model="hr.employee">
+            <field name="default_planning_role_id" ref="planning_role_junior_architect"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning_role_junior_architect'))]"/>
+        </record>
+        <record id="hr.employee_stw" model="hr.employee">
+            <field name="planning_role_ids" eval="[(4, ref('planning_role_junior_architect'))]"/>
+        </record>
+        <record id="hr.employee_chs" model="hr.employee">
+            <field name="default_planning_role_id" ref="planning_role_senior_architect"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning_role_senior_architect'))]"/>
+        </record>
+        <record id="hr.employee_fme" model="hr.employee">
+            <field name="planning_role_ids" eval="[(4, ref('planning_role_senior_architect'))]"/>
+        </record>
+        <record id="hr.employee_fpi" model="hr.employee">
+            <field name="default_planning_role_id" ref="planning_role_consultant"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning_role_consultant'))]"/>
+        </record>
+        <record id="hr.employee_jth" model="hr.employee">
+            <field name="planning_role_ids" eval="[(4, ref('planning_role_consultant'))]"/>
+        </record>
+
+        <record id="sale_timesheet.product_service_order_timesheet" model="product.product">
+            <field name="planning_enabled" eval="True"/>
+            <field name="planning_role_id" ref="planning_role_consultant"/>
+        </record>
+
+        <record id="sale_timesheet.product_service_deliver_timesheet_1" model="product.product">
+            <field name="planning_enabled" eval="True"/>
+            <field name="planning_role_id" ref="planning_role_senior_architect"/>
+        </record>
+
+        <record id="sale_timesheet.product_service_deliver_timesheet_2" model="product.product">
+            <field name="planning_enabled" eval="True"/>
+            <field name="planning_role_id" ref="planning_role_junior_architect"/>
+        </record>
+    </data>
+</odoo>

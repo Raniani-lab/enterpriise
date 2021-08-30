@@ -18,36 +18,42 @@
                     <p>You have been assigned the following schedule:</p>
                     % endif
                     <br/>
-                    <table style="table-layout: fixed; width: 80%; margin: auto;">
+                    <table style="width: 80%; margin: auto;">
                         <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">From</th>
+                            <th style="padding: 5px;text-align: left;">From</th>
                             <td style="padding: 5px;">${ctx.get('start_datetime')}</td>
                         </tr>
                         <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">To</th>
+                            <th style="padding: 5px;text-align: left;">To</th>
                             <td style="padding: 5px;">${ctx.get('end_datetime')}</td>
                         </tr>
                         % if object.role_id
                         <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">Role</th>
+                            <th style="padding: 5px;text-align: left;">Role</th>
                             <td style="padding: 5px;">${object.role_id.name or ''}</td>
+                        </tr>
+                        % endif
+                        % if object.sale_line_id
+                        <tr>
+                            <th style="padding: 5px;text-align: left;">Sale Order Item</th>
+                            <td style="padding: 5px;">${object.sudo().sale_line_id.name or ''}</td>
                         </tr>
                         % endif
                         % if object.project_id
                         <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">Project</th>
+                            <th style="padding: 5px;text-align: left;">Project</th>
                             <td style="padding: 5px;">${object.sudo().project_id.name or ''}</td>
                         </tr>
                         % endif
                         % if object.task_id
                         <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">Task</th>
+                            <th style="padding: 5px;text-align: left;">Task</th>
                             <td style="padding: 5px;">${object.sudo().task_id.name or ''}</td>
                         </tr>
                         % endif
                         % if object.name
                         <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">Note</th>
+                            <th style="padding: 5px;text-align: left;">Note</th>
                             <td style="padding: 5px;">${object.name or ''}</td>
                         </tr>
                         % endif

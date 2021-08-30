@@ -15,8 +15,13 @@ class ShiftControllerProject(ShiftController):
             return
         employee_fullcalendar_data = result['employee_slots_fullcalendar_data']
         new_employee_fullcalendar_data = []
-        for slot_data in employee_fullcalendar_data:
-            slot_sudo = request.env['planning.slot'].sudo().browse(slot_data['slot_id'])
+        mapped_data = {
+            slot_data['slot_id']: slot_data
+            for slot_data in employee_fullcalendar_data
+        }
+        slot_ids = request.env['planning.slot'].sudo().browse(list(mapped_data.keys()))
+        for slot_sudo in slot_ids:
+            slot_data = mapped_data[slot_sudo.id]
             slot_data['project'] = slot_sudo.project_id.name
             slot_data['task'] = slot_sudo.task_id.name
             # Reset the title according to the project and task name

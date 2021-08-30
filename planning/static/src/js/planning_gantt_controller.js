@@ -86,14 +86,19 @@ var PlanningGanttController = GanttController.extend({
             const action_name = e.data.action_data.name || e.data.action_data.special;
             const event_data = _.clone(e.data);
 
-            if (action_name === "unlink") {
+            /* YTI TODO: Refactor this stuff to use events instead of empirically reload the page*/
+            if (action_name === "action_unschedule") {
+                e.stopPropagation();
+                self.trigger_up('execute_action', event_data);
+                _.delay(function() { self.dialog.destroy(); }, 400);
+            } else if (action_name === "unlink") {
                 e.stopPropagation();
                 const message = _t('Are you sure you want to delete this shift?');
 
                 Dialog.confirm(self, message, {
                     confirm_callback: function(evt) {
                         self.trigger_up('execute_action', event_data);
-                        _.delay(function() { self.dialog.destroy() }, 100);
+                        _.delay(function() { self.dialog.destroy() }, 200);
                     },
                     cancel_callback: function(evt) {
                         self.dialog.$footer.find('button').removeAttr('disabled');

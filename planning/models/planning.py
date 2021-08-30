@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import logging
@@ -9,10 +10,10 @@ from math import ceil, modf
 from random import randint
 
 from odoo import api, fields, models, _
+from odoo.addons.resource.models.resource import Intervals
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from odoo.tools.misc import format_datetime
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_utils, format_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -59,10 +60,10 @@ class Planning(models.Model):
 
     start_datetime = fields.Datetime(
         "Start Date", compute='_compute_datetime', store=True, readonly=False, required=True,
-        copy=True, default=_default_start_datetime)
+        copy=True)
     end_datetime = fields.Datetime(
         "End Date", compute='_compute_datetime', store=True, readonly=False, required=True,
-        copy=True, default=_default_end_datetime)
+        copy=True)
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
     self_unassign_days_before = fields.Integer(
@@ -215,17 +216,48 @@ class Planning(models.Model):
     def _compute_allocated_hours(self):
         percentage_field = self._fields['allocated_percentage']
         self.env.remove_to_compute(percentage_field, self)
-        for slot in self:
-            if slot.start_datetime and slot.end_datetime:
+        planning_slots = self.filtered(lambda s: s.allocation_type == 'planning')
+        forecast_slots = self - planning_slots
+        for slot in planning_slots:
+            # for each planning slot, compute the duration
+            ratio = slot.allocated_percentage / 100.0 or 1
+            slot.allocated_hours = slot._get_slot_duration() * ratio
+        if forecast_slots:
+            # for forecasted slots, compute the Conjonction of the slot resource's work intervals and the slot.
+            unplanned_forecast_slots = forecast_slots.filtered_domain([
+                '|', ('start_datetime', "=", False), ('end_datetime', "=", False),
+            ])
+            # Unplanned slots will have allocated hours set to 0.0 as there are no enough information
+            # to compute the allocated hours (start or end datetime are mandatory for this computation)
+            for slot in unplanned_forecast_slots:
+                slot.allocated_hours = 0.0
+            planned_forecast_slots = forecast_slots - unplanned_forecast_slots
+            if not planned_forecast_slots:
+                return
+            # if there are at least one slot having start or end date, call the _get_work_intervals_batch
+            start_utc = pytz.utc.localize(min(planned_forecast_slots.mapped('start_datetime')))
+            end_utc = pytz.utc.localize(max(planned_forecast_slots.mapped('end_datetime')))
+            # work intervals per resource are retrieved with a batch
+            work_intervals_per_resource = forecast_slots.resource_id._get_work_intervals_batch(start_utc, end_utc)
+            for slot in planned_forecast_slots:
                 ratio = slot.allocated_percentage / 100.0 or 1
-                if slot.allocation_type == 'planning':
-                    slot.allocated_hours = slot._get_slot_duration() * ratio
-                else:
-                    calendar = slot.resource_id.calendar_id or slot.company_id.resource_calendar_id
+                if not slot.resource_id:
+                    # if there are no resource on the slot, use the company calendar
+                    calendar = slot.company_id.resource_calendar_id
                     hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime) if calendar else slot._get_slot_duration()
                     slot.allocated_hours = hours * ratio
-            else:
-                slot.allocated_hours = 0.0
+                else:
+                    interval = Intervals([(
+                        pytz.utc.localize(slot.start_datetime),
+                        pytz.utc.localize(slot.end_datetime),
+                        self.env['resource.calendar.attendance']
+                    )])
+                    # Conjonction between work_intervals and the slot interval.
+                    work_intervals = interval & work_intervals_per_resource[slot.resource_id.id]
+                    slot.allocated_hours = sum(
+                        (stop - start).total_seconds() / 3600
+                        for start, stop, _resource in work_intervals
+                    ) * ratio
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_working_days_count(self):
@@ -307,6 +339,8 @@ class Planning(models.Model):
         """Return the slot (effective) duration expressed in hours.
         """
         self.ensure_one()
+        if not self.start_datetime:
+            return False
         return (self.end_datetime - self.start_datetime).total_seconds() / 3600.0
 
     def _get_domain_template_slots(self):
@@ -337,6 +371,8 @@ class Planning(models.Model):
 
     def _different_than_template(self, check_empty=True):
         self.ensure_one()
+        if not self.start_datetime:
+            return True
         template_fields = self._get_template_fields().items()
         for template_field, slot_field in template_fields:
             if self.template_id[template_field] or not check_empty:
@@ -351,7 +387,7 @@ class Planning(models.Model):
                         return True
         return False
 
-    @api.depends('template_id', 'role_id', 'allocated_hours')
+    @api.depends('template_id', 'role_id', 'allocated_hours', 'start_datetime', 'end_datetime')
     def _compute_allow_template_creation(self):
         for slot in self:
             if not (slot.start_datetime and slot.end_datetime):
@@ -544,8 +580,8 @@ class Planning(models.Model):
                                                                                        res.get('template_reset'))
         else:
             if 'start_datetime' in fields_list:
-                start_datetime = fields.Datetime.from_string(res.get('start_datetime'))
-                end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else False
+                start_datetime = fields.Datetime.from_string(res.get('start_datetime')) if res.get('start_datetime') else self._default_start_datetime()
+                end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else self._default_end_datetime()
                 start = pytz.utc.localize(start_datetime)
                 end = pytz.utc.localize(end_datetime) if end_datetime else self._default_end_datetime()
                 opening_hours = self._company_working_hours(start, end)
@@ -763,15 +799,7 @@ class Planning(models.Model):
         slots_to_copy = self.search(domain)
 
         new_slot_values = []
-        for slot in slots_to_copy:
-            if not slot.was_copied:
-                values = slot.copy_data()[0]
-                if values.get('start_datetime'):
-                    values['start_datetime'] = self._add_delta_with_dst(values['start_datetime'], relativedelta(days=7))
-                if values.get('end_datetime'):
-                    values['end_datetime'] = self._add_delta_with_dst(values['end_datetime'], relativedelta(days=7))
-                values['state'] = 'draft'
-                new_slot_values.append(values)
+        new_slot_values = slots_to_copy._copy_slots(date_start_copy, date_end_copy, relativedelta(days=7))
         slots_to_copy.write({'was_copied': True})
         if new_slot_values:
             self.create(new_slot_values)
@@ -885,6 +913,11 @@ class Planning(models.Model):
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
+
+    # ----------------------------------------------------
+    # Copy Slots
+    # ----------------------------------------------------
+
     def _add_delta_with_dst(self, start, delta):
         """
         Add to start, adjusting the hours if needed to account for a shift in the local timezone between the
@@ -900,6 +933,240 @@ class Planning(models.Model):
         start = start.replace(tzinfo=pytz.utc).astimezone(tz).replace(tzinfo=None)
         result = start + delta
         return tz.localize(result).astimezone(pytz.utc).replace(tzinfo=None)
+
+    def _get_half_day_interval(self, values):
+        """
+            This method computes the afternoon and/or the morning whole interval where the planning slot exists.
+            The resulting interval frames the slot in a bigger interval beginning before the slot (max 11:59:59 sooner)
+            and finishing later (max 11:59:59 later)
+
+            :param values: a dict filled in with new planning.slot vals
+            :return an interval
+        """
+        return Intervals([(
+            self._get_half_day_datetime(values['start_datetime']),
+            self._get_half_day_datetime(values['end_datetime'], end=True),
+            self.env['resource.calendar.attendance']
+        )])
+
+    def _get_half_day_datetime(self, dt, end=False):
+        """
+            This method computes a datetime in order to frame the slot in a bigger interval begining at midnight or
+            noon and ending at midnight or noon.
+
+            This method returns :
+            - If end is False : Greatest datetime between midnight and noon that is sooner than the `dt` datetime;
+            - Otherwise : Lowest datetime between midnight and noon that is later than the `dt` datetime.
+
+            :param dt: input datetime
+            :param end: wheter the dt is the end, resp. the start, of the interval if set, resp. not set.
+            :return a datetime
+        """
+        self.ensure_one()
+        tz = pytz.timezone(self._get_tz())
+        localized_dt = pytz.utc.localize(dt).astimezone(tz)
+        midday = localized_dt.replace(hour=12, minute=0, second=0)
+        if end:
+            return midday if midday > localized_dt else (localized_dt.replace(hour=0, minute=0, second=0) + timedelta(days=1))
+        return midday if midday < localized_dt else localized_dt.replace(hour=0, minute=0, second=0)
+
+    def _init_remaining_hours_to_plan(self, remaining_hours_to_plan):
+        """
+            Inits the remaining_hours_to_plan dict for a given slot and returns wether
+            there are enough remaining hours.
+
+            :return a bool representing wether or not there are still hours remaining
+        """
+        self.ensure_one()
+        return True
+
+    def _update_remaining_hours_to_plan_and_values(self, remaining_hours_to_plan, values):
+        """
+            Update the remaining_hours_to_plan with the allocated hours of the slot in `values`
+            and returns wether there are enough remaining hours.
+
+            If remaining_hours is strictly positive, and the allocated hours of the slot in `values` is
+            higher than remaining hours, than update the values in order to consume at most the
+            number of remaining_hours still available.
+
+            :return a bool representing wether or not there are still hours remaining
+        """
+        self.ensure_one()
+        return True
+
+    def _get_split_slot_values(self, values, intervals, remaining_hours_to_plan, unassign=False):
+        """
+            Generates and returns slots values within the given intervals
+
+            The slot in values, which represents a forecast planning slot, is split in multiple parts
+            filling the (available) intervals.
+
+            :return a vals list of the slot to create
+        """
+        self.ensure_one()
+        splitted_slot_values = []
+        for start_inter, end_inter, _resource in intervals:
+            new_slot_vals = {
+                **values,
+                'start_datetime': start_inter.astimezone(pytz.utc).replace(tzinfo=None),
+                'end_datetime': end_inter.astimezone(pytz.utc).replace(tzinfo=None),
+                'allocated_hours': float_utils.float_round(
+                    (((end_inter - start_inter).total_seconds() / 3600.0) * (self.allocated_percentage / 100.0)),
+                    precision_digits=2
+                ),
+            }
+            if not self._update_remaining_hours_to_plan_and_values(remaining_hours_to_plan, new_slot_vals):
+                return splitted_slot_values
+            if unassign:
+                new_slot_vals['resource_id'] = False
+            splitted_slot_values.append(new_slot_vals)
+        return splitted_slot_values
+
+    def _copy_slots(self, start_dt, end_dt, delta):
+        """
+            Copy slots planned between `start_dt` and `end_dt`, after a `delta`
+
+            Takes into account the resource calendar and the slots already planned.
+            All the slots will be copied, whatever the value of was_copied is.
+
+            :return a vals list of the slot to create
+        """
+        # 1) Retrieve all the slots of the new period and create intervals within the slots will have to be unassigned (resource_slots_intervals),
+        #    add it to `unavailable_intervals_per_resource`
+        # 2) Retrieve all the calendars for the resource and their validity intervals (intervals within which the calendar is valid for the resource)
+        # 3) For each calendar, retrieve the attendances and the leaves. Add attendances by resource in `attendance_intervals_per_resource` and
+        #    the leaves by resource in `unavailable_intervals_per_resource`
+        # 4) For each slot, check if the slot is at least within an attendance and outside a company leave :
+        #    - If it is a planning :
+        #       - Copy it if the resource is available
+        #       - Copy and unassign it if the resource isn't available
+        #    - Otherwise :
+        #       - Split it and assign the part within resource work intervals
+        #       - Split it and unassign the part within resource leaves and outside company leaves
+        resource_per_calendar = defaultdict(lambda: self.env['resource.resource'])
+        resource_calendar_validity_intervals = defaultdict(dict)
+        attendance_intervals_per_resource = defaultdict(Intervals)  # key: resource, values: attendance intervals
+        unavailable_intervals_per_resource = defaultdict(Intervals)  # key: resource, values: unavailable intervals
+        attendance_intervals_per_calendar = defaultdict(Intervals)  # key: calendar, values: attendance intervals (used for company calendars)
+        leave_intervals_per_calendar = defaultdict(Intervals)  # key: calendar, values: leave intervals (used for company calendars)
+        new_slot_values = []
+        # date utils variable
+        start_dt_delta = start_dt + delta
+        end_dt_delta = end_dt + delta
+        start_dt_delta_utc = pytz.utc.localize(start_dt_delta)
+        end_dt_delta_utc = pytz.utc.localize(end_dt_delta)
+        # 1)
+        # Search for all resource slots already planned
+        resource_slots = self.search([
+            ('start_datetime', '>=', start_dt_delta),
+            ('end_datetime', '<=', end_dt_delta),
+            ('resource_id', 'in', self.resource_id.ids)
+        ])
+        # And convert it into intervals
+        for slot in resource_slots:
+            unavailable_intervals_per_resource[slot.resource_id] |= Intervals([(
+                pytz.utc.localize(slot.start_datetime),
+                pytz.utc.localize(slot.end_datetime),
+                self.env['resource.calendar.leaves'])])
+        # 2)
+        resource_calendar_validity_intervals = self.resource_id._get_calendars_validity_within_period(
+            start_dt_delta_utc, end_dt_delta_utc)
+        for slot in self:
+            if slot.resource_id:
+                for calendar in resource_calendar_validity_intervals[slot.resource_id.id].keys():
+                    resource_per_calendar[calendar] |= slot.resource_id
+            company_calendar_id = slot.company_id.resource_calendar_id
+            resource_per_calendar[company_calendar_id] |= self.env['resource.resource']  # ensures the company_calendar will be in resource_per_calendar keys.
+        # 3)
+        for calendar in resource_per_calendar.keys():
+            # For each calendar, retrieves the work intervals of every resource
+            attendances = calendar._attendance_intervals_batch(
+                start_dt_delta_utc,
+                end_dt_delta_utc,
+                resources=resource_per_calendar[calendar]
+            )
+            leaves = calendar._leave_intervals_batch(
+                start_dt_delta_utc,
+                end_dt_delta_utc,
+                resources=resource_per_calendar[calendar]
+            )
+            attendance_intervals_per_calendar[calendar] = attendances[False]
+            leave_intervals_per_calendar[calendar] = leaves[False]
+            for resource in resource_per_calendar[calendar]:
+                # for each resource, adds his/her attendances and unavailabilities for this calendar, during the calendar validity interval.
+                attendance_intervals_per_resource[resource] |= (attendances[resource.id] & resource_calendar_validity_intervals[resource.id][calendar])
+                unavailable_intervals_per_resource[resource] |= (leaves[resource.id] & resource_calendar_validity_intervals[resource.id][calendar])
+        # 4)
+        remaining_hours_to_plan = {}
+        for slot in self:
+            if not slot._init_remaining_hours_to_plan(remaining_hours_to_plan):
+                continue
+            values = slot.copy_data(default={'state': 'draft'})[0]
+            if not values.get('start_datetime') or not values.get('end_datetime'):
+                continue
+            values['start_datetime'] = slot._add_delta_with_dst(values['start_datetime'], delta)
+            values['end_datetime'] = slot._add_delta_with_dst(values['end_datetime'], delta)
+            interval = Intervals([(
+                pytz.utc.localize(values.get('start_datetime')),
+                pytz.utc.localize(values.get('end_datetime')),
+                self.env['resource.calendar.attendance']
+            )])
+            company_calendar = slot.company_id.resource_calendar_id
+            # Check if interval is contained in the resource work interval
+            attendance_resource = attendance_intervals_per_resource[slot.resource_id] if slot.resource_id else attendance_intervals_per_calendar[company_calendar]
+            attendance_interval_resource = interval & attendance_resource
+            # Check if interval is contained in the company attendances interval
+            attendance_interval_company = interval & attendance_intervals_per_calendar[company_calendar]
+            # Check if interval is contained in the company leaves interval
+            unavailable_interval_company = interval & leave_intervals_per_calendar[company_calendar]
+            if slot.allocation_type == 'planning' and not unavailable_interval_company and not attendance_interval_resource:
+                # If the slot is not a forecast and there are no expected attendance, neither a company leave
+                # check if the slot is planned during an afternoon or a morning during which the resource/company works/is opened
+
+                # /!\ Name of such attendance is an "Extended Attendance", see hereafter
+                interval = slot._get_half_day_interval(values)  # Get the afternoon and/or the morning whole interval where the planning slot exists.
+                attendance_interval_resource = interval & attendance_resource
+                attendance_interval_company = interval & attendance_intervals_per_calendar[company_calendar]
+                unavailable_interval_company = interval & leave_intervals_per_calendar[company_calendar]
+            unavailable_interval_resource = unavailable_interval_company if not slot.resource_id else (interval & unavailable_intervals_per_resource[slot.resource_id])
+            if (attendance_interval_resource - unavailable_interval_company) or (attendance_interval_company - unavailable_interval_company):
+                # Either the employee has, at least, some attendance that are not during the company unavailability
+                # Either the company has, at least, some attendance that are not during the company unavailability
+
+                if slot.allocation_type == 'planning':
+                    # /!\ It can be an "Extended Attendance" (see hereabove), and the slot may be unassigned. (TODO TLE: Check functionnaly)
+                    if unavailable_interval_resource or not attendance_interval_resource:
+                        # if the slot is during an resourece unavailability, or the employee is not attending during the slot
+                        if slot.resource_type != 'user':
+                            # if the resource is not an employee and the resource is not available, do not copy it nor unassign it
+                            continue
+                        values['resource_id'] = False
+                    if not slot._update_remaining_hours_to_plan_and_values(remaining_hours_to_plan, values):
+                        # make sure the hours remaining are enough
+                        continue
+                    new_slot_values.append(values)
+                else:
+                    if attendance_interval_resource:
+                        # if the resource has attendances, at least during a while of the future slot lifetime,
+                        # 1) Work interval represents the availabilities of the employee
+                        # 2) The unassigned intervals represents the slots where the employee should be unassigned
+                        #    (when the company is not unavailable and the employee is unavailable)
+                        work_interval_employee = (attendance_interval_resource - unavailable_interval_resource)
+                        unassigned_interval = unavailable_interval_resource - unavailable_interval_company
+                        split_slot_values = slot._get_split_slot_values(values, work_interval_employee, remaining_hours_to_plan)
+                        if slot.resource_type == 'user':
+                            split_slot_values += slot._get_split_slot_values(values, unassigned_interval, remaining_hours_to_plan, unassign=True)
+                    elif slot.resource_type != 'user':
+                        # If the resource type is not user and the slot can not be assigned to the resource, do not copy not unassign it
+                        continue
+                    else:
+                        # When the employee has no attendance at all, we are in the case where the employee has a calendar different than the
+                        # company (or no more calendar), so the slot will be unassigned
+                        unassigned_interval = attendance_interval_company - unavailable_interval_company
+                        split_slot_values = slot._get_split_slot_values(values, unassigned_interval, remaining_hours_to_plan, unassign=True)
+                    # merge forecast slots in order to have visually bigger slots
+                    new_slot_values += self._merge_slots_values(split_slot_values, unassigned_interval)
+        return new_slot_values
 
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
@@ -1095,6 +1362,124 @@ class Planning(models.Model):
             'publication_warning': False,
         })
 
+    # ---------------------------------------------------
+    # Slots generation/copy
+    # ---------------------------------------------------
+
+    @api.model
+    def _merge_slots_values(self, slots_to_merge, unforecastable_intervals):
+        """
+            Return a list of merged slots
+
+            - `slots_to_merge` is a sorted list of slots
+            - `unforecastable_intervals` are the intervals where the employee cannot work
+
+            Example:
+                slots_to_merge = [{
+                    'start_datetime': '2021-08-01 08:00:00',
+                    'end_datetime': '2021-08-01 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-01 13:00:00',
+                    'end_datetime': '2021-08-01 17:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-02 08:00:00',
+                    'end_datetime': '2021-08-02 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-03 08:00:00',
+                    'end_datetime': '2021-08-03 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-04 13:00:00',
+                    'end_datetime': '2021-08-04 17:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }]
+                unforecastable = Intervals([(
+                    datetime.datetime(2021, 8, 2, 13, 0, 0, tzinfo='UTC')',
+                    datetime.datetime(2021, 8, 2, 17, 0, 0, tzinfo='UTC')',
+                    self.env['resource.calendar.attendance'],
+                )])
+
+                result : [{
+                    'start_datetime': '2021-08-01 08:00:00',
+                    'end_datetime': '2021-08-02 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 12.0,
+                }, {
+                    'start_datetime': '2021-08-03 08:00:00',
+                    'end_datetime': '2021-08-03 12:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }, {
+                    'start_datetime': '2021-08-04 13:00:00',
+                    'end_datetime': '2021-08-04 17:00:00',
+                    'employee_id': 1,
+                    'allocated_hours': 4.0,
+                }]
+
+            :return list of merged slots
+        """
+        if not slots_to_merge:
+            return slots_to_merge
+        # resulting vals_list of the merged slots
+        new_slots_vals_list = []
+        # accumulator for mergeable slots
+        sum_allocated_hours = 0
+        to_merge = []
+        # invariants for mergeable slots
+        common_allocated_percentage = slots_to_merge[0]['allocated_percentage']
+        resource_id = slots_to_merge[0].get('resource_id')
+        start_datetime = slots_to_merge[0]['start_datetime']
+        previous_end_datetime = start_datetime
+        for slot in slots_to_merge:
+            mergeable = True
+            if (not slot['start_datetime']
+               or common_allocated_percentage != slot['allocated_percentage']
+               or resource_id != slot['resource_id']
+               or (slot['start_datetime'] - previous_end_datetime).total_seconds() > 3600 * 24):
+                # last condition means the elapsed time between the previous end time and the
+                # start datetime of the current slot should not be bigger than 24hours
+                # if it's the case, then the slot can not be merged.
+                mergeable = False
+            if mergeable:
+                end_datetime = slot['end_datetime']
+                interval = Intervals([(
+                    pytz.utc.localize(start_datetime),
+                    pytz.utc.localize(end_datetime),
+                    self.env['resource.calendar.attendance']
+                )])
+                if not (interval & unforecastable_intervals):
+                    sum_allocated_hours += slot['allocated_hours']
+                    if (end_datetime - start_datetime).total_seconds() < 3600 * 24:
+                        # If the elapsed time between the first start_datetime and the
+                        # current end_datetime is not higher than 24hours,
+                        # slots cannot be merged as it won't be a forecast
+                        to_merge.append(slot)
+                    else:
+                        to_merge = [{
+                            **slot,
+                            'start_datetime': start_datetime,
+                            'allocated_hours': sum_allocated_hours,
+                        }]
+                else:
+                    mergeable = False
+            if not mergeable:
+                new_slots_vals_list += to_merge
+                to_merge = [slot]
+                start_datetime = slot['start_datetime']
+                common_allocated_percentage = slot['allocated_percentage']
+                resource_id = slot.get('resource_id')
+                sum_allocated_hours = slot['allocated_hours']
+            previous_end_datetime = slot['end_datetime']
+        new_slots_vals_list += to_merge
+        return new_slots_vals_list
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

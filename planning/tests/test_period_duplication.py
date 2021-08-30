@@ -13,8 +13,8 @@ class TestPeriodDuplication(TestCommonPlanning):
         cls.setUpEmployees()
         cls.env['planning.slot'].create({
             'resource_id': cls.resource_bert.id,
-            'start_datetime': datetime(2019, 6, 2, 8, 0),
-            'end_datetime': datetime(2019, 6, 2, 17, 0),
+            'start_datetime': datetime(2019, 6, 3, 8, 0),  # it was a slot on Sunday...
+            'end_datetime': datetime(2019, 6, 3, 17, 0),
         })
         cls.env['planning.slot'].create({
             'resource_id': cls.resource_bert.id,
@@ -47,6 +47,7 @@ class TestPeriodDuplication(TestCommonPlanning):
         employee = self.employee_bert
 
         self.assertEqual(len(self.get_by_employee(employee)), 3)
+        self.assertEqual(sum(self.get_by_employee(employee).mapped('allocated_hours')), 16.0 + 9.0 + 9.0, 'duplicate has only duplicated slots that fit entirely in the period')
 
         self.env['planning.slot'].action_copy_previous_week('2019-06-09 00:00:00', [['start_datetime', '<=', '2020-04-04 21:59:59'], ['end_datetime', '>=', '2020-03-28 23:00:00']])
 
@@ -59,6 +60,8 @@ class TestPeriodDuplication(TestCommonPlanning):
         ])
         self.assertEqual(len(duplicated_slots), 2, 'duplicate has only duplicated slots that fit entirely in the period')
 
+        self.assertEqual(sum(self.get_by_employee(employee).mapped('allocated_hours')), 16.0 + 9.0 + 9.0 + 16.0 + 9.0, 'duplicate has only duplicated slots that fit entirely in the period')
+
     def test_duplication_should_preserve_local_time(self):
         """Original week: 10/19/2020 -> 10/23/2020
            Destination week: 10/26/2020 -> 10/30/2020
@@ -70,7 +73,7 @@ class TestPeriodDuplication(TestCommonPlanning):
                 10/19/2020 08:00 (CET) -> 10/19/2020 17:00
         """
         employee = self.employee_joseph
-        self.env['planning.slot'].with_context(tz='Europe/Brussels').action_copy_previous_week('2020-10-26 00:00:00', [])
+        self.env['planning.slot'].with_context(tz='Europe/Brussels').action_copy_previous_week('2020-10-26 00:00:00', [['start_datetime', '<=', '2020-10-25 23:59:59'], ['end_datetime', '>=', '2020-10-18 00:00:00']])
 
         duplicated_slots = self.env['planning.slot'].search([
             ('employee_id', '=', employee.id),

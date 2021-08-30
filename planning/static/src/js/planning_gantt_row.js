@@ -2,6 +2,7 @@
 
 import HrGanttRow from 'hr_gantt.GanttRow';
 import fieldUtils from 'web.field_utils';
+import EmployeeWithPlannedHours from '@planning/js/widgets/employee_m2o_with_planned_hours';
 
 const PlanningGanttRow = HrGanttRow.extend({
     template: 'PlanningGanttView.Row',
@@ -12,6 +13,7 @@ const PlanningGanttRow = HrGanttRow.extend({
         const isEmptyGroup = pillsInfo.groupId === 'empty';
         this.employeeID = pillsInfo.pills && pillsInfo.pills.length && Array.isArray(pillsInfo.pills[0].employee_id) ? pillsInfo.pills[0].employee_id[0] : false;
         this.showEmployeeAvatar = (isGroupedByResource && !isEmptyGroup && !!this.employeeID);
+        this.planningHoursInfo = pillsInfo.planningHoursInfo;
     },
 
     _getEmployeeID() {
@@ -29,6 +31,23 @@ const PlanningGanttRow = HrGanttRow.extend({
         data.allocatedHoursFormatted = fieldUtils.format.float_time(data.allocated_hours);
         data.allocatedPercentageFormatted = fieldUtils.format.float(data.allocated_percentage);
         return data;
+    },
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Initialize the avatar widget in virtual DOM.
+     *
+     * @private
+     * @override
+     * @returns {Promise}
+     */
+    async _preloadAvatarWidget() {
+        const employee = [this.resId, this.name];
+        this.avatarWidget = new EmployeeWithPlannedHours(this, employee, this.planningHoursInfo);
+        return this.avatarWidget.appendTo(document.createDocumentFragment());
     },
 });
 

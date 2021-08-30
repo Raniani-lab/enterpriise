@@ -217,12 +217,12 @@
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1"
                         groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'published')]}"/>
-                    <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
+                        groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                     <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
                     <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I Take It" attrs="{'invisible': ['|', '|', ('resource_type', '=', 'material'), ('employee_id', '!=', False), ('is_past', '=', True)]}" close="1" data-hotkey="q"/>
                     <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
+                    <button name="unlink" type="object" icon="fa-trash" class="btn-secondary float-right" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
                 </footer>
             </xpath>
         </field>
@@ -405,7 +405,6 @@
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_dashboard" sample="1">
-                <field name="name"/>
                 <field name="color"/>
                 <templates>
                     <t t-name="kanban-box">
@@ -449,6 +448,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
+                <field name="employee_ids"/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>

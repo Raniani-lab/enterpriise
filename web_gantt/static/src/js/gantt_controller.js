@@ -249,7 +249,7 @@ var GanttController = AbstractController.extend({
                 if (ids.length) {
                     // Here, the dates are already in server time so we set the
                     // isUTC parameter of reschedule to true to avoid conversion
-                    self._reschedule(ids, context, true);
+                    self._reschedule(ids, context, true, self.openPlanDialogCallback);
                 }
             },
         }).open();
@@ -286,10 +286,10 @@ var GanttController = AbstractController.extend({
      * @returns {Promise} resolved when the record has been reloaded, rejected
      *   if the request has been dropped by DropPrevious
      */
-    _reschedule: function (ids, schedule, isUTC) {
+    _reschedule: function (ids, schedule, isUTC, callback) {
         return this._executeAsyncOperation(
             this.model.reschedule.bind(this.model),
-            [ids, schedule, isUTC]
+            [ids, schedule, isUTC, callback]
         );
     },
 

@@ -20,7 +20,7 @@
                         <t t-esc="format_datetime(shift.end_datetime, dt_format='E')"/>.
                         <t t-esc="format_datetime(shift.end_datetime, dt_format='short')"/>
                     </td>
-                    <td t-if="has_role" class="align-middle"><t t-esc="shift.role_id.name"/></td>
+                    <td t-if="has_role" class="align-middle" name="role_id"><t t-esc="shift.role_id.name"/></td>
                     <td t-if="has_project" class="align-middle"><t t-esc="shift.project_id.name"/></td>
                     <td t-if="has_task" class="align-middle"><t t-esc="shift.task_id.name"/></td>
                     <td t-if="has_note" class="align-middle"><t t-esc="shift.name"/></td>

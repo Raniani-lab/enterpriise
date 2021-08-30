@@ -222,7 +222,7 @@ var GanttModel = AbstractModel.extend({
      * @param {boolean} isUTC
      * @returns {Promise}
      */
-    reschedule: function (ids, schedule, isUTC) {
+    reschedule: function (ids, schedule, isUTC, callback) {
         var self = this;
         if (!_.isArray(ids)) {
             ids = [ids];
@@ -234,6 +234,10 @@ var GanttModel = AbstractModel.extend({
                 method: 'write',
                 args: [ids, data],
                 context: self.context,
+            }).then((result) => {
+                if (callback) {
+                    callback(result);
+                }
             });
         });
     },

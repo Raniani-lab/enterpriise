@@ -297,11 +297,7 @@ var GanttRenderer = AbstractRenderer.extend({
             hideSidebar = self.state.groupedBy.length === 0;
         }
         rows.forEach(function (row) {
-            var pillsInfo = {
-                resId: row.resId,
-                pills: row.records,
-                groupLevel: groupLevel,
-            };
+            const pillsInfo = self._getPillsInfo(row, groupLevel);
             if (groupedBy.length) {
                 pillsInfo.groupName = row.name;
                 pillsInfo.groupedByField = row.groupedByField;
@@ -384,6 +380,19 @@ var GanttRenderer = AbstractRenderer.extend({
         // getBoundingClientRect is costly when there are lots of rows
         const firstCell = this.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0];
         _.invoke(this.rowWidgets, 'setDroppable', firstCell);
+    },
+    /**
+     * Get pills info
+     *
+     * @param {Object} row
+     * @param {*} groupLevel
+     */
+    _getPillsInfo: function (row, groupLevel) {
+        return {
+            resId: row.resId,
+            pills: row.records,
+            groupLevel: groupLevel,
+        };
     },
 
     //--------------------------------------------------------------------------

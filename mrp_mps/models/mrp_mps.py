@@ -31,6 +31,9 @@ class MrpProductionSchedule(models.Model):
     sequence = fields.Integer(related='product_id.sequence', store=True)
     warehouse_id = fields.Many2one('stock.warehouse', 'Production Warehouse',
         required=True, default=lambda self: self._default_warehouse_id())
+    bom_id = fields.Many2one(
+        'mrp.bom', "Bill of Materials",
+        domain="[('product_tmpl_id', '=', product_tmpl_id)]", check_company=True)
 
     forecast_target_qty = fields.Float('Safety Stock Target')
     min_to_replenish_qty = fields.Float('Minimum to Replenish')
@@ -219,6 +222,35 @@ class MrpProductionSchedule(models.Model):
             'company_id': self.env.company.id,
             'groups': company_groups,
         }
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """ If the BoM is pass at the creation, create MPS for its components """
+        mps = super().create(vals_list)
+        components_list = set()
+        components_vals = []
+        for record in mps:
+            bom = record.bom_id
+            if not bom:
+                continue
+            dummy, components = bom.explode(record.product_id, 1)
+            for component in components:
+                components_list.add((component[0].product_id.id, record.warehouse_id.id, record.company_id.id))
+        for component in components_list:
+            if self.env['mrp.production.schedule'].search_count([
+                ('product_id', '=', component[0]),
+                ('warehouse_id', '=', component[1]),
+                ('company_id', '=', component[2]),
+            ]):
+                continue
+            components_vals.append({
+                'product_id': component[0],
+                'warehouse_id': component[1],
+                'company_id': component[2]
+            })
+        if components_vals:
+            self.env['mrp.production.schedule'].create(components_vals)
+        return mps
 
     def get_production_schedule_view_state(self):
         """ Prepare and returns the fields used by the MPS client action.

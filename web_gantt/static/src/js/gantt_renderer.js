@@ -89,6 +89,7 @@ var GanttRenderer = AbstractRenderer.extend({
         }
 
         this.isRTL = _t.database.parameters.direction === "rtl";
+        this.template_to_use = "GanttView";
     },
     /**
      * Called each time the renderer is attached into the DOM.
@@ -250,12 +251,12 @@ var GanttRenderer = AbstractRenderer.extend({
             _.invoke(oldRowWidgets, 'destroy');
             self.$el.empty();
 
-            self._replaceElement(QWeb.render('GanttView', {widget: self, isMobile: config.device.isMobile}));
+            self._replaceElement(QWeb.render(self.template_to_use, {widget: self, isMobile: config.device.isMobile}));
             const $containment = $('<div id="o_gantt_containment"/>');
             const $rowContainer = self.$('.o_gantt_row_container');
             $rowContainer.append($containment);
             if (!self.state.groupedBy.length) {
-                $containment.css(self.isRTL ? {right: 0} : {left: 0})
+                $containment.css(self.isRTL ? {right: 0} : {left: 0});
             }
 
             rows.forEach(function (row) {

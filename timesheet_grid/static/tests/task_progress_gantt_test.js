@@ -54,8 +54,12 @@ QUnit.test("Check progress bar values", async (assert) => {
             return Promise.resolve({
                 records: this.data.task.records
             });
+        } else {
+            if (args.method === 'read_group' && args.model === 'project.task' && args.kwargs.groupby[0] === 'project_id') {
+                return Promise.resolve([]);
+            }
+            return this._super.apply(this, arguments);
         }
-        return this._super.apply(this, arguments);
     };
     ganttViewParams.archs = {
         'tasks,false,form': `

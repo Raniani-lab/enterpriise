@@ -125,7 +125,7 @@
                     <!-- pills -->
                     <t t-foreach="slot.pills" t-as="pill">
                         <div t-if="widget.isTotal"
-                             class="o_gantt_pill_wrapper position-absolute text-center d-flex justify-content-center"
+                             class="o_gantt_pill_wrapper position-absolute d-flex justify-content-center"
                              t-attf-style="width: #{pill.width}; #{widget.isRTL ? 'right' : 'left'}: #{pill.leftMargin}%;">
                             <div t-att-data-id="pill.id"
                                  t-attf-class="o_gantt_pill o_gantt_consolidated_pill"
@@ -135,7 +135,7 @@
                         </div>
 
                         <div t-elif="pill.consolidated"
-                             t-attf-class="o_gantt_pill_wrapper position-absolute text-center o_gantt_consolidated_wrapper #{widget.options.isGroup ? 'o_gantt_pill_wrapper_group' : ''}"
+                             t-attf-class="o_gantt_pill_wrapper position-absolute o_gantt_consolidated_wrapper #{widget.options.isGroup ? 'o_gantt_pill_wrapper_group' : ''}"
                              t-attf-style="width: #{pill.width}; #{widget.isRTL ? 'right' : 'left'}: #{pill.leftMargin}%;">
                             <div t-att-data-id="pill.id"
                                  t-attf-class="o_gantt_pill o_gantt_consolidated_pill #{pill.status? 'bg-' + pill.status + ' border-' + pill.status : ''}  #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''}"
@@ -146,7 +146,7 @@
                         </div>
 
                         <div t-else=""
-                             t-attf-class="o_gantt_pill_wrapper position-absolute text-center #{widget.options.isGroup ? 'o_gantt_pill_wrapper_group' : ''}"
+                             t-attf-class="o_gantt_pill_wrapper position-absolute #{widget.options.isGroup ? 'o_gantt_pill_wrapper_group' : ''}"
                              t-attf-style="width: #{pill.width}; margin-top: #{pill.topPadding}px; #{widget.isRTL ? 'right' : 'left'}: #{pill.leftMargin}%;">
                             <div
                                 t-att-data-id="pill.id"

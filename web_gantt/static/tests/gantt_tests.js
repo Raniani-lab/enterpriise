@@ -250,17 +250,17 @@ QUnit.module('Views', {
             'should have a 6 pills');
 
         // verify that the level offset is correctly applied (add 1px gap border compensation for each level)
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 1)').css('margin-top'), '0px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 1)').css('margin-top'), '2px',
             'task 1 should be in first level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 5)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 1 +'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 5)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 4 + 2 +'px',
             'task 5 should be in second level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"] .o_gantt_pill_wrapper:contains(Task 2)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 1 +'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"] .o_gantt_pill_wrapper:contains(Task 2)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 4 + 2 +'px',
             'task 2 should be in second level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 4)').css('margin-top'), 2 * GanttRow.prototype.LEVEL_TOP_OFFSET + 2 +'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 4)').css('margin-top'), 2 * (GanttRow.prototype.LEVEL_TOP_OFFSET + 4) + 2 +'px',
             'task 4 should be in third level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 7)').css('margin-top'), 2 * GanttRow.prototype.LEVEL_TOP_OFFSET + 2 +'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 7)').css('margin-top'), 2 * (GanttRow.prototype.LEVEL_TOP_OFFSET + 4) + 2 +'px',
             'task 7 should be in third level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-27 00:00:00"] .o_gantt_pill_wrapper:contains(Task 3)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 1 +'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-27 00:00:00"] .o_gantt_pill_wrapper:contains(Task 3)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 4 + 2 +'px',
             'task 3 should be in second level');
 
         // test popover and local timezone
@@ -499,13 +499,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(1, 126, 132)",
             "the 4th group pill should have the correct grey scale");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)",
             "the 1st group pill should have the correct width (1 to 3 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px - 4px)",
             "the 2nd group pill should have the correct width (4 to 19 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "50%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "calc(50% - 4px)",
             "the 3rd group pill should have the correct width (20 morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px - 4px)",
             "the 4th group pill should have the correct width (20 afternoon to 31 dec");
 
         gantt.destroy();
@@ -527,7 +527,7 @@ QUnit.module('Views', {
             groupBy: ['user_id', 'project_id']
         });
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(700% + 6px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(700% + 6px - 4px)",
             "the group pill should have the correct width (7 days)");
 
         gantt.destroy();
@@ -2031,7 +2031,7 @@ QUnit.module('Views', {
             "there should be one right resizer for task 1");
 
         // resize to one cell smaller (-1 day)
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
         await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
@@ -2105,7 +2105,7 @@ QUnit.module('Views', {
 
         // resize to one cell larger, but do the mouseup over the pill
         const $resize = gantt.$('.ui-resizable-e');
-        const cellWidth = gantt.$('.o_gantt_cell:first').width();
+        const cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
         const options = {
             position: {
                 left: 0.9 * cellWidth, // do the mouseup over the pill
@@ -2180,7 +2180,7 @@ QUnit.module('Views', {
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         // resize to one cell larger (1 day)
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
         await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
@@ -2230,7 +2230,7 @@ QUnit.module('Views', {
             "the pill should be draggable after mouse enter");
 
         // move a pill in the next cell (+1 day)
-        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
@@ -2271,7 +2271,7 @@ QUnit.module('Views', {
         });
 
         // move a pill in the next cell (+1 day)
-        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         var rect = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
@@ -2336,7 +2336,7 @@ QUnit.module('Views', {
         });
 
         // we are going to move the pill for task 8 (10/24/2020 06:30:12) by 1 cell to the right (+1 day)
-        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         var rect = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill[data-id=8]'),
@@ -2380,12 +2380,12 @@ QUnit.module('Views', {
             "there should be two rows (project 1 and project 2");
 
         // move a pill (task 7) in the other row and in the the next cell (+1 day)
-        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         var cellHeight = gantt.$('.o_gantt_cell:first').height();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill[data-id=7]'),
             gantt.$('.o_gantt_pill[data-id=7]'),
-            { position: { left: cellWidth, top: -cellHeight } },
+            { position: { left: cellWidth + 4, top: -cellHeight } },
         );
 
         gantt.destroy();
@@ -2425,7 +2425,7 @@ QUnit.module('Views', {
                 "there should be two rows (project 1 and project 2");
 
             // move a pill (task 7) in the other row and in the the next cell (+1 day)
-            var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+            var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
             var cellHeight = gantt.$('.o_gantt_cell:first').height() / 2;
             await testUtils.dom.triggerEvent(gantt.$el, 'keydown',{ctrlKey: true}, true);
 
@@ -2478,7 +2478,7 @@ QUnit.module('Views', {
         await testUtils.dom.dragAndDrop(
             $pill,
             $pill,
-            { position: { left: 0, top: -3 * groupHeaderHeight - cellHeight } },
+            { position: { left: 4, top: -3 * groupHeaderHeight - cellHeight } },
         );
 
         gantt.destroy();
@@ -2500,7 +2500,7 @@ QUnit.module('Views', {
 
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill:first'), 'mouseover');
 
-        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill:first'),
             gantt.$('.o_gantt_pill:first'),
@@ -2528,7 +2528,7 @@ QUnit.module('Views', {
 
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
-        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
@@ -2773,7 +2773,7 @@ QUnit.module('Views', {
 
         // move the pill of a few px (not enough for it to actually move to another cell)
         await testUtils.dom.dragAndDrop($secondPill, $secondPill, {
-            position: { left: 0, top: 4 },
+            position: { left: 4, top: 4 },
             withTrailingClick: true,
         });
 
@@ -3019,7 +3019,7 @@ QUnit.module('Views', {
             },
         });
 
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         // resize of a quarter
@@ -3208,13 +3208,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(40, 167, 69)",
             "the 3rd group pill should have the correct color");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)",
             "the 1st group pill should have the correct width (1 to 3 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px - 4px)",
             "the 2nd group pill should have the correct width (4 to 19 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "50%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "calc(50% - 4px)",
             "the 3rd group pill should have the correct width (20 morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px - 4px)",
             "the 4th group pill should have the correct width (20 afternoon to 31 dec");
 
         // 30 over Task 2 until Task 7 then 110 (Task 2 (30) + Task 7 (80)) then 30 again until end of task 2 then 60 over Task 3
@@ -3230,13 +3230,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(40, 167, 69)",
             "the 4th group pill should have the correct color");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)",
             "the 1st group pill should have the correct width (17 afternoon to 20 dec morning)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(1)')), "50%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(1)')), "calc(50% - 4px)",
             "the 2nd group pill should have the correct width (20 dec afternoon)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "150%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "calc(150% - 4px)",
             "the 3rd group pill should have the correct width (21 to 22 dec morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(500% + 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(500% + 4px - 4px)",
             "the 4th group pill should have the correct width (27 afternoon to 31 dec");
 
         gantt.destroy();
@@ -3342,7 +3342,7 @@ QUnit.module('Views', {
 
         const cell4 = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell')[3];
         assert.hasClass(cell4, 'o_gantt_today');
-        assert.hasAttrValue(cell4, 'style', 'height: 95px;');
+        assert.hasAttrValue(cell4, 'style', 'height: 105px;');
 
         unpatchDate();
         gantt.destroy();
@@ -3389,7 +3389,7 @@ QUnit.module('Views', {
         assert.deepEqual([...todayCells].map(c => c.getAttribute('style')), [
             null,
             "height: 0px;", // a css rule fix a minimal height
-            "height: 31px; background: linear-gradient(90deg, #e9ecef 49%, #fffaeb 50%);"
+            "height: 35px; background: linear-gradient(90deg, #e9ecef 49%, #fffaeb 50%);"
         ]);
         assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgba(0, 0, 0, 0)");
 
@@ -3431,9 +3431,9 @@ QUnit.module('Views', {
 
         const cell5 = cells[4]
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 95px;');
+        assert.hasAttrValue(cell5, 'style', 'height: 105px;');
         const cell6 = cells[5]
-        assert.hasAttrValue(cell6, 'style', 'height: 95px;');
+        assert.hasAttrValue(cell6, 'style', 'height: 105px;');
 
         unpatchDate();
         gantt.destroy();
@@ -3482,17 +3482,17 @@ QUnit.module('Views', {
 
         const cell5 = cells[4];
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell5, 'style', 'height: 105px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
         const cell6 = cells[5];
-        assert.hasAttrValue(cell6, 'style', 'height: 95px; background: #e9ecef');
+        assert.hasAttrValue(cell6, 'style', 'height: 105px; background: #e9ecef');
         const cell7 = cells[6];
-        assert.hasAttrValue(cell7, 'style', 'height: 95px;');
+        assert.hasAttrValue(cell7, 'style', 'height: 105px;');
         const cell16 = cells[15];
-        assert.hasAttrValue(cell16,'style',  'height: 95px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell16,'style',  'height: 105px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
         const cell17 = cells[16];
-        assert.hasAttrValue(cell17,'style', 'height: 95px; background: #e9ecef');
+        assert.hasAttrValue(cell17,'style', 'height: 105px; background: #e9ecef');
         const cell18 = cells[17];
-        assert.hasAttrValue(cell18,'style',  'height: 95px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
+        assert.hasAttrValue(cell18,'style',  'height: 105px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
 
         unpatchDate();
         gantt.destroy();
@@ -3599,17 +3599,17 @@ QUnit.module('Views', {
 
         const cell5 = cells[4];
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell5, 'style', 'height: 105px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
         const cell6 = cells[5];
-        assert.hasAttrValue(cell6, 'style', 'height: 95px; background: #e9ecef');
+        assert.hasAttrValue(cell6, 'style', 'height: 105px; background: #e9ecef');
         const cell7 = cells[6];
-        assert.hasAttrValue(cell7, 'style', 'height: 95px;');
+        assert.hasAttrValue(cell7, 'style', 'height: 105px;');
         const cell16 = cells[15];;
-        assert.hasAttrValue(cell16,'style',  'height: 95px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell16,'style',  'height: 105px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
         const cell17 = cells[16];;
-        assert.hasAttrValue(cell17,'style', 'height: 95px; background: #e9ecef');
+        assert.hasAttrValue(cell17,'style', 'height: 105px; background: #e9ecef');
         const cell18 = cells[17];;
-        assert.hasAttrValue(cell18,'style',  'height: 95px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
+        assert.hasAttrValue(cell18,'style',  'height: 105px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
 
         unpatchDate();
         gantt.destroy();
@@ -3831,7 +3831,7 @@ QUnit.module('Views', {
             },
         });
 
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
 
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
@@ -3899,7 +3899,7 @@ QUnit.module('Views', {
             },
         });
 
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
 
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
@@ -4191,7 +4191,7 @@ QUnit.module('Views', {
             "'Project 1' group should be expanded");
 
         // move a pill (task 7) in the other row and in the the next cell (+1 day)
-        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
         const cellHeight = gantt.$('.o_gantt_cell:first').height();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill[data-id=7]'),

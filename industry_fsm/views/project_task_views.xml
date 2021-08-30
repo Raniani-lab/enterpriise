@@ -40,18 +40,6 @@
                 <field name="date_deadline" attrs="{'invisible': [('is_fsm', '=', True)]}"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
             </xpath>
-            <xpath expr="//field[@name='parent_id']" position="after">
-                <label for="planned_date_begin" string="Planned Date" attrs="{'invisible': [('display_fsm_dates', '=', False)]}"/>
-                <div class="w-100" attrs="{'invisible': [('display_fsm_dates', '=', False)]}">
-                    <div class="o_row">
-                        <field name="planned_date_begin" widget="daterange" options='{"related_end_date": "planned_date_end"}'/>
-                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
-                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow" attrs="{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}"/>
-                        <field name="planned_date_end" widget="daterange" options='{"related_start_date": "planned_date_begin"}'/>
-                    </div>
-                </div>
-            </xpath>
-            <!-- FIXME: remove me, the group has already been added in project module -->
             <xpath expr="//page[@name='extra_info']" position="attributes">
                 <attribute name="groups">base.group_no_one</attribute>
             </xpath>

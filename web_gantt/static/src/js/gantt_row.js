@@ -97,7 +97,7 @@ var GanttRow = Widget.extend({
 
         // Add the 16px odoo window default padding.
         this.leftPadding = (this.groupLevel + 1) * this.LEVEL_LEFT_OFFSET;
-        this.cellHeight = this.level * this.LEVEL_TOP_OFFSET + (this.level > 0 ? this.level - 1 : 0);
+        this.cellHeight = this.level * (this.LEVEL_TOP_OFFSET + 3) + (this.level > 0 ? this.level : 0);
 
         this.MIN_WIDTHS = { full: 100, half: 50, quarter: 25 };
         this.PARTS = { full: 1, half: 2, quarter: 4 };
@@ -372,7 +372,7 @@ var GanttRow = Widget.extend({
                     pill.leftMargin = (left / 60) * 100;
                     diff = pill.stopDate.diff(pill.startDate, 'minutes');
                     var gapSize = pill.stopDate.diff(pill.startDate, 'hours') - 1; // Eventually compensate border(s) width
-                    pill.width = gapSize > 0 ? 'calc(' + (diff / 60) * 100 + '% + ' + gapSize + 'px)' : (diff / 60) * 100 + '%';
+                    pill.width = gapSize > 0 ? 'calc(' + (diff / 60) * 100 + '% + ' + gapSize + 'px - 4px)' : 'calc(' + (diff / 60) * 100 + '% - 4px)';
                     break;
                 case 'week':
                 case 'month':
@@ -380,7 +380,7 @@ var GanttRow = Widget.extend({
                     pill.leftMargin = (left / 24) * 100;
                     diff = pill.stopDate.diff(pill.startDate, 'hours');
                     var gapSize = pill.stopDate.diff(pill.startDate, 'days') - 1; // Eventually compensate border(s) width
-                    pill.width = gapSize > 0 ? 'calc(' + (diff / 24) * 100 + '% + ' + gapSize + 'px)' : (diff / 24) * 100 + '%';
+                    pill.width = gapSize > 0 ? 'calc(' + (diff / 24) * 100 + '% + ' + gapSize + 'px - 4px)' : 'calc(' + (diff / 24) * 100 + '% - 4px)';
                     break;
                 case 'year':
                     var startDateMonthStart = pill.startDate.clone().startOf('month');
@@ -393,7 +393,7 @@ var GanttRow = Widget.extend({
                         // A 30th of a month slot is too small to display
                         // 1-day events are displayed as if they were 2-days events
                         diff = Math.max(Math.ceil(pill.stopDate.diff(pill.startDate, 'days', true)), 2);
-                        pill.width = (diff / pill.startDate.daysInMonth()) * 100 + "%";
+                        pill.width = 'calc(' + (diff / pill.startDate.daysInMonth()) * 100 + "% - 4px)";
                     } else {
                         // The pill spans more than one month, so counting its
                         // number of days is not enough as some months have more
@@ -413,7 +413,7 @@ var GanttRow = Widget.extend({
                             // that the middle months are fully covered
                             width += (monthsDiff - 2) * 100;
                         }
-                        pill.width = width + "%";
+                        pill.width = 'calc(' + width + "% - 4px)";
                     }
                     break;
                 default:
@@ -421,7 +421,7 @@ var GanttRow = Widget.extend({
             }
 
             // Add 1px top-gap to events sharing the same cell.
-            pill.topPadding = pill.level * (self.LEVEL_TOP_OFFSET + 1);
+            pill.topPadding = pill.level * (self.LEVEL_TOP_OFFSET + 4) + 2;
         });
     },
     /**

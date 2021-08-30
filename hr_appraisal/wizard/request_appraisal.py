@@ -77,7 +77,7 @@ class RequestAppraisal(models.TransientModel):
     def _compute_subject(self):
         for wizard in self.filtered('employee_id'):
             if wizard.template_id:
-                wizard.subject = self._render_template(wizard.template_id.subject, 'res.users', self.env.user.ids, post_process=True)[self.env.user.id]
+                wizard.subject = self.sudo()._render_template(wizard.template_id.subject, 'res.users', self.env.user.ids, post_process=True)[self.env.user.id]
 
     @api.depends('template_id', 'recipient_ids')
     def _compute_body(self):
@@ -93,9 +93,14 @@ class RequestAppraisal(models.TransientModel):
                     'url': "${ctx['url']}",
                     'user_body': user_body
                 }
-                wizard.body = self.with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
+                wizard.body = self.with_context(ctx).sudo()._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
             elif not wizard.body:
                 wizard.body = ''
+
+    def _compute_can_edit_body(self):
+        for record in self:
+            # Do not bypass verification (as the template is rendered 2 times with 2 different models)
+            record.can_edit_body = True
 
     # Overrides of mail.composer.mixin
     @api.depends('subject')  # fake trigger otherwise not computed in new mode

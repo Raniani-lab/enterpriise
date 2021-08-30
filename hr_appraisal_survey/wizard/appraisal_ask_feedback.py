@@ -69,7 +69,7 @@ class AppraisalAskFeedback(models.TransientModel):
     def _compute_subject(self):
         for wizard in self.filtered('employee_id'):
             if wizard.template_id:
-                wizard.subject = self._render_template(wizard.template_id.subject, 'hr.appraisal', wizard.appraisal_id.ids, post_process=True)[wizard.appraisal_id.id]
+                wizard.subject = self.sudo()._render_template(wizard.template_id.subject, 'hr.appraisal', wizard.appraisal_id.ids, post_process=True)[wizard.appraisal_id.id]
 
     def _prepare_survey_anwers(self, partners):
         answers = self.env['survey.user_input']

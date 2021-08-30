@@ -291,6 +291,7 @@ class TestMpsMps(common.TransactionCase):
         replenish are impacted by those delay. Ensure that the MPS state and
         the period to replenish are correct.
         """
+        self.env.company.manufacturing_period = 'week'
         partner = self.env['res.partner'].create({
             'name': 'Jhon'
         })

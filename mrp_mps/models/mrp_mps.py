@@ -214,6 +214,8 @@ class MrpProductionSchedule(models.Model):
             'mrp_mps_show_actual_replenishment',
             'mrp_mps_show_safety_stock',
             'mrp_mps_show_available_to_promise',
+            'mrp_mps_show_actual_demand_year_minus_1',
+            'mrp_mps_show_actual_demand_year_minus_2',
         ])
         return {
             'dates': self.env.company._date_range_to_str(),
@@ -278,6 +280,8 @@ class MrpProductionSchedule(models.Model):
         """
         company_id = self.env.company
         date_range = company_id._get_date_range()
+        date_range_year_minus_1 = company_id._get_date_range(years=1)
+        date_range_year_minus_2 = company_id._get_date_range(years=2)
 
         # We need to get the schedule that impact the schedules in self. Since
         # the state is not saved, it needs to recompute the quantity to
@@ -296,6 +300,8 @@ class MrpProductionSchedule(models.Model):
         indirect_demand_qty = defaultdict(float)
         incoming_qty, incoming_qty_done = self._get_incoming_qty(date_range)
         outgoing_qty, outgoing_qty_done = self._get_outgoing_qty(date_range)
+        dummy, outgoing_qty_year_minus_1 = self._get_outgoing_qty(date_range_year_minus_1)
+        dummy, outgoing_qty_year_minus_2 = self._get_outgoing_qty(date_range_year_minus_2)
         read_fields = [
             'forecast_target_qty',
             'min_to_replenish_qty',
@@ -325,15 +331,19 @@ class MrpProductionSchedule(models.Model):
                 starting_inventory_qty -= incoming_qty_done.get((date_range[0], production_schedule.product_id, production_schedule.warehouse_id), 0.0)
                 starting_inventory_qty += outgoing_qty_done.get((date_range[0], production_schedule.product_id, production_schedule.warehouse_id), 0.0)
 
-            for date_start, date_stop in date_range:
+            for index, (date_start, date_stop) in enumerate(date_range):
                 forecast_values = {}
                 key = ((date_start, date_stop), production_schedule.product_id, production_schedule.warehouse_id)
+                key_y_1 = (date_range_year_minus_1[index], *key[1:])
+                key_y_2 = (date_range_year_minus_2[index], *key[1:])
                 existing_forecasts = production_schedule.forecast_ids.filtered(lambda p: p.date >= date_start and p.date <= date_stop)
                 if production_schedule in self:
                     forecast_values['date_start'] = date_start
                     forecast_values['date_stop'] = date_stop
                     forecast_values['incoming_qty'] = float_round(incoming_qty.get(key, 0.0) + incoming_qty_done.get(key, 0.0), precision_rounding=rounding)
                     forecast_values['outgoing_qty'] = float_round(outgoing_qty.get(key, 0.0) + outgoing_qty_done.get(key, 0.0), precision_rounding=rounding)
+                    forecast_values['outgoing_qty_year_minus_1'] = float_round(outgoing_qty_year_minus_1.get(key_y_1, 0.0), precision_rounding=rounding)
+                    forecast_values['outgoing_qty_year_minus_2'] = float_round(outgoing_qty_year_minus_2.get(key_y_2, 0.0), precision_rounding=rounding)
 
                 forecast_values['indirect_demand_qty'] = float_round(indirect_demand_qty.get(key, 0.0), precision_rounding=rounding)
                 replenish_qty_updated = False

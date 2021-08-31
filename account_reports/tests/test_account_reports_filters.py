@@ -13,7 +13,7 @@ from freezegun import freeze_time
 @tagged('post_install', '-at_install')
 class TestAccountReportsFilters(AccountTestInvoicingCommon):
 
-    def _assert_filter_date(self, filter_date, expected_date_values):
+    def _assert_filter_date(self, filter_date, expected_date_values, previous_options=None):
         ''' Initialize the 'date' key in the report options and then, assert the result matches the expectations.
 
         :param filter_date:             The filter_date report values.
@@ -22,11 +22,11 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
         report = self.env['account.report']
         with patch.object(type(report), 'filter_date', filter_date):
             options = {}
-            report._init_filter_date(options)
+            report._init_filter_date(options, previous_options)
 
             self.assertDictEqual(options['date'], expected_date_values)
 
-    def _assert_filter_comparison(self, filter_date, filter_comparison, expected_period_values):
+    def _assert_filter_comparison(self, filter_date, filter_comparison, expected_period_values, previous_options=None):
         ''' Initialize the 'date'/'comparison' keys in the report options and then, assert the result matches the
         expectations.
 
@@ -38,7 +38,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
         with patch.object(type(report), 'filter_date', filter_date), patch.object(type(report), 'filter_comparison', filter_comparison):
             options = {}
             report._init_filter_date(options)
-            report._init_filter_comparison(options)
+            report._init_filter_comparison(options, previous_options)
 
             self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
 
@@ -1187,6 +1187,63 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-01-15',
+                    'strict_range': False,
+                },
+            ],
+        )
+
+    @freeze_time('2021-09-01')
+    def test_filter_date_custom_single_period_type_month(self):
+        ''' Test the filter_date with a custom date in 'single' mode.'''
+        self._assert_filter_date(
+            {
+                'filter': 'custom',
+                'mode': 'single',
+                'date_to': '2019-07-18',
+            },
+            {
+                'string': 'As of %s' % format_date(self.env, '2019-07-18'),
+                'period_type': 'custom',
+                'mode': 'single',
+                'filter': 'custom',
+                'date_from': '2019-07-01',
+                'date_to': '2019-07-18',
+                'strict_range': False,
+            },
+            previous_options={
+                'date': {
+                    'period_type': 'today',
+                    'mode': 'single',
+                    'strict_range': False,
+                    'date_from': '2021-09-01',
+                    'date_to': '2019-07-18',
+                    'filter': 'custom',
+                }
+            },
+        )
+
+        self._assert_filter_comparison(
+            {
+                'filter': 'custom',
+                'mode': 'single',
+                'date_to': '2019-07-18',
+            },
+            {'filter': 'previous_period', 'number_period': 2},
+            [
+                {
+                    'string': 'As of %s' % format_date(self.env, '2019-06-30'),
+                    'period_type': 'month',
+                    'mode': 'single',
+                    'date_from': '2019-06-01',
+                    'date_to': '2019-06-30',
+                    'strict_range': False,
+                },
+                {
+                    'string': 'As of %s' % format_date(self.env, '2019-05-31'),
+                    'period_type': 'month',
+                    'mode': 'single',
+                    'date_from': '2019-05-01',
+                    'date_to': '2019-05-31',
                     'strict_range': False,
                 },
             ],

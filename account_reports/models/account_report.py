@@ -280,34 +280,60 @@ class AccountReport(models.AbstractModel):
 
         previous_date = (previous_options or {}).get('date', {})
         previous_date_to = previous_date.get('date_to')
+        previous_date_from = previous_date.get('date_from')
         previous_mode = previous_date.get('mode')
-        previous_filter = previous_date.get('filter')
+        previous_filter = previous_date.get('filter', 'custom')
 
         default_filter = self.filter_date['filter']
         options_mode = self.filter_date['mode']
-        options_filter = previous_filter or default_filter
         options_strict_range = self.filter_date.get('strict_range', False)
         date_from = date_to = period_type = False
 
         if previous_mode == 'single' and options_mode == 'range':
-            options_filter = 'custom'
-            if previous_date_to:
-                date_from = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(previous_date_to))['date_from']
-                date_to = fields.Date.from_string(previous_date['date_to'])
+            # 'single' date mode to 'range'.
+
+            if previous_filter == 'custom':
+                date_to = fields.Date.from_string(previous_date_to or previous_date_from)
+                date_from = self.env.company.compute_fiscalyear_dates(date_to)['date_from']
+                options_filter = 'custom'
+            elif previous_filter == 'today':
+                date_to = fields.Date.context_today(self)
+                date_from = date_utils.get_month(date_to)[0]
+                options_filter = 'custom'
+            elif previous_filter:
+                options_filter = previous_filter
             else:
-                # Failed to propagate the custom filter.
                 options_filter = default_filter
-        elif not previous_filter or previous_filter == 'custom':
-            # Try to retrieve dates from previous options.
-            custom_date_from = previous_date.get('date_from')
-            custom_date_to = previous_date.get('date_to')
-            if custom_date_to or custom_date_from:
-                # Ensure the integrity of the custom filter.
-                date_to = fields.Date.from_string(custom_date_to or custom_date_from)
-                date_from = fields.Date.from_string(custom_date_from) if custom_date_from else date_utils.get_month(date_to)[0]
-            elif previous_filter == 'custom':
-                # Failed to propagate the custom filter.
+
+        elif previous_mode == 'range' and options_mode == 'single':
+            # 'range' date mode to 'single'.
+
+            if previous_filter == 'custom':
+                date_to = fields.Date.from_string(previous_date_to or previous_date_from)
+                date_from = date_utils.get_month(date_to)[0]
+                options_filter = 'custom'
+            elif previous_filter:
+                options_filter = previous_filter
+            else:
                 options_filter = default_filter
+
+        elif previous_mode == options_mode:
+            # Same date mode.
+
+            if previous_filter == 'custom':
+                if options_mode == 'range':
+                    date_from = fields.Date.from_string(previous_date_from)
+                    date_to = fields.Date.from_string(previous_date_to)
+                else:
+                    date_to = fields.Date.from_string(previous_date_to or previous_date_from)
+                    date_from = date_utils.get_month(date_to)[0]
+                options_filter = 'custom'
+            else:
+                options_filter = previous_filter
+
+        else:
+            # Default.
+            options_filter = default_filter
 
         # Compute 'date_from' / 'date_to'.
         if not date_from or not date_to:
@@ -357,24 +383,30 @@ class AccountReport(models.AbstractModel):
         previous_filter = previous_comparison.get('filter')
 
         default_filter = self.filter_comparison.get('filter', 'no_comparison')
-        options_filter = previous_filter or default_filter
-        number_period = previous_comparison.get('number_period') or self.filter_comparison.get('number_period', 1)
         strict_range = options['date']['strict_range']
-        date_from = date_to = False
 
-        # Try to adapt the 'custom' filter.
         if previous_filter == 'custom':
+            # Try to adapt the previous 'custom' filter.
             date_from = previous_comparison.get('date_from')
             date_to = previous_comparison.get('date_to')
             number_period = 1
-
-        if not date_from or not date_to:
-            if options_filter == 'custom':
-                date_from = self.filter_comparison.get('date_from')
-                date_to = self.filter_comparison.get('date_to')
+            options_filter = 'custom'
+        elif default_filter == 'custom':
+            # Retrieve custom dates given by the user.
+            if options['date']['mode'] == 'range':
+                date_from = self.filter_comparison['date_from']
+                date_to = self.filter_comparison['date_to']
             else:
-                date_from = options['date']['date_from']
-                date_to = options['date']['date_to']
+                date_from = False
+                date_to = self.filter_comparison.get('date_to') or self.filter_comparison.get('date_from')
+            number_period = 1
+            options_filter = 'custom'
+        else:
+            # Use the 'date' options.
+            date_from = options['date']['date_from']
+            date_to = options['date']['date_to']
+            number_period = previous_comparison.get('number_period') or self.filter_comparison.get('number_period', 1)
+            options_filter = previous_filter or default_filter
 
         options['comparison'] = {
             'filter': options_filter,
@@ -383,6 +415,7 @@ class AccountReport(models.AbstractModel):
             'date_to': date_to,
             'periods': [],
         }
+
         date_from_obj = fields.Date.from_string(date_from)
         date_to_obj = fields.Date.from_string(date_to)
 

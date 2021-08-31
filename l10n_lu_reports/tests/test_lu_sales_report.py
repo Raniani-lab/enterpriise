@@ -394,7 +394,15 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
             {'id': 'services', 'name': 'S', 'selected': False, 'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_6_b1_non_exempt_customer_vat').ids}
         ]
         selected = [ln for code in ec_sale_code for ln in code['tax_report_line_ids']]
-        options = report._get_options({'date': {'date_from': date_from, 'date_to': date_to, 'filter': 'custom'}, 'ec_sale_code': ec_sale_code,})
+        options = report._get_options({
+            'date': {
+                'date_from': date_from,
+                'date_to': date_to,
+                'filter': 'custom',
+                'mode': 'range',
+            },
+            'ec_sale_code': ec_sale_code,
+        })
         options.update({'selected_tag_ids': selected, 'get_file_data': True})
         return report, options
 

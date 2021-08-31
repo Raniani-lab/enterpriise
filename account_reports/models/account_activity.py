@@ -49,7 +49,12 @@ class AccountMove(models.Model):
         tax_report_option = tax_report.id if tax_report else 'generic'
 
         options = {
-            'date': {'date_from': date_from, 'date_to': date_to, 'filter': 'custom'},
+            'date': {
+                'date_from': fields.Date.to_string(date_from),
+                'date_to': fields.Date.to_string(date_to),
+                'filter': 'custom',
+                'mode': 'range',
+            },
             'fiscal_position': fpos_option,
             'tax_report': tax_report_option,
         }

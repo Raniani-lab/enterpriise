@@ -245,7 +245,7 @@ class TestFinancialReport(TestAccountReportsCommon):
     def test_financial_report_comparison(self):
         line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
-        options = self._update_comparison_filter(options, self.report, 'previous_period', 1)
+        options = self._update_comparison_filter(options, self.report, 'custom', 1, date_to=fields.Date.from_string('2018-12-31'))
         options['unfolded_lines'] = [line_id]
 
         headers, lines = self.report._get_table(options)
@@ -306,7 +306,7 @@ class TestFinancialReport(TestAccountReportsCommon):
     def test_financial_report_custom_filters(self):
         line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_receivable0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
-        options = self._update_comparison_filter(options, self.report, 'previous_period', 1)
+        options = self._update_comparison_filter(options, self.report, 'custom', 1, date_to=fields.Date.from_string('2018-12-31'))
         options = self._update_multi_selector_filter(options, 'ir_filters', self.filter.ids)
         options['unfolded_lines'] = [line_id]
 

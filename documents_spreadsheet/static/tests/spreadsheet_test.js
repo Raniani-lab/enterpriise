@@ -2019,5 +2019,27 @@ module(
             assert.containsOnce(document.body, ".o_missing_value");
             assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
         });
+
+        QUnit.test("Grid has still the focus after a dialog", async function (assert) {
+            assert.expect(1);
+
+            const { model } = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="bar" type="col"/>
+                    <field name="product" type="col"/>
+                    <field name="probability" type="measure"/>
+                    <field name="foo" type="measure"/>
+                </pivot>`,
+            });
+            model.dispatch("SELECT_CELL", { col: 5, row: 3 });
+            model.config.notifyUser("Notification");
+            await nextTick();
+            await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
+            await nextTick();
+            assert.strictEqual(document.activeElement.tagName, "CANVAS");
+        });
     }
 );

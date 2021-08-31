@@ -147,6 +147,7 @@ export default class SpreadsheetComponent extends owl.Component {
         this.state.dialog.isDisplayed = false;
         this.state.dialog.isEditText = false;
         this.state.dialog.isEditInteger = false;
+        this.spreadsheet.comp.focusGrid();
     }
     /**
      * Close the pivot dialog.

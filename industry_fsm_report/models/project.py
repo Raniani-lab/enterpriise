@@ -59,11 +59,6 @@ class Task(models.Model):
             'allow_worksheets',
             'worksheet_count',
             'worksheet_signature',
-        }
-
-    @property
-    def SELF_WRITABLE_FIELDS(self):
-        return super().SELF_WRITABLE_FIELDS | {
             'worksheet_template_id',
         }
 

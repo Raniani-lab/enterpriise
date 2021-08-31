@@ -5,8 +5,6 @@ from . import models
 from . import report
 from . import controllers
 
-from odoo.addons.project import _check_exists_collaborators_for_project_sharing
-
 
 def post_init(cr, registry):
     from odoo import api, SUPERUSER_ID
@@ -28,5 +26,3 @@ def post_init(cr, registry):
         fsm_product.write(
             {"worksheet_template_id": env.ref("industry_fsm_report.fsm_worksheet_template").id,}
         )
-
-    _check_exists_collaborators_for_project_sharing(env)

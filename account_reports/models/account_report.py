@@ -573,13 +573,14 @@ class AccountReport(models.AbstractModel):
             })
             if not self._context.get('print_mode') or unfolded:
                 # add every direct child group recursively
+                children = []
                 for child in sorted(val_dict['children_codes']):
-                    add_to_hierarchy(lines, child, level + 1, val_dict['id'], hierarchy)
+                    add_to_hierarchy(children, child, level + 1, val_dict['id'], hierarchy)
                 # add all the lines that are in this group but not in one of this group's children groups
                 for l in val_dict['lines']:
                     l['level'] = level + 1
                     l['parent_id'] = val_dict['id']
-                lines.extend(val_dict['lines'])
+                lines.extend(sorted(val_dict['lines'] + children, key=lambda k: k['name']))
 
         def compute_hierarchy(lines, level, parent_id):
             # put every line in each of its parents (from less global to more global) and compute the totals

@@ -309,6 +309,101 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
+        QUnit.test("'Options' tab with layout component can be expanded on open with hierarchy", function (assert) {
+            var done = assert.async();
+            assert.expect(2);
+
+            var nodes = [
+                {
+                    context: {'rec': 'int'},
+                    node: {
+                        attrs: {
+                            'data-oe-id': '42',
+                            'data-oe-xpath': '/t/t/t/t/div',
+                            't-esc': 'rec',
+                        },
+                        tag: 'span',
+                        $nodes: $(),
+                    }
+                },
+                {
+                    context: {'rec': 'int'},
+                    node: {
+                        attrs: {
+                            'data-oe-id': '42',
+                            'data-oe-xpath': '/t/t/t/t',
+                            't-if': 'o.is_ok',
+                        },
+                        tag: 'div',
+                        $nodes: $(),
+                    },
+                },
+                {
+                    context: {'rec': 'int'},
+                    node: {
+                        attrs: {
+                            'data-oe-id': '42',
+                            'data-oe-xpath': '/t/t/t',
+                            't-else': '',
+                        },
+                        tag: 't',
+                        $nodes: $(),
+                    },
+                },
+                {
+                    context: {},
+                    node: {
+                        attrs: {
+                            'data-oe-id': '42',
+                            'data-oe-xpath': '/t/t',
+                            't-foreach': '5',
+                            't-as': 'rec',
+                        },
+                        tag: 't',
+                        $nodes: $(),
+                    },
+                },
+                {
+                    context: {},
+                    node: {
+                        attrs: {
+                            'data-oe-id': '42',
+                            'data-oe-xpath': '/t',
+                            't-name': 'my.template',
+                        },
+                        tag: 't',
+                        $nodes: $(),
+                    },
+                },
+            ];
+            nodes[0].node.parent = nodes[1].node;
+            nodes[1].node.children = [nodes[0].node]
+            nodes[1].node.parent = nodes[2].node;
+            nodes[2].node.children = [nodes[1].node]
+            nodes[2].node.parent = nodes[3].node;
+            nodes[3].node.children = [{tag: 'span', attrs: {'t-if': 'false'}, $nodes: $(), parent: nodes[3].node}, nodes[2].node]
+            nodes[3].node.parent = nodes[4].node;
+            nodes[4].node.children = [nodes[3].node]
+            nodes[4].node.parent = null;
+
+            studioTestUtils.createSidebar({
+                state: {
+                    mode: 'properties',
+                    nodes: nodes,
+                },
+                previousState: {
+                    "42/t/t/t/t/div": { 'layout': { showAll: true } }, // opens the layout expanded
+                },
+            }).then(function (sidebar) {
+
+            assert.equal(sidebar.$('.card').length, 5, 'Should have 5 item');
+            assert.equal(sidebar.$('.card h5 > button').get().map(el => el.textContent.replace(/[\s\n]+/g, ' ').trim()).join(' > '), 't > t [foreach="5"] > t > div > span [rec]', 'Should have all ordered parents');
+
+            sidebar.destroy();
+            done();
+            });
+        });
+
         QUnit.test("'Options' tab with widget selection (tOptions) component", function (assert) {
             var done = assert.async();
             assert.expect(4);

@@ -144,6 +144,9 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
                 record: directiveRecord,
                 options,
             });
+            this.fieldSelector[directiveKey].appendTo = function ($el) {
+                return this.mount($el[0]);
+            };
         } else {
             FieldClass = fieldRegistry.getAny([options.Widget, field.type]);
             this.fieldSelector[directiveKey] = new FieldClass(

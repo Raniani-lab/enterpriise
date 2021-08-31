@@ -21,9 +21,21 @@ class ProductTemplate(models.Model):
                 raise exceptions.ValidationError("Tracking by lots isn't supported for rental products. \
                     \n You should rather change the tracking mode to unique serial numbers.")
 
+    def _compute_show_qty_status_button(self):
+        super()._compute_show_qty_status_button()
+        for template in self:
+            if template.rent_ok and not template.sale_ok:
+                template.show_forecasted_qty_status_button = False
+
 
 class Product(models.Model):
     _inherit = 'product.product'
+
+    def _compute_show_qty_status_button(self):
+        super()._compute_show_qty_status_button()
+        for product in self:
+            if product.rent_ok and not product.sale_ok:
+                product.show_forecasted_qty_status_button = False
 
     def _get_qty_in_rent_domain(self):
         """Allow precising the warehouse_id to get qty currently in rent."""

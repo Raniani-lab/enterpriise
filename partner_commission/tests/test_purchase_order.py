@@ -13,7 +13,8 @@ from odoo.addons.partner_commission.tests.setup import Line, Spec, TestCommissio
 @tagged('commission_purchase')
 class TestPurchaseOrder(TestCommissionsSetup):
     def test_automatic_confirm(self):
-        """Only purchase orders within the frequency date range should be confirmed.
+        """Only purchase orders within the frequency date range and
+        where the amount_total is greater than the limit configure on the company should be confirmed.
         Standard purchase orders should be untouched."""
         # Setup.
         self.company.commission_automatic_po_frequency = 'weekly'
@@ -23,8 +24,8 @@ class TestPurchaseOrder(TestCommissionsSetup):
         send_mail_count = 0
 
         # Helper.
-        def make_po(days_offset=0):
-            inv = self.purchase(Spec(self.gold, [Line(self.crm, 1)]))
+        def make_po(days_offset=0, qty=1):
+            inv = self.purchase(Spec(self.gold, [Line(self.crm, qty)]))
             po = inv.commission_po_line_id.order_id
             po.date_order = fields.Date.add(fields.Date.today(), days=days_offset)
             return po
@@ -54,6 +55,20 @@ class TestPurchaseOrder(TestCommissionsSetup):
                 'currency_id': self.company.currency_id.id,
                 'date_order': fields.Date.subtract(fields.Date.today(), days=1),
             })
+            self.env['purchase.order']._cron_confirm_purchase_orders()
+            self.assertEqual(po.state, 'draft')
+
+        # Set a minimum amount_total to auto confirm the PO
+        self.company.commission_po_minimum = 50
+        # Case: OK. amount_total = 80 > 50
+        with patch('odoo.fields.Date.today', today):
+            po = make_po(days_offset=-1, qty=20)
+            self.env['purchase.order']._cron_confirm_purchase_orders()
+            self.assertEqual(po.state, 'purchase')
+
+        # Case: NOK: amount_total = 8 < 50
+        with patch('odoo.fields.Date.today', today):
+            po = make_po(days_offset=-1, qty=2)
             self.env['purchase.order']._cron_confirm_purchase_orders()
             self.assertEqual(po.state, 'draft')
 

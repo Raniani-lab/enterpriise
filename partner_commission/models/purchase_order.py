@@ -42,6 +42,7 @@ class PurchaseOrder(models.Model):
         companies = self.env['res.company'].search([])
         for company in companies:
             frequency = company.commission_automatic_po_frequency
+            minimum_amount_total = company.commission_po_minimum
 
             # noop
             if frequency == 'manually':
@@ -64,8 +65,10 @@ class PurchaseOrder(models.Model):
             ])
 
             template = self.env.ref('purchase.email_template_edi_purchase_done')
-
-            for po in purchases.filtered(lambda p: p.invoice_commission_count > 0):
+            for po in purchases.filtered(lambda p: (
+                    p.invoice_commission_count > 0 and
+                    p.currency_id._convert(p.amount_total, company.currency_id, company, today) >= minimum_amount_total
+            )):
                 try:
                     po.button_confirm()
 

@@ -511,6 +511,132 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('many2many grouped gantt rendering', async function (assert) {
+        assert.expect(20);
+
+        this.data.tasks.fields.user_ids = { string: 'Assignees', type: 'many2many', relation: 'users' };
+        this.data.tasks.records[0].user_ids = [1, 2];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
+            viewOptions: { initialDate },
+            groupBy: ['user_ids'],
+        });
+
+        assert.containsOnce(gantt, '.o_gantt_header_container',
+            'should have a header');
+        assert.hasClass(gantt.$('.o_gantt_button_scale[data-value=month]'), 'active',
+            'month view should by default activated');
+        assert.notOk(gantt.$('.o_gantt_button_expand_rows').is(':visible'),
+            "the expand button should be invisible (only displayed if useful)");
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .o_gantt_row_sidebar').text().trim(), 'Tasks',
+            'should contain "Tasks" in header sidebar');
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
+            'should contain "December 2018" in header');
+        assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 31,
+            'should have 31 slots for month view');
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row', 3, 'should have 3 rows');
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_row_sidebar',
+            'should have a sidebar');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_row_title').text().trim(), 'User 1', 'should contain "User 1" in sidebar title');
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_pill_wrapper', 'should have a single pill in first row');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_pill_wrapper').text().trim(), 'Task 1', 'pills should have those names in first row');
+
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(3) .o_gantt_row_sidebar',
+            'should have a sidebar');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth-child(3) .o_gantt_row_title').text().trim(), 'User 2',
+            'should contain "User 2" in sidebar title');
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(3) .o_gantt_pill_wrapper',
+            'should have a single pill in second row');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth-child(3) .o_gantt_pill_wrapper').text().trim(), 'Task 1',
+            'pills should have those names in second row');
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:last-child .o_gantt_row_sidebar',
+            'should have a sidebar');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:last-child .o_gantt_row_title').text().trim(), 'Undefined Assignees', 'should contain "Undefined Assignees" in sidebar title');
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row:last-child .o_gantt_pill_wrapper', 5, 'should have 5 pills in last row');
+        assert.deepEqual(gantt.$('.o_gantt_row_container .o_gantt_row:last-child .o_gantt_pill_wrapper').text().match(/(\w+\s\d)/g), [
+            "Task 5",
+            "Task 2",
+            "Task 4",
+            "Task 7",
+            "Task 3"
+        ], 'pills should have those names in last row');
+
+        assert.deepEqual([...gantt.el.querySelectorAll(".o_gantt_pill")].map((el) => el.dataset.id), ["1","1","5","2","4","7","3"],
+            "two pills should represent same record id");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('multi-level grouped with many2many field in gantt view', async function (assert) {
+        assert.expect(20);
+
+        this.data.tasks.fields.user_ids = { string: 'Assignees', type: 'many2many', relation: 'users' };
+        this.data.tasks.records[0].user_ids = [1, 2];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: "tasks",
+            data: this.data,
+            arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
+            viewOptions: { initialDate },
+            groupBy: ["user_ids", "project_id"],
+        });
+
+        // Header
+        assert.containsOnce(gantt, ".o_gantt_header_container", "should have a header");
+        assert.hasClass(gantt.el.querySelector(".o_gantt_button_scale[data-value=month]"), "active");
+        assert.containsOnce(gantt, ".btn-group:not(.d-none) > .o_gantt_button_expand_rows", "there should be an expand button");
+        assert.strictEqual(
+            gantt.el.querySelector(".o_gantt_header_container > .o_gantt_row_sidebar").innerText,
+            "Tasks",
+            "should contain 'Tasks' in header sidebar"
+        );
+        assert.strictEqual(
+            gantt.el.querySelector(".o_gantt_header_slots > .row:first-child").innerText,
+            "December 2018",
+            "should contain 'December 2018' in header"
+        );
+        assert.containsN(gantt, ".o_gantt_header_scale .o_gantt_header_cell", 31, "should have a 31 slots for month view");
+
+        // Body
+        assert.containsN(gantt, ".o_gantt_row_container .o_gantt_row", 7, "should have 7 rows");
+        assert.containsN(gantt, ".o_gantt_row_container .o_gantt_row .o_gantt_row_sidebar", 7, "each rowshould have a sidebar");
+        assert.containsN(gantt, ".o_gantt_row_container .o_gantt_row_group.open", 3, "should have 3 opened groups");
+        assert.containsN(gantt, ".o_gantt_row_container .o_gantt_row_nogroup", 4, "should have 4 'nogroup' rows");
+
+        // Check grouped rows
+        const rows = gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row");
+        const rowGroupClasses = [...rows].map((el) => {
+            return [...el.classList].filter((c) => c.startsWith("o_gantt_row_"))[0].substring(12);
+        });
+        assert.deepEqual(rowGroupClasses, ["group", "nogroup", "group", "nogroup", "group", "nogroup", "nogroup"], "rows should be '(no)group' in this order");
+
+        const rowTitles = [...rows].map((el) => el.querySelector(".o_gantt_row_title").innerText.trim());
+        assert.deepEqual(rowTitles, ["User 1", "Project 1", "User 2", "Project 1", "Undefined Assignees", "Project 1", "Project 2"], "rows should have those titles");
+
+        // group row count and greyscale
+        const groupCounts = [...rows].filter((el) => [...el.classList].includes("o_gantt_row_group")).map((el) => [...el.querySelectorAll(".o_gantt_consolidated_pill_title")].map((x) => x.innerText).join());
+        assert.deepEqual(groupCounts, ["1", "1", "1,1,2,1,1"], "group consolidated counts should be correctly computed");
+
+        // consolidated pills should have correct width
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(3100% + 30px - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(1) .o_gantt_pill_wrapper:eq(0)')), "calc(3100% + 30px - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(1)')), "calc(250% + 1px - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(2)')), "calc(100% - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(3)')), "calc(150% - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(4)')), "calc(500% + 4px - 4px)");
+
+        gantt.destroy();
+    });
+
     QUnit.test('full precision gantt rendering', async function(assert) {
         assert.expect(1);
 
@@ -1363,6 +1489,165 @@ QUnit.module('Views', {
         assert.strictEqual($modal.length, 1, 'There should be one modal opened');
         assert.strictEqual($modal.find('input[name=name]').val(), 'Task 8',
             'should open dialog for "Task 8"');
+
+        gantt.destroy();
+    });
+
+    QUnit.test("open a dialog to create a task when grouped by many2many field", async function (assert) {
+        assert.expect(22);
+
+        this.data.tasks.fields.user_ids = { string: 'Assignees', type: 'many2many', relation: 'users' };
+        this.data.tasks.records[0].user_ids = [1, 2];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: "tasks",
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop" />`,
+            archs: {
+                "tasks,false,form":
+                    `<form>
+                        <field name="name"/>
+                        <field name="start"/>
+                        <field name="stop"/>
+                        <field name="stage"/>
+                        <field name="project_id"/>
+                        <field name="user_id"/>
+                        <field name="user_ids" widget="many2many_tags"/>
+                    </form>`,
+            },
+            viewOptions: { initialDate },
+            groupBy: ["user_ids", "project_id"],
+        });
+
+        // Check grouped rows
+        let rows = gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row");
+        const rowGroupClasses = [...rows].map((el) => {
+            return [...el.classList].filter((c) => c.startsWith("o_gantt_row_"))[0].substring(12);
+        });
+        assert.deepEqual(rowGroupClasses, ["group", "nogroup", "group", "nogroup", "group", "nogroup", "nogroup"], "rows should be '(no)group' in this order");
+document.createElement("a").classList.contains
+        // Sanity check: row titles and tasks
+        assert.deepEqual(
+            [...rows].map((row) => row.querySelector(".o_gantt_row_title").innerText.trim()),
+            ["User 1", "Project 1", "User 2", "Project 1", "Undefined Assignees", "Project 1", "Project 2"],
+            "rows should have those titles");
+        assert.deepEqual(
+            [...rows]
+                .filter((row) => row.classList.contains("o_gantt_row_group"))
+                .map((row) => row.querySelector(".o_gantt_row_title").innerText.trim()),
+            ["User 1", "User 2", "Undefined Assignees"],
+            "group rows should have those titles");
+        assert.deepEqual(
+            [...rows]
+                .filter((row) => row.classList.contains("o_gantt_row_nogroup"))
+                .map((row) => row.querySelector(".o_gantt_row_title").innerText.trim()),
+            ["Project 1", "Project 1", "Project 1", "Project 2"],
+            "nogroup rows should have those titles");
+        assert.deepEqual(
+            [...rows]
+                .filter((row) => row.classList.contains("o_gantt_row_nogroup"))
+                .reduce((acc, row) => {
+                    acc[row.dataset.rowId] = [...row.querySelectorAll(".o_gantt_pill_title")].map((pill) => pill.innerText);
+                    return acc;
+                }, {}),
+            {
+                '[{"user_ids":[1,"User 1"]},{"project_id":[1,"Project 1"]}]':
+                    ["Task 1"],
+                '[{"user_ids":[2,"User 2"]},{"project_id":[1,"Project 1"]}]':
+                    ["Task 1"],
+                '[{"user_ids":false},{"project_id":[1,"Project 1"]}]':
+                    ["Task 2", "Task 4", "Task 3"],
+                '[{"user_ids":false},{"project_id":[2,"Project 2"]}]':
+                    ["Task 5", "Task 7"],
+            },
+            "nogroup rows should have those tasks");
+
+        // open dialog to create a task with two many2many values
+        let row = gantt.el.querySelector(`[data-row-id*="User 1"][data-row-id*="Project 1"]`);
+        await testUtils.dom.triggerMouseEvent(
+            row.querySelector(".o_gantt_cell[data-date='2018-12-10 00:00:00'] .o_gantt_cell_add"),
+            "click");
+        await testUtils.nextTick();
+        let $modal = $(".modal");
+        assert.strictEqual($modal.length, 1, "There should be one modal opened");
+        assert.strictEqual($modal.find(".modal-title").text(), "Create");
+        let $fieldDateStart = $modal.find(".o_field_widget.o_field_date[name=start]");
+        let $fieldDateStop = $modal.find(".o_field_widget.o_field_date[name=stop]");
+        let $fieldProject = $modal.find(".o_field_widget.o_field_many2one[name=project_id]");
+        let $fieldUser = $modal.find(".o_field_widget.o_field_many2manytags[name=user_ids]");
+        assert.strictEqual($fieldDateStart.find(".o_input").val(), "12/10/2018 00:00:00", "The date start field should have a value '12/10/2018 00:00:00'");
+        assert.strictEqual($fieldDateStop.find(".o_input").val(), "12/10/2018 23:59:59", "The date stop field should have a value '12/10/2018 23:59:59'");
+        assert.strictEqual($fieldProject.find(".o_input").val(), "Project 1", "The project field should have a value 'Project 1'");
+        assert.containsOnce($fieldUser, ".badge", "The user field should contain a single badge");
+        assert.strictEqual($fieldUser.find(".badge .o_tag_badge_text").text().trim(), "User 1", "The user field should have a value 'User 1'");
+
+        await testUtils.fields.editInput($fieldUser.find("input"), "User 2");
+        await testUtils.dom.triggerMouseEvent(
+            $(".ui-autocomplete:visible .ui-menu-item:contains(User 2)"),
+            "click");
+        await testUtils.fields.editInput($modal.find("input[name=name]"), "NEWTASK 0");
+        await testUtils.modal.clickButton("Save & Close");
+        assert.strictEqual($(".modal").length, 0, "Modal should be closed");
+        rows = gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row");
+        assert.deepEqual(
+            [...rows]
+                .filter((row) => row.classList.contains("o_gantt_row_nogroup"))
+                .reduce((acc, row) => {
+                    acc[row.dataset.rowId] = [...row.querySelectorAll(".o_gantt_pill_title")].map((pill) => pill.innerText);
+                    return acc;
+                }, {}),
+            {
+                '[{"user_ids":[1,"User 1"]},{"project_id":[1,"Project 1"]}]':
+                    ["Task 1", "NEWTASK 0"],
+                '[{"user_ids":[2,"User 2"]},{"project_id":[1,"Project 1"]}]':
+                    ["Task 1", "NEWTASK 0"],
+                '[{"user_ids":false},{"project_id":[1,"Project 1"]}]':
+                    ["Task 2", "Task 4", "Task 3"],
+                '[{"user_ids":false},{"project_id":[2,"Project 2"]}]':
+                    ["Task 5", "Task 7"],
+            },
+            "nogroup rows should have those tasks");
+
+        // open dialog to create a task with no many2many values
+        row = gantt.el.querySelector(`[data-row-id*="Project 2"]:not([data-row-id*="User"])`);
+        await testUtils.dom.triggerMouseEvent(
+            row.querySelector(".o_gantt_cell[data-date='2018-12-24 00:00:00'] .o_gantt_cell_add"),
+            "click");
+        await testUtils.nextTick();
+        $modal = $(".modal");
+        assert.strictEqual($modal.length, 1, "There should be one modal opened");
+        assert.strictEqual($modal.find(".modal-title").text(), "Create");
+        $fieldDateStart = $modal.find(".o_field_widget.o_field_date[name=start]");
+        $fieldDateStop = $modal.find(".o_field_widget.o_field_date[name=stop]");
+        $fieldProject = $modal.find(".o_field_widget.o_field_many2one[name=project_id]");
+        $fieldUser = $modal.find(".o_field_widget.o_field_many2manytags[name=user_ids]");
+        assert.strictEqual($fieldDateStart.find(".o_input").val(), "12/24/2018 00:00:00", "The date start field should have a value '12/24/2018 00:00:00'");
+        assert.strictEqual($fieldDateStop.find(".o_input").val(), "12/24/2018 23:59:59", "The date stop field should have a value '12/24/2018 23:59:59'");
+        assert.strictEqual($fieldProject.find(".o_input").val(), "Project 2", "The project field should have a value 'Project 2'");
+        assert.containsNone($fieldUser, ".badge", "The user field should not contain badges");
+        await testUtils.fields.editInput($modal.find("input[name=name]"), "NEWTASK 1");
+        await testUtils.modal.clickButton("Save & Close");
+        assert.strictEqual($(".modal").length, 0, "Modal should be closed");
+        rows = gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row");
+        assert.deepEqual(
+            [...rows]
+                .filter((row) => row.classList.contains("o_gantt_row_nogroup"))
+                .reduce((acc, row) => {
+                    acc[row.dataset.rowId] = [...row.querySelectorAll(".o_gantt_pill_title")].map((pill) => pill.innerText);
+                    return acc;
+                }, {}),
+            {
+                '[{"user_ids":[1,"User 1"]},{"project_id":[1,"Project 1"]}]':
+                    ["Task 1", "NEWTASK 0"],
+                '[{"user_ids":[2,"User 2"]},{"project_id":[1,"Project 1"]}]':
+                    ["Task 1", "NEWTASK 0"],
+                '[{"user_ids":false},{"project_id":[1,"Project 1"]}]':
+                    ["Task 2", "Task 4", "Task 3"],
+                '[{"user_ids":false},{"project_id":[2,"Project 2"]}]':
+                    ["Task 5", "Task 7", "NEWTASK 1"],
+            },
+            "nogroup rows should have those tasks");
 
         gantt.destroy();
     });
@@ -2479,6 +2764,59 @@ QUnit.module('Views', {
             $pill,
             $pill,
             { position: { left: 4, top: -3 * groupHeaderHeight - cellHeight } },
+        );
+
+        gantt.destroy();
+    });
+
+    QUnit.test('move a pill in another row in multi-level grouped (many2many case)', async function (assert) {
+        assert.expect(3);
+
+        this.data.tasks.fields.user_ids = { string: 'Assignees', type: 'many2many', relation: 'users' };
+        this.data.tasks.records[1].user_ids = [1, 2];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            groupBy: ['user_id', 'project_id', 'user_ids'],
+            viewOptions: { initialDate },
+            mockRPC: function (route, args) {
+                if (args.method === 'write') {
+                    assert.deepEqual(args.args[0], [2],
+                        "should write on the correct record");
+                    assert.deepEqual(args.args[1], {
+                        "project_id": 1,
+                        "start": "2018-12-10 23:30:00",
+                        "stop": "2018-12-15 18:29:59",
+                        "user_id": 2,
+                        "user_ids": false
+                    }, "should write these changes");
+                }
+                return this._super.apply(this, arguments);
+            },
+            domain: [["user_id", "=", 2],["project_id", "=", 1]]
+        });
+
+        // initialize dragging feature...
+        gantt.$('.o_gantt_pill').each(function () {
+            testUtils.dom.triggerMouseEvent($(this), 'mouseover');
+        });
+        await testUtils.nextTick();
+
+        // sanity check
+        const draggable = gantt.el.querySelectorAll(".o_gantt_pill.ui-draggable:not(.o_fake_draggable)");
+        assert.deepEqual(
+            [...draggable].map((el) => el.innerText),
+            ["Task 2", "Task 2"],
+            "there should be only 2 draggable pills (twice 'Task 2')"
+        );
+
+        // move a pill (first task 2) in last row group (Undefined Assignees)
+        await testUtils.dom.dragAndDrop(
+            draggable[0],
+            gantt.el.querySelector(".o_gantt_row_nogroup:last-child"),
         );
 
         gantt.destroy();

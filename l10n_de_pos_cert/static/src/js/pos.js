@@ -181,6 +181,10 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 }
                 throw odooError || fiskalyError;
             }
+        },
+        // @Override
+        htmlToImgLetterRendering() {
+            return this.isCountryGermany() || _super_posmodel.htmlToImgLetterRendering.apply(this, arguments);
         }
     });
 

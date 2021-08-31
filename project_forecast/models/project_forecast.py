@@ -7,6 +7,7 @@ import logging
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 
 _logger = logging.getLogger(__name__)
@@ -94,7 +95,7 @@ class PlanningShift(models.Model):
             if ('project_id', '=') in dom_tuples or ('project_id', 'ilike') in dom_tuples:
                 filter_domain = self._expand_domain_m2o_groupby(domain, 'project_id')
                 return self.env['project.project'].search(filter_domain, order=order)
-            filters = self._expand_domain_dates(domain)
+            filters = expression.AND([[('project_id.active', '=', True)], self._expand_domain_dates(domain)])
             return self.env['planning.slot'].search(filters).mapped('project_id')
         return projects
 
@@ -106,7 +107,7 @@ class PlanningShift(models.Model):
             if ('task_id', '=') in dom_tuples or ('task_id', 'ilike') in dom_tuples:
                 filter_domain = self._expand_domain_m2o_groupby(domain, 'task_id')
                 return self.env['project.task'].search(filter_domain, order=order)
-            filters = self._expand_domain_dates(domain)
+            filters = expression.AND([[('task_id.active', '=', True)], self._expand_domain_dates(domain)])
             return self.env['planning.slot'].search(filters).mapped('task_id')
         return tasks
 

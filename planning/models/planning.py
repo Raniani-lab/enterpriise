@@ -1264,7 +1264,7 @@ class Planning(models.Model):
             if ('role_id', '=') in dom_tuples or ('role_id', 'ilike') in dom_tuples:
                 filter_domain = self._expand_domain_m2o_groupby(domain, 'role_id')
                 return self.env['planning.role'].search(filter_domain, order=order)
-            filters = self._expand_domain_dates(domain)
+            filters = expression.AND([[('role_id.active', '=', True)], self._expand_domain_dates(domain)])
             return self.env['planning.slot'].search(filters).mapped('role_id')
         return roles
 

@@ -82,6 +82,14 @@
     const MIN_CF_ICON_MARGIN = 4;
     const MIN_CELL_TEXT_MARGIN = 4;
     const CF_ICON_EDGE_LENGTH = 15;
+    const LINK_TOOLTIP_HEIGHT = 43;
+    const LINK_TOOLTIP_WIDTH = 220;
+    // Menus
+    const MENU_WIDTH = 200;
+    const MENU_ITEM_HEIGHT = 32;
+    const MENU_SEPARATOR_BORDER_WIDTH = 1;
+    const MENU_SEPARATOR_PADDING = 5;
+    const MENU_SEPARATOR_HEIGHT = MENU_SEPARATOR_BORDER_WIDTH + 2 * MENU_SEPARATOR_PADDING;
     const FIGURE_BORDER_SIZE = 1;
     // Fonts
     const DEFAULT_FONT_WEIGHT = "400";
@@ -90,6 +98,7 @@
     const DEFAULT_FONT = "'Roboto', arial";
     // Borders
     const DEFAULT_BORDER_DESC = ["thin", "#000"];
+    const LINK_COLOR = "#00f";
     // DateTimeRegex
     const DATETIME_FORMAT = /[ymd:]/;
     // Ranges
@@ -102,110 +111,11 @@
     const MAX_CHAR_LABEL = 20;
     const DEBOUNCE_TIME = 200;
     const MESSAGE_VERSION = 1;
+    const LOADING = "Loading...";
     const DEFAULT_ERROR_MESSAGE = _lt("Invalid expression");
     const FORBIDDEN_IN_EXCEL_REGEX = /'|\*|\?|\/|\\|\[|\]/;
-
-    /**
-     * This regexp is supposed to be as close as possible as the numberRegexp, but
-     * its purpose is to be used by the tokenizer.
-     *
-     * - it tolerates extra characters at the end. This is useful because the tokenizer
-     *   only needs to find the number at the start of a string
-     * - it does not accept "," as thousand separator, because when we tokenize a
-     *   formula, commas are used to separate arguments
-     */
-    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?(\s*%)?|^-?\.\d+(\s*%)?/;
-    const numberRegexp = /^-?\d+(,\d+)*(\.?\d*(e\d+)?)?(\s*%)?$|^-?\.\d+(\s*%)?$/;
-    /**
-     * Return true if the argument is a "number string".
-     *
-     * Note that "" (empty string) does not count as a number string
-     */
-    function isNumber(value) {
-        // TO DO: add regexp for DATE string format (ex match: "28 02 2020")
-        return numberRegexp.test(value.trim());
-    }
-    const commaRegexp = /,/g;
-    /**
-     * Convert a string into a number. It assumes that the string actually represents
-     * a number (as determined by the isNumber function)
-     *
-     * Note that it accepts "" (empty string), even though it does not count as a
-     * number from the point of view of the isNumber function.
-     */
-    function parseNumber(str) {
-        let n = Number(str.replace(commaRegexp, ""));
-        if (isNaN(n) && str.includes("%")) {
-            n = Number(str.split("%")[0]);
-            if (!isNaN(n)) {
-                return n / 100;
-            }
-        }
-        return n;
-    }
-    const decimalStandardRepresentation = new Intl.NumberFormat("en-US", {
-        useGrouping: false,
-        maximumFractionDigits: 10,
-    });
-    function formatStandardNumber(n) {
-        if (Number.isInteger(n)) {
-            return n.toString();
-        }
-        return decimalStandardRepresentation.format(n);
-    }
-    // this is a cache than can contains decimal representation formats
-    // from 0 (minimum) to 20 (maximum) digits after the decimal point
-    let decimalRepresentations = [];
-    const maximumDecimalPlaces = 20;
-    function formatDecimal(n, decimals, sep = "") {
-        if (n < 0) {
-            return "-" + formatDecimal(-n, decimals);
-        }
-        const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
-        let formatter = decimalRepresentations[maxDecimals];
-        if (!formatter) {
-            formatter = new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: maxDecimals,
-                maximumFractionDigits: maxDecimals,
-                useGrouping: false,
-            });
-            decimalRepresentations[maxDecimals] = formatter;
-        }
-        let result = formatter.format(n);
-        if (sep) {
-            let p = result.indexOf(".");
-            result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
-        }
-        return result;
-    }
-    function formatNumber(value, format) {
-        const parts = format.split(";");
-        const l = parts.length;
-        if (value < 0) {
-            if (l > 1) {
-                return _formatValue(-value, parts[1]);
-            }
-            else {
-                return "-" + _formatValue(-value, parts[0]);
-            }
-        }
-        const index = l === 3 && value === 0 ? 2 : 0;
-        return _formatValue(value, parts[index]);
-    }
-    function _formatValue(value, format) {
-        const parts = format.split(".");
-        const decimals = parts.length === 1 ? 0 : parts[1].match(/0/g).length;
-        const separator = parts[0].includes(",") ? "," : "";
-        const isPercent = format.includes("%");
-        if (isPercent) {
-            value = value * 100;
-        }
-        const rawNumber = formatDecimal(value, decimals, separator);
-        if (isPercent) {
-            return rawNumber + "%";
-        }
-        return rawNumber;
-    }
+    // Cells
+    const NULL_FORMAT = undefined;
 
     // -----------------------------------------------------------------------------
     // Date Type
@@ -440,6 +350,108 @@
             }
         })
             .join(":") + meridian);
+    }
+
+    /**
+     * This regexp is supposed to be as close as possible as the numberRegexp, but
+     * its purpose is to be used by the tokenizer.
+     *
+     * - it tolerates extra characters at the end. This is useful because the tokenizer
+     *   only needs to find the number at the start of a string
+     * - it does not accept "," as thousand separator, because when we tokenize a
+     *   formula, commas are used to separate arguments
+     */
+    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?(\s*%)?|^-?\.\d+(\s*%)?/;
+    const numberRegexp = /^-?\d+(,\d+)*(\.?\d*(e\d+)?)?(\s*%)?$|^-?\.\d+(\s*%)?$/;
+    /**
+     * Return true if the argument is a "number string".
+     *
+     * Note that "" (empty string) does not count as a number string
+     */
+    function isNumber(value) {
+        // TO DO: add regexp for DATE string format (ex match: "28 02 2020")
+        return numberRegexp.test(value.trim());
+    }
+    const commaRegexp = /,/g;
+    /**
+     * Convert a string into a number. It assumes that the string actually represents
+     * a number (as determined by the isNumber function)
+     *
+     * Note that it accepts "" (empty string), even though it does not count as a
+     * number from the point of view of the isNumber function.
+     */
+    function parseNumber(str) {
+        let n = Number(str.replace(commaRegexp, ""));
+        if (isNaN(n) && str.includes("%")) {
+            n = Number(str.split("%")[0]);
+            if (!isNaN(n)) {
+                return n / 100;
+            }
+        }
+        return n;
+    }
+    const decimalStandardRepresentation = new Intl.NumberFormat("en-US", {
+        useGrouping: false,
+        maximumFractionDigits: 10,
+    });
+    function formatStandardNumber(n) {
+        if (Number.isInteger(n)) {
+            return n.toString();
+        }
+        return decimalStandardRepresentation.format(n);
+    }
+    // this is a cache than can contains decimal representation formats
+    // from 0 (minimum) to 20 (maximum) digits after the decimal point
+    let decimalRepresentations = [];
+    const maximumDecimalPlaces = 20;
+    function formatDecimal(n, decimals, sep = "") {
+        if (n < 0) {
+            return "-" + formatDecimal(-n, decimals);
+        }
+        const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
+        let formatter = decimalRepresentations[maxDecimals];
+        if (!formatter) {
+            formatter = new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: maxDecimals,
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false,
+            });
+            decimalRepresentations[maxDecimals] = formatter;
+        }
+        let result = formatter.format(n);
+        if (sep) {
+            let p = result.indexOf(".");
+            result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
+        }
+        return result;
+    }
+    function formatNumber(value, format) {
+        const parts = format.split(";");
+        const l = parts.length;
+        if (value < 0) {
+            if (l > 1) {
+                return _formatValue(-value, parts[1]);
+            }
+            else {
+                return "-" + _formatValue(-value, parts[0]);
+            }
+        }
+        const index = l === 3 && value === 0 ? 2 : 0;
+        return _formatValue(value, parts[index]);
+    }
+    function _formatValue(value, format) {
+        const parts = format.split(".");
+        const decimals = parts.length === 1 ? 0 : parts[1].match(/0/g).length;
+        const separator = parts[0].includes(",") ? "," : "";
+        const isPercent = format.includes("%");
+        if (isPercent) {
+            value = value * 100;
+        }
+        const rawNumber = formatDecimal(value, decimals, separator);
+        if (isPercent) {
+            return rawNumber + "%";
+        }
+        return rawNumber;
     }
 
     // HELPERS
@@ -1172,6 +1184,15 @@
         }
     }
 
+    var CellValueType;
+    (function (CellValueType) {
+        CellValueType["boolean"] = "boolean";
+        CellValueType["number"] = "number";
+        CellValueType["text"] = "text";
+        CellValueType["empty"] = "empty";
+        CellValueType["error"] = "error";
+    })(CellValueType || (CellValueType = {}));
+
     function isSheetDependent(cmd) {
         return "sheetId" in cmd;
     }
@@ -1184,6 +1205,17 @@
     function isPositionDependent(cmd) {
         return "col" in cmd && "row" in cmd;
     }
+    const invalidateEvaluationCommands = new Set([
+        "RENAME_SHEET",
+        "DELETE_SHEET",
+        "CREATE_SHEET",
+        "ADD_COLUMNS_ROWS",
+        "REMOVE_COLUMNS_ROWS",
+        "DELETE_CELL",
+        "INSERT_CELL",
+        "UNDO",
+        "REDO",
+    ]);
     const readonlyAllowedCommands = new Set([
         "START",
         "ACTIVATE_SHEET",
@@ -1350,14 +1382,6 @@
     // -----------------------------------------------------------------------------
     // MISC
     // -----------------------------------------------------------------------------
-    var CellType;
-    (function (CellType) {
-        CellType["text"] = "text";
-        CellType["number"] = "number";
-        CellType["formula"] = "formula";
-        CellType["empty"] = "empty";
-        CellType["invalidFormula"] = "invalidFormula";
-    })(CellType || (CellType = {}));
     var DIRECTION;
     (function (DIRECTION) {
         DIRECTION[DIRECTION["UP"] = 0] = "UP";
@@ -2605,13 +2629,16 @@
      * Convert from cartesian coordinate to the "XC" coordinate system.
      *
      * Examples:
-     *   [0,0] => A1
-     *   [1,2] => B3
-     *
-     * Note: it does not support fixed references
+     *   - 0,0 => A1
+     *   - 1,2 => B3
+     *   - 0,0, {colFixed: false, rowFixed: true} => A$1
+     *   - 1,2, {colFixed: true, rowFixed: false} => $B3
      */
-    function toXC(col, row) {
-        return numberToLetters(col) + String(row + 1);
+    function toXC(col, row, rangePart = { colFixed: false, rowFixed: false }) {
+        return ((rangePart.colFixed ? "$" : "") +
+            numberToLetters(col) +
+            (rangePart.rowFixed ? "$" : "") +
+            String(row + 1));
     }
 
     const MAX_DELAY = 140;
@@ -2752,6 +2779,65 @@
                 next: nextItem.done ? undefined : nextItem.value,
             };
         }
+    }
+    function isBoolean(str) {
+        const upperCased = str.toUpperCase();
+        return upperCased === "TRUE" || upperCased === "FALSE";
+    }
+    function isDateTime(str) {
+        return parseDateTime(str) !== null;
+    }
+    const MARKDOWN_LINK_REGEX = /^\[([^\[]+)\]\((.+)\)$/;
+    //link must start with http or https
+    //https://stackoverflow.com/a/3809435/4760614
+    const WEB_LINK_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
+    function isMarkdownLink(str) {
+        return MARKDOWN_LINK_REGEX.test(str);
+    }
+    /**
+     * Check if the string is a web link.
+     * e.g. http://odoo.com
+     */
+    function isWebLink(str) {
+        return WEB_LINK_REGEX.test(str);
+    }
+    /**
+     * Build a markdown link from a label and an url
+     */
+    function markdownLink(label, url) {
+        return `[${label}](${url})`;
+    }
+    function parseMarkdownLink(str) {
+        const matches = str.match(MARKDOWN_LINK_REGEX) || [];
+        const label = matches[1];
+        const url = matches[2];
+        if (!label || !url) {
+            throw new Error(`Could not parse markdown link ${str}.`);
+        }
+        return {
+            label,
+            url,
+        };
+    }
+    const O_SPREADSHEET_LINK_PREFIX = "o-spreadsheet://";
+    function isMarkdownSheetLink(str) {
+        if (!isMarkdownLink(str)) {
+            return false;
+        }
+        const { url } = parseMarkdownLink(str);
+        return url.startsWith(O_SPREADSHEET_LINK_PREFIX);
+    }
+    function buildSheetLink(sheetId) {
+        return `${O_SPREADSHEET_LINK_PREFIX}${sheetId}`;
+    }
+    /**
+     * Parse a sheet link and return the sheet id
+     */
+    function parseSheetLink(sheetLink) {
+        if (sheetLink.startsWith(O_SPREADSHEET_LINK_PREFIX)) {
+            return sheetLink.substr(O_SPREADSHEET_LINK_PREFIX.length);
+        }
+        throw new Error(`${sheetLink} is not a valid sheet link`);
     }
     /**
      * This helper function can be used as a type guard when filtering arrays.
@@ -6259,7 +6345,7 @@
     // -----------------------------------------------------------------------------
     // EQ
     // -----------------------------------------------------------------------------
-    function isEmpty(value) {
+    function isEmpty$1(value) {
         return value === null || value === undefined;
     }
     const getNeutral = { number: 0, string: "", boolean: false };
@@ -6271,8 +6357,8 @@
     `),
         returns: ["BOOLEAN"],
         compute: function (value1, value2) {
-            value1 = isEmpty(value1) ? getNeutral[typeof value2] : value1;
-            value2 = isEmpty(value2) ? getNeutral[typeof value1] : value2;
+            value1 = isEmpty$1(value1) ? getNeutral[typeof value2] : value1;
+            value2 = isEmpty$1(value2) ? getNeutral[typeof value1] : value2;
             if (typeof value1 === "string") {
                 value1 = value1.toUpperCase();
             }
@@ -6286,8 +6372,8 @@
     // GT
     // -----------------------------------------------------------------------------
     function applyRelationalOperator(value1, value2, cb) {
-        value1 = isEmpty(value1) ? getNeutral[typeof value2] : value1;
-        value2 = isEmpty(value2) ? getNeutral[typeof value1] : value2;
+        value1 = isEmpty$1(value1) ? getNeutral[typeof value2] : value1;
+        value2 = isEmpty$1(value2) ? getNeutral[typeof value1] : value2;
         if (typeof value1 !== "number") {
             value1 = toString(value1).toUpperCase();
         }
@@ -6811,595 +6897,6 @@
             functionRegistry.add(name, { isExported: false, ...addDescr });
         }
     }
-
-    /**
-     * BasePlugin
-     *
-     * Since the spreadsheet internal state is quite complex, it is split into
-     * multiple parts, each managing a specific concern.
-     *
-     * This file introduce the BasePlugin, which is the common class that defines
-     * how each of these model sub parts should interact with each other.
-     * There are two kind of plugins: core plugins handling persistent data
-     * and UI plugins handling transient data.
-     */
-    class BasePlugin {
-        constructor(stateObserver, dispatch, config) {
-            this.history = Object.assign(Object.create(stateObserver), {
-                update: stateObserver.addChange.bind(stateObserver, this),
-                selectCell: () => { },
-            });
-            this.dispatch = dispatch;
-            this.currentMode = config.mode;
-        }
-        // ---------------------------------------------------------------------------
-        // Command handling
-        // ---------------------------------------------------------------------------
-        /**
-         * Before a command is accepted, the model will ask each plugin if the command
-         * is allowed.  If all of then return true, then we can proceed. Otherwise,
-         * the command is cancelled.
-         *
-         * There should not be any side effects in this method.
-         */
-        allowDispatch(command) {
-            return 0 /* Success */;
-        }
-        /**
-         * This method is useful when a plugin need to perform some action before a
-         * command is handled in another plugin. This should only be used if it is not
-         * possible to do the work in the handle method.
-         */
-        beforeHandle(command) { }
-        /**
-         * This is the standard place to handle any command. Most of the plugin
-         * command handling work should take place here.
-         */
-        handle(command) { }
-        /**
-         * Sometimes, it is useful to perform some work after a command (and all its
-         * subcommands) has been completely handled.  For example, when we paste
-         * multiple cells, we only want to reevaluate the cell values once at the end.
-         */
-        finalize() { }
-        /**
-         * Combine multiple validation functions into a single function
-         * returning the list of result of every validation.
-         */
-        batchValidations(...validations) {
-            return (toValidate) => validations.map((validation) => validation.call(this, toValidate)).flat();
-        }
-        /**
-         * Combine multiple validation functions. Every validation is executed one after
-         * the other. As soon as one validation fails, it stops and the cancelled reason
-         * is returned.
-         */
-        chainValidations(...validations) {
-            return (toValidate) => {
-                for (const validation of validations) {
-                    let results = validation.call(this, toValidate);
-                    if (!Array.isArray(results)) {
-                        results = [results];
-                    }
-                    const cancelledReasons = results.filter((result) => result !== 0 /* Success */);
-                    if (cancelledReasons.length) {
-                        return cancelledReasons;
-                    }
-                }
-                return 0 /* Success */;
-            };
-        }
-        checkValidations(command, ...validations) {
-            return this.batchValidations(...validations)(command);
-        }
-    }
-    BasePlugin.getters = [];
-    BasePlugin.modes = ["headless", "normal", "readonly"];
-
-    /**
-     * Core plugins handle spreadsheet data.
-     * They are responsible to import, export and maintain the spreadsheet
-     * persisted state.
-     * They should not be concerned about UI parts or transient state.
-     */
-    class CorePlugin extends BasePlugin {
-        constructor(getters, stateObserver, range, dispatch, config, uuidGenerator) {
-            super(stateObserver, dispatch, config);
-            this.dispatch = dispatch;
-            this.range = range;
-            range.addRangeProvider(this.adaptRanges.bind(this));
-            this.getters = getters;
-            this.uuidGenerator = uuidGenerator;
-        }
-        // ---------------------------------------------------------------------------
-        // Import/Export
-        // ---------------------------------------------------------------------------
-        import(data) { }
-        export(data) { }
-        exportForExcel(data) { }
-        /**
-         * This method can be implemented in any plugin, to loop over the plugin's data structure and adapt the plugin's ranges.
-         * To adapt them, the implementation of the function must have a perfect knowledge of the data structure, thus
-         * implementing the loops over it makes sense in the plugin itself.
-         * When calling the method applyChange, the range will be adapted if necessary, then a copy will be returned along with
-         * the type of change that occurred.
-         *
-         * @param applyChange a function that, when called, will adapt the range according to the change on the grid
-         * @param sheetId an optional sheetId to adapt either range of that sheet specifically, or ranges pointing to that sheet
-         */
-        adaptRanges(applyChange, sheetId) { }
-    }
-
-    /**
-     * Formatting plugin.
-     *
-     * This plugin manages all things related to a cell look:
-     * - borders
-     */
-    class BordersPlugin extends CorePlugin {
-        constructor() {
-            super(...arguments);
-            this.borders = {};
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        handle(cmd) {
-            switch (cmd.type) {
-                case "ADD_MERGE":
-                    if (!cmd.interactive) {
-                        for (const zone of cmd.target) {
-                            this.addBordersToMerge(cmd.sheetId, zone);
-                        }
-                    }
-                    break;
-                case "DUPLICATE_SHEET":
-                    const borders = this.borders[cmd.sheetId];
-                    if (borders) {
-                        this.history.update("borders", cmd.sheetIdTo, JSON.parse(JSON.stringify(borders)));
-                    }
-                    break;
-                case "DELETE_SHEET":
-                    const allBorders = { ...this.borders };
-                    delete allBorders[cmd.sheetId];
-                    this.history.update("borders", allBorders);
-                    break;
-                case "SET_BORDER":
-                    this.setBorder(cmd.sheetId, cmd.col, cmd.row, cmd.border);
-                    break;
-                case "SET_FORMATTING":
-                    if (cmd.border) {
-                        const sheet = this.getters.getSheet(cmd.sheetId);
-                        const target = cmd.target.map((zone) => this.getters.expandZone(cmd.sheetId, zone));
-                        this.setBorders(sheet, target, cmd.border);
-                    }
-                    break;
-                case "CLEAR_FORMATTING":
-                    this.clearBorders(cmd.sheetId, cmd.target);
-                    break;
-                case "REMOVE_COLUMNS_ROWS":
-                    for (let el of cmd.elements) {
-                        if (cmd.dimension === "COL") {
-                            this.shiftBordersHorizontally(cmd.sheetId, el + 1, -1);
-                        }
-                        else {
-                            this.shiftBordersVertically(cmd.sheetId, el + 1, -1);
-                        }
-                    }
-                    break;
-                case "ADD_COLUMNS_ROWS":
-                    if (cmd.dimension === "COL") {
-                        this.handleAddColumns(cmd);
-                    }
-                    else {
-                        this.handleAddRows(cmd);
-                    }
-                    break;
-            }
-        }
-        /**
-         * Move borders according to the inserted columns.
-         * Ensure borders continuity.
-         */
-        handleAddColumns(cmd) {
-            // The new columns have already been inserted in the sheet at this point.
-            const sheet = this.getters.getSheet(cmd.sheetId);
-            let colLeftOfInsertion;
-            let colRightOfInsertion;
-            if (cmd.position === "before") {
-                this.shiftBordersHorizontally(cmd.sheetId, cmd.base, cmd.quantity, {
-                    moveFirstLeftBorder: true,
-                });
-                colLeftOfInsertion = cmd.base - 1;
-                colRightOfInsertion = cmd.base + cmd.quantity;
-            }
-            else {
-                this.shiftBordersHorizontally(cmd.sheetId, cmd.base + 1, cmd.quantity, {
-                    moveFirstLeftBorder: false,
-                });
-                colLeftOfInsertion = cmd.base;
-                colRightOfInsertion = cmd.base + cmd.quantity + 1;
-            }
-            this.ensureColumnBorderContinuity(sheet, colLeftOfInsertion, colRightOfInsertion);
-        }
-        /**
-         * Move borders according to the inserted rows.
-         * Ensure borders continuity.
-         */
-        handleAddRows(cmd) {
-            // The new rows have already been inserted at this point.
-            const sheet = this.getters.getSheet(cmd.sheetId);
-            let rowAboveInsertion;
-            let rowBelowInsertion;
-            if (cmd.position === "before") {
-                this.shiftBordersVertically(sheet.id, cmd.base, cmd.quantity, { moveFirstTopBorder: true });
-                rowAboveInsertion = cmd.base - 1;
-                rowBelowInsertion = cmd.base + cmd.quantity;
-            }
-            else {
-                this.shiftBordersVertically(sheet.id, cmd.base + 1, cmd.quantity, {
-                    moveFirstTopBorder: false,
-                });
-                rowAboveInsertion = cmd.base;
-                rowBelowInsertion = cmd.base + cmd.quantity + 1;
-            }
-            this.ensureRowBorderContinuity(sheet, rowAboveInsertion, rowBelowInsertion);
-        }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        getCellBorder(sheetId, col, row) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
-            const border = {
-                top: (_c = (_b = (_a = this.borders[sheetId]) === null || _a === void 0 ? void 0 : _a[col]) === null || _b === void 0 ? void 0 : _b[row]) === null || _c === void 0 ? void 0 : _c.horizontal,
-                bottom: (_f = (_e = (_d = this.borders[sheetId]) === null || _d === void 0 ? void 0 : _d[col]) === null || _e === void 0 ? void 0 : _e[row + 1]) === null || _f === void 0 ? void 0 : _f.horizontal,
-                left: (_j = (_h = (_g = this.borders[sheetId]) === null || _g === void 0 ? void 0 : _g[col]) === null || _h === void 0 ? void 0 : _h[row]) === null || _j === void 0 ? void 0 : _j.vertical,
-                right: (_m = (_l = (_k = this.borders[sheetId]) === null || _k === void 0 ? void 0 : _k[col + 1]) === null || _l === void 0 ? void 0 : _l[row]) === null || _m === void 0 ? void 0 : _m.vertical,
-            };
-            if (!border.bottom && !border.left && !border.right && !border.top) {
-                return null;
-            }
-            return border;
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        /**
-         * Ensure border continuity between two columns.
-         * If the two columns have the same borders (at each row respectively),
-         * the same borders are applied to each cell in between.
-         */
-        ensureColumnBorderContinuity(sheet, leftColumn, rightColumn) {
-            const targetCols = range(leftColumn + 1, rightColumn);
-            for (let row = 0; row < sheet.rows.length; row++) {
-                const leftBorder = this.getCellBorder(sheet.id, leftColumn, row);
-                const rightBorder = this.getCellBorder(sheet.id, rightColumn, row);
-                if (leftBorder && rightBorder) {
-                    const commonSides = this.getCommonSides(leftBorder, rightBorder);
-                    for (let col of targetCols) {
-                        this.addBorder(sheet.id, col, row, commonSides);
-                    }
-                }
-            }
-        }
-        /**
-         * Ensure border continuity between two rows.
-         * If the two rows have the same borders (at each column respectively),
-         * the same borders are applied to each cell in between.
-         */
-        ensureRowBorderContinuity(sheet, topRow, bottomRow) {
-            const targetRows = range(topRow + 1, bottomRow);
-            for (let col = 0; col < sheet.cols.length; col++) {
-                const aboveBorder = this.getCellBorder(sheet.id, col, topRow);
-                const belowBorder = this.getCellBorder(sheet.id, col, bottomRow);
-                if (aboveBorder && belowBorder) {
-                    const commonSides = this.getCommonSides(aboveBorder, belowBorder);
-                    for (let row of targetRows) {
-                        this.addBorder(sheet.id, col, row, commonSides);
-                    }
-                }
-            }
-        }
-        /**
-         * From two borders, return a new border with sides defined in both borders.
-         * i.e. the intersection of two borders.
-         */
-        getCommonSides(border1, border2) {
-            const commonBorder = {};
-            for (let side of ["top", "bottom", "left", "right"]) {
-                if (border1[side] && border1[side] === border2[side]) {
-                    commonBorder[side] = border1[side];
-                }
-            }
-            return commonBorder;
-        }
-        /**
-         * Get all the columns which contains at least a border
-         */
-        getColumnsWithBorders(sheetId) {
-            const sheetBorders = this.borders[sheetId];
-            if (!sheetBorders)
-                return [];
-            return Object.keys(sheetBorders).map((index) => parseInt(index, 10));
-        }
-        /**
-         * Get the range of all the rows in the sheet
-         */
-        getRowsRange(sheetId) {
-            const sheetBorders = this.borders[sheetId];
-            if (!sheetBorders)
-                return [];
-            const sheet = this.getters.getSheet(sheetId);
-            return range(0, sheet.rows.length + 1);
-        }
-        /**
-         * Move borders of a sheet horizontally.
-         * @param sheetId
-         * @param start starting column (included)
-         * @param delta how much borders will be moved (negative if moved to the left)
-         */
-        shiftBordersHorizontally(sheetId, start, delta, { moveFirstLeftBorder } = {}) {
-            const borders = this.borders[sheetId];
-            if (!borders)
-                return;
-            if (delta < 0) {
-                this.moveBordersOfColumn(sheetId, start, delta, "vertical", {
-                    destructive: false,
-                });
-            }
-            this.getColumnsWithBorders(sheetId)
-                .filter((col) => col >= start)
-                .sort((a, b) => (delta < 0 ? a - b : b - a)) // start by the end when moving up
-                .forEach((col) => {
-                if ((col === start && moveFirstLeftBorder) || col !== start) {
-                    this.moveBordersOfColumn(sheetId, col, delta, "vertical");
-                }
-                this.moveBordersOfColumn(sheetId, col, delta, "horizontal");
-            });
-        }
-        /**
-         * Move borders of a sheet vertically.
-         * @param sheetId
-         * @param start starting row (included)
-         * @param delta how much borders will be moved (negative if moved to the above)
-         */
-        shiftBordersVertically(sheetId, start, delta, { moveFirstTopBorder } = {}) {
-            const borders = this.borders[sheetId];
-            if (!borders)
-                return;
-            if (delta < 0) {
-                this.moveBordersOfRow(sheetId, start, delta, "horizontal", {
-                    destructive: false,
-                });
-            }
-            this.getRowsRange(sheetId)
-                .filter((row) => row >= start)
-                .sort((a, b) => (delta < 0 ? a - b : b - a)) // start by the end when moving up
-                .forEach((row) => {
-                if ((row === start && moveFirstTopBorder) || row !== start) {
-                    this.moveBordersOfRow(sheetId, row, delta, "horizontal");
-                }
-                this.moveBordersOfRow(sheetId, row, delta, "vertical");
-            });
-        }
-        /**
-         * Moves the borders (left if `vertical` or top if `horizontal` depending on
-         * `borderDirection`) of all cells in an entire row `delta` rows to the right
-         * (`delta` > 0) or to the left (`delta` < 0).
-         * Note that as the left of a cell is the right of the cell-1, if the left is
-         * moved the right is also moved. However, if `horizontal`, the bottom border
-         * is not moved.
-         * It does it by replacing the target border by the moved border. If the
-         * argument `destructive` is given false, the target border is preserved if
-         * the moved border is empty
-         */
-        moveBordersOfRow(sheetId, row, delta, borderDirection, { destructive } = { destructive: true }) {
-            const borders = this.borders[sheetId];
-            if (!borders)
-                return;
-            this.getColumnsWithBorders(sheetId).forEach((col) => {
-                var _a, _b, _c, _d;
-                const targetBorder = (_b = (_a = borders[col]) === null || _a === void 0 ? void 0 : _a[row + delta]) === null || _b === void 0 ? void 0 : _b[borderDirection];
-                const movedBorder = (_d = (_c = borders[col]) === null || _c === void 0 ? void 0 : _c[row]) === null || _d === void 0 ? void 0 : _d[borderDirection];
-                this.history.update("borders", sheetId, col, row + delta, borderDirection, destructive ? movedBorder : movedBorder || targetBorder);
-                this.history.update("borders", sheetId, col, row, borderDirection, undefined);
-            });
-        }
-        /**
-         * Moves the borders (left if `vertical` or top if `horizontal` depending on
-         * `borderDirection`) of all cells in an entire column `delta` columns below
-         * (`delta` > 0) or above (`delta` < 0).
-         * Note that as the top of a cell is the bottom of the cell-1, if the top is
-         * moved the bottom is also moved. However, if `vertical`, the right border
-         * is not moved.
-         * It does it by replacing the target border by the moved border. If the
-         * argument `destructive` is given false, the target border is preserved if
-         * the moved border is empty
-         */
-        moveBordersOfColumn(sheetId, col, delta, borderDirection, { destructive } = { destructive: true }) {
-            const borders = this.borders[sheetId];
-            if (!borders)
-                return;
-            this.getRowsRange(sheetId).forEach((row) => {
-                var _a, _b, _c, _d;
-                const targetBorder = (_b = (_a = borders[col + delta]) === null || _a === void 0 ? void 0 : _a[row]) === null || _b === void 0 ? void 0 : _b[borderDirection];
-                const movedBorder = (_d = (_c = borders[col]) === null || _c === void 0 ? void 0 : _c[row]) === null || _d === void 0 ? void 0 : _d[borderDirection];
-                this.history.update("borders", sheetId, col + delta, row, borderDirection, destructive ? movedBorder : movedBorder || targetBorder);
-                this.history.update("borders", sheetId, col, row, borderDirection, undefined);
-            });
-        }
-        /**
-         * Set the borders of a cell.
-         * Note that it override the current border
-         */
-        setBorder(sheetId, col, row, border) {
-            this.history.update("borders", sheetId, col, row, {
-                vertical: border === null || border === void 0 ? void 0 : border.left,
-                horizontal: border === null || border === void 0 ? void 0 : border.top,
-            });
-            this.history.update("borders", sheetId, col + 1, row, "vertical", border === null || border === void 0 ? void 0 : border.right);
-            this.history.update("borders", sheetId, col, row + 1, "horizontal", border === null || border === void 0 ? void 0 : border.bottom);
-        }
-        /**
-         * Remove the borders of a zone
-         */
-        clearBorders(sheetId, zones) {
-            for (let zone of zones) {
-                for (let row = zone.top; row <= zone.bottom; row++) {
-                    this.history.update("borders", sheetId, zone.right + 1, row, "vertical", undefined);
-                    for (let col = zone.left; col <= zone.right; col++) {
-                        this.history.update("borders", sheetId, col, row, undefined);
-                    }
-                }
-                for (let col = zone.left; col <= zone.right; col++) {
-                    this.history.update("borders", sheetId, col, zone.bottom + 1, "horizontal", undefined);
-                }
-            }
-        }
-        /**
-         * Add a border to the existing one to a cell
-         */
-        addBorder(sheetId, col, row, border) {
-            this.setBorder(sheetId, col, row, {
-                ...this.getCellBorder(sheetId, col, row),
-                ...border,
-            });
-        }
-        /**
-         * Set the borders of a zone by computing the borders to add from the given
-         * command
-         */
-        setBorders(sheet, zones, command) {
-            const sheetId = sheet.id;
-            if (command === "clear") {
-                return this.clearBorders(sheetId, zones);
-            }
-            for (let zone of zones) {
-                if (command === "h" || command === "hv" || command === "all") {
-                    for (let row = zone.top + 1; row <= zone.bottom; row++) {
-                        for (let col = zone.left; col <= zone.right; col++) {
-                            this.addBorder(sheetId, col, row, { top: DEFAULT_BORDER_DESC });
-                        }
-                    }
-                }
-                if (command === "v" || command === "hv" || command === "all") {
-                    for (let row = zone.top; row <= zone.bottom; row++) {
-                        for (let col = zone.left + 1; col <= zone.right; col++) {
-                            this.addBorder(sheetId, col, row, { left: DEFAULT_BORDER_DESC });
-                        }
-                    }
-                }
-                if (command === "left" || command === "all" || command === "external") {
-                    for (let row = zone.top; row <= zone.bottom; row++) {
-                        this.addBorder(sheetId, zone.left, row, { left: DEFAULT_BORDER_DESC });
-                    }
-                }
-                if (command === "right" || command === "all" || command === "external") {
-                    for (let row = zone.top; row <= zone.bottom; row++) {
-                        this.addBorder(sheetId, zone.right + 1, row, { left: DEFAULT_BORDER_DESC });
-                    }
-                }
-                if (command === "top" || command === "all" || command === "external") {
-                    for (let col = zone.left; col <= zone.right; col++) {
-                        this.addBorder(sheetId, col, zone.top, { top: DEFAULT_BORDER_DESC });
-                    }
-                }
-                if (command === "bottom" || command === "all" || command === "external") {
-                    for (let col = zone.left; col <= zone.right; col++) {
-                        this.addBorder(sheetId, col, zone.bottom + 1, { top: DEFAULT_BORDER_DESC });
-                    }
-                }
-            }
-        }
-        /**
-         * Compute the borders to add to the given zone merged.
-         */
-        addBordersToMerge(sheetId, zone) {
-            const sheet = this.getters.getSheet(sheetId);
-            const { left, right, top, bottom } = zone;
-            const bordersTopLeft = this.getCellBorder(sheet.id, left, top);
-            const bordersBottomRight = this.getCellBorder(sheet.id, right, bottom);
-            this.clearBorders(sheetId, [zone]);
-            if (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.top) {
-                this.setBorders(sheet, [{ ...zone, bottom: top }], "top");
-            }
-            if (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.left) {
-                this.setBorders(sheet, [{ ...zone, right: left }], "left");
-            }
-            if ((bordersBottomRight === null || bordersBottomRight === void 0 ? void 0 : bordersBottomRight.bottom) || (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.bottom)) {
-                this.setBorders(sheet, [{ ...zone, top: bottom }], "bottom");
-            }
-            if ((bordersBottomRight === null || bordersBottomRight === void 0 ? void 0 : bordersBottomRight.right) || (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.right)) {
-                this.setBorders(sheet, [{ ...zone, left: right }], "right");
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Import/Export
-        // ---------------------------------------------------------------------------
-        import(data) {
-            // Borders
-            if (data.borders) {
-                for (let sheet of data.sheets) {
-                    for (let [xc, cell] of Object.entries(sheet.cells)) {
-                        if (cell === null || cell === void 0 ? void 0 : cell.border) {
-                            const border = data.borders[cell.border];
-                            const [col, row] = toCartesian(xc);
-                            this.setBorder(sheet.id, col, row, border);
-                        }
-                    }
-                }
-            }
-            // Merges
-            for (let sheetData of data.sheets) {
-                if (sheetData.merges) {
-                    for (let merge of sheetData.merges) {
-                        this.addBordersToMerge(sheetData.id, toZone(merge));
-                    }
-                }
-            }
-        }
-        export(data) {
-            // Borders
-            let borderId = 0;
-            const borders = {};
-            /**
-             * Get the id of the given border. If the border does not exist, it creates
-             * one.
-             */
-            function getBorderId(border) {
-                for (let [key, value] of Object.entries(borders)) {
-                    if (stringify(value) === stringify(border)) {
-                        return parseInt(key, 10);
-                    }
-                }
-                borders[++borderId] = border;
-                return borderId;
-            }
-            for (let sheet of data.sheets) {
-                for (let col = 0; col < sheet.colNumber; col++) {
-                    for (let row = 0; row < sheet.rowNumber; row++) {
-                        const border = this.getCellBorder(sheet.id, col, row);
-                        if (border) {
-                            const xc = toXC(col, row);
-                            const cell = sheet.cells[xc];
-                            const borderId = getBorderId(border);
-                            if (cell) {
-                                cell.border = borderId;
-                            }
-                            else {
-                                sheet.cells[xc] = { border: borderId };
-                            }
-                        }
-                    }
-                }
-            }
-            data.borders = borders;
-        }
-        exportForExcel(data) {
-            this.export(data);
-        }
-    }
-    BordersPlugin.getters = ["getCellBorder"];
 
     /**
      * Tokenizer
@@ -8254,6 +7751,984 @@
         return { text: noRefFormula, dependencies: references };
     }
 
+    /**
+     * This registry is intended to map a cell content (raw string) to
+     * an instance of a cell.
+     */
+    const cellRegistry = new Registry();
+
+    /**
+     * Format a cell value with its format.
+     */
+    function formatValue(value, format) {
+        switch (typeof value) {
+            case "string":
+                return value;
+            case "boolean":
+                return value ? "TRUE" : "FALSE";
+            case "number":
+                if (format === null || format === void 0 ? void 0 : format.match(DATETIME_FORMAT)) {
+                    return formatDateTime({ value, format: format });
+                }
+                return format ? formatNumber(value, format) : formatStandardNumber(value);
+            case "object":
+                return "0";
+        }
+    }
+    /**
+     * Try to infer the cell format based on the formula dependencies.
+     * e.g. if the formula is `=A1` and A1 has a given format, the
+     * same format will be used.
+     */
+    function computeFormulaFormat(sheets, compiledFormula, dependencies) {
+        var _a;
+        const dependenciesFormat = compiledFormula.dependenciesFormat;
+        for (let dependencyFormat of dependenciesFormat) {
+            switch (typeof dependencyFormat) {
+                case "string":
+                    // dependencyFormat corresponds to a literal format which can be applied
+                    // directly.
+                    return dependencyFormat;
+                case "number":
+                    // dependencyFormat corresponds to a dependency cell from which we must
+                    // find the cell and extract the associated format
+                    const ref = dependencies[dependencyFormat];
+                    const s = sheets[ref.sheetId];
+                    if (s) {
+                        // if the reference is a range --> the first cell in the range
+                        // determines the format
+                        const cellRef = (_a = s.rows[ref.zone.top]) === null || _a === void 0 ? void 0 : _a.cells[ref.zone.left];
+                        if (cellRef && cellRef.format) {
+                            return cellRef.format;
+                        }
+                    }
+                    break;
+            }
+        }
+        return NULL_FORMAT;
+    }
+
+    /**
+     * Abstract base implementation of a cell.
+     * Concrete cell classes are responsible to build the raw cell `content` based on
+     * whatever data they have (formula, string, ...).
+     */
+    class AbstractCell {
+        constructor(id, evaluated, properties) {
+            this.id = id;
+            this.evaluated = evaluated;
+            this.style = properties.style;
+            this.format = properties.format;
+        }
+        get formattedValue() {
+            return formatValue(this.evaluated.value, this.format);
+        }
+        get composerContent() {
+            return this.content;
+        }
+        get defaultAlign() {
+            switch (this.evaluated.type) {
+                case CellValueType.number:
+                    return "right";
+                case CellValueType.boolean:
+                case CellValueType.error:
+                    return "center";
+                case CellValueType.text:
+                case CellValueType.empty:
+                    return "left";
+            }
+        }
+        /**
+         * Only empty cells, text cells and numbers are valid
+         */
+        get isAutoSummable() {
+            var _a;
+            switch (this.evaluated.type) {
+                case CellValueType.empty:
+                case CellValueType.text:
+                    return true;
+                case CellValueType.number:
+                    return !((_a = this.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
+                case CellValueType.error:
+                case CellValueType.boolean:
+                    return false;
+            }
+        }
+        withDisplayProperties(properties) {
+            return Object.create(this, {
+                style: {
+                    value: properties.style,
+                },
+                format: {
+                    value: properties.format,
+                },
+            });
+        }
+    }
+    class EmptyCell extends AbstractCell {
+        constructor(id, properties = {}) {
+            super(id, { value: "", type: CellValueType.empty }, properties);
+            this.content = "";
+        }
+    }
+    class NumberCell extends AbstractCell {
+        constructor(id, value, properties = {}) {
+            super(id, { value: value, type: CellValueType.number }, properties);
+            this.content = formatStandardNumber(this.evaluated.value);
+        }
+    }
+    class BooleanCell extends AbstractCell {
+        constructor(id, value, properties = {}) {
+            super(id, { value: value, type: CellValueType.boolean }, properties);
+            this.content = this.evaluated.value ? "TRUE" : "FALSE";
+        }
+    }
+    class TextCell extends AbstractCell {
+        constructor(id, value, properties = {}) {
+            super(id, { value: value, type: CellValueType.text }, properties);
+            this.content = this.evaluated.value;
+        }
+    }
+    /**
+     * A date time cell is a number cell with a required
+     * date time format.
+     */
+    class DateTimeCell extends NumberCell {
+        constructor(id, value, properties) {
+            super(id, value, properties);
+            this.format = properties.format;
+        }
+        get composerContent() {
+            return formatDateTime({ value: this.evaluated.value, format: this.format });
+        }
+    }
+    class LinkCell extends AbstractCell {
+        constructor(id, content, properties = {}) {
+            var _a;
+            const link = parseMarkdownLink(content);
+            properties = {
+                ...properties,
+                style: {
+                    ...properties.style,
+                    textColor: ((_a = properties.style) === null || _a === void 0 ? void 0 : _a.textColor) || LINK_COLOR,
+                    underline: true,
+                },
+            };
+            super(id, { value: link.label, type: CellValueType.text }, properties);
+            this.link = link;
+            this.content = content;
+        }
+        get composerContent() {
+            return this.link.label;
+        }
+    }
+    /**
+     * Simple web link cell
+     */
+    class WebLinkCell extends LinkCell {
+        constructor(id, content, properties = {}) {
+            super(id, content, properties);
+            this.link.url = this.withHttp(this.link.url);
+            this.content = markdownLink(this.link.label, this.link.url);
+            this.urlRepresentation = this.link.url;
+            this.isUrlEditable = true;
+        }
+        action(env) {
+            window.open(this.link.url, "_blank");
+        }
+        /**
+         * Add the `https` prefix to the url if it's missing
+         */
+        withHttp(url) {
+            return !/^https?:\/\//i.test(url) ? `https://${url}` : url;
+        }
+    }
+    /**
+     * Link redirecting to a given sheet in the workbook.
+     */
+    class SheetLinkCell extends LinkCell {
+        constructor(id, content, properties = {}, sheetName) {
+            super(id, content, properties);
+            this.sheetName = sheetName;
+            this.sheetId = parseSheetLink(this.link.url);
+            this.isUrlEditable = false;
+        }
+        action(env) {
+            env.dispatch("ACTIVATE_SHEET", {
+                sheetIdFrom: env.getters.getActiveSheetId(),
+                sheetIdTo: this.sheetId,
+            });
+        }
+        get urlRepresentation() {
+            return this.sheetName(this.sheetId) || _lt("Invalid sheet");
+        }
+    }
+    class FormulaCell extends AbstractCell {
+        constructor(buildFormulaString, id, normalizedText, compiledFormula, dependencies, properties) {
+            super(id, { value: LOADING, type: CellValueType.text }, properties);
+            this.buildFormulaString = buildFormulaString;
+            this.normalizedText = normalizedText;
+            this.compiledFormula = compiledFormula;
+            this.dependencies = dependencies;
+        }
+        get content() {
+            return this.buildFormulaString(this.normalizedText, this.dependencies);
+        }
+        assignValue(value) {
+            switch (typeof value) {
+                case "number":
+                    this.evaluated = {
+                        value,
+                        type: CellValueType.number,
+                    };
+                    break;
+                case "boolean":
+                    this.evaluated = {
+                        value,
+                        type: CellValueType.boolean,
+                    };
+                    break;
+                case "string":
+                    this.evaluated = {
+                        value,
+                        type: CellValueType.text,
+                    };
+                    break;
+                // `null` and `undefined` values are not allowed according to `CellValue`
+                // but it actually happens with empty evaluated cells.
+                // TODO fix `CellValue`
+                case "object": // null
+                    this.evaluated = {
+                        value,
+                        type: CellValueType.empty,
+                    };
+                    break;
+                case "undefined":
+                    this.evaluated = {
+                        value,
+                        type: CellValueType.empty,
+                    };
+                    break;
+            }
+        }
+        assignError(value, errorMessage) {
+            this.evaluated = {
+                value,
+                error: errorMessage,
+                type: CellValueType.error,
+            };
+        }
+    }
+    /**
+     * Cell containing a formula which could not be compiled
+     * or a content which could not be parsed.
+     */
+    class BadExpressionCell extends AbstractCell {
+        /**
+         * @param id
+         * @param content Invalid formula string
+         * @param error Compilation or parsing error
+         * @param properties
+         */
+        constructor(id, content, error, properties) {
+            super(id, { value: "#BAD_EXPR", type: CellValueType.error, error }, properties);
+            this.content = content;
+        }
+    }
+    function isFormula(cell) {
+        return cell instanceof FormulaCell;
+    }
+    function isEmpty(cell) {
+        return !cell || cell instanceof EmptyCell;
+    }
+    function isLink(cell) {
+        return cell instanceof LinkCell;
+    }
+
+    cellRegistry
+        .add("Formula", {
+        sequence: 10,
+        match: (content) => content.startsWith("="),
+        createCell: (id, content, properties, sheetId, getters) => {
+            const formula = normalize(content);
+            const normalizedText = formula.text;
+            const compiledFormula = compile(formula);
+            const ranges = formula.dependencies.map((xc) => getters.getRangeFromSheetXC(sheetId, xc));
+            const format = properties.format ||
+                computeFormulaFormat(getters.getEvaluationSheets(), compiledFormula, ranges);
+            return new FormulaCell((normalizedText, dependencies) => getters.buildFormulaContent(sheetId, normalizedText, dependencies), id, normalizedText, compiledFormula, ranges, {
+                ...properties,
+                format,
+            });
+        },
+    })
+        .add("Empty", {
+        sequence: 20,
+        match: (content) => content === "",
+        createCell: (id, content, properties) => new EmptyCell(id, properties),
+    })
+        .add("Number", {
+        sequence: 30,
+        match: (content) => isNumber(content),
+        createCell: (id, content, properties) => {
+            if (!properties.format && content.includes("%")) {
+                properties.format = content.includes(".") ? "0.00%" : "0%";
+            }
+            return new NumberCell(id, parseNumber(content), properties);
+        },
+    })
+        .add("Boolean", {
+        sequence: 40,
+        match: (content) => isBoolean(content),
+        createCell: (id, content, properties) => {
+            return new BooleanCell(id, content.toUpperCase() === "TRUE" ? true : false, properties);
+        },
+    })
+        .add("DateTime", {
+        sequence: 50,
+        match: (content) => isDateTime(content),
+        createCell: (id, content, properties) => {
+            const internalDate = parseDateTime(content);
+            const format = properties.format || internalDate.format;
+            return new DateTimeCell(id, internalDate.value, { ...properties, format });
+        },
+    })
+        .add("MarkdownSheetLink", {
+        sequence: 60,
+        match: (content) => isMarkdownSheetLink(content),
+        createCell: (id, content, properties, sheetId, getters) => {
+            return new SheetLinkCell(id, content, properties, (sheetId) => getters.tryGetSheetName(sheetId));
+        },
+    })
+        .add("MarkdownLink", {
+        sequence: 70,
+        match: (content) => isMarkdownLink(content),
+        createCell: (id, content, properties) => {
+            return new WebLinkCell(id, content, properties);
+        },
+    })
+        .add("WebLink", {
+        sequence: 80,
+        match: (content) => isWebLink(content),
+        createCell: (id, content, properties) => {
+            return new WebLinkCell(id, markdownLink(content, content), properties);
+        },
+    });
+    /**
+     * Return a factory function which can instantiate cells of
+     * different types, based on a raw content.
+     *
+     * ```
+     * // the createCell function can be used to instantiate new cells
+     * const createCell = cellFactory(getters);
+     * const cell = createCell(id, cellContent, cellProperties, sheetId)
+     * ```
+     */
+    function cellFactory(getters) {
+        const builders = cellRegistry.getAll().sort((a, b) => a.sequence - b.sequence);
+        return function createCell(id, content, properties, sheetId) {
+            const builder = builders.find((factory) => factory.match(content));
+            if (!builder) {
+                return new TextCell(id, content, properties);
+            }
+            try {
+                return builder.createCell(id, content, properties, sheetId, getters);
+            }
+            catch (error) {
+                return new BadExpressionCell(id, content, error.message || DEFAULT_ERROR_MESSAGE, properties);
+            }
+        };
+    }
+
+    /**
+     * BasePlugin
+     *
+     * Since the spreadsheet internal state is quite complex, it is split into
+     * multiple parts, each managing a specific concern.
+     *
+     * This file introduce the BasePlugin, which is the common class that defines
+     * how each of these model sub parts should interact with each other.
+     * There are two kind of plugins: core plugins handling persistent data
+     * and UI plugins handling transient data.
+     */
+    class BasePlugin {
+        constructor(stateObserver, dispatch, config) {
+            this.history = Object.assign(Object.create(stateObserver), {
+                update: stateObserver.addChange.bind(stateObserver, this),
+                selectCell: () => { },
+            });
+            this.dispatch = dispatch;
+            this.currentMode = config.mode;
+        }
+        // ---------------------------------------------------------------------------
+        // Command handling
+        // ---------------------------------------------------------------------------
+        /**
+         * Before a command is accepted, the model will ask each plugin if the command
+         * is allowed.  If all of then return true, then we can proceed. Otherwise,
+         * the command is cancelled.
+         *
+         * There should not be any side effects in this method.
+         */
+        allowDispatch(command) {
+            return 0 /* Success */;
+        }
+        /**
+         * This method is useful when a plugin need to perform some action before a
+         * command is handled in another plugin. This should only be used if it is not
+         * possible to do the work in the handle method.
+         */
+        beforeHandle(command) { }
+        /**
+         * This is the standard place to handle any command. Most of the plugin
+         * command handling work should take place here.
+         */
+        handle(command) { }
+        /**
+         * Sometimes, it is useful to perform some work after a command (and all its
+         * subcommands) has been completely handled.  For example, when we paste
+         * multiple cells, we only want to reevaluate the cell values once at the end.
+         */
+        finalize() { }
+        /**
+         * Combine multiple validation functions into a single function
+         * returning the list of result of every validation.
+         */
+        batchValidations(...validations) {
+            return (toValidate) => validations.map((validation) => validation.call(this, toValidate)).flat();
+        }
+        /**
+         * Combine multiple validation functions. Every validation is executed one after
+         * the other. As soon as one validation fails, it stops and the cancelled reason
+         * is returned.
+         */
+        chainValidations(...validations) {
+            return (toValidate) => {
+                for (const validation of validations) {
+                    let results = validation.call(this, toValidate);
+                    if (!Array.isArray(results)) {
+                        results = [results];
+                    }
+                    const cancelledReasons = results.filter((result) => result !== 0 /* Success */);
+                    if (cancelledReasons.length) {
+                        return cancelledReasons;
+                    }
+                }
+                return 0 /* Success */;
+            };
+        }
+        checkValidations(command, ...validations) {
+            return this.batchValidations(...validations)(command);
+        }
+    }
+    BasePlugin.getters = [];
+    BasePlugin.modes = ["headless", "normal", "readonly"];
+
+    /**
+     * Core plugins handle spreadsheet data.
+     * They are responsible to import, export and maintain the spreadsheet
+     * persisted state.
+     * They should not be concerned about UI parts or transient state.
+     */
+    class CorePlugin extends BasePlugin {
+        constructor(getters, stateObserver, range, dispatch, config, uuidGenerator) {
+            super(stateObserver, dispatch, config);
+            this.dispatch = dispatch;
+            this.range = range;
+            range.addRangeProvider(this.adaptRanges.bind(this));
+            this.getters = getters;
+            this.uuidGenerator = uuidGenerator;
+        }
+        // ---------------------------------------------------------------------------
+        // Import/Export
+        // ---------------------------------------------------------------------------
+        import(data) { }
+        export(data) { }
+        exportForExcel(data) { }
+        /**
+         * This method can be implemented in any plugin, to loop over the plugin's data structure and adapt the plugin's ranges.
+         * To adapt them, the implementation of the function must have a perfect knowledge of the data structure, thus
+         * implementing the loops over it makes sense in the plugin itself.
+         * When calling the method applyChange, the range will be adapted if necessary, then a copy will be returned along with
+         * the type of change that occurred.
+         *
+         * @param applyChange a function that, when called, will adapt the range according to the change on the grid
+         * @param sheetId an optional sheetId to adapt either range of that sheet specifically, or ranges pointing to that sheet
+         */
+        adaptRanges(applyChange, sheetId) { }
+    }
+
+    /**
+     * Formatting plugin.
+     *
+     * This plugin manages all things related to a cell look:
+     * - borders
+     */
+    class BordersPlugin extends CorePlugin {
+        constructor() {
+            super(...arguments);
+            this.borders = {};
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        handle(cmd) {
+            switch (cmd.type) {
+                case "ADD_MERGE":
+                    if (!cmd.interactive) {
+                        for (const zone of cmd.target) {
+                            this.addBordersToMerge(cmd.sheetId, zone);
+                        }
+                    }
+                    break;
+                case "DUPLICATE_SHEET":
+                    const borders = this.borders[cmd.sheetId];
+                    if (borders) {
+                        this.history.update("borders", cmd.sheetIdTo, JSON.parse(JSON.stringify(borders)));
+                    }
+                    break;
+                case "DELETE_SHEET":
+                    const allBorders = { ...this.borders };
+                    delete allBorders[cmd.sheetId];
+                    this.history.update("borders", allBorders);
+                    break;
+                case "SET_BORDER":
+                    this.setBorder(cmd.sheetId, cmd.col, cmd.row, cmd.border);
+                    break;
+                case "SET_FORMATTING":
+                    if (cmd.border) {
+                        const sheet = this.getters.getSheet(cmd.sheetId);
+                        const target = cmd.target.map((zone) => this.getters.expandZone(cmd.sheetId, zone));
+                        this.setBorders(sheet, target, cmd.border);
+                    }
+                    break;
+                case "CLEAR_FORMATTING":
+                    this.clearBorders(cmd.sheetId, cmd.target);
+                    break;
+                case "REMOVE_COLUMNS_ROWS":
+                    for (let el of cmd.elements) {
+                        if (cmd.dimension === "COL") {
+                            this.shiftBordersHorizontally(cmd.sheetId, el + 1, -1);
+                        }
+                        else {
+                            this.shiftBordersVertically(cmd.sheetId, el + 1, -1);
+                        }
+                    }
+                    break;
+                case "ADD_COLUMNS_ROWS":
+                    if (cmd.dimension === "COL") {
+                        this.handleAddColumns(cmd);
+                    }
+                    else {
+                        this.handleAddRows(cmd);
+                    }
+                    break;
+            }
+        }
+        /**
+         * Move borders according to the inserted columns.
+         * Ensure borders continuity.
+         */
+        handleAddColumns(cmd) {
+            // The new columns have already been inserted in the sheet at this point.
+            const sheet = this.getters.getSheet(cmd.sheetId);
+            let colLeftOfInsertion;
+            let colRightOfInsertion;
+            if (cmd.position === "before") {
+                this.shiftBordersHorizontally(cmd.sheetId, cmd.base, cmd.quantity, {
+                    moveFirstLeftBorder: true,
+                });
+                colLeftOfInsertion = cmd.base - 1;
+                colRightOfInsertion = cmd.base + cmd.quantity;
+            }
+            else {
+                this.shiftBordersHorizontally(cmd.sheetId, cmd.base + 1, cmd.quantity, {
+                    moveFirstLeftBorder: false,
+                });
+                colLeftOfInsertion = cmd.base;
+                colRightOfInsertion = cmd.base + cmd.quantity + 1;
+            }
+            this.ensureColumnBorderContinuity(sheet, colLeftOfInsertion, colRightOfInsertion);
+        }
+        /**
+         * Move borders according to the inserted rows.
+         * Ensure borders continuity.
+         */
+        handleAddRows(cmd) {
+            // The new rows have already been inserted at this point.
+            const sheet = this.getters.getSheet(cmd.sheetId);
+            let rowAboveInsertion;
+            let rowBelowInsertion;
+            if (cmd.position === "before") {
+                this.shiftBordersVertically(sheet.id, cmd.base, cmd.quantity, { moveFirstTopBorder: true });
+                rowAboveInsertion = cmd.base - 1;
+                rowBelowInsertion = cmd.base + cmd.quantity;
+            }
+            else {
+                this.shiftBordersVertically(sheet.id, cmd.base + 1, cmd.quantity, {
+                    moveFirstTopBorder: false,
+                });
+                rowAboveInsertion = cmd.base;
+                rowBelowInsertion = cmd.base + cmd.quantity + 1;
+            }
+            this.ensureRowBorderContinuity(sheet, rowAboveInsertion, rowBelowInsertion);
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        getCellBorder(sheetId, col, row) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+            const border = {
+                top: (_c = (_b = (_a = this.borders[sheetId]) === null || _a === void 0 ? void 0 : _a[col]) === null || _b === void 0 ? void 0 : _b[row]) === null || _c === void 0 ? void 0 : _c.horizontal,
+                bottom: (_f = (_e = (_d = this.borders[sheetId]) === null || _d === void 0 ? void 0 : _d[col]) === null || _e === void 0 ? void 0 : _e[row + 1]) === null || _f === void 0 ? void 0 : _f.horizontal,
+                left: (_j = (_h = (_g = this.borders[sheetId]) === null || _g === void 0 ? void 0 : _g[col]) === null || _h === void 0 ? void 0 : _h[row]) === null || _j === void 0 ? void 0 : _j.vertical,
+                right: (_m = (_l = (_k = this.borders[sheetId]) === null || _k === void 0 ? void 0 : _k[col + 1]) === null || _l === void 0 ? void 0 : _l[row]) === null || _m === void 0 ? void 0 : _m.vertical,
+            };
+            if (!border.bottom && !border.left && !border.right && !border.top) {
+                return null;
+            }
+            return border;
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        /**
+         * Ensure border continuity between two columns.
+         * If the two columns have the same borders (at each row respectively),
+         * the same borders are applied to each cell in between.
+         */
+        ensureColumnBorderContinuity(sheet, leftColumn, rightColumn) {
+            const targetCols = range(leftColumn + 1, rightColumn);
+            for (let row = 0; row < sheet.rows.length; row++) {
+                const leftBorder = this.getCellBorder(sheet.id, leftColumn, row);
+                const rightBorder = this.getCellBorder(sheet.id, rightColumn, row);
+                if (leftBorder && rightBorder) {
+                    const commonSides = this.getCommonSides(leftBorder, rightBorder);
+                    for (let col of targetCols) {
+                        this.addBorder(sheet.id, col, row, commonSides);
+                    }
+                }
+            }
+        }
+        /**
+         * Ensure border continuity between two rows.
+         * If the two rows have the same borders (at each column respectively),
+         * the same borders are applied to each cell in between.
+         */
+        ensureRowBorderContinuity(sheet, topRow, bottomRow) {
+            const targetRows = range(topRow + 1, bottomRow);
+            for (let col = 0; col < sheet.cols.length; col++) {
+                const aboveBorder = this.getCellBorder(sheet.id, col, topRow);
+                const belowBorder = this.getCellBorder(sheet.id, col, bottomRow);
+                if (aboveBorder && belowBorder) {
+                    const commonSides = this.getCommonSides(aboveBorder, belowBorder);
+                    for (let row of targetRows) {
+                        this.addBorder(sheet.id, col, row, commonSides);
+                    }
+                }
+            }
+        }
+        /**
+         * From two borders, return a new border with sides defined in both borders.
+         * i.e. the intersection of two borders.
+         */
+        getCommonSides(border1, border2) {
+            const commonBorder = {};
+            for (let side of ["top", "bottom", "left", "right"]) {
+                if (border1[side] && border1[side] === border2[side]) {
+                    commonBorder[side] = border1[side];
+                }
+            }
+            return commonBorder;
+        }
+        /**
+         * Get all the columns which contains at least a border
+         */
+        getColumnsWithBorders(sheetId) {
+            const sheetBorders = this.borders[sheetId];
+            if (!sheetBorders)
+                return [];
+            return Object.keys(sheetBorders).map((index) => parseInt(index, 10));
+        }
+        /**
+         * Get the range of all the rows in the sheet
+         */
+        getRowsRange(sheetId) {
+            const sheetBorders = this.borders[sheetId];
+            if (!sheetBorders)
+                return [];
+            const sheet = this.getters.getSheet(sheetId);
+            return range(0, sheet.rows.length + 1);
+        }
+        /**
+         * Move borders of a sheet horizontally.
+         * @param sheetId
+         * @param start starting column (included)
+         * @param delta how much borders will be moved (negative if moved to the left)
+         */
+        shiftBordersHorizontally(sheetId, start, delta, { moveFirstLeftBorder } = {}) {
+            const borders = this.borders[sheetId];
+            if (!borders)
+                return;
+            if (delta < 0) {
+                this.moveBordersOfColumn(sheetId, start, delta, "vertical", {
+                    destructive: false,
+                });
+            }
+            this.getColumnsWithBorders(sheetId)
+                .filter((col) => col >= start)
+                .sort((a, b) => (delta < 0 ? a - b : b - a)) // start by the end when moving up
+                .forEach((col) => {
+                if ((col === start && moveFirstLeftBorder) || col !== start) {
+                    this.moveBordersOfColumn(sheetId, col, delta, "vertical");
+                }
+                this.moveBordersOfColumn(sheetId, col, delta, "horizontal");
+            });
+        }
+        /**
+         * Move borders of a sheet vertically.
+         * @param sheetId
+         * @param start starting row (included)
+         * @param delta how much borders will be moved (negative if moved to the above)
+         */
+        shiftBordersVertically(sheetId, start, delta, { moveFirstTopBorder } = {}) {
+            const borders = this.borders[sheetId];
+            if (!borders)
+                return;
+            if (delta < 0) {
+                this.moveBordersOfRow(sheetId, start, delta, "horizontal", {
+                    destructive: false,
+                });
+            }
+            this.getRowsRange(sheetId)
+                .filter((row) => row >= start)
+                .sort((a, b) => (delta < 0 ? a - b : b - a)) // start by the end when moving up
+                .forEach((row) => {
+                if ((row === start && moveFirstTopBorder) || row !== start) {
+                    this.moveBordersOfRow(sheetId, row, delta, "horizontal");
+                }
+                this.moveBordersOfRow(sheetId, row, delta, "vertical");
+            });
+        }
+        /**
+         * Moves the borders (left if `vertical` or top if `horizontal` depending on
+         * `borderDirection`) of all cells in an entire row `delta` rows to the right
+         * (`delta` > 0) or to the left (`delta` < 0).
+         * Note that as the left of a cell is the right of the cell-1, if the left is
+         * moved the right is also moved. However, if `horizontal`, the bottom border
+         * is not moved.
+         * It does it by replacing the target border by the moved border. If the
+         * argument `destructive` is given false, the target border is preserved if
+         * the moved border is empty
+         */
+        moveBordersOfRow(sheetId, row, delta, borderDirection, { destructive } = { destructive: true }) {
+            const borders = this.borders[sheetId];
+            if (!borders)
+                return;
+            this.getColumnsWithBorders(sheetId).forEach((col) => {
+                var _a, _b, _c, _d;
+                const targetBorder = (_b = (_a = borders[col]) === null || _a === void 0 ? void 0 : _a[row + delta]) === null || _b === void 0 ? void 0 : _b[borderDirection];
+                const movedBorder = (_d = (_c = borders[col]) === null || _c === void 0 ? void 0 : _c[row]) === null || _d === void 0 ? void 0 : _d[borderDirection];
+                this.history.update("borders", sheetId, col, row + delta, borderDirection, destructive ? movedBorder : movedBorder || targetBorder);
+                this.history.update("borders", sheetId, col, row, borderDirection, undefined);
+            });
+        }
+        /**
+         * Moves the borders (left if `vertical` or top if `horizontal` depending on
+         * `borderDirection`) of all cells in an entire column `delta` columns below
+         * (`delta` > 0) or above (`delta` < 0).
+         * Note that as the top of a cell is the bottom of the cell-1, if the top is
+         * moved the bottom is also moved. However, if `vertical`, the right border
+         * is not moved.
+         * It does it by replacing the target border by the moved border. If the
+         * argument `destructive` is given false, the target border is preserved if
+         * the moved border is empty
+         */
+        moveBordersOfColumn(sheetId, col, delta, borderDirection, { destructive } = { destructive: true }) {
+            const borders = this.borders[sheetId];
+            if (!borders)
+                return;
+            this.getRowsRange(sheetId).forEach((row) => {
+                var _a, _b, _c, _d;
+                const targetBorder = (_b = (_a = borders[col + delta]) === null || _a === void 0 ? void 0 : _a[row]) === null || _b === void 0 ? void 0 : _b[borderDirection];
+                const movedBorder = (_d = (_c = borders[col]) === null || _c === void 0 ? void 0 : _c[row]) === null || _d === void 0 ? void 0 : _d[borderDirection];
+                this.history.update("borders", sheetId, col + delta, row, borderDirection, destructive ? movedBorder : movedBorder || targetBorder);
+                this.history.update("borders", sheetId, col, row, borderDirection, undefined);
+            });
+        }
+        /**
+         * Set the borders of a cell.
+         * Note that it override the current border
+         */
+        setBorder(sheetId, col, row, border) {
+            this.history.update("borders", sheetId, col, row, {
+                vertical: border === null || border === void 0 ? void 0 : border.left,
+                horizontal: border === null || border === void 0 ? void 0 : border.top,
+            });
+            this.history.update("borders", sheetId, col + 1, row, "vertical", border === null || border === void 0 ? void 0 : border.right);
+            this.history.update("borders", sheetId, col, row + 1, "horizontal", border === null || border === void 0 ? void 0 : border.bottom);
+        }
+        /**
+         * Remove the borders of a zone
+         */
+        clearBorders(sheetId, zones) {
+            for (let zone of zones) {
+                for (let row = zone.top; row <= zone.bottom; row++) {
+                    this.history.update("borders", sheetId, zone.right + 1, row, "vertical", undefined);
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        this.history.update("borders", sheetId, col, row, undefined);
+                    }
+                }
+                for (let col = zone.left; col <= zone.right; col++) {
+                    this.history.update("borders", sheetId, col, zone.bottom + 1, "horizontal", undefined);
+                }
+            }
+        }
+        /**
+         * Add a border to the existing one to a cell
+         */
+        addBorder(sheetId, col, row, border) {
+            this.setBorder(sheetId, col, row, {
+                ...this.getCellBorder(sheetId, col, row),
+                ...border,
+            });
+        }
+        /**
+         * Set the borders of a zone by computing the borders to add from the given
+         * command
+         */
+        setBorders(sheet, zones, command) {
+            const sheetId = sheet.id;
+            if (command === "clear") {
+                return this.clearBorders(sheetId, zones);
+            }
+            for (let zone of zones) {
+                if (command === "h" || command === "hv" || command === "all") {
+                    for (let row = zone.top + 1; row <= zone.bottom; row++) {
+                        for (let col = zone.left; col <= zone.right; col++) {
+                            this.addBorder(sheetId, col, row, { top: DEFAULT_BORDER_DESC });
+                        }
+                    }
+                }
+                if (command === "v" || command === "hv" || command === "all") {
+                    for (let row = zone.top; row <= zone.bottom; row++) {
+                        for (let col = zone.left + 1; col <= zone.right; col++) {
+                            this.addBorder(sheetId, col, row, { left: DEFAULT_BORDER_DESC });
+                        }
+                    }
+                }
+                if (command === "left" || command === "all" || command === "external") {
+                    for (let row = zone.top; row <= zone.bottom; row++) {
+                        this.addBorder(sheetId, zone.left, row, { left: DEFAULT_BORDER_DESC });
+                    }
+                }
+                if (command === "right" || command === "all" || command === "external") {
+                    for (let row = zone.top; row <= zone.bottom; row++) {
+                        this.addBorder(sheetId, zone.right + 1, row, { left: DEFAULT_BORDER_DESC });
+                    }
+                }
+                if (command === "top" || command === "all" || command === "external") {
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        this.addBorder(sheetId, col, zone.top, { top: DEFAULT_BORDER_DESC });
+                    }
+                }
+                if (command === "bottom" || command === "all" || command === "external") {
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        this.addBorder(sheetId, col, zone.bottom + 1, { top: DEFAULT_BORDER_DESC });
+                    }
+                }
+            }
+        }
+        /**
+         * Compute the borders to add to the given zone merged.
+         */
+        addBordersToMerge(sheetId, zone) {
+            const sheet = this.getters.getSheet(sheetId);
+            const { left, right, top, bottom } = zone;
+            const bordersTopLeft = this.getCellBorder(sheet.id, left, top);
+            const bordersBottomRight = this.getCellBorder(sheet.id, right, bottom);
+            this.clearBorders(sheetId, [zone]);
+            if (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.top) {
+                this.setBorders(sheet, [{ ...zone, bottom: top }], "top");
+            }
+            if (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.left) {
+                this.setBorders(sheet, [{ ...zone, right: left }], "left");
+            }
+            if ((bordersBottomRight === null || bordersBottomRight === void 0 ? void 0 : bordersBottomRight.bottom) || (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.bottom)) {
+                this.setBorders(sheet, [{ ...zone, top: bottom }], "bottom");
+            }
+            if ((bordersBottomRight === null || bordersBottomRight === void 0 ? void 0 : bordersBottomRight.right) || (bordersTopLeft === null || bordersTopLeft === void 0 ? void 0 : bordersTopLeft.right)) {
+                this.setBorders(sheet, [{ ...zone, left: right }], "right");
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Import/Export
+        // ---------------------------------------------------------------------------
+        import(data) {
+            // Borders
+            if (data.borders) {
+                for (let sheet of data.sheets) {
+                    for (let [xc, cell] of Object.entries(sheet.cells)) {
+                        if (cell === null || cell === void 0 ? void 0 : cell.border) {
+                            const border = data.borders[cell.border];
+                            const [col, row] = toCartesian(xc);
+                            this.setBorder(sheet.id, col, row, border);
+                        }
+                    }
+                }
+            }
+            // Merges
+            for (let sheetData of data.sheets) {
+                if (sheetData.merges) {
+                    for (let merge of sheetData.merges) {
+                        this.addBordersToMerge(sheetData.id, toZone(merge));
+                    }
+                }
+            }
+        }
+        export(data) {
+            // Borders
+            let borderId = 0;
+            const borders = {};
+            /**
+             * Get the id of the given border. If the border does not exist, it creates
+             * one.
+             */
+            function getBorderId(border) {
+                for (let [key, value] of Object.entries(borders)) {
+                    if (stringify(value) === stringify(border)) {
+                        return parseInt(key, 10);
+                    }
+                }
+                borders[++borderId] = border;
+                return borderId;
+            }
+            for (let sheet of data.sheets) {
+                for (let col = 0; col < sheet.colNumber; col++) {
+                    for (let row = 0; row < sheet.rowNumber; row++) {
+                        const border = this.getCellBorder(sheet.id, col, row);
+                        if (border) {
+                            const xc = toXC(col, row);
+                            const cell = sheet.cells[xc];
+                            const borderId = getBorderId(border);
+                            if (cell) {
+                                cell.border = borderId;
+                            }
+                            else {
+                                sheet.cells[xc] = { border: borderId };
+                            }
+                        }
+                    }
+                }
+            }
+            data.borders = borders;
+        }
+        exportForExcel(data) {
+            this.export(data);
+        }
+    }
+    BordersPlugin.getters = ["getCellBorder"];
+
     const nbspRegexp = new RegExp(String.fromCharCode(160), "g");
     /**
      * Core Plugin
@@ -8265,12 +8740,12 @@
         constructor() {
             super(...arguments);
             this.cells = {};
-            this.NULL_FORMAT = "";
+            this.createCell = cellFactory(this.getters);
         }
         adaptRanges(applyChange, sheetId) {
             for (const sheet of Object.keys(this.cells)) {
                 for (const cell of Object.values(this.cells[sheet] || {})) {
-                    if (cell.type === CellType.formula) {
+                    if (isFormula(cell)) {
                         for (const range of cell.dependencies) {
                             if (!sheetId || range.sheetId === sheetId) {
                                 const change = applyChange(range);
@@ -8383,12 +8858,10 @@
                 for (let row = zone.top; row <= zone.bottom; row++) {
                     for (let col = zone.left; col <= zone.right; col++) {
                         const cell = this.getters.getCell(sheetId, col, row);
-                        if (cell &&
-                            (cell.type === CellType.number ||
-                                (cell.type === CellType.formula && typeof cell.value === "number")) &&
+                        if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number &&
                             !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) // reject dates
                         ) {
-                            return cell.format || this.setDefaultNumberFormat(cell.value);
+                            return cell.format || this.setDefaultNumberFormat(cell.evaluated.value);
                         }
                     }
                 }
@@ -8532,20 +9005,23 @@
         // Import/Export
         // ---------------------------------------------------------------------------
         import(data) {
-            // Styles
             for (let sheet of data.sheets) {
                 const imported_sheet = this.getters.getSheet(sheet.id);
                 // cells
                 for (let xc in sheet.cells) {
-                    const cell = sheet.cells[xc];
+                    const cellData = sheet.cells[xc];
                     const [col, row] = toCartesian(xc);
-                    const style = (cell && cell.style && data.styles[cell.style]) || undefined;
-                    this.updateCell(imported_sheet, col, row, {
-                        content: cell === null || cell === void 0 ? void 0 : cell.content,
-                        formula: cell === null || cell === void 0 ? void 0 : cell.formula,
-                        format: cell === null || cell === void 0 ? void 0 : cell.format,
-                        style,
-                    });
+                    if ((cellData === null || cellData === void 0 ? void 0 : cellData.formula) || (cellData === null || cellData === void 0 ? void 0 : cellData.content) || (cellData === null || cellData === void 0 ? void 0 : cellData.format) || (cellData === null || cellData === void 0 ? void 0 : cellData.style)) {
+                        const cell = this.importCell(imported_sheet, cellData, data.styles);
+                        this.history.update("cells", sheet.id, cell.id, cell);
+                        this.dispatch("UPDATE_CELL_POSITION", {
+                            cell,
+                            cellId: cell.id,
+                            col,
+                            row,
+                            sheetId: sheet.id,
+                        });
+                    }
                 }
             }
         }
@@ -8575,24 +9051,33 @@
                         style: cell.style && getStyleId(cell.style),
                         format: cell.format,
                     };
-                    switch (cell.type) {
-                        case CellType.formula:
-                            cells[xc].formula = {
-                                text: cell.formula.text || "",
-                                dependencies: ((_a = cell.dependencies) === null || _a === void 0 ? void 0 : _a.map((d) => this.getters.getRangeString(d, _sheet.id))) || [],
-                                value: cell.value,
-                            };
-                            break;
-                        case CellType.number:
-                        case CellType.text:
-                        case CellType.invalidFormula:
-                            cells[xc].content = cell.content;
-                            break;
+                    if (isFormula(cell)) {
+                        cells[xc].formula = {
+                            text: cell.normalizedText || "",
+                            dependencies: ((_a = cell.dependencies) === null || _a === void 0 ? void 0 : _a.map((d) => this.getters.getRangeString(d, _sheet.id))) || [],
+                            value: cell.evaluated.value,
+                        };
+                    }
+                    else {
+                        cells[xc].content = cell.content;
                     }
                 }
                 _sheet.cells = cells;
             }
             data.styles = styles;
+        }
+        importCell(sheet, cellData, normalizedStyles) {
+            const style = (cellData.style && normalizedStyles[cellData.style]) || undefined;
+            // For perf reasons, formula are already normalized at export/import
+            const cellId = this.uuidGenerator.uuidv4();
+            if (cellData.formula) {
+                const ranges = cellData.formula.dependencies.map((xc) => this.getters.getRangeFromSheetXC(sheet.id, xc));
+                return new FormulaCell((normalizedText, dependencies) => this.getters.buildFormulaContent(sheet.id, normalizedText, dependencies), cellId, cellData.formula.text, compile(cellData.formula), ranges, { format: cellData === null || cellData === void 0 ? void 0 : cellData.format, style });
+            }
+            else {
+                const properties = { format: cellData === null || cellData === void 0 ? void 0 : cellData.format, style };
+                return this.createCell(cellId, (cellData === null || cellData === void 0 ? void 0 : cellData.content) || "", properties, sheet.id);
+            }
         }
         exportForExcel(data) {
             this.export(data);
@@ -8631,66 +9116,7 @@
             return newContent;
         }
         getFormulaCellContent(sheetId, cell) {
-            return this.buildFormulaContent(sheetId, cell.formula.text, cell.dependencies);
-        }
-        getCellValue(cell, sheetId, showFormula = false) {
-            let value;
-            if (showFormula) {
-                if (cell.type === CellType.formula) {
-                    value = this.getters.getFormulaCellContent(sheetId, cell);
-                }
-                else {
-                    value = cell.type === CellType.invalidFormula ? cell.content : cell.value;
-                }
-            }
-            else {
-                value = cell.value;
-            }
-            switch (typeof value) {
-                case "string":
-                    return value;
-                case "boolean":
-                    return value ? "TRUE" : "FALSE";
-                case "number":
-                    return formatStandardNumber(value);
-                case "object":
-                    return "0";
-            }
-            return (value && value.toString()) || "";
-        }
-        getCellText(cell, sheetId, showFormula = false) {
-            let value;
-            if (showFormula) {
-                if (cell.type === CellType.formula) {
-                    value = this.getters.getFormulaCellContent(sheetId, cell);
-                }
-                else {
-                    value = cell.type === CellType.invalidFormula ? cell.content : cell.value;
-                }
-            }
-            else {
-                value = cell.value;
-            }
-            switch (typeof value) {
-                case "string":
-                    return value;
-                case "boolean":
-                    return value ? "TRUE" : "FALSE";
-                case "number":
-                    const shouldFormat = (value || value === 0) && cell.format && !cell.error;
-                    const dateTimeFormat = shouldFormat && cell.format.match(DATETIME_FORMAT);
-                    if (dateTimeFormat) {
-                        return formatDateTime({ value, format: cell.format });
-                    }
-                    const numberFormat = shouldFormat && !dateTimeFormat;
-                    if (numberFormat) {
-                        return formatNumber(value, cell.format);
-                    }
-                    return formatStandardNumber(value);
-                case "object":
-                    return "0";
-            }
-            return (value && value.toString()) || "";
+            return this.buildFormulaContent(sheetId, cell.normalizedText, cell.dependencies);
         }
         getCellStyle(cell) {
             return cell.style || {};
@@ -8711,10 +9137,10 @@
          * if A1:B2 and A4:B5 are merges:
          * {top:1,left:0,right:1,bottom:3} ==> A1:A5
          */
-        zoneToXC(sheetId, zone) {
+        zoneToXC(sheetId, zone, fixedParts = [{ colFixed: false, rowFixed: false }]) {
             zone = this.getters.expandZone(sheetId, zone);
-            const topLeft = toXC(zone.left, zone.top);
-            const botRight = toXC(zone.right, zone.bottom);
+            const topLeft = toXC(zone.left, zone.top, fixedParts[0]);
+            const botRight = toXC(zone.right, zone.bottom, fixedParts.length > 1 ? fixedParts[1] : fixedParts[0]);
             const cellTopLeft = this.getters.getMainCell(sheetId, zone.left, zone.top);
             const cellBotRight = this.getters.getMainCell(sheetId, zone.right, zone.bottom);
             const sameCell = cellTopLeft[0] == cellBotRight[0] && cellTopLeft[1] == cellBotRight[1];
@@ -8786,8 +9212,14 @@
             const hasContent = "content" in after || "formula" in after;
             // Compute the new cell properties
             const afterContent = after.content ? after.content.replace(nbspRegexp, "") : "";
-            const style = after.style !== undefined ? after.style : (before && before.style) || 0;
-            let format = "format" in after ? after.format : (before && before.format) || "";
+            let style;
+            if (after.style !== undefined) {
+                style = after.style || undefined;
+            }
+            else {
+                style = before ? before.style : undefined;
+            }
+            let format = ("format" in after ? after.format : before && before.format) || NULL_FORMAT;
             /* Read the following IF as:
              * we need to remove the cell if it is completely empty, but we can know if it completely empty if:
              * - the command says the new content is empty and has no border/format/style
@@ -8796,7 +9228,7 @@
              *     - or there was a cell at this place, but it's an empty cell and the command says border/format/style is empty
              *  */
             if (((hasContent && !afterContent && !after.formula) ||
-                (!hasContent && ((before === null || before === void 0 ? void 0 : before.type) === CellType.empty || !before))) &&
+                (!hasContent && (isEmpty(before) || !before))) &&
                 !style &&
                 !format) {
                 if (before) {
@@ -8811,140 +9243,18 @@
                 }
                 return;
             }
-            // compute the new cell value
+            const cellId = (before === null || before === void 0 ? void 0 : before.id) || this.uuidGenerator.uuidv4();
             const didContentChange = hasContent;
             let cell;
+            const properties = { format, style };
             if (before && !didContentChange) {
-                cell = Object.assign({}, before);
+                cell = before.withDisplayProperties(properties);
             }
             else {
-                // the current content cannot be reused, so we need to recompute the
-                // derived
-                const cellId = (before === null || before === void 0 ? void 0 : before.id) || this.uuidGenerator.uuidv4();
-                let formulaString = after.formula;
-                if (!formulaString && afterContent[0] === "=") {
-                    formulaString = normalize(afterContent || "");
-                }
-                if (formulaString) {
-                    try {
-                        const compiledFormula = compile(formulaString);
-                        let ranges = [];
-                        for (let xc of formulaString.dependencies) {
-                            // todo: remove the actual range from the cell and only keep the range Id
-                            ranges.push(this.getters.getRangeFromSheetXC(sheet.id, xc));
-                        }
-                        cell = {
-                            id: cellId,
-                            type: CellType.formula,
-                            formula: {
-                                compiledFormula: compiledFormula,
-                                text: formulaString.text,
-                            },
-                            dependencies: ranges,
-                        };
-                        if (!format && !after.formula) {
-                            format = this.computeFormulaFormat(cell);
-                        }
-                    }
-                    catch (e) {
-                        cell = {
-                            id: cellId,
-                            type: CellType.invalidFormula,
-                            content: afterContent,
-                            value: "#BAD_EXPR",
-                            error: e.message || DEFAULT_ERROR_MESSAGE,
-                        };
-                    }
-                }
-                else if (afterContent === "") {
-                    cell = {
-                        id: cellId,
-                        type: CellType.empty,
-                        value: "",
-                    };
-                }
-                else if (isNumber(afterContent)) {
-                    cell = {
-                        id: cellId,
-                        type: CellType.number,
-                        content: afterContent,
-                        value: parseNumber(afterContent),
-                    };
-                    if (!format && afterContent.includes("%")) {
-                        format = afterContent.includes(".") ? "0.00%" : "0%";
-                    }
-                }
-                else {
-                    const internaldate = parseDateTime(afterContent);
-                    if (internaldate !== null) {
-                        cell = {
-                            id: cellId,
-                            type: CellType.number,
-                            content: internaldate.value.toString(),
-                            value: internaldate.value,
-                        };
-                        if (!format) {
-                            format = internaldate.format;
-                        }
-                    }
-                    else {
-                        const contentUpperCase = afterContent.toUpperCase();
-                        cell = {
-                            id: cellId,
-                            type: CellType.text,
-                            content: afterContent,
-                            value: contentUpperCase === "TRUE"
-                                ? true
-                                : contentUpperCase === "FALSE"
-                                    ? false
-                                    : afterContent,
-                        };
-                    }
-                }
-            }
-            if (style) {
-                cell.style = style;
-            }
-            else {
-                delete cell.style;
-            }
-            if (format) {
-                cell.format = format;
-            }
-            else {
-                delete cell.format;
+                cell = this.createCell(cellId, afterContent, properties, sheet.id);
             }
             this.history.update("cells", sheet.id, cell.id, cell);
             this.dispatch("UPDATE_CELL_POSITION", { cell, cellId: cell.id, col, row, sheetId: sheet.id });
-        }
-        computeFormulaFormat(cell) {
-            var _a;
-            const dependenciesFormat = cell.formula.compiledFormula.dependenciesFormat;
-            const dependencies = cell.dependencies;
-            for (let dependencyFormat of dependenciesFormat) {
-                switch (typeof dependencyFormat) {
-                    case "string":
-                        // dependencyFormat corresponds to a literal format which can be applied
-                        // directly.
-                        return dependencyFormat;
-                    case "number":
-                        // dependencyFormat corresponds to a dependency cell from which we must
-                        // find the cell and extract the associated format
-                        const ref = dependencies[dependencyFormat];
-                        const sheets = this.getters.getEvaluationSheets();
-                        const s = sheets[ref.sheetId];
-                        if (s) {
-                            // if the reference is a range --> the first cell in the range
-                            // determines the format
-                            const cellRef = (_a = s.rows[ref.zone.top]) === null || _a === void 0 ? void 0 : _a.cells[ref.zone.left];
-                            if (cellRef && cellRef.format) {
-                                return cellRef.format;
-                            }
-                        }
-                        break;
-                }
-            }
-            return this.NULL_FORMAT;
         }
         checkCellOutOfSheet(sheetId, col, row) {
             const sheet = this.getters.tryGetSheet(sheetId);
@@ -8963,8 +9273,6 @@
         "zoneToXC",
         "getCells",
         "getFormulaCellContent",
-        "getCellText",
-        "getCellValue",
         "getCellStyle",
         "buildFormulaContent",
         "getCellById",
@@ -9879,6 +10187,30 @@
             return false;
         }
         /**
+         * Returns true if two columns have at least one merge in common
+         */
+        doesColumnsHaveCommonMerges(sheetId, colA, colB) {
+            const sheet = this.getters.getSheet(sheetId);
+            for (let row = 0; row < sheet.rows.length; row++) {
+                if (this.isInSameMerge(sheet.id, colA, row, colB, row)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /**
+         * Returns true if two rows have at least one merge in common
+         */
+        doesRowsHaveCommonMerges(sheetId, rowA, rowB) {
+            const sheet = this.getters.getSheet(sheetId);
+            for (let col = 0; col <= sheet.cols.length; col++) {
+                if (this.isInSameMerge(sheet.id, col, rowA, col, rowB)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /**
          * Add all necessary merge to the current selection to make it valid
          */
         expandZone(sheetId, zone) {
@@ -9909,6 +10241,13 @@
             }
             const mergeTopLeftPos = this.getMerge(sheetId, col, row).topLeft;
             return [mergeTopLeftPos.col, mergeTopLeftPos.row];
+        }
+        getBottomLeftCell(sheetId, col, row) {
+            if (!this.isInMerge(sheetId, col, row)) {
+                return [col, row];
+            }
+            const { bottom, left } = this.getMerge(sheetId, col, row);
+            return [left, bottom];
         }
         isMergeHidden(sheetId, merge) {
             const hiddenColsGroups = this.getters.getHiddenColsGroups(sheetId);
@@ -9953,7 +10292,7 @@
                 for (let col = left; col <= right; col++) {
                     if (col !== left || row !== top) {
                         const cell = actualRow.cells[col];
-                        if (cell && cell.type !== CellType.empty) {
+                        if (cell && !isEmpty(cell)) {
                             return true;
                         }
                     }
@@ -10137,8 +10476,11 @@
         "isInSameMerge",
         "isMergeHidden",
         "getMainCell",
+        "getBottomLeftCell",
         "expandZone",
         "doesIntersectMerge",
+        "doesColumnsHaveCommonMerges",
+        "doesRowsHaveCommonMerges",
         "getMerges",
         "getMerge",
         "isSingleCellOrMerge",
@@ -10347,6 +10689,13 @@
         getSheetName(sheetId) {
             return this.getSheet(sheetId).name;
         }
+        /**
+         * Return the sheet name or undefined if the sheet doesn't exist.
+         */
+        tryGetSheetName(sheetId) {
+            var _a;
+            return (_a = this.tryGetSheet(sheetId)) === null || _a === void 0 ? void 0 : _a.name;
+        }
         getSheetIdByName(name) {
             return name && this.sheetIds[getUnquotedSheetName(name)];
         }
@@ -10428,7 +10777,7 @@
             const sheet = this.getSheet(sheetId);
             return mapCellsInZone(zone, sheet, (cell) => cell, undefined)
                 .flat()
-                .every((cell) => !cell || cell.type === CellType.empty);
+                .every(isEmpty);
         }
         setHeaderSize(sheet, dimension, index, size) {
             let start, end;
@@ -10574,7 +10923,7 @@
                     sheetId: newSheet.id,
                     col,
                     row,
-                    content: this.getters.getCellText(cell, fromId, true),
+                    content: cell.content,
                     format: cell.format,
                     style: cell.style,
                 });
@@ -10992,6 +11341,7 @@
     }
     SheetPlugin.getters = [
         "getSheetName",
+        "tryGetSheetName",
         "getSheet",
         "tryGetSheet",
         "getSheetIdByName",
@@ -11021,8 +11371,10 @@
     autofillModifiersRegistry
         .add("INCREMENT_MODIFIER", {
         apply: (rule, data) => {
+            var _a;
             rule.current += rule.increment;
             const content = rule.current.toString();
+            const tooltipValue = formatValue(rule.current, (_a = data.cell) === null || _a === void 0 ? void 0 : _a.format);
             return {
                 cellData: {
                     border: data.border,
@@ -11030,13 +11382,14 @@
                     format: data.cell && data.cell.format,
                     content,
                 },
-                tooltip: content ? { props: { content } } : undefined,
+                tooltip: content ? { props: { content: tooltipValue } } : undefined,
             };
         },
     })
         .add("COPY_MODIFIER", {
         apply: (rule, data, getters) => {
-            const content = (data.cell && getters.getCellText(data.cell, data.sheetId)) || "";
+            var _a, _b;
+            const content = ((_a = data.cell) === null || _a === void 0 ? void 0 : _a.content) || "";
             return {
                 cellData: {
                     border: data.border,
@@ -11044,7 +11397,7 @@
                     format: data.cell && data.cell.format,
                     content,
                 },
-                tooltip: content ? { props: { content: content } } : undefined,
+                tooltip: content ? { props: { content: (_b = data.cell) === null || _b === void 0 ? void 0 : _b.formattedValue } } : undefined,
             };
         },
     })
@@ -11071,12 +11424,12 @@
                     y = 0;
                     break;
             }
-            if (!data.cell || data.cell.type !== CellType.formula) {
+            if (!data.cell || !isFormula(data.cell)) {
                 return { cellData: {} };
             }
             const sheetId = data.sheetId;
             const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
-            const content = getters.buildFormulaContent(sheetId, data.cell.formula.text, ranges);
+            const content = getters.buildFormulaContent(sheetId, data.cell.normalizedText, ranges);
             return {
                 cellData: {
                     border: data.border,
@@ -11101,10 +11454,8 @@
             if (x === cell) {
                 found = true;
             }
-            if (x && x.type === CellType.number) {
-                if (typeof x.value === "number") {
-                    group.push(x.value);
-                }
+            if ((x === null || x === void 0 ? void 0 : x.evaluated.type) === CellValueType.number) {
+                group.push(x.evaluated.value);
             }
             else {
                 if (found) {
@@ -11132,9 +11483,7 @@
         .add("simple_value_copy", {
         condition: (cell, cells) => {
             var _a;
-            return (cells.length === 1 &&
-                [CellType.text, CellType.number].includes(cell.type) &&
-                !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)));
+            return cells.length === 1 && !isFormula(cell) && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
         },
         generateRule: () => {
             return { type: "COPY_MODIFIER" };
@@ -11142,21 +11491,21 @@
         sequence: 10,
     })
         .add("copy_text", {
-        condition: (cell) => cell.type === CellType.text,
+        condition: (cell) => !isFormula(cell) && cell.evaluated.type === CellValueType.text,
         generateRule: () => {
             return { type: "COPY_MODIFIER" };
         },
         sequence: 20,
     })
         .add("update_formula", {
-        condition: (cell) => cell.type === CellType.formula,
+        condition: isFormula,
         generateRule: (_, cells) => {
             return { type: "FORMULA_MODIFIER", increment: cells.length, current: 0 };
         },
         sequence: 30,
     })
         .add("increment_number", {
-        condition: (cell) => cell.type === CellType.number,
+        condition: (cell) => cell.evaluated.type === CellValueType.number,
         generateRule: (cell, cells) => {
             const group = getGroup(cell, cells);
             let increment = 1;
@@ -11169,7 +11518,7 @@
             return {
                 type: "INCREMENT_MODIFIER",
                 increment,
-                current: typeof cell.value === "number" ? cell.value : 0,
+                current: cell.evaluated.type === CellValueType.number ? cell.evaluated.value : 0,
             };
         },
         sequence: 40,
@@ -11826,7 +12175,7 @@
         let dataSetsHaveTitle = false;
         for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
             const cell = env.getters.getCell(sheetId, x, zone.top);
-            if (cell && typeof cell.value !== "number") {
+            if (cell && cell.evaluated.type !== CellValueType.number) {
                 dataSetsHaveTitle = true;
             }
         }
@@ -11871,6 +12220,9 @@
     };
     const OPEN_FAR_SIDEPANEL_ACTION = (env) => {
         env.openSidePanel("FindAndReplace", {});
+    };
+    const INSERT_LINK = (env) => {
+        env.openLinkEditor();
     };
     //------------------------------------------------------------------------------
     // Sorting action
@@ -11999,6 +12351,7 @@
         .add("delete_cell", {
         name: _lt("Delete cells"),
         sequence: 130,
+        separator: true,
         isVisible: IS_ONLY_ONE_RANGE,
     })
         .addChild("delete_cell_up", ["delete_cell"], {
@@ -12010,6 +12363,12 @@
         name: _lt("Shift left"),
         sequence: 20,
         action: DELETE_CELL_SHIFT_LEFT,
+    })
+        .add("insert_link", {
+        name: _lt("Insert link"),
+        separator: true,
+        sequence: 135,
+        action: INSERT_LINK,
     })
         .add("clear_cell", {
         name: _lt("Clear cells"),
@@ -12126,6 +12485,27 @@
         name: _lt("Conditional formatting"),
         sequence: 110,
         action: OPEN_CF_SIDEPANEL_ACTION,
+    });
+
+    //------------------------------------------------------------------------------
+    // Link Menu Registry
+    //------------------------------------------------------------------------------
+    const linkMenuRegistry = new MenuItemRegistry();
+    linkMenuRegistry.add("sheet", {
+        name: _lt("Link sheet"),
+        sequence: 10,
+        children: (env) => {
+            const sheets = env.getters.getSheets();
+            return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
+                name: sheet.name,
+                sequence: i,
+                action: () => ({
+                    link: { label: sheet.name, url: buildSheetLink(sheet.id) },
+                    urlRepresentation: sheet.name,
+                    isUrlEditable: false,
+                }),
+            }));
+        },
     });
 
     const rowMenuRegistry = new MenuItemRegistry();
@@ -12426,11 +12806,16 @@
         name: _lt("Chart"),
         sequence: 50,
         action: CREATE_CHART,
+    })
+        .addChild("insert_link", ["insert"], {
+        name: _lt("Link"),
         separator: true,
+        sequence: 60,
+        action: INSERT_LINK,
     })
         .addChild("insert_sheet", ["insert"], {
         name: _lt("New sheet"),
-        sequence: 60,
+        sequence: 70,
         action: CREATE_SHEET_ACTION,
         separator: true,
     })
@@ -12560,8 +12945,8 @@
     }
     const otRegistry = new OTRegistry();
 
-    const { Component: Component$n } = owl__namespace;
-    const { css: css$p, xml: xml$q } = owl__namespace.tags;
+    const { Component: Component$r } = owl__namespace;
+    const { css: css$s, xml: xml$u } = owl__namespace.tags;
     const COLORS = [
         [
             "#000000",
@@ -12660,7 +13045,7 @@
             "#4c1130",
         ],
     ];
-    class ColorPicker extends Component$n {
+    class ColorPicker extends Component$r {
         constructor() {
             super(...arguments);
             this.COLORS = COLORS;
@@ -12675,7 +13060,7 @@
             }
         }
     }
-    ColorPicker.template = xml$q /* xml */ `
+    ColorPicker.template = xml$u /* xml */ `
   <div class="o-color-picker" t-att-class="{
     'right': isDropdownRight(),
     'left': !isDropdownRight()
@@ -12686,7 +13071,7 @@
       </t>
     </div>
   </div>`;
-    ColorPicker.style = css$p /* scss */ `
+    ColorPicker.style = css$s /* scss */ `
     .o-color-picker {
       position: absolute;
       top: calc(100% + 5px);
@@ -12758,6 +13143,8 @@
     const BORDER_CLEAR = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z" transform="translate(2 2)" opacity=".54"/></svg>`;
     const PLUS = `<svg class="o-icon"><path fill="#000000" d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/></svg>`;
     const LIST = `<svg class="o-icon" viewBox="0 0 384 384"><rect x="0" y="277.333" width="384" height="42.667"/><rect x="0" y="170.667" width="384" height="42.667"/><rect x="0" y="64" width="384" height="42.667"/></svg>`;
+    const EDIT = `<svg class="o-icon" viewBox="0 0 576 512"><path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path></svg>`;
+    const UNLINK = `<svg class="o-icon" viewBox="0 0 512 512"><path fill="currentColor" d="M304.083 405.907c4.686 4.686 4.686 12.284 0 16.971l-44.674 44.674c-59.263 59.262-155.693 59.266-214.961 0-59.264-59.265-59.264-155.696 0-214.96l44.675-44.675c4.686-4.686 12.284-4.686 16.971 0l39.598 39.598c4.686 4.686 4.686 12.284 0 16.971l-44.675 44.674c-28.072 28.073-28.072 73.75 0 101.823 28.072 28.072 73.75 28.073 101.824 0l44.674-44.674c4.686-4.686 12.284-4.686 16.971 0l39.597 39.598zm-56.568-260.216c4.686 4.686 12.284 4.686 16.971 0l44.674-44.674c28.072-28.075 73.75-28.073 101.824 0 28.072 28.073 28.072 73.75 0 101.823l-44.675 44.674c-4.686 4.686-4.686 12.284 0 16.971l39.598 39.598c4.686 4.686 12.284 4.686 16.971 0l44.675-44.675c59.265-59.265 59.265-155.695 0-214.96-59.266-59.264-155.695-59.264-214.961 0l-44.674 44.674c-4.686 4.686-4.686 12.284 0 16.971l39.597 39.598zm234.828 359.28l22.627-22.627c9.373-9.373 9.373-24.569 0-33.941L63.598 7.029c-9.373-9.373-24.569-9.373-33.941 0L7.029 29.657c-9.373 9.373-9.373 24.569 0 33.941l441.373 441.373c9.373 9.372 24.569 9.372 33.941 0z"></path></svg>`;
     /** Font Awesome by Dave Gandy
      *  http://fontawesome.io/
      *  https://fontawesome.com/license
@@ -12834,10 +13221,10 @@
         },
     };
 
-    const { Component: Component$m, useState: useState$j } = owl__namespace;
-    const { xml: xml$p, css: css$o } = owl__namespace.tags;
+    const { Component: Component$q, useState: useState$l } = owl__namespace;
+    const { xml: xml$t, css: css$r } = owl__namespace.tags;
     const uuidGenerator = new UuidGenerator();
-    const TEMPLATE$m = xml$p /* xml */ `
+    const TEMPLATE$q = xml$t /* xml */ `
   <div class="o-selection">
     <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input">
       <input
@@ -12874,7 +13261,7 @@
     </div>
 
   </div>`;
-    const CSS$k = css$o /* scss */ `
+    const CSS$n = css$r /* scss */ `
   .o-selection {
     .o-selection-input {
       display: flex;
@@ -12928,7 +13315,7 @@
      * A `selection-changed` event is triggered every time the input value
      * changes.
      */
-    class SelectionInput extends Component$m {
+    class SelectionInput extends Component$q {
         constructor() {
             super(...arguments);
             this.id = uuidGenerator.uuidv4();
@@ -12936,7 +13323,7 @@
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.originSheet = this.env.getters.getActiveSheetId();
-            this.state = useState$j({
+            this.state = useState$l({
                 isMissing: false,
             });
         }
@@ -13034,8 +13421,8 @@
             this.trigger("selection-confirmed");
         }
     }
-    SelectionInput.template = TEMPLATE$m;
-    SelectionInput.style = CSS$k;
+    SelectionInput.template = TEMPLATE$q;
+    SelectionInput.style = CSS$n;
 
     const conditionalFormattingTerms = {
         CF_TITLE: _lt("Format rules"),
@@ -13157,104 +13544,119 @@
         ReplaceAll: _lt("Replace all"),
         ReplaceFormulas: _lt("Also modify formulas"),
     };
+    const LinkEditorTerms = {
+        Text: _lt("Text"),
+        Link: _lt("Link"),
+        Confirm: _lt("Confirm"),
+        Cancel: _lt("Cancel"),
+        Edit: _lt("Edit link"),
+        Remove: _lt("Remove link"),
+    };
     const GenericWords = {
         And: _lt("and"),
     };
 
-    const { Component: Component$l, useState: useState$i } = owl__namespace;
-    const { xml: xml$o, css: css$n } = owl__namespace.tags;
-    const TEMPLATE$l = xml$o /* xml */ `
+    const { Component: Component$p, useState: useState$k } = owl__namespace;
+    const { xml: xml$s, css: css$q } = owl__namespace.tags;
+    const CONFIGURATION_TEMPLATE = xml$s /* xml */ `
+<div>
+  <div class="o-section">
+    <div class="o-section-title" t-esc="env._t('${chartTerms.ChartType}')"/>
+    <select t-model="state.type" class="o-input o-type-selector" t-on-change="updateSelect('type')">
+      <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
+      <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
+      <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
+    </select>
+    <t t-if="state.type === 'bar'">
+      <div class="o_checkbox">
+        <input type="checkbox" name="stackedBar" t-model="state.stackedBar" t-on-change="updateStacked"/>
+        <t t-esc="env._t('${chartTerms.StackedBar}')"/>
+      </div>
+    </t>
+  </div>
+  <div class="o-section o-data-series">
+    <div class="o-section-title" t-esc="env._t('${chartTerms.DataSeries}')"/>
+    <SelectionInput t-key="getKey('dataSets')"
+                    ranges="state.dataSets"
+                    isInvalid="isDatasetInvalid"
+                    required="true"
+                    t-on-selection-changed="onSeriesChanged"
+                    t-on-selection-confirmed="updateDataSet" />
+    <input type="checkbox" t-model="state.dataSetsHaveTitle" t-on-change="updateDataSet"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
+  </div>
+  <div class="o-section o-data-labels">
+    <div class="o-section-title" t-esc="env._t('${chartTerms.DataCategories}')"/>
+    <SelectionInput t-key="getKey('label')"
+                    ranges="[state.labelRange || '']"
+                    isInvalid="isLabelInvalid"
+                    maximumRanges="1"
+                    t-on-selection-changed="onLabelRangeChanged"
+                    t-on-selection-confirmed="updateLabelRange" />
+  </div>
+  <div class="o-section o-sidepanel-error" t-if="errorMessages">
+    <div t-foreach="errorMessages" t-as="error">
+      <t t-esc="error"/>
+    </div>
+  </div>
+</div>
+`;
+    const DESIGN_TEMPLATE = xml$s /* xml */ `
+<div>
+  <div class="o-section o-chart-title">
+    <div class="o-section-title" t-esc="env._t('${chartTerms.BackgroundColor}')"/>
+    <div class="o-with-color-picker">
+      <t t-esc="env._t('${chartTerms.SelectColor}')"/>
+      <span t-attf-style="border-color:{{state.background}}"
+            t-on-click.stop="toggleColorPicker">${FILL_COLOR_ICON}</span>
+      <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor" t-key="backgroundColor"/>
+    </div>
+  </div>
+  <div class="o-section o-chart-title">
+    <div class="o-section-title" t-esc="env._t('${chartTerms.Title}')"/>
+    <input type="text" t-model="state.title" t-on-change="updateTitle" class="o-input" t-att-placeholder="env._t('${chartTerms.TitlePlaceholder}')"/>
+  </div>
+  <div class="o-section">
+    <div class="o-section-title"><t t-esc="env._t('${chartTerms.VerticalAxisPosition}')"/></div>
+    <select t-model="state.verticalAxisPosition" class="o-input o-type-selector" t-on-change="updateSelect('verticalAxisPosition')">
+      <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
+      <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
+    </select>
+  </div>
+  <div class="o-section">
+    <div class="o-section-title"><t t-esc="env._t('${chartTerms.LegendPosition}')"/></div>
+    <select t-model="state.legendPosition" class="o-input o-type-selector" t-on-change="updateSelect('legendPosition')">
+      <option value="top" t-esc="env._t('${chartTerms.Top}')"/>
+      <option value="bottom" t-esc="env._t('${chartTerms.Bottom}')"/>
+      <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
+      <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
+    </select>
+  </div>
+</div>
+`;
+    const TEMPLATE$p = xml$s /* xml */ `
   <div class="o-chart">
     <div class="o-panel">
       <div class="o-panel-element"
-           t-att-class="state.panel !== 'configuration' ? 'inactive' : ''"
-           t-on-click="activate('configuration')">
-           <i class="fa fa-sliders"/>Configuration</div>
+          t-att-class="state.panel !== 'configuration' ? 'inactive' : ''"
+          t-on-click="activate('configuration')">
+        <i class="fa fa-sliders"/>Configuration
+      </div>
       <div class="o-panel-element"
-           t-att-class="state.panel !== 'design' ? 'inactive' : ''"
-           t-on-click="activate('design')">
-           <i class="fa fa-paint-brush"/>Design</div>
+          t-att-class="state.panel !== 'design' ? 'inactive' : ''"
+          t-on-click="activate('design')">
+        <i class="fa fa-paint-brush"/>Design
+      </div>
     </div>
 
     <t t-if="state.panel === 'configuration'">
-      <div class="o-section">
-        <div class="o-section-title"><t t-esc="env._t('${chartTerms.ChartType}')"/></div>
-        <select t-model="state.type" class="o-input o-type-selector" t-on-change="updateSelect('type')">
-          <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
-          <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
-          <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
-        </select>
-        <t t-if="state.type === 'bar'">
-          <div class="o_checkbox">
-            <input type="checkbox" name="stackedBar" t-model="state.stackedBar" t-on-change="updateStacked"/>
-            <t t-esc="env._t('${chartTerms.StackedBar}')"/>
-          </div>
-        </t>
-      </div>
-      <div class="o-section o-data-series">
-        <div class="o-section-title" t-esc="env._t('${chartTerms.DataSeries}')"/>
-        <SelectionInput
-          t-key="getKey('dataSets')"
-          ranges="state.dataSets"
-          isInvalid="isDatasetInvalid"
-          required="true"
-          t-on-selection-changed="onSeriesChanged"
-          t-on-selection-confirmed="updateDataSet"
-        />
-        <input type="checkbox" t-model="state.dataSetsHaveTitle" t-on-change="updateDataSet"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
-      </div>
-      <div class="o-section o-data-labels">
-          <div class="o-section-title" t-esc="env._t('${chartTerms.DataCategories}')"/>
-          <SelectionInput
-            t-key="getKey('label')"
-            ranges="[state.labelRange || '']"
-            isInvalid="isLabelInvalid"
-            t-on-selection-changed="onLabelRangeChanged"
-            t-on-selection-confirmed="updateLabelRange"
-            maximumRanges="1"
-          />
-      </div>
-      <div class="o-section o-sidepanel-error" t-if="errorMessages">
-        <div t-foreach="errorMessages" t-as="error">
-          <t t-esc="error"/>
-        </div>
-      </div>
-      </t>
-      <t t-else="">
-        <div class="o-section o-chart-title">
-          <div class="o-section-title" t-esc="env._t('${chartTerms.BackgroundColor}')"/>
-          <div class="o-with-color-picker">
-            <t t-esc="env._t('${chartTerms.SelectColor}')"/>
-            <span t-att-title="env._t('blabla')"
-                  t-attf-style="border-color:{{state.background}}"
-                  t-on-click.stop="toggleColorPicker">${FILL_COLOR_ICON}</span>
-            <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor" t-key="backgroundColor"/>
-          </div>
-        </div>
-        <div class="o-section o-chart-title">
-          <div class="o-section-title" t-esc="env._t('${chartTerms.Title}')"/>
-          <input type="text" t-model="state.title" t-on-change="updateTitle" class="o-input" t-att-placeholder="env._t('${chartTerms.TitlePlaceholder}')"/>
-        </div>
-        <div class="o-section">
-          <div class="o-section-title"><t t-esc="env._t('${chartTerms.VerticalAxisPosition}')"/></div>
-          <select t-model="state.verticalAxisPosition" class="o-input o-type-selector" t-on-change="updateSelect('verticalAxisPosition')">
-            <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
-            <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
-          </select>
-        </div>
-        <div class="o-section">
-          <div class="o-section-title"><t t-esc="env._t('${chartTerms.LegendPosition}')"/></div>
-          <select t-model="state.legendPosition" class="o-input o-type-selector" t-on-change="updateSelect('legendPosition')">
-            <option value="top" t-esc="env._t('${chartTerms.Top}')"/>
-            <option value="bottom" t-esc="env._t('${chartTerms.Bottom}')"/>
-            <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
-            <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
-          </select>
-        </div>
-      </t>
+      <t t-call="${CONFIGURATION_TEMPLATE}"/>
+    </t>
+    <t t-else="">
+      <t t-call="${DESIGN_TEMPLATE}"/>
+    </t>
   </div>
 `;
-    const STYLE = css$n /* scss */ `
+    const STYLE = css$q /* scss */ `
   .o-chart {
     .o-panel {
       display: flex;
@@ -13277,10 +13679,6 @@
       }
     }
 
-    // .o_checkbox {
-    //   display: flex;
-    // }
-
     .o-with-color-picker {
       position: relative;
     }
@@ -13289,11 +13687,11 @@
     }
   }
 `;
-    class ChartPanel extends Component$l {
+    class ChartPanel extends Component$p {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$i(this.initialState(this.props.figure));
+            this.state = useState$k(this.initialState(this.props.figure));
         }
         async willUpdateProps(nextProps) {
             if (!this.getters.getChartDefinition(nextProps.figure.id)) {
@@ -13376,7 +13774,7 @@
             };
         }
     }
-    ChartPanel.template = TEMPLATE$l;
+    ChartPanel.template = TEMPLATE$p;
     ChartPanel.style = STYLE;
     ChartPanel.components = { SelectionInput, ColorPicker };
 
@@ -13394,10 +13792,10 @@
         return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
     }
 
-    const { Component: Component$k, useState: useState$h, hooks: hooks$3 } = owl__namespace;
-    const { useExternalListener: useExternalListener$6 } = hooks$3;
-    const { xml: xml$n, css: css$m } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$2 = xml$n /* xml */ `
+    const { Component: Component$o, useState: useState$j, hooks: hooks$4 } = owl__namespace;
+    const { useExternalListener: useExternalListener$6 } = hooks$4;
+    const { xml: xml$r, css: css$p } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$2 = xml$r /* xml */ `
     <div class="o-cf-preview-line"
          t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
                        text-decoration:{{getTextDecoration(currentStyle)}};
@@ -13407,7 +13805,7 @@
                        background-color:{{currentStyle.fillColor}};"
          t-esc="previewText || env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')" />
 `;
-    const TEMPLATE$k = xml$n /* xml */ `
+    const TEMPLATE$o = xml$r /* xml */ `
 <div>
     <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.IS_RULE}')"></div>
     <select t-model="state.condition.operator" class="o-input o-cell-is-operator">
@@ -13469,7 +13867,7 @@
     </div>
 </div>
 `;
-    const CSS$j = css$m /* scss */ `
+    const CSS$m = css$p /* scss */ `
   .o-cf-preview-line {
     border: 1px solid darkgrey;
     padding: 10px;
@@ -13493,14 +13891,14 @@
     }
   }
 `;
-    class CellIsRuleEditor extends Component$k {
+    class CellIsRuleEditor extends Component$o {
         constructor() {
             super(...arguments);
             // @ts-ignore used in XML template
             this.cellIsOperators = cellIsOperators;
             // @ts-ignore used in XML template
             this.getTextDecoration = getTextDecoration;
-            this.state = useState$h({
+            this.state = useState$j({
                 condition: {
                     operator: this.props.rule && this.props.rule.operator ? this.props.rule.operator : "IsNotEmpty",
                     value1: this.props.rule && this.props.rule.values.length > 0 ? this.props.rule.values[0] : "",
@@ -13585,22 +13983,22 @@
             };
         }
     }
-    CellIsRuleEditor.template = TEMPLATE$k;
-    CellIsRuleEditor.style = CSS$j;
+    CellIsRuleEditor.template = TEMPLATE$o;
+    CellIsRuleEditor.style = CSS$m;
     CellIsRuleEditor.components = { ColorPicker };
     CellIsRuleEditor.defaultProps = {
         errors: [],
     };
 
-    const { Component: Component$j, useState: useState$g, hooks: hooks$2 } = owl__namespace;
-    const { useExternalListener: useExternalListener$5 } = hooks$2;
-    const { xml: xml$m, css: css$l } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$1 = xml$m /* xml */ `
+    const { Component: Component$n, useState: useState$i, hooks: hooks$3 } = owl__namespace;
+    const { useExternalListener: useExternalListener$5 } = hooks$3;
+    const { xml: xml$q, css: css$o } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$1 = xml$q /* xml */ `
   <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
     <t t-esc="env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')"/>
   </div>
 `;
-    const THRESHOLD_TEMPLATE = xml$m /* xml */ `
+    const THRESHOLD_TEMPLATE = xml$q /* xml */ `
   <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
       <select class="o-input" name="valueType" t-model="threshold.type" t-on-click="closeMenus">
         <option value="value" t-if="thresholdType!=='midpoint'">
@@ -13638,7 +14036,7 @@
         </div>
       </div>
   </div>`;
-    const TEMPLATE$j = xml$m /* xml */ `
+    const TEMPLATE$n = xml$q /* xml */ `
   <div>
       <div class="o-cf-title-text">
         <t t-esc="env._t('${colorScale.Preview}')"/>
@@ -13666,7 +14064,7 @@
           <t t-set="thresholdType" t-value="'maximum'" ></t>
       </t>
   </div>`;
-    const CSS$i = css$l /* scss */ `
+    const CSS$l = css$o /* scss */ `
   .o-threshold {
     display: flex;
     flex-direction: horizontal;
@@ -13688,11 +14086,11 @@
     border-radius: 4px;
   }
 `;
-    class ColorScaleRuleEditor extends Component$j {
+    class ColorScaleRuleEditor extends Component$n {
         constructor() {
             super(...arguments);
             this.colorNumberString = colorNumberString;
-            this.stateColorScale = useState$g({
+            this.stateColorScale = useState$i({
                 minimum: this.props.rule.minimum,
                 maximum: this.props.rule.maximum,
                 midpoint: this.props.rule.midpoint
@@ -13769,16 +14167,16 @@
             };
         }
     }
-    ColorScaleRuleEditor.template = TEMPLATE$j;
-    ColorScaleRuleEditor.style = CSS$i;
+    ColorScaleRuleEditor.template = TEMPLATE$n;
+    ColorScaleRuleEditor.style = CSS$l;
     ColorScaleRuleEditor.components = { ColorPicker };
     ColorScaleRuleEditor.defaultProps = {
         errors: [],
     };
 
-    const { Component: Component$i } = owl__namespace;
-    const { css: css$k, xml: xml$l } = owl__namespace.tags;
-    class IconPicker extends Component$i {
+    const { Component: Component$m } = owl__namespace;
+    const { css: css$n, xml: xml$p } = owl__namespace.tags;
+    class IconPicker extends Component$m {
         constructor() {
             super(...arguments);
             this.icons = ICONS;
@@ -13790,7 +14188,7 @@
             }
         }
     }
-    IconPicker.template = xml$l /* xml */ `
+    IconPicker.template = xml$p /* xml */ `
   <div class="o-icon-picker" >
     <t t-foreach="iconSets" t-as="iconSet" t-key="iconset">
       <div class="o-cf-icon-line">
@@ -13806,7 +14204,7 @@
       </div>
     </t>
   </div>`;
-    IconPicker.style = css$k /* scss */ `
+    IconPicker.style = css$n /* scss */ `
     .o-icon-picker {
       position: absolute;
       z-index: 10;
@@ -13827,10 +14225,10 @@
     }
   `;
 
-    const { Component: Component$h, useState: useState$f, hooks: hooks$1 } = owl__namespace;
-    const { useExternalListener: useExternalListener$4 } = hooks$1;
-    const { xml: xml$k, css: css$j } = owl__namespace.tags;
-    const ICON_SETS_TEMPLATE = xml$k /* xml */ `
+    const { Component: Component$l, useState: useState$h, hooks: hooks$2 } = owl__namespace;
+    const { useExternalListener: useExternalListener$4 } = hooks$2;
+    const { xml: xml$o, css: css$m } = owl__namespace.tags;
+    const ICON_SETS_TEMPLATE = xml$o /* xml */ `
   <div>
   <div class="o-cf-title-text">
     <t t-esc="env._t('${iconSetRule.Icons}')"/>
@@ -13850,7 +14248,7 @@
     </div>
   </div>
 `;
-    const INFLECTION_POINTS_TEMPLATE_ROW = xml$k /* xml */ `
+    const INFLECTION_POINTS_TEMPLATE_ROW = xml$o /* xml */ `
   <tr>
     <td>
       <div t-on-click.stop="toggleMenu(icon+'IconTool')">
@@ -13897,7 +14295,7 @@
     </td>
   </tr>
 `;
-    const INFLECTION_POINTS_TEMPLATE = xml$k /* xml */ `
+    const INFLECTION_POINTS_TEMPLATE = xml$o /* xml */ `
   <div class="o-inflection">
     <table>
     <tr>
@@ -13939,7 +14337,7 @@
     </tr>
   </table>
   </div>`;
-    const TEMPLATE$i = xml$k /* xml */ `
+    const TEMPLATE$m = xml$o /* xml */ `
   <div class="o-cf-iconset-rule">
       <t t-call="${ICON_SETS_TEMPLATE}"/>
       <t t-call="${INFLECTION_POINTS_TEMPLATE}"/>
@@ -13950,7 +14348,7 @@
         <t t-esc="env._t('${iconSetRule.ReverseIcons}')"/>
       </div>
   </div>`;
-    const CSS$h = css$j /* scss */ `
+    const CSS$k = css$m /* scss */ `
   .o-cf-iconset-rule {
     font-size: 12;
     .o-cf-iconsets {
@@ -14030,13 +14428,13 @@
     }
   }
 `;
-    class IconSetRuleEditor extends Component$h {
+    class IconSetRuleEditor extends Component$l {
         constructor() {
             super(...arguments);
             this.icons = ICONS;
             this.iconSets = ICON_SETS;
             this.reverseIcon = REFRESH;
-            this.stateIconSetCF = useState$f({
+            this.stateIconSetCF = useState$h({
                 reversed: false,
                 upperInflectionPoint: this.props.rule.upperInflectionPoint,
                 lowerInflectionPoint: this.props.rule.lowerInflectionPoint,
@@ -14124,15 +14522,15 @@
             };
         }
     }
-    IconSetRuleEditor.template = TEMPLATE$i;
-    IconSetRuleEditor.style = CSS$h;
+    IconSetRuleEditor.template = TEMPLATE$m;
+    IconSetRuleEditor.style = CSS$k;
     IconSetRuleEditor.components = { IconPicker };
 
-    const { Component: Component$g, useState: useState$e } = owl__namespace;
-    const { xml: xml$j, css: css$i } = owl__namespace.tags;
-    const { useRef: useRef$6 } = owl__namespace.hooks;
+    const { Component: Component$k, useState: useState$g } = owl__namespace;
+    const { xml: xml$n, css: css$l } = owl__namespace.tags;
+    const { useRef: useRef$8 } = owl__namespace.hooks;
     // TODO vsc: add ordering of rules
-    const PREVIEW_TEMPLATE = xml$j /* xml */ `
+    const PREVIEW_TEMPLATE = xml$n /* xml */ `
 <div class="o-cf-preview">
   <t t-if="cf.rule.type==='IconSetRule'">
     <div class="o-cf-preview-icon">
@@ -14168,7 +14566,7 @@
     </div>
   </div>
 </div>`;
-    const TEMPLATE$h = xml$j /* xml */ `
+    const TEMPLATE$l = xml$n /* xml */ `
   <div class="o-cf">
     <t t-if="state.mode === 'list'">
       <div class="o-cf-preview-list" >
@@ -14234,7 +14632,7 @@
         </div>
     </t>
   </div>`;
-    const CSS$g = css$i /* scss */ `
+    const CSS$j = css$l /* scss */ `
   label{
     vertical-align: middle;
   }
@@ -14425,16 +14823,16 @@
     }
   }
   }`;
-    class ConditionalFormattingPanel extends Component$g {
+    class ConditionalFormattingPanel extends Component$k {
         constructor(parent, props) {
             super(parent, props);
             this.icons = ICONS;
             this.trashIcon = TRASH;
             //@ts-ignore --> used in XML template
             this.cellIsOperators = cellIsOperators;
-            this.editor = useRef$6("editorRef");
+            this.editor = useRef$8("editorRef");
             this.getters = this.env.getters;
-            this.state = useState$e({
+            this.state = useState$g({
                 mode: "list",
                 rules: {},
                 errors: [],
@@ -14619,19 +15017,18 @@
             }
         }
     }
-    ConditionalFormattingPanel.template = TEMPLATE$h;
-    ConditionalFormattingPanel.style = CSS$g;
+    ConditionalFormattingPanel.template = TEMPLATE$l;
+    ConditionalFormattingPanel.style = CSS$j;
     ConditionalFormattingPanel.components = { CellIsRuleEditor, ColorScaleRuleEditor, IconSetRuleEditor, SelectionInput };
 
-    const { Component: Component$f, useState: useState$d } = owl__namespace;
-    const { xml: xml$i, css: css$h } = owl__namespace.tags;
-    const TEMPLATE$g = xml$i /* xml */ `
+    const { Component: Component$j, useState: useState$f } = owl__namespace;
+    const { xml: xml$m, css: css$k } = owl__namespace.tags;
+    const TEMPLATE$k = xml$m /* xml */ `
 <div class="o-find-and-replace" tabindex="0" t-on-focusin="onFocusSidePanel">
   <div class="o-section">
-    <div t-esc="env._t('${FindAndReplaceTerms.Search}')" class="o-section-title"/>
+    <div class="o-section-title" t-esc="env._t('${FindAndReplaceTerms.Search}')"/>
     <div class="o-input-search-container">
-      <input type="text" class="o-input o-input-with-count" t-on-input="onInput" t-on-keydown="onKeydownSearch">
-      </input>
+      <input type="text" class="o-input o-input-with-count" t-on-input="onInput" t-on-keydown="onKeydownSearch"/>
       <div class="o-input-count" t-if="hasSearchResult">
         <t t-esc="env.getters.getCurrentSelectedMatchIndex()+1"/>
         /
@@ -14641,15 +15038,15 @@
     <div>
       <div class="o-far-item">
         <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.matchCase" t-on-change="updateSearch()" class="o-far-input" type="checkbox" />
+          <input t-model="state.searchOptions.matchCase" t-on-change="updateSearch()" class="o-far-input" type="checkbox"/>
           <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.MatchCase}')"/></span>
         </label>
       </div>
       <div class="o-far-item">
         <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.exactMatch" t-on-change="updateSearch()" class="o-far-input" type="checkbox" />
+          <input t-model="state.searchOptions.exactMatch" t-on-change="updateSearch()" class="o-far-input" type="checkbox"/>
           <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ExactMatch}')"/></span>
-        </label>                                                                            
+        </label>
       </div>
       <div class="o-far-item">
         <label class="o-far-checkbox">
@@ -14660,25 +15057,27 @@
     </div>
   </div>
   <div class="o-sidePanelButtons">
-    <button t-att-disabled="!hasSearchResult" t-on-click="onSelectPreviousCell" class="o-sidePanelButton"
+    <button t-att-disabled="!hasSearchResult"
+            t-on-click="onSelectPreviousCell"
+            class="o-sidePanelButton"
             t-esc="env._t('${FindAndReplaceTerms.Previous}')"/>
-    <button t-att-disabled="!hasSearchResult" t-on-click="onSelectNextCell" class="o-sidePanelButton"
+    <button t-att-disabled="!hasSearchResult"
+            t-on-click="onSelectNextCell"
+            class="o-sidePanelButton"
             t-esc="env._t('${FindAndReplaceTerms.Next}')"/>
   </div>
-
   <div class="o-section" t-if="!getters.isReadonly()">
     <div t-esc="env._t('${FindAndReplaceTerms.Replace}')" class="o-section-title"/>
     <div class="o-input-search-container">
       <input type="text" class="o-input o-input-without-count" t-model="state.replaceWith" t-on-keydown="onKeydownReplace"/>
     </div>
-    
 
     <div class="o-far-item">
       <label class="o-far-checkbox">
         <input class="o-far-input" t-att-disabled="state.searchOptions.searchFormulas" type="checkbox"
         t-model="state.replaceOptions.modifyFormulas"/>
         <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ReplaceFormulas}')"/></span>
-      </label>                                                                            
+      </label>
     </div>
   </div>
 
@@ -14691,7 +15090,7 @@
 
 </div>
 `;
-    const CSS$f = css$h /* scss */ `
+    const CSS$i = css$k /* scss */ `
   .o-find-and-replace {
     .o-far-item {
       display: block;
@@ -14725,11 +15124,11 @@
     }
   }
 `;
-    class FindAndReplacePanel extends Component$f {
+    class FindAndReplacePanel extends Component$j {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$d(this.initialState());
+            this.state = useState$f(this.initialState());
         }
         get hasSearchResult() {
             return this.env.getters.getCurrentSelectedMatchIndex() !== null;
@@ -14822,8 +15221,8 @@
             };
         }
     }
-    FindAndReplacePanel.template = TEMPLATE$g;
-    FindAndReplacePanel.style = CSS$f;
+    FindAndReplacePanel.template = TEMPLATE$k;
+    FindAndReplacePanel.style = CSS$i;
 
     const sidePanelRegistry = new Registry();
     sidePanelRegistry.add("ConditionalFormatting", {
@@ -15095,7 +15494,7 @@
             let row = zone.bottom;
             if (col > 0) {
                 let left = this.getters.getCell(sheetId, col - 1, row);
-                while (left && left.type !== "empty") {
+                while (!isEmpty(left)) {
                     row += 1;
                     left = this.getters.getCell(sheetId, col - 1, row);
                 }
@@ -15104,7 +15503,7 @@
                 col = zone.right;
                 if (col <= this.getters.getActiveSheet().cols.length) {
                     let right = this.getters.getCell(sheetId, col + 1, row);
-                    while (right && right.type !== "empty") {
+                    while (!isEmpty(right)) {
                         row += 1;
                         right = this.getters.getCell(sheetId, col + 1, row);
                     }
@@ -15386,7 +15785,7 @@
         reduceZoneStart(sheet, zone, end) {
             const cells = mapCellsInZone(zone, sheet, (cell) => cell, undefined).flat();
             const cellPositions = range(end, -1, -1);
-            const invalidCells = cellPositions.filter((position) => !this.isValid(cells[position]));
+            const invalidCells = cellPositions.filter((position) => { var _a; return cells[position] && !((_a = cells[position]) === null || _a === void 0 ? void 0 : _a.isAutoSummable); });
             const maxValidPosition = Math.max(...invalidCells);
             const numberSequences = groupConsecutive(cellPositions.filter((position) => this.isNumber(cells[position])));
             const firstSequence = numberSequences[0] || [];
@@ -15400,14 +15799,7 @@
         }
         isNumber(cell) {
             var _a;
-            return !!cell && typeof cell.value === "number" && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
-        }
-        /**
-         * Only empty cells, text cells and numbers are valid
-         */
-        isValid(cell) {
-            return ((cell === null || cell === void 0 ? void 0 : cell.type) !== CellType.invalidFormula &&
-                (!cell || typeof cell.value === "string" || !cell.value || this.isNumber(cell)));
+            return (cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
         }
         isZoneValid(zone) {
             return zone.bottom >= zone.top && zone.right >= zone.left;
@@ -15637,9 +16029,7 @@
             return (this.state.cells
                 .map((cells) => {
                 return cells
-                    .map((c) => c.cell
-                    ? this.getters.getCellText(c.cell, c.position.sheetId, this.getters.shouldShowFormulas())
-                    : "")
+                    .map((c) => c.cell ? this.getters.getCellText(c.cell, this.getters.shouldShowFormulas()) : "")
                     .join("\t");
             })
                 .join("\n") || "\t");
@@ -16001,12 +16391,12 @@
                     return;
                 }
                 if (pasteOption === "onlyValue") {
-                    const content = this.valueToContent(origin.cell.value);
+                    const content = formatValue(origin.cell.evaluated.value);
                     this.dispatch("UPDATE_CELL", { ...target, content });
                     return;
                 }
-                let content = this.getters.getCellValue(origin.cell, origin.position.sheetId, true) || "";
-                if (origin.cell.type === CellType.formula) {
+                let content = origin.cell.content;
+                if (isFormula(origin.cell)) {
                     const offsetX = col - origin.position.col;
                     const offsetY = row - origin.position.row;
                     content = this.getUpdatedContent(sheetId, origin.cell, offsetX, offsetY, zones, operation);
@@ -16044,28 +16434,16 @@
                         ranges.push(range);
                     }
                 }
-                return this.getters.buildFormulaContent(sheetId, cell.formula.text, ranges);
+                return this.getters.buildFormulaContent(sheetId, cell.normalizedText, ranges);
             }
             const ranges = this.getters.createAdaptedRanges(cell.dependencies, offsetX, offsetY, sheetId);
-            return this.getters.buildFormulaContent(sheetId, cell.formula.text, ranges);
+            return this.getters.buildFormulaContent(sheetId, cell.normalizedText, ranges);
         }
         /**
          * Check if the given zone and at least one of the clipped zones overlap
          */
         isZoneOverlapClippedZone(zones, zone) {
             return zones.some((clippedZone) => overlap(zone, clippedZone));
-        }
-        valueToContent(cellValue) {
-            switch (typeof cellValue) {
-                case "number":
-                    return cellValue.toString();
-                case "string":
-                    return cellValue;
-                case "boolean":
-                    return cellValue ? "TRUE" : "FALSE";
-                default:
-                    return "";
-            }
         }
         interactivePaste(state, target, cmd) {
             const result = this.isPasteAllowed(state, target, false);
@@ -16197,6 +16575,12 @@
                     catch (error) {
                         return 21 /* InvalidSheetId */;
                     }
+                case "MOVE_COLUMNS_ROWS":
+                    const result = this.isMoveElementAllowed(cmd);
+                    if (result === 2 /* WillRemoveExistingMerge */) {
+                        this.ui.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+                    }
+                    return result;
             }
             return 0 /* Success */;
         }
@@ -16313,6 +16697,11 @@
                         this.onAddElements(cmd);
                     }
                     break;
+                case "MOVE_COLUMNS_ROWS":
+                    if (cmd.sheetId === this.getActiveSheetId()) {
+                        this.onMoveElements(cmd);
+                    }
+                    break;
                 case "UPDATE_CHART":
                 case "SELECT_FIGURE":
                     this.selectedFigureId = cmd.id;
@@ -16402,9 +16791,9 @@
                     }
                     for (let col = zone.left; col <= zone.right; col++) {
                         const cell = r.cells[col];
-                        if (cell && cell.type !== "text" && !cell.error && typeof cell.value === "number") {
+                        if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number) {
                             n++;
-                            aggregate += cell.value;
+                            aggregate += cell.evaluated.value;
                         }
                     }
                 }
@@ -16771,6 +17160,63 @@
                 sheetIdTo: sheetIds[newPosition],
             });
         }
+        onMoveElements(cmd) {
+            const thickness = cmd.elements.length;
+            this.dispatch("ADD_COLUMNS_ROWS", {
+                dimension: cmd.dimension,
+                sheetId: cmd.sheetId,
+                base: cmd.base,
+                quantity: thickness,
+                position: "before",
+            });
+            const isCol = cmd.dimension === "COL";
+            const start = cmd.elements[0];
+            const end = cmd.elements[thickness - 1];
+            const isBasedbefore = cmd.base < start;
+            const deltaCol = isBasedbefore && isCol ? thickness : 0;
+            const deltaRow = isBasedbefore && !isCol ? thickness : 0;
+            const sheet = this.getters.getSheet(cmd.sheetId);
+            this.dispatch("CUT", {
+                target: [
+                    {
+                        left: isCol ? start + deltaCol : 0,
+                        right: isCol ? end + deltaCol : sheet.cols.length - 1,
+                        top: !isCol ? start + deltaRow : 0,
+                        bottom: !isCol ? end + deltaRow : sheet.rows.length - 1,
+                    },
+                ],
+            });
+            this.dispatch("PASTE", {
+                target: [
+                    {
+                        left: isCol ? cmd.base : 0,
+                        right: isCol ? cmd.base + thickness - 1 : sheet.cols.length - 1,
+                        top: !isCol ? cmd.base : 0,
+                        bottom: !isCol ? cmd.base + thickness - 1 : sheet.rows.length - 1,
+                    },
+                ],
+            });
+            this.dispatch("REMOVE_COLUMNS_ROWS", {
+                dimension: cmd.dimension,
+                sheetId: cmd.sheetId,
+                elements: isBasedbefore ? cmd.elements.map((el) => el + thickness) : cmd.elements,
+            });
+        }
+        isMoveElementAllowed(cmd) {
+            const isCol = cmd.dimension === "COL";
+            const start = cmd.elements[0];
+            const end = cmd.elements[cmd.elements.length - 1];
+            const id = cmd.sheetId;
+            const doesElementsHaveCommonMerges = isCol
+                ? this.getters.doesColumnsHaveCommonMerges
+                : this.getters.doesRowsHaveCommonMerges;
+            if (doesElementsHaveCommonMerges(id, start - 1, start) ||
+                doesElementsHaveCommonMerges(id, end, end + 1) ||
+                doesElementsHaveCommonMerges(id, cmd.base - 1, cmd.base)) {
+                return 2 /* WillRemoveExistingMerge */;
+            }
+            return 0 /* Success */;
+        }
         // ---------------------------------------------------------------------------
         // Grid rendering
         // ---------------------------------------------------------------------------
@@ -16855,6 +17301,7 @@
             this.multiSelectionInitialStart = 0;
             this.initialContent = "";
             this.previousRef = "";
+            this.previousRange = undefined;
             this.colorIndexByRange = {};
         }
         // ---------------------------------------------------------------------------
@@ -16874,7 +17321,7 @@
                 case "START_EDITION":
                     if (cmd.selection) {
                         const cell = this.getters.getActiveCell();
-                        const content = cmd.text || (cell && this.getCellContent(cell)) || "";
+                        const content = cmd.text || (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
                         return this.validateSelection(content.length, cmd.selection.start, cmd.selection.end);
                     }
                     else {
@@ -16886,9 +17333,6 @@
         }
         handle(cmd) {
             switch (cmd.type) {
-                case "START":
-                    this.setActiveContent();
-                    break;
                 case "CHANGE_COMPOSER_CURSOR_SELECTION":
                     this.selectionStart = cmd.start;
                     this.selectionEnd = cmd.end;
@@ -16920,11 +17364,6 @@
                 case "REPLACE_COMPOSER_CURSOR_SELECTION":
                     this.replaceSelection(cmd.text);
                     break;
-                case "ACTIVATE_SHEET":
-                    if (this.mode === "inactive") {
-                        this.setActiveContent();
-                    }
-                    break;
                 case "SELECT_FIGURE":
                     this.cancelEdition();
                     this.resetContent();
@@ -16935,9 +17374,6 @@
                     switch (this.mode) {
                         case "editing":
                             this.dispatch("STOP_EDITION");
-                            break;
-                        case "inactive":
-                            this.setActiveContent();
                             break;
                         case "waitingForRangeSelection":
                             this.insertSelectedRange();
@@ -16983,11 +17419,21 @@
                     break;
                 case "START_CHANGE_HIGHLIGHT":
                     this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-                    this.previousRef = this.getZoneReference(cmd.zone);
-                    this.selectionInitialStart = this.currentContent.toUpperCase().indexOf(this.previousRef);
+                    const previousRefToken = this.currentTokens
+                        .filter((token) => token.type === "SYMBOL")
+                        .find((token) => {
+                        let value = token.value;
+                        const [xc, sheet] = value.split("!").reverse();
+                        const sheetName = sheet || this.getters.getSheetName(this.sheet);
+                        return (isEqual(toZone(xc), cmd.zone) &&
+                            this.getters.getSheetName(this.getters.getActiveSheetId()) === sheetName);
+                    });
+                    this.previousRef = previousRefToken.value;
+                    this.previousRange = this.getters.getRangeFromSheetXC(this.getters.getActiveSheetId(), this.previousRef);
+                    this.selectionInitialStart = previousRefToken.start;
                     break;
                 case "CHANGE_HIGHLIGHT":
-                    const newRef = this.getZoneReference(cmd.zone);
+                    const newRef = this.getZoneReference(cmd.zone, this.previousRange.parts);
                     this.selectionStart = this.selectionInitialStart;
                     this.selectionEnd = this.selectionInitialStart + this.previousRef.length;
                     this.replaceSelection(newRef);
@@ -17012,8 +17458,7 @@
         getCurrentContent() {
             if (this.mode === "inactive") {
                 const cell = this.getters.getActiveCell();
-                const activeSheetId = this.getters.getActiveSheetId();
-                return cell ? this.getters.getCellText(cell, activeSheetId, true) : "";
+                return (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
             }
             return this.currentContent;
         }
@@ -17096,21 +17541,6 @@
             // This should result in deletions of previously selected cells.
             this.multiSelectionInitialStart = this.selectionStart;
         }
-        getCellContent(cell) {
-            var _a;
-            switch (cell.type) {
-                case CellType.formula:
-                    return this.getters.getFormulaCellContent(this.getters.getActiveSheetId(), cell);
-                case CellType.empty:
-                    return "";
-                case CellType.number:
-                    return ((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) ? formatDateTime({ value: (cell.value || 0), format: cell.format })
-                        : cell.content;
-                case CellType.text:
-                case CellType.invalidFormula:
-                    return cell.content;
-            }
-        }
         /**
          * start the edition of a cell
          * @param str the key that is used to start the edition if it is a "content" key like a letter or number
@@ -17119,7 +17549,7 @@
          */
         startEdition(str, selection) {
             const cell = this.getters.getActiveCell();
-            this.initialContent = (cell && this.getCellContent(cell)) || "";
+            this.initialContent = (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
             this.mode = "editing";
             const [col, row] = this.getters.getPosition();
             this.col = col;
@@ -17140,6 +17570,7 @@
                     return;
                 }
                 if (content) {
+                    const cell = this.getters.getCell(sheetId, col, row);
                     if (content.startsWith("=")) {
                         const left = this.currentTokens.filter((t) => t.type === "LEFT_PAREN").length;
                         const right = this.currentTokens.filter((t) => t.type === "RIGHT_PAREN").length;
@@ -17147,6 +17578,9 @@
                         if (missing > 0) {
                             content += new Array(missing).fill(")").join("");
                         }
+                    }
+                    else if (isLink(cell)) {
+                        content = markdownLink(content, cell.link.url);
                     }
                     this.dispatch("UPDATE_CELL", {
                         sheetId: this.sheet,
@@ -17242,9 +17676,9 @@
             this.replaceSelection(this.getZoneReference(this.getters.getSelectedZone()));
             this.selectionInitialStart = this.multiSelectionInitialStart;
         }
-        getZoneReference(zone) {
+        getZoneReference(zone, fixedParts = [{ colFixed: false, rowFixed: false }]) {
             const sheetId = this.getters.getActiveSheetId();
-            let selectedXc = this.getters.zoneToXC(sheetId, zone);
+            let selectedXc = this.getters.zoneToXC(sheetId, zone, fixedParts);
             if (this.getters.getEditionSheet() !== this.getters.getActiveSheetId()) {
                 const sheetName = getComposerSheetName(this.getters.getSheetName(this.getters.getActiveSheetId()));
                 selectedXc = `${sheetName}!${selectedXc}`;
@@ -17318,20 +17752,6 @@
                     }),
                 });
             }
-        }
-        setActiveContent() {
-            const sheetId = this.getters.getActiveSheetId();
-            const [mainCellCol, mainCellRow] = this.getters.getMainCell(sheetId, ...this.getters.getPosition());
-            const anchor = this.getters.getCell(this.getters.getActiveSheetId(), mainCellCol, mainCellRow);
-            if (anchor) {
-                const { col, row } = this.getters.getCellPosition(anchor.id);
-                this.col = col;
-                this.row = row;
-            }
-            const content = anchor ? this.getters.getCellText(anchor, sheetId, true) : "";
-            this.dispatch("SET_CURRENT_CONTENT", {
-                content,
-            });
         }
         /**
          * Function used to determine when composer selection can start.
@@ -17409,16 +17829,10 @@
         // Command Handling
         // ---------------------------------------------------------------------------
         handle(cmd) {
+            if (invalidateEvaluationCommands.has(cmd.type)) {
+                this.isUpToDate.clear();
+            }
             switch (cmd.type) {
-                case "RENAME_SHEET":
-                case "DELETE_SHEET":
-                case "CREATE_SHEET":
-                case "ADD_COLUMNS_ROWS":
-                case "REMOVE_COLUMNS_ROWS":
-                case "DELETE_CELL":
-                case "INSERT_CELL":
-                    this.isUpToDate.clear();
-                    break;
                 case "UPDATE_CELL":
                     if ("content" in cmd) {
                         this.isUpToDate.clear();
@@ -17430,10 +17844,6 @@
                     break;
                 case "EVALUATE_ALL_SHEETS":
                     this.evaluateAllSheets();
-                    break;
-                case "UNDO":
-                case "REDO":
-                    this.isUpToDate.clear();
                     break;
             }
         }
@@ -17464,7 +17874,7 @@
             const sheet = this.getters.tryGetSheet(range.sheetId);
             if (sheet === undefined)
                 return [[]];
-            return mapCellsInZone(range.zone, sheet, (cell) => this.getters.getCellText(cell, range.sheetId, this.getters.shouldShowFormulas()), "");
+            return mapCellsInZone(range.zone, sheet, (cell) => this.getters.getCellText(cell, this.getters.shouldShowFormulas()), "");
         }
         /**
          * Return the value of each cell in the range.
@@ -17473,7 +17883,7 @@
             const sheet = this.getters.tryGetSheet(range.sheetId);
             if (sheet === undefined)
                 return [[]];
-            return mapCellsInZone(range.zone, sheet, (cell) => this.getters.getCellValue(cell, sheet.id));
+            return mapCellsInZone(range.zone, sheet, (cell) => cell.evaluated.value);
         }
         // ---------------------------------------------------------------------------
         // Evaluator
@@ -17491,15 +17901,15 @@
                 if (!(e instanceof Error)) {
                     e = new Error(e);
                 }
-                if (!cell.error) {
-                    cell.value = "#ERROR";
+                if (cell.evaluated.type !== CellValueType.error) {
+                    cell.assignValue("#ERROR");
                     // apply function name
                     const __lastFnCalled = params[2].__lastFnCalled || "";
-                    cell.error = e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled);
+                    cell.assignError("#ERROR", e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled));
                 }
             }
             function computeValue(cell, sheetId) {
-                if (cell.type !== "formula" || !cell.formula) {
+                if (!isFormula(cell)) {
                     return;
                 }
                 const position = params[2].getters.getCellPosition(cell.id);
@@ -17507,22 +17917,17 @@
                 visited[sheetId] = visited[sheetId] || {};
                 if (xc in visited[sheetId]) {
                     if (visited[sheetId][xc] === null) {
-                        cell.value = "#CYCLE";
-                        cell.error = _lt("Circular reference");
+                        cell.assignError("#CYCLE", _lt("Circular reference"));
                     }
                     return;
                 }
                 visited[sheetId][xc] = null;
-                cell.error = undefined;
                 try {
                     params[2].__originCellXC = xc;
-                    cell.value = cell.formula.compiledFormula(cell.dependencies, sheetId, ...params);
-                    if (Array.isArray(cell.value)) {
+                    cell.assignValue(cell.compiledFormula(cell.dependencies, sheetId, ...params));
+                    if (Array.isArray(cell.evaluated.value)) {
                         // if a value returns an array (like =A1:A3)
                         throw new Error(_lt("This formula depends on invalid values"));
-                    }
-                    else {
-                        cell.error = undefined;
                     }
                 }
                 catch (e) {
@@ -17552,20 +17957,21 @@
                 else {
                     throw new Error(_lt("Invalid sheet name"));
                 }
-                if (!cell || cell.type === CellType.empty) {
+                if (!cell || isEmpty(cell)) {
+                    // magic "empty" value
                     return null;
                 }
                 return getCellValue(cell, range.sheetId);
             }
             function getCellValue(cell, sheetId) {
-                if (cell.type === CellType.formula && cell.error) {
+                if (isFormula(cell) && cell.evaluated.type === CellValueType.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
                 }
                 computeValue(cell, sheetId);
-                if (cell.error) {
+                if (cell.evaluated.type === CellValueType.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
                 }
-                return cell.value;
+                return cell.evaluated.value;
             }
             /**
              * Return a range of values. It is a list of col values.
@@ -17774,6 +18180,9 @@
             return this.chartRuntime[figureId];
         }
         truncateLabel(label) {
+            if (!label) {
+                return "";
+            }
             if (label.length > MAX_CHAR_LABEL) {
                 return label.substring(0, MAX_CHAR_LABEL) + "…";
             }
@@ -17952,7 +18361,7 @@
                         : undefined;
                     label =
                         cell && labelRange
-                            ? this.truncateLabel(this.getters.getCellText(cell, labelRange.sheetId))
+                            ? this.truncateLabel(cell.formattedValue)
                             : (label = `${chartTerms.Series} ${parseInt(dsIndex) + 1}`);
                 }
                 else {
@@ -17975,6 +18384,7 @@
             }
             return runtime;
         }
+        // TODO type this with Chart.js types.
         getData(ds, sheetId) {
             if (ds.dataRange) {
                 const labelCellZone = ds.labelCell ? [zoneToXc(ds.labelCell.zone)] : [];
@@ -18006,60 +18416,56 @@
              */
             this.rulePredicate = {
                 CellIsRule: (cell, rule) => {
-                    let value;
-                    if (cell) {
-                        switch (cell.type) {
-                            case CellType.formula:
-                            case CellType.number:
-                            case CellType.text:
-                                value = cell.value;
-                                break;
-                            case CellType.empty:
-                            case CellType.invalidFormula:
-                                value = "";
-                        }
+                    if (cell && cell.evaluated.type === CellValueType.error) {
+                        return false;
                     }
                     switch (rule.operator) {
                         case "IsEmpty":
-                            return !cell || value.toString().trim() === "";
+                            return !isDefined(cell) || cell.evaluated.value.toString().trim() === "";
                         case "IsNotEmpty":
-                            return cell && value.toString().trim() !== "";
+                            return isDefined(cell) && cell.evaluated.value.toString().trim() !== "";
                         case "BeginsWith":
                             if (!cell && rule.values[0] === "") {
                                 return false;
                             }
-                            return cell && value.startsWith(rule.values[0]);
+                            return isDefined(cell) && (cell === null || cell === void 0 ? void 0 : cell.evaluated.value.toString().startsWith(rule.values[0]));
                         case "EndsWith":
                             if (!cell && rule.values[0] === "") {
                                 return false;
                             }
-                            return cell && value && value.toString().endsWith(rule.values[0]);
+                            return isDefined(cell) && cell.evaluated.value.toString().endsWith(rule.values[0]);
                         case "Between":
-                            return cell && value >= rule.values[0] && value <= rule.values[1];
+                            return (isDefined(cell) &&
+                                cell.evaluated.value >= rule.values[0] &&
+                                cell.evaluated.value <= rule.values[1]);
                         case "NotBetween":
-                            return !(cell && value >= rule.values[0] && value <= rule.values[1]);
+                            return !(isDefined(cell) &&
+                                cell.evaluated.value >= rule.values[0] &&
+                                cell.evaluated.value <= rule.values[1]);
                         case "ContainsText":
-                            return cell && value && value.toString().indexOf(rule.values[0]) > -1;
+                            return isDefined(cell) && cell.evaluated.value.toString().indexOf(rule.values[0]) > -1;
                         case "NotContains":
-                            return !cell || !value || value.toString().indexOf(rule.values[0]) == -1;
+                            return (!isDefined(cell) ||
+                                !cell.evaluated.value ||
+                                cell.evaluated.value.toString().indexOf(rule.values[0]) == -1);
                         case "GreaterThan":
-                            return cell && value > rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value > rule.values[0];
                         case "GreaterThanOrEqual":
-                            return cell && value >= rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value >= rule.values[0];
                         case "LessThan":
-                            return cell && value < rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value < rule.values[0];
                         case "LessThanOrEqual":
-                            return cell && value <= rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value <= rule.values[0];
                         case "NotEqual":
-                            if (!cell && rule.values[0] === "") {
+                            if (!isDefined(cell) && rule.values[0] === "") {
                                 return false;
                             }
-                            return cell && value !== rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value !== rule.values[0];
                         case "Equal":
                             if (!cell && rule.values[0] === "") {
                                 return true;
                             }
-                            return cell && value.toString() === rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value.toString() === rule.values[0];
                         default:
                             console.warn(_lt("Not implemented operator %s for kind of conditional formatting:  %s", rule.operator, rule.type));
                     }
@@ -18221,20 +18627,10 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     const cell = this.getters.getCell(activeSheetId, col, row);
-                    let value;
-                    if (cell) {
-                        switch (cell.type) {
-                            case CellType.formula:
-                            case CellType.number:
-                                value = cell.value;
-                                break;
-                            case CellType.text:
-                            case CellType.empty:
-                            case CellType.invalidFormula:
-                                continue;
-                        }
+                    if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) !== CellValueType.number) {
+                        continue;
                     }
-                    const icon = this.computeIcon(value, upperInflectionPoint, rule.upperInflectionPoint.operator, lowerInflectionPoint, rule.lowerInflectionPoint.operator, iconSet);
+                    const icon = this.computeIcon(cell.evaluated.value, upperInflectionPoint, rule.upperInflectionPoint.operator, lowerInflectionPoint, rule.lowerInflectionPoint.operator, iconSet);
                     if (!computedIcons[col]) {
                         computedIcons[col] = [];
                     }
@@ -18243,9 +18639,6 @@
             }
         }
         computeIcon(value, upperInflectionPoint, upperOperator, lowerInflectionPoint, lowerOperator, icons) {
-            if (value === undefined) {
-                return undefined;
-            }
             if ((upperOperator === "ge" && value >= upperInflectionPoint) ||
                 (upperOperator === "gt" && value > upperInflectionPoint)) {
                 return icons[0];
@@ -18293,35 +18686,22 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     const cell = this.getters.getCell(activeSheetId, col, row);
-                    let value;
-                    if (cell) {
-                        switch (cell.type) {
-                            case CellType.formula:
-                            case CellType.number:
-                            case CellType.text:
-                                value = cell.value;
-                                break;
-                            case CellType.empty:
-                            case CellType.invalidFormula:
-                                continue;
+                    if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number) {
+                        const value = clip(cell.evaluated.value, minValue, maxValue);
+                        let color;
+                        if (colorCellArgs.length === 2 && midValue) {
+                            color =
+                                value <= midValue
+                                    ? this.colorCell(value, colorCellArgs[0].minValue, colorCellArgs[0].minColor, colorCellArgs[0].colorDiffUnit)
+                                    : this.colorCell(value, colorCellArgs[1].minValue, colorCellArgs[1].minColor, colorCellArgs[1].colorDiffUnit);
                         }
-                        if (!Number.isNaN(Number.parseFloat(value))) {
-                            value = clip(value, minValue, maxValue);
-                            let color;
-                            if (colorCellArgs.length === 2 && midValue) {
-                                color =
-                                    value <= midValue
-                                        ? this.colorCell(value, colorCellArgs[0].minValue, colorCellArgs[0].minColor, colorCellArgs[0].colorDiffUnit)
-                                        : this.colorCell(value, colorCellArgs[1].minValue, colorCellArgs[1].minColor, colorCellArgs[1].colorDiffUnit);
-                            }
-                            else {
-                                color = this.colorCell(value, colorCellArgs[0].minValue, colorCellArgs[0].minColor, colorCellArgs[0].colorDiffUnit);
-                            }
-                            if (!computedStyle[col])
-                                computedStyle[col] = [];
-                            computedStyle[col][row] = ((_a = computedStyle[col]) === null || _a === void 0 ? void 0 : _a[row]) || {};
-                            computedStyle[col][row].fillColor = "#" + colorNumberString(color);
+                        else {
+                            color = this.colorCell(value, colorCellArgs[0].minValue, colorCellArgs[0].minColor, colorCellArgs[0].colorDiffUnit);
                         }
+                        if (!computedStyle[col])
+                            computedStyle[col] = [];
+                        computedStyle[col][row] = ((_a = computedStyle[col]) === null || _a === void 0 ? void 0 : _a[row]) || {};
+                        computedStyle[col][row].fillColor = "#" + colorNumberString(color);
                     }
                 }
             }
@@ -18514,16 +18894,15 @@
             const activeSheetId = this.getters.getActiveSheetId();
             const cells = this.getters.getCells(activeSheetId);
             const matches = [];
-            //let field = this.searchOptions.searchFormulas ? "content" : "value";
             if (this.toSearch) {
                 for (const cell of Object.values(cells)) {
                     if (cell &&
                         this.currentSearchRegex &&
                         this.currentSearchRegex.test(this.searchOptions.searchFormulas
-                            ? cell.type === CellType.formula
-                                ? this.getters.getFormulaCellContent(activeSheetId, cell)
-                                : String(cell.value)
-                            : String(cell.value))) {
+                            ? isFormula(cell)
+                                ? cell.content
+                                : String(cell.evaluated.value)
+                            : String(cell.evaluated.value))) {
                         const position = this.getters.getCellPosition(cell.id);
                         const match = { col: position.col, row: position.row, selected: false };
                         matches.push(match);
@@ -18631,11 +19010,11 @@
          */
         toReplace(cell, sheetId) {
             if (cell) {
-                if (this.searchOptions.searchFormulas && cell.type === CellType.formula) {
-                    return this.getters.getFormulaCellContent(sheetId, cell);
+                if (this.searchOptions.searchFormulas && isFormula(cell)) {
+                    return cell.content;
                 }
-                else if (this.replaceOptions.modifyFormulas || cell.type !== CellType.formula) {
-                    return cell.value.toString();
+                else if (this.replaceOptions.modifyFormulas || !isFormula(cell)) {
+                    return cell.evaluated.value.toString();
                 }
             }
             return null;
@@ -18739,14 +19118,16 @@
                 return [];
             }
             const activeSheetId = this.getters.getActiveSheetId();
-            return ranges
-                .map(([r1c1, color]) => {
+            const preparedHighlights = [];
+            for (let [r1c1, color] of ranges) {
                 const [xc, sheet] = r1c1.split("!").reverse();
-                const sheetId = this.getters.getSheetIdByName(sheet) || activeSheetId;
-                const zone = this.getters.expandZone(activeSheetId, toZone(xc));
-                return { zone, color, sheet: sheetId };
-            })
-                .filter((x) => x.zone.top >= 0 &&
+                const sheetId = sheet ? this.getters.getSheetIdByName(sheet) : activeSheetId;
+                if (sheetId) {
+                    const zone = this.getters.expandZone(activeSheetId, toZone(xc));
+                    preparedHighlights.push({ zone, color, sheet: sheetId });
+                }
+            }
+            return preparedHighlights.filter((x) => x.zone.top >= 0 &&
                 x.zone.left >= 0 &&
                 x.zone.bottom < this.getters.getSheet(x.sheet).rows.length &&
                 x.zone.right < this.getters.getSheet(x.sheet).cols.length);
@@ -18830,8 +19211,8 @@
              */
             for (let h of this.highlights.filter((highlight, index) => 
             // For every highlight in the sheet, deduplicated by zone
-            highlight.sheet === sheetId &&
-                this.highlights.findIndex((h) => isEqual(h.zone, highlight.zone)) === index)) {
+            this.highlights.findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheet === sheetId) ===
+                index)) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeStyle = h.color;
@@ -18851,21 +19232,10 @@
     // Constants, types, helpers, ...
     // -----------------------------------------------------------------------------
     function computeAlign(cell, isShowingFormulas) {
-        if (cell.type === CellType.formula && isShowingFormulas) {
+        if (isFormula(cell) && isShowingFormulas) {
             return "left";
         }
-        else if (cell.error) {
-            return "center";
-        }
-        switch (typeof cell.value) {
-            case "object":
-            case "number":
-                return "right";
-            case "boolean":
-                return "center";
-            default:
-                return "left";
-        }
+        return cell.defaultAlign;
     }
     function searchIndex(headers, offset) {
         let left = 0;
@@ -18928,7 +19298,13 @@
             const height = rows[bottom].end - offsetY - y;
             return [x, y, width, height];
         }
-        // nouvelle implémentation
+        /**
+         * Check if a given position is visible in the viewport.
+         */
+        isVisibleInViewport(col, row, viewport) {
+            const { right, left, top, bottom } = viewport;
+            return row <= bottom && row >= top && col >= left && col <= right;
+        }
         getEdgeScrollCol(x) {
             let canEdgeScroll = false;
             let direction = 0;
@@ -19231,7 +19607,7 @@
         hasContent(col, row) {
             const sheetId = this.getters.getActiveSheetId();
             const cell = this.getters.getCell(sheetId, col, row);
-            return (cell && cell.type !== "empty") || this.getters.isInMerge(sheetId, col, row);
+            return !isEmpty(cell) || this.getters.isInMerge(sheetId, col, row);
         }
         getGridBoxes(renderingContext) {
             const { viewport } = renderingContext;
@@ -19258,7 +19634,7 @@
                     const iconStyle = this.getters.getConditionalIcon(colNumber, rowNumber);
                     if (!this.getters.isInMerge(sheetId, colNumber, rowNumber)) {
                         if (cell) {
-                            const text = this.getters.getCellText(cell, sheetId, showFormula);
+                            const text = this.getters.getCellText(cell, showFormula);
                             let style = this.getters.getCellStyle(cell);
                             if (conditionalStyle) {
                                 style = Object.assign({}, style, conditionalStyle);
@@ -19274,7 +19650,7 @@
                             const iconBoxWidth = iconStyle ? iconWidth + 2 * MIN_CF_ICON_MARGIN : 0;
                             const contentWidth = iconBoxWidth + textWidth;
                             const isOverflowing = contentWidth > cols[colNumber].size || fontSizeMap[fontsize] > row.size;
-                            if (isOverflowing && typeof cell.value === "number") {
+                            if (isOverflowing && cell.evaluated.type === CellValueType.number) {
                                 align = align !== "center" ? "left" : align;
                             }
                             if (iconStyle) {
@@ -19355,7 +19731,7 @@
                                 style,
                                 align,
                                 clipRect,
-                                error: cell.error,
+                                error: cell.evaluated.type === CellValueType.error ? cell.evaluated.error : undefined,
                                 image: iconStyle
                                     ? {
                                         type: "icon",
@@ -19398,7 +19774,7 @@
                     let text, textWidth, style, align, border;
                     style = refCell ? this.getters.getCellStyle(refCell) : null;
                     if (refCell || borderBottomRight || borderTopLeft) {
-                        text = refCell ? this.getters.getCellText(refCell, activeSheetId, showFormula) : "";
+                        text = refCell ? this.getters.getCellText(refCell, showFormula) : "";
                         textWidth = refCell ? this.getters.getTextWidth(refCell) : null;
                         const conditionalStyle = this.getters.getConditionalStyle(merge.topLeft.col, merge.topLeft.row);
                         if (conditionalStyle) {
@@ -19431,7 +19807,10 @@
                     /** alignment of a number cell should be put to left once the text overflows from the cell */
                     const contentWidth = iconBoxWidth + textWidth;
                     align =
-                        text && typeof refCell.value === "number" && contentWidth > width && align !== "center"
+                        text &&
+                            (refCell === null || refCell === void 0 ? void 0 : refCell.evaluated.type) === CellValueType.number &&
+                            contentWidth > width &&
+                            align !== "center"
                             ? "left"
                             : align;
                     const clipRect = iconStyle
@@ -19451,7 +19830,9 @@
                         style,
                         align,
                         clipRect,
-                        error: refCell ? refCell.error : undefined,
+                        error: refCell && refCell.evaluated.type === CellValueType.error
+                            ? refCell.evaluated.error
+                            : undefined,
                         image: iconStyle
                             ? {
                                 type: "icon",
@@ -19471,6 +19852,7 @@
         "getColIndex",
         "getRowIndex",
         "getRect",
+        "isVisibleInViewport",
         "getEdgeScrollCol",
         "getEdgeScrollRow",
     ];
@@ -20273,33 +20655,6 @@
     SelectionMultiUserPlugin.modes = ["normal", "readonly"];
 
     class SortPlugin extends UIPlugin {
-        constructor() {
-            super(...arguments);
-            this.headerTypeFromCell = (cell) => {
-                var _a;
-                switch (cell.type) {
-                    case CellType.formula:
-                        if (typeof cell.value === "number" && ((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT))) {
-                            // date
-                            return CellType.number;
-                        }
-                        else {
-                            switch (typeof cell.value) {
-                                case "boolean":
-                                    return "boolean";
-                                case "number":
-                                    return CellType.number;
-                                default:
-                                    return CellType.text;
-                            }
-                        }
-                    case CellType.invalidFormula:
-                        return CellType.text;
-                    default:
-                        return cell.type;
-                }
-            };
-        }
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "SORT_CELLS":
@@ -20446,12 +20801,12 @@
                     for (let r = top; r <= bottom; r++) {
                         const [mainCellCol, mainCellRow] = this.getters.getMainCell(sheetId, c, r);
                         cell = this.getters.getCell(sheetId, mainCellCol, mainCellRow);
-                        line.push(cell ? this.getters.getCellText(cell, sheetId) : "");
+                        line.push((cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
                     }
                 }
             }
             else {
-                const values = mapCellsInZone(expandedZone, sheet, (cell) => this.getters.getCellText(cell, sheetId), "");
+                const values = mapCellsInZone(expandedZone, sheet, (cell) => cell.formattedValue, "");
                 line = values.flat();
             }
             return line.some((item) => item !== "");
@@ -20567,16 +20922,16 @@
             const { left, right, top, bottom } = zone;
             if (bottom - top + 1 === 1)
                 return false;
-            let cells = mapCellsInZone({ left, right, top: top, bottom: top + 2 * deltaY - 1 }, sheet, this.headerTypeFromCell, CellType.empty, deltaX, deltaY);
+            let cells = mapCellsInZone({ left, right, top: top, bottom: top + 2 * deltaY - 1 }, sheet, (cell) => cell.evaluated.type, CellValueType.empty, deltaX, deltaY);
             // ignore left-most column when topLeft cell is empty
             const topLeft = cells[0][0];
-            if (topLeft === CellType.empty) {
+            if (topLeft === CellValueType.empty) {
                 cells = cells.slice(1);
             }
-            if (cells.some((item) => item[0] === CellType.empty)) {
+            if (cells.some((item) => item[0] === CellValueType.empty)) {
                 return false;
             }
-            else if (cells.some((item) => item[1] !== CellType.empty && item[0] !== item[1])) {
+            else if (cells.some((item) => item[1] !== CellValueType.empty && item[0] !== item[1])) {
                 return true;
             }
             else {
@@ -20585,13 +20940,18 @@
         }
         sortCellsList(list, sortDirection) {
             const cellsIndex = list.map((val, index) => ({ index, val }));
-            const sortingCellsIndexes = cellsIndex.filter((x) => !(x.val == undefined || x.val.value === ""));
-            const emptyCellsIndexes = cellsIndex.filter((x) => x.val == undefined || x.val.value === "");
+            const sortingCellsIndexes = cellsIndex.filter((x) => !(x.val == undefined || x.val.evaluated.value === ""));
+            const emptyCellsIndexes = cellsIndex.filter((x) => x.val == undefined || x.val.evaluated.value === "");
             const inverse = sortDirection === "descending" ? -1 : 1;
-            const sortTypes = [CellType.number, CellType.text, "boolean"];
+            const sortTypes = [
+                CellValueType.number,
+                CellValueType.error,
+                CellValueType.text,
+                CellValueType.boolean,
+            ];
             const convertCell = (cell) => {
-                let type = this.headerTypeFromCell(cell);
-                return { type: type, value: cell.value };
+                let type = cell.evaluated.type;
+                return { type: type, value: cell.evaluated.value };
             };
             const sortingTypeValueMapIndexes = sortingCellsIndexes.map((item) => {
                 return {
@@ -20602,7 +20962,7 @@
             const sortedIndex = sortingTypeValueMapIndexes.sort((left, right) => {
                 let typeOrder = sortTypes.indexOf(left.val.type) - sortTypes.indexOf(right.val.type);
                 if (typeOrder === 0) {
-                    if (left.val.type === "text") {
+                    if (left.val.type === CellValueType.text || left.val.type === CellValueType.error) {
                         typeOrder = left.val.value.localeCompare(right.val.value);
                     }
                     else
@@ -20646,18 +21006,18 @@
                         value: "",
                     };
                     if (cell) {
-                        let content = this.getters.getCellValue(cell, sheetId, true) || "";
-                        if (cell.type === CellType.formula) {
+                        let content = cell.content;
+                        if (isFormula(cell)) {
                             const position = this.getters.getCellPosition(cell.id);
                             const offsetY = newRow - position.row;
                             // we only have a vertical offset
                             const ranges = this.getters.createAdaptedRanges(cell.dependencies, 0, offsetY, sheetId);
-                            content = this.getters.buildFormulaContent(sheetId, cell.formula.text, ranges);
+                            content = this.getters.buildFormulaContent(sheetId, cell.normalizedText, ranges);
                         }
                         newCellValues.style = cell.style;
                         newCellValues.content = content;
                         newCellValues.format = cell.format;
-                        newCellValues.value = cell.value;
+                        newCellValues.value = cell.evaluated.value;
                     }
                     this.dispatch("UPDATE_CELL", newCellValues);
                 }
@@ -20770,13 +21130,21 @@
             return width;
         }
         getTextWidth(cell) {
-            const text = this.getters.getCellText(cell, this.getters.getActiveSheetId(), this.getters.shouldShowFormulas());
+            const text = this.getters.getCellText(cell, this.getters.shouldShowFormulas());
             return computeTextWidth(this.ctx, text, this.getters.getCellStyle(cell));
         }
         getCellHeight(cell) {
             const style = this.getters.getCellStyle(cell);
             const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
             return fontSizeMap[sizeInPt];
+        }
+        getCellText(cell, showFormula = false) {
+            if (showFormula && (isFormula(cell) || cell.evaluated.type === CellValueType.error)) {
+                return cell.content;
+            }
+            else {
+                return cell.formattedValue;
+            }
         }
         // ---------------------------------------------------------------------------
         // Grid manipulation
@@ -20821,7 +21189,7 @@
             }
         }
     }
-    SheetUIPlugin.getters = ["getCellWidth", "getCellHeight", "getTextWidth"];
+    SheetUIPlugin.getters = ["getCellWidth", "getCellHeight", "getTextWidth", "getCellText"];
 
     /**
      * Viewport plugin.
@@ -23298,6 +23666,26 @@
         }
         return formatId;
     }
+    /**
+     * Add a relation to the given file and return its id.
+     */
+    function addRelsToFile(relsFiles, path, rel) {
+        let relsFile = relsFiles.find((file) => file.path === path);
+        // the id is a one-based int casted as string
+        let id;
+        if (!relsFile) {
+            id = "rId1";
+            relsFiles.push({ path, rels: [{ ...rel, id }] });
+        }
+        else {
+            id = `rId${(relsFile.rels.length + 1).toString()}`;
+            relsFile.rels.push({
+                ...rel,
+                id,
+            });
+        }
+        return id;
+    }
     function pushElement(property, propertyList) {
         for (let [key, value] of Object.entries(propertyList)) {
             if (JSON.stringify(value) === JSON.stringify(property)) {
@@ -23947,6 +24335,7 @@
                     cfNodes.push(addIconSetRule(cf, cf.rule));
                     break;
                 default:
+                    // @ts-ignore Typescript knows it will never happen at compile time
                     console.warn(`Conditional formatting ${cf.rule.type} not implemented`);
                     break;
             }
@@ -24438,6 +24827,10 @@
                     if (cell.formula) {
                         ({ attrs: additionalAttrs, node: cellNode } = addFormula(cell.formula));
                     }
+                    else if (cell.content && isMarkdownLink(cell.content)) {
+                        const { label } = parseMarkdownLink(cell.content);
+                        ({ attrs: additionalAttrs, node: cellNode } = addContent(label, construct.sharedStrings));
+                    }
                     else if (cell.content && cell.content !== "") {
                         ({ attrs: additionalAttrs, node: cellNode } = addContent(cell.content, construct.sharedStrings));
                     }
@@ -24461,6 +24854,43 @@
     <sheetData>
       ${joinXmlNodes(rowNodes)}
     </sheetData>
+  `;
+    }
+    function addHyperlinks(construct, data, sheetIndex) {
+        var _a;
+        const sheet = data.sheets[sheetIndex];
+        const cells = sheet.cells;
+        const linkNodes = [];
+        for (const xc in cells) {
+            const content = (_a = cells[xc]) === null || _a === void 0 ? void 0 : _a.content;
+            if (content && isMarkdownLink(content)) {
+                const { label, url } = parseMarkdownLink(content);
+                if (isMarkdownSheetLink(content)) {
+                    const sheetId = parseSheetLink(url);
+                    const sheet = data.sheets.find((sheet) => sheet.id === sheetId);
+                    linkNodes.push(escapeXml /*xml*/ `
+          <hyperlink display="${label}" location="${sheet.name}!A1" ref="${xc}"/>
+        `);
+                }
+                else {
+                    const linkRelId = addRelsToFile(construct.relsFiles, `xl/worksheets/_rels/sheet${sheetIndex}.xml.rels`, {
+                        target: url,
+                        type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+                        targetMode: "External",
+                    });
+                    linkNodes.push(escapeXml /*xml*/ `
+          <hyperlink r:id="${linkRelId}" ref="${xc}"/>
+        `);
+                }
+            }
+        }
+        if (!linkNodes.length) {
+            return escapeXml ``;
+        }
+        return escapeXml /*xml*/ `
+    <hyperlinks>
+      ${joinXmlNodes(linkNodes)}
+    </hyperlinks>
   `;
     }
     function addMerges(merges) {
@@ -24564,6 +24994,7 @@
         ${addRows(construct, data, sheet)}
         ${addMerges(sheet.merges)}
         ${joinXmlNodes(addConditionalFormatting(construct.dxfs, sheet.conditionalFormats))}
+        ${addHyperlinks(construct, data, sheetIndex)}
         ${drawingNode}
       </worksheet>
     `;
@@ -24620,6 +25051,9 @@
                     ["Target", rel.target],
                     ["Type", rel.type],
                 ];
+                if (rel.targetMode) {
+                    attributes.push(["TargetMode", rel.targetMode]);
+                }
                 relationNodes.push(escapeXml /*xml*/ `
         <Relationship ${formatAttributes(attributes)} />
       `);
@@ -24661,26 +25095,6 @@
     </Relationships>
   `;
         return createXMLFile(parseXML(xml), "_rels/.rels");
-    }
-    /**
-     * Add a relation to the given file and return its id.
-     */
-    function addRelsToFile(relsFiles, path, rel) {
-        let relsFile = relsFiles.find((file) => file.path === path);
-        // the id is a one-based int casted as string
-        let id;
-        if (!relsFile) {
-            id = "rId1";
-            relsFiles.push({ path, rels: [{ ...rel, id }] });
-        }
-        else {
-            id = `rId${(relsFile.rels.length + 1).toString()}`;
-            relsFile.rels.push({
-                ...rel,
-                id,
-            });
-        }
-        return id;
     }
 
     var Status;
@@ -25026,19 +25440,122 @@
         }
     }
 
-    const { xml: xml$h, css: css$g } = owl.tags;
-    const { useExternalListener: useExternalListener$3, useRef: useRef$5 } = owl.hooks;
-    const MENU_WIDTH = 200;
-    const MENU_ITEM_HEIGHT = 32;
-    const SEPARATOR_BORDER_WIDTH = 1;
-    const SEPARATOR_PADDING = 5;
-    const SEPARATOR_HEIGHT = SEPARATOR_BORDER_WIDTH + 2 * SEPARATOR_PADDING;
+    const { useComponent, useState: useState$e, onPatched, useRef: useRef$7, onMounted: onMounted$1 } = owl.hooks;
+    function spreadsheetPosition() {
+        const spreadsheetElement = document.querySelector(".o-spreadsheet");
+        if (spreadsheetElement) {
+            const { top, left } = spreadsheetElement === null || spreadsheetElement === void 0 ? void 0 : spreadsheetElement.getBoundingClientRect();
+            return { top, left };
+        }
+        return { top: 0, left: 0 };
+    }
+    /**
+     * Return the component (or ref's component) top left position (in pixels) relative
+     * to the upper left corner of the spreadsheet.
+     *
+     * Note: when used with a <Portal/> component, it will
+     * return the portal position, not the teleported position.
+     */
+    function useAbsolutePosition(ref) {
+        const position = useState$e({ x: 0, y: 0 });
+        const component = useComponent();
+        const { top: spreadsheetTop, left: spreadsheetLeft } = spreadsheetPosition();
+        function updateElPosition() {
+            const el = (ref === null || ref === void 0 ? void 0 : ref.el) || component.el;
+            const { top, left } = el.getBoundingClientRect();
+            const x = left - spreadsheetLeft;
+            const y = top - spreadsheetTop;
+            if (x !== position.x || y !== position.y) {
+                position.x = x;
+                position.y = y;
+            }
+        }
+        onMounted$1(updateElPosition);
+        onPatched(updateElPosition);
+        return position;
+    }
+
+    const { Component: Component$i, tags: tags$3 } = owl__namespace;
+    const { Portal } = owl__namespace.misc;
+    const { xml: xml$l } = tags$3;
+    const TEMPLATE$j = xml$l /* xml */ `
+  <Portal target="'.o-spreadsheet'">
+    <div t-att-style="style">
+      <t t-slot="default"/>
+    </div>
+  </Portal>
+`;
+    class Popover extends Component$i {
+        constructor() {
+            super(...arguments);
+            this.getters = this.env.getters;
+        }
+        get style() {
+            const horizontalPosition = `left:${this.horizontalPosition()}`;
+            const verticalPosition = `top:${this.verticalPosition()}`;
+            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
+            return `
+      position: absolute;
+      z-index: 5;
+      ${verticalPosition}px;
+      ${horizontalPosition}px;
+      ${height}px;
+      width:${this.props.childWidth}px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
+    `;
+        }
+        get viewportDimension() {
+            return this.getters.getViewportDimension();
+        }
+        get shouldRenderRight() {
+            const { x } = this.props.position;
+            return x + this.props.childWidth < this.viewportDimension.width;
+        }
+        get shouldRenderBottom() {
+            const { y } = this.props.position;
+            return y + this.props.childHeight < this.viewportDimension.height + TOPBAR_HEIGHT;
+        }
+        horizontalPosition() {
+            const { x } = this.props.position;
+            if (this.shouldRenderRight) {
+                return x;
+            }
+            return x - this.props.childWidth - this.props.flipHorizontalOffset;
+        }
+        verticalPosition() {
+            const { y } = this.props.position;
+            if (this.shouldRenderBottom) {
+                return y;
+            }
+            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
+        }
+    }
+    Popover.template = TEMPLATE$j;
+    Popover.components = { Portal };
+    Popover.defaultProps = {
+        flipHorizontalOffset: 0,
+        flipVerticalOffset: 0,
+        verticalOffset: 0,
+        marginTop: 0,
+    };
+
+    const { xml: xml$k, css: css$j } = owl.tags;
+    const { useExternalListener: useExternalListener$3, useRef: useRef$6 } = owl.hooks;
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
-    const TEMPLATE$f = xml$h /* xml */ `
-    <div>
-      <div class="o-menu" t-att-style="style" t-on-scroll="onScroll" t-on-wheel.stop="">
+    const TEMPLATE$i = xml$k /* xml */ `
+    <Popover
+      position="props.position"
+      childWidth="${MENU_WIDTH}"
+      childHeight="menuHeight"
+      flipHorizontalOffset="popover.flipHorizontalOffset"
+      flipVerticalOffset="popover.flipVerticalOffset"
+      marginTop="popover.marginTop"
+      >
+      <div t-ref="menu" class="o-menu" t-on-scroll="onScroll" t-on-wheel.stop="" t-on-click.stop="">
         <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
           <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
           <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
@@ -25070,16 +25587,10 @@
         depth="props.depth + 1"
         t-ref="subMenuRef"
         t-on-close="subMenu.isOpen=false"/>
-    </div>`;
-    const CSS$e = css$g /* scss */ `
+    </Popover>`;
+    const CSS$h = css$j /* scss */ `
   .o-menu {
-    position: absolute;
-    width: ${MENU_WIDTH}px;
     background-color: white;
-    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-    font-size: 13px;
-    overflow-y: auto;
-    z-index: 10;
     padding: 5px 0px;
     .o-menu-item {
       display: flex;
@@ -25118,16 +25629,17 @@
     }
 
     .o-separator {
-      border-bottom: ${SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
-      margin-top: ${SEPARATOR_PADDING}px;
-      margin-bottom: ${SEPARATOR_PADDING}px;
+      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
+      margin-top: ${MENU_SEPARATOR_PADDING}px;
+      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
     }
   }
 `;
     class Menu extends owl.Component {
         constructor() {
             super(...arguments);
-            this.subMenuRef = useRef$5("subMenuRef");
+            this.position = useAbsolutePosition(useRef$6("menu"));
+            this.subMenuRef = useRef$6("subMenuRef");
             useExternalListener$3(window, "click", this.onClick);
             useExternalListener$3(window, "contextmenu", this.onContextMenu);
             this.subMenu = owl.useState({
@@ -25142,69 +25654,37 @@
             position.y -= this.subMenu.scrollOffset || 0;
             return position;
         }
-        get renderRight() {
-            const { x, width } = this.props.position;
-            return x < width - MENU_WIDTH;
-        }
-        get renderBottom() {
-            const { y, height } = this.props.position;
-            return y < height - this.menuHeight;
-        }
         get menuHeight() {
-            const separators = this.props.menuItems.filter((m) => m.separator);
-            const others = this.props.menuItems;
-            return MENU_ITEM_HEIGHT * others.length + separators.length * SEPARATOR_HEIGHT;
+            return this.menuComponentHeight(this.props.menuItems);
         }
-        get style() {
-            const { x, height } = this.props.position;
-            const hStyle = `left:${this.renderRight ? x : x - MENU_WIDTH}`;
-            const vStyle = `top:${this.menuVerticalPosition()}`;
-            const heightStyle = `max-height:${height}`;
-            return `${vStyle}px;${hStyle}px;${heightStyle}px`;
+        get subMenuHeight() {
+            return this.menuComponentHeight(this.subMenu.menuItems);
         }
-        activateMenu(menu) {
-            menu.action(this.env);
+        get popover() {
+            const isRoot = this.props.depth === 1;
+            return {
+                // some margin between the header and the component
+                marginTop: HEADER_HEIGHT + 6 + TOPBAR_HEIGHT,
+                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
+                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
+            };
+        }
+        async activateMenu(menu) {
+            const result = await menu.action(this.env);
             this.close();
+            this.trigger(`menu-clicked`, result);
         }
         close() {
             this.subMenu.isOpen = false;
             this.trigger("close");
         }
-        menuVerticalPosition() {
-            const { y, height } = this.props.position;
-            if (this.renderBottom) {
-                return y;
-            }
-            return Math.max(MENU_ITEM_HEIGHT, y - Math.min(this.menuHeight, height));
-        }
-        subMenuHorizontalPosition() {
-            const { x, width } = this.props.position;
-            const spaceRight = x + 2 * MENU_WIDTH < width;
-            if (this.renderRight && spaceRight) {
-                return x + MENU_WIDTH;
-            }
-            else if (this.renderRight && !spaceRight) {
-                return x - MENU_WIDTH;
-            }
-            return x - (this.props.depth + 1) * MENU_WIDTH;
-        }
-        subMenuVerticalPosition(subMenuItems, position) {
-            const { height } = this.props.position;
-            const y = this.menuVerticalPosition() + this.menuItemVerticalOffset(position);
-            const subMenuHeight = this.computeMenuHeight(subMenuItems);
-            const spaceBelow = y < height - subMenuHeight;
-            if (spaceBelow) {
-                return y;
-            }
-            return Math.max(MENU_ITEM_HEIGHT, y - subMenuHeight + MENU_ITEM_HEIGHT);
-        }
         /**
          * Return the number of pixels between the top of the menu
          * and the menu item at a given index.
          */
-        menuItemVerticalOffset(index) {
-            const menusAbove = this.props.menuItems.slice(0, index);
-            return this.computeMenuHeight(menusAbove);
+        subMenuVerticalPosition(position) {
+            const menusAbove = this.props.menuItems.slice(0, position);
+            return this.menuComponentHeight(menusAbove) + this.position.y;
         }
         onClick(ev) {
             // Don't close a root menu when clicked to open the submenus.
@@ -25213,20 +25693,21 @@
             }
             this.close();
         }
-        /**
-         * Return the total height (in pixels) needed for some
-         * menu items
-         */
-        computeMenuHeight(menuItems) {
-            const separatorCount = menuItems.filter((menu) => menu.separator).length;
-            return menuItems.length * MENU_ITEM_HEIGHT + separatorCount * SEPARATOR_HEIGHT;
-        }
         onContextMenu(ev) {
             // Don't close a root menu when clicked to open the submenus.
             if (this.el && isChildEvent(this.el, ev)) {
                 return;
             }
             this.subMenu.isOpen = false;
+        }
+        /**
+         * Return the total height (in pixels) needed for some
+         * menu items
+         */
+        menuComponentHeight(menuItems) {
+            const separators = menuItems.filter((m) => m.separator);
+            const others = menuItems;
+            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
         }
         getName(menu) {
             return cellMenuRegistry.getName(menu, this.env);
@@ -25258,15 +25739,13 @@
          */
         openSubMenu(menu, position) {
             this.closeSubMenus();
-            this.subMenu.isOpen = true;
-            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
-            const { width, height } = this.props.position;
+            const y = this.subMenuVerticalPosition(position);
             this.subMenu.position = {
-                x: this.subMenuHorizontalPosition(),
-                y: this.subMenuVerticalPosition(this.subMenu.menuItems, position),
-                height,
-                width,
+                x: this.position.x + MENU_WIDTH,
+                y: y - (this.subMenu.scrollOffset || 0),
             };
+            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
+            this.subMenu.isOpen = true;
         }
         onClickMenu(menu, position) {
             if (this.isEnabled(menu)) {
@@ -25289,20 +25768,20 @@
             }
         }
     }
-    Menu.template = TEMPLATE$f;
-    Menu.components = { Menu };
-    Menu.style = CSS$e;
+    Menu.template = TEMPLATE$i;
+    Menu.components = { Menu, Popover };
+    Menu.style = CSS$h;
     Menu.defaultProps = {
         depth: 1,
     };
 
-    const { Component: Component$e } = owl__namespace;
-    const { xml: xml$g, css: css$f } = owl__namespace.tags;
-    const { useState: useState$c } = owl__namespace.hooks;
+    const { Component: Component$h } = owl__namespace;
+    const { xml: xml$j, css: css$i } = owl__namespace.tags;
+    const { useState: useState$d } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$e = xml$g /* xml */ `
+    const TEMPLATE$h = xml$j /* xml */ `
   <div class="o-spreadsheet-bottom-bar">
     <div class="o-sheet-item o-add-sheet" t-on-click="addSheet">${PLUS}</div>
     <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
@@ -25325,7 +25804,7 @@
           menuItems="menuState.menuItems"
           t-on-close="menuState.isOpen=false"/>
   </div>`;
-    const CSS$d = css$f /* scss */ `
+    const CSS$g = css$i /* scss */ `
   .o-spreadsheet-bottom-bar {
     background-color: ${BACKGROUND_GRAY_COLOR};
     padding-left: ${HEADER_WIDTH}px;
@@ -25405,11 +25884,11 @@
     }
   }
 `;
-    class BottomBar extends Component$e {
+    class BottomBar extends Component$h {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.menuState = useState$c({ isOpen: false, position: null, menuItems: [] });
+            this.menuState = useState$d({ isOpen: false, position: null, menuItems: [] });
         }
         mounted() {
             this.focusSheet();
@@ -25459,12 +25938,7 @@
             const y = target.offsetTop;
             this.menuState.isOpen = true;
             this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
-            this.menuState.position = {
-                x,
-                y,
-                height: 400,
-                width: this.el.clientWidth,
-            };
+            this.menuState.position = { x, y };
         }
         onIconClick(sheet, ev) {
             if (this.getters.getActiveSheetId() !== sheet) {
@@ -25484,8 +25958,8 @@
             this.openContextMenu(ev.currentTarget, sheetMenuRegistry);
         }
     }
-    BottomBar.template = TEMPLATE$e;
-    BottomBar.style = CSS$d;
+    BottomBar.template = TEMPLATE$h;
+    BottomBar.style = CSS$g;
     BottomBar.components = { Menu };
 
     function startDnd(onMouseMove, onMouseUp) {
@@ -25568,13 +26042,13 @@
         startDnd(onMouseMove, onMouseUp);
     }
 
-    const { Component: Component$d } = owl__namespace;
-    const { xml: xml$f, css: css$e } = owl__namespace.tags;
-    const { useState: useState$b } = owl__namespace.hooks;
+    const { Component: Component$g } = owl__namespace;
+    const { xml: xml$i, css: css$h } = owl__namespace.tags;
+    const { useState: useState$c } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Autofill
     // -----------------------------------------------------------------------------
-    const TEMPLATE$d = xml$f /* xml */ `
+    const TEMPLATE$g = xml$i /* xml */ `
   <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
     <div class="o-autofill-handler" t-att-style="styleHandler"/>
     <t t-set="tooltip" t-value="getTooltip()"/>
@@ -25583,7 +26057,7 @@
     </div>
   </div>
 `;
-    const CSS$c = css$e /* scss */ `
+    const CSS$f = css$h /* scss */ `
   .o-autofill {
     height: 6px;
     width: 6px;
@@ -25612,10 +26086,10 @@
     }
   }
 `;
-    class Autofill extends Component$d {
+    class Autofill extends Component$g {
         constructor() {
             super(...arguments);
-            this.state = useState$b({
+            this.state = useState$c({
                 position: { left: 0, top: 0 },
                 handler: false,
             });
@@ -25674,27 +26148,26 @@
             this.env.dispatch("AUTOFILL_AUTO");
         }
     }
-    Autofill.template = TEMPLATE$d;
-    Autofill.style = CSS$c;
-    class TooltipComponent extends Component$d {
+    Autofill.template = TEMPLATE$g;
+    Autofill.style = CSS$f;
+    class TooltipComponent extends Component$g {
     }
-    TooltipComponent.template = xml$f /* xml */ `
+    TooltipComponent.template = xml$i /* xml */ `
     <div t-esc="props.content"/>
   `;
 
-    const { Component: Component$c } = owl__namespace;
-    const { css: css$d, xml: xml$e } = owl__namespace.tags;
-    const TEMPLATE$c = xml$e /* xml */ `
+    const { Component: Component$f } = owl__namespace;
+    const { css: css$g, xml: xml$h } = owl__namespace.tags;
+    const TEMPLATE$f = xml$h /* xml */ `
   <div>
     <div
       class="o-client-tag"
-      t-transition="fade"
       t-att-style="tagStyle"
       t-esc="props.name"
     />
   </div>
 `;
-    const CSS$b = css$d /* scss */ `
+    const CSS$e = css$g /* scss */ `
   .o-client-tag {
     position: absolute;
     border-top-left-radius: 4px;
@@ -25704,15 +26177,8 @@
     opacity: 0;
     pointer-events: none;
   }
-  .o-client-tag.fade-enter {
-    opacity: 1;
-  }
-
-  .o-client-tag.fade-enter-to {
-    transition: opacity 0.3s 1s;
-  }
 `;
-    class ClientTag extends Component$c {
+    class ClientTag extends Component$f {
         get tagStyle() {
             const { col, row, color } = this.props;
             const viewport = this.env.getters.getActiveSnappedViewport();
@@ -25721,11 +26187,11 @@
             return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
         }
     }
-    ClientTag.template = TEMPLATE$c;
-    ClientTag.style = CSS$b;
+    ClientTag.template = TEMPLATE$f;
+    ClientTag.style = CSS$e;
 
-    const { Component: Component$b, useState: useState$a } = owl__namespace;
-    const { xml: xml$d, css: css$c } = owl__namespace.tags;
+    const { Component: Component$e, useState: useState$b } = owl__namespace;
+    const { xml: xml$g, css: css$f } = owl__namespace.tags;
     const functions$1 = functionRegistry.content;
     const providerRegistry = new Registry();
     providerRegistry.add("functions", () => {
@@ -25739,7 +26205,7 @@
     // -----------------------------------------------------------------------------
     // Autocomplete DropDown component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$b = xml$d /* xml */ `
+    const TEMPLATE$e = xml$g /* xml */ `
   <div t-att-class="{'o-autocomplete-dropdown':state.values.length}"
        t-att-style="state.values.length > 0 ? props.borderStyle : null"
     >
@@ -25750,7 +26216,7 @@
         </div>
     </t>
   </div>`;
-    const CSS$a = css$c /* scss */ `
+    const CSS$d = css$f /* scss */ `
   .o-autocomplete-dropdown {
     pointer-events: auto;
     background-color: #fff;
@@ -25775,10 +26241,10 @@
     }
   }
 `;
-    class TextValueProvider extends Component$b {
+    class TextValueProvider extends Component$e {
         constructor() {
             super(...arguments);
-            this.state = useState$a({
+            this.state = useState$b({
                 values: [],
                 selectedIndex: 0,
             });
@@ -25825,8 +26291,8 @@
             }
         }
     }
-    TextValueProvider.template = TEMPLATE$b;
-    TextValueProvider.style = CSS$a;
+    TextValueProvider.template = TEMPLATE$e;
+    TextValueProvider.style = CSS$d;
 
     class ContentEditableHelper {
         constructor(el) {
@@ -25977,13 +26443,13 @@
         REPEATABLE: _lt("repeatable"),
     };
 
-    const { Component: Component$a } = owl__namespace;
-    const { xml: xml$c, css: css$b } = owl__namespace.tags;
-    const { useState: useState$9 } = owl__namespace.hooks;
+    const { Component: Component$d } = owl__namespace;
+    const { xml: xml$f, css: css$e } = owl__namespace.tags;
+    const { useState: useState$a } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Formula Assistant component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$a = xml$c /* xml */ `
+    const TEMPLATE$d = xml$f /* xml */ `
   <div class="o-formula-assistant-container"
        t-att-style="props.borderStyle"
        t-att-class="{
@@ -26036,7 +26502,7 @@
     </div>
   </div>
 `;
-    const CSS$9 = css$b /* scss */ `
+    const CSS$c = css$e /* scss */ `
   .o-formula-assistant {
     white-space: normal;
     background-color: #fff;
@@ -26084,10 +26550,10 @@
     opacity: 0.3;
   }
 `;
-    class FunctionDescriptionProvider extends Component$a {
+    class FunctionDescriptionProvider extends Component$d {
         constructor() {
             super(...arguments);
-            this.assistantState = useState$9({
+            this.assistantState = useState$a({
                 allowCellSelectionBehind: false,
             });
             this.timeOutId = 0;
@@ -26110,12 +26576,12 @@
             }, 2000);
         }
     }
-    FunctionDescriptionProvider.template = TEMPLATE$a;
-    FunctionDescriptionProvider.style = CSS$9;
+    FunctionDescriptionProvider.template = TEMPLATE$d;
+    FunctionDescriptionProvider.style = CSS$c;
 
-    const { Component: Component$9 } = owl__namespace;
-    const { useRef: useRef$4, useState: useState$8 } = owl__namespace.hooks;
-    const { xml: xml$b, css: css$a } = owl__namespace.tags;
+    const { Component: Component$c } = owl__namespace;
+    const { useRef: useRef$5, useState: useState$9 } = owl__namespace.hooks;
+    const { xml: xml$e, css: css$d } = owl__namespace.tags;
     const functions = functionRegistry.content;
     const ASSISTANT_WIDTH = 300;
     const FunctionColor = "#4a4e4d";
@@ -26135,7 +26601,7 @@
         RIGHT_PAREN: FunctionColor,
         COMMA: FunctionColor,
     };
-    const TEMPLATE$9 = xml$b /* xml */ `
+    const TEMPLATE$c = xml$e /* xml */ `
 <div class="o-composer-container">
   <div class="o-composer"
     t-att-style="props.inputStyle"
@@ -26172,7 +26638,7 @@
   </div>
 </div>
   `;
-    const CSS$8 = css$a /* scss */ `
+    const CSS$b = css$d /* scss */ `
   .o-composer-container {
     padding: 0;
     margin: 0;
@@ -26208,23 +26674,23 @@
     box-shadow: 0px 0px 4px 5px rgba(60, 64, 67, 0.35);
   }
 `;
-    class Composer extends Component$9 {
+    class Composer extends Component$c {
         constructor() {
             super(...arguments);
-            this.composerRef = useRef$4("o_composer");
-            this.autoCompleteRef = useRef$4("o_autocomplete_provider");
+            this.composerRef = useRef$5("o_composer");
+            this.autoCompleteRef = useRef$5("o_autocomplete_provider");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.composerState = useState$8({
+            this.composerState = useState$9({
                 positionStart: 0,
                 positionEnd: 0,
             });
-            this.autoCompleteState = useState$8({
+            this.autoCompleteState = useState$9({
                 showProvider: false,
                 provider: "functions",
                 search: "",
             });
-            this.functionDescriptionState = useState$8({
+            this.functionDescriptionState = useState$9({
                 showDescription: false,
                 functionName: "",
                 functionDescription: {},
@@ -26588,20 +27054,20 @@
             this.processTokenAtCursor();
         }
     }
-    Composer.template = TEMPLATE$9;
-    Composer.style = CSS$8;
+    Composer.template = TEMPLATE$c;
+    Composer.style = CSS$b;
     Composer.components = { TextValueProvider, FunctionDescriptionProvider };
     Composer.defaultProps = {
         inputStyle: "",
         focus: "inactive",
     };
 
-    const { Component: Component$8 } = owl__namespace;
-    const { useState: useState$7 } = owl__namespace.hooks;
-    const { xml: xml$a, css: css$9 } = owl__namespace.tags;
+    const { Component: Component$b } = owl__namespace;
+    const { useState: useState$8 } = owl__namespace.hooks;
+    const { xml: xml$d, css: css$c } = owl__namespace.tags;
     const SCROLLBAR_WIDTH = 14;
     const SCROLLBAR_HIGHT = 15;
-    const TEMPLATE$8 = xml$a /* xml */ `
+    const TEMPLATE$b = xml$d /* xml */ `
   <div class="o-grid-composer" t-att-style="containerStyle">
     <Composer
       focus = "props.focus"
@@ -26613,7 +27079,7 @@
   </div>
 `;
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
-    const CSS$7 = css$9 /* scss */ `
+    const CSS$a = css$c /* scss */ `
   .o-grid-composer {
     z-index: 5;
     box-sizing: border-box;
@@ -26625,11 +27091,11 @@
      * This component is a composer which positions itself on the grid at the anchor cell.
      * It also applies the style of the cell to the composer input.
      */
-    class GridComposer extends Component$8 {
+    class GridComposer extends Component$b {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.composerState = useState$7({
+            this.composerState = useState$8({
                 rect: null,
                 delimitation: null,
             });
@@ -26658,8 +27124,8 @@
             // align style
             let textAlign = "left";
             if (!isFormula) {
-                const cell = this.getters.getActiveCell() || { type: "text" };
-                textAlign = style.align || cell.type === "number" ? "right" : "left";
+                const cell = this.getters.getActiveCell();
+                textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
             }
             return `
       left: ${left - 1}px;
@@ -26705,14 +27171,36 @@
             }
         }
     }
-    GridComposer.template = TEMPLATE$8;
-    GridComposer.style = CSS$7;
+    GridComposer.template = TEMPLATE$b;
+    GridComposer.style = CSS$a;
     GridComposer.components = { Composer };
 
-    const { useState: useState$6 } = owl__namespace;
-    const { xml: xml$9, css: css$8 } = owl.tags;
-    const { useRef: useRef$3 } = owl.hooks;
-    const TEMPLATE$7 = xml$9 /* xml */ `
+    const { Component: Component$a, tags: tags$2 } = owl__namespace;
+    const { xml: xml$c, css: css$b } = tags$2;
+    const TEMPLATE$a = xml$c /* xml */ `
+    <div class="o-error-tooltip"> 
+      <t t-esc="props.text"/>
+    </div>
+`;
+    const CSS$9 = css$b /* scss */ `
+  .o-error-tooltip {
+    position: absolute;
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    border-left: 3px solid red;
+    padding: 10px;
+  }
+`;
+    class ErrorToolTip extends Component$a {
+    }
+    ErrorToolTip.template = TEMPLATE$a;
+    ErrorToolTip.style = CSS$9;
+
+    const { useState: useState$7 } = owl__namespace;
+    const { xml: xml$b, css: css$a } = owl.tags;
+    const { useRef: useRef$4 } = owl.hooks;
+    const TEMPLATE$9 = xml$b /* xml */ `
 <div class="o-chart-container">
   <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
   <canvas t-att-style="canvasStyle" t-ref="graphContainer"/>
@@ -26724,7 +27212,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$6 = css$8 /* scss */ `
+    const CSS$8 = css$a /* scss */ `
   .o-chart-container {
     width: 100%;
     height: 100%;
@@ -26749,9 +27237,10 @@
     class ChartFigure extends owl.Component {
         constructor() {
             super(...arguments);
-            this.menuState = useState$6({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = useRef$3("graphContainer");
+            this.menuState = useState$7({ isOpen: false, position: null, menuItems: [] });
+            this.canvas = useRef$4("graphContainer");
             this.state = { background: BACKGROUND_CHART_COLOR };
+            this.position = useAbsolutePosition();
         }
         get canvasStyle() {
             return `background-color: ${this.state.background}`;
@@ -26844,20 +27333,18 @@
             this.menuState.isOpen = true;
             this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
             this.menuState.position = {
-                x,
-                y,
-                height: 400,
-                width: this.el.clientWidth,
+                x: this.position.x + x - MENU_WIDTH,
+                y: this.position.y + y,
             };
         }
     }
-    ChartFigure.template = TEMPLATE$7;
-    ChartFigure.style = CSS$6;
+    ChartFigure.template = TEMPLATE$9;
+    ChartFigure.style = CSS$8;
     ChartFigure.components = { Menu };
 
-    const { xml: xml$8, css: css$7 } = owl__namespace.tags;
-    const { useState: useState$5 } = owl__namespace;
-    const TEMPLATE$6 = xml$8 /* xml */ `<div>
+    const { xml: xml$a, css: css$9 } = owl__namespace.tags;
+    const { useState: useState$6 } = owl__namespace;
+    const TEMPLATE$8 = xml$a /* xml */ `<div>
     <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
         <div class="o-figure-wrapper"
              t-att-style="getStyle(info)"
@@ -26894,7 +27381,7 @@
     const BORDER_WIDTH = 1;
     const ACTIVE_BORDER_WIDTH = 2;
     const MIN_FIG_SIZE = 80;
-    const CSS$5 = css$7 /*SCSS*/ `
+    const CSS$7 = css$9 /*SCSS*/ `
   .o-figure-wrapper {
     overflow: hidden;
   }
@@ -26972,7 +27459,7 @@
         constructor() {
             super(...arguments);
             this.figureRegistry = figureRegistry;
-            this.dnd = useState$5({
+            this.dnd = useState$6({
                 figureId: "",
                 x: 0,
                 y: 0,
@@ -27124,14 +27611,14 @@
             }
         }
     }
-    FiguresContainer.template = TEMPLATE$6;
-    FiguresContainer.style = CSS$5;
+    FiguresContainer.template = TEMPLATE$8;
+    FiguresContainer.style = CSS$7;
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
-    const { Component: Component$7 } = owl__namespace;
-    const { xml: xml$7, css: css$6 } = owl__namespace.tags;
-    const TEMPLATE$5 = xml$7 /* xml */ `
+    const { Component: Component$9 } = owl__namespace;
+    const { xml: xml$9, css: css$8 } = owl__namespace.tags;
+    const TEMPLATE$7 = xml$9 /* xml */ `
     <div class="o-border"
         t-on-mousedown="onMouseDown"
         t-att-style="style"
@@ -27145,7 +27632,7 @@
         >
     </div>
 `;
-    const CSS$4 = css$6 /* scss */ `
+    const CSS$6 = css$8 /* scss */ `
   .o-border {
     position: absolute;
     &:hover {
@@ -27157,7 +27644,7 @@
     cursor: grabbing;
   }
 `;
-    class Border extends Component$7 {
+    class Border extends Component$9 {
         get style() {
             const isTop = ["n", "w", "e"].includes(this.props.orientation);
             const isLeft = ["n", "w", "s"].includes(this.props.orientation);
@@ -27187,12 +27674,12 @@
             this.trigger("move-highlight", { clientX: ev.clientX, clientY: ev.clientY });
         }
     }
-    Border.template = TEMPLATE$5;
-    Border.style = CSS$4;
+    Border.template = TEMPLATE$7;
+    Border.style = CSS$6;
 
-    const { Component: Component$6 } = owl__namespace;
-    const { xml: xml$6, css: css$5 } = owl__namespace.tags;
-    const TEMPLATE$4 = xml$6 /* xml */ `
+    const { Component: Component$8 } = owl__namespace;
+    const { xml: xml$8, css: css$7 } = owl__namespace.tags;
+    const TEMPLATE$6 = xml$8 /* xml */ `
     <div class="o-corner"
         t-on-mousedown="onMouseDown"
         t-att-style="style"
@@ -27206,7 +27693,7 @@
         >
     </div>
 `;
-    const CSS$3 = css$5 /* scss */ `
+    const CSS$5 = css$7 /* scss */ `
   .o-corner {
     position: absolute;
     height: 6px;
@@ -27229,7 +27716,7 @@
     cursor: grabbing;
   }
 `;
-    class Corner extends Component$6 {
+    class Corner extends Component$8 {
         constructor() {
             super(...arguments);
             this.isTop = this.props.orientation[0] === "n";
@@ -27251,12 +27738,12 @@
             this.trigger("resize-highlight", { isLeft: this.isLeft, isTop: this.isTop });
         }
     }
-    Corner.template = TEMPLATE$4;
-    Corner.style = CSS$3;
+    Corner.template = TEMPLATE$6;
+    Corner.style = CSS$5;
 
-    const { Component: Component$5 } = owl__namespace;
-    const { xml: xml$5 } = owl__namespace.tags;
-    const TEMPLATE$3 = xml$5 /* xml */ `
+    const { Component: Component$7 } = owl__namespace;
+    const { xml: xml$7 } = owl__namespace.tags;
+    const TEMPLATE$5 = xml$7 /* xml */ `
   <div class="o-highlight">
     <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
       <Corner
@@ -27277,7 +27764,7 @@
     </t>
   </div>
 `;
-    class Highlight extends Component$5 {
+    class Highlight extends Component$7 {
         constructor() {
             super(...arguments);
             this.highlightState = owl.useState({
@@ -27366,11 +27853,290 @@
             dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
         }
     }
-    Highlight.template = TEMPLATE$3;
+    Highlight.template = TEMPLATE$5;
     Highlight.components = {
         Corner,
         Border,
     };
+
+    const { Component: Component$6, tags: tags$1 } = owl__namespace;
+    const { xml: xml$6, css: css$6 } = tags$1;
+    const TEMPLATE$4 = xml$6 /* xml */ `
+  <div class="o-link-tool">
+    <t t-set="link" t-value="cell.link"/>
+    <a t-att-href="link.url" target="_blank" t-on-click.prevent="openLink" t-att-title="link.url">
+      <t t-esc="cell.urlRepresentation"/>
+    </a>
+    <span class="o-link-icon o-unlink" t-on-click="unlink" title="${LinkEditorTerms.Remove}">${UNLINK}</span>
+    <span class="o-link-icon o-edit-link" t-on-click="edit" title="${LinkEditorTerms.Edit}">${EDIT}</span>
+  </div>
+`;
+    const CSS$4 = css$6 /* scss */ `
+  .o-link-tool {
+    border
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    margin: 2px 10px 2px 10px;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    a {
+      flex-grow: 2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .o-link-icon {
+    float: right;
+    padding-left: 4%;
+    .o-icon {
+      height: 16px;
+    }
+  }
+  .o-link-icon.o-unlink .o-icon {
+    padding-top: 1px;
+    height: 14px;
+  }
+  .o-link-icon:hover {
+    cursor: pointer;
+    color: #000;
+  }
+`;
+    class LinkDisplay extends Component$6 {
+        constructor() {
+            super(...arguments);
+            this.getters = this.env.getters;
+        }
+        get cell() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.getters.getActiveSheetId();
+            const cell = this.getters.getCell(sheetId, col, row);
+            if (isLink(cell)) {
+                return cell;
+            }
+            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
+        }
+        openLink() {
+            this.cell.action(this.env);
+        }
+        edit() {
+            this.env.openLinkEditor();
+        }
+        unlink() {
+            const sheetId = this.getters.getActiveSheetId();
+            const [col, row] = this.getters.getPosition();
+            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
+            const style = this.cell.style;
+            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
+            this.env.dispatch("UPDATE_CELL", {
+                col: mainCol,
+                row: mainRow,
+                sheetId,
+                content: this.cell.link.label,
+                style: { ...style, textColor, underline: undefined },
+            });
+        }
+    }
+    LinkDisplay.template = TEMPLATE$4;
+    LinkDisplay.components = { Menu };
+    LinkDisplay.style = CSS$4;
+
+    const { Component: Component$5, tags, hooks: hooks$1, useState: useState$5 } = owl__namespace;
+    const { xml: xml$5, css: css$5 } = tags;
+    const { useRef: useRef$3 } = hooks$1;
+    const MENU_OFFSET_X = 320;
+    const MENU_OFFSET_Y = 100;
+    const PADDING = 10;
+    const TEMPLATE$3 = xml$5 /* xml */ `
+    <div class="o-link-editor" t-on-click.stop="menu.isOpen=false" t-on-keydown.stop="onKeyDown">
+      <div class="o-section">
+        <div t-esc="env._t('${LinkEditorTerms.Text}')" class="o-section-title"/>
+        <div class="d-flex">
+          <input type="text" class="o-input flex-grow-1" t-model="state.link.label"></input>
+        </div>
+
+        <div t-esc="env._t('${LinkEditorTerms.Link}')" class="o-section-title mt-3"/>
+        <div class="o-link-url">
+          <t t-if="state.isUrlEditable">
+            <input type="text" t-ref="urlInput" t-model="state.link.url"></input>
+          </t>
+          <t t-else="">
+            <input type="text" t-att-value="state.urlRepresentation" disabled="1"></input>
+          </t>
+          <button t-if="state.link.url" t-on-click="removeLink" class="o-remove-url">✖</button>
+          <button t-if="!state.link.url" t-on-click.stop="openMenu" class="o-special-link">${LIST}</button>
+        </div>
+      </div>
+      <Menu
+        t-if="menu.isOpen"
+        position="menuPosition"
+        menuItems="menuItems"
+        t-on-menu-clicked="onSpecialLink"
+        t-on-close.stop="menu.isOpen=false"/>
+      <div class="o-buttons">
+        <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${LinkEditorTerms.Cancel}')"></button>
+        <button t-on-click="save" class="o-button o-save" t-esc="env._t('${LinkEditorTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
+      </div>
+    </div>`;
+    const CSS$3 = css$5 /* scss */ `
+  .o-link-editor {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    margin: 2px 10px 2px 10px;
+    padding: ${PADDING}px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    .o-section {
+      .o-section-title {
+        font-weight: bold;
+        color: dimgrey;
+        margin-bottom: 5px;
+      }
+    }
+    .o-buttons {
+      padding-left: 16px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      text-align: right;
+      .o-button {
+        border: 1px solid lightgrey;
+        padding: 0px 20px 0px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        height: 30px;
+        line-height: 16px;
+        background: white;
+        margin-right: 8px;
+        &:hover:enabled {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+      .o-button:enabled {
+        cursor: pointer;
+      }
+      .o-button:last-child {
+        margin-right: 0px;
+      }
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 4px;
+      padding: 4px 23px 4px 10px;
+      border: none;
+      height: 24px;
+      border: 1px solid lightgrey;
+    }
+    .o-link-url {
+      position: relative;
+      flex-grow: 1;
+      button {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        border: none;
+        height: 20px;
+        width: 20px;
+        background-color: #fff;
+        margin: 2px 3px 1px 0px;
+        padding: 0px 1px 0px 0px;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+    }
+  }
+`;
+    class LinkEditor extends Component$5 {
+        constructor() {
+            super(...arguments);
+            this.menuItems = linkMenuRegistry.getAll();
+            this.getters = this.env.getters;
+            this.state = useState$5(this.defaultState);
+            this.menu = useState$5({
+                isOpen: false,
+            });
+            this.position = useAbsolutePosition();
+            this.urlInput = useRef$3("urlInput");
+        }
+        mounted() {
+            var _a;
+            (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus();
+        }
+        get defaultState() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.getters.getActiveSheetId();
+            const cell = this.getters.getCell(sheetId, col, row);
+            if (isLink(cell)) {
+                return {
+                    link: { url: cell.link.url, label: cell.formattedValue },
+                    urlRepresentation: cell.urlRepresentation,
+                    isUrlEditable: cell.isUrlEditable,
+                };
+            }
+            return {
+                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
+                isUrlEditable: true,
+                urlRepresentation: "",
+            };
+        }
+        get menuPosition() {
+            return {
+                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
+                y: this.position.y + MENU_OFFSET_Y,
+            };
+        }
+        onSpecialLink(ev) {
+            const { detail } = ev;
+            this.state.link.url = detail.link.url;
+            this.state.link.label = detail.link.label;
+            this.state.isUrlEditable = detail.isUrlEditable;
+            this.state.urlRepresentation = detail.urlRepresentation;
+        }
+        openMenu() {
+            this.menu.isOpen = true;
+        }
+        removeLink() {
+            this.state.link.url = "";
+            this.state.urlRepresentation = "";
+            this.state.isUrlEditable = true;
+        }
+        save() {
+            const { col, row } = this.props.cellPosition;
+            const label = this.state.link.label || this.state.link.url;
+            this.env.dispatch("UPDATE_CELL", {
+                col: col,
+                row: row,
+                sheetId: this.getters.getActiveSheetId(),
+                content: markdownLink(label, this.state.link.url),
+            });
+            this.trigger("link-editor-closed");
+        }
+        cancel() {
+            this.trigger("link-editor-closed");
+        }
+        onKeyDown(ev) {
+            switch (ev.key) {
+                case "Enter":
+                    if (this.state.link.url) {
+                        this.save();
+                    }
+                    break;
+                case "Escape":
+                    this.cancel();
+                    break;
+            }
+        }
+    }
+    LinkEditor.template = TEMPLATE$3;
+    LinkEditor.components = { Menu };
+    LinkEditor.style = CSS$3;
 
     const { Component: Component$4 } = owl__namespace;
     const { xml: xml$4, css: css$4 } = owl__namespace.tags;
@@ -27384,49 +28150,69 @@
             this.PADDING = 0;
             this.MAX_SIZE_MARGIN = 0;
             this.MIN_ELEMENT_SIZE = 0;
-            this.lastSelectedElement = null;
-            this.lastElement = null;
+            this.lastSelectedElementIndex = null;
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.state = useState$4({
                 resizerIsActive: false,
                 isResizing: false,
+                isMoving: false,
+                isSelecting: false,
+                waitingForMove: false,
                 activeElement: 0,
-                resizerStyleValue: 0,
+                draggerLinePosition: 0,
+                draggerShadowPosition: 0,
+                draggerShadowThickness: 0,
                 delta: 0,
+                base: 0,
             });
         }
         _computeHandleDisplay(ev) {
-            const index = this._getEvOffset(ev);
-            const elementIndex = this._getElementIndex(index);
+            const position = this._getEvOffset(ev);
+            const elementIndex = this._getElementIndex(position);
             if (elementIndex < 0) {
                 return;
             }
             const element = this._getElement(elementIndex);
             const offset = this._getStateOffset();
-            if (index - (element.start - offset) < this.PADDING &&
+            if (position - (element.start - offset) < this.PADDING &&
                 elementIndex !== this._getViewportOffset()) {
                 this.state.resizerIsActive = true;
-                this.state.resizerStyleValue = element.start - offset - this._getHeaderSize();
+                this.state.draggerLinePosition = element.start - offset - this._getHeaderSize();
                 this.state.activeElement = this._getPreviousVisibleElement(elementIndex);
             }
-            else if (element.end - offset - index < this.PADDING) {
+            else if (element.end - offset - position < this.PADDING) {
                 this.state.resizerIsActive = true;
-                this.state.resizerStyleValue = element.end - offset - this._getHeaderSize();
+                this.state.draggerLinePosition = element.end - offset - this._getHeaderSize();
                 this.state.activeElement = elementIndex;
             }
             else {
                 this.state.resizerIsActive = false;
             }
         }
+        _computeGrabDisplay(ev) {
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            const activeElements = this._getActiveElements();
+            const selectedZoneStart = this._getSelectedZoneStart();
+            const selectedZoneEnd = this._getSelectedZoneEnd();
+            if (activeElements.has(selectedZoneStart)) {
+                if (selectedZoneStart <= index && index <= selectedZoneEnd) {
+                    this.state.waitingForMove = true;
+                    return;
+                }
+            }
+            this.state.waitingForMove = false;
+        }
         onMouseMove(ev) {
-            if (this.state.isResizing) {
+            if (this.state.isResizing || this.state.isMoving || this.state.isSelecting) {
                 return;
             }
             this._computeHandleDisplay(ev);
+            this._computeGrabDisplay(ev);
         }
         onMouseLeave() {
             this.state.resizerIsActive = this.state.isResizing;
+            this.state.waitingForMove = false;
         }
         onDblClick() {
             this._fitElementSize(this.state.activeElement);
@@ -27435,8 +28221,8 @@
         onMouseDown(ev) {
             this.state.isResizing = true;
             this.state.delta = 0;
-            const initialIndex = this._getClientPosition(ev);
-            const styleValue = this.state.resizerStyleValue;
+            const initialPosition = this._getClientPosition(ev);
+            const styleValue = this.state.draggerLinePosition;
             const size = this._getElement(this.state.activeElement).size;
             const minSize = styleValue - size + this.MIN_ELEMENT_SIZE;
             const maxSize = this._getMaxSize();
@@ -27447,14 +28233,14 @@
                 }
             };
             const onMouseMove = (ev) => {
-                this.state.delta = this._getClientPosition(ev) - initialIndex;
-                this.state.resizerStyleValue = styleValue + this.state.delta;
-                if (this.state.resizerStyleValue < minSize) {
-                    this.state.resizerStyleValue = minSize;
+                this.state.delta = this._getClientPosition(ev) - initialPosition;
+                this.state.draggerLinePosition = styleValue + this.state.delta;
+                if (this.state.draggerLinePosition < minSize) {
+                    this.state.draggerLinePosition = minSize;
                     this.state.delta = this.MIN_ELEMENT_SIZE - size;
                 }
-                if (this.state.resizerStyleValue > maxSize) {
-                    this.state.resizerStyleValue = maxSize;
+                if (this.state.draggerLinePosition > maxSize) {
+                    this.state.draggerLinePosition = maxSize;
                     this.state.delta = maxSize - styleValue;
                 }
             };
@@ -27469,55 +28255,116 @@
             if (index < 0) {
                 return;
             }
-            this.lastElement = index;
+            if (this.state.waitingForMove === true) {
+                this.startMovement(ev);
+                return;
+            }
+            this.startSelection(ev, index);
+        }
+        startMovement(ev) {
+            this.state.waitingForMove = false;
+            this.state.isMoving = true;
+            const startElement = this._getElement(this._getSelectedZoneStart());
+            const endElement = this._getElement(this._getSelectedZoneEnd());
+            const initialPosition = this._getClientPosition(ev);
+            const defaultPosition = startElement.start - this._getStateOffset() - this._getHeaderSize();
+            this.state.draggerLinePosition = defaultPosition;
+            this.state.base = this._getSelectedZoneStart();
+            this.state.draggerShadowPosition = defaultPosition;
+            this.state.draggerShadowThickness = endElement.end - startElement.start;
+            const mouseMoveMovement = (elementIndex, currentEv) => {
+                if (elementIndex >= 0) {
+                    // define draggerLinePosition
+                    const element = this._getElement(elementIndex);
+                    const offset = this._getStateOffset() + this._getHeaderSize();
+                    if (elementIndex <= this._getSelectedZoneStart()) {
+                        this.state.draggerLinePosition = element.start - offset;
+                        this.state.base = elementIndex;
+                    }
+                    else if (this._getSelectedZoneEnd() < elementIndex) {
+                        this.state.draggerLinePosition = element.end - offset;
+                        this.state.base = elementIndex + 1;
+                    }
+                    else {
+                        this.state.draggerLinePosition = startElement.start - offset;
+                        this.state.base = this._getSelectedZoneStart();
+                    }
+                    // define draggerShadowPosition
+                    const delta = this._getClientPosition(currentEv) - initialPosition;
+                    this.state.draggerShadowPosition = Math.max(defaultPosition + delta, 0);
+                }
+            };
+            const mouseUpMovement = (finalEv) => {
+                this.state.isMoving = false;
+                if (this.state.base !== this._getSelectedZoneStart()) {
+                    this._moveElements();
+                }
+                this._computeGrabDisplay(finalEv);
+            };
+            this.dragOverlayBeyondTheViewport(ev, mouseMoveMovement, mouseUpMovement);
+        }
+        startSelection(ev, index) {
+            this.state.isSelecting = true;
             this.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
             if (ev.shiftKey) {
                 this._increaseSelection(index);
             }
             else {
-                this.lastSelectedElement = index;
                 this._selectElement(index, ev.ctrlKey);
             }
-            const initialIndex = this._getClientPosition(ev);
-            const initialOffset = this._getEvOffset(ev);
+            this.lastSelectedElementIndex = index;
+            const mouseMoveSelect = (elementIndex, currentEv) => {
+                if (elementIndex !== this.lastSelectedElementIndex && elementIndex !== -1) {
+                    this._increaseSelection(elementIndex);
+                    this.lastSelectedElementIndex = elementIndex;
+                }
+            };
+            const mouseUpSelect = () => {
+                this.state.isSelecting = false;
+                this.lastSelectedElementIndex = null;
+                this.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                this._computeGrabDisplay(ev);
+            };
+            this.dragOverlayBeyondTheViewport(ev, mouseMoveSelect, mouseUpSelect);
+        }
+        dragOverlayBeyondTheViewport(ev, cbMouseMove, cbMouseUp) {
             let timeOutId = null;
             let currentEv;
-            const onMouseMoveSelect = (ev) => {
+            const initialPosition = this._getClientPosition(ev);
+            const initialOffset = this._getEvOffset(ev);
+            const onMouseMove = (ev) => {
                 currentEv = ev;
                 if (timeOutId) {
                     return;
                 }
-                const offset = this._getClientPosition(currentEv) - initialIndex + initialOffset;
-                const EdgeScrollInfo = this._getEdgeScroll(offset);
+                const position = this._getClientPosition(currentEv) - initialPosition + initialOffset;
+                const EdgeScrollInfo = this._getEdgeScroll(position);
                 const { first, last } = this._getBoundaries();
-                let index;
+                let elementIndex;
                 if (EdgeScrollInfo.canEdgeScroll) {
-                    index = EdgeScrollInfo.direction > 0 ? last : first - 1;
+                    elementIndex = EdgeScrollInfo.direction > 0 ? last : first - 1;
                 }
                 else {
-                    index = this._getElementIndex(offset);
+                    elementIndex = this._getElementIndex(position);
                 }
-                if (index !== this.lastElement && index !== -1) {
-                    this._increaseSelection(index);
-                    this.lastElement = index;
-                }
+                cbMouseMove(elementIndex, currentEv);
+                // adjust viewport if necessary
                 if (EdgeScrollInfo.canEdgeScroll) {
                     this._adjustViewport(EdgeScrollInfo.direction);
                     timeOutId = setTimeout(() => {
                         timeOutId = null;
-                        onMouseMoveSelect(currentEv);
+                        onMouseMove(currentEv);
                     }, Math.round(EdgeScrollInfo.delay));
                 }
             };
-            const onMouseUpSelect = () => {
+            const onMouseUp = (finalEv) => {
                 clearTimeout(timeOutId);
-                this.lastElement = null;
-                this.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                cbMouseUp(finalEv);
             };
-            startDnd(onMouseMoveSelect, onMouseUpSelect);
+            startDnd(onMouseMove, onMouseUp);
         }
         onMouseUp(ev) {
-            this.lastElement = null;
+            this.lastSelectedElementIndex = null;
         }
         onContextMenu(ev) {
             ev.preventDefault();
@@ -27525,7 +28372,6 @@
             if (index < 0)
                 return;
             if (!this._getActiveElements().has(index)) {
-                this.lastSelectedElement = index;
                 this._selectElement(index, false);
             }
             const type = this._getType();
@@ -27555,6 +28401,12 @@
         _getElementIndex(index) {
             return this.getters.getColIndex(index, this.getters.getActiveSnappedViewport().left);
         }
+        _getSelectedZoneStart() {
+            return this.getters.getSelectedZone().left;
+        }
+        _getSelectedZoneEnd() {
+            return this.getters.getSelectedZone().right;
+        }
         _getEdgeScroll(position) {
             return this.getters.getEdgeScrollCol(position);
         }
@@ -27583,6 +28435,20 @@
                 sheetId: this.getters.getActiveSheetId(),
                 elements: cols.has(index) ? [...cols] : [index],
                 size,
+            });
+        }
+        _moveElements() {
+            const elements = [];
+            const start = this._getSelectedZoneStart();
+            const end = this._getSelectedZoneEnd();
+            for (let colIndex = start; colIndex <= end; colIndex++) {
+                elements.push(colIndex);
+            }
+            this.dispatch("MOVE_COLUMNS_ROWS", {
+                sheetId: this.getters.getActiveSheetId(),
+                dimension: "COL",
+                base: this.state.base,
+                elements,
             });
         }
         _selectElement(index, ctrlKey) {
@@ -27636,11 +28502,13 @@
     }
     ColResizer.template = xml$4 /* xml */ `
     <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
-      t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
+      t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving, }">
+      <div t-if="state.isMoving" class="dragging-col-line" t-attf-style="left:{{state.draggerLinePosition}}px;"/>
+      <div t-if="state.isMoving" class="dragging-col-shadow" t-attf-style="left:{{state.draggerShadowPosition}}px; width:{{state.draggerShadowThickness}}px"/>
       <t t-if="state.resizerIsActive">
         <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
-        t-attf-style="left:{{state.resizerStyleValue - 2}}px;">
-        <div class="dragging" t-if="state.isResizing"/>
+        t-attf-style="left:{{state.draggerLinePosition - 2}}px;">
+        <div class="dragging-resizer" t-if="state.isResizing"/>
         </div>
       </t>
       <t t-foreach="getters.getHiddenColsGroups(getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
@@ -27663,6 +28531,26 @@
       left: ${HEADER_WIDTH}px;
       right: 0;
       height: ${HEADER_HEIGHT}px;
+      &.o-dragging {
+        cursor: grabbing;
+      }
+      &.o-grab {
+        cursor: grab;
+      }
+      .dragging-col-line {
+        top: ${HEADER_HEIGHT}px;
+        position: absolute;
+        width: 2px;
+        height: 10000px;
+        background-color: black;
+      }
+      .dragging-col-shadow {
+        top: ${HEADER_HEIGHT}px;
+        position: absolute;
+        height: 10000px;
+        background-color: black;
+        opacity: 0.1;
+      }
       .o-handle {
         position: absolute;
         height: ${HEADER_HEIGHT}px;
@@ -27670,7 +28558,7 @@
         cursor: e-resize;
         background-color: #3266ca;
       }
-      .dragging {
+      .dragging-resizer {
         top: ${HEADER_HEIGHT}px;
         position: absolute;
         margin-left: 2px;
@@ -27714,6 +28602,12 @@
         _getElementIndex(index) {
             return this.getters.getRowIndex(index, this.getters.getActiveSnappedViewport().top);
         }
+        _getSelectedZoneStart() {
+            return this.getters.getSelectedZone().top;
+        }
+        _getSelectedZoneEnd() {
+            return this.getters.getSelectedZone().bottom;
+        }
         _getEdgeScroll(position) {
             return this.getters.getEdgeScrollRow(position);
         }
@@ -27739,6 +28633,20 @@
                 sheetId: this.getters.getActiveSheetId(),
                 elements: rows.has(index) ? [...rows] : [index],
                 size,
+            });
+        }
+        _moveElements() {
+            const elements = [];
+            const start = this._getSelectedZoneStart();
+            const end = this._getSelectedZoneEnd();
+            for (let rowIndex = start; rowIndex <= end; rowIndex++) {
+                elements.push(rowIndex);
+            }
+            this.dispatch("MOVE_COLUMNS_ROWS", {
+                sheetId: this.getters.getActiveSheetId(),
+                dimension: "ROW",
+                base: this.state.base,
+                elements,
             });
         }
         _selectElement(index, ctrlKey) {
@@ -27792,11 +28700,13 @@
     }
     RowResizer.template = xml$4 /* xml */ `
     <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
-    t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
+    t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving}">
+      <div t-if="state.isMoving" class="dragging-row-line" t-attf-style="top:{{state.draggerLinePosition}}px;"/>
+      <div t-if="state.isMoving" class="dragging-row-shadow" t-attf-style="top:{{state.draggerShadowPosition}}px; height:{{state.draggerShadowThickness}}px;"/>
       <t t-if="state.resizerIsActive">
         <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
-          t-attf-style="top:{{state.resizerStyleValue - 2}}px;">
-          <div class="dragging" t-if="state.isResizing"/>
+          t-attf-style="top:{{state.draggerLinePosition - 2}}px;">
+          <div class="dragging-resizer" t-if="state.isResizing"/>
         </div>
       </t>
       <t t-foreach="getters.getHiddenRowsGroups(getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
@@ -27820,6 +28730,26 @@
       right: 0;
       width: ${HEADER_WIDTH}px;
       height: 100%;
+      &.o-dragging {
+        cursor: grabbing;
+      }
+      &.o-grab {
+        cursor: grab;
+      }
+      .dragging-row-line {
+        left: ${HEADER_WIDTH}px;
+        position: absolute;
+        width: 10000px;
+        height: 2px;
+        background-color: black;
+      }
+      .dragging-row-shadow {
+        left: ${HEADER_WIDTH}px;
+        position: absolute;
+        width: 10000px;
+        background-color: black;
+        opacity: 0.1;
+      }
       .o-handle {
         position: absolute;
         height: 4px;
@@ -27827,7 +28757,7 @@
         cursor: n-resize;
         background-color: #3266ca;
       }
-      .dragging {
+      .dragging-resizer {
         left: ${HEADER_WIDTH}px;
         position: absolute;
         margin-top: 2px;
@@ -27915,6 +28845,10 @@
         COL: colMenuRegistry,
         CELL: cellMenuRegistry,
     };
+    const LINK_EDITOR_WIDTH = 340;
+    const LINK_EDITOR_HEIGHT = 180;
+    const ERROR_TOOLTIP_HEIGHT = 80;
+    const ERROR_TOOLTIP_WIDTH = 180;
     // copy and paste are specific events that should not be managed by the keydown event,
     // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
     // and also should not result in typing the character C or V in the composer
@@ -28030,9 +28964,31 @@
                  active="isCellHovered(client.position.col, client.position.row)"
                  />
     </t>
-    <t t-if="errorTooltip.isOpen">
-      <div class="o-error-tooltip" t-esc="errorTooltip.text" t-att-style="errorTooltip.style"/>
-    </t>
+    <Popover
+      t-if="errorTooltip.isOpen"
+      position="errorTooltip.position"
+      childWidth="${ERROR_TOOLTIP_WIDTH}"
+      childHeight="${ERROR_TOOLTIP_HEIGHT}">
+      <ErrorToolTip text="errorTooltip.text"/>
+    </Popover>
+    <Popover
+      t-if="shouldDisplayLink"
+      position="popoverPosition.position"
+      flipHorizontalOffset="-popoverPosition.cellWidth"
+      flipVerticalOffset="-popoverPosition.cellHeight"
+      childWidth="${LINK_TOOLTIP_WIDTH}"
+      childHeight="${LINK_TOOLTIP_HEIGHT}">
+      <LinkDisplay cellPosition="activeCellPosition"/>
+    </Popover>
+    <Popover
+      t-if="props.linkEditorIsOpen"
+      position="popoverPosition.position"
+      flipHorizontalOffset="-popoverPosition.cellWidth"
+      flipVerticalOffset="-popoverPosition.cellHeight"
+      childWidth="${LINK_EDITOR_WIDTH}"
+      childHeight="${LINK_EDITOR_HEIGHT}">
+      <LinkEditor cellPosition="activeCellPosition"/>
+    </Popover>
     <t t-if="getters.getEditionMode() === 'inactive'">
       <Autofill position="getAutofillPosition()"/>
     </t>
@@ -28074,16 +29030,6 @@
         outline: none;
       }
     }
-    .o-error-tooltip {
-      position: absolute;
-      font-size: 13px;
-      width: 180px;
-      height: 80px;
-      background-color: white;
-      box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-      border-left: 3px solid red;
-      padding: 10px;
-    }
     .o-scrollbar {
       position: absolute;
       overflow: auto;
@@ -28124,19 +29070,24 @@
             this.currentSheet = this.getters.getActiveSheetId();
             this.clickedCol = 0;
             this.clickedRow = 0;
-            // errorTooltip = useErrorTooltip(this.env, () => this.snappedViewport);
             this.hoveredCell = useCellHovered(this.env, () => this.getters.getActiveSnappedViewport());
             // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
             // down itself
             this.keyDownMapping = {
-                ENTER: () => this.isEmptyCell
-                    ? this.trigger("composer-cell-focused")
-                    : this.trigger("composer-content-focused"),
+                ENTER: () => {
+                    const cell = this.getters.getActiveCell();
+                    isEmpty(cell)
+                        ? this.trigger("composer-cell-focused")
+                        : this.trigger("composer-content-focused");
+                },
                 TAB: () => this.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
                 "SHIFT+TAB": () => this.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
-                F2: () => this.isEmptyCell
-                    ? this.trigger("composer-cell-focused")
-                    : this.trigger("composer-content-focused"),
+                F2: () => {
+                    const cell = this.getters.getActiveCell();
+                    isEmpty(cell)
+                        ? this.trigger("composer-cell-focused")
+                        : this.trigger("composer-content-focused");
+                },
                 DELETE: () => {
                     this.dispatch("DELETE_CONTENT", {
                         sheetId: this.getters.getActiveSheetId(),
@@ -28229,31 +29180,51 @@
         }
         get errorTooltip() {
             const { col, row } = this.hoveredCell;
-            if (!col || !row) {
+            if (col === undefined || row === undefined) {
                 return { isOpen: false };
             }
             const sheetId = this.getters.getActiveSheetId();
             const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
             const cell = this.getters.getCell(sheetId, mainCol, mainRow);
-            if (cell && cell.error) {
+            if (cell && cell.evaluated.type === CellValueType.error) {
                 const viewport = this.getters.getActiveSnappedViewport();
-                const { width: viewportWidth, height: viewportHeight } = this.getters.getViewportDimension();
-                const [x, y, width, height] = this.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-                const hAlign = x + width + 200 < viewportWidth ? "left" : "right";
-                const hOffset = hAlign === "left" ? x + width : viewportWidth - x + (SCROLLBAR_WIDTH$1 + 2);
-                const vAlign = y + 120 < viewportHeight ? "top" : "bottom";
-                const vOffset = vAlign === "top" ? y : viewportHeight - y - height + (SCROLLBAR_WIDTH$1 + 2);
+                const [x, y, width] = this.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 return {
                     isOpen: true,
-                    style: `${hAlign}:${hOffset}px;${vAlign}:${vOffset}px`,
-                    text: cell.error,
+                    position: { x: x + width, y: y + TOPBAR_HEIGHT },
+                    text: cell.evaluated.error,
                 };
             }
             return { isOpen: false };
         }
-        get isEmptyCell() {
-            const cell = this.getters.getActiveCell();
-            return !cell || cell.type === CellType.empty;
+        get activeCellPosition() {
+            const [col, row] = this.getters.getMainCell(this.getters.getActiveSheetId(), ...this.getters.getPosition());
+            return { col, row };
+        }
+        get shouldDisplayLink() {
+            const sheetId = this.getters.getActiveSheetId();
+            const { col, row } = this.activeCellPosition;
+            const viewport = this.getters.getActiveSnappedViewport();
+            const cell = this.getters.getCell(sheetId, col, row);
+            return (this.getters.isVisibleInViewport(col, row, viewport) &&
+                isLink(cell) &&
+                !this.menuState.isOpen &&
+                !this.props.linkEditorIsOpen &&
+                !this.props.sidePanelIsOpen);
+        }
+        /**
+         * Get a reasonable position to display the popover, under the active cell.
+         * Used by link popover components.
+         */
+        get popoverPosition() {
+            const [col, row] = this.getters.getBottomLeftCell(this.getters.getActiveSheetId(), ...this.getters.getPosition());
+            const viewport = this.getters.getActiveSnappedViewport();
+            const [x, y, width, height] = this.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+            return {
+                position: { x, y: y + height + TOPBAR_HEIGHT },
+                cellWidth: width,
+                cellHeight: height,
+            };
         }
         mounted() {
             this.vScrollbar.el = this.vScrollbarRef.el;
@@ -28385,6 +29356,12 @@
             }
             this.clickedCol = col;
             this.clickedRow = row;
+            const sheetId = this.getters.getActiveSheetId();
+            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
+            const cell = this.getters.getCell(sheetId, mainCol, mainRow);
+            if (!isLink(cell)) {
+                this.closeLinkEditor();
+            }
             this.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
             if (ev.shiftKey) {
                 this.dispatch("ALTER_SELECTION", { cell: [col, row] });
@@ -28458,10 +29435,14 @@
         onDoubleClick(ev) {
             const [col, row] = this.getCartesianCoordinates(ev);
             if (this.clickedCol === col && this.clickedRow === row) {
-                this.isEmptyCell
+                const cell = this.getters.getActiveCell();
+                isEmpty(cell)
                     ? this.trigger("composer-cell-focused")
                     : this.trigger("composer-content-focused");
             }
+        }
+        closeLinkEditor() {
+            this.trigger("link-editor-closed");
         }
         // ---------------------------------------------------------------------------
         // Keyboard interactions
@@ -28474,6 +29455,7 @@
         processArrows(ev) {
             ev.preventDefault();
             ev.stopPropagation();
+            this.closeLinkEditor();
             const deltaMap = {
                 ArrowDown: [0, 1],
                 ArrowLeft: [-1, 0],
@@ -28569,13 +29551,9 @@
             this.toggleContextMenu(type, x, y);
         }
         toggleContextMenu(type, x, y) {
+            this.closeLinkEditor();
             this.menuState.isOpen = true;
-            this.menuState.position = {
-                x,
-                y,
-                width: this.el.clientWidth,
-                height: this.el.clientHeight,
-            };
+            this.menuState.position = { x, y: y + TOPBAR_HEIGHT };
             this.menuState.menuItems = registries$1[type]
                 .getAll()
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
@@ -28591,6 +29569,10 @@
         FiguresContainer,
         ClientTag,
         Highlight,
+        ErrorToolTip,
+        LinkDisplay,
+        LinkEditor,
+        Popover,
     };
 
     const { Component: Component$2 } = owl__namespace;
@@ -28644,6 +29626,16 @@
       overflow: auto;
       width: 100%;
       height: 100%;
+
+      .o-section {
+        padding: 16px;
+
+        .o-section-title {
+          font-weight: bold;
+          color: dimgrey;
+          margin-bottom: 5px;
+        }
+      }
     }
 
     .o-sidepanel-error {
@@ -28679,10 +29671,10 @@
       color: #666666;
       border-radius: 4px;
       min-width: 0px;
-      border: 1px solid lightgrey;
       padding: 4px 6px;
-      height: 15.5px;
+      box-sizing: border-box;
       line-height: 1;
+      width: 100%;
       .o-type-selector {
         background-position: right 5px top 11px;
       }
@@ -28696,17 +29688,6 @@
     select.o-input {
       background-color: white;
       text-align: left;
-    }
-
-    .o-section {
-      padding-top: 16px;
-      padding-left: 16px;
-      padding-right: 16px;
-      .o-section-title {
-        font-weight: bold;
-        color: dimgrey;
-        margin-bottom: 5px;
-      }
     }
   }
 `;
@@ -28820,9 +29801,7 @@
             const x = ev.target.offsetLeft;
             const y = ev.target.clientHeight + ev.target.offsetTop;
             this.state.menuState.isOpen = true;
-            const width = this.el.clientWidth;
-            const height = this.el.parentElement.clientHeight;
-            this.state.menuState.position = { x, y, width, height };
+            this.state.menuState.position = { x, y };
             this.state.menuState.menuItems = topbarMenuRegistry
                 .getChildren(menu, this.env)
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
@@ -29236,6 +30215,8 @@
     <Grid
       model="model"
       sidePanelIsOpen="sidePanel.isOpen"
+      linkEditorIsOpen="linkEditor.isOpen"
+      t-on-link-editor-closed="closeLinkEditor"
       t-ref="grid"
       focusComposer="focusGridComposer"
       t-on-composer-content-focused="onGridComposerContentFocused"
@@ -29249,6 +30230,7 @@
   </div>`;
     const CSS = css /* scss */ `
   .o-spreadsheet {
+    position: relative;
     display: grid;
     grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
     grid-template-columns: auto 350px;
@@ -29297,6 +30279,7 @@
             }, this.props.stateUpdateMessages);
             this.grid = useRef("grid");
             this.sidePanel = useState({ isOpen: false, panelProps: {} });
+            this.linkEditor = useState({ isOpen: false });
             this.composer = useState({
                 topBarFocus: "inactive",
                 gridFocusMode: "inactive",
@@ -29320,6 +30303,7 @@
                 export: this.model.exportData.bind(this.model),
                 waitForIdle: this.model.waitForIdle.bind(this.model),
                 exportXLSX: this.model.exportXLSX.bind(this.model),
+                openLinkEditor: () => this.openLinkEditor(),
             });
             useExternalListener(window, "resize", this.render);
             useExternalListener(document.body, "cut", this.copy.bind(this, true));
@@ -29365,6 +30349,13 @@
             this.sidePanel.component = panel;
             this.sidePanel.panelProps = panelProps;
             this.sidePanel.isOpen = true;
+        }
+        openLinkEditor() {
+            this.linkEditor.isOpen = true;
+        }
+        closeLinkEditor() {
+            this.linkEditor.isOpen = false;
+            this.focusGrid();
         }
         toggleSidePanel(panel, panelProps) {
             if (this.sidePanel.isOpen && panel === this.sidePanel.component) {
@@ -29472,7 +30463,7 @@
     }
     Spreadsheet.template = TEMPLATE;
     Spreadsheet.style = CSS;
-    Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel };
+    Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel, LinkEditor };
     Spreadsheet._t = t;
 
     /**
@@ -29498,6 +30489,7 @@
         autofillRulesRegistry,
         cellMenuRegistry,
         colMenuRegistry,
+        linkMenuRegistry,
         functionRegistry,
         uiPluginRegistry,
         corePluginRegistry,
@@ -29508,6 +30500,10 @@
         topbarComponentRegistry,
         otRegistry,
         inverseCommandRegistry,
+        cellRegistry,
+    };
+    const cellTypes = {
+        LinkCell,
     };
     const helpers = {
         args,
@@ -29522,6 +30518,10 @@
         UuidGenerator,
         formatDecimal,
         computeTextWidth,
+        isFormula,
+        isMarkdownLink,
+        parseMarkdownLink,
+        markdownLink,
     };
 
     exports.CorePlugin = CorePlugin;
@@ -29536,9 +30536,11 @@
     exports.__DEBUG__ = DEBUG;
     exports.__info__ = __info__;
     exports.astToFormula = astToFormula;
+    exports.cellTypes = cellTypes;
     exports.coreTypes = coreTypes;
     exports.functionCache = functionCache;
     exports.helpers = helpers;
+    exports.invalidateEvaluationCommands = invalidateEvaluationCommands;
     exports.normalize = normalize;
     exports.parse = parse;
     exports.readonlyAllowedCommands = readonlyAllowedCommands;
@@ -29548,8 +30550,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-08-31T06:42:40.130Z';
-    exports.__info__.hash = 'd05514b';
+    exports.__info__.date = '2021-09-01T16:32:17.762Z';
+    exports.__info__.hash = 'c120503';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

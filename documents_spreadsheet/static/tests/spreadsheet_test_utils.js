@@ -16,7 +16,7 @@ import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/s
 import { UNTITLED_SPREADSHEET_NAME } from "../src/constants";
 
 const { Model } = spreadsheet;
-const { toCartesian, toZone } = spreadsheet.helpers;
+const { toCartesian, toZone, isFormula } = spreadsheet.helpers;
 const { jsonToBase64 } = pivotUtils;
 
 /**
@@ -27,7 +27,7 @@ export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId
     if (!cell) {
         return undefined;
     }
-    return model.getters.getCellValue(cell, sheetId);
+    return cell.evaluated.value;
 }
 
 /**
@@ -92,9 +92,7 @@ export function getCells(model, sheetId = model.getters.getActiveSheetId()) {
  */
 export function getCellFormula(model, xc, sheetId = model.getters.getActiveSheetId()) {
     const cell = getCell(model, xc, sheetId);
-    return cell && cell.type === "formula"
-        ? model.getters.getFormulaCellContent(sheetId, cell)
-        : "";
+    return cell && isFormula(cell) ? model.getters.getFormulaCellContent(sheetId, cell) : "";
 }
 
 /**

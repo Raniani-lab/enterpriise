@@ -19,7 +19,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
         this.spreadsheetRef = useRef("spreadsheet");
     }
 
-    async _loadData(record) {
+    _loadData(record) {
         this.spreadsheetData = base64ToJson(record.data);
         this.state.spreadsheetName = record.name;
     }

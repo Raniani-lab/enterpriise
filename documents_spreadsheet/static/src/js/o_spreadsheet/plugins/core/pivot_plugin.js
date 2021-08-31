@@ -24,6 +24,7 @@ import { getFirstPivotFunction } from "../../helpers/odoo_functions_helpers";
 import { getMaxObjectId } from "../../helpers/helpers";
 
 const { astToFormula } = spreadsheet;
+const { isFormula } = spreadsheet.helpers;
 
 export default class PivotPlugin extends spreadsheet.CorePlugin {
     constructor() {
@@ -124,8 +125,8 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      */
     getPivotIdFromPosition(sheetId, col, row) {
         const cell = this.getters.getCell(sheetId, col, row);
-        if (cell && cell.type === "formula") {
-            const pivotFunction = getFirstPivotFunction(cell.formula.text);
+        if (isFormula(cell)) {
+            const pivotFunction = getFirstPivotFunction(cell.normalizedText);
             if (pivotFunction) {
                 const content = astToFormula(pivotFunction.args[0]);
                 const formula = this.getters.buildFormulaContent(sheetId, content, cell.dependencies);

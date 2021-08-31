@@ -6,6 +6,7 @@ import { getFirstListFunction } from "../../helpers/odoo_functions_helpers";
 import { getMaxObjectId } from "../../helpers/helpers";
 
 const { astToFormula } = spreadsheet;
+const { isFormula } = spreadsheet.helpers;
 
 /**
  * @typedef {Object} SpreadsheetList
@@ -103,8 +104,8 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
      */
     getListIdFromPosition(sheetId, col, row) {
         const cell = this.getters.getCell(sheetId, col, row);
-        if (cell && cell.type === "formula") {
-            const listFunction = getFirstListFunction(cell.formula.text);
+        if (isFormula(cell)) {
+            const listFunction = getFirstListFunction(cell.normalizedText);
             if (listFunction) {
                 const content = astToFormula(listFunction.args[0]);
                 const formula = this.getters.buildFormulaContent(sheetId, content, cell.dependencies);

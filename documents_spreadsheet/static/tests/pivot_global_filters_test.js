@@ -598,10 +598,9 @@ module(
                     },
                 },
             };
-            const sheetId = model.getters.getActiveSheetId();
             model.dispatch("EDIT_PIVOT_FILTER", { id: filter.id, filter: newFilter });
             assert.equal(
-                model.getters.getCell(sheetId, 0, 9).formula.text,
+                getCellFormula(model, "A10"),
                 `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
             );
         });

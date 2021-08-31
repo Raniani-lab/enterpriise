@@ -4,6 +4,7 @@ import { getNumberOfListFormulas } from "../helpers/odoo_functions_helpers";
 import spreadsheet from "../o_spreadsheet_loader";
 
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;
+const { isFormula } = spreadsheet.helpers;
 
 const UP = 0;
 const DOWN = 1;
@@ -23,10 +24,10 @@ AutofillTooltip.template = "documents_spreadsheet.AutofillTooltip";
 autofillRulesRegistry
     .add("autofill_pivot", {
         condition: (cell) =>
-            cell && cell.type === "formula" && cell.formula.text.match(/=\s*PIVOT/),
+            cell && isFormula(cell) && cell.content.match(/=\s*PIVOT/),
         generateRule: (cell, cells) => {
             const increment = cells.filter(
-                (cell) => cell && cell.type === "formula" && cell.formula.text.match(/=\s*PIVOT/)
+                (cell) => cell && isFormula(cell) && cell.content.match(/=\s*PIVOT/)
             ).length;
             return { type: "PIVOT_UPDATER", increment, current: 0 };
         },
@@ -34,19 +35,19 @@ autofillRulesRegistry
     })
     .add("autofill_pivot_position", {
         condition: (cell) =>
-            cell && cell.type === "formula" && cell.formula.text.match(/=.*PIVOT.*PIVOT\.POSITION/),
+            cell && isFormula(cell) && cell.content.match(/=.*PIVOT.*PIVOT\.POSITION/),
         generateRule: () => ({ type: "PIVOT_POSITION_UPDATER", current: 0 }),
         sequence: 1,
     })
     .add("autofill_list", {
         condition: (cell) =>
-            cell && cell.type === "formula" && getNumberOfListFormulas(cell.formula.text) === 1,
+            cell && isFormula(cell) && getNumberOfListFormulas(cell.content) === 1,
         generateRule: (cell, cells) => {
             const increment = cells.filter(
                 (cell) =>
                     cell &&
-                    cell.type === "formula" &&
-                    getNumberOfListFormulas(cell.formula.text) === 1
+                    isFormula(cell) &&
+                    getNumberOfListFormulas(cell.content) === 1
             ).length;
             return { type: "LIST_UPDATER", increment, current: 0 };
         },
@@ -120,10 +121,7 @@ autofillModifiersRegistry
          * column groups.
          */
         apply: (rule, data, getters, direction) => {
-            const formulaString =
-                data.cell.type === "formula"
-                    ? getters.getFormulaCellContent(data.sheetId, data.cell)
-                    : "";
+            const formulaString = data.cell.content;
             const pivotId = formulaString.match(/PIVOT\.POSITION\(\s*"(\w+)"\s*,/)[1];
             if (!getters.isExistingPivot(pivotId))
                 return { cellData: { ...data.cell, content: formulaString } };

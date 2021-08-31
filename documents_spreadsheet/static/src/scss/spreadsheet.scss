@@ -34,6 +34,7 @@
         height: 100%;
         .o_spreadsheet_container {
             flex: 1 1 auto;
+            overflow: auto;
             .o-spreadsheet {
                 height: 100%;
 

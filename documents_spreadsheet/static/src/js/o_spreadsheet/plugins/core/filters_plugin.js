@@ -21,7 +21,8 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
     const core = require("web.core");
     const _t = core._t;
 
-    const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
+    const { isFormula, UuidGenerator } = spreadsheet.helpers;
+    const uuidGenerator = new UuidGenerator();
 
     class FiltersPlugin extends spreadsheet.CorePlugin {
         constructor(getters, history, range, dispatch, config) {
@@ -351,12 +352,12 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             const sheets = this.getters.getSheets();
             for (let sheet of sheets) {
                 for (let cell of Object.values(this.getters.getCells(sheet.id))) {
-                    if (cell.type === "formula") {
-                        const newContent = cell.formula.text.replace(
+                    if (isFormula(cell)) {
+                        const newContent = cell.content.replace(
                             new RegExp(`FILTER\\.VALUE\\(\\s*"${currentLabel}"\\s*\\)`, "g"),
                             `FILTER.VALUE("${newLabel}")`
                         );
-                        if (newContent !== cell.formula.text) {
+                        if (newContent !== cell.content) {
                             const { col, row } = this.getters.getCellPosition(cell.id);
                             this.dispatch("UPDATE_CELL", {
                                 sheetId: sheet.id,

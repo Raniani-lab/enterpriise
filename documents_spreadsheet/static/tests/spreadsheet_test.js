@@ -530,14 +530,14 @@ module(
             });
 
             await nextTick();
-            assert.ok(model.getters.getCell(sheetId, 4, 9).error);
+            assert.ok(getCell(model, "E10").evaluated.error);
 
             // This is obviously not the desired error message. It happens because Odoo
             // RPC errors do not have a simple string message but an object with the
             // error details.
             // Will be fixed with task 2393876
             assert.equal(
-                model.getters.getCell(sheetId, 4, 9).error,
+                getCell(model, "E10").evaluated.error,
                 "Cannot read property 'display_name' of undefined"
             );
         });
@@ -550,11 +550,11 @@ module(
                     model: "partner",
                     data: this.data,
                     arch: `
-                <pivot string="Partners">
-                    <field name="foo" type="col"/>
-                    <field name="product" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="product" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
                 },
             });
             setCellContent(model, "F10", `=PIVOT.HEADER("1", "product", A25)`);
@@ -596,7 +596,10 @@ module(
             });
             const sheetId = model.getters.getActiveSheetId();
             model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, sheetId: "111" });
-            model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: sheetId, sheetIdTo: "111" });
+            model.dispatch("ACTIVATE_SHEET", {
+                sheetIdFrom: sheetId,
+                sheetIdTo: "111",
+            });
             model.dispatch("SELECT_CELL", { col: 0, row: 0 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
@@ -658,9 +661,9 @@ module(
                 },
             });
             const sheetId = model.getters.getActiveSheetId();
-            assert.equal(/*A3*/ model.getters.getCell(sheetId, 0, 2).value, 110);
-            assert.equal(/*B3*/ model.getters.getCell(sheetId, 1, 2).value, 11);
-            assert.equal(/*C3*/ model.getters.getCell(sheetId, 2, 2).value, 10);
+            assert.equal(getCellValue(model, "A3"), 110);
+            assert.equal(getCellValue(model, "B3"), 11);
+            assert.equal(getCellValue(model, "C3"), 10);
             // previously in group bar=110, now it's in a new group bar=99
             this.data.partner.records[0].bar = 99;
             this.data.partner.records[1].bar = 99;
@@ -671,21 +674,9 @@ module(
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             await nextTick();
-            assert.equal(
-                /*A3*/ model.getters.getCell(sheetId, 0, 2).value,
-                99,
-                "The header should have been updated"
-            );
-            assert.equal(
-                /*B3*/ model.getters.getCell(sheetId, 1, 2).value,
-                77,
-                "The value should have been updated"
-            );
-            assert.equal(
-                /*C3*/ model.getters.getCell(sheetId, 2, 2).value,
-                88,
-                "The value should have been updated"
-            );
+            assert.equal(getCellValue(model, "A3"), 99, "The header should have been updated");
+            assert.equal(getCellValue(model, "B3"), 77, "The value should have been updated");
+            assert.equal(getCellValue(model, "C3"), 88, "The value should have been updated");
         });
 
         test("Keep applying filter when pivot is re-inserted", async function (assert) {
@@ -716,7 +707,6 @@ module(
                     },
                 },
             });
-            await nextTick();
             model.dispatch("SET_PIVOT_FILTER_VALUE", {
                 id: "42",
                 value: [41],
@@ -801,43 +791,10 @@ module(
                     arch: this.arch,
                 },
             });
-            const sheetId = model.getters.getActiveSheetId();
-            assert.equal(model.getters.getCell(sheetId, 1, 2).value, 11);
-            assert.equal(model.getters.getCell(sheetId, 2, 2).value, 10);
-            assert.equal(model.getters.getCell(sheetId, 1, 3).value, 11);
-            assert.equal(model.getters.getCell(sheetId, 2, 3).value, 10);
-        });
-
-        test("Refresh all data correctly update data", async function (assert) {
-            assert.expect(4);
-            const data = getBasicData();
-            const { model, env } = await createSpreadsheetFromPivot({ pivotView: { data } });
-            const list = {
-                columns: ["probability"],
-                context: {},
-                domain: [],
-                model: "partner",
-                orderBy: [],
-                id: "1",
-            };
-            model.dispatch("BUILD_ODOO_LIST", {
-                sheetId: model.getters.getActiveSheetId(),
-                list,
-                anchor: [0, 10],
-                linesNumber: 5,
-                types: { probability: "integer" },
-            });
-            await model.waitForIdle();
-            assert.equal(getCellValue(model, "D4"), 10);
-            assert.equal(getCellValue(model, "A12"), 10);
-            data.partner.records[0].probability = 20;
-            const dataRoot = topbarMenuRegistry.getAll().find((item) => item.id === "data");
-            const children = topbarMenuRegistry.getChildren(dataRoot, env);
-            const refreshAll = children.find((item) => item.id === "refresh_all_data");
-            refreshAll.action(env);
-            await model.waitForIdle();
-            assert.equal(getCellValue(model, "D4"), 20);
-            assert.equal(getCellValue(model, "A12"), 20);
+            assert.equal(getCellValue(model, "B3"), 11);
+            assert.equal(getCellValue(model, "C3"), 10);
+            assert.equal(getCellValue(model, "B4"), 11);
+            assert.equal(getCellValue(model, "C3"), 10);
         });
 
         test("Open pivot properties properties", async function (assert) {
@@ -1178,19 +1135,18 @@ module(
               </pivot>`,
                 },
             });
-            const sheetId = model.getters.getActiveSheetId();
             assert.equal(
-                model.getters.getCell(sheetId, 1, 2).value,
+                getCellValue(model, "B3"),
                 1,
                 "[Cell B3] There is one distinct product for 'foo - 1' and 'bar - 110'"
             );
             assert.equal(
-                model.getters.getCell(sheetId, 2, 2).value,
+                getCellValue(model, "C3"),
                 1,
                 "[Cell C3] There is one distinct product for 'foo - 12' and 'bar - 110'"
             );
             assert.equal(
-                model.getters.getCell(sheetId, 3, 2).value,
+                getCellValue(model, "D3"),
                 2,
                 "[Cell D3] There are two distinct products for 'foo - 18' and 'bar - 110'"
             );

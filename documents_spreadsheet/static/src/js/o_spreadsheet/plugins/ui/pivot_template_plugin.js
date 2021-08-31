@@ -5,6 +5,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
     const CommandResult = require("documents_spreadsheet.CommandResult");
     const { pivotFormulaRegex } = require("documents_spreadsheet.pivot_utils");
     const { parse, astToFormula } = spreadsheet;
+    const { isFormula } = spreadsheet.helpers;
 
     class PivotTemplatePlugin extends spreadsheet.UIPlugin {
         constructor(getters, history, dispatch, config) {
@@ -65,17 +66,15 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          */
         _convertFormulas(cells, convertFunction, ...args) {
             cells.forEach((cell) => {
-                if (cell.formula) {
+                if (isFormula(cell)) {
                     const { col, row, sheetId } = this.getters.getCellPosition(cell.id);
-                    const ast = convertFunction(parse(cell.formula.text), ...args);
+                    const ast = convertFunction(parse(cell.normalizedText), ...args);
                     if (ast) {
-                        const content = this.getters.getFormulaCellContent(sheetId, {
-                            ...cell,
-                            formula: {
-                                ...cell.formula,
-                                text: `=${astToFormula(ast)}`,
-                            },
-                        });
+                        const content = this.getters.buildFormulaContent(
+                            sheetId,
+                            `=${astToFormula(ast)}`,
+                            cell.dependencies
+                        );
                         this.dispatch("UPDATE_CELL", {
                             content,
                             sheetId,
@@ -105,7 +104,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 .map((sheet) =>
                     Object.values(this.getters.getCells(sheet.id)).filter(
                         (cell) =>
-                            cell.type === "formula" &&
+                            isFormula(cell) &&
                             regex.test(this.getters.getFormulaCellContent(sheet.id, cell))
                     )
                 )
@@ -304,12 +303,10 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
                     const { cells } = this.getters.getRow(sheet.id, rowIndex);
                     const [valid, invalid] = Object.values(cells)
-                        .filter((cell) => cell.formula && /^\s*=.*PIVOT/.test(cell.formula.text))
+                        .filter((cell) => isFormula(cell) && /^\s*=.*PIVOT/.test(cell.content))
                         .reduce(
                             ([valid, invalid], cell) => {
-                                const isInvalid =
-                                    cell.formula &&
-                                    /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.formula.text);
+                                const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.content);
                                 return [
                                     isInvalid ? valid : valid + 1,
                                     isInvalid ? invalid + 1 : invalid,

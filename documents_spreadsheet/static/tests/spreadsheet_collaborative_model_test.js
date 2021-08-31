@@ -148,7 +148,7 @@ QUnit.test("Add a filter with a default value", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "D4"),
-        "10"
+        10
     );
     alice.dispatch("ADD_PIVOT_FILTER", { filter });
     await nextTick();
@@ -211,14 +211,14 @@ QUnit.test("Edit a filter", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "B4"),
-        "11"
+        11
     );
     alice.dispatch("ADD_PIVOT_FILTER", { filter });
     await nextTick();
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "B4"),
-        "11"
+        11
     );
     alice.dispatch("EDIT_PIVOT_FILTER", {
         id: "41",

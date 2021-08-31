@@ -515,8 +515,8 @@ test("group by regular field defined with not supported aggregate", async functi
         },
     });
     const B7 = getCell(model, "B7");
-    assert.equal(B7.error, `Not implemented: array_agg`);
-    assert.equal(B7.value, `#ERROR`);
+    assert.equal(B7.evaluated.error, `Not implemented: array_agg`);
+    assert.equal(B7.evaluated.value, `#ERROR`);
 });
 
 QUnit.test("group by related field with archived record", async function (assert) {

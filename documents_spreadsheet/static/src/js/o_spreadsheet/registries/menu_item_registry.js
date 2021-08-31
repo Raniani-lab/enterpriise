@@ -7,7 +7,7 @@ import spreadsheet from "../o_spreadsheet_loader";
 import { REINSERT_LIST_CHILDREN } from "./list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "./pivot_actions";
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
-const { createFullMenuItem } = spreadsheet.helpers;
+const { createFullMenuItem, isFormula } = spreadsheet.helpers;
 const { astToFormula } = spreadsheet;
 
 //--------------------------------------------------------------------------
@@ -123,7 +123,7 @@ cellMenuRegistry
         },
         isVisible: (env) => {
             const cell = env.getters.getActiveCell();
-            return cell && cell.type === "formula" && cell.formula.text.match(pivotFormulaRegex);
+            return cell && isFormula(cell) && cell.content.match(pivotFormulaRegex);
         },
     })
     .add("listing_properties", {
@@ -156,8 +156,7 @@ cellMenuRegistry
             const [col, row] = env.getters.getPosition();
             const sheetId = env.getters.getActiveSheetId();
             const cell = env.getters.getCell(sheetId, col, row);
-            const cellValue = env.getters.getCellValue(cell, sheetId, true);
-            const { args } = getFirstPivotFunction(cellValue);
+            const { args } = getFirstPivotFunction(cell.content);
             const evaluatedArgs = args
                 .map(astToFormula)
                 .map((arg) => env.getters.evaluateFormula(arg));
@@ -181,9 +180,8 @@ cellMenuRegistry
             const cell = env.getters.getActiveCell();
             return (
                 cell &&
-                cell.type === "formula" &&
-                cell.value !== "" &&
-                getNumberOfPivotFormulas(cell.formula.text) === 1
+                cell.evaluated.value !== "" &&
+                getNumberOfPivotFormulas(cell.content) === 1
             );
         },
         separator: true,

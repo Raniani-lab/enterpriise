@@ -12,13 +12,6 @@ from odoo import models, fields
 class Task(models.Model):
     _inherit = "project.task"
 
-    def _get_calendars_and_resources_key(self):
-        self.ensure_one()
-        if len(self.user_ids) == 1 and self.user_ids.employee_id.resource_calendar_id:
-            self.user_ids.employee_id.id
-        else:
-            return super(Task, self)._get_calendars_and_resources_key()
-
     def _get_calendars_and_resources(self, date_start, date_end):
         """
         Gets the calendars and resources (for instance to later get the work intervals for the provided date_start

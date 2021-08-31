@@ -13,7 +13,7 @@ const STYLE = css`
             width: 100%;
             height: 100%;
             &.o_connector_hovered {
-                z-index: 1;
+                z-index: 2;
             }
             .o_connector_stroke_button {
                 > rect {

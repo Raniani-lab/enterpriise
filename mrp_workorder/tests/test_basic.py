@@ -77,6 +77,7 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
             'product_tmpl_id': cls.dining_table.product_tmpl_id.id,
             'product_uom_id': cls.env.ref('uom.product_uom_unit').id,
             'sequence': 3,
+            'ready_to_produce': 'asap',
             'consumption': 'flexible',
             'operation_ids': [
                 (0, 0, {'workcenter_id': cls.mrp_workcenter.id, 'name': 'Manual Assembly'}),

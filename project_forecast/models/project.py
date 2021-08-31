@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 import datetime
 
 from odoo import api, exceptions, fields, models, _
@@ -31,6 +32,21 @@ class Project(models.Model):
             if not project._origin:
                 project.allow_forecast = not project.is_fsm
 
+    def action_project_forecast_from_project(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("project_forecast.project_forecast_action_from_project")
+        first_slot = self.env['planning.slot'].search([('start_datetime', '>=', datetime.datetime.now()), ('project_id', '=', self.id)], limit=1, order="start_datetime")
+        action['context'] = {
+            'default_project_id': self.id,
+            'search_default_project_id': [self.id],
+            **ast.literal_eval(action['context'])
+        }
+        if first_slot:
+            action['context'].update({'initialDate': first_slot.start_datetime})
+        elif self.date_start and self.date_start >= datetime.date.today():
+            action['context'].update({'initialDate': self.date_start})
+        return action
+
+
 
 class Task(models.Model):
     _inherit = 'project.task'
@@ -55,16 +71,20 @@ class Task(models.Model):
             raise UserError(_('You cannot delete a task containing plannings. You can either delete all the task\'s plannings and then delete the task or simply deactivate the task.'))
 
     def action_get_project_forecast_by_user(self):
-        allowed_task_ids = (self | self._get_all_subtasks() | self.depend_on_ids).ids
+        allowed_tasks = (self | self._get_all_subtasks() | self.depend_on_ids)
         action = self.env["ir.actions.actions"]._for_xml_id("project_forecast.project_forecast_action_schedule_by_employee")
-        first_slot = self.env['planning.slot'].search([('end_datetime', '>=', datetime.datetime.now()), ('task_id', 'in', allowed_task_ids)], limit=1, order="end_datetime asc")
+        first_slot = self.env['planning.slot'].search([('start_datetime', '>=', datetime.datetime.now()), ('task_id', 'in', allowed_tasks.ids)], limit=1, order="start_datetime")
         action_context = {
             'group_by': ['task_id', 'resource_id'],
         }
         if first_slot:
             action_context.update({'initialDate': first_slot.start_datetime})
+        else:
+            min_date = min(allowed_tasks.mapped('planned_date_begin'))
+            if min_date and min_date > datetime.datetime.now():
+                action_context.update({'initialDate': min_date})
         action['context'] = action_context
-        action['domain'] = [('task_id', 'in', allowed_task_ids)]
+        action['domain'] = [('task_id', 'in', allowed_tasks.ids)]
         return action
 
     # -------------------------------------------

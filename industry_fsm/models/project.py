@@ -84,7 +84,6 @@ class Task(models.Model):
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
-    display_fsm_dates = fields.Boolean(compute='_compute_display_fsm_dates')
     # Use to count conditions between : time, worksheet and materials
     # If 2 over 3 are enabled for the project, the required count = 2
     # If 1 over 3 is met (enabled + encoded), the satisfied count = 2
@@ -100,7 +99,6 @@ class Task(models.Model):
                                               'planned_date_begin',
                                               'planned_date_end',
                                               'fsm_done',
-                                              'display_fsm_dates',
                                               'partner_phone',
                                               'partner_city',
                                               'has_complete_partner_address'}
@@ -144,11 +142,6 @@ class Task(models.Model):
             'display_timer_resume': False,
         })
         super(Task, self - fsm_done_tasks)._compute_display_timer_buttons()
-
-    @api.depends('is_fsm')
-    def _compute_display_fsm_dates(self):
-        for task in self:
-            task.display_fsm_dates = task.is_fsm
 
     @api.depends('partner_id')
     def _compute_has_complete_partner_address(self):

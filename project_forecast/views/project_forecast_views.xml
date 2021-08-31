@@ -8,8 +8,6 @@
         <field name="view_mode">gantt,tree,form,pivot</field>
         <field name="context">{
             'group_by': ['employee_id'],
-            'default_project_id': active_id,
-            'search_default_project_id': [active_id],
             'search_default_group_by_resource': 1,
             'project_task_display_forecast': 1,
             'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1

@@ -99,7 +99,7 @@ function _getOdooFunctionsFromAST(ast) {
             } else if (["LIST", "LIST.HEADER"].includes(functionName)) {
                 return [{ functionName, args: ast.args, isList: true }];
             } else {
-                return ast.args.map((arg) => _getOdooFunctionsFromAST(arg).flat());
+                return ast.args.map((arg) => _getOdooFunctionsFromAST(arg)).flat();
             }
         }
         default:

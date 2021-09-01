@@ -661,6 +661,18 @@ test("can select a Pivot from cell formula where pivot is in a function call", a
     assert.strictEqual(selectedPivotId, "1");
 });
 
+test("can select a Pivot from cell formula where the id is a reference", async function (assert) {
+    assert.expect(1);
+    const { model } = await createSpreadsheetFromPivot();
+    setCellContent(model, "C3", `=PIVOT(G10,"probability","bar","false","foo","2")+2`);
+    setCellContent(model, "G10", "1");
+    const sheetId = model.getters.getActiveSheetId();
+    const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId });
+    const selectedPivotId = model.getters.getSelectedPivotId();
+    assert.strictEqual(selectedPivotId, "1");
+});
+
 test("Columns of newly inserted pivot are auto-resized", async function (assert) {
     assert.expect(1);
 

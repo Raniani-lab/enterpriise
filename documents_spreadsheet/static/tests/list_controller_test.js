@@ -184,4 +184,59 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.strictEqual(getCell(model, "A12").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B12").format, undefined);
     });
+
+    QUnit.test("can select a List from cell formula", async function (assert) {
+        assert.expect(1);
+        const { model } = await createSpreadsheetFromList();
+        const sheetId = model.getters.getActiveSheetId();
+        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        const selectedListId = model.getters.getSelectedListId();
+        assert.strictEqual(selectedListId, "1");
+    });
+
+    QUnit.test("can select a List from cell formula with '-' before the formula", async function (assert) {
+        assert.expect(1);
+        const { model } = await createSpreadsheetFromList();
+        setCellContent(model, "A1", `=-LIST("1","1","foo")`);
+        const sheetId = model.getters.getActiveSheetId();
+        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        const selectedListId = model.getters.getSelectedListId();
+        assert.strictEqual(selectedListId, "1");
+    });
+
+    QUnit.test("can select a List from cell formula with other numerical values", async function (assert) {
+        assert.expect(1);
+        const { model } = await createSpreadsheetFromList();
+        setCellContent(model, "A1", `=3*LIST("1","1","foo")`);
+        const sheetId = model.getters.getActiveSheetId();
+        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        const selectedListId = model.getters.getSelectedListId();
+        assert.strictEqual(selectedListId, "1");
+    });
+
+    QUnit.test("can select a List from cell formula within a formula", async function (assert) {
+        assert.expect(1);
+        const { model } = await createSpreadsheetFromList();
+        setCellContent(model, "A1", `=SUM(LIST("1","1","foo"),1)`);
+        const sheetId = model.getters.getActiveSheetId();
+        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        const selectedListId = model.getters.getSelectedListId();
+        assert.strictEqual(selectedListId, "1");
+    });
+
+    QUnit.test("can select a List from cell formula where the id is a reference", async function (assert) {
+        assert.expect(1);
+        const { model } = await createSpreadsheetFromList();
+        setCellContent(model, "A1", `=LIST(G10,"1","foo")`);
+        setCellContent(model, "G10", "1");
+        const sheetId = model.getters.getActiveSheetId();
+        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        const selectedListId = model.getters.getSelectedListId();
+        assert.strictEqual(selectedListId, "1");
+    });
 });

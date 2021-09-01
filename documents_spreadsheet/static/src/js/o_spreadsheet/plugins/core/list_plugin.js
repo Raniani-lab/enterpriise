@@ -5,6 +5,8 @@ import CommandResult from "../cancelled_reason";
 import { getFirstListFunction } from "../../helpers/odoo_functions_helpers";
 import { getMaxObjectId } from "../../helpers/helpers";
 
+const { astToFormula } = spreadsheet;
+
 /**
  * @typedef {Object} SpreadsheetList
  * @property {Array<string>} columns
@@ -104,7 +106,9 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         if (cell && cell.type === "formula") {
             const listFunction = getFirstListFunction(cell.formula.text);
             if (listFunction) {
-                return listFunction.args[0];
+                const content = astToFormula(listFunction.args[0]);
+                const formula = this.getters.buildFormulaContent(sheetId, content, cell.dependencies);
+                return this.getters.evaluateFormula(formula).toString();
             }
         }
         return undefined;

@@ -867,7 +867,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
                     },
                     followRelations: function (field) {
                         return field.type === 'many2one' &&
-                            field.relation !== 'account.move' && field.relation !== 'sale.order';
+                            field.relation !== 'account.move' && field.relation !== 'sale.order' && field.relation !== 'purchase.order';
                     },
                 };
                 var availableKeys = self._getContextKeys(self.node);
@@ -948,15 +948,17 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
         var amount_untaxed = '0.0';
         var amount_total = '0.0';
         var amount_by_groups = 'None';
-        if (values.relation === 'account.move') {
+        if (values.relation === 'account.move' || values.relation === 'purchase.order') {
             currency_id = values.related + '.currency_id';
         }
         if (values.relation === 'sale.order') {
             currency_id = values.related + '.pricelist_id.currency_id';
         }
         if (values.relation === 'account.move' || values.relation === 'sale.order') {
-            amount_untaxed = values.related + '.amount_untaxed';
             amount_by_groups = values.related + '.amount_by_group';
+        }
+        if (values.relation === 'account.move' || values.relation === 'sale.order' || values.relation === 'purchase.order') {
+            amount_untaxed = values.related + '.amount_untaxed';
             amount_total = values.related + '.amount_total';
         }
         return {

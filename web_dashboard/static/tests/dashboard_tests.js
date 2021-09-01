@@ -255,33 +255,53 @@ QUnit.module('Views', {
         // concurrency.delay is a fragile way that we use to wait until the
         // graph is rendered.
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
-        assert.expect(2);
+        assert.expect(13);
+
+        const unpatchDate = patchDate(2017, 2, 22, 1, 0, 0);
+
+        const readGroupDomains = [
+            [],
+            ["&", ["date", ">=", "2017-03-01"], ["date", "<=", "2017-03-31"]],
+            ["&", ["date", ">=", "2017-03-01"], ["date", "<=", "2017-03-31"]],
+            ["&", ["date", ">=", "2017-02-01"], ["date", "<=", "2017-02-28"]],
+        ];
 
         var dashboard = await createView({
             View: DashboardView,
             model: 'test_time_range',
             data: this.data,
-            context: {
-                timeRangeMenuData: {
-                    //Q3 2018
-                    timeRange: ['&', ["transformation_date", ">=", "2018-07-01"], ["transformation_date", "<=", "2018-09-30"]],
-                    timeRangeDescription: 'This Quarter',
-                    //Q4 2018
-                    comparisonTimeRange: ['&', ["transformation_date", ">=", "2018-10-01"], ["transformation_date", "<=", "2018-12-31"]],
-                    comparisonTimeRangeDescription: 'Previous Period',
-                },
-            },
             arch: '<dashboard>' +
                       '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
+            archs: {
+                "test_time_range,false,search": '<search><filter name="date" date="date" /></search>',
+            },
+            mockRPC(route, args) {
+                assert.step(args.method);
+                assert.deepEqual(args.kwargs.domain, readGroupDomains.shift());
+                return this._super(...arguments);
+            }
         });
+        assert.verifySteps(["read_group"]);
+
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'date');
+        await cpHelpers.toggleMenuItemOption(dashboard, 'date', 'March');
+        assert.verifySteps(["read_group"]);
+
+        // Apply range with today and comparison with previous period
+        await cpHelpers.toggleComparisonMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'date: Previous period');
+        assert.verifySteps(["read_group","read_group"]);
 
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
         var chartTitle = $('.o_pie_chart .o_graph_renderer label').text();
         assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
+
         dashboard.destroy();
+        unpatchDate();
         delete widgetRegistry.map.test;
     });
 

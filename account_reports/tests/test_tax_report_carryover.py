@@ -150,8 +150,8 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
                 'res_id': template.id,
                 'model': 'account.tax.template',
             })
-            tax_id = template._generate_tax(company)['tax_template_to_tax'][template.id]
-            taxes.append(self.env['account.tax'].browse(tax_id))
+            tax = template._generate_tax(company)['tax_template_to_tax'][template]
+            taxes.append(tax)
 
         return taxes
 

@@ -738,8 +738,7 @@ class TestTaxReport(TestAccountReportsCommon):
             'res_id': tax_template_11.id,
             'model': 'account.tax.template',
         })
-        tax_11_id = tax_template_11._generate_tax(company)['tax_template_to_tax'][tax_template_11.id]
-        tax_11 = self.env['account.tax'].browse(tax_11_id)
+        tax_11 = tax_template_11._generate_tax(company)['tax_template_to_tax'][tax_template_11]
 
         self.env['ir.model.data'].create({
             'name': 'account_reports.test_tax_report_tax_42',
@@ -747,8 +746,7 @@ class TestTaxReport(TestAccountReportsCommon):
             'res_id': tax_template_42.id,
             'model': 'account.tax.template',
         })
-        tax_42_id = tax_template_42._generate_tax(company)['tax_template_to_tax'][tax_template_42.id]
-        tax_42 = self.env['account.tax'].browse(tax_42_id)
+        tax_42 = tax_template_42._generate_tax(company)['tax_template_to_tax'][tax_template_42]
 
         # Create an invoice using the tax we just made
         invoice = self.env['account.move'].create({
@@ -883,8 +881,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 'res_id': tax_template.id,
                 'model': 'account.tax.template',
             })
-            tax_id = tax_template._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template.id]
-            rslt += self.env['account.tax'].browse(tax_id)
+            rslt += tax_template._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template]
 
         return rslt
 

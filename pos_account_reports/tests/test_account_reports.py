@@ -79,8 +79,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
             'res_id': tax_template.id,
             'model': 'account.tax.template',
         })
-        pos_tax_id = tax_template._generate_tax(cls.company_data['company'])['tax_template_to_tax'][tax_template.id]
-        cls.pos_tax = cls.env['account.tax'].browse(pos_tax_id)
+        cls.pos_tax = tax_template._generate_tax(cls.company_data['company'])['tax_template_to_tax'][tax_template]
 
         pos_tax_account = cls.env['account.account'].create({
             'name': 'POS tax account',

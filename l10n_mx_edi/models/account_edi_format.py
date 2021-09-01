@@ -413,14 +413,12 @@ class AccountEdiFormat(models.Model):
         if credentials.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
-                'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(exported['cfdi_str'])),
             }
 
         res = getattr(self, '_l10n_mx_edi_%s_sign_invoice' % pac_name)(invoice, credentials, exported['cfdi_str'])
         if res.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
-                'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(exported['cfdi_str'])),
             }
 
         return res
@@ -431,14 +429,12 @@ class AccountEdiFormat(models.Model):
         if credentials.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
-                'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(exported['cfdi_str'])),
             }
 
         res = getattr(self, '_l10n_mx_edi_%s_sign_payment' % pac_name)(move, credentials, exported['cfdi_str'])
         if res.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
-                'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(exported['cfdi_str'])),
             }
 
         return res
@@ -921,7 +917,16 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 })
 
             # == Create the attachment ==
-            cfdi_attachment = self._create_invoice_cfdi_attachment(invoice, res['cfdi_signed'])
+            cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
+            cfdi_attachment = self.env['ir.attachment'].create({
+                'name': cfdi_filename,
+                'res_id': invoice.id,
+                'res_model': invoice._name,
+                'type': 'binary',
+                'datas': res['cfdi_signed'],
+                'mimetype': 'application/xml',
+                'description': _('Mexican invoice CFDI generated for the %s document.') % invoice.name,
+            })
             edi_result[invoice] = {'success': True, 'attachment': cfdi_attachment}
 
             # == Chatter ==
@@ -930,29 +935,6 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 attachment_ids=cfdi_attachment.ids,
             )
         return edi_result
-
-    def _create_invoice_cfdi_attachment(self, invoice, data):
-        cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
-        description = _('Mexican invoice CFDI generated for the %s document.') % invoice.name
-        return self._create_cfdi_attachment(cfdi_filename, description, invoice, data)
-
-    def _create_cfdi_attachment(self, cfdi_filename, description, move, data):
-        IrAttachment = self.env['ir.attachment']
-        values = {
-            'name': cfdi_filename,
-            'res_id': move.id,
-            'res_model': move._name,
-            'type': 'binary',
-            'datas': data,
-            'mimetype': 'application/xml',
-            'description': description,
-        }
-        attachment = IrAttachment.search([('name', '=', cfdi_filename), ('res_model', '=', move._name), ('res_id', '=', move.id), ('type', '=', 'binary')])
-        if attachment:
-            attachment.write(values)
-            return attachment[0]
-        else:
-            return IrAttachment.create(values)
 
     def _cancel_invoice_edi(self, invoices):
         # OVERRIDE
@@ -1026,7 +1008,16 @@ Content-Disposition: form-data; name="xml"; filename="xml"
 
             # == Create the attachment ==
             cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
-            cfdi_attachment = self._create_payment_cfdi_attachment(move, cfdi_signed)
+            cfdi_filename = ('%s-%s-MX-Payment-10.xml' % (move.journal_id.code, move.name)).replace('/', '')
+            cfdi_attachment = self.env['ir.attachment'].create({
+                'name': cfdi_filename,
+                'res_id': move.id,
+                'res_model': move._name,
+                'type': 'binary',
+                'datas': cfdi_signed,
+                'mimetype': 'application/xml',
+                'description': _('Mexican payment CFDI generated for the %s document.') % move.name,
+            })
             edi_result[move] = {'success': True, 'attachment': cfdi_attachment}
 
             # == Chatter ==
@@ -1036,11 +1027,6 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 move.payment_id.message_post(body=message, attachment_ids=cfdi_attachment.ids)
 
         return edi_result
-
-    def _create_payment_cfdi_attachment(self, move, data):
-        cfdi_filename = ('%s-%s-MX-Payment-10.xml' % (move.journal_id.code, move.name)).replace('/', '')
-        descritpion = _('Mexican payment CFDI generated for the %s document.') % move.name
-        return self._create_cfdi_attachment(cfdi_filename, descritpion, move, data)
 
     def _cancel_payment_edi(self, moves, ):
         # OVERRIDE

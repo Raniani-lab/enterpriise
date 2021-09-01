@@ -479,5 +479,32 @@ QUnit.module('Views', {
         assert.hasClass($(webClient.el).find('.o_kanban_group:first'), 'o_current',
             "first available column should be active");
     });
+
+    QUnit.test("autofocus quick create form", async function (assert) {
+        assert.expect(2);
+
+        const kanban = await createView({
+            View: KanbanView,
+            model: "partner",
+            data: this.data,
+            arch: `<kanban on_create="quick_create">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div><field name="foo"/></div>
+                        </t>
+                    </templates>
+                </kanban>`,
+            groupBy: ["product_id"],
+        });
+
+        // quick create in first column
+        await dom.click(kanban.$buttons.find(".o-kanban-button-new"));
+        assert.ok(kanban.$(".o_kanban_group:nth(0) > div:nth(1)").hasClass("o_kanban_quick_create"),
+            "clicking on create should open the quick_create in the first column");
+        assert.strictEqual(document.activeElement, kanban.$(".o_kanban_quick_create .o_input:first")[0],
+            "the first input field should get the focus when the quick_create is opened");
+
+        kanban.destroy();
+    });
 });
 });

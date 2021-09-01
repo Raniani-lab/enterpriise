@@ -38,12 +38,15 @@ creates next activities for the related approvers.
     'installable': True,
     'auto_install': False,
     'assets': {
+        'mail.assets_discuss_public': [
+            'approvals/static/src/components/*/*',
+            'approvals/static/src/models/*/*.js',
+        ],
         'web.assets_backend': [
-            'approvals/static/src/components/approval/approval.js',
-            'approvals/static/src/models/activity/activity.js',
-            'approvals/static/src/models/approval/approval.js',
-            'approvals/static/src/widgets/form_renderer/form_renderer.js',
-            'approvals/static/src/components/approval/approval.scss',
+            'approvals/static/src/components/*/*.js',
+            'approvals/static/src/components/*/*.scss',
+            'approvals/static/src/models/*/*.js',
+            'approvals/static/src/widgets/*/*.js',
         ],
         'web.assets_tests': [
             'approvals/static/tests/tours/**/*',
@@ -52,11 +55,10 @@ creates next activities for the related approvers.
             'approvals/static/tests/helpers/**/*',
         ],
         'web.qunit_suite_tests': [
-            'approvals/static/src/components/activity/activity_tests.js',
+            'approvals/static/src/components/*/tests/*.js',
         ],
         'web.assets_qweb': [
-            'approvals/static/src/components/activity/activity.xml',
-            'approvals/static/src/components/approval/approval.xml',
+            'approvals/static/src/components/*/*.xml',
             'approvals/static/src/xml/*.xml',
         ],
     },

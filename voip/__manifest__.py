@@ -30,9 +30,13 @@ Allows to make call from next activities or with click-to-dial.
     'application': True,
     'license': 'OEEL-1',
     'assets': {
+        'mail.assets_discuss_public': [
+            'voip/static/src/components/*/*',
+            'voip/static/src/models/*/*.js',
+        ],
         'web.assets_backend': [
             'voip/static/lib/sip.js',
-            'voip/static/src/components/activity/activity.js',
+            'voip/static/src/components/*/*.js',
             'voip/static/src/js/call_center_field.js',
             'voip/static/src/js/dialing_panel.js',
             'voip/static/src/js/phone_call.js',
@@ -47,16 +51,16 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/js/voip_service.js',
             'voip/static/src/js/legacy_compatibility.js',
             'voip/static/src/js/user_agent.js',
-            'voip/static/src/models/activity/activity.js',
+            'voip/static/src/models/*/*.js',
             'voip/static/src/scss/call_center_field.scss',
             'voip/static/src/scss/voip.scss',
         ],
         'web.qunit_suite_tests': [
-            'voip/static/src/components/activity/activity_tests.js',
+            'voip/static/src/components/*/tests/*.js',
             'voip/static/tests/**/*.js',
         ],
         'web.assets_qweb': [
-            'voip/static/src/components/activity/activity.xml',
+            'voip/static/src/components/*/*.xml',
             'voip/static/src/xml/*.xml',
         ],
     }

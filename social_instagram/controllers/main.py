@@ -10,7 +10,6 @@ from odoo import _, http
 from odoo.addons.auth_oauth.controllers.main import fragment_to_query_string
 from odoo.addons.social.controllers.main import SocialController
 from odoo.addons.social.controllers.main import SocialValidationException
-from odoo.addons.web.controllers.main import Binary
 from odoo.http import request
 from werkzeug.exceptions import Forbidden
 from werkzeug.urls import url_encode, url_join
@@ -94,7 +93,7 @@ class SocialInstagramController(SocialController):
             default_mimetype='image/jpeg'
         )
 
-        return Binary._content_image_get_response(status, headers, image_base64)
+        return request.env['ir.http']._content_image_get_response(status, headers, image_base64)
 
     def _instagram_create_accounts(self, access_token, extended_access_token):
         """ 1. Retrieve all Facebook pages data from '/me/accounts'

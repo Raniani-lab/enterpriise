@@ -13,7 +13,6 @@ from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
 from odoo.tools import image_process
-from odoo.addons.web.controllers.main import Binary
 
 logger = logging.getLogger(__name__)
 
@@ -285,8 +284,7 @@ class ShareRoute(http.Controller):
                 image = env['res.users'].sudo().browse(share.create_uid.id).avatar_128
 
                 if not image:
-                    binary = Binary()
-                    return binary.placeholder()
+                    return env['ir.http']._placeholder()
 
                 return base64.b64decode(image)
             else:

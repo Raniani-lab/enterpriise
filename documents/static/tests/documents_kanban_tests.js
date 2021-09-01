@@ -2352,7 +2352,7 @@ QUnit.module('documents_kanban_tests.js', {
     });
 
     QUnit.test('document chatter: can write messages in the chatter', async function (assert) {
-        assert.expect(8);
+        assert.expect(7);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -2367,16 +2367,11 @@ QUnit.module('documents_kanban_tests.js', {
                 if (route === '/mail/get_suggested_recipients') {
                     return { 1: [] };
                 }
-                if (args.method === 'message_post') {
-                    assert.deepEqual(args.args, [1],
+                if (route === '/mail/message/post') {
+                    assert.deepEqual(args.thread_id, 1,
                         "should post message on correct record");
-                    assert.strictEqual(args.kwargs.body, 'Some message',
+                    assert.strictEqual(args.post_data.body, 'Some message',
                         "should post correct message");
-                    return this._super(...arguments);
-                }
-                if (args.method === 'message_format') {
-                    assert.deepEqual(args.args, [[1]],
-                        "should request message_format on correct message");
                     return this._super(...arguments);
                 }
                 return this._super.apply(this, arguments);

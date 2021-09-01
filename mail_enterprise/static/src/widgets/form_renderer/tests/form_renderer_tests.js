@@ -89,8 +89,8 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             device: { size_class: config.device.SIZES.XXL },
         },
         async mockRPC(route, args) {
-            if (args.method === 'message_fetch') {
-                assert.step('message_fetch');
+            if (route === '/mail/thread/messages') {
+                assert.step('/mail/thread/messages');
             }
             return this._super.call(this, ...arguments);
         },
@@ -107,7 +107,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         },
     });
     assert.verifySteps(
-        ['message_fetch'],
+        ['/mail/thread/messages'],
         'Initial message fetch should be done'
     );
 
@@ -135,8 +135,8 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         "The last message should be visible"
     );
     assert.verifySteps(
-        ['message_fetch'],
-        'The message_fetch to load new messages should be done when scrolling to the bottom'
+        ['/mail/thread/messages'],
+        'The RPC to load new messages should be done when scrolling to the bottom'
     );
 
     await this.afterEvent({
@@ -155,8 +155,8 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         },
     });
     assert.verifySteps(
-        ['message_fetch'],
-        'The message_fetch to load new messages should be done when scrolling to the bottom'
+        ['/mail/thread/messages'],
+        'The RPC to load new messages should be done when scrolling to the bottom'
     );
 });
 
@@ -209,8 +209,8 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             device: { size_class: config.device.SIZES.XXL },
         },
         async mockRPC(route, args) {
-            if (args.method === 'message_post') {
-                assert.step('message_post');
+            if (route === '/mail/message/post') {
+                assert.step('/mail/message/post');
             }
             return this._super.call(this, ...arguments);
         },
@@ -294,7 +294,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     await afterNextRender(() =>
         document.querySelector('.o_Composer_buttonSend').click()
     );
-    assert.verifySteps(['message_post'], "Message post should be done");
+    assert.verifySteps(['/mail/message/post'], "Message post should be done");
     assert.strictEqual(controllerContentEl.scrollTop, 0,
         "The controller container should not be scrolled after sending a message"
     );

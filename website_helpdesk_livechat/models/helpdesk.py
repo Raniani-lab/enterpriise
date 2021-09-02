@@ -64,7 +64,6 @@ class MailChannel(models.Model):
                 team_id = team.id if team else False
                 helpdesk_ticket = self.env['helpdesk.ticket'].create({
                     'name': ' '.join(list_value),
-                    'user_id': self.env.user.id,
                     'description': plaintext2html(description),
                     'partner_id': customer.id if customer else False,
                     'team_id': team_id,

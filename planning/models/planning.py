@@ -115,6 +115,8 @@ class Planning(models.Model):
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
     confirm_delete = fields.Boolean('Confirm Slots Deletion', compute='_compute_confirm_delete')
 
+    is_hatched = fields.Boolean(compute='_compute_is_hatched')
+
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
@@ -173,6 +175,11 @@ class Planning(models.Model):
                     slot.role_id = slot.template_id.role_id
             elif slot.previous_template_id and not slot.template_id and slot.previous_template_id.role_id == slot.role_id:
                 slot.role_id = False
+
+    @api.depends('state')
+    def _compute_is_hatched(self):
+        for slot in self:
+            slot.is_hatched = slot.state == 'draft'
 
     @api.depends('user_id')
     def _compute_is_assigned_to_me(self):

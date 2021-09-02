@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class Task(models.Model):
@@ -34,3 +34,10 @@ class Task(models.Model):
                 body = '<a href="#" data-oe-model="project.task" data-oe-id="%s">%s</a>' % (task.id, task.display_name)
                 task.helpdesk_ticket_id.sudo().message_post(subtype_id=subtype_id.id, body=body)
         return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        tasks = super().create(vals_list)
+        for task in tasks.filtered('helpdesk_ticket_id'):
+            task.message_post_with_view('helpdesk.ticket_creation', values={'self': task, 'ticket': task.helpdesk_ticket_id}, subtype_id=self.env.ref('mail.mt_note').id)
+        return tasks

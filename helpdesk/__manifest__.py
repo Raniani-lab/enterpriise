@@ -53,6 +53,7 @@ Features:
         'views/rating_views.xml',
         'views/res_partner_views.xml',
         'views/mail_activity_views.xml',
+        'views/helpdesk_templates.xml',
         'report/helpdesk_sla_report_analysis_views.xml',
     ],
     'demo': ['data/helpdesk_demo.xml'],

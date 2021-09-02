@@ -275,6 +275,7 @@ class HelpdeskTicket(models.Model):
     use_coupons = fields.Boolean(related='team_id.use_coupons', string='Use Coupons')
     use_product_returns = fields.Boolean(related='team_id.use_product_returns', string='Use Returns')
     use_product_repairs = fields.Boolean(related='team_id.use_product_repairs', string='Use Repairs')
+    use_rating = fields.Boolean(related='team_id.use_rating', string='Use Customer Ratings')
 
     # customer portal: include comment and incoming emails in communication history
     website_message_ids = fields.One2many(domain=lambda self: [('model', '=', self._name), ('message_type', 'in', ['email', 'comment'])])

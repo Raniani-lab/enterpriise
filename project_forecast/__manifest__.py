@@ -15,6 +15,7 @@
         'views/planning_views.xml',
         'views/project_forecast_views.xml',
         'views/project_views.xml',
+        'report/planning_report_templates.xml',
     ],
     'application': False,
     'license': 'OEEL-1',

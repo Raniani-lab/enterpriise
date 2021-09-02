@@ -572,6 +572,13 @@ class Planning(models.Model):
         for slot in slots_with_date:
             slot.is_unassign_deadline_passed = slot.unassign_deadline < fields.Datetime.now()
 
+    # Used in report
+    def _group_slots_by_resource(self):
+        grouped_slots = defaultdict(self.browse)
+        for slot in self.sorted(key=lambda s: s.resource_id.name or ''):
+            grouped_slots[slot.resource_id] |= slot
+        return grouped_slots
+
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------

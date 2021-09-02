@@ -24,6 +24,8 @@
         'views/planning_report_views.xml',
         'views/res_config_settings_views.xml',
         'views/planning_templates.xml',
+        'report/planning_report_templates.xml',
+        'report/planning_report_views.xml',
         'data/planning_cron.xml',
         'data/mail_template_data.xml',
     ],

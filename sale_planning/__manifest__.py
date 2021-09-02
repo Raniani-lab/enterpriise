@@ -22,6 +22,7 @@
         'views/planning_templates.xml',
         'views/product_views.xml',
         'views/sale_order_views.xml',
+        'report/planning_report_templates.xml',
     ],
     'demo': [
         'data/product_demo.xml',

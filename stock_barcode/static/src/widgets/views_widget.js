@@ -34,13 +34,18 @@ const ViewsWidget = Widget.extend({
 
     start: function () {
         const def = this.controller.appendTo(this.el.querySelector('.o_barcode_generic_view'));
+        def.then(() => { // Hack to be able to scroll if the form view is too long.
+            document.querySelector('.o_action_manager').style.overflow = 'auto';
+        });
         return Promise.all([def, this._super()]);
     },
 
     /**
      * @override
      */
-    destroy: function () {},
+    destroy: function () {
+        document.querySelector('.o_action_manager').style.overflow = '';
+    },
 
     //--------------------------------------------------------------------------
     // Private

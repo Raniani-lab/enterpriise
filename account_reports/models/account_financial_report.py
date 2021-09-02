@@ -1432,7 +1432,7 @@ class AccountFinancialReportLine(models.Model):
 
         missing_amls = solver._get_missing_control_domain(options, self)
         excess_amls = solver._get_excess_control_domain(options, self)
-        amls = self.env['account.move.line'].search(missing_amls + excess_amls)
+        amls = self.env['account.move.line'].search(expression.OR([missing_amls + excess_amls]))
 
         return {
             'type': 'ir.actions.act_window',

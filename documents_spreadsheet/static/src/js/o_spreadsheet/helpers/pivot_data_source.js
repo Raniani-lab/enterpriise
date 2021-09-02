@@ -280,7 +280,8 @@ export default class PivotDataSource extends BasicDataSource {
     _createCols(groupBys, values, measures) {
         const cols = [];
         if (groupBys.length !== 0) {
-            this._fillColumns(cols, [], [], groupBys, measures, values, false);
+            const shouldFilterChildValues = this._shouldFilterChildValues(groupBys);
+            this._fillColumns(cols, [], [], groupBys, measures, values, false, shouldFilterChildValues);
         }
         for (let field of measures) {
             cols.push([[], [field]]); // Total
@@ -298,7 +299,8 @@ export default class PivotDataSource extends BasicDataSource {
      */
     _createRows(groupBys, values) {
         const rows = [];
-        this._fillRows(rows, [], groupBys, values, false);
+        const shouldFilterChildValues = this._shouldFilterChildValues(groupBys);
+        this._fillRows(rows, [], groupBys, values, false, shouldFilterChildValues);
         rows.push([]); // Total
         return rows;
     }
@@ -312,10 +314,12 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {Array<string>} measures Measures
      * @param {Object} values Values of the pivot (see PivotCache.groupBys)
      * @param {Array<number|false} currentIds Ids used to compute the intersection
+     * @param {Object} shouldFilterChildValues Dictionary specifying for each fields
+     *                                         if the children should be filtered or not
      *
      * @private
      */
-    _fillColumns(cols, currentRow, currentCol, groupBys, measures, values, currentIds) {
+    _fillColumns(cols, currentRow, currentCol, groupBys, measures, values, currentIds, shouldFilterChildValues) {
         const field = groupBys[0];
         if (!field) {
             for (let measure of measures) {
@@ -329,11 +333,12 @@ export default class PivotDataSource extends BasicDataSource {
         }
         for (let [id, vals] of values[field] || []) {
             let ids = currentIds ? intersect(currentIds, vals) : vals;
+            const newValues = shouldFilterChildValues[field] ? this._filterValues(values, ids) : values;
             const row = currentRow.slice();
             const col = currentCol.slice();
             row.push(id);
             col.push(row);
-            this._fillColumns(cols, row, col, groupBys.slice(1), measures, values, ids);
+            this._fillColumns(cols, row, col, groupBys.slice(1), measures, newValues, ids, shouldFilterChildValues);
         }
     }
     /**
@@ -344,20 +349,85 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {Array<string>} groupBys Name of the fields of colGroupBys
      * @param {Object} values Values of the pivot (see PivotCache.groupBys)
      * @param {Array<number|false} currentIds Ids used to compute the intersection
+     * @param {Object} shouldFilterChildValues Dictionary specifying for each fields
+     *                                         if the children should be filtered or not
      *
      * @private
      */
-    _fillRows(rows, currentRow, groupBys, values, currentIds) {
+    _fillRows(rows, currentRow, groupBys, values, currentIds, shouldFilterChildValues) {
         if (groupBys.length === 0) {
             return;
         }
         const fieldName = groupBys[0];
         for (let [id, vals] of values[fieldName] || []) {
             let ids = currentIds ? intersect(currentIds, vals) : vals;
+            const newValues = shouldFilterChildValues[fieldName] ? this._filterValues(values, ids) : values;
             const row = currentRow.slice();
             row.push(id);
             rows.push(row);
-            this._fillRows(rows, row, groupBys.slice(1), values, ids);
+            this._fillRows(rows, row, groupBys.slice(1), newValues, ids, shouldFilterChildValues);
         }
+    }
+
+    /**
+     * Fills a dictionary which as keys the different fields and as value if
+     * the children should be filtered or not. The value will be true if the children
+     * should be filtered, and false if they should be joined.
+     *
+     * @param {Array<string>} groupBys Name of the fields of groupBys
+     *
+     * @returns {Object<string, bool>} Dictionary specifying for each fields
+     *                                 if the children should be filtered(true) or joined(false)
+     * @private
+     */
+
+    _shouldFilterChildValues(groupBys) {
+        let joiningOn = false;
+        const shouldFilterChildValues = {};
+        for (const i in groupBys) {
+            const fieldDesc = groupBys[i];
+            const [fieldName] = fieldDesc.split(":");
+            const field = this.getField(fieldName);
+            const type = field ? field.type : undefined;
+            const nextId = parseInt(i, 10) + 1;
+            const fieldDescNext = nextId < groupBys.length ? groupBys[nextId] : undefined;
+            const fieldNameNext = fieldDescNext ? fieldDescNext.split(":")[0] : undefined;
+            const nextField = this.getField(fieldNameNext);
+            const typeNext = nextField ? nextField.type : undefined;
+            if (["date", "datetime"].includes(type)) {
+                joiningOn = fieldName;
+            }
+            if (["date", "datetime"].includes(typeNext) && joiningOn === fieldNameNext) {
+                joiningOn = false;
+            }
+            shouldFilterChildValues[fieldDesc] = !joiningOn;
+        }
+        return shouldFilterChildValues;
+    }
+
+    /**
+     * This function will filter a Values Object and remove all the nodes that
+     * do not contain the given ids.
+     *
+     * @param {Object} values All possible values at current depth in pivot
+     * @param {Array} ids Ids to keep
+     *
+     * @private
+     */
+    _filterValues(values, ids) {
+        let filteredValues = {};
+        for (const [key, value] of Object.entries(values)) {
+            const filteredLabels = [];
+            value.forEach((labelValuesPair) => {
+                const a = labelValuesPair[1].length ? intersect(labelValuesPair[1], ids) : [];
+                if (a.length) {
+                    filteredLabels.push([labelValuesPair[0], a]);
+                }
+            });
+            if (filteredLabels.length) {
+                filteredValues[key] = filteredLabels;
+            }
+        }
+        return filteredValues;
     }
 }

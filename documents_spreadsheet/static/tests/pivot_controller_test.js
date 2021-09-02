@@ -100,7 +100,7 @@ test("pivot with one level of group bys", async (assert) => {
 });
 
 test("pivot with two levels of group bys in rows", async (assert) => {
-    assert.expect(10);
+    assert.expect(9);
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             arch: `
@@ -116,28 +116,352 @@ test("pivot with two levels of group bys in rows", async (assert) => {
             );
         },
     });
-    assert.strictEqual(Object.values(getCells(model)).length, 18);
+    assert.strictEqual(Object.values(getCells(model)).length, 16);
     assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","bar","false")');
     assert.deepEqual(getCell(model, "A3").style, { fillColor: "#f2f2f2", bold: true });
     assert.strictEqual(
         getCellFormula(model, "A4"),
-        '=PIVOT.HEADER("1","bar","false","product_id","37")'
-    );
-    assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2" });
-    assert.strictEqual(
-        getCellFormula(model, "A5"),
         '=PIVOT.HEADER("1","bar","false","product_id","41")'
     );
-    assert.strictEqual(getCellFormula(model, "A6"), '=PIVOT.HEADER("1","bar","true")');
+    assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2" });
+    assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER("1","bar","true")');
     assert.strictEqual(
-        getCellFormula(model, "A7"),
+        getCellFormula(model, "A6"),
         '=PIVOT.HEADER("1","bar","true","product_id","37")'
     );
     assert.strictEqual(
-        getCellFormula(model, "A8"),
+        getCellFormula(model, "A7"),
         '=PIVOT.HEADER("1","bar","true","product_id","41")'
     );
-    assert.strictEqual(getCellFormula(model, "A9"), '=PIVOT.HEADER("1")');
+    assert.strictEqual(getCellFormula(model, "A8"), '=PIVOT.HEADER("1")');
+});
+
+test("Add pivot: date grouping", async (assert) => {
+    assert.expect(6);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41")`);
+});
+
+test("Add pivot: no date groupings", async (assert) => {
+    assert.expect(6);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="product_id" type="row"/>
+                <field name="foo" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","product_id","37")`);
+    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","product_id","41")`);
+    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","product_id","41","foo","17")`);
+});
+
+test("Add pivot: foo has a parent date grouping: only foo should be joined across months", async (assert) => {
+    assert.expect(12);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="product_id" type="row"/>
+                <field name="date" interval="month" type="row"/>
+                <field name="foo" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","product_id","37")`);
+    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","product_id","37","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","product_id","37","date:month","04/2016","foo","12")`);
+    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","product_id","41")`);
+    assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","1")`);
+    assert.equal(getCellFormula(model, "A9"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","2")`);
+    assert.equal(getCellFormula(model, "A10"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","17")`);
+    assert.equal(getCellFormula(model, "A11"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "A12"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","1")`);
+    assert.equal(getCellFormula(model, "A13"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","2")`);
+    assert.equal(getCellFormula(model, "A14"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","17")`);
+});
+
+test("Add pivot: Both groupings have a parent date grouping: both sets must be joined across months", async (assert) => {
+    assert.expect(33);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="foo" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","1")`);
+    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","2")`);
+    assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","17")`);
+    assert.equal(getCellFormula(model, "A9"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "A10"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "A11"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "A12"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","12")`);
+    assert.equal(getCellFormula(model, "A13"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","17")`);
+    assert.equal(getCellFormula(model, "A14"), `=PIVOT.HEADER("1","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "A15"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "A16"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","1")`);
+    assert.equal(getCellFormula(model, "A17"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","2")`);
+    assert.equal(getCellFormula(model, "A18"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "A19"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","17")`);
+    assert.equal(getCellFormula(model, "A20"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "A21"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "A22"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "A23"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","12")`);
+    assert.equal(getCellFormula(model, "A24"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","17")`);
+    assert.equal(getCellFormula(model, "A25"), `=PIVOT.HEADER("1","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "A26"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "A27"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","1")`);
+    assert.equal(getCellFormula(model, "A28"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","2")`);
+    assert.equal(getCellFormula(model, "A29"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "A30"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","17")`);
+    assert.equal(getCellFormula(model, "A31"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "A32"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "A33"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "A34"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","12")`);
+    assert.equal(getCellFormula(model, "A35"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","17")`);
+});
+
+test("Add pivot: Never join the values of a date field if there is a parent group based on the same date field", async (assert) => {
+    assert.expect(7);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="row"/>
+                <field name="date" interval="week" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","16/2016")`);
+    assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","44/2016")`);
+    assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","51/2016")`);
+    assert.equal(getCellFormula(model, "A9"), `=PIVOT.HEADER("1")`);
+});
+
+test("Add pivot: date grouping", async (assert) => {
+    assert.expect(17);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="col"/>
+                <field name="product_id" type="col"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "B1"), `=PIVOT.HEADER("1","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","measure","probability")`);
+    assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","measure","probability")`);
+    assert.equal(getCellFormula(model, "D1"), `=PIVOT.HEADER("1","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "D2"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","measure","probability")`);
+    assert.equal(getCellFormula(model, "E2"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","measure","probability")`);
+    assert.equal(getCellFormula(model, "F1"), `=PIVOT.HEADER("1","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "F2"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "F3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","measure","probability")`);
+    assert.equal(getCellFormula(model, "G2"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "G3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","measure","probability")`);
+    assert.equal(getCellFormula(model, "H2"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "H3"), `=PIVOT.HEADER("1","measure","probability")`);
+});
+
+test("Add pivot: no date groupings", async (assert) => {
+    assert.expect(12);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="product_id" type="col"/>
+                <field name="foo" type="col"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
+    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","product_id","37","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
+    assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","product_id","41","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "D2"), `=PIVOT.HEADER("1","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","product_id","41","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "E2"), `=PIVOT.HEADER("1","product_id","41","foo","17")`);
+    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","product_id","41","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "F2"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "F3"), `=PIVOT.HEADER("1","measure","probability")`);
+});
+
+test("Add pivot: foo has a parent date grouping: only foo should be joined across months", async (assert) => {
+    assert.expect(21);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="product_id" type="col"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="foo" type="col"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
+    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","product_id","37","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","product_id","37","date:month","04/2016","foo","12")`);
+    assert.equal(getCellFormula(model, "B4"), `=PIVOT.HEADER("1","product_id","37","date:month","04/2016","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
+    assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","1")`);
+    assert.equal(getCellFormula(model, "C4"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","2")`);
+    assert.equal(getCellFormula(model, "D4"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","17")`);
+    assert.equal(getCellFormula(model, "E4"), `=PIVOT.HEADER("1","product_id","41","date:month","10/2016","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "F2"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "F3"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","1")`);
+    assert.equal(getCellFormula(model, "F4"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "G3"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","2")`);
+    assert.equal(getCellFormula(model, "G4"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "H3"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","17")`);
+    assert.equal(getCellFormula(model, "H4"), `=PIVOT.HEADER("1","product_id","41","date:month","12/2016","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "I3"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "I4"), `=PIVOT.HEADER("1","measure","probability")`);
+});
+
+test("Add pivot: Both groupings have a parent date grouping: both sets must be joined across months", async (assert) => {
+    assert.expect(59);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="col"/>
+                <field name="product_id" type="col"/>
+                <field name="foo" type="col"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "B1"), `=PIVOT.HEADER("1","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","1")`);
+    assert.equal(getCellFormula(model, "B4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","2")`);
+    assert.equal(getCellFormula(model, "C4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "D4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","17")`);
+    assert.equal(getCellFormula(model, "E4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","37","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "F2"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "F3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "F4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "G3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "G4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "H3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","12")`);
+    assert.equal(getCellFormula(model, "H4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "I3"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","17")`);
+    assert.equal(getCellFormula(model, "I4"), `=PIVOT.HEADER("1","date:month","04/2016","product_id","41","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "J1"), `=PIVOT.HEADER("1","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "J2"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "J3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","1")`);
+    assert.equal(getCellFormula(model, "J4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "K3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","2")`);
+    assert.equal(getCellFormula(model, "K4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "L3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "L4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "M3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","17")`);
+    assert.equal(getCellFormula(model, "M4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","37","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "N2"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "N3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "N4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "O3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "O4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "P3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","12")`);
+    assert.equal(getCellFormula(model, "P4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "Q3"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","17")`);
+    assert.equal(getCellFormula(model, "Q4"), `=PIVOT.HEADER("1","date:month","10/2016","product_id","41","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "R1"), `=PIVOT.HEADER("1","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "R2"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37")`);
+    assert.equal(getCellFormula(model, "R3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","1")`);
+    assert.equal(getCellFormula(model, "R4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "S3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","2")`);
+    assert.equal(getCellFormula(model, "S4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "T3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","12")`);
+    assert.equal(getCellFormula(model, "T4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "U3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","17")`);
+    assert.equal(getCellFormula(model, "U4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","37","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "V2"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41")`);
+    assert.equal(getCellFormula(model, "V3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","1")`);
+    assert.equal(getCellFormula(model, "V4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","1","measure","probability")`);
+    assert.equal(getCellFormula(model, "W3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","2")`);
+    assert.equal(getCellFormula(model, "W4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","2","measure","probability")`);
+    assert.equal(getCellFormula(model, "X3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","12")`);
+    assert.equal(getCellFormula(model, "X4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","12","measure","probability")`);
+    assert.equal(getCellFormula(model, "Y3"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","17")`);
+    assert.equal(getCellFormula(model, "Y4"), `=PIVOT.HEADER("1","date:month","12/2016","product_id","41","foo","17","measure","probability")`);
+    assert.equal(getCellFormula(model, "Z3"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "Z4"), `=PIVOT.HEADER("1","measure","probability")`);
+});
+
+test("Add pivot: Never join the values of a date field if there is a parent group based on the same date field", async (assert) => {
+    assert.expect(11);
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            arch: `
+            <pivot string="Partners">
+                <field name="date" interval="month" type="col"/>
+                <field name="date" interval="week" type="col"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        }
+    });
+    assert.equal(getCellFormula(model, "B1"), `=PIVOT.HEADER("1","date:month","04/2016")`);
+    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","16/2016")`);
+    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","16/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER("1","date:month","10/2016")`);
+    assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","44/2016")`);
+    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","44/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "D1"), `=PIVOT.HEADER("1","date:month","12/2016")`);
+    assert.equal(getCellFormula(model, "D2"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","51/2016")`);
+    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","51/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "E2"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","measure","probability")`);
 });
 
 test("verify that there is a record for an undefined header", async (assert) => {
@@ -198,7 +522,7 @@ test("undefined date is inserted in pivot", async (assert) => {
 });
 
 test("pivot with two levels of group bys in cols", async (assert) => {
-    assert.expect(14);
+    assert.expect(12);
 
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
@@ -215,45 +539,18 @@ test("pivot with two levels of group bys in cols", async (assert) => {
             );
         },
     });
-
-    assert.strictEqual(Object.values(getCells(model)).length, 24);
+    assert.strictEqual(Object.values(getCells(model)).length, 20);
     assert.strictEqual(getCellContent(model, "A1"), "");
     assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2", bold: true });
     assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER("1","bar","false")');
-    assert.strictEqual(
-        getCellFormula(model, "B2"),
-        '=PIVOT.HEADER("1","bar","false","product_id","37")'
-    );
-    assert.strictEqual(
-        getCellFormula(model, "B3"),
-        '=PIVOT.HEADER("1","bar","false","product_id","37","measure","probability")'
-    );
+    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER("1","bar","false","product_id","41")');
+    assert.strictEqual(getCellFormula(model, "B3"), '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")');
     assert.deepEqual(getCell(model, "C2").style, { fillColor: "#f2f2f2", bold: true });
-    assert.strictEqual(
-        getCellFormula(model, "C2"),
-        '=PIVOT.HEADER("1","bar","false","product_id","41")'
-    );
-    assert.strictEqual(
-        getCellFormula(model, "C3"),
-        '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")'
-    );
-    assert.strictEqual(getCellFormula(model, "D1"), '=PIVOT.HEADER("1","bar","true")');
-    assert.strictEqual(
-        getCellFormula(model, "D2"),
-        '=PIVOT.HEADER("1","bar","true","product_id","37")'
-    );
-    assert.strictEqual(
-        getCellFormula(model, "D3"),
-        '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")'
-    );
-    assert.strictEqual(
-        getCellFormula(model, "E2"),
-        '=PIVOT.HEADER("1","bar","true","product_id","41")'
-    );
-    assert.strictEqual(
-        getCellFormula(model, "E3"),
-        '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")'
-    );
+    assert.strictEqual(getCellFormula(model, "C1"), '=PIVOT.HEADER("1","bar","true")');
+    assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER("1","bar","true","product_id","37")');
+    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")');
+    assert.strictEqual(getCellFormula(model, "D2"), '=PIVOT.HEADER("1","bar","true","product_id","41")');
+    assert.strictEqual(getCellFormula(model, "D3"), '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")');
 });
 
 test("pivot with count as measure", async (assert) => {
@@ -282,7 +579,7 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
 
     const data = getBasicData();
     // add many values in a subgroup
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < 70; i++) {
         data.product.records.push({
             id: i + 9999,
             display_name: i.toString(),
@@ -312,8 +609,8 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
             );
         },
     });
-    // 37 products * 2 groups + 1 row header + 1 total col + 1 extra empty col at the end
-    assert.strictEqual(model.getters.getActiveSheet().cols.length, 77);
+    // 72 products * 1 groups + 1 row header + 1 total col + 1 extra empty col at the end
+    assert.strictEqual(model.getters.getActiveSheet().cols.length, 76);
 });
 
 test("groupby week is sorted", async (assert) => {

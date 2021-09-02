@@ -1609,6 +1609,23 @@ module(
 
         test("Name is only fetched once", async function (assert) {
             assert.expect(6);
+            this.data.partner.records = [
+                ...this.data.partner.records,
+                {
+                    id: 3,
+                    foo: 12,
+                    bar: 110,
+                    product: 41,
+                    probability: 15,
+                },
+                {
+                    id: 4,
+                    foo: 1,
+                    bar: 110,
+                    product: 37,
+                    probability: 16,
+                },
+            ];
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
                     model: "partner",
@@ -1673,7 +1690,7 @@ module(
         });
 
         test("Name is not fetched if related record is not assigned", async function (assert) {
-            assert.expect(6);
+            assert.expect(4);
             this.data.partner.records[0].product = false;
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
@@ -1717,15 +1734,7 @@ module(
                 `=PIVOT.HEADER("1","foo","1","product","41")`
             );
             assert.equal(
-                getCellFormula(model, "A5"),
-                `=PIVOT.HEADER("1","foo","1","product","false")`
-            );
-            assert.equal(
-                getCellFormula(model, "A7"),
-                `=PIVOT.HEADER("1","foo","12","product","41")`
-            );
-            assert.equal(
-                getCellFormula(model, "A8"),
+                getCellFormula(model, "A6"),
                 `=PIVOT.HEADER("1","foo","12","product","false")`
             );
             model.dispatch("SET_PIVOT_FILTER_VALUE", {
@@ -1828,7 +1837,7 @@ module(
         });
 
         test("Styling on row headers", async function (assert) {
-            assert.expect(11);
+            assert.expect(9);
 
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
@@ -1856,12 +1865,10 @@ module(
             assert.deepEqual(getCell(model, "A3").style, styleMainheader);
             assert.deepEqual(getCell(model, "A4").style, styleSubHeader);
             assert.deepEqual(getCell(model, "A5").style, styleSubSubHeader);
-            assert.deepEqual(getCell(model, "A6").style, styleSubSubHeader);
-            assert.deepEqual(getCell(model, "A7").style, styleMainheader);
-            assert.deepEqual(getCell(model, "A8").style, styleSubHeader);
-            assert.deepEqual(getCell(model, "A9").style, styleSubSubHeader);
-            assert.deepEqual(getCell(model, "A10").style, styleSubSubHeader);
-            assert.deepEqual(getCell(model, "A11").style, styleMainheader);
+            assert.deepEqual(getCell(model, "A6").style, styleMainheader);
+            assert.deepEqual(getCell(model, "A7").style, styleSubHeader);
+            assert.deepEqual(getCell(model, "A8").style, styleSubSubHeader);
+            assert.deepEqual(getCell(model, "A9").style, styleMainheader);
         });
 
         test("Insert missing value modal can show only the values not used in the current sheet with multiple levels", async function (assert) {

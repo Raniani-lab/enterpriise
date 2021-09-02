@@ -39,6 +39,9 @@
                 <field name="partner_id" position="after">
                     <field name="batch_payment_id"/>
                 </field>
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" string="Partner"/>
+                </field>
             </field>
         </record>
 

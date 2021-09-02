@@ -303,8 +303,7 @@ odoo.define('sign.template', function(require) {
                         posx: Math.round((ui.position.left / signItem.parent().innerWidth())*1000)/1000,
                         posy: Math.round((ui.position.top / signItem.parent().innerHeight())*1000)/1000,
                     });
-                    // hack to prevent sign item from registering a click event immediately after drop
-                    ['signature', 'initial'].includes(self.types[type].item_type) && $(e.originalEvent.target).on('click', e => { e.stopImmediatePropagation(); } );
+                    signItem.removeClass('ui-selected');
                 });
     
                 signItem.off('resizestop').on('resizestop', function(e, ui) {
@@ -315,8 +314,6 @@ odoo.define('sign.template', function(require) {
 
                     self.updateSignItem(signItem);
                     signItem.removeClass('ui-selected');
-                    // hack to prevent sign item from registering a click event immediately after drop
-                    ['signature', 'initial'].includes(self.types[type].item_type) && $(e.originalEvent.target).on('click', e => { e.stopImmediatePropagation(); } );
                 });
 
                 signItem.find('.o_sign_config_area .fa-times').on('click', () => {

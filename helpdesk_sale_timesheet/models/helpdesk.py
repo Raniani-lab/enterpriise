@@ -162,25 +162,6 @@ class AccountAnalyticLine(models.Model):
     def _check_timesheet_can_be_billed(self):
         return super(AccountAnalyticLine, self)._check_timesheet_can_be_billed() or self.so_line == self.helpdesk_ticket_id.sale_line_id
 
-    @api.depends('so_line.product_id', 'project_id', 'task_id', 'task_id.pricing_type', 'helpdesk_ticket_id')
-    def _compute_timesheet_invoice_type(self):
-        """ Compute the correct timesheet_invoice_type for timesheets linked to a ticket
-
-            For the tickets which have not a linked task, the timesheets of these tickets have the timesheet_invoice_type
-            set to 'non_billable_project' because in the parent method we check that the task_id in each timesheet is set.
-        """
-        super(AccountAnalyticLine, self)._compute_timesheet_invoice_type()
-        for timesheet in self.filtered(lambda t: t.timesheet_invoice_type == 'non_billable_project' and t.helpdesk_ticket_id and t.so_line and t.so_line.product_id.type == 'service'):
-            # FIXME: duplicate code with the parent method in sale_timesheet module
-            if timesheet.so_line.product_id.invoice_policy == 'delivery':
-                if timesheet.so_line.product_id.service_type == 'timesheet':
-                    invoice_type = 'billable_time'
-                else:
-                    invoice_type = 'billable_fixed'
-            elif timesheet.so_line.product_id.invoice_policy == 'order':
-                invoice_type = 'billable_fixed'
-            timesheet.timesheet_invoice_type = invoice_type
-
     def _timesheet_get_sale_domain(self, order_lines_ids, invoice_ids):
         domain = super(AccountAnalyticLine, self)._timesheet_get_sale_domain(order_lines_ids, invoice_ids)
         if not invoice_ids:

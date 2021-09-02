@@ -303,7 +303,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         if groupby_key == 'src_tax_type_tax_use':
             type_tax_use_option = value
-            report_line['id'] = self._get_generic_line_id('account.tax', False, markup=type_tax_use_option[0])
+            report_line['id'] = self._get_generic_line_id(None, None, markup=type_tax_use_option[0])
             report_line['name'] = type_tax_use_option[1]
 
         elif groupby_key == 'src_tax_id':

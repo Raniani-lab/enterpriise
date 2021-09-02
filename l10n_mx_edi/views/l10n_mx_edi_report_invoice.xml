@@ -67,7 +67,7 @@
             <td t-if="is_cfdi_signed" class="text-right"><span t-field="line.product_uom_id.unspsc_code_id.code"/></td>
         </xpath>
 
-        <xpath expr="//p[@t-if='not is_html_empty(o.narration)']" position="before">
+        <xpath expr="//div[@t-if='not is_html_empty(o.narration)']" position="before">
             <t t-if="is_cfdi_signed">
                 <p>
                     <span t-esc="o._l10n_mx_edi_cfdi_amount_to_text()"/>

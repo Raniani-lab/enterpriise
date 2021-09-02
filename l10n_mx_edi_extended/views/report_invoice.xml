@@ -30,7 +30,7 @@
             </xpath>
 
             <!-- External Trade stuff -->
-            <xpath expr="//p[@t-if='not is_html_empty(o.narration)']" position="before">
+            <xpath expr="//div[@t-if='not is_html_empty(o.narration)']" position="before">
                 <div t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade">
                     <div class="row">
                         <div class="col-12">

@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <template id="sdd_report_invoice_document" inherit_id="account.report_invoice_document">
-            <xpath expr="//p[@t-if='not is_html_empty(o.narration)']" position="before">
+            <xpath expr="//div[@t-if='not is_html_empty(o.narration)']" position="before">
                 <p t-if="o.sdd_mandate_id">
                     <span>
                       <p>

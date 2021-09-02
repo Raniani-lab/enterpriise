@@ -3,6 +3,7 @@
 
 import ast
 import datetime
+import json
 
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import UserError
@@ -46,7 +47,25 @@ class Project(models.Model):
             action['context'].update({'initialDate': self.date_start})
         return action
 
+    # ----------------------------
+    #  Project Updates
+    # ----------------------------
 
+    def _get_stat_buttons(self):
+        buttons = super(Project, self)._get_stat_buttons()
+        buttons.append({
+            'icon': 'tasks',
+            'text': _('Forecast'),
+            'number': '%s Hours' % (self.total_forecast_time),
+            'action_type': 'object',
+            'action': 'action_project_forecast_from_project',
+            'additional_context': json.dumps({
+                'active_id': self.id,
+            }),
+            'show': self.allow_forecast,
+            'sequence': 6,
+        })
+        return buttons
 
 class Task(models.Model):
     _inherit = 'project.task'

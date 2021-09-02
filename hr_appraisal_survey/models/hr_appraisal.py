@@ -26,7 +26,7 @@ class HrAppraisal(models.Model):
             return {
                 'name': _("Survey Feedback"),
                 'type': 'ir.actions.act_window',
-                "views": [[self.env.ref('hr_appraisal_survey.survey_user_input_view_tree_inherit_hr_appraisal').id, 'tree']],
+                "views": [[self.env.ref('hr_appraisal_survey.survey_user_input_view_tree').id, 'tree']],
                 'view_mode': 'tree',
                 'res_model': 'survey.user_input',
                 'domain': [('appraisal_id', 'in', self.ids)],

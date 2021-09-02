@@ -97,9 +97,9 @@
             </div>
 
             <div class="row row-long">
-                <div class="col-12 col-md-12 my-2 d-flex">
+                <div class="col-12 my-2 d-flex">
                     <i class="fa fa-fw fa-lg fa-cubes mr-3" title="Locations"/>
-                    <field name="product_stock_quant_ids" context="{'kanban_view_ref': 'stock_barcode.stock_quant_barcode_kanban_2', 'tree_view_ref': 'stock.view_stock_quant_tree'}"/>
+                    <field name="product_stock_quant_ids" context="{'kanban_view_ref': 'stock_barcode.stock_quant_barcode_kanban_2', 'tree_view_ref': 'stock_barcode.view_stock_quant_tree'}"/>
                 </div>
             </div>
         </form>
@@ -141,25 +141,44 @@
             <templates>
                 <t t-name="kanban-box">
                     <div t-attf-class="oe_kanban_global_click">
-                        <div class="row mb4 col-12">
+                        <div class="mb4">
                             <strong><field name="location_id"/></strong>
                         </div>
-                        <div class="row mb4 col-12">
-                            <span>Qty: <field name="quantity"/></span>
+                        <div class="mb4">
+                            <field name="quantity"/> <field name="product_uom_id" groups="uom.group_uom"/>
+                            <span class="ml-4" attrs="{'invisible': [('lot_id', '=', False)]}" groups="stock.group_production_lot">
+                                <field name="lot_id"/>
+                            </span>
                         </div>
-                        <div class="row mb4 col-12" attrs="{'invisible': [('lot_id', '=', False)]}" groups="stock.group_production_lot">
-                            <span>Lot/SN: <field name="lot_id"/></span>
+                        <div class="mb4" attrs="{'invisible': [('package_id', '=', False)]}" groups="stock.group_tracking_lot">
+                            <i class="fa fa-lg fa-archive" title="Package"/><field name="package_id"/>
                         </div>
-                        <div class="row mb4 col-12" attrs="{'invisible': [('package_id', '=', False)]}" groups="stock.group_tracking_lot">
-                            <span>Package: <field name="package_id"/></span>
-                        </div>
-                        <div class="row mb4 col-12" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner">
-                            <span>Owner: <field name="owner_id"/></span>
+                        <div class="mb4" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner">
+                            <i class="fa fa-lg fa-user-o" title="Owner"/><field name="owner_id"/>
                         </div>
                     </div>
                 </t>
             </templates>
         </kanban>
+    </field>
+</record>
+
+<record id="view_stock_quant_tree" model="ir.ui.view">
+    <field name="name">stock_barcode.quant.tree.inherit</field>
+    <field name="model">stock.quant</field>
+    <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='product_uom_id']" position="attributes" >
+            <attribute name="string">UoM</attribute>
+            <attribute name="optional">show</attribute>
+        </xpath>
+        <xpath expr="//field[@name='available_quantity']" position="attributes" >
+            <attribute name="optional">hide</attribute>
+        </xpath>
+        <xpath expr="//field[@name='company_id']" position="attributes" >
+            <attribute name="optional">hide</attribute>
+        </xpath>
     </field>
 </record>
 </odoo>

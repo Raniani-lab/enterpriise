@@ -75,7 +75,7 @@ topbarMenuRegistry.add("data", {
                 separator: true,
             }),
             createFullMenuItem(`reinsert_pivot`, {
-                name: _t("Re-Insert Pivot"),
+                name: _t("Re-insert pivot"),
                 sequence: 1010,
                 children: REINSERT_PIVOT_CHILDREN,
                 isVisible: (env) => env.getters.getPivotIds().length,
@@ -101,20 +101,20 @@ topbarMenuRegistry.add("data", {
 cellMenuRegistry
     .add("reinsert_pivot", {
         name: _t("Re-insert pivot"),
-        sequence: 122,
+        sequence: 185,
         children: REINSERT_PIVOT_CHILDREN,
-        isVisible: (env) => env.getters.getPivotIds().length,
-    })
-    .add("insert_pivot_cell", {
-        name: _t("Insert pivot cell"),
-        sequence: 123,
-        children: INSERT_PIVOT_CELL_CHILDREN,
         isVisible: (env) => env.getters.getPivotIds().length,
         separator: true,
     })
+    .add("insert_pivot_cell", {
+        name: _t("Insert pivot cell"),
+        sequence: 180,
+        children: INSERT_PIVOT_CELL_CHILDREN,
+        isVisible: (env) => env.getters.getPivotIds().length,
+    })
     .add("pivot_properties", {
         name: _t("Pivot properties"),
-        sequence: 121,
+        sequence: 170,
         action(env) {
             const [col, row] = env.getters.getPosition();
             const sheetId = env.getters.getActiveSheetId();
@@ -129,7 +129,7 @@ cellMenuRegistry
     })
     .add("listing_properties", {
         name: _t("List properties"),
-        sequence: 124,
+        sequence: 190,
         action(env) {
             const [col, row] = env.getters.getPosition();
             const sheetId = env.getters.getActiveSheetId();
@@ -145,14 +145,14 @@ cellMenuRegistry
     })
     .add("reinsert_list", {
         name: _t("Re-insert list"),
-        sequence: 125,
+        sequence: 195,
         children: REINSERT_LIST_CHILDREN,
         isVisible: (env) => env.getters.getListIds().length,
         separator: true,
     })
     .add("see records", {
         name: _t("See records"),
-        sequence: 126,
+        sequence: 175,
         async action(env) {
             const [col, row] = env.getters.getPosition();
             const sheetId = env.getters.getActiveSheetId();
@@ -185,5 +185,4 @@ cellMenuRegistry
                 getNumberOfPivotFormulas(cell.content) === 1
             );
         },
-        separator: true,
     });

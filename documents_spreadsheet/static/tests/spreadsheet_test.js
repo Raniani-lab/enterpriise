@@ -923,7 +923,7 @@ module(
             assert.equal(children[1].name, "(#2) partner");
             // bottom children
             assert.equal(children[2].name, "Refresh all data");
-            assert.equal(children[3].name, "Re-Insert Pivot");
+            assert.equal(children[3].name, "Re-insert pivot");
             assert.equal(children[4].name, "Insert pivot cell");
             assert.equal(children[5].name, "Re-insert list");
         });

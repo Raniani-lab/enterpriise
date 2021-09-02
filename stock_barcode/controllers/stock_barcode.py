@@ -195,7 +195,8 @@ class StockBarcodeController(http.Controller):
             ('name', '=', barcode),
         ], limit=1)
         if corresponding_picking:
-            return corresponding_picking.get_barcode_action()
+            action = corresponding_picking.action_open_picking_client_action()
+            return {'action': action}
         return False
 
     def _try_new_internal_picking(self, barcode):

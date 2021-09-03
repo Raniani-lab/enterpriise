@@ -24,11 +24,7 @@ class ApprovalProductLine(models.Model):
         self.ensure_one()
         if not self.warehouse_id:
             return None
-        return self.env['stock.picking.type'].search([
-            ('company_id', '=', self.company_id.id),
-            ('code', '=', 'incoming'),
-            ('warehouse_id', '=', self.warehouse_id.id),
-        ], limit=1)
+        return self.warehouse_id.in_type_id
 
     def _get_purchase_orders_domain(self, vendor):
         """ Override to filter purchase orders on warehouse. """

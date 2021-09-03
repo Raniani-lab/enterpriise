@@ -22,11 +22,5 @@ class TestApprovalsCommon(common.TestApprovalsCommon):
             'code': 'WH2',
             'sequence': 2,
         })
-        cls.wh_picking_type_1 = cls.env['stock.picking.type'].search([
-            ('warehouse_id', '=', cls.warehouse_1.id),
-            ('code', '=', 'incoming'),
-        ])
-        cls.wh_picking_type_2 = cls.env['stock.picking.type'].search([
-            ('warehouse_id', '=', cls.warehouse_2.id),
-            ('code', '=', 'incoming'),
-        ])
+        cls.wh_picking_type_1 = cls.warehouse_1.in_type_id
+        cls.wh_picking_type_2 = cls.warehouse_2.in_type_id

@@ -279,7 +279,7 @@ class Task(models.Model):
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
             'task_id': self.id,
-            'analytic_account_id': self.project_id.analytic_account_id.id,
+            'analytic_account_id': self._get_task_analytic_account_id().id,
             'team_id': team.id if team else False,
         })
         sale_order.onchange_partner_id()

@@ -452,7 +452,7 @@ class DatevExportCSV(models.AbstractModel):
                     'gegenkonto': to_account_code,
                     'belegfeld1': receipt1[-36:],
                     'belegfeld2': receipt2,
-                    'datum': datetime.strftime(aml.move_id.date, '%d-%m'),
+                    'datum': datetime.strftime(aml.move_id.date, '%-d%m'),
                     'konto': account_code or '',
                     'kurs': str(currency.rate).replace('.', ','),
                     'buchungstext': receipt1,

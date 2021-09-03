@@ -62,5 +62,5 @@ class TestDateCSV(AccountTestInvoicingCommon):
         reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[8], x[9], x[10], x[11], x[13]] for x in reader][2:]
         self.assertEqual(2, len(data), "csv should have 2 lines")
-        self.assertIn(['238,00', 's', 'EUR', '34000000', '19', '01-12', 'BILL/2020/12/0001', '', 'BILL/2020/12/0001'], data)
-        self.assertIn(['119,00', 's', 'EUR', '49800000', '19', '01-12', 'BILL/2020/12/0001', '', 'BILL/2020/12/0001'], data)
+        self.assertIn(['238,00', 's', 'EUR', '34000000', '19', '112', 'BILL/2020/12/0001', '', 'BILL/2020/12/0001'], data)
+        self.assertIn(['119,00', 's', 'EUR', '49800000', '19', '112', 'BILL/2020/12/0001', '', 'BILL/2020/12/0001'], data)

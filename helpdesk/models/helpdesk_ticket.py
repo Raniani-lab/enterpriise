@@ -87,7 +87,7 @@ class HelpdeskSLAStatus(models.Model):
                 deadline = working_calendar.plan_days(time_days + 1, deadline, compute_leaves=True)
                 # We should also depend on ticket creation time, otherwise for 1 day SLA, all tickets
                 # created on monday will have their deadline filled with tuesday 8:00
-                create_dt = status.ticket_id.create_date
+                create_dt = working_calendar.plan_hours(0, status.ticket_id.create_date)
                 deadline = deadline.replace(hour=create_dt.hour, minute=create_dt.minute, second=create_dt.second, microsecond=create_dt.microsecond)
 
             sla_hours = status.sla_id.time % avg_hour

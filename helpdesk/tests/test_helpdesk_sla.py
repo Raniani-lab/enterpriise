@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from unittest.mock import patch
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from freezegun import freeze_time
 
 from odoo import Command, fields
 from odoo.tests.common import TransactionCase
@@ -244,3 +245,35 @@ class HelpdeskSLA(TransactionCase):
         data = self.env['helpdesk.team'].retrieve_dashboard()
         self.assertEqual(data['my_all']['count'], 2, "There should be 2 tickets")
         self.assertEqual(data['my_all']['failed'], 1, "There should be 1 failed ticket")
+
+    @freeze_time(NOW + relativedelta(hour=20, minute=0))
+    def test_deadlines_after_work(self):
+        self.sla.time = 3
+        # Set the calendar tz to UTC in order to ease test comprehension
+        self.sla.company_id.resource_calendar_id.tz = 'UTC'
+        ticket = self.create_ticket(user_id=self.env.user.id)
+        # We set ticket create date to 20:00 which is out of the working calendar => The first possible time to work
+        # on the ticket is the next day at 08:00
+        self._utils_set_create_date(ticket, fields.Datetime.now(), ticket)
+        self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=1, hour=11), "Day0:20h + 3h = Day1:8h + 3h = Day1:11h")
+
+        self.sla.time = 11
+        ticket = self.create_ticket(user_id=self.env.user.id)
+        self._utils_set_create_date(ticket, fields.Datetime.now(), ticket)
+        self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=2, hour=11), "Day0:20h + 11h = Day0:20h + 1day:3h = Day1:8h + 1day:3h = Day2:8h + 3h = Day2:11h")
+
+    @freeze_time(NOW + relativedelta(hour=8, minute=0))
+    def test_deadlines_during_work(self):
+        self.sla.time = 3
+        # Set the calendar tz to UTC in order to ease test comprehension
+        self.sla.company_id.resource_calendar_id.tz = 'UTC'
+        ticket = self.create_ticket(user_id=self.env.user.id)
+        # We set ticket create date to 20:00 which is out of the working calendar => The first possible time to work
+        # on the ticket is the next day at 08:00
+        self._utils_set_create_date(ticket, fields.Datetime.now(), ticket)
+        self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=0, hour=11), "Day0:8h + 3h = Day0:11h")
+
+        self.sla.time = 11
+        ticket = self.create_ticket(user_id=self.env.user.id)
+        self._utils_set_create_date(ticket, fields.Datetime.now(), ticket)
+        self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=1, hour=11), "Day0:8h + 11h = Day0:8h + 1day:3h = Day1:8h + 3h = Day1:11h")

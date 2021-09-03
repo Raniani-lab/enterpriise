@@ -999,7 +999,8 @@ class AEATAccountFinancialReport(models.Model):
             line_options['date']['date_from'] =  datetime.strftime(line_date_from, '%Y-%m-%d')
             line_options['date']['date_to'] =  datetime.strftime(line_date_to, '%Y-%m-%d')
 
-            invoice_line_data = self._get_subline_data(line_options, invoice_report_line_xml_id, line_partner.id)
+            subline_id = 'financial_report_group_%s_%s' % (self.env.ref(invoice_report_line_xml_id).id, line_partner.id)
+            invoice_line_data = self._get_subline_data(line_options, invoice_report_line_xml_id, subline_id)
             previous_report_amount = invoice_line_data['columns'][0]['no_format']
 
             # Now, we can report the record !

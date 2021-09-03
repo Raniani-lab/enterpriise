@@ -13,11 +13,6 @@ Wysiwyg.include({
                 description: 'Add a specific appointment.',
                 fontawesome: 'fa-calendar',
                 callback: async () => {
-                    const [_, id] = await this._rpc({
-                        model: 'ir.model.data',
-                        method: 'xmlid_to_res_model_res_id',
-                        args: ["website_appointment.calendar_appointment_insert_share_view_form"],
-                    });
                     const dialog = new dialogs.FormViewDialog(this, {
                         res_model: 'calendar.appointment.share',
                         res_id: 0,
@@ -25,11 +20,11 @@ Wysiwyg.include({
                         res_IDs: [],
                         resIDs: [],
                         context: {
+                            form_view_ref: "appointment.calendar_appointment_insert_share_view_form",
                             default_appointment_type_ids: [],
                             default_employee_ids: [],
                         },
                         title: "Insert Appointment Link",
-                        view_id: id,
                         readonly: false,
                     });
                     dialog.open();

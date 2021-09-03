@@ -264,8 +264,7 @@ class ProviderFedex(models.Model):
                 commodity_country_of_manufacture = picking.picking_type_id.warehouse_id.partner_id.country_id.code
 
                 for operation in picking.move_line_ids:
-                    commodity_amount = operation.move_id.sale_line_id.price_reduce_taxinc or operation.product_id.list_price
-                    total_commodities_amount += (commodity_amount * operation.qty_done)
+                    total_commodities_amount += operation.sale_price
                     commodity_description = operation.product_id.name
                     commodity_number_of_piece = '1'
                     commodity_weight_units = self.fedex_weight_unit
@@ -273,6 +272,8 @@ class ProviderFedex(models.Model):
                     commodity_quantity = operation.qty_done
                     commodity_quantity_units = 'EA'
                     commodity_harmonized_code = operation.product_id.hs_code or ''
+                    commodity_amount = round(operation.sale_price/commodity_quantity, 2) if commodity_quantity else operation.sale_price
+
                     srm.commodities(_convert_curr_iso_fdx(commodity_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)
                 srm.customs_value(_convert_curr_iso_fdx(commodity_currency.name), total_commodities_amount, "NON_DOCUMENTS")
                 srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id, superself.fedex_account_number, superself.fedex_duty_payment)
@@ -488,8 +489,7 @@ class ProviderFedex(models.Model):
             commodity_country_of_manufacture = picking.picking_type_id.warehouse_id.partner_id.country_id.code
 
             for operation in picking.move_line_ids:
-                commodity_amount = operation.move_id.sale_line_id.price_unit or operation.product_id.list_price
-                total_commodities_amount += (commodity_amount * operation.qty_done)
+                total_commodities_amount += operation.sale_price
                 commodity_description = operation.product_id.name
                 commodity_number_of_piece = '1'
                 commodity_weight_units = self.fedex_weight_unit
@@ -499,6 +499,7 @@ class ProviderFedex(models.Model):
                 else:
                     commodity_weight_value = self._fedex_convert_weight(operation.product_id.weight * operation.product_uom_qty, self.fedex_weight_unit)
                     commodity_quantity = operation.product_uom_qty
+                commodity_amount = round(operation.sale_price/commodity_quantity, 2) if commodity_quantity else operation.sale_price
                 commodity_quantity_units = 'EA'
                 commodity_harmonized_code = operation.product_id.hs_code or ''
                 srm.commodities(_convert_curr_iso_fdx(commodity_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)

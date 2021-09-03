@@ -69,7 +69,7 @@ class SocialLivePostYoutube(models.Model):
             })
 
     def _post(self):
-        youtube_live_posts = self.filtered(lambda post: post.account_id.media_type == 'youtube')
+        youtube_live_posts = self._filter_by_media_types(['youtube'])
         super(SocialLivePostYoutube, (self - youtube_live_posts))._post()
 
         for live_post in youtube_live_posts:

@@ -30,7 +30,7 @@ class SocialStreamPostLinkedIn(models.Model):
                 post.linkedin_author_id = False
 
     def _compute_author_link(self):
-        linkedin_posts = self.filtered(lambda post: post.media_type == 'linkedin')
+        linkedin_posts = self._filter_by_media_types(['linkedin'])
         super(SocialStreamPostLinkedIn, (self - linkedin_posts))._compute_author_link()
 
         for post in linkedin_posts:
@@ -40,7 +40,7 @@ class SocialStreamPostLinkedIn(models.Model):
                 post.author_link = False
 
     def _compute_post_link(self):
-        linkedin_posts = self.filtered(lambda post: post.media_type == 'linkedin')
+        linkedin_posts = self._filter_by_media_types(['linkedin'])
         super(SocialStreamPostLinkedIn, (self - linkedin_posts))._compute_post_link()
 
         for post in linkedin_posts:

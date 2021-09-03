@@ -53,7 +53,7 @@ class SocialLivePostFacebook(models.Model):
                     })
 
     def _post(self):
-        facebook_live_posts = self.filtered(lambda post: post.account_id.media_type == 'facebook')
+        facebook_live_posts = self._filter_by_media_types(['facebook'])
         super(SocialLivePostFacebook, (self - facebook_live_posts))._post()
 
         for live_post in facebook_live_posts:

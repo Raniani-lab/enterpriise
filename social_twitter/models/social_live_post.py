@@ -61,7 +61,7 @@ class SocialLivePostTwitter(models.Model):
                     })
 
     def _post(self):
-        twitter_live_posts = self.filtered(lambda post: post.account_id.media_type == 'twitter')
+        twitter_live_posts = self._filter_by_media_types(['twitter'])
         super(SocialLivePostTwitter, (self - twitter_live_posts))._post()
 
         twitter_live_posts._post_twitter()

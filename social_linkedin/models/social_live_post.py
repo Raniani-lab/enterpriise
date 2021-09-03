@@ -58,7 +58,7 @@ class SocialLivePostLinkedin(models.Model):
                     })
 
     def _post(self):
-        linkedin_live_posts = self.filtered(lambda post: post.account_id.media_type == 'linkedin')
+        linkedin_live_posts = self._filter_by_media_types(['linkedin'])
         super(SocialLivePostLinkedin, (self - linkedin_live_posts))._post()
 
         linkedin_live_posts._post_linkedin()

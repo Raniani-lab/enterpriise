@@ -97,3 +97,6 @@ class SocialLivePost(models.Model):
             'medium_id': self.account_id.utm_medium_id.id,
             'source_id': post_id.utm_source_id.id
         }
+
+    def _filter_by_media_types(self, media_types):
+        return self.filtered(lambda post: post.account_id.media_id.media_type in media_types)

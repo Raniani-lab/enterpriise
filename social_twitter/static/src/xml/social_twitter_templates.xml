@@ -23,8 +23,10 @@
                 <div t-attf-class="o_social_twitter_likes pl-2 pr-3 #{originalPost.twitterUserLikes ? 'o_social_twitter_user_likes' : ''}"
                     t-att-data-user-likes="originalPost.twitterUserLikes"
                     t-att-data-post-id="originalPost.postId">
-                    <i class="fa fa-heart" title="Likes"/>
-                    <b class="o_social_likes_count" t-esc="originalPost.twitterLikesCount !== 0 ? originalPost.twitterLikesCount : ''"/>
+                    <t t-if="originalPost.twitterLikesCount !== 0">
+                        <i class="fa fa-heart" title="Likes"/>
+                        <b class="o_social_likes_count" t-esc="originalPost.twitterLikesCount"/>
+                    </t>
                 </div>
                 <div class="flex-grow-1 d-flex text-muted justify-content-end">
                     <div>

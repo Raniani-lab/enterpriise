@@ -62,6 +62,20 @@
         </field>
     </record>
 
+    <record id="social_stream_view_form_wizard" model="ir.ui.view">
+        <field name="name">social.stream.view.form.wizard</field>
+        <field name="model">social.stream</field>
+        <field name="mode">primary</field>
+        <field name="priority">24</field>
+        <field name="inherit_id" ref="social_stream_view_form"/>
+        <field name="arch" type="xml">
+            <!--Remove the radio widget as the account on which user want to add the stream has already been selected -->
+            <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="widget"></attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="social_stream_view_search" model="ir.ui.view">
         <field name="name">social.stream.view.search</field>
         <field name="model">social.stream</field>

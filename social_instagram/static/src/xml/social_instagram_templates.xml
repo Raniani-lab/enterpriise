@@ -9,8 +9,10 @@
                 t-if="originalPost.mediaType === 'instagram'">
                 <div t-attf-class="o_social_instagram_likes pl-2 pr-3"
                     t-att-data-post-id="originalPost.postId">
-                    <i class="fa fa-heart" title="Likes"/>
-                    <b class="o_social_likes_count" t-esc="originalPost.instagramLikesCount !== 0 ? originalPost.instagramLikesCount : ''"/>
+                    <t t-if="originalPost.instagramLikesCount !== 0">
+                        <i class="fa fa-heart" title="Likes"/>
+                        <b class="o_social_likes_count" t-esc="originalPost.instagramLikesCount"/>
+                    </t>
                 </div>
                 <div class="flex-grow-1" />
             </div>

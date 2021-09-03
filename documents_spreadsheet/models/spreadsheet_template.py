@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, _
-
+from odoo.exceptions import AccessError
 
 class SpreadsheetTemplate(models.Model):
     _name = "spreadsheet.template"
@@ -29,8 +29,13 @@ class SpreadsheetTemplate(models.Model):
         - whether the user can edit the content of the template or not
         """
         self.ensure_one()
-        can_write = self.check_access_rights("write", raise_exception=False) \
-            and self.check_access_rule("write")
+        try:
+            self.check_access_rights("write")
+            self.check_access_rule("write")
+            can_write = True
+        except AccessError:
+            can_write = False
+
         return {
             "name": self.name,
             "data": self.data,

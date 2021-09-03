@@ -9,7 +9,7 @@ import testUtils from 'web.test_utils';
 const createCalendarView = testUtils.createCalendarView;
 const initialDate = new Date('2020-10-26T08:00:00Z');
 
-QUnit.skip('appointment.appointment_link', {
+QUnit.module('appointment.appointment_link', {
     beforeEach: function () {
         patchWithCleanup(session, {
             uid: 1,
@@ -58,8 +58,8 @@ QUnit.skip('appointment.appointment_link', {
                     user_id: session.uid,
                     partner_id: session.uid,
                     name: 'Event 1',
-                    start: '2020-10-27 11:00:00',
-                    stop: '2020-10-27 12:00:00',
+                    start: moment().add(7, 'days').format('YYYY-MM-DD 10:00:00'),
+                    stop: moment().add(7, 'days').format('YYYY-MM-DD 11:00:00'),
                     allday: false,
                     partner_ids: [1],
                 }, {
@@ -217,10 +217,8 @@ QUnit.test('verify appointment links button are displayed', async function (asse
 });
 
 QUnit.test('discard slot in calendar', async function (assert) {
-    assert.expect(7);
+    assert.expect(11);
 
-    const today = moment();
-    const hour = `.fc-axis:contains(${today.hour() + 1}:00)`;
     const calendar = await createCalendarView({
         View: AttendeeCalendarView,
         model: 'calendar.event',
@@ -234,6 +232,9 @@ QUnit.test('discard slot in calendar', async function (assert) {
             <field name="name"/>
             <field name="partner_ids" write_model="filter_partner" write_field="partner_id"/>
         </calendar>`,
+        translateParameters: { // Avoid issues due to localization formats
+            time_format: "%I:%M:%S",
+        },
         mockRPC: async function (route, args) {
             if (route === '/microsoft_calendar/sync_data') {
                 return Promise.resolve();
@@ -253,17 +254,25 @@ QUnit.test('discard slot in calendar', async function (assert) {
     assert.containsN(calendar, '.fc-event', 2);
     assert.containsNone(calendar, '.o_calendar_slot');
     
-    const top = calendar.$(hour).offset().top + 15;
-    const left = calendar.$('.fc-day:last()').offset().left + 15;
+    await testUtils.dom.click(calendar.$('.o_calendar_button_next'));
+    assert.containsOnce(calendar, '.fc-event', 'There is one calendar event');
+    assert.containsNone(calendar, '.o_calendar_slot', 'There is no slot yet');
+
+    const top = calendar.$('.fc-axis:contains(1pm)').offset().top + 5;
+    const left = calendar.$('.fc-day:last()').offset().left + 5;
 
     testUtils.dom.triggerPositionalMouseEvent(left, top, "mousedown");
-    await testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
+    testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
     await testUtils.nextTick();
-    assert.containsN(calendar, '.fc-event', 3);
-    assert.containsOnce(calendar, '.o_calendar_slot');
+    assert.containsN(calendar, '.fc-event', 2, 'There is 2 events in the calendar');
+    assert.containsOnce(calendar, '.o_calendar_slot', 'One of them is a slot');
 
     await testUtils.dom.click(calendar.$('button.o_appointment_discard_slots'));
     await testUtils.nextTick();
+    assert.containsOnce(calendar, '.fc-event', 'The calendar event is still here');
+    assert.containsNone(calendar, '.o_calendar_slot', 'The slot has been discarded');
+
+    await testUtils.dom.click(calendar.$('.o_calendar_button_prev'));
     assert.containsN(calendar, '.fc-event', 2);
     assert.containsNone(calendar, '.o_calendar_slot');
 
@@ -315,7 +324,7 @@ QUnit.test("cannot move real event in slots-creation mode", async function (asse
 });
 
 QUnit.test("create slots for custom appointment type", async function (assert) {
-    assert.expect(15);
+    assert.expect(13);
 
     patchWithCleanup(browser, {
         navigator: {
@@ -330,8 +339,6 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
         }
     });
 
-    const today = moment();
-    const hour = `.fc-axis:contains(${today.hour() + 1}:00)`;
     const calendar = await createCalendarView({
         View: AttendeeCalendarView,
         model: 'calendar.event',
@@ -345,6 +352,9 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
             <field name="name"/>
             <field name="partner_ids" write_model="filter_partner" write_field="partner_id"/>
         </calendar>`,
+        translateParameters: { // Avoid issues due to localization formats
+            time_format: "%I:%M:%S",
+        },
         mockRPC: function (route, args) {
             if (route === "/appointment/calendar_appointment_type/create_custom") {
                 assert.step(route);
@@ -368,40 +378,31 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
     assert.containsN(calendar, '.fc-event', 2);
     assert.containsNone(calendar, '.o_calendar_slot');
     
-    const top = calendar.$(hour).offset().top + 15;
-    const left = calendar.$('.fc-day:last()').offset().left + 15;
-
-    testUtils.dom.triggerPositionalMouseEvent(left, top, "mousedown");
-    await testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
-    await testUtils.nextTick();
-    assert.containsN(calendar, '.fc-event', 3);
-    assert.containsOnce(calendar, '.o_calendar_slot');
-
     await testUtils.dom.click(calendar.$('.o_calendar_button_next'));
-    assert.containsNone(calendar, '.fc-event');
-    assert.containsNone(calendar, '.o_calendar_slot');
+    assert.containsOnce(calendar, '.fc-event', 'There is one calendar event');
+    assert.containsNone(calendar, '.o_calendar_slot', 'There is no slot yet');
+
+    const top = calendar.$('.fc-axis:contains(1pm)').offset().top + 5;
+    const left = calendar.$('.fc-day:last()').offset().left + 5;
 
     testUtils.dom.triggerPositionalMouseEvent(left, top, "mousedown");
-    await testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
+    testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
     await testUtils.nextTick();
-    assert.containsOnce(calendar, '.fc-event');
-    assert.containsOnce(calendar, '.o_calendar_slot');
-
+    assert.containsN(calendar, '.fc-event', 2, 'There is 2 events in the calendar');
+    assert.containsOnce(calendar, '.o_calendar_slot', 'One of them is a slot');
 
     await testUtils.dom.click(calendar.$('button.o_appointment_create_custom_appointment'));
     assert.verifySteps(['/appointment/calendar_appointment_type/create_custom']);
-    assert.containsNone(calendar, '.fc-event');
-    assert.containsNone(calendar, '.o_calendar_slot');
-    assert.strictEqual(this.data['calendar.appointment.slot'].records.length, 2);
+    assert.containsOnce(calendar, '.fc-event', 'The calendar event is still here');
+    assert.containsNone(calendar, '.o_calendar_slot', 'The slot has been cleared after the creation');
+    assert.strictEqual(this.data['calendar.appointment.slot'].records.length, 1);
 
     calendar.destroy();
 });
 
 QUnit.test('filter works in slots-creation mode', async function (assert) {
-    assert.expect(9);
+    assert.expect(11);
 
-    const today = moment();
-    const hour = `.fc-axis:contains(${today.hour() + 1}:00)`;
     const calendar = await createCalendarView({
         View: AttendeeCalendarView,
         model: 'calendar.event',
@@ -417,6 +418,9 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
             <field name="partner_ids" write_model="filter_partner" write_field="partner_id"/>
             <field name="partner_id" filters="1" invisible="1"/>
         </calendar>`,
+        translateParameters: { // Avoid issues due to localization formats
+            time_format: "%I:%M:%S",
+        },
         mockRPC: function (route, args) {
             if (route === '/microsoft_calendar/sync_data') {
                 return Promise.resolve();
@@ -438,20 +442,25 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
     assert.strictEqual(calendar.model.calendarMode, 'slots-creation',
         "The calendar is now in a mode to create custom appointment time slots");
 
-    const top = calendar.$(hour).offset().top + 15;
-    const left = calendar.$('.fc-day:last()').offset().left + 15;
+    await testUtils.dom.click(calendar.$('.o_calendar_button_next'));
+    assert.containsOnce(calendar, '.fc-event');
+    assert.containsNone(calendar, '.o_calendar_slot');
+
+    const top = calendar.$('.fc-axis:contains(1pm)').offset().top + 5;
+    const left = calendar.$('.fc-day:last()').offset().left + 5;
 
     testUtils.dom.triggerPositionalMouseEvent(left, top, "mousedown");
-    await testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
+    testUtils.dom.triggerPositionalMouseEvent(left, top, "mouseup");
     await testUtils.nextTick();
-    assert.containsN(calendar, '.fc-event', 3, 'The slot is successfully created in the calendar');
+    assert.containsN(calendar, '.fc-event', 2, 'The slot is successfully created in the calendar');
     assert.containsOnce(calendar, '.o_calendar_slot');
 
     // Modify filters of the calendar to display less calendar event
     await testUtils.dom.click(calendar.$('.o_calendar_filter_item:last() > input'));
-    assert.containsN(calendar, '.fc-event', 2, 'There is now only 2 events displayed');
+    assert.containsOnce(calendar, '.fc-event', 'There is now only 1 events displayed');
     assert.containsOnce(calendar, '.o_calendar_slot', 'The slot created is still displayed');
 
+    await testUtils.dom.click(calendar.$('.o_calendar_filter_item:last() > input'));
     await testUtils.dom.click(calendar.$('button.o_appointment_discard_slots'));
     assert.containsOnce(calendar, '.fc-event', 'There is now only 1 calendar event displayed');
     assert.containsNone(calendar, '.o_calendar_slot', 'There is no more slots in the calendar view');

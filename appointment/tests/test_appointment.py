@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
+
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -152,17 +154,18 @@ class AppointmentTest(common.HttpCase):
         self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")
 
     def test_generate_recurring_slots(self):
-        slots = self.appointment_in_brussel._get_appointment_slots(self.env.user.tz)
+        slots = self.appointment_in_brussel._get_appointment_slots('UTC')
         now = datetime.now()
-        for week in slots[0]['weeks']:
-            for day in week:
-                if day['day'] > now.date() and\
-                    day['day'] < (now + relativedelta(days=self.appointment_in_brussel.max_schedule_days)).date() and\
-                    day['day'].isoweekday() == 1:
+        for month in slots:
+            for week in month['weeks']:
+                for day in week:
+                    if day['day'] > now.date() and\
+                        day['day'] < (now + relativedelta(days=self.appointment_in_brussel.max_schedule_days)).date() and\
+                        day['day'].isoweekday() == 1:
 
-                    self.assertEqual(len(day['slots']), 1, "There should be 1 slot each monday")
-                else:
-                    self.assertEqual(len(day['slots']), 0, "There should be no slot in the past")
+                        self.assertEqual(len(day['slots']), 1, "There should be 1 slot each monday")
+                    elif day['day'] < now.date():
+                        self.assertEqual(len(day['slots']), 0, "There should be no slot in the past")
 
     @users('admin')
     def test_generate_unique_slots(self):
@@ -188,20 +191,56 @@ class AppointmentTest(common.HttpCase):
         self.assertEqual(custom_appointment_type.category, 'custom', "It should be a custom appointment type")
         self.assertEqual(len(custom_appointment_type.slot_ids), 2, "Two slots should have been assigned to the appointment type")
 
-        slots = custom_appointment_type._get_appointment_slots(self.env.user.tz)
+        slots = custom_appointment_type._get_appointment_slots('UTC')
         for week in slots[0]['weeks']:
             for day in week:
+                slot = day['slots']
                 if (now + timedelta(hours=1)).date() == day['day']:
-                    self.assertEqual(len(day['slots']), 1, "There should be 1 slot for this date")
+                    # Check if the month we are is greater than the one we are in if there are mutltiple months
+                    if (now + timedelta(hours=1)).date().month > week[0]['day'].month and len(slots) > 1:
+                        # Take the slots of the day in the next month (happens when we are in the end of the month)
+                        slot = next(d['slots'] for d in slots[1]['weeks'][0] if d["day"] == day['day'])
+
+                    self.assertEqual(len(slot), 1, "There should be 1 slot for this date")
                 elif (now + timedelta(days=2)).date() == day['day']:
-                    if (now + timedelta(days=2)).date().month != now.month:
-                        s = next(d['slots'] for d in slots[1]['weeks'][0] if d["day"] == day['day'])
-                    else:
-                        s = day['slots']
-                    self.assertEqual(len(s), 1, "There should be 1 all day slot for this date")
-                    self.assertEqual(s[0]['hours'], 'All day')
+                    # Check if the month we are is greater than the one we are in if there are mutltiple months
+                    if (now + timedelta(days=2)).date().month != week[0]['day'].month and len(slots) > 1:
+                        # Take the slots of the day in the next month (happens when we are in the end of the month)
+                        slot = next(d['slots'] for d in slots[1]['weeks'][0] if d["day"] == day['day'])
+
+                    self.assertEqual(len(slot), 1, "There should be 1 all day slot for this date")
+                    self.assertEqual(slot[0]['hours'], 'All day')
                 else:
-                    self.assertEqual(len(day['slots']), 0, "There should be no slot for this date")
+                    self.assertEqual(len(slot), 0, "There should be no slot for this date")
+
+    @users('admin')
+    def test_create_custom_appointment(self):
+        self.authenticate('admin', 'admin')
+        now = datetime.now()
+        unique_slots = [{
+            'start': (now + timedelta(hours=1)).replace(microsecond=0).isoformat(' '),
+            'end': (now + timedelta(hours=2)).replace(microsecond=0).isoformat(' '),
+            'allday': False,
+        }, {
+            'start': (now + timedelta(days=2)).replace(microsecond=0).isoformat(' '),
+            'end': (now + timedelta(days=3)).replace(microsecond=0).isoformat(' '),
+            'allday': True,
+        }]
+        request = self.url_open(
+            "/appointment/calendar_appointment_type/create_custom",
+            data=json.dumps({
+                'params': {
+                    'slots': unique_slots,
+                }
+            }),
+            headers={"Content-Type": "application/json"},
+        ).json()
+        result = request.get('result', False)
+        self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
+        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
+        self.assertEqual(appointment_type.category, 'custom')
+        self.assertEqual(len(appointment_type.slot_ids), 2, "Two slots have been created")
+        self.assertTrue(all(slot.slot_type == 'unique' for slot in appointment_type.slot_ids), "All slots are 'unique'")
 
     @users('admin')
     def test_create_custom_appointment_without_employee(self):
@@ -236,3 +275,18 @@ class AppointmentTest(common.HttpCase):
                 'category': 'work_hours',
                 'employee_ids': [self.employee_in_brussel.id, self.employee_in_australia.id]
             })
+
+    @users('admin')
+    def test_search_create_work_hours(self):
+        self.authenticate('admin', 'admin')
+        request = self.url_open(
+            "/appointment/calendar_appointment_type/search_create_work_hours",
+            data=json.dumps({}),
+            headers={"Content-Type": "application/json"},
+        ).json()
+        result = request.get('result', False)
+        self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
+        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
+        self.assertEqual(appointment_type.category, 'work_hours')
+        self.assertEqual(len(appointment_type.slot_ids), 14, "Two slots have been created")
+        self.assertTrue(all(slot.slot_type == 'recurring' for slot in appointment_type.slot_ids), "All slots are 'recurring'")

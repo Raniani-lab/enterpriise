@@ -3,7 +3,6 @@ odoo.define('pos_settle_due.ClientLine', function (require) {
 
     const ClientLine = require('point_of_sale.ClientLine');
     const Registries = require('point_of_sale.Registries');
-    const { float_is_zero } = require('web.utils');
 
     const POSSettleDueClientLine = (ClientLine) =>
         class extends ClientLine {
@@ -12,7 +11,6 @@ odoo.define('pos_settle_due.ClientLine', function (require) {
             }
             async settleCustomerDue() {
                 const totalDue = this.props.partner.total_due;
-                if (float_is_zero(totalDue, 6)) return;
                 const paymentMethods = this.env.pos.payment_methods.filter(
                     (method) => this.env.pos.config.payment_method_ids.includes(method.id) && method.type != 'pay_later'
                 );

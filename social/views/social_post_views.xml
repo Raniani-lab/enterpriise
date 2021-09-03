@@ -183,6 +183,9 @@
                     <button name="action_post" string="Post Now" type="object"
                         attrs="{'invisible': [('state', '!=', 'scheduled')]}"
                         groups="social.group_social_manager" data-hotkey="v" />
+                    <button name="action_set_draft" string="Cancel" type="object"
+                        attrs="{'invisible': [('state', '!=', 'scheduled')]}"
+                        groups="social.group_social_manager" data-hotkey="z" />
                     <button name="action_schedule" string="Schedule" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'now')]}"
                         groups="social.group_social_manager" data-hotkey="q" />
@@ -242,14 +245,16 @@
                             <field name="account_id"/>
                             <field name="state"/>
                             <field name="failure_reason" />
+                            <field name="live_post_link" />
                             <templates>
                                 <t t-name="kanban-box">
                                     <div class="o_social_live_post_kanban ml-0 mr-3">
                                         <div class="row">
-                                            <div class="col-md-9 o_social_live_post_kanban_account">
+                                            <div class="col-md-8 o_social_live_post_kanban_account">
                                                 <field name="account_id" />
+                                                <t t-if="record.live_post_link.raw_value"><a t-att-href="record.live_post_link.raw_value" target="blank"><i class="fa fa-globe" title="See the post"/></a></t>
                                             </div>
-                                            <div class="col-md-3 text-right">
+                                            <div class="col-md-4 text-right">
                                                 <field name="state" widget="label_selection" options="{'classes': {'ready': 'info', 'posting': 'warning', 'posted': 'success', 'failed': 'danger'}}"/>
                                             </div>
                                         </div>

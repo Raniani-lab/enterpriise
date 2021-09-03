@@ -56,6 +56,7 @@ class SocialPostYoutube(models.Model):
                 'youtube_description': post.youtube_description,
                 'youtube_video_id': post.youtube_video_id,
                 'published_date': post.scheduled_date if post.scheduled_date else fields.Datetime.now(),
+                'post_link': "https://www.youtube.com/watch?v=%s" % post.youtube_video_id,
             })
 
     @api.depends('account_ids.media_type')

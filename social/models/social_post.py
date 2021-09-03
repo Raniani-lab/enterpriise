@@ -173,6 +173,14 @@ class SocialPost(models.Model):
             for post in self:
                 post.click_count = mapped_data.get(post.utm_source_id.id, 0)
 
+    def _prepare_preview_values(self, media):
+        values = super(SocialPost, self)._prepare_preview_values(media)
+        if self._name == 'social.post':
+            live_posts = self.live_post_ids._filter_by_media_types([media])
+            # Take first live post for preview. Should always have at least one.
+            values['live_post_link'] = live_posts[0].live_post_link if len(live_posts) >= 1 else False
+        return values
+
     def name_get(self):
         """ We use the first 20 chars of the message (or "Post" if no message yet).
         We also add "(Draft)" at the end if the post is still in draft state. """
@@ -275,6 +283,10 @@ class SocialPost(models.Model):
     def action_schedule(self):
         self._check_post_access()
         self.write({'state': 'scheduled'})
+
+    def action_set_draft(self):
+        self._check_post_access()
+        self.write({'state': 'draft'})
 
     def action_post(self):
         self._check_post_access()

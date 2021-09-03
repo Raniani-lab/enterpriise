@@ -10,7 +10,8 @@
                     </span>
                     <div class="o_social_preview_author">
                         <div><b>LinkedIn Post</b></div>
-                        <small class="text-secondary" t-esc="published_date"></small>
+                        <a t-if="live_post_link" t-attf-href="#{live_post_link}" target="blank"><small t-esc="published_date"/></a>
+                        <t t-else=""><small t-esc="published_date"/></t>
                     </div>
                 </div>
                 <div class="o_social_preview_message">

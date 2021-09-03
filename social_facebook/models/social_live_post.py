@@ -14,6 +14,13 @@ class SocialLivePostFacebook(models.Model):
 
     facebook_post_id = fields.Char('Actual Facebook ID of the post')
 
+    def _compute_live_post_link(self):
+        facebook_live_posts = self._filter_by_media_types(["facebook"]).filtered(lambda post: post.state == 'posted')
+        super(SocialLivePostFacebook, self - facebook_live_posts)._compute_live_post_link()
+
+        for post in facebook_live_posts:
+            post.live_post_link = "http://facebook.com/%s" % post.facebook_post_id
+
     def _refresh_statistics(self):
         super(SocialLivePostFacebook, self)._refresh_statistics()
         accounts = self.env['social.account'].search([('media_type', '=', 'facebook')])

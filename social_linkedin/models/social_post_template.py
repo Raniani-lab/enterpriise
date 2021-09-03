@@ -21,13 +21,13 @@ class SocialPostTemplate(models.Model):
     def _compute_linkedin_preview(self):
         for post in self:
             post.linkedin_preview = self.env.ref('social_linkedin.linkedin_preview')._render({
+                **post._prepare_preview_values("instagram"),
                 'message': post._prepare_post_content(
                     post.message,
                     'linkedin',
                     **{field: post[field] for field in post._get_post_message_modifying_fields()}),
-                'published_date': fields.Datetime.now(),
                 'images': [
                     image.with_context(bin_size=False).datas
                     for image in post.image_ids.sorted(lambda image: image._origin.id or image.id, reverse=True)
-                ]
+                ],
             })

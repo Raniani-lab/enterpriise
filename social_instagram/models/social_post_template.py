@@ -36,6 +36,7 @@ class SocialPostTemplate(models.Model):
 
         for post in self:
             post.instagram_preview = self.env.ref('social_instagram.instagram_preview')._render({
+                **post._prepare_preview_values("instagram"),
                 'error_code': post._get_instagram_image_error(),
                 'image': post.instagram_image_id.with_context(bin_size=False).datas if post.instagram_image_id else False,
                 'image_multiple': len(post.image_ids) > 1,
@@ -43,7 +44,6 @@ class SocialPostTemplate(models.Model):
                     post.message,
                     'instagram',
                     **{field: post[field] for field in post._get_post_message_modifying_fields()}),
-                'published_date': fields.Datetime.now(),
             })
 
     def _get_instagram_image_error(self):

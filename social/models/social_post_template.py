@@ -5,6 +5,7 @@ import json
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools import format_datetime
 
 
 class SocialPostTemplate(models.Model):
@@ -81,6 +82,15 @@ class SocialPostTemplate(models.Model):
         has_active_accounts = self.env['social.account'].search_count([]) > 0
         for post in self:
             post.has_active_accounts = has_active_accounts
+
+    def _prepare_preview_values(self, media):
+        """ Generic function called by media specific _compute_*media*_preview methods. This function returns the
+        live_post_link (in the case the compute is used in the context of a social_post) and the published date. """
+        self.ensure_one()
+        values = {
+            'published_date': format_datetime(self.env, fields.Datetime.now(), tz=self.env.user.tz, dt_format="short"),
+        }
+        return values
 
     def name_get(self):
         return [

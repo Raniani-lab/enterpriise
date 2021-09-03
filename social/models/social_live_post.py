@@ -18,6 +18,8 @@ class SocialLivePost(models.Model):
     account_id = fields.Many2one('social.account', string="Social Account", required=True, readonly=True, ondelete="cascade")
     message = fields.Char('Message', compute='_compute_message',
         help="Content of the social post message that is post-processed (links are shortened, UTMs, ...)")
+    live_post_link = fields.Char('Post Link', compute='_compute_live_post_link',
+        help="Link of the live post on the target media.")
     failure_reason = fields.Text('Failure Reason', readonly=True,
         help="""The reason why a post is not successfully posted on the Social Media (eg: connection error, duplicated post, ...).""")
     state = fields.Selection([
@@ -45,6 +47,11 @@ class SocialLivePost(models.Model):
                 message,
                 live_post.account_id.media_type,
                 **{field: live_post.post_id[field] for field in self.env['social.post']._get_post_message_modifying_fields()})
+
+    @api.depends('account_id.media_id')
+    def _compute_live_post_link(self):
+        for live_post in self:
+            live_post.live_post_link = False
 
     def name_get(self):
         """ ex: [Facebook] Odoo Social: posted, [Twitter] Mitchell Admin: failed, ... """

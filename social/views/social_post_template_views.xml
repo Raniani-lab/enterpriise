@@ -35,7 +35,8 @@
                             </div>
                             <field name="message" widget="text_emojis" class="o_social_post_message_wrapper"
                                 options="{'onchange_on_keydown': true}" force_save="1"
-                                attrs="{'required': [(1, '=', 1)], 'readonly': [('has_active_accounts', '=', False)]}" />
+                                   attrs="{'required': [(1, '=', 1)], 'readonly': [('has_active_accounts', '=', False)]}">
+                            </field>
                             <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"/>
                         </group>
                         <group name="previews_placeholder" class="o_social_post_preview_group m-0">
@@ -46,7 +47,7 @@
                                         Preview your post
                                     </p>
                                     <p>
-                                        Write a message to see the preview.
+                                        Before posting, links will be converted to be trackable.
                                     </p>
                                 </div>
                             </div>

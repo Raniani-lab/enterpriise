@@ -41,7 +41,8 @@
                 <span class="o_social_preview_message" t-esc="message" />
             </div>
             <div class="text-muted o_social_instagram_font_size small pt-1 pb-3">
-                34 SECONDS AGO
+                <a t-if="live_post_link" t-attf-href="#{live_post_link}" target="blank">34 SECONDS AGO</a>
+                <t t-else="">34 SECONDS AGO</t>
             </div>
         </div>
     </template>

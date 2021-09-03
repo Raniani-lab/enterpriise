@@ -260,7 +260,12 @@ class Picking(models.Model):
                 qty = move.product_uom._compute_quantity(move.product_uom_qty, sale_line.product_uom)
                 price = sale_line.price_unit * (1 - (sale_line.discount or 0.0) / 100.0)
 
-            tax_res = taxes.compute_all(price, self.company_id.currency_id, qty, self.partner_id)
+            tax_res = taxes.compute_all(
+                price,
+                currency=self.company_id.currency_id,
+                quantity=qty,
+                partner=self.partner_id
+            )
             totals['total_amount'] += tax_res['total_included']
 
             no_vat_taxes = True
@@ -289,7 +294,11 @@ class Picking(models.Model):
             }
             if guide_price == "sale_order" and sale_line.discount:
                 tax_res_disc = taxes.compute_all(
-                    sale_line.price_unit, self.company_id.currency_id, qty, self.partner_id)
+                    sale_line.price_unit,
+                    currency=self.company_id.currency_id,
+                    quantity=qty,
+                    partner=self.partner_id
+                )
                 line_amounts[move].update({
                     'price_unit': self.company_id.currency_id.round(
                         tax_res_disc['total_excluded'] / move.product_uom_qty),

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+
+from odoo import Command
 from odoo.addons.stock_barcode.tests.test_barcode_client_action import clean_access_rights, TestBarcodeClientAction
 from odoo.tests import Form, tagged
 
@@ -19,20 +21,20 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
             'type': 'product',
             'barcode': 'product_subcontracted',
         })
-
         self.subcontracted_component = self.env['product.product'].create({
             'name': 'Chocolate',
             'type': 'product',
         })
-
-        bom_form = Form(self.env['mrp.bom'])
-        bom_form.type = 'subcontract'
-        bom_form.subcontractor_ids.add(self.subcontractor_partner)
-        bom_form.product_tmpl_id = self.subcontracted_product.product_tmpl_id
-        with bom_form.bom_line_ids.new() as bom_line:
-            bom_line.product_id = self.subcontracted_component
-            bom_line.product_qty = 1
-        self.bom = bom_form.save()
+        self.bom = self.env['mrp.bom'].create({
+            'type': 'subcontract',
+            'consumption': 'strict',
+            'subcontractor_ids': [Command.link(self.subcontractor_partner.id)],
+            'product_tmpl_id': self.subcontracted_product.product_tmpl_id.id,
+            'bom_line_ids': [Command.create({
+                'product_id': self.subcontracted_component.id,
+                'product_qty': 1,
+            })]
+        })
 
     def test_receipt_classic_subcontracted_product(self):
         clean_access_rights(self.env)
@@ -56,7 +58,7 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
         receipt_picking.action_confirm()
 
         url = self._get_client_action_url(receipt_picking.id)
-        self.start_tour(url, 'test_receipt_subcontracted_1', login='admin', timeout=180)
+        self.start_tour(url, 'test_receipt_classic_subcontracted_product', login='admin', timeout=180)
 
         self.assertEqual(receipt_picking.state, 'done')
         self.assertEqual(receipt_picking.move_lines.quantity_done, 2)
@@ -95,6 +97,38 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
         receipt_picking.action_confirm()
 
         url = self._get_client_action_url(receipt_picking.id)
-        self.start_tour(url, 'test_receipt_subcontracted_2', login='admin', timeout=180)
+        self.start_tour(url, 'test_receipt_tracked_subcontracted_product', login='admin', timeout=180)
         self.assertEqual(receipt_picking.state, 'done')
         self.assertEqual(receipt_picking.move_lines.quantity_done, 5)
+
+    def test_receipt_flexible_subcontracted_product(self):
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.bom.consumption = 'flexible'  # To able to record flexible component
+        receipt_picking = self.env['stock.picking'].create({
+            'partner_id': self.subcontractor_partner.id,
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+        self.env['stock.move'].create({
+            'name': 'test_receipt_classic_subcontracted_product',
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.subcontracted_product.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': receipt_picking.id,
+        })
+        receipt_picking.action_confirm()
+
+        url = self._get_client_action_url(receipt_picking.id)
+        self.start_tour(url, 'test_receipt_flexible_subcontracted_product', login='admin', timeout=180)
+
+        self.assertEqual(receipt_picking.state, 'done')
+        self.assertEqual(receipt_picking.move_lines.quantity_done, 1)
+        sub_order = self.env['mrp.production'].search([('product_id', '=', self.subcontracted_product.id)])
+        self.assertEqual(len(sub_order), 1)
+        self.assertEqual(sub_order.state, 'done')
+        self.assertEqual(sub_order.move_raw_ids.quantity_done, 2)  # because we record more than expected

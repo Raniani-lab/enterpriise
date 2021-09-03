@@ -4,18 +4,35 @@ import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import { patch } from 'web.utils';
 import { _t } from 'web.core';
 
-patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
 
+patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
+    
     showSubcontractingDetails(line) {
         return line.is_subcontract_stock_barcode && !['done', 'cancel'].includes(line.state) && this.getQtyDone(line);
     },
+    
+    getPickingToRecordComponents() {
+        const displayValues = ["hide", "facultative", "mandatory"];
+        let picking = this.record;
+        if (this.params.model === "stock.picking.batch") {
+            const picking_id = this.record.picking_ids.reduce((prevId, currentId) => {
+                const currentPicking = this.cache.getRecord("stock.picking", currentId);
+                const currentValue = currentPicking.display_action_record_components;
+                const prevPicking = this.cache.getRecord("stock.picking", prevId);
+                const prevValue = prevPicking.display_action_record_components;
+                if (displayValues.indexOf(prevValue) > displayValues.indexOf(currentValue)) {
+                    return prevId;
+                } else {
+                    return currentId;
+                }
+            }, this.record.picking_ids[0]);
+            picking = this.cache.getRecord("stock.picking", picking_id);
+        }
+        return picking;
+    },
 
     get displayActionRecordComponents() {
-        if (!this.params.model || !this.params.id) {
-            return false;
-        }
-        const picking = this.cache.getRecord(this.params.model, this.params.id);
-        return picking.display_action_record_components;
+        return this.getPickingToRecordComponents().display_action_record_components;
     },
 
     _actionRecordComponents(line) {
@@ -37,9 +54,9 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
             );
         } else {
             action = await this.orm.call(
-                this.params.model,
+                'stock.picking',
                 'action_record_components',
-                [[this.params.id]]
+                [[this.getPickingToRecordComponents().id]]
             );
         }
         if (!action) {
@@ -81,10 +98,15 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
     },
 
     async _updateLineQty(line, args) {
-        if (line.is_subcontract_stock_barcode) {
+        // We cannot know if this particularly line is mandatory
+        // In master is_subcontract_stock_barcode should be a selection like the display_action_record_components
+        if (
+            line.is_subcontract_stock_barcode &&
+            this.displayActionRecordComponents === "mandatory"
+        ) {
             await this._actionRecordComponents(line);
         } else {
             this._super(...arguments);
         }
-    }
+    },
 });

@@ -8,7 +8,8 @@
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
-                <button string="New Rental" name="action_rental_quotations_new" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('type', '=', 'lead'), '&amp;', ('probability', '=', 0), ('active', '=', False)]}" data-hotkey="k"/>
+                <button string="New Rental" name="action_rental_quotations_new" type="object" class="oe_highlight" title="Create new rental"
+                        attrs="{'invisible': ['|', ('type', '=', 'lead'), '&amp;', ('probability', '=', 0), ('active', '=', False)]}" data-hotkey="k"/>
             </xpath>
             <button name="action_set_won_rainbowman" position="attributes">
                 <attribute name="class" remove="oe_highlight"/>

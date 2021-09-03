@@ -58,7 +58,7 @@
             </t>
         </xpath>
         <xpath expr="//div[@name='transferable-legend']" position="inside">
-            <t t-if="o.l10n_latam_document_type_id.code in ['39', '41']">
+            <t t-if="o.l10n_latam_document_type_id._is_doc_type_electronic_ticket()">
                 The VAT tax of this boleta is: <span t-esc="o._l10n_cl_get_amounts()['vat_amount']" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
             </t>
         </xpath>

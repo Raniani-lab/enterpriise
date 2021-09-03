@@ -535,7 +535,7 @@ class AccountMove(models.Model):
                 'There is not an activity description configured in the '
                 'customer record. This is mandatory for electronic invoicing for this type of '
                 'document. Please go to the partner record and set the activity description'))
-        if self.l10n_latam_document_type_id.code not in ['39', '41'] and not self.partner_id.street:
+        if not self.l10n_latam_document_type_id._is_doc_type_electronic_ticket() and not self.partner_id.street:
             raise UserError(_(
                 'There is no address configured in your customer record. '
                 'This is mandatory for electronic invoicing for this type of document. '
@@ -748,7 +748,7 @@ class AccountMoveLine(models.Model):
         values = {
             'price_item': float(
                 self.price_total / self.quantity) if self.move_id.l10n_latam_document_type_id._is_doc_type_voucher(
-                ) and self.l10n_latam_document_type_id.code not in ['39', '41'] else self.price_unit,
+                ) and not self.l10n_latam_document_type_id._is_doc_type_electronic_ticket() else self.price_unit,
             'total_discount': '{:.0f}'.format(self.price_unit * self.quantity * self.discount / 100.0),
         }
         if self.move_id.currency_id != self.move_id.company_id.currency_id:

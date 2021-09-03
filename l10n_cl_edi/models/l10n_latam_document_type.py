@@ -10,6 +10,9 @@ class L10nLatamDocumentType(models.Model):
     def _is_doc_type_ticket(self):
         return self.code in ['35', '38', '39', '41', '70', '71']
 
+    def _is_doc_type_electronic_ticket(self):
+        return self.code in ['39', '41']
+
     def _is_doc_type_voucher(self):
         return self.code in ['35', '39', '906', '45', '46', '70', '71']
 

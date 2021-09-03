@@ -5,12 +5,12 @@ import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
 import core from 'web.core';
 import LineComponent from '@stock_barcode/components/line';
 import LocationButton from '@stock_barcode/components/location_button';
-import mobile from 'web_mobile.core';
 import PackageLineComponent from '@stock_barcode/components/package_line';
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import ViewsWidget from '@stock_barcode/widgets/views_widget';
 import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
+import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 
 const { Component } = owl;
 const { useSubEnv, useState } = owl.hooks;
@@ -179,7 +179,7 @@ class MainComponent extends Component {
     }
 
     get mobileScanner() {
-        return mobile.methods && mobile.methods.scanBarcode;
+        return BarcodeScanner.isBarcodeScannerSupported();
     }
 
     get numberOfPages() {
@@ -251,13 +251,17 @@ class MainComponent extends Component {
     }
 
     async openMobileScanner() {
-        const response = await mobile.methods.scanBarcode();
-        const barcode = response.data;
+        const barcode = await BarcodeScanner.scanBarcode();
         if (barcode) {
             this.env.model.processBarcode(barcode);
-            mobile.methods.vibrate({duration: 100});
+            if ('vibrate' in window.navigator) {
+                window.navigator.vibrate(100);
+            }
         } else {
-            mobile.methods.showToast({message: this.env._t("Please, Scan again !")});
+            this.env.services.notification.notify({
+                type: 'warning',
+                message: this.env._t("Please, Scan again !"),
+            });
         }
     }
 

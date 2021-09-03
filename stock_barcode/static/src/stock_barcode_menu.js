@@ -4,7 +4,7 @@ import AbstractAction from 'web.AbstractAction';
 import core from 'web.core';
 import Dialog from 'web.Dialog';
 import Session from 'web.session';
-import mobile from "web_mobile.core";
+import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 
 const _t = core._t;
 
@@ -29,13 +29,17 @@ const MainMenu = AbstractAction.extend({
             this.trigger_up('show_home_menu');
         },
         "click .o_stock_mobile_barcode": async function() {
-            const response = await mobile.methods.scanBarcode();
-            const barcode = response.data;
+            const barcode = await BarcodeScanner.scanBarcode();
             if (barcode){
                 this._onBarcodeScanned(barcode);
-                mobile.methods.vibrate({'duration': 100});
+                if ('vibrate' in window.navigator) {
+                    window.navigator.vibrate(100);
+                }
             } else {
-                mobile.methods.showToast({'message':_t("Please, Scan again !")});
+                this.displayNotification({
+                    type: 'warning',
+                    message:_t("Please, Scan again !"),
+                });
             }
         }
     },
@@ -43,7 +47,7 @@ const MainMenu = AbstractAction.extend({
     init: function (parent, action) {
         this._super(...arguments);
         this.message_demo_barcodes = action.params.message_demo_barcodes;
-        this.mobileScanner = mobile.methods.scanBarcode;
+        this.mobileScanner = BarcodeScanner.isBarcodeScannerSupported();
     },
 
     willStart: async function () {

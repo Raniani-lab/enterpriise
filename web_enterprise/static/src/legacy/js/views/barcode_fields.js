@@ -6,7 +6,7 @@ require('web._field_registry');
 var relational_fields = require('web.relational_fields');
 
 const { _t } = require('web.core');
-const mobile = require('web_mobile.core');
+const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
 
 /**
  * Override the Many2One to open a dialog in mobile.
@@ -78,21 +78,19 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
      *
      * @private
      */
-    _onBarcodeButtonClick: function () {
-        var self = this;
-        mobile.methods.scanBarcode().then(function (response){
-            var barcode = response.data;
-            if (barcode) {
-                self._onBarcodeScanned(barcode);
-                mobile.methods.vibrate({
-                    duration: 100,
-                });
-            } else {
-                mobile.methods.showToast({
-                    message: 'Please, scan again !!',
-                });
+    async _onBarcodeButtonClick() {
+        const barcode = await BarcodeScanner.scanBarcode();
+        if (barcode) {
+            this._onBarcodeScanned(barcode);
+            if ('vibrate' in window.navigator) {
+                window.navigator.vibrate(100);
             }
-        });
+        } else {
+            this.displayNotification({
+                type: 'warning',
+                message: 'Please, scan again !',
+            });
+        }
     },
     /**
      * When barcode is scanned
@@ -115,7 +113,7 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
     },
 });
 
-if (mobile.methods.scanBarcode) {
+if (BarcodeScanner.isBarcodeScannerSupported()) {
     field_registry.add('many2one_barcode', FieldMany2OneBarcode);
 }
 

@@ -345,7 +345,10 @@ class SignRequest(models.Model):
 
     def send_signature_accesses(self, ignored_partners=None):
         self.ensure_one()
-        if not self.request_item_ids.ids or (set(self.request_item_ids.mapped('role_id')) != set(self.template_id.sign_item_ids.mapped('responsible_id'))):
+        roles_and_responsible_dont_match = not self.request_item_ids.ids or (set(self.request_item_ids.mapped('role_id')) != set(self.template_id.sign_item_ids.mapped('responsible_id')))
+        # if sign request has default role and 0 items, it should be sent
+        request_is_not_default_without_items = not(len(self.request_item_ids) == 1 and self.request_item_ids.role_id == self.env.ref('sign.sign_item_role_default') and not(self.template_id.sign_item_ids))
+        if roles_and_responsible_dont_match and request_is_not_default_without_items:
             return False
 
         self.request_item_ids.filtered(lambda r: not r.partner_id or not ignored_partners or r.partner_id.id not in ignored_partners).send_signature_accesses()

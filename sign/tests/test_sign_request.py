@@ -5,8 +5,8 @@ from unittest.mock import patch
 from odoo.addons.sign.models.sign_log import SignLog
 
 
-@patch.object(SignLog, "_create_log")
 class TestSignRequest(TestSignCommon):
+    @patch.object(SignLog, "_create_log")
     def test_sign_request_item_auto_resend(self, _create_log):
         sign_request = self.single_role_sign_request
         request_item_ids = sign_request.request_item_ids
@@ -30,3 +30,7 @@ class TestSignRequest(TestSignCommon):
         token_c = request_item.access_token
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
         self.assertEqual(token_c, token_b, "sign request item's access token should be not changed after the document is signed by the signer")
+
+    def test_templates_send_accesses(self):
+        for sign_request in [self.default_role_sign_request, self.multi_role_sign_request, self.single_role_sign_request]:
+            self.assertTrue(all(sign_request.request_item_ids.mapped('is_mail_sent')))

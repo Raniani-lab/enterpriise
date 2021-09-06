@@ -1274,6 +1274,7 @@ odoo.define('sign.template', function(require) {
             var defParties = this._rpc({
                     model: 'sign.item.role',
                     method: 'search_read',
+                    args: [[['default', '=', false]]],
                     kwargs: {context: session.user_context},
                 })
                 .then(function(parties) {

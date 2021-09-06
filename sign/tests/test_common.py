@@ -73,6 +73,11 @@ class TestSignCommon(TransactionCase):
             },
         ])
 
+        cls.template_without_sign_items = cls.env['sign.template'].create({
+            'attachment_id': cls.attachment.id,
+            'sign_item_ids': [(6, 0, [])]
+        })
+
         cls.company_id = cls.env['res.company'].create({
             'name': 'My Belgian Company - TEST',
             'country_id': cls.env.ref('base.be').id,
@@ -103,12 +108,13 @@ class TestSignCommon(TransactionCase):
 
         cls.single_role_sign_request = cls.create_sign_request(cls, cls.template, [cls.partner_id.id])
         cls.multi_role_sign_request = cls.create_sign_request(cls, cls.template_multi_role, [cls.partner_id.id, cls.partner_2_id.id])
+        cls.default_role_sign_request = cls.create_sign_request(cls, cls.template_without_sign_items, [cls.partner_id.id])
 
     @patch.object(SignLog, "_create_log")
     def create_sign_request(self, template, partners, _create_log=None):
         data = {
             'template_id': template.id,
-            'signer_id': False,
+            'signer_id': partners[0],
             'filename': template.display_name,
             'subject': _("Signature Request - %s", (template.attachment_id.name or '')),
         }

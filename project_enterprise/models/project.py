@@ -22,8 +22,6 @@ class Task(models.Model):
     project_color = fields.Integer('Project color', related='project_id.color')
 
     # Task Dependencies fields
-    dependent_ids = fields.Many2many('project.task', relation="task_dependencies_rel", column1="depends_on_id",
-                                     column2="task_id", string="Block")
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
     planning_overlap = fields.Integer(compute='_compute_planning_overlap', search='_search_planning_overlap')
 

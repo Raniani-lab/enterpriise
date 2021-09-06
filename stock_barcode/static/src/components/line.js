@@ -1,16 +1,6 @@
 /** @odoo-module **/
 
 export default class LineComponent extends owl.Component {
-    mounted() {
-        document.addEventListener('keydown', this._onKeyDown.bind(this));
-        document.addEventListener('keyup', this._onKeyUp.bind(this));
-    }
-
-    willUnmount() {
-        document.removeEventListener('keydown', this._onKeyDown.bind(this));
-        document.removeEventListener('keyup', this._onKeyUp.bind(this));
-    }
-
     get displayIncrementBtn() {
         return this.env.model.getDisplayIncrementBtn(this.line);
     }
@@ -68,11 +58,11 @@ export default class LineComponent extends owl.Component {
     }
 
     get decrementQty() {
-        return this.shiftPressed && this.qtyDemand ? this.qtyDone : 1;
+        return this.qtyDemand ? this.qtyDone : 1;
     }
 
     get incrementQty() {
-        return this.shiftPressed && this.qtyDemand ? this.qtyDemand - this.qtyDone : 1;
+        return this.qtyDemand ? this.qtyDemand - this.qtyDone : 1;
     }
 
     get line() {
@@ -95,26 +85,6 @@ export default class LineComponent extends owl.Component {
         ev.stopPropagation();
         this.env.model.selectLine(this.line);
         this.env.model.trigger('update');
-    }
-
-    // -------------------------------------------------------------------------
-    // Handlers
-    // -------------------------------------------------------------------------
-
-    _onKeyDown(ev) {
-        if (ev.key === 'Shift') {
-            ev.stopPropagation();
-            this.shiftPressed = true;
-            this.env.model.trigger('update');
-        }
-    }
-
-    _onKeyUp(ev) {
-        if (ev.key === 'Shift') {
-            ev.stopPropagation();
-            this.shiftPressed = false;
-            this.env.model.trigger('update');
-        }
     }
 }
 LineComponent.template = 'stock_barcode.LineComponent';

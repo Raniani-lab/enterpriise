@@ -34,7 +34,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
         } else if (line.product_id.tracking === 'lot' && (!line.lot_name && !line.lot_id)) {
             return false;
         }
-        return true;
+        return (this.getQtyDemand(line) - this.getQtyDone(line)) !== 0;
     }
 
     getDisplayDecrementBtn(line) {

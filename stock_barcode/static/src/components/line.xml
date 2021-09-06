@@ -63,12 +63,10 @@
             </button>
             <button t-if="displayDecrementBtn" name="decrementButton"
                 t-on-click="addQuantity(-decrementQty)" t-esc="'- ' + decrementQty"
-                class="o_line_button btn btn-primary ml-2 ml-sm-4"
-                t-att-class="shiftPressed ? 'o_add_reserved' : 'o_remove_unit'"/>
+                class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4"/>
             <button t-if="displayIncrementBtn" name="incrementButton"
                 t-on-click="addQuantity(incrementQty)" t-esc="'+ ' + incrementQty"
-                class="o_line_button btn btn-primary ml-2 ml-sm-4"
-                t-att-class="shiftPressed ? 'o_add_reserved' : 'o_add_unit'"/>
+                class="o_line_button o_add_reserved btn btn-primary ml-2 ml-sm-4"/>
         </div>
     </t>
 

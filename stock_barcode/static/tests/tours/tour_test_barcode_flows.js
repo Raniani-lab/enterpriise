@@ -1816,9 +1816,9 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertLineQuantityOnReservedQty(0, '0 / 2');
             helper.assertLineQuantityOnReservedQty(1, '0 / 3');
             helper.assertLineQuantityOnReservedQty(2, '0 / 4');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(1), 'add_unit');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_unit');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(1), 'add_quantity');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_quantity');
         }
     },
 
@@ -1830,8 +1830,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_barcode_lines',
         run: function() {
             const $line = $('.o_barcode_line:first-child');
-            helper.assert($line.find('.o_add_unit').length, 1);
-            helper.assert($line.find('.o_add_reserved').length, 0);
+            helper.assert($line.find('.o_add_quantity').length, 1);
             helper.assertLineQuantityOnReservedQty(0, '1 / 2');
             helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
@@ -1841,14 +1840,14 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     // Press +1 button again, now its buttons must be hidden and it is moved to the end of the list.
     // Second line (product2) gets pushed up to 1st place in list.
     {
-        trigger: '.o_barcode_line:first-child .o_add_unit'
+        trigger: '.o_barcode_line:first-child .o_add_quantity'
     },
     {
         trigger: '.o_barcode_line:last-child.o_selected',
         run: function() {
-            helper.assert($('.o_barcode_line:eq(2) .o_add_unit').length, 0);
+            helper.assert($('.o_barcode_line:eq(2) .o_add_quantity').length, 0);
             helper.assertLineQuantityOnReservedQty(2, '2 / 2');
-            helper.assert($('.o_barcode_line:eq(0) .o_add_unit').length, 1);
+            helper.assert($('.o_barcode_line:eq(0) .o_add_quantity').length, 1);
             helper.assertLineQuantityOnReservedQty(0, '0 / 3');
         }
     },
@@ -1860,7 +1859,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         }
     },
     {
-        trigger: '.o_barcode_line:first-child .o_add_reserved'
+        trigger: '.o_barcode_line:first-child .o_add_quantity'
     },
     {
         trigger: '.o_barcode_client_action',
@@ -1884,7 +1883,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
             helper.assertLineQuantityOnReservedQty(0, '0 / 4');
         }
     },
@@ -1896,7 +1895,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_line:first-child .qty-done:contains("1")',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
             helper.assertLineQuantityOnReservedQty(0, '1 / 4');
             helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
@@ -1910,7 +1909,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_lines',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
             helper.assertLineQuantityOnReservedQty(0, '2 / 4');
         }
     },
@@ -1922,7 +1921,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         }
     },
     {
-        trigger: '.o_barcode_line:first-child .o_add_reserved'
+        trigger: '.o_barcode_line:first-child .o_add_quantity'
     },
     {
         trigger: '.o_barcode_client_action',
@@ -1958,12 +1957,12 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             const $line = $('.o_barcode_line:first-child');
             helper.assertLineQty($line, '1');
             // +1 button must be present on new line.
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
         }
     },
     // Press +1 button of the new line.
     {
-        trigger: '.o_barcode_line:first-child .o_add_unit'
+        trigger: '.o_barcode_line:first-child .o_add_quantity'
     },
     {
         trigger: '.o_barcode_line:first-child .qty-done:contains("2")',
@@ -1975,7 +1974,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             const $line = $('.o_barcode_line:first-child');
             helper.assertLineQty($line, '2');
             // +1 button must still be present.
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
         }
     },
 
@@ -3869,7 +3868,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'product1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsVisible($line, 'remove_unit');
         }
     },
@@ -3884,13 +3883,13 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'product1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsNotVisible($line, 'remove_unit');
         }
     },
     // Clicks on +1 button: must have 1 quantity, -1 must be visible now.
     {
-        trigger: '.o_add_unit',
+        trigger: '.o_add_quantity',
     },
     {
         trigger: '.o_barcode_line .qty-done:contains("1")',
@@ -3899,7 +3898,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'product1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsVisible($line, 'remove_unit');
         }
     },
@@ -3917,7 +3916,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'productserial1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '0');
-            helper.assertButtonIsNotVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'add_quantity');
             helper.assertButtonIsNotVisible($line, 'remove_unit');
         }
     },
@@ -3933,7 +3932,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'productserial1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '1');
-            helper.assertButtonIsNotVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'add_quantity');
             helper.assertButtonIsVisible($line, 'remove_unit');
         }
     },
@@ -3942,13 +3941,13 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("productserial1") .o_remove_unit'
     },
     {
-        trigger: '.o_barcode_line:contains("productserial1") .o_add_unit',
+        trigger: '.o_barcode_line:contains("productserial1") .o_add_quantity',
         run: function () {
             helper.assertLinesCount(2);
             const $line = helper.getLine({barcode: 'productserial1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsNotVisible($line, 'remove_unit');
         }
     },
@@ -3965,7 +3964,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'productlot1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '0');
-            helper.assertButtonIsNotVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'add_quantity');
             helper.assertButtonIsNotVisible($line, 'remove_unit');
         }
     },
@@ -3981,7 +3980,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'productlot1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsVisible($line, 'remove_unit');
         }
     },
@@ -3996,13 +3995,13 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'productlot1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsNotVisible($line, 'remove_unit');
         }
     },
     // Clicks on +1 button: must have 1 quantity, buttons must be visible.
     {
-        trigger: '.o_barcode_line:contains("productlot1") .o_add_unit'
+        trigger: '.o_barcode_line:contains("productlot1") .o_add_quantity'
     },
     {
         trigger: '.o_barcode_line:contains("productlot1") .o_remove_unit',
@@ -4011,7 +4010,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             const $line = helper.getLine({barcode: 'productlot1'});
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'add_quantity');
             helper.assertButtonIsVisible($line, 'remove_unit');
         }
     },

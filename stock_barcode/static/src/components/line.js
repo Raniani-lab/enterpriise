@@ -62,7 +62,7 @@ export default class LineComponent extends owl.Component {
     }
 
     get incrementQty() {
-        return this.qtyDemand ? this.qtyDemand - this.qtyDone : 1;
+        return ((this.qtyDemand - this.qtyDone) > 0 && (this.qtyDemand - this.qtyDone)) || 1;
     }
 
     get line() {

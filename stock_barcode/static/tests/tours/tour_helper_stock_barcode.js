@@ -41,7 +41,7 @@ function assert (current, expected, info) {
  * Checks if a button on the given line is visible.
  *
  * @param {jQuerryElement} $line the line where we test the button visibility.
- * @param {string} buttonName could be 'add_unit', 'remove_unit' or 'add_reserved'.
+ * @param {string} buttonName could be 'add_quantity' or 'remove_unit'.
  * @param {boolean} [isVisible=true]
  */
 function assertButtonIsVisible($line, buttonName, isVisible=true) {
@@ -58,7 +58,7 @@ function assertButtonIsVisible($line, buttonName, isVisible=true) {
  * Checks if a button on the given line is invisible.
  *
  * @param {jQuerryElement} $line the line where we test the button visibility.
- * @param {string} buttonName could be 'add_unit', 'remove_unit' or 'add_reserved'.
+ * @param {string} buttonName could be 'add_quantity' or 'remove_unit'.
  */
 function assertButtonIsNotVisible ($line, buttonName) {
     assertButtonIsVisible($line, buttonName, false);

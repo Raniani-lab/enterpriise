@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import StandaloneM2OAvatarEmployee from '@hr/js/standalone_m2o_avatar_employee';
-import { qweb } from 'web.core';
+import { qweb, _t } from 'web.core';
 import fieldUtils from 'web.field_utils';
 
 const EmployeeWithPlannedHours = StandaloneM2OAvatarEmployee.extend({
@@ -47,11 +47,17 @@ const EmployeeWithPlannedHours = StandaloneM2OAvatarEmployee.extend({
      * Generate (qweb render) the template from the attribute values.
      */
     _updateTemplateFromCacheData() {
+        const plannedHours = fieldUtils.format.float(this.cachePlannedHours, {'digits': [false, 0]});
         this.$templateHtml = $(qweb._render(this.hoursTemplate, {
             'width': Math.min(this.cachePlannedHours / (this.cacheWorkHours || this.cachePlannedHours || 1) * 100, 100), // avoid NaN
             'is_overplanned': this.cachePlannedHours > this.cacheWorkHours,
-            'planned_hours': fieldUtils.format.float(this.cachePlannedHours, {'digits': [false, 0]}),
+            'planned_hours': plannedHours,
             'work_hours': fieldUtils.format.float(this.cacheWorkHours, {'digits': [false, 0]}),
+            'expected_to_work': this.cacheWorkHours > 0,
+            'no_work_hours_title': _.str.sprintf(
+                _t("This employee isn't expected to work during this period. Planned hours : %s hours"),
+                plannedHours
+            )
         }));
     },
 });

@@ -133,7 +133,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         res = super()._get_reports_buttons(options)
-        if options['tax_report'] in {'generic_oss_import', 'generic_oss_no_import'}:
+        if options['tax_report'] in {'generic_oss_import', 'generic_oss_no_import'} and self._get_oss_xml_template(options):
             res.append({'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')})
         return res
 

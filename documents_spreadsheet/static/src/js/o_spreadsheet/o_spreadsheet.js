@@ -87,7 +87,7 @@
     const LINK_TOOLTIP_WIDTH = 220;
     // Menus
     const MENU_WIDTH = 200;
-    const MENU_ITEM_HEIGHT = 32;
+    const MENU_ITEM_HEIGHT = 24;
     const MENU_SEPARATOR_BORDER_WIDTH = 1;
     const MENU_SEPARATOR_PADDING = 5;
     const MENU_SEPARATOR_HEIGHT = MENU_SEPARATOR_BORDER_WIDTH + 2 * MENU_SEPARATOR_PADDING;
@@ -12352,7 +12352,6 @@
         .add("delete_cell", {
         name: _lt("Delete cells"),
         sequence: 130,
-        separator: true,
         isVisible: IS_ONLY_ONE_RANGE,
     })
         .addChild("delete_cell_up", ["delete_cell"], {
@@ -12365,12 +12364,6 @@
         sequence: 20,
         action: DELETE_CELL_SHIFT_LEFT,
     })
-        .add("insert_link", {
-        name: _lt("Insert link"),
-        separator: true,
-        sequence: 135,
-        action: INSERT_LINK,
-    })
         .add("clear_cell", {
         name: _lt("Clear cells"),
         sequence: 140,
@@ -12381,9 +12374,15 @@
         },
         separator: true,
     })
+        .add("insert_link", {
+        name: _lt("Insert link"),
+        separator: true,
+        sequence: 150,
+        action: INSERT_LINK,
+    })
         .add("conditional_formatting", {
         name: _lt("Conditional formatting"),
-        sequence: 140,
+        sequence: 160,
         action: OPEN_CF_SIDEPANEL_ACTION,
         separator: true,
     });
@@ -13284,7 +13283,7 @@
         padding: 3px 5px;
       }
       input.o-focused {
-        border-color: #3266ca;
+        border-color: ${SELECTION_BORDER_COLOR};
       }
       input.o-invalid {
         border-color: red;
@@ -16473,7 +16472,7 @@
                 return;
             }
             ctx.setLineDash([8, 5]);
-            ctx.strokeStyle = "#3266ca";
+            ctx.strokeStyle = SELECTION_BORDER_COLOR;
             ctx.lineWidth = 3.3 * thinLineWidth;
             for (const zone of this.state.zones) {
                 const [x, y, width, height] = this.getters.getRect(zone, viewport);
@@ -17243,7 +17242,7 @@
             // active zone
             const activeSheet = this.getters.getActiveSheetId();
             const [col, row] = this.getPosition();
-            ctx.strokeStyle = "#3266ca";
+            ctx.strokeStyle = SELECTION_BORDER_COLOR;
             ctx.lineWidth = 3 * thinLineWidth;
             let zone;
             if (this.getters.isInMerge(activeSheet, col, row)) {
@@ -17426,8 +17425,9 @@
                         let value = token.value;
                         const [xc, sheet] = value.split("!").reverse();
                         const sheetName = sheet || this.getters.getSheetName(this.sheet);
-                        return (isEqual(toZone(xc), cmd.zone) &&
-                            this.getters.getSheetName(this.getters.getActiveSheetId()) === sheetName);
+                        const activeSheetId = this.getters.getActiveSheetId();
+                        return (isEqual(this.getters.expandZone(activeSheetId, toZone(xc)), cmd.zone) &&
+                            this.getters.getSheetName(activeSheetId) === sheetName);
                     });
                     this.previousRef = previousRefToken.value;
                     this.previousRange = this.getters.getRangeFromSheetXC(this.getters.getActiveSheetId(), this.previousRef);
@@ -25592,13 +25592,13 @@
     const CSS$h = css$j /* scss */ `
   .o-menu {
     background-color: white;
-    padding: 5px 0px;
+    padding: 8px 0px;
     .o-menu-item {
       display: flex;
       justify-content: space-between;
       box-sizing: border-box;
       height: ${MENU_ITEM_HEIGHT}px;
-      padding: 7px 20px;
+      padding: 4px 16px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -26655,8 +26655,8 @@
     max-height: inherit;
     .o-composer {
       caret-color: black;
-      padding-left: 8px;
-      padding-right: 2px;
+      padding-left: 3px;
+      padding-right: 3px;
       word-break: break-all;
       &:focus {
         outline: none;
@@ -26681,7 +26681,7 @@
 
   /* Custom css to highlight topbar composer on focus */
   .o-topbar-toolbar .o-composer-container:focus-within {
-    box-shadow: 0px 0px 4px 5px rgba(60, 64, 67, 0.35);
+    border: 1px solid ${SELECTION_BORDER_COLOR};
   }
 `;
     class Composer extends Component$c {
@@ -26742,7 +26742,7 @@
                 }
                 return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
             }
-            return "";
+            return `width:${ASSISTANT_WIDTH}px;`;
         }
         mounted() {
             DEBUG.composer = this;
@@ -26997,7 +26997,8 @@
             const refSheet = sheetName
                 ? this.getters.getSheetIdByName(sheetName)
                 : this.getters.getEditionSheet();
-            const highlight = highlights.find((highlight) => zoneToXc(highlight.zone) == xc.replace(/\$/g, "") && highlight.sheet === refSheet);
+            const highlight = highlights.find((highlight) => highlight.sheet === refSheet &&
+                isEqual(this.getters.expandZone(refSheet, toZone(xc)), highlight.zone));
             return highlight && highlight.color ? highlight.color : undefined;
         }
         /**
@@ -27097,7 +27098,7 @@
     z-index: 5;
     box-sizing: border-box;
     position: absolute;
-    border: ${COMPOSER_BORDER_WIDTH}px solid #3266ca;
+    border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
   }
 `;
     /**
@@ -27159,7 +27160,7 @@
         }
         get composerStyle() {
             return `
-      line-height:${DEFAULT_CELL_HEIGHT - 2 * COMPOSER_BORDER_WIDTH}px;
+      line-height: ${DEFAULT_CELL_HEIGHT}px;
       max-height: inherit;
       overflow: hidden;
     `;
@@ -28564,7 +28565,7 @@
         height: ${HEADER_HEIGHT}px;
         width: 4px;
         cursor: e-resize;
-        background-color: #3266ca;
+        background-color: ${SELECTION_BORDER_COLOR};
       }
       .dragging-resizer {
         top: ${HEADER_HEIGHT}px;
@@ -28572,7 +28573,7 @@
         margin-left: 2px;
         width: 1px;
         height: 10000px;
-        background-color: #3266ca;
+        background-color: ${SELECTION_BORDER_COLOR};
       }
       .o-unhide {
         width: ${UNHIDE_ICON_EDGE_LENGTH}px;
@@ -28763,7 +28764,7 @@
         height: 4px;
         width: ${HEADER_WIDTH}px;
         cursor: n-resize;
-        background-color: #3266ca;
+        background-color: ${SELECTION_BORDER_COLOR};
       }
       .dragging-resizer {
         left: ${HEADER_WIDTH}px;
@@ -28771,7 +28772,7 @@
         margin-top: 2px;
         width: 10000px;
         height: 1px;
-        background-color: #3266ca;
+        background-color: ${SELECTION_BORDER_COLOR};
       }
       .o-unhide {
         width: ${UNHIDE_ICON_EDGE_LENGTH}px;
@@ -29759,9 +29760,8 @@
             this.menuRef = useRef$1("menuRef");
             this.composerStyle = `
     line-height: 34px;
+    padding-left: 8px;
     height: 34px;
-    border-bottom: 1px solid #e0e2e4;
-    border-left: 1px solid #e0e2e4;
     background-color: white;
   `;
             useExternalListener$1(window, "click", this.onClick);
@@ -30040,6 +30040,7 @@
     TopBar.style = css$1 /* scss */ `
     .o-spreadsheet-topbar {
       background-color: white;
+      line-height: 1.2;
       display: flex;
       flex-direction: column;
       font-size: 13px;
@@ -30082,6 +30083,13 @@
           background-color: ${BACKGROUND_HEADER_COLOR};
           padding-left: 18px;
           padding-right: 18px;
+          }
+        .o-composer-container {
+          height: 34px;
+          border: 1px solid #e0e2e4;
+          margin-top: -1px;
+          margin-bottom: -1px;
+          margin-right: -1px;
         }
 
         /* Toolbar */
@@ -30577,8 +30585,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-09-02T12:40:12.070Z';
-    exports.__info__.hash = 'c807948';
+    exports.__info__.date = '2021-09-06T14:20:49.930Z';
+    exports.__info__.hash = '2167f3c';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

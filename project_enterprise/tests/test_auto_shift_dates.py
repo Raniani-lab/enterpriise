@@ -66,10 +66,10 @@ class TestTaskDependencies(AutoShiftDatesCommon):
             'project_id': project_id.id
         })
 
-        # # Checks that no date shift is made when the new planned_date is prior to the current datetime.
-        # with freeze_time(self.task_1_no_date_auto_shift_trigger['planned_date_begin'] + relativedelta(weeks=1)):
-        #     failed_message = "The auto shift date feature should not trigger any changes when the new planned_date is prior to the current datetime."
-        #     test_task_3_dates_unchanged(self.task_1_date_auto_shift_trigger, failed_message)
+        # Checks that no date shift is made when the new planned_date is prior to the current datetime.
+        with freeze_time(self.task_1_no_date_auto_shift_trigger['planned_date_begin'] + relativedelta(weeks=1)):
+            failed_message = "The auto shift date feature should not trigger any changes when the new planned_date is prior to the current datetime."
+            test_task_3_dates_unchanged(self.task_1_date_auto_shift_trigger, failed_message)
 
     def test_auto_shift_dependent_task(self):
         """

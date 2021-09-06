@@ -11,6 +11,12 @@ from odoo.exceptions import UserError
 from odoo.addons.resource.models.resource import Intervals
 
 
+DATE_AUTO_SHIFT_CONTEXT_KEY = 'date_auto_shift'
+DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY = 'date_auto_shift_direction'
+DATE_AUTO_SHIFT_FORWARD = 'forward'
+DATE_AUTO_SHIFT_BACKWARD = 'backward'
+DATE_AUTO_SHIFT_BOTH_DIRECTIONS = 'both'
+
 class Task(models.Model):
     _inherit = "project.task"
 
@@ -227,12 +233,20 @@ class Task(models.Model):
                     'planned_date_end': date_stop,
                 })
 
-        date_auto_shift = self.env.context.get('date_auto_shift')
+        date_auto_shift = self.env.context.get(DATE_AUTO_SHIFT_CONTEXT_KEY)
         write_planned_date_fields = any(field for field in ['planned_date_begin', 'planned_date_end'] if field in vals)
         if date_auto_shift and write_planned_date_fields:
             self._action_auto_shift()
 
         return res
+
+    def _write_planned_dates_if_in_future(self, new_planned_date_begin, new_planned_date_end):
+        if new_planned_date_begin and new_planned_date_end and new_planned_date_begin > datetime.now(tz=utc):
+            self.write({
+                'planned_date_begin': new_planned_date_begin.astimezone(utc).replace(tzinfo=None),
+                'planned_date_end': new_planned_date_end.astimezone(utc).replace(tzinfo=None),
+            })
+
 
     def _get_first_work_interval(self, intervals_cache, date_time, task_calendars, search_forward=True):
         """
@@ -406,11 +420,8 @@ class Task(models.Model):
                 new_planned_date_begin, new_planned_date_end, intervals_cache = task._action_auto_shift_without_planned_hours(
                     mapped_dependent, mapped_depend_on, intervals_cache)
 
-            if new_planned_date_begin and new_planned_date_end:
-                task.write({
-                    'planned_date_begin': new_planned_date_begin.astimezone(utc).replace(tzinfo=None),
-                    'planned_date_end': new_planned_date_end.astimezone(utc).replace(tzinfo=None),
-                })
+            if new_planned_date_begin and new_planned_date_end and new_planned_date_begin > datetime.now(tz=utc):
+                task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end)
 
     def _action_auto_shift_get_candidates(self):
         """
@@ -426,11 +437,16 @@ class Task(models.Model):
         # Mapping of tasks with the related tasks dependent tasks
         mapped_dependent = defaultdict(lambda: self.env['project.task'])
         tasks_to_auto_shift = self.env['project.task']
+
+        auto_shift_direction = self.env.context.get(DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY, 'none')
+        auto_shift_forward = auto_shift_direction in (DATE_AUTO_SHIFT_FORWARD, DATE_AUTO_SHIFT_BOTH_DIRECTIONS)
+        auto_shift_backward = auto_shift_direction in (DATE_AUTO_SHIFT_BACKWARD, DATE_AUTO_SHIFT_BOTH_DIRECTIONS)
+
         for task in self:
             # We provide priority to depend_on over dependent as we try to shorten the critical path
             if task._is_auto_shift_candidate():
                 for depend_on_task in task.depend_on_ids:
-                    if depend_on_task.project_id == task.project_id and depend_on_task.planned_date_end > task.planned_date_begin:
+                    if depend_on_task.project_id == task.project_id and (depend_on_task.planned_date_end > task.planned_date_begin or auto_shift_forward):
                         if not mapped_depend_on[depend_on_task] or \
                                 mapped_depend_on[depend_on_task].planned_date_begin > task.planned_date_begin:
                             if mapped_dependent[depend_on_task]:
@@ -438,7 +454,7 @@ class Task(models.Model):
                             mapped_depend_on[depend_on_task] = task
                             tasks_to_auto_shift |= depend_on_task
                 for dependent_task in task.dependent_ids:
-                    if dependent_task.project_id == task.project_id and dependent_task.planned_date_begin < task.planned_date_end:
+                    if dependent_task.project_id == task.project_id and (dependent_task.planned_date_begin < task.planned_date_end or auto_shift_backward):
                         if (not mapped_depend_on[dependent_task] and not mapped_dependent[dependent_task]) or \
                                 mapped_dependent[dependent_task].planned_date_end < task.planned_date_end:
                             mapped_dependent[dependent_task] = task
@@ -446,6 +462,7 @@ class Task(models.Model):
         return tasks_to_auto_shift, mapped_depend_on, mapped_dependent
 
     def _action_auto_shift_with_planned_hours(self, mapped_dependent, mapped_depend_on, intervals_cache):
+
         # If planned_hours are used, we will modify the planned_date fields values in order to
         # preserve the planned_hours, taking into account the work intervals either of the user
         # if available or the one of the company if not
@@ -459,7 +476,7 @@ class Task(models.Model):
 
         task_calendars = {}
 
-        if  mapped_dependent[task]:
+        if mapped_dependent[task]:
             # Case 1: Move forward
             # Here task is a task that the depends on the written task so we need to schedule it after
             # to this task planned_date_end
@@ -492,7 +509,6 @@ class Task(models.Model):
         # Keeps track of the hours that have already been covered.
         new_task_hours = timedelta(hours=0.0)
         min_numb_of_weeks = 1
-        # TODO Add a counter in order to avoid infinite loop and return a notif with the problematic tasks
         first = defaultdict(lambda: True)
         while new_task_hours < planned_hours:
             # Look for the missing intervals with min search of 1 week
@@ -706,7 +722,13 @@ class Task(models.Model):
         master_task, slave_task = self.env['project.task'].browse([master_task_id, slave_task_id])
         is_dependency_constraint_met = master_task.planned_date_end <= slave_task.planned_date_begin
 
+        auto_shift_task_write_context = {
+            DATE_AUTO_SHIFT_CONTEXT_KEY: True,
+            DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY: DATE_AUTO_SHIFT_BOTH_DIRECTIONS
+        }
+
         if direction == 'forward':
+            auto_shift_task_write_context[DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY] = DATE_AUTO_SHIFT_FORWARD
             if (is_dependency_constraint_met):
                 trigger_task = master_task
                 mapped_depend_on[trigger_task] = slave_task
@@ -714,6 +736,7 @@ class Task(models.Model):
                 trigger_task = slave_task
                 mapped_dependent[trigger_task] = master_task
         elif direction == 'backward':
+            auto_shift_task_write_context[DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY] = DATE_AUTO_SHIFT_BACKWARD
             if (is_dependency_constraint_met):
                 trigger_task = slave_task
                 mapped_dependent[trigger_task] = master_task
@@ -723,7 +746,7 @@ class Task(models.Model):
         else:
             return False
 
-        trigger_task = trigger_task.with_context(date_auto_shift=True)
+        trigger_task = trigger_task.with_context(**auto_shift_task_write_context)
         intervals_cache = defaultdict(Intervals)
 
         if trigger_task.planned_hours:
@@ -733,11 +756,8 @@ class Task(models.Model):
             new_planned_date_begin, new_planned_date_end, intervals_cache = trigger_task._action_auto_shift_without_planned_hours(
                 mapped_dependent, mapped_depend_on, intervals_cache)
 
-        if new_planned_date_begin and new_planned_date_end:
-            trigger_task.write({
-                'planned_date_begin': new_planned_date_begin.astimezone(utc).replace(tzinfo=None),
-                'planned_date_end': new_planned_date_end.astimezone(utc).replace(tzinfo=None),
-            })
+        if new_planned_date_begin and new_planned_date_end and new_planned_date_begin > datetime.now(tz=utc):
+            trigger_task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end)
 
         return True
 

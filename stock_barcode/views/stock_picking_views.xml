@@ -65,12 +65,12 @@
         <field name="priority">1000</field>
         <field name="arch" type="xml">
             <form string="Picking Details">
-                <field name="picking_type_code" invisible="1"/>
+                <field name="show_allocation" invisible="1"/>
                 <group>
                     <button name="action_view_reception_report" string="Allocation"
                         context="{'default_picking_ids': [id]}"
                         class="btn btn-primary o_reception_report" icon="fa-list"
-                        attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"
+                        attrs="{'invisible': [('show_allocation', '=', False)]}"
                         groups="stock.group_reception_report"/>
                     <field name="partner_id"/>
                     <field name="scheduled_date" readonly="1" attrs="{'invisible': [('scheduled_date', '=', False)]}"/>

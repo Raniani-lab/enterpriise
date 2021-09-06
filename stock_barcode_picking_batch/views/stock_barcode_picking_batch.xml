@@ -8,10 +8,10 @@
             <form>
                 <group>
                     <field name="allowed_picking_ids" invisible="1"/>
-                    <field name="picking_type_code" invisible="1"/>
+                    <field name="show_allocation" invisible="1"/>
                     <button name="action_view_reception_report" string="Allocation" type="object"
                         class="btn btn-primary o_reception_report" icon="fa-list"
-                        attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"
+                        attrs="{'invisible': [('show_allocation', '=', False)]}"
                         groups="stock.group_reception_report"/>
                     <field name="user_id"/>
                     <field name="picking_type_id" readonly="1" attrs="{'invisible': [('picking_type_id', '=', False)]}"/>

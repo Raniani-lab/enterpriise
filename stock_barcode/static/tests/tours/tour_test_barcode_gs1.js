@@ -382,7 +382,7 @@ tour.register('test_gs1_inventory_package', {test: true}, [
 
     // Validates the inventory.
     {
-        trigger: '.o_validate_page'
+        trigger: '.o_apply_page'
     },
     {
         trigger: '.o_notification.bg-success'

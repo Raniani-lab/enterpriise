@@ -34,7 +34,7 @@
                 <div name="quantity">
                     <i class="fa fa-fw fa-cube" t-attf-class="{{nextExpected === 'quantity' ? 'o_next_expected' : ''}}"/>
                     <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}">
-                        <span class="qty-done d-inline-block text-left" t-esc="qtyDone"/>
+                        <span class="qty-done d-inline-block text-left" t-esc="env.model.IsNotSet(line) ? '?' : qtyDone"/>
                         <span t-if="qtyDemand" t-esc="'/ ' + qtyDemand"/>
                     </span>
                     <span t-if="props.displayUOM" t-esc="line.product_uom_id.name"/>
@@ -58,15 +58,25 @@
                     <span class="o_line_lot_name" t-esc="lotName"/>
                 </div>
             </div>
-            <button t-on-click="edit" class="o_line_button o_edit btn btn-secondary ml-2 ml-sm-4">
-                <i class="fa fa-2x fa-pencil"/>
-            </button>
-            <button t-if="displayDecrementBtn" name="decrementButton"
-                t-on-click="addQuantity(-decrementQty)" t-esc="'- ' + decrementQty"
-                class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4"/>
-            <button t-if="displayIncrementBtn" name="incrementButton"
-                t-on-click="addQuantity(incrementQty)" t-esc="'+ ' + incrementQty"
-                class="o_line_button o_add_quantity btn btn-primary ml-2 ml-sm-4"/>
+            <div class="o_line_buttons">
+                <button t-on-click="edit" class="o_line_button o_edit btn btn-secondary ml-2 ml-sm-4">
+                    <i class="fa fa-2x fa-pencil"/>
+                </button>
+                <button t-if="env.model.displaySetButton" t-on-click="setOnHandQuantity"
+                    class="o_line_button o_set btn ml-2 ml-sm-4"
+                    t-attf-class="{{quantityIsSet &amp;&amp; qtyDone != qtyDemand ? 'o_difference' : ''}}">
+                    <i t-if="quantityIsSet" class="fa fa-2x"
+                        t-attf-class="{{qtyDone == qtyDemand ? 'fa-check' : 'fa-times'}}"/>
+                </button>
+                <span t-attf-class="{{env.model.incrementButtonsDisplayStyle}}">
+                    <button t-if="env.model.getDisplayDecrementBtn(line)" name="decrementButton" t-on-click="addQuantity(-1)"
+                        class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4"
+                        t-attf-disabled="{{qtyDone &lt;= 0 || qtyDone == '?'}}">-1</button>
+                    <button t-if="env.model.getDisplayIncrementBtn(line)" name="incrementButton"
+                        t-on-click="addQuantity(incrementQty)" t-esc="'+' + incrementQty"
+                        class="o_line_button o_add_quantity btn btn-primary ml-2 ml-sm-4"/>
+                </span>
+            </div>
         </div>
     </t>
 

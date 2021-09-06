@@ -1,14 +1,6 @@
 /** @odoo-module **/
 
 export default class LineComponent extends owl.Component {
-    get displayIncrementBtn() {
-        return this.env.model.getDisplayIncrementBtn(this.line);
-    }
-
-    get displayDecrementBtn() {
-        return this.env.model.getDisplayDecrementBtn(this.line);
-    }
-
     get displayResultPackage() {
         return this.env.model.displayResultPackage;
     }
@@ -57,12 +49,12 @@ export default class LineComponent extends owl.Component {
         return this.env.model.getQtyDone(this.line);
     }
 
-    get decrementQty() {
-        return this.qtyDemand ? this.qtyDone : 1;
+    get quantityIsSet() {
+        return this.line.inventory_quantity_set;
     }
 
     get incrementQty() {
-        return ((this.qtyDemand - this.qtyDone) > 0 && (this.qtyDemand - this.qtyDone)) || 1;
+        return this.env.model.getIncrementQuantity(this.line);
     }
 
     get line() {
@@ -85,6 +77,10 @@ export default class LineComponent extends owl.Component {
         ev.stopPropagation();
         this.env.model.selectLine(this.line);
         this.env.model.trigger('update');
+    }
+
+    setOnHandQuantity(ev) {
+        this.env.model.setOnHandQuantity(this.line);
     }
 }
 LineComponent.template = 'stock_barcode.LineComponent';

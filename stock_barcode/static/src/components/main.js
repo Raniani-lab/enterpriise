@@ -143,10 +143,6 @@ class MainComponent extends Component {
         return this.env.model.view === 'productPage';
     }
 
-    get displayValidateButton() {
-        return this.currentPageIndex === this.numberOfPages;
-    }
-
     get highlightDestinationLocation() {
         return this.env.model.highlightDestinationLocation;
     }

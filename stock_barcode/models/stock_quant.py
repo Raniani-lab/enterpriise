@@ -55,7 +55,7 @@ class StockQuant(models.Model):
         return self.browse(quant_ids)._get_stock_barcode_data()
 
     def action_validate(self):
-        quants = self.with_context(inventory_mode=True)
+        quants = self.with_context(inventory_mode=True).filtered(lambda q: q.inventory_quantity_set)
         quants._compute_inventory_diff_quantity()
         res = quants.action_apply_inventory()
         if res:
@@ -81,7 +81,7 @@ class StockQuant(models.Model):
             if self.env.user.has_group('stock.group_tracking_lot'):
                 package_types = package_types.search([])
 
-        data = self.with_context(display_default_code=False).get_stock_barcode_data_records()
+        data = self.with_context(display_default_code=False, barcode_view=True).get_stock_barcode_data_records()
         if locations:
             data["records"]["stock.location"] = locations.read(locations._get_fields_stock_barcode(), load=False)
         if package_types:
@@ -118,7 +118,9 @@ class StockQuant(models.Model):
         return [
             'product_id',
             'location_id',
+            'inventory_date',
             'inventory_quantity',
+            'inventory_quantity_set',
             'quantity',
             'product_uom_id',
             'lot_id',
@@ -126,6 +128,7 @@ class StockQuant(models.Model):
             'owner_id',
             'inventory_diff_quantity',
             'dummy_id',
+            'user_id',
         ]
 
     def _get_inventory_fields_write(self):

@@ -46,12 +46,8 @@ function assert (current, expected, info) {
  */
 function assertButtonIsVisible($line, buttonName, isVisible=true) {
     const $button = $line.find(`.o_${buttonName}`);
-    if (isVisible) {
-        assert($button.length, 1, `Buttons should be in the DOM`);
-        assert($button.css('display'), 'block', `Buttons must be visible`);
-    } else {
-        assert($button.length, 0, "Button shouldn't be in the DOM");
-    }
+    assert($button.length, isVisible ? 1 : 0,
+        isVisible ? `Buttons should be in the DOM` : "Button shouldn't be in the DOM");
 }
 
 /**

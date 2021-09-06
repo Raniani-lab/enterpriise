@@ -64,10 +64,8 @@ export default class BarcodeModel extends owl.core.EventBus {
     }
 
     getDisplayIncrementBtn(line) {
-        if (line.product_id.tracking === 'serial') {
-            return false;
-        }
-        return !this.getQtyDemand(line) || (this.getQtyDemand(line) - this.getQtyDone(line)) > 0;
+        return line.product_id.tracking !== 'serial' &&
+            (!this.getQtyDemand(line) || this.getQtyDemand(line) > this.getQtyDone(line));
     }
 
     getDisplayDecrementBtn(line) {
@@ -79,6 +77,14 @@ export default class BarcodeModel extends owl.core.EventBus {
             route: '/stock_barcode/get_barcode_data',
             params: {model: this.params.model, res_id: this.params.id || false},
         };
+    }
+
+    getIncrementQuantity(line) {
+        return 1;
+    }
+
+    async apply() {
+        throw new Error('Not Implemented');
     }
 
     get barcodeInfo() {
@@ -158,6 +164,10 @@ export default class BarcodeModel extends owl.core.EventBus {
         return this.pages[this.pageIndex].lines.length;
     }
 
+    get displayApplyButton() {
+        return false;
+    }
+
     get displayCancelButton() {
         return false;
     }
@@ -172,6 +182,10 @@ export default class BarcodeModel extends owl.core.EventBus {
 
     get displaySourceLocation() {
         return this.groups.group_stock_multi_locations;
+    }
+
+    get displayValidateButton() {
+        return false;
     }
 
     groupKey(line) {
@@ -244,6 +258,16 @@ export default class BarcodeModel extends owl.core.EventBus {
         return false;
     }
 
+    /**
+     * Say if the line quantity is not set. Only useful for the inventory adjustment.
+     *
+     * @param {Object} line
+     * @returns {boolean}
+     */
+    IsNotSet(line) {
+        return false;
+    }
+
     get lastScannedLine() {
         if (this.scannedLinesVirtualId.length) {
             const virtualId = this.scannedLinesVirtualId[this.scannedLinesVirtualId.length - 1];
@@ -257,12 +281,31 @@ export default class BarcodeModel extends owl.core.EventBus {
     }
 
     /**
+     * Retuns the current page if it exists, or a new empty page if it doesn't.
+     *
+     * @returns {Object}
+     */
+    get page() {
+        const page = this.pages[this.pageIndex];
+        if (!page) {
+            const emptyPage = {
+                index: this.pages.length,
+                lines: [],
+                sourceLocationId: this.currentLocationId,
+            };
+            this.pages.push(emptyPage);
+            return emptyPage;
+        }
+        return page;
+    }
+
+    /**
      * Returns only the lines from the current page.
      *
      * @returns {Array<Object>}
      */
     get pageLines() {
-        let lines = this.pages[this.pageIndex].lines;
+        let lines = this.page.lines;
         // If we show entire package, we don't return lines with package (they
         // will be treated as "package lines").
         if (this.record.picking_type_entire_packs) {
@@ -275,7 +318,7 @@ export default class BarcodeModel extends owl.core.EventBus {
         if (!this.record.picking_type_entire_packs) {
             return [];
         }
-        const lines = this.pages[this.pageIndex].lines;
+        const lines = this.page.lines;
         const linesWithPackage = lines.filter(line => line.package_id);
         // Groups lines by package.
         const groupedLines = {};
@@ -626,7 +669,7 @@ export default class BarcodeModel extends owl.core.EventBus {
             return;
         }
         this.pageIndex = pageIndex;
-        this.currentLocationId = this.pages[this.pageIndex].sourceLocationId;
+        this.currentLocationId = this.page.sourceLocationId;
         // Forgets which lines was scanned as the user isn't on the same page anymore.
         this.scannedLinesVirtualId = [];
         this.lastScannedPackage = false;
@@ -672,11 +715,10 @@ export default class BarcodeModel extends owl.core.EventBus {
      * @private
      */
     _defineLocationId() {
-        const page = this.pages[this.pageIndex];
-        if (page.lines.length) {
-            this.currentLocationId = page.lines[0].location_id;
+        if (this.page.lines.length) {
+            this.currentLocationId = this.page.lines[0].location_id;
         } else {
-            this.currentLocationId = this._defaultLocationId();
+            this.currentLocationId = this.page.sourceLocationId || this._defaultLocationId();
         }
     }
 
@@ -743,9 +785,9 @@ export default class BarcodeModel extends owl.core.EventBus {
                 for (const field of fields) {
                     const fieldValue = line[field];
                     const initialValue = initialLine[field];
-                    if (fieldValue && (
-                        (['number', 'string'].includes(typeof fieldValue) && fieldValue != initialValue) ||
-                        (typeof fieldValue === 'object' && fieldValue.id != initialValue.id)
+                    if (fieldValue !== undefined && (
+                        (['boolean', 'number', 'string'].includes(typeof fieldValue) && fieldValue !== initialValue) ||
+                        (typeof fieldValue === 'object' && fieldValue.id !== initialValue.id)
                     )) {
                         changedValues[field] = this._fieldToValue(fieldValue);
                         somethingToSave = true;

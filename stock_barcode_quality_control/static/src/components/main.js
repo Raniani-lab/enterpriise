@@ -8,10 +8,6 @@ patch(MainComponent.prototype, 'stock_barcode_quality_control', {
         return this.env.model.record && this.env.model.record.quality_check_todo;
     },
 
-    get displayValidateButton() {
-        return !this.hasQualityChecksTodo && this._super();
-    },
-
     async checkQuality(ev) {
         ev.stopPropagation();
         await this.env.model.save();

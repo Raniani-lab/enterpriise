@@ -128,11 +128,20 @@
                     t-attf-class="{{highlightNextButton ? 'btn-primary' : 'btn-secondary'}}">
                     Next <i class="fa fa-angle-right ml-1"/>
                 </button>
-                <button t-if="displayValidateButton" t-on-click="validate"
+                <button t-if="env.model.displayValidateButton" t-on-click="validate"
                     class="btn text-uppercase o_validate_page"
                     t-att-disabled="!env.model.canBeValidate"
                     t-attf-class="{{highlightValidateButton ? 'btn-success' : 'btn-secondary'}}">
                     <i class="fa fa-check mr-1"/> Validate
+                </button>
+                <button t-if="env.model.displayApplyButton" t-on-click="env.model.apply.bind(env.model)"
+                    class="btn text-uppercase o_apply_page"
+                    t-att-disabled="env.model.applyOn === 0"
+                    t-attf-class="{{highlightValidateButton ? 'btn-success' : 'btn-secondary'}}">
+                    <i class="fa fa-check mr-1"/> Apply
+                    <span t-attf-class="{{highlightValidateButton ? '' : 'text-muted'}}">
+                        (<t t-esc="env.model.applyOn"/>)
+                    </span>
                 </button>
             </div>
         </div>

@@ -69,6 +69,11 @@
         font-size: 1.1em;
     }
 
+    .o_line_buttons {
+        min-width: 132px;
+        text-align: right;
+    }
+
     .o_line_button {
         min-width: 60px;
         height: 60px;
@@ -87,6 +92,21 @@
 
         &.btn-secondary {
             @include o-hover-opacity();
+        }
+
+        &.o_set {
+            border: 4px solid $o-brand-primary;
+            color: $o-brand-primary;
+
+            &.o_difference {
+                color: orange;
+                border-color: orange;
+            }
+        }
+
+        &[disabled] {
+            background-color: gray;
+            border-color: gray;
         }
     }
 

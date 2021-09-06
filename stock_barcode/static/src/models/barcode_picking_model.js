@@ -73,6 +73,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.selectedLineVirtualId = false;
     }
 
+    getIncrementQuantity(line) {
+        return Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
+    }
+
     getQtyDone(line) {
         return line.qty_done;
     }
@@ -154,6 +158,10 @@ export default class BarcodePickingModel extends BarcodeModel {
     get displaySourceLocation() {
         return super.displaySourceLocation &&
             ['internal', 'outgoing'].includes(this.record.picking_type_code);
+    }
+
+    get displayValidateButton() {
+        return (this.pageIndex + 1) === this.pages.length;
     }
 
     get highlightNextButton() {
@@ -250,7 +258,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     async _changePage(pageIndex) {
         await super._changePage(...arguments);
-        this.currentDestLocationId = this.pages[this.pageIndex].destinationLocationId;
+        this.currentDestLocationId = this.page.destinationLocationId;
         this.highlightDestinationLocation = false;
     }
 
@@ -338,9 +346,8 @@ export default class BarcodePickingModel extends BarcodeModel {
      */
     _defineLocationId() {
         super._defineLocationId();
-        const page = this.pages[this.pageIndex];
-        if (page.lines.length) {
-            this.currentDestLocationId = page.lines[0].location_dest_id;
+        if (this.page.lines.length) {
+            this.currentDestLocationId = this.page.lines[0].location_dest_id;
         } else {
             this.currentDestLocationId = this._defaultDestLocationId();
         }
@@ -495,7 +502,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
         // Checks if the package is already scanned.
         let alreadyExisting = 0;
-        for (const line of this.pages[this.pageIndex].lines) {
+        for (const line of this.pageLines) {
             if (line.package_id && line.package_id.id === recPackage.id &&
                 this.getQtyDone(line) > 0) {
                 alreadyExisting++;

@@ -12,6 +12,7 @@ import string
 
 from lxml import etree
 from lxml.objectify import fromstring
+from math import copysign
 from datetime import datetime
 from io import BytesIO
 from zeep import Client
@@ -242,6 +243,93 @@ class AccountEdiFormat(models.Model):
         cfdi_values.update({
             'has_tax_details_transferred_no_exento': any(x['tax'].l10n_mx_tax_type != 'Exento' for x in cfdi_values['tax_details_transferred']['tax_details'].values()),
             'has_tax_details_withholding_no_exento': any(x['tax'].l10n_mx_tax_type != 'Exento' for x in cfdi_values['tax_details_withholding']['tax_details'].values()),
+        })
+
+        if not invoice._l10n_mx_edi_is_managing_invoice_negative_lines_allowed():
+            return cfdi_values
+
+        # ==== Distribute negative lines ====
+
+        def is_discount_line(line):
+            return line.price_subtotal < 0.0
+
+        def is_candidate(discount_line, other_line):
+            discount_taxes = discount_line.tax_ids.flatten_taxes_hierarchy()
+            other_line_taxes = other_line.tax_ids.flatten_taxes_hierarchy()
+            return set(discount_taxes.ids) == set(other_line_taxes.ids)
+
+        def put_discount_on(cfdi_values, discount_vals, other_line_vals):
+            discount_line = discount_vals['line']
+            other_line = other_line_vals['line']
+
+            # Update price_discount.
+
+            remaining_discount = discount_vals['price_discount'] - discount_line.price_subtotal
+            remaining_price_subtotal = other_line_vals['price_subtotal_before_discount'] - other_line_vals['price_discount']
+            discount_to_allow = min(remaining_discount, remaining_price_subtotal)
+
+            other_line_vals['price_discount'] += discount_to_allow
+            discount_vals['price_discount'] -= discount_to_allow
+
+            # Update taxes.
+
+            for tax_key in ('tax_details_transferred', 'tax_details_withholding'):
+                discount_line_tax_details = cfdi_values[tax_key]['invoice_line_tax_details'][discount_line]['tax_details']
+                other_line_tax_details = cfdi_values[tax_key]['invoice_line_tax_details'][other_line]['tax_details']
+                for k, tax_values in discount_line_tax_details.items():
+                    if discount_line.currency_id.is_zero(tax_values['tax_amount_currency']):
+                        continue
+
+                    other_tax_values = other_line_tax_details[k]
+                    tax_amount_to_allow = copysign(
+                        min(abs(tax_values['tax_amount_currency']), abs(other_tax_values['tax_amount_currency'])),
+                        other_tax_values['tax_amount_currency'],
+                    )
+                    other_tax_values['tax_amount_currency'] -= tax_amount_to_allow
+                    tax_values['tax_amount_currency'] += tax_amount_to_allow
+                    base_amount_to_allow = copysign(
+                        min(abs(tax_values['base_amount_currency']), abs(other_tax_values['base_amount_currency'])),
+                        other_tax_values['base_amount_currency'],
+                    )
+                    other_tax_values['base_amount_currency'] -= base_amount_to_allow
+                    tax_values['base_amount_currency'] += base_amount_to_allow
+
+            return discount_line.currency_id.is_zero(remaining_discount - discount_to_allow)
+
+        for line_vals in cfdi_values['invoice_line_vals_list']:
+            line = line_vals['line']
+
+            if not is_discount_line(line):
+                continue
+
+            # Search for lines on which distribute the global discount.
+            candidate_vals_list = [x for x in cfdi_values['invoice_line_vals_list']
+                                   if not is_discount_line(x['line']) and is_candidate(line, x['line'])]
+
+            # Put the discount on the biggest lines first.
+            candidate_vals_list = sorted(candidate_vals_list, key=lambda x: x['line'].price_subtotal, reverse=True)
+            for candidate_vals in candidate_vals_list:
+                if put_discount_on(cfdi_values, line_vals, candidate_vals):
+                    break
+
+        # ==== Remove discount lines ====
+
+        cfdi_values['invoice_line_vals_list'] = [x for x in cfdi_values['invoice_line_vals_list']
+                                                 if not is_discount_line(x['line'])]
+
+        # ==== Remove taxes for zero lines ====
+
+        for line_vals in cfdi_values['invoice_line_vals_list']:
+            line = line_vals['line']
+
+            if line.currency_id.is_zero(line_vals['price_subtotal_before_discount'] - line_vals['price_discount']):
+                for tax_key in ('tax_details_transferred', 'tax_details_withholding'):
+                    cfdi_values[tax_key]['invoice_line_tax_details'].pop(line, None)
+
+        # Recompute Totals since lines changed.
+        cfdi_values.update({
+            'total_price_subtotal_before_discount': sum(x['price_subtotal_before_discount'] for x in cfdi_values['invoice_line_vals_list']),
+            'total_price_discount': sum(x['price_discount'] for x in cfdi_values['invoice_line_vals_list']),
         })
 
         return cfdi_values

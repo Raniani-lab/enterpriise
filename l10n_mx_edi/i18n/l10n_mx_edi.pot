@@ -4353,6 +4353,13 @@ msgid ""
 msgstr ""
 
 #. module: l10n_mx_edi
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"Invoice lines having a negative amount without a tax set is not allowed to generate the CFDI."
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_gua_017
 msgid "Irapuato"
 msgstr ""

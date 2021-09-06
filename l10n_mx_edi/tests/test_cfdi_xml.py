@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .common import TestMxEdiCommon, mocked_l10n_mx_edi_pac
+from odoo import Command
 from odoo.tests import tagged
 from odoo.tools import mute_logger
 
@@ -126,6 +127,125 @@ class TestEdiResults(TestMxEdiCommon):
                     </xpath>
                     <xpath expr="//Comprobante/Impuestos//Traslado" position="attributes">
                         <attribute name='Importe'>1280.00</attribute>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
+    def test_invoice_cfdi_global_discount_1_partial_discount(self):
+        self.env['ir.config_parameter'].sudo().create({
+            'key': 'l10n_mx_edi.manage_invoice_negative_lines',
+            'value': 'True',
+        })
+
+        discount_product = self.env['product.product'].create({
+            'name': "discount_product",
+            'unspsc_code_id': self.env.ref('product_unspsc.unspsc_code_01010101').id,
+        })
+
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
+
+            # Should give the same result: 2000 * 5 * 0.8 == (2000 * 6 * 0.8) - 1600
+            self.invoice.write({
+                'invoice_line_ids': [
+                    Command.update(self.invoice.invoice_line_ids.id, {
+                        'quantity': 6,
+                    }),
+                    Command.create({
+                        'product_id': discount_product.id,
+                        'price_unit': -1600.0,
+                        'tax_ids': [Command.set((self.tax_16 + self.tax_10_negative).ids)],
+                    }),
+                ],
+            })
+            self.invoice.action_post()
+
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                        <attribute name='SubTotal'>12000.000</attribute>
+                        <attribute name='Descuento'>4000.000</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto" position="attributes">
+                        <attribute name='Cantidad'>6.000000</attribute>
+                        <attribute name='Importe'>12000.000</attribute>
+                        <attribute name='Descuento'>4000.000</attribute>
+                    </xpath>
+                    <xpath expr="//Traslado" position="attributes">
+                        <attribute name='Base'>8000.000</attribute>
+                    </xpath>
+                    <xpath expr="//Retencion" position="attributes">
+                        <attribute name='Base'>8000.000</attribute>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
+    def test_invoice_cfdi_global_discount_2_full_discount(self):
+        self.env['ir.config_parameter'].sudo().create({
+            'key': 'l10n_mx_edi.manage_invoice_negative_lines',
+            'value': 'True',
+        })
+
+        discount_product = self.env['product.product'].create({
+            'name': "discount_product",
+            'unspsc_code_id': self.env.ref('product_unspsc.unspsc_code_01010101').id,
+        })
+
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
+
+            # Should give the same result: 2000 * 5 * 0.8 == (2000 * 6 * 0.8) - 1600
+            self.invoice.write({
+                'invoice_line_ids': [
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 2000.0,
+                        'quantity': 5,
+                        'discount': 20.0,
+                        'tax_ids': [Command.set((self.tax_16 + self.tax_10_negative).ids)],
+                    }),
+                    Command.create({
+                        'product_id': discount_product.id,
+                        'price_unit': -8000.0,
+                        'tax_ids': [Command.set((self.tax_16 + self.tax_10_negative).ids)],
+                    }),
+                ],
+            })
+            self.invoice.action_post()
+
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                        <attribute name='SubTotal'>20000.000</attribute>
+                        <attribute name='Descuento'>12000.000</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto" position="before">
+                        <Concepto
+                            Cantidad="5.000000"
+                            ClaveProdServ="01010101"
+                            Descripcion="product_mx"
+                            Importe="10000.000"
+                            Descuento="10000.000"
+                            ValorUnitario="2000.000">
+                        </Concepto>
                     </xpath>
                 ''',
             )

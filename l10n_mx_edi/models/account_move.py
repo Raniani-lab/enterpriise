@@ -281,6 +281,17 @@ class AccountMove(models.Model):
         # By default, takes the central area timezone
         return timezone('America/Mexico_City')
 
+    @api.model
+    def _l10n_mx_edi_is_managing_invoice_negative_lines_allowed(self):
+        """ Negative lines are not allowed by the Mexican government making some features unavailable like sale_coupon
+        or global discounts. This method allows odoo to distribute the negative discount lines to each others making
+        such features available even for Mexican people.
+
+        :return: True if odoo needs to distribute the negative discount lines, False otherwise.
+        """
+        param_name = 'l10n_mx_edi.manage_invoice_negative_lines'
+        return bool(self.env['ir.config_parameter'].sudo().get_param(param_name))
+
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
@@ -469,11 +480,20 @@ class AccountMove(models.Model):
             if move.l10n_mx_edi_cfdi_request in ('on_invoice', 'on_refund'):
 
                 # ==== Invoice + Refund ====
-                # Line having a negative amount is not allowed.
+
                 for line in move.invoice_line_ids:
+
                     if line.price_subtotal < 0:
-                        raise UserError(_("Invoice lines having a negative amount are not allowed to generate the CFDI. "
-                                          "Please create a credit note instead."))
+
+                        # Line having a negative amount is not allowed.
+                        if not move._l10n_mx_edi_is_managing_invoice_negative_lines_allowed():
+                            raise UserError(_("Invoice lines having a negative amount are not allowed to generate the CFDI. "
+                                              "Please create a credit note instead."))
+
+                        # Discount line without taxes is not allowed.
+                        if not line.tax_ids:
+                            raise UserError(_("Invoice lines having a negative amount without a tax set is not allowed to"
+                                              "generate the CFDI."))
 
                 invalid_unspcs_products = move.invoice_line_ids.product_id.filtered(lambda product: not product.unspsc_code_id)
                 if invalid_unspcs_products:

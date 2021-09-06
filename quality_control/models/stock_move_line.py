@@ -37,7 +37,7 @@ class StockMoveLine(models.Model):
         return super().write(vals)
 
     def unlink(self):
-        self.check_ids.unlink()
+        self.check_ids.filtered(lambda qc: qc._check_to_unlink()).unlink()
         return super(StockMoveLine, self).unlink()
 
     def action_open_quality_check_wizard(self):
@@ -72,7 +72,7 @@ class StockMoveLine(models.Model):
 
         for ml in self:
             quality_points_product = quality_points_by_product_picking_type.get((ml.product_id, ml.move_id.picking_type_id), set())
-            quality_points_all_products = quality_points_by_product_picking_type.get((None, ml.move_id.picking_type_id), set())
+            quality_points_all_products = ml._get_quality_points_all_products(quality_points_by_product_picking_type)
             quality_points = self.env['quality.point'].browse(quality_points_product.union(quality_points_all_products))
             for quality_point in quality_points:
                 if quality_point.check_execute_now():
@@ -94,3 +94,6 @@ class StockMoveLine(models.Model):
             'move_line_id': self.id,
             'lot_name': self.lot_name,
         }
+
+    def _get_quality_points_all_products(self, quality_points_by_product_picking_type):
+        return quality_points_by_product_picking_type.get((None, self.move_id.picking_type_id), set())

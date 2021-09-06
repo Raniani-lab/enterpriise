@@ -211,6 +211,9 @@ class QualityCheck(models.Model):
         else:
             return super(QualityCheck, self)._get_check_result()
 
+    def _check_to_unlink(self):
+        return True
+
     def do_measure(self):
         self.ensure_one()
         if self.measure < self.point_id.tolerance_min or self.measure > self.point_id.tolerance_max:

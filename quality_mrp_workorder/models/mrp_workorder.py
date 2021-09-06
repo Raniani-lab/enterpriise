@@ -41,6 +41,9 @@ class MrpProductionWorkcenterLine(models.Model):
                 'context': {**self.env.context, **{
                     'default_check_ids': [old_check_id.id],
                     'default_current_check_id': old_check_id.id,
+                    'default_test_type': old_check_id.test_type,
+                    'default_failure_message': old_check_id.failure_message,
+                    'default_warning_message': old_check_id.warning_message,
                 }},
             }
         return result

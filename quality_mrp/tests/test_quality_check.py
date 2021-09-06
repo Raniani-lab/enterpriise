@@ -55,11 +55,17 @@ class TestQualityCheck(TestQualityMrpCommon):
         # Now check state of quality check.
         self.assertEqual(self.mrp_production_qc_test1.check_ids.quality_state, 'pass')
 
-    def test_01_production_quality_check_lot(self):
-        """ Test quality check on production order with type lot
+    def test_01_production_quality_check_product(self):
+        """ Test quality check on production order with type product for tracked and non-tracked manufactured product
         """
 
-        # Create Quality Point for product Laptop Customized with Manufacturing Operation Type.
+        product_without_tracking = self.env['product.product'].create({
+            'name': 'Product not tracked',
+            'type': 'product',
+            'tracking': 'none',
+        })
+
+        # Create Quality Point for product Drawer with Manufacturing Operation Type.
         self.env['quality.point'].create({
             'product_ids': [self.product_id],
             'picking_type_ids': [self.picking_type_id],
@@ -67,8 +73,20 @@ class TestQualityCheck(TestQualityMrpCommon):
             'is_lot_tested_fractionally': True,
             'testing_percentage_within_lot': 50,
         })
+        # Create Quality Point for component Drawer Case Black with Manufacturing Operation Type.
+        self.env['quality.point'].create({
+            'product_ids': [self.product.bom_ids.bom_line_ids[0].product_id.id],
+            'picking_type_ids': [self.picking_type_id],
+            'measure_on': 'product',
+        })
+        # Create Quality Point for all products with Manufacturing Operation Type.
+        # This should apply for all products but not to the components of a MO
+        self.env['quality.point'].create({
+            'picking_type_ids': [self.picking_type_id],
+            'measure_on': 'product',
+        })
 
-        # Create Production Order of Laptop Customized to produce 5.0 Unit.
+        # Create Production Order of Drawer to produce 5.0 Unit.
         production_form = Form(self.env['mrp.production'])
         production_form.product_id = self.product
         production_form.product_qty = 5.0
@@ -77,6 +95,17 @@ class TestQualityCheck(TestQualityMrpCommon):
         production.qty_producing = 4.0
         production.action_generate_serial()
 
-        # Check that the Quality Check was created and has correct values
-        self.assertEqual(len(production.check_ids), 1)
-        self.assertEqual(production.check_ids[0].qty_to_test, 2)
+        # Check that the Quality Check were created and has correct values
+        self.assertEqual(len(production.move_raw_ids[0].move_line_ids.check_ids), 1)
+        self.assertEqual(len(production.check_ids), 3)
+        self.assertEqual(production.move_finished_ids.move_line_ids.check_ids[0].qty_to_test, 2)
+
+        # Create Production Order of non-tracked product
+        production2_form = Form(self.env['mrp.production'])
+        production2_form.product_id = product_without_tracking
+        production2 = production2_form.save()
+        production2.action_confirm()
+        production2.qty_producing = 1.0
+
+        # Check that the Quality Check was created
+        self.assertEqual(len(production2.check_ids), 1)

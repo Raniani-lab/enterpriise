@@ -144,8 +144,13 @@ class TestQualityCheck(TestQualityCommon):
             'tracking': 'lot',
         })
 
+        product = self.env['product.product'].create({
+            'name': 'Product',
+            'tracking': 'none',
+        })
+
         # Create Quality Point for incoming shipment on lots with 'Measure' as test type
-        self.quality_point_test = self.env['quality.point'].create({
+        self.quality_point_test1 = self.env['quality.point'].create({
             'product_ids': [product_tracked_by_lot.id],
             'picking_type_ids': [self.picking_type_id],
             'test_type_id': self.env.ref('quality_control.test_type_measure').id,
@@ -157,8 +162,25 @@ class TestQualityCheck(TestQualityCommon):
             'tolerance_max': 6.,
         })
 
-        # Check that the quality point is created
-        self.assertTrue(self.quality_point_test, "Quality Point not created")
+        # Create Quality Point for incoming shipment on lots for all products
+        self.quality_point_test2 = self.env['quality.point'].create({
+            'picking_type_ids': [self.picking_type_id],
+            'test_type_id': self.env.ref('quality_control.test_type_measure').id,
+            'measure_on': 'product',
+        })
+
+        # Create Quality Point for product without tracking
+        self.quality_point_test3 = self.env['quality.point'].create({
+            'product_ids': [product.id],
+            'picking_type_ids': [self.picking_type_id],
+            'test_type_id': self.env.ref('quality_control.test_type_measure').id,
+            'measure_on': 'product',
+        })
+
+        # Check that the quality points are created
+        self.assertTrue(self.quality_point_test1, "Quality Point not created")
+        self.assertTrue(self.quality_point_test2, "Quality Point not created")
+        self.assertTrue(self.quality_point_test3, "Quality Point not created")
 
         # Create incoming shipment
         self.picking_in = self.env['stock.picking'].create({
@@ -167,6 +189,7 @@ class TestQualityCheck(TestQualityCommon):
             'location_id': self.location_id,
             'location_dest_id': self.location_dest_id,
         })
+
         move = self.env['stock.move'].create({
             'name': product_tracked_by_lot.name,
             'product_id': product_tracked_by_lot.id,
@@ -175,16 +198,23 @@ class TestQualityCheck(TestQualityCommon):
             'picking_id': self.picking_in.id,
             'location_id': self.location_id,
             'location_dest_id': self.location_dest_id})
+
         # Check that incoming shipment is created
         self.assertTrue(self.picking_in, "Incoming shipment not created.")
 
-        # Creating move lines
+        # Creating move lines with the serial number widget
         move.next_serial = "1"
         move._generate_serial_numbers(next_serial_count=10)
         self.assertTrue(len(move.move_line_ids) == 10, "Not all move lines are created with _generate_serial_number")
 
         # Check that quality checks were created
-        self.assertTrue(len(move.move_line_ids.check_ids) == 10, "Quality Checks not created on the move lines")
+        self.assertTrue(len(move.move_line_ids.check_ids) == 20, "Wrong number of Quality Checks created on the move lines")
+
+        # Create move line without qty_done and setting it after
+        move_line_vals = move._prepare_move_line_vals()
+        move_line = self.env['stock.move.line'].create(move_line_vals)
+        move_line.qty_done = 1.
+        self.assertTrue(len(move.move_line_ids.check_ids) == 22, "Wrong number of Quality Checks created on the move lines")
 
         # Updating quantity of one move line
         move.move_line_ids[0].qty_done = 2
@@ -202,6 +232,33 @@ class TestQualityCheck(TestQualityCommon):
         check_line2.do_measure()
         self.assertTrue(check_line1.quality_state == 'fail', "Quality Check of type 'measure' not failing on move line")
         self.assertTrue(check_line2.quality_state == 'pass', "Quality Check of type 'measure' not passing on move line")
+
+        # Create move with a product without tracking with done quantity
+        move_without_tracking1 = self.env['stock.move'].create({
+            'name': product.name,
+            'product_id': product.id,
+            'product_uom_qty': 1,
+            'quantity_done': 1,
+            'product_uom': product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        self.assertTrue(len(move_without_tracking1.move_line_ids.check_ids) == 2, "Wrong number of Quality Checks created on the move lines")
+
+        # Create move with a product without tracking without done quantity and changing done quantity after
+        move_without_tracking2 = self.env['stock.move'].create({
+            'name': product.name,
+            'product_id': product.id,
+            'product_uom_qty': 1,
+            'quantity_done': 0,
+            'product_uom': product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        move_without_tracking2.quantity_done = 1
+        self.assertTrue(len(move_without_tracking2.move_line_ids.check_ids) == 2, "Wrong number of Quality Checks created on the move lines")
 
     def test_04_picking_quality_check_creation_no_products_no_categories(self):
 

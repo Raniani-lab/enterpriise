@@ -36,7 +36,7 @@ class MrpProduction(models.Model):
     def write(self, vals):
         res = super(MrpProduction, self).write(vals)
         for production in self:
-            if production.state in ['to_close', 'progress'] and 'lot_producing_id' in vals:
+            if production.state in ['confirmed', 'to_close', 'progress'] and ('lot_producing_id' in vals or 'qty_producing' in vals):
                 finished_product_move = production.move_finished_ids.filtered(
                     lambda move: move.product_id == production.product_id)
                 if not finished_product_move.move_line_ids:
@@ -46,7 +46,7 @@ class MrpProduction(models.Model):
                         'production_id': production.id,
                     })
                     self.env['stock.move.line'].create(move_line_vals)
-                else:
+                elif 'lot_producing_id' in vals:
                     finished_product_move.move_line_ids.write(
                         {'lot_id': vals.get('lot_producing_id')})
         return res

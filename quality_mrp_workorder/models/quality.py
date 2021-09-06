@@ -23,3 +23,7 @@ class QualityCheck(models.Model):
         elif self.test_type == 'measure':
             return '{} {}'.format(self.measure, self.norm_unit)
         return super(QualityCheck, self)._get_check_result()
+
+    def _check_to_unlink(self):
+        self.ensure_one()
+        return super()._check_to_unlink() and not self.workorder_id

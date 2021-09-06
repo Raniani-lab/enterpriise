@@ -574,7 +574,7 @@ class MrpProductionWorkcenterLine(models.Model):
     def _defaults_from_move(self, move):
         self.ensure_one()
         vals = {'move_id': move.id}
-        move_line_id = move.move_line_ids.filtered(lambda ml: not ml.quality_check_ids)[:1]
+        move_line_id = move.move_line_ids.filtered(lambda sml: sml._without_quality_checks())[:1]
         if move_line_id:
             vals.update({
                 'move_line_id': move_line_id.id,

@@ -76,7 +76,8 @@ class QualityCheckWizard(models.TransientModel):
         if not self.is_last_check:
             action = self.env["ir.actions.actions"]._for_xml_id("quality_control.action_quality_check_wizard")
             action['context'] = dict(ast.literal_eval(action['context']))
-            action['context'].update(self.env.context,
+            action['context'].update(
+                self.env.context,
                 default_current_check_id=self.check_ids[self.position_current_check].id
             )
             return action
@@ -84,7 +85,8 @@ class QualityCheckWizard(models.TransientModel):
     def action_generate_previous_window(self):
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.action_quality_check_wizard")
         action['context'] = dict(ast.literal_eval(action['context']))
-        action['context'].update(self.env.context,
+        action['context'].update(
+            self.env.context,
             default_current_check_id=self.check_ids[self.position_current_check - 2].id
         )
         return action
@@ -104,7 +106,8 @@ class QualityCheckWizard(models.TransientModel):
         self.current_check_id.quality_state = 'none'
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.action_quality_check_wizard")
         action['context'] = dict(ast.literal_eval(action['context']))
-        action['context'].update(self.env.context,
+        action['context'].update(
+            self.env.context,
             default_check_ids=self.check_ids.ids,
             default_current_check_id=self.current_check_id.id,
         )

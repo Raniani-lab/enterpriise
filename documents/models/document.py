@@ -24,7 +24,7 @@ class Document(models.Model):
     datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False)
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
     checksum = fields.Char(related='attachment_id.checksum')
-    mimetype = fields.Char(related='attachment_id.mimetype', default='application/octet-stream')
+    mimetype = fields.Char(related='attachment_id.mimetype')
     res_model = fields.Char('Resource Model', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
     res_id = fields.Integer('Resource ID', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
     res_name = fields.Char('Resource Name', related='attachment_id.res_name')

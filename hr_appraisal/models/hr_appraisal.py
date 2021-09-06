@@ -33,7 +33,7 @@ class HrAppraisal(models.Model):
         'hr.employee', required=True, string='Employee', index=True,
         default=_get_default_employee)
     employee_user_id = fields.Many2one('res.users', string="Employee User", related='employee_id.user_id')
-    company_id = fields.Many2one('res.company', related='employee_id.company_id', default=lambda self: self.env.company, store=True)
+    company_id = fields.Many2one('res.company', related='employee_id.company_id', store=True)
     department_id = fields.Many2one(
         'hr.department', related='employee_id.department_id', string='Department', store=True)
     image_128 = fields.Image(related='employee_id.image_128')

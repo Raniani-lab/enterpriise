@@ -13,7 +13,7 @@
     <tr><td valign="top">
         <p>Hello <t t-esc="record.partner_id.name"/>,</p>
         <t t-esc="record.create_uid.name"/>
-        (<a t-att-href="'mailto:%s?subject=%s' % (record.create_uid.email, 'Re: %s' % subject)"
+        (<a t-att-href="record._get_mail_link(record.create_uid.email, subject)"
             style="color:#428BCA; text-decoration:none;"
             target="_blank"><t t-esc="record.create_uid.email"/></a>)
         has requested your signature on the document <t t-esc="record.sign_request_id.reference"/>.
@@ -68,7 +68,7 @@
             <t t-if="recipient_id == signer.get('id')">you</t>
             <t t-else="">
                 <t t-esc="signer.get('name')"/>
-                (<a t-att-href="'mailto:%s?subject=%s' % (signer.get('email'), 'Re: %s' % subject)"
+                (<a t-att-href="record._get_mail_link(signer.get('email'), subject)"
                     style="color:#428BCA; text-decoration:none;"
                     target="_blank"><t t-esc="signer.get('email')"/></a>)</t></t>.
     </td></tr>

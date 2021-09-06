@@ -16,7 +16,7 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from werkzeug.urls import url_join
+from werkzeug.urls import url_join, url_encode
 from random import randint
 
 from odoo import api, fields, models, http, _, Command
@@ -54,6 +54,9 @@ class SignRequest(models.Model):
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]
+
+    def _get_mail_link(self, email, subject):
+        return "mailto:%s&%s" % (email, url_encode({'subject': subject}).replace("+", "%20"))
 
     template_id = fields.Many2one('sign.template', string="Template", required=True)
     subject = fields.Char(string="Email Subject")
@@ -660,6 +663,9 @@ class SignRequestItem(models.Model):
 
     def _default_access_token(self):
         return str(uuid.uuid4())
+
+    def _get_mail_link(self, email, subject):
+        return "mailto:%s&%s" % (email, url_encode({'subject': subject}).replace("+", "%20"))
 
     partner_id = fields.Many2one('res.partner', string="Contact", ondelete='restrict')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)

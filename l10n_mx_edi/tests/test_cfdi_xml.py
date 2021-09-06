@@ -233,8 +233,12 @@ class TestEdiResults(TestMxEdiCommon):
         - Payment of 750 MXN fully paying invoice1 & invoice2 with a write-off because 1500 GOL = 750 MXN in
         2017.
         '''
-        with freeze_time(self.frozen_today), mute_logger('py.warnings'):
-
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             invoice1 = self.env['account.move'].with_context(edi_test_mode=True).create({
                 'move_type': 'out_invoice',
                 'partner_id': self.partner_a.id,
@@ -335,7 +339,12 @@ class TestEdiResults(TestMxEdiCommon):
         - Invoice1 & invoice2 of 750 GOL / 375 MXN in 2017.
         - Payment of 500 MXN paying not completely invoice1 & invoice2 because 1500 GOL = 500 MXN in 2017.
         '''
-        with freeze_time(self.frozen_today), mute_logger('py.warnings'):
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
 
             invoice1 = self.env['account.move'].with_context(edi_test_mode=True).create({
                 'move_type': 'out_invoice',
@@ -438,7 +447,13 @@ class TestEdiResults(TestMxEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_payment_cfdi_rate(self):
-        with freeze_time(self.frozen_today), mute_logger('py.warnings'):
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
+
             self.fake_usd_data['rates'][0].rate = 0.050498164392
             self.fake_usd_data['rates'][1].rate = 0.050465035300
 

@@ -68,6 +68,7 @@ class RequestWizard(models.TransientModel):
             'user_id': self.owner_id.id if self.owner_id else self.env.user.id,
             'note': self.activity_note,
             'activity_type_id': self.activity_type_id.id if self.activity_type_id else False,
+            'summary': self.name
         }
 
         deadline = None
@@ -93,3 +94,4 @@ class RequestWizard(models.TransientModel):
 
         activity = document.with_context(mail_activity_quick_update=request_by_mail).activity_schedule(**activity_vals)
         document.request_activity_id = activity
+        return document

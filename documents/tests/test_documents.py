@@ -354,6 +354,43 @@ class TestCaseDocuments(TransactionCase):
         self.assertFalse(activity.exists(), 'the activity should be done')
         self.assertFalse(activity_2.exists(), 'the activity_2 should be done')
 
+    def test_recurring_document_request(self):
+        """
+        Ensure that separate document requests are created for recurring upload activities
+        Ensure that the next activity is linked to the new document
+        """
+        activity_type = self.env['mail.activity.type'].create({
+            'name': 'recurring_upload_activity_type',
+            'category': 'upload_file',
+            'folder_id': self.folder_a.id,
+        })
+        activity_type.write({
+            'chaining_type': 'trigger',
+            'triggered_next_type_id': activity_type.id
+        })
+        document = self.env['documents.request_wizard'].create({
+            'name': 'Wizard Request',
+            'owner_id': self.doc_user.id,
+            'activity_type_id': activity_type.id,
+            'folder_id': self.folder_a.id,
+        }).request_document()
+        activity = document.request_activity_id
+
+        self.assertEqual(activity.summary, 'Wizard Request')
+
+        document.write({'datas': GIF, 'name': 'testGif.gif'})
+
+        self.assertFalse(activity.exists(), 'the activity should be removed after file upload')
+        self.assertEqual(document.type, 'binary', 'document 1 type should be binary')
+        self.assertFalse(document.request_activity_id, 'document 1 should have no activity remaining')
+
+        # a new document (request) and file_upload activity should be created
+        activity_2 = self.env['mail.activity'].search([('res_model', '=', 'documents.document')])
+        document_2 = self.env['documents.document'].search([('request_activity_id', '=', activity_2.id), ('type', '=', 'empty')])
+
+        self.assertNotEqual(document_2.id, document.id, 'a new document and activity should exist')
+        self.assertEqual(document_2.request_activity_id.summary, 'Wizard Request')
+
     def test_default_res_id_model(self):
         """
         Test default res_id and res_model from context are used for linking attachment to document.

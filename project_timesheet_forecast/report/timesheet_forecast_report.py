@@ -4,6 +4,7 @@
 from odoo import tools
 from odoo import api, fields, models
 
+from psycopg2 import sql
 
 class TimesheetForecastReport(models.Model):
 
@@ -21,14 +22,12 @@ class TimesheetForecastReport(models.Model):
     line_type = fields.Selection([('forecast', 'Planning'), ('timesheet', 'Timesheet')], string='Type', readonly=True)
     effective_hours = fields.Float('Effective Hours', readonly=True)
     planned_hours = fields.Float('Planned Hours', readonly=True)
-    difference = fields.Float('Difference', readonly=True)
+    difference = fields.Float('Remaining Hours', readonly=True)
     user_id = fields.Many2one('res.users', string='Assigned to', readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute("""
-            CREATE or REPLACE VIEW %s as (
-                (
+        query = """
                     SELECT
                         d::date AS entry_date,
                         F.employee_id AS employee_id,
@@ -59,17 +58,27 @@ class TimesheetForecastReport(models.Model):
                         A.task_id AS task_id,
                         A.project_id AS project_id,
                         A.user_id AS user_id,
-                        A.unit_amount AS effective_hours,
+                        A.unit_amount / UOM.factor * HOUR_UOM.factor AS effective_hours,
                         0.0 AS planned_hours,
-                        -A.unit_amount AS difference,
+                        -A.unit_amount / UOM.factor * HOUR_UOM.factor AS difference,
                         'timesheet' AS line_type,
                         -A.id AS id
-                    FROM account_analytic_line A, hr_employee E
+                    FROM account_analytic_line A
+                        LEFT JOIN hr_employee E ON A.employee_id = E.id
+                        LEFT JOIN uom_uom UOM ON A.product_uom_id = UOM.id,
+                        (
+                            SELECT
+                                U.factor
+                            FROM uom_uom U
+                            WHERE U.id = %s
+                        ) HOUR_UOM
                     WHERE A.project_id IS NOT NULL
-                        AND A.employee_id = E.id
-                )
-            )
-        """ % (self._table,))
+        """ % (self.env.ref('uom.product_uom_hour').id)
+        self.env.cr.execute(
+            sql.SQL("CREATE or REPLACE VIEW {} as ({})").format(
+                sql.Identifier(self._table),
+                sql.SQL(query)
+            ))
 
     @api.model
     def _fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):

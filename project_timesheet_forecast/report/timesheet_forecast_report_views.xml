@@ -39,7 +39,7 @@
          <field name="name">project.timesheet.forecast.report.analysis.view.tree</field>
          <field name="model">project.timesheet.forecast.report.analysis</field>
          <field name="arch" type="xml">
-            <tree string="Timesheet and Planning Analysis">
+            <tree string="Timesheets and Planning Analysis">
                 <field name="entry_date"/>
                 <field name="project_id" optional="show"/>
                 <field name="task_id" optional="hide"/>
@@ -56,7 +56,7 @@
         <field name="name">timesheet.forecast.report.search</field>
         <field name="model">project.timesheet.forecast.report.analysis</field>
         <field name="arch" type="xml">
-            <search string="Timesheet and Planning Analysis">
+            <search string="Timesheets and Planning Analysis">
                 <field name="employee_id" filter_domain="[('employee_id', 'ilike', self)]"/>
                 <field name="project_id" filter_domain="[('project_id', 'ilike', self)]"/>
                 <field name="task_id" filter_domain="[('task_id', 'ilike', self)]"/>
@@ -70,7 +70,6 @@
                     <filter string="Employee" name="resource_employee" context="{'group_by':'employee_id'}"/>
                     <filter string="Task" name="resource_task" context="{'group_by':'task_id'}"/>
                     <filter string="Project" name="project_resource" context="{'group_by':'project_id'}"/>
-                    <separator/>
                     <filter string="Date" name="date_month" context="{'group_by':'entry_date:month'}"/>
                 </group>
             </search>
@@ -83,7 +82,7 @@
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="project_timesheet_forecast_report_view_search"/>
         <field name="context">{
-            'pivot_row_groupby': ['entry_date'],
+            'pivot_row_groupby': ['entry_date:month'],
             'pivot_measures': ['planned_hours', 'effective_hours', 'difference'],
             'graph_groupbys': ['entry_date:month', 'line_type'],
             'group_by': [],

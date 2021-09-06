@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="project_update_default_description" inherit_id="sale_timesheet.project_update_default_description">
+        <!--As this template is rendered in an html field, the spaces may be interpreted as nbsp while editing. -->
+        <xpath expr="//thead/td[last()]" position="before">
+<t t-if="project.allow_forecast">
+<td>Planned</td>
+</t>
+        </xpath>
+        <xpath expr="//tr/td[last()]" position="before">
+<t t-if="project.allow_forecast">
+<td><t t-esc="service['planned_value']"/> <t t-esc="service['uom']"/></td>
+</t>
+        </xpath>
+        <xpath expr="//tfoot/td[last()]" position="before">
+<t t-if="project.allow_forecast">
+<td><t t-esc="services['total_planned']"/> Hours</td>
+</t>
+        </xpath>
+    </template>
+</odoo>

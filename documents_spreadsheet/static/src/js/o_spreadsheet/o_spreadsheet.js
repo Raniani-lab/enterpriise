@@ -14910,14 +14910,13 @@
             return "";
         }
         getDescription(cf) {
-            //TODO Fix translations of this
             switch (cf.rule.type) {
                 case "CellIsRule":
                     return cellIsOperators[cf.rule.operator];
                 case "ColorScaleRule":
-                    return "Color scale";
+                    return this.env._t("Color scale");
                 case "IconSetRule":
-                    return "Icon Set";
+                    return this.env._t("Icon Set");
                 default:
                     return "";
             }
@@ -30585,8 +30584,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-09-06T14:20:49.930Z';
-    exports.__info__.hash = '2167f3c';
+    exports.__info__.date = '2021-09-07T06:13:45.624Z';
+    exports.__info__.hash = '009eb3b';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -18,6 +18,11 @@ class MenuSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
         this.env = owl.Component.env;
     }
+
+    mounted() {
+        this.widget.getFocusableElement().focus();
+    }
+
     /**
      * @override
      */

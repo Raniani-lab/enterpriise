@@ -20,6 +20,23 @@ function labelInput(webClient) {
 function urlInput(webClient) {
     return webClient.el.querySelectorAll(".o-link-editor input")[1];
 }
+
+/**
+ * Create a spreadsheet and open the menu selector to
+ * insert a menu link in A1.
+ */
+async function openMenuSelector(serverData) {
+    const { webClient, env, model } = await createSpreadsheet({
+        serverData,
+    });
+    const insertLinkMenu = cellMenuRegistry.getAll().find((item) => item.id === "insert_link");
+    await insertLinkMenu.action(env);
+    await nextTick();
+    await click(webClient.el, ".o-special-link");
+    await click(webClient.el, ".o-menu-item[data-name='odooMenu']");
+    return { webClient, env, model };
+}
+
 QUnit.module(
     "documents_spreadsheet > ir.ui.menu links",
     {
@@ -140,16 +157,7 @@ QUnit.module(
 
         QUnit.test("insert a new ir menu link", async function (assert) {
             assert.expect(6);
-            const { webClient, env, model } = await createSpreadsheet({
-                serverData: this.serverData,
-            });
-            const insertLinkMenu = cellMenuRegistry
-                .getAll()
-                .find((item) => item.id === "insert_link");
-            await insertLinkMenu.action(env);
-            await nextTick();
-            await click(webClient.el, ".o-special-link");
-            await click(webClient.el, ".o-menu-item[data-name='odooMenu']");
+            const { webClient, model } = await openMenuSelector(this.serverData);
             await click(webClient.el, ".o_field_many2one input");
             assert.ok(webClient.el.querySelector("button.o-confirm").disabled);
             await click(document.querySelectorAll(".ui-menu-item")[0]);
@@ -183,16 +191,7 @@ QUnit.module(
             "insert a new ir menu link when the menu does not have an xml id",
             async function (assert) {
                 assert.expect(6);
-                const { webClient, env, model } = await createSpreadsheet({
-                    serverData: this.serverData,
-                });
-                const insertLinkMenu = cellMenuRegistry
-                    .getAll()
-                    .find((item) => item.id === "insert_link");
-                await insertLinkMenu.action(env);
-                await nextTick();
-                await click(webClient.el, ".o-special-link");
-                await click(webClient.el, ".o-menu-item[data-name='odooMenu']");
+                const { webClient, model } = await openMenuSelector(this.serverData);
                 await click(webClient.el, ".o_field_many2one input");
                 assert.ok(webClient.el.querySelector("button.o-confirm").disabled);
                 const item = document.querySelectorAll(".ui-menu-item")[1];
@@ -228,16 +227,7 @@ QUnit.module(
 
         QUnit.test("cancel ir.menu selection", async function (assert) {
             assert.expect(4);
-            const { webClient, env } = await createSpreadsheet({
-                serverData: this.serverData,
-            });
-            const insertLinkMenu = cellMenuRegistry
-                .getAll()
-                .find((item) => item.id === "insert_link");
-            await insertLinkMenu.action(env);
-            await nextTick();
-            await click(webClient.el, ".o-special-link");
-            await click(webClient.el, ".o-menu-item[data-name='odooMenu']");
+            const { webClient } = await openMenuSelector(this.serverData);
             await click(webClient.el, ".o_field_many2one input");
             await click(document.querySelectorAll(".ui-menu-item")[0]);
             assert.containsOnce(webClient, ".o-ir-menu-selector");
@@ -248,6 +238,16 @@ QUnit.module(
                 urlInput(webClient).value,
                 "",
                 "The url displayed should be the menu name"
+            );
+        });
+
+        QUnit.test("menu many2one field input is focused", async function (assert) {
+            assert.expect(1);
+            const { webClient } = await openMenuSelector(this.serverData);
+            assert.equal(
+                document.activeElement,
+                webClient.el.querySelector(".o_field_many2one input"),
+                "the input should be focused"
             );
         });
     }

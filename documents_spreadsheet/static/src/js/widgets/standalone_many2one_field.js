@@ -39,6 +39,14 @@ const StandaloneMany2OneField = Widget.extend(StandaloneFieldManagerMixin, {
         return this._super.apply(this, arguments);
     },
 
+    /**
+     * Return the field input
+     * @returns {HTMLInputElement}
+     */
+    getFocusableElement() {
+        return this.widget.getFocusableElement()[0];
+    },
+
     //----------------------------------------------------------------------
     // Private
     //----------------------------------------------------------------------

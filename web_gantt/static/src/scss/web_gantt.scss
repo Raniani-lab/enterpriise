@@ -157,7 +157,7 @@ $gantt-unavailability-bg: $gray-200;
         font-weight: bold;
 
         .o_gantt_row_title {
-            line-height: $gantt-pill-height;
+            line-height: $gantt-pill-height + 4px;
         }
     }
 

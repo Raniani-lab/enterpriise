@@ -9,7 +9,10 @@ odoo.define('pos_settle_due.ClientLine', function (require) {
             getPartnerLink() {
                 return `/web#model=res.partner&id=${this.props.partner.id}`;
             }
-            async settleCustomerDue() {
+            async settleCustomerDue(event) {
+                if (this.props.selectedClient == this.props.partner) {
+                    event.stopPropagation();
+                }
                 const totalDue = this.props.partner.total_due;
                 const paymentMethods = this.env.pos.payment_methods.filter(
                     (method) => this.env.pos.config.payment_method_ids.includes(method.id) && method.type != 'pay_later'

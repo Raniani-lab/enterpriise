@@ -144,7 +144,7 @@ class View(models.Model):
         })
 
     def auto_form_view(self, res_model):
-        ir_model = self.env['ir.model'].search([('model', '=', res_model)])
+        ir_model = self.env['ir.model']._get(res_model)
         model = self.env[res_model]
         rec_name = model._rec_name_fallback()
         sheet_content = list()

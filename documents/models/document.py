@@ -174,11 +174,7 @@ class Document(models.Model):
     def _compute_res_model_name(self):
         for record in self:
             if record.res_model:
-                model = self.env['ir.model'].sudo().name_search(record.res_model, operator='=', limit=1)
-                if model:
-                    record.res_model_name = model[0][1]
-                else:
-                    record.res_model_name = False
+                record.res_model_name = self.env['ir.model']._get(record.res_model).display_name
             else:
                 record.res_model_name = False
 

@@ -62,7 +62,7 @@ class WebStudioController(http.Controller):
     @http.route('/web_studio/get_studio_action', type='json', auth='user')
     def get_studio_action(self, action_name, model, view_id=None, view_type=None):
         view_type = 'tree' if view_type == 'list' else view_type  # list is stored as tree in db
-        model = request.env['ir.model'].search([('model', '=', model)], limit=1)
+        model = request.env['ir.model']._get(model)
 
         action = None
         if hasattr(self, '_get_studio_action_' + action_name):
@@ -373,9 +373,7 @@ class WebStudioController(http.Controller):
         if not table_kind or table_kind == 'v':
             raise UserError(_('The model %s doesn\'t support adding fields.', Model._name))
 
-        model = request.env['ir.model'].search([('model', '=', model_name)])
-
-        values['model_id'] = model.id
+        values['model_id'] = request.env['ir.model']._get_id(model_name)
 
         # Field type is called ttype in the database
         if values.get('type'):
@@ -435,7 +433,7 @@ class WebStudioController(http.Controller):
         view_type = 'tree' if view_type == 'list' else view_type  # list is stored as tree in db
 
         if view_type == 'activity':
-            model = request.env['ir.model'].search([('model', '=', res_model)])
+            model = request.env['ir.model']._get(res_model)
             if model.state == 'manual' and not model.is_mail_activity:
                 # Activate mail.activity.mixin inheritance on the custom model
                 model.write({'is_mail_activity': True})
@@ -512,7 +510,7 @@ class WebStudioController(http.Controller):
             # try to find the lowest priority matching ir.ui.view
             view_id = request.env['ir.ui.view'].default_view(request.env[model]._name, view_type)
         # We have to create a view with the default view if we want to customize it.
-        ir_model = request.env['ir.model'].search([('model', '=', model)])
+        ir_model = request.env['ir.model']._get(model)
         view = ir_model._get_default_view(view_type, view_id)
         studio_view = self._get_studio_view(view)
 
@@ -957,7 +955,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         if (field.ttype != 'many2one' and field.ttype != 'many2many') or field.relation != model:
             raise UserError(_('The related field of a button has to be a many2one to %s.', model))
 
-        model = request.env['ir.model'].search([('model', '=', model)], limit=1)
+        model = request.env['ir.model']._get(model)
 
         # There is a counter on the button ; as the related field is a many2one, we need
         # to create a new computed field that counts the number of records in the one2many
@@ -1034,7 +1032,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             if 'color_field' in options:
                 field_name = operation['node']['attrs']['name']
                 field_id = request.env['ir.model.fields'].search([('model', '=', model), ('name', '=', field_name)])
-                related_model_id = request.env['ir.model'].search([('model', '=', field_id.relation)])
+                related_model_id = request.env['ir.model']._get(field_id.relation)
 
                 if 'color' in related_model_id.field_id.mapped('name'):
                     options['color_field'] = 'color'
@@ -1107,7 +1105,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             return
 
         # From this point, the model is either a custom model or inherits from mail.thread
-        model = request.env['ir.model'].search([('model', '=', operation['model'])])
+        model = request.env['ir.model']._get(operation['model'])
         if model.state == 'manual' and not model.is_mail_thread:
             # Activate mail.thread inheritance on the custom model
             model.write({'is_mail_thread': True})
@@ -1145,16 +1143,16 @@ Are you sure you want to remove the selection values of those records?""") % len
                 - add a dropdown section in the view
                 - modify the kanban class to use `oe_kanban_color_`
         """
-        model_id = request.env['ir.model'].search([('model', '=', model)])
+        model_id = request.env['ir.model']._get_id(model)
         if not model_id:
             return
 
         color_field_name = 'x_color'
-        if not request.env['ir.model.fields'].search([('model_id', '=', model_id.id), ('name', '=', color_field_name), ('ttype', '=', 'integer')]):
+        if not request.env['ir.model.fields'].search([('model_id', '=', model_id), ('name', '=', color_field_name), ('ttype', '=', 'integer')]):
             # create a field if it doesn't exist in the model
             request.env['ir.model.fields'].create({
                 'model': model,
-                'model_id': model_id.id,
+                'model_id': model_id,
                 'name': color_field_name,
                 'field_description': 'Color',
                 'ttype': 'integer',
@@ -1204,7 +1202,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                 - add a section (kanban_right) in the view
                 - add the field with `kanban_image` in this section
         """
-        model_id = request.env['ir.model'].search([('model', '=', model)])
+        model_id = request.env['ir.model']._get_id(model)
         if not model_id:
             raise UserError(_('The model %s does not exist.', model))
 
@@ -1264,8 +1262,8 @@ Are you sure you want to remove the selection values of those records?""") % len
                 - adds an option inside dropdown section in the view
                 - adds an field having widget `attachment_image` in the view
         """
-        model_id = request.env['ir.model'].search([('model', '=', model)])
-        if not model_id:
+        ir_model = request.env['ir.model']._get(model)
+        if not ir_model:
             raise UserError(_('The model %s does not exist.', model))
         if operation.get('field'):
             field_id = request.env['ir.model.fields'].search([
@@ -1275,22 +1273,21 @@ Are you sure you want to remove the selection values of those records?""") % len
             if not field_id:
                 raise UserError(_('The field %s does not exist.', operation['field']))
         else:
-            att_model = request.env['ir.model'].search([('model', '=', 'ir.attachment')])
             field_id = request.env['ir.model.fields'].search([
-                ('model', '=', model_id.model),
+                ('model', '=', ir_model.model),
                 ('name', '=', 'x_studio_cover_image_id'),
                 ('ttype', '=', 'many2one')
             ])
             # create a field many2one x_studio_cover_image_id if it doesn't exist in the model
             if not field_id:
                 field_id = request.env['ir.model.fields'].create({
-                    'model': model_id.model,
-                    'model_id': model_id.id,
-                    'relation': att_model.model,
+                    'model': ir_model.model,
+                    'model_id': ir_model.id,
+                    'relation': 'ir.attachment',
                     'name': 'x_studio_cover_image_id',
                     'field_description': 'Cover Image',
                     'ttype': 'many2one',
-                    'domain': '[("res_model", "=", "%s"), ("res_id", "=", "%s"), ("mimetype", "ilike", "image")]' % (model_id.model, model_id.id)
+                    'domain': '[("res_model", "=", "%s"), ("res_id", "=", "%s"), ("mimetype", "ilike", "image")]' % (ir_model.model, ir_model.id)
                 })
 
         # add link inside the dropdown
@@ -1332,7 +1329,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                 - add a section (kanban_left) in the view
                 - add the field x_priority with the widget priority in this section
         """
-        model_id = request.env['ir.model'].search([('model', '=', model)])
+        model_id = request.env['ir.model']._get_id(model)
         if not model_id:
             raise UserError(_('The model %s does not exist.', model))
 
@@ -1346,7 +1343,7 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         else:
             field_id = request.env['ir.model.fields'].search([
-                ('model_id', '=', model_id.id),
+                ('model_id', '=', model_id),
                 ('name', '=', 'x_priority'),
                 ('ttype', '=', 'selection')
             ])
@@ -1354,7 +1351,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             if not field_id:
                 field_id = request.env['ir.model.fields'].create({
                     'model': model,
-                    'model_id': model_id.id,
+                    'model_id': model_id,
                     'name': 'x_priority',
                     'field_description': 'Priority',
                     'ttype': 'selection',
@@ -1379,7 +1376,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         parser = etree.XMLParser(remove_blank_text=True)
         arch = etree.fromstring(arch, parser=parser)
 
-        model_id = request.env['ir.model'].search([('model', '=', model)])
+        model_id = request.env['ir.model']._get_id(model)
         IrModelFields = request.env['ir.model.fields']
 
         if not model_id:
@@ -1393,7 +1390,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                 raise UserError(_('The field %s does not exist.', operation['field']))
         else:
             field_id = IrModelFields.search([
-                ('model_id', '=', model_id.id),
+                ('model_id', '=', model_id),
                 ('name', '=', 'x_avatar_image'),
                 ('ttype', '=', 'binary')
             ])
@@ -1401,7 +1398,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             if not field_id:
                 field_id = IrModelFields.create({
                     'model': model,
-                    'model_id': model_id.id,
+                    'model_id': model_id,
                     'name': 'x_avatar_image',
                     'field_description': 'Avatar',
                     'ttype': 'binary',
@@ -1545,7 +1542,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         """ Returns the email alias associated to the model @model_name if both exist
         """
         result = {'alias_domain': request.env['ir.config_parameter'].get_param('mail.catchall.domain')}
-        model = request.env['ir.model'].search([('model', '=', model_name)], limit=1)
+        model = request.env['ir.model']._get(model_name)
         if model:
             email_alias = request.env['mail.alias'].search([('alias_model_id', '=', model.id)], limit=1)
             if email_alias:
@@ -1558,9 +1555,9 @@ Are you sure you want to remove the selection values of those records?""") % len
              - if there is no email alias, it will be created
              - if there is one and the value is empty, it will be unlinked
         """
-        model = request.env['ir.model'].search([('model', '=', model_name)], limit=1)
-        if model:
-            email_alias = request.env['mail.alias'].search([('alias_model_id', '=', model.id)], limit=1)
+        model_id = request.env['ir.model']._get_id(model_name)
+        if model_id:
+            email_alias = request.env['mail.alias'].search([('alias_model_id', '=', model_id)], limit=1)
             if email_alias:
                 if value:
                     email_alias.alias_name = value
@@ -1568,7 +1565,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                     email_alias.unlink()
             else:
                 request.env['mail.alias'].create({
-                    'alias_model_id': model.id,
+                    'alias_model_id': model_id,
                     'alias_name': value,
                 })
 

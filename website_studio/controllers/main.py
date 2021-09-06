@@ -18,7 +18,7 @@ class WebsiteStudioController(http.Controller):
             :return: xml_id of the website page containing the form
             :rtype: string
         """
-        model = request.env['ir.model'].search([('model', '=', res_model)])
+        model = request.env['ir.model']._get(res_model)
         values = {}
         if not model.website_form_access:
             values['website_form_access'] = True

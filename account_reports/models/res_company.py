@@ -180,7 +180,7 @@ class ResCompany(models.Model):
 
                 self.env['mail.activity'].with_context(mail_activity_quick_update=True).create({
                     'res_id': tax_closing_move.id,
-                    'res_model_id': self.env['ir.model'].sudo().search([('model', '=', 'account.move')], limit=1).id,
+                    'res_model_id': self.env['ir.model']._get_id('account.move'),
                     'activity_type_id': tax_closing_activity_type_id,
                     'date_deadline': activity_deadline,
                     'automated': True,

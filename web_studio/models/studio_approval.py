@@ -111,9 +111,9 @@ class StudioApprovalRule(models.Model):
 
     @api.model
     def create_rule(self, model, method, action_id):
-        model_id = self.env['ir.model'].search([('model', '=', model)])
+        model_id = self.env['ir.model']._get_id(model)
         return self.create({
-            'model_id': model_id.id,
+            'model_id': model_id,
             'method': method,
             'action_id': action_id and int(action_id),
         })

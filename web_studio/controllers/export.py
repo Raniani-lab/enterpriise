@@ -273,9 +273,9 @@ def get_relations(record, field):
     # be defined in other modules and those modules need to be listed as
     # dependencies of the exported module
     if field.model_name == 'ir.actions.act_window' and field.name in ('res_model', 'binding_model'):
-        return record.env['ir.model'].search([('model', '=', record[field.name])])
+        return record.env['ir.model']._get(record[field.name])
     if field.model_name == 'ir.actions.report' and field.name == 'model':
-        return record.env['ir.model'].search([('model', '=', record.model)])
+        return record.env['ir.model']._get(record.model)
 
 
 def generate_record(record, get_xmlid):

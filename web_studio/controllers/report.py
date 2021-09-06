@@ -72,7 +72,7 @@ class WebStudioReportController(main.WebStudioController):
         view.name = new_view_document_xml_id
         view.key = new_view_document_xml_id
 
-        model = request.env['ir.model'].search([('model', '=', model_name)])
+        model = request.env['ir.model']._get(model_name)
         report = request.env['ir.actions.report'].create({
             'name': _('%s Report', model.name),
             'model': model.model,

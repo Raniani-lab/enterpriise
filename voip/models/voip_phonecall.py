@@ -103,7 +103,7 @@ class VoipPhonecall(models.Model):
                 'note': record.note,
             }
             if record.partner_id:
-                ir_model = record.env['ir.model'].search([('model', '=', 'res.partner')])
+                ir_model = record.env['ir.model']._get('res.partner')
                 info.update({
                     'partner_id': record.partner_id.id,
                     'activity_res_id': record.partner_id.id,
@@ -114,7 +114,7 @@ class VoipPhonecall(models.Model):
                     'partner_email': record.partner_id.email
                 })
             if record.activity_id:
-                ir_model = record.env['ir.model'].search([('model', '=', record.activity_id.res_model)])
+                ir_model = record.env['ir.model']._get(record.activity_id.res_model)
                 info.update({
                     'activity_id': record.activity_id.id,
                     'activity_res_id': record.activity_id.res_id,
@@ -124,7 +124,7 @@ class VoipPhonecall(models.Model):
                     'activity_note': record.activity_id.note
                 })
             elif record.mail_message_id:
-                ir_model = record.env['ir.model'].search([('model', '=', record.mail_message_id.model)])
+                ir_model = record.env['ir.model']._get(record.mail_message_id.model)
                 info.update({
                     'activity_res_id': record.mail_message_id.res_id,
                     'activity_res_model': record.mail_message_id.model,

@@ -58,6 +58,9 @@
                 </div>
 
                 <sheet string="Shift">
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Used by other modules-->
+                    </div>
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
                     <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}"

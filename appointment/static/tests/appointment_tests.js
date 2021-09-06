@@ -9,7 +9,7 @@ import testUtils from 'web.test_utils';
 const createCalendarView = testUtils.createCalendarView;
 const initialDate = new Date('2020-10-26T08:00:00Z');
 
-QUnit.module('appointment.appointment_link', {
+QUnit.skip('appointment.appointment_link', {
     beforeEach: function () {
         patchWithCleanup(session, {
             uid: 1,

@@ -14,7 +14,7 @@ class Task(models.Model):
     def _get_calendars_and_resources_key(self):
         self.ensure_one()
         if len(self.user_ids) == 1 and self.user_ids.employee_id.resource_calendar_id:
-            self.user_ids.employee_id.id
+            return self.user_ids.employee_id
         else:
             return super(Task, self)._get_calendars_and_resources_key()
 

@@ -155,8 +155,9 @@ class Task(models.Model):
         :rtype: bool
         """
         self.ensure_one()
-        return self.project_id and self.project_id.allow_task_dependencies and not self.stage_id.fold and \
-               self.planned_date_begin and self.planned_date_end
+        task_is_done = self.stage_id.fold or self.stage_id.is_closed
+        return self.project_id and self.project_id.allow_task_dependencies and not task_is_done and \
+               self.planned_date_begin and self.planned_date_end and self.planned_date_begin > datetime.now()
 
     def _get_tasks_by_resource_calendar_dict(self):
         """
@@ -233,7 +234,7 @@ class Task(models.Model):
                     'planned_date_end': date_stop,
                 })
 
-        date_auto_shift = self.env.context.get(DATE_AUTO_SHIFT_CONTEXT_KEY)
+        date_auto_shift = self.env.context.get(DATE_AUTO_SHIFT_CONTEXT_KEY, False)
         write_planned_date_fields = any(field for field in ['planned_date_begin', 'planned_date_end'] if field in vals)
         if date_auto_shift and write_planned_date_fields:
             self._action_auto_shift()
@@ -241,12 +242,14 @@ class Task(models.Model):
         return res
 
     def _write_planned_dates_if_in_future(self, new_planned_date_begin, new_planned_date_end):
-        if new_planned_date_begin and new_planned_date_end and new_planned_date_begin > datetime.now(tz=utc):
+        if new_planned_date_begin and new_planned_date_end and new_planned_date_begin >= datetime.now(tz=utc):
             self.write({
                 'planned_date_begin': new_planned_date_begin.astimezone(utc).replace(tzinfo=None),
                 'planned_date_end': new_planned_date_end.astimezone(utc).replace(tzinfo=None),
             })
+            return True
 
+        return False
 
     def _get_first_work_interval(self, intervals_cache, date_time, task_calendars, search_forward=True):
         """
@@ -420,8 +423,7 @@ class Task(models.Model):
                 new_planned_date_begin, new_planned_date_end, intervals_cache = task._action_auto_shift_without_planned_hours(
                     mapped_dependent, mapped_depend_on, intervals_cache)
 
-            if new_planned_date_begin and new_planned_date_end and new_planned_date_begin > datetime.now(tz=utc):
-                task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end)
+            task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end)
 
     def _action_auto_shift_get_candidates(self):
         """
@@ -442,11 +444,18 @@ class Task(models.Model):
         auto_shift_forward = auto_shift_direction in (DATE_AUTO_SHIFT_FORWARD, DATE_AUTO_SHIFT_BOTH_DIRECTIONS)
         auto_shift_backward = auto_shift_direction in (DATE_AUTO_SHIFT_BACKWARD, DATE_AUTO_SHIFT_BOTH_DIRECTIONS)
 
+        auto_shift_candidate_ids = set(self.ids)
+        auto_shift_candidate_ids.update(self.depend_on_ids.ids)
+        auto_shift_candidate_ids.update(self.dependent_ids.ids)
+        auto_shift_candidates = self.env['project.task'].browse(auto_shift_candidate_ids)
+        auto_shift_candidate_dict = {auto_shift_candidate.id for auto_shift_candidate in auto_shift_candidates if auto_shift_candidate._is_auto_shift_candidate()}
+
         for task in self:
             # We provide priority to depend_on over dependent as we try to shorten the critical path
-            if task._is_auto_shift_candidate():
+            if task.id in auto_shift_candidate_dict:
                 for depend_on_task in task.depend_on_ids:
-                    if depend_on_task.project_id == task.project_id and (depend_on_task.planned_date_end > task.planned_date_begin or auto_shift_forward):
+                    if depend_on_task.id in auto_shift_candidate_dict and depend_on_task.project_id == task.project_id \
+                            and (depend_on_task.planned_date_end > task.planned_date_begin or auto_shift_forward):
                         if not mapped_depend_on[depend_on_task] or \
                                 mapped_depend_on[depend_on_task].planned_date_begin > task.planned_date_begin:
                             if mapped_dependent[depend_on_task]:
@@ -454,7 +463,8 @@ class Task(models.Model):
                             mapped_depend_on[depend_on_task] = task
                             tasks_to_auto_shift |= depend_on_task
                 for dependent_task in task.dependent_ids:
-                    if dependent_task.project_id == task.project_id and (dependent_task.planned_date_begin < task.planned_date_end or auto_shift_backward):
+                    if dependent_task.id in auto_shift_candidate_dict and dependent_task.project_id == task.project_id \
+                            and (dependent_task.planned_date_begin < task.planned_date_end or auto_shift_backward):
                         if (not mapped_depend_on[dependent_task] and not mapped_dependent[dependent_task]) or \
                                 mapped_dependent[dependent_task].planned_date_end < task.planned_date_end:
                             mapped_dependent[dependent_task] = task
@@ -510,7 +520,18 @@ class Task(models.Model):
         new_task_hours = timedelta(hours=0.0)
         min_numb_of_weeks = 1
         first = defaultdict(lambda: True)
+        iteration_counter = 0
+        # If we can't reschedule the task within a year, we can consider that there is an issue.
+        MAX_ITERATIONS = 52
         while new_task_hours < planned_hours:
+            iteration_counter += 1
+
+            if iteration_counter > MAX_ITERATIONS:
+                # This should of course never happen. But if it does we will return False which will cause the
+                # process to stop for this task dependency node (this one and its dependencies)
+                new_planned_date_begin, new_planned_date_end = False, False
+                break
+
             # Look for the missing intervals with min search of 1 week
             calendar_intervals_to_search = max(planned_hours - new_task_hours, timedelta(weeks=min_numb_of_weeks))
 
@@ -756,8 +777,15 @@ class Task(models.Model):
             new_planned_date_begin, new_planned_date_end, intervals_cache = trigger_task._action_auto_shift_without_planned_hours(
                 mapped_dependent, mapped_depend_on, intervals_cache)
 
-        if new_planned_date_begin and new_planned_date_end and new_planned_date_begin > datetime.now(tz=utc):
-            trigger_task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end)
+        if not trigger_task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end):
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'warning',
+                    'message': _('You cannot reschedule tasks in the past. Please, change their dates manually instead.'),
+                }
+            }
 
         return True
 

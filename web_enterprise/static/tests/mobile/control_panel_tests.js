@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
 import { click } from "@web/../tests/helpers/utils";
-import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { makeWithSearch, setupControlPanelServiceRegistry } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
+import { ControlPanel } from "@web/search/control_panel/control_panel";
 
 let serverData;
 
@@ -37,15 +37,13 @@ QUnit.module("Search", (hooks) => {
     QUnit.module("Control Panel (mobile)");
 
     QUnit.test("Display control panel mobile", async (assert) => {
-        const controlPanel = await makeWithSearch(
-            { serverData },
-            {
-                resModel: "foo",
-                Component: ControlPanel,
-                searchMenuTypes: ["filter"],
-                searchViewId: false,
-            }
-        );
+        const controlPanel = await makeWithSearch({
+            serverData,
+            resModel: "foo",
+            Component: ControlPanel,
+            searchMenuTypes: ["filter"],
+            searchViewId: false,
+        });
 
         assert.containsOnce(controlPanel.el, ".breadcrumb");
         assert.containsOnce(controlPanel.el, ".o_enable_searchview");

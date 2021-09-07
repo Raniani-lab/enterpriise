@@ -48,13 +48,14 @@ class Project(models.Model):
 
     def _get_stat_buttons(self):
         buttons = super(Project, self)._get_stat_buttons()
-        buttons.append({
-            'icon': 'refresh',
-            'text': _('Subscriptions'),
-            'number': self.subscriptions_count,
-            'action_type': 'object',
-            'action': 'action_open_project_subscriptions',
-            'show': self.user_has_groups('sale_subscription.group_sale_subscription_view') and self.subscriptions_count > 0,
-            'sequence': 12,
-        })
+        if self.user_has_groups('sale_subscription.group_sale_subscription_view'):
+            buttons.append({
+                'icon': 'refresh',
+                'text': _('Subscriptions'),
+                'number': self.subscriptions_count,
+                'action_type': 'object',
+                'action': 'action_open_project_subscriptions',
+                'show': self.subscriptions_count > 0,
+                'sequence': 12,
+            })
         return buttons

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 class Project(models.Model):
     _inherit = 'project.project'
@@ -32,3 +32,33 @@ class Project(models.Model):
         data = {data['project_id'][0]: data['project_id_count'] > 0 for data in result}
         for project in self:
             project.has_helpdesk_team = data.get(project.id, False)
+
+    def action_open_project_tickets(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk_timesheet.project_project_action_view_helpdesk_tickets")
+        action.update({
+            'display_name': _('Tickets'),
+            'domain': [('id', 'in', self.ticket_ids.ids)],
+            'context': {'active_id': self.id},
+        })
+        if len(self.ticket_ids.ids) == 1:
+            action["view_mode"] = 'form'
+            action["views"] = [[False, 'form']]
+            action["res_id"] = self.ticket_ids.id
+        return action
+
+    # ----------------------------
+    #  Project Updates
+    # ----------------------------
+
+    def _get_stat_buttons(self):
+        buttons = super(Project, self)._get_stat_buttons()
+        buttons.append({
+            'icon': 'life-ring',
+            'text': _('Tickets'),
+            'number': self.ticket_count,
+            'action_type': 'object',
+            'action': 'action_open_project_tickets',
+            'show': self.ticket_count > 0,
+            'sequence': 22,
+        })
+        return buttons

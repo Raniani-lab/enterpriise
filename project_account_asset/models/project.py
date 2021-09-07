@@ -44,13 +44,14 @@ class Project(models.Model):
 
     def _get_stat_buttons(self):
         buttons = super(Project, self)._get_stat_buttons()
-        buttons.append({
-            'icon': 'pencil-square-o',
-            'text': _('Assets'),
-            'number': self.assets_count,
-            'action_type': 'object',
-            'action': 'action_open_project_assets',
-            'show': self.user_has_groups('account.group_account_readonly') and self.assets_count > 0,
-            'sequence': 15,
-        })
+        if self.user_has_groups('account.group_account_readonly'):
+            buttons.append({
+                'icon': 'pencil-square-o',
+                'text': _('Assets'),
+                'number': self.assets_count,
+                'action_type': 'object',
+                'action': 'action_open_project_assets',
+                'show': self.assets_count > 0,
+                'sequence': 15,
+            })
         return buttons

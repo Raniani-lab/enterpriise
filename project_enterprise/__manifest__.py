@@ -30,6 +30,8 @@ Bridge module for project and enterprise
             'project_enterprise/static/tests/**/*',
         ],
         'project.webclient': [
+            ('remove', 'web_enterprise/static/src/legacy/legacy_service_provider.js'),
+            ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_service.js'),
             'project_enterprise/static/src/project_sharing/**/*',
         ],
     }

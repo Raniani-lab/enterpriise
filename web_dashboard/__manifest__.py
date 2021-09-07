@@ -15,18 +15,13 @@ can embed graph and/or pivot views, and displays aggregate values.
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'web_dashboard/static/src/js/dashboard_view.js',
-            'web_dashboard/static/src/js/dashboard_renderer.js',
-            'web_dashboard/static/src/js/dashboard_model.js',
-            'web_dashboard/static/src/js/dashboard_controller.js',
-            'web_dashboard/static/src/js/dashboard_model_extension.js',
-            'web_dashboard/static/src/scss/dashboard_view.scss',
+            'web_dashboard/static/src/**/*',
         ],
         'web.qunit_suite_tests': [
-            'web_dashboard/static/tests/**/*',
+            'web_dashboard/static/tests/**/*.js',
         ],
         'web.assets_qweb': [
-            'web_dashboard/static/src/xml/**/*',
+            'web_dashboard/static/src/**/*.xml',
         ],
     }
 }

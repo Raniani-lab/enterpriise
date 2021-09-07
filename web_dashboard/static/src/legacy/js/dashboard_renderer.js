@@ -127,7 +127,7 @@ var DashboardRenderer = FormRenderer.extend({
         $el.tooltip({
             delay: { show: 1000, hide: 0 },
             title: function () {
-                return QWeb.render('web_dashboard.StatisticTooltip', {
+                return QWeb.render('web_dashboard.LegacyStatisticTooltip', {
                     debug: config.isDebug(),
                     node: node,
                 });

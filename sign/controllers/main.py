@@ -288,13 +288,16 @@ class Sign(http.Controller):
             if sms_token == request_item.sms_token:
                 request_item.sign_request_id._message_log(body=_('%s validated the signature by SMS with the phone number %s.') % (request_item.partner_id.display_name, request_item.sms_number))
 
+        sign_user = request.env['res.users'].sudo().search([('partner_id', '=', request_item.partner_id.id)], limit=1)
+        if sign_user:
+            # sign as an internal user
+            request_item = request_item.with_user(sign_user).sudo()
+
         if not request_item.sign(signature, new_sign_items):
             return False
 
         # mark signature as done in next activity
-        user_ids = http.request.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)])
-        sign_users = user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee'))
-        for sign_user in sign_users:
+        if sign_user.has_group('sign.group_sign_employee'):
             request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
         request.env['sign.log']._create_log(request_item, "sign", is_request=False, token=token)

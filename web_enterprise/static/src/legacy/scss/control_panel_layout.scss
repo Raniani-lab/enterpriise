@@ -33,6 +33,7 @@
 @include media-breakpoint-down(sm) {
     .o_control_panel {
         padding-right: 0;
+        width: 100%;
 
         .o_cp_action_menus {
             .o_dropdown_title {

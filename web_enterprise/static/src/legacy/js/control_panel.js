@@ -135,7 +135,7 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
     });
 
     patch(ControlPanel, 'web_enterprise.ControlPanel', {
-        template: 'web_enterprise.ControlPanel',
+        template: 'web_enterprise._ControlPanel',
         components: {
             ...ControlPanel.components,
             Portal,

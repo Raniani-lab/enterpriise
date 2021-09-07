@@ -197,12 +197,14 @@ class Task(models.Model):
             If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.
         """
+        closed_stage_by_project = {
+            project.id:
+                project.type_ids.filtered(lambda stage: stage.is_closed)[:1] or project.type_ids[-1:]
+            for project in self.project_id
+        }
         for task in self:
             # determine closed stage for task
-            closed_stage = task.project_id.type_ids.filtered(lambda stage: stage.is_closed)
-            if not closed_stage and len(task.project_id.type_ids) > 1:  # project without stage (or with only one)
-                closed_stage = task.project_id.type_ids[-1]
-
+            closed_stage = closed_stage_by_project.get(self.project_id.id)
             values = {'fsm_done': True}
             if closed_stage:
                 values['stage_id'] = closed_stage.id

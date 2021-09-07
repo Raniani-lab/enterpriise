@@ -86,7 +86,6 @@
         <field name="inherit_id" ref="industry_fsm.quick_create_task_form_fsm"/>
         <field name="arch" type="xml">
             <field name="user_ids" position="before">
-                <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" attrs="{'invisible':[('allow_worksheets', '=', False)]}" options="{'no_open': True}"/>
             </field>
         </field>
@@ -121,15 +120,15 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='rating_settings']" position="before">
-                <div class="col-lg-6 o_setting_box">
+            <xpath expr="//div[@id='industry_fsm']" position="replace">
+                <div class="col-lg-6 o_setting_box" id="industry_fsm">
                     <div class="o_setting_left_pane">
                         <field name="allow_worksheets"/>
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="allow_worksheets"/>
                         <div class="text-muted" id="allow_billable_setting">
-                            Create and fill custom reports on tasks
+                            Create reports to be signed off by your customers
                         </div>
                         <div class="mt-3" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
                             <label for="worksheet_template_id" string="Worksheet Template"/>
@@ -212,57 +211,16 @@
         <field name="arch" type="xml">
             <field name="display_project_id" position="after">
                 <field name="allow_worksheets" invisible="1"/>
-                <field name="display_sign_report_primary" invisible="1"/>
-                <field name="display_sign_report_secondary" invisible="1"/>
-                <field name="display_send_report_primary" invisible="1"/>
-                <field name="display_send_report_secondary" invisible="1"/>
-                <field name="worksheet_template_id" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model_name': 'project.task'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
+                <field name="worksheet_template_id" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
-            <field name="is_fsm" position="after">
-                <field name="fsm_is_sent" invisible="1"/>
-                <field name="worksheet_signature" invisible="1"/>
-            </field>
-            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="before">
-                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': [('display_sign_report_primary', '=', False)]}" data-hotkey="y"/>
-                <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': [('display_send_report_primary', '=', False)]}" data-hotkey="g"/>
-            </xpath>
-            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')]" position="before">
-                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': [('display_sign_report_secondary', '=', False)]}" data-hotkey="y"/>
-                <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': [('display_send_report_secondary', '=', False)]}" data-hotkey="g"/>
-            </xpath>
-            <xpath expr="//span[@id='button_worksheet']" position="replace">
+            <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <field name="worksheet_count" invisible="1"/>
-                <button
-                    string="Worksheet"
-                    class="oe_stat_button"
-                    name="action_fsm_worksheet"
-                    icon="fa-pencil" type="object"
-                    groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
-                </button>
-                <button
-                    string="Worksheet Completed"
-                    class="oe_stat_button text-success"
-                    name="action_fsm_worksheet"
-                    icon="fa-check" type="object"
-                    groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}">
-                </button>
             </xpath>
-            <xpath expr="//span[@id='end_button_box']" position="after">
-                <field name="worksheet_signature" invisible="1"/>
-                <button
-                    string="Customer Preview"
-                    class="oe_stat_button"
-                    name="action_preview_worksheet"
-                    icon="fa-globe" type="object"
-                    groups="project.group_project_user"
-                    attrs="{'invisible': [('worksheet_signature', '=', False)]}">
-                </button>
+            <xpath expr="//button[hasclass('oe_worksheet')]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False),  ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0), ('comment', '!=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//button[hasclass('oe_worksheet_completed')]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), ('comment', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/button[@name='action_open_task']" position="before">
                 <field name="worksheet_template_id" optional="hide"/>

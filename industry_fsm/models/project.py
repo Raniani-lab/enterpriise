@@ -15,6 +15,9 @@ class Project(models.Model):
     allow_subtasks = fields.Boolean(
         compute="_compute_allow_subtasks", store=True, readonly=False)
     allow_task_dependencies = fields.Boolean(compute='_compute_allow_task_dependencies', store=True, readonly=False)
+    allow_worksheets = fields.Boolean(
+        "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False,
+        help="Enables customizable worksheets on tasks.")
 
     @api.depends("is_fsm")
     def _compute_allow_subtasks(self):
@@ -27,6 +30,11 @@ class Project(models.Model):
         has_group = self.user_has_groups('project.group_project_task_dependencies')
         for project in self:
             project.allow_task_dependencies = has_group and not project.is_fsm
+
+    def _compute_allow_worksheets(self):
+        for project in self:
+            if not project._origin:
+                project.allow_worksheets = project.is_fsm
 
     @api.model
     def default_get(self, fields_list):
@@ -93,6 +101,7 @@ class Task(models.Model):
                     result['planned_date_end'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)
         return result
 
+    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True, copy=False)
     user_ids = fields.Many2many(group_expand='_read_group_user_ids')
@@ -103,16 +112,26 @@ class Task(models.Model):
     display_satisfied_conditions_count = fields.Integer(compute='_compute_display_conditions_count')
     display_mark_as_done_primary = fields.Boolean(compute='_compute_mark_as_done_buttons')
     display_mark_as_done_secondary = fields.Boolean(compute='_compute_mark_as_done_buttons')
+    display_sign_report_primary = fields.Boolean(compute='_compute_display_sign_report_buttons')
+    display_sign_report_secondary = fields.Boolean(compute='_compute_display_sign_report_buttons')
+    display_send_report_primary = fields.Boolean(compute='_compute_display_send_report_buttons')
+    display_send_report_secondary = fields.Boolean(compute='_compute_display_send_report_buttons')
     has_complete_partner_address = fields.Boolean(compute='_compute_has_complete_partner_address')
+    worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
+    worksheet_signed_by = fields.Char('Signed By', help='Name of the person that signed the task.', copy=False)
+    fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
+    comment = fields.Html(string='Comments', copy=False)
 
     @property
     def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS | {'is_fsm',
+        return super().SELF_READABLE_FIELDS | {'allow_worksheets',
+                                              'is_fsm',
                                               'planned_date_begin',
                                               'planned_date_end',
                                               'fsm_done',
                                               'partner_phone',
                                               'partner_city',
+                                              'worksheet_signature',  # [XBO] TODO: remove me in master
                                               'has_complete_partner_address'}
 
     @api.depends(
@@ -133,11 +152,13 @@ class Task(models.Model):
                 'display_mark_as_done_secondary': secondary,
             })
 
-    @api.depends('project_id.allow_timesheets', 'total_hours_spent')
+    @api.depends('allow_worksheets', 'project_id.allow_timesheets', 'total_hours_spent', 'comment')
     def _compute_display_conditions_count(self):
         for task in self:
             enabled = 1 if task.project_id.allow_timesheets else 0
             satisfied = 1 if enabled and task.total_hours_spent else 0
+            enabled += 1 if task.allow_worksheets else 0
+            satisfied += 1 if task.allow_worksheets and task.comment else 0
             task.update({
                 'display_enabled_conditions_count': enabled,
                 'display_satisfied_conditions_count': satisfied
@@ -154,6 +175,53 @@ class Task(models.Model):
             'display_timer_resume': False,
         })
         super(Task, self - fsm_done_tasks)._compute_display_timer_buttons()
+
+    def _hide_sign_button(self):
+        self.ensure_one()
+        return not self.allow_worksheets or self.timer_start or self.worksheet_signature \
+            or not self.display_satisfied_conditions_count
+
+    @api.depends(
+        'allow_worksheets', 'timer_start', 'worksheet_signature',
+        'display_satisfied_conditions_count', 'display_enabled_conditions_count')
+    def _compute_display_sign_report_buttons(self):
+        for task in self:
+            sign_p, sign_s = True, True
+            if task._hide_sign_button():
+                sign_p, sign_s = False, False
+            else:
+                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
+                    sign_s = False
+                else:
+                    sign_p = False
+            task.update({
+                'display_sign_report_primary': sign_p,
+                'display_sign_report_secondary': sign_s,
+            })
+
+    def _hide_send_report_button(self):
+        self.ensure_one()
+        return not self.allow_worksheets or self.timer_start or not self.display_satisfied_conditions_count \
+            or self.fsm_is_sent
+
+    @api.depends(
+        'allow_worksheets', 'timer_start',
+        'display_satisfied_conditions_count', 'display_enabled_conditions_count',
+        'fsm_is_sent')
+    def _compute_display_send_report_buttons(self):
+        for task in self:
+            send_p, send_s = True, True
+            if task._hide_send_report_button():
+                send_p, send_s = False, False
+            else:
+                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
+                    send_s = False
+                else:
+                    send_p = False
+            task.update({
+                'display_send_report_primary': send_p,
+                'display_send_report_secondary': send_s,
+            })
 
     @api.depends('partner_id')
     def _compute_has_complete_partner_address(self):
@@ -187,6 +255,17 @@ class Task(models.Model):
             closed_stage = task.project_id.type_ids.filtered('is_closed')
             if closed_stage:
                 task.fsm_done = task.stage_id in closed_stage
+
+    def action_fsm_worksheet(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.task',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'context': {'form_view_initial_mode': 'edit', 'task_worksheet_comment': True},
+            'views': [[self.env.ref('industry_fsm.fsm_form_view_comment').id, 'form']],
+        }
 
     def action_view_timesheets(self):
         kanban_view = self.env.ref('hr_timesheet.view_kanban_account_analytic_line')
@@ -261,6 +340,74 @@ class Task(models.Model):
             'url': url,
             'target': 'new'
         }
+
+    def action_preview_worksheet(self):
+        self.ensure_one()
+        source = 'fsm' if self._context.get('fsm_mode', False) else 'project'
+        return {
+            'type': 'ir.actions.act_url',
+            'target': 'self',
+            'url': self.get_portal_url(suffix='/worksheet/%s' % source)
+        }
+
+    def action_send_report(self):
+        tasks_with_report = self.filtered(lambda task: task._is_fsm_report_available())
+        if not tasks_with_report:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': _("There are no reports to send."),
+                    'sticky': False,
+                    'type': 'danger',
+                }
+            }
+
+        template_id = self.env.ref('industry_fsm.mail_template_data_task_report').id
+        return {
+            'name': _("Send report"),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': {
+                'default_composition_mode': 'mass_mail' if len(tasks_with_report.ids) > 1 else 'comment',
+                'default_model': 'project.task',
+                'default_res_id': tasks_with_report.ids[0],
+                'default_use_template': bool(template_id),
+                'default_template_id': template_id,
+                'fsm_mark_as_sent': True,
+                'active_ids': tasks_with_report.ids,
+            },
+        }
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return 'Worksheet %s - %s' % (self.name, self.partner_id.name)
+
+    def _is_fsm_report_available(self):
+        self.ensure_one()
+        return self.comment or self.timesheet_ids
+
+    def has_to_be_signed(self):
+        self.ensure_one()
+        return self.allow_worksheets and not self.worksheet_signature
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        toolbar = not self._context.get('task_worksheet_comment') and toolbar
+        res = super().fields_view_get(view_id, view_type, toolbar, submenu)
+        return res
+
+    # ---------------------------------------------------------
+    # Business Methods
+    # ---------------------------------------------------------
+
+    def _message_post_after_hook(self, message, *args, **kwargs):
+        if self.env.context.get('fsm_mark_as_sent') and not self.fsm_is_sent:
+            self.fsm_is_sent = True
 
     @api.model
     def get_unusual_days(self, date_from, date_to=None):

@@ -239,7 +239,7 @@ class WorksheetTemplate(models.Model):
             }),
             (0, 0, {
                 'name': 'x_comments',
-                'ttype': 'text',
+                'ttype': 'html',
                 'field_description': 'Comments',
             }),
         ] + (fields_func and fields_func() or [])

@@ -8,8 +8,8 @@ from odoo.osv import expression
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    module_industry_fsm_report = fields.Boolean("Worksheets")
-    module_industry_fsm_sale = fields.Boolean('Time and Material')
+    module_industry_fsm_report = fields.Boolean("Custom Worksheets")
+    module_industry_fsm_sale = fields.Boolean('Time and Material Invoicing')
     group_industry_fsm_quotations = fields.Boolean(string="Extra Quotations", implied_group="industry_fsm.group_fsm_quotation_from_task")
 
     @api.model

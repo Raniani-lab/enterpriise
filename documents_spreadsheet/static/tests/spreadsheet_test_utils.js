@@ -2,7 +2,6 @@
 import spreadsheet from "documents_spreadsheet.spreadsheet";
 import pivotUtils from "documents_spreadsheet.pivot_utils";
 import { createView } from "web.test_utils";
-import PivotView from "web.PivotView";
 import ListView from "web.ListView";
 import MockServer from "web.MockServer";
 import makeTestEnvironment from "web.test_env";
@@ -14,11 +13,16 @@ import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "../src/actions/spreadsheet/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/spreadsheet_template_action";
 import { UNTITLED_SPREADSHEET_NAME } from "../src/constants";
+import { PivotView } from "@web/views/pivot/pivot_view";
+import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
+import { registry } from "@web/core/registry";
 
 const { Model } = spreadsheet;
 const { toCartesian, toZone, isFormula } = spreadsheet.helpers;
 const { jsonToBase64 } = pivotUtils;
 const { loadJS } = owl.utils;
+
+const serviceRegistry = registry.category("services");
 
 /**
  * Get the value of the given cell
@@ -333,7 +337,20 @@ export async function createSpreadsheetFromList(params = {}) {
  * The pivot is on the first sheet, the list is on the second.
  */
 export async function createSpreadsheetWithPivotAndList() {
-    const { model: listModel, webClient: listWebClient } = await createSpreadsheetFromList();
+    // In createSpreadsheetFromPivot, we will reuse the webclient created in
+    // createSpreadsheetFromList. We must be sure that it is configured in a
+    // as similarly in createSpreadsheetFromPivot.
+    const listView = {
+        archs: {
+            "partner,false,pivot": getBasicPivotArch(),
+            "partner,false,search": `<search/>`
+        },
+    };
+    if (!serviceRegistry.contains("user")) {
+        serviceRegistry.add("user", makeFakeUserService(() => true));
+    }
+
+    const { model: listModel, webClient: listWebClient } = await createSpreadsheetFromList({ listView });
     const { model, webClient, env } = await createSpreadsheetFromPivot({
         webClient: listWebClient,
     });
@@ -368,10 +385,16 @@ export async function createSpreadsheetWithPivotAndList() {
  */
 export async function createSpreadsheetFromPivot(params = {}) {
     await loadJS("/web/static/lib/Chart/Chart.js");
-    let { actions, pivotView, webClient } = params;
+    let { actions, pivotView, webClient, legacyServicesRegistry } = params;
+
     if (!pivotView) {
         pivotView = {};
     }
+
+    if (!pivotView.model) {
+        pivotView.model = "partner";
+    }
+
     let spreadsheetAction = {};
     patchWithCleanup(SpreadsheetAction.prototype, {
         setup() {
@@ -379,53 +402,74 @@ export async function createSpreadsheetFromPivot(params = {}) {
             spreadsheetAction = this;
         },
     });
-    pivotView = {
-        arch: getBasicPivotArch(),
-        data: getBasicData(),
-        model: pivotView.model || "partner",
-        ...pivotView,
-    };
-    const { data } = pivotView;
-    const controller = await createView({
-        View: PivotView,
-        ...pivotView,
+
+    let pivot = null;
+    patchWithCleanup(PivotView.prototype, {
+        setup() {
+            this._super();
+            pivot = this;
+        },
     });
-    const documents = data["documents.document"].records;
+
+    let views = null;
+    if (pivotView.archs) {
+        views = pivotView.archs;
+    } else if (pivotView.arch) {
+        views = {};
+        views[`${pivotView.model},false,pivot`] = pivotView.arch;
+        views[`${pivotView.model},false,search`] = `<search/>`;
+    } else {
+        views = { "partner,false,pivot": getBasicPivotArch(), "partner,false,search": `<search/>` };
+    }
+    const serverData = {
+        models: pivotView.data || getBasicData(),
+        views: views,
+    };
+    if (!webClient) {
+        if (!serviceRegistry.contains("user")) {
+            serviceRegistry.add("user", makeFakeUserService(() => true));
+        }
+        webClient = await createWebClient({
+            serverData,
+            legacyParams: {
+                withLegacyMockServer: true,
+                serviceRegistry: legacyServicesRegistry,
+            },
+            mockRPC: function (route, args) {
+                if (pivotView.mockRPC) {
+                    return pivotView.mockRPC(route, args);
+                }
+            },
+        });
+    }
+    await doAction(webClient, {
+        name: "pivot view",
+        res_model: pivotView.model,
+        type: "ir.actions.act_window",
+        views: [[false, "pivot"]],
+        domain: pivotView.domain,
+    });
+
+    if (actions) {
+        await actions(pivot);
+    }
+
+    const documents = serverData.models["documents.document"].records;
     const id = Math.max(...documents.map((d) => d.id)) + 1;
     documents.push({
         id,
         name: "pivot spreadsheet",
         raw: "{}",
     });
-    if (pivotView.services) {
-        const serviceRegistry = new LegacyRegistry();
-        for (const sname in pivotView.services) {
-            serviceRegistry.add(sname, pivotView.services[sname]);
-        }
-    }
 
-    if (!webClient) {
-        const serverData = { models: data, views: pivotView.archs };
-        webClient = await createWebClient({
-            serverData,
-            legacyParams: { withLegacyMockServer: true },
-            mockRPC: pivotView.mockRPC,
-        });
-    }
-    if (actions) {
-        await actions(controller);
-    }
     const transportService = new MockSpreadsheetCollaborativeChannel();
-
-    const pivot = controller._getPivotForSpreadsheet();
-    const initCallback = await controller._getCallbackBuildPivot(pivot, true);
     await doAction(webClient, {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
             spreadsheet_id: id,
             transportService,
-            initCallback,
+            initCallback: await pivot.getCallbackBuildPivot(true),
         },
     });
     const spreadSheetComponent = spreadsheetAction.spreadsheetRef.comp;
@@ -437,6 +481,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
         services: model.config.evalContext.env.services,
         openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
     });
+
     return {
         webClient,
         env,

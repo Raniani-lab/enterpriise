@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-<t t-name="web_dashboard.StatisticTooltip">
+<t t-name="web_dashboard.LegacyStatisticTooltip">
     <div t-if="node.attrs.help || debug" class="oe_tooltip_string">
         <t t-esc="node.attrs.string || node.attrs.name"/>
     </div>

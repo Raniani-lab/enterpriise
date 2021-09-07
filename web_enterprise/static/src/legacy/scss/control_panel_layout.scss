@@ -5,7 +5,7 @@
     .o_cp_bottom_left .btn-secondary.fa,
     .o_pager .btn-secondary,
     .o_switch_view.btn-secondary,
-    .o_dropdown:not(.show) .o_dropdown_toggler.btn-secondary {
+    .o_dropdown:not(.show) .o_dropdown_toggler.btn-secondary:not(.o_dropdown_active) {
         @extend .btn-light;
     }
 }
@@ -33,6 +33,7 @@
 @include media-breakpoint-down(sm) {
     .o_control_panel {
         padding-right: 0;
+        width: 100%;
 
         .o_cp_action_menus {
             .o_dropdown_title {

@@ -474,7 +474,7 @@ module(
         });
 
         test("Spreadsheet action is named in breadcrumb", async function (assert) {
-            assert.expect(2);
+            assert.expect(3);
             const arch = `
             <pivot string="Partners">
                 <field name="bar" type="col"/>
@@ -500,9 +500,12 @@ module(
             });
             await nextTick();
             const items = $(webClient.el).find(".breadcrumb-item");
-            const [breadcrumb1, breadcrumb2] = Array.from(items).map((item) => item.innerText);
-            assert.equal(breadcrumb1, "pivot spreadsheet");
-            assert.equal(breadcrumb2, "Partner");
+            const [breadcrumb1, breadcrumb2, breadcrumb3] = Array.from(items).map(
+                (item) => item.innerText
+            );
+            assert.equal(breadcrumb1, "pivot view");
+            assert.equal(breadcrumb2, "pivot spreadsheet");
+            assert.equal(breadcrumb3, "Partner");
         });
 
         module("Spreadsheet");
@@ -877,13 +880,8 @@ module(
         test("Verify presence of pivots in top menu bar in a spreadsheet with a pivot", async function (assert) {
             assert.expect(8);
 
-            const pivotController = await createView({
-                View: PivotView,
-                model: "partner",
-                data: this.data,
-                arch: this.arch,
-            });
-            registerCleanup(() => pivotController.destroy());
+            let pivot;
+            let cache;
 
             const { webClient, model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
@@ -896,10 +894,12 @@ module(
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
+                async actions(pivotView) {
+                    pivot = pivotView.getPivotForSpreadsheet();
+                    cache = await pivotView.getPivotCache(pivot);
+                },
             });
 
-            const pivot = pivotController._getPivotForSpreadsheet();
-            const cache = await pivotController._getPivotCache(pivot);
             pivot.id = model.getters.getNextPivotId();
             const sheetId = model.getters.getActiveSheetId();
 
@@ -931,13 +931,8 @@ module(
         test("Pivot focus changes on top bar menu click", async function (assert) {
             assert.expect(3);
 
-            const pivotController = await createView({
-                View: PivotView,
-                model: "partner",
-                data: this.data,
-                arch: this.arch,
-            });
-            registerCleanup(() => pivotController.destroy());
+            let pivot;
+            let cache;
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
@@ -950,10 +945,12 @@ module(
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
+                async actions(pivotView) {
+                    pivot = pivotView.getPivotForSpreadsheet();
+                    cache = await pivotView.getPivotCache(pivot);
+                },
             });
 
-            const pivot = pivotController._getPivotForSpreadsheet();
-            const cache = await pivotController._getPivotCache(pivot);
             pivot.id = model.getters.getNextPivotId();
             const sheetId = model.getters.getActiveSheetId();
 
@@ -987,13 +984,8 @@ module(
         test("Pivot focus changes on sidepanel click", async function (assert) {
             assert.expect(6);
 
-            const pivotController = await createView({
-                View: PivotView,
-                model: "partner",
-                data: this.data,
-                arch: this.arch,
-            });
-            registerCleanup(() => pivotController.destroy());
+            let pivot;
+            let cache;
 
             const { webClient, model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
@@ -1006,9 +998,11 @@ module(
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
+                async actions(pivotView) {
+                    pivot = pivotView.getPivotForSpreadsheet();
+                    cache = await pivotView.getPivotCache(pivot);
+                },
             });
-            const pivot = pivotController._getPivotForSpreadsheet();
-            const cache = await pivotController._getPivotCache(pivot);
             pivot.id = model.getters.getNextPivotId();
             const sheetId = model.getters.getActiveSheetId();
 
@@ -1156,21 +1150,22 @@ module(
 
         test("Can rebuild the Odoo domain of records based on the according pivot cell", async function (assert) {
             assert.expect(1);
-            const arch = `
-            <pivot string="Partners">
-                <field name="product" type="col"/>
-                <field name="bar" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`;
+            const archs = {
+                "partner,false,pivot": `
+                    <pivot string="Partners">
+                        <field name="product" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                "partner,false,list": `<List/>`,
+                "partner,false,search": `<Search/>`,
+            };
             const { env } = await createSpreadsheetFromPivot({
                 pivotView: {
                     model: "partner",
                     data: this.data,
-                    arch,
-                    archs: {
-                        "partner,false,list": `<List/>`,
-                        "partner,false,search": `<Search/>`,
-                    },
+                    archs,
                 },
             });
             env.dispatch("SELECT_CELL", { col: 2, row: 2 });
@@ -1186,21 +1181,22 @@ module(
 
         test("Can rebuild the Odoo domain of records based on a cell containing the total of pivots cells (in a column)", async function (assert) {
             assert.expect(1);
-            const arch = `
-            <pivot string="Partners">
-                <field name="product" type="col"/>
-                <field name="bar" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`;
+            const archs = {
+                "partner,false,pivot": `
+                    <pivot string="Partners">
+                        <field name="product" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                "partner,false,list": `<List/>`,
+                "partner,false,search": `<Search/>`,
+            };
             const { env } = await createSpreadsheetFromPivot({
                 pivotView: {
                     model: "partner",
                     data: this.data,
-                    arch,
-                    archs: {
-                        "partner,false,list": `<List/>`,
-                        "partner,false,search": `<Search/>`,
-                    },
+                    archs,
                 },
             });
             env.dispatch("SELECT_CELL", { col: 1, row: 3 });
@@ -1216,21 +1212,22 @@ module(
 
         test("Can rebuild the Odoo domain of records based on a cell containing the total of pivots cells (in a row)", async function (assert) {
             assert.expect(4);
-            const arch = `
-            <pivot string="Partners">
-                <field name="product" type="col"/>
-                <field name="bar" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`;
+            const archs = {
+                "partner,false,pivot": `
+                    <pivot string="Partners">
+                        <field name="product" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                "partner,false,list": `<List/>`,
+                "partner,false,search": `<Search/>`,
+            };
             const { env } = await createSpreadsheetFromPivot({
                 pivotView: {
                     model: "partner",
                     data: this.data,
-                    arch,
-                    archs: {
-                        "partner,false,list": `<List/>`,
-                        "partner,false,search": `<Search/>`,
-                    },
+                    archs,
                 },
             });
             env.dispatch("SELECT_CELL", { col: 3, row: 2 });
@@ -1249,21 +1246,22 @@ module(
 
         test("Can rebuild the Odoo domain of records based on a total of all pivot cells", async function (assert) {
             assert.expect(1);
-            const arch = `
-            <pivot string="Partners">
-                <field name="product" type="col"/>
-                <field name="bar" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`;
+            const archs = {
+                "partner,false,pivot": `
+                    <pivot string="Partners">
+                        <field name="product" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                "partner,false,list": `<List/>`,
+                "partner,false,search": `<Search/>`,
+            };
             const { env } = await createSpreadsheetFromPivot({
                 pivotView: {
                     model: "partner",
                     data: this.data,
-                    arch,
-                    archs: {
-                        "partner,false,list": `<List/>`,
-                        "partner,false,search": `<Search/>`,
-                    },
+                    archs,
                 },
             });
             env.dispatch("SELECT_CELL", { col: 3, row: 3 });
@@ -1644,9 +1642,6 @@ module(
                         if (args.method === "name_get" && args.model === "product") {
                             assert.step(`name_get_product_${args.args[0].join("-")}`);
                         }
-                        if (this) {
-                            return this._super(...arguments);
-                        }
                     },
                 },
             });
@@ -1709,9 +1704,6 @@ module(
                     mockRPC: function (route, args) {
                         if (args.method === "name_get" && args.model === "product") {
                             assert.step(`name_get_product_${args.args[0]}`);
-                        }
-                        if (this) {
-                            return this._super(...arguments);
                         }
                     },
                 },

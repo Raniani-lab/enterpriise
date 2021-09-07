@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="documents_spreadsheet.InsertActionSpreadsheet" owl="1">
+    <t t-name="documents_spreadsheet.Legacy.InsertActionSpreadsheet" owl="1">
         <li role="menuitem">
             <a class="dropdown-item o_insert_action_spreadsheet_menu" href="#" t-on-click.prevent="_linkInSpreadsheet">
                 Link menu in spreadsheet

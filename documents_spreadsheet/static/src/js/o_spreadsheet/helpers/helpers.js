@@ -25,7 +25,16 @@ export function intersect(a, b) {
  * @returns ID of the newly created spreadsheet
  */
 export async function createEmptySpreadsheet(rpc) {
-    return rpc({
+    let callRPC;
+    if (rpc && rpc.constructor.name === "ORM") {
+        callRPC = legacyRPC(rpc);
+    } else {
+        callRPC = rpc;
+    }
+    if (!callRPC) {
+        throw new Error("rpc cannot be undefined");
+    }
+    return callRPC({
         model: "documents.document",
         method: "create",
         args: [
@@ -80,4 +89,37 @@ export function checkFiltersTypeValueCombination(type, value) {
         }
     }
     return CommandResult.Success;
+}
+
+/**
+ * Compatibility layer between the ORM service
+ * and the legacy RPC API.
+ * The returned function has the same API as the legacy RPC.
+ *
+ * Notes:
+ *    - the compatibility is incomplete and only covers what's currently
+ *      needed for spreadsheet
+ *    - remove when views and helpers are converted to wowl.
+ * @param {Object} orm
+ */
+export function legacyRPC(orm) {
+    return (params) => {
+        params = { ...params };
+        const model = params.model;
+        delete params.model;
+        const method = params.method;
+        delete params.method;
+        if (params.groupBy) {
+            params.groupby = params.groupBy;
+            delete params.groupBy;
+        }
+        if (params.orderBy) {
+            params.order = params.orderBy
+                .map((order) => order.name + (order.asc !== false ? " ASC" : " DESC"))
+                .join(", ");
+            delete params.orderBy;
+        }
+        const { args, ...kwargs } = params;
+        return orm.call(model, method, args || [], kwargs);
+    };
 }

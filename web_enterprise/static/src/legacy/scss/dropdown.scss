@@ -16,11 +16,12 @@
             box-shadow: none;
             color: $dropdown-link-active-color;
         }
+
+        + .o_dropdown_menu {
+            margin-top: $dropdown-border-width * -1;
+        }
     }
 
-    .o_dropdown_menu {
-        margin-top: $dropdown-border-width * -1;
-    }
 }
 
 // = Enterprise jQueryUI dropdown

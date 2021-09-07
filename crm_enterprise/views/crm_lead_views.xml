@@ -72,7 +72,7 @@
             <field name="name">crm.lead.pivot.view</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <pivot string="Leads" display_quantity="true" sample="1">
+                <pivot string="Leads" display_quantity="1" sample="1">
                     <field name="user_id" type="row"/>
                     <field name="expected_revenue" type="measure"/>
                     <field name="prorated_revenue" type="measure"/>

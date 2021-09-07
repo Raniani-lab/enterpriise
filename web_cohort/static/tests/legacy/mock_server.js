@@ -69,7 +69,7 @@ MockServer.include({
                 domain: group.__domain,
             });
             var value = 0;
-            if (kwargs.measure === '__count__') {
+            if (kwargs.measure === '__count') {
                 value = records.length;
             } else {
                 if (records.length) {
@@ -109,7 +109,7 @@ MockServer.include({
                     return record[kwargs.date_stop] && moment(record[kwargs.date_stop], 'YYYY-MM-DD').format(displayFormats[kwargs.interval]) == compareDate;
                 });
                 var colValue = 0;
-                if (kwargs.measure === '__count__') {
+                if (kwargs.measure === '__count') {
                     colValue = colRecords.length;
                 } else {
                     if (colRecords.length) {
@@ -123,7 +123,7 @@ MockServer.include({
                     colRecords = _.filter(records.records, function (record) {
                         return record[kwargs.date_stop] && moment(record[kwargs.date_stop], 'YYYY-MM-DD') >= colStartDate;
                     });
-                    if (kwargs.measure === '__count__') {
+                    if (kwargs.measure === '__count') {
                         initialValue = colRecords.length;
                     } else {
                         if (colRecords.length) {

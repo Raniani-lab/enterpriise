@@ -67,6 +67,10 @@
       border: 0;
       position: relative;
       background-color: initial;
+
+      &:after {
+        display: none; // Remove inner dropdown caret
+      }
     }
 
     // Menu entries size and layout

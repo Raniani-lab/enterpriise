@@ -4,6 +4,10 @@ odoo.define('web_cohort.cohort_tests', function (require) {
 var CohortView = require('web_cohort.CohortView');
 var testUtils = require('web.test_utils');
 
+const legacyViewRegistry = require("web.view_registry");
+const { registry } = require("@web/core/registry");
+const viewRegistry = registry.category("views");
+
 const cpHelpers = testUtils.controlPanel;
 var createView = testUtils.createView;
 var patchDate = testUtils.mock.patchDate;
@@ -69,7 +73,7 @@ QUnit.module('Views', {
         serverData = {models: this.data};
     }
 }, function () {
-    QUnit.module('CohortView');
+    QUnit.module('LegacyCohortView');
 
     QUnit.test('simple cohort rendering', async function (assert) {
         assert.expect(7);
@@ -145,7 +149,7 @@ QUnit.module('Views', {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />'
         });
 
-        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'),'selected',
+        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count]'),'selected',
                 'count should by default for measure');
         assert.hasClass(cohort.$buttons.find('.o_cohort_interval_button[data-interval=day]'),'active',
                 'day should by default for interval');
@@ -206,8 +210,8 @@ QUnit.module('Views', {
             'should contain "Stop - By Week" in title');
 
         await testUtils.dom.click(cohort.$buttons.find('.dropdown-toggle:contains(Measures)'));
-        await testUtils.dom.click(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'));
-        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'),'selected',
+        await testUtils.dom.click(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count]'));
+        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count]'),'selected',
                 'should active count for measure');
         assert.ok(cohort.$('.table thead tr:first th:nth-child(2):contains(Count)').length,
             'should contain "Count" in header of second column');
@@ -234,7 +238,7 @@ QUnit.module('Views', {
         await testUtils.dom.click(cohort.$('.btn-group:first button'));
         assert.containsN(cohort, '.o_cohort_measures_list button', 2);
         assert.containsOnce(cohort, '.o_cohort_measures_list button[data-field="recurring"]');
-        assert.containsOnce(cohort, '.o_cohort_measures_list button[data-field="__count__"]');
+        assert.containsOnce(cohort, '.o_cohort_measures_list button[data-field="__count"]');
 
         cohort.destroy();
     });
@@ -291,7 +295,7 @@ QUnit.module('Views', {
         assert.expect(6);
 
         const views = {
-            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />',
             'subscription,my_list_view,list': '<tree>' +
                     '<field name="start"/>' +
                     '<field name="stop"/>' +
@@ -316,6 +320,11 @@ QUnit.module('Views', {
             serverData,
             legacyParams: { withLegacyMockServer: true },
         });
+
+
+        viewRegistry.remove("cohort");
+        legacyViewRegistry.add("cohort", CohortView); // We want to test the legacy view that was not added to viewRegistry!
+        // (see end of registerView in legacy_views.js)
 
         await doAction(webClient, {
             name: 'Subscriptions',
@@ -401,7 +410,7 @@ QUnit.module('Views', {
     QUnit.test('when clicked on cell redirects to the action list/form view passed in context', async function(assert) {
         assert.expect(6);
         const views = {
-            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />',
             'subscription,my_list_view,list': '<tree>' +
                     '<field name="start"/>' +
                     '<field name="stop"/>' +
@@ -425,6 +434,10 @@ QUnit.module('Views', {
             serverData,
             legacyParams: { withLegacyMockServer: true },
         });
+
+        viewRegistry.remove("cohort");
+        legacyViewRegistry.add("cohort", CohortView); // We want to test the legacy view that was not added to viewRegistry!
+        // (see end of registerView in legacy_views.js)
 
         await doAction(webClient, {
             name: 'Subscriptions',
@@ -470,7 +483,7 @@ QUnit.module('Views', {
         var unpatchDate = patchDate(2017, 7, 25, 1, 0, 0);
 
         const views = {
-            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+            'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />',
             'subscription,false,search': `
                 <search>
                     <filter date="start" name="date_filter" string="Date"/>
@@ -482,6 +495,10 @@ QUnit.module('Views', {
             serverData,
             legacyParams: { withLegacyMockServer: true },
         });
+
+        viewRegistry.remove("cohort");
+        legacyViewRegistry.add("cohort", CohortView); // We want to test the legacy view that was not added to viewRegistry!
+        // (see end of registerView in legacy_views.js)
 
         await doAction(webClient, {
             name: 'Subscriptions',

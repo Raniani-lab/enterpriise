@@ -21,9 +21,10 @@ Bridge module for project and enterprise
         'web.assets_backend': [
             'project_enterprise/static/src/js/**/*',
             'project_enterprise/static/src/scss/**/*',
+            'project_enterprise/static/src/project_control_panel/**/*',
         ],
         'web.assets_qweb': [
-            'project_enterprise/static/src/xml/**/*',
+            'project_enterprise/static/src/**/*.xml',
         ],
         'web.qunit_suite_tests': [
             'project_enterprise/static/tests/**/*',

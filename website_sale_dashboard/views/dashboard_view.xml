@@ -17,7 +17,7 @@
          <field name="name">sale.report.pivot</field>
          <field name="model">sale.report</field>
          <field name="arch" type="xml">
-             <pivot string="Sales Analysis" display_quantity="true" sample="1">
+             <pivot string="Sales Analysis" display_quantity="1" sample="1">
                  <field name="categ_id" type="row"/>
                  <field name="order_id" type="measure"/>
                  <field name="price_subtotal" type="measure"/>

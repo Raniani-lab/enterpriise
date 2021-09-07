@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import spreadsheet from "../o_spreadsheet_loader";
+import { legacyRPC } from "./helpers";
 
 const { DataSource } = spreadsheet;
 
@@ -36,7 +37,11 @@ export class BasicDataSource extends DataSource {
      */
     constructor(params) {
         super();
-        this.rpc = params.rpc;
+        if (params.rpc && params.rpc.constructor.name === "ORM") {
+            this.rpc = legacyRPC(params.rpc);
+        } else {
+            this.rpc = params.rpc;
+        }
         if (!this.rpc) {
             throw new Error("rpc cannot be undefined");
         }

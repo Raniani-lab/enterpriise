@@ -1,14 +1,21 @@
 odoo.define('web_dashboard.dashboard_tests', function (require) {
-"use strict";
+    "use strict";
 
 var BasicFields = require('web.basic_fields');
+const { createWebClient, doAction } = require("@web/../tests/webclient/helpers");
 var DashboardView = require('web_dashboard.DashboardView');
 var fieldRegistry = require('web.field_registry');
+var GraphView = require('web.GraphView');
+var PivotView = require('web.PivotView');
+const legacyViewRegistry = require("web.view_registry");
+const { registry } = require("@web/core/registry");
 var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
-const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const CohortView = require('web_cohort.CohortView');
+
+const viewRegistry = registry.category("views");
 
 const { createView, nextTick } = testUtils;
 const cpHelpers = testUtils.controlPanel;
@@ -17,7 +24,6 @@ var patchDate = testUtils.mock.patchDate;
 var FieldFloat = BasicFields.FieldFloat;
 
 let serverData;
-
 QUnit.module('Views', {
     beforeEach: function () {
         this.data = {
@@ -72,7 +78,7 @@ QUnit.module('Views', {
     }
 }, function () {
 
-    QUnit.module('DashboardView');
+    QUnit.module('DashboardView (legacy)');
 
     QUnit.test('basic rendering of a dashboard with groups', async function (assert) {
         assert.expect(3);
@@ -1398,6 +1404,12 @@ QUnit.module('Views', {
                 '</search>',
         };
         Object.assign(serverData, {views});
+
+        viewRegistry.remove("dashboard");
+        legacyViewRegistry.add("dashboard", DashboardView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("graph");
+        legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
+
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
@@ -1421,7 +1433,6 @@ QUnit.module('Views', {
         assert.strictEqual($('.o_control_panel .breadcrumb-item').text(), 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
-
         // activate 'Category 1' filter
         await cpHelpers.toggleFilterMenu(webClient);
         await cpHelpers.toggleMenuItem(webClient, 0);
@@ -1444,7 +1455,6 @@ QUnit.module('Views', {
             'categ_id=1', // graph view opened fullscreen
             'categ_id=1', // dashboard after coming back
         ]);
-
     });
 
     QUnit.test('open a cohort view fullscreen', async function (assert) {
@@ -1468,6 +1478,11 @@ QUnit.module('Views', {
                 '</search>',
         };
         Object.assign(serverData, {views});
+
+        viewRegistry.remove("dashboard");
+        legacyViewRegistry.add("dashboard", DashboardView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("cohort");
+        legacyViewRegistry.add("cohort", CohortView); // We want to test the legacy view that was not added to viewRegistry!
 
         const webClient = await createWebClient({
             serverData,
@@ -1733,6 +1748,13 @@ QUnit.module('Views', {
         };
         Object.assign(serverData, {views});
 
+        viewRegistry.remove("dashboard");
+        legacyViewRegistry.add("dashboard", DashboardView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("graph");
+        legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("pivot");
+        legacyViewRegistry.add("pivot", PivotView); // We want to test the legacy view that was not added to viewRegistry!
+
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
@@ -1807,6 +1829,11 @@ QUnit.module('Views', {
         };
         Object.assign(serverData, {views});
 
+        viewRegistry.remove("dashboard");
+        legacyViewRegistry.add("dashboard", DashboardView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("graph");
+        legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
+
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
@@ -1866,6 +1893,11 @@ QUnit.module('Views', {
             'test_report,false,search': '<search></search>',
         };
         Object.assign(serverData, {views});
+
+        viewRegistry.remove("dashboard");
+        legacyViewRegistry.add("dashboard", DashboardView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("graph");
+        legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
 
         const webClient = await createWebClient({
             serverData,
@@ -1991,7 +2023,7 @@ QUnit.module('Views', {
         });
 
         assert.deepEqual(dashboard.getOwnedQueryParams().context.cohort, {
-            cohort_measure: '__count__',
+            cohort_measure: '__count',
             cohort_interval: 'week',
         }, "context should be correct");
 
@@ -2220,7 +2252,7 @@ QUnit.module('Views', {
         });
 
         assert.verifySteps([
-            '__count__', // first load
+            '__count', // first load
             'untaxed', // reload
         ]);
 

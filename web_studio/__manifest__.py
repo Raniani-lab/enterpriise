@@ -62,6 +62,7 @@ Note: Only the admin user is allowed to make those customizations.
         'web.assets_backend_prod_only': [
             'web_studio/static/src/client_action/studio_action_loader.js',
         ],
+        # This bundle is lazy loaded: it is loaded when studio is opened for the first time
         'web_studio.studio_assets': [
             'web_studio/static/src/client_action/**/*.js',
             ('remove', 'web_studio/static/src/client_action/studio_action_loader.js'),

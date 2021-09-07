@@ -58,8 +58,7 @@ class HrContract(models.Model):
         super()._compute_contract_wage()
 
     def _get_contract_wage_field(self):
-        self.ensure_one()
-        if self.structure_type_id.country_id.code == 'BE':
+        if (len(self) == 1 and self.structure_type_id.country_id.code == 'BE') or (not len(self) and self.env.company.country_id.code == 'BE'):
             return 'wage_on_signature'
         return super()._get_contract_wage_field()
 
@@ -68,21 +67,30 @@ class HrContract(models.Model):
         for contract in self:
             contract.is_origin_contract_template = contract.origin_contract_id and not contract.origin_contract_id.employee_id
 
+    def _get_yearly_cost(self, inverse=False):
+        self.ensure_one()
+        ratio = (1.0 - self.holidays / 231.0)
+        if inverse:
+            return self._get_advantages_costs() + self._get_salary_costs_factor() * self.wage_with_holidays / ratio
+        return self.final_yearly_costs * ratio
+
+    def _is_salary_sacrifice(self):
+        self.ensure_one()
+        return self.holidays
+
     @api.depends('holidays', 'wage', 'final_yearly_costs')
     def _compute_wage_with_holidays(self):
         for contract in self:
-            if contract.holidays:
-                yearly_cost = contract.final_yearly_costs * (1.0 - contract.holidays / 231.0)
+            if contract._is_salary_sacrifice():
+                yearly_cost = contract._get_yearly_cost()
                 contract.wage_with_holidays = contract._get_gross_from_employer_costs(yearly_cost)
             else:
                 contract.wage_with_holidays = contract.wage
 
     def _inverse_wage_with_holidays(self):
         for contract in self:
-            if contract.holidays:
-                yearly_cost = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage_with_holidays
-                # YTI TODO: The number of working days per year could be a setting on the company
-                contract.final_yearly_costs = yearly_cost / (1.0 - contract.holidays / 231.0)
+            if contract._is_salary_sacrifice():
+                contract.final_yearly_costs = contract._get_yearly_cost(inverse=True)
                 contract.wage = contract._get_gross_from_employer_costs(contract.final_yearly_costs)
             else:
                 contract.wage = contract.wage_with_holidays

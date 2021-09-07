@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_contract_view_form" model="ir.ui.view">
+        <field name="name">hr.contract.view.form.inherit.group.insurance</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract_salary.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='yearly_advantages']" position="inside">
+                <label for="l10n_be_group_insurance_rate" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                <div class="o_row">
+                    <field name="l10n_be_group_insurance_rate" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                    <span attrs="{'invisible': [('wage_type', '=', 'hourly')]}">%</span>
+                </div>
+                <field name="l10n_be_group_insurance_amount" invisible="1"/>
+                <field name="l10n_be_group_insurance_cost" invisible="1"/>
+            </xpath>
+            <div name="div_wage_with_holidays" position="attributes">
+                <attribute name="attrs">{'invisible': [('holidays', '=', 0.0), ('l10n_be_group_insurance_rate', '=', 0.0)]}</attribute>
+            </div>
+            <label name="label_wage_with_holidays" position="attributes">
+                <attribute name="attrs">{'invisible': [('holidays', '=', 0.0), ('l10n_be_group_insurance_rate', '=', 0.0)]}</attribute>
+            </label>
+        </field>
+    </record>
+</odoo>

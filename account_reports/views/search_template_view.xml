@@ -418,7 +418,7 @@
 
     <template id="search_template_tax_unit_chooser">
         <div id="tax_unit_option" class="btn-group o_dropdown">
-            <button t-if="options['available_tax_units']" type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button t-if="options['available_tax_units']" type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-home"/>
                 Tax Unit:
                 <t>

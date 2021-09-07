@@ -77,7 +77,7 @@ class StockMoveLine(models.Model):
             for quality_point in quality_points:
                 if quality_point.check_execute_now():
                     check_values = ml._get_check_values(quality_point)
-                check_values_list.append(check_values)
+                    check_values_list.append(check_values)
         if check_values_list:
             self.env['quality.check'].sudo().create(check_values_list)
 

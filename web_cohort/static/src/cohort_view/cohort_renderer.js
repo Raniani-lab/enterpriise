@@ -1,0 +1,21 @@
+/** @odoo-module **/
+
+import { formatFloat, formatPercentage } from "@web/fields/formatters";
+
+const { Component } = owl;
+
+export class CohortRenderer extends Component {
+    range(n) {
+        return Array.from({ length: n }, (_, i) => i);
+    }
+
+    formatFloat(value) {
+        return formatFloat(value, { digits: [false, 1] });
+    }
+
+    formatPercentage(value) {
+        return formatPercentage(value, { digits: [false, 1] });
+    }
+}
+
+CohortRenderer.template = "web_cohort.CohortRenderer";

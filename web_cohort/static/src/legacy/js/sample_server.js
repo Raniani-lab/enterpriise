@@ -34,7 +34,7 @@ odoo.define('web_cohort/static/src/js/sample_server.js', function (require) {
                 colStartDate = colStartDate.subtract(15, interval);
             }
 
-            let value = measure === '__count__' ?
+            let value = measure === '__count' ?
                             this._getRandomInt(SampleServer.MAX_INTEGER) :
                             this._generateFieldValue(model, measure);
             value = value || 25;

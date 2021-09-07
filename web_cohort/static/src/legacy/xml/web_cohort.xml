@@ -14,7 +14,7 @@
                     <t t-esc="measure[1]"/>
                 </button>
                 <div t-if="_.keys(measures).length" class="dropdown-divider"/>
-                <button type="button" class="dropdown-item" data-field="__count__">Count</button>
+                <button type="button" class="dropdown-item" data-field="__count">Count</button>
             </div>
         </div>
         <div class="btn-group" t-if="isMobile">
@@ -37,7 +37,7 @@
         </div>
     </t>
 
-    <div t-name="web_cohort.CohortRenderer" class="o_cohort_view" owl="1">
+    <div t-name="web_cohort.Legacy.CohortRenderer" class="o_cohort_view" owl="1">
         <div t-if="props.hasContent">
             <div t-if="props.comparisonReport &amp;&amp; (props.comparisonReport.rows.length || props.report.rows.length)" class="table-responsive">
                 <t t-call="CohortView.tableTitle">

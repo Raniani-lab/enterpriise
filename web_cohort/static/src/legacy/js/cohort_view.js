@@ -3,11 +3,11 @@ odoo.define('web_cohort.CohortView', function (require) {
 
 var AbstractView = require('web.AbstractView');
 var core = require('web.core');
-var view_registry = require('web.view_registry');
 var CohortController = require('web_cohort.CohortController');
 var CohortModel = require('web_cohort.CohortModel');
 var CohortRenderer = require('web_cohort.CohortRenderer');
 const RendererWrapper = require('web.RendererWrapper');
+const legacyViewRegistry = require("web.view_registry");
 
 var _t = core._t;
 var _lt = core._lt;
@@ -71,12 +71,12 @@ var CohortView = AbstractView.extend({
             }
         });
 
-        measures.__count__ = _t('Count');
+        measures.__count = _t('Count');
         this.rendererParams.measures = measures;
         this.rendererParams.intervals = intervals;
 
         // Controller Parameters
-        this.controllerParams.measures = _.omit(measures, '__count__');
+        this.controllerParams.measures = _.omit(measures, '__count');
         this.controllerParams.intervals = intervals;
         this.controllerParams.title = params.title || attrs.string || _t('Untitled');
         // Used in export
@@ -112,7 +112,7 @@ var CohortView = AbstractView.extend({
         this.loadParams.dateStop = context.cohort_date_stop ||  attrs.date_stop;
         this.loadParams.mode = context.cohort_mode || attrs.mode || 'retention';
         this.loadParams.timeline = context.cohort_timeline || attrs.timeline || 'forward';
-        this.loadParams.measure = context.cohort_measure ||  attrs.measure || '__count__';
+        this.loadParams.measure = context.cohort_measure ||  attrs.measure || '__count';
         this.loadParams.interval = context.cohort_interval || attrs.interval || 'day';
 
         this.rendererParams.mode = this.loadParams.mode;
@@ -133,8 +133,7 @@ var CohortView = AbstractView.extend({
     },
 });
 
-view_registry.add('cohort', CohortView);
-
+legacyViewRegistry.add("cohort", CohortView); // Compatibility with Studio!
 return CohortView;
 
 });

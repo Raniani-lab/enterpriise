@@ -55,7 +55,8 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
             }
             const rowData = ev.currentTarget.dataset;
             const rowIndex = rowData.rowIndex;
-            const colIndex = ev.target.dataset.colIndex;
+            const colIndex = ev.target.dataset.colIndex; // pas de colIndex dans le template
+            // TODO: [SAD] fixme in master (type is always data because set unconditionally in template)
             const row = (rowData.type === 'data') ?
                 this.props.report.rows[rowIndex] :
                 this.props.comparisonReport.rows[rowIndex];
@@ -75,7 +76,7 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
         }
     }
 
-    CohortRenderer.template = 'web_cohort.CohortRenderer';
+    CohortRenderer.template = 'web_cohort.Legacy.CohortRenderer';
 
     return CohortRenderer;
 

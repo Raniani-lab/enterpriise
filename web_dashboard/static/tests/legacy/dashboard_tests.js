@@ -13,6 +13,7 @@ var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
 const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const CohortView = require('web_cohort.CohortView');
 
 const viewRegistry = registry.category("views");
 
@@ -1480,6 +1481,8 @@ QUnit.module('Views', {
 
         viewRegistry.remove("dashboard");
         legacyViewRegistry.add("dashboard", DashboardView); // We want to test the legacy view that was not added to viewRegistry!
+        viewRegistry.remove("cohort");
+        legacyViewRegistry.add("cohort", CohortView); // We want to test the legacy view that was not added to viewRegistry!
 
         const webClient = await createWebClient({
             serverData,

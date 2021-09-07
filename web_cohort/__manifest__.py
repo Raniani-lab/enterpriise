@@ -10,13 +10,13 @@
     'depends': ['web'],
     'assets': {
         'web.assets_qweb': [
-            'web_cohort/static/src/xml/**/*',
+            'web_cohort/static/src/**/*.xml',
         ],
         'web.assets_backend': [
             'web_cohort/static/src/**/*',
         ],
         'web.qunit_suite_tests': [
-            'web_cohort/static/tests/**/*',
+            'web_cohort/static/tests/**/*.js',
         ],
     },
     'auto_install': True,

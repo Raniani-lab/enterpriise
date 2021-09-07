@@ -650,13 +650,13 @@ class Task(models.Model):
                 group_bys = row.get('groupedBy')
                 res_id = row.get('resId')
                 if group_bys:
-                    # if user_id is the first grouping attribute
-                    if group_bys[0] == 'user_id' and res_id:
+                    # if user_ids is the first grouping attribute
+                    if group_bys[0] == 'user_ids' and res_id:
                         user_id = res_id
                         user_ids.add(user_id)
                         row['user_id'] = user_id
                     # else we recursively traverse the rows
-                    elif 'user_id' in group_bys:
+                    elif 'user_ids' in group_bys:
                         tag_user_rows(row.get('rows'))
 
         tag_user_rows(rows)

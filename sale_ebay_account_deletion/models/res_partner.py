@@ -94,8 +94,8 @@ class ResPartner(models.Model):
             'city': '',
             'zip': '',
             'phone': '',
-            'state_id': '',
-            'country_id': '',
+            'state_id': False,
+            'country_id': False,
         }
         if archive:
             # Do not archive the main partner otherwise the generated activity

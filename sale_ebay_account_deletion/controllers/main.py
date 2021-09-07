@@ -12,16 +12,17 @@ from werkzeug import urls
 from werkzeug.exceptions import NotFound
 
 try:
+    from cryptography.exceptions import InvalidSignature
     from cryptography.hazmat.primitives import serialization, hashes
     from cryptography.hazmat.primitives.asymmetric import ec
     from cryptography.hazmat.backends import default_backend
-    from cryptography.exceptions import InvalidSignature
 except ImportError:
     serialization = hashes = ec = default_backend = InvalidSignature = None
 
 from odoo.http import Controller, request, route
 
 _logger = logging.getLogger(__name__)
+TIMEOUT = 60
 
 
 class EbayController(Controller):
@@ -175,6 +176,7 @@ class EbayController(Controller):
                     "scope": "https://api.ebay.com/oauth/api_scope",
                 },
                 headers=headers,
+                timeout=TIMEOUT,
             )
             response.raise_for_status()
         except Exception as e:
@@ -206,7 +208,9 @@ class EbayController(Controller):
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Authorization': 'bearer ' + token,
-                })
+                },
+                timeout=TIMEOUT,
+            )
             response.raise_for_status()
         except Exception as e:
             _logger.error("Couldn't fetch public key from ebay (key id: %s):\n%s", key_id, e)

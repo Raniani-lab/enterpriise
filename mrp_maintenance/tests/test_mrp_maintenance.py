@@ -8,41 +8,42 @@ from odoo.tests import common, Form
 
 class TestMrpMaintenance(common.TransactionCase):
 
-    def setUp(self):
-        super(TestMrpMaintenance, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
         # Relative models
-        self.ResUsers = self.env['res.users']
-        self.equipment = self.env['maintenance.equipment']
+        cls.ResUsers = cls.env['res.users']
+        cls.equipment = cls.env['maintenance.equipment']
 
         # User references
-        self.main_company = self.env.ref('base.main_company')
-        self.technician_user_id = self.env.ref('base.user_root')
-        self.maintenance_team_id = self.env.ref('maintenance.equipment_team_maintenance')
-        self.stage_repaired_id = self.ref('maintenance.stage_3')
-        self.stage_id = self.ref('maintenance.stage_0')
-        self.category_id = self.env['maintenance.equipment.category'].create({
+        cls.main_company = cls.env.ref('base.main_company')
+        cls.technician_user_id = cls.env.ref('base.user_root')
+        cls.maintenance_team_id = cls.env.ref('maintenance.equipment_team_maintenance')
+        cls.stage_repaired_id = cls.env.ref('maintenance.stage_3').id
+        cls.stage_id = cls.env.ref('maintenance.stage_0').id
+        cls.category_id = cls.env['maintenance.equipment.category'].create({
             'name': 'Monitors - Test',
-            'technician_user_id': self.env.ref('base.user_admin').id,
+            'technician_user_id': cls.env.ref('base.user_admin').id,
             'color': 3,
         })
 
         # Create user
-        self.user = self.ResUsers.create({
+        cls.user = cls.ResUsers.create({
             'name': "employee",
-            'company_id': self.main_company.id,
+            'company_id': cls.main_company.id,
             'login': "employee",
             'email': "employee@yourcompany.example.com",
-            'groups_id': [(6, 0, [self.ref('base.group_user')])]
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])]
         })
 
         # Create user with extra rights
-        self.manager = self.ResUsers.create({
+        cls.manager = cls.ResUsers.create({
             'name': "Equipment Manager",
-            'company_id': self.main_company.id,
+            'company_id': cls.main_company.id,
             'login': "manager",
             'email': "eqmanager@yourcompany.example.com",
-            'groups_id': [(6, 0, [self.ref('maintenance.group_equipment_manager')])]
+            'groups_id': [(6, 0, [cls.env.ref('maintenance.group_equipment_manager').id])]
         })
 
     # Create method for create a maintenance request

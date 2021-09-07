@@ -7,7 +7,8 @@ from odoo.tests import common, Form
 
 class TestMpsMps(common.TransactionCase):
 
-    def setUp(cls):
+    @classmethod
+    def setUpClass(cls):
         """ Define a multi level BoM and generate a production schedule with
         default value for each of the products.
         BoM 1:
@@ -27,7 +28,7 @@ class TestMpsMps(common.TransactionCase):
                     |                   |
                 3 Drawer            4 Table Legs
         """
-        super(TestMpsMps, cls).setUp()
+        super().setUpClass()
 
         cls.table = cls.env['product.product'].create({
             'name': 'Table',

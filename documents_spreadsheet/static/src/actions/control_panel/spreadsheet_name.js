@@ -31,7 +31,8 @@ export class SpreadsheetName extends owl.Component {
    * @param {string} text in the input element
    */
   _setInputSize(text) {
-    const { font } = window.getComputedStyle(this.input.el);
+    const { fontFamily, fontSize } = window.getComputedStyle(this.input.el);
+    const font = `${fontSize} ${fontFamily}`;
     this.state.inputSize =
       this._computeTextWidth(text || this.placeholder, font) +
       PADDING_RIGHT +

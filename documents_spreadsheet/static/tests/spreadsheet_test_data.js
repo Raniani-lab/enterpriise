@@ -162,6 +162,7 @@ export function getBasicData() {
                     type: "many2one",
                     relation: "product",
                     store: true,
+                    sortable: true,
                 },
                 probability: {
                     string: "Probability",

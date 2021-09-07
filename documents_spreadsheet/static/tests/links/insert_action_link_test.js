@@ -5,6 +5,10 @@ import { controlPanel } from "web.test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 
 import { getBasicData } from "../spreadsheet_test_data";
+import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
+import { registry } from "@web/core/registry";
+
+const serviceRegistry = registry.category("services");
 
 const { toggleMenuItem } = controlPanel;
 const { loadJS } = owl.utils;
@@ -198,6 +202,7 @@ QUnit.module(
 
         QUnit.test("simple pivot view", async function (assert) {
             assert.expect(1);
+            serviceRegistry.add("user", makeFakeUserService());
             const webClient = await openView("pivot");
             await insertInSpreadsheetAndClickLink(webClient);
             assert.strictEqual(getCurrentViewType(webClient), "pivot");
@@ -205,15 +210,16 @@ QUnit.module(
 
         QUnit.test("pivot view with custom group by and measure", async function (assert) {
             assert.expect(3);
+            serviceRegistry.add("user", makeFakeUserService());
             const webClient = await openView("pivot");
 
             // group by name
-            await click(webClient.el, ".o_group_by_menu button");
+            await toggleGroupByMenu(webClient);
             await toggleMenuItem(webClient.el, "name");
 
             // add count measure
-            await click(webClient.el, ".o_cp_bottom_left button.dropdown-toggle");
-            await click(webClient.el, "a[data-field='__count']");
+            await toggleMenu(webClient, "Measures");
+            await toggleMenuItem(webClient, "Count");
 
             await insertInSpreadsheetAndClickLink(webClient);
             const action = getCurrentAction(webClient);

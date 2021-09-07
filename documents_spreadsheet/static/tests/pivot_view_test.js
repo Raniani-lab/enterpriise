@@ -1,7 +1,5 @@
-/** @odoo-module alias=documents_spreadsheet.PivotControllerTests */
+/** @odoo-module alias=documents_spreadsheet.PivotViewTests */
 
-import PivotView from "web.PivotView";
-import testUtils from "web.test_utils";
 import { getBasicData } from "./spreadsheet_test_data";
 import {
     createSpreadsheetFromPivot,
@@ -13,12 +11,24 @@ import {
     getMerges,
     setCellContent,
 } from "./spreadsheet_test_utils";
-import { doAction } from "@web/../tests/webclient/helpers";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import { click, nextTick } from "@web/../tests/helpers/utils";
+import { makeView } from "@web/../tests/views/helpers";
+import { dialogService } from "@web/core/dialog/dialog_service";
+import { registry } from "@web/core/registry";
+import {
+    toggleMenu,
+    toggleMenuItem,
+    setupControlPanelServiceRegistry,
+} from "@web/../tests/search/helpers";
+import * as BusService from "bus.BusService";
+import * as legacyRegistry from "web.Registry";
+import * as RamStorage from "web.RamStorage";
+import * as AbstractStorageService from "web.AbstractStorageService";
 
-const createView = testUtils.createView;
 const { module, test } = QUnit;
 
-module("documents_spreadsheet > pivot_controller");
+module("documents_spreadsheet > pivot_view");
 
 test("simple pivot export", async (assert) => {
     assert.expect(8);
@@ -109,11 +119,9 @@ test("pivot with two levels of group bys in rows", async (assert) => {
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions: async (controller) => {
-            await testUtils.dom.click(controller.$("tbody .o_pivot_header_cell_closed:first"));
-            await testUtils.dom.click(
-                controller.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
-            );
+        actions: async (pivot) => {
+            await click(pivot.el.querySelector("tbody .o_pivot_header_cell_closed"));
+            await click(pivot.el.querySelectorAll(".o_dropdown_item")[1]);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 16);
@@ -252,7 +260,7 @@ test("Add pivot: Both groupings have a parent date grouping: both sets must be j
 });
 
 test("Add pivot: Never join the values of a date field if there is a parent group based on the same date field", async (assert) => {
-    assert.expect(7);
+    assert.expect(8);
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             arch: `
@@ -264,12 +272,13 @@ test("Add pivot: Never join the values of a date field if there is a parent grou
         }
     });
     assert.equal(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:month","04/2016")`);
-    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","16/2016")`);
+    assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","15/2016")`);
     assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:month","10/2016")`);
-    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","44/2016")`);
+    assert.equal(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","43/2016")`);
     assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","date:month","12/2016")`);
-    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","51/2016")`);
-    assert.equal(getCellFormula(model, "A9"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "A8"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","49/2016")`);
+    assert.equal(getCellFormula(model, "A9"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","50/2016")`);
+    assert.equal(getCellFormula(model, "A10"), `=PIVOT.HEADER("1")`);
 });
 
 test("Add pivot: date grouping", async (assert) => {
@@ -440,7 +449,7 @@ test("Add pivot: Both groupings have a parent date grouping: both sets must be j
 });
 
 test("Add pivot: Never join the values of a date field if there is a parent group based on the same date field", async (assert) => {
-    assert.expect(11);
+    assert.expect(14);
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
             arch: `
@@ -452,16 +461,19 @@ test("Add pivot: Never join the values of a date field if there is a parent grou
         }
     });
     assert.equal(getCellFormula(model, "B1"), `=PIVOT.HEADER("1","date:month","04/2016")`);
-    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","16/2016")`);
-    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","16/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "B2"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","15/2016")`);
+    assert.equal(getCellFormula(model, "B3"), `=PIVOT.HEADER("1","date:month","04/2016","date:week","15/2016","measure","probability")`);
     assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER("1","date:month","10/2016")`);
-    assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","44/2016")`);
-    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","44/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","43/2016")`);
+    assert.equal(getCellFormula(model, "C3"), `=PIVOT.HEADER("1","date:month","10/2016","date:week","43/2016","measure","probability")`);
     assert.equal(getCellFormula(model, "D1"), `=PIVOT.HEADER("1","date:month","12/2016")`);
-    assert.equal(getCellFormula(model, "D2"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","51/2016")`);
-    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","51/2016","measure","probability")`);
-    assert.equal(getCellFormula(model, "E2"), `=PIVOT.HEADER("1")`);
-    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","measure","probability")`);
+    assert.equal(getCellFormula(model, "D2"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","49/2016")`);
+    assert.equal(getCellFormula(model, "D3"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","49/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "E1"), ``);
+    assert.equal(getCellFormula(model, "E2"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","50/2016")`);
+    assert.equal(getCellFormula(model, "E3"), `=PIVOT.HEADER("1","date:month","12/2016","date:week","50/2016","measure","probability")`);
+    assert.equal(getCellFormula(model, "F2"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellFormula(model, "F3"), `=PIVOT.HEADER("1","measure","probability")`);
 });
 
 test("verify that there is a record for an undefined header", async (assert) => {
@@ -532,11 +544,9 @@ test("pivot with two levels of group bys in cols", async (assert) => {
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions: async (controller) => {
-            await testUtils.dom.click(controller.$("thead .o_pivot_header_cell_closed:first"));
-            await testUtils.dom.click(
-                controller.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
-            );
+        actions: async (pivot) => {
+            await click(pivot.el.querySelector("thead .o_pivot_header_cell_closed"));
+            await click(pivot.el.querySelectorAll(".o_dropdown_item")[1]);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 20);
@@ -563,10 +573,9 @@ test("pivot with count as measure", async (assert) => {
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions: async (controller) => {
-            await testUtils.nextTick();
-            await testUtils.pivot.toggleMeasuresDropdown(controller);
-            await testUtils.pivot.clickMeasure(controller, "__count");
+        actions: async (pivot) => {
+            await toggleMenu(pivot, "Measures");
+            await toggleMenuItem(pivot, "Count");
         },
     });
     assert.strictEqual(Object.keys(getCells(model)).length, 9);
@@ -602,11 +611,9 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
                 <field name="probability" type="measure"/>
             </pivot>`,
         },
-        actions: async (controller) => {
-            await testUtils.dom.click(controller.$("thead .o_pivot_header_cell_closed:first"));
-            await testUtils.dom.click(
-                controller.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
-            );
+        actions: async (pivot) => {
+            await click(pivot.el.querySelector("thead .o_pivot_header_cell_closed"));
+            await click(pivot.el.querySelectorAll(".o_dropdown_item")[1]);
         },
     });
     // 72 products * 1 groups + 1 row header + 1 total col + 1 extra empty col at the end
@@ -614,7 +621,7 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
 });
 
 test("groupby week is sorted", async (assert) => {
-    assert.expect(3);
+    assert.expect(4);
 
     const { model } = await createSpreadsheetFromPivot({
         pivotView: {
@@ -626,81 +633,133 @@ test("groupby week is sorted", async (assert) => {
             </pivot>`,
         },
     });
-    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:week","16/2016")`);
-    assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:week","44/2016")`);
-    assert.strictEqual(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:week","51/2016")`);
+    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:week","15/2016")`);
+    assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:week","43/2016")`);
+    assert.strictEqual(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:week","49/2016")`);
+    assert.strictEqual(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:week","50/2016")`);
 });
 
 test("Can save a pivot in a new spreadsheet", async (assert) => {
     assert.expect(2);
 
-    await createSpreadsheetFromPivot({
-        pivotView: {
-            arch: `
-            <pivot string="Partners">
-                <field name="probability" type="measure"/>
-            </pivot>`,
-            mockRPC: async function (route, args) {
-                if (route.includes("get_spreadsheets_to_display")) {
-                    return [{ id: 1, name: "My Spreadsheet" }];
-                }
-                if (args.method === "create" && args.model === "documents.document") {
-                    assert.step("create");
-                    return [1];
-                }
-                if (this) {
-                    return this._super.apply(this, arguments);
-                }
-            },
-            session: { user_has_group: async () => true },
+    const legacyServicesRegistry = new legacyRegistry();
+    const LocalStorageService = AbstractStorageService.extend({
+        storage: new RamStorage(),
+    });
+    legacyServicesRegistry.add(
+        "bus_service",
+        BusService.extend({
+            _poll() {},
+        })
+    );
+    legacyServicesRegistry.add("local_storage", LocalStorageService);
+
+    const serverData = {
+        models: getBasicData(),
+        views: {
+            "partner,false,pivot": `
+                 <pivot string="Partners">
+                     <field name="probability" type="measure"/>
+                 </pivot>`,
+            "partner,false,search": `<search/>`,
         },
-        actions: async (controller) => {
-            await testUtils.nextTick();
-            await testUtils.dom.click(controller.$el.find(".o_pivot_add_spreadsheet"));
-            await testUtils.nextTick();
-            await testUtils.modal.clickButton("Confirm");
-            await testUtils.nextTick();
+    };
+    const webClient = await createWebClient({
+        serverData,
+        legacyParams: {
+            withLegacyMockServer: true,
+            serviceRegistry: legacyServicesRegistry,
+        },
+        mockRPC: function (route, args) {
+            if (args.method === "has_group") {
+                return Promise.resolve(true);
+            }
+            if (route.includes("get_spreadsheets_to_display")) {
+                return [{ id: 1, name: "My Spreadsheet" }];
+            }
+            if (args.method === "create" && args.model === "documents.document") {
+                assert.step("create");
+                return 1;
+            }
         },
     });
+
+    await doAction(webClient, {
+        res_model: "partner",
+        type: "ir.actions.act_window",
+        views: [[false, "pivot"]],
+    });
+    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     assert.verifySteps(["create"]);
 });
 
-QUnit.test("Can save a pivot in existing spreadsheet", async (assert) => {
+test("Can save a pivot in existing spreadsheet", async (assert) => {
     assert.expect(3);
 
-    const { webClient } = await createSpreadsheetFromPivot({
-        pivotView: {
-            arch: `
-            <pivot string="Partners">
-                <field name="probability" type="measure"/>
-            </pivot>`,
-            async mockRPC(route, args) {
-                if (route === "/web/action/load") {
-                    return { id: args.action_id, type: "ir.actions.act_window_close" };
-                }
-                if (args.model === "documents.document") {
-                    assert.step(args.method);
-                    switch (args.method) {
-                        case "get_spreadsheets_to_display":
-                            return [{ id: 1, name: "My Spreadsheet" }];
-                    }
-                }
-                if (!this) return;
-                return this._super.apply(this, arguments);
-            },
-            session: { user_has_group: async () => true },
+    const legacyServicesRegistry = new legacyRegistry();
+    const LocalStorageService = AbstractStorageService.extend({
+        storage: new RamStorage(),
+    });
+    legacyServicesRegistry.add("local_storage", LocalStorageService);
+    legacyServicesRegistry.add(
+        "bus_service",
+        BusService.extend({
+            _poll() {},
+        })
+    );
+
+    const serverData = {
+        models: getBasicData(),
+        views: {
+            "partner,false,pivot": `
+                 <pivot string="Partners">
+                     <field name="probability" type="measure"/>
+                 </pivot>`,
+            "partner,false,search": `<search/>`,
         },
-        async actions(controller) {
-            await testUtils.dom.click(controller.$el.find(".o_pivot_add_spreadsheet"));
-            await testUtils.dom.click($(document.body.querySelector(".modal-content select")));
-            document.body
-                .querySelector(".modal-content option[value='1']")
-                .setAttribute("selected", "selected");
-            await testUtils.modal.clickButton("Confirm");
+    };
+    const webClient = await createWebClient({
+        serverData,
+        legacyParams: {
+            withLegacyMockServer: true,
+            serviceRegistry: legacyServicesRegistry,
+        },
+        mockRPC: function (route, args) {
+            if (args.method === "has_group") {
+                return Promise.resolve(true);
+            }
+            if (route === "/web/action/load") {
+                assert.step("write");
+                return { id: args.action_id, type: "ir.actions.act_window_close" };
+            }
+            if (route.includes("join_spreadsheet_session")) {
+                assert.step("join_spreadsheet_session");
+            }
+            if (args.model === "documents.document") {
+                switch (args.method) {
+                    case "get_spreadsheets_to_display":
+                        return [{ id: 1, name: "My Spreadsheet" }];
+                }
+            }
         },
     });
+
+    await doAction(webClient, {
+        res_model: "partner",
+        type: "ir.actions.act_window",
+        views: [[false, "pivot"]],
+    });
+
+    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    await click(document.querySelector(".modal-content select"));
+    document.body
+        .querySelector(".modal-content option[value='1']")
+        .setAttribute("selected", "selected");
+    await nextTick();
+    await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await doAction(webClient, 1); // leave the spreadsheet action
-    assert.verifySteps(["get_spreadsheets_to_display", "join_spreadsheet_session"]);
+    assert.verifySteps(["join_spreadsheet_session", "write"]);
 });
 
 test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
@@ -708,9 +767,8 @@ test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
 
     let callback;
     const { model } = await createSpreadsheetFromPivot({
-        async actions(controller) {
-            const pivot = controller._getPivotForSpreadsheet();
-            callback = await controller._getCallbackBuildPivot(pivot, false);
+        async actions(pivot) {
+            callback = await pivot.getCallbackBuildPivot(false);
         },
     });
     model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
@@ -739,40 +797,61 @@ test("pivot with a domain", async (assert) => {
 test("Insert in spreadsheet is disabled when no measure is specified", async (assert) => {
     assert.expect(1);
 
-    const pivot = await createView({
-        View: PivotView,
-        model: "partner",
-        data: getBasicData(),
+    setupControlPanelServiceRegistry();
+    const serviceRegistry = registry.category("services");
+    serviceRegistry.add("dialog", dialogService);
+    const serverData = {
+        models: getBasicData(),
+    };
+    const pivot = await makeView({
+        type: "pivot",
+        resModel: "partner",
+        serverData,
         arch: `
         <pivot string="Partners">
             <field name="foo" type="measure"/>
         </pivot>`,
-        session: { user_has_group: async () => true },
+        mockRPC: function (route, args) {
+            if (args.method === "has_group") {
+                return Promise.resolve(true);
+            }
+        },
     });
-    await testUtils.pivot.toggleMeasuresDropdown(pivot);
-    await testUtils.pivot.clickMeasure(pivot, "foo");
-    assert.ok(document.body.querySelector("button.o_pivot_add_spreadsheet").disabled);
-    pivot.destroy();
+
+    await toggleMenu(pivot, "Measures");
+    await toggleMenuItem(pivot, "Foo");
+    assert.ok(pivot.el.querySelector("button.o_pivot_add_spreadsheet").disabled);
 });
 
 test("Insert in spreadsheet is disabled when data is empty", async (assert) => {
     assert.expect(1);
 
+    const serviceRegistry = registry.category("services");
+    setupControlPanelServiceRegistry();
+    serviceRegistry.add("dialog", dialogService);
+
     const data = getBasicData();
     data.partner.records = [];
     data.product.records = [];
-    const pivot = await createView({
-        View: PivotView,
-        model: "partner",
-        data,
+    const serverData = {
+        models: data,
+    };
+
+    await makeView({
+        type: "pivot",
+        resModel: "partner",
+        serverData,
         arch: `
         <pivot string="Partners">
             <field name="foo" type="measure"/>
         </pivot>`,
-        session: { user_has_group: async () => true },
+        mockRPC: function (route, args) {
+            if (args.method === "has_group") {
+                return Promise.resolve(true);
+            }
+        },
     });
     assert.ok(document.body.querySelector("button.o_pivot_add_spreadsheet").disabled);
-    pivot.destroy();
 });
 
 test("pivot with a quote in name", async function (assert) {

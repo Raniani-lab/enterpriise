@@ -41,15 +41,15 @@ export function formatDate(field, value) {
 /**
  * Create the pivot object
  *
- * @param {Object} payload Pivot payload (See PivotModel)
+ * @param {PivotModel} instance of PivotModel
  *
- * @returns {SpreadsheetPivotForRPC}
+ * @returns {Pivot}
  */
-export function sanitizePivot(payload) {
-    let measures = _sanitizeFields(payload.measures, payload.fields);
-    measures = payload.measures.map((measure) => {
+export function sanitizePivot(pivotModel) {
+    let measures = _sanitizeFields(pivotModel.meta.activeMeasures, pivotModel.meta.measures);
+    measures = pivotModel.meta.activeMeasures.map((measure) => {
         const fieldName = measure.split(":")[0];
-        const fieldDesc = payload.fields[fieldName];
+        const fieldDesc = pivotModel.meta.measures[fieldName];
         const operator =
             (fieldDesc.group_operator && fieldDesc.group_operator.toLowerCase()) ||
             (fieldDesc.type === "many2one" ? "count_distinct" : "sum");
@@ -58,15 +58,15 @@ export function sanitizePivot(payload) {
             operator,
         };
     });
-    const rowGroupBys = _sanitizeFields(payload.rowGroupBys, payload.fields);
-    const colGroupBys = _sanitizeFields(payload.colGroupBys, payload.fields);
+    const rowGroupBys = _sanitizeFields(pivotModel.meta.fullRowGroupBys, pivotModel.meta.fields);
+    const colGroupBys = _sanitizeFields(pivotModel.meta.fullColGroupBys, pivotModel.meta.fields);
     return {
-        model: payload.modelName,
+        model: pivotModel.meta.resModel,
         rowGroupBys,
         colGroupBys,
         measures,
-        domain: payload.domain,
-        context: payload.context,
+        domain: pivotModel.searchParams.domain,
+        context: pivotModel.searchParams.context,
     };
 }
 

@@ -285,10 +285,16 @@ module(
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-            Object.assign(serverData, { views: arch });
+            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
+            Object.assign(serverData, { views });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
             });
             let result = await convertFormula({
                 webClient,
@@ -347,10 +353,16 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-            Object.assign(serverData, { views: arch });
+            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
+            Object.assign(serverData, { views });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
             });
             let result = await convertFormula({
                 webClient,
@@ -384,10 +396,16 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-            Object.assign(serverData, { views: arch });
+            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
+            Object.assign(serverData, { views });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
             });
 
             let result = await convertFormula({
@@ -447,10 +465,16 @@ module(
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-            Object.assign(serverData, { views: arch });
+            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
+            Object.assign(serverData, { views });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
             });
             let result = await convertFormula({
                 webClient,
@@ -497,10 +521,16 @@ module(
                 <field name="product_id" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`;
-            Object.assign(serverData, { views: arch });
+            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
+            Object.assign(serverData, { views });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
             });
             const result = await convertFormula({
                 webClient,
@@ -567,10 +597,16 @@ module(
                         <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`;
-            Object.assign(serverData, { views: arch });
+            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
+            Object.assign(serverData, { views });
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
             });
             let result = await convertFormula({
                 webClient,
@@ -1345,8 +1381,6 @@ module(
                         if (args.method === "search_read" && args.model === "ir.model") {
                             return Promise.resolve([{ name: "partner" }]);
                         }
-                        if (!this) return;
-                        return this._super.apply(this, arguments);
                     },
                 },
             });

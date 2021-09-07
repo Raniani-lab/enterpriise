@@ -9,44 +9,12 @@ import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import CachedRPC from "../o_spreadsheet/helpers/cached_rpc";
 import { DEFAULT_LINES_NUMBER } from "../o_spreadsheet/constants";
 import { useService } from "@web/core/utils/hooks";
+import { legacyRPC } from "../o_spreadsheet/helpers/helpers";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
 const { useState, useRef, useSubEnv, useExternalListener } = owl.hooks;
-
-/**
- * Compatibility layer between the ORM service
- * and the legacy RPC API.
- * The returned function has the same API as the legacy RPC.
- *
- * Notes:
- *    - the compatibility is incomplete and only covers what's currently
- *      needed for spreadsheet
- *    - remove when views and helpers are converted to wowl.
- * @param {Object} orm
- */
-function legacyRPC(orm) {
-    return (params) => {
-        params = { ...params };
-        const model = params.model;
-        delete params.model;
-        const method = params.method;
-        delete params.method;
-        if (params.groupBy) {
-            params.groupby = params.groupBy;
-            delete params.groupBy;
-        }
-        if (params.orderBy) {
-            params.order = params.orderBy
-                .map((order) => order.name + (order.asc !== false ? " ASC" : " DESC"))
-                .join(", ");
-            delete params.orderBy;
-        }
-        const { args, ...kwargs } = params;
-        return orm.call(model, method, args || [], kwargs);
-    };
-}
 
 export default class SpreadsheetComponent extends owl.Component {
     constructor(parent, props) {

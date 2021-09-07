@@ -359,9 +359,9 @@
         <field name="name">planning.slot.graph</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <graph string="Planning Analysis" type="bar" sample="1">
-                <field name="role_id" type="row"/>
-                <field name="resource_id" type="col"/>
+            <graph string="Planning Analysis" sample="1">
+                <field name="role_id"/>
+                <field name="resource_id"/>
                 <field name="allocated_hours" type="measure"/>
                 <field name="allocated_percentage" type="measure"/>
              </graph>

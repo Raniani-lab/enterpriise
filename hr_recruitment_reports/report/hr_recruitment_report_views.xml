@@ -48,7 +48,7 @@
             <field name="model">hr.recruitment.report</field>
             <field name="arch" type="xml">
                 <graph string="Recruitment Analysis" type="line" sample="1">
-                    <field name="create_date" type="row"/>
+                    <field name="create_date"/>
                     <field name="count" type="measure"/>
                 </graph>
             </field>

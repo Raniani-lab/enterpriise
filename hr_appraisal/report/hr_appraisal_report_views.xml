@@ -16,8 +16,8 @@
             <field name="model">hr.appraisal.report</field>
             <field name="arch" type="xml">
             <graph string="Appraisal Analysis" sample="1">
-                 <field name="employee_id" type="row"/>
-                 <field name="create_date" interval="month" type="col"/>
+                 <field name="employee_id"/>
+                 <field name="create_date" interval="month"/>
              </graph>
          </field>
     </record>

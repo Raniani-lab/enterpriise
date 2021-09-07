@@ -46,8 +46,8 @@
         <field name="model">marketing.trace</field>
         <field name="arch" type="xml">
             <graph sample="1">
-                <field name="activity_id" type="row"/>
-                <field name="state" type="row"/>
+                <field name="activity_id"/>
+                <field name="state"/>
             </graph>
         </field>
     </record>

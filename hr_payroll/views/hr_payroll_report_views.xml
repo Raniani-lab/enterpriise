@@ -60,7 +60,7 @@
             <field name="model">hr.payroll.report</field>
             <field name="arch" type="xml">
                 <graph string="Payroll Analysis" type="line" sample="1">
-                    <field name="date_from" type="row"/>
+                    <field name="date_from"/>
                     <field name="net_wage" type="measure"/>
                 </graph>
             </field>

@@ -19,7 +19,7 @@
            <field name="model">sale.rental.report</field>
            <field name="arch" type="xml">
                <graph string="Rental Analysis" type="line" sample="1">
-                   <field name="date" interval="day" type="row"/>
+                   <field name="date" interval="day"/>
                    <field name="quantity" type="measure"/>
                </graph>
            </field>

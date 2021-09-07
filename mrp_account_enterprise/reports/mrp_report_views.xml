@@ -23,8 +23,8 @@
             <field name="model">mrp.report</field>
             <field name="arch" type="xml">
                 <graph type="line" sample="1">
-                    <field name="date_finished" interval="week" type="row"/>
-                    <field name="product_id" type="row"/>
+                    <field name="date_finished" interval="week"/>
+                    <field name="product_id"/>
                     <field name="unit_cost" type="measure"/>
                 </graph>
             </field>

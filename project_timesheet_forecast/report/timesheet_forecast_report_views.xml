@@ -26,8 +26,8 @@
         <field name="name">timesheet.forecast.report.graph</field>
         <field name="model">project.timesheet.forecast.report.analysis</field>
         <field name="arch" type="xml">
-            <graph string="Timesheet and Planning Analysis" type="bar" sample="1" stacked="False" js_class="hr_timesheet_graphview" disable_linking="1">
-                <field name="entry_date" type="row"/>
+            <graph string="Timesheet and Planning Analysis" sample="1" stacked="0" js_class="hr_timesheet_graphview" disable_linking="1">
+                <field name="entry_date"/>
                 <field name="planned_hours" widget="timesheet_uom" type="measure"/>
                 <field name="effective_hours" widget="timesheet_uom" type="measure"/>
                 <field name="difference" widget="timesheet_uom" type="measure"/>

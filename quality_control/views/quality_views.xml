@@ -157,8 +157,8 @@
          <field name="model">quality.alert</field>
          <field name="arch" type="xml">
              <graph string="Quality Alert Analysis" sample="1">
-                 <field name="reason_id" type="col"/>
-                 <field name="stage_id" type="col"/>
+                 <field name="reason_id"/>
+                 <field name="stage_id"/>
              </graph>
          </field>
     </record>
@@ -357,8 +357,8 @@
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
             <graph string="Quality Check Analysis" sample="1">
-                <field name="control_date" type="col" interval="day"/>
-                <field name="quality_state" type="row"/>
+                <field name="control_date" interval="day"/>
+                <field name="quality_state"/>
             </graph>
         </field>
     </record>

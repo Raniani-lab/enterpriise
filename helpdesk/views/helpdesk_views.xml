@@ -381,9 +381,9 @@
         <field name="name">helpdesk.ticket.graph</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <graph string="Helpdesk Tickets" type="line" stacked="True" sample="1">
-                <field name="create_date" type="row" interval="day"/>
-                <field name="stage_id" type="col"/>
+            <graph string="Helpdesk Tickets" type="line" sample="1">
+                <field name="create_date" interval="day"/>
+                <field name="stage_id"/>
             </graph>
         </field>
     </record>
@@ -897,9 +897,9 @@
         <field name="name">helpdesk.ticket.graph</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <graph string="Performance Analysis" stacked="True" sample="1">
-                <field name="stage_id" type="col"/>
-                <field name="team_id" type="row"/>
+            <graph string="Performance Analysis" sample="1">
+                <field name="stage_id"/>
+                <field name="team_id"/>
                 <field name="close_hours" type="measure"/>
             </graph>
         </field>

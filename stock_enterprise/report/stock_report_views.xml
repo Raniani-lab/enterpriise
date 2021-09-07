@@ -22,7 +22,7 @@
             <field name="model">stock.report</field>
             <field name="arch" type="xml">
                 <graph type="line" sample="1">
-                    <field name="date_done" interval="week" type="row"/>
+                    <field name="date_done" interval="week"/>
                 </graph>
             </field>
         </record>

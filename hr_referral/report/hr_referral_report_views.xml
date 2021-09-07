@@ -49,9 +49,9 @@
             <field name="name">employee.referral.report.view.graph</field>
             <field name="model">hr.referral.report</field>
             <field name="arch" type="xml">
-                <graph string="Employees Analysis" type="bar" sample="1">
-                    <field name="medium_id" type="row"/>
-                    <field name="referral_state" type="row"/>
+                <graph string="Employees Analysis" sample="1">
+                    <field name="medium_id"/>
+                    <field name="referral_state"/>
                     <field name="applicant_id" type="measure"/>
                 </graph>
             </field>

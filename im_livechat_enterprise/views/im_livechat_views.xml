@@ -19,9 +19,9 @@
             <field name="name">im_livechat.report.channel.graph.view</field>
             <field name="model">im_livechat.report.channel</field>
             <field name="arch" type="xml">
-                <graph string="Sessions" type="bar" sample="1" disable_linking="1">
-                    <field name="start_date" interval="month" type="row"/>
-                    <field name="livechat_channel_id" type="col"/>
+                <graph string="Sessions" sample="1" disable_linking="1">
+                    <field name="start_date" interval="month"/>
+                    <field name="livechat_channel_id"/>
                 </graph>
             </field>
         </record>

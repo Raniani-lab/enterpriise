@@ -18,6 +18,7 @@ import { ControlPanelBottomContent } from "./control_panel_bottom_content/contro
 import { DashboardCompiler } from "./dashboard_compiler";
 import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
+import { OnboardingBanner } from "@web/views/onboarding_banner";
 
 const { Component, hooks } = owl;
 const { useSubEnv } = hooks;
@@ -413,7 +414,7 @@ DashboardView.defaultProps = {
     display: {},
 };
 
-DashboardView.components = { ControlPanel, SearchPanel, View, DashboardStatistic, ViewWidget };
+DashboardView.components = { ControlPanel, SearchPanel, View, DashboardStatistic, ViewWidget, Banner: OnboardingBanner };
 
 DashboardView.type = "dashboard";
 

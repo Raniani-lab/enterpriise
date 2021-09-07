@@ -128,7 +128,11 @@ export const studioService = {
                     if (currentController) {
                         action = currentController.action;
                         viewType = currentController.view.type;
-                        controllerState = currentController.getState();
+                        controllerState = Object.assign({}, currentController.getLocalState());
+                        const { resIds } = currentController.getGlobalState() || {};
+                        if (resIds) {
+                            controllerState.resIds = resIds;
+                        }
                     }
                 }
                 if (!_isStudioEditable(action)) {

@@ -7,7 +7,7 @@ import { registry } from "@web/core/registry";
 
 import { EditorMenu } from "./editor_menu/editor_menu";
 
-import { mapDoActionOptionAPI } from "@web/legacy/utils";
+import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
 const { Component, core, hooks } = owl;
 

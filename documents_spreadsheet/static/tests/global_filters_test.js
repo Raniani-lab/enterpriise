@@ -930,5 +930,37 @@ module(
             await testUtils.nextTick();
             assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue, {});
         });
+
+        test("pivot headers won't change when adding a filter ", async function (assert) {
+            assert.expect(6);
+            const { model } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="product_id" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                    `,
+                },
+            });
+            await model.waitForIdle() 
+            assert.equal(getCellValue(model, "A3"), "xphone");
+            assert.equal(getCellValue(model, "A4"), "xpad");
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "Relation Filter",
+                    modelName: "product",
+                    defaultValue: [41],
+                    pivotFields: {1: {field: "product_id", type: "many2one"}},
+                },
+            });
+            await testUtils.nextTick();
+            assert.equal(getCellValue(model, "A3"), "xphone");
+            assert.equal(getCellValue(model, "B3"), "");
+            assert.equal(getCellValue(model, "A4"), "xpad");
+            assert.equal(getCellValue(model, "B4"), "121");
+        });
     }
 );

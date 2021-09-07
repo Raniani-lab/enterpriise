@@ -8,7 +8,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import { doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
-import { editView } from "@web/legacy/debug_manager";
+import { editView } from "@web/views/debug_items";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import testUtils from "web.test_utils";

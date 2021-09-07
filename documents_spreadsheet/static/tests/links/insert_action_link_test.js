@@ -1,16 +1,20 @@
 /** @odoo-module */
-import { click, nextTick, legacyExtraNextTick } from "@web/../tests/helpers/utils";
-import { controlPanel } from "web.test_utils";
-
+import { click, legacyExtraNextTick, nextTick } from "@web/../tests/helpers/utils";
+import {
+    applyGroup,
+    selectGroup,
+    toggleAddCustomGroup,
+    toggleGroupByMenu,
+    toggleMenu,
+    toggleMenuItem,
+} from "@web/../tests/search/helpers";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-
 import { getBasicData } from "../spreadsheet_test_data";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 
 const serviceRegistry = registry.category("services");
 
-const { toggleMenuItem } = controlPanel;
 const { loadJS } = owl.utils;
 
 let serverData;
@@ -119,11 +123,11 @@ QUnit.module(
 
             // add a domain
             await click(webClient.el, ".o_filter_menu button");
-            await toggleMenuItem(webClient.el, "filter_1");
+            await click(webClient.el.querySelector(".o_menu_item > a"));
 
             // group by name
             await click(webClient.el, ".o_group_by_menu button");
-            await toggleMenuItem(webClient.el, "name");
+            await click(webClient.el.querySelector(".o_menu_item > a"));
 
             await insertInSpreadsheetAndClickLink(webClient);
             assert.strictEqual(getCurrentViewType(webClient), "list");
@@ -180,14 +184,14 @@ QUnit.module(
             const webClient = await openView("graph");
             await click(webClient.el, ".fa-pie-chart");
             // count measure
-            await click(webClient.el, ".o_graph_measures_list button");
-            await click(webClient.el.querySelectorAll(".o_graph_measures_list .o_menu_item a")[1]);
+            await toggleMenu(webClient, "Measures");
+            await toggleMenuItem(webClient, "Count");
             await insertInSpreadsheetAndClickLink(webClient);
             const action = getCurrentAction(webClient);
             assert.deepEqual(action.context.graph_mode, "pie", "It should be a pie chart");
             assert.deepEqual(
                 action.context.graph_measure,
-                "__count__",
+                "__count",
                 "It should have the custom measures"
             );
             assert.containsOnce(webClient.el, ".fa-pie-chart.active");
@@ -257,14 +261,15 @@ QUnit.module(
                 await click(webClient.el, ".fa-pie-chart");
 
                 // custom group by
-                await click(webClient.el, ".o_group_by_menu button");
-                await click(webClient.el.querySelector(".o_group_by_menu .o_menu_item a"));
+                await toggleGroupByMenu(webClient);
+                await toggleAddCustomGroup(webClient);
+                await selectGroup(webClient, "bar");
+                await applyGroup(webClient);
 
                 // count measure
-                await click(webClient.el, ".o_graph_measures_list button");
-                await click(
-                    webClient.el.querySelectorAll(".o_graph_measures_list .o_menu_item a")[1]
-                );
+                await toggleMenu(webClient, "Measures");
+                await toggleMenuItem(webClient, "Count");
+
                 await insertInSpreadsheetAndClickLink(webClient);
                 const action = getCurrentAction(webClient);
                 assert.containsOnce(webClient.el, ".fa-pie-chart.active");
@@ -280,7 +285,7 @@ QUnit.module(
                 );
                 assert.deepEqual(
                     action.context.graph.graph_measure,
-                    "__count__",
+                    "__count",
                     "It should have the same measure"
                 );
             }

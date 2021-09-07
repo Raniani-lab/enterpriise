@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, _
+from odoo.osv import expression
 
 
 class CrmLead(models.Model):
@@ -30,6 +31,16 @@ class CrmLead(models.Model):
             lead.rental_order_count = len(sale_orders)
             lead.rental_amount_total = total
 
+    def _get_lead_quotation_domain(self):
+        # over-ride to exclude rental quotations linked to lead
+        lead_quotation_domain = super()._get_lead_quotation_domain()
+        return expression.AND([lead_quotation_domain, [("is_rental_order", "=", False)]])
+
+    def _get_lead_sale_order_domain(self):
+        # over-ride to exclude rental sale orders linked to lead
+        lead_sale_order_domain = super()._get_lead_sale_order_domain()
+        return expression.AND([lead_sale_order_domain, [("is_rental_order", "=", False)]])
+
     def action_rental_quotations_new(self):
         if not self.partner_id:
             return self.env["ir.actions.actions"]._for_xml_id("sale_renting_crm.crm_lead_to_rental_action")
@@ -39,7 +50,6 @@ class CrmLead(models.Model):
         return {
             "search_default_opportunity_id": self.id,
             "default_opportunity_id": self.id,
-            "search_default_partner_id": self.partner_id.id,
             "default_partner_id": self.partner_id.id,
             "default_team_id": self.team_id.id,
             "default_campaign_id": self.campaign_id.id,

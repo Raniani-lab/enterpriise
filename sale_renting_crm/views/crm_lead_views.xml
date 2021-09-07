@@ -14,11 +14,11 @@
             <button name="action_set_won_rainbowman" position="attributes">
                 <attribute name="class" remove="oe_highlight"/>
             </button>
-            <button name="action_schedule_meeting" position="after">
-                <button class="oe_stat_button" type="object" name="action_view_rental_quotation" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('rental_quotation_count', '=', 0), ('type', '=', 'lead')]}">
-                    <field name="rental_quotation_count" widget="statinfo" string="Rental Quotations"/>
+            <button name="action_view_sale_order" position="after">
+                <button class="oe_stat_button" type="object" name="action_view_rental_quotation" icon="fa-pencil-square-o" attrs="{'invisible': [('type', '=', 'lead')]}">
+                    <field name="rental_quotation_count" widget="statinfo" string="Rentals"/>
                 </button>
-                 <button class="oe_stat_button" type="object" attrs="{'invisible': ['|', ('rental_order_count', '=', 0), ('type', '=', 'lead')]}" name="action_view_rental_quotation" icon="fa-usd" context="{'is_rental_order': True}">
+                <button class="oe_stat_button" type="object" attrs="{'invisible': ['|', ('rental_order_count', '=', 0), ('type', '=', 'lead')]}" name="action_view_rental_quotation" icon="fa-usd" context="{'is_rental_order': True}">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="rental_amount_total" widget="monetary" options="{'currency_field': 'company_currency'}"/></span>
                         <span class="o_stat_text"> Rental Orders</span>

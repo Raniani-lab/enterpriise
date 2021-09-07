@@ -11,7 +11,7 @@ This module adds a shortcut on one or several opportunity cases in the CRM.
 
 This shortcut allows you to generate a rental order based on the selected case.
     """,
-    'depends': ['sale_renting', 'crm'],
+    'depends': ['sale_renting', 'sale_crm'],
     'data': [
         'security/ir.model.access.csv',
         'views/crm_lead_views.xml',

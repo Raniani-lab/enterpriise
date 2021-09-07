@@ -144,6 +144,6 @@ export class InsertViewSpreadsheet extends DropdownMenuItem {
 }
 
 InsertViewSpreadsheet.props = {};
-InsertViewSpreadsheet.template = "documents_spreadsheet.InsertActionSpreadsheet";
+InsertViewSpreadsheet.template = "documents_spreadsheet.Legacy.InsertActionSpreadsheet";
 
 FavoriteMenu.registry.add("insert-action-link-in-spreadsheet", InsertViewSpreadsheet, 1);

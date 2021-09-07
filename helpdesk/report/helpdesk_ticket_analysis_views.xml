@@ -4,7 +4,7 @@
         <field name="name">helpdesk.ticket.report.analysis.pivot</field>
         <field name="model">helpdesk.ticket.report.analysis</field>
         <field name="arch" type="xml">
-            <pivot string="Ticket Analysis" disable_linking="True" sample="1">
+            <pivot string="Ticket Analysis" disable_linking="1" sample="1">
                 <field name="team_id" type="row"/>
                 <field name="ticket_close_hours" widget="float_time" type="measure"/>
                 <field name="ticket_open_hours" widget="float_time" type="measure"/>

@@ -11,7 +11,7 @@
         <field name="name">hr.salary.attachment.report.pivot</field>
         <field name="model">hr.salary.attachment.report</field>
         <field name="arch" type="xml">
-            <pivot string="Salary Attachment Report" disable_linking="True" sample="1">
+            <pivot string="Salary Attachment Report" disable_linking="1" sample="1">
                 <field name="payslip_end_date" invisible="1"/>
                 <field name="employee_id" type="row"/>
                 <field name="payslip_id"  type="col"/>

@@ -57,6 +57,14 @@ class StockMoveLine(models.Model):
                 for picking_type in quality_point.picking_type_ids:
                     quality_points_by_product_picking_type.setdefault(
                         (product, picking_type), set()).add(quality_point.id)
+            for categ in quality_point.product_category_ids:
+                categ_product = self.env['product.product'].search([
+                    ('categ_id', 'child_of', categ.id)
+                ])
+                for product in categ_product & self.product_id:
+                    for picking_type in quality_point.picking_type_ids:
+                        quality_points_by_product_picking_type.setdefault(
+                            (product, picking_type), set()).add(quality_point.id)
             if not quality_point.product_ids:
                 for picking_type in quality_point.picking_type_ids:
                     quality_points_by_product_picking_type.setdefault(

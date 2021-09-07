@@ -407,3 +407,74 @@ class TestQualityCheck(TestQualityCommon):
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_2.id)), 1)
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_3.id)), 0)
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_4.id)), 1)
+
+    def test_08_on_product_creation_with_product_and_categories(self):
+
+        """ Test Quality Check creation on incoming shipment from a Quality Point
+        with both products and product_categories set
+        """
+        # Create Quality Point for incoming shipment with only a product_category set.
+        self.quality_point_test = self.env['quality.point'].create({
+            'product_ids': [(4, self.product_2.id), (4, self.product_4.id)],
+            'product_category_ids': [(4, self.product_category_base.id)],
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'measure_on': 'product',
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+        # Create incoming shipment.
+        self.picking_in = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'partner_id': self.partner_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with wrong product but having right category (child of Quality Point set category.
+        self.env['stock.move'].create({
+            'name': self.product.name,
+            'product_id': self.product.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with right product but having wrong category (parent of Quality Point set category).
+        self.env['stock.move'].create({
+            'name': self.product_2.name,
+            'product_id': self.product_2.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_2.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with wrong product and having wrong category (parent of Quality Point set category).
+        self.env['stock.move'].create({
+            'name': self.product_3.name,
+            'product_id': self.product_3.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_3.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Create move with right product having right category
+        self.env['stock.move'].create({
+            'name': self.product_4.name,
+            'product_id': self.product_4.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product_4.uom_id.id,
+            'picking_id': self.picking_in.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id
+        })
+        # Confirm incoming shipment.
+        self.picking_in.action_confirm()
+        for line in self.picking_in.move_line_ids:
+            line.qty_done = line.product_qty
+        # Check that Quality Check for incoming shipment have been created for all the good move lines
+        self.assertEqual(len(self.picking_in.check_ids), 3)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product.id)), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_2.id)), 1)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_3.id)), 0)
+        self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_4.id)), 1)

@@ -41,7 +41,8 @@ class HrPayrollStructure(models.Model):
                 'condition_select': 'python',
                 'condition_python': 'result = inputs.DEDUCTION',
                 'amount_select': 'code',
-                'amount_python_compute': 'result = -inputs.DEDUCTION.amount',
+                'amount_python_compute': """result = -inputs.DEDUCTION.amount
+result_name = inputs.DEDUCTION.name""",
             }),
             (0, 0, {
                 'name': _('Attachment of Salary'),
@@ -84,7 +85,8 @@ result_name = inputs.CHILD_SUPPORT.name""",
                 'condition_select': 'python',
                 'condition_python': 'result = inputs.REIMBURSEMENT',
                 'amount_select': 'code',
-                'amount_python_compute': 'result = inputs.REIMBURSEMENT.amount',
+                'amount_python_compute': """result = inputs.REIMBURSEMENT.amount
+result_name = inputs.REIMBURSEMENT.name""",
             }),
             (0, 0, {
                 'name': _('Net Salary'),

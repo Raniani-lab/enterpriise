@@ -192,6 +192,10 @@ odoo.define('sign.PDFIframe', function (require) {
             '#secondaryOpenFile, #secondaryPresentationMode, #secondaryViewBookmark, #secondaryPrint, #secondaryDownload').add(this.$('#lastPage').next()).hide();
             this.$('button#print').prop('title', _t("Print original document"));
             this.$('button#download').prop('title', _t("Download original document"));
+            // The following attribute is used to prevent Chrome to auto complete the text 'input' of sign items
+            // The following password input is used to decrypt the PDF when needed.
+            // The autocomplete="off" doesn't work anymore. https://bugs.chromium.org/p/chromium/issues/detail?id=468153#c164
+            this.$(':password').attr('autocomplete', 'new-password');
             if (this.readonlyFields && !this.editMode && is_all_signed) {
                 this._managedToolBarButtonsForSignedDocument();
             }
@@ -1607,9 +1611,6 @@ odoo.define('sign.document_signing', function (require) {
             var $signatureItem = this._super.apply(this, arguments);
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
             if(!readonly) {
-                // 'off' is not supported by all the browsers, like chrome
-                // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#browser_compatibility
-                $signatureItem.attr('autocomplete', 'new-password');
                 // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
                 if ([_t('Text'), _t('Multiline Text')].includes(type.name) && type.placeholder === $signatureItem.prop('placeholder')) {
                     $signatureItem.attr('placeholder', ' ');

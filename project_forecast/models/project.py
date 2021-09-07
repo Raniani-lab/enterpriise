@@ -18,9 +18,14 @@ class Project(models.Model):
                                          help="Total number of forecast hours in the project rounded to the unit.")
 
     def _compute_total_forecast_time(self):
+        shifts_read_group = self.env['planning.slot'].read_group(
+            [('start_datetime', '!=', False), ('end_datetime', '!=', False), ('project_id', 'in', self.ids)],
+            ['project_id', 'allocated_hours'],
+            ['project_id'],
+        )
+        shifts_per_project = {res['project_id'][0]: int(round(res['allocated_hours'])) for res in shifts_read_group}
         for project in self:
-            forecast_data = self.env['planning.slot'].search([('project_id', '=', project.id)])
-            project.total_forecast_time = int(round(sum(slot.allocated_hours for slot in forecast_data)))
+            project.total_forecast_time = shifts_per_project.get(project.id, 0)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_contains_plannings(self):

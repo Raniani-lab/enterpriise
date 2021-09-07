@@ -360,7 +360,8 @@ class MainComponent extends Component {
         this.env.model.displayBarcodeLines(recordId);
     }
 
-    toggleInformation() {
+    async toggleInformation() {
+        await this.env.model.save();
         this.env.model.displayInformation();
     }
 

@@ -151,6 +151,8 @@ class AccountGenericTaxReport(models.AbstractModel):
         elif options['date']['period_type'] == 'quarter':
             month_end = int(date_to.month)
             quarter = month_end // 3
+        else:
+            raise UserError(_('Choose a month or quarter to export the OSS report'))
 
         # prepare a dict of european standard tax rates {'AT': 20.0, 'BE': 21.0 ... }
         # sorted() is here needed to ensure the dict will contain the hihest rate each time

@@ -202,6 +202,9 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             cols = currentElement.cols;
             if (date.isDate) {
                 // Date
+                if (currentElement.rows.length === 0) {
+                    return "";
+                }
                 rows = currentElement.rows;
                 rows[0] = this._incrementDate(rows[0], date.group, increment);
             } else {

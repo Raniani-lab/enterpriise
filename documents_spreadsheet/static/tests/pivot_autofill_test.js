@@ -117,7 +117,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
     });
 
     test("Autofill pivot values with date in rows", async function (assert) {
-        assert.expect(5);
+        assert.expect(6);
 
         const { model } = await createSpreadsheetFromPivot({
             pivotView: {
@@ -148,6 +148,10 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
         assert.strictEqual(
             getAutofillValue(model, "B5", { direction: "top", steps: 1 }),
             getCellFormula(model, "B4").replace("10/2016", "11/2016")
+        );
+        assert.strictEqual(
+            getAutofillValue(model, "F6", { direction: "top", steps: 1 }),
+            ""
         );
     });
 

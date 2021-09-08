@@ -213,7 +213,7 @@ $gantt-unavailability-bg: $gray-200;
     // ===========================================
     .o_gantt_row_nogroup {
         .o_gantt_cell {
-            min-height: $gantt-pill-height;
+            min-height: $gantt-pill-height + 4px;
         }
 
         .o_gantt_pill {

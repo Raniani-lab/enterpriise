@@ -13,6 +13,7 @@ import ViewsWidget from '@stock_barcode/widgets/views_widget';
 import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 import { LegacyComponent } from "@web/legacy/legacy_component";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 const { onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
@@ -70,6 +71,7 @@ class MainComponent extends LegacyComponent {
             this.el.addEventListener('exit', this.exit.bind(this));
             this.el.addEventListener('open-package', this._onOpenPackage.bind(this));
             this.el.addEventListener('refresh', this._onRefreshState.bind(this));
+            this.el.addEventListener('warning', this._onWarning.bind(this));
         });
 
         onWillUnmount(() => {
@@ -455,6 +457,16 @@ class MainComponent extends LegacyComponent {
         const result = await this.rpc(route, params);
         await this.env.model.refreshCache(result.data.records);
         this.toggleBarcodeLines(recordId);
+    }
+
+    /**
+     * Handles triggered warnings. It can happen from an onchange for example.
+     *
+     * @param {CustomEvent} ev
+     */
+    _onWarning(ev) {
+        const { title, message } = ev.detail;
+        this.env.services.dialog.add(ConfirmationDialog, { title, body: message });
     }
 }
 MainComponent.template = 'stock_barcode.MainComponent';

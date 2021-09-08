@@ -18,6 +18,7 @@ import {
     saveFavorite,
     toggleMenu,
     toggleComparisonMenu,
+    validateSearch,
 } from "@web/../tests/search/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
@@ -3443,9 +3444,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         for (let i = 0; i < 11; i++) {
-            await dashboard.model.load();
-            dashboard.model.notify();
-            await nextTick();
+            await validateSearch(dashboard)
             assert.strictEqual(
                 dashboard.el.querySelector(".o_value").textContent.trim(),
                 results.shift(),

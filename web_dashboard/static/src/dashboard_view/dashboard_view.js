@@ -111,7 +111,7 @@ export class DashboardView extends Component {
         this.action = useService("action");
         this.subViewsRenderKey = 1;
 
-        const { resModel, info, arch, fields, state } = this.props;
+        const { resModel, arch, fields, state } = this.props;
         const processedArch = useViewArch(arch, {
             compile: (arch) => new DashboardCompiler().compileArch(arch),
             extract: (arch) => new DashboardArchParser().parse(arch, fields),
@@ -130,10 +130,11 @@ export class DashboardView extends Component {
         useSetupView({
             exportLocalState: () => {
                 const subViews = this.exportSubviewsState();
-                for (const [viewType, viewInfo] of Object.entries(subViews)) {
+                for (const viewInfo of Object.values(subViews)) {
                     delete viewInfo.props.state.domain;
-                    delete viewInfo.props.state.domains;
-                    delete viewInfo.props.domains;
+                    delete viewInfo.props.state.comparison;
+                    delete viewInfo.props.domain;
+                    delete viewInfo.props.comparison;
                     delete viewInfo.props.globalState;
                 }
                 return {
@@ -317,7 +318,7 @@ export class DashboardView extends Component {
             {},
             {
                 domain: this.props.domain,
-                domains: this.props.domains,
+                comparison: this.props.comparison,
                 resModel: this.props.resModel,
                 display: display,
                 context: Object.assign({}, this.props.context),
@@ -373,11 +374,11 @@ export class DashboardView extends Component {
         });
         this.subViews = subViews;
 
-        const { domains } = nextProps;
+        const { comparison, domain } = nextProps;
         for (const [type, subView] of Object.entries(this.subViews)) {
             const context = Object.assign(nextProps.context, nextProps.context[type] || {});
             delete context[type];
-            Object.assign(subView.props, { context, domains });
+            Object.assign(subView.props, { comparison, context, domain });
         }
 
         const globalStates = this.exportSubviewsGlobalState();

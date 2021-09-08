@@ -15,6 +15,10 @@ export const INTERVALS = {
     year: _lt("Year"),
 };
 
+/**
+ * @typedef {import("@web/search/search_model").SearchParams} SearchParams
+ */
+
 export class CohortModel extends Model {
     /**
      * @override
@@ -31,10 +35,16 @@ export class CohortModel extends Model {
     }
 
     /**
-     * @param {Object} [searchParams = {}]
+     * @param {SearchParams} searchParams
      */
-    load(searchParams = {}) {
-        this.searchParams = searchParams;
+    load(searchParams) {
+        const { comparison, context, domain } = searchParams;
+        this.searchParams = { context };
+        if (comparison) {
+            this.searchParams.domains = comparison.domains;
+        } else {
+            this.searchParams.domains = [{ arrayRepr: domain, description: null }];
+        }
         const { cohort_interval, cohort_measure } = searchParams.context;
         this.metaData.interval = cohort_interval || this.metaData.interval;
 

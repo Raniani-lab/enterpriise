@@ -8,6 +8,10 @@ import { evaluateExpr } from "@web/core/py_js/py";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { Model } from "@web/views/helpers/model";
 
+/**
+ * @typedef {import("@web/search/search_model").SearchParams} SearchParams
+ */
+
 function getPseudoRecords(meta, data) {
     const records = [];
     for (let i = 0; i < meta.domains.length; i++) {
@@ -126,7 +130,7 @@ export class DashboardModel extends Model {
                 record.data = pseudoRecords[0];
 
                 if (this.meta.domains.length > 1) {
-                    const comparison = this.env.searchModel._getComparison();
+                    const comparison = this.env.searchModel.getFullComparison();
 
                     record.comparisonData = pseudoRecords[1];
                     record.comparisonTimeRange = comparison.comparisonRange;
@@ -139,10 +143,16 @@ export class DashboardModel extends Model {
     }
 
     /**
-     * @param {Object} searchParams
+     * @param {SearchParams} searchParams
      */
     async load(searchParams) {
-        const meta = Object.assign({}, this.meta, searchParams);
+        const { comparison, domain, context } = searchParams;
+        const meta = Object.assign({}, this.meta, { context, domain });
+        if (comparison) {
+            meta.domains = comparison.domains;
+        } else {
+            meta.domains = [{ arrayRepr: domain, description: null }];
+        }
         let { count, data } = await this.keepLast.add(this._load(meta));
         if (meta.useSampleModel && count === 0) {
             const result = await this.keepLast.add(this._load(meta, true));

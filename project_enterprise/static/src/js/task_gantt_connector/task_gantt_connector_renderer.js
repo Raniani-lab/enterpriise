@@ -72,7 +72,9 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         await this._super(...arguments);
         this._connectorContainerComponent = new ComponentWrapper(this, ConnectorContainer, this._getConnectorContainerProps());
         this._throttledReRender = throttle(async () => {
-            await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+            if (!(this.state.isSample || device.isMobile)) {
+                await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+            }
         }, 100);
         window.addEventListener('resize', this._throttledReRender);
     },

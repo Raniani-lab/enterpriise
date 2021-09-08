@@ -15,7 +15,8 @@ class WebsiteForm(form.WebsiteForm):
             if not partner:
                 partner = request.env['res.partner'].sudo().create({
                     'email': email,
-                    'name': request.params.get('partner_name', False)
+                    'name': request.params.get('partner_name', False),
+                    'lang': request.lang.code,
                 })
             request.params['partner_id'] = partner.id
 

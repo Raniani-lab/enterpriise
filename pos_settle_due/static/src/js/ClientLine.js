@@ -29,19 +29,7 @@ odoo.define('pos_settle_due.ClientLine', function (require) {
                 if (!confirmed) return;
                 this.trigger('discard'); // make sure the ClientListScreen resolves and properly closed.
                 const newOrder = this.env.pos.add_new_order();
-                const paylaterPaymentMethod = this.env.pos.payment_methods.filter(
-                    (method) => this.env.pos.config.payment_method_ids.includes(method.id) && method.type == 'pay_later'
-                )[0];
-                if (!paylaterPaymentMethod) {
-                    this.showPopup('ErrorPopup', {
-                        title: this.env._t('No Customer Account'),
-                        body: this.env._t('Customer Account payment method is required to settle dues.'),
-                    });
-                    return;
-                }
-                const paylaterPayment = newOrder.add_paymentline(paylaterPaymentMethod);
                 const payment = newOrder.add_paymentline(selectedPaymentMethod);
-                paylaterPayment.set_amount(-totalDue);
                 payment.set_amount(totalDue);
                 newOrder.set_client(this.props.partner);
                 this.showScreen('PaymentScreen');

@@ -227,3 +227,24 @@ class TestMrpPlm(TestPlmCommon):
         op3_change = eco1.routing_change_ids.filtered(lambda x: x.workcenter_id == self.workcenter_3)
         self.assertEqual(op3_change.change_type, 'add', "Wrong type on opration change line.")
         self.assertEqual(op1_change.upd_time_cycle_manual, 10.0, "Wrong duration change.")
+
+    def test_operation_eco_counting(self):
+        """ Test when count ECOs for a bom, all ECOs, including the ones for previous
+        version boms, are counted.
+        """
+        eco1 = self._create_eco('ECO1', self.bom_table, self.eco_type.id, self.eco_stage.id)
+        eco1.action_new_revision()
+        eco1.action_apply()
+        self.assertEqual(eco1.stage_id, self.eco_stage_folded, "Wrong stage.")
+
+        eco2 = self._create_eco('ECO2', eco1.new_bom_id, self.eco_type.id, self.eco_stage.id)
+        eco2.action_new_revision()
+        self.assertEqual(eco2.stage_id, self.eco_stage, "Wrong stage.")
+
+        # only ECOs in unfolded stages are counted
+        self.assertEqual(eco1.new_bom_id.eco_count, 1)
+
+        # unfold the stage to check if all ECOs are counted
+        self.eco_stage_folded.folded = False
+        eco1.new_bom_id.invalidate_cache()
+        self.assertEqual(eco1.new_bom_id.eco_count, 2)

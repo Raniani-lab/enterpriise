@@ -17,19 +17,21 @@ class MrpBom(models.Model):
     eco_inprogress_count = fields.Integer("# ECOs in progress", compute='_compute_eco_data')
 
     def _compute_eco_data(self):
-        eco_inprogress_data = self.env['mrp.eco'].read_group([
-            ('product_tmpl_id', 'in', self.mapped('product_tmpl_id').ids),
-            ('state', '=', 'progress')],
-            ['product_tmpl_id'], ['product_tmpl_id'])
+        self.eco_inprogress_count = 0   # not used
+        previous_boms_mapping = self._get_previous_boms()
+        previous_boms_list = list(previous_boms_mapping.keys())
         eco_data = self.env['mrp.eco'].read_group([
-            ('bom_id', 'in', self.ids),
+            ('bom_id', 'in', previous_boms_list),
             ('stage_id.folded', '=', False)],
             ['bom_id'], ['bom_id'])
-        result_inprogress = dict((data['product_tmpl_id'][0], data['product_tmpl_id_count']) for data in eco_inprogress_data)
-        result = dict((data['bom_id'][0], data['bom_id_count']) for data in eco_data)
+        eco_count = dict((bom.id, 0) for bom in self)
+        for eco in eco_data:
+            previous_bom_id = eco['bom_id'][0]
+            previous_bom_eco_count = eco['bom_id_count']
+            for bom_id in previous_boms_mapping[previous_bom_id]:
+                eco_count[bom_id] += previous_bom_eco_count
         for bom in self:
-            bom.eco_count = result.get(bom.id, 0)
-            bom.eco_inprogress_count = result_inprogress.get(bom.product_tmpl_id.id, 0)
+            bom.eco_count = eco_count[bom.id]
 
     def apply_new_version(self):
         """ Put old BoM as deprecated - TODO: Set to stage that is production_ready """
@@ -57,13 +59,31 @@ class MrpBom(models.Model):
     def button_mrp_eco(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("mrp_plm.mrp_eco_action_main")
-        action['domain'] = [('bom_id', '=', self.id)]
+        previous_boms = self._get_previous_boms()
+        action['domain'] = [('bom_id', 'in', list(previous_boms.keys()))]
         action['context'] = {
             'default_bom_id': self.id,
             'default_product_tmpl_id': self.product_tmpl_id.id,
             'default_type': 'bom'
         }
         return action
+
+    def _get_previous_boms(self):
+        """ Return a dictionary with the keys to be all the previous boms' id and
+        the value to be a set of ids in self of which the key is their previous boms.
+        """
+        boms_data = self.with_context(active_test=False).search_read(
+            [('product_tmpl_id', 'in', self.product_tmpl_id.ids)],
+            fields=['id', 'previous_bom_id'], load=False,
+            order='id desc, version desc')
+        previous_boms = dict((bom.id, {bom.id}) for bom in self)
+        for bom_data in boms_data:
+            if not bom_data['previous_bom_id']:
+                continue
+            bom_id = bom_data['id']
+            previous_bom_id = bom_data['previous_bom_id']
+            previous_boms[previous_bom_id] = previous_boms.get(bom_id, set()) | previous_boms.get(previous_bom_id, set())
+        return previous_boms
 
     def _get_active_version(self):
         self.ensure_one()

@@ -77,6 +77,7 @@ class TestPlmCommon(common.TransactionCase):
             })
         cls.eco_type = cls.env['mrp.eco.type'].search([], limit=1)
         cls.eco_stage = cls.eco_type.stage_ids.filtered('allow_apply_change')[0]
+        cls.eco_stage_folded = cls.eco_type.stage_ids.filtered('folded')[0]
 
     @classmethod
     def _create_eco(cls, name, bom, type_id, stage_id):

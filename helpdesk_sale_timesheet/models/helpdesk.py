@@ -68,7 +68,7 @@ class HelpdeskTicket(models.Model):
             if ticket.project_id and ticket.project_id.pricing_type != 'task_rate':
                 ticket.sale_line_id = ticket.project_id.sale_line_id
             # Check sale_line_id and customer are coherent
-            if ticket.sale_line_id.order_partner_id.commercial_partner_id != ticket.commercial_partner_id:
+            if ticket.sale_line_id.sudo().order_partner_id.commercial_partner_id != ticket.commercial_partner_id:
                 ticket.sale_line_id = False
             if not ticket.sale_line_id:
                 ticket.sale_line_id = ticket._get_last_sol_of_customer()

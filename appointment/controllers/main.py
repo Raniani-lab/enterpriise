@@ -160,6 +160,7 @@ class Appointment(http.Controller):
                 'name': name,
                 'mobile': Partner._phone_format(phone, country=self._get_customer_country()),
                 'email': email,
+                'lang': request.lang.code,
             })
 
         description_bits = []

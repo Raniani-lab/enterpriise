@@ -96,10 +96,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         and that its planned_hours is such that the planned_date_end would fall into that unavailable period, then the
         planned_date_end will be push forward after the unavailable period so that the planned_hours constraint is met.
         """
-        self.task_1.write({
-            'planned_date_begin': self.task_3_planned_date_begin,
-            'planned_date_end': self.task_3_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
-        })
+        with self.assertQueryCount(26):
+            self.task_1.with_context(tracking_disable=True).write({
+                'planned_date_begin': self.task_3_planned_date_begin,
+                'planned_date_end': self.task_3_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
                          "planned_date_end accordingly when moving a task forward."
         self.assertEqual(self.task_3.planned_date_end, self.task_3_planned_date_end + relativedelta(days=1, hour=9), failed_message)
@@ -112,11 +113,12 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         unavailable period, then the planned_date_begin will be push backward before the unavailable period so that
         the planned_hours constraint is met.
         """
-        new_task_3_begin_date = self.task_1_planned_date_end - timedelta(hours=2)
-        self.task_3.write({
-            'planned_date_begin': new_task_3_begin_date,
-            'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
-        })
+        with self.assertQueryCount(25):
+            new_task_3_begin_date = self.task_1_planned_date_end - timedelta(hours=2)
+            self.task_3.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_3_begin_date,
+                'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
                          "planned_date_begin accordingly when moving a task backward."
         self.assertEqual(self.task_1.planned_date_begin,
@@ -130,10 +132,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         self.task_3.write({
             'planned_hours': 0,
         })
-        self.task_1.write({
-            'planned_date_begin': self.task_3_planned_date_begin,
-            'planned_date_end': self.task_3_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
-        })
+        with self.assertQueryCount(16):
+            self.task_1.with_context(tracking_disable=True).write({
+                'planned_date_begin': self.task_3_planned_date_begin,
+                'planned_date_end': self.task_3_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
+            })
         failed_message = "When planned_hours=0, the auto shift date feature should preserve the time interval between" \
                          "planned_date_begin and planned_date_end when moving a task forward."
         self.assertEqual(self.task_3.planned_date_end - self.task_3.planned_date_begin,
@@ -148,10 +151,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         self.task_1.write({
             'planned_hours': 0,
         })
-        self.task_3.write({
-            'planned_date_begin': new_task_3_begin_date,
-            'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
-        })
+        with self.assertQueryCount(15):
+            self.task_3.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_3_begin_date,
+                'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
                          "planned_date_begin accordingly when moving a task backward."
         self.assertEqual(self.task_1.planned_date_end - self.task_1.planned_date_begin,
@@ -163,10 +167,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         if any is set, or with the user company resource_calendar if not.
         """
         new_task_1_planned_date_begin = self.task_3_planned_date_begin + timedelta(hours=1)
-        self.task_1.write({
-            'planned_date_begin': new_task_1_planned_date_begin,
-            'planned_date_end': new_task_1_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
-        })
+        with self.assertQueryCount(26):
+            self.task_1.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_1_planned_date_begin,
+                'planned_date_end': new_task_1_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_3.planned_date_begin,
                          self.task_3_planned_date_begin + relativedelta(days=1, hour=8), failed_message)
@@ -177,10 +182,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         if any is set, or with the user company resource_calendar if not.
         """
         new_task_3_begin_date = self.task_1_planned_date_begin - timedelta(hours=1)
-        self.task_3.write({
-            'planned_date_begin': new_task_3_begin_date,
-            'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
-        })
+        with self.assertQueryCount(25):
+            self.task_3.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_3_begin_date,
+                'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_1.planned_date_end,
                          self.task_1_planned_date_end + relativedelta(days=-1, hour=17), failed_message)
@@ -194,10 +200,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         self.task_3.write({
             'planned_hours': 0,
         })
-        self.task_1.write({
-            'planned_date_begin': new_task_1_planned_date_begin,
-            'planned_date_end': new_task_1_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
-        })
+        with self.assertQueryCount(16):
+            self.task_1.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_1_planned_date_begin,
+                'planned_date_end': new_task_1_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_3.planned_date_begin,
                          self.task_3_planned_date_begin + relativedelta(days=1, hour=8), failed_message)
@@ -211,10 +218,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         self.task_1.write({
             'planned_hours': 0,
         })
-        self.task_3.write({
-            'planned_date_begin': new_task_3_begin_date,
-            'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
-        })
+        with self.assertQueryCount(15):
+            self.task_3.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_3_begin_date,
+                'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_1.planned_date_end,
                          self.task_1_planned_date_end + relativedelta(days=-1, hour=17), failed_message)
@@ -227,10 +235,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         that a task is pushed forward up to after the holiday leave period when a task that it depends on is moved so that
         it creates an overlap between, the tasks.
         """
-        self.task_3.write({
-            'planned_date_begin': self.task_4_planned_date_begin,
-            'planned_date_end': self.task_4_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
-        })
+        with self.assertQueryCount(38):
+            self.task_3.with_context(tracking_disable=True).write({
+                'planned_date_begin': self.task_4_planned_date_begin,
+                'planned_date_end': self.task_4_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \
                          "works also for long periods (requiring extending the search interval period)."
         self.assertEqual(self.task_4.planned_date_begin,
@@ -244,10 +253,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         that a task is pushed backward up to before the holiday leave period when a dependent task is moved so that it
         creates an overlap between the tasks.
         """
-        self.task_6.write({
-            'planned_date_begin': self.task_5_planned_date_begin,
-            'planned_date_end': self.task_5_planned_date_begin + (self.task_6_planned_date_end - self.task_6_planned_date_begin),
-        })
+        with self.assertQueryCount(38):
+            self.task_6.with_context(tracking_disable=True).write({
+                'planned_date_begin': self.task_5_planned_date_begin,
+                'planned_date_end': self.task_5_planned_date_begin + (self.task_6_planned_date_end - self.task_6_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \
                          "works also for long periods (requiring extending the search interval period)."
         self.assertEqual(self.task_5.planned_date_end,
@@ -259,10 +269,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         (task A move impacts B that moves forwards and then impacts C that is moved forward).
         """
         new_task_3_planned_date_begin = self.task_4_planned_date_begin - timedelta(hours=1)
-        self.task_3.write({
-            'planned_date_begin': new_task_3_planned_date_begin,
-            'planned_date_end': new_task_3_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
-        })
+        with self.assertQueryCount(45):
+            self.task_3.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_3_planned_date_begin,
+                'planned_date_end': new_task_3_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should handle correctly dependencies cascades."
         self.assertEqual(self.task_4.planned_date_begin,
                          self.task_3.planned_date_end, failed_message)
@@ -279,10 +290,11 @@ class TestTaskDependencies(AutoShiftDatesCommon):
         (task A move impacts B that moves backward and then impacts C that is moved backward).
         """
         new_task_6_planned_date_begin = self.task_5_planned_date_begin + timedelta(hours=1)
-        self.task_6.write({
-            'planned_date_begin': new_task_6_planned_date_begin,
-            'planned_date_end': new_task_6_planned_date_begin + (self.task_6_planned_date_end - self.task_6_planned_date_begin),
-        })
+        with self.assertQueryCount(20):
+            self.task_6.with_context(tracking_disable=True).write({
+                'planned_date_begin': new_task_6_planned_date_begin,
+                'planned_date_end': new_task_6_planned_date_begin + (self.task_6_planned_date_end - self.task_6_planned_date_begin),
+            })
         failed_message = "The auto shift date feature should handle correctly dependencies cascades."
         self.assertEqual(self.task_5.planned_date_end,
                          new_task_6_planned_date_begin, failed_message)

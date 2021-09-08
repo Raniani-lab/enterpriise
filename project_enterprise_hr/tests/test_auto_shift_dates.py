@@ -16,6 +16,11 @@ from odoo.fields import Command
 class TestTaskDependencies(AutoShiftDatesHRCommon):
 
     def test_auto_shift_employee_integration(self):
+        # We have to bypass the calendar validity computation for employees/students,
+        # Otherwise, we will fallback on company calendar if there are no contracts
+        # once the test is launched in project_enterprise_hr_contract by extension
+        self.armande_employee.employee_type = 'freelance'
+
         self.task_4.depend_on_ids = [Command.clear()]
         new_task_3_begin_date = self.task_1_planned_date_end - timedelta(hours=2)  # 2021 06 24 10:00
         self.task_3.write({

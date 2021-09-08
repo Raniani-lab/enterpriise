@@ -33,7 +33,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'resource_calendar_id': cls.calendar_afternoon.id,
             'wage': 5000.0,
             'employee_id': cls.armande_employee.id,
-            'state': 'close',
+            'state': 'open',
         })
         cls.armande_user_calendar = cls.env['resource.calendar'].create({
             'name': 'Wednesday calendar',
@@ -43,11 +43,19 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             ],
             'tz': 'UTC',
         })
-        cls.armande_employee.write({
-            'resource_calendar_id': cls.armande_user_calendar.id,
-        })
 
     def test_auto_shift_employee_contract_integration(self):
+        # As the fallback is the company and not the resource's calendar, we have to create a contract for armande in the past
+        self.contract_3 = self.env['hr.contract'].create({
+            'date_start': self.task_1_planned_date_begin.date() - relativedelta(months=1),
+            'date_end': self.task_1_planned_date_begin.date() - relativedelta(days=2),
+            'name': 'Other CDD Contract for Armande ProjectUser',
+            'resource_calendar_id': self.armande_user_calendar.id,
+            'wage': 5000.0,
+            'employee_id': self.armande_employee.id,
+            'state': 'close',
+        })
+
         self.task_4.depend_on_ids = [Command.clear()]
         new_task_3_begin_date = self.task_1_planned_date_end - timedelta(hours=2)  # 2021 06 24 10:00
         self.task_3.write({
@@ -65,8 +73,10 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
         failed_message = "The auto shift date feature should take the employee's calendar when no contract cover the period."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(day=16, hour=14), failed_message)
-        self.armande_employee.write({
-            'resource_calendar_id': False,
+        tmp_date_start = self.contract_3.date_start
+        # Test like there are no active contract covering < 2021 06 15
+        self.contract_3.write({
+            'date_start': self.contract_3.date_end - relativedelta(days=1)
         })
         new_task_3_begin_date = self.task_1.planned_date_begin - relativedelta(days=2)  # 2021 06 14 14:00
         self.task_3.write({
@@ -76,8 +86,9 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
         failed_message = "The auto shift date feature should take the company's calendar when no contract cover the period and no calendar is set on the employee."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(hour=10), failed_message)
-        self.armande_employee.write({
-            'resource_calendar_id': self.armande_user_calendar.id,
+        # Reset contract
+        self.contract_3.write({
+            'date_start': tmp_date_start
         })
         new_task_1_begin_date = self.contract_2.date_start + relativedelta(days=1, hour=14)  # 2021 06 27 14:00
         self.task_1.write({
@@ -86,3 +97,36 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
         })
         self.assertEqual(self.task_3.planned_date_begin,
                          new_task_1_begin_date + relativedelta(days=1, hour=13), failed_message)
+
+    def test_auto_shift_period_without_contract(self):
+        self.contract_3 = self.env['hr.contract'].create({
+            'date_start': self.task_1_planned_date_begin.date() - relativedelta(months=1),
+            'date_end': self.task_1_planned_date_begin.date() - relativedelta(days=5),
+            'name': 'Other CDD Contract for Armande ProjectUser',
+            'resource_calendar_id': self.calendar_afternoon.id,
+            'wage': 5000.0,
+            'employee_id': self.armande_employee.id,
+            'state': 'close',
+        })
+        self.armande_employee.write({
+            'resource_calendar_id': self.calendar_morning.id,
+        })
+
+        self.task_4.depend_on_ids = [Command.clear()]
+        new_task_3_begin_date = self.task_1_planned_date_end - timedelta(hours=2)  # 2021 06 24 10:00
+        self.task_3.write({
+            'planned_date_begin': new_task_3_begin_date,
+            'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+        })
+        failed_message = "The auto shift date feature should take the employee's calendar into account."
+        self.assertEqual(self.task_1.planned_date_begin,
+                         new_task_3_begin_date - relativedelta(days=1, hour=11), failed_message)
+        new_task_3_begin_date = self.task_1.planned_date_begin - relativedelta(days=2)  # 2021 06 21 11:00
+        self.task_3.write({
+            'planned_date_begin': new_task_3_begin_date,
+            'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
+        })
+        failed_message = "The auto shift date feature should take the company's calendar when no contract covers the period."
+        self.assertEqual(self.task_1.planned_date_begin,
+                         new_task_3_begin_date + relativedelta(day=21, hour=8), failed_message)
+        # between the two contracts, the fallback is done on company calendar.

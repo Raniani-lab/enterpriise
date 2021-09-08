@@ -10,18 +10,25 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
-
+# Auto-shift utils
 DATE_AUTO_SHIFT_CONTEXT_KEY = 'date_auto_shift'
 DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY = 'date_auto_shift_direction'
 DATE_AUTO_SHIFT_IDS_TO_EXCLUDE_KEY = 'date_auto_shift_ids_to_exclude'
 DATE_AUTO_SHIFT_FORWARD = 'forward'
 DATE_AUTO_SHIFT_BACKWARD = 'backward'
-DATE_AUTO_SHIFT_BOTH_DIRECTIONS = 'both'
 
 PROJECT_TASK_WRITABLE_FIELDS = {
     'planned_date_begin',
     'planned_date_end',
 }
+
+def order_boundaries_auto_shift(baseline, boundary, search_forward):
+    """
+        Returns the boundaries in the right order :
+            - Baseline is considered as start in case of forward, stop otherwise
+            - Boundary is considered as stop in case of forward, start otherwise
+    """
+    return (baseline, boundary) if search_forward else (boundary, baseline)
 
 class Task(models.Model):
     _inherit = "project.task"
@@ -223,16 +230,6 @@ class Task(models.Model):
         stop = list_intervals[-1][1].astimezone(utc).replace(tzinfo=None)  # We take the last date in the interval list
         return start, stop
 
-    def _is_auto_shift_candidate(self):
-        """
-        Informs whether a task is a candidate for the auto shift feature.
-        :return: True if the task is a candidate for the auto shift feature.
-        :rtype: bool
-        """
-        self.ensure_one()
-        return self.project_id and self.project_id.allow_task_dependencies and not self.is_closed and \
-               self.planned_date_begin and self.planned_date_end and self.planned_date_begin > datetime.now()
-
     def _get_tasks_by_resource_calendar_dict(self):
         """
             Returns a dict of:
@@ -256,36 +253,6 @@ class Task(models.Model):
                 tasks_by_resource_calendar_dict[default_calendar] |= task
 
         return tasks_by_resource_calendar_dict
-
-    def _get_calendars_and_resources_key(self):
-        self.ensure_one()
-        return self.company_id.resource_calendar_id or self.project_id.company_id.resource_calendar_id
-
-    def _get_calendars_and_resources(self, date_start, date_end):
-        """
-        Gets the calendars and resources (for instance to later get the work intervals for the provided date_start
-        and date_end).
-        :param date_start:
-        :param date_end:
-        :return: a dict of:
-                    key = unique key identifying the calendar usage history (should be retrieved through the use of _get_calendars_and_resources_key)
-                    value = list of tuple (date_start, date_end, 'resource.calendar', 'resource.resource') containing
-                            the interval validity, the the calendar and the resource. The tuples are sorted
-                            chronologically.
-        :rtype: dict(dict)
-        """
-        self.ensure_one()
-        calendar_by_task_dict = {
-            self._get_calendars_and_resources_key(): [
-                {
-                    'date_start': datetime(1, 1, 1, tzinfo=utc),
-                    'date_end': datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=utc),
-                    'calendar_id': self.company_id.resource_calendar_id or self.project_id.company_id.resource_calendar_id,
-                    'resource_id': False,
-                }
-            ]
-        }
-        return calendar_by_task_dict
 
     def write(self, vals):
         compute_default_planned_dates = None
@@ -315,6 +282,10 @@ class Task(models.Model):
 
         return res
 
+    # -------------------------------------
+    # Business Methods : Auto-shift
+    # -------------------------------------
+
     def _write_planned_dates_if_in_future(self, new_planned_date_begin, new_planned_date_end):
         self.ensure_one()
         if new_planned_date_begin and new_planned_date_end and new_planned_date_begin >= datetime.now(tz=utc):
@@ -329,195 +300,277 @@ class Task(models.Model):
 
         return False
 
-    @api.model
-    def _get_cache_info(self, key, task_calendars, intervals_cache, date_time, search_forward):
-        match_index = 0
-        for index, item in enumerate(task_calendars[key] if search_forward else reversed(task_calendars[key]), 1):
-            if item['date_start'] <= date_time and date_time <= item['date_end']:
-                match_index = index
-                break
-
-        cache_key = task_calendars[key][match_index - 1]['calendar_id'], task_calendars[key][match_index - 1]['resource_id']
-        intervals_cache_entry = intervals_cache[cache_key]
-        in_memory_start = intervals_cache_entry._items[0][0].astimezone(utc) if len(intervals_cache_entry) > 0 else \
-                          datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=utc)
-        in_memory_end = intervals_cache_entry._items[-1][1].astimezone(utc) if len(intervals_cache_entry) > 0 else \
-                        datetime(1, 1, 1, tzinfo=utc)
-
-        return intervals_cache_entry, in_memory_start, in_memory_end
-
-    def _get_first_work_interval(self, intervals_cache, date_time, task_calendars, search_forward=True):
+    def _get_resource(self):
         """
-        Finds and returns the first work interval for the provided calendar and resource that matches the date_time
-        and search_forward criteria. A first search is made in the intervals_cache and if none is found, additional
-        search are made in the database until a match is found.
-        :param date_time: The date the work interval is searched for. If no exact match can be done, the closest is
-                          returned.
-        :param calendar: The calendar the work intervals are to be retrieved from.
-        :param resource: The resource the work intervals are to be retrieved for.
-        :param intervals_cache: The cached data that can be used prior to fetch data from the database.
-                                A defaultdict (lambda: Intervals()) with keys of tuple(`resource.calendar`,
-                                `resource.resource`).
+            Gets the resource linked to the task.
+        """
+        self.ensure_one()
+        return self.user_ids._get_project_task_resource() if len(self.user_ids) == 1 else self.env['resource.resource']
+
+    def _get_resource_entity(self):
+        """
+            Gets the resource entity linked to the task.
+
+            The resource entity is either a company, either a resource to cope with resource invalidity (i.e. not under contract, not yet created...)
+            This is used as key to keep information in the auto-shift business methods.
+        """
+        self.ensure_one()
+        return self._get_resource() or self.company_id or self.project_id.company_id
+
+    def _get_resource_calendars_validity(self, date_start, date_end, intervals_to_search=None, resource=None):
+        """
+        Gets the calendars and resources (for instance to later get the work intervals for the provided date_start
+        and date_end).
+        :param date_start: A start date for the search
+        :param date_end: A end date fot the search
+        :param intervals_to_search: If given, the periods for which the calendars validity must be retrieved.
+        :param resource: If given, it overrides the resource in self._get_resource
+        :return: a dict `resource_calendar_validity` with calendars as keys and their validity as values,
+                 a dict `resource_validity` with 'valid' and 'invalid' keys, with the intervals where the resource has a valid calendar (resp. no calendar)
+        :rtype: tuple(defaultdict(), dict())
+        """
+        self.ensure_one()
+        interval = Intervals([(date_start, date_end, self.env['resource.calendar.attendance'])])
+        if intervals_to_search:
+            interval &= intervals_to_search
+        invalid_interval = interval
+        resource = self._get_resource() if resource is None else resource
+        resource_calendar_validity = resource._get_calendars_validity_within_period(
+            date_start, date_end, default_company=self.company_id or self.project_id.company_id
+        )[resource.id]
+        for calendar in resource_calendar_validity:
+            resource_calendar_validity[calendar] &= interval
+            invalid_interval -= resource_calendar_validity[calendar]
+        resource_validity = {
+            'valid': interval - invalid_interval,
+            'invalid': invalid_interval,
+        }
+        return resource_calendar_validity, resource_validity
+
+    def _update_intervals_cache(self, intervals_cache, interval_to_search, resource_validity, resource=None, resource_entity=None):
+        """
+            Update intervals cache if the interval to search for hasn't already been requested for work intervals.
+
+            If the resource_entity has some parts of the interval_to_search which is unknown yet, then the calendar of the
+            resource_entity must be retrieved and queried to have the work intervals.
+            If the resource_entity is invalid (i.e. was not yet created, not under contract or fired)
+
+            :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
+            :param interval_to_search: Intervals for which we need to update the intervals_cache if the interval is not already searched
+            :param resource_validity: A dict with resource's intervals of validity/invality
+                                    (during resource validity, the resource has its own work intervals,
+                                    during the invalidity, the intervals of its company are used)
+        """
+        resource = self._get_resource() if resource is None else resource
+        resource_entity = self._get_resource_entity() if resource_entity is None else resource_entity
+        intervals_not_searched = (
+            interval_to_search - resource_validity[resource_entity]['valid'] - resource_validity[resource_entity]['invalid']
+        )
+        if not intervals_not_searched:
+            return
+
+        # For at least a part of the task, we don't have the work information of the resource
+        # The interval between the very first date of the interval_to_search to the very last must be explored
+        resource_calendar_validity_delta, resource_validity_tmp = self._get_resource_calendars_validity(
+            intervals_not_searched._items[0][0],
+            intervals_not_searched._items[-1][1],
+            intervals_to_search=intervals_not_searched, resource=resource
+        )
+        for calendar in resource_calendar_validity_delta:
+            if not resource_calendar_validity_delta[calendar]:
+                continue
+            intervals_cache[resource_entity] |= calendar._work_intervals_batch(
+                resource_calendar_validity_delta[calendar]._items[0][0],
+                resource_calendar_validity_delta[calendar]._items[-1][1],
+                resources=resource
+            )[resource.id] & resource_calendar_validity_delta[calendar]
+        resource_validity[resource_entity]['valid'] |= resource_validity_tmp['valid']
+        if resource_validity_tmp['invalid']:
+            # If the resource is not valid for a given period (not yet created, not under contract...)
+            # There is a fallback on its company calendar.
+            resource_validity[resource_entity]['invalid'] |= resource_validity_tmp['invalid']
+            company = self.company_id or self.project_id.company_id
+            self._update_intervals_cache(
+                intervals_cache, interval_to_search, resource_validity,
+                resource=self.env['resource.resource'], resource_entity=company
+            )
+            # Fill the intervals cache of the resource entity with the intervals of the company.
+            intervals_cache[resource_entity] |= resource_validity_tmp['invalid'] & intervals_cache[company]
+
+    @api.model
+    def _get_interval_auto_shift(self, curr, delta, search_forward):
+        """
+            :param curr: Baseline of the interval, its start if search_forward is true, its stop otherwise
+            :param delta: Timedelta duration of the interval, expected to be positive if search_forward is true, false otherwise
+            :param search_forward: Interval direction, forward if true, backward otherwise.
+
+            Returns the interval from curr to curr + delta in the right order.
+        """
+        start, stop = order_boundaries_auto_shift(curr, curr + delta, search_forward)
+        return Intervals([(start, stop, self.env['resource.calendar.attendance'])])
+
+    def _get_first_working_datetime(self, intervals_cache, date_candidate, resource_validity, search_forward=True):
+        """
+        Finds and returns the first work datetime for the provided intervals_cache that matches the date_candidate
+        and search_forward criteria. If there is no match in the intervals_cache, the cache is updated and filled with work intervals
+        for a larger date range.
+        :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
+        :param date_candidate: The date the work interval is searched for. If no exact match can be done, the closest is
+                               returned.
+        :param resource_validity: A dict with resource's intervals of validity/invality
+                                (during resource validity, the resource has its own work intervals,
+                                 during the invalidity, the intervals of its company are used)
         :param search_forward: The search direction.
                                Having search_forward truthy causes the search to be made chronologically, looking for
                                an interval that matches interval_start <= date_time < interval_end.
                                Having search_forward falsy causes the search to be made reverse chronologically, looking
                                for an interval that matches interval_start < date_time <= interval_end.
-        :return: tuple (interval, intervals_cache). The closest interval that matches the search criteria and the
+        :return: datetime. The closest datetime that matches the search criteria and the
                  intervals_cache updated with the data fetched from the database if any.
         """
         self.ensure_one()
+        assert date_candidate.tzinfo
+        delta = (1 if search_forward else -1) * relativedelta(months=1)
+        date_to_search = date_candidate
+        resource_entity = self._get_resource_entity()
 
-        key = self._get_calendars_and_resources_key()
-        if key not in task_calendars:
-            task_calendars = self._get_calendars_and_resources(date_time - relativedelta(months=1),
-                                                               date_time + relativedelta(months=1))
+        interval_to_search = self._get_interval_auto_shift(date_to_search, delta, search_forward)
+        interval = intervals_cache[resource_entity] & interval_to_search
+        while not interval:
+            interval_to_search = self._get_interval_auto_shift(date_to_search, delta, search_forward)
+            self._update_intervals_cache(intervals_cache, interval_to_search, resource_validity)
+            interval = intervals_cache[resource_entity] & interval_to_search
+            date_to_search += delta
 
-        intervals_cache_entry, in_memory_start, in_memory_end = self._get_cache_info(key, task_calendars, intervals_cache, date_time, search_forward)
-
-        assert date_time.tzinfo
-
-        interval = Intervals()
-        if (search_forward and in_memory_start <= date_time < in_memory_end) or \
-                (not search_forward and in_memory_start < date_time <= in_memory_end):
-            interval = self._get_interval(date_time, intervals_cache_entry, search_forward)
-        else:
-            search_extender = search_forward and 1 or -1
-            if len(intervals_cache_entry) == 0:
-                in_memory_start = in_memory_end = date_time
-            else:
-                if search_forward and date_time < in_memory_start:
-                    search_extender = -1
-                elif not search_forward and date_time > in_memory_end:
-                    search_extender = 1
-
-            while not interval:
-                intervals = Intervals()
-                interval_pool = Intervals()
-                date_to_search = date_time + timedelta(weeks=search_extender)
-                if date_to_search <= in_memory_start:
-                    if (date_to_search < task_calendars[key][0]['date_start']):
-                        new_task_calendars = self._get_calendars_and_resources(date_to_search,
-                                                                               task_calendars[key][0]['date_start'])
-                        task_calendars[key][0:0] = new_task_calendars[key]
-
-                        intervals_cache_entry, in_memory_start, in_memory_end = self._get_cache_info(key, task_calendars,
-                                                                                           intervals_cache, date_time,
-                                                                                           search_forward)
-
-                    for entry in filter(lambda calendar_interval: calendar_interval['date_start'] <= in_memory_start and calendar_interval['date_end'] >= date_to_search,
-                                        task_calendars[key] if search_forward else reversed(task_calendars[key])):
-                        new_interval = entry['calendar_id']._work_intervals_batch(max(date_to_search, entry['date_start']), min(in_memory_start, entry['date_end']), entry['resource_id'])[entry['resource_id'] and entry['resource_id'].id]
-                        intervals |= new_interval
-                        intervals_cache[entry['calendar_id'], entry['resource_id']] |= new_interval
-                        interval_pool |= intervals_cache[entry['calendar_id'], entry['resource_id']]
-
-                else:
-                    if (date_to_search > task_calendars[key][-1]['date_end']):
-                        new_task_calendars = self._get_calendars_and_resources(task_calendars[key][-1]['date_end'],
-                                                                               date_to_search)
-                        task_calendars[key].append(new_task_calendars[key])
-
-                        intervals_cache_entry, in_memory_start, in_memory_end = self._get_cache_info(key, task_calendars,
-                                                                                           intervals_cache, date_time,
-                                                                                           search_forward)
-
-                    for entry in filter(lambda calendar_interval: calendar_interval['date_start'] <= date_to_search and calendar_interval['date_end'] >= in_memory_end,
-                                        task_calendars[key] if search_forward else reversed(task_calendars[key])):
-                        new_interval = entry['calendar_id']._work_intervals_batch(max(in_memory_end, entry['date_start']), min(date_to_search, entry['date_end']), entry['resource_id'])[entry['resource_id'] and entry['resource_id'].id]
-                        intervals |= new_interval
-                        intervals_cache[entry['calendar_id'], entry['resource_id']] |= new_interval
-                        interval_pool |= intervals_cache[entry['calendar_id'], entry['resource_id']]
-
-                interval = self._get_interval(date_time, interval_pool, search_forward)
-                search_extender += search_extender
-
-        return interval, intervals_cache, task_calendars
+        return interval._items[0][0] if search_forward else interval._items[-1][1]
 
     @api.model
-    def _get_interval(self, date_time, intervals, search_forward):
+    def _plan_hours_auto_shift(self, intervals, hours_to_plan, searched_date, search_forward=True):
         """
-        Finds and returns the first work interval for the provided date_time and search_forward criteria.
-        :param date_time: The date the work interval is searched for. If no exact match can be done, the closest is
-                          returned.
-        :param intervals:
-        :param search_forward: The search direction.
-                               Having search_forward truthy causes the search to be made chronologically, looking for
-                               an interval that matches interval_end > date_time. Having search_forward falsy causes
-                               the search to be made reverse chronologically, looking for an interval that matches
-                               interval_start < date_time.
-        :return: tuple ``(start, stop, records)`` where ``records`` is a recordset.
-        """
-        if not search_forward:
-            intervals = reversed(intervals)
-        for interval in intervals:
-            if (search_forward and interval[1] > date_time) or (not search_forward and interval[0] < date_time):
-                return interval
-        return ()
+        Gets datetime after having planned hours from a searched date, in the future (search_forward) or in the past (not search_forward)
+        given the intervals
 
-    @api.model
-    def _get_date_for_planned_hours(self, intervals, planned_hours_target, planned_hours, searched_date,
-                                    search_forward=True):
-        """
-        Browse the intervals in order to find the date that meets the planned_hours_target constraint and returns
-        the planned_hours and the search_date corresponding to it. If not possible, returns the planned_hours the closest
-        to the planned_hours_target as well as the corresponding search_date.
         :param intervals: The intervals to browse.
-        :param planned_hours_target: The planned_hours target.
-        :param planned_hours: The current value of planned_hours.
+        :param : The remaining hours to plan.
         :param searched_date: The current value of the search_date.
         :param search_forward: The search direction. Having search_forward truthy causes the search to be made chronologically.
                                Having search_forward falsy causes the search to be made reverse chronologically.
         :return: tuple ``(planned_hours, searched_date)``.
         """
-        enumeration = search_forward and intervals or reversed(intervals)
-        for interval in enumeration:
-            delta = 0.0
-            if search_forward:
-                if interval[1] > searched_date:
-                    target_date = max(searched_date, interval[0])
-                    delta = min(planned_hours_target - planned_hours, interval[1] - target_date)
-                    searched_date = target_date + delta
-            else:
-                if interval[0] < searched_date:
-                    target_date = min(searched_date, interval[1])
-                    delta = min(planned_hours_target - planned_hours, target_date - interval[0])
-                    searched_date = target_date - delta
-
-            if delta:
-                planned_hours += delta
-
-            if planned_hours >= planned_hours_target:
+        if not intervals:
+            return hours_to_plan, searched_date
+        if search_forward:
+            intervals_to_browse = Intervals([(searched_date, intervals._items[-1][1], self.env['resource.calendar.attendance'])]) & intervals
+        else:
+            intervals_to_browse = reversed(Intervals([(intervals._items[0][0], searched_date, self.env['resource.calendar.attendance'])]) & intervals)
+        new_planned_date = searched_date
+        for interval in intervals_to_browse:
+            delta = min(hours_to_plan, interval[1] - interval[0])
+            new_planned_date = interval[0] + delta if search_forward else interval[1] - delta
+            hours_to_plan -= delta
+            if hours_to_plan <= timedelta(hours=0.0):
                 break
-        return planned_hours, searched_date
+        return hours_to_plan, new_planned_date
 
-    def _action_auto_shift(self):
-        # Recordset of all the tasks that are 'linked' to the current task and that would require an update in
-        # their planned_date fields.
-        tasks_to_auto_shift, mapped_depend_on, mapped_dependent = self._action_auto_shift_get_candidates()
-        if not tasks_to_auto_shift:
-            return
+    def _get_planned_dates_auto_shift(self, mapped_dependent, mapped_depend_on, intervals_cache, resource_validity):
+        """ Gets the new planned dates for a given task in self
 
-        # # We will perform the search per calendar in order to increase performance in case multiple records
-        # # share the same calendar.
-        # tasks_by_resource_calendar_dict = tasks_to_auto_shift._get_tasks_by_resource_calendar_dict()
+            :param mapped_dependent: dependent tasks
+            :param mapped_depend_on: depending tasks
+            :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
+            :param resource_validity: A dict with resource's intervals of validity/invality
+                                     (during resource validity, the resource has its own work intervals,
+                                      during the invalidity, the intervals of its company are use
+            :returns: new planned begin and end dates
+        """
+        # If planned_hours are used, we will modify the planned_date fields values in order to
+        # preserve the planned_hours, taking into account the work intervals either of the user
+        # if available or the one of the company if not
+        self.ensure_one()
+        search_forward = bool(mapped_dependent[self])
+        search_factor = (1 if search_forward else -1)
+        if search_forward:
+            # Case 1: Move forward
+            # Here self is a task that the depends on the written task so we need to schedule it after
+            # to this task planned_date_end
+            date_candidate = mapped_dependent[self].planned_date_end.replace(tzinfo=utc)
+        else:
+            # Case 2: Move backward
+            # Here self is a task that the written task depends on so we need to schedule it prior to
+            # this task planned_date_begin
+            date_candidate = mapped_depend_on[self].planned_date_begin.replace(tzinfo=utc)
 
-        # The calendar intervals that will be kept during the process of all the tasks that
-        # share the calendar in order to limit DB queries.
-        intervals_cache = defaultdict(Intervals)
+        first_datetime = self._get_first_working_datetime(
+            intervals_cache, date_candidate, resource_validity, search_forward=search_forward
+        )
 
-        for task in tasks_to_auto_shift:
-            new_planned_date_begin, new_planned_date_end = False, False
-            if task.planned_hours:
-                new_planned_date_begin, new_planned_date_end, intervals_cache = task._action_auto_shift_with_planned_hours(
-                    mapped_dependent, mapped_depend_on, intervals_cache)
-            else:
-                new_planned_date_begin, new_planned_date_end, intervals_cache = task._action_auto_shift_without_planned_hours(
-                    mapped_dependent, mapped_depend_on, intervals_cache)
+        if not self.planned_hours:
+            # If there are no planned hours, keep the current duration
+            duration = search_factor * (self.planned_date_end - self.planned_date_begin)
+            return order_boundaries_auto_shift(first_datetime, first_datetime + duration, search_forward)
 
-            task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end)
+        searched_date = current = first_datetime
+        planned_hours = timedelta(hours=self.planned_hours)
 
-    def _action_auto_shift_get_candidates(self):
+        # Keeps track of the hours that have already been covered.
+        hours_to_plan = planned_hours
+        MIN_NUMB_OF_WEEKS = 1
+        MAX_ELAPSED_TIME = timedelta(weeks=53)
+        resource_entity = self._get_resource_entity()
+        while hours_to_plan > timedelta(hours=0.0) and search_factor * (current - first_datetime) < MAX_ELAPSED_TIME:
+            # Look for the missing intervals with min search of 1 week
+            delta = search_factor * max(hours_to_plan * 3, timedelta(weeks=MIN_NUMB_OF_WEEKS))
+            task_interval = self._get_interval_auto_shift(current, delta, search_forward)
+            self._update_intervals_cache(intervals_cache, task_interval, resource_validity)
+            intervals_cache_entry = intervals_cache[resource_entity] & task_interval
+            hours_to_plan, searched_date = self._plan_hours_auto_shift(
+                intervals_cache_entry, hours_to_plan, searched_date, search_forward
+            )
+            current += delta
+
+        if hours_to_plan > timedelta(hours=0.0):
+            # Reached max iterations
+            return False, False
+
+        return order_boundaries_auto_shift(first_datetime, searched_date, search_forward)
+
+    def _auto_shift_task(self, mapped_dependent, mapped_depend_on, intervals_cache, resource_validity):
+        """ Shifts the task in the future or the past regarding the dependent and depending tasks
+
+            :param mapped_dependent: dependent tasks
+            :param mapped_depend_on: depending tasks
+            :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
+            :param resource_validity: A dict with resource's intervals of validity/invality
+                                     (during resource validity, the resource has its own work intervals,
+                                      during the invalidity, the intervals of its company are use
+            :returns a notification dict if the shift could not be applied, False otherwise
+        """
+        self.ensure_one()
+        new_planned_date_begin, new_planned_date_end = self._get_planned_dates_auto_shift(
+            mapped_dependent, mapped_depend_on, intervals_cache, resource_validity
+        )
+        if not self._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end):
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'warning',
+                    'message': _('You cannot reschedule tasks in the past. Please, change their dates manually instead.'),
+                }
+            }
+        return False
+
+    def _is_candidate_auto_shift(self):
+        """
+        Informs whether a task is a candidate for the auto shift feature.
+        :return: True if the task is a candidate for the auto shift feature.
+        :rtype: bool
+        """
+        self.ensure_one()
+        return self.project_id and self.project_id.allow_task_dependencies and not self.is_closed and \
+            self.planned_date_begin and self.planned_date_end and self.planned_date_begin > datetime.now()
+
+    def _get_candidates_auto_shift(self):
         """
         Gets the tasks that are candidates for the auto shift feature, together with the two dictionaries
         mapped_depend_on and mapped_dependent that provide access to the task that trigger the auto shift.
@@ -533,204 +586,75 @@ class Task(models.Model):
         tasks_to_auto_shift = self.env['project.task']
 
         auto_shift_direction = self.env.context.get(DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY, 'none')
-        auto_shift_forward = auto_shift_direction in (DATE_AUTO_SHIFT_FORWARD, DATE_AUTO_SHIFT_BOTH_DIRECTIONS)
-        auto_shift_backward = auto_shift_direction in (DATE_AUTO_SHIFT_BACKWARD, DATE_AUTO_SHIFT_BOTH_DIRECTIONS)
+        auto_shift_forward = auto_shift_direction == DATE_AUTO_SHIFT_FORWARD
+        auto_shift_backward = auto_shift_direction == DATE_AUTO_SHIFT_BACKWARD
 
-        auto_shift_candidate_ids = set(self.ids)
-        auto_shift_candidate_ids.update(self.depend_on_ids.ids)
-        auto_shift_candidate_ids.update(self.dependent_ids.ids)
+        auto_shift_candidate_ids = set(self.ids + self.depend_on_ids.ids + self.dependent_ids.ids)
         # The goal is to automatically exclude ids from the depend_on_ids and dependent_ids but not the self.ids.
-        # But the call on _is_auto_shift_candidate will still ensure that the self.ids are candidates
+        # But the call on _is_candidate_auto_shift will still ensure that the self.ids are candidates
         date_auto_shift_ids_to_exclude = self.env.context.get(DATE_AUTO_SHIFT_IDS_TO_EXCLUDE_KEY, set()) - set(self.ids)
         auto_shift_candidates = self.env['project.task'].browse(auto_shift_candidate_ids - date_auto_shift_ids_to_exclude)
-        auto_shift_candidate_set = {auto_shift_candidate.id for auto_shift_candidate in auto_shift_candidates if auto_shift_candidate._is_auto_shift_candidate()}
+        auto_shift_candidate_set = {auto_shift_candidate.id for auto_shift_candidate in auto_shift_candidates if auto_shift_candidate._is_candidate_auto_shift()}
+
+        def is_candidate_and_same_project(master, slave):
+            return slave.id in auto_shift_candidate_set and slave.project_id == master.project_id
+
+        def is_in_conflict_or_force(master, slave, force_autoshift):
+            return force_autoshift or slave.planned_date_end > master.planned_date_begin
 
         for task in self:
+            if task.id not in auto_shift_candidate_set:
+                continue
+            for depend_on_task in task.depend_on_ids:
+                if not is_candidate_and_same_project(task, depend_on_task) or\
+                   not is_in_conflict_or_force(task, depend_on_task, auto_shift_forward):
+                    continue
+                earliest_task = mapped_depend_on[depend_on_task] or task
+                mapped_depend_on[depend_on_task] = task if task.planned_date_begin < earliest_task.planned_date_begin else earliest_task
+                if mapped_depend_on[depend_on_task] == task:
+                    tasks_to_auto_shift |= depend_on_task
+            for dependent_task in task.dependent_ids:
+                if not is_candidate_and_same_project(task, dependent_task) or\
+                   not is_in_conflict_or_force(dependent_task, task, auto_shift_backward):
+                    continue
+                latest_task = mapped_dependent[dependent_task] or task
+                mapped_dependent[dependent_task] = task if task.planned_date_end > latest_task.planned_date_end else latest_task
+                if mapped_dependent[dependent_task] == task:
+                    tasks_to_auto_shift |= dependent_task
+        for task in mapped_depend_on:
             # We provide priority to depend_on over dependent as we try to shorten the critical path
-            if task.id in auto_shift_candidate_set:
-                for depend_on_task in task.depend_on_ids:
-                    if depend_on_task.id in auto_shift_candidate_set and depend_on_task.project_id == task.project_id \
-                            and (depend_on_task.planned_date_end > task.planned_date_begin or auto_shift_forward):
-                        if not mapped_depend_on[depend_on_task] or \
-                                mapped_depend_on[depend_on_task].planned_date_begin > task.planned_date_begin:
-                            if mapped_dependent[depend_on_task]:
-                                del mapped_dependent[depend_on_task]
-                            mapped_depend_on[depend_on_task] = task
-                            tasks_to_auto_shift |= depend_on_task
-                for dependent_task in task.dependent_ids:
-                    if dependent_task.id in auto_shift_candidate_set and dependent_task.project_id == task.project_id \
-                            and (dependent_task.planned_date_begin < task.planned_date_end or auto_shift_backward):
-                        if (not mapped_depend_on[dependent_task] and not mapped_dependent[dependent_task]) or \
-                                mapped_dependent[dependent_task].planned_date_end < task.planned_date_end:
-                            mapped_dependent[dependent_task] = task
-                            tasks_to_auto_shift |= dependent_task
+            if task in mapped_dependent:
+                del mapped_dependent[task]
         return tasks_to_auto_shift, mapped_depend_on, mapped_dependent
 
-    def _action_auto_shift_with_planned_hours(self, mapped_dependent, mapped_depend_on, intervals_cache):
+    def _action_auto_shift(self):
+        # Recordset of all the tasks that are 'linked' to the current task and that would require an update in
+        # their planned_date fields.
+        tasks_to_auto_shift, mapped_depend_on, mapped_dependent = self._get_candidates_auto_shift()
+        if not tasks_to_auto_shift:
+            return
 
-        # If planned_hours are used, we will modify the planned_date fields values in order to
-        # preserve the planned_hours, taking into account the work intervals either of the user
-        # if available or the one of the company if not
-        self.ensure_one()
-        task = self
-        key = self._get_calendars_and_resources_key()
+        # Utils variables
+        # 1) work intervals cache will be used to cache the work intervals per company or resource
+        #    Reason why the key is a mixin is due to the fact a company has no resource associated.
+        #    Work intervals are resource dependant, we will "query" this work interval rather than calling
+        #    _work_intervals_batch to save some db queries.
+        # 2) Resource validity is a dict with a mixin(company,resource) as key and a dict representing the
+        #    intervals where the resource is "valid", i.e. under contract for an employee, and "invalid", i.e.
+        #    intervals where the employee was not already there or has been fired. When an interval is in the
+        #    invalid interval of a resource, then there is a fallback on its company intervals. (see _update_intervals_cache)
+        work_intervals_cache = defaultdict(Intervals)  # keys : [mixin(company,resource)]
+        resource_validity = defaultdict(lambda: {'valid': Intervals(), 'invalid': Intervals()})
+        for task in tasks_to_auto_shift:
+            notification = task._auto_shift_task(
+                mapped_dependent, mapped_depend_on, work_intervals_cache, resource_validity
+            )
+            if notification:
+                return notification
 
-        new_planned_date_begin, new_planned_date_end = False, False
-
-        planned_hours = timedelta(hours=task.planned_hours)
-
-        task_calendars = {}
-
-        if mapped_dependent[task]:
-            # Case 1: Move forward
-            # Here task is a task that the depends on the written task so we need to schedule it after
-            # to this task planned_date_end
-
-            search_forward = True
-            date_candidate = mapped_dependent[task].planned_date_end.replace(tzinfo=utc)
-            # We arbitrary get the calendars info for the period from a month before the date and a month after.
-            task_calendars = self._get_calendars_and_resources(date_candidate - relativedelta(months=1),
-                                                               date_candidate + relativedelta(months=1))
-            planned_date_begin_interval, intervals_cache, task_calendars = self._get_first_work_interval(intervals_cache,
-                                                                                                         date_candidate,
-                                                                                                         task_calendars)
-            searched_date = new_planned_date_begin = max(date_candidate, planned_date_begin_interval[0])
-        else:
-            # Case 2: Move backward
-            # Here task is a task that the written task depends on so we need to schedule it prior to
-            # this task planned_date_begin
-
-            search_forward = False
-            date_candidate = mapped_depend_on[task].planned_date_begin.replace(tzinfo=utc)
-            # We arbitrary get the calendars info for the period from a month before the date and a month after.
-            task_calendars = self._get_calendars_and_resources(date_candidate - relativedelta(months=1),
-                                                               date_candidate + relativedelta(months=1))
-            planned_date_end_interval, intervals_cache, task_calendars = self._get_first_work_interval(intervals_cache,
-                                                                                                       date_candidate,
-                                                                                                       task_calendars,
-                                                                                                       search_forward=False)
-            searched_date = new_planned_date_end = min(date_candidate, planned_date_end_interval[1])
-
-        # Keeps track of the hours that have already been covered.
-        new_task_hours = timedelta(hours=0.0)
-        min_numb_of_weeks = 1
-        first = defaultdict(lambda: True)
-        iteration_counter = 0
-        # If we can't reschedule the task within a year, we can consider that there is an issue.
-        MAX_ITERATIONS = 52
-        while new_task_hours < planned_hours:
-            iteration_counter += 1
-
-            if iteration_counter > MAX_ITERATIONS:
-                # This should of course never happen. But if it does we will return False which will cause the
-                # process to stop for this task dependency node (this one and its dependencies)
-                new_planned_date_begin, new_planned_date_end = False, False
-                break
-
-            # Look for the missing intervals with min search of 1 week
-            calendar_intervals_to_search = max(planned_hours - new_task_hours, timedelta(weeks=min_numb_of_weeks))
-
-            if mapped_dependent[task]:
-                # task is a task that the written task depends on so we need to schedule it prior to this task planned_date_begin
-                start = searched_date
-                stop = start + calendar_intervals_to_search
-            else:
-                # task is a task that the depends on the written task so we need to schedule it after to this task planned_date_end
-                stop = searched_date
-                start = stop - calendar_intervals_to_search
-
-            # find every calendars between start and stop
-            for calendar in (task_calendars[key] if search_forward else reversed(task_calendars[key])):
-                if calendar['date_start'] <= stop and calendar['date_end'] >= start:
-                    intervals_cache_entry = intervals_cache[calendar['calendar_id'], calendar['resource_id']]
-                    calendar_intervals_start = intervals_cache_entry._items[0][0].astimezone(
-                        utc) if len(intervals_cache_entry) > 0 else datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=utc)
-                    calendar_intervals_end = intervals_cache_entry._items[-1][1].astimezone(
-                        utc) if len(intervals_cache_entry) > 0 else datetime(1, 1, 1, tzinfo=utc)
-                    calendar_interval = Intervals([(
-                        calendar_intervals_start,
-                        calendar_intervals_end,
-                        self.env['resource.calendar.attendance'])])
-
-                    task_interval = Intervals([
-                        (max(min(start, calendar_intervals_end), calendar['date_start']),
-                         min(max(stop, calendar_intervals_start), calendar['date_end']),
-                         self.env['resource.calendar.attendance'])
-                    ])
-
-                    search_intervals = task_interval - calendar_interval
-
-                    if not search_intervals or first[intervals_cache_entry]:
-                        first[intervals_cache_entry] = False
-                        # Look into the calendar intervals that have already been retrieved
-                        new_task_hours, searched_date = self._get_date_for_planned_hours(intervals_cache_entry, planned_hours,
-                                                                                         new_task_hours, searched_date,
-                                                                                         search_forward)
-
-                    else:
-                        for search_interval in search_intervals:
-                            intervals = calendar['calendar_id']._work_intervals_batch(search_interval[0], search_interval[1], calendar['resource_id'])[calendar['resource_id'] and calendar['resource_id'].id]
-                            if not intervals:
-                                min_numb_of_weeks += 1
-                                break
-                            else:
-                                min_numb_of_weeks = 1
-
-                            new_task_hours, searched_date = self._get_date_for_planned_hours(intervals, planned_hours,
-                                                                                             new_task_hours,
-                                                                                             searched_date,
-                                                                                             search_forward)
-
-                            intervals_cache_entry |= intervals
-
-                if new_task_hours == planned_hours:
-                    break
-
-        if mapped_dependent[task]:
-            new_planned_date_end = searched_date
-        else:
-            new_planned_date_begin = searched_date
-
-        return new_planned_date_begin, new_planned_date_end, intervals_cache
-
-    def _action_auto_shift_without_planned_hours(self, mapped_dependent, mapped_depend_on, intervals_cache):
-        # Checks planned_hours is covered otherwise add
-        self.ensure_one()
-        task = self
-
-        if mapped_dependent[task]:
-            # Case 1: Move forward
-            # Here task is a task that the depends on the written task so we need to schedule it after
-            # to this task planned_date_end
-
-            date_candidate = mapped_dependent[task].planned_date_end.replace(tzinfo=utc)
-            # We arbitrary get the calendars info for the period from a month before the date and a month after.
-            task_calendars = self._get_calendars_and_resources(date_candidate - relativedelta(months=1),
-                                                               date_candidate + relativedelta(months=1))
-            planned_date_begin_interval, intervals_cache, task_calendars = self._get_first_work_interval(intervals_cache,
-                                                                                                         date_candidate,
-                                                                                                         task_calendars)
-            new_planned_date_begin = max(date_candidate, planned_date_begin_interval[0])
-            new_planned_date_end = new_planned_date_begin + (
-                    task.planned_date_end - task.planned_date_begin)
-        else:
-            # Case 2: Move backward
-            # Here task is a task that the written task depends on so we need to schedule it prior to
-            # this task planned_date_begin
-
-            date_candidate = mapped_depend_on[task].planned_date_begin.replace(tzinfo=utc)
-            # We arbitrary get the calendars info for the period from a month before the date and a month after.
-            task_calendars = self._get_calendars_and_resources(date_candidate - relativedelta(months=1),
-                                                               date_candidate + relativedelta(months=1))
-            planned_date_end_interval, intervals_cache, task_calendars = self._get_first_work_interval(intervals_cache,
-                                                                                                       date_candidate,
-                                                                                                       task_calendars,
-                                                                                                       search_forward=False)
-            new_planned_date_end = min(date_candidate, planned_date_end_interval[1])
-            new_planned_date_begin = new_planned_date_end - (
-                task.planned_date_end - task.planned_date_begin)
-
-        return new_planned_date_begin, new_planned_date_end, intervals_cache
+    # ----------------------------------------------------
+    # Overlapping tasks
+    # ----------------------------------------------------
 
     def _get_task_overlap_domain(self):
         domain_mapping = {}
@@ -831,58 +755,36 @@ class Task(models.Model):
 
     @api.model
     def action_reschedule(self, direction, master_task_id, slave_task_id):
+        if direction not in (DATE_AUTO_SHIFT_FORWARD, DATE_AUTO_SHIFT_BACKWARD):
+            return False
         # Mapping of tasks with the related tasks that are depending on it
         mapped_depend_on = defaultdict(lambda: self.env['project.task'])
         # Mapping of tasks with the related tasks dependent tasks
         mapped_dependent = defaultdict(lambda: self.env['project.task'])
         master_task, slave_task = self.env['project.task'].browse([master_task_id, slave_task_id])
-        is_dependency_constraint_met = master_task.planned_date_end <= slave_task.planned_date_begin
+        is_master_prior_to_slave = master_task.planned_date_end <= slave_task.planned_date_begin
 
         auto_shift_task_write_context = {
             DATE_AUTO_SHIFT_CONTEXT_KEY: True,
-            DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY: DATE_AUTO_SHIFT_BOTH_DIRECTIONS,
+            DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY: direction,
         }
 
-        if direction == 'forward':
-            auto_shift_task_write_context[DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY] = DATE_AUTO_SHIFT_FORWARD
-            if (is_dependency_constraint_met):
-                trigger_task = master_task
-                mapped_depend_on[trigger_task] = slave_task
-            else:
-                trigger_task = slave_task
-                mapped_dependent[trigger_task] = master_task
-        elif direction == 'backward':
-            auto_shift_task_write_context[DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY] = DATE_AUTO_SHIFT_BACKWARD
-            if (is_dependency_constraint_met):
-                trigger_task = slave_task
-                mapped_dependent[trigger_task] = master_task
-            else:
-                trigger_task = master_task
-                mapped_depend_on[trigger_task] = slave_task
+        if (is_master_prior_to_slave and direction == DATE_AUTO_SHIFT_FORWARD) or\
+           (not is_master_prior_to_slave and direction == DATE_AUTO_SHIFT_BACKWARD):
+            # Indeed this condition is a XOR, but it's clearer with the long version
+            trigger_task = master_task
+            mapped_depend_on[trigger_task] = slave_task
         else:
-            return False
+            trigger_task = slave_task
+            mapped_dependent[trigger_task] = master_task
 
         trigger_task = trigger_task.with_context(**auto_shift_task_write_context)
-        intervals_cache = defaultdict(Intervals)
-
-        if trigger_task.planned_hours:
-            new_planned_date_begin, new_planned_date_end, intervals_cache = trigger_task._action_auto_shift_with_planned_hours(
-                mapped_dependent, mapped_depend_on, intervals_cache)
-        else:
-            new_planned_date_begin, new_planned_date_end, intervals_cache = trigger_task._action_auto_shift_without_planned_hours(
-                mapped_dependent, mapped_depend_on, intervals_cache)
-
-        if not trigger_task._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end):
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'type': 'warning',
-                    'message': _('You cannot reschedule tasks in the past. Please, change their dates manually instead.'),
-                }
-            }
-
-        return True
+        work_intervals_cache = defaultdict(Intervals)  # keys resource_entity: [mixin(company,resource)]
+        resource_validity = defaultdict(lambda: {'valid': Intervals(), 'invalid': Intervals()})
+        notification = trigger_task._auto_shift_task(
+            mapped_dependent, mapped_depend_on, work_intervals_cache, resource_validity
+        )
+        return notification or True
 
     def _get_recurrence_start_date(self):
         self.ensure_one()

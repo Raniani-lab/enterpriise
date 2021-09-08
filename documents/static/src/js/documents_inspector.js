@@ -274,10 +274,14 @@ const DocumentsInspector = Widget.extend({
             proms.push(this._renderField('partner_id', options));
         }
         if (this.records.length > 0) {
-            proms.push(this._renderField('owner_id', options));
+            proms.push(this._renderField('owner_id', {
+                mode: 'edit',
+                noCreate: true,
+            }));
             proms.push(this._renderField('folder_id', {
                 icon: 'fa fa-folder text-odoo',
                 mode: 'edit',
+                noCreate: true,
             }));
         }
         return Promise.all(proms);

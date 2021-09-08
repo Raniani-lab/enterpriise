@@ -90,7 +90,7 @@ class StockBarcodeController(http.Controller):
             domain_for_this_model = domains_by_model.get(model)
             if domain_for_this_model:
                 domain = expression.AND([domain, domain_for_this_model])
-            record = request.env[model].search(domain, limit=limit)
+            record = request.env[model].with_context(display_default_code=False).search(domain, limit=limit)
             if record:
                 result[model] += record.read(request.env[model]._get_fields_stock_barcode(), load=False)
                 if hasattr(record, '_get_stock_barcode_specific_data'):

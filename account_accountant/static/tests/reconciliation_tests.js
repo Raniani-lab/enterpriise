@@ -685,6 +685,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -765,15 +766,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -862,15 +855,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -915,15 +900,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -974,6 +951,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             mockRPC: function (route, args) {
                 if (args.method === 'process_bank_statement_line') {
                     var lines = args.args['1'];
@@ -994,15 +972,6 @@ QUnit.module('account', {
                     ], "should call process_bank_statement_line with partial reconcile values");
                 }
                 return this._super(route, args);
-            },
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
             },
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
@@ -1054,6 +1023,110 @@ QUnit.module('account', {
         clientAction.destroy();
     });
 
+    QUnit.test('Reconciliation with rounding different representation (but same value) is not partial', async function (assert) {
+        assert.expect(6);
+
+        this.params.data_preprocess = {
+            value_min: 0,
+            value_max: 1,
+            notifications: [],
+            statement_id: 2,
+            journal_id: 7,
+            st_lines_ids: [8],
+            statement_name: 'BNK/2014/001',
+        };
+
+        this.params.data_widget = [
+            {
+                st_line: { id: 8, ref: false, note: "", name: "test", date: "09/09/2021", amount: 956.06, amount_str: "$ 956.06", currency_id: 3, partner_id: 10, journal_id: 7, statement_id: 2, account_id: [ 40, "101402 Bank" ], account_code: "101402", account_name: "Bank", partner_name: "Deco Addict", communication_partner_name: false, amount_currency_str: "", amount_currency: 956.06, has_no_partner: false, company_id: 1, open_balance_account_id: 6},
+                reconciliation_proposition: [{
+                    id: 36,
+                    name: "INV/2021/09/0004",
+                    ref: "",
+                    date: "09/09/2021",
+                    date_maturity: "10/09/2021",
+                    account_id: [ 6, "121000 Account Receivable" ],
+                    account_code: "121000",
+                    account_name: "Account Receivable",
+                    account_type: "receivable",
+                    journal_id: [ 1, "Customer Invoices" ],
+                    partner_id: 10,
+                    partner_name: "Deco Addict",
+                    is_liquidity_line: false,
+                    currency_id: 3,
+                    debit: 956.0600000000001,
+                    credit: 0,
+                    amount_str: "$ 956.06",
+                    amount_currency: 0,
+                    amount_currency_str: "",
+                    total_amount_currency_str: "",
+                    total_amount_str: "$ 956.06",
+                    recs_count: 0,
+                }],
+                model_id: 1,
+                partner_id: 10,
+                partner_name: "Deco Addict"
+            }
+        ]
+
+        // tweak the data to fit our needs
+        this.params.move_lines_for_manual_reconciliation = {
+            '[283,null,"",0]': [
+                { id: 26,
+                        name: "INV/2021/08/0001", ref: "", date: "08/25/2021", date_maturity: "08/25/2021", account_id: [ 6, "121000 Account Receivable" ], account_code: "121000", account_name: "Account Receivable", account_type: "receivable", journal_id: [ 1, "Customer Invoices" ], partner_id: 10, partner_name: "Deco Addict", is_liquidity_line: false, currency_id: 3, debit: 365125, credit: 0, amount_str: "$ 365,125.00", amount_currency: 0, amount_currency_str: "", total_amount_currency_str: "", total_amount_str: "$ 365,125.00", recs_count: 3 },
+                { id: 20, name: "INV/2021/09/0002", ref: "", date: "09/08/2021", date_maturity: "10/08/2021", account_id: [ 6, "121000 Account Receivable" ], account_code: "121000", account_name: "Account Receivable", account_type: "receivable", journal_id: [ 1, "Customer Invoices" ], partner_id: 10, partner_name: "Deco Addict", is_liquidity_line: false, currency_id: 3, debit: 169625, credit: 0, amount_str: "$ 169,625.00", amount_currency: 0, amount_currency_str: "", total_amount_currency_str: "", total_amount_str: "$ 169,625.00", recs_count: 3 },
+                { id: 23, name: "INV/2021/09/0003", ref: "", date: "09/08/2021", date_maturity: "10/08/2021", account_id: [ 6, "121000 Account Receivable" ], account_code: "121000", account_name: "Account Receivable", account_type: "receivable", journal_id: [ 1, "Customer Invoices" ], partner_id: 10, partner_name: "Deco Addict", is_liquidity_line: false, currency_id: 3, debit: 143750, credit: 0, amount_str: "$ 143,750.00", amount_currency: 0, amount_currency_str: "", total_amount_currency_str: "", total_amount_str: "$ 143,750.00", recs_count: 3 }
+              ],
+        };
+
+        var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
+        await testUtils.mock.addMockEnvironment(clientAction, {
+            data: this.params.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'process_bank_statement_line') {
+                    assert.deepEqual(args.args, [
+                            [8],
+                            [{
+                                lines_vals_list: [
+                                    {
+                                        analytic_tag_ids: [[6, null, []]],
+                                        balance: -956.0600000000001,
+                                        currency_id: 3,
+                                        id: 36,
+                                        name: "INV/2021/09/0004",
+                                    }
+                                ],
+                                partner_id: 10,
+                                to_check: false
+                            }],
+                          ], "should call process_bank_statement_line");
+                }
+
+                return this._super(route, args);
+            },
+            session: this.params.session,
+            archs: {
+                'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
+            },
+        });
+
+        await clientAction.appendTo($('#qunit-fixture'));
+        await testUtils.nextTick();
+
+        // The first reconciliation "line" is where it happens
+        var widget = clientAction.widgets[0];
+
+        assert.strictEqual(widget.$('.accounting_view div[name="partner_id"] input').val(), "Deco Addict", "Display the partner in input");
+        assert.strictEqual(widget.$('.accounting_view thead .cell_left').text(), "$ 956.06", "Display the amount on left.");
+        assert.strictEqual(widget.$('.accounting_view thead').text().replace(/[\s\n]+/g, ' ').trim(), "101402 09/09/2021 test $ 956.06", "Display the line to reconcile");
+        assert.strictEqual(widget.$('.accounting_view .strike_amount').length, 0, "Should not display the proposal as partial reconcile.");
+        assert.strictEqual(widget.$('.accounting_view tbody').text().replace(/[\s\n]+/g, ' ').trim(), "121000​ 10/09/2021 INV/2021/09/0004 $ 956.06", "Display the line proposal to reconcile");
+
+        await testUtils.dom.click(widget.$('.o_reconcile.btn-primary'));
+
+        clientAction.destroy();
+    });
+
     QUnit.test('Reconciliation currencies', async function (assert) {
         assert.expect(2);
 
@@ -1098,6 +1171,7 @@ QUnit.module('account', {
 
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             archs: {
                 'res.partner,false,list': '<tree string="Partners"><field name="display_name"/></tree>',
                 'res.partner,false,search': '<search string="Partners">' +
@@ -1172,15 +1246,7 @@ QUnit.module('account', {
 
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -1268,15 +1334,7 @@ QUnit.module('account', {
 
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 "account.account,false,list": '<tree string="Account"><field name="code"/><field name="name"/></tree>',
                 "account.account,false,search": '<search string="Account"><field name="code"/></search>',
@@ -1327,15 +1385,7 @@ QUnit.module('account', {
 
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -1387,6 +1437,7 @@ QUnit.module('account', {
 
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -1536,6 +1587,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             mockRPC: function (route, args) {
                 if (args.method === 'process_bank_statement_line') {
                     assert.deepEqual(args.args, [
@@ -1561,15 +1613,6 @@ QUnit.module('account', {
                     ], "should call process_bank_statement_line with partial reconcile values");
                 }
                 return this._super(route, args);
-            },
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
             },
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
@@ -1631,6 +1674,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             mockRPC: function (route, args) {
                 if (args.method === 'process_bank_statement_line') {
                     assert.deepEqual(args.args, [
@@ -1662,15 +1706,6 @@ QUnit.module('account', {
                     ], "should call process_bank_statement_line with new aml dict reconcile values");
                 }
                 return this._super(route, args);
-            },
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
             },
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
@@ -1758,6 +1793,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             mockRPC: function (route, args) {
                 if (args.method === 'process_bank_statement_line') {
                     assert.deepEqual(args.args, [
@@ -1783,15 +1819,6 @@ QUnit.module('account', {
                     ], "should call process_bank_statement_line with correct lines_vals_list");
                 }
                 return this._super(route, args);
-            },
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
             },
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
@@ -1861,6 +1888,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.ManualAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             mockRPC: function (route, args) {
                 if (args.method === 'process_move_lines') {
                     assert.deepEqual(args.args,
@@ -1873,15 +1901,6 @@ QUnit.module('account', {
                 }
 
                 return this._super(route, args);
-            },
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
             },
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
@@ -1929,15 +1948,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.ManualAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },
@@ -1972,7 +1983,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.ManualAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {},
+            session: this.params.session,
             mockRPC: function(route, args) {
                 if (args.method === "name_search") {
                     switch (args.model) {
@@ -2073,7 +2084,7 @@ QUnit.module('account', {
             "Gift line is flagged as new");
         assert.equal($($newLineGiftTds[2]).text().trim(), "dummy text",
             "Gift line has the correct label");
-        assert.equal($($newLineGiftTds[3]).text().trim(), "180.00",
+        assert.equal($($newLineGiftTds[3]).text().trim(), "$\u00a0180.00",
             "Gift line has the correct left amount");
         assert.equal($($newLineGiftTds[4]).text().trim(), "",
             "Gift line has the correct right amount");
@@ -2085,7 +2096,7 @@ QUnit.module('account', {
             "Tax line is flagged as new");
         assert.equal($($newLineTaxeTds[2]).text().trim(), "Tax 20.00%",
             "Tax line has the correct label");
-        assert.equal($($newLineTaxeTds[3]).text().trim(), "36.00",
+        assert.equal($($newLineTaxeTds[3]).text().trim(), "$\u00a036.00",
             "Tax line has the correct left amount");
         assert.equal($($newLineTaxeTds[4]).text().trim(), "",
             "Tax line has the correct right amount");
@@ -2104,15 +2115,7 @@ QUnit.module('account', {
 
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
-            session: {
-                currencies: {
-                    3: {
-                        digits: [69, 2],
-                        position: "before",
-                        symbol: "$"
-                    }
-                }
-            },
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },

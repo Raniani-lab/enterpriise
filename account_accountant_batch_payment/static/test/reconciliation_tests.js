@@ -41,6 +41,7 @@ QUnit.module('account', {
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
         await testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
+            session: this.params.session,
             archs: {
                 'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
             },

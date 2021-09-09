@@ -144,16 +144,15 @@ var StatementModel = BasicModel.extend({
             var balance = line.balance.amount
             var prop_amount = prop.partial_amount || prop.amount;
             var format_options = {currency_id: line.st_line.currency_id};
-            if (balance > 0.0 && prop_amount > balance) {
+            if (balance > 0.0 && this._amountCompare(prop_amount, balance, line.st_line.currency_id) > 0) {
                 // Adding a line to the credit (right side).
                 prop.partial_amount = balance
                 prop.partial_amount_str = field_utils.format.monetary(prop.partial_amount, {}, format_options);
-            } else if (balance < 0.0 && prop_amount < balance) {
+            } else if (balance < 0.0 && this._amountCompare(prop_amount, balance, line.st_line.currency_id) < 0) {
                 // Adding a line to the debit (left side).
                 prop.partial_amount = balance
                 prop.partial_amount_str = field_utils.format.monetary(-prop.partial_amount, {}, format_options);
             }
-
         }
 
         this._addProposition(line, prop);
@@ -657,7 +656,7 @@ var StatementModel = BasicModel.extend({
             // Amount can't be greater than line.amount and can not be negative and must be a number
             // the amount we receive will be a string, so take sign of previous line amount in consideration in order to put
             // the amount in the correct left or right column
-            if (amount >= Math.abs(prop.amount) || amount <= 0 || isNaN(amount)) {
+            if (amount <= 0 || isNaN(amount) || this._amountCompare(amount, Math.abs(prop.amount), line.st_line.currency_id) >= 0) {
                 delete prop.partial_amount_str;
                 delete prop.partial_amount;
                 if (isNaN(amount) || amount < 0) {
@@ -1146,7 +1145,7 @@ var StatementModel = BasicModel.extend({
     **/
     _refresh_partial_rec_preview: function (line) {
         var st_line_balance_left = line.st_line.amount;
-        _.each(line.reconciliation_proposition, function (proposition) {
+        _.each(line.reconciliation_proposition, proposition => {
             var prop_amount = st_line_balance_left < 0 ? proposition.credit : proposition.debit;
 
             // Invoice matching reconciliation models may have defined some write off rules as well
@@ -1158,7 +1157,7 @@ var StatementModel = BasicModel.extend({
 
             st_line_balance_left -= signed_impact;
 
-            if (prop_impact > 0 && prop_impact != prop_amount) {
+            if (prop_impact > 0 && this._amountCompare(prop_impact, prop_amount, line.st_line.currency_id) !== 0) {
                 // Then it'll be a partial reconciliation
                 proposition.partial_amount = signed_impact;
                 proposition.partial_amount_str = field_utils.format.monetary(Math.abs(proposition.partial_amount), {}, {currency_id: line.st_line.currency_id});
@@ -1202,6 +1201,31 @@ var StatementModel = BasicModel.extend({
         } else {
             return this._computeLine(line);
         }
+    },
+    /**
+     * Compare two amounts.
+     *
+     * Some amounts may be represented differently and are therefore compared
+     * to an epsilon deviation (depending on currency). The values to be
+     * compared have already been rounded according to the currency.
+     * (eg: 956.06 digit is rounded and represented as 956.0600000000001 float
+     * with the python method `odoo.tools.float_round`)
+     *
+     * @param float value1: first value to compare
+     * @param float value2: second value to compare
+     * @param int currency_id: currency ID used for the comparison
+     *    (associated digit used to compute the epsilon)
+     * @return -1, 0 or 1: if ``value1`` is (resp.) lower than,
+     *    equal to, or greater than ``value2``, at the given currency.
+     */
+    _amountCompare: function (value1, value2, currency_id) {
+        const currency = session.get_currency(currency_id);
+        const epsilon = Math.pow(10, -currency.digits[1]);
+        const delta = value1 - value2;
+        if (Math.abs(delta) < epsilon) {
+            return 0;
+        }
+        return delta < 0 ? -1 : 1;
     },
     /**
      * overridden in ManualModel

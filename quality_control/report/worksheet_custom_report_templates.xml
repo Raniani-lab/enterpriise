@@ -51,7 +51,7 @@
                     </div>
                     <div t-if="doc.test_type == 'picture'">
                         <hr/>
-                        <img t-att-src="image_data_uri(resize_picture(doc.picture))" alt="Quality Check Picture"/>
+                        <img width="750" t-attf-src="#{image_data_uri(doc.picture)}" alt="Quality Check Picture"/>
                     </div>
                 </t>
             </div>

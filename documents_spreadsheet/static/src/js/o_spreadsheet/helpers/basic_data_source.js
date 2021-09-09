@@ -94,11 +94,12 @@ export class BasicDataSource extends DataSource {
     /**
      * Get the display name of the given field. If the name is not already
      * available, it returns the technical name
-     * @param {string} field Technical name of the field
+     * @param {string} technicalFieldName Technical name of the field
      * @returns {string} display name of technical name
      */
-    getFieldName(field) {
-        return (this.metadata && this.metadata.fields[field].string) || field;
+    getFieldName(technicalFieldName) {
+        const field = this.getField(technicalFieldName);
+        return field ? field.string : technicalFieldName;
     }
 
     /**

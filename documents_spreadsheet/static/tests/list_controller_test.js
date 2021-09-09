@@ -239,4 +239,54 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const selectedListId = model.getters.getSelectedListId();
         assert.strictEqual(selectedListId, "1");
     });
+
+    QUnit.test("Referencing non-existing fields does not crash", async function (assert) {
+        assert.expect(4);
+        const forbiddenFieldName = "product_id"
+        let spreadsheetLoaded = false;
+        const { model } = await createSpreadsheetFromList({
+            listView: {
+                arch: `
+                    <tree string="Partners">
+                        <field name="bar"/>
+                        <field name="product_id"/>
+                    </tree>
+                `,
+                mockRPC: async function (route, args, performRPC) {
+                    if (args.method === "fields_get" && args.model === "partner"){
+                            // simulate that user cannot read the forbidden field
+                            const result = await performRPC(route, args);
+                            delete result[forbiddenFieldName];
+                            return result;
+                        }
+                    else if (args.method === "join_spreadsheet_session")
+                    { 
+                        spreadsheetLoaded = true;
+                    }
+                    else if (
+                        spreadsheetLoaded
+                        && args.method === "search_read"
+                        && args.model === "partner"
+                        && args.kwargs.fields
+                        && args.kwargs.fields.includes(forbiddenFieldName)
+                    ) {
+                        // We should not go through this condition if the forbidden fields is properly filtered
+                        assert.ok(false, `${forbiddenFieldName} should have been ignored`);
+                    }
+                    if (this) {
+                        return this._super.apply(this, arguments);
+                    }
+                },
+            },
+        });
+        setCellContent(model, "A1", `=LIST.HEADER("1", "${forbiddenFieldName}")`);
+        setCellContent(model, "A2", `=LIST("1","1","${forbiddenFieldName}")`);
+
+        const listId = model.getters.getListIds()[0];
+        assert.equal(model.getters.getListFields(listId)[forbiddenFieldName], undefined);
+        assert.strictEqual(getCellValue(model, "A1"), forbiddenFieldName);
+        const A2 = getCell(model,"A2");
+        assert.equal(A2.evaluated.type, "error");
+        assert.equal(A2.evaluated.error, `The field ${forbiddenFieldName} does not exist or you do not have access to that field`);
+    });
 });

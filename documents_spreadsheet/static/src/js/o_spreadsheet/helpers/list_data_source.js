@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { BasicDataSource } from "./basic_data_source";
+import { _t } from "web.core";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -34,13 +35,16 @@ export default class ListDataSource extends BasicDataSource {
             method: "search_read",
             context: this.definition.context,
             domain: this.computedDomain,
-            fields: this.definition.columns,
+            fields: this.definition.columns.filter(f => this.getField(f)),
             orderBy: this.definition.orderBy,
             limit: this.limit,
         });
         const proms = [];
         for (const column of this.definition.columns) {
             const field = this.getField(column);
+            if (!field) {
+                continue;
+            }
             if (["one2many", "many2many"].includes(field.type)) {
                 let ids = [];
                 for (const record of data) {
@@ -189,6 +193,9 @@ export default class ListDataSource extends BasicDataSource {
             return "";
         }
         const field = this.getField(fieldName);
+        if (!field) {
+            throw new Error(_.str.sprintf(_t("The field %s does not exist or you do not have access to that field"), fieldName));
+        }
         if (field.type === "many2one") {
             return record[fieldName].length === 2 ? record[fieldName][1] : "";
         }

@@ -251,6 +251,9 @@ class HrExpense(models.Model):
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/parse'
 
+            #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
+            self.env['iap.account'].get_credits('invoice_ocr')
+
             user_infos = {
                 'user_company_VAT': self.company_id.vat,
                 'user_company_name': self.company_id.name,

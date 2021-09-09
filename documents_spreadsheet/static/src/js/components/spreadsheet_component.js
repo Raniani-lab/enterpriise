@@ -2,6 +2,7 @@
 
 import { _t } from "web.core";
 import Dialog from "web.OwlDialog";
+import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import PivotDialog from "documents_spreadsheet.PivotDialog";
 import { jsonToBase64 } from "../o_spreadsheet/helpers/pivot_helpers";
@@ -32,6 +33,9 @@ export default class SpreadsheetComponent extends owl.Component {
             download: this._download.bind(this),
             delayedRPC: this.cacheRPC.delayedRPC.bind(this.cacheRPC),
             getLinesNumber: this._getLinesNumber.bind(this),
+        });
+        useSetupAction({
+            beforeLeave: this._onLeave.bind(this),
         });
         this.state = useState({
             dialog: {

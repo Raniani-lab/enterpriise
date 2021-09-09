@@ -27,7 +27,7 @@ class AnalyticLine(models.Model):
     amount = fields.Monetary(copy=False)
     validated = fields.Boolean("Validated line", group_operator="bool_and", store=True, copy=False)
     validated_status = fields.Selection([('draft', 'Draft'), ('validated', 'Validated')], required=True,
-        compute='_compute_validated_status', inverse='_inverse_validated_status', readonly=False)
+        compute='_compute_validated_status')
     user_can_validate = fields.Boolean(compute='_compute_can_validate',
         help="Whether or not the current user can validate/reset to draft the record.")
     is_timesheet = fields.Boolean(
@@ -287,13 +287,6 @@ class AnalyticLine(models.Model):
                 line.validated_status = 'validated'
             else:
                 line.validated_status = 'draft'
-
-    def _inverse_validated_status(self):
-        for line in self:
-            if line.validated_status == 'validated':
-                line.validated = True
-            else:
-                line.validated = False
 
     @api.depends_context('uid')
     def _compute_can_validate(self):

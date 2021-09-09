@@ -31,6 +31,7 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name"/>
                 <field name="company_id" groups="base.group_multi_company" optional="show"/>
             </tree>
@@ -96,6 +97,7 @@
                                     <field name="manager_approval"/>
                                     <separator colspan="2"/>
                                     <field name="approver_ids"/>
+                                    <field name="approver_sequence" attrs="{'invisible': [('approval_minimum', '=', 0)]}"/>
                                     <field name="approval_minimum"/>
                                     <field name="invalid_minimum" invisible="1"/>
                                     <div class="text-warning" colspan="2" attrs="{'invisible': [('invalid_minimum', '=', False)]}">

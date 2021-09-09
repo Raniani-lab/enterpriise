@@ -82,12 +82,12 @@
                 <header>
                     <field name="user_status" invisible="1"/>
                     <field name="has_access_to_request" invisible="1"/>
-                    <button name="action_confirm" string="Submit" type="object" attrs="{'invisible':[('request_status','!=','new')]}" class="btn-primary" data-hotkey="v"/>
-                    <button name="action_approve" string="Approve" type="object" attrs="{'invisible':[('user_status','!=','pending')]}" data-hotkey="q"/>
-                    <button name="action_refuse" string="Refuse" type="object" attrs="{'invisible':[('user_status','!=','pending')]}" data-hotkey="x"/>
-                    <button name="action_withdraw" string="Withdraw" type="object" attrs="{'invisible':['|','|',('request_status','==','new'),('user_status','in',['pending','cancel']),('user_status','=',False)]}" data-hotkey="y"/>
-                    <button name="action_draft" string="Back To Draft" type="object" attrs="{'invisible':['|',('request_status','!=','cancel'),'&amp;',('user_status','==',False),('has_access_to_request','==',False)]}" data-hotkey="w"/>
-                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible':['|',('request_status','in',['new','cancel']),'&amp;',('user_status','==',False),('has_access_to_request','==',False)]}" data-hotkey="z"/>
+                    <button name="action_confirm" string="Submit" type="object" attrs="{'invisible': ['|', ('approver_ids', '=', []), ('request_status','!=','new')]}" class="btn-primary" data-hotkey="v"/>
+                    <button name="action_approve" string="Approve" type="object" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="q"/>
+                    <button name="action_refuse" string="Refuse" type="object" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="x"/>
+                    <button name="action_withdraw" string="Withdraw" type="object" attrs="{'invisible':['|','|',('request_status','=','new'),('user_status','in',['waiting', 'pending','cancel']),('user_status','=',False)]}" data-hotkey="y"/>
+                    <button name="action_draft" string="Back To Draft" type="object" attrs="{'invisible':['|',('request_status','!=','cancel'),'&amp;',('user_status','=',False),('has_access_to_request','=',False)]}" data-hotkey="w"/>
+                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible':['|',('request_status','in',['new','cancel']),'&amp;',('user_status','=',False),('has_access_to_request','=',False)]}" data-hotkey="z"/>
                     <widget name="attach_document" string="Attach Document" action="message_post" attrs="{'invisible': [('attachment_number', '&lt;', 1)]}"/>
                     <widget name="attach_document" string="Attach Document" action="message_post" highlight="1" attrs="{'invisible': [('attachment_number', '&gt;=', 1)]}"/>
                     <field name="request_status" widget="statusbar"/>
@@ -105,6 +105,7 @@
                     <field name="requirer_document" invisible="1"/>
                     <field name="approval_minimum" invisible="1"/>
                     <field name="approval_type" invisible="1"/>
+                    <field name="change_request_owner" invisible="1"/>
                     <div class="o_not_full oe_button_box">
                         <button name="action_get_attachment_view"
                             class="oe_stat_button"
@@ -128,8 +129,8 @@
                     </div>
                     <group>
                         <group name="request_main">
-                            <field name="request_owner_id" groups="approvals.group_approval_user" domain="[('share', '=', False)]" attrs="{'readonly':[('request_status','not in',('new', 'pending'))]}"/>
-                            <field name="category_id" groups="approvals.group_approval_user" attrs="{'readonly':[('request_status','!=','new')]}" force_save="1"/>
+                            <field name="request_owner_id" domain="[('share', '=', False)]" attrs="{'readonly':['|', ('change_request_owner', '=', False), ('request_status','not in',('new', 'pending'))]}"/>
+                            <field name="category_id" attrs="{'readonly':[('request_status','!=','new')]}" force_save="1"/>
                             <field name="date_confirmed" groups="base.group_no_one" readonly="1"/>
                             <label for="date" string="Date" attrs="{'invisible':[('has_date','==','no')]}"/>
                             <div attrs="{'invisible':[('has_date','==','no')]}">
@@ -170,11 +171,11 @@
                             <field name="reason" attrs="{'readonly':[('request_status','not in',('new', 'pending'))]}"/>
                         </page>
                         <page string="Approver(s)" name="approvers">
-                            <field name="approver_ids" mode="tree,kanban">
-                                <tree editable="bottom" decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'">
+                            <field name="approver_ids" mode="tree,kanban" attrs="{'readonly': [('request_status', '!=', 'new')]}">
+                                <tree editable="bottom" decoration-success="status=='approved'" decoration-warning="status in ['pending', 'waiting']" decoration-danger="status=='refused'" no_open="1">
                                     <field name="existing_request_user_ids" invisible="1"/>
                                     <field name="can_edit" invisible="1"/>
-                                    <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
+                                    <field name="user_id" string="Approver" attrs="{'readonly':['|', ('can_edit', '=', False), ('status','!=','new')]}" force_save="1" />
                                     <field name="required" attrs="{'readonly': [('can_edit', '=', False)]}" force_save="1"/>
                                     <field name="status"/>
                                     <field name="company_id" invisible="1"/>
@@ -245,7 +246,7 @@
                                         role="menuitem" class="dropdown-item">Approve</a>
                                     <a name="action_refuse" type="object" attrs="{'invisible':[('user_status','!=','pending')]}"
                                         role="menuitem" class="dropdown-item">Refuse</a>
-                                    <a name="action_withdraw" type="object" attrs="{'invisible':['|',('request_status','==','new'),('user_status','in',['pending','cancel'])]}"
+                                    <a name="action_withdraw" type="object" attrs="{'invisible':['|',('request_status','=','new'),('user_status','in',['waiting', 'pending','cancel'])]}"
                                         role="menuitem" class="dropdown-item">Withdraw</a>
                                 </div>
                             </div>

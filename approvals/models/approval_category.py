@@ -17,7 +17,7 @@ CATEGORY_SELECTION = [
 class ApprovalCategory(models.Model):
     _name = 'approval.category'
     _description = 'Approval Category'
-    _order = 'sequence'
+    _order = 'sequence, id'
 
     _check_company_auto = True
 
@@ -62,6 +62,7 @@ class ApprovalCategory(models.Model):
     """)
     user_ids = fields.Many2many('res.users', compute='_compute_user_ids', string="Approver Users")
     approver_ids = fields.One2many('approval.category.approver', 'category_id', string="Approvers")
+    approver_sequence = fields.Boolean('Approvers Sequence?', help="If checked, the approvers have to approve in sequence (one after the other).")
     request_to_validate_count = fields.Integer("Number of requests to validate", compute="_compute_request_to_validate_count")
     automated_sequence = fields.Boolean('Automated Sequence?',
         help="If checked, the Approval Requests will have an automated generated name based on the given code.")
@@ -106,6 +107,11 @@ class ApprovalCategory(models.Model):
         for record in self:
             if len(record.approver_ids) != len(record.approver_ids.user_id):
                 raise ValidationError(_('An user may not be in the approver list multiple times.'))
+
+    @api.constrains('approver_sequence', 'approval_minimum')
+    def _constrains_approver_sequence(self):
+        if any(a.approver_sequence and not a.approval_minimum for a in self):
+            raise ValidationError(_('Approver Sequence can only be activated with at least 1 minimum approver.'))
 
     @api.model
     def create(self, vals):

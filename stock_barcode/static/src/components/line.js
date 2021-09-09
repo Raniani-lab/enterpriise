@@ -70,7 +70,6 @@ export default class LineComponent extends owl.Component {
     }
 
     select(ev) {
-        ev.stopPropagation();
         this.env.model.selectLine(this.line);
         this.env.model.trigger('update');
     }

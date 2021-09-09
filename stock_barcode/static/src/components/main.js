@@ -40,6 +40,7 @@ class MainComponent extends Component {
         this.props.id = this.props.action.context.active_id;
         const model = this._getModel(this.props);
         useSubEnv({model});
+        this._scrollBehavior = 'smooth';
     }
 
     async willStart() {
@@ -181,6 +182,40 @@ class MainComponent extends Component {
 
     get numberOfPages() {
         return this.env.model.pages.length;
+    }
+
+    async render() {
+        await super.render(...arguments);
+        if (!this.displayBarcodeLines) {
+            this._scrollBehavior = 'auto';
+            return;
+        }
+        let selectedLine = document.querySelector('.o_sublines .o_barcode_line.o_highlight');
+        if (!selectedLine) {
+            selectedLine = document.querySelector('.o_barcode_line.o_highlight');
+        }
+        if (selectedLine) {
+            // If a line is selected, checks if this line is entirely visible
+            // and if it's not, scrolls until the line is.
+            const footer = document.querySelector('.fixed-bottom');
+            const header = document.querySelector('.o_barcode_header');
+            const lineRect = selectedLine.getBoundingClientRect();
+            const navbar = document.querySelector('.o_main_navbar');
+            const page = document.querySelector('.o_barcode_lines');
+            // Computes the real header's height (the navbar is present if the page was refreshed).
+            const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
+            let scrollCoordY = false;
+            if (lineRect.top < headerHeight) {
+                scrollCoordY = lineRect.top - headerHeight + page.scrollTop;
+            } else if (lineRect.bottom > window.innerHeight - footer.offsetHeight) {
+                const pageRect = page.getBoundingClientRect();
+                scrollCoordY = page.scrollTop - (pageRect.bottom - lineRect.bottom);
+            }
+            if (scrollCoordY !== false) { // Scrolls to the line only if it's not entirely visible.
+                page.scroll({ left: 0, top: scrollCoordY, behavior: this._scrollBehavior });
+                this._scrollBehavior = 'smooth';
+            }
+        }
     }
 
     get packageLines() {

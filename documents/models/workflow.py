@@ -166,7 +166,7 @@ class WorkflowActionRule(models.Model):
             documents.documents_set_activity(settings_record=self)
 
         if self.create_model:
-            return self.create_record(documents=documents)
+            return self.with_company(documents.company_id).create_record(documents=documents)
 
         return True
 

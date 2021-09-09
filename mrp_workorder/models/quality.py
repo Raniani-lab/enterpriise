@@ -79,7 +79,7 @@ class QualityPoint(models.Model):
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     product_ids = fields.Many2many(
         default=_default_product_ids,
-        domain="(is_workorder_step and operation_id) and [('id', 'in', bom_product_ids)] or [('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="operation_id and [('id', 'in', bom_product_ids)] or [('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     bom_product_ids = fields.One2many('product.product', compute="_compute_bom_product_ids")
     test_type_id = fields.Many2one(
         'quality.point.test_type',
@@ -102,7 +102,7 @@ class QualityPoint(models.Model):
     @api.depends('bom_id.product_id', 'bom_id.product_tmpl_id.product_variant_ids', 'is_workorder_step', 'bom_id')
     def _compute_bom_product_ids(self):
         self.bom_product_ids = False
-        points_for_workorder_step = self.filtered(lambda p: p.is_workorder_step and p.bom_id)
+        points_for_workorder_step = self.filtered(lambda p: p.operation_id and p.bom_id)
         for point in points_for_workorder_step:
             bom_product_ids = point.bom_id.product_id or point.bom_id.product_tmpl_id.product_variant_ids
             point.bom_product_ids = bom_product_ids.filtered(lambda p: not p.company_id or p.company_id == point.company_id._origin)

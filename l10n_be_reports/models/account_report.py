@@ -44,6 +44,7 @@ class AccountReport(models.AbstractModel):
                     'views': [[False, 'form']],
                     'target': 'new',
                     'res_id': representative.id,
+                    'context': {'create': False},
                 }
                 button_text = _('Specify')
                 additional_context = {'required_fields': missing_fields}

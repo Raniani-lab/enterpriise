@@ -50,7 +50,8 @@ class L10nLuGenerateXML(models.TransientModel):
                         'res_model': 'res.partner',
                         'views': [[False, 'form']],
                         'target': 'new',
-                        'res_id': company.id,
+                        'res_id': agent.id,
+                        'context': {'create': False},
                     },
                     button_text=_('Verify'),
                     additional_context={'required_fields': [ecdf_not_ok and 'l10n_lu_agent_ecdf_prefix',
@@ -92,6 +93,7 @@ class L10nLuGenerateXML(models.TransientModel):
                     'views': [[False, 'form']],
                     'target': 'new',
                     'res_id': company.id,
+                    'context': {'create': False},
                 },
                 button_text=_('Configure'),
                 additional_context={'required_fields': ['matr_number']}

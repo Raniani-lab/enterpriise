@@ -32,7 +32,7 @@ QUnit.module("Views > GanttView > TaskGantt", {
                     start: { string: "Start Date", type: "datetime" },
                     stop: { string: "Start Date", type: "datetime" },
                     time: { string: "Time", type: "float" },
-                    user_id: {
+                    user_ids: {
                         string: "Assigned to",
                         type: "many2one",
                         relation: "res.users",
@@ -50,14 +50,14 @@ QUnit.module("Views > GanttView > TaskGantt", {
                         name: "Blop",
                         start: "2021-06-14 08:00:00",
                         stop: "2021-06-24 08:00:00",
-                        user_id: 100,
+                        user_ids: 100,
                     },
                     {
                         id: 2,
                         name: "Yop",
                         start: "2021-06-02 08:00:00",
                         stop: "2021-06-12 08:00:00",
-                        user_id: 101,
+                        user_ids: 101,
                         stuff_id: 1,
                     },
                 ],
@@ -83,7 +83,7 @@ QUnit.module("Views > GanttView > TaskGantt", {
     },
 });
 
-QUnit.test("not user_id grouped: empty groups are displayed first", async (assert) => {
+QUnit.test("not user_ids grouped: empty groups are displayed first", async (assert) => {
     assert.expect(1);
     const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id"] });
     registerCleanup(gantt.destroy);
@@ -97,7 +97,7 @@ QUnit.test("not user_id grouped: empty groups are displayed first", async (asser
     );
 });
 
-QUnit.test("not user_id grouped: no empty group if no records", async (assert) => {
+QUnit.test("not user_ids grouped: no empty group if no records", async (assert) => {
     assert.expect(1);
     // delete the record having no stuff_id
     ganttViewParams.data.task.records.splice(0, 1);
@@ -113,9 +113,9 @@ QUnit.test("not user_id grouped: no empty group if no records", async (assert) =
     );
 });
 
-QUnit.test("user_id grouped: specific empty group added, even if no records", async (assert) => {
+QUnit.test("user_ids grouped: specific empty group added, even if no records", async (assert) => {
     assert.expect(1);
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["user_id"] });
+    const gantt = await createView({ ...ganttViewParams, groupBy: ["user_ids"] });
     registerCleanup(gantt.destroy);
 
     assert.deepEqual(
@@ -123,13 +123,13 @@ QUnit.test("user_id grouped: specific empty group added, even if no records", as
             (el) => el.innerText
         ),
         ["Unassigned Tasks", "Jane Doe", "John Doe"],
-        "'Unassigned Tasks' should be the first group, even if no record exist without user_id"
+        "'Unassigned Tasks' should be the first group, even if no record exist without user_ids"
     );
 });
 
-QUnit.test("[user_id, ...] grouped", async (assert) => {
+QUnit.test("[user_ids, ...] grouped", async (assert) => {
     assert.expect(1);
-    // add an unassigned task (no user_id) that has a linked stuff
+    // add an unassigned task (no user_ids) that has a linked stuff
     ganttViewParams.data.task.records.push({
         id: 3,
         name: "Gnop",
@@ -137,7 +137,7 @@ QUnit.test("[user_id, ...] grouped", async (assert) => {
         stop: "2021-06-12 08:00:00",
         stuff_id: 1,
     });
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["user_id", "stuff_id"] });
+    const gantt = await createView({ ...ganttViewParams, groupBy: ["user_ids", "stuff_id"] });
     registerCleanup(gantt.destroy);
 
     assert.deepEqual(
@@ -156,9 +156,9 @@ QUnit.test("[user_id, ...] grouped", async (assert) => {
     );
 });
 
-QUnit.test("[..., user_id(, ...)] grouped", async (assert) => {
+QUnit.test("[..., user_ids(, ...)] grouped", async (assert) => {
     assert.expect(1);
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id", "user_id"] });
+    const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id", "user_ids"] });
     registerCleanup(gantt.destroy);
 
     assert.deepEqual(

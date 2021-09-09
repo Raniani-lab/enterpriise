@@ -49,6 +49,10 @@ class MrpRouting(models.Model):
             res.quality_point_ids._change_product_ids_for_bom(res.bom_id)
         return res
 
+    def toggle_active(self):
+        self.with_context(active_test=False).quality_point_ids.toggle_active()
+        return super().toggle_active()
+
     def action_mrp_workorder_show_steps(self):
         self.ensure_one()
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id
@@ -76,6 +80,7 @@ class QualityPoint(models.Model):
     operation_id = fields.Many2one(
         'mrp.routing.workcenter', 'Step', check_company=True)
     bom_id = fields.Many2one(related='operation_id.bom_id')
+    bom_active = fields.Boolean('Related Bill of Material Active', related='bom_id.active')
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     product_ids = fields.Many2many(
         default=_default_product_ids,

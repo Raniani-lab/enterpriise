@@ -659,6 +659,9 @@ class MrpProductionWorkcenterLine(models.Model):
             action = self.env["ir.actions.actions"]._for_xml_id("mrp.action_mrp_workorder_production_specific")
             action['domain'] = expression.AND([domain, [('production_id', 'in', self.production_id.procurement_group_id.mrp_production_ids.ids)]])
             action['target'] = 'main'
+            action['context'] = {
+                'no_breadcrumbs': True,
+            }
         else:
             # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
             action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")

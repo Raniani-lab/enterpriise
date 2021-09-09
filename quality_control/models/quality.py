@@ -8,7 +8,7 @@ import random
 
 from odoo import api, models, fields, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round
-from odoo.osv.expression import OR
+from odoo.osv.expression import AND, OR
 
 
 class QualityPoint(models.Model):
@@ -344,8 +344,8 @@ class ProductTemplate(models.Model):
 
         domain_in_products_or_categs = ['|', ('product_ids', 'in', self.product_variant_ids.ids), ('product_category_ids', 'parent_of', self.categ_id.ids)]
         domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
-        action['domain'] = OR([domain_in_products_or_categs, domain_no_products_and_categs])
-
+        domain_products = OR([domain_in_products_or_categs, domain_no_products_and_categs])
+        action['domain'] = AND([domain_products, [('bom_active', '=', True)]])
         return action
 
     def action_see_quality_checks(self):
@@ -393,6 +393,8 @@ class ProductProduct(models.Model):
         query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
         self.env['quality.point']._apply_ir_rules(query, 'read')
         _, where_clause, where_clause_args = query.get_sql()
+        additional_where_clause = self._additional_quality_point_where_clause()
+        where_clause += additional_where_clause
         parent_category_ids = [int(parent_id) for parent_id in self.categ_id.parent_path.split('/')[:-1]] if self.categ_id else []
 
         self.env.cr.execute("""
@@ -424,8 +426,8 @@ class ProductProduct(models.Model):
 
         domain_in_products_or_categs = ['|', ('product_ids', 'in', self.ids), ('product_category_ids', 'parent_of', self.categ_id.ids)]
         domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
-        action['domain'] = OR([domain_in_products_or_categs, domain_no_products_and_categs])
-
+        domain_products = OR([domain_in_products_or_categs, domain_no_products_and_categs])
+        action['domain'] = AND([domain_products, [('bom_active', '=', True)]])
         return action
 
     def action_see_quality_checks(self):
@@ -434,3 +436,6 @@ class ProductProduct(models.Model):
         action['context'] = dict(self.env.context, default_product_id=self.id, create=False)
         action['domain'] = [('product_id', '=', self.id)]
         return action
+
+    def _additional_quality_point_where_clause(self):
+        return ""

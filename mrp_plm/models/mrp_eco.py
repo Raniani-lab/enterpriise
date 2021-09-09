@@ -387,7 +387,7 @@ class MrpEco(models.Model):
             else:
                 eco.previous_change_ids = False
 
-    @api.depends('bom_id.operation_ids', 'new_bom_id.operation_ids')
+    @api.depends('bom_id.operation_ids', 'bom_id.operation_ids.active', 'new_bom_id.operation_ids', 'new_bom_id.operation_ids.active')
     def _compute_routing_change_ids(self):
         for rec in self:
             if rec.state == 'confirmed' or rec.type == 'product':

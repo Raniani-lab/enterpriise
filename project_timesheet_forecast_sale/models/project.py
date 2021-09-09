@@ -29,9 +29,9 @@ class Project(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("project_timesheet_forecast.project_timesheet_forecast_report_action")
         action.update({
             'name': 'Timesheets and Planning Analysis',
+            'domain': [('project_id', '=', self.id)],
             'context': {
                 'pivot_row_groupby': ['entry_date:month', 'sale_line_id'],
-                'search_default_project_id': self.id
             }
         })
         return action
@@ -52,8 +52,7 @@ class Project(models.Model):
         ], ['allocated_hours'], [])
         uom_hour = self.env.ref('uom.product_uom_hour')
         if planned_hours and planned_hours[0]['allocated_hours']:
-            planned_sold_total = uom_hour._compute_quantity(planned_hours[0]['allocated_hours'], self.env.company.timesheet_encode_uom_id, raise_if_failure=False)
-            sold_items['planned_sold'] = planned_sold_total
+            sold_items['planned_sold'] = uom_hour._compute_quantity(planned_hours[0]['allocated_hours'], self.env.company.timesheet_encode_uom_id, raise_if_failure=False)
         else:
             sold_items['planned_sold'] = 0.0
         remaining = sold_items['remaining']['value'] - sold_items['planned_sold']

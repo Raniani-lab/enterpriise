@@ -20,6 +20,6 @@ class ProjectUpdate(models.Model):
             return {}
         profitability = project._get_profitability_common()
         return {
-            'percentage': (-profitability['costs'] / project.budget) * 100 if project.budget != 0 else 0,
+            'percentage': round((-profitability['costs'] / project.budget) * 100 if project.budget != 0 else 0, 0),
             'amount': format_amount(self.env, project.budget, project.company_id.currency_id),
         }

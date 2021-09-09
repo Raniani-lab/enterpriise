@@ -22,10 +22,13 @@ class ProjectUpdate(models.Model):
         ], ['order_line_id', 'allocated_hours'], ['order_line_id'])
         slots_by_order_line = {res['order_line_id'][0]: res['allocated_hours'] for res in slots}
         total_planned = 0
-        for service in services['data']:
-            allocated_hours = slots_by_order_line.get(service['sol'].id, 0)
-            service['planned_value'] = float(allocated_hours)
-            total_planned += allocated_hours
         uom_hour = self.env.ref('uom.product_uom_hour')
-        services['total_planned'] = float(uom_hour._compute_quantity(total_planned, self.env.company.timesheet_encode_uom_id, raise_if_failure=False))
+        for service in services['data']:
+            allocated_hours = uom_hour._compute_quantity(slots_by_order_line.get(service['sol'].id, 0), self.env.company.timesheet_encode_uom_id, raise_if_failure=False)
+            service['planned_value'] = allocated_hours
+            service['remaining_value'] = service['remaining_value'] - allocated_hours
+            if service['sol'].product_uom.category_id == self.env.company.timesheet_encode_uom_id.category_id:
+                total_planned += allocated_hours
+        services['total_planned'] = total_planned
+        services['total_remaining'] = services['total_remaining'] - services['total_planned']
         return services

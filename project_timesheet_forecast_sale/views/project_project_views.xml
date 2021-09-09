@@ -11,7 +11,7 @@
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_manage_reporting')]" position="inside">
                 <div t-if="record.display_planning_timesheet_analysis.raw_value" role="menuitem">
-                    <a name="open_timesheets_planning_report" type="object" context="{'search_default_project_id': [active_id]}">
+                    <a name="open_timesheets_planning_report" type="object">
                         Timesheets and Planning Analysis
                     </a>
                 </div>

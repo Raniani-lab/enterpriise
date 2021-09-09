@@ -168,7 +168,9 @@ QUnit.module("Views", (hooks) => {
             type: "cohort",
             resModel: "subscription",
             serverData,
-            views: [[false, "search"]],
+            config: {
+                views: [[false, "search"]],
+            },
         });
 
         assert.containsNone(cohort, "div.o_view_nocontent");
@@ -737,7 +739,9 @@ QUnit.module("Views", (hooks) => {
             serverData,
             context: { search_default_small_than_0: true },
             noContentHelp: '<p class="abc">click to add a foo</p>',
-            views: [[false, "search"]],
+            config: {
+                views: [[false, "search"]],
+            },
         });
 
         assert.containsOnce(cohort, ".o_view_nocontent .abc");
@@ -765,7 +769,9 @@ QUnit.module("Views", (hooks) => {
             serverData,
             context: { search_default_small_than_0: true },
             noContentHelp: '<p class="abc">click to add a foo</p>',
-            views: [[false, "search"]],
+            config: {
+                views: [[false, "search"]],
+            },
             useSampleModel: true,
         });
 
@@ -796,7 +802,9 @@ QUnit.module("Views", (hooks) => {
             resModel: "subscription",
             serverData,
             noContentHelp: '<p class="abc">click to add a foo</p>',
-            views: [[false, "search"]],
+            config: {
+                views: [[false, "search"]],
+            },
             useSampleModel: true,
         });
 

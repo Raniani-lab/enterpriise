@@ -42,11 +42,6 @@
                     <field string="Quotations" name="quotation_count" widget="statinfo"/>
                 </button>
             </xpath>
-            <xpath expr="//button[@name='action_view_so']" position="after">
-                <button name="action_view_invoices" type="object" special="cancel" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}">
-                    <field name="invoice_count" widget="statinfo" string="Invoices"/>
-                </button>
-            </xpath>
         </field>
     </record>
 

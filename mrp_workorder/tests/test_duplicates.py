@@ -84,9 +84,9 @@ class TestDuplicateProducts(common.TransactionCase):
         production.button_plan()
         self.assertEqual(len(production.workorder_ids), 1, "wrong number of workorders")
         self.assertEqual(production.workorder_ids.state, 'ready', "workorder state should be 'ready'")
-        self.assertEqual(len(production.workorder_ids.check_ids), 2, "after same components merged, should be 2 quality checks")
+        self.assertEqual(len(production.workorder_ids.check_ids), 3, "Same components are not merged, should be 3 quality checks")
         painting_checks = production.workorder_ids.check_ids.filtered(lambda check: check.component_id == self.painting)
-        self.assertEqual(len(painting_checks), 1, "should be 1 quality check for painting")
+        self.assertEqual(len(painting_checks), 2, "should be 2 quality checks for painting")
 
     def test_duplicate_with_points(self):
         """ Bom with the same non tracked product in 2 bom lines and a quality point
@@ -118,9 +118,9 @@ class TestDuplicateProducts(common.TransactionCase):
         production.button_plan()
         self.assertEqual(len(production.workorder_ids), 1, "wrong number of workorders")
         self.assertEqual(production.workorder_ids.state, 'ready', "workorder state should be 'ready'")
-        self.assertEqual(len(production.workorder_ids.check_ids), 2, "after same components merged, should be 2 quality checks")
+        self.assertEqual(len(production.workorder_ids.check_ids), 3, "Same components are not merged, should be 3 quality checks")
         painting_checks = production.workorder_ids.check_ids.filtered(lambda check: check.component_id == self.painting)
-        self.assertEqual(len(painting_checks), 1, "should be 1 quality check for painting")
+        self.assertEqual(len(painting_checks), 2, "should be 2 quality checks for painting")
 
     def test_assignation_1(self):
         """ Bom with the same tracked product in 2 bom lines
@@ -134,13 +134,13 @@ class TestDuplicateProducts(common.TransactionCase):
         production.button_plan()
         self.assertEqual(len(production.workorder_ids), 1, "wrong number of workorders")
         self.assertEqual(production.workorder_ids.state, 'ready', "workorder state should be 'ready'")
-        self.assertEqual(len(production.workorder_ids.check_ids), 2, "after same components merged, should be 2 quality checks")
+        self.assertEqual(len(production.workorder_ids.check_ids), 3, "Same components are not merged, should be 3 quality checks")
         painting_checks = production.workorder_ids.check_ids.filtered(lambda check: check.component_id == self.painting)
-        self.assertEqual(len(painting_checks), 1, "should be 1 quality check for painting")
+        self.assertEqual(len(painting_checks), 2, "should be 2 quality checks for painting")
         production.action_assign()
-        self.assertEqual(len(production.workorder_ids.check_ids), 2, "after same components merged, should be 2 quality checks")
+        self.assertEqual(len(production.workorder_ids.check_ids), 3, "Same components merged, should be 3 quality checks")
         painting_checks = production.workorder_ids.check_ids.filtered(lambda check: check.component_id == self.painting)
-        self.assertEqual(len(painting_checks), 1, "should be 1 quality check for painting")
+        self.assertEqual(len(painting_checks), 2, "should be 2 quality checks for painting")
 
     def test_byproduct_1(self):
         """ Use the same product as component and as byproduct"""
@@ -169,6 +169,12 @@ class TestDuplicateProducts(common.TransactionCase):
         wo_form.lot_id = self.bb1
         wo = wo_form.save()
         wo._next()
+        # First layer
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.lot_id = self.p1
+        wo = wo_form.save()
+        wo._next()
+        # Second layer
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.lot_id = self.p1
         wo = wo_form.save()
@@ -182,10 +188,10 @@ class TestDuplicateProducts(common.TransactionCase):
         production.button_mark_done()
 
         move_paint_raw = production.move_raw_ids.filtered(lambda move: move.product_id == self.painting)
-        self.assertEqual(len(move_paint_raw), 1, 'there should be only 1 move after merge same components')
-        self.assertEqual(move_paint_raw.state, 'done', 'Moves should be done')
-        self.assertEqual(move_paint_raw.quantity_done, 2, 'Consumed quantity should be 2')
-        self.assertEqual(len(move_paint_raw.move_line_ids), 1, 'their should be 1 move line')
+        self.assertEqual(len(move_paint_raw), 2, 'there should be 2 moves after merge same components')
+        self.assertEqual(move_paint_raw.mapped('state'), ['done', 'done'], 'Moves should be done')
+        self.assertEqual(move_paint_raw.mapped('quantity_done'), [1, 1], 'Consumed quantity should be 2')
+        self.assertEqual(len(move_paint_raw.move_line_ids), 2, 'their should be 2 move lines')
         self.assertEqual(move_paint_raw.mapped('move_line_ids').mapped('lot_id'), self.p1, 'Wrong lot numbers used')
         move_paint_finished = production.move_finished_ids.filtered(lambda move: move.product_id == self.painting)
         self.assertEqual(move_paint_finished.state, 'done', 'Move should be done')

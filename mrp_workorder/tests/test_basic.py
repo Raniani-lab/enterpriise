@@ -667,7 +667,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.assertEqual(man_order.reservation_state, 'confirmed', "Production order should be in waiting state.")
 
         # check consume materials of manufacturing order
-        self.assertEqual(len(man_order.move_raw_ids), 3, "Consume material lines are not generated/merged properly.")
+        self.assertEqual(len(man_order.move_raw_ids), 4, "Consume material lines are not generated properly.")
         product_2_consume_moves = man_order.move_raw_ids.filtered(lambda x: x.product_id == self.product_2)
         product_3_consume_moves = man_order.move_raw_ids.filtered(lambda x: x.product_id == self.product_3)
         product_4_consume_moves = man_order.move_raw_ids.filtered(lambda x: x.product_id == self.product_4)
@@ -676,8 +676,8 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.assertEqual(consume_qty_2, 24.0, "Consume material quantity of Wood should be 24 instead of %s" % str(consume_qty_2))
         consume_qty_3 = product_3_consume_moves.product_uom_qty
         self.assertEqual(consume_qty_3, 12.0, "Consume material quantity of Stone should be 12 instead of %s" % str(consume_qty_3))
-        self.assertEqual(len(product_4_consume_moves), 1, "Consume move are not generated/merged properly.")
-        self.assertEqual(product_4_consume_moves.product_uom_qty, 24, "Consume material quantity of Stick should be 24.")
+        self.assertEqual(len(product_4_consume_moves), 2, "Consume move are not generated properly.")
+        self.assertEqual(sum(product_4_consume_moves.mapped('product_uom_qty')), 24, "Consume material quantity of Stick should be 24.")
         self.assertFalse(product_5_consume_moves, "Move should not create for phantom bom")
 
         # create required lots
@@ -1540,13 +1540,16 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         long_time_assembly = mo.workorder_ids[2]
 
         # same component merged in one line
-        self.assertEqual(len(long_time_assembly.check_ids), 2)
+        self.assertEqual(len(long_time_assembly.check_ids), 3)
         line1 = long_time_assembly.check_ids[0]
         line2 = long_time_assembly.check_ids[1]
+        line3 = long_time_assembly.check_ids[2]
         self.assertEqual(line1.component_id, self.product_1)
-        self.assertEqual(line1.qty_done, 5)
-        self.assertEqual(line2.component_id, self.product_2)
-        self.assertEqual(line2.qty_done, 1)
+        self.assertEqual(line1.qty_done, 1)
+        self.assertEqual(line2.component_id, self.product_1)
+        self.assertEqual(line2.qty_done, 4)
+        self.assertEqual(line3.component_id, self.product_2)
+        self.assertEqual(line3.qty_done, 1)
 
     def test_conflict_and_replan(self):
         """ TEST Json data conflicted and the replan button of a workorder """

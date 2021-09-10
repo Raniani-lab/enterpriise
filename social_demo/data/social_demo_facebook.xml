@@ -100,9 +100,9 @@ Better run to our website while it lasts 🏃</field>
         <field name="facebook_likes_count">9711</field>
         <field name="author_name">My Company Page</field>
         <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
-        <field name="message">We are glad to announce a new product for this year! 🍾
+        <field name="message">To celebrate the new year, we have a gift for you: Learn how to build your own chair!
 
-https://www.youtube.com/watch?v=m5FAPOdqWUc</field>
+https://www.youtube.com/watch?v=kmt-oVAB6hU</field>
         <field name="published_date" eval="time.strftime('%Y-01-10 09:00:00')"/>
     </record>
 

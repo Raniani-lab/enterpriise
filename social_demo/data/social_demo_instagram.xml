@@ -14,7 +14,7 @@
         <field name="instagram_comments_count">47</field>
         <field name="instagram_likes_count">879</field>
         <field name="author_name">My Company Page</field>
-        <field name="twitter_profile_image_url" eval="'/web/image/res.partner/%s/image_128' % ref('social_demo.res_partner_1')" />
+        <field name="instagram_post_link">http://instagram.com/1/1</field>
         <field name="message">Get 20% out of your purchases on https://mycompany.com/shop
     Better run to our website while it lasts 🏃</field>
         <field name="published_date" eval="time.strftime('%Y-01-07 09:00:00')"/>

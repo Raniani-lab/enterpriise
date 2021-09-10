@@ -40,6 +40,7 @@
         <field name="message">Our new product has been released 🎉 Check it out!</field>
         <field name="published_date" eval="time.strftime('%Y-01-05 08:00:00')"/>
         <field name="linkedin_author_urn">XX:XX:XX</field>
+        <field name="linkedin_post_urn">XX:XX:XX</field>
     </record>
 
     <record id="social_stream_post_linkedin_2" model="social.stream.post">
@@ -52,6 +53,7 @@
         <field name="message">Our company wishes a happy new year to everyone on LinkedIn!</field>
         <field name="published_date" eval="time.strftime('%Y-01-01 00:01:00')"/>
         <field name="linkedin_author_urn">XX:XX:XX</field>
+        <field name="linkedin_post_urn">XX:XX:XX</field>
     </record>
 
     <record id="social_stream_post_linkedin_3" model="social.stream.post">
@@ -64,6 +66,7 @@
 Better run to our website while it lasts 🏃</field>
         <field name="published_date" eval="time.strftime('%Y-01-07 08:00:00')"/>
         <field name="linkedin_author_urn">XX:XX:XX</field>
+        <field name="linkedin_post_urn">XX:XX:XX</field>
     </record>
 
     <record id="social_stream_post_linkedin_4" model="social.stream.post">
@@ -72,11 +75,12 @@ Better run to our website while it lasts 🏃</field>
         <field name="linkedin_likes_count">1454</field>
         <field name="author_name">My Company Page</field>
         <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
-        <field name="message">We are glad to announce a new product for this year! 🍾
+        <field name="message">To celebrate the new year, we have a gift for you: Learn how to build your own chair!
 
-https://www.youtube.com/watch?v=m5FAPOdqWUc</field>
+https://www.youtube.com/watch?v=kmt-oVAB6hU</field>
         <field name="published_date" eval="time.strftime('%Y-01-10 08:00:00')"/>
         <field name="linkedin_author_urn">XX:XX:XX</field>
+        <field name="linkedin_post_urn">XX:XX:XX</field>
     </record>
 
     <record id="social_stream_post_linkedin_image_1" model="social.stream.post.image">

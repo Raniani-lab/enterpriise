@@ -26,9 +26,9 @@ class CohortView extends owl.Component {
             };
         }
 
-        const { additionalMeasures, resModel, useSampleModel, fields, info } = this.props;
+        const { additionalMeasures, resModel, fields, info } = this.props;
         const modelParams = Object.assign(
-            { additionalMeasures, resModel, useSampleModel, fields, info },
+            { additionalMeasures, resModel, fields, info },
             localState
         );
         this.model = useModel(CohortModel, modelParams);

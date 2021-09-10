@@ -3,7 +3,6 @@
 import { _lt } from "@web/core/l10n/translation";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { Model } from "@web/views/helpers/model";
-import { buildSampleORM } from "@web/views/helpers/sample_server";
 import { computeReportMeasures, processMeasure } from "@web/views/helpers/utils";
 
 export const MODES = ["retention", "churn"];
@@ -23,10 +22,7 @@ export class CohortModel extends Model {
     /**
      * @override
      */
-    setup(params, { orm, user }) {
-        this.orm = orm;
-        this.user = user;
-
+    setup(params) {
         this.keepLast = new KeepLast();
 
         this.metaData = params;
@@ -59,31 +55,27 @@ export class CohortModel extends Model {
     }
 
     /**
+     * @override
+     */
+    hasData() {
+        return this.data.some((data) => data.rows.length > 0);
+    }
+
+    /**
      * @param {Object} metaData
      */
     async _load(metaData) {
-        this.data = await this._fetchData(metaData, this.orm);
-
-        // To check:
-        if (metaData.useSampleModel && this.data.some((data) => data.rows.length === 0)) {
-            const fakeORM = buildSampleORM(metaData.resModel, metaData.fields, this.user);
-            this.data = await this._fetchData(metaData, fakeORM);
-        } else {
-            this.metaData.useSampleModel = false;
-        }
-
+        this.data = await this._fetchData(metaData);
         for (const i in this.data) {
             this.data[i].title = this.searchParams.domains[i].description;
         }
-
-        this.hasData = this.data.some((data) => data.rows.length > 0);
     }
 
-    async _fetchData(metaData, orm) {
+    async _fetchData(metaData) {
         return this.keepLast.add(
             Promise.all(
                 this.searchParams.domains.map(({ arrayRepr: domain }) => {
-                    return orm.call(metaData.resModel, "get_cohort_data", [], {
+                    return this.orm.call(metaData.resModel, "get_cohort_data", [], {
                         date_start: metaData.dateStart,
                         date_stop: metaData.dateStop,
                         measure: metaData.measure,
@@ -107,5 +99,3 @@ export class CohortModel extends Model {
         this.notify();
     }
 }
-
-CohortModel.services = ["orm", "user"];

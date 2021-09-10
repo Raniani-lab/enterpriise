@@ -17,7 +17,7 @@
                         </table>
                     </div>
                     <div t-if="data.rows.length" class="table-responsive">
-                        <table class="table text-center mb0" t-att-class="{ o_sample_data_disabled: props.metaData.useSampleModel }">
+                        <table class="table text-center mb0" t-att-class="{ o_sample_data_disabled: props.useSampleModel }">
                             <thead>
                                 <tr>
                                     <th rowspan="2">
@@ -92,7 +92,7 @@
             </t>
             <t t-set="displayNoContent" t-value="
                 props.metaData.info.noContentHelp !== false and (
-                    !props.hasData or props.metaData.useSampleModel
+                    !props.hasData or props.useSampleModel
                 )"
             />
             <t t-if="displayNoContent">

@@ -76,7 +76,7 @@ class ResourceResource(models.Model):
                 start = max(start_utc, pytz.utc.localize(slot.start_datetime))
                 end = min(stop_utc, pytz.utc.localize(slot.end_datetime))
                 if slot.allocation_type == 'planning':
-                    planned_hours_mapped += (end - start).total_seconds() / 3600
+                    planned_hours_mapped[slot.resource_id.id] += (end - start).total_seconds() / 3600
                 else:
                     # for forecast slots, use the conjonction between work intervals and slot.
                     interval = Intervals([(

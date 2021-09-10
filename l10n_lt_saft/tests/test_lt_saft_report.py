@@ -11,7 +11,7 @@ from odoo.tests import tagged
 class TestLtSaftReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_lt.account_chart_template_lithuania'):
+    def setUpClass(cls, chart_template_ref='lt'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         (cls.partner_a + cls.partner_b).write({

@@ -4,16 +4,13 @@
 from odoo import models
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def load_payroll_accounts(self):
-        """
-        Override to configure payroll accounting data as well as accounting data.
-        """
-        if self == self.env.ref('l10n_ae.uae_chart_template_standard'):
-            ae_companies = self.env['res.company'].search([('partner_id.country_id.code', '=', 'AE')])
-            self._configure_payroll_account_data_uae(ae_companies)
+    def _load_payroll_accounts(self, template_code, companies):
+        if template_code != 'ae':
+            return super()._load_payroll_accounts(template_code, companies)
+        self._configure_payroll_account_data_uae(companies)
 
     def _configure_payroll_account_data_uae(self, companies):
         accounts_codes = [
@@ -26,6 +23,8 @@ class AccountChartTemplate(models.Model):
             '400012',  # Staff Other Allowances
         ]
         uae_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "AE")])
+        if not companies or not uae_structures:
+            return
         for company in companies:
             self = self.with_company(company)
 

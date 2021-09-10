@@ -42,8 +42,7 @@ class TestCoEdiCommon(AccountEdiTestCommon):
 
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_co.l10n_co_chart_template_generic',
-                   edi_format_ref='l10n_co_edi.edi_carvajal'):
+    def setUpClass(cls, chart_template_ref='co', edi_format_ref='l10n_co_edi.edi_carvajal'):
         super().setUpClass(chart_template_ref=chart_template_ref, edi_format_ref=edi_format_ref)
 
         cls.frozen_today = datetime.datetime(year=2020, month=8, day=27, hour=0, minute=0, second=0, tzinfo=timezone('utc'))

@@ -6,16 +6,13 @@ from odoo.exceptions import ValidationError
 from odoo import models, _
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def load_payroll_accounts(self):
-        """
-        Override to configure payroll accounting data as well as accounting data.
-        """
-        if self == self.env.ref('l10n_sa.sa_chart_template_standard'):
-            sa_companies = self.env['res.company'].search([('partner_id.country_id.code', '=', 'SA'), ('chart_template_id', '=', self.env.ref('l10n_sa.sa_chart_template_standard').id)])
-            self._configure_payroll_account_data_saudi(sa_companies)
+    def _load_payroll_accounts(self, template_code, companies):
+        if template_code != 'sa':
+            return super()._load_payroll_accounts(template_code, companies)
+        self._configure_payroll_account_data_saudi(companies)
 
     def _configure_payroll_account_data_saudi(self, companies):
         accounts_codes = [
@@ -30,6 +27,8 @@ class AccountChartTemplate(models.Model):
             '400012',  # Staff Other Allowances
         ]
         ksa_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "SA")])
+        if not companies or not ksa_structures:
+            return
         for company in companies:
             self = self.with_company(company)
 

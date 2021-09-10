@@ -14,9 +14,6 @@ Accounting Data for Kenyan Payroll Rules
     'data': [
         'data/account_chart_template_data.xml',
     ],
-    'demo': [
-        'data/l10n_ke_hr_payroll_account_demo.xml',
-    ],
     'license': 'OEEL-1',
     'auto_install': True,
 }

@@ -117,11 +117,6 @@
               name="_onchange_sale_order_template_id"
               eval="[obj().env.ref('test_sale_subscription.test_subscription_portal_3').filtered(lambda s: s.state != 'done').ids]"/>
 
-    <function model="account.chart.template" name="try_loading">
-        <value eval="[ref('l10n_generic_coa.configurable_chart_template')]"/>
-        <value model="res.company" eval="obj().env.ref('base.main_company')"/>
-    </function>
-
     <record id="test_subscription_portal_4" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="template_draft_multi"/>

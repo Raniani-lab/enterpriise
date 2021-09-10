@@ -10,7 +10,7 @@ from odoo.tests import tagged
 class TestL10nMXTrialBalanceMonth13(TestAccountReportsCommon):
     """ Testing the MX Trial Balance when there are Month 13 closing entries. """
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_mx.mx_coa'):
+    def setUpClass(cls, chart_template_ref='mx'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.company_data['company'].country_id = cls.env.ref('base.mx')
 

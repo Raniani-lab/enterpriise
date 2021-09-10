@@ -12,10 +12,8 @@
     'data': [
         'security/ir.model.access.csv',
         'data/account_edi_data.xml',
-        'data/account.tax.group.csv',
         'data/l10n_co_edi.type_code.csv',
         'data/l10n_co_edi.tax.type.csv',
-        'data/account.tax.template.csv',
         'data/l10n_co_edi.payment.option.csv',
         'data/res_partner_data.xml',
         'data/res.city.csv',

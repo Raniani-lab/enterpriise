@@ -63,6 +63,7 @@ class TestL10nClEdiStockCommon(TestStockCommon):
         cls.company.write({
             'l10n_cl_certificate_ids': [(4, cls.certificate.id)]
         })
+        cls.env['account.tax.group'].create({'name': 'default', 'company_id': cls.company.id})
         cls.tax_19 = cls.env['account.tax'].create({
             'name': 'IVA 19% Venta',
             'type_tax_use': 'sale',

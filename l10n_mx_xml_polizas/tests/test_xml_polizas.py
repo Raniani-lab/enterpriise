@@ -14,7 +14,7 @@ class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         """ Set up the test class for its own tests """
-        super().setUpClass(chart_template_ref='l10n_mx.mx_coa')
+        super().setUpClass(chart_template_ref='mx')
 
         # Setup the company
         cls.company = cls.company_data['company']
@@ -116,8 +116,8 @@ class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):
                 xsi:schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd"
                 Version="1.3" TipoSolicitud="AF" NumOrden="ABC6987654/99" Anio="2017" Mes="01" RFC="AAAA611013AAA">
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Bank" NumUnIdenPol="BNK1/2017/00001">
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.04" Haber="0.00" Debe="4240.00"></PLZ:Transaccion>
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="4240.00" Debe="0.00"></PLZ:Transaccion>
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="0.00" Debe="4240.00"></PLZ:Transaccion>
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.02" Haber="4240.00" Debe="0.00"></PLZ:Transaccion>
                 </PLZ:Poliza>
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Miscellaneous Operations" NumUnIdenPol="MISC/2017/01/0001">
                      <PLZ:Transaccion Concepto="Miscellaneous Operations - 2017_1_1" DesCta="___ignore___" NumCta="105.01.01" Haber="0.00" Debe="1000.00"></PLZ:Transaccion>
@@ -252,9 +252,9 @@ class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):
         expected_xml = """<?xml version='1.0' encoding='utf-8'?>
             <PLZ:Polizas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:PLZ="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo" xsi:schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd" Version="1.3" TipoSolicitud="AF" NumOrden="ABC6987654/99" Anio="2017" Mes="01" RFC="AAAA611013AAA">
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Bank" NumUnIdenPol="BNK1/2017/00001">
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.04" Haber="0.00" Debe="4240.00">
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="0.00" Debe="4240.00">
                     </PLZ:Transaccion>
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="4240.00" Debe="0.00">
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.02" Haber="4240.00" Debe="0.00">
                     </PLZ:Transaccion>
                 </PLZ:Poliza>
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Miscellaneous Operations" NumUnIdenPol="MISC/2017/01/0001">
@@ -329,9 +329,9 @@ class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):
         expected_xml = """<?xml version='1.0' encoding='utf-8'?>
             <PLZ:Polizas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:PLZ="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo" xsi:schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd" Version="1.3" TipoSolicitud="AF" NumOrden="ABC6987654/99" Anio="2017" Mes="01" RFC="AAAA611013AAA">
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Bank" NumUnIdenPol="BNK1/2017/00001">
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.04" Haber="0.00" Debe="4240.00">
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="0.00" Debe="4240.00">
                     </PLZ:Transaccion>
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="4240.00" Debe="0.00">
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.02" Haber="4240.00" Debe="0.00">
                     </PLZ:Transaccion>
                 </PLZ:Poliza>
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Miscellaneous Operations" NumUnIdenPol="MISC/2017/01/0001">
@@ -417,9 +417,9 @@ class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):
         expected_xml = """<?xml version='1.0' encoding='utf-8'?>
             <PLZ:Polizas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:PLZ="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo" xsi:schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd" Version="1.3" TipoSolicitud="AF" NumOrden="ABC6987654/99" Anio="2017" Mes="01" RFC="AAAA611013AAA">
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Bank" NumUnIdenPol="BNK1/2017/00001">
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.04" Haber="0.00" Debe="4240.00">
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="0.00" Debe="4240.00">
                       </PLZ:Transaccion>
-                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.01" Haber="4240.00" Debe="0.00">
+                    <PLZ:Transaccion Concepto="Bank - mx_st_line" DesCta="___ignore___" NumCta="102.01.02" Haber="4240.00" Debe="0.00">
                       </PLZ:Transaccion>
                 </PLZ:Poliza>
                 <PLZ:Poliza Fecha="2017-01-01" Concepto="Miscellaneous Operations" NumUnIdenPol="MISC/2017/01/0001">
@@ -457,7 +457,7 @@ class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):
                       </PLZ:Transaccion>
                 </PLZ:Poliza>
                 <PLZ:Poliza Fecha="2017-01-02" Concepto="Bank" NumUnIdenPol="PBNK1/2017/00002">
-                    <PLZ:Transaccion Concepto="Bank - Customer Payment $ 1,820.00 - partner_a - 01/02/2017" DesCta="___ignore___" NumCta="102.01.02" Haber="0.00" Debe="1820.00">
+                    <PLZ:Transaccion Concepto="Bank - Customer Payment $ 1,820.00 - partner_a - 01/02/2017" DesCta="___ignore___" NumCta="102.01.03" Haber="0.00" Debe="1820.00">
                         <PLZ:CompNal UUID_CFDI="AAAAAAAA-ABCD-ABCD-ABCD-AAAAAAAAAAAA" RFC="XEXX010101000" MontoTotal="1820.00"/>
                       </PLZ:Transaccion>
                     <PLZ:Transaccion Concepto="Bank - Customer Payment $ 1,820.00 - partner_a - 01/02/2017" DesCta="___ignore___" NumCta="105.01.01" Haber="1820.00" Debe="0.00">

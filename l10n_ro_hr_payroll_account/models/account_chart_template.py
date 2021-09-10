@@ -6,25 +6,13 @@ from odoo.exceptions import ValidationError
 from odoo import models, _
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def _load(self, company):
-        """
-        Override to configure payroll accounting data as well as accounting data.
-        """
-        res = super()._load(company)
-        if self == self.env.ref('l10n_ro.ro_chart_template'):
-            self._configure_payroll_account_romania(company)
-        return res
-
-    def _load_payroll_accounts(self):
-        super()._load_payroll_accounts()
-        if self == self.env.ref('l10n_ro.ro_chart_template'):
-            ro_companies = self.env['res.company'].search([
-                ('partner_id.country_id.code', '=', 'RO'),
-                ('chart_template_id', '=', self.env.ref('l10n_ro.ro_chart_template').id)])
-            self._configure_payroll_account_romania(ro_companies)
+    def _load_payroll_accounts(self, template_code, companies):
+        if template_code != 'ro':
+            return super()._load_payroll_accounts(template_code, companies)
+        return self._configure_payroll_account_romania(companies)
 
     def _configure_payroll_account_romania(self, companies):
         accounts_codes = [

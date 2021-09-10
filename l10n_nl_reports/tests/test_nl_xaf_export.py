@@ -12,7 +12,7 @@ from odoo.tests import tagged
 class TestNlXafExport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_nl.l10nnl_chart_template'):
+    def setUpClass(cls, chart_template_ref='nl'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.env.company.write({

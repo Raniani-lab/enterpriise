@@ -1276,8 +1276,8 @@ class TestSubscription(TestSubscriptionCommon):
         """ Update the taxes of confirmed lines when the subscription company is updated """
         tax_group_1 = self.env['account.tax.group'].create({
             'name': 'Test tax group',
-            'property_tax_receivable_account_id': self.company_data['default_account_receivable'].copy().id,
-            'property_tax_payable_account_id': self.company_data['default_account_payable'].copy().id,
+            'tax_receivable_account_id': self.company_data['default_account_receivable'].copy().id,
+            'tax_payable_account_id': self.company_data['default_account_payable'].copy().id,
         })
         sale_tax_percentage_incl_1 = self.env['account.tax'].create({
             'name': 'sale_tax_percentage_incl_1',
@@ -1287,11 +1287,11 @@ class TestSubscription(TestSubscriptionCommon):
             'price_include': True,
             'tax_group_id': tax_group_1.id,
         })
-        other_company_data = self.setup_company_data("Company 3", chart_template=self.env.company.chart_template_id)
+        other_company_data = self.setup_company_data("Company 3", chart_template=self.env.company.chart_template)
         tax_group_2 = self.env['account.tax.group'].create({
             'name': 'Test tax group',
-            'property_tax_receivable_account_id': other_company_data['default_account_receivable'].copy().id,
-            'property_tax_payable_account_id': other_company_data['default_account_payable'].copy().id,
+            'tax_receivable_account_id': other_company_data['default_account_receivable'].copy().id,
+            'tax_payable_account_id': other_company_data['default_account_payable'].copy().id,
         })
         sale_tax_percentage_incl_2 = self.env['account.tax'].create({
             'name': 'sale_tax_percentage_incl_2',

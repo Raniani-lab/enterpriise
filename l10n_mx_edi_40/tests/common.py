@@ -19,7 +19,7 @@ def mocked_l10n_mx_edi_pac(edi_format, invoice, exported):
 class TestMxEdiCommon(AccountEdiTestCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_mx.mx_coa', edi_format_ref='l10n_mx_edi.edi_cfdi_3_3'):
+    def setUpClass(cls, chart_template_ref='mx', edi_format_ref='l10n_mx_edi.edi_cfdi_3_3'):
         super().setUpClass(chart_template_ref=chart_template_ref, edi_format_ref=edi_format_ref)
 
         cls.frozen_today = datetime.datetime(year=2017, month=1, day=1, hour=0, minute=0, second=0, tzinfo=timezone('utc'))

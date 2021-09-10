@@ -17,6 +17,5 @@ Accounting Data for Belgian Payroll Rules.
         'views/l10n_be_274_XX_views.xml',
         'data/l10n_be_hr_payroll_account_data.xml',
     ],
-    'post_init_hook': '_post_install_hook_configure_journals',
     'license': 'OEEL-1',
 }

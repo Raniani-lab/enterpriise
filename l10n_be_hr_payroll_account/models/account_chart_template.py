@@ -6,19 +6,15 @@ from odoo.http import request
 from odoo.exceptions import ValidationError
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def _load(self, company):
-        """
-        Override to configure payroll accounting data as well as accounting data.
-        """
-        res = super()._load(company)
-        if self == self.env.ref('l10n_be.l10nbe_chart_template'):
-            self._configure_payroll_account_data(company)
-        return res
+    def _load_payroll_accounts(self, template_code, companies):
+        if template_code != 'be':
+            return super()._load_payroll_accounts(template_code, companies)
+        return self._configure_payroll_account_data_be(companies)
 
-    def _configure_payroll_account_data(self, companies):
+    def _configure_payroll_account_data_be(self, companies):
         accounts_codes = [
             '453000',  # Withholding taxes, IP Deduction
             '454000',  # ONSS (Employee, Employer, Miscellaneous)
@@ -28,6 +24,8 @@ class AccountChartTemplate(models.Model):
             '643000',  # IP
         ]
         belgian_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "BE")])
+        if not companies or not belgian_structures:
+            return
         for company in companies:
             self = self.with_company(company)
 

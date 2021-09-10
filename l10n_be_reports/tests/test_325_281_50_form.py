@@ -14,7 +14,7 @@ from odoo.tests import tagged
 class TestResPartner(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+    def setUpClass(cls, chart_template_ref='be'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.invoice = cls.init_invoice('in_invoice')

@@ -13,9 +13,10 @@ class AccountMove(models.Model):
 
 
     def _l10n_cl_edi_post_validation(self):
+        cid = self.company_id.id
         if self.l10n_latam_document_type_id.code == '39':
             if self.line_ids.filtered(lambda x: x.tax_group_id.id in [
-                    self.env.ref('l10n_cl.tax_group_ila').id, self.env.ref('l10n_cl.tax_group_retenciones').id]):
+                    self.env.ref(f'account.{cid}_tax_group_ila').id, self.env.ref(f'account.{cid}_tax_group_retenciones').id]):
                 raise UserError(_('Receipts with withholding taxes are not allowed'))
             if any(self.invoice_line_ids.mapped('tax_ids.price_include')):
                 raise UserError(_('Tax included in price is not supported for boletas. '

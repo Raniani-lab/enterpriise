@@ -1,21 +1,22 @@
 # coding: utf-8
-from odoo import models, fields
+from odoo import fields, models
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = 'account.chart.template'
 
-    def _load(self, company):
-        res = super(AccountChartTemplate, self)._load(company)
+    def _post_load_data(self, template_code, company, template_data):
+        super()._post_load_data(template_code, company, template_data)
 
-        # by default, anglo-saxon companies should have totals
-        # displayed below sections in their reports
-        company.totals_below_sections = company.anglo_saxon_accounting
-
-        #set a default misc journal for the tax closure
-        company.account_tax_periodicity_journal_id = company._get_default_misc_journal()
-
-        company.account_tax_periodicity_reminder_day = 7
-        # create the recurring entry
-        company.with_company(company)._get_and_update_tax_closing_moves(fields.Date.today(), include_domestic=True)
-        return res
+        company = company or self.env.company
+        default_misc_journal = self.env['account.journal'].search([
+            ('company_id.id', '=', company.id),
+            ('type', '=', 'general'),
+            ('show_on_dashboard', '=', True)
+        ], limit=1)
+        company.update({
+            'totals_below_sections': company.anglo_saxon_accounting,
+            'account_tax_periodicity_journal_id': default_misc_journal,
+            'account_tax_periodicity_reminder_day': 7,
+        })
+        company._get_and_update_tax_closing_moves(fields.Date.today(), include_domestic=True)

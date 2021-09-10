@@ -4,7 +4,6 @@ from .common import TestCoEdiCommon
 from odoo.tests import tagged
 from odoo.tools import mute_logger
 
-
 @tagged('post_install_l10n', 'post_install', '-at_install')
 class TestColombianInvoice(TestCoEdiCommon):
 
@@ -50,3 +49,22 @@ class TestColombianInvoice(TestCoEdiCommon):
                 })],
             })
             self.l10n_co_assert_generated_file_equal(self.invoice, self.expected_invoice_xml)
+
+    def test_setup_tax_type(self):
+        for xml_id, expected_type in [
+            ("account.l10n_co_tax_4", "l10n_co_edi.tax_type_0"),
+            ("account.l10n_co_tax_8", "l10n_co_edi.tax_type_0"),
+            ("account.l10n_co_tax_9", "l10n_co_edi.tax_type_0"),
+            ("account.l10n_co_tax_10", "l10n_co_edi.tax_type_0"),
+            ("account.l10n_co_tax_11", "l10n_co_edi.tax_type_0"),
+            ("account.l10n_co_tax_53", "l10n_co_edi.tax_type_5"),
+            ("account.l10n_co_tax_54", "l10n_co_edi.tax_type_5"),
+            ("account.l10n_co_tax_55", "l10n_co_edi.tax_type_4"),
+            ("account.l10n_co_tax_56", "l10n_co_edi.tax_type_4"),
+            ("account.l10n_co_tax_57", "l10n_co_edi.tax_type_6"),
+            ("account.l10n_co_tax_58", "l10n_co_edi.tax_type_6"),
+            ("account.l10n_co_tax_covered_goods", "l10n_co_edi.tax_type_0")
+        ]:
+            tax = self.env.ref(xml_id, raise_if_not_found=False)
+            if tax:
+                self.assertEqual(tax.l10n_co_edi_type, expected_type)

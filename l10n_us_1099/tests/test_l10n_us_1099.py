@@ -8,7 +8,7 @@ from freezegun import freeze_time
 @tagged('post_install_l10n', "post_install", "-at_install")
 class Test1099(AccountTestInvoicingCommon):
     @classmethod
-    def setUpClass(cls, chart_template_ref="l10n_generic_coa.configurable_chart_template"):
+    def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.env.company.write({

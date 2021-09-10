@@ -13,7 +13,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
-        super().setUpClass(chart_template_ref='l10n_de_skr03.l10n_de_chart_template')
+        super().setUpClass(chart_template_ref='de_skr03')
 
         cls.account_3400 = cls.env['account.account'].search([
             ('code', '=', 3400),

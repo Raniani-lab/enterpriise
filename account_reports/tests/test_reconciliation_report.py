@@ -346,13 +346,13 @@ class TestReconciliationReport(TestAccountReportsCommon):
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
-                ('Balance of 101404 Bank',                                      '01/01/2019',   '10.00'),
+                ('Balance of 101401 Bank',                                      '01/01/2019',   '10.00'),
 
                 ('Including Unreconciled Bank Statement Receipts',              '',             '10.00'),
                 ('BNK1/2019/00001',                                             '01/01/2019',   '10.00'),
                 ('Total Including Unreconciled Bank Statement Receipts',        '',             '10.00'),
 
-                ('Total Balance of 101404 Bank',                                '01/01/2019',   '10.00'),
+                ('Total Balance of 101401 Bank',                                '01/01/2019',   '10.00'),
             ],
             options,
             currency_map={3: {'currency': bank_journal.currency_id}},
@@ -367,7 +367,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
-                ('Balance of 101404 Bank',                                      '01/04/2019',   '20.00'),
+                ('Balance of 101401 Bank',                                      '01/04/2019',   '20.00'),
 
                 ('Including Unreconciled Bank Statement Receipts',              '',             '60.00'),
                 ('BNK1/2019/00001',                                             '01/01/2019',   '10.00'),
@@ -379,7 +379,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 ('BNK1/2019/00004',                                             '01/04/2019',   '-40.00'),
                 ('Total Including Unreconciled Bank Statement Payments',        '',             '-40.00'),
 
-                ('Total Balance of 101404 Bank',                                '01/04/2019',   '20.00'),
+                ('Total Balance of 101401 Bank',                                '01/04/2019',   '20.00'),
 
                 ('Outstanding Payments/Receipts',                               '',             '1,000.00'),
                 ('(+) Outstanding Receipts',                                    '',             '1,000.00'),

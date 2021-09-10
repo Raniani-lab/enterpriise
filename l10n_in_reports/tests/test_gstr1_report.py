@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class TestReports(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref="l10n_in.indian_chart_template_standard"):
+    def setUpClass(cls, chart_template_ref="in"):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.maxDiff = None
         cls.company_data["company"].write({

@@ -58,7 +58,7 @@ class ResCompany(models.Model):
         tax_closing_update_dependencies = ('account_tax_periodicity', 'account_tax_periodicity_reminder_day', 'account_tax_periodicity_journal_id.id')
         to_update = self.env['res.company']
         for company in self:
-            if company.chart_template_id and company.account_tax_periodicity_journal_id:
+            if company.account_tax_periodicity_journal_id:
 
                 need_tax_closing_update = any(
                     update_dep in values and company.mapped(update_dep)[0] != values[update_dep]

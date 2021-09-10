@@ -10,7 +10,7 @@ from freezegun import freeze_time
 class SwedishTaxReportTest(AccountSalesReportCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_se.l10nse_chart_template'):
+    def setUpClass(cls, chart_template_ref='se'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
     @classmethod

@@ -11,7 +11,7 @@ from odoo.tests.common import Form
 class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
+    def setUpClass(cls, chart_template_ref='lu'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company_data['company'].write({

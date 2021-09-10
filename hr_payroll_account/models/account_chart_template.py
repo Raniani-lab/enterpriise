@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import models
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def _load_payroll_accounts(self):
-        # To be overridden by payroll localizations
-        return
+    def _post_load_data(self, template_code, company, template_data):
+        super()._post_load_data(template_code, company, template_data)
+        self._load_payroll_accounts(template_code, company)
+
+    def _load_payroll_accounts(self, template_code, companies):
+        pass

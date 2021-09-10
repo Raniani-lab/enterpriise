@@ -760,7 +760,7 @@ class ProductProduct(models.Model):
     def set_tax_on_work_in_out(self):
         existing_companies = self.env['res.company'].sudo().search([])
         for company in existing_companies:
-            if company.chart_template_id == self.env.ref('l10n_be.l10nbe_chart_template'):
+            if company.chart_template == 'be':
                 work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
                 work_out = self.env.ref('pos_blackbox_be.product_product_work_out')
                 taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([('amount', '=', 0.0), ('type_tax_use', '=', 'sale'), ('name', '=', '0%'), ('company_id', '=', company.id)])
@@ -773,9 +773,9 @@ class ProductProduct(models.Model):
 class AccountChartTemplate(models.Model):
     _inherit = "account.chart.template"
 
-    def _load(self, company):
-        super(AccountChartTemplate, self)._load(company)
-        if self == self.env.ref('l10n_be.l10nbe_chart_template'):
+    def _load(self, template_code, company, install_demo):
+        super(AccountChartTemplate, self)._load(template_code, company, install_demo)
+        if template_code == 'be':
             work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
             work_out = self.env.ref('pos_blackbox_be.product_product_work_out')
             taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([('amount', '=', 0.0), ('type_tax_use', '=', 'sale'), ('name', '=', '0%'), ('company_id', '=', company.id)])

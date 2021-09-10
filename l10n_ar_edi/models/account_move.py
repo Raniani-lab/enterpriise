@@ -579,7 +579,6 @@ class AccountMove(models.Model):
 
     # Prepare Request Data for webservices
 
-    @api.model
     def wsfe_get_cae_request(self, client=None):
         self.ensure_one()
         partner_id_code = self._get_partner_code_id(self.commercial_partner_id)
@@ -635,7 +634,6 @@ class AccountMove(models.Model):
                    'Compradores': None}}]}
         return res
 
-    @api.model
     def wsfex_get_cae_request(self, last_id, client):
         if not self.commercial_partner_id.country_id:
             raise UserError(_('For WS "%s" country is required on partner', self.journal_id.l10n_ar_afip_ws))
@@ -700,7 +698,6 @@ class AccountMove(models.Model):
             res.update({'Fecha_pago': payment_date})
         return res
 
-    @api.model
     def wsbfe_get_cae_request(self, last_id, client=None):
         partner_id_code = self._get_partner_code_id(self.commercial_partner_id)
         amounts = self._l10n_ar_get_amounts()

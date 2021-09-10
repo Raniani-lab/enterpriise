@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=C0326
+# pylint: disable=bad-whitespace
 from unittest.mock import patch
 
 from .common import TestAccountReportsCommon
@@ -40,11 +40,6 @@ class TestTaxReport(TestAccountReportsCommon):
             'state_id': cls. country_state_1.id, # Not necessary at the moment; put there for consistency and robustness with possible future changes
             'account_tax_periodicity': 'trimester',
         })
-
-        # So that we can easily instantiate test tax templates within this country
-        cls.company_data['company'].chart_template_id.country_id = cls.fiscal_country
-        tax_templates = cls.env['account.tax.template'].search([('chart_template_id', '=', cls.company_data['company'].chart_template_id.id)])
-        tax_templates.tax_group_id.country_id = cls.fiscal_country
 
         # Prepare tax groups
         cls.tax_group_1 = cls._instantiate_basic_test_tax_group()
@@ -235,11 +230,13 @@ class TestTaxReport(TestAccountReportsCommon):
         cls.init_invoice('in_refund', partner=cls.test_fpos_foreign_partner, invoice_date='2021-05-02', post=True, amounts=[10000], taxes=cls.test_fpos_tax_purchase)
 
     @classmethod
-    def _instantiate_basic_test_tax_group(cls):
-        return cls.env['account.tax.group'].create({
+    def _instantiate_basic_test_tax_group(cls, company=None):
+        company = company or cls.env.company
+        return cls.env['account.tax.group'].sudo().create({
             'name': 'Test tax group',
-            'property_tax_receivable_account_id': cls.company_data['default_account_receivable'].copy().id,
-            'property_tax_payable_account_id': cls.company_data['default_account_payable'].copy().id,
+            'company_id': company.id,
+            'tax_receivable_account_id': cls.company_data['default_account_receivable'].sudo().copy({'company_id': company.id}).id,
+            'tax_payable_account_id': cls.company_data['default_account_payable'].sudo().copy({'company_id': company.id}).id,
         })
 
     @classmethod
@@ -346,9 +343,9 @@ class TestTaxReport(TestAccountReportsCommon):
                 # purchases: 1000 * 0.5 * (-0.05) - 600 * 0.5 * (-0.05)
                 {'debit': 10,       'credit': 0,        'account_id': self.tax_account_2.id},
                 # For sales operations
-                {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.tax_payable_account_id.id},
                 # For purchase operations
-                {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.tax_receivable_account_id.id},
             ]
         })
 
@@ -371,9 +368,9 @@ class TestTaxReport(TestAccountReportsCommon):
                 # purchases: 400 * 0.5 * (-0.05) - 60 * 0.5 * (-0.05)
                 {'debit': 8.5,      'credit': 0,        'account_id': self.tax_account_2.id},
                 # For sales operations
-                {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.tax_payable_account_id.id},
                 # For purchase operations
-                {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.tax_receivable_account_id.id},
             ]
         })
 
@@ -398,9 +395,9 @@ class TestTaxReport(TestAccountReportsCommon):
                 # purchases: 400 * 0.5 * (-0.05) - 60 * 0.5 * (-0.05)
                 {'debit': 8.5,      'credit': 0,        'account_id': self.tax_account_2.id},
                 # For sales operations
-                {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.tax_payable_account_id.id},
                 # For purchase operations
-                {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.tax_receivable_account_id.id},
             ],
 
             # From test_vat_closing_single_fpos
@@ -414,9 +411,9 @@ class TestTaxReport(TestAccountReportsCommon):
                 # purchases: 1000 * 0.5 * (-0.05) - 600 * 0.5 * (-0.05)
                 {'debit': 10,       'credit': 0,        'account_id': self.tax_account_2.id},
                 # For sales operations
-                {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.tax_payable_account_id.id},
                 # For purchase operations
-                {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.tax_receivable_account_id.id},
             ],
         })
 
@@ -440,9 +437,9 @@ class TestTaxReport(TestAccountReportsCommon):
                     # purchases: 400 * 0.5 * (-0.05) - 60 * 0.5 * (-0.05)
                     {'debit': 8.5,      'credit': 0,        'account_id': self.tax_account_2.id},
                     # For sales operations
-                    {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                    {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.tax_payable_account_id.id},
                     # For purchase operations
-                    {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                    {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.tax_receivable_account_id.id},
                 ],
 
                 # From test_vat_closing_single_fpos
@@ -456,9 +453,9 @@ class TestTaxReport(TestAccountReportsCommon):
                     # purchases: 1000 * 0.5 * (-0.05) - 600 * 0.5 * (-0.05)
                     {'debit': 10,       'credit': 0,        'account_id': self.tax_account_2.id},
                     # For sales operations
-                    {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                    {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.tax_payable_account_id.id},
                     # For purchase operations
-                    {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                    {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.tax_receivable_account_id.id},
                 ],
             })
 
@@ -637,105 +634,87 @@ class TestTaxReport(TestAccountReportsCommon):
         self._create_tax_report_line('Tax difference (42%-11%)', tax_report, sequence=10, formula='tax_42.balance - tax_11.balance')
 
         # Create two taxes linked to report lines
-        tax_template_11 = self.env['account.tax.template'].create({
+        tax_11 = self.env['account.tax'].create({
             'name': 'Impôt sur les revenus',
             'amount': '11',
             'amount_type': 'percent',
             'type_tax_use': 'sale',
-            'chart_template_id': company.chart_template_id.id,
             'invoice_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'plus_report_expression_ids': base_11_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("+", base_11_line.expression_ids),
                 }),
                 Command.create({
                     'repartition_type': 'tax',
-                    'plus_report_expression_ids': tax_11_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("+", tax_11_line.expression_ids),
                 }),
             ],
             'refund_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'minus_report_expression_ids': base_11_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("-", base_11_line.expression_ids),
                 }),
                 Command.create({
                     'repartition_type': 'tax',
-                    'minus_report_expression_ids': tax_11_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("-", tax_11_line.expression_ids),
                 }),
             ],
         })
 
-        tax_template_42 = self.env['account.tax.template'].create({
+        tax_42 = self.env['account.tax'].create({
             'name': 'Impôt sur les revenants',
             'amount': '42',
             'amount_type': 'percent',
             'type_tax_use': 'sale',
-            'chart_template_id': company.chart_template_id.id,
             'invoice_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'plus_report_expression_ids': base_42_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("+", base_42_line.expression_ids),
                 }),
 
                 Command.create({
                     'factor_percent': 25,
                     'repartition_type': 'tax',
-                    'plus_report_expression_ids': tax_10_5_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("+", tax_10_5_line.expression_ids),
                 }),
 
                 Command.create({
                     'factor_percent': 75,
                     'repartition_type': 'tax',
-                    'plus_report_expression_ids': tax_31_5_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("+", tax_31_5_line.expression_ids),
                 }),
 
                 Command.create({
                     'factor_percent': -10,
                     'repartition_type': 'tax',
-                    'minus_report_expression_ids': tax_neg_10_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("-", tax_neg_10_line.expression_ids),
                 }),
             ],
             'refund_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'minus_report_expression_ids': base_42_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("-", base_42_line.expression_ids),
                 }),
 
                 Command.create({
                     'factor_percent': 25,
                     'repartition_type': 'tax',
-                    'minus_report_expression_ids': tax_10_5_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("-", tax_10_5_line.expression_ids),
                 }),
 
                 Command.create({
                     'factor_percent': 75,
                     'repartition_type': 'tax',
-                    'minus_report_expression_ids': tax_31_5_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("-", tax_31_5_line.expression_ids),
                 }),
 
                 Command.create({
                     'factor_percent': -10,
                     'repartition_type': 'tax',
-                    'plus_report_expression_ids': tax_neg_10_line.expression_ids.ids,
+                    'tag_ids': self._get_tag_ids("+", tax_neg_10_line.expression_ids),
                 }),
             ],
         })
-        # The templates needs an xmlid in order so that we can call _generate_tax
-        self.env['ir.model.data'].create({
-            'name': 'account_reports.test_tax_report_tax_11',
-            'module': 'account_reports',
-            'res_id': tax_template_11.id,
-            'model': 'account.tax.template',
-        })
-        tax_11 = tax_template_11._generate_tax(company)['tax_template_to_tax'][tax_template_11]
-
-        self.env['ir.model.data'].create({
-            'name': 'account_reports.test_tax_report_tax_42',
-            'module': 'account_reports',
-            'res_id': tax_template_42.id,
-            'model': 'account.tax.template',
-        })
-        tax_42 = tax_template_42._generate_tax(company)['tax_template_to_tax'][tax_template_42]
 
         # Create an invoice using the tax we just made
         invoice = self.env['account.move'].create({
@@ -828,103 +807,79 @@ class TestTaxReport(TestAccountReportsCommon):
 
         :return:                   The created account.tax objects
         """
-        rslt = self.env['account.tax']
-        for tax_type, report_line in report_lines_dict.items():
-            tax_template = self.env['account.tax.template'].create({
+        return self.env['account.tax'].create([
+            {
                 'name': 'Impôt sur tout ce qui bouge',
                 'amount': '20',
                 'amount_type': 'percent',
                 'type_tax_use': tax_type,
-                'chart_template_id': company.chart_template_id.id,
                 'tax_exigibility': 'on_payment',
                 'invoice_repartition_line_ids': [
                     Command.create({
                         'repartition_type': 'base',
-                        'plus_report_expression_ids': report_line.expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line.expression_ids),
                     }),
                     Command.create({
                         'factor_percent': 25,
                         'repartition_type': 'tax',
-                        'plus_report_expression_ids': report_line.expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line.expression_ids),
                     }),
                     Command.create({
                         'factor_percent': 75,
                         'repartition_type': 'tax',
-                        'plus_report_expression_ids': report_line.expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line.expression_ids),
                     }),
                 ],
                 'refund_repartition_line_ids': [
                     Command.create({
                         'repartition_type': 'base',
-                        'minus_report_expression_ids': report_line.expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("-", report_line.expression_ids),
                     }),
                     Command.create({
                         'factor_percent': 25,
                         'repartition_type': 'tax',
-                        'minus_report_expression_ids': report_line.expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("-", report_line.expression_ids),
                     }),
                     Command.create({
                         'factor_percent': 75,
                         'repartition_type': 'tax',
                     }),
                 ],
-            })
-
-            # The template needs an xmlid in order so that we can call _generate_tax
-            self.env['ir.model.data'].create({
-                'name': 'account_reports.test_tax_report_tax_' + tax_type,
-                'module': 'account_reports',
-                'res_id': tax_template.id,
-                'model': 'account.tax.template',
-            })
-            rslt += tax_template._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template]
-
-        return rslt
+            }
+            for tax_type, report_line in report_lines_dict.items()
+        ])
 
     def _create_taxes_for_report_lines(self, report_lines_dict, company):
-        """ report_lines_dict is a dictionary mapping tax_type_use values to
-        tax report lines.
-        """
-        rslt = self.env['account.tax']
-        for tax_type, report_line in report_lines_dict.items():
-            tax_template = self.env['account.tax.template'].create({
+        return self.env['account.tax'].create([
+            {
                 'name': 'Impôt sur tout ce qui bouge',
                 'amount': '20',
                 'amount_type': 'percent',
                 'type_tax_use': tax_type,
-                'chart_template_id': company.chart_template_id.id,
                 'invoice_repartition_line_ids': [
                     Command.create({
                         'repartition_type': 'base',
-                        'plus_report_expression_ids': report_line[0].expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line[0].expression_ids),
                     }),
                     Command.create({
                         'repartition_type': 'tax',
-                        'plus_report_expression_ids': report_line[1].expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line[1].expression_ids),
                     }),
                 ],
                 'refund_repartition_line_ids': [
                     Command.create({
                         'repartition_type': 'base',
-                        'plus_report_expression_ids': report_line[0].expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line[0].expression_ids),
                     }),
                     Command.create({
                         'repartition_type': 'tax',
-                        'plus_report_expression_ids': report_line[1].expression_ids.ids,
+                        'tag_ids': self._get_tag_ids("+", report_line[1].expression_ids),
                     }),
                 ],
-            })
+            }
+            for tax_type, report_line in report_lines_dict.items()
+        ])
 
-            # The template needs an xmlid in order so that we can call _generate_tax
-            self.env['ir.model.data'].create({
-                'name': 'account_reports.test_tax_report_tax_' + tax_type,
-                'module': 'account_reports',
-                'res_id': tax_template.id,
-                'model': 'account.tax.template',
-            })
-            rslt += tax_template._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template]
-
-        return rslt
 
     def _run_caba_generic_test(self, expected_columns, expected_lines, on_invoice_created=None, on_all_invoices_created=None, invoice_generator=None):
         """ Generic test function called by several cash basis tests.
@@ -974,6 +929,7 @@ class TestTaxReport(TestAccountReportsCommon):
         today = fields.Date.today()
 
         company = self.company_data['company']
+        company.tax_exigibility = True
         partner = self.env['res.partner'].create({'name': 'Char Aznable'})
 
         # Create a tax report
@@ -1759,7 +1715,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
         company_1 = self.company_data['company']
         company_2 = self.company_data_2['company']
-        company_data_3 = self.setup_company_data("Company 3", chart_template=company_1.chart_template_id)
+        company_data_3 = self.setup_company_data("Company 3", chart_template=company_1.chart_template)
         company_3 = company_data_3['company']
         unit_companies = company_1 + company_2
         all_companies = unit_companies + company_3
@@ -1773,6 +1729,8 @@ class TestTaxReport(TestAccountReportsCommon):
             'company_ids': [Command.set(unit_companies.ids)],
             'main_company_id': company_1.id,
         })
+        tax_group_2 = self._instantiate_basic_test_tax_group(company_2)
+        self._instantiate_basic_test_tax_group(company_3)
 
         created_taxes = {}
         tax_accounts = {}
@@ -1788,8 +1746,9 @@ class TestTaxReport(TestAccountReportsCommon):
                 'account_type': 'asset_current',
                 'company_id': company.id,
             })
+            tax_group = self.env['account.tax.group'].search([('company_id', '=', company.id), ('name', '=', 'Test tax group')], limit=1)
 
-            test_tax = self._add_basic_tax_for_report(tax_unit_report, 42, 'sale', self.tax_group_1, [(100, tax_account, True)], company=company)
+            test_tax = self._add_basic_tax_for_report(tax_unit_report, 42, 'sale', tax_group, [(100, tax_account, True)], company=company)
             created_taxes[company] = test_tax
             tax_accounts[company] = tax_account
 
@@ -1863,16 +1822,10 @@ class TestTaxReport(TestAccountReportsCommon):
             {'tax_report': tax_unit_report.id, 'fiscal_position': 'all'}
         )
 
-        # Ensure tax group is properly configured for company2 as well
-        self.tax_group_1.with_company(company_2).write({
-            'property_tax_receivable_account_id': self.company_data_2['default_account_receivable'].copy().id,
-            'property_tax_payable_account_id': self.company_data_2['default_account_payable'].copy().id,
-        })
-
         self._assert_vat_closing(tax_unit_report, options, {
             (company_1, self.env['account.fiscal.position']): [
                 {'debit': 42,       'credit':  0,       'account_id': tax_accounts[company_1].id},
-                {'debit':  0,       'credit': 42,       'account_id': self.tax_group_1.with_company(company_1).property_tax_payable_account_id.id},
+                {'debit':  0,       'credit': 42,       'account_id': self.tax_group_1.tax_payable_account_id.id},
             ],
 
             (company_1, self.foreign_vat_fpos): [
@@ -1883,7 +1836,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
             (company_2, self.env['account.fiscal.position']): [
                 {'debit': 84,       'credit':  0,       'account_id': tax_accounts[company_2].id},
-                {'debit':  0,       'credit': 84,       'account_id': self.tax_group_1.with_company(company_2).property_tax_payable_account_id.id},
+                {'debit':  0,       'credit': 84,       'account_id': tax_group_2.tax_payable_account_id.id},
             ],
         })
 

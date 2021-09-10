@@ -16,8 +16,8 @@ from freezegun import freeze_time
 class LuxembourgSalesReportTest(AccountSalesReportCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
-        super().setUpClass('l10n_lu.lu_2011_chart_1')
+    def setUpClass(cls, chart_template_ref='lu'):
+        super().setUpClass(chart_template_ref)
 
         cls.l_tax = cls.env['account.tax'].search([('name', '=', '0-IC-S-G'), ('company_id', '=', cls.company_data['company'].id)])
         cls.t_tax = cls.env['account.tax'].search([('name', '=', '0-ICT-S-G'), ('company_id', '=', cls.company_data['company'].id)])

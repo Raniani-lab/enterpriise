@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -182,6 +183,7 @@ class WinbooksImportWizard(models.TransientModel):
             "Set account to being a central account"
             property_name = None
             account_central[centralid] = account.id
+            tax_group_name = None
             if centralid == 'S1':
                 property_name = 'property_account_payable_id'
                 model_name = 'res.partner'
@@ -189,13 +191,13 @@ class WinbooksImportWizard(models.TransientModel):
                 property_name = 'property_account_receivable_id'
                 model_name = 'res.partner'
             if centralid == 'V01':
-                property_name = 'property_tax_receivable_account_id'
-                model_name = 'account.tax.group'
+                tax_group_name = 'tax_receivable_account_id'
             if centralid == 'V03':
-                property_name = 'property_tax_payable_account_id'
-                model_name = 'account.tax.group'
+                tax_group_name = 'tax_payable_account_id'
             if property_name:
                 self.env['ir.property']._set_default(property_name, model_name, account, self.env.company)
+            if tax_group_name:
+                self.env['account.tax.group'].search(['company_id', '=', self.env.company])[tax_group_name] = account
 
         _logger.info("Import Accounts")
         account_data = {}
@@ -709,7 +711,7 @@ class WinbooksImportWizard(models.TransientModel):
         if not self.env.company.country_id:
             action = self.env.ref('base.action_res_company_form')
             raise RedirectWarning(_('Please define the country on your company.'), action.id, _('Company Settings'))
-        if not self.env.company.chart_template_id:
+        if not self.env.company.chart_template:
             action = self.env.ref('account.action_account_config')
             raise RedirectWarning(_('You should install a Fiscal Localization first.'), action.id,  _('Accounting Settings'))
         self = self.with_context(active_test=False)

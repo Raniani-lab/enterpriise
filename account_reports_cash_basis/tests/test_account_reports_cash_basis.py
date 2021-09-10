@@ -79,7 +79,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                              4,          5,          6],
             [
                 # Accounts.
-                ('101404 Bank',                 460.0,      '',     460.0),
+                ('101401 Bank',                 460.0,      '',     460.0),
                 ('121000 Account Receivable',   460.0,      460.0,    0.0),
                 ('400000 Product Sales',        '',         460.0, -460.0),
                 # Report Total.
@@ -98,7 +98,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,                    4,             5,             6],
             [
                 # Account.
-                ('101404 Bank',                         '',              460.00,            '',        460.00),
+                ('101401 Bank',                         '',              460.00,            '',        460.00),
                 ('121000 Account Receivable',           '',              460.00,        460.00,          0.00),
                 # Account Move Lines.from unfolded account
                 ('MISC/2016/01/0001',                   '02/01/2016',     69.00,            '',         69.00),
@@ -186,7 +186,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       4,              5,              6],
             [
                 # Accounts.
-                ('101402 Outstanding Receipts',        115,             '',            115),
+                ('101403 Outstanding Receipts',        115,             '',            115),
                 ('121000 Account Receivable',           '',            115,           -115),
                 # Report Total.
                 ('Total',                              115,            115,             0),
@@ -204,7 +204,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       4,              5,              6],
             [
                 # Accounts.
-                ('101402 Outstanding Receipts',        115,             '',            115),
+                ('101403 Outstanding Receipts',        115,             '',            115),
                 ('121000 Account Receivable',          115,            115,              0),
                 ('251000 Tax Received',                 '',             15,            -15),
                 ('400000 Product Sales',                '',            100,           -100),

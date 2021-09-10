@@ -10,7 +10,7 @@ from odoo.tools import file_open
 class TestSodaFile(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+    def setUpClass(cls, chart_template_ref='be'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.env.company.vat = 'BE0477472701'
         cls.misc_journal = cls.env['account.journal'].create({

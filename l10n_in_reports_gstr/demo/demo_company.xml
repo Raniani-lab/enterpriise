@@ -27,7 +27,8 @@
     </function>
 
     <function model="account.chart.template" name="try_loading">
-        <value eval="[ref('l10n_in.indian_chart_template_standard')]"/>
+        <value eval="[]"/>
+        <value>in</value>
         <value model="res.company" eval="obj().env.ref('l10n_in_reports_gstr.demo_company_in_gstr')"/>
     </function>
 </odoo>

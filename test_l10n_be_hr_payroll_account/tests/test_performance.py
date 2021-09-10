@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 class TestPayslipValidation(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+    def setUpClass(cls, chart_template_ref='be'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.EMPLOYEES_COUNT = 100

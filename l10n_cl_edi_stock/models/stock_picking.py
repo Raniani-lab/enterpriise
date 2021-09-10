@@ -274,14 +274,17 @@ class Picking(models.Model):
             totals['total_amount'] += tax_res['total_included']
 
             no_vat_taxes = True
+            cid = move.company_id.id
             for tax_val in tax_res['taxes']:
                 tax = self.env['account.tax'].browse(tax_val['id'])
                 if tax.l10n_cl_sii_code == TAX19_SII_CODE:
                     no_vat_taxes = False
                     totals['vat_amount'] += tax_val['amount']
                     max_vat_perc = max(max_vat_perc, tax.amount)
-                elif tax.tax_group_id.id in [self.env.ref('l10n_cl.tax_group_ila').id, self.env.ref(
-                        'l10n_cl.tax_group_retenciones').id]:
+                elif tax.tax_group_id.id in [
+                    self.env.ref(f'account.{cid}_tax_group_ila').id,
+                    self.env.ref(f'account.{cid}_tax_group_retenciones').id
+                ]:
                     retentions.setdefault((tax.l10n_cl_sii_code, tax.amount), 0.0)
                     retentions[(tax.l10n_cl_sii_code, tax.amount)] += tax_val['amount']
                     move_retentions |= tax

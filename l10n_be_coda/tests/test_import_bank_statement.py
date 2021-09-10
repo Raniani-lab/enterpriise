@@ -14,7 +14,7 @@ from odoo.tools import file_open
 class TestCodaFile(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+    def setUpClass(cls, chart_template_ref='be'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.bank_journal = cls.company_data['default_journal_bank']

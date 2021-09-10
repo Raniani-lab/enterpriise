@@ -13,7 +13,7 @@ class GermanySalesReportTest(AccountSalesReportCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
-        super().setUpClass('l10n_de_skr03.l10n_de_chart_template')
+        super().setUpClass('de_skr03')
 
     @classmethod
     def setup_company_data(cls, company_name, chart_template=None, **kwargs):

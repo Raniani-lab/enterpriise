@@ -10,7 +10,7 @@ from odoo.exceptions import RedirectWarning
 class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_mx.mx_coa'):
+    def setUpClass(cls, chart_template_ref='mx'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company_data['company'].country_id = cls.env.ref('base.mx')

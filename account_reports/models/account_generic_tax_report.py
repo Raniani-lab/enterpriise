@@ -221,7 +221,7 @@ class AccountTaxReportHandler(models.AbstractModel):
         for tg, values in tax_groups.items():
             total = 0
             # ignore line that have no property defined on tax group
-            if not tg.property_tax_receivable_account_id or not tg.property_tax_payable_account_id:
+            if not tg.tax_receivable_account_id or not tg.tax_payable_account_id:
                 continue
             for dummy, value in values.items():
                 for v in value:
@@ -232,7 +232,7 @@ class AccountTaxReportHandler(models.AbstractModel):
 
             if not currency.is_zero(total):
                 # Add total to correct group
-                key = (tg.property_advance_tax_payment_account_id.id or False, tg.property_tax_receivable_account_id.id, tg.property_tax_payable_account_id.id)
+                key = (tg.advance_tax_payment_account_id.id or False, tg.tax_receivable_account_id.id, tg.tax_payable_account_id.id)
 
                 if tax_group_subtotal.get(key):
                     tax_group_subtotal[key] += total
@@ -353,7 +353,6 @@ class AccountTaxReportHandler(models.AbstractModel):
             _('Please specify the accounts necessary for the Tax Closing Entry.'),
             need_config_action,
             _('Configure your TAX accounts - %s', company.display_name),
-            additional_context={'allowed_company_ids': company.ids, 'force_account_company': company.id}
         )
 
     def _get_fpos_info_for_tax_closing(self, company, report, options):

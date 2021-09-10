@@ -13,7 +13,7 @@ from odoo.tools.float_utils import float_compare
 class TestPayslipValidation(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+    def setUpClass(cls, chart_template_ref='be'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.date_from = datetime.date(2020, 9, 1)
         cls.date_to = datetime.date(2020, 9, 30)

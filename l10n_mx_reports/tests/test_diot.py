@@ -10,8 +10,10 @@ from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 class TestDiot(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_mx.mx_coa'):
+    def setUpClass(cls, chart_template_ref='mx'):
         super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.env.companies.tax_exigibility = True
+        cls.env.companies.totals_below_sections = True  # TODO should be automatic
 
         cls.purchase_taxes = cls._get_purchase_taxes()
 
@@ -22,7 +24,7 @@ class TestDiot(TestAccountReportsCommon):
     def _get_purchase_taxes(cls):
         taxes = cls.env['account.tax']
         for i in [1, 2, 7, 8, 13, 14, 16]:
-            taxes += cls.env.ref(f'l10n_mx.{cls.env.company.id}_tax{i}')
+            taxes += cls.env.ref(f'account.{cls.env.company.id}_tax{i}')
         return taxes
 
     def test_diot_report(self):

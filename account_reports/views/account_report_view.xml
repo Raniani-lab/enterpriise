@@ -71,7 +71,7 @@
                             </group>
                             <group>
                                 <field name="country_id" attrs="{'invisible': [('availability_condition', '!=', 'country')], 'required': [('availability_condition', '=', 'country')]}"/>
-                                <field name="chart_template_id" attrs="{'invisible': [('availability_condition', '!=', 'coa')], 'required': [('availability_condition', '=', 'coa')]}"/>
+                                <field name="chart_template" attrs="{'invisible': [('availability_condition', '!=', 'coa')], 'required': [('availability_condition', '=', 'coa')]}"/>
                             </group>
                         </group>
 

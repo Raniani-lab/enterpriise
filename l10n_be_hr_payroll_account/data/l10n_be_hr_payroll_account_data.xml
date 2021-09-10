@@ -39,4 +39,13 @@
     <record id="l10n_be_hr_payroll.hr_payroll_structure_student_regular_pay" model="hr.payroll.structure">
         <field name="journal_id" ref="hr_payroll_account.hr_payroll_account_journal"/>
     </record>
+
+    <data noupdate="1">
+        <function model="account.chart.template" name="_load_payroll_accounts">
+            <value eval="[]"/>
+            <value>be</value>
+            <value model="res.company" eval="obj().search([('chart_template', '=', 'be')])"/>
+        </function>
+    </data>
+
 </odoo>

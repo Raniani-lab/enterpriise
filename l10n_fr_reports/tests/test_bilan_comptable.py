@@ -10,7 +10,7 @@ from odoo import fields, Command
 class TestBilanComptable(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_fr.l10n_fr_pcg_chart_template'):
+    def setUpClass(cls, chart_template_ref='fr'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
     def _get_line(self, lines, line_id):
@@ -33,7 +33,7 @@ class TestBilanComptable(TestAccountReportsCommon):
 
         bank_journal = self.company_data['default_journal_bank']
         bank_account = bank_journal.default_account_id
-        bank_account.code = '512004'
+        bank_account.code = '512005'
 
         # Create a move to bring the bank_journal to a positive value.
         move_2019_1 = self.env['account.move'].create({

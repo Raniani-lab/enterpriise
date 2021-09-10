@@ -6,31 +6,21 @@ from odoo.exceptions import ValidationError
 from odoo import models, _
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def _load(self, company):
-        """
-        Override to configure payroll accounting data as well as accounting data.
-        """
-        res = super()._load(company)
-        if self == self.env.ref('l10n_lu.lu_2011_chart_1'):
-            self._configure_payroll_account_luxembourg(company)
-        return res
-
-    def _load_payroll_accounts(self):
-        if self == self.env.ref('l10n_lu.lu_2011_chart_1'):
-            sa_companies = self.env['res.company'].search([
-                ('partner_id.country_id.code', '=', 'LU'),
-                ('chart_template_id', '=', self.env.ref('l10n_lu.lu_2011_chart_1').id)])
-            self._configure_payroll_account_luxembourg(sa_companies)
-        super()._load_payroll_accounts()
+    def _load_payroll_accounts(self, template_code, companies):
+        if template_code != 'lu':
+            return super()._load_payroll_accounts(template_code, companies)
+        self._configure_payroll_account_luxembourg(companies)
 
     def _configure_payroll_account_luxembourg(self, companies):
         accounts_codes = [
             # YTI TODO: Configure accounts
         ]
         lu_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "LU")])
+        if not companies or not lu_structures:
+            return
         for company in companies:
             self = self.with_company(company)
 

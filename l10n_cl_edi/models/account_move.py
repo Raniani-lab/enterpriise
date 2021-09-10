@@ -691,11 +691,12 @@ class AccountMove(models.Model):
         :return:
         """
         self.ensure_one()
+        cid = self.company_id.id
         return [{'tax_code': line.tax_line_id.l10n_cl_sii_code,
                  'tax_percent': abs(line.tax_line_id.amount),
                  'tax_amount': self.currency_id.round(abs(line.amount_currency))} for line in self.line_ids.filtered(
             lambda x: x.tax_group_id.id in [
-                self.env.ref('l10n_cl.tax_group_ila').id, self.env.ref('l10n_cl.tax_group_retenciones').id])]
+                self.env.ref(f'account.{cid}_tax_group_ila').id, self.env.ref(f'account.{cid}_tax_group_retenciones').id])]
 
     def _l10n_cl_get_dte_barcode_xml(self):
         """

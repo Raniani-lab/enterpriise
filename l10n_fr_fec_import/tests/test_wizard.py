@@ -39,7 +39,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
     # ----------------------------------------
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_fr.l10n_fr_pcg_chart_template'):
+    def setUpClass(cls, chart_template_ref='fr'):
         """ Setup all the prerequisite entities for the CSV import tests to run """
 
         super().setUpClass(chart_template_ref=chart_template_ref)
@@ -157,7 +157,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         accounts = self.env['account.account'].search(domain, order='code')
 
         expected_values = [{
-            'name': 'Suppliers',
+            'name': 'Suppliers - Purchase of goods and services',
             'account_type': 'liability_payable',
             'reconcile': True
         }, {

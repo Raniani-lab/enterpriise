@@ -16,6 +16,10 @@ class OSSTaxReportTest(TestAccountReportsCommon):
         cls.env.company.account_fiscal_country_id = cls.env.ref('base.be')
         cls.env.company.vat = 'BE0477472701'
 
+        cls.env['account.tax.group'].create({
+            'name': 'tax_group',
+            'country_id': cls.env.ref('base.be').id,
+        })
         tax_21 = cls.env['account.tax'].create({
             'name': "tax_21",
             'amount_type': 'percent',
@@ -146,6 +150,12 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
         report_line_refund_base_line = cls._create_tax_report_line('Refund base', cls.tax_report, sequence=2, tag_name='refund_base_line')
 
         # Create an OSS tax from scratch
+        cls.env['account.tax.group'].create({
+            'name': 'tax_group',
+            'country_id': cls.company_data['company'].account_fiscal_country_id.id,
+            'tax_payable_account_id': cls.company_data['default_account_expense'].id,
+            'tax_receivable_account_id': cls.company_data['default_account_revenue'].id,
+        })
         oss_tag = cls.env.ref('l10n_eu_oss.tag_oss')
         cls.oss_tax = cls.env['account.tax'].create({
             'name': 'OSS tax for DK',

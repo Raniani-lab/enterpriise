@@ -3,6 +3,7 @@
 
 from . import account_move_line
 from . import account_move
+from . import account_chart_template
 from . import ir_attachment
 from . import res_company
 from . import l10n_pe_edi_certificate

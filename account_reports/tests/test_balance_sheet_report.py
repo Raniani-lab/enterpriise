@@ -19,20 +19,18 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
         """ Check that the report lines are correctly ordered with nested account groups """
         self.env['account.group'].create([{
             'name': 'A',
-            'code_prefix_start': '101402',
+            'code_prefix_start': '101401',
             'code_prefix_end': '101601',
         }, {
             'name': 'A1',
-            'code_prefix_start': '1014040',
+            'code_prefix_start': '1014010',
             'code_prefix_end': '1015010',
         }])
 
-        def find_account(code):
-            return self.env['account.account'].search([('code', '=', code), ('company_id', '=', self.env.company.id)])
-
-        account_bank = find_account('101404')
-        account_cash = find_account('101501')
-        account_a = self.env['account.account'].create([{'code': '1014040', 'name': 'A', 'account_type': 'asset_cash'}])
+        cid = self.env.company.id
+        account_bank = self.env.ref(f"account.{cid}_bank").default_account_id
+        account_cash = self.env.ref(f"account.{cid}_cash").default_account_id
+        account_a = self.env['account.account'].create([{'code': '1014010', 'name': 'A', 'account_type': 'asset_cash'}])
         account_c = self.env['account.account'].create([{'code': '101600', 'name': 'C', 'account_type': 'asset_cash'}])
 
         # Create a journal lines for each account
@@ -70,10 +68,10 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
             unfolded_lines,
             [
                 {'level': 5, 'name': 'Bank and Cash Accounts'},
-                {'level': 6, 'name': '101402-101601 A'},
-                {'level': 7, 'name': '101404 Bank'},
-                {'level': 7, 'name': '1014040-1015010 A1'},
-                {'level': 8, 'name': '1014040 A'},
+                {'level': 6, 'name': '101401-101601 A'},
+                {'level': 7, 'name': '101401 Bank'},
+                {'level': 7, 'name': '1014010-1015010 A1'},
+                {'level': 8, 'name': '1014010 A'},
                 {'level': 8, 'name': '101501 Cash'},
                 {'level': 7, 'name': '101600 C'},
             ]

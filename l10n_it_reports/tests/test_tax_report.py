@@ -10,7 +10,7 @@ from odoo.tests import tagged
 class TestItalianTaxReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_it.l10n_it_chart_template_generic'):
+    def setUpClass(cls, chart_template_ref='it'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         company = cls.company_data["company"]
         AccountTax = cls.env['account.tax']
@@ -19,10 +19,10 @@ class TestItalianTaxReport(TestAccountReportsCommon):
             'country_id': cls.env.ref('base.it').id,
         })
 
-        cls.tax_4a = cls.env.ref(f'l10n_it.{cls.env.company.id}_4am')
+        cls.tax_4a = cls.env.ref(f'account.{cls.env.company.id}_4am')
         cls.tax_4a.active = True
-        cls.tax_4v = cls.env.ref(f'l10n_it.{cls.env.company.id}_4v')
-        cls.tax_4v.tax_group_id.property_tax_payable_account_id = cls.company_data['default_account_payable']
+        cls.tax_4v = cls.env.ref(f'account.{cls.env.company.id}_4v')
+        cls.tax_4v.tax_group_id.tax_payable_account_id = cls.company_data['default_account_payable']
         cls.tax_4v.active = True
 
         cls.l10n_it_tax_report_partner = cls.env['res.partner'].create({

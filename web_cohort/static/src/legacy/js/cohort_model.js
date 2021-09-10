@@ -2,6 +2,7 @@ odoo.define('web_cohort.CohortModel', function (require) {
 'use strict';
 
 var AbstractModel = require('web.AbstractModel');
+const { processMeasure } = require("@web/views/helpers/utils");
 
 var CohortModel = AbstractModel.extend({
     //--------------------------------------------------------------------------
@@ -39,7 +40,7 @@ var CohortModel = AbstractModel.extend({
         this.modelName = params.modelName;
         this.dateStart = params.dateStart;
         this.dateStop = params.dateStop;
-        this.measure = params.measure;
+        this.measure = processMeasure(params.measure);
         this.interval = params.interval;
         this.domain = params.domain;
         this.mode = params.mode;
@@ -65,7 +66,7 @@ var CohortModel = AbstractModel.extend({
      */
     __reload: function (handle, params) {
         if ('measure' in params) {
-            this.data.measure = params.measure;
+            this.data.measure = processMeasure(params.measure);
         }
         if ('interval' in params) {
             this.data.interval = params.interval;

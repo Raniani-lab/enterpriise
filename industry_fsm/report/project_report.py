@@ -15,7 +15,6 @@ class ReportProjectTaskUser(models.Model):
             CREATE view %s as
             %s
             FROM project_task t
-            JOIN project_task_user_rel tu on t.id=tu.task_id
             INNER JOIN project_project p ON t.project_id = p.id AND p.is_fsm = 't'
             WHERE t.active = 'true'
                 %s

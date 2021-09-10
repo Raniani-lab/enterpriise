@@ -51,13 +51,13 @@
                                 Tickets
                             </a>
                         </td>
-                        <td t-att-class="demo_class + ' o_main o_dashboard_action'" title="My High Priority Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_priority': '2'}" t-attr-show_demo="{{show_demo}}">
+                        <td t-att-class="demo_class + ' o_main o_dashboard_action'" title="My High Priority Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_high_priority': True}" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_high']['count']"/></span><br/>
                                 High Priority (<span title="Two stars, with a maximum of three" role="img" aria-label="Two stars, with a maximum of three"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
                         </td>
-                        <td t-att-class="demo_class + ' o_main o_dashboard_action'" title="My Urgent Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_priority': '3'}" t-attr-show_demo="{{show_demo}}">
+                        <td t-att-class="demo_class + ' o_main o_dashboard_action'" title="My Urgent Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_urgent']['count']"/></span><br/>
                                 Urgent (<span title="Three stars, maximum score" role="img" aria-label="Three stars, maximum score"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)

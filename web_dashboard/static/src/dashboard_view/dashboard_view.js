@@ -28,6 +28,7 @@ const SUB_VIEW_CONTROL_PANEL_DISPLAY = {
     "bottom-right": false,
     "top-left": false,
     "top-right": false, // --> top: false
+    adaptToScroll: false,
 };
 
 const GRAPH_DISPLAY = {

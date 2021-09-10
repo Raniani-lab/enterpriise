@@ -18,7 +18,10 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
         });
 
         useExternalListener(window, "click", this.onWindowClick);
-        useExternalListener(document, "scroll", this.onScrollThrottled);
+        const display = this.display;
+        if (!("adaptToScroll" in display) || display.adaptToScroll) {
+            useExternalListener(document, "scroll", this.onScrollThrottled);
+        }
     },
     mounted() {
         this.oldScrollTop = 0;

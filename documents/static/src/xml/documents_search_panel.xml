@@ -9,6 +9,9 @@
     <xpath expr="//*[@t-call='web.Legacy.SearchPanel.FiltersGroup']" position="attributes">
         <attribute name="t-call">documents.SearchPanel.FiltersGroup</attribute>
     </xpath>
+    <xpath expr="//div[hasclass('o_search_panel')]" position="inside">
+        <span class="o_resize" t-on-click.stop.prevent="" t-on-mousedown.stop.prevent="_onStartResize"/>
+    </xpath>
 </t>
 
 <t t-name="documents.SearchPanel.Category" t-inherit="web.Legacy.SearchPanel.Category" t-inherit-mode="primary" owl="1">
@@ -16,6 +19,7 @@
         <attribute name="t-call">documents.SearchPanel.Category</attribute>
     </xpath>
     <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
+        <attribute name="t-att-title">value.display_name</attribute>
         <attribute name="t-on-dragenter.stop.prevent">(ev) => this._onDragEnter(section.id, valueId, ev)</attribute>
         <attribute name="t-on-dragleave.stop.prevent">_onDragLeave</attribute>
         <attribute name="t-on-dragover.stop.prevent"> </attribute>

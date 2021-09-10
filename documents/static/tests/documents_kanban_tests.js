@@ -3097,6 +3097,36 @@ QUnit.module('documents_kanban_tests.js', {
         kanban.destroy();
     });
 
+    QUnit.test('SearchPanel: search panel should be resizable', async function (assert) {
+        assert.expect(1);
+
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            mockRPC: function (route, args) {
+                return this._super.apply(this, arguments);
+            },
+            arch: `
+                <kanban><templates><t t-name="kanban-box">
+                    <div draggable="true" class="oe_kanban_global_area o_document_draggable">
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        const searchPanel = kanban.el.getElementsByClassName('o_search_panel')[0];
+        const resizeHandle = searchPanel.getElementsByClassName('o_resize')[0];
+        const originalWidth = searchPanel.offsetWidth;
+
+        await testUtils.dom.dragAndDrop(resizeHandle, searchPanel, { mousemoveTarget: document, mouseupTarget: document, position: 'right' });
+
+        assert.ok(searchPanel.offsetWidth - originalWidth > 0,
+            "width should be increased after resizing search panel");
+
+        kanban.destroy();
+    });
+
     QUnit.test('documents: upload progress bars', async function (assert) {
         assert.expect(5);
 

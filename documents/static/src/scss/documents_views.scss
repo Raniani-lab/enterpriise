@@ -91,6 +91,21 @@ $o-dms-inspector-width-model-button: 30px;
 
 .o_documents_content {
 
+    .o_search_panel {
+        position: relative;
+
+        .o_resize {
+            bottom: 0;
+            cursor: col-resize;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 10px;
+            height: 100%;
+            z-index: 1;
+        }
+    }
+
     .o_kanban_record, .o_inspector_tag_remove, .o_inspector_model, .o_inspector_open_chatter {
         cursor: pointer;
         user-select: none;

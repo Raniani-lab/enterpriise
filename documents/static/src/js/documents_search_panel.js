@@ -147,6 +147,64 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
                 this.model.dispatch("updateRecordTagId", data.recordIds, valueId);
             }
         }
+
+        /**
+         * Handles the resize feature on the sidebar
+         *
+         * @private
+         * @param {MouseEvent} ev
+         */
+        _onStartResize(ev) {
+            // Only triggered by left mouse button
+            if (ev.which !== 1) {
+                return;
+            }
+
+            const initialX = ev.pageX;
+            const initialWidth = this.el.offsetWidth;
+            const resizeStoppingEvents = [
+                'keydown',
+                'mousedown',
+                'mouseup',
+            ];
+
+            // Mousemove event : resize header
+            const resizePanel = ev => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                const delta = ev.pageX - initialX;
+                const newWidth = Math.max(10, initialWidth + delta);
+                this.el.style['min-width'] = `${newWidth}px`;
+            };
+            document.addEventListener('mousemove', resizePanel, true);
+
+            // Mouse or keyboard events : stop resize
+            const stopResize = ev => {
+                // Ignores the initial 'left mouse button down' event in order
+                // to not instantly remove the listener
+                if (ev.type === 'mousedown' && ev.which === 1) {
+                    return;
+                }
+                ev.preventDefault();
+                ev.stopPropagation();
+
+                document.removeEventListener('mousemove', resizePanel, true);
+                resizeStoppingEvents.forEach(stoppingEvent => {
+                    document.removeEventListener(stoppingEvent, stopResize, true);
+                });
+                // we remove the focus to make sure that the there is no focus inside
+                // the panel. If that is the case, there is some css to darken the whole
+                // thead, and it looks quite weird with the small css hover effect.
+                document.activeElement.blur();
+            };
+            // We have to listen to several events to properly stop the resizing function. Those are:
+            // - mousedown (e.g. pressing right click)
+            // - mouseup : logical flow of the resizing feature (drag & drop)
+            // - keydown : (e.g. pressing 'Alt' + 'Tab' or 'Windows' key)
+            resizeStoppingEvents.forEach(stoppingEvent => {
+                document.addEventListener(stoppingEvent, stopResize, true);
+            });
+        }
     }
     DocumentsSearchPanel.modelExtension = "DocumentsSearchPanel";
 

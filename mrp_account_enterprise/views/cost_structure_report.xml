@@ -12,7 +12,6 @@
                 </t>
                 <t t-foreach="lines" t-as="line">
                     <t t-set="currency" t-value="line['currency']"/>
-                    <t t-set="opcost" t-value="0.0"/>
                     <t t-set="tot_scrap_cost" t-value="0.0"/>
 
                     <!-- Title -->
@@ -69,7 +68,7 @@
                                     <strong>Total Cost of Components</strong>
                                 </td>
                                 <td class="text-right">
-                                    <strong t-esc="line['total_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    <strong t-esc="line['total_cost_components']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                 </td>
                             </tr>
                             <tr t-if="not line['qty_by_byproduct_w_costshare'] and line['mo_qty'] &gt; 1" >
@@ -77,14 +76,14 @@
                                     <strong>Cost of Components per unit (in <t t-esc="line['product'].uom_id.name"/>)</strong>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="line['total_cost'] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    <span t-esc="line['total_cost_components'] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
                     <!-- Cost of Operations table -->
-                    <t t-if="line['operations']">
+                    <t t-if="line['operations']" name="operations">
                         <h3 class="o_mrp_header o_mrp_table_header">Cost of Operations</h3>
                         <table class="table table-sm o_mrp_report_table">
                             <thead>
@@ -114,14 +113,13 @@
                                     <td class="text-right">
                                         <span t-esc="row[3] * row[4]" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
-                                    <t t-set="opcost" t-value="opcost + row[3] * row[4]"/>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-right">
                                         <strong>Total Cost of Operations</strong>
                                     </td>
                                     <td class="text-right">
-                                        <strong t-esc="opcost" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <strong t-esc="line['total_cost_operations']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                 </tr>
                                 <tr t-if="not line['qty_by_byproduct_w_costshare'] and line['mo_qty'] &gt; 1">
@@ -129,7 +127,7 @@
                                         <strong>Cost of Operations per unit (in <t t-esc="line['product'].uom_id.name"/>)</strong>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="opcost / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="line['total_cost_operations'] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -187,7 +185,7 @@
                                         <strong>Total Production Cost</strong>
                                     </td>
                                     <td class="text-right">
-                                        <strong t-esc="line['total_cost'] + opcost" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <strong t-esc="line['total_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                 </tr>
                                 <tr t-if="not line['qty_by_byproduct_w_costshare']">
@@ -195,7 +193,7 @@
                                         <strong>Total Cost per unit (in <t t-esc="line['product'].uom_id.name"/>)</strong>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="(line['total_cost'] + opcost) / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="line['total_cost'] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                 </tr>
                             </table>

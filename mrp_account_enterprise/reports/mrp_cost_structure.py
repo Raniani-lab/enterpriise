@@ -18,7 +18,6 @@ class MrpCostStructure(models.AbstractModel):
         currency_table = self.env['res.currency']._get_query_currency_table({'multi_company': True, 'date': {'date_to': fields.Date.today()}})
         for product in productions.mapped('product_id'):
             mos = productions.filtered(lambda m: m.product_id == product)
-            total_cost = 0.0
             # variables to calc cost share (i.e. between products/byproducts) since MOs can have varying distributions
             total_cost_by_mo = defaultdict(float)
             component_cost_by_mo = defaultdict(float)
@@ -26,6 +25,7 @@ class MrpCostStructure(models.AbstractModel):
 
             # Get operations details + cost
             operations = []
+            total_cost_operations = 0.0
             Workorders = self.env['mrp.workorder'].search([('production_id', 'in', mos.ids)])
             if Workorders:
                 query_str = """SELECT
@@ -53,10 +53,12 @@ class MrpCostStructure(models.AbstractModel):
                     cost = duration / 60.0 * cost_hour * currency_rate
                     total_cost_by_mo[mo_id] += cost
                     operation_cost_by_mo[mo_id] += cost
+                    total_cost_operations += cost
                     operations.append([user, op_id, wo_name, duration / 60.0, cost_hour * currency_rate])
 
             # Get the cost of raw material effectively used
             raw_material_moves = []
+            total_cost_components = 0.0
             query_str = """SELECT
                                 sm.product_id,
                                 mo.id,
@@ -79,7 +81,7 @@ class MrpCostStructure(models.AbstractModel):
                 })
                 total_cost_by_mo[mo_id] += cost
                 component_cost_by_mo[mo_id] += cost
-                total_cost += cost
+                total_cost_components += cost
 
             # Get the cost of scrapped materials
             scraps = StockMove.search([('production_id', 'in', mos.ids), ('scrapped', '=', True), ('state', '=', 'done')])
@@ -123,7 +125,9 @@ class MrpCostStructure(models.AbstractModel):
                 'operations': operations,
                 'currency': self.env.company.currency_id,
                 'raw_material_moves': raw_material_moves,
-                'total_cost': total_cost,
+                'total_cost_components': total_cost_components,
+                'total_cost_operations': total_cost_operations,
+                'total_cost': total_cost_components + total_cost_operations,
                 'scraps': scraps,
                 'mocount': len(mos),
                 'byproduct_moves': byproduct_moves,

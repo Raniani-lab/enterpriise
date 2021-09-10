@@ -13,16 +13,17 @@ class MrpReport(models.Model):
 
     id = fields.Integer("", readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
+    currency_id = fields.Many2one('res.currency', 'Currency', readonly=True, required=True)
     production_id = fields.Many2one('mrp.production', "Manufacturing Order", readonly=True)
     date_finished = fields.Datetime('End Date', readonly=True)
     product_id = fields.Many2one('product.product', "Product", readonly=True)
-    total_cost = fields.Float(
+    total_cost = fields.Monetary(
         "Total Cost", readonly=True,
         help="Total cost of manufacturing order (component + operation costs)")
-    component_cost = fields.Float(
+    component_cost = fields.Monetary(
         "Total Component Cost", readonly=True,
         help="Total cost of components for manufacturing order")
-    operation_cost = fields.Float(
+    operation_cost = fields.Monetary(
         "Total Operation Cost", readonly=True, groups="mrp.group_mrp_routings",
         help="Total cost of operations for manufacturing order")
     duration = fields.Float(
@@ -34,13 +35,13 @@ class MrpReport(models.Model):
         help="Total quantity produced in product's UoM")
 
     # note that unit costs take include subtraction of byproduct cost share
-    unit_cost = fields.Float(
+    unit_cost = fields.Monetary(
         "Cost / Unit", readonly=True, group_operator="avg",
         help="Cost per unit produced (in product UoM) of manufacturing order")
-    unit_component_cost = fields.Float(
+    unit_component_cost = fields.Monetary(
         "Component Cost / Unit", readonly=True, group_operator="avg",
         help="Component cost per unit produced (in product UoM) of manufacturing order")
-    unit_operation_cost = fields.Float(
+    unit_operation_cost = fields.Monetary(
         "Total Operation Cost / Unit", readonly=True, group_operator="avg",
         groups="mrp.group_mrp_routings",
         help="Operation cost per unit produced (in product UoM) of manufacturing order")
@@ -49,7 +50,7 @@ class MrpReport(models.Model):
         groups="mrp.group_mrp_routings",
         help="Operation duration (minutes) per unit produced of manufacturing order")
 
-    byproduct_cost = fields.Float(
+    byproduct_cost = fields.Monetary(
         "By-Products Total Cost", readonly=True,
         groups="mrp.group_mrp_byproducts")
 
@@ -58,24 +59,28 @@ class MrpReport(models.Model):
         ''' Report needs to be dynamic to take into account multi-company selected + multi-currency rates '''
         return '%s %s %s %s' % (self._select(), self._from(), self._where(), self._group_by())
 
+    def _select_total_cost(self):
+        return "comp_cost.total + op_cost.total"
+
     def _select(self):
-        select_str = """
+        select_str = f"""
             SELECT
                 min(mo.id)             AS id,
                 mo.id                  AS production_id,
                 mo.company_id          AS company_id,
+                rc.currency_id         AS currency_id,
                 mo.date_finished       AS date_finished,
                 mo.product_id          AS product_id,
                 prod_qty.product_qty   AS qty_produced,
                 comp_cost.total * currency_table.rate                                                                                   AS component_cost,
                 op_cost.total * currency_table.rate                                                                                     AS operation_cost,
-                (comp_cost.total + op_cost.total) * currency_table.rate                                                                 AS total_cost,
+                ({self._select_total_cost()}) * currency_table.rate                                                                     AS total_cost,
                 op_cost.total_duration                                                                                                  AS duration,
                 comp_cost.total * (1 - cost_share.byproduct_cost_share) / prod_qty.product_qty * currency_table.rate                    AS unit_component_cost,
                 op_cost.total * (1 - cost_share.byproduct_cost_share) / prod_qty.product_qty * currency_table.rate                      AS unit_operation_cost,
-                (comp_cost.total + op_cost.total) * (1 - cost_share.byproduct_cost_share) / prod_qty.product_qty * currency_table.rate  AS unit_cost,
+                ({self._select_total_cost()}) * (1 - cost_share.byproduct_cost_share) / prod_qty.product_qty * currency_table.rate      AS unit_cost,
                 op_cost.total_duration / prod_qty.product_qty                                                                           AS unit_duration,
-                (comp_cost.total + op_cost.total) * cost_share.byproduct_cost_share * currency_table.rate                               AS byproduct_cost
+                ({self._select_total_cost()}) * cost_share.byproduct_cost_share * currency_table.rate                                   AS byproduct_cost
         """
 
         return select_str
@@ -94,10 +99,11 @@ class MrpReport(models.Model):
         """
         from_str = """
             FROM mrp_production AS mo
+            JOIN res_company AS rc ON rc.id = {company_id}
             LEFT JOIN (
                 SELECT
                     mo.id                                                                    AS mo_id,
-                    CASE WHEN SUM(svl.value) IS NULL THEN 0.0 ELSE abs(SUM(svl.value)) END   AS total
+                    COALESCE(ABS(SUM(svl.value)), 0.0)                                       AS total
                 FROM mrp_production AS mo
                 LEFT JOIN stock_move AS sm on sm.raw_material_production_id = mo.id
                 LEFT JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
@@ -117,9 +123,8 @@ class MrpReport(models.Model):
                         mo.id AS mo_id,
                         CASE
                             WHEN wo.costs_hour != 0.0 AND wo.costs_hour IS NOT NULL THEN wo.costs_hour
-                            WHEN wc.costs_hour IS NOT NULL THEN wc.costs_hour
-                            ELSE 0.0 END                                                                AS op_costs_hour,
-                        CASE WHEN SUM(t.duration) IS NULL THEN 0.0 ELSE SUM(t.duration) END             AS op_duration
+                            ELSE COALESCE(wc.costs_hour, 0.0) END                                       AS op_costs_hour,
+                        COALESCE(SUM(t.duration), 0.0)                                                  AS op_duration
                     FROM mrp_production AS mo
                     LEFT JOIN mrp_workorder wo ON wo.production_id = mo.id
                     LEFT JOIN mrp_workcenter_productivity t ON t.workorder_id = wo.id
@@ -135,7 +140,7 @@ class MrpReport(models.Model):
             LEFT JOIN (
                 SELECT
                     mo.id AS mo_id,
-                    CASE WHEN SUM(sm.cost_share) IS NOT NULL THEN SUM(sm.cost_share) / 100. ELSE 0.0 END AS byproduct_cost_share
+                    COALESCE(SUM(sm.cost_share), 0.0) / 100.0 AS byproduct_cost_share
                 FROM stock_move AS sm
                 LEFT JOIN mrp_production AS mo ON sm.production_id = mo.id
                 WHERE
@@ -161,6 +166,7 @@ class MrpReport(models.Model):
             LEFT JOIN {currency_table} ON currency_table.company_id = mo.company_id
         """.format(
             currency_table=self.env['res.currency']._get_query_currency_table({'multi_company': True, 'date': {'date_to': fields.Date.today()}}),
+            company_id=int(self.env.company.id)
         )
 
         return from_str
@@ -177,6 +183,7 @@ class MrpReport(models.Model):
         group_by_str = """
             GROUP BY
                 mo.id,
+                rc.currency_id,
                 cost_share.byproduct_cost_share,
                 comp_cost.total,
                 op_cost.total,

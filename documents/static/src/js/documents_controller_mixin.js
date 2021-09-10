@@ -420,7 +420,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         if (selectedRecordIds) {
             this._selectedRecordIds = selectedRecordIds;
         }
-        const recordIds = state.data.map(record => record.res_id);
+        const recordIds = state.groupedBy.length ? state.res_ids : state.data.map(record => record.res_id);
         this._selectedRecordIds = _.intersection(this._selectedRecordIds, recordIds);
         await this._updateChatter();
         const shareAliases = await this._updateHelper(state.getDomain());

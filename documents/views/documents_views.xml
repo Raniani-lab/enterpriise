@@ -38,9 +38,11 @@
                 <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
                 <field name="type"/>
                 <group expand="0" string="Group By">
-                    <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
-                    <filter name="by_model" string="Model" domain="[]" context="{'group_by': 'res_model'}"/>
-                    <filter name="creation_month" string="Creation Date" domain="[]" context="{'group_by':'create_date'}"/>
+                    <filter string="Contact" name="filter_partner_id" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Owner" name="filter_owner_id" domain="[]" context="{'group_by': 'owner_id'}"/>
+                    <filter string="Type" name="filter_type" domain="[]" context="{'group_by': 'type'}"/>
+                    <filter string="Model" name="filter_res_model" domain="[]" context="{'group_by': 'res_model'}"/>
+                    <filter string="Creation Date" name="filter_create_date" domain="[]" context="{'group_by':'create_date'}"/>
                 </group>
                 <searchpanel>
                     <field name="folder_id"/>

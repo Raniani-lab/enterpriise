@@ -25,7 +25,7 @@ const DocumentsListView = ListView.extend(DocumentsView, {
         Renderer: DocumentsListRenderer,
         SearchPanel: DocumentsSearchPanel,
     }),
-    searchMenuTypes: ['filter', 'favorite'],
+    searchMenuTypes: ['filter', 'groupBy', 'favorite'],
 });
 
 viewRegistry.add('documents_list', DocumentsListView);

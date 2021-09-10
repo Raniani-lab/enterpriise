@@ -70,7 +70,15 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
 
         this.records = [];
         for (const resId of params.recordIds) {
-            const record = params.state.data.find(record => record.res_id === resId);
+            let record = params.state.data.find(record => record.res_id === resId);
+            if (params.state.groupedBy.length) {
+                for (const dataRecords of Object.values(params.state.data)) {
+                    record = dataRecords.data.find(record => record.res_id === resId);
+                    if (record) {
+                        break;
+                    }
+                }
+            }
             if (record) {
                 let youtubeToken;
                 let youtubeUrlMatch;

@@ -46,10 +46,10 @@ export function formatDate(field, value) {
  * @returns {Pivot}
  */
 export function sanitizePivot(pivotModel) {
-    let measures = _sanitizeFields(pivotModel.meta.activeMeasures, pivotModel.meta.measures);
-    measures = pivotModel.meta.activeMeasures.map((measure) => {
+    let measures = _sanitizeFields(pivotModel.metaData.activeMeasures, pivotModel.metaData.measures);
+    measures = pivotModel.metaData.activeMeasures.map((measure) => {
         const fieldName = measure.split(":")[0];
-        const fieldDesc = pivotModel.meta.measures[fieldName];
+        const fieldDesc = pivotModel.metaData.measures[fieldName];
         const operator =
             (fieldDesc.group_operator && fieldDesc.group_operator.toLowerCase()) ||
             (fieldDesc.type === "many2one" ? "count_distinct" : "sum");
@@ -58,10 +58,10 @@ export function sanitizePivot(pivotModel) {
             operator,
         };
     });
-    const rowGroupBys = _sanitizeFields(pivotModel.meta.fullRowGroupBys, pivotModel.meta.fields);
-    const colGroupBys = _sanitizeFields(pivotModel.meta.fullColGroupBys, pivotModel.meta.fields);
+    const rowGroupBys = _sanitizeFields(pivotModel.metaData.fullRowGroupBys, pivotModel.metaData.fields);
+    const colGroupBys = _sanitizeFields(pivotModel.metaData.fullColGroupBys, pivotModel.metaData.fields);
     return {
-        model: pivotModel.meta.resModel,
+        model: pivotModel.metaData.resModel,
         rowGroupBys,
         colGroupBys,
         measures,

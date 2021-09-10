@@ -695,12 +695,12 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(
             dashboard,
-            ".o_subview .o_dashboard_subview_buttons",
+            ".o_subview .o-dashboard-view--subview-buttons",
             "should have rendered the pivot view's buttons"
         );
         assert.containsN(
             dashboard,
-            ".o_subview .o_dashboard_subview_buttons .o_button_switch",
+            ".o_subview .o-dashboard-view--subview-buttons .o_button_switch",
             1,
             "should have rendered an additional switch button"
         );
@@ -813,12 +813,12 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(
             dashboard,
-            ".o_subview .o_dashboard_subview_buttons",
+            ".o_subview .o-dashboard-view--subview-buttons",
             "should have rendered the cohort view's buttons"
         );
         assert.containsN(
             dashboard,
-            ".o_subview .o_dashboard_subview_buttons .o_button_switch",
+            ".o_subview .o-dashboard-view--subview-buttons .o_button_switch",
             1,
             "should have rendered an additional switch button"
         );
@@ -3624,13 +3624,13 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(
             dashboard,
-            ".o_subview .o_dashboard_subview_buttons",
+            ".o_subview .o-dashboard-view--subview-buttons",
             "should contain the buttons container"
         );
 
         assert.containsOnce(
             dashboard,
-            '.o_subview .o_dashboard_subview_buttons .o_group_by_menu:contains("Group By")',
+            '.o_subview .o-dashboard-view--subview-buttons .o_group_by_menu:contains("Group By")',
             "graph button should have been rendered"
         );
 

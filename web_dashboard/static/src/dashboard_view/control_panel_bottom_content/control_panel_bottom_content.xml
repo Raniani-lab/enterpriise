@@ -2,9 +2,11 @@
 <templates>
 
 <t t-name="web_dashboard.ControlPanelBottomContent" owl="1">
-  <div class="o_dashboard_subview_buttons">
+  <div class="o-dashboard-view--subview-buttons">
       <t t-slot="default" />
-      <button class="btn btn-outline-secondary fa fa-arrows-alt float-right o_button_switch" t-on-click="props.switchView()" title="Full Screen View"/>
+      <div>
+        <button class="btn btn-outline-secondary fa fa-arrows-alt float-right o_button_switch" t-on-click="props.switchView()" title="Full Screen View"/>
+      </div>
   </div>
 </t>
 

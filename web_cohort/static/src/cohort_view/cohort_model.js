@@ -62,40 +62,47 @@ export class CohortModel extends Model {
     }
 
     /**
-     * @param {Object} metaData
-     */
-    async _load(metaData) {
-        this.data = await this._fetchData(metaData);
-        for (const i in this.data) {
-            this.data[i].title = this.searchParams.domains[i].description;
-        }
-    }
-
-    async _fetchData(metaData) {
-        return this.keepLast.add(
-            Promise.all(
-                this.searchParams.domains.map(({ arrayRepr: domain }) => {
-                    return this.orm.call(metaData.resModel, "get_cohort_data", [], {
-                        date_start: metaData.dateStart,
-                        date_stop: metaData.dateStop,
-                        measure: metaData.measure,
-                        interval: metaData.interval,
-                        domain: domain,
-                        mode: metaData.mode,
-                        timeline: metaData.timeline,
-                        context: this.searchParams.context,
-                    });
-                })
-            )
-        );
-    }
-
-    /**
      * @param {Object} params
      */
     async updateMetaData(params) {
         Object.assign(this.metaData, params);
         await this._load(this.metaData);
         this.notify();
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+
+    /**
+     * @protected
+     * @param {Object} metaData
+     */
+    async _load(metaData) {
+        this.data = await this.keepLast.add(this._fetchData(metaData));
+        for (const i in this.data) {
+            this.data[i].title = this.searchParams.domains[i].description;
+        }
+    }
+
+    /**
+     * @protected
+     * @param {Object} metaData
+     */
+    async _fetchData(metaData) {
+        return Promise.all(
+            this.searchParams.domains.map(({ arrayRepr: domain }) => {
+                return this.orm.call(metaData.resModel, "get_cohort_data", [], {
+                    date_start: metaData.dateStart,
+                    date_stop: metaData.dateStop,
+                    measure: metaData.measure,
+                    interval: metaData.interval,
+                    domain: domain,
+                    mode: metaData.mode,
+                    timeline: metaData.timeline,
+                    context: this.searchParams.context,
+                });
+            })
+        );
     }
 }

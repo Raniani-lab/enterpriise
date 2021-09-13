@@ -247,6 +247,41 @@ export class DashboardView extends Component {
         await Promise.all(loadViewProms);
     }
 
+    async willUpdateProps(nextProps) {
+        if (this.currentMeasure) {
+            const states = this.callRecordedCallbacks("__exportLocalState__");
+            Object.entries(this.subViews).forEach(([viewType, subView]) => {
+                subView.state = states[viewType];
+                if (viewType === "graph") {
+                    subView.state.metaData = Object.assign({}, subView.state.metaData);
+                    subView.state.metaData.measure = this.currentMeasure;
+                } else if (viewType === "cohort") {
+                    subView.state.measure = this.currentMeasure;
+                } else if (viewType === "pivot") {
+                    subView.state.metaData = Object.assign({}, subView.state.metaData);
+                    subView.state.metaData.activeMeasures = [this.currentMeasure];
+                }
+            });
+        }
+
+        const { comparison, domain } = nextProps;
+        for (const [type, subView] of Object.entries(this.subViews)) {
+            const context = Object.assign(nextProps.context, nextProps.context[type] || {});
+            delete context[type];
+            Object.assign(subView.props, { comparison, context, domain });
+        }
+
+        const globalStates = this.callRecordedCallbacks("__exportGlobalState__");
+        for (const [type, subView] of Object.entries(this.subViews)) {
+            subView.props = Object.assign({}, subView.props, { globalState: globalStates[type] });
+        }
+    }
+
+    /**
+     * Calls a type of recorded callbacks and aggregates their result.
+     * @param {"__saveParams__"|"__exportLocalState__"|"__exportGlobalState__"} name
+     * @returns {Object}
+     */
     callRecordedCallbacks(name) {
         const result = {};
         for (const [viewType, subView] of Object.entries(this.subViews)) {
@@ -263,25 +298,6 @@ export class DashboardView extends Component {
         return result;
     }
 
-    openFullscreen(viewType) {
-        const action = {
-            domain: this.env.searchModel.globalDomain,
-            context: this.props.context,
-            name: sprintf(this.env._t("%s Analysis"), capitalize(viewType)),
-            res_model: this.model.meta.resModel,
-            type: "ir.actions.act_window",
-            views: [[false, viewType]],
-            useSampleModel: false, // disable sample data when zooming on a sub view
-        };
-
-        this.action.doAction(action, {
-            props: {
-                state: this.callRecordedCallbacks("__exportLocalState__")[viewType],
-                globalState: { searchModel: JSON.stringify(this.env.searchModel.exportState()) },
-            },
-        });
-    }
-
     /**
      * Returns the props of the ViewWrapper components.
      * @param {string} viewType
@@ -294,6 +310,11 @@ export class DashboardView extends Component {
         };
     }
 
+    /**
+     * Returns the props to pass to the sub view of the given type.
+     * @param {string} viewType
+     * @returns {Object}
+     */
     getViewProps(viewType) {
         const display = Object.assign(DISPLAY[viewType] || {});
         display.controlPanel = Object.assign({}, SUB_VIEW_CONTROL_PANEL_DISPLAY, {
@@ -327,57 +348,35 @@ export class DashboardView extends Component {
         return props;
     }
 
-    getCurrentMeasure() {
-        if (!this.currentMeasure) {
-            return null;
-        }
-        const measure = this.currentMeasure;
-        return {
-            default: { measure },
-            pivot: { activeMeasures: [measure] },
+    /**
+     * Opens the requested view in an other action, so that it is displayed in
+     * full screen.
+     * @param {string} viewType
+     * @returns {Promise}
+     */
+    openFullscreen(viewType) {
+        const action = {
+            domain: this.env.searchModel.globalDomain,
+            context: this.props.context,
+            name: sprintf(this.env._t("%s Analysis"), capitalize(viewType)),
+            res_model: this.model.meta.resModel,
+            type: "ir.actions.act_window",
+            views: [[false, viewType]],
+            useSampleModel: false, // disable sample data when zooming on a sub view
         };
+
+        return this.action.doAction(action, {
+            props: {
+                state: this.callRecordedCallbacks("__exportLocalState__")[viewType],
+                globalState: { searchModel: JSON.stringify(this.env.searchModel.exportState()) },
+            },
+        });
     }
 
     /**
-     * @param {Object} nextProps
+     * Handler executed when the user clicks on a statistic.
+     * @param {string} statName
      */
-    async willUpdateProps(nextProps) {
-        const currentMeasure = this.getCurrentMeasure();
-        if (currentMeasure) {
-            const states = this.callRecordedCallbacks("__exportLocalState__");
-            Object.entries(this.subViews).forEach(([viewType, subView]) => {
-                subView.state = states[viewType];
-                if (viewType === "graph") {
-                    subView.state.metaData = Object.assign(
-                        {},
-                        subView.state.metaData,
-                        currentMeasure.default
-                    );
-                } else if (viewType === "cohort") {
-                    Object.assign(subView.state, currentMeasure.default);
-                } else if (viewType === "pivot") {
-                    subView.state.metaData = Object.assign(
-                        {},
-                        subView.state.metaData,
-                        currentMeasure.pivot
-                    );
-                }
-            });
-        }
-
-        const { comparison, domain } = nextProps;
-        for (const [type, subView] of Object.entries(this.subViews)) {
-            const context = Object.assign(nextProps.context, nextProps.context[type] || {});
-            delete context[type];
-            Object.assign(subView.props, { comparison, context, domain });
-        }
-
-        const globalStates = this.callRecordedCallbacks("__exportGlobalState__");
-        for (const [type, subView] of Object.entries(this.subViews)) {
-            subView.props = Object.assign({}, subView.props, { globalState: globalStates[type] });
-        }
-    }
-
     onStatisticChange(statName) {
         const stat = this.model.getStatisticDescription(statName);
         this.currentMeasure = stat.measure;

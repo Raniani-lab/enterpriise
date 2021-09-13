@@ -84,7 +84,7 @@ export class DashboardModel extends Model {
             this.meta.aggregates.push(enrichedCopy);
         }
 
-        this.meta.statistics = this.statisticsAsFields();
+        this.meta.statistics = this._statisticsAsFields();
 
         this.basicModel = setupBasicModel(this.meta.resModel, {
             getFieldsInfo: () => {
@@ -166,6 +166,22 @@ export class DashboardModel extends Model {
      */
     hasData() {
         return this.count > 0;
+    }
+
+    evalDomain(record, expr) {
+        if (!Array.isArray(expr)) {
+            return !!expr;
+        }
+        const domain = new Domain(expr);
+        return domain.contains(getPseudoRecords(this.meta, this.data)[0]);
+    }
+
+    /**
+     * @param {strnig} statName
+     * @returns {Object}
+     */
+    getStatisticDescription(statName) {
+        return this.meta.statistics[statName];
     }
 
     //--------------------------------------------------------------------------
@@ -274,15 +290,10 @@ export class DashboardModel extends Model {
         this.count = count;
     }
 
-    evalDomain(record, expr) {
-        if (!Array.isArray(expr)) {
-            return !!expr;
-        }
-        const domain = new Domain(expr);
-        return domain.contains(getPseudoRecords(this.meta, this.data)[0]);
-    }
-
-    statisticsAsFields() {
+    /**
+     * @protected
+     */
+    _statisticsAsFields() {
         const fakeFields = {};
         for (const agg of this.meta.aggregates) {
             fakeFields[agg.name] = agg;
@@ -291,10 +302,6 @@ export class DashboardModel extends Model {
             fakeFields[formula.name] = Object.assign({}, formula, { fieldType: "float" });
         }
         return fakeFields;
-    }
-
-    getStatisticDescription(statName) {
-        return this.meta.statistics[statName];
     }
 }
 

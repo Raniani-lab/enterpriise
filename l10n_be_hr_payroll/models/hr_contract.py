@@ -631,6 +631,12 @@ class HrContract(models.Model):
             if contract.employee_id not in employees_already_started:
                 contract._create_dimona_next_activity()
 
+    def _get_contract_insurance_amount(self, name):
+        self.ensure_one()
+        if name == 'hospital':
+            return self._get_hospital_insurance_amount()
+        return 0.0
+
     def _get_hospital_insurance_amount(self):
         self.ensure_one()
         return self.insurance_amount

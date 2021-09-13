@@ -140,10 +140,13 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
             })
 
     def _get_input_type(self, name, cp='cp200'):
-        return self.env.ref('l10n_be_hr_payroll.%s_other_input_%s' % (cp, name)).id
+        input_type = self.env.ref('l10n_be_hr_payroll.%s_other_input_%s' % (cp, name), raise_if_not_found=False)
+        return input_type.id if input_type else False
 
     def _create_input(self, payslip_id, sequence, input_type, amount, contract_id):
         input_type_id = self._get_input_type(input_type)
+        if not input_type_id:
+            return
         self.env['hr.payslip.input'].create({
             'payslip_id': payslip_id,
             'sequence': sequence,
@@ -184,8 +187,9 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         self._create_input(payslip_id, 12, 'expatriate', 0, contract.id)
         self._create_input(payslip_id, 13, 'variable_salary', termination_payslip._get_last_year_average_variable_revenues() * 12, contract.id)
         self._create_input(payslip_id, 14, 'benefit_in_kind', 0, contract.id)
-        self._create_input(payslip_id, 15, 'hospital_insurance', contract._get_hospital_insurance_amount(), contract.id)
-        self._create_input(payslip_id, 16, 'group_insurance', 0, contract.id)
+        self._create_input(payslip_id, 15, 'hospital_insurance', contract._get_contract_insurance_amount('hospital'), contract.id)
+        self._create_input(payslip_id, 15, 'ambulatory_insurance', contract._get_contract_insurance_amount('ambulatory'), contract.id)
+        self._create_input(payslip_id, 16, 'group_insurance', contract._get_contract_insurance_amount('group'), contract.id)
         self._create_input(payslip_id, 17, 'stock_option', termination_payslip._get_last_year_average_warrant_revenues(), contract.id)
         self._create_input(payslip_id, 18, 'specific_rules', 0, contract.id)
         self._create_input(payslip_id, 19, 'other', 0, contract.id)

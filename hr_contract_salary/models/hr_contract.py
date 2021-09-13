@@ -58,7 +58,7 @@ class HrContract(models.Model):
         super()._compute_contract_wage()
 
     def _get_contract_wage_field(self):
-        if (len(self) == 1 and self.structure_type_id.country_id.code == 'BE') or (not len(self) and self.env.company.country_id.code == 'BE'):
+        if (self and len(self) == 1 and self.structure_type_id.country_id.code == 'BE') or (not self and self.env.company.country_id.code == 'BE'):
             return 'wage_on_signature'
         return super()._get_contract_wage_field()
 

@@ -4718,8 +4718,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
 
         self.assertEqual(len(self.termination_fees.worked_days_line_ids), 0)
-        self.assertEqual(len(self.termination_fees.input_line_ids), 15)
-        self.assertEqual(len(self.termination_fees.line_ids), 34)
+        self.assertEqual(len(self.termination_fees.input_line_ids), 16)
+        self.assertEqual(len(self.termination_fees.line_ids), 35)
         payslip_results = {
             'BASIC2': 41344.0,
             'YEAREND_BONUS': 3200.0,
@@ -4733,6 +4733,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ADVANTAGE_ANY_KIND': 116.28,
             'ATN.CAR': 1693.68,
             'HOSPITAL_INSURANCE': 0.0,
+            'AMBULATORY_INSURANCE': 0.0,
             'GROUP_INSURANCE': 0.0,
             'STOCK_OPTION': 1500.0,
             'SPECIFIC RULES': 0.0,
@@ -4875,8 +4876,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.holiday_pay_2020 = holiday_pays.filtered(lambda p: p.struct_id == struct_n_id)
 
         self.assertEqual(len(self.termination_fees.worked_days_line_ids), 0)
-        self.assertEqual(len(self.termination_fees.input_line_ids), 15)
-        self.assertEqual(len(self.termination_fees.line_ids), 34)
+        self.assertEqual(len(self.termination_fees.input_line_ids), 16)
+        self.assertEqual(len(self.termination_fees.line_ids), 35)
         payslip_results = {
             'BASIC2': 41344.0,
             'YEAREND_BONUS': 3200.0,
@@ -4890,6 +4891,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ADVANTAGE_ANY_KIND': 116.28,
             'ATN.CAR': 1693.68,
             'HOSPITAL_INSURANCE': 0.0,
+            'AMBULATORY_INSURANCE': 0.0,
             'GROUP_INSURANCE': 0.0,
             'STOCK_OPTION': 1500.0,
             'SPECIFIC RULES': 0.0,

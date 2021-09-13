@@ -102,3 +102,11 @@ class HrContract(models.Model):
                 contract.l10n_be_ambulatory_insured_children,
                 contract.l10n_be_ambulatory_amount_per_adult,
                 contract.l10n_be_ambulatory_insured_adults_total)
+
+    def _get_contract_insurance_amount(self, name):
+        self.ensure_one()
+        if name == 'ambulatory':
+            return self.l10n_be_ambulatory_insurance_amount
+        if name == 'group':
+            return self.l10n_be_group_insurance_amount * (1 + 4.4 / 100.0)
+        return super()._get_contract_insurance_amount(name)

@@ -18,6 +18,7 @@
         'data/hr_contract_salary_advantage_data.xml',
         'data/hr_salary_rule_category_data.xml',
         'data/cp200/employee_salary_data.xml',
+        'data/cp200/employee_termination_fees_data.xml',
         'security/ir.model.access.csv',
     ],
     'demo': [

@@ -135,6 +135,13 @@
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees'))]"/>
     </record>
 
+    <record id="cp200_other_input_ambulatory_insurance" model="hr.payslip.input.type">
+        <field name="name">Monthly ambulatory insurance (employer's share)</field>
+        <field name="code">AMBULATORY_INSURANCE</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees'))]"/>
+    </record>
+
     <record id="cp200_other_input_stock_option" model="hr.payslip.input.type">
         <field name="name">Stock Option</field>
         <field name="code">STOCK_OPTION</field>

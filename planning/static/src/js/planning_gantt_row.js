@@ -11,7 +11,7 @@ const PlanningGanttRow = HrGanttRow.extend({
         this._super(...arguments);
         const isGroupedByResource = pillsInfo.groupedByField === 'resource_id';
         const isEmptyGroup = pillsInfo.groupId === 'empty';
-        this.employeeID = pillsInfo.pills && pillsInfo.pills.length && Array.isArray(pillsInfo.pills[0].employee_id) ? pillsInfo.pills[0].employee_id[0] : false;
+        this.employeeID = (pillsInfo.planningHoursInfo && pillsInfo.planningHoursInfo.employee_id) || false;
         this.showEmployeeAvatar = (isGroupedByResource && !isEmptyGroup && !!this.employeeID);
         this.planningHoursInfo = pillsInfo.planningHoursInfo;
     },
@@ -45,7 +45,7 @@ const PlanningGanttRow = HrGanttRow.extend({
      * @returns {Promise}
      */
     async _preloadAvatarWidget() {
-        const employee = [this.resId, this.name];
+        const employee = [this._getEmployeeID(), this.name];
         this.avatarWidget = new EmployeeWithPlannedHours(this, employee, this.planningHoursInfo);
         return this.avatarWidget.appendTo(document.createDocumentFragment());
     },

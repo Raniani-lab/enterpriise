@@ -96,11 +96,12 @@ class ResourceResource(models.Model):
             for resource_id, work_intervals in work_intervals_batch.items()
         }
         return {
-            resource_id: {
-                'planned_hours': planned_hours_mapped[resource_id],
-                'work_hours': work_hours.get(resource_id, 0.0),
+            resource.id: {
+                'planned_hours': planned_hours_mapped[resource.id],
+                'work_hours': work_hours.get(resource.id, 0.0),
+                'employee_id': resource.employee_id.id,
             }
-            for resource_id in self.ids
+            for resource in self
         }
 
     def _get_calendars_validity_within_period(self, start, end, default_company=None):

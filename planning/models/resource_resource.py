@@ -37,6 +37,19 @@ class ResourceResource(models.Model):
             self.env['hr.employee'].sudo().create(create_vals)
         return resources
 
+    def name_get(self):
+        result = []
+        if self.env.context.get('planning_gantt_view'):
+            for resource in self:
+                employee = resource.employee_id
+                if employee.job_title:
+                    result.append((resource.id, "%s (%s)" % (employee.name, employee.job_title)))
+                else:
+                    result.append((resource.id, resource.name))
+        else:
+            result = super().name_get()
+        return result
+
     # -----------------------------------------
     # Business Methods
     # -----------------------------------------

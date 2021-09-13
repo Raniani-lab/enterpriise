@@ -18,6 +18,7 @@
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('is_closed', '=', True)]}</attribute>
             </div>
             <div name="date_deadline" position="after">
+                <!-- [XBO] TODO: remove me in master -->
                 <t t-if="record.planned_date_begin.raw_value">
                     <t t-if="('fsm_task_kanban_whole_date' in context) || context.fsm_task_kanban_whole_date">
                         <t t-if="record.is_fsm.raw_value" t-set="deadline_class" t-value="" />
@@ -34,8 +35,9 @@
                             t-set="deadline_class" t-value="'oe_kanban_text_red'" />
                         <t t-set="date_format" t-value="'HH:mm A'"/>
                     </t>
-                    <span name="date" title="Start Date" t-attf-class="#{deadline_class || ''}"><t t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)"/></span>
+                    <span name="date" title="Start Date" t-attf-class="d-none #{deadline_class || ''}"><t t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)"/></span>
                 </t>
+                <field name="planned_date_begin" />
             </div>
             <xpath expr="//field[@name='kanban_state']" position="attributes">
                 <attribute name="invisible">context.get('fsm_mode', False)</attribute>

@@ -13,7 +13,7 @@ from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_T
 class HelpdeskTeam(models.Model):
     _inherit = 'helpdesk.team'
 
-    project_id = fields.Many2one(domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id), ('pricing_type', '=', 'task_rate')]")
+    project_id = fields.Many2one(domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]")
 
     def _create_project(self, name, allow_billable, other):
         new_values = dict(other, allow_billable=allow_billable)

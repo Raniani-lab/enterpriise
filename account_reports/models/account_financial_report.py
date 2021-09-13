@@ -939,7 +939,7 @@ class AccountFinancialReportLine(models.Model):
     financial_report_id = fields.Many2one('account.financial.html.report', 'Financial Report')
     parent_id = fields.Many2one('account.financial.html.report.line', string='Parent', ondelete='cascade')
     children_ids = fields.One2many('account.financial.html.report.line', 'parent_id', string='Children')
-    parent_path = fields.Char(index=True)
+    parent_path = fields.Char(index=True, unaccent=False)
     sequence = fields.Integer()
 
     domain = fields.Char(default=None)

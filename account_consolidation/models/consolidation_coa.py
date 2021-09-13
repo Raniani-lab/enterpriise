@@ -279,7 +279,7 @@ class ConsolidationGroup(models.Model):
     show_on_dashboard = fields.Boolean(default=False)
     parent_id = fields.Many2one('consolidation.group', string='Parent')
     child_ids = fields.One2many('consolidation.group', 'parent_id', 'Children')
-    parent_path = fields.Char(index=True)
+    parent_path = fields.Char(index=True, unaccent=False)
     account_ids = fields.One2many('consolidation.account', 'group_id', 'Consolidation Account')
     line_ids = fields.One2many('consolidation.journal.line', 'group_id', 'Journal lines',
                                related="account_ids.line_ids")

@@ -369,7 +369,7 @@ odoo.define('sign.template', function(require) {
                 sign_utils.setAsOptionsSelect(self.$optionsSelect.find('input'), self.$currentTarget.data('itemId'), self.$currentTarget.data('option_ids'), self.select_options);
                 self.$('input[type="checkbox"]').prop('checked', self.$currentTarget.data('required'));
 
-                self.$('#o_sign_name').val(self.$currentTarget.data('name') );
+                self.$('#o_sign_name').val(self.$currentTarget.data('name') || "");
                 self.title = self.$currentTarget.prop('field-name');
                 if (fieldType !== 'selection') {
                     self.$('.o_sign_options_group').hide();
@@ -393,6 +393,7 @@ odoo.define('sign.template', function(require) {
                     html: true,
                     placement: isRTL ? 'left': 'right',
                     trigger:'focus',
+                    container: '.o_sign_template',
                 };
                 self.$currentTarget.popover(options).one('inserted.bs.popover', function (e) {
                     $('.popover').addClass('o_popover_offset');
@@ -1312,14 +1313,6 @@ odoo.define('sign.template', function(require) {
                 if(self.$('iframe').length) {
                     core.bus.on('DOM_updated', self, init_iframe);
                 }
-
-                $('body').on('click', function (e) {
-                    $('div.popover').each(function () {
-                        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                            $(this).find('.o_sign_validate_field_button').click();
-                        }
-                    });
-                });
 
                 self.$('.o_content').addClass('o_sign_template');
 

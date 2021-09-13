@@ -32,5 +32,8 @@ Features:
         'web.assets_backend': [
             'website_helpdesk_livechat/static/src/models/*/*.js',
         ],
+        'web.qunit_suite_tests': [
+            'website_helpdesk_livechat/static/src/components/*/tests/*.js',
+        ],
     },
 }

@@ -10,12 +10,14 @@ class TestMrpWorkorderPlm(TestPlmCommon):
         super(TestMrpWorkorderPlm, cls).setUpClass()
         cls.picking_type_manufacturing = cls.env.ref('stock.warehouse0').manu_type_id
         cls.quality_point_test1 = cls.env['quality.point'].create({
+            'name': 'QP1',
             'product_ids': [(4, cls.table.id)],
             'picking_type_ids': [(4, cls.picking_type_manufacturing.id)],
             'operation_id': cls.bom_table.operation_ids[0].id,
             'test_type_id': cls.env.ref('quality.test_type_instructions').id,
         })
         cls.quality_point_test2 = cls.env['quality.point'].create({
+            'name': 'QP2',
             'product_ids': [(4, cls.table.id)],
             'picking_type_ids': [(4, cls.picking_type_manufacturing.id)],
             'operation_id': cls.bom_table.operation_ids[0].id,
@@ -47,6 +49,7 @@ class TestMrpWorkorderPlm(TestPlmCommon):
 
         # add quality_point_test3
         self.env['quality.point'].create({
+            'name': 'QP3',
             'product_ids': [(4, self.table.id)],
             'picking_type_ids': [(4, self.picking_type_manufacturing.id)],
             'operation_id': eco1.new_bom_id.operation_ids[1].id,

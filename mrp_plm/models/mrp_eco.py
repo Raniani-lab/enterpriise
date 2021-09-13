@@ -6,7 +6,7 @@ import ast
 from collections import defaultdict
 from random import randint
 
-from odoo import api, fields, models, tools, SUPERUSER_ID, _
+from odoo import api, fields, models, tools, Command, SUPERUSER_ID, _
 from odoo.exceptions import UserError
 
 
@@ -392,7 +392,7 @@ class MrpEco(models.Model):
         for rec in self:
             if rec.state == 'confirmed' or rec.type == 'product':
                 continue
-            new_routing_commands = [(5,)]
+            new_routing_commands = [Command.clear()]
             old_routing_lines = defaultdict(list)
             for op in rec.bom_id.operation_ids:
                 old_routing_lines[op.workcenter_id.id].append(op)
@@ -404,7 +404,7 @@ class MrpEco(models.Model):
                         if not old_ops:
                             old_routing_lines.pop(operation.workcenter_id.id)
                         if tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
-                            new_routing_commands += [(0, 0, {
+                            new_routing_commands += [Command.create({
                                 'change_type': 'update',
                                 'workcenter_id': operation.workcenter_id.id,
                                 'new_time_cycle_manual': operation.time_cycle_manual,
@@ -413,7 +413,7 @@ class MrpEco(models.Model):
                             })]
                         new_routing_commands += self._prepare_detailed_change_commands(operation, old_op)
                     else:
-                        new_routing_commands += [(0, 0, {
+                        new_routing_commands += [Command.create({
                             'change_type': 'add',
                             'workcenter_id': operation.workcenter_id.id,
                             'new_time_cycle_manual': operation.time_cycle_manual,
@@ -422,7 +422,7 @@ class MrpEco(models.Model):
                         new_routing_commands += self._prepare_detailed_change_commands(operation, None)
             for old_ops in old_routing_lines.values():
                 for old_op in old_ops:
-                    new_routing_commands += [(0, 0, {
+                    new_routing_commands += [Command.create({
                         'change_type': 'remove',
                         'workcenter_id': old_op.workcenter_id.id,
                         'old_time_cycle_manual': old_op.time_cycle_manual,

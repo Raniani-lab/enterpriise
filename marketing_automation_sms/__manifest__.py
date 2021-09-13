@@ -19,6 +19,7 @@
         'security/ir.model.access.csv',
         'security/sms_security.xml',
     ],
+    'uninstall_hook': '_uninstall_hook',
     'demo': [
     ],
     'auto_install': True,

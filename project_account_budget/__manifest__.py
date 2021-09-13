@@ -11,6 +11,9 @@
     'data': [
         'views/project_views.xml',
     ],
+    'demo': [
+        'data/account_budget_demo.xml',
+    ],
     'application': False,
     'auto_install': True,
     'license': 'OEEL-1',

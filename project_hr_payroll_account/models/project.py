@@ -49,6 +49,6 @@ class Project(models.Model):
                 'action_type': 'object',
                 'action': 'action_open_project_contracts',
                 'show': self.contracts_count > 0,
-                'sequence': 16,
+                'sequence': 57,
             })
         return buttons

@@ -34,6 +34,6 @@ class Project(models.Model):
             'action_type': 'object',
             'action': 'action_view_budget_lines',
             'show': self.analytic_account_id,
-            'sequence': 17,
+            'sequence': 21,
         })
         return buttons

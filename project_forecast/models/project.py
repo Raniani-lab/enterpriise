@@ -68,7 +68,7 @@ class Project(models.Model):
                 'active_id': self.id,
             }),
             'show': self.allow_forecast,
-            'sequence': 6,
+            'sequence': 12,
         })
         return buttons
 

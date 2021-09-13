@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </xpath>
-            <xpath expr="//button[@name='%(project.action_project_task_burndown_chart_report)d']" position="before">
+            <xpath expr="//button[@name='action_view_all_rating']" position="before">
                 <button class="oe_stat_button" name="action_project_forecast_from_project"
                     type="object" icon="fa-tasks" help="Forecasts" attrs="{'invisible': [('allow_forecast', '=', False)]}">
                     <div class="o_stat_info">

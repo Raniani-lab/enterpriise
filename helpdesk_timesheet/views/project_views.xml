@@ -14,8 +14,9 @@
         <field name="name">project.form.inherit.helpdesk.timesheet</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
+        <field name="priority">30</field>
         <field name="arch" type="xml">
-            <div name="button_box" position="inside">
+            <xpath expr="//button[@name='action_view_analytic_account_entries']" position="after">
                 <button
                     class="oe_stat_button"
                     type="object"
@@ -25,7 +26,7 @@
                     attrs="{'invisible': [('ticket_count', '=', 0)]}">
                     <field name="ticket_count" string="Tickets" widget="statinfo"/>
                 </button>
-            </div>
+            </xpath>
         </field>
         <field name="groups_id" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
    </record>

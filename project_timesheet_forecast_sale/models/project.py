@@ -73,7 +73,7 @@ class Project(models.Model):
                 'active_id': self.id,
             }),
             'show': self.display_planning_timesheet_analysis,
-            'sequence': 8,
+            'sequence': 63,
         })
         return buttons
 

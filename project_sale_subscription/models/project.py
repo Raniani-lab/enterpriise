@@ -56,6 +56,6 @@ class Project(models.Model):
                 'action_type': 'object',
                 'action': 'action_open_project_subscriptions',
                 'show': self.subscriptions_count > 0,
-                'sequence': 12,
+                'sequence': 27,
             })
         return buttons

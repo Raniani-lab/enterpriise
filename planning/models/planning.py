@@ -635,7 +635,7 @@ class Planning(models.Model):
             if slot.name:
                 name = u'%s \U0001F4AC' % name
 
-            result.append([slot.id, name])
+            result.append([slot.id, name or ''])
         return result
 
     @api.model_create_multi

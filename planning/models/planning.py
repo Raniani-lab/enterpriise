@@ -540,12 +540,16 @@ class Planning(models.Model):
 
     @api.depends('self_unassign_days_before', 'start_datetime')
     def _compute_unassign_deadline(self):
-        for slot in self:
+        slots_with_date = self.filtered('start_datetime')
+        (self - slots_with_date).unassign_deadline = False
+        for slot in slots_with_date:
             slot.unassign_deadline = fields.Datetime.subtract(slot.start_datetime, days=slot.self_unassign_days_before)
 
     @api.depends('unassign_deadline')
     def _compute_is_unassign_deadline_passed(self):
-        for slot in self:
+        slots_with_date = self.filtered('unassign_deadline')
+        (self - slots_with_date).is_unassign_deadline_passed = False
+        for slot in slots_with_date:
             slot.is_unassign_deadline_passed = slot.unassign_deadline < fields.Datetime.now()
 
     # ----------------------------------------------------

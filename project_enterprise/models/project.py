@@ -18,11 +18,16 @@ DATE_AUTO_SHIFT_FORWARD = 'forward'
 DATE_AUTO_SHIFT_BACKWARD = 'backward'
 DATE_AUTO_SHIFT_BOTH_DIRECTIONS = 'both'
 
+PROJECT_TASK_WRITABLE_FIELDS = {
+    'planned_date_begin',
+    'planned_date_end',
+}
+
 class Task(models.Model):
     _inherit = "project.task"
 
     planned_date_begin = fields.Datetime("Start date", tracking=True, task_dependency_tracking=True)
-    planned_date_end = fields.Datetime("End date", tracking=True)
+    planned_date_end = fields.Datetime("End date", tracking=True, task_dependency_tracking=True)
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)
@@ -38,6 +43,10 @@ class Task(models.Model):
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
     ]
+
+    @property
+    def SELF_WRITABLE_FIELDS(self):
+        return super().SELF_WRITABLE_FIELDS | PROJECT_TASK_WRITABLE_FIELDS
 
     def default_get(self, fields_list):
         result = super().default_get(fields_list)

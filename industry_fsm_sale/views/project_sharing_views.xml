@@ -7,7 +7,6 @@
         <field name="inherit_id" ref="project.project_sharing_project_task_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="after">
-                <!-- TODO: see with AJU normally only salesman can see it -->
                 <div class="text-center alert alert-primary" role="alert" attrs="{'invisible': ['|', ('warning_message', '=', False), ('warning_message', '=', '')]}">
                     <field name="warning_message"/>
                 </div>
@@ -17,7 +16,7 @@
             </field>
             <xpath expr="//button[@name='action_open_parent_task']" position="before">
                 <button class="oe_stat_button o_debounce_disabled" name="action_fsm_view_material" type="object" icon="fa-cart-plus" special="cancel"
-                        attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
+                        attrs="{'invisible': ['|', '|', ('partner_id', '=', False), ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>

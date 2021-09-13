@@ -20,7 +20,7 @@ import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
 import { OnboardingBanner } from "@web/views/onboarding_banner";
 
-const { Component, hooks } = owl;
+const { Component, hooks, tags } = owl;
 const { useSubEnv } = hooks;
 
 const viewRegistry = registry.category("views");
@@ -46,11 +46,10 @@ const SUPPORTED_VIEW_TYPES = ["graph", "pivot", "cohort"];
 
 class DashboardArchParser extends XMLParser {
     parse(arch, fields) {
-        const subViews = {};
+        const subViewRefs = {};
         const aggregates = [];
         const formulae = [];
         const nodeIdentifier = CompileLib.nodeIdentifier();
-        let viewAppearanceIndex = 0;
 
         this.visitXML(arch, (node) => {
             if (node.tagName === "view") {
@@ -58,13 +57,12 @@ class DashboardArchParser extends XMLParser {
                 if (!SUPPORTED_VIEW_TYPES.includes(type)) {
                     throw new Error(`Unsupported viewtype "${type}" in DashboardView`);
                 }
-                if (type in subViews) {
+                if (type in subViewRefs) {
                     throw new Error(
                         `multiple views of the same type is not allowed. Duplicated type: "${type}".`
                     );
                 }
-                const ref = node.getAttribute("ref") || false;
-                subViews[type] = { ref, index: viewAppearanceIndex++ };
+                subViewRefs[type] = node.getAttribute("ref") || false;
             }
             if (node.tagName === "aggregate") {
                 const fieldName = node.getAttribute("field");
@@ -108,9 +106,21 @@ class DashboardArchParser extends XMLParser {
                 });
             }
         });
-        return { subViews, aggregates, formulae };
+        return { subViewRefs, aggregates, formulae };
     }
 }
+
+// The ViewWrapper component is an higher order component for sub views in the
+// dashboard. It allows to define a specific env for each sub view, with their
+// own callback recorders such that the dashboard can get their local and global
+// states, and their context.
+class ViewWrapper extends Component {
+    setup() {
+        useSubEnv(this.props.callbackRecorders);
+    }
+}
+ViewWrapper.template = tags.xml`<View t-props="props.viewProps"/>`;
+ViewWrapper.components = { View };
 
 export class DashboardView extends Component {
     setup() {
@@ -125,38 +135,36 @@ export class DashboardView extends Component {
         });
 
         this.template = processedArch.template;
-        const { subViews, aggregates, formulae } = processedArch.extracted;
-        this.subViews = Object.assign({}, subViews, this.props.state && this.props.state.subViews);
+        const { subViewRefs, aggregates, formulae } = processedArch.extracted;
+        this.subViews = {};
+        Object.keys(subViewRefs).forEach((viewType) => {
+            this.subViews[viewType] = {
+                ref: subViewRefs[viewType],
+                callbackRecorders: {
+                    __exportLocalState__: new CallbackRecorder(),
+                    __exportGlobalState__: new CallbackRecorder(),
+                    __saveParams__: new CallbackRecorder(),
+                },
+                props: null, // will be generated after the loadViews
+            };
+            if (this.props.state) {
+                this.subViews[viewType].state = this.props.state.subViews[viewType];
+            }
+        });
         this.aggregates = aggregates;
         this.formulae = formulae;
 
-        this.__exportGlobalState__ = new CallbackRecorder();
-        this.__exportLocalState__ = new CallbackRecorder();
-        this.__saveParams__ = new CallbackRecorder();
-
         useSetupView({
             exportLocalState: () => {
-                const subViews = this.exportSubviewsState();
-                for (const viewInfo of Object.values(subViews)) {
-                    delete viewInfo.props.state.domain;
-                    delete viewInfo.props.state.comparison;
-                    delete viewInfo.props.domain;
-                    delete viewInfo.props.comparison;
-                    delete viewInfo.props.globalState;
-                }
-                return { subViews };
+                return {
+                    subViews: this.callRecordedCallbacks("__exportLocalState__"),
+                };
             },
             saveParams: () => {
                 return {
-                    context: this.saveParamsSubviews(),
+                    context: this.callRecordedCallbacks("__saveParams__"),
                 };
             },
-        });
-        // cannot be above useSetupAction: ok with that?
-        useSubEnv({
-            __exportGlobalState__: this.__exportGlobalState__,
-            __exportLocalState__: this.__exportLocalState__,
-            __saveParams__: this.__saveParams__,
         });
 
         this.model = useModel(DashboardModel, {
@@ -170,46 +178,6 @@ export class DashboardView extends Component {
         useEffect(() => {
             this.subViewsRenderKey++;
         });
-    }
-
-    saveParamsSubviews() {
-        const { subViews } = this;
-        const result = {};
-        for (const [viewType, subView] of Object.entries(subViews)) {
-            const c = this.__saveParams__._callbacks.find(
-                (c) => c.owner.constructor.type === viewType
-            );
-            if (c) {
-                result[viewType] = c.callback().context;
-            }
-        }
-        // we will need some kind of reconciliation: arch and thus subViews can change without the ir filter stay the same!
-        return result;
-    }
-
-    exportSubviewsGlobalState() {
-        const globalStates = {};
-
-        for (const [viewType, subView] of Object.entries(this.subViews)) {
-            const { callback } = this.__exportGlobalState__._callbacks[subView.index];
-            globalStates[viewType] = callback();
-        }
-        return globalStates;
-    }
-
-    exportSubviewsState() {
-        const subViews = {};
-        for (let [viewType, subView] of Object.entries(this.subViews)) {
-            subView = deepCopy(subView);
-            subViews[viewType] = subView;
-            const c = this.__exportLocalState__._callbacks.find(
-                (c) => c.owner.constructor.type === viewType
-            );
-            if (c) {
-                subView.props.state = c.callback();
-            }
-        }
-        return subViews;
     }
 
     async willStart() {
@@ -263,13 +231,14 @@ export class DashboardView extends Component {
                             );
                             delete context[type];
                             const { viewId, arch, fields } = viewInfo;
-                            subView.props = Object.assign(subView.props || {}, {
+                            subView.props = {
                                 viewId,
                                 arch,
                                 fields,
                                 additionalMeasures,
                                 context,
-                            });
+                                type,
+                            };
                         });
                     })
             );
@@ -278,15 +247,23 @@ export class DashboardView extends Component {
         await Promise.all(loadViewProms);
     }
 
-    openFullscreen(viewType) {
-        let localState;
-        const c = this.__exportLocalState__._callbacks.find(
-            (c) => c.owner.constructor.type === viewType
-        );
-        if (c) {
-            localState = c.callback();
+    callRecordedCallbacks(name) {
+        const result = {};
+        for (const [viewType, subView] of Object.entries(this.subViews)) {
+            const callbacks = subView.callbackRecorders[name]._callbacks;
+            if (callbacks.length) {
+                result[viewType] = callbacks.reduce((res, c) => {
+                    // FIXME: we'll stop exporting a dict with a context key, but directly export
+                    // the context instead. When this will be done, we'll get rid of this hack
+                    const cbRes = name === "__saveParams__" ? c.callback().context : c.callback();
+                    return { ...res, ...cbRes };
+                }, {});
+            }
         }
+        return result;
+    }
 
+    openFullscreen(viewType) {
         const action = {
             domain: this.env.searchModel.globalDomain,
             context: this.props.context,
@@ -299,25 +276,36 @@ export class DashboardView extends Component {
 
         this.action.doAction(action, {
             props: {
-                state: localState,
+                state: this.callRecordedCallbacks("__exportLocalState__")[viewType],
                 globalState: { searchModel: JSON.stringify(this.env.searchModel.exportState()) },
             },
         });
     }
 
-    getViewProps(type) {
-        const display = Object.assign(DISPLAY[type] || {});
+    /**
+     * Returns the props of the ViewWrapper components.
+     * @param {string} viewType
+     * @returns {Object}
+     */
+    getViewWrapperProps(viewType) {
+        return {
+            callbackRecorders: this.subViews[viewType].callbackRecorders,
+            viewProps: this.getViewProps(viewType),
+        };
+    }
+
+    getViewProps(viewType) {
+        const display = Object.assign(DISPLAY[viewType] || {});
         display.controlPanel = Object.assign({}, SUB_VIEW_CONTROL_PANEL_DISPLAY, {
             "bottom-content": {
                 Component: ControlPanelBottomContent,
                 props: {
-                    switchView: () => this.openFullscreen(type),
+                    switchView: () => this.openFullscreen(viewType),
                 },
             },
         });
-        const subView = this.subViews[type];
+        const subView = this.subViews[viewType];
         const props = Object.assign(
-            {},
             {
                 domain: this.props.domain,
                 comparison: this.props.comparison,
@@ -326,12 +314,14 @@ export class DashboardView extends Component {
                 context: Object.assign({}, this.props.context),
                 searchViewArch: this.props.info.searchViewArch,
                 searchViewFields: this.props.info.searchViewFields,
+                type: viewType,
             },
             subView.props,
             {
                 noContentHelp: this.model.useSampleModel ? false : undefined,
                 useSampleModel: this.model.useSampleModel,
-            }
+            },
+            { state: subView.state }
         );
 
         return props;
@@ -352,29 +342,28 @@ export class DashboardView extends Component {
      * @param {Object} nextProps
      */
     async willUpdateProps(nextProps) {
-        const subViews = this.exportSubviewsState();
         const currentMeasure = this.getCurrentMeasure();
-
-        Object.entries(subViews).forEach(([viewType, { props }]) => {
-            if (viewType === "graph") {
-                props.state = Object.assign(
-                    props.state || {},
-                    currentMeasure && currentMeasure.default
-                );
-            } else if (viewType === "cohort") {
-                props.state = Object.assign(
-                    props.state || {},
-                    currentMeasure && currentMeasure.default
-                );
-            } else if (viewType === "pivot") {
-                props.state = Object.assign(props.state || {});
-                props.state.metaData = Object.assign(
-                    props.state.metaData || {},
-                    currentMeasure && currentMeasure.pivot
-                );
-            }
-        });
-        this.subViews = subViews;
+        if (currentMeasure) {
+            const states = this.callRecordedCallbacks("__exportLocalState__");
+            Object.entries(this.subViews).forEach(([viewType, subView]) => {
+                subView.state = states[viewType];
+                if (viewType === "graph") {
+                    subView.state.metaData = Object.assign(
+                        {},
+                        subView.state.metaData,
+                        currentMeasure.default
+                    );
+                } else if (viewType === "cohort") {
+                    Object.assign(subView.state, currentMeasure.default);
+                } else if (viewType === "pivot") {
+                    subView.state.metaData = Object.assign(
+                        {},
+                        subView.state.metaData,
+                        currentMeasure.pivot
+                    );
+                }
+            });
+        }
 
         const { comparison, domain } = nextProps;
         for (const [type, subView] of Object.entries(this.subViews)) {
@@ -383,7 +372,7 @@ export class DashboardView extends Component {
             Object.assign(subView.props, { comparison, context, domain });
         }
 
-        const globalStates = this.exportSubviewsGlobalState();
+        const globalStates = this.callRecordedCallbacks("__exportGlobalState__");
         for (const [type, subView] of Object.entries(this.subViews)) {
             subView.props = Object.assign({}, subView.props, { globalState: globalStates[type] });
         }
@@ -417,9 +406,9 @@ DashboardView.defaultProps = {
 DashboardView.components = {
     ControlPanel,
     SearchPanel,
-    View,
     DashboardStatistic,
     ViewWidget,
+    ViewWrapper,
     Banner: OnboardingBanner,
 };
 

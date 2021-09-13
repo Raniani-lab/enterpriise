@@ -8,7 +8,7 @@ function setSampleDisable(node) {
 }
 
 export class DashboardCompiler {
-    constructor(arch) {
+    constructor() {
         this.doc = new DOMParser().parseFromString("<templates />", "text/xml");
         this.OUTER_GROUP_COL = 6;
         this.nodeIdentifier = CompileLib.nodeIdentifier();
@@ -74,9 +74,9 @@ export class DashboardCompiler {
         }
     }
 
-    compileView(node, params) {
+    compileView(node) {
         const type = node.getAttribute("type");
-        const view = this.doc.createElement("View");
+        const view = this.doc.createElement("ViewWrapper");
 
         const divWrap = this.doc.createElement("div");
         divWrap.setAttribute("t-att-type", `"${type}"`);
@@ -85,8 +85,7 @@ export class DashboardCompiler {
 
         CompileLib.appendTo(divWrap, view);
 
-        view.setAttribute("type", `"${type}"`);
-        view.setAttribute("t-props", `getViewProps("${type}")`);
+        view.setAttribute("t-props", `getViewWrapperProps("${type}")`);
         view.setAttribute("t-key", "subViewsRenderKey");
         return divWrap;
     }

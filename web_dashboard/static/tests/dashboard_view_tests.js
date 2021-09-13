@@ -1960,9 +1960,9 @@ QUnit.module("Views", (hooks) => {
         patchWithCleanup(graph.env.services.action, {
             doAction(action, options) {
                 assert.step("doAction");
-                assert.step(options.props.state.groupBy[0].fieldName);
-                assert.step(options.props.state.measure);
-                assert.step(options.props.state.mode);
+                assert.step(options.props.state.metaData.groupBy[0].fieldName);
+                assert.step(options.props.state.metaData.measure);
+                assert.step(options.props.state.metaData.mode);
                 const expectedAction = {
                     context: {
                         allowed_company_ids: [1],
@@ -2154,7 +2154,7 @@ QUnit.module("Views", (hooks) => {
                 doAction(action, options) {
                     assert.step("doAction");
                     assert.deepEqual(
-                        options.props.state.additionalMeasures,
+                        options.props.state.metaData.additionalMeasures,
                         ["product_id"],
                         "should have passed additional measures in fullscreen"
                     );
@@ -3504,7 +3504,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         for (let i = 0; i < 11; i++) {
-            await validateSearch(dashboard)
+            await validateSearch(dashboard);
             assert.strictEqual(
                 dashboard.el.querySelector(".o_value").textContent.trim(),
                 results.shift(),

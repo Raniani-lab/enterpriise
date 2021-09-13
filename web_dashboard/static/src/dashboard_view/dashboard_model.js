@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import BasicModel from "web.BasicModel";
-import { buildSampleORM } from "@web/views/helpers/sample_server";
 import { computeVariation } from "@web/core/utils/numbers";
 import { Domain } from "@web/core/domain";
 import { evaluateExpr } from "@web/core/py_js/py";
@@ -64,17 +63,13 @@ function setupBasicModel(resModel, { getFieldsInfo, postProcessRecord }) {
 }
 
 export class DashboardModel extends Model {
-    setup(params, services) {
+    setup(params) {
         super.setup(...arguments);
-
-        const { orm, user } = services;
-        this.orm = orm;
-        this.user = user;
 
         this.keepLast = new KeepLast();
 
-        const { aggregates, fields, formulae, resModel, useSampleModel } = params; // useSampleModel is missing for now
-        this.meta = { fields, formulae, resModel, useSampleModel };
+        const { aggregates, fields, formulae, resModel } = params;
+        this.meta = { fields, formulae, resModel };
 
         this.meta.aggregates = [];
         for (const agg of aggregates) {
@@ -153,24 +148,24 @@ export class DashboardModel extends Model {
         } else {
             meta.domains = [{ arrayRepr: domain, description: null }];
         }
-        let { count, data } = await this.keepLast.add(this._load(meta));
-        if (meta.useSampleModel && count === 0) {
-            const result = await this.keepLast.add(this._load(meta, true));
-            data = result.data;
-        } else {
-            meta.useSampleModel = false;
-        }
+        await this.keepLast.add(this._load(meta));
         this.basicModel.isSample = meta.useSampleModel;
         this.meta = meta;
-        this.data = data;
 
         const legacyParams = {
             domain: meta.domain,
             compare: meta.domains.length > 1,
         };
         this._legacyRecord_ = await this.keepLast.add(
-            this.basicModel.makeRecord(legacyParams, data)
+            this.basicModel.makeRecord(legacyParams, this.data)
         );
+    }
+
+    /**
+     * @override
+     */
+    hasData() {
+        return this.count > 0;
     }
 
     //--------------------------------------------------------------------------
@@ -221,21 +216,10 @@ export class DashboardModel extends Model {
     /**
      * @protected
      * @param {Object} meta
-     * @param {boolean} [sample=false]
      */
-    async _load(meta, sample = false) {
-        let orm2use;
-        if (sample) {
-            if (!this.fakeOrm) {
-                this.fakeOrm = buildSampleORM(meta.resModel, meta.fields, this.user);
-            }
-            orm2use = this.fakeOrm;
-        } else {
-            orm2use = this.orm;
-        }
-
+    async _load(meta) {
         const domainMapping = {};
-        if (meta.useSampleModel && !sample) {
+        if (this.useSampleModel) {
             // force a read_group RPC without domain to determine if there is data to display
             domainMapping["[]"] = [];
         }
@@ -255,7 +239,7 @@ export class DashboardModel extends Model {
             for (let i = 0; i < meta.domains.length; i++) {
                 const { arrayRepr } = meta.domains[i];
                 proms.push(
-                    orm2use
+                    this.orm
                         .readGroup(
                             meta.resModel,
                             Domain.and([domain, arrayRepr]).toList(),
@@ -286,7 +270,8 @@ export class DashboardModel extends Model {
         this._evalFormulae(meta, data);
         this._computeVariations(meta, data);
 
-        return { count, data };
+        this.data = data;
+        this.count = count;
     }
 
     evalDomain(record, expr) {
@@ -312,7 +297,6 @@ export class DashboardModel extends Model {
         return this.meta.statistics[statName];
     }
 }
-DashboardModel.services = ["orm", "user"];
 
 // TODO:
 // comparisons beware of legacy record

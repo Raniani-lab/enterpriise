@@ -118,7 +118,7 @@ export class DashboardView extends Component {
         this.action = useService("action");
         this.subViewsRenderKey = 1;
 
-        const { resModel, arch, fields, state } = this.props;
+        const { resModel, arch, fields } = this.props;
         const processedArch = useViewArch(arch, {
             compile: (arch) => new DashboardCompiler().compileArch(arch),
             extract: (arch) => new DashboardArchParser().parse(arch, fields),
@@ -144,10 +144,7 @@ export class DashboardView extends Component {
                     delete viewInfo.props.comparison;
                     delete viewInfo.props.globalState;
                 }
-                return {
-                    subViews,
-                    useSampleModel: this.model.meta.useSampleModel,
-                };
+                return { subViews };
             },
             saveParams: () => {
                 return {
@@ -162,11 +159,9 @@ export class DashboardView extends Component {
             __saveParams__: this.__saveParams__,
         });
 
-        const useSampleModel = state ? state.useSampleModel : this.props.useSampleModel;
         this.model = useModel(DashboardModel, {
             resModel,
             fields,
-            useSampleModel,
             aggregates: this.aggregates,
             formulae: this.formulae,
         });
@@ -334,8 +329,8 @@ export class DashboardView extends Component {
             },
             subView.props,
             {
-                noContentHelp: this.model.meta.useSampleModel ? false : undefined,
-                useSampleModel: this.model.meta.useSampleModel,
+                noContentHelp: this.model.useSampleModel ? false : undefined,
+                useSampleModel: this.model.useSampleModel,
             }
         );
 
@@ -373,8 +368,8 @@ export class DashboardView extends Component {
                 );
             } else if (viewType === "pivot") {
                 props.state = Object.assign(props.state || {});
-                props.state.meta = Object.assign(
-                    props.state.meta || {},
+                props.state.metaData = Object.assign(
+                    props.state.metaData || {},
                     currentMeasure && currentMeasure.pivot
                 );
             }
@@ -419,7 +414,14 @@ DashboardView.defaultProps = {
     display: {},
 };
 
-DashboardView.components = { ControlPanel, SearchPanel, View, DashboardStatistic, ViewWidget, Banner: OnboardingBanner };
+DashboardView.components = {
+    ControlPanel,
+    SearchPanel,
+    View,
+    DashboardStatistic,
+    ViewWidget,
+    Banner: OnboardingBanner,
+};
 
 DashboardView.type = "dashboard";
 

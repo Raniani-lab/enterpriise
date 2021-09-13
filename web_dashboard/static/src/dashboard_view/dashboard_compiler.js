@@ -4,7 +4,7 @@ import * as CompileLib from "@web/views/compile/compile_lib";
 import { compileGroup, compileWidget } from "@web/views/compile/compile_nodes";
 
 function setSampleDisable(node) {
-    CompileLib.appendAttr(node, "class", "o_sample_data_disabled: model.meta.useSampleModel");
+    CompileLib.appendAttr(node, "class", "o_sample_data_disabled: model.useSampleModel");
 }
 
 export class DashboardCompiler {

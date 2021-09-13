@@ -29,3 +29,18 @@ def uninstall_hook(cr, registry):
         rule = env.ref(xml_id, raise_if_not_found=False)
         if rule:
             rule.domain_force = rule.domain_force.replace(domain, "(1, '=', 1)")
+
+    action_xml_ids = [
+        'survey.action_survey_form',
+        'survey.action_survey_question_form',
+        'survey.survey_question_answer_action',
+        'survey.action_survey_user_input',
+        'survey.survey_user_input_line_action'
+    ]
+    for xml_id in action_xml_ids:
+        act_window = env.ref(xml_id, raise_if_not_found=False)
+        if act_window and act_window.domain and 'is_appraisal' in act_window.domain:
+            if 'is_page' in act_window.domain:
+                act_window.domain = [('is_page', '=', False)]
+            else:
+                act_window.domain = []

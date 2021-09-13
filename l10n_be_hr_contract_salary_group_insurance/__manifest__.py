@@ -22,6 +22,11 @@
     ],
     'demo': [
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'l10n_be_hr_contract_salary_group_insurance/static/src/**/*',
+        ],
+    },
     'license': 'OEEL-1',
     'auto_install': True,
 }

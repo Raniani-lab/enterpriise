@@ -276,12 +276,14 @@
         <field name="value">0</field>
         <field name="color">red</field>
         <field name="hide_description" eval="True"/>
+        <field name="sequence">1</field>
     </record>
 
     <record id="l10n_be_hospital_insurance_value_1" model="hr.contract.salary.advantage.value">
         <field name="advantage_id" ref="l10n_be_hospital_insurance"/>
         <field name="name">Yes</field>
         <field name="value">1</field>
+        <field name="sequence">10</field>
     </record>
 
     <record id="l10n_be_insured_spouse" model="hr.contract.salary.advantage">

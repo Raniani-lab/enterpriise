@@ -2,1007 +2,1022 @@
 host = https://www.transifex.com
 type = PO
 
-[odoo-master.account_3way_match]
+[odoo-15.account_3way_match]
 file_filter = account_3way_match/i18n/<lang>.po
 source_file = account_3way_match/i18n/account_3way_match.pot
 source_lang = en
 
-[odoo-master.account_accountant]
+[odoo-15.account_accountant]
 file_filter = account_accountant/i18n/<lang>.po
 source_file = account_accountant/i18n/account_accountant.pot
 source_lang = en
 
-[odoo-master.account_asset]
+[odoo-15.account_accountant_batch_payment]
+file_filter = account_accountant_batch_payment/i18n/<lang>.po
+source_file = account_accountant_batch_payment/i18n/account_accountant_batch_payment.pot
+source_lang = en
+
+[odoo-15.account_asset]
 file_filter = account_asset/i18n/<lang>.po
 source_file = account_asset/i18n/account_asset.pot
 source_lang = en
 
-[odoo-master.account_auto_transfer]
+[odoo-15.account_auto_transfer]
 file_filter = account_auto_transfer/i18n/<lang>.po
 source_file = account_auto_transfer/i18n/account_auto_transfer.pot
 source_lang = en
 
-[odoo-master.account_bank_statement_import]
+[odoo-15.account_bank_statement_import]
 file_filter = account_bank_statement_import/i18n/<lang>.po
 source_file = account_bank_statement_import/i18n/account_bank_statement_import.pot
 source_lang = en
 
-[odoo-master.account_bank_statement_import_camt]
+[odoo-15.account_bank_statement_import_camt]
 file_filter = account_bank_statement_import_camt/i18n/<lang>.po
 source_file = account_bank_statement_import_camt/i18n/account_bank_statement_import_camt.pot
 source_lang = en
 
-[odoo-master.account_bank_statement_import_csv]
+[odoo-15.account_bank_statement_import_csv]
 file_filter = account_bank_statement_import_csv/i18n/<lang>.po
 source_file = account_bank_statement_import_csv/i18n/account_bank_statement_import_csv.pot
 source_lang = en
 
-[odoo-master.account_bank_statement_import_ofx]
+[odoo-15.account_bank_statement_import_ofx]
 file_filter = account_bank_statement_import_ofx/i18n/<lang>.po
 source_file = account_bank_statement_import_ofx/i18n/account_bank_statement_import_ofx.pot
 source_lang = en
 
-[odoo-master.account_bank_statement_import_qif]
+[odoo-15.account_bank_statement_import_qif]
 file_filter = account_bank_statement_import_qif/i18n/<lang>.po
 source_file = account_bank_statement_import_qif/i18n/account_bank_statement_import_qif.pot
 source_lang = en
 
-[odoo-master.account_batch_payment]
+[odoo-15.account_batch_payment]
 file_filter = account_batch_payment/i18n/<lang>.po
 source_file = account_batch_payment/i18n/account_batch_payment.pot
 source_lang = en
 
-[odoo-master.account_budget]
+[odoo-15.account_budget]
 file_filter = account_budget/i18n/<lang>.po
 source_file = account_budget/i18n/account_budget.pot
 source_lang = en
 
-[odoo-master.account_consolidation]
+[odoo-15.account_consolidation]
 file_filter = account_consolidation/i18n/<lang>.po
 source_file = account_consolidation/i18n/account_consolidation.pot
 source_lang = en
 
-[odoo-master.account_disallowed_expenses]
+[odoo-15.account_disallowed_expenses]
 file_filter = account_disallowed_expenses/i18n/<lang>.po
 source_file = account_disallowed_expenses/i18n/account_disallowed_expenses.pot
 source_lang = en
 
-[odoo-master.account_disallowed_expenses_fleet]
+[odoo-15.account_disallowed_expenses_fleet]
 file_filter = account_disallowed_expenses_fleet/i18n/<lang>.po
 source_file = account_disallowed_expenses_fleet/i18n/account_disallowed_expenses_fleet.pot
 source_lang = en
 
-[odoo-master.account_followup]
+[odoo-15.account_followup]
 file_filter = account_followup/i18n/<lang>.po
 source_file = account_followup/i18n/account_followup.pot
 source_lang = en
 
-[odoo-master.account_inter_company_rules]
+[odoo-15.account_inter_company_rules]
 file_filter = account_inter_company_rules/i18n/<lang>.po
 source_file = account_inter_company_rules/i18n/account_inter_company_rules.pot
 source_lang = en
 
-[odoo-master.account_intrastat]
+[odoo-15.account_intrastat]
 file_filter = account_intrastat/i18n/<lang>.po
 source_file = account_intrastat/i18n/account_intrastat.pot
 source_lang = en
 
-[odoo-master.account_invoice_extract]
+[odoo-15.account_invoice_extract]
 file_filter = account_invoice_extract/i18n/<lang>.po
 source_file = account_invoice_extract/i18n/account_invoice_extract.pot
 source_lang = en
 
-[odoo-master.account_online_synchronization]
+[odoo-15.account_online_synchronization]
 file_filter = account_online_synchronization/i18n/<lang>.po
 source_file = account_online_synchronization/i18n/account_online_synchronization.pot
 source_lang = en
 
-[odoo-master.account_predictive_bills]
+[odoo-15.account_predictive_bills]
 file_filter = account_predictive_bills/i18n/<lang>.po
 source_file = account_predictive_bills/i18n/account_predictive_bills.pot
 source_lang = en
 
-[odoo-master.account_reports]
+[odoo-15.account_reports]
 file_filter = account_reports/i18n/<lang>.po
 source_file = account_reports/i18n/account_reports.pot
 source_lang = en
 
-[odoo-master.account_reports_cash_basis]
+[odoo-15.account_reports_cash_basis]
 file_filter = account_reports_cash_basis/i18n/<lang>.po
 source_file = account_reports_cash_basis/i18n/account_reports_cash_basis.pot
 source_lang = en
 
-[odoo-master.account_saft]
+[odoo-15.account_saft]
 file_filter = account_saft/i18n/<lang>.po
 source_file = account_saft/i18n/account_saft.pot
 source_lang = en
 
-[odoo-master.account_sepa]
+[odoo-15.account_sepa]
 file_filter = account_sepa/i18n/<lang>.po
 source_file = account_sepa/i18n/account_sepa.pot
 source_lang = en
 
-[odoo-master.account_sepa_direct_debit]
+[odoo-15.account_sepa_direct_debit]
 file_filter = account_sepa_direct_debit/i18n/<lang>.po
 source_file = account_sepa_direct_debit/i18n/account_sepa_direct_debit.pot
 source_lang = en
 
-[odoo-master.account_taxcloud]
+[odoo-15.account_taxcloud]
 file_filter = account_taxcloud/i18n/<lang>.po
 source_file = account_taxcloud/i18n/account_taxcloud.pot
 source_lang = en
 
-[odoo-master.account_winbooks_import]
+[odoo-15.account_winbooks_import]
 file_filter = account_winbooks_import/i18n/<lang>.po
 source_file = account_winbooks_import/i18n/account_winbooks_import.pot
 source_lang = en
 
-[odoo-master.analytic_enterprise]
+[odoo-15.analytic_enterprise]
 file_filter = analytic_enterprise/i18n/<lang>.po
 source_file = analytic_enterprise/i18n/analytic_enterprise.pot
 source_lang = en
 
-[odoo-master.appointment_crm]
+[odoo-15.appointment]
+file_filter = appointment/i18n/<lang>.po
+source_file = appointment/i18n/appointment.pot
+source_lang = en
+
+[odoo-15.appointment_crm]
 file_filter = appointment_crm/i18n/<lang>.po
 source_file = appointment_crm/i18n/appointment_crm.pot
 source_lang = en
 
-[odoo-master.approvals]
+[odoo-15.approvals]
 file_filter = approvals/i18n/<lang>.po
 source_file = approvals/i18n/approvals.pot
 source_lang = en
 
-[odoo-master.approvals_purchase]
+[odoo-15.approvals_purchase]
 file_filter = approvals_purchase/i18n/<lang>.po
 source_file = approvals_purchase/i18n/approvals_purchase.pot
 source_lang = en
 
-[odoo-master.approvals_purchase_stock]
+[odoo-15.approvals_purchase_stock]
 file_filter = approvals_purchase_stock/i18n/<lang>.po
 source_file = approvals_purchase_stock/i18n/approvals_purchase_stock.pot
 source_lang = en
 
-[odoo-master.base_automation_hr_contract]
-file_filter = base_automation_hr_contract/i18n/<lang>.po
-source_file = base_automation_hr_contract/i18n/base_automation_hr_contract.pot
-source_lang = en
-
-[odoo-master.crm_enterprise]
+[odoo-15.crm_enterprise]
 file_filter = crm_enterprise/i18n/<lang>.po
 source_file = crm_enterprise/i18n/crm_enterprise.pot
 source_lang = en
 
-[odoo-master.crm_helpdesk]
+[odoo-15.crm_helpdesk]
 file_filter = crm_helpdesk/i18n/<lang>.po
 source_file = crm_helpdesk/i18n/crm_helpdesk.pot
 source_lang = en
 
-[odoo-master.currency_rate_live]
+[odoo-15.currency_rate_live]
 file_filter = currency_rate_live/i18n/<lang>.po
 source_file = currency_rate_live/i18n/currency_rate_live.pot
 source_lang = en
 
-[odoo-master.data_cleaning]
+[odoo-15.data_cleaning]
 file_filter = data_cleaning/i18n/<lang>.po
 source_file = data_cleaning/i18n/data_cleaning.pot
 source_lang = en
 
-[odoo-master.data_merge]
+[odoo-15.data_merge]
 file_filter = data_merge/i18n/<lang>.po
 source_file = data_merge/i18n/data_merge.pot
 source_lang = en
 
-[odoo-master.delivery_barcode]
+[odoo-15.delivery_barcode]
 file_filter = delivery_barcode/i18n/<lang>.po
 source_file = delivery_barcode/i18n/delivery_barcode.pot
 source_lang = en
 
-[odoo-master.delivery_bpost]
+[odoo-15.delivery_bpost]
 file_filter = delivery_bpost/i18n/<lang>.po
 source_file = delivery_bpost/i18n/delivery_bpost.pot
 source_lang = en
 
-[odoo-master.delivery_dhl]
+[odoo-15.delivery_dhl]
 file_filter = delivery_dhl/i18n/<lang>.po
 source_file = delivery_dhl/i18n/delivery_dhl.pot
 source_lang = en
 
-[odoo-master.delivery_easypost]
+[odoo-15.delivery_easypost]
 file_filter = delivery_easypost/i18n/<lang>.po
 source_file = delivery_easypost/i18n/delivery_easypost.pot
 source_lang = en
 
-[odoo-master.delivery_fedex]
+[odoo-15.delivery_fedex]
 file_filter = delivery_fedex/i18n/<lang>.po
 source_file = delivery_fedex/i18n/delivery_fedex.pot
 source_lang = en
 
-[odoo-master.delivery_iot]
+[odoo-15.delivery_iot]
 file_filter = delivery_iot/i18n/<lang>.po
 source_file = delivery_iot/i18n/delivery_iot.pot
 source_lang = en
 
-[odoo-master.delivery_ups]
+[odoo-15.delivery_ups]
 file_filter = delivery_ups/i18n/<lang>.po
 source_file = delivery_ups/i18n/delivery_ups.pot
 source_lang = en
 
-[odoo-master.delivery_usps]
+[odoo-15.delivery_usps]
 file_filter = delivery_usps/i18n/<lang>.po
 source_file = delivery_usps/i18n/delivery_usps.pot
 source_lang = en
 
-[odoo-master.documents]
+[odoo-15.documents]
 file_filter = documents/i18n/<lang>.po
 source_file = documents/i18n/documents.pot
 source_lang = en
 
-[odoo-master.documents_account]
+[odoo-15.documents_account]
 file_filter = documents_account/i18n/<lang>.po
 source_file = documents_account/i18n/documents_account.pot
 source_lang = en
 
-[odoo-master.documents_fleet]
-file_filter = documents_fleet/i18n/<lang>.po
-source_file = documents_fleet/i18n/documents_fleet.pot
-source_lang = en
-
-[odoo-master.documents_hr]
+[odoo-15.documents_hr]
 file_filter = documents_hr/i18n/<lang>.po
 source_file = documents_hr/i18n/documents_hr.pot
 source_lang = en
 
-[odoo-master.documents_hr_contract]
+[odoo-15.documents_hr_contract]
 file_filter = documents_hr_contract/i18n/<lang>.po
 source_file = documents_hr_contract/i18n/documents_hr_contract.pot
 source_lang = en
 
-[odoo-master.documents_hr_payroll]
+[odoo-15.documents_hr_payroll]
 file_filter = documents_hr_payroll/i18n/<lang>.po
 source_file = documents_hr_payroll/i18n/documents_hr_payroll.pot
 source_lang = en
 
-[odoo-master.documents_hr_recruitment]
+[odoo-15.documents_hr_recruitment]
 file_filter = documents_hr_recruitment/i18n/<lang>.po
 source_file = documents_hr_recruitment/i18n/documents_hr_recruitment.pot
 source_lang = en
 
-[odoo-master.documents_product]
+[odoo-15.documents_product]
 file_filter = documents_product/i18n/<lang>.po
 source_file = documents_product/i18n/documents_product.pot
 source_lang = en
 
-[odoo-master.documents_project]
+[odoo-15.documents_project]
 file_filter = documents_project/i18n/<lang>.po
 source_file = documents_project/i18n/documents_project.pot
 source_lang = en
 
-[odoo-master.documents_sign]
+[odoo-15.documents_sign]
 file_filter = documents_sign/i18n/<lang>.po
 source_file = documents_sign/i18n/documents_sign.pot
 source_lang = en
 
-[odoo-master.documents_spreadsheet]
+[odoo-15.documents_spreadsheet]
 file_filter = documents_spreadsheet/i18n/<lang>.po
 source_file = documents_spreadsheet/i18n/documents_spreadsheet.pot
 source_lang = en
 
-[odoo-master.event_barcode]
+[odoo-15.event_barcode]
 file_filter = event_barcode/i18n/<lang>.po
 source_file = event_barcode/i18n/event_barcode.pot
 source_lang = en
 
-[odoo-master.event_enterprise]
+[odoo-15.event_enterprise]
 file_filter = event_enterprise/i18n/<lang>.po
 source_file = event_enterprise/i18n/event_enterprise.pot
 source_lang = en
 
-[odoo-master.fleet_dashboard]
+[odoo-15.event_social]
+file_filter = event_social/i18n/<lang>.po
+source_file = event_social/i18n/event_social.pot
+source_lang = en
+
+[odoo-15.fleet_dashboard]
 file_filter = fleet_dashboard/i18n/<lang>.po
 source_file = fleet_dashboard/i18n/fleet_dashboard.pot
 source_lang = en
 
-[odoo-master.helpdesk]
+[odoo-15.helpdesk]
 file_filter = helpdesk/i18n/<lang>.po
 source_file = helpdesk/i18n/helpdesk.pot
 source_lang = en
 
-[odoo-master.helpdesk_account]
+[odoo-15.helpdesk_account]
 file_filter = helpdesk_account/i18n/<lang>.po
 source_file = helpdesk_account/i18n/helpdesk_account.pot
 source_lang = en
 
-[odoo-master.helpdesk_fsm]
+[odoo-15.helpdesk_fsm]
 file_filter = helpdesk_fsm/i18n/<lang>.po
 source_file = helpdesk_fsm/i18n/helpdesk_fsm.pot
 source_lang = en
 
-[odoo-master.helpdesk_fsm_report]
+[odoo-15.helpdesk_fsm_report]
 file_filter = helpdesk_fsm_report/i18n/<lang>.po
 source_file = helpdesk_fsm_report/i18n/helpdesk_fsm_report.pot
 source_lang = en
 
-[odoo-master.helpdesk_repair]
+[odoo-15.helpdesk_mail_plugin]
+file_filter = helpdesk_mail_plugin/i18n/<lang>.po
+source_file = helpdesk_mail_plugin/i18n/helpdesk_mail_plugin.pot
+source_lang = en
+
+[odoo-15.helpdesk_repair]
 file_filter = helpdesk_repair/i18n/<lang>.po
 source_file = helpdesk_repair/i18n/helpdesk_repair.pot
 source_lang = en
 
-[odoo-master.helpdesk_sale]
+[odoo-15.helpdesk_sale]
 file_filter = helpdesk_sale/i18n/<lang>.po
 source_file = helpdesk_sale/i18n/helpdesk_sale.pot
 source_lang = en
 
-[odoo-master.helpdesk_sale_coupon]
+[odoo-15.helpdesk_sale_coupon]
 file_filter = helpdesk_sale_coupon/i18n/<lang>.po
 source_file = helpdesk_sale_coupon/i18n/helpdesk_sale_coupon.pot
 source_lang = en
 
-[odoo-master.helpdesk_sale_timesheet]
+[odoo-15.helpdesk_sale_timesheet]
 file_filter = helpdesk_sale_timesheet/i18n/<lang>.po
 source_file = helpdesk_sale_timesheet/i18n/helpdesk_sale_timesheet.pot
 source_lang = en
 
-[odoo-master.helpdesk_stock]
+[odoo-15.helpdesk_stock]
 file_filter = helpdesk_stock/i18n/<lang>.po
 source_file = helpdesk_stock/i18n/helpdesk_stock.pot
 source_lang = en
 
-[odoo-master.helpdesk_timesheet]
+[odoo-15.helpdesk_timesheet]
 file_filter = helpdesk_timesheet/i18n/<lang>.po
 source_file = helpdesk_timesheet/i18n/helpdesk_timesheet.pot
 source_lang = en
 
-[odoo-master.hr_appraisal]
+[odoo-15.hr_appraisal]
 file_filter = hr_appraisal/i18n/<lang>.po
 source_file = hr_appraisal/i18n/hr_appraisal.pot
 source_lang = en
 
-[odoo-master.hr_appraisal_survey]
+[odoo-15.hr_appraisal_skills]
+file_filter = hr_appraisal_skills/i18n/<lang>.po
+source_file = hr_appraisal_skills/i18n/hr_appraisal_skills.pot
+source_lang = en
+
+[odoo-15.hr_appraisal_survey]
 file_filter = hr_appraisal_survey/i18n/<lang>.po
 source_file = hr_appraisal_survey/i18n/hr_appraisal_survey.pot
 source_lang = en
 
-[odoo-master.hr_contract_reports]
+[odoo-15.hr_contract_reports]
 file_filter = hr_contract_reports/i18n/<lang>.po
 source_file = hr_contract_reports/i18n/hr_contract_reports.pot
 source_lang = en
 
-[odoo-master.hr_contract_salary]
+[odoo-15.hr_contract_salary]
 file_filter = hr_contract_salary/i18n/<lang>.po
 source_file = hr_contract_salary/i18n/hr_contract_salary.pot
 source_lang = en
 
-[odoo-master.hr_contract_salary_holidays]
+[odoo-15.hr_contract_salary_holidays]
 file_filter = hr_contract_salary_holidays/i18n/<lang>.po
 source_file = hr_contract_salary_holidays/i18n/hr_contract_salary_holidays.pot
 source_lang = en
 
-[odoo-master.hr_contract_salary_payroll]
+[odoo-15.hr_contract_salary_payroll]
 file_filter = hr_contract_salary_payroll/i18n/<lang>.po
 source_file = hr_contract_salary_payroll/i18n/hr_contract_salary_payroll.pot
 source_lang = en
 
-[odoo-master.hr_contract_sign]
+[odoo-15.hr_contract_sign]
 file_filter = hr_contract_sign/i18n/<lang>.po
 source_file = hr_contract_sign/i18n/hr_contract_sign.pot
 source_lang = en
 
-[odoo-master.hr_expense_extract]
+[odoo-15.hr_expense_extract]
 file_filter = hr_expense_extract/i18n/<lang>.po
 source_file = hr_expense_extract/i18n/hr_expense_extract.pot
 source_lang = en
 
-[odoo-master.hr_expense_predict_product]
+[odoo-15.hr_expense_predict_product]
 file_filter = hr_expense_predict_product/i18n/<lang>.po
 source_file = hr_expense_predict_product/i18n/hr_expense_predict_product.pot
 source_lang = en
 
-[odoo-master.hr_holidays_gantt]
+[odoo-15.hr_holidays_gantt]
 file_filter = hr_holidays_gantt/i18n/<lang>.po
 source_file = hr_holidays_gantt/i18n/hr_holidays_gantt.pot
 source_lang = en
 
-[odoo-master.hr_payroll]
+[odoo-15.hr_payroll]
 file_filter = hr_payroll/i18n/<lang>.po
 source_file = hr_payroll/i18n/hr_payroll.pot
 source_lang = en
 
-[odoo-master.hr_payroll_account]
+[odoo-15.hr_payroll_account]
 file_filter = hr_payroll_account/i18n/<lang>.po
 source_file = hr_payroll_account/i18n/hr_payroll_account.pot
 source_lang = en
 
-[odoo-master.hr_payroll_account_sepa]
+[odoo-15.hr_payroll_account_sepa]
 file_filter = hr_payroll_account_sepa/i18n/<lang>.po
 source_file = hr_payroll_account_sepa/i18n/hr_payroll_account_sepa.pot
 source_lang = en
 
-[odoo-master.hr_payroll_expense]
+[odoo-15.hr_payroll_expense]
 file_filter = hr_payroll_expense/i18n/<lang>.po
 source_file = hr_payroll_expense/i18n/hr_payroll_expense.pot
 source_lang = en
 
-[odoo-master.hr_payroll_holidays]
+[odoo-15.hr_payroll_holidays]
 file_filter = hr_payroll_holidays/i18n/<lang>.po
 source_file = hr_payroll_holidays/i18n/hr_payroll_holidays.pot
 source_lang = en
 
-[odoo-master.hr_recruitment_reports]
+[odoo-15.hr_recruitment_reports]
 file_filter = hr_recruitment_reports/i18n/<lang>.po
 source_file = hr_recruitment_reports/i18n/hr_recruitment_reports.pot
 source_lang = en
 
-[odoo-master.hr_referral]
+[odoo-15.hr_referral]
 file_filter = hr_referral/i18n/<lang>.po
 source_file = hr_referral/i18n/hr_referral.pot
 source_lang = en
 
-[odoo-master.hr_work_entry_contract_enterprise]
+[odoo-15.hr_work_entry_contract_enterprise]
 file_filter = hr_work_entry_contract_enterprise/i18n/<lang>.po
 source_file = hr_work_entry_contract_enterprise/i18n/hr_work_entry_contract_enterprise.pot
 source_lang = en
 
-[odoo-master.hr_work_entry_holidays_enterprise]
+[odoo-15.hr_work_entry_holidays_enterprise]
 file_filter = hr_work_entry_holidays_enterprise/i18n/<lang>.po
 source_file = hr_work_entry_holidays_enterprise/i18n/hr_work_entry_holidays_enterprise.pot
 source_lang = en
 
-[odoo-master.im_livechat_enterprise]
+[odoo-15.im_livechat_enterprise]
 file_filter = im_livechat_enterprise/i18n/<lang>.po
 source_file = im_livechat_enterprise/i18n/im_livechat_enterprise.pot
 source_lang = en
 
-[odoo-master.industry_fsm]
+[odoo-15.industry_fsm]
 file_filter = industry_fsm/i18n/<lang>.po
 source_file = industry_fsm/i18n/industry_fsm.pot
 source_lang = en
 
-[odoo-master.industry_fsm_forecast]
-file_filter = industry_fsm_forecast/i18n/<lang>.po
-source_file = industry_fsm_forecast/i18n/industry_fsm_forecast.pot
-source_lang = en
-
-[odoo-master.industry_fsm_report]
+[odoo-15.industry_fsm_report]
 file_filter = industry_fsm_report/i18n/<lang>.po
 source_file = industry_fsm_report/i18n/industry_fsm_report.pot
 source_lang = en
 
-[odoo-master.industry_fsm_sale]
+[odoo-15.industry_fsm_sale]
 file_filter = industry_fsm_sale/i18n/<lang>.po
 source_file = industry_fsm_sale/i18n/industry_fsm_sale.pot
 source_lang = en
 
-[odoo-master.industry_fsm_sale_report]
+[odoo-15.industry_fsm_sale_report]
 file_filter = industry_fsm_sale_report/i18n/<lang>.po
 source_file = industry_fsm_sale_report/i18n/industry_fsm_sale_report.pot
 source_lang = en
 
-[odoo-master.industry_fsm_stock]
+[odoo-15.industry_fsm_stock]
 file_filter = industry_fsm_stock/i18n/<lang>.po
 source_file = industry_fsm_stock/i18n/industry_fsm_stock.pot
 source_lang = en
 
-[odoo-master.iot]
+[odoo-15.iot]
 file_filter = iot/i18n/<lang>.po
 source_file = iot/i18n/iot.pot
 source_lang = en
 
-[odoo-master.mail_enterprise]
-file_filter = mail_enterprise/i18n/<lang>.po
-source_file = mail_enterprise/i18n/mail_enterprise.pot
-source_lang = en
-
-[odoo-master.mail_mobile]
+[odoo-15.mail_mobile]
 file_filter = mail_mobile/i18n/<lang>.po
 source_file = mail_mobile/i18n/mail_mobile.pot
 source_lang = en
 
-[odoo-master.marketing_automation]
+[odoo-15.marketing_automation]
 file_filter = marketing_automation/i18n/<lang>.po
 source_file = marketing_automation/i18n/marketing_automation.pot
 source_lang = en
 
-[odoo-master.marketing_automation_sms]
+[odoo-15.marketing_automation_sms]
 file_filter = marketing_automation_sms/i18n/<lang>.po
 source_file = marketing_automation_sms/i18n/marketing_automation_sms.pot
 source_lang = en
 
-[odoo-master.mass_mailing_themes]
+[odoo-15.mass_mailing_themes]
 file_filter = mass_mailing_themes/i18n/<lang>.po
 source_file = mass_mailing_themes/i18n/mass_mailing_themes.pot
 source_lang = en
 
-[odoo-master.mrp_account_enterprise]
+[odoo-15.mrp_account_enterprise]
 file_filter = mrp_account_enterprise/i18n/<lang>.po
 source_file = mrp_account_enterprise/i18n/mrp_account_enterprise.pot
 source_lang = en
 
-[odoo-master.mrp_maintenance]
+[odoo-15.mrp_maintenance]
 file_filter = mrp_maintenance/i18n/<lang>.po
 source_file = mrp_maintenance/i18n/mrp_maintenance.pot
 source_lang = en
 
-[odoo-master.mrp_mps]
+[odoo-15.mrp_mps]
 file_filter = mrp_mps/i18n/<lang>.po
 source_file = mrp_mps/i18n/mrp_mps.pot
 source_lang = en
 
-[odoo-master.mrp_plm]
+[odoo-15.mrp_plm]
 file_filter = mrp_plm/i18n/<lang>.po
 source_file = mrp_plm/i18n/mrp_plm.pot
 source_lang = en
 
-[odoo-master.mrp_workorder]
+[odoo-15.mrp_workorder]
 file_filter = mrp_workorder/i18n/<lang>.po
 source_file = mrp_workorder/i18n/mrp_workorder.pot
 source_lang = en
 
-[odoo-master.mrp_workorder_expiry]
+[odoo-15.mrp_workorder_expiry]
 file_filter = mrp_workorder_expiry/i18n/<lang>.po
 source_file = mrp_workorder_expiry/i18n/mrp_workorder_expiry.pot
 source_lang = en
 
-[odoo-master.mrp_workorder_iot]
+[odoo-15.mrp_workorder_iot]
 file_filter = mrp_workorder_iot/i18n/<lang>.po
 source_file = mrp_workorder_iot/i18n/mrp_workorder_iot.pot
 source_lang = en
 
-[odoo-master.partner_commission]
+[odoo-15.mrp_workorder_plm]
+file_filter = mrp_workorder_plm/i18n/<lang>.po
+source_file = mrp_workorder_plm/i18n/mrp_workorder_plm.pot
+source_lang = en
+
+[odoo-15.partner_commission]
 file_filter = partner_commission/i18n/<lang>.po
 source_file = partner_commission/i18n/partner_commission.pot
 source_lang = en
 
-[odoo-master.payment_sepa_direct_debit]
+[odoo-15.payment_sepa_direct_debit]
 file_filter = payment_sepa_direct_debit/i18n/<lang>.po
 source_file = payment_sepa_direct_debit/i18n/payment_sepa_direct_debit.pot
 source_lang = en
 
-[odoo-master.planning]
+[odoo-15.planning]
 file_filter = planning/i18n/<lang>.po
 source_file = planning/i18n/planning.pot
 source_lang = en
 
-[odoo-master.planning_holidays]
+[odoo-15.planning_holidays]
 file_filter = planning_holidays/i18n/<lang>.po
 source_file = planning_holidays/i18n/planning_holidays.pot
 source_lang = en
 
-[odoo-master.pos_enterprise]
-file_filter = pos_enterprise/i18n/<lang>.po
-source_file = pos_enterprise/i18n/pos_enterprise.pot
-source_lang = en
-
-[odoo-master.pos_iot]
+[odoo-15.pos_iot]
 file_filter = pos_iot/i18n/<lang>.po
 source_file = pos_iot/i18n/pos_iot.pot
 source_lang = en
 
-[odoo-master.pos_loyalty]
+[odoo-15.pos_loyalty]
 file_filter = pos_loyalty/i18n/<lang>.po
 source_file = pos_loyalty/i18n/pos_loyalty.pot
 source_lang = en
 
-[odoo-master.pos_restaurant_iot]
+[odoo-15.pos_restaurant_iot]
 file_filter = pos_restaurant_iot/i18n/<lang>.po
 source_file = pos_restaurant_iot/i18n/pos_restaurant_iot.pot
 source_lang = en
 
-[odoo-master.product_unspsc]
+[odoo-15.pos_settle_due]
+file_filter = pos_settle_due/i18n/<lang>.po
+source_file = pos_settle_due/i18n/pos_settle_due.pot
+source_lang = en
+
+[odoo-15.product_unspsc]
 file_filter = product_unspsc/i18n/<lang>.po
 source_file = product_unspsc/i18n/product_unspsc.pot
 source_lang = en
 
-[odoo-master.project_enterprise]
+[odoo-15.project_account_asset]
+file_filter = project_account_asset/i18n/<lang>.po
+source_file = project_account_asset/i18n/project_account_asset.pot
+source_lang = en
+
+[odoo-15.project_account_budget]
+file_filter = project_account_budget/i18n/<lang>.po
+source_file = project_account_budget/i18n/project_account_budget.pot
+source_lang = en
+
+[odoo-15.project_enterprise]
 file_filter = project_enterprise/i18n/<lang>.po
 source_file = project_enterprise/i18n/project_enterprise.pot
 source_lang = en
 
-[odoo-master.project_forecast]
+[odoo-15.project_forecast]
 file_filter = project_forecast/i18n/<lang>.po
 source_file = project_forecast/i18n/project_forecast.pot
 source_lang = en
 
-[odoo-master.project_timesheet_forecast]
+[odoo-15.project_holidays]
+file_filter = project_holidays/i18n/<lang>.po
+source_file = project_holidays/i18n/project_holidays.pot
+source_lang = en
+
+[odoo-15.project_hr_payroll_account]
+file_filter = project_hr_payroll_account/i18n/<lang>.po
+source_file = project_hr_payroll_account/i18n/project_hr_payroll_account.pot
+source_lang = en
+
+[odoo-15.project_sale_subscription]
+file_filter = project_sale_subscription/i18n/<lang>.po
+source_file = project_sale_subscription/i18n/project_sale_subscription.pot
+source_lang = en
+
+[odoo-15.project_timesheet_forecast]
 file_filter = project_timesheet_forecast/i18n/<lang>.po
 source_file = project_timesheet_forecast/i18n/project_timesheet_forecast.pot
 source_lang = en
 
-[odoo-master.project_timesheet_forecast_sale]
+[odoo-15.project_timesheet_forecast_sale]
 file_filter = project_timesheet_forecast_sale/i18n/<lang>.po
 source_file = project_timesheet_forecast_sale/i18n/project_timesheet_forecast_sale.pot
 source_lang = en
 
-[odoo-master.project_timesheet_synchro]
+[odoo-15.project_timesheet_synchro]
 file_filter = project_timesheet_synchro/i18n/<lang>.po
 source_file = project_timesheet_synchro/i18n/project_timesheet_synchro.pot
 source_lang = en
 
-[odoo-master.purchase_enterprise]
+[odoo-15.purchase_enterprise]
 file_filter = purchase_enterprise/i18n/<lang>.po
 source_file = purchase_enterprise/i18n/purchase_enterprise.pot
 source_lang = en
 
-[odoo-master.quality]
+[odoo-15.quality]
 file_filter = quality/i18n/<lang>.po
 source_file = quality/i18n/quality.pot
 source_lang = en
 
-[odoo-master.quality_control]
+[odoo-15.quality_control]
 file_filter = quality_control/i18n/<lang>.po
 source_file = quality_control/i18n/quality_control.pot
 source_lang = en
 
-[odoo-master.quality_control_iot]
+[odoo-15.quality_control_iot]
 file_filter = quality_control_iot/i18n/<lang>.po
 source_file = quality_control_iot/i18n/quality_control_iot.pot
 source_lang = en
 
-[odoo-master.quality_control_picking_batch]
+[odoo-15.quality_control_picking_batch]
 file_filter = quality_control_picking_batch/i18n/<lang>.po
 source_file = quality_control_picking_batch/i18n/quality_control_picking_batch.pot
 source_lang = en
 
-[odoo-master.quality_control_worksheet]
+[odoo-15.quality_control_worksheet]
 file_filter = quality_control_worksheet/i18n/<lang>.po
 source_file = quality_control_worksheet/i18n/quality_control_worksheet.pot
 source_lang = en
 
-[odoo-master.quality_iot]
+[odoo-15.quality_iot]
 file_filter = quality_iot/i18n/<lang>.po
 source_file = quality_iot/i18n/quality_iot.pot
 source_lang = en
 
-[odoo-master.quality_mrp]
+[odoo-15.quality_mrp]
 file_filter = quality_mrp/i18n/<lang>.po
 source_file = quality_mrp/i18n/quality_mrp.pot
 source_lang = en
 
-[odoo-master.quality_mrp_workorder]
+[odoo-15.quality_mrp_workorder]
 file_filter = quality_mrp_workorder/i18n/<lang>.po
 source_file = quality_mrp_workorder/i18n/quality_mrp_workorder.pot
 source_lang = en
 
-[odoo-master.quality_mrp_workorder_iot]
+[odoo-15.quality_mrp_workorder_iot]
 file_filter = quality_mrp_workorder_iot/i18n/<lang>.po
 source_file = quality_mrp_workorder_iot/i18n/quality_mrp_workorder_iot.pot
 source_lang = en
 
-[odoo-master.quality_mrp_workorder_worksheet]
-file_filter = quality_mrp_workorder_worksheet/i18n/<lang>.po
-source_file = quality_mrp_workorder_worksheet/i18n/quality_mrp_workorder_worksheet.pot
-source_lang = en
-
-[odoo-master.sale_account_accountant]
+[odoo-15.sale_account_accountant]
 file_filter = sale_account_accountant/i18n/<lang>.po
 source_file = sale_account_accountant/i18n/sale_account_accountant.pot
 source_lang = en
 
-[odoo-master.sale_account_taxcloud]
+[odoo-15.sale_account_taxcloud]
 file_filter = sale_account_taxcloud/i18n/<lang>.po
 source_file = sale_account_taxcloud/i18n/sale_account_taxcloud.pot
 source_lang = en
 
-[odoo-master.sale_amazon]
+[odoo-15.sale_amazon]
 file_filter = sale_amazon/i18n/<lang>.po
 source_file = sale_amazon/i18n/sale_amazon.pot
 source_lang = en
 
-[odoo-master.sale_coupon_taxcloud]
+[odoo-15.sale_coupon_taxcloud]
 file_filter = sale_coupon_taxcloud/i18n/<lang>.po
 source_file = sale_coupon_taxcloud/i18n/sale_coupon_taxcloud.pot
 source_lang = en
 
-[odoo-master.sale_coupon_taxcloud_delivery]
-file_filter = sale_coupon_taxcloud_delivery/i18n/<lang>.po
-source_file = sale_coupon_taxcloud_delivery/i18n/sale_coupon_taxcloud_delivery.pot
-source_lang = en
-
-[odoo-master.sale_ebay]
+[odoo-15.sale_ebay]
 file_filter = sale_ebay/i18n/<lang>.po
 source_file = sale_ebay/i18n/sale_ebay.pot
 source_lang = en
 
-[odoo-master.sale_enterprise]
+[odoo-15.sale_enterprise]
 file_filter = sale_enterprise/i18n/<lang>.po
 source_file = sale_enterprise/i18n/sale_enterprise.pot
 source_lang = en
 
-[odoo-master.sale_intrastat]
+[odoo-15.sale_intrastat]
 file_filter = sale_intrastat/i18n/<lang>.po
 source_file = sale_intrastat/i18n/sale_intrastat.pot
 source_lang = en
 
-[odoo-master.sale_purchase_inter_company_rules]
+[odoo-15.sale_planning]
+file_filter = sale_planning/i18n/<lang>.po
+source_file = sale_planning/i18n/sale_planning.pot
+source_lang = en
+
+[odoo-15.sale_project_forecast]
+file_filter = sale_project_forecast/i18n/<lang>.po
+source_file = sale_project_forecast/i18n/sale_project_forecast.pot
+source_lang = en
+
+[odoo-15.sale_purchase_inter_company_rules]
 file_filter = sale_purchase_inter_company_rules/i18n/<lang>.po
 source_file = sale_purchase_inter_company_rules/i18n/sale_purchase_inter_company_rules.pot
 source_lang = en
 
-[odoo-master.sale_renting]
+[odoo-15.sale_renting]
 file_filter = sale_renting/i18n/<lang>.po
 source_file = sale_renting/i18n/sale_renting.pot
 source_lang = en
 
-[odoo-master.sale_renting_crm]
+[odoo-15.sale_renting_crm]
 file_filter = sale_renting_crm/i18n/<lang>.po
 source_file = sale_renting_crm/i18n/sale_renting_crm.pot
 source_lang = en
 
-[odoo-master.sale_renting_sign]
+[odoo-15.sale_renting_sign]
 file_filter = sale_renting_sign/i18n/<lang>.po
 source_file = sale_renting_sign/i18n/sale_renting_sign.pot
 source_lang = en
 
-[odoo-master.sale_stock_renting]
+[odoo-15.sale_stock_renting]
 file_filter = sale_stock_renting/i18n/<lang>.po
 source_file = sale_stock_renting/i18n/sale_stock_renting.pot
 source_lang = en
 
-[odoo-master.sale_subscription]
+[odoo-15.sale_subscription]
 file_filter = sale_subscription/i18n/<lang>.po
 source_file = sale_subscription/i18n/sale_subscription.pot
 source_lang = en
 
-[odoo-master.sale_subscription_dashboard]
+[odoo-15.sale_subscription_dashboard]
 file_filter = sale_subscription_dashboard/i18n/<lang>.po
 source_file = sale_subscription_dashboard/i18n/sale_subscription_dashboard.pot
 source_lang = en
 
-[odoo-master.sale_subscription_taxcloud]
-file_filter = sale_subscription_taxcloud/i18n/<lang>.po
-source_file = sale_subscription_taxcloud/i18n/sale_subscription_taxcloud.pot
+[odoo-15.sale_timesheet_account_budget]
+file_filter = sale_timesheet_account_budget/i18n/<lang>.po
+source_file = sale_timesheet_account_budget/i18n/sale_timesheet_account_budget.pot
 source_lang = en
 
-[odoo-master.sale_timesheet_enterprise]
+[odoo-15.sale_timesheet_enterprise]
 file_filter = sale_timesheet_enterprise/i18n/<lang>.po
 source_file = sale_timesheet_enterprise/i18n/sale_timesheet_enterprise.pot
 source_lang = en
 
-[odoo-master.sign]
+[odoo-15.sign]
 file_filter = sign/i18n/<lang>.po
 source_file = sign/i18n/sign.pot
 source_lang = en
 
-[odoo-master.snailmail_account_followup]
+[odoo-15.snailmail_account_followup]
 file_filter = snailmail_account_followup/i18n/<lang>.po
 source_file = snailmail_account_followup/i18n/snailmail_account_followup.pot
 source_lang = en
 
-[odoo-master.social]
+[odoo-15.social]
 file_filter = social/i18n/<lang>.po
 source_file = social/i18n/social.pot
 source_lang = en
 
-[odoo-master.social_crm]
+[odoo-15.social_crm]
 file_filter = social_crm/i18n/<lang>.po
 source_file = social_crm/i18n/social_crm.pot
 source_lang = en
 
-[odoo-master.social_demo]
+[odoo-15.social_demo]
 file_filter = social_demo/i18n/<lang>.po
 source_file = social_demo/i18n/social_demo.pot
 source_lang = en
 
-[odoo-master.social_facebook]
+[odoo-15.social_facebook]
 file_filter = social_facebook/i18n/<lang>.po
 source_file = social_facebook/i18n/social_facebook.pot
 source_lang = en
 
-[odoo-master.social_linkedin]
+[odoo-15.social_instagram]
+file_filter = social_instagram/i18n/<lang>.po
+source_file = social_instagram/i18n/social_instagram.pot
+source_lang = en
+
+[odoo-15.social_linkedin]
 file_filter = social_linkedin/i18n/<lang>.po
 source_file = social_linkedin/i18n/social_linkedin.pot
 source_lang = en
 
-[odoo-master.social_push_notifications]
+[odoo-15.social_push_notifications]
 file_filter = social_push_notifications/i18n/<lang>.po
 source_file = social_push_notifications/i18n/social_push_notifications.pot
 source_lang = en
 
-[odoo-master.social_sale]
+[odoo-15.social_sale]
 file_filter = social_sale/i18n/<lang>.po
 source_file = social_sale/i18n/social_sale.pot
 source_lang = en
 
-[odoo-master.social_twitter]
+[odoo-15.social_twitter]
 file_filter = social_twitter/i18n/<lang>.po
 source_file = social_twitter/i18n/social_twitter.pot
 source_lang = en
 
-[odoo-master.social_youtube]
+[odoo-15.social_youtube]
 file_filter = social_youtube/i18n/<lang>.po
 source_file = social_youtube/i18n/social_youtube.pot
 source_lang = en
 
-[odoo-master.stock_account_enterprise]
+[odoo-15.stock_account_enterprise]
 file_filter = stock_account_enterprise/i18n/<lang>.po
 source_file = stock_account_enterprise/i18n/stock_account_enterprise.pot
 source_lang = en
 
-[odoo-master.stock_barcode]
+[odoo-15.stock_barcode]
 file_filter = stock_barcode/i18n/<lang>.po
 source_file = stock_barcode/i18n/stock_barcode.pot
 source_lang = en
 
-[odoo-master.stock_barcode_mobile]
-file_filter = stock_barcode_mobile/i18n/<lang>.po
-source_file = stock_barcode_mobile/i18n/stock_barcode_mobile.pot
-source_lang = en
-
-[odoo-master.stock_barcode_mrp_subcontracting]
+[odoo-15.stock_barcode_mrp_subcontracting]
 file_filter = stock_barcode_mrp_subcontracting/i18n/<lang>.po
 source_file = stock_barcode_mrp_subcontracting/i18n/stock_barcode_mrp_subcontracting.pot
 source_lang = en
 
-[odoo-master.stock_barcode_picking_batch]
+[odoo-15.stock_barcode_picking_batch]
 file_filter = stock_barcode_picking_batch/i18n/<lang>.po
 source_file = stock_barcode_picking_batch/i18n/stock_barcode_picking_batch.pot
 source_lang = en
 
-[odoo-master.stock_barcode_quality_control]
-file_filter = stock_barcode_quality_control/i18n/<lang>.po
-source_file = stock_barcode_quality_control/i18n/stock_barcode_quality_control.pot
-source_lang = en
-
-[odoo-master.stock_barcode_quality_control_picking_batch]
-file_filter = stock_barcode_quality_control_picking_batch/i18n/<lang>.po
-source_file = stock_barcode_quality_control_picking_batch/i18n/stock_barcode_quality_control_picking_batch.pot
-source_lang = en
-
-[odoo-master.stock_enterprise]
+[odoo-15.stock_enterprise]
 file_filter = stock_enterprise/i18n/<lang>.po
 source_file = stock_enterprise/i18n/stock_enterprise.pot
 source_lang = en
 
-[odoo-master.stock_intrastat]
+[odoo-15.stock_intrastat]
 file_filter = stock_intrastat/i18n/<lang>.po
 source_file = stock_intrastat/i18n/stock_intrastat.pot
 source_lang = en
 
-[odoo-master.timer]
+[odoo-15.timer]
 file_filter = timer/i18n/<lang>.po
 source_file = timer/i18n/timer.pot
 source_lang = en
 
-[odoo-master.timesheet_grid]
+[odoo-15.timesheet_grid]
 file_filter = timesheet_grid/i18n/<lang>.po
 source_file = timesheet_grid/i18n/timesheet_grid.pot
 source_lang = en
 
-[odoo-master.voip]
+[odoo-15.voip]
 file_filter = voip/i18n/<lang>.po
 source_file = voip/i18n/voip.pot
 source_lang = en
 
-[odoo-master.voip_crm]
-file_filter = voip_crm/i18n/<lang>.po
-source_file = voip_crm/i18n/voip_crm.pot
-source_lang = en
-
-[odoo-master.voip_onsip]
+[odoo-15.voip_onsip]
 file_filter = voip_onsip/i18n/<lang>.po
 source_file = voip_onsip/i18n/voip_onsip.pot
 source_lang = en
 
-[odoo-master.web_cohort]
+[odoo-15.web_cohort]
 file_filter = web_cohort/i18n/<lang>.po
 source_file = web_cohort/i18n/web_cohort.pot
 source_lang = en
 
-[odoo-master.web_dashboard]
+[odoo-15.web_dashboard]
 file_filter = web_dashboard/i18n/<lang>.po
 source_file = web_dashboard/i18n/web_dashboard.pot
 source_lang = en
 
-[odoo-master.web_enterprise]
+[odoo-15.web_enterprise]
 file_filter = web_enterprise/i18n/<lang>.po
 source_file = web_enterprise/i18n/web_enterprise.pot
 source_lang = en
 
-[odoo-master.web_gantt]
+[odoo-15.web_gantt]
 file_filter = web_gantt/i18n/<lang>.po
 source_file = web_gantt/i18n/web_gantt.pot
 source_lang = en
 
-[odoo-master.web_grid]
+[odoo-15.web_grid]
 file_filter = web_grid/i18n/<lang>.po
 source_file = web_grid/i18n/web_grid.pot
 source_lang = en
 
-[odoo-master.web_map]
+[odoo-15.web_map]
 file_filter = web_map/i18n/<lang>.po
 source_file = web_map/i18n/web_map.pot
 source_lang = en
 
-[odoo-master.web_mobile]
+[odoo-15.web_mobile]
 file_filter = web_mobile/i18n/<lang>.po
 source_file = web_mobile/i18n/web_mobile.pot
 source_lang = en
 
-[odoo-master.web_studio]
+[odoo-15.web_studio]
 file_filter = web_studio/i18n/<lang>.po
 source_file = web_studio/i18n/web_studio.pot
 source_lang = en
 
-[odoo-master.website_appointment]
+[odoo-15.website_appointment]
 file_filter = website_appointment/i18n/<lang>.po
 source_file = website_appointment/i18n/website_appointment.pot
 source_lang = en
 
-[odoo-master.website_delivery_ups]
+[odoo-15.website_delivery_ups]
 file_filter = website_delivery_ups/i18n/<lang>.po
 source_file = website_delivery_ups/i18n/website_delivery_ups.pot
 source_lang = en
 
-[odoo-master.website_enterprise]
+[odoo-15.website_enterprise]
 file_filter = website_enterprise/i18n/<lang>.po
 source_file = website_enterprise/i18n/website_enterprise.pot
 source_lang = en
 
-[odoo-master.website_event_social]
+[odoo-15.website_event_social]
 file_filter = website_event_social/i18n/<lang>.po
 source_file = website_event_social/i18n/website_event_social.pot
 source_lang = en
 
-[odoo-master.website_event_track_gantt]
+[odoo-15.website_event_track_gantt]
 file_filter = website_event_track_gantt/i18n/<lang>.po
 source_file = website_event_track_gantt/i18n/website_event_track_gantt.pot
 source_lang = en
 
-[odoo-master.website_event_track_social]
+[odoo-15.website_event_track_social]
 file_filter = website_event_track_social/i18n/<lang>.po
 source_file = website_event_track_social/i18n/website_event_track_social.pot
 source_lang = en
 
-[odoo-master.website_event_twitter_wall]
+[odoo-15.website_event_twitter_wall]
 file_filter = website_event_twitter_wall/i18n/<lang>.po
 source_file = website_event_twitter_wall/i18n/website_event_twitter_wall.pot
 source_lang = en
 
-[odoo-master.website_helpdesk]
+[odoo-15.website_helpdesk]
 file_filter = website_helpdesk/i18n/<lang>.po
 source_file = website_helpdesk/i18n/website_helpdesk.pot
 source_lang = en
 
-[odoo-master.website_helpdesk_form]
+[odoo-15.website_helpdesk_form]
 file_filter = website_helpdesk_form/i18n/<lang>.po
 source_file = website_helpdesk_form/i18n/website_helpdesk_form.pot
 source_lang = en
 
-[odoo-master.website_helpdesk_forum]
+[odoo-15.website_helpdesk_forum]
 file_filter = website_helpdesk_forum/i18n/<lang>.po
 source_file = website_helpdesk_forum/i18n/website_helpdesk_forum.pot
 source_lang = en
 
-[odoo-master.website_helpdesk_livechat]
+[odoo-15.website_helpdesk_livechat]
 file_filter = website_helpdesk_livechat/i18n/<lang>.po
 source_file = website_helpdesk_livechat/i18n/website_helpdesk_livechat.pot
 source_lang = en
 
-[odoo-master.website_helpdesk_slides]
+[odoo-15.website_helpdesk_slides]
 file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
 source_lang = en
 
-[odoo-master.website_sale_account_taxcloud]
-file_filter = website_sale_account_taxcloud/i18n/<lang>.po
-source_file = website_sale_account_taxcloud/i18n/website_sale_account_taxcloud.pot
-source_lang = en
-
-[odoo-master.website_sale_dashboard]
+[odoo-15.website_sale_dashboard]
 file_filter = website_sale_dashboard/i18n/<lang>.po
 source_file = website_sale_dashboard/i18n/website_sale_dashboard.pot
 source_lang = en
 
-[odoo-master.website_studio]
+[odoo-15.website_studio]
 file_filter = website_studio/i18n/<lang>.po
 source_file = website_studio/i18n/website_studio.pot
 source_lang = en
 
-[odoo-master.website_twitter_wall]
+[odoo-15.website_twitter_wall]
 file_filter = website_twitter_wall/i18n/<lang>.po
 source_file = website_twitter_wall/i18n/website_twitter_wall.pot
 source_lang = en
 
-[odoo-master.worksheet]
+[odoo-15.worksheet]
 file_filter = worksheet/i18n/<lang>.po
 source_file = worksheet/i18n/worksheet.pot
 source_lang = en

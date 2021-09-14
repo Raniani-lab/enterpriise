@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2021-09-14 11:00+0000\n"
+"PO-Revision-Date: 2021-09-14 11:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,34 +21,38 @@ msgid "Attachment"
 msgstr ""
 
 #. module: account_saft
-#: code:addons/account_saft/models/account_saft_report.py:0
-#, python-format
-msgid "Define `Company Registry` for your company."
-msgstr ""
-
-#. module: account_saft
 #: model:ir.model,name:account_saft.model_account_general_ledger
 msgid "General Ledger Report"
 msgstr ""
 
 #. module: account_saft
-#: model_terms:ir.ui.view,arch_db:account_saft.HeaderTemplate
+#: model_terms:ir.ui.view,arch_db:account_saft.saft_template
 msgid "Odoo"
 msgstr ""
 
 #. module: account_saft
-#: model_terms:ir.ui.view,arch_db:account_saft.HeaderTemplate
+#: model_terms:ir.ui.view,arch_db:account_saft.saft_template
 msgid "Odoo SA"
 msgstr ""
 
 #. module: account_saft
-#: code:addons/account_saft/models/account_saft_report.py:0
+#: code:addons/account_saft/models/account_general_ledger.py:0
 #, python-format
-msgid "Please define City/Zip for address(es) of `%s`."
+msgid "Please define `Company Registry` for your company."
 msgstr ""
 
 #. module: account_saft
-#: code:addons/account_saft/models/account_saft_report.py:0
+#: code:addons/account_saft/models/account_general_ledger.py:0
 #, python-format
-msgid "Please define Phone or Mobile for `%s` Contact(s)."
+msgid ""
+"Please define at least one address (Zip/City) for the following partners: "
+"%s."
+msgstr ""
+
+#. module: account_saft
+#: code:addons/account_saft/models/account_general_ledger.py:0
+#, python-format
+msgid ""
+"Please define at least one contact (Phone or Mobile) for the following "
+"partners: %s."
 msgstr ""

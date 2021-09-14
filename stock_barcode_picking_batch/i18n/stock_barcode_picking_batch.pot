@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2021-09-14 11:01+0000\n"
+"PO-Revision-Date: 2021-09-14 11:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,20 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/components/main.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/components/main.xml:0
 #, python-format
-msgid "&nbsp;"
+msgid "!isConfiguring"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#. openerp-web
+#: code:addons/stock_barcode_picking_batch/static/src/components/grouped_line.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/components/line.xml:0
+#, python-format
+msgid ""
+"(line.colorLine or line.colorLine === 0) ? 'border-color: hsla(' + "
+"line.colorLine + ', 80%, 50%, 0.6);' : ''"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -33,13 +44,13 @@ msgid "<span class=\"fa fa-external-link-square ml-1\" title=\"Open Batch Pickin
 msgstr ""
 
 #. module: stock_barcode_picking_batch
-#: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_client_action
-msgid "Barcode Batch Picking Client Action"
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
+msgid "Allocation"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
-#: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_create_client_action
-msgid "Barcode Batch Picking Create Client Action"
+#: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_client_action
+msgid "Barcode Batch Picking Client Action"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -49,22 +60,32 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_cancel_operation__batch_id
 msgid "Batch Transfer"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_cancel_operation__batch_name
+msgid "Batch Transfer Name"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/stock_barcode.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/main_menu.xml:0
 #: model:ir.actions.act_window,name:stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban
 #, python-format
 msgid "Batch Transfers"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: model:ir.model,name:stock_barcode_picking_batch.model_stock_barcode_cancel_operation
+msgid "Cancel Operation"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
-msgid "Confirm"
+msgid "Cancel this batch transfer ?"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -104,13 +125,6 @@ msgid "Display Name"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/js/client_action/picking_batch_create_client_action.js:0
-#, python-format
-msgid "Error"
-msgstr ""
-
-#. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_barcode_picking_batch_group_pickings
 msgid "Group Pickings into a New Batch"
 msgstr ""
@@ -141,10 +155,8 @@ msgid "Lines"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
-#, python-format
-msgid "No \"ready\" transfers found."
+#: model:ir.model.fields,help:stock_barcode_picking_batch.field_stock_barcode_cancel_operation__batch_name
+msgid "Name of the batch transfer"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -154,9 +166,9 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/js/client_action/picking_batch_create_client_action.js:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
-msgid "No transfers were selected or something has gone wrong!"
+msgid "No ready transfers found"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -182,14 +194,7 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/js/client_action/picking_batch_create_client_action.js:0
-#, python-format
-msgid "Please select an Operation Type"
-msgstr ""
-
-#. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Print Batch Transfer"
 msgstr ""
@@ -206,29 +211,14 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
-#, python-format
-msgid "Put In Pack"
-msgstr ""
-
-#. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
-#, python-format
-msgid "Select"
-msgstr ""
-
-#. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Select an operation type for batch transfer"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Select transfers for batch transfer"
 msgstr ""
@@ -245,7 +235,14 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/js/client_action/picking_batch_client_action.js:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
+#, python-format
+msgid "The Batch Transfer has been validated"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#. openerp-web
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The batch picking has been cancelled"
 msgstr ""
@@ -266,28 +263,21 @@ msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
-#, python-format
-msgid "This batch transfer is already cancelled"
-msgstr ""
-
-#. module: stock_barcode_picking_batch
-#. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "This batch transfer is already done"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
-msgid "This batch transfer is empty, you need to configure it"
+msgid "This batch transfer is cancelled"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid ""
 "This batch transfer is still draft, it must be confirmed before being "
@@ -321,13 +311,20 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#. openerp-web
+#: code:addons/stock_barcode_picking_batch/static/src/components/main.xml:0
+#, python-format
+msgid "displayBarcodeLines && !isConfiguring"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
 msgid "for contact"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
 #. openerp-web
-#: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/components/line.xml:0
 #, python-format
 msgid "line.package_id || line.result_package_id || line.suggested_package"
 msgstr ""
@@ -335,4 +332,16 @@ msgstr ""
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
 msgid "should already be done or are scheduled on a date earlier than"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#. openerp-web
+#: code:addons/stock_barcode_picking_batch/static/src/components/grouped_line.xml:0
+#: code:addons/stock_barcode_picking_batch/static/src/components/line.xml:0
+#, python-format
+msgid ""
+"{{isComplete ? 'o_line_completed' : ''}}\n"
+"                {{isFaulty ? 'o_faulty' : ''}}\n"
+"                {{isSelected ? 'o_selected o_highlight' : ''}}\n"
+"                {{(line.colorLine or line.colorLine === 0) ? 'o_colored_markup' : ''}}"
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2021-09-14 11:00+0000\n"
+"PO-Revision-Date: 2021-09-14 11:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -94,6 +94,12 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__merge_mode__automatic
 msgid "Automatic"
+msgstr ""
+
+#. module: data_merge
+#: model:ir.model.fields,field_description:data_merge.field_ir_model__is_merge_enabled
+#: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_search
+msgid "Can Be Merged"
 msgstr ""
 
 #. module: data_merge
@@ -234,7 +240,7 @@ msgstr ""
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_form
-msgid "Disable Merge Action"
+msgid "Disable Merge"
 msgstr ""
 
 #. module: data_merge
@@ -286,7 +292,7 @@ msgstr ""
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_form
-msgid "Enable Merge Action"
+msgid "Enable Merge"
 msgstr ""
 
 #. module: data_merge
@@ -407,23 +413,18 @@ msgid "Manual"
 msgstr ""
 
 #. module: data_merge
+#: code:addons/data_merge/models/data_merge_record.py:0
+#, python-format
+msgid "Manual Selection - %s"
+msgstr ""
+
+#. module: data_merge
 #. openerp-web
 #: code:addons/data_merge/models/ir_model.py:0
 #: code:addons/data_merge/static/src/xml/data_merge_list_views.xml:0
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_list
 #, python-format
 msgid "Merge"
-msgstr ""
-
-#. module: data_merge
-#: code:addons/data_merge/models/data_merge_record.py:0
-#, python-format
-msgid "Merge Action - %s"
-msgstr ""
-
-#. module: data_merge
-#: model:ir.model.fields,field_description:data_merge.field_ir_model__is_merge_enabled
-msgid "Merge Action Enabled"
 msgstr ""
 
 #. module: data_merge
@@ -454,11 +455,6 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__is_contextual_merge_action
 msgid "Merge action attached"
-msgstr ""
-
-#. module: data_merge
-#: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_search
-msgid "Merge action enabled"
 msgstr ""
 
 #. module: data_merge
@@ -495,8 +491,10 @@ msgid "Name"
 msgstr ""
 
 #. module: data_merge
+#: code:addons/data_merge/models/data_merge_record.py:0
 #: model_terms:ir.actions.act_window,help:data_merge.action_data_merge_record
 #: model_terms:ir.actions.act_window,help:data_merge.action_data_merge_record_notification
+#, python-format
 msgid "No duplicates found"
 msgstr ""
 

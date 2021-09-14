@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2021-09-14 11:01+0000\n"
+"PO-Revision-Date: 2021-09-14 11:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,11 +42,6 @@ msgid "By Project"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_planning_slot__employee_id
-msgid "Employee"
-msgstr ""
-
-#. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_planning_slot__allow_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
@@ -54,7 +49,9 @@ msgid "Enable planning tasks on the project."
 msgstr ""
 
 #. module: project_forecast
+#: code:addons/project_forecast/models/project.py:0
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_task_view_form
+#, python-format
 msgid "Forecast"
 msgstr ""
 
@@ -66,6 +63,7 @@ msgstr ""
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Forecasts"
 msgstr ""
 
@@ -81,14 +79,14 @@ msgstr ""
 
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.action_project_task_view_planning
-#: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
-#: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_schedule_by_employee
+#: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_from_project
 msgid "Let's start your planning by adding a new shift."
 msgstr ""
 
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.action_project_task_view_planning
 #: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
+#: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_from_project
 #: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_schedule_by_employee
 msgid "No shifts found. Let's create one!"
 msgstr ""
@@ -117,6 +115,11 @@ msgid "Plan your resources on project tasks"
 msgstr ""
 
 #. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
+msgid "Planned Date"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
 #: model:ir.model.fields,field_description:project_forecast.field_planning_slot__allow_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
@@ -139,13 +142,18 @@ msgid "Project"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_schedule_by_employee
-msgid "Schedule by Employee"
+#: model:ir.model.fields,field_description:project_forecast.field_planning_slot__resource_id
+msgid "Resource"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.planning_action_schedule_by_project
 msgid "Schedule by Project"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_schedule_by_employee
+msgid "Schedule by Resource"
 msgstr ""
 
 #. module: project_forecast
@@ -157,6 +165,14 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot_template
 msgid "Shift Template"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
+#: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_schedule_by_employee
+msgid ""
+"Shifts are periods allocated to your resources for a specific role. "
+"Together, they constitute your resources' planning."
 msgstr ""
 
 #. module: project_forecast

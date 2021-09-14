@@ -4,16 +4,29 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:56+0000\n"
-"PO-Revision-Date: 2021-07-12 07:56+0000\n"
+"POT-Creation-Date: 2021-09-14 10:59+0000\n"
+"PO-Revision-Date: 2021-09-14 10:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid "%s Spent"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/task_gantt.xml:0
+#, python-format
+msgid "&nbsp;"
+msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_kanban
@@ -27,9 +40,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid ""
-"<span class=\"fa fa-lg fa-building-o \" title=\"Values set here are company-"
-"specific.\" groups=\"base.group_multi_company\"/>"
+msgid "<strong>Time Rounding</strong>"
 msgstr ""
 
 #. module: timesheet_grid
@@ -63,11 +74,11 @@ msgid ""
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    <div>\n"
 "                        Hello ${object.name},<br/><br/>\n"
-"                        This is a friendly reminder to log your hours for the period : ${ctx.get('date_start')} - ${ctx.get('date_stop')}.\n"
+"                        This is a friendly reminder to log your hours for the following period: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.\n"
 "                        For the time being, you only logged ${ctx.get('timesheet_hours')} hours on the ${ctx.get('working_hours')} requested.<br/>\n"
 "                        % if ctx.get('action_url'):\n"
 "                        <div style=\"margin: 16px 0px 16px 0px;\">\n"
-"                            <a href=\"${ctx.get('action_url')}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Fill your timesheet</a>\n"
+"                            <a href=\"${ctx.get('action_url')}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Fill in your Timesheets</a>\n"
 "                        </div>\n"
 "                        % endif\n"
 "                        <br/>Thank you,<br/>\n"
@@ -149,10 +160,10 @@ msgid ""
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    <div>\n"
 "                        Hello ${object.name},<br/><br/>\n"
-"                        This is a friendly reminder to approved your team's hours for the period : ${ctx.get('date_start')} - ${ctx.get('date_stop')}.<br/>\n"
+"                        This is a friendly reminder to approve your team's timesheets for the following period: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.<br/>\n"
 "                        % if ctx.get('action_url'):\n"
 "                        <div style=\"margin: 16px 0px 16px 0px;\">\n"
-"                            <a href=\"${ctx.get('action_url')}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Fill your timesheet</a>\n"
+"                            <a href=\"${ctx.get('action_url')}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Validate the Timesheets</a>\n"
 "                        </div>\n"
 "                        % endif\n"
 "                        <br/>Thank you,<br/>\n"
@@ -255,9 +266,9 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid ""
-"Congratulations, you are now a master of Timesheets.</b>Psst: try the  [a] -"
-" [Enter] - [b] - [Enter] - shift + [A]  sequence on your keyboard and see "
-"what happens next!"
+"Congratulations, you are now a master of Timesheets.</b> <i>Psst: try the  "
+"[a] - [Enter] - [b] - [Enter] - shift + [A]  sequence on your keyboard and "
+"see what happens next!</i>"
 msgstr ""
 
 #. module: timesheet_grid
@@ -281,6 +292,11 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__date
 msgid "Date"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
+msgid "Days Spent —"
 msgstr ""
 
 #. module: timesheet_grid
@@ -392,14 +408,15 @@ msgstr ""
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/timesheet_config_mixin.js:0
+#: code:addons/timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_view.js:0
 #, python-format
 msgid "Download our App"
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:0
-#, python-format
-msgid "Duration (%s)"
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+msgid "Draft"
 msgstr ""
 
 #. module: timesheet_grid
@@ -448,6 +465,11 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_timer_grid_model.js:0
 #, python-format
 msgid "Grouping by date is not supported"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
+msgid "Hours Spent —"
 msgstr ""
 
 #. module: timesheet_grid
@@ -562,6 +584,11 @@ msgid "Merge Timesheet Entries"
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
+msgid "Minimal Duration"
+msgstr ""
+
+#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
@@ -593,11 +620,6 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_month
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_week
 msgid "No activities to validate."
-msgstr ""
-
-#. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
-msgid "Non Validated"
 msgstr ""
 
 #. module: timesheet_grid
@@ -654,12 +676,29 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_manager
-msgid "Reminder to validate your team timesheets"
+msgid "Reminder to validate your team's timesheets"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.actions.server,name:timesheet_grid.invalidate_timesheet_action
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_form_view
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
+msgid "Reset to draft"
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Resume"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_rounding
+msgid "Round up"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid "Rounding applied when tracking your time using the timer"
 msgstr ""
 
 #. module: timesheet_grid
@@ -696,16 +735,6 @@ msgstr ""
 msgid ""
 "Select the user responsible for approving \"Timesheet\" of this employee.\n"
 "If empty, the approval is done by an Administrator or Team Approver (determined in settings/users)."
-msgstr ""
-
-#. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Send a periodical email reminder to timesheet managers"
-msgstr ""
-
-#. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Send a periodical email reminder to timesheet users"
 msgstr ""
 
 #. module: timesheet_grid
@@ -747,8 +776,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> from the"
-" description to automatically log your entry.</i> <br/>Congratulations, you "
-"have logged your first timesheet entry."
+" description to automatically log your entry.</i>"
 msgstr ""
 
 #. module: timesheet_grid
@@ -767,9 +795,15 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.model.constraint,message:timesheet_grid.constraint_project_project_timer_only_when_timesheet
-msgid ""
-"The timesheet timer can only be activated on project allowing timesheets."
+#: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
+#, python-format
+msgid "The timesheet entries have successfully been merged."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid "The timesheets have successfully been reset to draft."
 msgstr ""
 
 #. module: timesheet_grid
@@ -787,12 +821,13 @@ msgstr ""
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "There are no timesheets to validate."
+msgid ""
+"There are no timesheet entries to reset to draft or they have already been "
+"invoiced."
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Time Spent"
 msgstr ""
 
@@ -828,11 +863,6 @@ msgid "Timesheet Approver"
 msgstr ""
 
 #. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Timesheet Control"
-msgstr ""
-
-#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
 msgid "Timesheet Init Amount"
 msgstr ""
@@ -843,8 +873,8 @@ msgid "Timesheet Line"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.model.fields,field_description:timesheet_grid.field_project_project__allow_timesheet_timer
-msgid "Timesheet Timer"
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__unit_amount_validate
+msgid "Timesheet Unit Time"
 msgstr ""
 
 #. module: timesheet_grid
@@ -881,8 +911,10 @@ msgid "Timesheets"
 msgstr ""
 
 #. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_week
+#, python-format
 msgid "Timesheets to Validate"
 msgstr ""
 
@@ -899,11 +931,6 @@ msgid "Track the <b>time spent</b> on your projects. <i>It starts here.</i>"
 msgstr ""
 
 #. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_view_form_inherit
-msgid "Track your time using a timer"
-msgstr ""
-
-#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
@@ -911,8 +938,8 @@ msgid "Undefined"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_project_project__allow_timesheet_timer
-msgid "Use a timer to record timesheets on tasks"
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__user_can_validate
+msgid "User Can Validate"
 msgstr ""
 
 #. module: timesheet_grid
@@ -937,14 +964,23 @@ msgid "Users"
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.actions.server,name:timesheet_grid.timesheet_validate_action
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_form_view
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_tree_user_inherited
 msgid "Validate"
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__validated
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Validated"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated_status
+msgid "Validated Status"
 msgstr ""
 
 #. module: timesheet_grid
@@ -968,6 +1004,20 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Week"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__user_can_validate
+msgid ""
+"Whether or not the current user can validate/reset to draft the record."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"You can only reset to draft the timesheets of employees of whom you are the "
+"manager or the timesheet approver."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1001,6 +1051,14 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "You cannot use the timer on validated timesheets."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"You cannot validate the timesheets from employees that are not part of your "
+"team or there are no timesheets to validate."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1040,6 +1098,11 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "min"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid "minutes"
 msgstr ""
 
 #. module: timesheet_grid

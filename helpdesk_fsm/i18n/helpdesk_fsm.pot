@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2021-09-14 11:00+0000\n"
+"PO-Revision-Date: 2021-09-14 11:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,17 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: helpdesk_fsm
+#: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_1
+#: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_2
+msgid "Blocked"
+msgstr ""
+
+#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__company_id
 msgid "Company"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_team__use_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Convert tickets into Field Service tasks"
 msgstr ""
@@ -69,17 +74,12 @@ msgid "Display Name"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
-msgid "Documentation"
-msgstr ""
-
-#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__fsm_project_id
 msgid "FSM Project"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Field Service"
 msgstr ""
 
@@ -104,6 +104,12 @@ msgid "ID"
 msgstr ""
 
 #. module: helpdesk_fsm
+#: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_1
+#: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_2
+msgid "In Progress"
+msgstr ""
+
+#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -116,17 +122,6 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__write_date
 msgid "Last Updated on"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__use_fsm
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
-msgid "Onsite Interventions"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
-msgid "Plan Field Service tasks from tickets"
 msgstr ""
 
 #. module: helpdesk_fsm
@@ -146,6 +141,12 @@ msgid "Project in which to create the task"
 msgstr ""
 
 #. module: helpdesk_fsm
+#: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_1
+#: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_2
+msgid "Ready"
+msgstr ""
+
+#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
 msgid "Related ticket"
 msgstr ""
@@ -153,6 +154,14 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_project_task
 msgid "Task"
+msgstr ""
+
+#. module: helpdesk_fsm
+#: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done
+#: model:mail.message.subtype,description:helpdesk_fsm.mt_ticket_task_done
+#: model:mail.message.subtype,name:helpdesk_fsm.mt_team_ticket_task_done
+#: model:mail.message.subtype,name:helpdesk_fsm.mt_ticket_task_done
+msgid "Task Done"
 msgstr ""
 
 #. module: helpdesk_fsm
@@ -175,12 +184,12 @@ msgstr ""
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
 msgid "Ticket"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
 msgid "Ticket from this task"
 msgstr ""
 
@@ -195,7 +204,7 @@ msgid "Ticket's customer, will be linked to the task"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
 msgid "Tickets"
 msgstr ""
 

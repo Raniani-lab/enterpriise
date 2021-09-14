@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:58+0000\n"
-"PO-Revision-Date: 2021-01-12 07:58+0000\n"
+"POT-Creation-Date: 2021-09-14 11:01+0000\n"
+"PO-Revision-Date: 2021-09-14 11:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,6 +34,13 @@ msgstr ""
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__active
 msgid "Active"
+msgstr ""
+
+#. module: worksheet
+#: code:addons/worksheet/models/worksheet_template.py:0
+#: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form
+#, python-format
+msgid "Analysis"
 msgstr ""
 
 #. module: worksheet
@@ -66,7 +73,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/worksheet/static/src/js/open_studio_button_widget.js:0
 #, python-format
-msgid "Design Worksheet Template"
+msgid "Design Template"
 msgstr ""
 
 #. module: worksheet
@@ -75,7 +82,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: worksheet
-#: model:ir.model.fields,field_description:worksheet.field_worksheet_template__res_model_id
+#: model:ir.model.fields,field_description:worksheet.field_worksheet_template__res_model
 msgid "Host Model"
 msgstr ""
 
@@ -120,12 +127,13 @@ msgid "Sequence"
 msgstr ""
 
 #. module: worksheet
-#: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_list
-msgid "Template name"
+#: code:addons/worksheet/models/worksheet_template.py:0
+#, python-format
+msgid "The host model name should be an existing model."
 msgstr ""
 
 #. module: worksheet
-#: model:ir.model.fields,help:worksheet.field_worksheet_template__res_model_id
+#: model:ir.model.fields,help:worksheet.field_worksheet_template__res_model
 msgid "The model that is using this template"
 msgstr ""
 

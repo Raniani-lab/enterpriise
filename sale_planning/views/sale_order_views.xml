@@ -13,6 +13,8 @@
                 <button name="%(planning.planning_action_schedule_by_resource)d"
                     type="action"
                     context="{'default_sale_line_id': planning_first_sale_line_id,
+                              'search_default_group_by_role': 1,
+                              'search_default_group_by_resource': 2,
                               'initialDate': planning_initial_date,
                               'planning_gantt_active_sale_order_id': id}"
                     icon="fa-tasks"
@@ -29,6 +31,8 @@
                     type="action"
                     context="{'search_default_sale_order_id': id,
                               'default_sale_line_id': planning_first_sale_line_id,
+                              'search_default_group_by_role': 1,
+                              'search_default_group_by_resource': 2,
                               'initialDate': planning_initial_date,
                               'planning_gantt_active_sale_order_id': id}"
                     class="oe_stat_button"

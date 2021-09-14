@@ -7930,6 +7930,7 @@
         constructor(id, content, properties = {}) {
             super(id, content, properties);
             this.link.url = this.withHttp(this.link.url);
+            this.link.isExternal = true;
             this.content = markdownLink(this.link.label, this.link.url);
             this.urlRepresentation = this.link.url;
             this.isUrlEditable = true;
@@ -27875,7 +27876,18 @@
     const TEMPLATE$4 = xml$6 /* xml */ `
   <div class="o-link-tool">
     <t t-set="link" t-value="cell.link"/>
-    <a t-att-href="link.url" target="_blank" t-on-click.prevent="openLink" t-att-title="link.url">
+    <a t-if="link.isExternal"
+      class="o-link"
+      t-att-href="link.url"
+      target="_blank"
+      t-on-click.prevent="openLink"
+      t-att-title="link.url">
+      <t t-esc="cell.urlRepresentation"/>
+    </a>
+    <a t-else=""
+      class="o-link"
+      t-on-click.prevent="openLink"
+      t-att-title="cell.urlRepresentation">
       <t t-esc="cell.urlRepresentation"/>
     </a>
     <span class="o-link-icon o-unlink" t-on-click="unlink" title="${LinkEditorTerms.Remove}">${UNLINK}</span>
@@ -27891,11 +27903,17 @@
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
-    a {
+    a.o-link {
+      color: #007bff;
       flex-grow: 2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    a.o-link:hover {
+      text-decoration: underline;
+      color: #0056b3;
+      cursor: pointer;
     }
   }
   .o-link-icon {
@@ -30088,7 +30106,6 @@
           border: 1px solid #e0e2e4;
           margin-top: -1px;
           margin-bottom: -1px;
-          margin-right: -1px;
         }
 
         /* Toolbar */
@@ -30584,8 +30601,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-09-07T06:13:45.624Z';
-    exports.__info__.hash = '009eb3b';
+    exports.__info__.date = '2021-09-14T08:28:11.979Z';
+    exports.__info__.hash = '6ff67fb';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

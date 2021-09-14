@@ -20,7 +20,7 @@ class HrPayslip(models.Model):
             if leaves_to_defer:
                 raise ValidationError(_(
                     'There is some remaining time off to defer for these employees: \n\n %s',
-                    ','.join(e.display_name for e in leaves_to_defer.mapped('employee_id'))))
+                    ', '.join(e.display_name for e in leaves_to_defer.mapped('employee_id'))))
             dates = self.mapped('date_to')
             max_date = datetime.combine(max(dates), datetime.max.time())
             leaves_to_green = leaves.filtered(lambda l: l.payslip_state != 'blocked' and l.date_to <= max_date)

@@ -56,11 +56,14 @@ odoo.define('hr_payroll.WorkEntryPayrollControllerMixin', function (require) {
         },
 
         _generatePayslips: function () {
-            this.do_action('hr_payroll.action_generate_payslips_from_work_entries', {
-                additional_context: {
-                    default_date_start: time.date_to_str(this.firstDay),
-                    default_date_end: time.date_to_str(this.lastDay),
-                    active_employee_ids: this._getActiveEmployeeIds(),
+            this.trigger_up('do_action', {
+                action: 'hr_payroll.action_generate_payslips_from_work_entries',
+                options: {
+                    additional_context: {
+                        default_date_start: time.date_to_str(this.firstDay),
+                        default_date_end: time.date_to_str(this.lastDay),
+                        active_employee_ids: this._getActiveEmployeeIds(),
+                    },
                 },
             });
         },

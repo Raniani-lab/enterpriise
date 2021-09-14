@@ -68,13 +68,18 @@ class DashboardArchParser extends XMLParser {
             }
             if (node.tagName === "aggregate") {
                 const fieldName = node.getAttribute("field");
+                const field = fields[fieldName];
                 let groupOperator = node.getAttribute("group_operator");
+
+                if (!groupOperator && field.group_operator) {
+                    groupOperator = field.group_operator;
+                }
                 // in the dashboard views, many2one fields are fetched with the
                 // group_operator 'count_distinct', which means that the values
                 // manipulated client side for these fields are integers
 
                 //TO DO: Discuss with LPE: on legacy we also change the type of the field : field.type = 'integer';
-                if (fields[fieldName].type === "many2one") {
+                if (field.type === "many2one") {
                     groupOperator = "count_distinct";
                 }
 

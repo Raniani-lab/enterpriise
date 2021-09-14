@@ -465,6 +465,66 @@ QUnit.module("Views", (hooks) => {
         assert.verifySteps(["read_group"]);
     });
 
+    QUnit.test("aggregate group_operator from the arch overrides the one on the field", async function (assert) {
+        assert.expect(3);
+
+        serverData.models.test_report.fields.sold.group_operator = "fromField";
+        const dashboard = await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            arch: `
+                <dashboard>
+                    <group>
+                        <aggregate name="sold" field="sold" group_operator="fromArch"/>
+                    </group>
+                </dashboard>
+            `,
+            mockRPC(route, args) {
+                assert.step(args.method || route);
+                if (args.method === "read_group") {
+                    assert.deepEqual(
+                        args.kwargs.fields,
+                        ["sold:fromArch(sold)"],
+                        "should read the correct field"
+                    );
+                    return [{}];
+                }
+            },
+        });
+        assert.verifySteps(["read_group"]);
+    });
+
+    QUnit.test("aggregate group_operator from field", async function (assert) {
+        assert.expect(3);
+
+        serverData.models.test_report.fields.sold.group_operator = "fromField";
+        const dashboard = await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            arch: `
+                <dashboard>
+                    <group>
+                        <aggregate name="sold" field="sold"/>
+                    </group>
+                </dashboard>
+            `,
+            mockRPC(route, args) {
+                assert.step(args.method || route);
+                if (args.method === "read_group") {
+                    assert.deepEqual(
+                        args.kwargs.fields,
+                        ["sold:fromField(sold)"],
+                        "should read the correct field"
+                    );
+                    return [{}];
+                }
+            },
+        });
+        assert.verifySteps(["read_group"]);
+    });
+
     QUnit.test("basic rendering of a aggregate tag with widget attribute", async function (assert) {
         const dashboard = await makeView({
             type: "dashboard",

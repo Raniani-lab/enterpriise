@@ -60,8 +60,8 @@ export class DashboardView extends Component {
 
         const { resModel, arch, fields } = this.props;
         const processedArch = useViewArch(arch, {
-            compile: (arch) => new DashboardCompiler().compileArch(arch),
-            extract: (arch) => new DashboardArchParser().parse(arch, fields),
+            compile: (arch) => new this.constructor.Compiler().compileArch(arch),
+            extract: (arch) => new this.constructor.ArchParser().parse(arch, fields),
         });
 
         this.template = processedArch.template;
@@ -97,7 +97,7 @@ export class DashboardView extends Component {
             },
         });
 
-        this.model = useModel(DashboardModel, {
+        this.model = useModel(this.constructor.Model, {
             resModel,
             fields,
             aggregates: this.aggregates,
@@ -341,8 +341,11 @@ DashboardView.components = {
     Banner: OnboardingBanner,
 };
 
-DashboardView.type = "dashboard";
+DashboardView.Model = DashboardModel;
+DashboardView.ArchParser = DashboardArchParser;
+DashboardView.Compiler = DashboardCompiler;
 
+DashboardView.type = "dashboard";
 DashboardView.display_name = "dashboard";
 DashboardView.icon = "fa-tachometer";
 DashboardView.multiRecord = true;

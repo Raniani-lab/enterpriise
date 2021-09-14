@@ -18,7 +18,7 @@ class CohortView extends owl.Component {
         let { state: localState } = this.props;
         if (!localState) {
             const { arch, fields } = this.props;
-            const archInfo = new CohortArchParser().parse(arch, fields);
+            const archInfo = new this.constructor.ArchParser().parse(arch, fields);
             localState = {
                 ...archInfo,
                 measure: archInfo.measure,
@@ -31,7 +31,7 @@ class CohortView extends owl.Component {
             { additionalMeasures, resModel, fields, info },
             localState
         );
-        this.model = useModel(CohortModel, modelParams);
+        this.model = useModel(this.constructor.Model, modelParams);
 
         useSetupView({
             exportLocalState: () => ({
@@ -135,5 +135,8 @@ CohortView.buttonTemplate = "web_cohort.CohortView.Buttons";
 CohortView.components = { ControlPanel, Renderer: CohortRenderer, SearchPanel };
 
 CohortView.searchMenuTypes = ["filter", "comparison", "favorite"];
+
+CohortView.Model = CohortModel;
+CohortView.ArchParser = CohortArchParser;
 
 registry.category("views").add("cohort", CohortView);

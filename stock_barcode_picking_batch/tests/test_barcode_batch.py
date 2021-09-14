@@ -181,13 +181,23 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         return '/web#action=%s&active_id=%s' % (action['id'], batch_id)
 
     def test_barcode_batch_receipt_1(self):
-        """ Create a batch picking with 2 receipts, then open the batch in
+        """ Create a batch picking with 3 receipts, then open the batch in
         barcode app and scan each product, SN or LN one by one.
         """
+        # Creates an additional receipt for the product tracked by lots.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.productlot1
+            move.product_uom_qty = 4
+        picking_receipt_3 = picking_form.save()
+        picking_receipt_3.action_confirm()
+        picking_receipt_3.name = 'picking_receipt_3'
 
         batch_form = Form(self.env['stock.picking.batch'])
         batch_form.picking_ids.add(self.picking_receipt_1)
         batch_form.picking_ids.add(self.picking_receipt_2)
+        batch_form.picking_ids.add(picking_receipt_3)
         batch_receipt = batch_form.save()
         self.assertEqual(
             batch_receipt.picking_type_id.id,
@@ -195,8 +205,8 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             "Batch picking must take the picking type of its sub-pickings"
         )
         batch_receipt.action_confirm()
-        self.assertEqual(len(batch_receipt.move_ids), 4)
-        self.assertEqual(len(batch_receipt.move_line_ids), 5)
+        self.assertEqual(len(batch_receipt.move_ids), 5)
+        self.assertEqual(len(batch_receipt.move_line_ids), 6)
 
         url = self._get_batch_client_action_url(batch_receipt.id)
         self.start_tour(url, 'test_barcode_batch_receipt_1', login='admin', timeout=180)

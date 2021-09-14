@@ -612,13 +612,13 @@ export default class BarcodeModel extends owl.core.EventBus {
     async updateLotName(line, lotName) {
         // Checks if the tracking number isn't already used.
         for (const l of this.pageLines) {
-            if (line.virtual_id === l.virtual_id) { // Don't check for the current line.
+            if (line.virtual_id === l.virtual_id ||
+                line.product_id.tracking !== 'serial' || line.product_id.id !== l.product_id.id) {
                 continue;
             }
             if (lotName === l.lot_name || (l.lot_id && lotName === l.lot_id.name)) {
-                return Promise.reject(_t(
-                    "This serial number is already used."
-                    ));
+                this.notification.add(_t("This serial number is already used."), { type: 'warning' });
+                return Promise.reject();
             }
         }
         await this._updateLotName(line, lotName);
@@ -1391,6 +1391,12 @@ export default class BarcodeModel extends owl.core.EventBus {
         const lineLotName = line.lot_name || (line.lot_id && line.lot_id.name) || false;
         if (dataLotName && lineLotName && dataLotName !== lineLotName) {
             return true;
+        }
+        // If the line is a part of a group, we check if the group is fulfilled.
+        const groupLines = this.groupedLines.filter(gl => gl.lines);
+        const parentLine = groupLines.find(gl => gl.virtual_ids.indexOf(line.virtual_id) !== -1);
+        if (parentLine) {
+            return this.getQtyDone(parentLine) >= this.getQtyDemand(parentLine);
         }
         return false;
     }

@@ -626,13 +626,6 @@ export default class BarcodePickingModel extends BarcodeModel {
         return result;
     }
 
-    _shouldSearchForAnotherLine(line, barcodeData) {
-        return super._shouldSearchForAnotherLine(...arguments) || (
-            barcodeData.product.tracking !== 'none' && barcodeData.lotNumber &&
-            line.lot_name && barcodeData.lotNumber != line.lot_name
-        );
-    }
-
     _sortingMethod(l1, l2) {
         const l1QtyDemand = this.getQtyDemand(l1);
         const l2QtyDemand = this.getQtyDemand(l2);

@@ -71,9 +71,9 @@ export class DashboardView extends Component {
             this.subViews[viewType] = {
                 ref: subViewRefs[viewType],
                 callbackRecorders: {
-                    __exportLocalState__: new CallbackRecorder(),
-                    __exportGlobalState__: new CallbackRecorder(),
-                    __saveParams__: new CallbackRecorder(),
+                    __getLocalState__: new CallbackRecorder(),
+                    __getGlobalState__: new CallbackRecorder(),
+                    __getContext__: new CallbackRecorder(),
                 },
                 props: null, // will be generated after the loadViews
             };
@@ -85,15 +85,13 @@ export class DashboardView extends Component {
         this.formulae = formulae;
 
         useSetupView({
-            exportLocalState: () => {
+            getLocalState: () => {
                 return {
-                    subViews: this.callRecordedCallbacks("__exportLocalState__"),
+                    subViews: this.callRecordedCallbacks("__getLocalState__"),
                 };
             },
-            saveParams: () => {
-                return {
-                    context: this.callRecordedCallbacks("__saveParams__"),
-                };
+            getContext: () => {
+                return this.callRecordedCallbacks("__getContext__");
             },
         });
 
@@ -179,7 +177,7 @@ export class DashboardView extends Component {
 
     async willUpdateProps(nextProps) {
         if (this.currentMeasure) {
-            const states = this.callRecordedCallbacks("__exportLocalState__");
+            const states = this.callRecordedCallbacks("__getLocalState__");
             Object.entries(this.subViews).forEach(([viewType, subView]) => {
                 subView.state = states[viewType];
                 if (viewType === "graph") {
@@ -201,7 +199,7 @@ export class DashboardView extends Component {
             Object.assign(subView.props, { comparison, context, domain });
         }
 
-        const globalStates = this.callRecordedCallbacks("__exportGlobalState__");
+        const globalStates = this.callRecordedCallbacks("__getGlobalState__");
         for (const [type, subView] of Object.entries(this.subViews)) {
             subView.props = Object.assign({}, subView.props, { globalState: globalStates[type] });
         }
@@ -209,7 +207,7 @@ export class DashboardView extends Component {
 
     /**
      * Calls a type of recorded callbacks and aggregates their result.
-     * @param {"__saveParams__"|"__exportLocalState__"|"__exportGlobalState__"} name
+     * @param {"__getContext__"|"__getLocalState__"|"__getGlobalState__"} name
      * @returns {Object}
      */
     callRecordedCallbacks(name) {
@@ -218,10 +216,7 @@ export class DashboardView extends Component {
             const callbacks = subView.callbackRecorders[name]._callbacks;
             if (callbacks.length) {
                 result[viewType] = callbacks.reduce((res, c) => {
-                    // FIXME: we'll stop exporting a dict with a context key, but directly export
-                    // the context instead. When this will be done, we'll get rid of this hack
-                    const cbRes = name === "__saveParams__" ? c.callback().context : c.callback();
-                    return { ...res, ...cbRes };
+                    return { ...res, ...c.callback() };
                 }, {});
             }
         }
@@ -297,7 +292,7 @@ export class DashboardView extends Component {
 
         return this.action.doAction(action, {
             props: {
-                state: this.callRecordedCallbacks("__exportLocalState__")[viewType],
+                state: this.callRecordedCallbacks("__getLocalState__")[viewType],
                 globalState: { searchModel: JSON.stringify(this.env.searchModel.exportState()) },
             },
         });

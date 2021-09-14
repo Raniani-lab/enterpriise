@@ -2393,7 +2393,7 @@ QUnit.module("Views", (hooks) => {
         }
     );
 
-    QUnit.test("saveParams correctly returns graph subview context", async function (assert) {
+    QUnit.test("getContext correctly returns graph subview context", async function (assert) {
         assert.expect(2);
 
         const expectedContexts = [
@@ -2453,7 +2453,7 @@ QUnit.module("Views", (hooks) => {
         await saveFavorite(dashboard);
     });
 
-    QUnit.test("saveParams correctly returns pivot subview context", async function (assert) {
+    QUnit.test("getContext correctly returns pivot subview context", async function (assert) {
         assert.expect(2);
 
         serverData.views["test_report,some_xmlid,pivot"] = `
@@ -2513,7 +2513,7 @@ QUnit.module("Views", (hooks) => {
         await saveFavorite(dashboard);
     });
 
-    QUnit.test("saveParams correctly returns cohort subview context", async function (assert) {
+    QUnit.test("getContext correctly returns cohort subview context", async function (assert) {
         assert.expect(2);
 
         serverData.models.test_report.fields.create_date = {

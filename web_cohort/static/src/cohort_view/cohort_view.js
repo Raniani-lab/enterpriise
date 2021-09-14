@@ -34,13 +34,18 @@ class CohortView extends owl.Component {
         this.model = useModel(this.constructor.Model, modelParams);
 
         useSetupView({
-            exportLocalState: () => ({
+            getLocalState: () => ({
                 ...localState,
                 measure: this.model.metaData.measure,
                 interval: this.model.metaData.interval,
             }),
-            saveParams: () => this.saveParams(),
+            getContext: () => this.getContext(),
         });
+    }
+
+    getContext() {
+        const { measure, interval } = this.model.metaData;
+        return { cohort_measure: measure, cohort_interval: interval };
     }
 
     /**
@@ -112,11 +117,6 @@ class CohortView extends owl.Component {
         } finally {
             this.env.services.ui.unblock();
         }
-    }
-
-    saveParams() {
-        const { measure, interval } = this.model.metaData;
-        return { context: { cohort_measure: measure, cohort_interval: interval } };
     }
 
     /**

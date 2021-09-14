@@ -12,7 +12,7 @@
                         <group col="4">
                             <aggregate name="employee_id" string="Total Employees" field="employee_id"/>
                             <aggregate name="contract_id" string="Total Contracts" field="contract_id"/>
-                            <aggregate name="date_end_contract" string="Last Contract Ended" field="date_end_contract" clickable="False"/>
+                            <aggregate name="date_end_contract" string="Last Contract Ended" group_operator="max" field="date_end_contract" clickable="False"/>
                             <aggregate name="count_new_employee" string="New Employees" field="count_new_employee"/>
                             <aggregate name="count_employee_exit" string="Departure Employees" field="count_employee_exit"/>
                             <aggregate name="min_date" string="Min Date in Months" group_operator="min" field="start_date_months" invisible="1"/>

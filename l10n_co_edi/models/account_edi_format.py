@@ -2,13 +2,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, api, models, _
 from odoo.tools.float_utils import float_compare
-from odoo.tools import DEFAULT_SERVER_TIME_FORMAT, float_repr
+from odoo.tools import DEFAULT_SERVER_TIME_FORMAT, float_repr, float_round
 from odoo.tools import html2plaintext
 from .carvajal_request import CarvajalRequest
 
 import pytz
 import base64
+
+from collections import defaultdict
 from datetime import timedelta
+from functools import lru_cache
 
 
 class AccountEdiFormat(models.Model):
@@ -43,6 +46,101 @@ class AccountEdiFormat(models.Model):
         return 'face_{}{:0>10}{:010x}.xml'.format(invoice._l10n_co_edi_get_electronic_invoice_type(),
                                                   invoice.company_id.vat,
                                                   int(invoice_number))
+
+    def _l10n_co_edi_get_round_amount(self, amount):
+        if abs(amount - float("%.2f" % amount)) > 0.00001:
+            return "%.3f" % amount
+        return '%.2f' % amount
+
+    def _l10n_co_edi_prepare_tim_sections(self, taxes_dict, invoice_currency, retention, tax_details=None):
+        @lru_cache(maxsize=None)
+        def _get_conversion_rate(from_currency, to_currency, company, date):
+            if from_currency == to_currency:
+                return 1
+            currency_rates = (from_currency + to_currency)._get_rates(company, date)
+            return currency_rates.get(to_currency.id) / currency_rates.get(from_currency.id)
+
+        def _convert(from_currency, from_amount, to_currency, company, date):
+            return to_currency.round(from_amount * _get_conversion_rate(from_currency, to_currency, company, date))
+
+        new_taxes_dict = defaultdict(list)
+        tax_details = tax_details or {}
+        for tax_code, values in taxes_dict.items():
+            tim = {
+                'TIM_1': bool(retention),
+                'TIM_2': 0.0,
+                'TIM_3': invoice_currency.name,
+                'TIM_4': 0.0,
+                'TIM_5': invoice_currency.name,
+                'IMPS': [],
+            }
+            for rec in values:
+                imp = {
+                    'IMP_1': tax_code,
+                    'IMP_2': (
+                        abs((rec.amount_currency or rec.balance) * 100 / 15)
+                        if rec.tax_line_id.l10n_co_edi_type.code == '05' else
+                        _convert(rec.company_id.currency_id, rec.tax_base_amount, rec.currency_id, rec.company_id, rec.move_id.invoice_date)
+                    ),
+                    'IMP_3': invoice_currency.name,
+                    'IMP_4': abs(rec.amount_currency or rec.balance),
+                    'IMP_5': invoice_currency.name,
+                }
+                if rec.tax_line_id.amount_type == 'fixed':
+                    imp.update({
+                        'IMP_6': '',
+                        'IMP_7': 1,
+                        'IMP_8': 'BO' if rec.tax_line_id.l10n_co_edi_type.code == '22' else '94',
+                        'IMP_9': rec.tax_line_id.amount,
+                        'IMP_10': invoice_currency.name,
+                    })
+                else:
+                    imp.update({
+                        'IMP_6': 15.0 if rec.tax_line_id.l10n_co_edi_type.code == '05' else abs(rec.tax_line_id.amount),
+                        'IMP_7': '',
+                        'IMP_8': '',
+                        'IMP_9': '',
+                        'IMP_10': '',
+                    })
+                    tim['TIM_4'] += float_round((imp['IMP_6'] / 100.0 * imp['IMP_2']) - imp['IMP_4'], 2)
+                tim['TIM_2'] += imp['IMP_4']
+                tim['IMPS'].append(imp)
+            if tax_details.get(tax_code):
+                tim['IMPS'].append({
+                    'IMP_1': tax_code,
+                    'IMP_2': tax_details[tax_code],
+                    'IMP_3': invoice_currency.name,
+                    'IMP_4': 0,
+                    'IMP_5': invoice_currency.name,
+                    'IMP_6': 0,
+                    'IMP_7': '',
+                    'IMP_8': '',
+                    'IMP_9': '',
+                    'IMP_10': '',
+                })
+                tax_details.pop(tax_code)
+            new_taxes_dict[tax_code] = tim
+        for tax_code, values in tax_details.items():
+            new_taxes_dict[tax_code] = {
+                'TIM_1': bool(retention),
+                'TIM_2': 0,
+                'TIM_3': invoice_currency.name,
+                'TIM_4': 0,
+                'TIM_5': invoice_currency.name,
+                'IMPS': [{
+                    'IMP_1': tax_code,
+                    'IMP_2': tax_details[tax_code],
+                    'IMP_3': invoice_currency.name,
+                    'IMP_4': 0,
+                    'IMP_5': invoice_currency.name,
+                    'IMP_6': 0,
+                    'IMP_7': '',
+                    'IMP_8': '',
+                    'IMP_9': '',
+                    'IMP_10': ''
+                }]
+            }
+        return new_taxes_dict
 
     # -------------------------------------------------------------------------
     # Generation
@@ -127,6 +225,27 @@ class AccountEdiFormat(models.Model):
         for line in invoice.invoice_line_ids:
             if tax_group_covered_goods and tax_group_covered_goods in line.mapped('tax_ids.tax_group_id'):
                 exempt_tax_dict[line.id] = True
+
+        retention_lines = move_lines_with_tax_type.filtered(
+            lambda move: move.tax_line_id.l10n_co_edi_type.retention)
+        retention_lines_listdict = defaultdict(list)
+        for line in retention_lines:
+            retention_lines_listdict[line.tax_line_id.l10n_co_edi_type.code].append(line)
+
+        regular_lines = move_lines_with_tax_type - retention_lines
+        regular_lines_listdict = defaultdict(list)
+        for line in regular_lines:
+            regular_lines_listdict[line.tax_line_id.l10n_co_edi_type.code].append(line)
+
+        zero_tax_details = defaultdict(float)
+        for line, tax_detail in tax_details['invoice_line_tax_details'].items():
+            for tax, detail in tax_detail.get('tax_details').items():
+                if not detail.get('tax_amount'):
+                    for grouped_tax in detail.get('group_tax_details'):
+                        tax = grouped_tax.get('tax_id')
+                        zero_tax_details[tax.l10n_co_edi_type.code] += abs(grouped_tax.get('base_amount'))
+        retention_taxes_new = self._l10n_co_edi_prepare_tim_sections(retention_lines_listdict, invoice.currency_id, True)
+        regular_taxes_new = self._l10n_co_edi_prepare_tim_sections(regular_lines_listdict, invoice.currency_id, False, zero_tax_details)
         # The rate should indicate how many pesos is one foreign currency
         currency_rate = "%.2f" % (tax_details['base_amount'] / tax_details['base_amount_currency'])
 
@@ -163,7 +282,9 @@ class AccountEdiFormat(models.Model):
             'sales_partner': invoice.user_id,
             'invoice_partner': invoice.partner_id.commercial_partner_id,
             'retention_taxes': retention_taxes,
+            'retention_taxes_new': retention_taxes_new,
             'regular_taxes': regular_taxes,
+            'regular_taxes_new': regular_taxes_new,
             'tax_details': tax_details,
             'tax_types': invoice.mapped('line_ids.tax_ids.l10n_co_edi_type'),
             'exempt_tax_dict': exempt_tax_dict,
@@ -179,6 +300,7 @@ class AccountEdiFormat(models.Model):
             'description_code': description_code,
             'description': description,
             'format_monetary': format_monetary,
+            '_l10n_co_edi_get_round_amount': self._l10n_co_edi_get_round_amount
         })
         return b'<?xml version="1.0" encoding="utf-8"?>' + xml_content.encode()
 
@@ -279,6 +401,9 @@ class AccountEdiFormat(models.Model):
 
         company = move.company_id
         journal = move.journal_id
+        now = fields.Datetime.now()
+        oldest_date = now - timedelta(days=5)
+        newest_date = now + timedelta(days=10)
         if not company.l10n_co_edi_username or not company.l10n_co_edi_password or not company.l10n_co_edi_company or \
            not company.l10n_co_edi_account:
             edi_result.append(_("Carvajal credentials are not set on the company, please go to Accounting Settings and set the credentials."))
@@ -294,6 +419,8 @@ class AccountEdiFormat(models.Model):
         if (move.l10n_co_edi_type == '2' and \
                 any(l.product_id and not l.product_id.l10n_co_edi_customs_code for l in move.invoice_line_ids)):
             edi_result.append(_("Every exportation product must have a customs code."))
+        elif move.invoice_date and not (oldest_date <= fields.Datetime.to_datetime(move.invoice_date) <= newest_date):
+            move.message_post(body=_('The issue date can not be older than 5 days or more than 5 days in the future'))
         elif any(l.product_id and not l.product_id.default_code and \
                  not l.product_id.barcode and not l.product_id.unspsc_code_id for l in move.invoice_line_ids):
             edi_result.append(_("Every product on a line should at least have a product code (barcode, internal, UNSPSC) set."))

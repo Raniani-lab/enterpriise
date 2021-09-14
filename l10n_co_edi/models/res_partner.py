@@ -37,24 +37,24 @@ class ResPartner(models.Model):
 
     def _l10n_co_edi_get_partner_type(self):
         self.ensure_one()
-        if self.is_company:
-            return '3' if self.l10n_co_edi_large_taxpayer else '1'
-        else:
-            return '2'
+        return '1' if self.is_company else '2'
 
     def _l10n_co_edi_get_carvajal_code_for_identification_type(self):
         self.ensure_one()
         IDENTIFICATION_TYPE_TO_CARVAJAL_CODE = {
             'rut': '31',
+            'id_document': '',
             'id_card': '12',
-            'national_citizen_id': '13',
-            'id_document': '12',
             'passport': '41',
-            'external_id': '21',
             'foreign_id_card': '22',
-            'diplomatic_card': 'O-99',
+            'external_id': '50',
             'residence_document': 'O-99',
             'civil_registration': '11',
+            'national_citizen_id': '13',
+            'niup_id': '91',
+            'foreign_colombian_card': '21',
+            'foreign_resident_card': '22',
+            'diplomatic_card': 'O-99',
         }
 
         identification_type = self.l10n_latam_identification_type_id.l10n_co_document_code

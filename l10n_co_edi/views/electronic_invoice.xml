@@ -2,36 +2,25 @@
 <odoo>
     <data>
         <template id="tim_section">
-            <TIM t-if="tax_details_group" t-foreach="tax_details_group" t-as="group_detail">
-                <t t-set="group" t-value="group_detail[0]"/>
-                <t t-set="detail" t-value="group_detail[1]"/>
-                <TIM_1 t-esc="'true' if detail['l10n_co_edi_type'].retention else 'false'"/>
-                <TIM_2 t-esc="format_monetary(abs(detail['tax_amount']), invoice.currency_id)"/>
-                <TIM_3 t-esc="invoice.currency_id.name"/>
-
-                <IMP t-foreach="detail['group_tax_details']" t-as="group_tax_details">
-                    <t t-set="line" t-value="group_tax_details['base_line_id']"/>
-                    <t t-set="line_details" t-value="tax_details['invoice_line_tax_details'][line]['tax_details'][group]" />
-                    <IMP_1 t-esc="detail['l10n_co_edi_type'].code"/>
-                    <IMP_2 t-esc="format_monetary((abs(line_details['base_amount_currency'] * 100 / 15) if detail['l10n_co_edi_type'].code == '05'
-                        else abs(line_details['base_amount_currency'])), invoice.currency_id)"/>
-                    <IMP_3 t-esc="invoice.currency_id.name"/>
-                    <IMP_4 t-esc="format_monetary(abs(line_details['tax_amount_currency']), invoice.currency_id)"/>
-                    <IMP_5 t-esc="invoice.currency_id.name"/>
-                    <t t-if="detail['tax'].amount_type == 'fixed'">
-                        <IMP_7 t-esc="'1'"/>
-                        <IMP_8 t-esc="'BO' if detail['l10n_co_edi_type'].code == '22' else '94'"/>
-                        <IMP_9 t-esc="abs(detail['tax'].amount)"/>
-                        <IMP_10 t-esc="invoice.currency_id.name"/>
-                    </t>
-                    <t t-else="">
-                        <IMP_6 t-esc="'15' if detail['l10n_co_edi_type'].code == '05' else abs(detail['tax'].amount)"/>
-                        <IMP_7/>
-                        <IMP_8/>
-                        <IMP_9/>
-                        <IMP_10/>
-                    </t>
+            <TIM t-if="tax_details_group" t-foreach="tax_details_group.values()" t-as="group_detail">
+                <TIM_1 t-esc="'true' if group_detail['TIM_1'] else 'false'"/>
+                <TIM_2 t-esc="'%.2f' % group_detail['TIM_2']"/>
+                <TIM_3 t-esc="group_detail['TIM_3']"/>
+                <TIM_4 t-esc="'%.3f' % group_detail['TIM_4']"/>
+                <TIM_5 t-esc="group_detail['TIM_5']"/>
+                <IMP t-foreach="group_detail['IMPS']" t-as="IMP">
+                    <IMP_1 t-esc="IMP['IMP_1']"/>
+                    <IMP_2 t-esc="'%.2f' % IMP['IMP_2']"/>
+                    <IMP_3 t-esc="IMP['IMP_3']"/>
+                    <IMP_4 t-esc="'%.2f' % IMP['IMP_4']"/>
+                    <IMP_5 t-esc="IMP['IMP_5']"/>
+                    <IMP_6 t-esc="_l10n_co_edi_get_round_amount(IMP['IMP_6'])"/>
+                    <IMP_7 t-esc="IMP['IMP_7']"/>
+                    <IMP_8 t-esc="IMP['IMP_8']"/>
+                    <IMP_9 t-esc="IMP['IMP_9']"/>
+                    <IMP_10 t-esc="IMP['IMP_10']"/>
                 </IMP>
+
             </TIM>
         </template>
         <template id="electronic_invoice_body">
@@ -40,7 +29,7 @@
                 <ENC_2 t-esc="company_partner._get_vat_without_verification_code()"/>
                 <ENC_3 t-esc="invoice_partner._get_vat_without_verification_code()"/>
                 <ENC_4>UBL 2.1</ENC_4>
-                <ENC_5>DIAN 2.1</ENC_5>
+                <ENC_5 t-esc="invoice._l10n_co_edi_get_electronic_invoice_type_info()"/>
                 <ENC_6 t-esc="invoice.name"/>
                 <ENC_7 t-esc="invoice.invoice_date"/>
                 <ENC_8 t-esc="validation_time"/>
@@ -81,6 +70,7 @@
 
                 <ICC>
                     <ICC_1/>
+                    <ICC_9 t-esc="invoice.sequence_prefix"/>
                 </ICC>
 
                 <DFE>
@@ -110,7 +100,7 @@
                 <ADQ_1 t-esc="invoice_partner._l10n_co_edi_get_partner_type()"/>
                 <ADQ_2 t-esc="invoice_partner._get_vat_without_verification_code()"/>
                 <ADQ_3 t-esc="invoice_partner._l10n_co_edi_get_carvajal_code_for_identification_type()"/>
-                <ADQ_4 t-esc="invoice_partner.l10n_co_edi_fiscal_regimen"/>
+                <ADQ_4 t-esc="'No Aplica' if invoice_partner.vat != '222222222222' else invoice_partner.l10n_co_edi_fiscal_regimen"/>
                 <ADQ_5 t-esc="invoice_partner.ref"/>
                 <ADQ_6 t-esc="invoice_partner.display_name"/>
                 <ADQ_7 t-esc="invoice_partner.l10n_co_edi_commercial_name or invoice_partner.name"/>
@@ -162,7 +152,11 @@
                 <DFA t-if="invoice_partner.vat != '222222222222'">
                     <DFA_1 t-esc="invoice_partner.country_id.code"/>
                     <DFA_2 t-esc="str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>
+                    <DFA_3 t-esc="invoice_partner.zip"/>
                     <DFA_4 t-esc="str(invoice_partner.city_id.l10n_co_edi_code).zfill(5)"/>
+                    <DFA_5 t-esc="invoice_partner.country_id and invoice_partner.country_id.name or 'Colombia'"/>
+                    <DFA_6 t-esc="invoice_partner.state_id.name"/>
+                    <DFA_7 t-esc="invoice_partner.city"/>
                     <DFA_8/>
                 </DFA>
 
@@ -174,8 +168,14 @@
                 </CDA>
 
                 <GTA t-if="tax_types">
-                    <GTA_1 t-esc="tax_types[0].code"/>
-                    <GTA_2 t-esc="tax_types[0].name"/>
+                    <t t-if="invoice_partner.vat == '222222222222'">
+                        <GTA_1>ZZ</GTA_1>
+                        <GTA_2>No Aplica</GTA_2>
+                    </t>
+                    <t t-else="">
+                        <GTA_1 t-esc="tax_types[0].code"/>
+                        <GTA_2 t-esc="tax_types[0].name"/>
+                    </t>
                 </GTA>
             </ADQ>
             <TOT>
@@ -190,11 +190,11 @@
             </TOT>
             <t t-call="l10n_co_edi.tim_section">
                 <t t-set="retention" t-value="True"/>
-                <t t-set="tax_details_group" t-value="retention_taxes"/>
+                <t t-set="tax_details_group" t-value="retention_taxes_new"/>
             </t>
             <t t-call="l10n_co_edi.tim_section">
                 <t t-set="retention" t-value="False"/>
-                <t t-set="tax_details_group" t-value="regular_taxes"/>
+                <t t-set="tax_details_group" t-value="regular_taxes_new"/>
             </t>
             <TDC>
                 <TDC_1 t-esc="invoice.currency_id.name"/>
@@ -240,11 +240,51 @@
                 <IEN_2 t-esc="str(env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()).state_id.l10n_co_edi_code or '').zfill(2)"/>
                 <IEN_3/>
                 <IEN_4 t-esc="shipping_partner.city if shipping_partner else ''"/>
+                <IEN_5 t-esc="invoice.partner_id.zip"/>
                 <IEN_6 t-esc="shipping_partner.country_id.code if shipping_partner else ''"/>
                 <IEN_7 t-esc="invoice_partner.name"/>
                 <IEN_8 t-esc="delivery_date"/>
                 <IEN_12 t-esc="str(env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()).city_id.l10n_co_edi_code or '').zfill(5)"/>
+                <IEN_22 t-esc="invoice.partner_id.state_id.name"/>
+                <IEN_23 t-esc="invoice.partner_id.country_id.name"/>
+                <IEN_24 t-esc="company_partner.lang.split('_')[0] if company_partner.lang and '_' in company_partner.lang else ''"/>
             </IEN>
+
+            <TDE>
+                <TDE_1 t-esc="company_partner.l10n_co_edi_commercial_name or company_partner.name"/>
+                <TDE_2 t-esc="company_partner.country_id.code"/>
+                <TDE_3 t-esc="str(company_partner.state_id.l10n_co_edi_code).zfill(2)"/>
+                <TDE_4 t-esc="company_partner.zip"/>
+                <TDE_5 t-esc="str(company_partner.city_id.l10n_co_edi_code).zfill(5)"/>
+                <TDE_6 t-esc="company_partner.city_id.name"/>
+                <TDE_7 t-esc="company_partner.state_id.name"/>
+                <TDE_8 t-esc="company_partner.country_id.name"/>
+                <TDE_9 t-esc="company_partner.lang.split('_')[0] if company_partner.lang and '_' in company_partner.lang else ''"/>
+                <TDE_10 t-esc="company_partner._l10n_co_edi_get_company_address()"/>
+                <ITT>
+                    <ITT_1 t-esc="company_partner.display_name"/>
+                    <ITT_2 t-esc="';'.join(company_partner.l10n_co_edi_obligation_type_ids.mapped('name'))"/>
+                    <ITT_3 t-esc="company_partner.l10n_co_edi_fiscal_regimen"/>
+                    <ITT_4 t-esc="company_partner._get_vat_without_verification_code()"/>
+                    <ITT_5 t-esc="company_partner._l10n_co_edi_get_carvajal_code_for_identification_type()"/>
+                    <ITT_6 t-esc="company_partner._get_vat_verification_code()"/>
+                </ITT>
+                <DFT>
+                    <t t-if="tax_types">
+                        <DFT_1 t-esc="tax_types[0].code"/>
+                        <DFT_2 t-esc="tax_types[0].name"/>
+                    </t>
+                    <DFT_3 t-esc="company_partner.country_id.code"/>
+                    <DFT_4 t-esc="str(company_partner.state_id.l10n_co_edi_code).zfill(2)"/>
+                    <DFT_5 t-esc="company_partner.zip"/>
+                    <DFT_6 t-esc="str(company_partner.city_id.l10n_co_edi_code).zfill(5)"/>
+                    <DFT_7 t-esc="company_partner.city_id.name"/>
+                    <DFT_8 t-esc="company_partner.state_id.name"/>
+                    <DFT_9 t-esc="company_partner.country_id.name"/>
+                    <DFT_10 t-esc="company_partner.lang.split('_')[0] if company_partner.lang and '_' in company_partner.lang else ''"/>
+                    <DFT_11 t-esc="company_partner._l10n_co_edi_get_company_address()"/>
+                </DFT>
+            </TDE>
 
             <MEP>
                 <MEP_1 t-esc="invoice.l10n_co_edi_payment_option_id.code"/>
@@ -260,10 +300,6 @@
                 <CDN_1 t-esc="description_code"/>
                 <CDN_2 t-esc="description"/>
             </CDN>
-
-            <DCN>
-                <DCN_1 t-esc="invoice.ref"/>
-            </DCN>
 
             <OVT t-foreach="move_lines_with_ovt_taxes" t-as="line">
                 <OVT_1 t-esc="line.tax_line_id.l10n_co_edi_type.code"/>
@@ -331,15 +367,19 @@
                     <t t-foreach="tax_details['invoice_line_tax_details'][line]['tax_details']" t-as="group">
                         <t t-set="tax" t-value="tax_details['invoice_line_tax_details'][line]['tax_details'][group]" />
                         <TII t-foreach="tax['group_tax_details']" t-as="group_tax_details">
-                            <TII_1 t-esc="format_monetary(abs(group_tax_details['tax_amount_currency']), invoice.currency_id)"/>
+                            <t t-set="IIM_2" t-value="abs(group_tax_details['tax_amount_currency'])"/>
+                            <t t-set="IIM_4" t-value="abs(group_tax_details['tax_amount_currency'] * 100 / 15) if tax['l10n_co_edi_type'].code == '05' else abs(group_tax_details['base_amount_currency'])"/>
+                            <t t-set="IIM_6" t-value="'15' if tax['l10n_co_edi_type'].code == '05' else tax['tax'].amount"/>
+                            <TII_1 t-esc="format_monetary(IIM_2, invoice.currency_id)"/>
                             <TII_2 t-esc="invoice.currency_id.name"/>
                             <TII_3 t-esc="'true' if tax['l10n_co_edi_type'].retention else 'false'"/>
+                            <TII_4 t-if="tax['tax'].amount_type != 'fixed'" t-esc="'%.3f'% ((float(IIM_6) / 100 * float(IIM_4)) - IIM_2)"/>
+                            <TII_5 t-esc="invoice.currency_id.name"/>
                             <IIM>
                                 <IIM_1 t-esc="tax['l10n_co_edi_type'].code"/>
-                                <IIM_2 t-esc="format_monetary(abs(group_tax_details['tax_amount_currency']), invoice.currency_id)"/>
+                                <IIM_2 t-esc="format_monetary(IIM_2, invoice.currency_id)"/>
                                 <IIM_3 t-esc="invoice.currency_id.name"/>
-                                <IIM_4 t-esc="format_monetary((abs(group_tax_details['tax_amount_currency'] * 100 / 15) if tax['l10n_co_edi_type'].code == '05'
-                                    else abs(group_tax_details['base_amount_currency'])), invoice.currency_id)"/>
+                                <IIM_4 t-esc="format_monetary(IIM_4, invoice.currency_id)"/>
                                 <IIM_5 t-esc="invoice.currency_id.name"/>
                                 <t t-if="tax['tax'].amount_type == 'fixed'">
                                     <IIM_7 t-esc="'1'"/>
@@ -348,7 +388,7 @@
                                     <IIM_10 t-esc="invoice.currency_id.name"/>
                                 </t>
                                 <t t-else="">
-                                    <IIM_6 t-esc="'15' if tax['l10n_co_edi_type'].code == '05' else abs(tax['tax'].amount)"/>
+                                    <IIM_6 t-esc="abs(float(IIM_6))"/>
                                     <IIM_7/>
                                     <IIM_8/>
                                     <IIM_9/>
@@ -361,6 +401,7 @@
                         <t t-set="product_code" t-value="line._l10n_co_edi_get_product_code()"/>
                         <IAE_1 t-esc="product_code[0]"/>
                         <IAE_2 t-esc="product_code[1]"/>
+                        <IAE_4 t-esc="product_code[2]"/>
                     </IAE>
                     <NTI t-if="exempt_tax_dict.get(line.id)">
                         <NTI_1 t-esc="'Bienes Cubiertos'"/>

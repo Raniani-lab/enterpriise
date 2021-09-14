@@ -5,12 +5,12 @@ from odoo.exceptions import UserError
 
 
 DESCRIPTION_CREDIT_CODE = [
-    ("1", "Devolución de parte de los bienes; no aceptación de partes del servicio"),
+    ("1", "Devolución parcial de los bienes y/o no aceptación parcial del servicio"),
     ("2", "Anulación de factura electrónica"),
     ("3", "Rebaja total aplicada"),
-    ("4", "Descuento total aplicado"),
-    ("5", "Rescisión: nulidad por falta de requisitos"),
-    ("6", "Otros")
+    ("4", "Ajuste de precio"),
+    ("5", "Otros"),
+    ("6", "Otros (Inactive)")
 ]
 
 DESCRIPTION_DEBIT_CODE = [
@@ -18,6 +18,7 @@ DESCRIPTION_DEBIT_CODE = [
     ('2', 'Gastos por cobrar'),
     ('3', 'Cambio del valor')
 ]
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -34,12 +35,14 @@ class AccountMove(models.Model):
     l10n_co_edi_operation_type = fields.Selection([('10', 'Estandar'),
                                                   ('09', 'AIU'),
                                                   ('11', 'Mandatos'),
+                                                  ('12', 'Transporte'),
+                                                  ('13', 'Cambiario'),
                                                   ('20', 'Nota Crédito que referencia una factura electrónica'),
-                                                  ('22', 'Nota Crédito sin referencia a facturas'),
                                                   ('23', 'Nota Crédito para facturación electrónica V1 (Decreto 2242)'),
                                                   ('30', 'Nota Débito que referencia una factura electrónica'),
                                                   ('32', 'Nota Débito sin referencia a facturas'),
-                                                  ('33', 'Nota Débito para facturación electrónica V1 (Decreto 2242)')],
+                                                  ('23', 'Inactivo: Nota Crédito para facturación electrónica V1 (Decreto 2242)'),
+                                                  ('33', 'Inactivo: Nota Débito para facturación electrónica V1 (Decreto 2242)')],
                                                   string="Operation Type (CO)", compute='_compute_operation_type', default="10", required=True)
     l10n_co_edi_transaction = fields.Char('Transaction ID (CO)', help='Technical field used to track the status of a submission.', copy=False)
     l10n_co_edi_cufe_cude_ref = fields.Char(string="CUFE/CUDE", copy=False, help='Unique ID received by the government when the invoice is signed.')
@@ -88,6 +91,11 @@ class AccountMove(models.Model):
             return 'ND' if self.l10n_co_edi_debit_note else 'INVOIC'
         return 'NC'
 
+    def _l10n_co_edi_get_electronic_invoice_type_info(self):
+        if self.move_type == 'out_invoice':
+            return 'DIAN 2.1: Nota Débito de Factura Electrónica de Venta' if self.l10n_co_edi_debit_note else 'DIAN 2.1: Factura Electrónica de Venta'
+        return 'DIAN 2.1: Nota Crédito de Factura Electrónica de Venta'
+
     # -------------------------------------------------------------------------
     # Account_edi OVERRIDE
     # -------------------------------------------------------------------------
@@ -125,12 +133,12 @@ class AccountMoveLine(models.Model):
             if self.move_id.l10n_co_edi_type == '2':
                 if not self.product_id.l10n_co_edi_customs_code:
                     raise UserError(_('Exportation invoices require custom code in all the products, please fill in this information before validating the invoice'))
-                return (self.product_id.l10n_co_edi_customs_code, '020')
+                return (self.product_id.l10n_co_edi_customs_code, '020', 'Partida Alanceraria')
             if self.product_id.barcode:
-                return (self.product_id.barcode, '010')
+                return (self.product_id.barcode, '010', 'GTIN')
             elif self.product_id.unspsc_code_id:
-                return (self.product_id.unspsc_code_id.code, '001')
+                return (self.product_id.unspsc_code_id.code, '001', 'UNSPSC')
             elif self.product_id.default_code:
-                return (self.product_id.default_code, '999')
+                return (self.product_id.default_code, '999', 'Estándar de adopción del contribuyente')
 
-        return ('NA', '999')
+        return ('1010101', '001', '')

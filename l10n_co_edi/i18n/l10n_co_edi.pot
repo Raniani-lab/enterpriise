@@ -6259,3 +6259,9 @@ msgstr ""
 #: model:res.city,name:l10n_co_edi.city_co_567
 msgid "ÚTICA"
 msgstr ""
+
+#. module: l10n_co_edi
+#: code:addons/l10n_co_edi/models/account_invoice.py:0
+#, python-format
+msgid "The issue date can not be older than 5 days or more than 5 days in the future"
+msgstr ""

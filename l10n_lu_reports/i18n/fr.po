@@ -164,7 +164,7 @@ msgstr "1. Provisions pour pensions et obligations similaires"
 #. module: l10n_lu_reports
 #: model:account.financial.html.report.line,name:l10n_lu_reports.account_financial_report_l10n_lu_bs_line_1_4_1_1
 msgid "1. Raw materials and consumables"
-msgstr "a) Matières  premières et consommables"
+msgstr "1. Matières  premières et consommables"
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report.line,name:l10n_lu_reports.account_financial_report_l10n_lu_bs_line_1_3_3_1
@@ -212,7 +212,7 @@ msgstr "12. Quote-part dans le résultat des entreprises mises en équivalence"
 msgid ""
 "12. Share of profit or loss of undertakings accounted for under the equity "
 "method"
-msgstr ""
+msgstr "12. Quote-part dans le résultat des entreprises mises en équivalence"
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report.line,name:l10n_lu_reports.account_financial_report_l10n_lu_pl_abr_line_13

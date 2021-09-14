@@ -467,10 +467,10 @@ var accountReportsWidget = AbstractAction.extend({
             var $accountReportLineFoldable = $(el);
             var line_id = $accountReportLineFoldable.find('.o_account_report_line').data('id');
             var $childs = self.$('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
-            var lineText = $accountReportLineFoldable.find('.account_report_line_name')
-                // Only the direct text node, not text situated in other child nodes
-                .contents().get(0).nodeValue
-                .trim();
+
+            // Only the direct text node, not text situated in other child nodes
+            const lineContent = $accountReportLineFoldable.find('.account_report_line_name').contents();
+            const lineText = lineContent.length > 0 ? lineContent.get(0).nodeValue.trim() : '';
 
             // The python does this too
             var queryFound = lineText.split(' ').some(function (str) {

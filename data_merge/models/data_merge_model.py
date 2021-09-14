@@ -189,7 +189,8 @@ class DataMergeModel(models.Model):
                     field_name = related_model._inherits_join_calc(rhs_alias, related_model._rec_name, query)
 
                 if rule.match_mode == 'accent':
-                    field_name = unaccent(field_name)
+                    # Since unaccent is case sensitive, we must add a lower to make field_name insensitive
+                    field_name = unaccent('lower(%s)' % field_name)
 
                 group_by = ''
                 company_field = res_model._fields.get('company_id')

@@ -27,3 +27,14 @@ class TestMerge(test_common.TestCommon):
         group.merge_records()
         self.assertFalse(other_record.exists(), "record should be unlinked")
         self.assertEqual(ref.x_test_id, rec, "The reference should be to rec")
+
+    def test_generic_insensitive_rule(self):
+        self._create_rule('x_name', 'accent')
+        for name in ('accentuée', 'accentuee', 'Accentuée', 'Accentué'):
+            self._create_record('x_dm_test_model', x_name=name)
+        self.MyModel.find_duplicates()
+
+        groups = self.env['data_merge.group'].search([('model_id', '=', self.MyModel.id)])
+        self.assertEqual(len(groups), 1, 'Should have found 1 group')
+        self.assertEqual(len(groups.record_ids), 3, 'First group must contains three records: ("accentuée", "accentue", "Accentuée")')
+        self.assertNotIn('Accentué', groups[0].record_ids.mapped('display_name'), 'Group must not contains "Accentué"')

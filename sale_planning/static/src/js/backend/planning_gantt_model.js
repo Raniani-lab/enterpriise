@@ -11,6 +11,16 @@ const GROUPBY_COMBINATIONS = [
 
 PlanningGanttModel.include({
     /**
+     * @override
+     */
+    reload: function (handle, params) {
+        if ('context' in params && params.context.planning_groupby_sale_order && !params.groupBy.length) {
+            params.groupBy.unshift('sale_line_id');
+        }
+
+        return this._super(handle, params);
+    },
+    /**
      * Check if the given groupedBy includes fields for which an empty fake group will be created
      * @param {string[]} groupedBy
      * @returns {boolean}

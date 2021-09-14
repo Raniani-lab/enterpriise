@@ -377,6 +377,24 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             helper.assert($line2.find('.o_picking_label').text(), 'picking_receipt_3');
         }
     },
+    // Selects the subline with the lot0002 and scans it again, it should increment the selected line.
+    { trigger: '.o_barcode_line:contains("productlot1") .o_toggle_sublines' },
+    { trigger: '.o_sublines:contains("lot0002")' },
+    {
+        trigger: '.o_sublines .o_selected:contains("lot0002")',
+        run: 'scan lot0002'
+    },
+    {
+        trigger: '.o_sublines .o_barcode_line.o_highlight:contains("lot0002") .qty-done:contains("5")',
+        run: function() {
+            const sublines = document.querySelectorAll('.o_sublines [data-barcode=productlot1]');
+            helper.assert(sublines.length, 2, "Expect 2 lines for productlot1");
+            helper.assertLineQty($(sublines[0]), '4');
+            helper.assertLineIsHighlighted($(sublines[0]), false);
+            helper.assertLineQty($(sublines[1]), '5');
+            helper.assertLineIsHighlighted($(sublines[1]), true);
+        }
+    },
 ]);
 
 tour.register('test_barcode_batch_delivery_1', {test: true}, [

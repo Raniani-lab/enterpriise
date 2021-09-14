@@ -1365,16 +1365,14 @@ export default class BarcodeModel extends owl.core.EventBus {
             )) {
                 continue;
             }
-            if (foundLine && this.getQtyDemand(line) && this.getQtyDone(line) <= this.getQtyDemand(line)) {
-                continue; // Don't take a complete line if already find another one.
-            }
             if (this._lineIsNotComplete(line)) {
                 // Found a uncompleted compatible line, stop searching.
                 foundLine = line;
                 break;
             }
-            // The line matches, but there could be a better candidate, so keep searching.
-            foundLine = foundLine || line;
+            // The line matches but there could be a better candidate, so keep searching.
+            // If multiple lines can match, prioritises the selected line if relevant.
+            foundLine = this.selectedLine && this.selectedLine.virtual_id === line.virtual_id ? line : foundLine || line;
         }
         return foundLine;
     }

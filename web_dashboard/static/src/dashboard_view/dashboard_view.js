@@ -2,23 +2,21 @@
 
 import { registry } from "@web/core/registry";
 import { useEffect, useService } from "@web/core/utils/hooks";
-import { deepCopy } from "@web/core/utils/objects";
 import { capitalize, sprintf } from "@web/core/utils/strings";
-import { XMLParser } from "@web/core/utils/xml";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
-import * as CompileLib from "@web/views/compile/compile_lib";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
+import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { useSetupView, useViewArch } from "@web/views/helpers/view_hook";
 import { View } from "@web/views/view";
 import { ViewWidget } from "@web/views/view_widget";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { ControlPanelBottomContent } from "./control_panel_bottom_content/control_panel_bottom_content";
+import { DashboardArchParser } from "./dashboard_arch_parser";
 import { DashboardCompiler } from "./dashboard_compiler";
 import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
-import { OnboardingBanner } from "@web/views/onboarding_banner";
 
 const { Component, hooks, tags } = owl;
 const { useSubEnv } = hooks;
@@ -41,74 +39,6 @@ const GRAPH_DISPLAY = {
 const DISPLAY = {
     graph: GRAPH_DISPLAY,
 };
-
-const SUPPORTED_VIEW_TYPES = ["graph", "pivot", "cohort"];
-
-class DashboardArchParser extends XMLParser {
-    parse(arch, fields) {
-        const subViewRefs = {};
-        const aggregates = [];
-        const formulae = [];
-        const nodeIdentifier = CompileLib.nodeIdentifier();
-
-        this.visitXML(arch, (node) => {
-            if (node.tagName === "view") {
-                const type = node.getAttribute("type");
-                if (!SUPPORTED_VIEW_TYPES.includes(type)) {
-                    throw new Error(`Unsupported viewtype "${type}" in DashboardView`);
-                }
-                if (type in subViewRefs) {
-                    throw new Error(
-                        `multiple views of the same type is not allowed. Duplicated type: "${type}".`
-                    );
-                }
-                subViewRefs[type] = node.getAttribute("ref") || false;
-            }
-            if (node.tagName === "aggregate") {
-                const fieldName = node.getAttribute("field");
-                const field = fields[fieldName];
-                let groupOperator = node.getAttribute("group_operator");
-
-                if (!groupOperator && field.group_operator) {
-                    groupOperator = field.group_operator;
-                }
-                // in the dashboard views, many2one fields are fetched with the
-                // group_operator 'count_distinct', which means that the values
-                // manipulated client side for these fields are integers
-
-                //TO DO: Discuss with LPE: on legacy we also change the type of the field : field.type = 'integer';
-                if (field.type === "many2one") {
-                    groupOperator = "count_distinct";
-                }
-
-                let measure = node.getAttribute("measure");
-                if (measure && measure === "__count__") {
-                    measure = "__count";
-                }
-                aggregates.push({
-                    name: node.getAttribute("name"),
-                    field: fieldName,
-                    domain: node.getAttribute("domain"),
-                    domainLabel:
-                        node.getAttribute("domain_label") ||
-                        node.getAttribute("string") ||
-                        node.getAttribute("name"),
-                    measure: measure || fieldName,
-                    groupOperator,
-                });
-            }
-            if (node.tagName === "formula") {
-                nodeIdentifier(node);
-                formulae.push({
-                    name: node.getAttribute("name") || nodeIdentifier.idFor(),
-                    operation: node.getAttribute("value"),
-                    domain: node.getAttribute("domain"),
-                });
-            }
-        });
-        return { subViewRefs, aggregates, formulae };
-    }
-}
 
 // The ViewWrapper component is an higher order component for sub views in the
 // dashboard. It allows to define a specific env for each sub view, with their

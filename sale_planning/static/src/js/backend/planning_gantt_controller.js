@@ -48,6 +48,7 @@ PlanningGanttController.include({
         };
         Object.assign(context, {
             search_default_group_by_resource: false,
+            search_default_group_by_role: false,
             planning_slots_to_schedule: true,
             search_default_sale_order_id: this.model.context.planning_gantt_active_sale_order_id || null,
         });

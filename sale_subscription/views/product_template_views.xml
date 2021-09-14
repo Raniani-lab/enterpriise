@@ -27,6 +27,9 @@
                     <label for="recurring_invoice" string="Recurring"/>
                 </span>
             </div>
+            <group name="group_general" position="inside">
+                <field name="subscription_template_id" class="field_sub_template_id" attrs="{'invisible': [('recurring_invoice', '=', False)], 'required': [('recurring_invoice','=', True)]}"/>
+            </group>
         </field>
     </record>
 

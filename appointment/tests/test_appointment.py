@@ -77,7 +77,7 @@ class AppointmentTest(common.HttpCase):
                         self.assertEqual(len(day['slots']), 1, 'Each monday should have only one slot')
                         slot = day['slots'][0]
                         self.assertEqual(slot['staff_user_id'], self.first_staff_user_in_brussel.id, 'The right user should be available on each slot')
-                        self.assertEqual(slot['hours'], '09:00', 'Slots hours has to be 09:00')  # We asked to display the slots as Europe/Brussels
+                        self.assertEqual(slot['hours'], '9:00 AM', 'Slots hours has to be 09:00 AM')  # We asked to display the slots as Europe/Brussels
 
         # Ensuring that we've gone through the *crucial* asserts at least once
         # It might be more accurate to assert mondays_count >= 2, but we don't want this test to break when it pleases

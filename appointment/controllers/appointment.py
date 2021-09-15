@@ -15,7 +15,7 @@ from odoo.addons.http_routing.models.ir_http import slug
 from odoo.http import request, route
 from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
-from odoo.tools.misc import get_lang
+from odoo.tools.misc import babel_locale_parse, get_lang
 
 
 class Appointment(http.Controller):
@@ -99,6 +99,11 @@ class Appointment(http.Controller):
             suggested_staff_users[0] if suggested_staff_users else request.env['res.users']
         )
         formated_days = [format_date(fields.Date.from_string('2021-03-0%s' % str(day + 1)), "EEE", get_lang(request.env).code) for day in range(7)]
+
+        # Get the first weekday based on the lang used on the website
+        first_weekday_index = babel_locale_parse(get_lang(request.env).code).first_week_day
+        # Reorder the list of days to match with the first weekday
+        formated_days = list(formated_days[first_weekday_index:] + formated_days)[:7]
 
         return request.render("appointment.appointment_info", {
             'appointment_type': appointment_type,

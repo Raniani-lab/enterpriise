@@ -177,7 +177,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="timezoneSelection" class="mt-lg-0 mt-3">
+                <div id="timezoneSelection" class="mt-lg-0 px-1 px-md-3 mt-3">
                     <span>Time displayed in <strong t-out="request.session['timezone']"/> timezone</span>
                 </div>
             </div>

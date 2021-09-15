@@ -7,15 +7,14 @@ import pytz
 from datetime import datetime, timedelta, time
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
-from babel.dates import format_datetime
+from babel.dates import format_datetime, format_time
 from werkzeug.urls import url_join
 
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
-from odoo.tools.misc import get_lang
+from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.http_routing.models.ir_http import slug
-from odoo.osv.expression import AND
 
 
 class CalendarAppointmentType(models.Model):
@@ -281,7 +280,8 @@ class CalendarAppointmentType(models.Model):
         # Compute calendar rendering and inject available slots
         today = requested_tz.fromutc(datetime.utcnow())
         start = today
-        month_dates_calendar = cal.Calendar(0).monthdatescalendar
+        locale = babel_locale_parse(get_lang(self.env).code)
+        month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []
         while (start.year, start.month) <= (last_day.year, last_day.month):
             dates = month_dates_calendar(start.year, start.month)
@@ -289,7 +289,7 @@ class CalendarAppointmentType(models.Model):
                 for day_index, day in enumerate(week):
                     mute_cls = weekend_cls = today_cls = None
                     today_slots = []
-                    if day.weekday() in (cal.SUNDAY, cal.SATURDAY):
+                    if day.weekday() in (locale.weekend_start, locale.weekend_end):
                         weekend_cls = 'o_weekend'
                     if day == today.date() and day.month == today.month:
                         today_cls = 'o_today'
@@ -299,24 +299,25 @@ class CalendarAppointmentType(models.Model):
                         # slots are ordered, so check all unprocessed slots from until > day
                         while slots and (slots[0][timezone][0].date() <= day):
                             if (slots[0][timezone][0].date() == day) and ('staff_user_id' in slots[0]):
+                                slot = {
+                                    'staff_user_id': slots[0]['staff_user_id'].id,
+                                    'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                }
                                 if slots[0]['slot'].allday:
-                                    today_slots.append({
-                                        'staff_user_id': slots[0]['staff_user_id'].id,
-                                        'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                    slot.update({
                                         'hours': _("All day"),
                                         'duration': 24,
                                     })
                                 else:
-                                    start_hour = slots[0][timezone][0].strftime('%H:%M')
-                                    end_hour = slots[0][timezone][1].strftime('%H:%M')
-                                    today_slots.append({
-                                        'staff_user_id': slots[0]['staff_user_id'].id,
-                                        'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                    start_hour = format_time(slots[0][timezone][0].time(), format='short', locale=locale)
+                                    end_hour = format_time(slots[0][timezone][1].time(), format='short', locale=locale)
+                                    slot.update({
                                         'hours': "%s - %s" % (start_hour, end_hour) if self.category == 'custom' else start_hour,
                                         'duration': str((slots[0][timezone][1] - slots[0][timezone][0]).total_seconds() / 3600),
                                     })
+                                today_slots.append(slot)
                             slots.pop(0)
-                    today_slots = sorted(today_slots, key=lambda d: d['hours'])
+                    today_slots = sorted(today_slots, key=lambda d: d['datetime'])
                     dates[week_index][day_index] = {
                         'day': day,
                         'slots': today_slots,

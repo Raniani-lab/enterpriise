@@ -3,23 +3,23 @@
 import { registry } from "@web/core/registry";
 import { useEffect, useService } from "@web/core/utils/hooks";
 import { capitalize, sprintf } from "@web/core/utils/strings";
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
-import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { useSetupView, useViewArch } from "@web/views/helpers/view_hook";
+import { Layout } from "@web/views/layout";
+import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { DashboardArchParser } from "./dashboard_arch_parser";
 import { DashboardCompiler } from "./dashboard_compiler/dashboard_compiler";
 import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
-import { ViewWrapper } from "./view_wrapper/view_wrapper";
 import { ViewWidget } from "./view_widget";
+import { ViewWrapper } from "./view_wrapper/view_wrapper";
 
 const { Component } = owl;
 
 const viewRegistry = registry.category("views");
+const bannerRegistry = registry.category("banner");
 
 const SUB_VIEW_CONTROL_PANEL_DISPLAY = {
     "bottom-right": false,
@@ -295,14 +295,7 @@ export class DashboardView extends Component {
 DashboardView.template = "web_dashboard.DashboardView";
 DashboardView.props = standardViewProps;
 
-DashboardView.components = {
-    ControlPanel,
-    SearchPanel,
-    DashboardStatistic,
-    ViewWidget,
-    ViewWrapper,
-    Banner: OnboardingBanner,
-};
+DashboardView.components = { Layout, DashboardStatistic, ViewWidget, ViewWrapper };
 
 DashboardView.Model = DashboardModel;
 DashboardView.ArchParser = DashboardArchParser;
@@ -316,3 +309,4 @@ DashboardView.multiRecord = true;
 DashboardView.searchMenuTypes = ["filter", "comparison", "favorite"];
 
 viewRegistry.add("dashboard", DashboardView);
+bannerRegistry.add("dashboard", OnboardingBanner);

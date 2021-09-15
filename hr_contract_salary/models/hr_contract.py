@@ -236,7 +236,7 @@ class HrContract(models.Model):
                 'default_template_id': template_id,
                 'default_composition_mode': 'comment',
                 'salary_package_url': self.get_base_url() + path,
-                'custom_layout': 'mail.mail_notification_light'
+                'default_email_layout_xmlid': 'mail.mail_notification_light'
             }
             return {
                 'type': 'ir.actions.act_window',

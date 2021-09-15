@@ -173,7 +173,7 @@ class GenerateSimulationLink(models.TransientModel):
             'default_template_id': default_template_id,
             'default_composition_mode': 'comment',
             'salary_package_url': self.url,
-            'custom_layout': "mail.mail_notification_light",
+            'default_email_layout_xmlid': "mail.mail_notification_light",
             'partner_to': partner_to and partner_to.id or False,
             'mail_post_autofollow': False,
         }

@@ -172,7 +172,7 @@
     </record>
 
     <record id="sale_planning_action_schedule_by_sale_order" model="ir.actions.act_window">
-        <field name="name">By Sales Order</field>
+        <field name="name">Schedule by Sales Order</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{

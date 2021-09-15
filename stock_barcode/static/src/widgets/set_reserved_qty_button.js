@@ -16,7 +16,8 @@ const SetReservedQuantityButton = Widget.extend({
         this.dataPointID = data.id;
         this.viewType = data.viewType;
         this.record = this.parent.state.data;
-        this.qty = this.record.product_uom_qty;
+        this.quantityField = options.attrs.field_to_set;
+        this.qty = this.record[options.attrs.quantity];
         const uom = this.record.product_uom_id;
         this.uom = uom && uom.data.display_name;
     },
@@ -39,7 +40,7 @@ const SetReservedQuantityButton = Widget.extend({
     _onClickButton: function (ev) {
         ev.preventDefault();
         const { dataPointID, viewType } = this;
-        const changes = { qty_done: this.qty };
+        const changes = { [this.quantityField]: this.qty };
         this.trigger_up('field_changed', { dataPointID, changes, viewType });
     },
 });

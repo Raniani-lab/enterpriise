@@ -29,6 +29,7 @@
                     <i class="fa fa-fw fa-lg fa-cube mr-3" title="Quantity"/>
                     <field name="qty_done" class="w-50 w-md-100" options="{'type': 'number'}" placeholder="Quantity"/>
                     <widget name="set_reserved_qty_button"
+                        field_to_set="qty_done" quantity="product_uom_qty"
                         attrs="{'invisible': [('product_uom_qty', '=', 0)]}"/>
                 </div>
                 <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom"

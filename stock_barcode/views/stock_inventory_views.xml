@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <form class="o_barcode_line_form">
                 <div class="row mt-5 mb-4">
+                    <field name="quantity" invisible="1" />
                     <div class="col-12 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-tags mr-3" title="Product"/>
                         <field name="product_id" placeholder="Product"
@@ -19,19 +20,15 @@
                 <div class="row">
                     <div class="col-6 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-cube mr-3" title="Counted Quantity"/>
-                        <field name="inventory_quantity" options="{'type': 'number'}" placeholder="Counted Quantity"/>
+                        <field name="inventory_quantity" class="w-50 w-md-100" options="{'type': 'number'}" placeholder="Counted Quantity"/>
+                        <widget name="set_reserved_qty_button"
+                        field_to_set="inventory_quantity" quantity="quantity"
+                        attrs="{'invisible': [('quantity', '=', 0)]}"/>
                     </div>
-                    <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom">
+                    <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom"
+                        attrs="{'invisible': [('quantity', '!=', 0)]}">
                         <i class="fa mr-3" attrs="{'invisible': [('inventory_quantity', '!=', 0.0)]}"/>
                         <field name="product_uom_id" placeholder="Unit of Measure"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 my-2 d-flex align-items-baseline">
-                        <field name="quantity" class="ml-5 pl-2"/>
-                    </div>
-                    <div class="col-6 my-2 d-flex align-items-baseline">
-                        <span>On Hand</span>
                     </div>
                 </div>
                 <div class="row justify-content-center justify-content-md-start">

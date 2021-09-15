@@ -147,7 +147,7 @@ class Planning(models.Model):
     @api.depends('resource_id.company_id')
     def _compute_planning_slot_company_id(self):
         for slot in self:
-            slot.company_id = slot.resource_id.company_id or slot.env.company
+            slot.company_id = slot.resource_id.company_id or slot.company_id or slot.env.company
 
     @api.depends('start_datetime')
     def _compute_past_shift(self):

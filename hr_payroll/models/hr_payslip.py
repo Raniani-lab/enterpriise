@@ -356,7 +356,7 @@ class HrPayslip(models.Model):
                 })
                 # Send email to employees
                 if template:
-                    template.send_mail(payslip.id, notif_layout='mail.mail_notification_light')
+                    template.send_mail(payslip.id, email_layout_xmlid='mail.mail_notification_light')
         self.env['ir.attachment'].sudo().create(attachments_vals_list)
 
     def action_payslip_done(self):

@@ -1385,7 +1385,7 @@ class Planning(models.Model):
                 'work_email': employee.work_email,
                 'unassign_deadline': unassign_deadline
             })
-            mail_id = template.with_context(view_context).send_mail(self.id, notif_layout='mail.mail_notification_light')
+            mail_id = template.with_context(view_context).send_mail(self.id, email_layout_xmlid='mail.mail_notification_light')
             mails_to_send_ids.append(mail_id)
 
         mails_to_send = self.env['mail.mail'].sudo().browse(mails_to_send_ids)
@@ -1596,7 +1596,7 @@ class PlanningPlanning(models.Model):
                         template_context['end_datetime'] = planning.date_end
                         template_context['planning_url'] = employee_url_map[employee.id]
                         template_context['assigned_new_shift'] = bool(slots.filtered(lambda slot: slot.employee_id.id == employee.id))
-                        template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, notif_layout='mail.mail_notification_light')
+                        template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, email_layout_xmlid='mail.mail_notification_light')
             sent_slots |= slots
         # mark as sent
         sent_slots.write({

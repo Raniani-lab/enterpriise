@@ -594,7 +594,7 @@ class SignRequest(models.Model):
         output.close()
 
     @api.model
-    def _message_send_mail(self, body, notif_template_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):
+    def _message_send_mail(self, body, email_layout_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):
         """ Shortcut to send an email. """
         default_lang = get_lang(self.env, lang_code=kwargs.get('lang')).code
         lang = kwargs.get('lang', default_lang)
@@ -604,8 +604,8 @@ class SignRequest(models.Model):
         # to actually create the record
         # See @tde-banana-odoo for details
         msg = sign_request.env['mail.message'].sudo().new(dict(body=body, **message_values))
-        notif_layout = sign_request.env.ref(notif_template_xmlid)
-        body_html = notif_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
+        email_layout = sign_request.env.ref(email_layout_xmlid)
+        body_html = email_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = sign_request.env['mail.render.mixin']._replace_local_links(body_html)
 
         mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, **mail_values))

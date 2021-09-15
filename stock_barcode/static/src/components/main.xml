@@ -49,7 +49,7 @@
                                     </ul>
                                 </span>
                             </t>
-                            <br t-if="displayLocations &amp;&amp; displayDestinationLocation" class="d-md-none"/>
+                            <br t-if="displaySourceLocation &amp;&amp; displayDestinationLocation" class="d-md-none"/>
                             <span t-if="displayDestinationLocation" class="text-truncate d-block d-md-inline mb-2">
                                 <span class="o_barcode_location_label"> To </span>
                                 <span t-if="destinationLocations" t-on-click="toggleDestinationSelection"

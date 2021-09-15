@@ -9,6 +9,7 @@ const { css } = owl.tags;
 
 const STYLE = css`
         .o_connector_container {
+            pointer-events: none;
             position: absolute;
             top: 0;
             left: 0;

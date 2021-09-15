@@ -28,7 +28,7 @@ class Task(models.Model):
         self.ensure_one()
 
         calendar_by_task_dict = defaultdict(list)
-        contracts = self.env['project.task']
+        contracts = self.env['hr.contract']
         if len(self.user_ids) == 1 and self.user_ids.employee_id:
             employee = self.user_ids.employee_id
             contracts = employee._get_contracts(date_start, date_end, ['open', 'close'])

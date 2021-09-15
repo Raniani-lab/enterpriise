@@ -146,7 +146,13 @@ const TaskGanttConnectorController = TaskGanttController.extend({
     async _onRescheduleTask(ev) {
         ev.stopPropagation();
         return this.model.rescheduleTask(ev.data.direction, ev.data.masterTaskId, ev.data.slaveTaskId).then(
-            (result) => this.reload()
+            (result) => {
+                if (result.type !== 'ir.actions.client') {
+                    this.reload();
+                } else {
+                    this.do_action(result);
+                }
+            }
         );
     },
 });

@@ -37,16 +37,16 @@
         <field name="arch" type="xml">
             <gantt date_start="planned_date_begin"
                 date_stop="planned_date_end"
-                default_scale="week"
+                default_scale="month"
                 scales="day,week,month,year"
                 color="project_color"
                 string="Planning"
                 thumbnails="{'user_ids': 'avatar_128'}"
                 js_class="task_gantt"
                 display_unavailability="1"
-                sample="1"
-                precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:full'}"
-                decoration-danger="planning_overlap &gt; 0">
+                precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:half'}"
+                decoration-danger="planning_overlap &gt; 0"
+                default_group_by="user_ids">
                 <templates>
                     <div t-name="gantt-popover">
                         <div t-if="project_id"><strong>Project — </strong> <t t-esc="project_id[1]"/></div>

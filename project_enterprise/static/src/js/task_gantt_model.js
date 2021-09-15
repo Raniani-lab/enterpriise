@@ -66,7 +66,7 @@ const TaskGanttModel = GanttModel.extend({
         const { groupedBy, groups, parentPath } = params;
         if (groupedBy.length) {
             const groupedByField = groupedBy[0];
-            if (groupedByField === 'user_id') {
+            if (groupedByField === 'user_ids') {
                 // Here we are generating some rows under a common "parent" (if any).
                 // We make sure that a row with resId = false for "user_id"
                 // ('Unassigned Tasks') and same "parent" will be added by adding
@@ -88,7 +88,7 @@ const TaskGanttModel = GanttModel.extend({
      * @override
      */
     _getRowName(groupedByField, value) {
-        if (groupedByField === "user_id") {
+        if (groupedByField === "user_ids") {
             const resId = Array.isArray(value) ? value[0] : value;
             if (!resId) {
                 return _t("Unassigned Tasks");

@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="sale_timesheet.project_project_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//page[@name='billing_employee_rate']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '&amp;', ('is_fsm', '=', True), ('allow_billable', '=', False), '&amp;', '|', ('allow_billable', '=', False), ('has_helpdesk_team', '=', True), ('is_fsm', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', ('partner_id', '=', False), '&amp;', ('is_fsm', '=', True), ('allow_billable', '=', False), '&amp;', '|', ('allow_billable', '=', False), ('has_helpdesk_team', '=', True), ('is_fsm', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

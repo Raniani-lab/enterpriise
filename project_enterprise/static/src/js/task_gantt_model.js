@@ -7,6 +7,10 @@ import { _t } from 'web.core';
 
 
 const TaskGanttModel = GanttModel.extend({
+    mapMany2manyFields: [{
+        many2many_field: 'personal_stage_type_ids',
+        many2one_field: 'personal_stage_type_id',
+    }],
 
     //--------------------------------------------------------------------------
     // Private
@@ -114,6 +118,28 @@ const TaskGanttModel = GanttModel.extend({
             const emptyRow = rows.splice(emptyIndex, 1)[0];
             rows.unshift(emptyRow);
         }
+    },
+    /**
+     * In the case of special Many2many Fields, like personal_stage_type_ids in project.task
+     * model, we don't want to write the many2many field but use the inverse method of the
+     * linked Many2one field, in this case the personal_stage_type_id, to create or update the
+     * record - here set the stage_id - in the personal_stage_type_ids.
+     *
+     * See @project/src/js/task_gantt_controller::_getDialogContext() for
+     * further explanation.
+     *
+     * @private
+     * @override
+     */
+    rescheduleData: function (schedule, isUTC) {
+        const data = this._super.apply(this, arguments);
+        for (let mapping of this.mapMany2manyFields) {
+            if (mapping.many2many_field in data) {
+                data[mapping.many2one_field] = data[mapping.many2many_field][0];
+                delete data[mapping.many2many_field];
+            }
+        }
+        return data;
     },
 });
 

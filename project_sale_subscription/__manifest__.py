@@ -5,7 +5,7 @@
 {
     'name': 'Project Sales Subscription',
     'version': '1.0',
-    'category': 'Project/sales/subscriptions',
+    'category': 'Services/sales/subscriptions',
     'summary': 'Project sales subscriptions',
     'description': 'Bridge created to add the number of subscriptions linked to an AA to a project form',
     'depends': ['project', 'sale_subscription'],

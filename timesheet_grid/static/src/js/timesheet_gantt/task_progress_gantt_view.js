@@ -3,7 +3,7 @@
 import TaskGanttRow from '@project_enterprise/js/task_gantt_row';
 import fieldUtils from 'web.field_utils';
 
-const TimesheetGridTaskGanttRow = TaskGanttRow.extend({
+TaskGanttRow.include({
     _getPopoverContext: function () {
         const data = this._super.apply(this, arguments);
         if (data.allow_subtasks) {

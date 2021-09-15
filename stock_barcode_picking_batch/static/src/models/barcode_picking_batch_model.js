@@ -238,6 +238,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
     _getNewLineDefaultContext() {
         const defaultContextValues = super._getNewLineDefaultContext();
         const batch = this.cache.getRecord(this.params.model, this.params.id);
+        defaultContextValues.default_batch_id = batch.id;
         defaultContextValues.default_picking_id = batch.picking_ids[0];
         return defaultContextValues;
     }

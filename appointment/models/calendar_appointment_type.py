@@ -168,8 +168,7 @@ class CalendarAppointmentType(models.Model):
             local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))))
             local_end = appt_tz.localize(
                 datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
-
-            while local_start.hour <= slot.end_hour - self.appointment_duration:
+            while (local_start.hour + local_start.minute / 60) <= slot.end_hour - self.appointment_duration:
                 slots.append({
                     self.appointment_tz: (
                         local_start,

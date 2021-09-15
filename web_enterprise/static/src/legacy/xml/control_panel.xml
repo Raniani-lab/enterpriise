@@ -89,6 +89,8 @@
                     </div>
                 </div>
                 <div class="o_cp_bottom_right">
+                    <!-- Show "searchViewButtons" when custom CP have search view buttons but no SearchBar -->
+                    <div class="btn-group o_search_options position-static" role="search" t-if="!props.withSearchBar" t-ref="searchViewButtons"/>
                     <button t-if="env.view and env.view.type === 'calendar'"
                         class="o_cp_today_button btn btn-sm btn-link"
                         t-on-click="trigger('today-button-click')"

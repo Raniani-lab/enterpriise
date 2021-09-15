@@ -15,7 +15,7 @@ import {
     toggleMenuItemOption,
     toggleMenu,
 } from "@web/../tests/search/helpers";
-import { mockDownload, patchDate } from "@web/../tests/helpers/utils";
+import { makeDeferred, mockDownload, patchDate } from "@web/../tests/helpers/utils";
 
 const serviceRegistry = registry.category("services");
 
@@ -812,4 +812,56 @@ QUnit.module("Views", (hooks) => {
         assert.containsOnce(cohort, ".o_view_nocontent .abc");
         assert.containsNone(cohort, "table");
     });
+
+    QUnit.test(
+        "concurrent reloads: add a filter, and directly toggle a measure",
+        async function (assert) {
+            let def;
+            const cohort = await makeView({
+                type: "cohort",
+                resModel: "subscription",
+                serverData,
+                arch: `<cohort date_start="start" date_stop="stop"/>`,
+                searchViewArch: `
+                    <search>
+                        <filter name="my_filter" string="My Filter" domain="[('id', '&lt;', 2)]"/>
+                    </search>`,
+                mockRPC: function (route, args) {
+                    if (args.method === "get_cohort_data") {
+                        return Promise.resolve(def);
+                    }
+                },
+            });
+
+            assert.containsN(cohort, ".o_cohort_row_clickable", 5);
+            assert.equal(
+                cohort.el.querySelector(".table thead th:nth-child(2)").textContent,
+                "Count",
+                'active measure should be "Count"'
+            );
+
+            // Set a domain (this reload is delayed)
+            def = makeDeferred();
+            await toggleFilterMenu(cohort);
+            await toggleMenuItem(cohort, "My Filter");
+
+            assert.containsN(cohort, ".o_cohort_row_clickable", 5);
+
+            // Toggle a measure
+            await toggleMenu(cohort, "Measures");
+            await toggleMenuItem(cohort, "Recurring Price");
+
+            assert.containsN(cohort, ".o_cohort_row_clickable", 5);
+
+            def.resolve();
+            await nextTick();
+
+            assert.containsOnce(cohort, ".o_cohort_row_clickable");
+            assert.equal(
+                cohort.el.querySelector(".table thead th:nth-child(2)").textContent,
+                "Recurring Price",
+                'active measure should be "Recurring Price"'
+            );
+        }
+    );
 });

@@ -1,7 +1,7 @@
 /* @odoo-module */
 
 import { _lt } from "@web/core/l10n/translation";
-import { KeepLast } from "@web/core/utils/concurrency";
+import { KeepLast, Race } from "@web/core/utils/concurrency";
 import { Model } from "@web/views/helpers/model";
 import { computeReportMeasures, processMeasure } from "@web/views/helpers/utils";
 
@@ -23,7 +23,13 @@ export class CohortModel extends Model {
      * @override
      */
     setup(params) {
+        // concurrency management
         this.keepLast = new KeepLast();
+        this.race = new Race();
+        const _load = this._load.bind(this);
+        this._load = (...args) => {
+            return this.race.add(_load(...args));
+        };
 
         this.metaData = params;
         this.data = null;

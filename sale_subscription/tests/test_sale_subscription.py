@@ -509,3 +509,29 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertRecordValues(subscription.subscription_log_ids[-1],
                                 [{'recurring_monthly': 10.0, 'amount_signed': -110}])
 
+    def test_19_fiscal_position(self):
+        # Test that the fiscal postion FP is applied on recurring invoice.
+        # FP must mapped an included tax of 21% to an excluded one of 0%
+        tax_include_id = self.env['account.tax'].create({'name': "Include tax",
+                                                    'amount': 21.0,
+                                                    'price_include': True,
+                                                    'type_tax_use': 'sale'})
+        tax_exclude_id = self.env['account.tax'].create({'name': "Exclude tax",
+                                                    'amount': 0.0,
+                                                    'type_tax_use': 'sale'})
+
+        self.product_tmpl.write({'taxes_id': [(6, 0, [tax_include_id.id])], 'list_price': 121})
+
+        fp = self.env['account.fiscal.position'].create({'name': "fiscal position",
+                                                    'sequence': 1,
+                                                    'auto_apply': True,
+                                                    'tax_ids': [(0, 0, {'tax_src_id': tax_include_id.id, 'tax_dest_id': tax_exclude_id.id})]})
+
+        self.env['sale.subscription.line'].create({'analytic_account_id': self.subscription.id,
+                                                'product_id': self.product_tmpl.product_variant_id.id,
+                                                'price_unit': 121,
+                                                'uom_id': self.env.ref('uom.product_uom_unit').id,
+                                                'quantity': 1})
+        self.subscription.partner_id.property_account_position_id = fp
+        inv = self.subscription._recurring_create_invoice()
+        self.assertEqual(100, inv.invoice_line_ids[0].price_unit, "The included tax must be subtracted to the price")

@@ -54,9 +54,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
                 <field name="check_state" invisible="1"/>
-                <button type="object" class="btn-secondary text-muted" name="action_open_quality_check_wizard" icon="fa-check" attrs="{'invisible': [('check_state', '!=', 'in_progress')]}"/>
-                <button type="object" class="btn-secondary text-danger" name="action_open_quality_check_wizard" icon="fa-check" attrs="{'invisible': [('check_state', '!=', 'fail')]}"/>
-                <button type="object" class="btn-secondary text-success" name="action_open_quality_check_wizard" icon="fa-check" attrs="{'invisible': [('check_state', '!=', 'pass')]}"/>
+                <button type="object" class="btn-secondary text-muted" name="action_open_quality_check_wizard" icon="fa-check" attrs="{'invisible': [('check_state', '!=', 'in_progress')]}" title="Check Quality"/>
+                <button type="object" class="btn-secondary text-danger" name="action_open_quality_check_wizard" icon="fa-check" attrs="{'invisible': [('check_state', '!=', 'fail')]}" title="Check Quality"/>
+                <button type="object" class="btn-secondary text-success" name="action_open_quality_check_wizard" icon="fa-check" attrs="{'invisible': [('check_state', '!=', 'pass')]}" title="Check Quality"/>
             </xpath>
         </field>
     </record>

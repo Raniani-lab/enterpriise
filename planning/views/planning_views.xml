@@ -225,7 +225,7 @@
 
                     <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I Take It" attrs="{'invisible': ['|', '|', ('resource_type', '=', 'material'), ('employee_id', '!=', False), ('is_past', '=', True)]}" close="1" data-hotkey="q"/>
                     <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
-                    <button name="unlink" type="object" icon="fa-trash" class="btn-secondary float-right" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
+                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-right" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
                 </footer>
             </xpath>
         </field>

@@ -42,7 +42,7 @@
                 <field name="production_state" invisible="1"/>
             </xpath>
             <xpath expr="//button[@name='action_open_wizard']" position="after">
-                <button name="open_tablet_view" type="object" icon="fa-tablet" context="{'from_production_order': True}" attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'cancel', 'done')), ('state', '=', 'done')]}"/>
+                <button name="open_tablet_view" type="object" icon="fa-tablet" title="Open Tablet View" context="{'from_production_order': True}" attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'cancel', 'done')), ('state', '=', 'done')]}"/>
             </xpath>
         </field>
     </record>

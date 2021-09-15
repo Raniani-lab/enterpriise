@@ -615,6 +615,20 @@ export default class BarcodePickingModel extends BarcodeModel {
         );
     }
 
+    _sortingMethod(l1, l2) {
+        const l1QtyDemand = this.getQtyDemand(l1);
+        const l2QtyDemand = this.getQtyDemand(l2);
+        const l1IsCompleted = l1QtyDemand && this.getQtyDone(l1) >= l1QtyDemand;
+        const l2IsCompleted = l2QtyDemand && this.getQtyDone(l2) >= l2QtyDemand;
+        // Complete lines always on the bottom.
+        if (!l1IsCompleted && l2IsCompleted) {
+            return -1;
+        } else if (l1IsCompleted && !l2IsCompleted) {
+            return 1;
+        }
+        return super._sortingMethod(...arguments);
+    }
+
     _updateLineQty(line, args) {
         if (line.product_id.tracking === 'serial' && line.qty_done > 0 && (this.record.use_create_lots || this.record.use_existing_lots)) {
             return;

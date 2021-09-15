@@ -1291,6 +1291,45 @@ export default class BarcodeModel extends owl.core.EventBus {
         return result;
     }
 
+    _sortingMethod(l1, l2) {
+        // New lines always on top.
+        if (!l1.id && l2.id) {
+            return -1;
+        } else if (l1.id && !l2.id) {
+            return 1;
+        } else if (l1.id && l2.id) {
+            // Sort by display name of product.
+            const product1 = l1.product_id.display_name;
+            const product2 = l2.product_id.display_name;
+            if (product1 < product2) {
+                return -1;
+            } else if (product1 > product2) {
+                return 1;
+            }
+            // Sort by picking name.
+            const picking1 = l1.picking_id && l1.picking_id.name || '';
+            const picking2 = l2.picking_id && l2.picking_id.name || '';
+            if (picking1 < picking2) {
+                return -1;
+            } else if (picking1 > picking2) {
+                return 1;
+            }
+
+            if (l1.id < l2.id) {
+                return -1;
+            } else if (l1.id > l2.id) {
+                return 1;
+            }
+        }
+        // Sort by id and/or virtual_id (creation of the line).
+        if (l1.virtual_id > l2.virtual_id) {
+            return -1;
+        } else if (l1.virtual_id < l2.virtual_id) {
+            return 1;
+        }
+        return 0;
+    }
+
     /**
      * Sorts the lines to have new lines always on top and complete lines always on the bottom.
      *
@@ -1298,54 +1337,7 @@ export default class BarcodeModel extends owl.core.EventBus {
      * @returns {Array<Object>}
      */
     _sortLine(lines) {
-        return lines.sort((l1, l2) => {
-            const l1QtyDemand = this.getQtyDemand(l1);
-            const l2QtyDemand = this.getQtyDemand(l2);
-            const l1IsCompleted = l1QtyDemand && this.getQtyDone(l1) >= l1QtyDemand;
-            const l2IsCompleted = l2QtyDemand && this.getQtyDone(l2) >= l2QtyDemand;
-            // Complete lines always on the bottom.
-            if (!l1IsCompleted && l2IsCompleted) {
-                return -1;
-            } else if (l1IsCompleted && !l2IsCompleted) {
-                return 1;
-            }
-            // New lines always on top.
-            if (!l1.id && l2.id) {
-                return -1;
-            } else if (l1.id && !l2.id) {
-                return 1;
-            } else if (l1.id && l2.id) {
-                // Sort by display name of product.
-                const product1 = l1.product_id.display_name;
-                const product2 = l2.product_id.display_name;
-                if (product1 < product2) {
-                    return -1;
-                } else if (product1 > product2) {
-                    return 1;
-                }
-                // Sort by picking name.
-                const picking1 = l1.picking_id && l1.picking_id.name || '';
-                const picking2 = l2.picking_id && l2.picking_id.name || '';
-                if (picking1 < picking2) {
-                    return -1;
-                } else if (picking1 > picking2) {
-                    return 1;
-                }
-
-                if (l1.id < l2.id) {
-                    return -1;
-                } else if (l1.id > l2.id) {
-                    return 1;
-                }
-            }
-            // Sort by id and/or virtual_id (creation of the line).
-            if (l1.virtual_id > l2.virtual_id) {
-                return -1;
-            } else if (l1.virtual_id < l2.virtual_id) {
-                return 1;
-            }
-            return 0;
-        });
+        return lines.sort(this._sortingMethod.bind(this));
     }
 
     _findLine(barcodeData) {

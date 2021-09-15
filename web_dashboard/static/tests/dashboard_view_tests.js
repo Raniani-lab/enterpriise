@@ -465,35 +465,38 @@ QUnit.module("Views", (hooks) => {
         assert.verifySteps(["read_group"]);
     });
 
-    QUnit.test("aggregate group_operator from the arch overrides the one on the field", async function (assert) {
-        assert.expect(3);
+    QUnit.test(
+        "aggregate group_operator from the arch overrides the one on the field",
+        async function (assert) {
+            assert.expect(3);
 
-        serverData.models.test_report.fields.sold.group_operator = "fromField";
-        const dashboard = await makeView({
-            type: "dashboard",
-            resModel: "test_report",
-            serverData,
-            arch: `
+            serverData.models.test_report.fields.sold.group_operator = "fromField";
+            const dashboard = await makeView({
+                type: "dashboard",
+                resModel: "test_report",
+                serverData,
+                arch: `
                 <dashboard>
                     <group>
                         <aggregate name="sold" field="sold" group_operator="fromArch"/>
                     </group>
                 </dashboard>
             `,
-            mockRPC(route, args) {
-                assert.step(args.method || route);
-                if (args.method === "read_group") {
-                    assert.deepEqual(
-                        args.kwargs.fields,
-                        ["sold:fromArch(sold)"],
-                        "should read the correct field"
-                    );
-                    return [{}];
-                }
-            },
-        });
-        assert.verifySteps(["read_group"]);
-    });
+                mockRPC(route, args) {
+                    assert.step(args.method || route);
+                    if (args.method === "read_group") {
+                        assert.deepEqual(
+                            args.kwargs.fields,
+                            ["sold:fromArch(sold)"],
+                            "should read the correct field"
+                        );
+                        return [{}];
+                    }
+                },
+            });
+            assert.verifySteps(["read_group"]);
+        }
+    );
 
     QUnit.test("aggregate group_operator from field", async function (assert) {
         assert.expect(3);
@@ -613,7 +616,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a graph tag", async function (assert) {
-        assert.expect(8);
+        assert.expect(9);
 
         serverData.views["test_report,some_xmlid,graph"] = `
             <graph>
@@ -657,7 +660,12 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsNone(
             dashboard,
-            ".o_subview .o_graph_view .o_control_panel .o_cp_bottom_rigth"
+            ".o_subview .o_graph_view .o_control_panel .o_cp_bottom_right"
+        );
+        assert.containsOnce(
+            dashboard,
+            ".o-web-dashboard-view-wrapper--switch-button",
+            "should have rendered an additional switch button"
         );
 
         assert.verifySteps(["load_views", "web_read_group"]);
@@ -717,7 +725,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a pivot tag", async function (assert) {
-        assert.expect(11);
+        assert.expect(10);
         serverData.views["test_report,some_xmlid,pivot"] = `
             <pivot>
                 <field name="categ_id" type="row"/>
@@ -755,13 +763,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(
             dashboard,
-            ".o_subview .o-dashboard-view--subview-buttons",
-            "should have rendered the pivot view's buttons"
-        );
-        assert.containsN(
-            dashboard,
-            ".o_subview .o-dashboard-view--subview-buttons .o_button_switch",
-            1,
+            ".o-web-dashboard-view-wrapper--switch-button",
             "should have rendered an additional switch button"
         );
         assert.containsOnce(dashboard, ".o_subview .o_pivot", "should have rendered a pivot view");
@@ -825,7 +827,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a cohort tag", async function (assert) {
-        assert.expect(6);
+        assert.expect(5);
         serverData.views["test_report,some_xmlid,cohort"] = `
             <cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week"/>
         `;
@@ -873,13 +875,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(
             dashboard,
-            ".o_subview .o-dashboard-view--subview-buttons",
-            "should have rendered the cohort view's buttons"
-        );
-        assert.containsN(
-            dashboard,
-            ".o_subview .o-dashboard-view--subview-buttons .o_button_switch",
-            1,
+            ".o-web-dashboard-view-wrapper--switch-button",
             "should have rendered an additional switch button"
         );
         assert.containsOnce(
@@ -1490,9 +1486,8 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        const graph = dashboard.el.querySelector(".o_subview[type='graph']");
-        const pivot = dashboard.el.querySelector(".o_subview[type='pivot']");
-
+        let graph = dashboard.el.querySelector(".o_subview[type='graph']");
+        let pivot = dashboard.el.querySelector(".o_subview[type='pivot']");
         await toggleMenu(graph, "Measures");
         assert.ok(isItemSelected(graph, "Sold"), "sold measure should be active in graph view");
 
@@ -1512,7 +1507,8 @@ QUnit.module("Views", (hooks) => {
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in both subviews
         await click(dashboard.el.querySelector(".o_aggregate[name=untaxed]"));
-
+        graph = dashboard.el.querySelector(".o_subview[type='graph']");
+        pivot = dashboard.el.querySelector(".o_subview[type='pivot']");
         await toggleMenu(graph, "Measures");
         assert.ok(
             isItemSelected(graph, "Untaxed"),
@@ -1809,7 +1805,7 @@ QUnit.module("Views", (hooks) => {
         assert.deepEqual(getFacetTexts(webClient), ["Category 1"]);
 
         // open graph in fullscreen
-        await click(webClient.el.querySelector(".o_button_switch"));
+        await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
         await nextTick();
         assert.strictEqual(
             $(webClient.el).find(".o_control_panel .breadcrumb-item:nth(1)").text(),
@@ -1900,7 +1896,7 @@ QUnit.module("Views", (hooks) => {
         assert.deepEqual(getFacetTexts(webClient), ["Category 1"]);
 
         // open cohort in fullscreen
-        await click(webClient.el.querySelector(".o_button_switch"));
+        await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
         await nextTick();
         assert.strictEqual(
             $(".o_control_panel .breadcrumb li:nth(1)").text(),
@@ -2008,7 +2004,7 @@ QUnit.module("Views", (hooks) => {
         await toggleMenuItem(dashboard, "Untaxed");
 
         // open graph in fullscreen
-        await click(dashboard.el.querySelector(".o_button_switch"));
+        await click(dashboard.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
         assert.verifySteps(["doAction", "categ_id", "untaxed", "pie"]);
     });
 
@@ -2090,7 +2086,7 @@ QUnit.module("Views", (hooks) => {
         await toggleMenuItem(dashboard, "Untaxed");
 
         // open cohort in fullscreen
-        await click(dashboard.el.querySelector(".o_button_switch"));
+        await click(dashboard.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
         assert.verifySteps(["doAction", "untaxed", "week"]);
     });
 
@@ -2176,7 +2172,7 @@ QUnit.module("Views", (hooks) => {
             );
 
             // open graph in fullscreen
-            click(dashboard.el.querySelector(".o_button_switch"));
+            click(dashboard.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
             assert.verifySteps(["doAction"]);
         }
@@ -2244,7 +2240,7 @@ QUnit.module("Views", (hooks) => {
             await toggleMenuItem(pivot, "Untaxed");
 
             // open pivot in fullscreen
-            await click(pivot.querySelector(".o_button_switch"));
+            await click(pivot.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
             // go back using the breadcrumbs
             await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
@@ -2317,7 +2313,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         // open graph in fullscreen
-        await click(webClient.el.querySelector(".o_button_switch"));
+        await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
         // filter on bar
         await toggleFilterMenu(webClient);
@@ -2380,7 +2376,7 @@ QUnit.module("Views", (hooks) => {
             });
 
             // open graph in fullscreen
-            await click(webClient.el.querySelector(".o_button_switch"));
+            await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
             // go back using the breadcrumbs
             await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
@@ -2967,11 +2963,11 @@ QUnit.module("Views", (hooks) => {
                 `,
             });
 
-            const graph = dashboard.el.querySelector(".o_subview[type='graph']");
-            const pivot = dashboard.el.querySelector(".o_subview[type='pivot']");
             // click on aggregate to activate count measure
             await click(dashboard.el.querySelector(".o_aggregate"));
 
+            const graph = dashboard.el.querySelector(".o_subview[type='graph']");
+            const pivot = dashboard.el.querySelector(".o_subview[type='pivot']");
             await toggleMenu(graph, "Measures");
             assert.ok(
                 isItemSelected(graph, "Count"),
@@ -3635,7 +3631,7 @@ QUnit.module("Views", (hooks) => {
     );
 
     QUnit.test('groupbys in "Group By" menu of graph subviews', async function (assert) {
-        assert.expect(17);
+        assert.expect(16);
 
         serverData.models.test_time_range.fields.categ_id.store = true;
         serverData.models.test_time_range.fields.categ_id.sortable = true;
@@ -3684,13 +3680,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(
             dashboard,
-            ".o_subview .o-dashboard-view--subview-buttons",
-            "should contain the buttons container"
-        );
-
-        assert.containsOnce(
-            dashboard,
-            '.o_subview .o-dashboard-view--subview-buttons .o_group_by_menu:contains("Group By")',
+            '.o_subview .o_group_by_menu:contains("Group By")',
             "graph button should have been rendered"
         );
 
@@ -3910,7 +3900,11 @@ QUnit.module("Views", (hooks) => {
             await toggleFilterMenu(webClient.el.querySelector(".o_control_panel"));
             await toggleMenuItem(webClient.el.querySelector(".o_control_panel"), "noId");
 
-            await click(webClient.el.querySelector(".o_subview[type='pivot'] .o_button_switch"));
+            await click(
+                webClient.el.querySelector(
+                    ".o_subview[type='pivot'] .o-web-dashboard-view-wrapper--switch-button"
+                )
+            );
             assert.containsOnce(webClient, ".o_action");
             assert.containsNone(webClient, ".o_dashboard_view");
             assert.containsOnce(webClient, ".o_pivot_view ");

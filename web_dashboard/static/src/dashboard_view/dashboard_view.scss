@@ -30,6 +30,10 @@
         .o_graph_renderer {
             width: 100%;
         }
+
+        @include media-breakpoint-down(sm) {
+            overflow: auto;
+        }
     }
 
     .o_group {
@@ -96,11 +100,6 @@
             color: $headings-color;
         }
 
-        //.o_pie_chart {
-        //    width: 100%;
-        //}
-
-
         .o_aggregate.o_clickable {
             .o_value, .o_variation {
                 cursor: pointer;
@@ -157,31 +156,11 @@
         }
     }
 
-    .o_pivot > table {
-        width: 100%;
-    }
-
-    .o_dashboard_subview_buttons  {
-        // Icons toolbar
-        > .btn-group[role=toolbar] {
-            margin-left: 8px;
-        }
-
-        .o_dropdown:not(:first-child) {
-            margin-left: 8px;
-            align-items: center;
-        }
-    }
-
     .o_subview {
         .o_view_nocontent {
             position: relative;
             flex: 1 1 auto;
             top: inherit;
-        }
-
-        .o_view_controller {
-            padding-top: $padding-small;
         }
 
         .o_control_panel {
@@ -190,6 +169,14 @@
             padding-right: 0px;
             padding-left: 0px;
             border-bottom: unset;
+        }
+
+        .o_view_controller {
+            padding-top: $padding-small;
+        }
+
+        .o_pivot > table {
+            width: 100%;
         }
 
         .o_graph_view  {
@@ -207,10 +194,6 @@
         }
 
         &[type=graph] {
-            .o_view_controller {
-                width: 100%;
-            }
-
             @include media-breakpoint-down(xs) {
                 .o_dashboard_subview_buttons {
                     .btn-group {

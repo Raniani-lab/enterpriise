@@ -75,19 +75,12 @@ export class DashboardCompiler {
     }
 
     compileView(node) {
-        const type = node.getAttribute("type");
         const view = this.doc.createElement("ViewWrapper");
-
-        const divWrap = this.doc.createElement("div");
-        divWrap.setAttribute("t-att-type", `"${type}"`);
-        divWrap.setAttribute("class", "o_subview");
-        setSampleDisable(divWrap);
-
-        CompileLib.appendTo(divWrap, view);
-
+        const type = node.getAttribute("type");
         view.setAttribute("t-props", `getViewWrapperProps("${type}")`);
         view.setAttribute("t-key", "subViewsRenderKey");
-        return divWrap;
+        view.setAttribute("class", "o_subview");
+        return view;
     }
 
     compileStatistic(node, params) {

@@ -16,7 +16,7 @@ var renderVariation = dataComparisonUtils.renderVariation;
 var QWeb = core.qweb;
 
 var DashboardRenderer = FormRenderer.extend({
-    className: "o_dashboard_view",
+    className: "o_legacy_dashboard_view",
     sampleDataTargets: ['.o_subview', '.o_group'],
     events: {
         'click .o_aggregate.o_clickable': '_onAggregateClicked',

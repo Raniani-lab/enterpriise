@@ -95,8 +95,8 @@ QUnit.module('Views', {
         });
         await testUtils.nextTick();
         await testUtils.nextTick();
-        assert.containsOnce(dashboard, '.o_dashboard_view',
-            "root has a child with 'o_dashboard_view' class");
+        assert.containsOnce(dashboard, '.o_legacy_dashboard_view',
+            "root has a child with 'o_legacy_dashboard_view' class");
         assert.containsN(dashboard, '.o_group', 2,
             "should have rendered two groups");
         assert.hasClass(dashboard.$('.o_group .o_group'), 'o_group_col_2',

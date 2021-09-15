@@ -9,17 +9,15 @@ import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { useSetupView, useViewArch } from "@web/views/helpers/view_hook";
-import { View } from "@web/views/view";
 import { ViewWidget } from "@web/views/view_widget";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
-import { ControlPanelBottomContent } from "./control_panel_bottom_content/control_panel_bottom_content";
 import { DashboardArchParser } from "./dashboard_arch_parser";
 import { DashboardCompiler } from "./dashboard_compiler";
 import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
+import { ViewWrapper } from "./view_wrapper/view_wrapper";
 
-const { Component, hooks, tags } = owl;
-const { useSubEnv } = hooks;
+const { Component } = owl;
 
 const viewRegistry = registry.category("views");
 
@@ -39,18 +37,6 @@ const GRAPH_DISPLAY = {
 const DISPLAY = {
     graph: GRAPH_DISPLAY,
 };
-
-// The ViewWrapper component is an higher order component for sub views in the
-// dashboard. It allows to define a specific env for each sub view, with their
-// own callback recorders such that the dashboard can get their local and global
-// states, and their context.
-class ViewWrapper extends Component {
-    setup() {
-        useSubEnv(this.props.callbackRecorders);
-    }
-}
-ViewWrapper.template = tags.xml`<View t-props="props.viewProps"/>`;
-ViewWrapper.components = { View };
 
 export class DashboardView extends Component {
     setup() {
@@ -231,6 +217,8 @@ export class DashboardView extends Component {
     getViewWrapperProps(viewType) {
         return {
             callbackRecorders: this.subViews[viewType].callbackRecorders,
+            switchView: () => this.openFullscreen(viewType),
+            type: viewType,
             viewProps: this.getViewProps(viewType),
         };
     }
@@ -242,16 +230,9 @@ export class DashboardView extends Component {
      */
     getViewProps(viewType) {
         const display = Object.assign(DISPLAY[viewType] || {});
-        display.controlPanel = Object.assign({}, SUB_VIEW_CONTROL_PANEL_DISPLAY, {
-            "bottom-content": {
-                Component: ControlPanelBottomContent,
-                props: {
-                    switchView: () => this.openFullscreen(viewType),
-                },
-            },
-        });
+        display.controlPanel = SUB_VIEW_CONTROL_PANEL_DISPLAY;
         const subView = this.subViews[viewType];
-        const props = Object.assign(
+        return Object.assign(
             {
                 domain: this.props.domain,
                 comparison: this.props.comparison,
@@ -266,11 +247,9 @@ export class DashboardView extends Component {
             {
                 noContentHelp: this.model.useSampleModel ? false : undefined,
                 useSampleModel: this.model.useSampleModel,
-            },
-            { state: subView.state }
+                state: subView.state,
+            }
         );
-
-        return props;
     }
 
     /**

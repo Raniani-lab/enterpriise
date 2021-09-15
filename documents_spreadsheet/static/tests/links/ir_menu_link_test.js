@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry";
-import { menuService } from "@web/webclient/menu_service";
+import { menuService } from "@web/webclient/menus/menu_service";
 import { session } from "@web/session";
 import { actionService } from "@web/webclient/actions/action_service";
 import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";

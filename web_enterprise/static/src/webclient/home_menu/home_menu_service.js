@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
-import { computeAppsAndMenuItems } from "@web/webclient/menu_service";
+import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_service";
 import { ControllerNotFoundError } from "@web/webclient/actions/action_service";
 import { HomeMenu } from "./home_menu";
 

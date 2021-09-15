@@ -6,6 +6,7 @@ import { delay } from "web.concurrency";
 import { loadAssets } from "@web/core/assets";
 
 const { core, Component, hooks, mount } = owl;
+import { _t } from 'web.core';
 const { useRef } = hooks;
 const bus = new core.EventBus();
 const busOk = "BarcodeDialog-Ok";
@@ -154,7 +155,18 @@ class BarcodeDialog extends Component {
             video: { facingMode: "environment" },
             audio: false,
         };
-        this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+        try {
+            this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+        } catch (err) {
+            const errors = {
+                NotFoundError: _t('No device can be found.'),
+                NotAllowedError: _t('Odoo needs your authorization first.'),
+            };
+            const errorMessage = _t('Could not start scanning. ') + (errors[err.name] || err.message);
+            this.onError(new Error(errorMessage));
+            return;
+        }
         this.videoPreviewRef.el.srcObject = this.stream;
         await this.isVideoReady();
         this.interval = setInterval(this.detectCode.bind(this), 100);

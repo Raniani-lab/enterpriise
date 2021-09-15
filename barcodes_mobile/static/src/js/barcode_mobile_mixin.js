@@ -2,6 +2,8 @@ odoo.define('web_mobile.barcode_mobile_mixin', function (require) {
 "use strict";
 
 const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
+const core = require('web.core');
+const _t = core._t;
 
 return {
     events: {
@@ -15,7 +17,14 @@ return {
         return res;
     },
     async open_mobile_scanner() {
-        const barcode = await BarcodeScanner.scanBarcode();
+        let error = null;
+        let barcode = null;
+        try {
+            barcode = await BarcodeScanner.scanBarcode();
+        } catch (err) {
+            error = err.error.message;
+        }
+
         if (barcode) {
             this._onBarcodeScanned(barcode);
             if ('vibrate' in window.navigator) {
@@ -24,7 +33,7 @@ return {
         } else {
             this.displayNotification({
                 type: 'warning',
-                message: 'Please, Scan again !',
+                message: error || _t('Please, Scan again !'),
             });
         }
     }

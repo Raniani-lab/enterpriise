@@ -586,7 +586,14 @@ p.o_account_reports_contact_info {
     }
 }
 
-.o_country_specific_report_label{
+.o_country_specific_report_label {
     margin-left: 16px;
     background-color: white;
+}
+
+.o_account_reports_filter_currency {
+    > .dropdown-menu {
+        overflow-y: auto;
+        max-height: calc(100vh - #{$o-navbar-height} - 100px);  // 100px for the control panel
+    }
 }

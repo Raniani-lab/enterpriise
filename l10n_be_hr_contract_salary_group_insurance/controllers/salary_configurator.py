@@ -29,9 +29,9 @@ class HrContractSalary(main.HrContractSalary):
         return res
 
     def _get_advantages_values(self, contract):
-        mapped_advantages, advantage_types, dropdown_options, initial_values = super()._get_advantages_values(contract)
+        mapped_advantages, advantage_types, dropdown_options, dropdown_group_otions, initial_values = super()._get_advantages_values(contract)
         initial_values['l10n_be_has_ambulatory_insurance'] = contract.l10n_be_ambulatory_insurance_amount
-        return mapped_advantages, advantage_types, dropdown_options, initial_values
+        return mapped_advantages, advantage_types, dropdown_options, dropdown_group_otions, initial_values
 
     def _get_new_contract_values(self, contract, employee, advantages):
         res = super()._get_new_contract_values(contract, employee, advantages)

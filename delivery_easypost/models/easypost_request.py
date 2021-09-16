@@ -10,7 +10,7 @@ from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_round, float_is_zero
 
 API_BASE_URL = 'https://api.easypost.com/v2/'
-
+NON_BLOCKING_MESSAGES = ['rate_message']
 
 class EasypostRequest():
     "Implementation of Easypost API"
@@ -398,7 +398,9 @@ class EasypostRequest():
         response = self._make_api_request(endpoint, 'post', data=buy_order_payload)
         response = self._post_process_ship_response(response, carrier=carrier, picking=picking)
         # explicitly check response for any messages
-        if response.get('messages'):
+        messages = response.get('messages', [])
+        message_type = len(messages) and messages[0].get('type')
+        if message_type not in NON_BLOCKING_MESSAGES:
             raise UserError('\n'.join([x['carrier'] + ': ' + x['type'] + ' -- ' + x['message'] for x in response['messages']]))
 
         # get tracking code and lable file url

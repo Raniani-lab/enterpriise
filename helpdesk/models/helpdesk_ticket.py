@@ -299,7 +299,7 @@ class HelpdeskTicket(models.Model):
             ['ids:array_agg(id)', 'groups_id'],
             ['groups_id'],
         )
-        mapped_data = {data['groups_id']: data['ids'] for data in users_data}
+        mapped_data = {data['groups_id'][0]: data['ids'] for data in users_data}
         for ticket in self:
             if ticket.team_id and ticket.team_id.privacy == 'invite' and ticket.team_id.visibility_member_ids:
                 manager_ids = mapped_data.get(helpdesk_manager_group_id, [])

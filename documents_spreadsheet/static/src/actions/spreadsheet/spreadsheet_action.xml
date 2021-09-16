@@ -21,6 +21,7 @@
         initCallback="props.action.params.initCallback"
         transportService="transportService"
         snapshotRequested="snapshotRequested"
+        download="props.action.params.download"
         t-on-download="_onDownload"
         t-on-unexpected-revision-id="_onUnexpectedRevisionId"
         t-on-spreadsheet-sync-status="_onSpreadsheetSyncStatus"

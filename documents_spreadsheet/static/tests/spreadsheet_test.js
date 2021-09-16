@@ -251,9 +251,33 @@ module(
             assert.verifySteps(["spreadsheet-loaded"]);
         });
 
-        test("Can download xlsx file", async function (assert) {
+        test("download spreadsheet with the action param `download`", async function (assert) {
             assert.expect(4);
-            mockDownload((options) => {
+            registry.category("services").add("spreadsheet", spreadsheetService);
+            mockDownload(async (options) => {
+                assert.step(options.url);
+                assert.ok(options.data.zip_name);
+                assert.ok(options.data.files);
+            });
+            const webClient = await createWebClient({
+                serverData: { models: this.data },
+            });
+            await doAction(webClient, {
+                type: "ir.actions.client",
+                tag: "action_open_spreadsheet",
+                params: {
+                    spreadsheet_id: 1,
+                    download: true,
+                    transportService: new MockSpreadsheetCollaborativeChannel(),
+                },
+            });
+            await nextTick();
+            assert.verifySteps(["/documents/xlsx"]);
+        });
+
+        test("Can download xlsx file from top bar menu", async function (assert) {
+            assert.expect(4);
+            mockDownload(async (options) => {
                 assert.step(options.url);
                 assert.ok(options.data.zip_name);
                 assert.ok(options.data.files);

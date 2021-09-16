@@ -20,6 +20,43 @@ module("documents_spreadsheet kanban", {
     },
 });
 
+test("download spreadsheet from the document inspector", async function (assert) {
+    assert.expect(3);
+    const kanban = await createDocumentsView({
+        View: DocumentsKanbanView,
+        model: "documents.document",
+        data: this.data,
+        arch: `
+          <kanban><templates><t t-name="kanban-box">
+              <div>
+                  <i class="fa fa-circle-thin o_record_selector"/>
+                  <field name="name"/>
+                  <field name="handler"/>
+              </div>
+          </t></templates></kanban>
+      `,
+        intercepts: {
+            do_action: function ({ data }) {
+                assert.step("redirect_to_spreadsheet");
+                assert.deepEqual(data.action, {
+                    type: "ir.actions.client",
+                    tag: "action_open_spreadsheet",
+                    params: {
+                        spreadsheet_id: 1,
+                        download: true,
+                    },
+                });
+            },
+        }
+    });
+    await dom.click(".o_kanban_record:nth(0) .o_record_selector");
+    await nextTick();
+    await dom.click("button.o_inspector_download");
+    await nextTick();
+    assert.verifySteps(["redirect_to_spreadsheet"])
+    kanban.destroy();
+});
+
 test("thumbnail size in document side panel", async function (assert) {
     assert.expect(9);
     this.data["documents.document"].records.push({

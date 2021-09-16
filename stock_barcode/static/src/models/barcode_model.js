@@ -390,16 +390,6 @@ export default class BarcodeModel extends owl.core.EventBus {
 
     async changeSourceLocation(id, applyChangeToPageLines = false) {
         this.scannedLinesVirtualId = [];
-        // For the pickings, changes the location will change the source
-        // location of all the page's move lines.
-        if (applyChangeToPageLines) {
-            const moveLines = this.pageLines;
-            for (const moveLine of moveLines) {
-                moveLine.location_id = id;
-                this._markLineAsDirty(moveLine);
-            }
-            this._groupLinesByPage(this.currentState);
-        }
         this.currentLocationId = id;
         let pageFound = false;
         let emptyPage = false;

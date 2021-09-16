@@ -14,4 +14,12 @@
     &:last-child {
         padding-bottom: 8px;
     }
+
+    > span {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        direction: rtl;
+    }
 }

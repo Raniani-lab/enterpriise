@@ -57,14 +57,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
         super.setData(...arguments);
         const companies = data.data.records['res.company'];
         this.companyIds = companies.map(company => company.id);
-        // Get back all locations used by the quants to list them.
-        this.locationList = [];
-        for (const page of this.pages) {
-            if (page.lines.length) {
-                const locationId = page.lines[0].location_id;
-                this.locationList.push(this.cache.getRecord('stock.location', locationId));
-            }
-        }
+        // Lists all locations to be able to change it easily.
+        const locations = data.data.records['stock.location'];
+        this.locationList = locations ?
+            locations.map(loc => this.cache.getRecord('stock.location', loc.id)) : [];
     }
 
     get displayApplyButton() {

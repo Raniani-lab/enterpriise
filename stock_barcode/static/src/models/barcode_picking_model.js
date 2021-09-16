@@ -138,6 +138,19 @@ export default class BarcodePickingModel extends BarcodeModel {
         return this.record.use_create_lots;
     }
 
+    async changeSourceLocation(id, applyChangeToPageLines = false) {
+        // For the pickings, changes the location will change the source
+        // location of all the page's move lines.
+        if (applyChangeToPageLines) {
+            for (const moveLine of this.pageLines) {
+                moveLine.location_id = id;
+                this._markLineAsDirty(moveLine);
+            }
+            this._groupLinesByPage(this.currentState);
+        }
+        return super.changeSourceLocation(...arguments);
+    }
+
     get destLocation() {
         return this.cache.getRecord('stock.location', this.currentDestLocationId);
     }

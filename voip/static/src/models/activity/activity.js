@@ -45,14 +45,15 @@ registerInstancePatchModel('mail.activity', 'voip/static/src/models/activity/act
      */
     _created() {
         const res = this._super(...arguments);
-        this.env.bus.on('voip_reload_chatter', this, this._onReloadChatter);
+        this._onReloadChatter = this._onReloadChatter.bind(this);
+        this.env.bus.on('voip_reload_chatter', undefined, this._onReloadChatter);
         return res;
     },
     /**
      * @override
      */
     _willDelete() {
-        this.env.bus.off('voip_reload_chatter', this, this._onReloadChatter);
+        this.env.bus.off('voip_reload_chatter', undefined, this._onReloadChatter);
         return this._super(...arguments);
     },
 

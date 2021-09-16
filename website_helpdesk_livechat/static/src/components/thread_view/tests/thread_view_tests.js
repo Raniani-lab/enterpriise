@@ -1,11 +1,10 @@
 /** @odoo-module **/
 
-import { insert, link } from '@mail/model/model_field_command';
+import { insertAndReplace, link } from '@mail/model/model_field_command';
 import {
     afterEach,
     afterNextRender,
     beforeEach,
-    createRootMessagingComponent,
     start,
 } from '@mail/utils/test_utils';
 
@@ -16,22 +15,14 @@ QUnit.module('thread_view_tests.js', {
     beforeEach() {
         beforeEach(this);
 
-        /**
-         * @param {mail.thread_view} threadView
-         * @param {Object} [otherProps={}]
-         */
-        this.createThreadViewComponent = async (threadView, otherProps = {}) => {
-            const props = Object.assign({ threadViewLocalId: threadView.localId }, otherProps);
-            await createRootMessagingComponent(this, "ThreadView", { props, target: this.widget.el });
-        };
-
         this.start = async params => {
-            const { afterEvent, env, widget } = await start(Object.assign({}, params, {
-                data: this.data,
-            }));
+            const res = await start({ ...params, data: this.data });
+            const { afterEvent, components, env, widget } = res;
             this.afterEvent = afterEvent;
+            this.components = components;
             this.env = env;
             this.widget = widget;
+            return res;
         };
     },
     afterEach() {
@@ -50,7 +41,7 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
         seen_message_id: 10,
         name: "General",
     }];
-    await this.start({
+    const { createThreadViewComponent } = await this.start({
         mockRPC(route, { model, method, kwargs }) {
             if (model === 'mail.channel' && method === 'execute_command_helpdesk') {
                 assert.step(`execute command helpdesk. body: ${kwargs.body}`);
@@ -65,9 +56,10 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
     });
     const threadViewer = this.messaging.models['mail.thread_viewer'].create({
         hasThreadView: true,
+        qunitTest: insertAndReplace(),
         thread: link(thread),
     });
-    await this.createThreadViewComponent(threadViewer.threadView, { hasComposer: true });
+    await createThreadViewComponent(threadViewer.threadView);
 
     document.querySelector('.o_ComposerTextInput_textarea').focus();
     await afterNextRender(() => document.execCommand('insertText', false, "/helpdesk something"));

@@ -41,17 +41,6 @@ function factory(dependencies) {
             this.delete();
         }
 
-        //----------------------------------------------------------------------
-        // Private
-        //----------------------------------------------------------------------
-
-        /**
-         * @override
-         */
-        static _createRecordLocalId(data) {
-            return `${this.modelName}_${data.id}`;
-        }
-
     }
 
     Approval.fields = {
@@ -59,6 +48,7 @@ function factory(dependencies) {
             inverse: 'approval',
         }),
         id: attr({
+            readonly: true,
             required: true,
         }),
         isCurrentPartnerApprover: attr({
@@ -67,7 +57,7 @@ function factory(dependencies) {
         }),
         status: attr(),
     };
-
+    Approval.identifyingFields = ['id'];
     Approval.modelName = 'approvals.approval';
 
     return Approval;

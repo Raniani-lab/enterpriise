@@ -6,7 +6,6 @@ import {
     afterEach,
     afterNextRender,
     beforeEach,
-    createRootMessagingComponent,
     start,
 } from '@mail/utils/test_utils';
 
@@ -21,20 +20,14 @@ QUnit.module('attachment_tests.js', {
     beforeEach() {
         beforeEach(this);
 
-        this.createMessageComponent = async (message, otherProps) => {
-            const props = Object.assign({ messageLocalId: message.localId }, otherProps);
-            await createRootMessagingComponent(this, "Message", {
-                props,
-                target: this.widget.el,
-            });
-        };
-
         this.start = async params => {
-            const { env, widget } = await start(Object.assign({}, params, {
-                data: this.data,
-            }));
+            const res = await start({ ...params, data: this.data });
+            const { afterEvent, components, env, widget } = res;
+            this.afterEvent = afterEvent;
+            this.components = components;
             this.env = env;
             this.widget = widget;
+            return res;
         };
     },
     afterEach() {
@@ -50,7 +43,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         overrideBackButton({ enabled }) {},
     });
 
-    await this.start({
+    const { createMessageComponent } = await this.start({
         env: {
             device: {
                 isMobile: true,
@@ -70,7 +63,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         body: "<p>Test</p>",
         id: 100,
     });
-    await this.createMessageComponent(message);
+    await createMessageComponent(message);
 
     await afterNextRender(() => document.querySelector('.o_AttachmentImage').click());
     await afterNextRender(() => {
@@ -99,7 +92,7 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         },
     });
 
-    await this.start({
+    const { createMessageComponent } = await this.start({
         env: {
             device: {
                 isMobile: true,
@@ -119,7 +112,7 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         body: "<p>Test</p>",
         id: 100,
     });
-    await this.createMessageComponent(message);
+    await createMessageComponent(message);
 
     await afterNextRender(() => document.querySelector('.o_AttachmentImage').click());
     assert.verifySteps(

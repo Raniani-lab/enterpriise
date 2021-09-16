@@ -318,13 +318,10 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         },
     },
 
-    // Scan productlot1...
+    // Scan productlot1 then scan lot0002 x4
+    { trigger: '.o_barcode_client_action', run: 'scan productlot1' },
     {
-        trigger: '.o_barcode_line[data-barcode="productlot1"]',
-        run: 'scan productlot1'
-    },
-    {
-        trigger: '.o_scan_message_scan_lot',
+        trigger: '.o_sublines .qty-done:contains("4")',
         run: function() {
             checkState(currentViewState);
             const sublines = document.querySelectorAll('.o_sublines [data-barcode=productlot1]');
@@ -335,23 +332,10 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             helper.assertLineIsHighlighted($(sublines[1]), false);
         }
     },
-    // ... then scan lot0002 x4
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan lot0002'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan lot0002'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan lot0002'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan lot0002'
-    },
+    { trigger: '.o_barcode_client_action', run: 'scan lot0002' },
+    { trigger: '.o_barcode_client_action', run: 'scan lot0002' },
+    { trigger: '.o_barcode_client_action', run: 'scan lot0002' },
+    { trigger: '.o_barcode_client_action', run: 'scan lot0002' },
     {
         trigger: '.o_sublines .o_barcode_line.o_highlight:contains("lot0002") .qty-done:contains("4")',
         run: function() {
@@ -611,7 +595,7 @@ tour.register('test_batch_create', {test: true}, [
     },
 
     {
-        trigger: '.o_confirm'
+        trigger: '.o_confirm:not([disabled])'
     },
 
     // select 2 delivery orders
@@ -620,10 +604,12 @@ tour.register('test_batch_create', {test: true}, [
     },
 
     {
+        extra_trigger: '.o_highlight .o_barcode_line_title:contains("picking_delivery_1")',
         trigger: '.o_barcode_line_title:contains("picking_delivery_2")',
     },
 
     {
+        extra_trigger: '.o_highlight .o_barcode_line_title:contains("picking_delivery_2")',
         trigger: '.o_confirm'
     },
 

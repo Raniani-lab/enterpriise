@@ -1752,26 +1752,15 @@ tour.register('test_delivery_reserved_3', {test: true}, [
             helper.assertLinesCount(1);
             helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
-            // not relevant in delivery mode
-            // helper.assertDestinationLocationHighlight(false);
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
         }
     },
-
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    { trigger: '.o_barcode_client_action', run: 'scan this_is_not_a_barcode_dude' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan this_is_not_a_barcode_dude'
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line',
         run: function() {
             helper.assertPageSummary('');
             helper.assertPreviousVisible(true);
@@ -1781,8 +1770,6 @@ tour.register('test_delivery_reserved_3', {test: true}, [
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
             helper.assertScanMessage('scan_product');
-            // not relevant in delivery mode
-            // helper.assertDestinationLocationHighlight(false);
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1932,7 +1919,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
     // and it is the last line again
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:last-child:contains("product3")',
         run: function() {
             helper.assertLineButtonsAreVisible(2, false, '[name=incrementButton]');
             helper.assertLineQuantityOnReservedQty(2, '4 / 4');
@@ -2463,8 +2450,7 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_line:first-child .qty-done:contains("2")',
-        extra_trigger: '.o_barcode_line:nth-child(2)',
+        trigger: '.o_sublines .o_barcode_line:contains("lot2") .qty-done:contains("2")',
         run: 'scan LOC-01-01-00',
     },
     // Open the form view to trigger a save
@@ -2914,7 +2900,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:contains("productlot1")',
         run: 'scan lot1',
     },
 
@@ -2924,12 +2910,12 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected .qty-done:contains(2)',
         run: 'scan productserial1',
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:contains("productserial1")',
         run: 'scan serial1',
     },
 
@@ -2974,7 +2960,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line .qty-done:contains(3)',
         run: 'scan productserial1',
     },
 
@@ -2984,7 +2970,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_sublines .o_barcode_line:nth-child(3)',
+        trigger: ':contains("productserial1") .o_sublines .o_barcode_line:nth-child(3)',
         run: function () {
             helper.assertLinesCount(2);
             helper.assertSublinesCount(3);
@@ -3017,7 +3003,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         run: 'scan productlot1',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected:contains("productlot1")',
         run: 'scan lot2',
     },
     {

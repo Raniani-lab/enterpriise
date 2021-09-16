@@ -13,6 +13,11 @@ const {
     beforeEach,
 } = require('@mail/utils/test_utils');
 
+const {
+    toggleFilterMenu,
+    toggleMenuItem,
+} = require("@web/../tests/search/helpers");
+
 const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
 const KanbanView = require('web.KanbanView');
@@ -21,7 +26,6 @@ const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
 const { str_to_datetime } = require('web.time');
 
-const cpHelpers = testUtils.controlPanel;
 const createView = testUtils.createView;
 
 function autocompleteLength() {
@@ -543,15 +547,15 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
             "should show 3 document previews in the DocumentsInspector");
 
-        await testUtils.controlPanel.toggleFilterMenu(kanban);
-        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(kanban.el);
+        await toggleMenuItem(kanban.el, "OwO");
 
         assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected record");
         assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
+        await toggleMenuItem(kanban.el, "OwO");
 
         assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected records");
@@ -843,7 +847,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        await cpHelpers.pagerNext(kanban);
+        await testUtils.controlPanel.pagerNext(kanban);
         await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_record_selected',
@@ -851,7 +855,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
-        await cpHelpers.pagerPrevious(kanban);
+        await testUtils.controlPanel.pagerPrevious(kanban);
         await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_record_selected',
@@ -2496,8 +2500,8 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the chatter");
 
         // reload with a domain
-        await testUtils.controlPanel.toggleFilterMenu(kanban);
-        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(kanban.el);
+        await toggleMenuItem(kanban.el, "OwO");
 
         assert.containsOnce(kanban, '.o_record_selected',
             "record should still be selected");
@@ -2578,8 +2582,8 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the chatter");
 
         // reload with a domain
-        await testUtils.controlPanel.toggleFilterMenu(kanban);
-        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(kanban.el);
+        await toggleMenuItem(kanban.el, "OwO");
 
         assert.containsNone(kanban, '.o_record_selected',
             "no more record should be selected");
@@ -2840,8 +2844,8 @@ QUnit.module('documents_kanban_tests.js', {
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 3 records in the renderer");
 
         // reload with a domain
-        await testUtils.controlPanel.toggleFilterMenu(kanban);
-        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(kanban.el);
+        await toggleMenuItem(kanban.el, "OwO");
 
         assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
         assert.ok(
@@ -2861,8 +2865,8 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
 
         // reload without the domain
-        await testUtils.controlPanel.toggleFilterMenu(kanban);
-        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(kanban.el);
+        await toggleMenuItem(kanban.el, "OwO");
 
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 4 record in the renderer");
         assert.ok(

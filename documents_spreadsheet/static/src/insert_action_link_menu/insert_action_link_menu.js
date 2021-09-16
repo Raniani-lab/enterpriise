@@ -1,16 +1,10 @@
 /** @odoo-module **/
 
-import { createEmptySpreadsheet } from "@documents_spreadsheet/js/o_spreadsheet/helpers/helpers";
-import spreadsheet from "@documents_spreadsheet/js/o_spreadsheet/o_spreadsheet_loader";
-import { buildViewLink } from "@documents_spreadsheet/js/o_spreadsheet/registries/odoo_menu_link_cell";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 
 const { Component } = owl;
-const { UuidGenerator, markdownLink } = spreadsheet.helpers;
-const uuidGenerator = new UuidGenerator();
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 
 /**
@@ -19,9 +13,8 @@ const favoriteMenuRegistry = registry.category("favoriteMenu");
  */
 export class InsertViewSpreadsheet extends Component {
     setup() {
-        this.action = useService("action");
-        this.notification = useService("notification");
         this.orm = useService("orm");
+        this.spreadsheet = useService("spreadsheet");
     }
 
     //-------------------------------------------------------------------------
@@ -38,58 +31,8 @@ export class InsertViewSpreadsheet extends Component {
      * Open a new spreadsheet or an existing one and insert a link to the action.
      */
     async insertInSpreadsheet({ id: spreadsheet }) {
-        let documentId;
-        let notificationMessage;
-        const insertLinkCallback = await this.getInsertMenuCallback(!spreadsheet);
-        if (!spreadsheet) {
-            documentId = await createEmptySpreadsheet(this.env.searchModel.orm);
-            notificationMessage = this.env._t("New spreadsheet created in Documents");
-        } else {
-            documentId = spreadsheet.id;
-            notificationMessage = sprintf(
-                this.env._t("New sheet inserted in '%s'"),
-                spreadsheet.name
-            );
-        }
-        this.notification.add(notificationMessage, { type: "info" });
-        this.action.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-                spreadsheet_id: documentId,
-                initCallback: insertLinkCallback,
-            },
-        });
-    }
-
-    /**
-     * Get the function to be called when the spreadsheet is opened in order
-     * to insert the link.
-     * @param {boolean} isEmptySpreadsheet True if the link is inserted in
-     *                                     an empty spreadsheet, false
-     *                                     otherwise
-     * @returns Function to call
-     */
-    async getInsertMenuCallback(isEmptySpreadsheet) {
-        const action = this.getViewDescription();
-        return (model) => {
-            if (!isEmptySpreadsheet) {
-                const sheetId = uuidGenerator.uuidv4();
-                const sheetIdFrom = model.getters.getActiveSheetId();
-                model.dispatch("CREATE_SHEET", {
-                    sheetId,
-                    position: model.getters.getVisibleSheets().length,
-                });
-                model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId });
-            }
-            const viewLink = buildViewLink(action);
-            model.dispatch("UPDATE_CELL", {
-                sheetId: model.getters.getActiveSheetId(),
-                content: markdownLink(this.env.searchModel.displayName, viewLink),
-                col: 0,
-                row: 0,
-            });
-        };
+        const actionToLink = this.getViewDescription();
+        return this.spreadsheet.insertInSpreadsheet(spreadsheet, actionToLink);
     }
 
     getViewDescription() {

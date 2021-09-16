@@ -1,19 +1,59 @@
 /** @odoo-module **/
 
-import { _t } from "@web/core/l10n/translation";
+import { registry } from "@web/core/registry";
+import { sprintf } from "@web/core/utils/strings";
+import spreadsheet from "@documents_spreadsheet/js/o_spreadsheet/o_spreadsheet_loader";
+import { buildViewLink } from "@documents_spreadsheet/js/o_spreadsheet/registries/odoo_menu_link_cell";
+import { createEmptySpreadsheet } from "@documents_spreadsheet/js/o_spreadsheet/helpers/helpers";
 import { UNTITLED_SPREADSHEET_NAME } from "../../constants";
+
+const { markdownLink } = spreadsheet.helpers;
+
+/**
+ * Helper to get the function to be called when the spreadsheet is opened
+ * in order to insert the link.
+ * @param {boolean} isEmptySpreadsheet True if the link is inserted in
+ *                                     an empty spreadsheet, false
+ *                                     otherwise
+ * @param {ViewLinkDescription} actionToLink
+ * @returns Function to call
+ */
+function getInsertMenuCallback(isEmptySpreadsheet, actionToLink) {
+    return (model) => {
+        if (!isEmptySpreadsheet) {
+            const sheetId = model.uuidGenerator.uuidv4();
+            const sheetIdFrom = model.getters.getActiveSheetId();
+            model.dispatch("CREATE_SHEET", {
+                sheetId,
+                position: model.getters.getVisibleSheets().length,
+            });
+            model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId });
+        }
+        const viewLink = buildViewLink(actionToLink);
+        model.dispatch("UPDATE_CELL", {
+            sheetId: model.getters.getActiveSheetId(),
+            content: markdownLink(actionToLink.name, viewLink),
+            col: 0,
+            row: 0,
+        });
+    };
+}
 
 /**
  * This class is an interface used to interact with
  * the server database to manipulate spreadsheet documents.
  * It hides details of the underlying "documents.document" model.
  */
-export class SpreadsheetService {
+class SpreadsheetService {
     /**
-     * @param {Object} orm orm service
+     * @param {OdooEnv} env
+     * @param {Object} dependencies injected services
      */
-    constructor(orm) {
+    constructor(env, { orm, notification, action }) {
+        this.env = env;
         this.orm = orm;
+        this.action = action;
+        this.notification = notification;
     }
 
     /**
@@ -84,4 +124,46 @@ export class SpreadsheetService {
     async fetchData(documentId) {
         return this.orm.call("documents.document", "join_spreadsheet_session", [documentId]);
     }
+
+    /**
+     * Open a new spreadsheet or an existing one and insert a link to the action.
+     * @param {Object} spreadsheet
+     *  a spreadsheet that has been returned by get_spreadsheets_to_display
+     * @param {ViewLinkDescription} actionToLink
+     */
+    async insertInSpreadsheet(spreadsheet, actionToLink) {
+        let documentId;
+        let notificationMessage;
+        if (!spreadsheet) {
+            documentId = await createEmptySpreadsheet(this.orm);
+            notificationMessage = this.env._t("New spreadsheet created in Documents");
+        } else {
+            documentId = spreadsheet.id;
+            notificationMessage = sprintf(
+                this.env._t("New sheet inserted in '%s'"),
+                spreadsheet.name
+            );
+        }
+        this.notification.add(notificationMessage, { type: "info" });
+        this.action.doAction({
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: {
+                spreadsheet_id: documentId,
+                initCallback: getInsertMenuCallback(!spreadsheet, actionToLink),
+            },
+        });
+    }
 }
+
+/**
+ * This service exposes a single instance of the above class.
+ */
+export const spreadsheetService = {
+    dependencies: ["orm", "notification", "action"],
+    start(env, dependencies) {
+        return new SpreadsheetService(env, dependencies);
+    },
+};
+
+registry.category("services").add("spreadsheet", spreadsheetService);

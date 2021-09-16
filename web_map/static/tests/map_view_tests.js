@@ -5,7 +5,7 @@ const MapView = require('web_map.MapView');
 const MapModel = require('web_map.MapModel');
 const testUtils = require('web.test_utils');
 
-const cpHelpers = testUtils.controlPanel;
+const { toggleGroupByMenu, toggleMenuItem } = require("@web/../tests/search/helpers");
 const createView = testUtils.createAsyncView;
 
 QUnit.module('mapView', {
@@ -896,8 +896,8 @@ QUnit.module('mapView', {
             },
         });
 
-        assert.strictEqual(cpHelpers.getPagerValue(map), '1-2');
-        assert.strictEqual(cpHelpers.getPagerSize(map), '3');
+        assert.strictEqual(testUtils.controlPanel.getPagerValue(map), '1-2');
+        assert.strictEqual(testUtils.controlPanel.getPagerSize(map), '3');
 
         map.destroy();
     });
@@ -1765,14 +1765,14 @@ QUnit.module('mapView', {
             },
         });
         assert.containsOnce(map, '.o_pager');
-        assert.strictEqual(cpHelpers.getPagerValue(map), "1-80",
+        assert.strictEqual(testUtils.controlPanel.getPagerValue(map), "1-80",
             "current pager value should be 1-20");
-        assert.strictEqual(cpHelpers.getPagerSize(map), "101",
+        assert.strictEqual(testUtils.controlPanel.getPagerSize(map), "101",
             "current pager limit should be 21");
 
-        await cpHelpers.pagerNext(map);
+        await testUtils.controlPanel.pagerNext(map);
 
-        assert.strictEqual(cpHelpers.getPagerValue(map), "81-101",
+        assert.strictEqual(testUtils.controlPanel.getPagerValue(map), "81-101",
             "pager value should be 21-40");
 
         map.destroy();
@@ -1946,8 +1946,8 @@ QUnit.module('mapView', {
 
         assert.containsNone(map, '.o_pin_list_group_header', 'Should not have any groups');
 
-        await cpHelpers.toggleGroupByMenu(map);
-        await cpHelpers.toggleMenuItem(map, 'Partner');
+        await toggleGroupByMenu(map.el);
+        await toggleMenuItem(map.el, 'Partner');
 
         assert.containsN(map, '.o_pin_list_group_header', 2, 'Should have 2 groups');
         assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'BarFoo');
@@ -1955,12 +1955,12 @@ QUnit.module('mapView', {
         assert.containsN(map, '.o_pin_list_details li', 3);
         assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectFooBarProjectBarProject');
 
-        await cpHelpers.toggleMenuItem(map, 'Name');
+        await toggleMenuItem(map.el, 'Name');
 
         assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'BarFoo', 'Should not have changed');
         assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectFooBarProjectBarProject');
 
-        await cpHelpers.toggleMenuItem(map, 'Partner');
+        await toggleMenuItem(map.el, 'Partner');
 
         assert.containsN(map, '.o_pin_list_group_header', 3, 'Should have 3 groups');
         assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'FooProjectBarProjectFooBarProject');

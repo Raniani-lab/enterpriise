@@ -4,6 +4,7 @@ import { browser } from "@web/core/browser/browser";
 import { makeView } from "@web/../tests/views/helpers";
 import {
     getFacetTexts,
+    setupControlPanelFavoriteMenuRegistry,
     setupControlPanelServiceRegistry,
     toggleAddCustomFilter,
     toggleFilterMenu,
@@ -129,6 +130,7 @@ QUnit.module("Views", (hooks) => {
                 "test_report,false,dashboard": `<dashboard/>`,
             },
         };
+        setupControlPanelFavoriteMenuRegistry();
         setupControlPanelServiceRegistry();
         serviceRegistry.add("dialog", dialogService);
         serviceRegistry.add("company", companyService);

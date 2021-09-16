@@ -15,10 +15,18 @@ var widgetRegistry = require('web.widget_registry');
 const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 const CohortView = require('web_cohort.CohortView');
 
+const {
+    getFacetTexts,
+    toggleAddCustomFilter,
+    toggleComparisonMenu,
+    toggleFilterMenu,
+    toggleMenuItem,
+    toggleMenuItemOption,
+} = require("@web/../tests/search/helpers");
+
 const viewRegistry = registry.category("views");
 
-const { createView, nextTick } = testUtils;
-const cpHelpers = testUtils.controlPanel;
+const { createView, nextTick, controlPanel: cpHelpers } = testUtils;
 var patchDate = testUtils.mock.patchDate;
 
 var FieldFloat = BasicFields.FieldFloat;
@@ -290,14 +298,14 @@ QUnit.module('Views', {
         });
         assert.verifySteps(["read_group"]);
 
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'date');
-        await cpHelpers.toggleMenuItemOption(dashboard, 'date', 'March');
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'date');
+        await toggleMenuItemOption(dashboard.el, 'date', 'March');
         assert.verifySteps(["read_group"]);
 
         // Apply range with today and comparison with previous period
-        await cpHelpers.toggleComparisonMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'date: Previous period');
+        await toggleComparisonMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'date: Previous period');
         assert.verifySteps(["read_group","read_group"]);
 
         assert.strictEqual($('.o_widget').length, 1,
@@ -384,8 +392,8 @@ QUnit.module('Views', {
             model: "test_report",
         });
 
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleAddCustomFilter(dashboard);
+        await toggleFilterMenu(dashboard.el);
+        await toggleAddCustomFilter(dashboard.el);
 
         assert.containsOnce(dashboard, ".o_generator_menu_field > option[value=sold]");
         assert.containsNone(dashboard, ".o_generator_menu_field > option[value=sold_aggregate]");
@@ -1434,16 +1442,16 @@ QUnit.module('Views', {
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // activate 'Category 1' filter
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 0);
-        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1']);
+        await toggleFilterMenu(webClient);
+        await toggleMenuItem(webClient, 0);
+        assert.deepEqual(getFacetTexts(webClient), ['Category 1']);
 
         // open graph in fullscreen
         await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
         await nextTick();
         assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
             "'Graph Analysis' should have been stacked in the breadcrumbs");
-        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1'],
+        assert.deepEqual(getFacetTexts(webClient), ['Category 1'],
             "the filter should have been kept");
 
         // go back using the breadcrumbs
@@ -1510,16 +1518,16 @@ QUnit.module('Views', {
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // activate 'Category 1' filter
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 0);
-        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1']);
+        await toggleFilterMenu(webClient);
+        await toggleMenuItem(webClient, 0);
+        assert.deepEqual(getFacetTexts(webClient), ['Category 1']);
 
         // open cohort in fullscreen
         await testUtils.dom.click($(webClient.el).find('.o_cohort_buttons .o_button_switch'));
         await nextTick();
         assert.strictEqual($('.o_control_panel .breadcrumb li:nth(1)').text(), 'Cohort Analysis',
             "'Cohort Analysis' should have been stacked in the breadcrumbs");
-        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Category 1']);
+        assert.deepEqual(getFacetTexts(webClient), ['Category 1']);
 
         // go back using the breadcrumbs
         await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
@@ -1856,19 +1864,19 @@ QUnit.module('Views', {
         await nextTick();
 
         // filter on bar
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 0);
-        assert.deepEqual(cpHelpers.getFacetTexts(webClient), ['Sold']);
+        await toggleFilterMenu(webClient);
+        await toggleMenuItem(webClient, 0);
+        assert.deepEqual(getFacetTexts(webClient), ['Sold']);
 
         // go back using the breadcrumbs
         await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
         await testUtils.owlCompatibilityExtraNextTick();
         await legacyExtraNextTick();
 
-        assert.deepEqual(cpHelpers.getFacetTexts(webClient), []);
+        assert.deepEqual(getFacetTexts(webClient), []);
 
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 1);
+        await toggleFilterMenu(webClient);
+        await toggleMenuItem(webClient, 1);
 
         assert.verifySteps([
             ' ', // graph in dashboard
@@ -2291,8 +2299,8 @@ QUnit.module('Views', {
         assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 0);
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 0);
 
         await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
 
@@ -2419,8 +2427,8 @@ QUnit.module('Views', {
         assert.hasClass(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 0);
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 0);
         assert.hasClass(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
@@ -2577,14 +2585,14 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply time range with today
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'Date');
-        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'March');
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'Date');
+        await toggleMenuItemOption(dashboard.el, 'Date', 'March');
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        await cpHelpers.toggleComparisonMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous period');
+        await toggleComparisonMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'Date: Previous period');
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "The value is 16.00 vs The value is 4.00");
 
@@ -2615,12 +2623,12 @@ QUnit.module('Views', {
             },
         });
 
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'Date');
-        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'October');
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'Date');
+        await toggleMenuItemOption(dashboard.el, 'Date', 'October');
 
-        await cpHelpers.toggleComparisonMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous period');
+        await toggleComparisonMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'Date: Previous period');
 
         // The test should be modified and extended.
         assert.strictEqual(dashboard.$('.o_cohort_view div.o_view_nocontent').length, 1);
@@ -2693,23 +2701,23 @@ QUnit.module('Views', {
         assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "8.00");
 
         // Apply time range with today
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'Date');
-        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'March');
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'Date');
+        await toggleMenuItemOption(dashboard.el, 'Date', 'March');
 
         assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "16.00");
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with this month and comparison with previous period
-        await cpHelpers.toggleComparisonMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous period');
+        await toggleComparisonMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 'Date: Previous period');
 
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
         assert.hasClass(dashboard.$('.o_aggregate'), 'border-success');
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
 
         // Apply range with this month and comparison with last year
-        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous year');
+        await toggleMenuItem(dashboard.el, 'Date: Previous year');
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "-75%");
         assert.hasClass(dashboard.$('.o_aggregate'), 'border-danger');
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
@@ -2835,8 +2843,8 @@ QUnit.module('Views', {
         await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons .o_menu_item .o_item_option > a')[4]);
         assert.doesNotHaveClass(el.querySelectorAll('.o_graph_buttons .o_menu_item > a')[1], 'selected',
             'groupby should be unselected');
-        await cpHelpers.toggleFilterMenu(dashboard);
-        await cpHelpers.toggleMenuItem(dashboard, 0);
+        await toggleFilterMenu(dashboard.el);
+        await toggleMenuItem(dashboard.el, 0);
 
         await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
 
@@ -2888,7 +2896,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_graph_buttons .o_group_by_menu:contains("Group By")',
             "graph button should have been rendered");
 
-        await cpHelpers.toggleGroupByMenu(dashboard);
+        await cpHelpers.toggleGroupByMenu(dashboard.$el);
 
         await cpHelpers.toggleMenuItem(dashboard, 'categ_id');
         assert.ok(cpHelpers.isItemSelected(dashboard, 'categ_id'));

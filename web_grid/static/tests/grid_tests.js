@@ -5,7 +5,7 @@ var concurrency = require('web.concurrency');
 var GridView = require('web_grid.GridView');
 var testUtils = require('web.test_utils');
 
-const cpHelpers = testUtils.controlPanel;
+const cpHelpers = require('@web/../tests/search/helpers');
 var createView = testUtils.createView;
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
@@ -1862,9 +1862,9 @@ QUnit.module('Views', {
         assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "two groupbys");
 
         // open Group By menu
-        await cpHelpers.toggleGroupByMenu(grid);
+        await cpHelpers.toggleGroupByMenu(grid.el);
         // click on Project
-        await cpHelpers.toggleMenuItem(grid, 'Project');
+        await cpHelpers.toggleMenuItem(grid.el, 'Project');
 
         // the data has not been fetched yet (the calls to read_grid take time)
         assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
@@ -1872,7 +1872,7 @@ QUnit.module('Views', {
         assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "_gridData has not been modified yet");
 
         // click again on Project while the data are being fetched (the read_grid results have not returned yet)
-        await cpHelpers.toggleMenuItem(grid, 'Project');
+        await cpHelpers.toggleMenuItem(grid.el, 'Project');
 
         assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
         assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys"); 

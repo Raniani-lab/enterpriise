@@ -8,7 +8,12 @@ const legacyViewRegistry = require("web.view_registry");
 const { registry } = require("@web/core/registry");
 const viewRegistry = registry.category("views");
 
-const cpHelpers = testUtils.controlPanel;
+const {
+    toggleComparisonMenu,
+    toggleFilterMenu,
+    toggleMenuItem,
+    toggleMenuItemOption,
+} = require('@web/../tests/search/helpers');
 var createView = testUtils.createView;
 var patchDate = testUtils.mock.patchDate;
 
@@ -179,7 +184,7 @@ QUnit.module('Views', {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop"/>',
         });
 
-        const buttonsEls = cpHelpers.getButtons(cohort);
+        const buttonsEls = testUtils.controlPanel.getButtons(cohort);
         const measureButtonEls = buttonsEls[0].querySelectorAll('.o_cohort_measures_list > button');
         assert.deepEqual(
             [...measureButtonEls].map(e => e.innerText.trim()),
@@ -531,43 +536,43 @@ QUnit.module('Views', {
         assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with no comparison with no data (filter on 'last_year')
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 'Date');
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2016');
+        await toggleFilterMenu(webClient);
+        await toggleMenuItem(webClient, 'Date');
+        await toggleMenuItemOption(webClient, 'Date', '2016');
 
         verifyContents([]);
         assert.containsNone(webClient, '.o_cohort_no_data');
         assert.containsOnce(webClient, 'div.o_view_nocontent');
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2016');
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', 'August');
-        await cpHelpers.toggleComparisonMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 'Date: Previous period');
+        await toggleMenuItemOption(webClient, 'Date', '2016');
+        await toggleMenuItemOption(webClient, 'Date', 'August');
+        await toggleComparisonMenu(webClient);
+        await toggleMenuItem(webClient, 'Date: Previous period');
 
         verifyContents(['August 2017', 2, 'July 2017', 1]);
         assert.containsNone(webClient, '.o_cohort_no_data');
         assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 'Date');
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', 'August');
+        await toggleFilterMenu(webClient);
+        await toggleMenuItem(webClient, 'Date');
+        await toggleMenuItemOption(webClient, 'Date', 'August');
 
         verifyContents(['2017', 3, '2016']);
         assert.containsOnce(webClient, '.o_cohort_no_data');
         assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with comparison active, no data, comparisonData (filter on 'Q4' + 'previous_period')
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', 'Q4');
+        await toggleMenuItemOption(webClient, 'Date', 'Q4');
 
         verifyContents(['Q4 2017', 'Q3 2017', 3]);
         assert.containsOnce(webClient, '.o_cohort_no_data');
         assert.containsNone(webClient, 'div.o_view_nocontent');
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2016');
-        await cpHelpers.toggleMenuItemOption(webClient, 'Date', '2017');
+        await toggleMenuItemOption(webClient, 'Date', '2016');
+        await toggleMenuItemOption(webClient, 'Date', '2017');
 
         verifyContents([]);
         assert.containsNone(webClient, '.o_cohort_no_data');

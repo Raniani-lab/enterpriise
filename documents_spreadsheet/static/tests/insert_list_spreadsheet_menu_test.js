@@ -4,13 +4,21 @@ import ListView from "web.ListView";
 import testUtils from "web.test_utils";
 import { createSpreadsheetFromList } from "./spreadsheet_test_utils";
 import { doAction } from "@web/../tests/webclient/helpers";
+import * as LegacyFavoriteMenu from "web.FavoriteMenu";
+import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/js/components/insert_list_spreadsheet_menu";
 
 const createView = testUtils.createView;
+const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 
 QUnit.module(
     "documents_spreadsheet > insert_list_spreadsheet_menu",
     {
         beforeEach: function () {
+            legacyFavoriteMenuRegistry.add(
+                "insert-list-spreadsheet-menu",
+                LegacyInsertListSpreadsheetMenu,
+                5
+            );
             this.data = {
                 foo: {
                     fields: {
@@ -22,22 +30,6 @@ QUnit.module(
         },
     },
     function () {
-        QUnit.test("Menu item is present in list view", async function (assert) {
-            assert.expect(1);
-
-            const list = await createView({
-                View: ListView,
-                model: "foo",
-                data: this.data,
-                arch: '<tree><field name="foo"/></tree>',
-            });
-
-            await testUtils.dom.click(list.$(".o_favorite_menu button"));
-            assert.containsOnce(list, ".o_insert_list_spreadsheet_menu");
-
-            list.destroy();
-        });
-
         QUnit.test("Menu item is present in list view", async function (assert) {
             assert.expect(1);
 
@@ -76,7 +68,7 @@ QUnit.module(
                 actions: async (controller) => {
                     await testUtils.dom.click(controller.$el.find(".o_favorite_menu button"));
                     await testUtils.dom.click(
-                        controller.$el.find(".o_insert_list_spreadsheet_menu button")
+                        controller.$el.find(".o_insert_list_spreadsheet_menu")
                     );
                     await testUtils.nextTick();
                     await testUtils.modal.clickButton("Confirm");
@@ -111,7 +103,7 @@ QUnit.module(
                 async actions(controller) {
                     await testUtils.dom.click(controller.$el.find(".o_favorite_menu button"));
                     await testUtils.dom.click(
-                        controller.$el.find(".o_insert_list_spreadsheet_menu button")
+                        controller.$el.find(".o_insert_list_spreadsheet_menu")
                     );
                     await testUtils.nextTick();
                     document.body

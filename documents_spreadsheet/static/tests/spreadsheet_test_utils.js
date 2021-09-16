@@ -16,6 +16,7 @@ import { UNTITLED_SPREADSHEET_NAME } from "../src/constants";
 import { PivotView } from "@web/views/pivot/pivot_view";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
+import { spreadsheetService } from "@documents_spreadsheet/actions/spreadsheet/spreadsheet_service";
 
 const { Model } = spreadsheet;
 const { toCartesian, toZone, isFormula } = spreadsheet.helpers;
@@ -189,6 +190,7 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
     // TODO convert tests to use "serverData"
     const serverData = params.serverData || { models: data, views: arch };
     if (!webClient) {
+        serviceRegistry.add("spreadsheet", spreadsheetService);
         webClient = await createWebClient({
             serverData,
             mockRPC,
@@ -197,6 +199,8 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
                 serviceRegistry: legacyServicesRegistry,
             },
         });
+        const legacyEnv = owl.Component.env;
+        legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
     }
 
     const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
@@ -270,6 +274,17 @@ export async function createSpreadsheetFromList(params = {}) {
         ...listView,
     };
     const { data } = listView;
+    if (!webClient) {
+        serviceRegistry.add("spreadsheet", spreadsheetService);
+        const serverData = { models: data, views: listView.archs };
+        webClient = await createWebClient({
+            serverData,
+            legacyParams: { withLegacyMockServer: true },
+            mockRPC: listView.mockRPC,
+        });
+        const legacyEnv = owl.Component.env;
+        legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
+    }
     const controller = await createView({
         View: ListView,
         ...listView,
@@ -286,15 +301,6 @@ export async function createSpreadsheetFromList(params = {}) {
         for (const sname in listView.services) {
             serviceRegistry.add(sname, listView.services[sname]);
         }
-    }
-
-    if (!webClient) {
-        const serverData = { models: data, views: listView.archs };
-        webClient = await createWebClient({
-            serverData,
-            legacyParams: { withLegacyMockServer: true },
-            mockRPC: listView.mockRPC,
-        });
     }
     if (actions) {
         await actions(controller);
@@ -429,6 +435,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
         if (!serviceRegistry.contains("user")) {
             serviceRegistry.add("user", makeFakeUserService(() => true));
         }
+        serviceRegistry.add("spreadsheet", spreadsheetService);
         webClient = await createWebClient({
             serverData,
             legacyParams: {
@@ -441,6 +448,8 @@ export async function createSpreadsheetFromPivot(params = {}) {
                 }
             },
         });
+        const legacyEnv = owl.Component.env;
+        legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
     }
     await doAction(webClient, {
         name: "pivot view",

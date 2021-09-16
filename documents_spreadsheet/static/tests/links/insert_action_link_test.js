@@ -1,9 +1,17 @@
 /** @odoo-module */
-import { click, legacyExtraNextTick, nextTick } from "@web/../tests/helpers/utils";
+import {
+    click,
+    legacyExtraNextTick,
+    makeDeferred,
+    nextTick,
+    triggerEvent,
+} from "@web/../tests/helpers/utils";
 import {
     applyGroup,
     selectGroup,
     toggleAddCustomGroup,
+    toggleFavoriteMenu,
+    toggleFilterMenu,
     toggleGroupByMenu,
     toggleMenu,
     toggleMenuItem,
@@ -12,18 +20,42 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "../spreadsheet_test_data";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
+import { spreadsheetService } from "@documents_spreadsheet/actions/spreadsheet/spreadsheet_service";
+import * as LegacyFavoriteMenu from "web.FavoriteMenu";
+import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu";
+import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/js/components/insert_action_link/insert_action_link_menu";
 
 const serviceRegistry = registry.category("services");
+const favoriteMenuRegistry = registry.category("favoriteMenu");
+const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 
 const { loadJS } = owl.utils;
 
 let serverData;
 
 async function openView(viewType, options = {}) {
+    legacyFavoriteMenuRegistry.add(
+        "insert-action-link-in-spreadsheet",
+        LegacyInsertViewSpreadsheet,
+        1
+    );
+    favoriteMenuRegistry.add(
+        "insert-action-link-in-spreadsheet",
+        {
+            Component: InsertViewSpreadsheet,
+            groupNumber: 4,
+            isDisplayed: ({ isSmall, searchModel }) =>
+                !isSmall && searchModel.action.type === "ir.actions.act_window"
+        },
+        { sequence: 1 }
+    );
+    serviceRegistry.add("spreadsheet", spreadsheetService);
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,
     });
+    const legacyEnv = owl.Component.env;
+    legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
     await doAction(webClient, 1, { viewType, additionalContext: options.additionalContext });
     return webClient;
 }
@@ -122,12 +154,12 @@ QUnit.module(
             });
 
             // add a domain
-            await click(webClient.el, ".o_filter_menu button");
-            await click(webClient.el.querySelector(".o_menu_item > a"));
+            await toggleFilterMenu(webClient);
+            await toggleMenuItem(webClient, 0);
 
             // group by name
-            await click(webClient.el, ".o_group_by_menu button");
-            await click(webClient.el.querySelector(".o_menu_item > a"));
+            await toggleGroupByMenu(webClient);
+            await toggleMenuItem(webClient, 0);
 
             await insertInSpreadsheetAndClickLink(webClient);
             assert.strictEqual(getCurrentViewType(webClient), "list");
@@ -154,15 +186,40 @@ QUnit.module(
                 },
             });
             await loadJS("/web/static/lib/Chart/Chart.js");
-            await click(webClient.el, ".o_favorite_menu button");
+            await toggleFavoriteMenu(webClient);
             await click(webClient.el, ".o_insert_action_spreadsheet_menu");
-            await click(webClient.el, ".modal-content select");
-            document.body
-                .querySelector(".modal-content option[value='1']")
-                .setAttribute("selected", "selected");
-            await click(document, ".modal-footer button.btn-primary");
+            const select = webClient.el.querySelector(".modal-content select");
+            select.value = "1";
+            await triggerEvent(select, null, "change");
+            await click(webClient.el, ".modal-footer button.btn-primary");
             await nextTick();
             assert.verifySteps(["spreadsheet-joined"]);
+        });
+
+        QUnit.test("insert action in new spreadsheet", async function (assert) {
+            assert.expect(5);
+            const def = makeDeferred();
+            const webClient = await openView("list", {
+                mockRPC: async function (route, args) {
+                    if (args.method === "create") {
+                        await def;
+                        assert.step("spreadsheet-created");
+                    }
+                },
+            });
+            await loadJS("/web/static/lib/Chart/Chart.js");
+            assert.containsNone(webClient, ".o_spreadsheet_action");
+            await toggleFavoriteMenu(webClient);
+            await click(webClient.el, ".o_insert_action_spreadsheet_menu");
+            await click(webClient.el, ".modal-footer button.btn-primary");
+            def.resolve();
+            await nextTick();
+            assert.verifySteps(["spreadsheet-created"]);
+            assert.containsOnce(webClient, ".o_spreadsheet_action");
+            assert.strictEqual(
+                webClient.el.querySelector(".breadcrumb .o_spreadsheet_name input").value,
+                "Untitled spreadsheet"
+            );
         });
 
         QUnit.test("kanban view", async function (assert) {

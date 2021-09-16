@@ -1,17 +1,16 @@
 /** @odoo-module */
 
-import DropdownMenuItem from "web.DropdownMenuItem";
 import FavoriteMenu from "web.FavoriteMenu";
 import { useModel } from "web.Model";
+
+const { Component } = owl;
 
 /**
  * Insert list view in spreadsheet menu
  *
  * This component is used to insert a list view in a spreadsheet
- *
- * @extends DropdownMenuItem
  */
-class InsertListSpreadsheetMenu extends DropdownMenuItem {
+export class InsertListSpreadsheetMenu extends Component {
     constructor() {
         super(...arguments);
         this.model = useModel("searchModel");

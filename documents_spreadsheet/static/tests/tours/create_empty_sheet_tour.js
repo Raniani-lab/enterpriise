@@ -70,7 +70,7 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
                 run: "click",
             },
             {
-                trigger: ".o_insert_list_spreadsheet_menu button",
+                trigger: ".o_insert_list_spreadsheet_menu",
                 content: "Insert in spreadsheet",
                 run: "click",
             },

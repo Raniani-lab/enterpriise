@@ -3,7 +3,6 @@
 
 import * as legacyRegistry from "web.Registry";
 import * as RamStorage from "web.RamStorage";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -11,8 +10,7 @@ import * as BusService from "bus.BusService";
 import spreadsheet from "documents_spreadsheet.spreadsheet";
 import { mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
-import PivotView from "web.PivotView";
-import { fields, nextTick, dom, createView } from "web.test_utils";
+import { fields, nextTick, dom } from "web.test_utils";
 import {
     createSpreadsheet,
     createSpreadsheetFromPivot,
@@ -25,7 +23,8 @@ import {
     setSelection,
 } from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
-import { getBasicData, getBasicPivotArch } from "./spreadsheet_test_data";
+import { getBasicPivotArch } from "./spreadsheet_test_data";
+import { spreadsheetService } from "../src/actions/spreadsheet/spreadsheet_service";
 
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
@@ -223,6 +222,7 @@ module(
 
         test("open spreadsheet with deprecated `active_id` params", async function (assert) {
             assert.expect(4);
+            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData: { models: this.data },
                 mockRPC: async function (route, args) {
@@ -294,6 +294,7 @@ module(
             };
             const serverData = { actions, models: this.data, views };
 
+            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },

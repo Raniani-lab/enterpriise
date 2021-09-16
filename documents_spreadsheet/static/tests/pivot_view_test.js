@@ -25,6 +25,7 @@ import * as BusService from "bus.BusService";
 import * as legacyRegistry from "web.Registry";
 import * as RamStorage from "web.RamStorage";
 import * as AbstractStorageService from "web.AbstractStorageService";
+import { spreadsheetService } from "../src/actions/spreadsheet/spreadsheet_service";
 
 const { module, test } = QUnit;
 
@@ -664,6 +665,7 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
             "partner,false,search": `<search/>`,
         },
     };
+    registry.category("services").add("spreadsheet", spreadsheetService);
     const webClient = await createWebClient({
         serverData,
         legacyParams: {
@@ -719,6 +721,7 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
             "partner,false,search": `<search/>`,
         },
     };
+    registry.category("services").add("spreadsheet", spreadsheetService);
     const webClient = await createWebClient({
         serverData,
         legacyParams: {

@@ -17,6 +17,8 @@ const { makeLegacyDialogMappingTestEnv } = require('@web/../tests/helpers/legacy
 var initialDate = new Date(2018, 11, 20, 8, 0, 0);
 initialDate = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() * 60 * 1000);
 
+const { toggleFilterMenu, toggleMenuItem } = require("@web/../tests/search/helpers");
+
 const FORMAT = "YYYY-MM-DD HH:mm:ss";
 // This function is used to be sure that the unavailabilities will be displayed
 // where we want (independently of the timezone used when lauching the tests)
@@ -4550,7 +4552,7 @@ document.createElement("a").classList.contains
                 "tasks,false,list": `<tree><field name="name"/></tree>`,
                 "tasks,false,search": `
                     <search>
-                        <filter name="project_one" domain="[('project_id', '=', 1)]"/>
+                        <filter name="project_one" string="Project 1" domain="[('project_id', '=', 1)]"/>
                     </search>
                 `,
             };
@@ -4597,9 +4599,9 @@ document.createElement("a").classList.contains
             await doAction(webClient, ganttAction);
             assert.verifySteps(["start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
 
-            await testUtils.dom.click($('.o_control_panel .o_filter_menu .o_dropdown_toggler'));
+            await toggleFilterMenu(webClient);
             await nextTick();
-            await testUtils.dom.click($('.o_control_panel .o_filter_menu a:contains(project_one)'));
+            await toggleMenuItem(webClient, "Project 1");
             await nextTick();
             assert.verifySteps(["project_id,=,1,start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
 

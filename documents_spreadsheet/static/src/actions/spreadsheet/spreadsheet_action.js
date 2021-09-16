@@ -8,7 +8,6 @@ import { SpreadsheetName } from "../control_panel/spreadsheet_name";
 import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
-import { SpreadsheetService } from "./spreadsheet_service";
 import { AbstractSpreadsheetAction } from "../abstract_spreadsheet_action";
 import { UNTITLED_SPREADSHEET_NAME } from "../../constants";
 
@@ -18,7 +17,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     setup() {
         super.setup();
         this.orm = useService("orm");
-        this.service = new SpreadsheetService(this.orm)
+        this.service = useService("spreadsheet");
         this.actionService = useService("action");
         this.spreadsheetRef = useRef("spreadsheet");
         this.notificationMessage = this.env._t("New spreadsheet created in Documents");

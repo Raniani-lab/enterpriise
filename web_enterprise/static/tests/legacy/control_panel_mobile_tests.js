@@ -4,7 +4,7 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
     const FormView = require('web.FormView');
     const testUtils = require('web.test_utils');
 
-    const cpHelpers = testUtils.controlPanel;
+    const cpHelpers = require('@web/../tests/search/helpers');
     const { createControlPanel, createView } = testUtils;
 
     const { createWebClient, doAction, getActionManagerServerData } = require('@web/../tests/webclient/helpers');

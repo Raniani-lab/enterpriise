@@ -5,7 +5,6 @@ odoo.define('web.action_menus_mobile_tests', function (require) {
     const Registry = require('web.Registry');
     const testUtils = require('web.test_utils');
 
-    const cpHelpers = testUtils.controlPanel;
     const { createComponent } = testUtils;
 
     QUnit.module('Components', {
@@ -71,10 +70,10 @@ odoo.define('web.action_menus_mobile_tests', function (require) {
                     }
                 },
             });
-            await cpHelpers.toggleActionMenu(actionMenus, "Print");
+            await testUtils.controlPanel.toggleActionMenu(actionMenus, "Print");
             assert.containsOnce(actionMenus.el, '.dropdown-menu-left',
                 "should display the dropdown menu");
-            await cpHelpers.toggleMenuItem(actionMenus, "Po-ta-toes");
+            await testUtils.controlPanel.toggleMenuItem(actionMenus, "Po-ta-toes");
             assert.containsNone(actionMenus.el, '.dropdown-menu-left',
                 "should not display the dropdown menu");
             assert.verifySteps(['load-action', 'do-action']);

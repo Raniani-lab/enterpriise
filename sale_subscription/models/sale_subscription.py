@@ -551,7 +551,7 @@ class SaleSubscription(models.Model):
             if not stage:
                 stage = search([('category', '=', 'closed')], limit=1)
             values = {'stage_id': stage.id, 'to_renew': False}
-            if sub.recurring_rule_boundary == 'unlimited' or today < sub.date:
+            if sub.recurring_rule_boundary == 'unlimited' or not sub.date or today < sub.date:
                 values['date'] = today
             sub.write(values)
         return True

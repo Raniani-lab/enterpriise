@@ -102,8 +102,11 @@ class AccountMoveLine(models.Model):
                         ON aml.move_id = move.id
                     LEFT JOIN account_move_line_account_tax_rel tax_rel
                         ON tax_rel.account_move_line_id = aml.id
+                    LEFT JOIN account_tax tax
+                        ON tax.id = tax_rel.account_tax_id
                     WHERE move.move_type = 'in_invoice'
                         AND move.state = 'posted'
+                        AND tax.active = TRUE OR tax.active IS NULL
                         AND aml.display_type IS NULL
                         AND NOT aml.exclude_from_invoice_tab
                         AND aml.company_id = %(company_id)s
@@ -140,9 +143,12 @@ class AccountMoveLine(models.Model):
                     FROM account_move_line ail
                     JOIN account_move inv
                         ON ail.move_id = inv.id
+                    LEFT JOIN product_product pr
+                        ON ail.product_id = pr.id
 
                     WHERE inv.move_type = 'in_invoice'
                         AND inv.state = 'posted'
+                        AND pr.active = TRUE OR pr.active IS NULL
                         AND ail.display_type IS NULL
                         AND NOT ail.exclude_from_invoice_tab
                         AND ail.company_id = %(company_id)s

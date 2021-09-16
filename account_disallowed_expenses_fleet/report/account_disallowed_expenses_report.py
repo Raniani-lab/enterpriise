@@ -39,7 +39,8 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
               AND vehicle.id IS NULL""" or ""
         group_by += ", vehicle.id, vehicle.name"
         group_by += options['multi_rate_in_period'] and ", fleet_rate.rate" or ""
-        order_by += ", vehicle.name IS NOT NULL, vehicle.name"
+        order_by = """
+            ORDER BY category_code, vehicle.name IS NOT NULL, vehicle.name, account_code"""
         order_by_rate += ", fleet_rate"
         return select, from_, where, group_by, order_by, order_by_rate, params
 
@@ -69,6 +70,8 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
 
     def _set_line(self, options, values, lines, current, totals):
         if not values['vehicle_id']:
+            if current.get('vehicle'):
+                current['vehicle'] = None
             super()._set_line(options, values, lines, current, totals)
         else:
             if values['category_id'] != current['category']:

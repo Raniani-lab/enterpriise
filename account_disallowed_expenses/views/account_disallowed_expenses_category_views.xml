@@ -63,7 +63,7 @@
                     <group>
                         <field name="code"/>
                         <field name="name"/>
-                        <field name="company_id"/>
+                        <field name="company_id" options="{'no_create': True}"/>
                     </group>
                     <group string="Rates">
                         <field name="rate_ids" nolabel="1" editable="bottom">

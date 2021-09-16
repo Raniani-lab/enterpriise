@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <record id="group_social_user" model="res.groups">
-        <field name="name">Social Poster</field>
+        <field name="name">Social User</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         <field name="category_id" ref="base.module_category_marketing_social_marketing"/>
     </record>
@@ -26,9 +26,42 @@
         <field name="perm_create" eval="1"/>
     </record>
 
-    <record id="social_post_rule_social_user_rcwu" model="ir.rule">
-        <field name="name">Social: user: read/create/write/unlink own posts only</field>
+    <record id="social_post_rule_social_user_read_write" model="ir.rule">
+        <field name="name">Social: user: read and edit all posts</field>
         <field name="model_id" ref="social.model_social_post"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_social_user'))]"/>
+        <field name="perm_unlink" eval="0"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="0"/>
+    </record>
+
+    <record id="social_post_rule_social_user_cwu" model="ir.rule">
+        <field name="name">Social: user: create/unlink own posts only</field>
+        <field name="model_id" ref="social.model_social_post"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_social_user'))]"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="1"/>
+    </record>
+
+    <record id="social_live_post_rule_social_manager" model="ir.rule">
+        <field name="name">Social: manager: all</field>
+        <field name="model_id" ref="social.model_social_live_post"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_social_manager'))]"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="1"/>
+    </record>
+
+    <record id="social_live_post_rule_social_user_rcwu" model="ir.rule">
+        <field name="name">Social: user: read/create/write/unlink own live posts only</field>
+        <field name="model_id" ref="social.model_social_live_post"/>
         <field name="domain_force">[('create_uid', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('group_social_user'))]"/>
         <field name="perm_unlink" eval="1"/>

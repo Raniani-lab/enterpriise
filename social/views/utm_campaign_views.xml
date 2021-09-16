@@ -82,6 +82,6 @@
         parent="menu_social_global"
         name="Campaigns"
         sequence="25"
-        groups="group_social_manager"
+        groups="group_social_user"
         action="action_view_utm_campaigns"/>
 </odoo>

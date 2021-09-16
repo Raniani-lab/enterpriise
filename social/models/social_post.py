@@ -214,11 +214,6 @@ class SocialPost(models.Model):
         """Every post will have a unique corresponding utm.source for statistics computation purposes.
         This way, it will be possible to see every leads/quotations generated through a particular post."""
 
-        if not self.env.is_superuser() and \
-           not self.user_has_groups('social.group_social_manager') and \
-           any(vals.get('state', 'draft') != 'draft' for vals in vals_list):
-            raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
-
         sources = self.env['utm.source'].create([{
             'name': self._prepare_post_name(vals.get('message'), include_datetime=True)
         } for vals in vals_list])
@@ -240,11 +235,6 @@ class SocialPost(models.Model):
         return res
 
     def write(self, vals):
-        if not self.env.is_superuser() and \
-           not self.user_has_groups('social.group_social_manager') and \
-           (vals.get('state', 'draft') != 'draft' or any(post.state != 'draft' for post in self)):
-            raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
-
         if vals.get('calendar_date'):
             if any(post.state != 'scheduled' for post in self):
                 raise UserError(_("You can only move posts that are scheduled."))
@@ -271,9 +261,6 @@ class SocialPost(models.Model):
         """
         Raise an error if the user cannot post on a social media
         """
-        if not self.env.is_admin() and not self.user_has_groups('social.group_social_manager'):
-            raise AccessError(_('You are not allowed to do this operation.'))
-
         if any(not post.account_ids for post in self):
             raise UserError(_(
                 'Please specify at least one account to post into (for post ID(s) %s).',

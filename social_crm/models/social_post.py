@@ -8,7 +8,8 @@ class SocialPost(models.Model):
     _inherit = 'social.post'
 
     use_leads = fields.Boolean('Use Leads', compute='_compute_use_leads')
-    leads_opportunities_count = fields.Integer('Leads / Opportunities count', compute='_compute_leads_opportunities_count', groups='sales_team.group_sale_salesman')
+    leads_opportunities_count = fields.Integer('Leads / Opportunities count', groups='sales_team.group_sale_salesman',
+                                               compute='_compute_leads_opportunities_count', compute_sudo=True)
 
     def _compute_use_leads(self):
         for post in self:

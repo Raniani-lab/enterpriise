@@ -7,12 +7,13 @@ from odoo import models, fields
 class SocialPost(models.Model):
     _inherit = 'social.post'
 
-    sale_quotation_count = fields.Integer('Quotation Count', compute='_compute_sale_quotation_count', groups='sales_team.group_sale_salesman')
-    sale_invoiced_amount = fields.Integer('Invoiced Amount', compute='_compute_sale_invoiced_amount', groups='sales_team.group_sale_salesman')
+    sale_quotation_count = fields.Integer('Quotation Count', groups='sales_team.group_sale_salesman',
+                                          compute='_compute_sale_quotation_count', compute_sudo=True)
+    sale_invoiced_amount = fields.Integer('Invoiced Amount', groups='sales_team.group_sale_salesman',
+                                          compute='_compute_sale_invoiced_amount', compute_sudo=True)
 
     def _compute_sale_quotation_count(self):
-        has_so_access = self.env['sale.order'].check_access_rights('read', raise_exception=False)
-        if has_so_access and self.utm_source_id.ids:
+        if self.utm_source_id.ids:
             quotation_data = self.env['sale.order'].read_group(
                 [('source_id', 'in', self.utm_source_id.ids)],
                 ['source_id'], ['source_id'])
@@ -25,8 +26,7 @@ class SocialPost(models.Model):
                 post.sale_quotation_count = 0
 
     def _compute_sale_invoiced_amount(self):
-        has_account_move_access = self.env['account.move'].check_access_rights('read', raise_exception=False)
-        if has_account_move_access and self.utm_source_id.ids:
+        if self.utm_source_id.ids:
             query = """SELECT move.source_id as source_id, -SUM(line.balance) as price_subtotal
                         FROM account_move_line line
                         INNER JOIN account_move move ON line.move_id = move.id

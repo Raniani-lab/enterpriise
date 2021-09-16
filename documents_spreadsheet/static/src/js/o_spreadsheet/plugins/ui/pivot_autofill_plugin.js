@@ -559,6 +559,9 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     _tooltipFormatPivotHeader(pivotId, args) {
         const tooltips = [];
         const values = this._parseArgs(args.slice(1));
+        if (Object.keys(values).length === 0) {
+            return [{ title: _t("Total"), value: _t("Total") }];
+        }
         for (let [field, value] of Object.entries(values)) {
             tooltips.push({
                 title:

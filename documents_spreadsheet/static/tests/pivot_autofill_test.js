@@ -240,7 +240,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
     });
 
     test("Tooltip of pivot formulas", async function (assert) {
-        assert.expect(6);
+        assert.expect(8);
 
         const { model } = await createSpreadsheetFromPivot({
             pivotView: {
@@ -291,6 +291,18 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             {
                 title: "Measure",
                 value: "Probability",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(`=PIVOT.HEADER("1")`, true), [
+            {
+                title: "Total",
+                value: "Total",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(`=PIVOT.HEADER("1")`, false), [
+            {
+                title: "Total",
+                value: "Total",
             },
         ]);
     });

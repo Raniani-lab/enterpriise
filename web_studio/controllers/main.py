@@ -1575,18 +1575,22 @@ Are you sure you want to remove the selection values of those records?""", len(r
         """ Returns the email alias associated to the model @model_name. Only
         free aliases (not owned by a document using 'parent_*' fields')
         creating new documents (void 'alias_force_thread_id') are considered. """
-        result = {'alias_domain': request.env['ir.config_parameter'].get_param('mail.catchall.domain')}
+        current_alias_domain = request.env.company.alias_domain_id
+        result = {'alias_domain': current_alias_domain.name}
+
         model = request.env['ir.model']._get(model_name)
-        if model:
-            request.env[model_name].check_access_rights('read')
-            email_alias = request.env['mail.alias'].search([
-                ('alias_force_thread_id', '=', False),
-                ('alias_model_id', '=', model.id),
-                ('alias_parent_model_id', '=', False),
-                ('alias_parent_thread_id', '=', False)
-            ], limit=1)
-            if email_alias:
-                result['email_alias'] = email_alias.alias_name
+        if not model:
+            return result
+
+        request.env[model_name].check_access_rights('read')
+        email_alias = request.env['mail.alias'].search([
+            ('alias_domain_id', '=', current_alias_domain.id),
+            ('alias_force_thread_id', '=', False),
+            ('alias_model_id', '=', model.id),
+            ('alias_parent_model_id', '=', False),
+            ('alias_parent_thread_id', '=', False)
+        ], limit=1)
+        result['email_alias'] = email_alias.alias_name
         return result
 
     @http.route('/web_studio/set_email_alias', type='json', auth='user')
@@ -1598,22 +1602,27 @@ Are you sure you want to remove the selection values of those records?""", len(r
         void alias, do not unlink aliases as it may have unwanted side effects).
         """
         model_id = request.env['ir.model']._get_id(model_name)
-        if model_id:
-            request.env[model_name].check_access_rights('read')
-            alias_name = request.env['mail.alias']._sanitize_alias_name(value)
-            existing_alias = request.env['mail.alias'].search([
-                ('alias_force_thread_id', '=', False),
-                ('alias_model_id', '=', model_id),
-                ('alias_parent_model_id', '=', False),
-                ('alias_parent_thread_id', '=', False)
-            ], limit=1)
-            if existing_alias:
-                existing_alias.alias_name = alias_name
-            elif alias_name:
-                request.env['mail.alias'].create({
-                    'alias_model_id': model_id,
-                    'alias_name': alias_name,
-                })
+        if not model_id:
+            return
+
+        request.env[model_name].check_access_rights('read')
+        current_alias_domain = request.env.company.alias_domain_id
+        alias_name = request.env['mail.alias']._sanitize_alias_name(value)
+        existing_alias = request.env['mail.alias'].search([
+            ('alias_domain_id', '=', current_alias_domain.id),
+            ('alias_force_thread_id', '=', False),
+            ('alias_model_id', '=', model_id),
+            ('alias_parent_model_id', '=', False),
+            ('alias_parent_thread_id', '=', False)
+        ], limit=1)
+        if existing_alias:
+            existing_alias.alias_name = alias_name
+        elif alias_name:
+            request.env['mail.alias'].create({
+                'alias_domain_id': current_alias_domain.id,
+                'alias_model_id': model_id,
+                'alias_name': alias_name,
+            })
 
     @http.route('/web_studio/get_default_value', type='json', auth='user')
     def get_default_value(self, model_name, field_name):

@@ -340,7 +340,7 @@
             <t t-call="account_reports.search_template_ec_sale_code"/>
         </div>
         <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position"
-            t-if="len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1) and options['tax_unit'] == 'company_only'">
+            t-if="len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1)">
             <t t-call="account_reports.search_template_fiscal_position_choser"/>
         </div>
     </template>
@@ -362,6 +362,12 @@
         <xpath expr="//div[@id='extra_options_dropdown']/t" position="after">
             <t t-call="account_reports.search_template_tax_report_choser"/>
             <t t-call="account_reports.search_template_tax_unit_chooser"/>
+        </xpath>
+
+        <xpath expr="//div[@id='fiscal_position_choice_option']" position="attributes">
+            <attribute name="t-if">
+                len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1) and options['tax_unit'] == 'company_only'
+            </attribute>
         </xpath>
     </template>
 

@@ -11,6 +11,8 @@ class AccountMove(models.Model):
         # OVERRIDE
         for move in self.filtered(lambda move: move.is_invoice()):
             for line in move.line_ids:
+                if line.l10n_mx_edi_customs_number:
+                    continue
                 stock_moves = line.mapped('sale_line_ids.move_ids').filtered(lambda r: r.state == 'done' and not r.scrapped)
                 if not stock_moves:
                     continue

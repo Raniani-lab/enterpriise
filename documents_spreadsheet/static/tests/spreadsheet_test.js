@@ -3,6 +3,7 @@
 
 import * as legacyRegistry from "web.Registry";
 import * as RamStorage from "web.RamStorage";
+import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -2057,5 +2058,61 @@ module(
             const measures = sections[4];
             assert.equal(measures.children[2].innerText, "non-existing");
         });
+
+        test("Trying to duplicate a filter label will trigger a toaster", async function (assert) {
+            assert.expect(3);
+            const mock = (message) => {
+                assert.step(`create (${message})`);
+                return () => {};
+            };
+            registry.category("services").add("notification", makeFakeNotificationService(mock), {
+                force: true,
+            });
+            const uniqueFilterName = "UNIQUE_FILTER";
+            const { model, webClient } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot>
+                        <field name="bar" type="col"/>
+                        <field name="product" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                },
+            });
+            model.dispatch("ADD_GLOBAL_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: uniqueFilterName,
+                    pivotFields: {
+                        1: {
+                            field: "product",
+                            type: "many2one",
+                        },
+                    },
+                },
+            });
+            const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+            await dom.click(searchIcon);
+            const newText = $(webClient.el).find(".o_global_filter_new_text")[0];
+            await dom.click(newText);
+            assert.equal($(webClient.el).find(".o-sidePanel").length, 1);
+            const input = $(webClient.el).find(".o_global_filter_label")[0];
+            await fields.editInput(input, uniqueFilterName);
+            const value = $(webClient.el).find(".o_global_filter_default_value")[0];
+            await fields.editInput(value, "Default Value");
+            // Can't make it work with the DOM API :(
+            // await dom.triggerEvent($(webClient.el).find(".o_field_selector_value"), "focusin");
+            $($(webClient.el).find(".o_field_selector_value")).focusin();
+            await dom.click($(webClient.el).find(".o_field_selector_select_button")[0]);
+            const save = $(webClient.el).find(
+                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
+            )[0];
+            await dom.click(save);
+            assert.verifySteps(["create (Duplicated Label)"]);
+        })
     }
 );

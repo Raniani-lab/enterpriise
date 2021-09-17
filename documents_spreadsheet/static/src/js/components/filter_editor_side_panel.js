@@ -266,7 +266,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 listFields: this.state.listFields,
             };
             const result = this.env.dispatch(cmd, { id, filter });
-            if (result === CommandResult.DuplicatedFilterLabel) {
+            if (result.isCancelledBecause(CommandResult.DuplicatedFilterLabel)) {
                 this.notification.add(this.env._t("Duplicated Label"), {
                     type: "danger",
                     sticky: false,

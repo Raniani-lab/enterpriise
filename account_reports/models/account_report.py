@@ -702,7 +702,7 @@ class AccountReport(models.AbstractModel):
                 # Multiple possible values; by default, show the values of the company's area (if allowed), or everything
                 options['fiscal_position'] = options['allow_domestic'] and 'domestic' or 'all'
         else:
-            vat_fiscal_positions = self.env['account.fiscal.position'].search(vat_fpos_domain)
+            vat_fiscal_positions = []
             options['allow_domestic'] = False
             options['fiscal_position'] = 'all'
 
@@ -724,7 +724,11 @@ class AccountReport(models.AbstractModel):
         fiscal_position_opt = options.get('fiscal_position')
 
         if fiscal_position_opt == 'domestic':
-            return [('move_id.fiscal_position_id', 'not in', [fpos_opt['id'] for fpos_opt in options['available_vat_fiscal_positions']])]
+            return [
+                '|',
+                ('move_id.fiscal_position_id', '=', False),
+                ('move_id.fiscal_position_id.foreign_vat', '=', False),
+            ]
 
         if fiscal_position_opt == 'all':
             return []

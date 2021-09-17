@@ -747,13 +747,12 @@ class AccountGenericTaxReport(models.AbstractModel):
                  (i.e. the one without any fiscal position) must also be performed
         """
         if options['fiscal_position'] == 'domestic':
-            fpos_ids = []
+            fiscal_positions = self.env['account.fiscal.position']
         elif options['fiscal_position'] == 'all':
-            fpos_ids = [opt['id'] for opt in options['available_vat_fiscal_positions'] if opt['company_id'] == company.id]
+            fiscal_positions = self.env['account.fiscal.position'].search([('company_id', '=', company.id), ('foreign_vat', '!=', False)])
         else:
             fpos_ids = [options['fiscal_position']]
-
-        fiscal_positions = self.env['account.fiscal.position'].browse(fpos_ids)
+            fiscal_positions = self.env['account.fiscal.position'].browse(fpos_ids)
 
         if options['fiscal_position'] == 'all':
             report_country = self._get_country_for_fiscal_position_filter(options)

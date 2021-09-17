@@ -262,6 +262,11 @@
                     padding: 8px;
                     border: 1px solid $o-form-lightsecondary;
 
+                    &.o_field_number {
+                        min-width: 100%;
+                        max-width: 100%;
+                    }
+
                     @include media-breakpoint-up(sm) {
                         min-width: 510px;
                         max-width: 510px;

@@ -26,7 +26,7 @@ const SetReservedQuantityButton = Widget.extend({
      * @override
      */
     willStart: function () {
-        this.display_uom = this.getSession().user_has_group('uom.group_uom');
+        this.display_uom = this.uom && this.getSession().user_has_group('uom.group_uom');
         return Promise.all([
             this._super(...arguments),
             this.display_uom,

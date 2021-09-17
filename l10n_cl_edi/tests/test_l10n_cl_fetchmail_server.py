@@ -200,8 +200,10 @@ class TestFetchmailServer(TestL10nClEdiCommon):
     def test_process_incoming_customer_claim_move_not_found(self):
         att_name = 'incoming_acknowledge.xml'
         att_content = misc.file_open(os.path.join('l10n_cl_edi', 'tests', 'fetchmail_dtes', att_name)).read()
-
-        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([('code', '=', '34')])
+        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([
+            ('code', '=', '34'),
+            ('country_id.code', '=', 'CL')
+        ])
         with patch('logging.Logger.error') as logger:
             self.env['fetchmail.server']._process_incoming_customer_claim(
                 self.company_data['company'].id, att_content, att_name, origin_type='incoming_acknowledge')
@@ -210,7 +212,10 @@ class TestFetchmailServer(TestL10nClEdiCommon):
                     self.partner_sii.id, 'FNA 000254', l10n_latam_document_type.id, self.company_data['company'].id))
 
     def test_process_incoming_customer_claim_acknowledge(self):
-        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([('code', '=', '34')])
+        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([
+            ('code', '=', '34'),
+            ('country_id.code', '=', 'CL')
+        ])
         with Form(self.env['account.move'].with_context(default_move_type='out_invoice')) as invoice_form:
             invoice_form.partner_id = self.partner_sii
             invoice_form.l10n_latam_document_number = '00254'
@@ -235,7 +240,10 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         self.assertEqual(move.l10n_cl_dte_acceptation_status, 'received')
 
     def test_process_incoming_customer_claim_accepted(self):
-        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([('code', '=', '33')])
+        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([
+            ('code', '=', '33'),
+            ('country_id.code', '=', 'CL')
+        ])
         with Form(self.env['account.move'].with_context(default_move_type='out_invoice')) as invoice_form:
             invoice_form.partner_id = self.partner_sii
             invoice_form.l10n_latam_document_number = '0301'
@@ -260,7 +268,10 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         self.assertEqual(move.l10n_cl_dte_acceptation_status, 'accepted')
 
     def test_process_incoming_customer_claim_rejected(self):
-        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([('code', '=', '34')])
+        l10n_latam_document_type = self.env['l10n_latam.document.type'].search([
+            ('code', '=', '34'),
+            ('country_id.code', '=', 'CL')
+        ])
         with Form(self.env['account.move'].with_context(default_move_type='out_invoice')) as invoice_form:
             invoice_form.partner_id = self.partner_sii
             invoice_form.l10n_latam_document_number = '254'

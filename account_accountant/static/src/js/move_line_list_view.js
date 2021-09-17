@@ -232,7 +232,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 var text_node = $th.contents().filter(function () {
                     return this.nodeType == 3;
                 })[0]; // we filter on text nodes (type 3) to get only the text and not the title tooltips we would have had with $.text()
-                text_node.nodeValue = text_node.nodeValue.replace(/(\*\*)(.*)\1/g, '<strong>$2</strong>').replace(/\s+\([0-9]+\)/, ''); // we only change the value of the text and not eh html to keep the listeners on the buttons
+                text_node.nodeValue = _.escape(text_node.nodeValue).replace(/(\*\*)(.*)\1/g, '<strong>$2</strong>').replace(/\s+\([0-9]+\)/, ''); // we only change the value of the text and not eh html to keep the listeners on the buttons
                 $(text_node).replaceWith($('<span>' + text_node.nodeValue + '</span>')); // we need to create a new node (span) to replace, just inserting with the new html would mean that we replace by multiple nodes, which is impossible
             }
             return ret;

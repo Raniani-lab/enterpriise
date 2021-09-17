@@ -9,7 +9,6 @@
         />
     <SpreadsheetComponent
         name="state.spreadsheetName"
-        res_id="props.resId"
         data="spreadsheetData"
         isReadonly="isReadonly"
         showFormulas="showFormulas"

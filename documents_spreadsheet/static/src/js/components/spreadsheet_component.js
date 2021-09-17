@@ -57,7 +57,6 @@ export default class SpreadsheetComponent extends owl.Component {
         this.confirmDialog = () => true;
         this.data = props.data;
         this.stateUpdateMessages = props.stateUpdateMessages;
-        this.res_id = props.res_id;
         this.client = {
             id: uuidGenerator.uuidv4(),
             name: user.name,
@@ -310,3 +309,28 @@ export default class SpreadsheetComponent extends owl.Component {
 SpreadsheetComponent.template = "documents_spreadsheet.SpreadsheetComponent";
 SpreadsheetComponent.components = { Spreadsheet, Dialog, PivotDialog };
 Spreadsheet._t = _t;
+SpreadsheetComponent.props = {
+    name: String,
+    data: Object,
+    thumbnailSize: Number,
+    isReadonly: Boolean,
+    snapshotRequested: Boolean,
+    showFormulas: Boolean,
+    download: Boolean,
+    stateUpdateMessages: Array,
+    initCallback: {
+        optional: true,
+        type: Function,
+    },
+    transportService: {
+        optional: true,
+        type: Object
+    }
+}
+SpreadsheetComponent.defaultProps = {
+    isReadonly: false,
+    download: false,
+    snapshotRequested: false,
+    showFormulas: false,
+    stateUpdateMessages: [],
+}

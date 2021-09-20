@@ -22,7 +22,7 @@
                 </group>
                 <group>
                     <field name="email_to" invisible="True"/>
-                    <field name="url" widget="CopyClipboardChar"/>
+                    <field name="url" widget="CopyClipboardURL"/>
                 </group>
                 <footer>
                     <button name="send_offer" type="object" string="Send" class="oe_highlight" data-hotkey="q"/>

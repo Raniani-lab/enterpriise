@@ -174,16 +174,21 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     onchangeCountry(event) {
+        const stateElement = $("select[name='state_id']");
         let countryID = parseInt($("select[name='country_id'][applies-on='address']").val());
-        $("select[name='state_id']").find('option').toArray().forEach(option => {
+        let enableState = true;
+        stateElement.select2('val', '');
+        stateElement.find('option').toArray().forEach(option => {
             let $option = $(option);
             let stateCountryID = $option.data('additional-info');
             if (countryID === stateCountryID) {
                 $option.removeClass('d-none');
+                enableState = false;
             } else {
                 $option.addClass('d-none');
             }
-        })
+        });
+        stateElement.attr('disabled', enableState);
     },
 
     _isInvalidInput() {

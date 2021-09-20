@@ -140,6 +140,8 @@ class SignLog(models.Model):
         return dict(
             sign_request_id=sign_request.id,
             request_state=sign_request.state,
+            latitude=request.session['geoip'].get('latitude', 0.0),
+            longitude=request.session['geoip'].get('latitude', 0.0),
         )
 
     def _update_vals_with_http_request(self, vals):

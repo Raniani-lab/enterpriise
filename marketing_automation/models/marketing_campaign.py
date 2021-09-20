@@ -37,7 +37,10 @@ class MarketingCampaign(models.Model):
         help="""Used to avoid duplicates based on model field.\ne.g.
                 For model 'Customers', select email field here if you don't
                 want to process records which have the same email address""")
-    domain = fields.Char(string='Filter', default='[]')
+    domain = fields.Char(string="Filter", compute='_compute_domain', readonly=False, store=True)
+    mailing_filter_id = fields.Many2one('mailing.filter', string='Favorite Filter',
+        domain="[('mailing_model_name', '=', model_name)]")
+    mailing_filter_domain = fields.Char('Favorite filter domain', related='mailing_filter_id.mailing_domain')
     # activities
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=False)
     mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
@@ -51,10 +54,27 @@ class MarketingCampaign(models.Model):
     total_participant_count = fields.Integer(string="# of active and completed participants", compute='_compute_participants')
     test_participant_count = fields.Integer(string="# of test participants", compute='_compute_participants')
 
+    @api.constrains('model_id', 'mailing_filter_id')
+    def _check_mailing_filter_model(self):
+        """Check that if the favorite filter is set, it must contain the same target model as campaign"""
+        for campaign in self:
+            if campaign.mailing_filter_id and campaign.model_id != campaign.mailing_filter_id.mailing_model_id:
+                raise ValidationError(
+                    _("The saved filter targets different model and is incompatible with this campaign.")
+                )
+
     @api.depends('model_id')
     def _compute_unique_field_id(self):
         for campaign in self:
             campaign.unique_field_id = False
+
+    @api.depends('model_id', 'mailing_filter_id')
+    def _compute_domain(self):
+        for campaign in self:
+            if campaign.mailing_filter_id:
+                campaign.domain = campaign.mailing_filter_id.mailing_domain
+            else:
+                campaign.domain = repr([])
 
     @api.depends('marketing_activity_ids.require_sync', 'last_sync_date')
     def _compute_require_sync(self):

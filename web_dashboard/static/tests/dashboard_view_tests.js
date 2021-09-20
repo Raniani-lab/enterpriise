@@ -2052,8 +2052,8 @@ QUnit.module("Views", (hooks) => {
         patchWithCleanup(dashboard.env.services.action, {
             doAction(action, options) {
                 assert.step("doAction");
-                assert.step(options.props.state.measure);
-                assert.step(options.props.state.interval);
+                assert.step(options.props.state.metaData.measure);
+                assert.step(options.props.state.metaData.interval);
                 const expectedAction = {
                     context: {
                         allowed_company_ids: [1],

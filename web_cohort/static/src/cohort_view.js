@@ -9,37 +9,42 @@ import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { useSetupView } from "@web/views/helpers/view_hook";
 import { CohortArchParser } from "./cohort_arch_parser";
-import { CohortModel, INTERVALS } from "./cohort_model";
+import { CohortModel } from "./cohort_model";
 import { CohortRenderer } from "./cohort_renderer";
 
 class CohortView extends owl.Component {
     setup() {
         this.actionService = useService("action");
-        this.intervals = INTERVALS;
-        let { state: localState } = this.props;
-        if (!localState) {
+
+        let modelParams;
+        if (this.props.state) {
+            modelParams = this.props.state.metaData;
+        } else {
             const { arch, fields } = this.props;
             const archInfo = new this.constructor.ArchParser().parse(arch, fields);
-            localState = {
-                ...archInfo,
-                measure: archInfo.measure,
+            modelParams = {
+                additionalMeasures: this.props.additionalMeasures,
+                dateStart: archInfo.dateStart,
+                dateStartString: archInfo.dateStartString,
+                dateStop: archInfo.dateStop,
+                dateStopString: archInfo.dateStopString,
+                fieldAttrs: archInfo.fieldAttrs,
+                fields: this.props.fields,
                 interval: archInfo.interval,
+                measure: archInfo.measure,
+                mode: archInfo.mode,
+                resModel: this.props.resModel,
+                timeline: archInfo.timeline,
+                title: archInfo.title,
             };
         }
 
-        const { additionalMeasures, resModel, fields, info } = this.props;
-        const modelParams = Object.assign(
-            { additionalMeasures, resModel, fields, info },
-            localState
-        );
         this.model = useModel(this.constructor.Model, modelParams);
 
         useSetupView({
-            getLocalState: () => ({
-                ...localState,
-                measure: this.model.metaData.measure,
-                interval: this.model.metaData.interval,
-            }),
+            getLocalState: () => {
+                return { metaData: this.model.metaData };
+            },
             getContext: () => this.getContext(),
         });
     }
@@ -97,7 +102,7 @@ class CohortView extends owl.Component {
         const data = {
             title: title,
             model: resModel,
-            interval_string: this.intervals[interval].toString(), // intervals are lazy-translated
+            interval_string: this.model.intervals[interval].toString(), // intervals are lazy-translated
             measure_string: measures[measure].string,
             date_start_string: dateStartString,
             date_stop_string: dateStopString,

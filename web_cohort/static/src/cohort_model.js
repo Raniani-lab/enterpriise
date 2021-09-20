@@ -34,6 +34,7 @@ export class CohortModel extends Model {
         this.metaData = params;
         this.data = null;
         this.searchParams = null;
+        this.intervals = INTERVALS;
     }
 
     /**

@@ -165,13 +165,10 @@ export class DashboardView extends Component {
             const states = this.callRecordedCallbacks("__getLocalState__");
             Object.entries(this.subViews).forEach(([viewType, subView]) => {
                 subView.state = states[viewType];
-                if (viewType === "graph") {
-                    subView.state.metaData = Object.assign({}, subView.state.metaData);
+                subView.state.metaData = Object.assign({}, subView.state.metaData);
+                if (viewType === "graph" || viewType === "cohort") {
                     subView.state.metaData.measure = this.currentMeasure;
-                } else if (viewType === "cohort") {
-                    subView.state.measure = this.currentMeasure;
                 } else if (viewType === "pivot") {
-                    subView.state.metaData = Object.assign({}, subView.state.metaData);
                     subView.state.metaData.activeMeasures = [this.currentMeasure];
                 }
             });

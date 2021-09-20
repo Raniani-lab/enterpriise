@@ -88,7 +88,6 @@ export class CohortArchParser extends XMLParser {
                 }
             }
         });
-        archInfo.intervals = INTERVALS;
         return archInfo;
     }
 }

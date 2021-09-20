@@ -3,7 +3,7 @@
 import { memoize } from "@web/core/utils/functions";
 import { registry } from "@web/core/registry";
 import { loadPublicAsset } from "@web/core/assets";
-
+import { loadLegacyViews } from "@web/legacy/legacy_views";
 import { loadWysiwyg } from "web_editor.loader";
 
 const actionRegistry = registry.category("actions");
@@ -11,7 +11,11 @@ const actionRegistry = registry.category("actions");
 const loadStudioAction = memoize(async (env) => {
     // some parts of the studio client action depend on the wysiwyg widgets, so load them first
     await loadWysiwyg();
-    await loadPublicAsset("web_studio.compiled_assets_studio", env.services.orm);
+    const orm = env.services.orm;
+    await Promise.all([
+        loadPublicAsset("web_studio.compiled_assets_studio", orm),
+        loadLegacyViews({ orm }),
+    ]);
 
     if (actionRegistry.get("studio") === loadStudioAction) {
         // At this point, the real studio client action should be loaded and have

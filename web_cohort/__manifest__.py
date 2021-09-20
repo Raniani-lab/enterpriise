@@ -14,6 +14,10 @@
         ],
         'web.assets_backend': [
             'web_cohort/static/src/**/*',
+            ("remove", "web_cohort/static/src/legacy/**/*"),
+        ],
+        "web.assets_backend_legacy_lazy": [
+            "web_cohort/static/src/legacy/**/*.js",
         ],
         'web.qunit_suite_tests': [
             'web_cohort/static/tests/**/*.js',

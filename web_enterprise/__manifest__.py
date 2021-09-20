@@ -70,6 +70,10 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/webclient/**/*.js',
 
             'web_enterprise/static/src/legacy/**/*.js',
+            ("remove", "web_enterprise/static/src/legacy/js/views/pivot_renderer.js"),
+        ],
+        "web.assets_backend_legacy_lazy": [
+            "web_enterprise/static/src/legacy/js/views/pivot_renderer.js",
         ],
         'web.assets_backend_prod_only': [
             ('replace', 'web/static/src/main.js', 'web_enterprise/static/src/main.js'),

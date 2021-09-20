@@ -1680,6 +1680,7 @@ module(
                 id: "42",
                 value: [17],
             });
+            await model.waitForIdle();
             await nextTick();
 
             // But it only fetches names once

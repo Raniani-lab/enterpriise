@@ -943,7 +943,7 @@ module(
                     `,
                 },
             });
-            await model.waitForIdle() 
+            await model.waitForIdle();
             assert.equal(getCellValue(model, "A3"), "xphone");
             assert.equal(getCellValue(model, "A4"), "xpad");
             model.dispatch("ADD_GLOBAL_FILTER", {
@@ -956,6 +956,7 @@ module(
                     pivotFields: {1: {field: "product_id", type: "many2one"}},
                 },
             });
+            await model.waitForIdle();
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A3"), "xphone");
             assert.equal(getCellValue(model, "B3"), "");

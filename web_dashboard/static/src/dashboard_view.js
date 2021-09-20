@@ -261,7 +261,7 @@ export class DashboardView extends Component {
             domain: this.env.searchModel.globalDomain,
             context: this.props.context,
             name: sprintf(this.env._t("%s Analysis"), capitalize(viewType)),
-            res_model: this.model.meta.resModel,
+            res_model: this.model.metaData.resModel,
             type: "ir.actions.act_window",
             views: [[false, viewType]],
             useSampleModel: false, // disable sample data when zooming on a sub view

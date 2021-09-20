@@ -69,9 +69,9 @@ export class DashboardModel extends Model {
         this.keepLast = new KeepLast();
 
         const { aggregates, fields, formulae, resModel } = params;
-        this.meta = { fields, formulae, resModel };
+        this.metaData = { fields, formulae, resModel };
 
-        this.meta.aggregates = [];
+        this.metaData.aggregates = [];
         for (const agg of aggregates) {
             const enrichedCopy = Object.assign({}, agg);
 
@@ -81,29 +81,29 @@ export class DashboardModel extends Model {
             const field = fields[agg.field];
             enrichedCopy.fieldType = field.type;
 
-            this.meta.aggregates.push(enrichedCopy);
+            this.metaData.aggregates.push(enrichedCopy);
         }
 
-        this.meta.statistics = this._statisticsAsFields();
+        this.metaData.statistics = this._statisticsAsFields();
 
-        this.basicModel = setupBasicModel(this.meta.resModel, {
+        this.basicModel = setupBasicModel(this.metaData.resModel, {
             getFieldsInfo: () => {
                 const legFieldsInfo = {
                     dashboard: {},
                 };
 
-                this.meta.aggregates.forEach((agg) => {
+                this.metaData.aggregates.forEach((agg) => {
                     legFieldsInfo.dashboard[agg.name] = Object.assign({}, agg, {
                         type: agg.fieldType,
                     });
                 });
 
-                Object.entries(this.meta.fields).forEach(([fName, f]) => {
+                Object.entries(this.metaData.fields).forEach(([fName, f]) => {
                     legFieldsInfo.dashboard[fName] = Object.assign({}, f);
                 });
 
                 let formulaId = 1;
-                this.meta.formulae.forEach((formula) => {
+                this.metaData.formulae.forEach((formula) => {
                     const formulaName = formula.name || `formula_${formulaId++}`;
                     const fakeField = Object.assign({}, formula, {
                         type: "float",
@@ -121,10 +121,10 @@ export class DashboardModel extends Model {
                 record.context = this.env.searchModel.context;
                 record.viewType = "dashboard";
 
-                const pseudoRecords = getPseudoRecords(this.meta, data);
+                const pseudoRecords = getPseudoRecords(this.metaData, data);
                 record.data = pseudoRecords[0];
 
-                if (this.meta.domains.length > 1) {
+                if (this.metaData.domains.length > 1) {
                     const comparison = this.env.searchModel.getFullComparison();
 
                     record.comparisonData = pseudoRecords[1];
@@ -142,19 +142,19 @@ export class DashboardModel extends Model {
      */
     async load(searchParams) {
         const { comparison, domain, context } = searchParams;
-        const meta = Object.assign({}, this.meta, { context, domain });
+        const metaData = Object.assign({}, this.metaData, { context, domain });
         if (comparison) {
-            meta.domains = comparison.domains;
+            metaData.domains = comparison.domains;
         } else {
-            meta.domains = [{ arrayRepr: domain, description: null }];
+            metaData.domains = [{ arrayRepr: domain, description: null }];
         }
-        await this.keepLast.add(this._load(meta));
-        this.basicModel.isSample = meta.useSampleModel;
-        this.meta = meta;
+        await this.keepLast.add(this._load(metaData));
+        this.basicModel.isSample = metaData.useSampleModel;
+        this.metaData = metaData;
 
         const legacyParams = {
-            domain: meta.domain,
-            compare: meta.domains.length > 1,
+            domain: metaData.domain,
+            compare: metaData.domains.length > 1,
         };
         this._legacyRecord_ = await this.keepLast.add(
             this.basicModel.makeRecord(legacyParams, this.data)
@@ -173,7 +173,7 @@ export class DashboardModel extends Model {
             return !!expr;
         }
         const domain = new Domain(expr);
-        return domain.contains(getPseudoRecords(this.meta, this.data)[0]);
+        return domain.contains(getPseudoRecords(this.metaData, this.data)[0]);
     }
 
     /**
@@ -181,7 +181,7 @@ export class DashboardModel extends Model {
      * @returns {Object}
      */
     getStatisticDescription(statName) {
-        return this.meta.statistics[statName];
+        return this.metaData.statistics[statName];
     }
 
     //--------------------------------------------------------------------------
@@ -295,10 +295,10 @@ export class DashboardModel extends Model {
      */
     _statisticsAsFields() {
         const fakeFields = {};
-        for (const agg of this.meta.aggregates) {
+        for (const agg of this.metaData.aggregates) {
             fakeFields[agg.name] = agg;
         }
-        for (const formula of this.meta.formulae) {
+        for (const formula of this.metaData.formulae) {
             fakeFields[formula.name] = Object.assign({}, formula, { fieldType: "float" });
         }
         return fakeFields;

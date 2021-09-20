@@ -98,8 +98,8 @@ export class DashboardStatistic extends owl.Component {
         }
         const allFields = Object.assign(
             {},
-            this.props.model.meta.fields,
-            this.props.model.meta.statistics
+            this.props.model.metaData.fields,
+            this.props.model.metaData.statistics
         );
         for (const field of Object.values(allFields)) {
             field.type = field.fieldType;

@@ -2004,6 +2004,7 @@ odoo.define('sign.document_signing', function (require) {
                             if($elem.data('required')) {
                                 this.iframeWidget.checkSignItemsCompletion();
                                 Dialog.alert(this, _t("Some fields have still to be completed !"), {title: _t("Warning")});
+                                $btn.removeAttr('disabled', true);
                                 return;
                             }
                             continue;

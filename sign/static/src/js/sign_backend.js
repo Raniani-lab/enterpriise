@@ -176,9 +176,6 @@ odoo.define('sign.views_custo', function(require) {
             }).then(() => {
                 $upload_input.removeAttr('disabled');
                 $upload_input.val("");
-            }).then(() => {
-                $upload_input.removeAttr('disabled');
-                $upload_input.val("");
             });
         });
 
@@ -319,8 +316,10 @@ odoo.define('sign.template', function(require) {
                 signItem.find('.o_sign_config_area .fa-times').on('click', () => {
                     delete self.signatureItems[signItem.data('item-id')];
                     self.deleteSignItem(signItem);
+                    self.checkSignItemsCompletion();
                 });
                 $dropdown.remove();
+                self.checkSignItemsCompletion();
             })
         }
     })

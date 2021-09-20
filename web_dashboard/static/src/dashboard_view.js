@@ -28,14 +28,13 @@ const SUB_VIEW_CONTROL_PANEL_DISPLAY = {
     adaptToScroll: false,
 };
 
-const GRAPH_DISPLAY = {
-    "bottom-right": false,
-    legend: true,
-    scaleLabels: false,
+const GRAPH_VIEW_PROPS = {
+    displayGroupByMenu: true,
+    displayScaleLabels: false,
 };
 
-const DISPLAY = {
-    graph: GRAPH_DISPLAY,
+const VIEW_PROPS = {
+    graph: GRAPH_VIEW_PROPS,
 };
 
 export class DashboardView extends Component {
@@ -229,20 +228,19 @@ export class DashboardView extends Component {
      * @returns {Object}
      */
     getViewProps(viewType) {
-        const display = Object.assign(DISPLAY[viewType] || {});
-        display.controlPanel = SUB_VIEW_CONTROL_PANEL_DISPLAY;
         const subView = this.subViews[viewType];
         return Object.assign(
             {
                 domain: this.props.domain,
                 comparison: this.props.comparison,
                 resModel: this.props.resModel,
-                display: display,
                 context: Object.assign({}, this.props.context),
                 searchViewArch: this.props.info.searchViewArch,
                 searchViewFields: this.props.info.searchViewFields,
                 type: viewType,
+                display: { controlPanel: SUB_VIEW_CONTROL_PANEL_DISPLAY },
             },
+            VIEW_PROPS[viewType],
             subView.props,
             {
                 noContentHelp: this.model.useSampleModel ? false : undefined,
@@ -298,13 +296,7 @@ export class DashboardView extends Component {
     }
 }
 DashboardView.template = "web_dashboard.DashboardView";
-DashboardView.props = {
-    ...standardViewProps,
-    display: Object,
-};
-DashboardView.defaultProps = {
-    display: {},
-};
+DashboardView.props = standardViewProps;
 
 DashboardView.components = {
     ControlPanel,

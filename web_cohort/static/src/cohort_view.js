@@ -6,6 +6,7 @@ import { useService } from "@web/core/utils/hooks";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { useModel } from "@web/views/helpers/model";
+import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { useSetupView } from "@web/views/helpers/view_hook";
 import { CohortArchParser } from "./cohort_arch_parser";
 import { CohortModel, INTERVALS } from "./cohort_model";
@@ -133,6 +134,13 @@ CohortView.multiRecord = true;
 CohortView.template = "web_cohort.CohortView";
 CohortView.buttonTemplate = "web_cohort.CohortView.Buttons";
 CohortView.components = { ControlPanel, Renderer: CohortRenderer, SearchPanel };
+CohortView.props = {
+    ...standardViewProps,
+    additionalMeasures: { type: Array, elements: String, optional: 1 },
+};
+CohortView.defaultProps = {
+    additionalMeasures: [],
+};
 
 CohortView.searchMenuTypes = ["filter", "comparison", "favorite"];
 

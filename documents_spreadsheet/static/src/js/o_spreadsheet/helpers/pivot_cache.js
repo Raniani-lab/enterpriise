@@ -224,7 +224,7 @@ export default class PivotCache {
      * @returns {Promise<string> | undefined}
      */
     getGroupLabel(groupBy, groupValue) {
-        return this._labels[groupBy][groupValue];
+        return this._labels[groupBy] && this._labels[groupBy][groupValue];
     }
 
     /**

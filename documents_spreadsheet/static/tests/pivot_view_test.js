@@ -1111,3 +1111,13 @@ test("Get value from pivot with a non-loaded cache", async function (assert) {
     await model.waitForIdle();
     assert.equal(getCellValue(model, "C3"), 15);
 });
+
+test("Format header correctly works with non-existing field", async function (assert) {
+    assert.expect(2);
+    const { model } = await createSpreadsheetFromPivot();
+    setCellContent(model, "G10", `=PIVOT.HEADER("1", "measure", "non-existing")`);
+    setCellContent(model, "G11", `=PIVOT.HEADER("1", "non-existing", "bla")`);
+    await nextTick();
+    assert.equal(getCellValue(model, "G10"), "non-existing");
+    assert.equal(getCellValue(model, "G11"), "(Undefined)");
+});

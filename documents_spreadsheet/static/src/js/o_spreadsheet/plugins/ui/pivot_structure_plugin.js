@@ -87,30 +87,31 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * Format a header value
      *
      * @param {string} pivotId Id of the pivot
-     * @param {string} field field
+     * @param {string} fieldName field
      * @param {string} value Value
      *
      * @returns {string}
      */
-    getFormattedHeader(pivotId, field, value) {
-        if (field === "measure") {
+    getFormattedHeader(pivotId, fieldName, value) {
+        if (fieldName === "measure") {
             return value === "__count" ? _t("Count") : this.getPivotFieldName(pivotId, value);
         }
         const undef = _t("(Undefined)");
         const pivotData = this.getPivotStructureData(pivotId);
         const dataSource = this._getDataSource(pivotId);
+        const field = dataSource.getField(fieldName.split(":")[0])
         if (
-            !pivotData.isGroupLabelLoaded(field, value) &&
-            dataSource.getField(field.split(":")[0]).relation &&
+            field && field.relation &&
+            !pivotData.isGroupLabelLoaded(fieldName, value) &&
             value !== "false"
         ) {
             dataSource._fetchLabel(field, value).then(() => dataSource.trigger("data-loaded"));
             return undefined;
         }
-        if (this.getters.isPivotFieldDate(pivotId, field.split(":")[0])) {
-            return formatDate(field, value);
+        if (this.getters.isPivotFieldDate(pivotId, fieldName.split(":")[0])) {
+            return formatDate(fieldName, value);
         }
-        const result = pivotData.getGroupLabel(field, value) || undef;
+        const result = pivotData.getGroupLabel(fieldName, value) || undef;
         if (result instanceof Error) {
             throw result;
         }
@@ -297,7 +298,8 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @returns {boolean}
      */
     isPivotFieldDate(pivotId, fieldName) {
-        return ["date", "datetime"].includes(this.getPivotField(pivotId, fieldName).type);
+        const field = this.getPivotField(pivotId, fieldName);
+        return field ? ["date", "datetime"].includes(field.type) : false;
     }
 
     /**

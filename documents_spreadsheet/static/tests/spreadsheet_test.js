@@ -2041,5 +2041,24 @@ module(
             await nextTick();
             assert.strictEqual(document.activeElement.tagName, "CANVAS");
         });
+
+        QUnit.test("Open pivot properties properties with non-loaded field", async function (assert) {
+            assert.expect(1);
+
+            const { webClient, model, env } = await createSpreadsheetFromPivot();
+            const pivot = model.getters.getPivotForRPC("1");
+            pivot.measures.push({
+                field: "non-existing",
+                operator: "sum",
+            })
+            model.dispatch("SELECT_PIVOT", { pivotId: "1" });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+                pivot: model.getters.getSelectedPivotId(),
+            })
+            await nextTick();
+            const sections = webClient.el.querySelectorAll(".o_side_panel_section");
+            const measures = sections[4];
+            assert.equal(measures.children[2].innerText, "non-existing");
+        });
     }
 );

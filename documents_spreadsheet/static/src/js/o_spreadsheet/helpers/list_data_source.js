@@ -52,7 +52,7 @@ export default class ListDataSource extends BasicDataSource {
                 }
                 ids = Array.from(new Set(ids));
                 for (const id of ids) {
-                    proms.push(this._fetchLabel(field.relation, id));
+                    proms.push(this._fetchLabel(field, id));
                 }
             }
         }
@@ -130,10 +130,11 @@ export default class ListDataSource extends BasicDataSource {
      *
      * @private
      *
-     * @param {string} model
+     * @param {Field} field
      * @param {string} id
      */
-    async _fetchLabel(model, id) {
+    async _fetchLabel(field, id) {
+        const model = field.relation
         let label;
         try {
             const rpc = await this.rpc({
@@ -162,7 +163,7 @@ export default class ListDataSource extends BasicDataSource {
         const model = field.relation;
         const label = this._getLabel(model, id);
         if (label === undefined) {
-            this._fetchLabel(model, id).then(() => this.trigger("data-loaded"));
+            this._fetchLabel(field, id).then(() => this.trigger("data-loaded"));
             return undefined;
         }
         if (label instanceof Error) {

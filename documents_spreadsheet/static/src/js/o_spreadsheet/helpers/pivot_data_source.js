@@ -63,13 +63,13 @@ export default class PivotDataSource extends BasicDataSource {
      * example in multi-company)
      * It also update the cache to avoid further rpc.
      *
-     * @param {string} field Name of the field
+     * @param {Field} field Name of the field
      * @param {string} value Value
      *
      * @returns {Promise<string>}
      */
     async _fetchLabel(field, value) {
-        const model = this.getField(field).relation;
+        const model = field.relation;
         let label;
         try {
             const rpc = await this.rpc({
@@ -82,7 +82,7 @@ export default class PivotDataSource extends BasicDataSource {
             label = e;
         }
         if (this.data) {
-            this.data.addLabel(field, value, label);
+            this.data.addLabel(field.name, value, label);
         }
     }
 

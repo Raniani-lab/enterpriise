@@ -9,13 +9,13 @@ import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { useSetupView, useViewArch } from "@web/views/helpers/view_hook";
-import { ViewWidget } from "@web/views/view_widget";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { DashboardArchParser } from "./dashboard_arch_parser";
-import { DashboardCompiler } from "./dashboard_compiler";
+import { DashboardCompiler } from "./dashboard_compiler/dashboard_compiler";
 import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
 import { ViewWrapper } from "./view_wrapper/view_wrapper";
+import { ViewWidget } from "./view_widget";
 
 const { Component } = owl;
 

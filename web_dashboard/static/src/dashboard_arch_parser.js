@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { XMLParser } from "@web/core/utils/xml";
-import * as CompileLib from "@web/views/compile/compile_lib";
+import * as CompileHelpers from "./dashboard_compiler/compile_helpers";
 
 const SUPPORTED_VIEW_TYPES = ["graph", "pivot", "cohort"];
 
@@ -10,7 +10,7 @@ export class DashboardArchParser extends XMLParser {
         const subViewRefs = {};
         const aggregates = [];
         const formulae = [];
-        const nodeIdentifier = CompileLib.nodeIdentifier();
+        const nodeIdentifier = CompileHelpers.nodeIdentifier();
 
         this.visitXML(arch, (node) => {
             if (node.tagName === "view") {

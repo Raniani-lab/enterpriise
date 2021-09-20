@@ -1,17 +1,110 @@
 /** @odoo-module */
+
 import { XMLParser } from "@web/core/utils/xml";
-import * as CompileLib from "@web/views/compile/compile_lib";
-import { compileGroup, compileWidget } from "@web/views/compile/compile_nodes";
+import {
+    addLegacyNodeInfo,
+    appendAttr,
+    appendTo,
+    applyInvisibleModifier,
+    encodeObjectForTemplate,
+    getAllModifiers,
+    getModifier,
+    isAlwaysInvisible,
+    nodeIdentifier,
+} from "./compile_helpers";
+
+/**
+ * An object containing various information about the current
+ * compilation from an Arch to a owl template.
+ * @typedef {Object} CompilationContext
+ */
+
+/**
+ * If a group node has a string, compile a title div for it
+ * @param  {Element} node an arch's node
+ * @return {Element}
+ */
+function makeGroupTitleRow(node) {
+    const titleDiv = this.document.createElement("div");
+    titleDiv.classList.add("o_horizontal_separator");
+    titleDiv.textContent = node.getAttribute("string");
+    return titleDiv;
+}
+
+/**
+ * Compiles a template node for a `<group>`arch's node. Only for first level
+ * @param {Object} config
+ * @param  {Document} config.document The document from which we can create elements
+ * @param  {Function} config.compileNode   A function to compile children nodes
+ * @param  {number} [config.outerGroupCol] the default group column
+ * @param {Object} params The execution parameters
+ * @param  {Element} params.node An arch's node
+ * @param  {CompilationContext} params.compilationContext
+ * @return {Element} The compiled group node
+ */
+function compileGroup({ document, compileNode, outerGroupCol }, { node, compilationContext }) {
+    outerGroupCol = outerGroupCol || 2;
+
+    const group = document.createElement("div");
+    group.setAttribute("class", "o_group");
+
+    if (node.hasAttribute("string")) {
+        appendTo(group, makeGroupTitleRow(node));
+    }
+
+    const nbCols =
+        "col" in node.attributes ? parseInt(node.getAttribute("col"), 10) : outerGroupCol;
+    const colSize = Math.max(1, Math.round(12 / nbCols));
+
+    compilationContext = Object.create(compilationContext);
+    compilationContext.groupLevel = (compilationContext.groupLevel || 1) + 1;
+    for (let child of node.children) {
+        if (child.tagName === "newline") {
+            appendTo(group, this.doc.createElement("br"));
+            continue;
+        }
+        const compiled = compileNode(child, compilationContext);
+        if (!compiled) {
+            continue;
+        }
+        const colspan =
+            "colspan" in child.attributes ? parseInt(node.getAttribute("colspan"), 10) : 1;
+
+        compiled.classList.add(`o_group_col_${colSize * colspan}`);
+        appendTo(group, compiled);
+    }
+    return group;
+}
+
+/**
+ * Compiles a template node for a `<widget>`arch's node
+ * @param {Object} config
+ * @param  {Document} config.document The document from which we can create elements
+ * @param {Object} params The execution parameters
+ * @param  {Element} params.node An arch's node
+ * @return {Element} The compiled ViewWidget node
+ */
+function compileWidget({ document }, { node }) {
+    const viewWidget = document.createElement("ViewWidget");
+    viewWidget.setAttribute("model", "model");
+    viewWidget.setAttribute("widgetName", `"${node.getAttribute("name")}"`);
+    if ("title" in node.attributes) {
+        viewWidget.setAttribute("title", `"${node.getAttribute("title")}"`);
+    }
+    addLegacyNodeInfo(node, viewWidget);
+
+    return viewWidget;
+}
 
 function setSampleDisable(node) {
-    CompileLib.appendAttr(node, "class", "o_sample_data_disabled: model.useSampleModel");
+    appendAttr(node, "class", "o_sample_data_disabled: model.useSampleModel");
 }
 
 export class DashboardCompiler {
     constructor() {
         this.doc = new DOMParser().parseFromString("<templates />", "text/xml");
         this.OUTER_GROUP_COL = 6;
-        this.nodeIdentifier = CompileLib.nodeIdentifier();
+        this.nodeIdentifier = nodeIdentifier();
     }
 
     compileArch(arch) {
@@ -23,7 +116,7 @@ export class DashboardCompiler {
     compile(node, params = {}) {
         const newRoot = this.doc.createElement("t");
         const child = this.compileNode(node, params);
-        CompileLib.appendTo(newRoot, child);
+        appendTo(newRoot, child);
         return newRoot;
     }
 
@@ -31,14 +124,14 @@ export class DashboardCompiler {
         const dash = this.doc.createElement("div");
         dash.classList.add("o_dashboard_view");
         for (const child of node.children) {
-            CompileLib.appendTo(dash, this.compileNode(child, params));
+            appendTo(dash, this.compileNode(child, params));
         }
         return dash;
     }
 
     compileNode(node, params) {
         this.nodeIdentifier(node);
-        if (CompileLib.isAlwaysInvisible(node, params)) {
+        if (isAlwaysInvisible(node, params)) {
             return;
         }
         switch (node.tagName) {
@@ -109,9 +202,9 @@ export class DashboardCompiler {
             agg.setAttribute("help", `"${node.getAttribute("help")}"`);
         }
 
-        const modifiers = CompileLib.getAllModifiers(node);
+        const modifiers = getAllModifiers(node);
         if (modifiers) {
-            agg.setAttribute("modifiers", `"${CompileLib.encodeObjectForTemplate(modifiers)}"`);
+            agg.setAttribute("modifiers", `"${encodeObjectForTemplate(modifiers)}"`);
         }
 
         if (node.tagName === "aggregate") {
@@ -119,7 +212,7 @@ export class DashboardCompiler {
             if (!("clickable" in node.attributes)) {
                 clickable = true;
             } else {
-                clickable = CompileLib.getModifier(node, "clickable");
+                clickable = getModifier(node, "clickable");
             }
             if (clickable) {
                 agg.setAttribute("t-on-change-statistic", `onStatisticChange("${aggName}")`);
@@ -130,9 +223,9 @@ export class DashboardCompiler {
         if (params.groupLevel) {
             const div = this.doc.createElement("div");
             div.setAttribute("class", "o_aggregate_col");
-            CompileLib.appendTo(div, agg);
+            appendTo(div, agg);
             compiled = div;
         }
-        return CompileLib.applyInvisibleModifier({ node, compiled }, params);
+        return applyInvisibleModifier({ node, compiled }, params);
     }
 }

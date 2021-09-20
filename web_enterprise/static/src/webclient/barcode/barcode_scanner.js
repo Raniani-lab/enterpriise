@@ -191,7 +191,7 @@ class BarcodeDialog extends Component {
      */
     onResult(result) {
         this.closeDialog();
-        bus.trigger(busOk, { data: result });
+        bus.trigger(busOk, result);
     }
 
     /**

@@ -699,8 +699,6 @@ class MrpEco(models.Model):
             'edit': self.state != 'done',
             'delete': self.state != 'done',
         }
-        if self.state == 'done':
-            context.update({'search_default_all': 0, 'no_banner': True})
         return {
             'name': _('Attachments'),
             'domain': domain,

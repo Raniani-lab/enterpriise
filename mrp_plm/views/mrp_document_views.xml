@@ -13,10 +13,10 @@
                 <field name="origin_attachment_id"/>
             </field>
             <xpath expr="//div[hasclass('o_kanban_image')]" position="before">
-                <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}" invisible="context.get('no_banner',False)">
+                <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
                     <span class="bg-danger">Archived</span>
                 </div>
-                <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('origin_attachment_id', '!=', False), ('active', '=', False)]}" invisible="context.get('no_banner',False)">
+                <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('origin_attachment_id', '!=', False), ('active', '=', False)]}">
                     <span class="bg-primary">New</span>
                 </div>
             </xpath>

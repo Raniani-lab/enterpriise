@@ -39,7 +39,7 @@ import { GraphView } from "@web/views/graph/graph_view";
 import { actionService } from "@web/webclient/actions/action_service";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
-import { DashboardModel } from "@web_dashboard/dashboard_view/dashboard_model";
+import { DashboardModel } from "@web_dashboard/dashboard_model";
 
 import legacyFieldRegistry from "web.field_registry";
 import { FieldFloat } from "web.basic_fields";

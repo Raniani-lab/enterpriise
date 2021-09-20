@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { DashboardView } from "@web_dashboard/dashboard_view/dashboard_view";
+import { DashboardView } from "@web_dashboard/dashboard_view";
 import { registry } from "@web/core/registry";
 
 const viewRegistry = registry.category("views");

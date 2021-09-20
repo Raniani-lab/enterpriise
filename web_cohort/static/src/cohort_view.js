@@ -7,9 +7,9 @@ import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { useModel } from "@web/views/helpers/model";
 import { useSetupView } from "@web/views/helpers/view_hook";
-import { CohortArchParser } from "@web_cohort/cohort_view/cohort_arch_parser";
-import { CohortModel, INTERVALS } from "@web_cohort/cohort_view/cohort_model";
-import { CohortRenderer } from "@web_cohort/cohort_view/cohort_renderer";
+import { CohortArchParser } from "./cohort_arch_parser";
+import { CohortModel, INTERVALS } from "./cohort_model";
+import { CohortRenderer } from "./cohort_renderer";
 
 class CohortView extends owl.Component {
     setup() {

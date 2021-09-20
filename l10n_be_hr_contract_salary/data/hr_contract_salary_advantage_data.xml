@@ -113,6 +113,7 @@
     </record>
 
     <record id="l10n_be_mobile_value_0" model="hr.contract.salary.advantage.value">
+        <field name="sequence" eval="1"/>
         <field name="advantage_id" ref="l10n_be_mobile"/>
         <field name="value">0</field>
         <field name="name">No</field>
@@ -121,6 +122,7 @@
     </record>
 
     <record id="l10n_be_mobile_value_1" model="hr.contract.salary.advantage.value">
+        <field name="sequence" eval="2"/>
         <field name="advantage_id" ref="l10n_be_mobile"/>
         <field name="value">30.0</field>
         <field name="name">30.0 €</field>

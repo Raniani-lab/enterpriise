@@ -8,10 +8,10 @@
         <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="%(hr_appraisal_action_my)d"
-                    class="oe_stat_button"
+                <button name="action_open_last_appraisal"
+                    class="oe_stat_button" attrs="{'invisible': [('last_appraisal_id', '=', False)]}"
                     icon="fa-sitemap"
-                    type="action"
+                    type="object"
                     >
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">
@@ -22,6 +22,7 @@
                         </span>
                     </div>
                 </button>
+                <field name="last_appraisal_id" invisible="1"/>
             </xpath>
             <header position="inside">
                 <field name="employee_ids" invisible="1"/>

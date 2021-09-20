@@ -27,3 +27,13 @@ class User(models.Model):
             'name': 'Appraisal Request',
             'context': self.env.context,
         }
+
+    def action_open_last_appraisal(self):
+        self.ensure_one()
+        return {
+            'view_mode': 'form',
+            'res_model': 'hr.appraisal',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_id': self.last_appraisal_id.id,
+        }

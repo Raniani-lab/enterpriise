@@ -24,6 +24,16 @@ class HrEmployeeBase(models.AbstractModel):
             'context': self.env.context,
         }
 
+    def action_open_last_appraisal(self):
+        self.ensure_one()
+        return {
+            'view_mode': 'form',
+            'res_model': 'hr.appraisal',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_id': self.last_appraisal_id.id,
+        }
+
     def _create_multi_appraisals(self):
         active_ids = self.env.context.get('active_ids')
         appraisals = self.env['hr.appraisal']

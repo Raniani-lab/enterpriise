@@ -265,6 +265,11 @@ class HrAppraisal(models.Model):
         for employee in set(self.mapped('employee_id')):
             appraisals = employee.appraisal_ids.filtered(lambda a: a.state not in ['done', 'cancel']).sorted('date_close')
             employee.sudo().write({'next_appraisal_date': appraisals[0].date_close if appraisals else False})
+            if employee.last_appraisal_id.state != 'done':
+                employee.sudo().write({
+                    'last_appraisal_id': appraisals[0].id if appraisals else False,
+                    'last_appraisal_date': appraisals[0].date_close if appraisals else False
+                })
 
     @api.model
     def create(self, vals):

@@ -5,6 +5,10 @@ import { formatFloat, formatPercentage } from "@web/fields/formatters";
 const { Component } = owl;
 
 export class CohortRenderer extends Component {
+    setup() {
+        this.model = this.props.model;
+    }
+
     range(n) {
         return Array.from({ length: n }, (_, i) => i);
     }
@@ -19,3 +23,4 @@ export class CohortRenderer extends Component {
 }
 
 CohortRenderer.template = "web_cohort.CohortRenderer";
+CohortRenderer.props = ["model", "onRowClicked"];

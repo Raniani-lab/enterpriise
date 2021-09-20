@@ -50,10 +50,9 @@ class CohortView extends owl.Component {
     }
 
     /**
-     * @param {CustomEvent} ev
+     * @param {Object} row
      */
-    onOpenView(ev) {
-        const row = ev.detail;
+    onRowClicked(row) {
         if (row.value === undefined) {
             return;
         }

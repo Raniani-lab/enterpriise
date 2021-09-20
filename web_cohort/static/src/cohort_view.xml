@@ -50,11 +50,8 @@
                 <SearchPanel t-if="env.searchModel.display.searchPanel" />
                 <Renderer
                     class="o_renderer"
-                    data="model.data"
-                    metaData="model.metaData"
-                    hasData="model.hasData()"
-                    useSampleModel="model.useSampleModel"
-                    t-on-open-view.stop="onOpenView"
+                    model="model"
+                    onRowClicked="(row) => onRowClicked(row)"
                 />
             </div>
         </div>

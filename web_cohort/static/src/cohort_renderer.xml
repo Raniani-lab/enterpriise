@@ -3,8 +3,8 @@
 
     <t t-name="web_cohort.CohortRenderer" owl="1">
         <div class="o_cohort_renderer">
-            <t t-if="props.hasData">
-                <t t-foreach="props.data" t-as="data" t-key="data_index">
+            <t t-if="model.hasData()">
+                <t t-foreach="model.data" t-as="data" t-key="data_index">
                     <div t-if="data.title" class="table-responsive">
                         <table class="table text-center mb0">
                             <thead>
@@ -17,22 +17,22 @@
                         </table>
                     </div>
                     <div t-if="data.rows.length" class="table-responsive">
-                        <table class="table text-center mb0" t-att-class="{ o_sample_data_disabled: props.useSampleModel }">
+                        <table class="table text-center mb0" t-att-class="{ o_sample_data_disabled: model.useSampleModel }">
                             <thead>
                                 <tr>
                                     <th rowspan="2">
-                                        <t t-esc="props.metaData.dateStartString" />
+                                        <t t-esc="model.metaData.dateStartString" />
                                     </th>
                                     <th rowspan="2">
-                                        <t t-esc="props.metaData.measures[props.metaData.measure].string"/>
+                                        <t t-esc="model.metaData.measures[model.metaData.measure].string"/>
                                     </th>
                                     <th colspan="16">
-                                        <t t-esc="props.metaData.dateStopString" /> - By <t t-esc="props.metaData.intervals[props.metaData.interval]" />
+                                        <t t-esc="model.metaData.dateStopString" /> - By <t t-esc="model.metaData.intervals[model.metaData.interval]" />
                                     </th>
                                 </tr>
                                 <tr>
                                     <th t-foreach="range(data.rows[0].columns.length)" t-as="intervalNumber" t-key="intervalNumber">
-                                        <t t-if="props.metaData.timeline === 'backward'">
+                                        <t t-if="model.metaData.timeline === 'backward'">
                                             <t t-esc="intervalNumber - (data.rows[0].columns.length - 1)"/>
                                         </t>
                                         <t t-else="">
@@ -44,7 +44,7 @@
                             <tbody>
                                 <tr t-foreach="data.rows" t-as="row" t-key="row.date"
                                     class="o_cohort_row_clickable"
-                                    t-on-click="trigger('open-view', row)"
+                                    t-on-click.stop="props.onRowClicked(row)"
                                 >
                                     <td class="o_cohort_value">
                                         <t t-esc="row.date" />
@@ -55,7 +55,7 @@
                                     <td t-foreach="row.columns" t-as="col" t-key="col.period">
                                         <t t-if="col.percentage !== ''">
                                             <t t-set="count" t-value="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)" />
-                                            <t t-set="measure" t-value="props.metaData.measures[props.metaData.measure].string" />
+                                            <t t-set="measure" t-value="model.metaData.measures[model.metaData.measure].string" />
                                             <div class="o_cohort_highlight"
                                                 t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
                                                 t-attf-style="background-color: rgba(0, 160, 157, {{col.percentage/100.0}}); color: {{col.percentage gt 50 and '#FFFFFF' or 'inherit'}}"
@@ -82,7 +82,7 @@
                             </tfoot>
                         </table>
                     </div>
-                    <div t-if="props.data.length > 1 &amp;&amp; !data.rows.length"
+                    <div t-if="model.data.length > 1 &amp;&amp; !data.rows.length"
                         class="o_cohort_no_data text-center"
                     >
                         No data available.
@@ -91,13 +91,13 @@
                 </t>
             </t>
             <t t-set="displayNoContent" t-value="
-                props.metaData.info.noContentHelp !== false and (
-                    !props.hasData or props.useSampleModel
+                model.metaData.info.noContentHelp !== false and (
+                    !model.hasData() or model.useSampleModel
                 )"
             />
             <t t-if="displayNoContent">
-                <t t-if="props.metaData.info.noContentHelp" t-call="web.ActionHelper">
-                    <t t-set="noContentHelp" t-value="props.metaData.info.noContentHelp"/>
+                <t t-if="model.metaData.info.noContentHelp" t-call="web.ActionHelper">
+                    <t t-set="noContentHelp" t-value="model.metaData.info.noContentHelp"/>
                 </t>
                 <t t-else="" t-call="web.NoContentHelper"/>
             </t>

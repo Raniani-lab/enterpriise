@@ -33,7 +33,7 @@
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It"
                         attrs="{'invisible': ['|', '|', ('resource_id', '!=', False), ('start_datetime', '=', False), ('end_datetime', '=', False)]}" close="1"/>
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I Am Unavailable"
-                        attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False),
+                        attrs="{'invisible': ['|', '|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False),
                         ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True), ('resource_type', '=', 'material')]}"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager"/>

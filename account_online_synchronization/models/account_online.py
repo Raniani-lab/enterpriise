@@ -333,6 +333,7 @@ class AccountOnlineLink(models.Model):
             # In such a case, we renew the token with the provider and send back the newly encrypted token inside provider_data
             # which result in the information having changed, henceforth why that field is passed at every loop.
             data['provider_data'] = self.provider_data
+            data['add_new_accounts'] = add_new_accounts
             resp_json = self._fetch_odoo_fin('/proxy/v1/accounts', data)
             for acc in resp_json.get('accounts', []):
                 acc['account_online_link_id'] = self.id

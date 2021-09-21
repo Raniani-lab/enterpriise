@@ -509,6 +509,6 @@ export default class BarcodeQuantModel extends BarcodeModel {
     }
 
     _defaultDestLocationId() {
-        return null;
+        return undefined;
     }
 }

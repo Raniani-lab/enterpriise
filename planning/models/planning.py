@@ -628,7 +628,11 @@ class Planning(models.Model):
         result = []
         for slot in self:
             # label part, depending on context `groupby`
-            name_values = [self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:3]  # limit to 3 labels
+            name_values = [
+                self._fields[fname].convert_to_display_name(slot[fname], slot) if fname != 'resource_id' else slot.resource_id.name
+                for fname in field_list
+                if slot[fname]
+            ][:3]  # limit to 3 labels
             name = ' - '.join(name_values) or slot.resource_id.name
 
             # add unicode bubble to tell there is a note

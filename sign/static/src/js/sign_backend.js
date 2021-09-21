@@ -1656,6 +1656,7 @@ odoo.define('sign.document_signing_backend', function(require) {
     var core = require('web.core');
     var DocumentBackend = require('sign.DocumentBackend');
     var document_signing = require('sign.document_signing');
+    const config = require('web.config');
 
     var _t = core._t;
     const qweb = core.qweb;
@@ -1702,7 +1703,7 @@ odoo.define('sign.document_signing_backend', function(require) {
                     args: [this.documentID],
                 })
             ])
-            if(allowEdit) {
+            if(allowEdit && !config.device.isMobile) {
                 this.$buttons.push($(qweb.render('sign.edit_mode_info'))[0]);
                 this.updateControlPanel({cp_content: {$buttons: this.$buttons}});
             }

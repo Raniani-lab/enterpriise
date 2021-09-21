@@ -375,12 +375,14 @@ class HrPayslip(models.Model):
         self.mapped('payslip_run_id').action_close()
         # Validate work entries for regular payslips (exclude end of year bonus, ...)
         regular_payslips = self.filtered(lambda p: p.struct_id.type_id.default_struct_id == p.struct_id)
+        work_entries = self.env['hr.work.entry']
         for regular_payslip in regular_payslips:
-            work_entries = self.env['hr.work.entry'].search([
+            work_entries |= self.env['hr.work.entry'].search([
                 ('date_start', '<=', regular_payslip.date_to),
                 ('date_stop', '>=', regular_payslip.date_from),
                 ('employee_id', '=', regular_payslip.employee_id.id),
             ])
+        if work_entries:
             work_entries.action_validate()
 
         if self.env.context.get('payslip_generate_pdf'):

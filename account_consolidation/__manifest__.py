@@ -39,6 +39,9 @@
         'web.assets_qweb': [
             'account_consolidation/static/src/xml/**/*',
         ],
+        'web.qunit_suite_tests': [
+            'account_consolidation/static/tests/**/*'
+        ]
     },
     'license': 'OEEL-1',
 }

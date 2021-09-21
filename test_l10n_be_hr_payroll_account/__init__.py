@@ -44,16 +44,18 @@ def _generate_payslips(cr, registry):
             }
             cids = env.ref('l10n_be_hr_payroll.res_company_be').ids
             payslip_runs = env['hr.payslip.run']
+            payslis_values = []
             for i in range(2, 20):
                 date_start = Datetime.today() - relativedelta(months=i, day=1)
                 date_end = Datetime.today() - relativedelta(months=i, day=31)
-                payslip_run = env['hr.payslip.run'].create({
+                payslis_values.append({
                     'name': date_start.strftime('%B %Y'),
                     'date_start': date_start,
                     'date_end': date_end,
                     'company_id': env.ref('l10n_be_hr_payroll.res_company_be').id,
                 })
-                payslip_runs |= payslip_run
+            payslip_runs = env['hr.payslip.run'].create(payslis_values)
+            for payslip_run in payslip_runs:
                 wizard = env['hr.payslip.employees'].create(wizard_vals)
                 wizard.with_context(active_id=payslip_run.id, allowed_company_ids=cids).compute_sheet()
             _logger.info('Validating payslips')

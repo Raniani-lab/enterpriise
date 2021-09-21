@@ -2,8 +2,11 @@
     .o_kanban_view.o_kanban_dashboard.o_helpdesk_kanban {
         $helpdesk-record-width: 420px;
 
-        .o_kanban_group {
+        .o_kanban_group:not(.o_column_folded) {
             width: $helpdesk-record-width + 2*$o-kanban-group-padding;
+        }
+        .o_kanban_group.o_column_folded {
+            height: $helpdesk-record-width;
         }
         .o_kanban_record {
             width: $helpdesk-record-width;

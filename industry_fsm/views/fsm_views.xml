@@ -111,7 +111,7 @@
             <div name="date_deadline" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('is_closed', '=', True)]}</attribute>
             </div>
-            <div name="date_deadline" position="after">
+            <div name="date_deadline" position="before">
                 <field name="planned_date_begin" widget="fsm_date" attrs="{'invisible': [('planned_date_begin', '=', False)]}"/>
             </div>
         </field>

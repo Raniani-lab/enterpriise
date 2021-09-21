@@ -6,7 +6,7 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='preview_sale_order']" position="before">
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
                 <field name="id" invisible="1"/>
                 <field name="planning_first_sale_line_id" invisible="1"/>
                 <field name="planning_initial_date" invisible="1"/>

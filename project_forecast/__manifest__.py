@@ -9,6 +9,9 @@
     'category': 'Services/Project',
     'version': '1.0',
     'depends': ['project', 'planning', 'web_grid'],
+    'demo': [
+        'data/project_planning_demo.xml',
+    ],
     'data': [
         'views/planning_template_views.xml',
         'views/planning_templates.xml',

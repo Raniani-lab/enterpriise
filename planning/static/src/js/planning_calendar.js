@@ -7,6 +7,7 @@ import CalendarRenderer from 'web.CalendarRenderer';
 import CalendarView from 'web.CalendarView';
 import fieldUtils from 'web.field_utils';
 import view_registry from 'web.view_registry';
+import session from 'web.session';
 
     var PlanningCalendarPopover = CalendarPopover.extend({
         template: 'Planning.event.popover',
@@ -58,6 +59,17 @@ import view_registry from 'web.view_registry';
     });
 
     var PlanningCalendarRenderer = CalendarRenderer.extend({
+        template: "Planning.CalendarView.extend",
+
+        /**
+         * Check the planning manager group
+         * @override
+         */
+        async willStart() {
+            await this._super.apply(this, arguments);
+            this.is_manager = await session.user_has_group('planning.group_planning_manager');
+        },
+
         config: _.extend({}, CalendarRenderer.prototype.config, {
             CalendarPopover: PlanningCalendarPopover,
         }),

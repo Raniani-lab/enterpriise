@@ -3,7 +3,7 @@ $map-table-line-padding: 20px;
 $map-number-color: white;
 $map-number-font-size: 19px;
 $map-marker-color: #2c8397;
-.o_map_view {
+.o_map_view.o_legacy {
     height: 100%;
 
     .o_map_container {

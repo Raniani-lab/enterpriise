@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="web_map.MapView" owl="1">
+        <Layout viewType="'map'">
+            <t t-set-slot="control-panel-bottom-left">
+                <t t-call="{{ constructor.buttonTemplate }}"/>
+            </t>
+            <t t-component="constructor.Renderer" t-props="rendererProps" />
+        </Layout>
+    </t>
+
+    <t t-name="web_map.MapView.Buttons"  owl="1">
+        <div class="o-map-view--buttons">
+            <a class="btn btn-primary text-white" t-att-href="googleMapUrl" target="_blank">View in Google Maps</a>
+        </div>
+    </t>
+
+</templates>

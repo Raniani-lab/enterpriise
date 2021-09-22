@@ -31,7 +31,7 @@ const MapController = AbstractController.extend({
      * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
-        this.$buttons = $(qweb.render("MapView.buttons"), { widget: this });
+        this.$buttons = $(qweb.render("web_map.legacy.buttons"), { widget: this });
         this._updateGoogleMapUrl();
         this.$buttons.appendTo($node);
     },

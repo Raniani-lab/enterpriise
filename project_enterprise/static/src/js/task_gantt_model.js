@@ -21,44 +21,43 @@ const TaskGanttModel = GanttModel.extend({
      * @override
      */
     _fetchData() {
-        return this._super(...arguments).then((result) => {
-            this.ganttData.milestones = [];
-            if (this.isSampleModel || device.isMobile) {
-                return Promise.resolve();
-            }
-            return this._rpc({
-                model: 'project.task',
-                method: 'read_group',
-                fields: ['project_id'],
-                domain: this.domain,
-                groupBy: ['project_id'],
-            }).then((result) => {
-                const projectIds = result.map((read_group_entry) => read_group_entry.project_id[0]);
-                if (!projectIds.length) {
-                    return Promise.resolve();
-                }
-                return this._rpc({
-                    model: 'project.milestone',
-                    method: 'search_read',
-                    domain: [
-                        ['project_id', 'in', projectIds],
-                        ['deadline', '<=', this.convertToServerTime(this.ganttData.stopDate)],
-                        ['deadline', '>=', this.convertToServerTime(this.ganttData.startDate)],
-                    ],
-                    fields: ['name', 'deadline', 'is_deadline_exceeded', 'is_reached', 'project_id'],
-                    orderBy: [{ name: 'project_id', asc: true }, { name: 'deadline', asc: true }]
-                }).then((milestones) => {
-                    this.ganttData.milestones = milestones.map(milestone => {
-                        return Object.assign(
-                            milestone,
-                            {
-                                'deadlineUserFormatted': format.date(moment(milestone.deadline)),
-                                // Ensure milestones are displayed at the end of the period.
-                                'deadline': moment(milestone.deadline).clone().add(1, 'd').subtract(1, 'ms'),
-                            },
-                        );
-                    });
-                });
+        const proms = [];
+        proms.push(this._super(...arguments));
+        proms.push(this._fetchMilestoneData());
+        return Promise.all(proms);
+    },
+    /**
+     * Retrieve the milestone data based on the task domain.
+     *
+     * @private
+     */
+    _fetchMilestoneData() {
+        this.ganttData.milestones = [];
+        if (this.isSampleModel || device.isMobile) {
+            return Promise.resolve();
+        }
+        return this._rpc({
+            model: 'project.milestone',
+            method: 'search_milestone_from_task',
+            kwargs: {
+                task_domain: this.domain,
+                milestone_domain: [
+                    ['deadline', '<=', this.convertToServerTime(this.ganttData.stopDate)],
+                    ['deadline', '>=', this.convertToServerTime(this.ganttData.startDate)],
+                ],
+                fields: ['name', 'deadline', 'is_deadline_exceeded', 'is_reached', 'project_id'],
+                order: 'project_id ASC, deadline ASC',
+            },
+        }).then((milestones) => {
+            this.ganttData.milestones = milestones.map(milestone => {
+                return Object.assign(
+                    milestone,
+                    {
+                        'deadlineUserFormatted': format.date(moment(milestone.deadline)),
+                        // Ensure milestones are displayed at the end of the period.
+                        'deadline': moment(milestone.deadline).clone().add(1, 'd').subtract(1, 'ms'),
+                    },
+                );
             });
         });
     },

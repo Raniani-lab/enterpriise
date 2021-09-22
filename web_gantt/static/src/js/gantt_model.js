@@ -193,7 +193,12 @@ var GanttModel = AbstractModel.extend({
                 this.ganttData.groupedBy = this.defaultGroupBy;
             }
         }
-        return this._fetchData()
+        return this._fetchData().then(function () {
+            // The 'reload' function returns a promise which resolves with the
+            // handle to pass to the 'get' function to access the data. In this
+            // case, we don't want to pass any argument to 'get' (see its API).
+            return Promise.resolve();
+        });
     },
     /**
      * Create a copy of a task with defaults determined by schedule.

@@ -55,7 +55,7 @@ QUnit.test("Check progress bar values", async (assert) => {
                 records: this.data.task.records
             });
         } else {
-            if (args.method === 'read_group' && args.model === 'project.task' && args.kwargs.groupby[0] === 'project_id') {
+            if (args.method === 'search_milestone_from_task') {
                 return Promise.resolve([]);
             }
             return this._super.apply(this, arguments);

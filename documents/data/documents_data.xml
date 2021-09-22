@@ -258,7 +258,7 @@
             <field name="email_drop">True</field>
             <field name="activity_option">True</field>
             <field name="activity_type_id" ref="mail_documents_activity_data_Inbox"/>
-            <field name="activity_date_deadline_range">7</field>
+            <field name="activity_date_deadline_range">0</field>
             <field name="activity_date_deadline_range_type">days</field>
         </record>
 
@@ -272,7 +272,7 @@
             <field name="email_drop">True</field>
             <field name="activity_option">True</field>
             <field name="activity_type_id" ref="mail_documents_activity_data_Inbox"/>
-            <field name="activity_date_deadline_range">7</field>
+            <field name="activity_date_deadline_range">0</field>
             <field name="activity_date_deadline_range_type">days</field>
         </record>
     </data>

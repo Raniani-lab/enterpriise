@@ -59,4 +59,9 @@ def _generate_payslips(cr, registry):
                 wizard = env['hr.payslip.employees'].create(wizard_vals)
                 wizard.with_context(active_id=payslip_run.id, allowed_company_ids=cids).compute_sheet()
             _logger.info('Validating payslips')
+            # after many insertions in work_entries, table statistics may be broken.
+            # In this case, query plan may be randomly suboptimal leading to slow search
+            # Analyzing the table is fast, and will transform a potential ~30 seconds
+            # sql time for _mark_conflicting_work_entries into ~2 seconds
+            env.cr.execute('ANALYZE hr_work_entry')
             payslip_runs.with_context(allowed_company_ids=cids).action_validate()

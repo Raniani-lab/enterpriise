@@ -506,17 +506,12 @@ _amount_getters = [
 # These are pair of getters: (getter for the exchange rate, getter for the target currency)
 _target_rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
-    (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
-    (partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
-    (partial(_generic_get, xpath='ns:XchgRate/text()'), partial(_generic_get, xpath='ns:TrgtCcy/text()')),
 ]
 
 # These are pair of getters: (getter for the exchange rate, getter for the source currency)
 _source_rate_getters = [
-    (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:SrcCcy/text()')),
     (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:SrcCcy/text()')),
     (partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:SrcCcy/text()')),
-    (partial(_generic_get, xpath='ns:XchgRate/text()'), partial(_generic_get, xpath='ns:SrcCcy/text()')),
 ]
 
 _get_credit_debit_indicator = partial(_generic_get,
@@ -577,9 +572,9 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
 
     def get_rate(*entries, target_currency):
         for entry in entries:
-            rate = get_value_and_currency_name(entry, _target_rate_getters, target_currency=target_currency)[0]
+            rate = get_value_and_currency_name(entry, _source_rate_getters, target_currency=target_currency)[0]
             if not rate:
-                rate = get_value_and_currency_name(entry, _source_rate_getters, target_currency=target_currency)[0]
+                rate = get_value_and_currency_name(entry, _target_rate_getters, target_currency=target_currency)[0]
                 rate = rate and 1 / rate
             if rate:
                 return rate

@@ -55,7 +55,7 @@
               <CcyXchg>
                 <SrcCcy>EUR</SrcCcy>
                 <TrgtCcy>USD</TrgtCcy>
-                <XchgRate>2</XchgRate>
+                <XchgRate>0.5</XchgRate>
               </CcyXchg>
             </CntrValAmt>
           </AmtDtls>

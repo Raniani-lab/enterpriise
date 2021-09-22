@@ -321,8 +321,9 @@ class CalendarAppointmentType(models.Model):
         requested_tz = pytz.timezone(timezone)
         first_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(hours=self.min_schedule_hours))
         appointment_duration_days = self.max_schedule_days
-        if self.category == 'custom':
-            appointment_duration_days = (self.slot_ids[-1].end_datetime - datetime.utcnow()).days
+        unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique')
+        if self.category == 'custom' and unique_slots:
+            appointment_duration_days = (unique_slots[-1].end_datetime - datetime.utcnow()).days
         last_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)

@@ -53,7 +53,7 @@ class WebsiteAppointmentTest(common.TransactionCase):
             'category': 'website',
         })
         self.assertFalse(appointment.is_published, "A website appointment type should not be published at creation")
-        
+
         appointment.write({'category': 'custom'})
         self.assertTrue(appointment.is_published, "Modifying an appointment type category to custom auto-published it")
 

@@ -889,12 +889,12 @@ class HelpdeskTicket(models.Model):
             return self.env.ref('helpdesk.mt_ticket_stage')
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 
-    def _notify_get_groups(self, msg_vals=None):
+    def _notify_get_recipients_groups(self, msg_vals=None):
         """ Handle helpdesk users and managers recipients that can assign
         tickets directly from notification emails. Also give access button
         to portal and portal customers. If they are notified they should
         probably have access to the document. """
-        groups = super(HelpdeskTicket, self)._notify_get_groups(msg_vals=msg_vals)
+        groups = super(HelpdeskTicket, self)._notify_get_recipients_groups(msg_vals=msg_vals)
 
         self.ensure_one()
         for group_name, _group_method, group_data in groups:
@@ -915,13 +915,13 @@ class HelpdeskTicket(models.Model):
         )]
         return new_groups + groups
 
-    def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):
+    def _notify_get_reply_to(self, default=None):
         """ Override to set alias of tickets to their team if any. """
-        aliases = self.mapped('team_id').sudo()._notify_get_reply_to(default=default, records=None, company=company, doc_names=None)
+        aliases = self.mapped('team_id').sudo()._notify_get_reply_to(default=default)
         res = {ticket.id: aliases.get(ticket.team_id.id) for ticket in self}
         leftover = self.filtered(lambda rec: not rec.team_id)
         if leftover:
-            res.update(super(HelpdeskTicket, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
+            res.update(super(HelpdeskTicket, leftover)._notify_get_reply_to(default=default))
         return res
 
     # ------------------------------------------------------------

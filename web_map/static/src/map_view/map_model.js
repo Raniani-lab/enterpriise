@@ -57,13 +57,20 @@ export class MapModel extends Model {
             ...this.metaData,
             ...params,
         };
-        this.data = await this.keepLast.add(this._fetchData(metaData));
+        this.data = await this._fetchData(metaData);
         this.metaData = metaData;
 
         this.notify();
     }
     /**
-     * Called when component will be unmounted or before patched.
+     * Tells the model to stop fetching coordinates.
+     * In OSM mode, the model starts to fetch coordinates once every second after the
+     * model has loaded.
+     * This fetching has to be done every second if we don't want to be banned from OSM.
+     * There are typically two cases when we need to stop fetching:
+     * - when component is about to be unmounted because the request is bound to
+     *   the component and it will crash if we do so.
+     * - when calling the `load` method as it will start fetching new coordinates.
      */
     stopFetchingCoordinates() {
         browser.clearTimeout(this.coordinateFetchingTimeoutHandle);
@@ -155,9 +162,9 @@ export class MapModel extends Model {
             data.recordGroups = [];
             data.records = [];
             data.routes = [];
-            return data;
+            return this.keepLast.add(Promise.resolve(data));
         }
-        const results = await this._fetchRecordData(metaData, data);
+        const results = await this.keepLast.add(this._fetchRecordData(metaData, data));
         data.records = results.records;
         data.count = results.length;
         if (data.isGrouped) {
@@ -518,12 +525,22 @@ export class MapModel extends Model {
                             data.partnerToCache.push(partner);
                         }
                     }
-                } finally {
                     for (const partner of partners) {
                         partner.fetchingCoordinate = false;
                     }
                     data.fetchingCoordinates = i < partnersList.length - 1;
                     this._notifyFetchedCoordinate(metaData, data);
+                } catch (e) {
+                    for (const partner of data.partners) {
+                        partner.fetchingCoordinate = false;
+                    }
+                    data.fetchingCoordinates = false;
+                    this.shouldFetchCoordinates = false;
+                    this.notification.add(
+                        this.env._t("OpenStreetMap's request limit exceeded, try again later."),
+                        { type: "danger" }
+                    );
+                    this.notify();
                 }
             }
         };
@@ -541,11 +558,12 @@ export class MapModel extends Model {
      */
     async _partnerFetching(metaData, data) {
         data.partners = data.partnerIds.length
-            ? await this._fetchRecordsPartner(metaData, data, data.partnerIds)
+            ? await this.keepLast.add(this._fetchRecordsPartner(metaData, data, data.partnerIds))
             : [];
         this._addPartnerToRecord(metaData, data);
         if (data.useMapBoxAPI) {
-            return this._maxBoxAPI(metaData, data)
+            return this.keepLast
+                .add(this._maxBoxAPI(metaData, data))
                 .then(() => {
                     this._writeCoordinatesUsers(metaData, data);
                 })

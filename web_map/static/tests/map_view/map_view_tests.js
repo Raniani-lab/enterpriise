@@ -7,9 +7,6 @@ import {
     toggleFilterMenu,
     toggleMenuItem,
     toggleGroupByMenu,
-    getPagerValue,
-    getPagerTotal,
-    pagerNext,
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { dialogService } from "@web/core/dialog/dialog_service";
@@ -988,8 +985,14 @@ QUnit.module("Views", (hooks) => {
             resModel: "project.task",
             arch: `<map res_partner="partner_id" limit="2" />`,
         });
-        assert.strictEqual(getPagerValue(map.el), "1-2");
-        assert.strictEqual(getPagerTotal(map.el), "3");
+        assert.strictEqual(
+            map.el.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
+            "1-2"
+        );
+        assert.strictEqual(
+            map.el.querySelector(`.o_pager_counter span.o_pager_limit`).innerText.trim(),
+            "3"
+        );
     });
 
     //--------------------------------------------------------------------------
@@ -1869,12 +1872,24 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.containsOnce(map.el, ".o_pager");
-        assert.strictEqual(getPagerValue(map.el), "1-80", "current pager value should be 1-20");
-        assert.strictEqual(getPagerTotal(map.el), "101", "current pager limit should be 21");
+        assert.strictEqual(
+            map.el.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
+            "1-80",
+            "current pager value should be 1-20"
+        );
+        assert.strictEqual(
+            map.el.querySelector(`.o_pager_counter span.o_pager_limit`).innerText.trim(),
+            "101",
+            "current pager limit should be 21"
+        );
 
-        await pagerNext(map.el);
+        await click(map.el.querySelector(`.o_pager button.o_pager_next`));
 
-        assert.strictEqual(getPagerValue(map.el), "81-101", "pager value should be 21-40");
+        assert.strictEqual(
+            map.el.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
+            "81-101",
+            "pager value should be 21-40"
+        );
     });
 
     QUnit.test("New domain", async function (assert) {

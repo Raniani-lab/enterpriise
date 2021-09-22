@@ -69,9 +69,7 @@ var DashboardController = AbstractController.extend({
                 additionalMeasures: ev.data.additionalMeasures
             };
         }
-        this.do_action(action, {
-            controllerState: this.exportState(),
-        });
+        this.do_action(action);
     },
     /**
      * Handles a reload request (it occurs when a field is clicked). If this

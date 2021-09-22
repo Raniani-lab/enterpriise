@@ -12,7 +12,7 @@ const { registry } = require("@web/core/registry");
 var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
-const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { legacyExtraNextTick, click } = require("@web/../tests/helpers/utils");
 const CohortView = require('web_cohort.CohortView');
 
 const {
@@ -1398,7 +1398,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('open a graph view fullscreen', async function (assert) {
-        assert.expect(9);
+        assert.expect(3);
         const views = {
             'test_report,false,dashboard': '<dashboard>' +
                     '<view type="graph" ref="some_xmlid"/>' +
@@ -1407,9 +1407,7 @@ QUnit.module('Views', {
                     '<field name="categ_id"/>' +
                     '<field name="sold" type="measure"/>' +
                 '</graph>',
-            'test_report,false,search': '<search>' +
-                    '<filter name="categ" help="Category 1" domain="[(\'categ_id\', \'=\', 1)]"/>' +
-                '</search>',
+            'test_report,false,search': '<search/>',
         };
         Object.assign(serverData, {views});
 
@@ -1418,18 +1416,7 @@ QUnit.module('Views', {
         viewRegistry.remove("graph");
         legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
 
-        const webClient = await createWebClient({
-            serverData,
-            mockRPC: function (route, args) {
-                if (args.method === 'read_group') {
-                    if (args.kwargs.domain[0]) {
-                        assert.step(args.kwargs.domain[0].join(''));
-                    } else {
-                        assert.step('initial read_group');
-                    }
-                }
-            }
-        });
+        const webClient = await createWebClient({ serverData });
 
         await doAction(webClient, {
             name: 'Dashboard',
@@ -1441,32 +1428,24 @@ QUnit.module('Views', {
         assert.strictEqual($('.o_control_panel .breadcrumb-item').text(), 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
-        // activate 'Category 1' filter
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 0);
-        assert.deepEqual(getFacetTexts(webClient), ['Category 1']);
-
         // open graph in fullscreen
         await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
         await nextTick();
+
         assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
             "'Graph Analysis' should have been stacked in the breadcrumbs");
-        assert.deepEqual(getFacetTexts(webClient), ['Category 1'],
-            "the filter should have been kept");
 
         // go back using the breadcrumbs
         await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
         await nextTick();
-        assert.verifySteps([
-            'initial read_group',
-            'categ_id=1', // dashboard view after applying the filter
-            'categ_id=1', // graph view opened fullscreen
-            'categ_id=1', // dashboard after coming back
-        ]);
+        await nextTick();
+
+        assert.strictEqual($('.o_control_panel .breadcrumb-item').text(), 'Dashboard',
+        "'Dashboard' should be displayed in the breadcrumbs");
     });
 
     QUnit.test('open a cohort view fullscreen', async function (assert) {
-        assert.expect(9);
+        assert.expect(3);
 
         this.data.test_report.fields.create_date = {type: 'date', string: 'Creation Date'};
         this.data.test_report.fields.transformation_date = {type: 'date', string: 'Transormation Date'};
@@ -1481,9 +1460,7 @@ QUnit.module('Views', {
                     '<view type="cohort" ref="some_xmlid"/>' +
                 '</dashboard>',
             'test_report,some_xmlid,cohort': '<cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week"/>',
-            'test_report,false,search': '<search>' +
-                    '<filter name="categ" help="Category 1" domain="[(\'categ_id\', \'=\', 1)]"/>' +
-                '</search>',
+            'test_report,false,search': '<search/>',
         };
         Object.assign(serverData, {views});
 
@@ -1495,15 +1472,6 @@ QUnit.module('Views', {
         const webClient = await createWebClient({
             serverData,
             legacyParams: { withLegacyMockServer: true },
-            mockRPC: function (route, args) {
-                if (args.method === 'get_cohort_data') {
-                    if (args.kwargs.domain[0]) {
-                        assert.step(args.kwargs.domain[0].join(''));
-                    } else {
-                        assert.step('initial get_cohort_data');
-                    }
-                }
-            }
         });
 
         await doAction(webClient, {
@@ -1517,28 +1485,18 @@ QUnit.module('Views', {
         assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb li').text(), 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
-        // activate 'Category 1' filter
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 0);
-        assert.deepEqual(getFacetTexts(webClient), ['Category 1']);
-
         // open cohort in fullscreen
         await testUtils.dom.click($(webClient.el).find('.o_cohort_buttons .o_button_switch'));
         await nextTick();
         assert.strictEqual($('.o_control_panel .breadcrumb li:nth(1)').text(), 'Cohort Analysis',
             "'Cohort Analysis' should have been stacked in the breadcrumbs");
-        assert.deepEqual(getFacetTexts(webClient), ['Category 1']);
 
         // go back using the breadcrumbs
         await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
         await nextTick();
 
-        assert.verifySteps([
-            'initial get_cohort_data',
-            'categ_id=1', // dashboard view after applying the filter
-            'categ_id=1', // cohort view opened fullscreen
-            'categ_id=1', // dashboard after coming back
-        ]);
+        assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb li').text(), 'Dashboard',
+        "'Dashboard' should be displayed in the breadcrumbs");
     });
 
     QUnit.test('interact with a graph view and open it fullscreen', async function (assert) {
@@ -3038,6 +2996,52 @@ QUnit.module('Views', {
         assert.containsNone(dashboard, '.o_view_nocontent .abc');
 
         dashboard.destroy();
+    });
+
+    QUnit.test("correctly transition from legacy to a wowl view -- emulates a legacy dashboard within a board.board", async (assert) => {
+        assert.expect(4);
+
+        const DashboardLegacy = DashboardView.extend({
+            withControlPanel: false,
+            withSearchPanel: false,
+        });
+
+        viewRegistry.remove("dashboard");
+        legacyViewRegistry.add("dashboard", DashboardLegacy);
+
+        serverData.actions = {};
+        serverData.views = {};
+
+        serverData.actions[213] = {
+            type: "ir.actions.act_window",
+            res_model: "test_report",
+            views: [[999, "dashboard"]],
+            search_view_id: 1000,
+            context: { search_default_my_filter: true },
+        };
+
+        serverData.views["test_report,999,dashboard"] = `<dashboard><view type="graph"/></dashboard>`;
+        serverData.views["test_report,1000,search"] = `<search><filter name="my_filter" domain="[('name', '=', 'Jackie Brown')]"/></search>`;
+
+        serverData.views["test_report,false,graph"] = `<graph/>`;
+
+        let testActive = false;
+        const mockRPC = (route, args) => {
+            if (testActive && args.method === "web_read_group") {
+                assert.deepEqual(args.kwargs.domain, [["name", "=", "Jackie Brown"]]);
+            }
+        }
+
+        const webClient = await createWebClient({ serverData, mockRPC });
+
+        await doAction(webClient, 213);
+
+        assert.containsOnce(webClient, ".o_legacy_dashboard_view");
+
+        testActive = true;
+        await click(webClient.el.querySelector(".o_button_switch"));
+        assert.containsNone(webClient, ".o_legacy_dashboard_view");
+        assert.containsOnce(webClient, ".o_graph_view");
     });
 });
 });

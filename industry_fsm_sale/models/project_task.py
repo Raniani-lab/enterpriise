@@ -203,7 +203,10 @@ class Task(models.Model):
 
         self = self.with_company(self.company_id)
 
-        domain = [('invoice_policy', '=', 'delivery'), ('service_type', '=', 'manual'), ('sale_ok', '=', True), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
+        domain = [('sale_ok', '=', True),
+            '|', ('detailed_type', 'in', ['consu', 'product']),
+            '&', '&', ('detailed_type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'manual'),
+            '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.project_id and self.timesheet_product_id:
             domain = expression.AND([domain, [('id', '!=', self.timesheet_product_id.id)]])
         deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
@@ -224,7 +227,8 @@ class Task(models.Model):
                 'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id,
-                'hide_qty_buttons': self.sale_order_id.state == 'done'
+                'hide_qty_buttons': self.sale_order_id.state == 'done',
+                'default_invoice_policy': 'delivery',
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
                             Create a new product

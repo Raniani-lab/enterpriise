@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import logging
 import requests
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 from werkzeug.urls import url_join
-
-_logger = logging.getLogger(__name__)
 
 
 class SocialStreamPostYoutube(models.Model):
@@ -21,6 +18,7 @@ class SocialStreamPostYoutube(models.Model):
     youtube_comments_count = fields.Integer('YouTube Comments Count')
     youtube_views_count = fields.Integer('YouTube Views')
     youtube_video_duration = fields.Float('YouTube Video Duration')  # in minutes
+    youtube_thumbnail_url = fields.Char('Youtube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
 
     def _compute_author_link(self):
         youtube_posts = self._filter_by_media_types(['youtube'])
@@ -35,6 +33,11 @@ class SocialStreamPostYoutube(models.Model):
 
         for post in youtube_posts:
             post.post_link = 'https://www.youtube.com/watch?v=%s' % post.youtube_video_id
+
+    @api.depends('youtube_video_id')
+    def _compute_youtube_thumbnail_url(self):
+        for post in self:
+            post.youtube_thumbnail_url = "http://i3.ytimg.com/vi/%s/hqdefault.jpg" % post.youtube_video_id
 
     # ========================================================
     # COMMENTS / LIKES

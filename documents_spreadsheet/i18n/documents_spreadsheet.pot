@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:00+0000\n"
-"PO-Revision-Date: 2021-09-14 11:00+0000\n"
+"POT-Creation-Date: 2021-09-22 09:02+0000\n"
+"PO-Revision-Date: 2021-09-22 09:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1657,6 +1657,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/pivot.xml:0
 #: code:addons/documents_spreadsheet/static/src/xml/pivot.xml:0
 #: code:addons/documents_spreadsheet/static/src/xml/pivot.xml:0
 #: code:addons/documents_spreadsheet/static/src/xml/pivot.xml:0
@@ -3714,6 +3715,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o_spreadsheet/helpers/list_data_source.js:0
+#, python-format
+msgid "The field %s does not exist or you do not have access to that field"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
@@ -4274,6 +4282,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Type"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o_spreadsheet/helpers/pivot_data_source.js:0
+#, python-format
+msgid "Unable to fetch the label of %s of model %s"
 msgstr ""
 
 #. module: documents_spreadsheet

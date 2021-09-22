@@ -536,14 +536,9 @@ module(
 
             await nextTick();
             assert.ok(getCell(model, "E10").evaluated.error);
-
-            // This is obviously not the desired error message. It happens because Odoo
-            // RPC errors do not have a simple string message but an object with the
-            // error details.
-            // Will be fixed with task 2393876
             assert.equal(
                 getCell(model, "E10").evaluated.error,
-                "Cannot read property 'display_name' of undefined"
+                "Unable to fetch the label of 1111111 of model product"
             );
         });
 

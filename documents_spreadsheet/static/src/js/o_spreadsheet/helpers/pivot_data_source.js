@@ -1,6 +1,7 @@
 /** @odoo-module */
 /* global moment */
 
+import { _t } from "web.core";
 import { BasicDataSource } from "./basic_data_source";
 import PivotCache from "./pivot_cache";
 import { formats } from "../constants";
@@ -79,7 +80,7 @@ export default class PivotDataSource extends BasicDataSource {
             });
             label = rpc;
         } catch (e) {
-            label = e;
+            label = new Error(_.str.sprintf(_t("Unable to fetch the label of %s of model %s"), value, model));
         }
         if (this.data) {
             this.data.addLabel(field.name, value, label);

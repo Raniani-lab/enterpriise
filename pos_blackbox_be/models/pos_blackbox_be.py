@@ -182,12 +182,12 @@ class pos_session(models.Model):
         help='This is a technical field used for tracking the status of the session for each users.',
     )
 
-    @api.depends('statement_ids')
+    @api.depends('order_ids')
     def _compute_total_sold(self):
         for rec in self:
             rec.total_sold = 0
-            for st in rec.statement_ids:
-                rec.total_sold += st.total_entry_encoding
+            for order in rec.order_ids:
+                rec.total_sold += order.amount_paid
 
     @api.depends('pro_forma_order_ids')
     def _compute_total_pro_forma(self):

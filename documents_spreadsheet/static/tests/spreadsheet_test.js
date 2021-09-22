@@ -13,6 +13,7 @@ import { mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import { fields, nextTick, dom } from "web.test_utils";
 import {
+    addGlobalFilter,
     createSpreadsheet,
     createSpreadsheetFromPivot,
     getCell,
@@ -21,6 +22,7 @@ import {
     joinSession,
     leaveSession,
     setCellContent,
+    setGlobalFilterValue,
     setSelection,
 } from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
@@ -695,7 +697,7 @@ module(
                 `,
                 },
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -709,7 +711,7 @@ module(
                 },
             });
             await nextTick();
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: "42",
                 value: [41],
             });
@@ -1308,7 +1310,7 @@ module(
                 },
             });
             const label = "This year";
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: { id: "42", type: "date", label, pivotFields: {}, defaultValue: {} },
             });
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
@@ -1472,7 +1474,7 @@ module(
                 },
                 defaultValue: [],
             };
-            model.dispatch("ADD_GLOBAL_FILTER", { filter });
+            await addGlobalFilter(model, { filter });
             const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
             await dom.click(searchIcon);
             const items = webClient.el.querySelectorAll(
@@ -1551,7 +1553,7 @@ module(
             });
             const label = "This year";
             const defaultValue = "value";
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: { id: "42", type: "text", label, defaultValue, pivotFields: {} },
             });
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
@@ -1586,7 +1588,7 @@ module(
             });
             const label = "This year";
             const defaultValue = "value";
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: { id: "42", type: "text", label, defaultValue, pivotFields: {} },
             });
             const [filter] = model.getters.getGlobalFilters();
@@ -1642,7 +1644,7 @@ module(
                     },
                 },
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -1673,7 +1675,7 @@ module(
                 getCellFormula(model, "A8"),
                 `=PIVOT.HEADER("1","foo","12","product","41")`
             );
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: "42",
                 value: [17],
             });
@@ -1706,7 +1708,7 @@ module(
                     },
                 },
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -1729,7 +1731,7 @@ module(
                 getCellFormula(model, "A6"),
                 `=PIVOT.HEADER("1","foo","12","product","false")`
             );
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: "42",
                 value: [17],
             });

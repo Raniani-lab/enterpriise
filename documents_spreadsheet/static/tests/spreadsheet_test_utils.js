@@ -37,6 +37,43 @@ export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId
 }
 
 /**
+ * Add a global filter and ensure the data sources are completely reloaded
+ */
+export async function addGlobalFilter(model, filter) {
+    const result = model.dispatch("ADD_GLOBAL_FILTER", filter);
+    await model.waitForIdle();
+    return result;
+}
+
+/**
+ * Remove a global filter and ensure the data sources are completely reloaded
+ */
+export async function removeGlobalFilter(model, id) {
+    const result = model.dispatch("REMOVE_GLOBAL_FILTER", { id });
+    await model.waitForIdle();
+    return result;
+}
+
+/**
+ * Edit a global filter and ensure the data sources are completely reloaded
+ */
+export async function editGlobalFilter(model, filter) {
+    const result = model.dispatch("EDIT_GLOBAL_FILTER", filter);
+    await model.waitForIdle();
+    return result;
+}
+
+/**
+ * Set the value of a global filter and ensure the data sources are completely
+ * reloaded
+ */
+export async function setGlobalFilterValue(model, payload) {
+    const result = model.dispatch("SET_GLOBAL_FILTER_VALUE", payload);
+    await model.waitForIdle();
+    return result;
+}
+
+/**
  * Get the computed value that would be autofilled starting from the given xc
  */
 export function getAutofillValue(model, xc, { direction, steps }) {
@@ -327,6 +364,7 @@ export async function createSpreadsheetFromList(params = {}) {
         services: model.config.evalContext.env.services,
         openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
     });
+    await model.waitForIdle();
     return {
         webClient,
         env,
@@ -490,7 +528,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
         services: model.config.evalContext.env.services,
         openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
     });
-
+    await model.waitForIdle();
     return {
         webClient,
         env,

@@ -8,6 +8,9 @@ import {
     getCellFormula,
     getCellValue,
     setCellContent,
+    addGlobalFilter,
+    editGlobalFilter,
+    setGlobalFilterValue,
 } from "./spreadsheet_test_utils";
 import { getBasicData } from "./spreadsheet_test_data";
 import PivotDataSource from "@documents_spreadsheet/js/o_spreadsheet/helpers/pivot_data_source";
@@ -150,7 +153,7 @@ QUnit.test("Add a filter with a default value", async (assert) => {
         (user) => getCellValue(user, "D4"),
         10
     );
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
+    await addGlobalFilter(alice, { filter });
     await nextTick();
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
@@ -177,8 +180,8 @@ QUnit.test("Setting a filter value is only applied locally", async (assert) => {
         label: "a relational filter",
         pivotFields: { 1: { field: "product_id", type: "many2one" } },
     };
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
-    bob.dispatch("SET_GLOBAL_FILTER_VALUE", {
+    await addGlobalFilter(alice, { filter });
+    await setGlobalFilterValue(bob, {
         id: filter.id,
         value: [1],
     });
@@ -213,14 +216,14 @@ QUnit.test("Edit a filter", async (assert) => {
         (user) => getCellValue(user, "B4"),
         11
     );
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
+    await addGlobalFilter(alice, { filter });
     await nextTick();
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "B4"),
         11
     );
-    alice.dispatch("EDIT_GLOBAL_FILTER", {
+    await editGlobalFilter(alice, {
         id: "41",
         filter: { ...filter, defaultValue: [37] },
     });
@@ -240,7 +243,7 @@ QUnit.test("Edit a filter and remove it concurrently", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
+    await addGlobalFilter(alice, { filter });
     await network.concurrent(() => {
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
             id: "41",
@@ -267,7 +270,7 @@ QUnit.test("Remove a filter and edit it concurrently", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter });
+    await addGlobalFilter(alice, { filter });
     await network.concurrent(() => {
         bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
@@ -304,8 +307,8 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter: filter1 });
-    alice.dispatch("ADD_GLOBAL_FILTER", { filter: filter2 });
+    await addGlobalFilter(alice, { filter: filter1 });
+    await addGlobalFilter(alice, { filter: filter2 });
     await network.concurrent(() => {
         bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         charlie.dispatch("EDIT_GLOBAL_FILTER", {

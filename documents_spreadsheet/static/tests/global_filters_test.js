@@ -10,6 +10,10 @@ import {
     getCellFormula,
     getCellValue,
     createSpreadsheetWithPivotAndList,
+    addGlobalFilter,
+    removeGlobalFilter,
+    editGlobalFilter,
+    setGlobalFilterValue,
 } from "./spreadsheet_test_utils";
 
 import { getBasicPivotArch, getBasicData } from "./spreadsheet_test_data";
@@ -53,7 +57,7 @@ module(
 
             const { model } = await createSpreadsheetWithPivotAndList();
             assert.equal(model.getters.getGlobalFilters().length, 0);
-            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
+            await addGlobalFilter(model, LAST_YEAR_FILTER);
             assert.equal(model.getters.getGlobalFilters().length, 1);
             const computedDomain = model.getters.getPivotComputedDomain("1");
             assert.equal(computedDomain.length, 3);
@@ -64,15 +68,14 @@ module(
             assert.expect(4);
 
             const { model } = await createSpreadsheetWithPivotAndList();
-            assert.deepEqual(model.dispatch("REMOVE_GLOBAL_FILTER", { id: 1 }).reasons, [
+            let result = await removeGlobalFilter(model, 1);
+            assert.deepEqual(result.reasons, [
                 CommandResult.FilterNotFound,
             ]);
-            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
+            await addGlobalFilter(model, LAST_YEAR_FILTER);
             const gf = model.getters.getGlobalFilters()[0];
-            assert.deepEqual(
-                model.dispatch("REMOVE_GLOBAL_FILTER", { id: gf.id }),
-                DispatchResult.Success
-            );
+            result = await removeGlobalFilter(model, gf.id);
+            assert.deepEqual(result, DispatchResult.Success);
             assert.equal(model.getters.getGlobalFilters().length, 0);
             const computedDomain = model.getters.getPivotComputedDomain("1");
             assert.equal(computedDomain.length, 0);
@@ -83,13 +86,15 @@ module(
 
             const { model } = await createSpreadsheetWithPivotAndList();
             const gfDef = { ...THIS_YEAR_FILTER, id: 1 };
-            assert.deepEqual(model.dispatch("EDIT_GLOBAL_FILTER", gfDef).reasons, [
+            let result = await editGlobalFilter(model, gfDef);
+            assert.deepEqual(result.reasons, [
                 CommandResult.FilterNotFound,
             ]);
-            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
+            await addGlobalFilter(model, LAST_YEAR_FILTER);
             const gf = model.getters.getGlobalFilters()[0];
             gfDef.id = gf.id;
-            assert.deepEqual(model.dispatch("EDIT_GLOBAL_FILTER", gfDef), DispatchResult.Success);
+            result = await editGlobalFilter(model, gfDef);
+            assert.deepEqual(result, DispatchResult.Success);
             assert.equal(model.getters.getGlobalFilters().length, 1);
             assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "this_year");
         });
@@ -227,7 +232,7 @@ module(
                     `,
                 }
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -267,7 +272,7 @@ module(
                     </pivot>
                 `,
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "43",
                     type: "date",
@@ -318,7 +323,7 @@ module(
                     </pivot>
                 `,
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -355,27 +360,28 @@ module(
 
             const { model } = await createSpreadsheetWithPivotAndList();
             const filter = { ...THIS_YEAR_FILTER.filter, label: "Hello" };
-            model.dispatch("ADD_GLOBAL_FILTER", { filter });
+            await addGlobalFilter(model, { filter });
             assert.equal(model.getters.getGlobalFilters().length, 1);
 
             // Add filter with same name
-            let result = model.dispatch("ADD_GLOBAL_FILTER", { filter: { ...filter, id: "456" } });
+            let result = await addGlobalFilter(model , { filter: { ...filter, id: "456" } });
             assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
             assert.equal(model.getters.getGlobalFilters().length, 1);
+            await model.waitForIdle();
 
             // Edit to set same name as other filter
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: { ...filter, id: "789", label: "Other name" },
             });
             assert.equal(model.getters.getGlobalFilters().length, 2);
-            result = model.dispatch("EDIT_GLOBAL_FILTER", {
+            result = await editGlobalFilter(model, {
                 id: "789",
                 filter: { ...filter, label: "Hello" },
             });
             assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
 
             // Edit to set same name
-            result = model.dispatch("EDIT_GLOBAL_FILTER", {
+            result = await editGlobalFilter(model, {
                 id: "789",
                 filter: { ...filter, label: "Other name" },
             });
@@ -386,25 +392,21 @@ module(
             assert.expect(8);
 
             const { model } = await createSpreadsheetWithPivotAndList();
-            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
+            await addGlobalFilter(model, LAST_YEAR_FILTER);
             const gf = model.getters.getGlobalFilters()[0];
-            assert.deepEqual(
-                model.dispatch("SET_GLOBAL_FILTER_VALUE", {
-                    id: gf.id,
-                    value: { period: "last_month" },
-                }),
-                DispatchResult.Success
-            );
+            let result = await setGlobalFilterValue(model, {
+                id: gf.id,
+                value: { period: "last_month" },
+            });
+            assert.deepEqual(result, DispatchResult.Success);
             assert.equal(model.getters.getGlobalFilters().length, 1);
             assert.deepEqual(model.getters.getGlobalFilterDefaultValue(gf.id).year, "last_year");
             assert.deepEqual(model.getters.getGlobalFilterValue(gf.id).period, "last_month");
-            assert.deepEqual(
-                model.dispatch("SET_GLOBAL_FILTER_VALUE", {
-                    id: gf.id,
-                    value: { period: "this_month" },
-                }),
-                DispatchResult.Success
-            );
+            result = await setGlobalFilterValue(model, {
+                id: gf.id,
+                value: { period: "this_month" },
+            });
+            assert.deepEqual(result, DispatchResult.Success);
             assert.deepEqual(model.getters.getGlobalFilterValue(gf.id).period, "this_month");
             const computedDomain = model.getters.getPivotComputedDomain("1");
             assert.equal(computedDomain.length, 3);
@@ -416,7 +418,7 @@ module(
             assert.expect(5);
 
             const { model, env } = await createSpreadsheetWithPivotAndList();
-            model.dispatch("ADD_GLOBAL_FILTER", LAST_YEAR_FILTER);
+            await addGlobalFilter(model, LAST_YEAR_FILTER);
             const newModel = new Model(model.exportData(), {
                 evalContext: { env },
             });
@@ -439,7 +441,7 @@ module(
             assert.expect(1);
 
             const { model } = await createSpreadsheetFromPivot();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -453,7 +455,7 @@ module(
                 },
             });
             const [filter] = model.getters.getGlobalFilters();
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: undefined,
             });
@@ -465,14 +467,14 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
                     label: "Text Filter",
                 },
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "43",
                     type: "date",
@@ -480,7 +482,7 @@ module(
                     rangeType: "quarter",
                 },
             });
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "44",
                     type: "relation",
@@ -489,7 +491,7 @@ module(
             });
             const [text] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: text.id,
                 value: "Hello",
             });
@@ -500,7 +502,7 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -509,7 +511,7 @@ module(
             });
             const [filter] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: "Hello",
             });
@@ -520,7 +522,7 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -529,7 +531,7 @@ module(
             });
             const [filter] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: [1],
             });
@@ -540,7 +542,7 @@ module(
             assert.expect(4);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "date",
@@ -550,7 +552,7 @@ module(
             });
             const [filter] = model.getters.getGlobalFilters();
             assert.equal(model.getters.getActiveFilterCount(), false);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: {
                     year: "this_year",
@@ -558,7 +560,7 @@ module(
                 },
             });
             assert.equal(model.getters.getActiveFilterCount(), true);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: {
                     year: undefined,
@@ -566,7 +568,7 @@ module(
                 },
             });
             assert.equal(model.getters.getActiveFilterCount(), true);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: {
                     year: "this_year",
@@ -583,7 +585,7 @@ module(
             setCellContent(model, "A10", `=FILTER.VALUE("Text Filter")`);
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A10"), "#ERROR");
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -599,7 +601,7 @@ module(
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A10"), "");
             const [filter] = model.getters.getGlobalFilters();
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: "Hello",
             });
@@ -613,7 +615,7 @@ module(
             const model = new Model();
             setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
             await testUtils.nextTick();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "date",
@@ -628,7 +630,7 @@ module(
             });
             await testUtils.nextTick();
             const [filter] = model.getters.getGlobalFilters();
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 rangeType: "quarter",
                 value: {
@@ -638,7 +640,7 @@ module(
             });
             await testUtils.nextTick();
             assert.equal(getCellValue(model, "A10"), `Q1 ${moment().year()}`);
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 rangeType: "year",
                 value: {
@@ -674,7 +676,7 @@ module(
             );
             setCellContent(model, "A10", `=FILTER.VALUE("Relation Filter")`);
             await testUtils.nextTick();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",
@@ -686,7 +688,7 @@ module(
             const [filter] = model.getters.getGlobalFilters();
 
             // One record; displayNames not defined => rpc
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: [1],
             });
@@ -694,7 +696,7 @@ module(
             assert.equal(getCellValue(model, "A10"), "Jean-Jacques");
 
             // Two records; displayNames defined => no rpc
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: [1, 2],
                 displayNames: ["Jean-Jacques", "Raoul Grosbedon"],
@@ -703,7 +705,7 @@ module(
             assert.equal(getCellValue(model, "A10"), "Jean-Jacques, Raoul Grosbedon");
 
             // another record; displayNames not defined => rpc
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: filter.id,
                 value: [2],
             });
@@ -716,7 +718,7 @@ module(
             assert.expect(1);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "date",
@@ -741,7 +743,7 @@ module(
                     },
                 },
             };
-            model.dispatch("EDIT_GLOBAL_FILTER", { id: filter.id, filter: newFilter });
+            await editGlobalFilter(model, { id: filter.id, filter: newFilter });
             assert.equal(
                 getCellFormula(model, "A10"),
                 `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
@@ -752,7 +754,7 @@ module(
             assert.expect(2);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -765,7 +767,7 @@ module(
                     },
                 },
             });
-            model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            await setGlobalFilterValue(model, {
                 id: "42",
                 value: "Hello export bug",
             });
@@ -791,7 +793,7 @@ module(
                 },
             });
             await model.waitForIdle();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "41",
                     type: "relation",
@@ -813,7 +815,7 @@ module(
             assert.expect(3);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -837,7 +839,7 @@ module(
             assert.expect(3);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -850,7 +852,7 @@ module(
                     },
                 },
             });
-            model.dispatch("REMOVE_GLOBAL_FILTER", { id: "42" });
+            await removeGlobalFilter(model, "42");
             assert.equal(model.getters.getGlobalFilters().length, 0);
             model.dispatch("REQUEST_UNDO");
             assert.equal(model.getters.getGlobalFilters().length, 1);
@@ -862,7 +864,7 @@ module(
             assert.expect(3);
 
             const model = new Model();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "text",
@@ -875,7 +877,7 @@ module(
                     },
                 },
             });
-            model.dispatch("EDIT_GLOBAL_FILTER", {
+            await editGlobalFilter(model, {
                 id: "42",
                 filter: {
                     id: "42",
@@ -900,7 +902,7 @@ module(
             assert.expect(1);
 
             const { webClient, model } = await createSpreadsheetFromPivot();
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "date",
@@ -946,7 +948,7 @@ module(
             await model.waitForIdle();
             assert.equal(getCellValue(model, "A3"), "xphone");
             assert.equal(getCellValue(model, "A4"), "xpad");
-            model.dispatch("ADD_GLOBAL_FILTER", {
+            await addGlobalFilter(model, {
                 filter: {
                     id: "42",
                     type: "relation",

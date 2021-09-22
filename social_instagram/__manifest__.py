@@ -18,7 +18,7 @@
     'qweb': [
         "static/src/xml/social_instagram_templates.xml",
     ],
-    'auto_install': False,  # switch back to True when we receive Instagram permissions
+    'auto_install': True,
     'assets': {
         'web.assets_backend': [
             'social_instagram/static/src/scss/social_instagram.scss',

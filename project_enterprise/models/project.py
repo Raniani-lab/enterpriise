@@ -32,6 +32,9 @@ class Task(models.Model):
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
     planning_overlap = fields.Integer(compute='_compute_planning_overlap', search='_search_planning_overlap')
 
+    # User names in popovers
+    user_names = fields.Char(compute='_compute_user_names')
+
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
     ]
@@ -119,6 +122,10 @@ class Task(models.Model):
         """
         operator_new = (operator == ">") and "inselect" or "not inselect"
         return [('id', operator_new, (query, ()))]
+
+    def _compute_user_names(self):
+        for task in self:
+            task.user_names = ', '.join(task.user_ids.mapped('name'))
 
     @api.model
     def _calculate_planned_dates(self, date_start, date_stop, user_id=None, calendar=None):

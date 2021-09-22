@@ -63,11 +63,13 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/pivot_view_mobile.scss',
             'web_enterprise/static/src/search/**/*.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
+            'web_enterprise/static/src/views/**/*.scss',
 
             ('replace', 'web/static/src/legacy/js/fields/upgrade_fields.js', 'web_enterprise/static/src/legacy/js/apps.js'),
 
             'web_enterprise/static/src/search/**/*.js',
             'web_enterprise/static/src/webclient/**/*.js',
+            'web_enterprise/static/src/views/**/*.js',
 
             'web_enterprise/static/src/legacy/**/*.js',
             ("remove", "web_enterprise/static/src/legacy/js/views/pivot_renderer.js"),

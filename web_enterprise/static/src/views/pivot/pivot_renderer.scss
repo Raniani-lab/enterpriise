@@ -1,0 +1,35 @@
+@include media-breakpoint-down(sm) {
+    .o_pivot {
+        height: 100%;
+
+        .o_dropdown.show {
+            > .o_dropdown_toggler::after {
+                @include o-caret-down;
+            }
+        }
+
+        th > .o_group_by_menu  > .o_dropdown_menu {
+            // realign under the header
+            left: -20px !important;
+            top: 10px !important;
+            // let the pivot itself be the scroll referential
+            overflow: initial;
+            max-height: none;
+
+            .o_dropdown_item {
+                // caret centered vertically
+                .o_dropdown_toggler::after{
+                    top: 12px;
+                }
+
+                // nested dropdown should be *under* the parent, not on its side
+                .o_dropdown_menu {
+                    top: initial !important;
+                    left: 5% !important;
+                    width: 95%;
+                }
+
+            }
+        }
+    }
+}

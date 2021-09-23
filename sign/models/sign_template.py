@@ -124,6 +124,7 @@ class SignTemplate(models.Model):
         name = extension.sub(file_type, name)
         attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas, 'mimetype': mimetype})
         template = self.create({'attachment_id': attachment.id, 'favorited_ids': [(4, self.env.user.id)], 'active': active})
+        attachment.write({'res_model': self._name, 'res_id': template.id})
 
         return {'template': template.id, 'attachment': attachment.id}
 

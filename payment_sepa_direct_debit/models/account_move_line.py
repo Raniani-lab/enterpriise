@@ -11,11 +11,12 @@ class AccountMoveLine(models.Model):
         res = super().reconcile()
 
         involved_payments = self.move_id.payment_id
-        txs = self.env['payment.transaction'].search([
+        tx_ids = self.env['payment.transaction'].sudo().search([
             ('state', '=', 'pending'),
             ('acquirer_id.provider', '=', 'sepa_direct_debit'),
             ('payment_id', 'in', involved_payments.filtered('is_matched').ids),
-        ])
+        ]).ids
+        txs = self.env['payment.transaction'].browse(tx_ids)
         txs._set_done()
         # Since the payment confirmation does not come from a provider notification, we reproduce
         # the processing of the `_handle_feedback_data` method here and trigger the post-processing.

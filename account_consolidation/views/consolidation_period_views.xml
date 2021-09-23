@@ -257,14 +257,14 @@
                     <field string="Consolidation Chart" name="chart_id"/>
                     <!-- NAMED FILTERS -->
                     <filter string="Active" name="active" domain="[
-                    ('date_analysis_begin', '&lt;=', time.strftime('%%Y-%%m-%%d')),
-                    ('date_analysis_end', '&gt;=', time.strftime('%%Y-%%m-%%d')),
+                    ('date_analysis_begin', '&lt;=', time.strftime('%Y-%m-%d')),
+                    ('date_analysis_end', '&gt;=', time.strftime('%Y-%m-%d')),
                     ]" help="Only the periods containing today"/>
                     <filter string="In The Future" name="future"
-                            domain="[('date_analysis_begin', '&gt;=', time.strftime('%%Y-%%m-%%d'))]"
+                            domain="[('date_analysis_begin', '&gt;=', time.strftime('%Y-%m-%d'))]"
                             help="Only the periods in the future"/>
                     <filter string="In The Past" name="past"
-                            domain="[('date_analysis_end', '&lt;=', time.strftime('%%Y-%%m-%%d'))]"
+                            domain="[('date_analysis_end', '&lt;=', time.strftime('%Y-%m-%d'))]"
                             help="Only the periods in the past"/>
                     <separator/>
                     <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>

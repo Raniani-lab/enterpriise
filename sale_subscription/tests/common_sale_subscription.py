@@ -124,6 +124,15 @@ class TestSubscriptionCommon(TestSaleCommon):
             'company_id': cls.company_data['company'].id,
         })
 
+        cls.malicious_user = TestUsersEnv.create({
+            'name': 'Al Capone',
+            'login': 'Al',
+            'email': 'al@capone.it',
+            'groups_id': [(6, 0, [group_portal_id])],
+            'property_account_receivable_id': cls.account_receivable.id,
+            'property_account_payable_id': cls.account_receivable.id,
+        })
+
         # Test analytic account
         cls.account_1 = Analytic.create({
             'partner_id': cls.user_portal.partner_id.id,

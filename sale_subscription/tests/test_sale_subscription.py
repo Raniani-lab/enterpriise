@@ -3,6 +3,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
+from odoo.exceptions import AccessError
 from odoo.tests import Form
 from odoo.tools import mute_logger
 from odoo import fields
@@ -438,7 +439,6 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(sub.recurring_total_incl, 60.0,
                          'Default tax for product should have been applied.')
 
-
     def test_17_renew_archived_products(self):
         """Check behaviour of renewal of archived products."""
         sub = self.subscription.copy({'date_start': '2020-04-01', 'recurring_next_date': '2020-05-1'})
@@ -535,3 +535,31 @@ class TestSubscription(TestSubscriptionCommon):
         self.subscription.partner_id.property_account_position_id = fp
         inv = self.subscription._recurring_create_invoice()
         self.assertEqual(100, inv.invoice_line_ids[0].price_unit, "The included tax must be subtracted to the price")
+
+    def test_prevents_assigning_not_owned_payment_tokens_to_subscriptions(self):
+        malicious_user_subscription = self.env['sale.subscription'].create({
+            'name': 'Free Subscription',
+            'partner_id': self.malicious_user.partner_id.id,
+            'template_id': self.subscription_tmpl.id,
+        })
+        self.partner = self.env['res.partner'].create(
+            {'name': 'Stevie Nicks',
+             'email': 'sti@fleetwood.mac',
+             'property_account_receivable_id': self.account_receivable.id,
+             'property_account_payable_id': self.account_receivable.id,
+             'company_id': self.env.company.id})
+        self.acquirer = self.env['payment.acquirer'].create(
+            {'name': 'The Wire',
+             'provider': 'transfer',
+             'company_id': self.env.company.id,
+             'state': 'test'})
+        stolen_payment_method = self.env['payment.token'].create(
+            {'name': 'Jimmy McNulty',
+             'partner_id': self.partner.id,
+             'acquirer_id': self.acquirer.id,
+             'acquirer_ref': 'Omar Little'})
+
+        with self.assertRaises(AccessError):
+            malicious_user_subscription.with_user(self.malicious_user).write({
+                'payment_token_id': stolen_payment_method.id,  # payment token not related to al capone
+            })

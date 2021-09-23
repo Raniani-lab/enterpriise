@@ -363,6 +363,10 @@ class SaleSubscription(models.Model):
                 vals['recurring_invoice_day'] = fields.Date.from_string(recurring_next_date).day
         if vals.get('partner_id'):
             self.message_subscribe([vals['partner_id']])
+        if vals.get('payment_token_id'):
+            # check access rule for token to make sure the user is allowed to read it. This prevents
+            # assigning unowned tokens through RPC calls
+            self.env['payment.token'].browse(vals.get('payment_token_id')).check_access_rule('read')
         result = super(SaleSubscription, self).write(vals)
         if vals.get('stage_id'):
             self._send_subscription_rating_mail(force_send=True)

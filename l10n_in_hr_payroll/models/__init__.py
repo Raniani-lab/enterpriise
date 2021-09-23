@@ -3,3 +3,4 @@
 
 from . import l10n_in_hr_payroll
 from . import hr_employee
+from . import ir_ui_menu

@@ -155,16 +155,17 @@ class AppointmentTest(common.HttpCase):
 
     def test_generate_recurring_slots(self):
         slots = self.appointment_in_brussel._get_appointment_slots('UTC')
-        now = datetime.now()
+        now = fields.Date.context_today(self.appointment_in_brussel)
         for month in slots:
             for week in month['weeks']:
                 for day in week:
-                    if day['day'] > now.date() and\
-                        day['day'] < (now + relativedelta(days=self.appointment_in_brussel.max_schedule_days)).date() and\
+                    if day['day'] > now and\
+                        day['day'] < now + relativedelta(days=self.appointment_in_brussel.max_schedule_days) and\
+                        day['day'].month == week[-1]['day'].month and\
                         day['day'].isoweekday() == 1:
 
                         self.assertEqual(len(day['slots']), 1, "There should be 1 slot each monday")
-                    elif day['day'] < now.date():
+                    elif day['day'] < now:
                         self.assertEqual(len(day['slots']), 0, "There should be no slot in the past")
 
     @users('admin')

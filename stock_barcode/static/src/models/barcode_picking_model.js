@@ -570,7 +570,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         const context = Object.assign({ barcode_view: true }, additionalContext);
         if (!this.groups.group_tracking_lot) {
             return this.notification.add(
-                _t("To use packages, enable 'Delivery Packages' from the settings"),
+                _t("To use packages, enable 'Packages' in the settings"),
                 { type: 'danger'}
             );
         }

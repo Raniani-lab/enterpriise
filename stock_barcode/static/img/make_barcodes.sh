@@ -106,7 +106,7 @@ cat > barcodes_demo_header_pg_1.ps << HEADER
 (O-BTN.validate) 85 168 showCode
 
 
-(Put in Pack (activate Delivery Packages)) 45 137 showLabel
+(Put in Pack (activate Packages)) 45 137 showLabel
 (YourCompany Receipts) 45 117 showTitle
 (WH-RECEIPTS) 85 58 showCode
 (Large Cabinet) 230 117 showTitle
@@ -162,7 +162,7 @@ cat > barcodes_demo_header_pg_2.ps << HEADER
 (Validate) 230 557 showTitle
 (O-BTN.validate) 271 498 showCode
 
-(Batch picking with cluster pickings (activate Batch Pickings and Delivery Packages)) 45 467 showLabel
+(Batch picking with cluster pickings (activate Batch Pickings and Packages)) 45 467 showLabel
 (BATCH/00001) 45 447 showTitle
 (BATCH/00001) 85 388 showCode
 (Cabinet with Doors) 230 447 showTitle
@@ -188,3 +188,5 @@ HEADER
 cat barcodes_demo_header_pg_1.ps barcodes_demo_barcode_pg_1.ps barcodes_demo_header_pg_2.ps barcodes_demo_barcode_pg_2.ps | ps2pdf - - > barcodes_demo.pdf
 rm barcodes_demo_header_pg_1.ps barcodes_demo_barcode_pg_1.ps
 rm barcodes_demo_header_pg_2.ps barcodes_demo_barcode_pg_2.ps
+
+python3 make_barcodes.py

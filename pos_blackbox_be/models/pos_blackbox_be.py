@@ -235,10 +235,7 @@ class pos_session(models.Model):
                 for line in order.lines:
                     if line.discount > 0:
                         rec.amount_of_discounts += 1
-                        original_line_discount = line.discount
-                        line.discount = 0
-                        price_without_discount = line.price_subtotal_incl
-                        line.discount = original_line_discount
+                        price_without_discount = line.currency_id.round(line.price_subtotal_incl/(1-(line.discount/100)))
                         rec.total_discount += price_without_discount - line.price_subtotal_incl
 
     @api.depends('order_ids')

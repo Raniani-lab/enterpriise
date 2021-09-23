@@ -167,10 +167,10 @@ $gantt-unavailability-bg: $gray-200;
         .o_gantt_pill {
             z-index: 1;  // pill should overlap the grid
             height: $gantt-pill-height;
-            padding: 0 8px;
             p {
                 // Prevent displaying pill's description when size is smaller than 50px
                 max-width: calc((100% - 50px) * 9999);
+                margin: 0 4px;
             }
         }
     }

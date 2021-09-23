@@ -47,28 +47,25 @@ export class DashboardStatistic extends owl.Component {
     getNodeAttributes() {
         if (this.env.debug || this.props.help) {
             return {
-                "data-tooltip": true,
-                "data-tooltip-component": this.getTooltipComponent(),
+                "data-tooltip-template": "web_dashboard.DashboardStatisticTooltip",
+                "data-tooltip-info": JSON.stringify(this.getTooltipInfo()),
             };
         }
         return null;
     }
 
-    getTooltipComponent() {
+    getTooltipInfo() {
         const props = this.props;
-        const statistic = props.model.getStatisticDescription(props.name);
-        const tooltip = { Component: "dashboard_statistic_tooltip" };
-        tooltip.props = {
-            name: props.name,
+        return {
             displayName: props.displayName,
-            statisticType: props.statisticType,
-            help: props.help,
             formatter: this.formatterString,
-            statistic,
-            valueLabel: props.valueLabel,
+            help: props.help,
             modifiers: props.modifiers,
+            name: props.name,
+            statistic: props.model.getStatisticDescription(props.name),
+            statisticType: props.statisticType,
+            valueLabel: props.valueLabel,
         };
-        return JSON.stringify(tooltip);
     }
 
     get hasComparison() {

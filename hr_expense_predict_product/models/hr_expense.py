@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models, _
 
-import psycopg2
+from psycopg2 import ProgrammingError, errorcodes
 import re
 
 class HrExpense(models.Model):
@@ -42,10 +42,13 @@ class HrExpense(models.Model):
                 result = self.env.cr.fetchone()
             if result:
                 return result[1]
-        except psycopg2.errors.SyntaxError:
+        except ProgrammingError as e:
             # In case there is an error while parsing the to_tsquery (wrong character for example)
             # We don't want to have a traceback, instead return False
-            return False
+            if e.pgcode == errorcodes.SYNTAX_ERROR:
+                return False
+            else:
+                raise
         return False
 
 

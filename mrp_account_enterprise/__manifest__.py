@@ -26,8 +26,8 @@ Analytic Accounting in MRP
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
-        'web.assets_common': [
-            'mrp_account_enterprise/static/**/*',
+        'web.report_assets_common': [
+            'mrp_account_enterprise/static/src/scss/cost_structure_report.scss',
         ],
     }
 }

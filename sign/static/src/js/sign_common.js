@@ -1628,7 +1628,8 @@ odoo.define('sign.document_signing', function (require) {
                     // in edit while signing mode, both edit and sign are possible.
                     // So we sign when .o_sign_item_display is clicked, instead of a click in the signatureItem
                     const clickableSignItem = isSignItemEditable ? $signatureItem.find('.o_sign_item_display') : $signatureItem;
-                    clickableSignItem.on('click', function(e) {
+                    // debounce is used to prevent opening multiple times the SignatureDialog
+                    clickableSignItem.on('click', _.debounce(function(e) {
                         self.refreshSignItems();
                         /** Logic for wizard/mark behavior is: 
                          * If type is signature, nextSignature is defined and the item is not marked yet, the default signature is used
@@ -1710,7 +1711,7 @@ odoo.define('sign.document_signing', function (require) {
                                 signDialog.close();
                             })
                         }
-                    });
+                    }, 800));
                 }
 
                 if(type.auto_field) {

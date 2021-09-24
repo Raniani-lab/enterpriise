@@ -72,18 +72,6 @@ msgid "Display LinkedIn Preview"
 msgstr ""
 
 #. module: social_linkedin
-#: code:addons/social_linkedin/models/social_live_post.py:0
-#, python-format
-msgid "Failed during image upload"
-msgstr ""
-
-#. module: social_linkedin
-#: code:addons/social_linkedin/models/social_live_post.py:0
-#, python-format
-msgid "Failed during upload registering"
-msgstr ""
-
-#. module: social_linkedin
 #. openerp-web
 #: code:addons/social_linkedin/static/src/xml/social_linkedin_templates.xml:0
 #, python-format
@@ -267,6 +255,21 @@ msgstr ""
 msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
+msgstr ""
+
+#. module: social_linkedin
+#: code:addons/social_linkedin/models/social_live_post.py:0
+#, python-format
+msgid ""
+"We could not upload your image, try reducing its size and posting it again "
+"(error: Failed during upload registering)."
+msgstr ""
+
+#. module: social_linkedin
+#: code:addons/social_linkedin/models/social_live_post.py:0
+#, python-format
+msgid ""
+"We could not upload your image, try reducing its size and posting it again."
 msgstr ""
 
 #. module: social_linkedin

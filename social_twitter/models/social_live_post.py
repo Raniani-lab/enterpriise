@@ -5,6 +5,7 @@ import re
 import requests
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from werkzeug.urls import url_join
 
 
@@ -76,7 +77,14 @@ class SocialLivePostTwitter(models.Model):
                 'status': live_post.message,
             }
 
-            images_attachments_ids = account._format_attachments_to_images_twitter(post.image_ids)
+            try:
+                images_attachments_ids = account._format_attachments_to_images_twitter(post.image_ids)
+            except UserError as e:
+                live_post.write({
+                    'state': 'failed',
+                    'failure_reason': e.name
+                })
+                continue
             if images_attachments_ids:
                 params['media_ids'] = ','.join(images_attachments_ids)
 

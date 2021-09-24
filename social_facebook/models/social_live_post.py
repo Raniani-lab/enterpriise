@@ -4,7 +4,8 @@
 import json
 import requests
 
-from odoo import models, fields
+from odoo import models, fields, _
+from odoo.exceptions import UserError
 from werkzeug.urls import url_join
 
 
@@ -90,8 +91,23 @@ class SocialLivePostFacebook(models.Model):
 
             result = requests.request('POST', endpoint_url, params=params, timeout=15,
                 files={'source': (image.name, image.with_context(bin_size=False).raw, image.mimetype)})
+            if not result.ok:
+                generic_api_error = json.loads(result.text or '{}').get('error', {}).get('message', '')
+                self.write({
+                    'state': 'failed',
+                    'failure_reason': _("We could not upload your image, try reducing its size and posting it again (error: %s).", generic_api_error)
+                })
+                return
         else:
             if post.image_ids:
+                try:
+                    images_attachments = post._format_images_facebook(account.facebook_account_id, account.facebook_access_token)
+                except UserError as e:
+                    self.write({
+                        'state': 'failed',
+                        'failure_reason': e.name
+                    })
+                    return
                 images_attachments = post._format_images_facebook(facebook_target_id, account.facebook_access_token)
                 if images_attachments:
                     for index, image_attachment in enumerate(images_attachments):

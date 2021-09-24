@@ -6,7 +6,8 @@ import base64
 import requests
 from werkzeug.urls import url_join
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 TWITTER_IMAGES_UPLOAD_ENDPOINT = "https://upload.twitter.com/1.1/media/upload.json"
 
@@ -214,6 +215,12 @@ class SocialAccountTwitter(models.Model):
             headers=headers,
             timeout=5
         )
+        if not result.ok:
+            # unfortunately Twitter does not return a proper error code so we have to rely on the error message
+            # last known max file size for the API is 5MB
+            generic_api_error = result.json().get('error', '')
+            raise UserError(_("We could not upload your image, try reducing its size and posting it again (error: %s).", generic_api_error))
+
         return result.json().get('media_id_string')
 
     def _process_twitter_upload(self, image, media_id):

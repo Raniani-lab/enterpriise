@@ -75,10 +75,17 @@ class SocialLivePostLinkedin(models.Model):
             }
 
             if live_post.post_id.image_ids:
-                images_urn = [
-                    self._linkedin_upload_image(live_post.account_id, image_id)
-                    for image_id in live_post.post_id.image_ids
-                ]
+                try:
+                    images_urn = [
+                        self._linkedin_upload_image(live_post.account_id, image_id)
+                        for image_id in live_post.post_id.image_ids
+                    ]
+                except UserError as e:
+                    live_post.write({
+                        'state': 'failed',
+                        'failure_reason': e.name
+                    })
+                    continue
 
                 share_content.update({
                     "shareMediaCategory": "IMAGE",
@@ -151,7 +158,7 @@ class SocialLivePostLinkedin(models.Model):
                 json=data, timeout=5).json()
 
         if 'value' not in response or 'asset' not in response['value']:
-            raise UserError(_('Failed during upload registering'))
+            raise UserError(_("We could not upload your image, try reducing its size and posting it again (error: Failed during upload registering)."))
 
         # 2 - Upload image binary file
         upload_url = response['value']['uploadMechanism']['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest']['uploadUrl']
@@ -165,6 +172,6 @@ class SocialLivePostLinkedin(models.Model):
         response = requests.request('POST', upload_url, data=data, headers=headers, timeout=15)
 
         if response.status_code != 201:
-            raise UserError(_('Failed during image upload'))
+            raise UserError(_("We could not upload your image, try reducing its size and posting it again."))
 
         return image_urn

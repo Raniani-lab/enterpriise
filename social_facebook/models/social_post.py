@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
 import requests
 
-from odoo import api, models
+from odoo import _, api, models
+from odoo.exceptions import UserError
 from odoo.osv import expression
 from werkzeug.urls import url_join
 
@@ -39,6 +41,10 @@ class SocialPostFacebook(models.Model):
                 timeout=15
             )
 
-            formatted_images.append({'media_fbid': post_result.json().get('id')})
+            if post_result.ok:
+                formatted_images.append({'media_fbid': post_result.json().get('id')})
+            else:
+                generic_api_error = json.loads(post_result.text or '{}').get('error', {}).get('message', '')
+                raise UserError(_("We could not upload your image, try reducing its size and posting it again (error: %s).", generic_api_error))
 
         return formatted_images

@@ -45,6 +45,13 @@ class AccountGenericTaxReport(models.AbstractModel):
                 ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_eu_import').ids),
             ]
 
+        elif isinstance(options['tax_report'], int) or options['fiscal_position'] != 'all':
+            # National report: don't include OSS lines
+            # For tax closing, the generic report is also passed with a fiscal position; we don't want OSS then.
+            domain += [
+                ('tax_tag_ids', 'not in', self.env.ref('l10n_eu_oss.tag_oss').ids),
+            ]
+
         return domain
 
     @api.model
@@ -133,8 +140,13 @@ class AccountGenericTaxReport(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         res = super()._get_reports_buttons(options)
-        if options['tax_report'] in {'generic_oss_import', 'generic_oss_no_import'} and self._get_oss_xml_template(options):
-            res.append({'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')})
+        if options['tax_report'] in {'generic_oss_import', 'generic_oss_no_import'}:
+            # Disable the tax closing for OSS reports: we currently don't support it. It has to be done manually.
+            res = [button for button in res if button['action'] != 'periodic_vat_entries']
+
+            # Add OSS XML export if there is one available for the domestic country
+            if self._get_oss_xml_template(options):
+                res.append({'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')})
         return res
 
     def get_xml(self, options):

@@ -71,7 +71,7 @@ class HrContract(models.Model):
         self.ensure_one()
         ratio = (1.0 - self.holidays / 231.0)
         if inverse:
-            return self._get_advantages_costs() + self._get_salary_costs_factor() * self.wage_with_holidays / ratio
+            return (self._get_advantages_costs() + self._get_salary_costs_factor() * self.wage_with_holidays) / ratio
         return self.final_yearly_costs * ratio
 
     def _is_salary_sacrifice(self):

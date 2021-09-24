@@ -88,7 +88,7 @@ class HrContract(models.Model):
                 not (c.state in ('open', 'close') or (c.state == 'draft' and c.date_start >= date_today)) # make sure to include futur contracts
             )
         )
-        contract_resets.write({'calendar_changed': False})
+        contract_resets.filtered(lambda c: c.calendar_changed).write({'calendar_changed': False})
         self -= contract_resets
         occupation_dates = self._get_occupation_dates(include_future_contracts=True)
         occupation_by_employee = defaultdict(list)
@@ -103,8 +103,8 @@ class HrContract(models.Model):
                 next_row = occupations[i + 1]
                 contract_changed |= current_row[0][-1]
                 contract_changed |= next_row[0][0]
-        contract_changed.write({'calendar_changed': True})
-        (self - contract_changed).write({'calendar_changed': False})
+        contract_changed.filtered(lambda c: not c.calendar_changed).write({'calendar_changed': True})
+        (self - contract_changed).filtered(lambda c: c.calendar_changed).write({'calendar_changed': False})
 
     @api.model
     def _recompute_calendar_changed(self, employee_ids):

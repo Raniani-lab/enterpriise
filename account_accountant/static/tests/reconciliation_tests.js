@@ -2029,7 +2029,7 @@ QUnit.module('account', {
                     assert.deepEqual(
                         _.pick(args.args[0][0].new_mv_line_dicts[1 - idx],
                                'account_id', 'name', 'balance', 'tax_repartition_line_id'),
-                        {account_id: 287, name: "Tax 20.00%", balance: 36, tax_repartition_line_id: 2},
+                        {account_id: 287, name: "dummy text Tax 20.00%", balance: 36, tax_repartition_line_id: 2},
                         "Reconciliation rpc payload, new_mv_line_dicts.tax is correct"
                     );
                 }
@@ -2094,7 +2094,7 @@ QUnit.module('account', {
             "Tax line account number is valid");
         assert.equal($($newLineTaxeTds[1]).text().trim(), "New",
             "Tax line is flagged as new");
-        assert.equal($($newLineTaxeTds[2]).text().trim(), "Tax 20.00%",
+        assert.equal($($newLineTaxeTds[2]).text().trim(), "dummy text Tax 20.00%",
             "Tax line has the correct label");
         assert.equal($($newLineTaxeTds[3]).text().trim(), "$\u00a036.00",
             "Tax line has the correct left amount");
@@ -2102,7 +2102,7 @@ QUnit.module('account', {
             "Tax line has the correct right amount");
 
         // Reconcile
-        await testUtils.dom.click(widget.$("button.o_reconcile.btn.btn-primary:first"));
+        await testUtils.dom.click(widget.$("button.o_validate.btn.btn-secondary:first"));
         assert.ok(true, "No error in reconciliation");
 
         clientAction.destroy();

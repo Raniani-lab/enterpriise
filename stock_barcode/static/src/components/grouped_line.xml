@@ -6,7 +6,7 @@
             class="o_barcode_line list-group-item d-flex flex-row flex-wrap"
             t-att-data-barcode="line.product_id.barcode" t-attf-class="
                 {{isComplete ? 'o_line_completed' : ''}}
-                {{isFaulty ? 'o_faulty' : ''}}
+                {{env.model.lineIsFaulty(line) ? 'o_faulty' : ''}}
                 {{isSelected ? 'o_selected o_highlight' : ''}}
             ">
             <div class="o_barcode_line_summary d-flex flex-grow-1">

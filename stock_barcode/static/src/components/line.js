@@ -14,10 +14,6 @@ export default class LineComponent extends owl.Component {
         return true;
     }
 
-    get isFaulty() {
-        return this.qtyDemand < this.qtyDone;
-    }
-
     get isSelected() {
         return this.line.virtual_id === this.env.model.selectedLineVirtualId ||
         (this.line.package_id && this.line.package_id.id === this.env.model.lastScannedPackage);

@@ -276,6 +276,10 @@ export default class BarcodeModel extends owl.core.EventBus {
         return false;
     }
 
+    lineIsFaulty(line) {
+        throw new Error('Not Implemented');
+    }
+
     get location() {
         return this.cache.getRecord('stock.location', this.currentLocationId);
     }

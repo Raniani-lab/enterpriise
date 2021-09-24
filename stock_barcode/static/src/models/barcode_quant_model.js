@@ -105,6 +105,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
         return !line.inventory_quantity_set;
     }
 
+    lineIsFaulty(line) {
+        return line.inventory_quantity_set && line.inventory_quantity !== line.quantity;
+    }
+
     get printButtons() {
         return [{
             name: _t("Print Inventory"),

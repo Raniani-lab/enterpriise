@@ -29,6 +29,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         data.data.destination_locations_ids.forEach(id => {
             this.destLocationList.push(this.cache.getRecord('stock.location', id));
         });
+        this._useReservation = this.initialState.lines.some(line => line.product_uom_qty);
     }
 
     async changeDestinationLocation(id, moveScannedLineOnly) {
@@ -207,6 +208,10 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     get isCancelled() {
         return this.record.state === 'cancel';
+    }
+
+    lineIsFaulty(line) {
+        return this._useReservation && line.qty_done > line.product_uom_qty;
     }
 
     get printButtons() {

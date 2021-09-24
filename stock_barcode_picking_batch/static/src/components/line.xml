@@ -5,7 +5,7 @@
         <xpath expr="//div[hasclass('o_barcode_line')]" position="attributes">
             <attribute name="t-attf-class">
                 {{isComplete ? 'o_line_completed' : ''}}
-                {{isFaulty ? 'o_faulty' : ''}}
+                {{env.model.lineIsFaulty(line) ? 'o_faulty' : ''}}
                 {{isSelected ? 'o_selected o_highlight' : ''}}
                 {{(line.colorLine or line.colorLine === 0) ? 'o_colored_markup' : ''}}
             </attribute>

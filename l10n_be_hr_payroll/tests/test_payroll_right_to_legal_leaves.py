@@ -143,7 +143,9 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'holiday_status_id': self.paid_time_off_type.id,
             'employee_id': self.employee_test.id,
             'request_date_from': date(2018, 2, 1),
+            'date_from': date(2018, 2, 1),
             'request_date_to': date(2018, 2, 5),
+            'date_to': date(2018, 2, 5),
             'number_of_days': 5
         })
         leave.action_validate()
@@ -231,7 +233,9 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'holiday_status_id': self.paid_time_off_type.id,
             'employee_id': self.employee_test.id,
             'request_date_from': date(2018, 2, 1),
+            'date_from': date(2018, 2, 1),
             'request_date_to': date(2018, 2, 3),
+            'date_to': date(2018, 2, 3),
             'number_of_days': 1.5
         })
         leave.action_validate()

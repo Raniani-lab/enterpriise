@@ -147,6 +147,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'holiday_status_id': self.paid_time_off_type.id,
             'employee_id': self.employee_a.id,
             'request_date_from': date(today.year, 2, 1),
+            'date_from': date(today.year, 2, 1),
+            'date_to': date(today.year, 2, 6),
             'request_date_to': date(today.year, 2, 6),
             'number_of_days': 6
         })
@@ -171,6 +173,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'holiday_status_id': self.paid_time_off_type.id,
             'employee_id': self.employee_a.id,
             'request_date_from': date(today.year, 7, 1),
+            'date_from': date(today.year, 7, 1),
+            'date_to': date(today.year, 7, 6),
             'request_date_to': date(today.year, 7, 6),
             'number_of_days': 6
         })
@@ -202,6 +206,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
                 'holiday_status_id': self.paid_time_off_type.id,
                 'employee_id': self.employee_a.id,
                 'request_date_from': date(today.year, 10, 4),
+                'date_from': date(today.year, 10, 4),
+                'date_to': date(today.year, 10, 8),
                 'request_date_to': date(today.year, 10, 8),
                 'number_of_days': 5
             })

@@ -301,7 +301,6 @@ class FetchmailServer(models.Model):
                 account_predictive_bills_disable_prediction=True)) as invoice_form:
             invoice_form.partner_id = partner
             invoice_form.invoice_source_email = from_address
-
             invoice_date = dte_xml.findtext('.//ns0:FchEmis', namespaces=XML_NAMESPACES)
             if invoice_date is not None:
                 invoice_form.invoice_date = fields.Date.from_string(invoice_date)
@@ -316,7 +315,6 @@ class FetchmailServer(models.Model):
             journal = self._get_dte_purchase_journal(company_id)
             if journal:
                 invoice_form.journal_id = journal
-
             currency = self._get_dte_currency(dte_xml)
             if currency:
                 invoice_form.currency_id = currency
@@ -324,11 +322,12 @@ class FetchmailServer(models.Model):
             invoice_form.l10n_latam_document_type_id = document_type
             invoice_form.l10n_latam_document_number = document_number
             for invoice_line in self._get_dte_lines(dte_xml, company_id, partner.id):
+                price_unit = invoice_line.get('price_unit')
                 with invoice_form.invoice_line_ids.new() as invoice_line_form:
                     invoice_line_form.product_id = invoice_line.get('product', self.env['product.product'])
                     invoice_line_form.name = invoice_line.get('name')
                     invoice_line_form.quantity = invoice_line.get('quantity')
-                    invoice_line_form.price_unit = invoice_line.get('price_unit')
+                    invoice_line_form.price_unit = price_unit
                     invoice_line_form.discount = invoice_line.get('discount', 0)
 
                     if not invoice_line.get('default_tax'):
@@ -485,6 +484,11 @@ class FetchmailServer(models.Model):
         This parse DTE invoice detail lines and tries to match lines with existing products.
         If no products are found, it puts only the description of the products in the draft invoice lines
         """
+        gross_amount = dte_xml.findtext('.//ns0:MntBruto', namespaces=XML_NAMESPACES) is not None
+        default_purchase_tax = self.env['account.tax'].search(
+            [('l10n_cl_sii_code', '=', 14), ('type_tax_use', '=', 'purchase'),
+             ('company_id', '=', company_id)], limit=1)
+        currency = self._get_dte_currency(dte_xml)
         invoice_lines = []
         for dte_line in dte_xml.findall('.//ns0:Detalle', namespaces=XML_NAMESPACES):
             product_code = dte_line.findtext('.//ns0:VlrCodigo', namespaces=XML_NAMESPACES)
@@ -512,6 +516,13 @@ class FetchmailServer(models.Model):
                     dte_line.findtext('.//ns0:IndExe', namespaces=XML_NAMESPACES) is None):
                 values['default_tax'] = True
                 values['taxes'] = self._get_withholding_taxes(company_id, dte_line)
+            if gross_amount:
+                # in case the tag MntBruto is included in the IdDoc section, and there are not
+                # additional taxes (withholdings)
+                # even if the company has not selected its default tax value, we deduct it
+                # from the price unit, gathering the value rate of the l10n_cl default purchase tax
+                values['price_unit'] = default_purchase_tax.with_context(
+                 force_price_include=True).compute_all(price_unit, currency)['total_excluded']
             invoice_lines.append(values)
 
         for desc_rcg_global in dte_xml.findall('.//ns0:DscRcgGlobal', namespaces=XML_NAMESPACES):
@@ -551,6 +562,9 @@ class FetchmailServer(models.Model):
                     values['price_unit'] = round(
                         dte_amount - (int(dte_amount) / (1 - amount_dr / 100))) * price_unit_multiplier
             else:
+                if gross_amount:
+                    amount_dr = default_purchase_tax.with_context(force_price_include=True).compute_all(
+                        amount_dr, currency)['total_excluded']
                 values['price_unit'] = amount_dr * -1 * price_unit_multiplier
                 if desc_rcg_global.findtext('.//ns0:IndExeDR', namespaces=XML_NAMESPACES) not in ['1', '2']:
                     values['default_tax'] = self._use_default_tax(dte_xml)

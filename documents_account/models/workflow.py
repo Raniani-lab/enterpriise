@@ -35,9 +35,23 @@ class WorkflowActionRuleAccount(models.Model):
                     create_values['default_suspense_statement_line_id'] = move.statement_line_id.id
 
                 if self.partner_id:
-                    create_values.update(default_partner_id=self.partner_id.id)
+                    if invoice_type in ['in_invoice', 'in_refund']:
+                        payment_term_id = self.partner_id.property_supplier_payment_term_id.id
+                    elif invoice_type in ['out_invoice', 'out_refund']:
+                        payment_term_id = self.partner_id.property_payment_term_id.id
+                    create_values.update(
+                        default_partner_id=self.partner_id.id,
+                        default_invoice_payment_term_id=payment_term_id
+                    )
                 elif document.partner_id:
-                    create_values.update(default_partner_id=document.partner_id.id)
+                    if invoice_type in ['in_invoice', 'in_refund']:
+                        payment_term_id = document.partner_id.property_supplier_payment_term_id.id
+                    elif invoice_type in ['out_invoice', 'out_refund']:
+                        payment_term_id = document.partner_id.property_payment_term_id.id
+                    create_values.update(
+                        default_partner_id=document.partner_id.id,
+                        default_invoice_payment_term_id=payment_term_id
+                    )
 
                 if move.is_invoice():
                     invoice_ids.append(document.res_id)

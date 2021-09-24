@@ -141,6 +141,7 @@ class MrpProductionWorkcenterLine(models.Model):
         self.finished_lot_id = self.env['stock.production.lot'].create({
             'product_id': self.product_id.id,
             'company_id': self.company_id.id,
+            'name': self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
         })
 
     def action_print(self):

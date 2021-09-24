@@ -1026,14 +1026,14 @@ class AccountReconciliation(models.AbstractModel):
         move_lines.reconcile()
 
     @api.model
-    def get_reconciliation_dict_from_model(self, model_id, st_line, residual_balance):
+    def get_reconciliation_dict_from_model(self, model_id, st_line, residual_balance, widget_partner_id):
         """ Returns the values to be used by the reconciliation widget widget in order
         to apply the provided reconciliation model to the provided statement line
         (hence the values used to create the lines in the widget).
         """
         st_line = self.env['account.bank.statement.line'].browse(st_line)
         model = self.env['account.reconcile.model'].browse(model_id)
-        new_aml_dicts = model._get_write_off_move_lines_dict(st_line, residual_balance)
+        new_aml_dicts = model._get_write_off_move_lines_dict(st_line, residual_balance, widget_partner_id)
         self._complete_write_off_vals_for_widget(new_aml_dicts)
         return new_aml_dicts
 

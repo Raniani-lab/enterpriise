@@ -321,7 +321,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
                 'tax_ids': [(6, 0, [tax.id])]
             })]
         })
-        res = self.env["account.reconciliation.widget"].get_reconciliation_dict_from_model(reconciliation_model.id, bank_stmt_line.id, 7.50)
+        res = self.env["account.reconciliation.widget"].get_reconciliation_dict_from_model(reconciliation_model.id, bank_stmt_line.id, 7.50, bank_stmt_line.partner_id)
 
         self.assertEqual(len(res), 2)
         self.assertEqual(res[0]['tax_ids'][0]['id'], tax.id)

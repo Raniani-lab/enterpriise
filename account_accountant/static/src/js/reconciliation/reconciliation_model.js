@@ -536,7 +536,7 @@ var StatementModel = BasicModel.extend({
         return this._rpc({
             model: 'account.reconciliation.widget',
             method: 'get_reconciliation_dict_from_model',
-            args: [reconcile_model_id, line.st_line.id, -line.balance.amount],
+            args: [reconcile_model_id, line.st_line.id, -line.balance.amount, line.st_line.partner_id],
         }).then(function(result) {
             return self.prepare_propositions_from_server(line, result);
         })

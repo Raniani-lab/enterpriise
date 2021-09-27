@@ -3,23 +3,10 @@
     <record id="survey_survey_view_form" model="ir.ui.view">
         <field name="name">survey.survey.view.form</field>
         <field name="model">survey.survey</field>
-        <field name="inherit_id" ref="survey.survey_form"/>
+        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
         <field name="arch" type="xml">
             <field name="access_mode" position="after">
                 <field name="is_appraisal" groups="base.group_no_one"/>
-            </field>
-        </field>
-    </record>
-
-    <record id="survey_user_input_view_tree" model="ir.ui.view">
-        <field name="name">survey.user.input.view.tree.inherit.appraisal</field>
-        <field name="model">survey.user_input</field>
-        <field name="inherit_id" ref="survey.survey_user_input_view_tree"/>
-        <field name="priority">32</field>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <field name="scoring_percentage" position="after">
-                <button class="oe_stat_button" name="action_open_survey_inputs" icon="fa-external-link" type="object" title="Open Results"/>
             </field>
         </field>
     </record>

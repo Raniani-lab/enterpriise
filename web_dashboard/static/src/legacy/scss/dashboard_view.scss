@@ -27,7 +27,7 @@
         max-width: 100%;
         margin: 0 $padding ($spacer * 2);
 
-        .o_graph_renderer {
+        .o_legacy_graph_renderer {
             display: flex;
             > .o_graph_canvas_container {
                 flex: 1 1 auto;
@@ -145,7 +145,7 @@
                 flex: 1;
                 display: flex;
 
-                .o_graph_renderer {
+                .o_legacy_graph_renderer {
                     display: flex;
                     justify-content: space-between;
                     flex-flow: column wrap;
@@ -166,7 +166,7 @@
         }
     }
 
-    .o_pivot > table {
+    .o_legacy_pivot > table {
         width: 100%;
     }
 

@@ -37,7 +37,7 @@
         </div>
     </t>
 
-    <div t-name="web_cohort.Legacy.CohortRenderer" class="o_cohort_view" owl="1">
+    <div t-name="web_cohort.Legacy.CohortRenderer" class="o_legacy_cohort_view" owl="1">
         <div t-if="props.hasContent">
             <div t-if="props.comparisonReport &amp;&amp; (props.comparisonReport.rows.length || props.report.rows.length)" class="table-responsive">
                 <t t-call="CohortView.tableTitle">

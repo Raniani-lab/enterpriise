@@ -254,7 +254,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual($(".o_widget").length, 1, "there should be a node with o_widget class");
-        const chartTitle = dashboard.el.querySelector(".o_pie_chart .o_graph_renderer label")
+        const chartTitle = dashboard.el.querySelector(".o_pie_chart .o_legacy_graph_renderer label")
             .textContent;
         assert.strictEqual(
             chartTitle,
@@ -357,7 +357,7 @@ QUnit.module("Views", (hooks) => {
                 "there should be a node with o_widget class"
             );
             assert.strictEqual(
-                $(".o_pie_chart .o_graph_renderer label").text(),
+                $(".o_pie_chart .o_legacy_graph_renderer label").text(),
                 "Products sold",
                 "the title of the graph should be displayed"
             );
@@ -418,7 +418,7 @@ QUnit.module("Views", (hooks) => {
         assert.verifySteps(["read_group", "read_group"]);
 
         assert.strictEqual($(".o_widget").length, 1, "there should be a node with o_widget class");
-        const chartTitle = $(".o_pie_chart .o_graph_renderer label").text();
+        const chartTitle = $(".o_pie_chart .o_legacy_graph_renderer label").text();
         assert.strictEqual(
             chartTitle,
             "Products sold",

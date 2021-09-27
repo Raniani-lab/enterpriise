@@ -176,7 +176,7 @@ QUnit.module('Views', {
 
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        var chartTitle = dashboard.$('.o_pie_chart .o_graph_renderer label').text();
+        var chartTitle = dashboard.$('.o_pie_chart .o_legacy_graph_renderer label').text();
         assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
         var chart = dashboard.renderer.widgets[0].controller.renderer.componentRef.comp.chart;
@@ -252,7 +252,7 @@ QUnit.module('Views', {
         });
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        assert.strictEqual($('.o_pie_chart .o_graph_renderer label').text(), "Products sold",
+        assert.strictEqual($('.o_pie_chart .o_legacy_graph_renderer label').text(), "Products sold",
             "the title of the graph should be displayed");
 
         var chart = dashboard.renderer.widgets[0].controller.renderer.componentRef.comp.chart;
@@ -310,7 +310,7 @@ QUnit.module('Views', {
 
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        var chartTitle = $('.o_pie_chart .o_graph_renderer label').text();
+        var chartTitle = $('.o_pie_chart .o_legacy_graph_renderer label').text();
         assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
 
@@ -469,7 +469,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_graph_buttons',
             "should have rendered the graph view's buttons");
         assert.containsN(dashboard, '.o_subview .o_graph_buttons .o_button_switch', 1, "should have rendered an additional switch button");
-        assert.containsOnce(dashboard, '.o_subview .o_graph_renderer');
+        assert.containsOnce(dashboard, '.o_subview .o_legacy_graph_renderer');
 
         assert.verifySteps(['load_views', 'read_group']);
 
@@ -565,7 +565,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_pivot_buttons',
             "should have rendered the pivot view's buttons");
         assert.containsN(dashboard, '.o_subview .o_pivot_buttons .o_button_switch', 1, "should have rendered an additional switch button");
-        assert.containsOnce(dashboard, '.o_subview .o_pivot',
+        assert.containsOnce(dashboard, '.o_subview .o_legacy_pivot',
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'read_group', 'read_group']);
@@ -667,7 +667,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_cohort_buttons',
             "should have rendered the cohort view's buttons");
         assert.containsN(dashboard, '.o_subview .o_cohort_buttons .o_button_switch', 1, "should have rendered an additional switch button");
-        assert.containsOnce(dashboard, '.o_subview .o_cohort_view',
+        assert.containsOnce(dashboard, '.o_subview .o_legacy_cohort_view',
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'get_cohort_data']);
@@ -2589,7 +2589,7 @@ QUnit.module('Views', {
         await toggleMenuItem(dashboard.el, 'Date: Previous period');
 
         // The test should be modified and extended.
-        assert.strictEqual(dashboard.$('.o_cohort_view div.o_view_nocontent').length, 1);
+        assert.strictEqual(dashboard.$('.o_legacy_cohort_view div.o_view_nocontent').length, 1);
 
         unpatchDate();
         dashboard.destroy();
@@ -2763,7 +2763,7 @@ QUnit.module('Views', {
         });
 
         // Click on the unique pivot cell
-        await testUtils.dom.click(dashboard.$('.o_pivot .o_pivot_cell_value'));
+        await testUtils.dom.click(dashboard.$('.o_legacy_pivot .o_pivot_cell_value'));
 
         // There should a unique do_action triggered.
         assert.verifySteps(['do_action']);

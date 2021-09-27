@@ -5,7 +5,7 @@ $o-cohort-heading-bg-color: darken(theme-color('light'), 4%);
 $o-cohort-border-color: darken($o-cohort-heading-bg-color, 6%);
 $o-cohort-hover-color: lighten($o-cohort-heading-bg-color, 2%);
 
-.o_cohort_view {
+.o_legacy_cohort_view {
     .table {
         border-bottom: 1px solid $o-cohort-border-color;
         thead {

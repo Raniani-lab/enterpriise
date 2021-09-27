@@ -3720,9 +3720,9 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'pivot',
             "view type should be pivot");
-        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_pivot',
+        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_legacy_pivot',
             "there should be a pivot renderer");
-        assert.containsOnce(vem, '.o_web_studio_view_renderer > .o_pivot > table',
+        assert.containsOnce(vem, '.o_web_studio_view_renderer > .o_legacy_pivot > table',
             "the table should be the direct child of pivot");
 
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar_header [name="view"]'));
@@ -3864,8 +3864,8 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.view_type, 'graph',
             "view type should be graph");
         return concurrency.delay(0).then(function () {
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer');
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer .o_graph_canvas_container canvas',
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_legacy_graph_renderer');
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_legacy_graph_renderer .o_graph_canvas_container canvas',
                 "the graph should be a child of its container");
             vem.destroy();
             done();
@@ -6891,7 +6891,7 @@ QUnit.module('ViewEditorManager', {
         await testUtils.owlCompatibilityExtraNextTick();
         assert.containsNone(vem, '.o_ace_view_editor');
         assert.containsOnce(vem, '.o_web_studio_sidebar');
-        assert.containsOnce(vem, '.o_graph_renderer');
+        assert.containsOnce(vem, '.o_legacy_graph_renderer');
 
         odoo.debug = initialDebugMode;
         testUtils.mock.unpatch(ace);

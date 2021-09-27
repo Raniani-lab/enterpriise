@@ -32,10 +32,11 @@ class CurrencyTestCase(TransactionCase):
 
     def test_live_currency_update_banxico(self):
         self.test_company.currency_provider = 'banxico'
+        self.env.ref('base.MXN').write({'active': True})
         rates_count = len(self.currency_usd.rate_ids)
         res = self.test_company.update_currency_rates()
-        if res:
-            self.assertEqual(len(self.currency_usd.rate_ids), rates_count + 1)
+        self.assertTrue(res)
+        self.assertEqual(len(self.currency_usd.rate_ids), rates_count + 1)
 
     def test_live_currency_update_boc(self):
         self.test_company.currency_provider = 'boc'

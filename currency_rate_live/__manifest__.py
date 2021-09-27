@@ -12,7 +12,6 @@
     'data': [
         'views/res_config_settings_views.xml',
         'views/service_cron_data.xml',
-        'data/data.xml',
     ],
     'installable': True,
     'auto_install': True,

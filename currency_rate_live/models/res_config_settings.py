@@ -111,56 +111,52 @@ def xml2json_from_elementtree(el, preserve_whitespaces=False):
     return res
 
 
+# countries, provider_code, description
+CURRENCY_PROVIDER_SELECTION = [
+    ([], 'ecb', 'European Central Bank'),
+    ([], 'xe_com', 'xe.com'),
+    (['AE'], 'cbuae', 'UAE Central Bank'),
+    (['CA'], 'boc', 'Bank Of Canada'),
+    (['CH'], 'fta', 'Federal Tax Administration (Switzerland)'),
+    (['CL'], 'mindicador', 'Chilean mindicador.cl'),
+    (['MX'], 'banxico', 'Mexican Bank'),
+    (['PE'], 'bcrp', 'Bank of Peru'),
+    (['RO'], 'bnr', 'National Bank Of Romania'),
+    (['TR'], 'tcmb', 'Turkey Republic Central Bank'),
+]
+
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    currency_interval_unit = fields.Selection([
-        ('manually', 'Manually'),
-        ('daily', 'Daily'),
-        ('weekly', 'Weekly'),
-        ('monthly', 'Monthly')],
-        default='manually', string='Interval Unit')
+    currency_interval_unit = fields.Selection(
+        selection=[
+            ('manually', 'Manually'),
+            ('daily', 'Daily'),
+            ('weekly', 'Weekly'),
+            ('monthly', 'Monthly')
+        ],
+        default='manually',
+        required=True,
+        string='Interval Unit',
+    )
     currency_next_execution_date = fields.Date(string="Next Execution Date")
-    currency_provider = fields.Selection([
-        ('ecb', 'European Central Bank'),
-        ('fta', 'Federal Tax Administration (Switzerland)'),
-        ('banxico', 'Mexican Bank'),
-        ('boc', 'Bank Of Canada'),
-        ('xe_com', 'xe.com'),
-        ('bnr', 'National Bank Of Romania'),
-        ('mindicador', 'Chilean mindicador.cl'),
-        ('bcrp', 'Bank of Peru'),
-        ('cbuae', 'UAE Central Bank'),
-        ('tcmb', 'Turkey Republic Central Bank'),
-    ], default='ecb', string='Service Provider')
+    currency_provider = fields.Selection(
+        selection=[(provider_code, desc) for dummy, provider_code, desc in CURRENCY_PROVIDER_SELECTION],
+        string='Service Provider',
+        compute='_compute_currency_provider',
+        readonly=False,
+        store=True,
+    )
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        ''' Change the default provider depending on the company data.'''
-        for vals in vals_list:
-            if vals.get('country_id') and 'currency_provider' not in vals:
-                code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador', 'PE': 'bcrp', 'AE': 'cbuae'}
-                cc = self.env['res.country'].browse(vals['country_id']).code.upper()
-                if cc in code_providers:
-                    vals['currency_provider'] = code_providers[cc]
-        return super().create(vals_list)
-
-    @api.model
-    def set_special_defaults_on_install(self):
-        ''' At module installation, set the default provider depending on the company country.'''
-        all_companies = self.env['res.company'].search([])
-        currency_providers = {
-            'CH': 'fta',  # Sets FTA as the default provider for every swiss company that was already installed
-            'MX': 'banxico',  # Sets Banxico as the default provider for every mexican company already installed
-            'CA': 'boc',  # Bank of Canada
-            'RO': 'bnr',
-            'CL': 'mindicador',
-            'PE': 'bcrp',
-            'AE': 'cbuae',
-            'TR': 'tcmb',
+    @api.depends('country_id')
+    def _compute_currency_provider(self):
+        code_providers = {
+            country: provider_code
+            for countries, provider_code, dummy in CURRENCY_PROVIDER_SELECTION
+            for country in countries
         }
-        for company in all_companies:
-            company.currency_provider = currency_providers.get(company.country_id.code, 'ecb')
+        for record in self:
+            record.currency_provider = code_providers.get(record.country_id.code, 'ecb')
 
     def update_currency_rates(self):
         ''' This method is used to update all currencies given by the provider.
@@ -181,21 +177,16 @@ class ResCompany(models.Model):
         :return: True if the rates of all the records in self were updated
                  successfully, False if at least one wasn't.
         '''
-        rslt = True
         active_currencies = self.env['res.currency'].search([])
+        rslt = True
         for (currency_provider, companies) in self._group_by_provider().items():
-            parse_results = None
             parse_function = getattr(companies, '_parse_' + currency_provider + '_data')
-            parse_results = parse_function(active_currencies)
-
-            if parse_results == False:
-                # We check == False, and don't use bool conversion, as an empty
-                # dict can be returned, if none of the available currencies is supported by the provider
-                _logger.warning('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.', currency_provider)
-                rslt = False
-            else:
+            try:
+                parse_results = parse_function(active_currencies)
                 companies._generate_currency_rates(parse_results)
-
+            except Exception:
+                rslt = False
+                _logger.exception('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.', currency_provider)
         return rslt
 
     def _group_by_provider(self):
@@ -224,7 +215,6 @@ class ResCompany(models.Model):
         Currency = self.env['res.currency']
         CurrencyRate = self.env['res.currency.rate']
 
-        today = fields.Date.today()
         for company in self:
             rate_info = parsed_data.get(company.currency_id.name, None)
 
@@ -247,14 +237,12 @@ class ResCompany(models.Model):
         ''' Parses the data returned in xml by FTA servers and returns it in a more
         Python-usable form.'''
         request_url = 'https://www.backend-rates.ezv.admin.ch/api/xmldaily?d=today&locale=en'
-        try:
-            parse_url = requests.request('GET', request_url)
-        except:
-            return False
+        response = requests.get(request_url, timeout=30)
+        response.raise_for_status()
 
         rates_dict = {}
         available_currency_names = available_currencies.mapped('name')
-        xml_tree = etree.fromstring(parse_url.content)
+        xml_tree = etree.fromstring(response.content)
         data = xml2json_from_elementtree(xml_tree)
         for child_node in data['children']:
             if child_node['tag'] == 'devise':
@@ -285,13 +273,10 @@ class ResCompany(models.Model):
             Rates are given against EURO
         '''
         request_url = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
-        try:
-            parse_url = requests.request('GET', request_url)
-        except:
-            #connection error, the request wasn't successful
-            return False
+        response = requests.get(request_url, timeout=30)
+        response.raise_for_status()
 
-        xmlstr = etree.fromstring(parse_url.content)
+        xmlstr = etree.fromstring(response.content)
         data = xml2json_from_elementtree(xmlstr)
         node = data['children'][2]['children'][0]
         available_currency_names = available_currencies.mapped('name')
@@ -306,13 +291,10 @@ class ResCompany(models.Model):
         ''' This method is used to update the currencies by using UAE Central Bank service provider.
             Exchange rates are expressed as 1 unit of the foreign currency converted into AED
         '''
-        try:
-            fetched_data = requests.get(CBUAE_URL, timeout=30)
-            fetched_data.raise_for_status()
-        except Exception:
-            return False
+        response = requests.get(CBUAE_URL, timeout=30)
+        response.raise_for_status()
 
-        htmlelem = etree.fromstring(fetched_data.content, etree.HTMLParser())
+        htmlelem = etree.fromstring(response.content, etree.HTMLParser())
         rates_entries = htmlelem.xpath("//table[@id='ratesDateTable']/tbody/tr")
         available_currency_names = set(available_currencies.mapped('name'))
         rslt = {}
@@ -336,13 +318,10 @@ class ResCompany(models.Model):
         available_currency_names = available_currencies.mapped('name')
 
         request_url = "http://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json"
-        try:
-            response = requests.request('GET', request_url)
-        except:
-            #connection error, the request wasn't successful
-            return False
+        response = requests.get(request_url, timeout=30)
+        response.raise_for_status()
         if not 'application/json' in response.headers.get('Content-Type', ''):
-            return False
+            raise ValueError('Should be json')
         data = response.json()
 
         # 'observations' key contains rates observations by date
@@ -390,16 +369,13 @@ class ResCompany(models.Model):
             'SF60653': 'USD',
         }
         url = 'https://www.banxico.org.mx/SieAPIRest/service/v1/series/%s/datos/%s/%s?token=%s' # noqa
-        try:
-            date_mx = datetime.datetime.now(timezone('America/Mexico_City'))
-            today = date_mx.strftime(DEFAULT_SERVER_DATE_FORMAT)
-            yesterday = (date_mx - datetime.timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT)
-            res = requests.get(url % (','.join(foreigns), yesterday, today, token), timeout=30)
-            res.raise_for_status()
-            series = res.json()['bmx']['series']
-            series = {serie['idSerie']: {dato['fecha']: dato['dato'] for dato in serie['datos']} for serie in series if 'datos' in serie}
-        except:
-            return False
+        date_mx = datetime.datetime.now(timezone('America/Mexico_City'))
+        today = date_mx.strftime(DEFAULT_SERVER_DATE_FORMAT)
+        yesterday = (date_mx - datetime.timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+        res = requests.get(url % (','.join(foreigns), yesterday, today, token), timeout=30)
+        res.raise_for_status()
+        series = res.json()['bmx']['series']
+        series = {serie['idSerie']: {dato['fecha']: dato['dato'] for dato in serie['datos']} for serie in series if 'datos' in serie}
 
         available_currency_names = available_currencies.mapped('name')
 
@@ -434,10 +410,8 @@ class ResCompany(models.Model):
         today = fields.Date.today()
 
         # We generate all the exchange rates relative to the USD. This is purely arbitrary.
-        try:
-            fetched_data = requests.request('GET', url_format % {'currency_code': 'USD'})
-        except:
-            return False
+        response = requests.get(url_format % {'currency_code': 'USD'}, timeout=30)
+        response.raise_for_status()
 
         rslt = {}
 
@@ -446,7 +420,7 @@ class ResCompany(models.Model):
         if 'USD' in available_currency_names:
             rslt['USD'] = (1.0, today)
 
-        htmlelem = etree.fromstring(fetched_data.content, etree.HTMLParser())
+        htmlelem = etree.fromstring(response.content, etree.HTMLParser())
         rates_entries = htmlelem.xpath(".//div[@id='table-section']//tbody/tr")
         for rate_entry in rates_entries:
             # line structure is <th>CODE</th><td>NAME<td><td>UNITS PER CURRENCY</td><td>CURRENCY PER UNIT</td>
@@ -462,13 +436,10 @@ class ResCompany(models.Model):
         BNR service provider. Rates are given against RON
         '''
         request_url = "https://www.bnr.ro/nbrfxrates.xml"
-        try:
-            parse_url = requests.request('GET', request_url)
-        except:
-            #connection error, the request wasn't successful
-            return False
+        response = requests.get(request_url, timeout=30)
+        response.raise_for_status()
 
-        xmlstr = etree.fromstring(parse_url.content)
+        xmlstr = etree.fromstring(response.content)
         data = xml2json_from_elementtree(xmlstr)
         available_currency_names = available_currencies.mapped('name')
         rate_date = fields.Date.today()
@@ -579,13 +550,10 @@ class ResCompany(models.Model):
                 logger.debug('Index %s not in available currency name', index)
                 continue
             url = server_url + '/%s/%s' % (currency, request_date)
-            try:
-                res = requests.get(url, timeout=30)
-                res.raise_for_status()
-            except Exception as e:
-                return False
+            res = requests.get(url, timeout=30)
+            res.raise_for_status()
             if 'html' in res.text:
-                return False
+                raise ValueError('Should be json')
             data_json = res.json()
             if not data_json['serie']:
                 continue
@@ -603,24 +571,17 @@ class ResCompany(models.Model):
         server_url = 'https://www.tcmb.gov.tr/kurlar/today.xml'
         available_currency_names = set(available_currencies.mapped('name'))
 
-        try:
-            res = requests.get(server_url, timeout=30)
-            res.raise_for_status()
-        except Exception:
-            return False
+        res = requests.get(server_url, timeout=30)
+        res.raise_for_status()
 
-        try:
-            root = etree.fromstring(res.text.encode())
-            rate_date = fields.Date.to_string(datetime.datetime.strptime(root.attrib['Date'], '%d/%m/%Y'))
-            rslt = {
-                currency.attrib['Kod']: (2 / (float(currency.find('ForexBuying').text) + float(currency.find('ForexSelling').text)), rate_date)
-                for currency in root
-                if currency.attrib['Kod'] in available_currency_names
-            }
-            rslt['TRY'] = (1.0, rate_date)
-        except Exception as e:
-            _logger.warning('Unable to parse data from TCMB provider, the format may have been changed: %s', e)
-            return False
+        root = etree.fromstring(res.text.encode())
+        rate_date = fields.Date.to_string(datetime.datetime.strptime(root.attrib['Date'], '%d/%m/%Y'))
+        rslt = {
+            currency.attrib['Kod']: (2 / (float(currency.find('ForexBuying').text) + float(currency.find('ForexSelling').text)), rate_date)
+            for currency in root
+            if currency.attrib['Kod'] in available_currency_names
+        }
+        rslt['TRY'] = (1.0, rate_date)
 
         return rslt
 

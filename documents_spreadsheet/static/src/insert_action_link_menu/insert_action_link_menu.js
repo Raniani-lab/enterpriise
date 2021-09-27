@@ -36,9 +36,9 @@ export class InsertViewSpreadsheet extends Component {
     }
 
     getViewDescription() {
-        const { displayName, resModel, view } = this.env.searchModel;
+        const { resModel } = this.env.searchModel;
+        const { displayName, views = [] } = this.env.config;
         const { context, domain } = this.env.searchModel.getIrFilterValues();
-        const { views } = this.env.searchModel.action;
         const action = {
             domain,
             context,
@@ -46,7 +46,7 @@ export class InsertViewSpreadsheet extends Component {
             views: views.map(([, type]) => [false, type]),
         };
         return {
-            viewType: view.type,
+            viewType: this.env.config.viewType,
             action,
             name: displayName,
         };
@@ -61,8 +61,8 @@ favoriteMenuRegistry.add(
     {
         Component: InsertViewSpreadsheet,
         groupNumber: 4,
-        isDisplayed: ({ isSmall, searchModel }) =>
-            !isSmall && searchModel.action.type === "ir.actions.act_window"
+        isDisplayed: ({ config, isSmall }) =>
+            !isSmall && config.actionType === "ir.actions.act_window"
     },
     { sequence: 1 }
 );

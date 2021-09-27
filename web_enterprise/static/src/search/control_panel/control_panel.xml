@@ -127,7 +127,7 @@
                 />
             </t>
             <li class="breadcrumb-item active">
-                <t t-if="props.displayName" t-esc="props.displayName"/>
+                <t t-if="env.config.displayName" t-esc="env.config.displayName"/>
                 <em t-else="" class="text-warning">Unnamed</em>
             </li>
         </ol>

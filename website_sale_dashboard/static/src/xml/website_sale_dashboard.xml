@@ -16,7 +16,7 @@
         t-inherit="web_dashboard.DashboardView"
         t-inherit-mode="primary"
         owl="1">
-        <xpath expr="//ControlPanel" position="inside">
+        <xpath expr="//Layout" position="inside">
             <t t-set-slot="control-panel-bottom-left">
                 <a role="button" href="/" class="btn btn-primary" title="Go to Website">
                     Go to Website
@@ -24,5 +24,5 @@
             </t>
         </xpath>
     </t>
-        
+
 </templates>

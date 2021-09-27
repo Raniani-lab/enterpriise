@@ -19,7 +19,6 @@ import { ViewWrapper } from "./view_wrapper/view_wrapper";
 const { Component } = owl;
 
 const viewRegistry = registry.category("views");
-const bannerRegistry = registry.category("banner");
 
 const SUB_VIEW_CONTROL_PANEL_DISPLAY = {
     "bottom-right": false,
@@ -300,6 +299,7 @@ DashboardView.components = { Layout, DashboardStatistic, ViewWidget, ViewWrapper
 DashboardView.Model = DashboardModel;
 DashboardView.ArchParser = DashboardArchParser;
 DashboardView.Compiler = DashboardCompiler;
+DashboardView.Banner = OnboardingBanner;
 
 DashboardView.type = "dashboard";
 DashboardView.display_name = "dashboard";
@@ -309,4 +309,3 @@ DashboardView.multiRecord = true;
 DashboardView.searchMenuTypes = ["filter", "comparison", "favorite"];
 
 viewRegistry.add("dashboard", DashboardView);
-bannerRegistry.add("dashboard", OnboardingBanner);

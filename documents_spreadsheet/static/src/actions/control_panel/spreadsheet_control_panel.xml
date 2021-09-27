@@ -2,11 +2,7 @@
 <templates>
 
 <t t-name="documents_spreadsheet.SpreadsheetControlPanel" owl="1">
-    <ControlPanel
-        title="props.spreadsheetName"
-        breadcrumbs="props.breadcrumbs"
-        display="controlPanelDisplay"
-    >
+    <ControlPanel display="controlPanelDisplay">
         <t t-set-slot="control-panel-top-right">
             <div t-if="props.isSpreadsheetSynced !== undefined" class="o_spreadsheet_status o_spreadsheet_sync_status text-muted">
                 <t t-if="props.isSpreadsheetSynced">

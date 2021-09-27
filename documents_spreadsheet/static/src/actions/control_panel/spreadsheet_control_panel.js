@@ -4,7 +4,10 @@ import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { SpreadsheetName } from "./spreadsheet_name";
 import { useService } from "@web/core/utils/hooks";
 
-export class SpreadsheetControlPanel extends owl.Component {
+const { Component, hooks } = owl;
+const { useSubEnv } = hooks;
+
+export class SpreadsheetControlPanel extends Component {
 
     constructor() {
         super(...arguments);
@@ -20,7 +23,7 @@ export class SpreadsheetControlPanel extends owl.Component {
      *
      * @param {string} jsId
      */
-     onBreadcrumbClicked(jsId) {
+    onBreadcrumbClicked(jsId) {
         this.actionService.restore(jsId);
     }
 
@@ -36,7 +39,6 @@ SpreadsheetControlPanel.components = {
     SpreadsheetName,
 };
 SpreadsheetControlPanel.props = {
-    breadcrumbs: Array,
     spreadsheetName: String,
     isFavorited: {
         type: Boolean,

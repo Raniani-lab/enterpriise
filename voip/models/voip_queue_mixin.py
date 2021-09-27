@@ -55,6 +55,7 @@ class VoipQueueMixin(models.AbstractModel):
             if not activity.voip_phonecall_id:
                 record = self.env[activity.res_model_id.model].browse(activity.res_id)
                 raise UserError(_('Phone call cannot be created. Is it any phone number linked to record %s?', record.name))
+        return activities
 
     def delete_call_in_queue(self):
         domain = self._linked_phone_call_domain()

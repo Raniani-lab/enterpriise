@@ -23,8 +23,10 @@ in order to test the whole mail codebase. """,
         'test_mail',
         'test_mail_full',
         'test_mass_mailing',
+        'voip',
     ],
     'data': [
+        'security/ir.model.access.csv',
     ],
     'demo': [
     ],

@@ -4,7 +4,6 @@
 from odoo.addons.test_mail.tests.test_performance import BaseMailPerformance
 from odoo.tests.common import users, warmup
 from odoo.tests import tagged
-from odoo.tools import mute_logger
 
 
 @tagged('mail_performance')
@@ -31,6 +30,12 @@ class TestActivityPerformance(BaseMailPerformance):
             'name': 'Super Customer',
         })
         cls.test_record = cls.env['mail.test.sms.bl.activity'].with_context(cls._quick_create_ctx).create({
+            'name': 'Test Record',
+            'customer_id': cls.customer.id,
+            'email_from': cls.customer.email,
+            'phone_nbr': '0456999999',
+        })
+        cls.test_record_voip = cls.env['mail.test.activity.bl.sms.voip'].with_context(cls._quick_create_ctx).create({
             'name': 'Test Record',
             'customer_id': cls.customer.id,
             'email_from': cls.customer.email,
@@ -76,10 +81,21 @@ class TestActivityPerformance(BaseMailPerformance):
         enabled. No computed fields are involved. """
         record = self.env['mail.test.sms.bl.activity'].browse(self.test_record.ids)
 
-        with self.assertQueryCount(employee=34):
+        with self.assertQueryCount(employee=37):  # TME only: 36
             activity = record.activity_schedule('mail.mail_activity_data_call', summary='Call Activity')
             activity.flush()
 
         # check business information (to benefits from this test)
         self.assertEqual(record.activity_ids, activity)
         self.assertEqual(activity.user_id, self.user_admin)
+
+    @users('employee')
+    @warmup
+    def test_create_call_in_queue(self):
+        record = self.env['mail.test.activity.bl.sms.voip'].browse(self.test_record_voip.ids)
+
+        with self.assertQueryCount(employee=14):
+            activity = record.create_call_in_queue()
+
+        # check business information (to benefits from this test)
+        self.assertEqual(activity.activity_type_id, self.phonecall_activity)

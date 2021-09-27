@@ -195,7 +195,7 @@ class StockPicking(models.Model):
         for po in corresponding_po:
             po.qty_done = po.product_uom_qty
         if corresponding_po:
-            self.entire_package_detail_ids.filtered(lambda p: p.name == package.name).is_processed = True
+            self.package_level_ids_details.filtered(lambda p: p.package_id == package).is_done = True
             return True
         else:
             return False

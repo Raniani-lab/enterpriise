@@ -103,7 +103,7 @@ var HelpdeskDashboardRenderer = KanbanRenderer.extend({
         e.preventDefault();
         var $action = $(e.currentTarget);
         var action_ref = $action.attr('name');
-        var title = $action.attr('title');
+        var title = $action.data('actionTitle') || $action.attr('title');
         var search_view_ref = $action.attr('search_view_ref');
         if ($action.attr('show_demo') != 'true'){
             if ($action.attr('name').includes("helpdesk.")) {

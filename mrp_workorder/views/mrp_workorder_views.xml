@@ -139,8 +139,8 @@
                         <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
                             <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
                                 <field name="duration" widget="mrp_time_counter" readonly="1" class="mr-3"/>
-                                <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is not working"/>
-                                <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is working"/>
+                                <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is working"/>
+                                <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is not working"/>
                             </span>
                             <button
                                 name="action_next"

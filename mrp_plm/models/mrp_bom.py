@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class MrpBom(models.Model):
     _inherit = 'mrp.bom'
 
-    version = fields.Integer('Version', default=1)
+    version = fields.Integer('Version', default=1, readonly=True)
     previous_bom_id = fields.Many2one('mrp.bom', 'Previous BoM')
     active = fields.Boolean('Production Ready')
     image_128 = fields.Image(related='product_tmpl_id.image_128', readonly=False)

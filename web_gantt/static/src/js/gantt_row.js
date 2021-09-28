@@ -366,13 +366,17 @@ var GanttRow = Widget.extend({
         var left;
         var diff;
         this.pills.forEach(function (pill) {
+            let widthPill;
+            let margin;
             switch (self.state.scale) {
                 case 'day':
                     left = pill.startDate.diff(pill.startDate.clone().startOf('hour'), 'minutes');
                     pill.leftMargin = (left / 60) * 100;
                     diff = pill.stopDate.diff(pill.startDate, 'minutes');
                     var gapSize = pill.stopDate.diff(pill.startDate, 'hours') - 1; // Eventually compensate border(s) width
-                    pill.width = gapSize > 0 ? 'calc(' + (diff / 60) * 100 + '% + ' + gapSize + 'px - 4px)' : 'calc(' + (diff / 60) * 100 + '% - 4px)';
+                    widthPill = (diff / 60) * 100;
+                    margin = pill.aggregatedPills ? 0 : 4;
+                    pill.width = gapSize > 0 ? `calc(${widthPill}% + ${gapSize}px - ${margin}px)` : `calc(${widthPill}% - ${margin}px)`;
                     break;
                 case 'week':
                 case 'month':
@@ -380,7 +384,9 @@ var GanttRow = Widget.extend({
                     pill.leftMargin = (left / 24) * 100;
                     diff = pill.stopDate.diff(pill.startDate, 'hours');
                     var gapSize = pill.stopDate.diff(pill.startDate, 'days') - 1; // Eventually compensate border(s) width
-                    pill.width = gapSize > 0 ? 'calc(' + (diff / 24) * 100 + '% + ' + gapSize + 'px - 4px)' : 'calc(' + (diff / 24) * 100 + '% - 4px)';
+                    widthPill = (diff / 24) * 100;
+                    margin = pill.aggregatedPills ? 0 : 4;
+                    pill.width = gapSize > 0 ? `calc(${widthPill}% + ${gapSize}px - ${margin}px)` : `calc(${widthPill}% - ${margin}px)`;
                     break;
                 case 'year':
                     var startDateMonthStart = pill.startDate.clone().startOf('month');
@@ -389,11 +395,12 @@ var GanttRow = Widget.extend({
                     pill.leftMargin = (left / 30) * 100;
 
                     var monthsDiff = stopDateMonthEnd.diff(startDateMonthStart, 'months', true);
+                    margin = pill.aggregatedPills ? 0 : 4;
                     if (monthsDiff < 1) {
                         // A 30th of a month slot is too small to display
                         // 1-day events are displayed as if they were 2-days events
                         diff = Math.max(Math.ceil(pill.stopDate.diff(pill.startDate, 'days', true)), 2);
-                        pill.width = 'calc(' + (diff / pill.startDate.daysInMonth()) * 100 + "% - 4px)";
+                        pill.width = `calc(${(diff / pill.startDate.daysInMonth()) * 100}% - ${margin}px)`;
                     } else {
                         // The pill spans more than one month, so counting its
                         // number of days is not enough as some months have more
@@ -413,7 +420,7 @@ var GanttRow = Widget.extend({
                             // that the middle months are fully covered
                             width += (monthsDiff - 2) * 100;
                         }
-                        pill.width = 'calc(' + width + "% - 4px)";
+                        pill.width = `calc(${width}% - ${margin}px)`;
                     }
                     break;
                 default:

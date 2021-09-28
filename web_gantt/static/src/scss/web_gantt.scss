@@ -559,7 +559,12 @@ $gantt-unavailability-bg: $gray-200;
                 height: 100vh;
                 content: '';
                 pointer-events: none;
+                z-index: 1;
             }
+        }
+        .o_gantt_cell:last-child .o_gantt_pill_wrapper:hover:before {
+            border-right: 0px;
+            right: 0;
         }
     }
 

@@ -501,13 +501,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(1, 126, 132)",
             "the 4th group pill should have the correct grey scale");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 0px)",
             "the 1st group pill should have the correct width (1 to 3 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px - 0px)",
             "the 2nd group pill should have the correct width (4 to 19 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "calc(50% - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "calc(50% - 0px)",
             "the 3rd group pill should have the correct width (20 morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px - 0px)",
             "the 4th group pill should have the correct width (20 afternoon to 31 dec");
 
         gantt.destroy();
@@ -628,13 +628,13 @@ QUnit.module('Views', {
         assert.deepEqual(groupCounts, ["1", "1", "1,1,2,1,1"], "group consolidated counts should be correctly computed");
 
         // consolidated pills should have correct width
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(3100% + 30px - 4px)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(1) .o_gantt_pill_wrapper:eq(0)')), "calc(3100% + 30px - 4px)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(1)')), "calc(250% + 1px - 4px)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(2)')), "calc(100% - 4px)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(3)')), "calc(150% - 4px)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(4)')), "calc(500% + 4px - 4px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(3100% + 30px - 0px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(1) .o_gantt_pill_wrapper:eq(0)')), "calc(3100% + 30px - 0px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 0px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(1)')), "calc(250% + 1px - 0px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(2)')), "calc(100% - 0px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(3)')), "calc(150% - 0px)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(2) .o_gantt_pill_wrapper:eq(4)')), "calc(500% + 4px - 0px)");
 
         gantt.destroy();
     });
@@ -655,7 +655,7 @@ QUnit.module('Views', {
             groupBy: ['user_id', 'project_id']
         });
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(700% + 6px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(700% + 6px - 0px)",
             "the group pill should have the correct width (7 days)");
 
         gantt.destroy();
@@ -3548,13 +3548,13 @@ document.createElement("a").classList.contains
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(40, 167, 69)",
             "the 3rd group pill should have the correct color");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 0px)",
             "the 1st group pill should have the correct width (1 to 3 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px - 0px)",
             "the 2nd group pill should have the correct width (4 to 19 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "calc(50% - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "calc(50% - 0px)",
             "the 3rd group pill should have the correct width (20 morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px - 0px)",
             "the 4th group pill should have the correct width (20 afternoon to 31 dec");
 
         // 30 over Task 2 until Task 7 then 110 (Task 2 (30) + Task 7 (80)) then 30 again until end of task 2 then 60 over Task 3
@@ -3570,13 +3570,13 @@ document.createElement("a").classList.contains
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(40, 167, 69)",
             "the 4th group pill should have the correct color");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px - 0px)",
             "the 1st group pill should have the correct width (17 afternoon to 20 dec morning)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(1)')), "calc(50% - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(1)')), "calc(50% - 0px)",
             "the 2nd group pill should have the correct width (20 dec afternoon)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "calc(150% - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "calc(150% - 0px)",
             "the 3rd group pill should have the correct width (21 to 22 dec morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(500% + 4px - 4px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(500% + 4px - 0px)",
             "the 4th group pill should have the correct width (27 afternoon to 31 dec");
 
         gantt.destroy();

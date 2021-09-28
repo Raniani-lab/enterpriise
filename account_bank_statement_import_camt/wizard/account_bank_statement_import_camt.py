@@ -559,9 +559,6 @@ _get_check_number = partial(_generic_get, xpath='ns:Refs/ns:ChqNb/text()')
 
 
 def _get_signed_amount(*nodes, namespaces, journal_currency=None):
-    # journal_currency is not necessarily journal.currency_id, because currency_id is not required
-    # In such a case, journal_currency can be defined with journal.company_id.currency_id
-    # (Therefore, journal_currency will never be empty)
     def get_value_and_currency_name(node, getters, target_currency=None):
         for value_getter, currency_getter in getters:
             value = value_getter(node, namespaces=namespaces)
@@ -587,7 +584,7 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     if not amount:
         amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters)
 
-    if amount_currency_name == journal_currency.name:
+    if not journal_currency or amount_currency_name == journal_currency.name:
         rate = 1.0
     else:
         rate = get_rate(entry_details, entry, target_currency=journal_currency.name)

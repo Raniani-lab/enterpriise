@@ -30,6 +30,7 @@ var OpenStudioButton = Widget.extend({
     start: function () {
         this._super.apply(this, arguments);
         this.$el.text(_t('Design Template'));
+        this.$el.attr('data-hotkey', 'e');
     },
 
     /**

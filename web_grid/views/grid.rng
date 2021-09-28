@@ -85,6 +85,7 @@
                             <attribute name="span"/>
                             <attribute name="step"/>
                             <optional><attribute name="invisible"/></optional>
+                            <optional><attribute name="hotkey"/></optional>
                         </element>
                     </zeroOrMore>
                 </group>
@@ -123,6 +124,7 @@
             <!-- method name or action id -->
             <attribute name="name"/>
             <optional><attribute name="class"/></optional>
+            <optional><attribute name="data-hotkey"/></optional>
             <!-- Python dict literal -->
             <optional><attribute name="context"/></optional>
         </element>

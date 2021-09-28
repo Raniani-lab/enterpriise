@@ -15,8 +15,8 @@
                     <field name="expiration_date"/>
                 </group>
                 <footer>
-                    <button name="action_coupon_send" string="Send" type="object" attrs="{'invisible': [('state', 'not in', ['new', 'sent'])]}" class="btn btn-primary"/>
-                    <button name="action_coupon_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', '!=', 'new')]}" class="btn btn-secondary"/>
+                    <button name="action_coupon_send" string="Send" type="object" attrs="{'invisible': [('state', 'not in', ['new', 'sent'])]}" class="btn btn-primary" data-hotkey="v"/>
+                    <button name="action_coupon_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', '!=', 'new')]}" class="btn btn-secondary" data-hotkey="w"/>
                 </footer>
             </form>
         </field>

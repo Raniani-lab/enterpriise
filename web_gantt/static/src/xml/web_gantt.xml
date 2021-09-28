@@ -3,14 +3,14 @@
 <templates>
 
     <div t-name="GanttView.buttons">
-        <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary mr-3" title="Add record">
+        <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary mr-3" title="Add record" data-hotkey="r">
             Add
         </button>
         <div class="d-inline-block mr-3">
             <button class="o_gantt_button_prev btn btn-primary" title="Previous">
                 <span class="fa fa-arrow-left"/>
             </button>
-            <button class="o_gantt_button_today btn btn-primary">
+            <button class="o_gantt_button_today btn btn-primary" data-hotkey="t">
                 Today
             </button>
             <button class="o_gantt_button_next btn btn-primary" title="Next">
@@ -50,7 +50,7 @@
 
     <t t-name="GanttView.RangeButtons.Loop">
         <t t-foreach="allowedScales" t-as="scale">
-            <button t-attf-class="o_gantt_button_scale btn btn-secondary #{scale == activateScale ? 'active' : ''} #{isMobile ? 'dropdown-item' : ''}" type="button" t-att-data-value="scale">
+            <button t-attf-class="o_gantt_button_scale btn btn-secondary #{scale == activateScale ? 'active' : ''} #{isMobile ? 'dropdown-item' : ''}" type="button" t-att-data-value="scale" t-att-data-hotkey="SCALES[scale].hotkey" >
                 <t t-esc="SCALES[scale].string"/>
             </button>
         </t>

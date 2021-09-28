@@ -152,9 +152,9 @@
                 <xpath expr="//sheet" position="before">
                     <header>
                         <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
-                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="v"/>
                         <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
-                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="q"/>
                         <field name="validated_status" widget="statusbar"/>
                     </header>
                 </xpath>
@@ -170,9 +170,9 @@
                 <form string="Add a Task">
                     <header invisible="context.get('view_grid_add_line', False)">
                         <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
-                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="v"/>
                         <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
-                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}"/>
+                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="q"/>
                         <field name="validated_status" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -228,9 +228,9 @@
                     <field name="project_id" type="row"/>
                     <field name="task_id" type="row"/>
                     <field name="date" type="col">
-                        <range name="day" string="Day" span="day" step="day"/>
-                        <range name="week" string="Week" span="week" step="day"/>
-                        <range name="month" string="Month" span="month" step="day"/>
+                        <range name="day" string="Day" span="day" step="day" hotkey="e"/>
+                        <range name="week" string="Week" span="week" step="day" hotkey="w"/>
+                        <range name="month" string="Month" span="month" step="day" hotkey="m"/>
                     </field>
                     <field name="unit_amount" type="measure" widget="timesheet_uom"/>
                 </grid>
@@ -303,9 +303,9 @@
                       display_empty="1">
                     <field name="employee_id" type="row"/>
                     <field name="date" type="col">
-                        <range name="day" string="Day" span="day" step="day"/>
-                        <range name="week" string="Week" span="week" step="day"/>
-                        <range name="month" string="Month" span="month" step="day"/>
+                        <range name="day" string="Day" span="day" step="day" hotkey="e"/>
+                        <range name="week" string="Week" span="week" step="day" hotkey="w"/>
+                        <range name="month" string="Month" span="month" step="day" hotkey="m"/>
                     </field>
                     <field name="unit_amount" type="measure" widget="timesheet_uom"/>
                 </grid>
@@ -348,7 +348,7 @@
             <field name="mode">primary</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='unit_amount']" position="before">
-                    <button type="object" class="btn-primary o_timesheet_validate" name="action_validate_timesheet" string="Validate"/>
+                    <button type="object" class="btn-primary o_timesheet_validate" name="action_validate_timesheet" string="Validate" data-hotkey="v"/>
                 </xpath>
             </field>
         </record>

@@ -33,7 +33,7 @@
 
     <div t-name="timesheet_grid.timer_header" class="d-flex align-items-center timesheet-timer py-2" owl="1">
         <t t-if="_timerIsRunning">
-            <button class="my-2 mr-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer()" t-ref="stopButton">
+            <button class="my-2 mr-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer()" t-ref="stopButton" data-hotkey="z">
                 Stop
             </button>
             <div class="p-2 input_timer">
@@ -66,7 +66,7 @@
         </t>
         <t t-else="">
             <div class="my-2 pr-2" id="start">
-                <button class="btn btn_start_timer" t-on-click="_onClickStartTimer()" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
+                <button class="btn btn_start_timer" t-on-click="_onClickStartTimer()" t-ref="startButton" data-hotkey="z"><i class="fa fa-play"></i> Start</button>
             </div>
             <div class="p-2">
                 <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>

@@ -12,7 +12,7 @@
 
     <t t-name="web_map.MapView.Buttons"  owl="1">
         <div class="o-map-view--buttons">
-            <a class="btn btn-primary text-white" t-att-href="googleMapUrl" target="_blank">View in Google Maps</a>
+            <a class="btn btn-primary text-white" t-att-href="googleMapUrl" target="_blank" data-hotkey="m">View in Google Maps</a>
         </div>
     </t>
 

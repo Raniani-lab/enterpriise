@@ -35,10 +35,10 @@ var GanttView = AbstractView.extend({
         this.controllerParams.actionDomain = domain || [];
 
         this.SCALES = {
-            day: { string: _t('Day'), cellPrecisions: { full: 60, half: 30, quarter: 15 }, defaultPrecision: 'full', time: 'minutes', interval: 'hour' },
-            week: { string: _t('Week'), cellPrecisions: { full: 24, half: 12 }, defaultPrecision: 'half', time: 'hours', interval: 'day' },
-            month: { string: _t('Month'), cellPrecisions: { full: 24, half: 12 }, defaultPrecision: 'half', time: 'hours', interval: 'day' },
-            year: { string: _t('Year'), cellPrecisions: { full: 1 }, defaultPrecision: 'full', time: 'months', interval: 'month' },
+            day: { string: _t('Day'), hotkey: 'e', cellPrecisions: { full: 60, half: 30, quarter: 15 }, defaultPrecision: 'full', time: 'minutes', interval: 'hour' },
+            week: { string: _t('Week'), hotkey: 'p', cellPrecisions: { full: 24, half: 12 }, defaultPrecision: 'half', time: 'hours', interval: 'day' },
+            month: { string: _t('Month'), hotkey: 'm', cellPrecisions: { full: 24, half: 12 }, defaultPrecision: 'half', time: 'hours', interval: 'day' },
+            year: { string: _t('Year'), hotkey: 'y', cellPrecisions: { full: 1 }, defaultPrecision: 'full', time: 'months', interval: 'month' },
         };
 
         var arch = this.arch;

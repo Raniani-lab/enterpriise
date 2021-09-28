@@ -21,7 +21,7 @@
             <th>
                 <div class="ml-3">
                     <div>
-                        <a href="javascript:void(0)" role="button" t-on-click="_onClickCreateInline">Add a line</a>
+                        <a href="javascript:void(0)" role="button" t-on-click="_onClickCreateInline" data-hotkey="i">Add a line</a>
                     </div>
                 </div>
             </th>
@@ -369,7 +369,7 @@
             <div t-if="widget._buttons.length" class="btn-group">
                 <button t-foreach="widget._buttons" t-as="btn"
                         t-attf-class="grid_arrow_button btn {{ btn['class'] || 'btn-secondary' }}"
-                        type="button" t-att-data-index="btn_index">
+                        type="button" t-att-data-index="btn_index" t-att-data-hotkey="btn['data-hotkey']">
                     <t t-esc="btn.string"/>
                 </button>
             </div>
@@ -377,7 +377,7 @@
                     type="button">
                 <span class="fa fa-arrow-left" role="img" aria-label="Previous" title="Previous"/>
             </button>
-            <button class="btn btn-primary grid_button_initial o_grid_button_change_range d-none" type="button">
+            <button class="btn btn-primary grid_button_initial o_grid_button_change_range d-none" type="button" data-hotkey="t">
                 Today
             </button>
             <button class="grid_arrow_next o_grid_button_change_range btn btn-primary d-none"
@@ -409,7 +409,7 @@
     </t>
 
     <t t-name="grid.RangeButton">
-        <button class="grid_arrow_range btn btn-secondary" type="button" t-att-data-name="range.name">
+        <button class="grid_arrow_range btn btn-secondary" type="button" t-att-data-name="range.name" t-att-data-hotkey="range.hotkey">
             <t t-esc="range.string"/>
         </button>
     </t>

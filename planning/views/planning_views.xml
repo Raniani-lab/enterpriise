@@ -28,19 +28,19 @@
             <form>
                 <header>
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary"
-                        close="1" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager"/>
+                        close="1" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary"
-                        close="1" groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}"/>
+                        close="1" groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" data-hotkey="w"/>
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It"
                         attrs="{'invisible': ['|', '|', ('resource_id', '!=', False), ('start_datetime', '=', False), ('end_datetime', '=', False)]}" close="1"/>
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I Am Unavailable"
                         attrs="{'invisible': ['|', '|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False),
                         ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True), ('resource_type', '=', 'material')]}"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager"/>
+                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="v"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish"
                         class="btn btn-secondary" close="1" groups="planning.group_planning_manager"
-                        attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        attrs="{'invisible': [('state', '=', 'draft')]}" data-hotkey="q"/>
                     <field name="state" widget="statusbar" groups="planning.group_planning_manager"/>
                 </header>
                 <field name="is_past" invisible="1"/>
@@ -220,18 +220,18 @@
                     <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
                     <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager"/>
+                        attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager"/>
+                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}"/>
+                        groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" data-hotkey="w"/>
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It" attrs="{'invisible': ['|', '|', '|', ('resource_type', '=', 'material'), ('employee_id', '!=', False), ('start_datetime', '=', False), ('end_datetime', '=', False)]}" close="1" data-hotkey="q"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'draft')]}" data-hotkey="q"/>
                     <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
                     <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
-                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-right" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
+                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-right" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager" data-hotkey="d"/>
                 </footer>
             </xpath>
         </field>

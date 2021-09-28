@@ -23,11 +23,14 @@ class Task(models.Model):
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
 
+    # Project Sharing fields
+    portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
+
     @property
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS | {'allow_material',
                                               'allow_quotations',
-                                              'quotation_count',
+                                              'portal_quotation_count',
                                               'material_line_product_count',
                                               'material_line_total_price',
                                               'currency_id',
@@ -52,6 +55,15 @@ class Task(models.Model):
         mapped_data = dict([(q['task_id'][0], q['task_id_count']) for q in quotation_data])
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)
+
+    def _compute_portal_quotation_count(self):
+        domain = [('task_id', 'in', self.ids)]
+        if self.user_has_groups('base.group_portal'):
+            domain = expression.AND([domain, [('state', '!=', 'draft')]])
+        quotation_data = self.env['sale.order'].read_group(domain, ['task_id'], ['task_id'])
+        mapped_data = {q['task_id'][0]: q['task_id_count'] for q in quotation_data}
+        for task in self:
+            task.portal_quotation_count = mapped_data.get(task.id, 0)
 
     @api.depends('sale_order_id.order_line.product_uom_qty', 'sale_order_id.order_line.price_total')
     def _compute_material_line_totals(self):
@@ -196,6 +208,7 @@ class Task(models.Model):
         return action
 
     def action_fsm_view_quotations(self):
+        self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("sale.action_quotations")
         action.update({
             'name': self.name,
@@ -209,6 +222,20 @@ class Task(models.Model):
             action['res_id'] = self.env['sale.order'].search([('task_id', '=', self.id)]).id
             action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
         return action
+
+    def action_project_sharing_view_quotations(self):
+        """ Action used only in project sharing feature """
+        self.ensure_one()
+        if self.user_has_groups('base.group_portal'):
+            return {
+                "name": "Portal Quotations",
+                "type": "ir.actions.act_url",
+                "url":
+                    self.env['sale.order'].search([('task_id', '=', self.id)], limit=1).get_portal_url()
+                    if self.portal_quotation_count == 1
+                    else f"/my/projects/{self.project_id.id}/task/{self.id}/quotes",
+            }
+        return self.action_fsm_view_quotations()
 
     def action_fsm_view_material(self):
         if not self.partner_id:

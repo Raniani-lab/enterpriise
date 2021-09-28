@@ -33,12 +33,12 @@
                     <field name="invoice_count" widget="statinfo" string="Invoices"/>
                 </button>
                 <field name="allow_quotations" invisible="1" />
-                <button name="action_fsm_view_quotations"
-                    type="object" special="cancel"
-                    class="oe_stat_button o_debounce_disabled"
+                <button name="action_project_sharing_view_quotations"
+                    type="object"
+                    class="oe_stat_button"
                     icon="fa-dollar"
-                    attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
+                    attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('portal_quotation_count', '=', 0)]}">
+                    <field string="Quotations" name="portal_quotation_count" widget="statinfo"/>
                 </button>
             </xpath>
         </field>

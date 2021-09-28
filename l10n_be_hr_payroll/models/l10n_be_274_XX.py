@@ -376,13 +376,14 @@ class L10nBe274XX(models.Model):
             - declaration_34['prepayment'],
             (- declaration_32['prepayment'] - declaration_33['prepayment']) / 4.0)
 
+        result['positive_total'] = _to_eurocent(result['positive_total'])
+        result['negative_total'] = _to_eurocent(declaration_32['prepayment'] + declaration_33['prepayment'] + declaration_34['prepayment'])
+
         for declaration in [declaration_10, declaration_32, declaration_33, declaration_34]:
             declaration['prepayment'] = _to_eurocent(declaration['prepayment'])
             declaration['taxable_revenue'] = _to_eurocent(declaration['taxable_revenue'])
 
         result['declarations'] = [declaration_10, declaration_32, declaration_33, declaration_34]
-        result['positive_total'] = _to_eurocent(result['positive_total'])
-        result['negative_total'] = _to_eurocent(result['negative_total'])
         return result
 
     def action_generate_xml(self):

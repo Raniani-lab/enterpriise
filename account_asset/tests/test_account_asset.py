@@ -507,6 +507,45 @@ class TestAccountAsset(TestAccountReportsCommon):
 
     @patch('odoo.fields.Date.today', return_value=today())
     @patch('odoo.fields.Date.context_today', context_today)
+    def test_06_account_asset(self, today_mock):
+        """Test the correct computation of asset amounts"""
+        revenue_account = self.env['account.account'].create({
+            "name": "test_06_account_asset",
+            "code": "test_06_account_asset",
+            "user_type_id": self.env.ref('account.data_account_type_current_liabilities').id,
+            "create_asset": "no",
+            "asset_type": "sale",
+            "multiple_assets_per_line": True,
+        })
+
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 0,
+            'state': 'draft',
+            'method_period': '12',
+            'method_number': 4,
+            'name': "CEO's Car",
+            'original_value': 1000.0,
+            'asset_type': 'sale',
+            'acquisition_date': today() - relativedelta(years=3),
+            'account_asset_id': revenue_account.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': revenue_account.id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+        })
+
+        CEO_car.validate()
+        posted_entries = len(CEO_car.depreciation_move_ids.filtered(lambda x: x.state == 'posted'))
+        self.assertEqual(posted_entries, 3)
+
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 1000,
+            'book_value': 250,
+            'value_residual': 250,
+            'salvage_value': 0,
+        }])
+
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
     def test_asset_form(self, today_mock):
         """Test the form view of assets"""
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))

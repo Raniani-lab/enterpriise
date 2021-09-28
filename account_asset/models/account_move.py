@@ -219,7 +219,7 @@ class AccountMove(models.Model):
     def _get_depreciation(self):
         asset = self.asset_id
         if asset:
-            account = asset.account_depreciation_id
+            account = asset.account_depreciation_expense_id if asset.asset_type == 'sale' else asset.account_depreciation_id
             field = 'debit' if asset.asset_type == 'sale' else 'credit'
             asset_depreciation = sum(
                 self.line_ids.filtered(lambda l: l.account_id == account).mapped(field)

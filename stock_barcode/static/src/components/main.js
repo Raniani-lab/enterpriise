@@ -136,6 +136,10 @@ class MainComponent extends Component {
         return this.numberOfPages > 1 && this.currentPageIndex < this.numberOfPages;
     }
 
+    get displayNote() {
+        return !this._hideNote && this.env.model.record.note;
+    }
+
     get displayPackageContent() {
         return this.env.model.view === 'packagePage';
     }
@@ -308,6 +312,11 @@ class MainComponent extends Component {
         } else {
             this.toggleBarcodeLines();
         }
+    }
+
+    hideNote(ev) {
+        this._hideNote = true;
+        this.render();
     }
 
     nextPage(ev) {

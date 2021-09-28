@@ -128,7 +128,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 <UBLVersionID>2.1</UBLVersionID>
                 <CustomizationID>2.0</CustomizationID>
                 <ID>___ignore___</ID>
-                <IssueDate>2016-12-31</IssueDate>
+                <IssueDate>2017-01-01</IssueDate>
                 <InvoiceTypeCode
                     listID="0101"
                     listAgencyName="PE:SUNAT"
@@ -257,7 +257,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 <UBLVersionID>2.1</UBLVersionID>
                 <CustomizationID>2.0</CustomizationID>
                 <ID>___ignore___</ID>
-                <IssueDate>2016-12-31</IssueDate>
+                <IssueDate>2017-01-01</IssueDate>
                 <DocumentCurrencyCode>USD</DocumentCurrencyCode>
                 <DiscrepancyResponse>
                     <ResponseCode>01</ResponseCode>
@@ -313,10 +313,6 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                         </PartyLegalEntity>
                     </Party>
                 </AccountingCustomerParty>
-                <PaymentTerms>
-                    <ID>FormaPago</ID>
-                    <PaymentMeansID>Contado</PaymentMeansID>
-                </PaymentTerms>
                 <TaxTotal>
                     <TaxAmount currencyID="USD">1440.00</TaxAmount>
                     <TaxSubtotal>
@@ -389,7 +385,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 <UBLVersionID>2.1</UBLVersionID>
                 <CustomizationID>2.0</CustomizationID>
                 <ID>___ignore___</ID>
-                <IssueDate>2016-12-31</IssueDate>
+                <IssueDate>2017-01-01</IssueDate>
                 <DocumentCurrencyCode>USD</DocumentCurrencyCode>
                 <DiscrepancyResponse>
                     <ResponseCode>01</ResponseCode>

@@ -711,6 +711,12 @@ msgid "You cannot have two journals associated with the same Online Account."
 msgstr ""
 
 #. module: account_online_synchronization
+#: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:75
+#, python-format
+msgid "You must select or create a journal for each account you want to synchronize."
+msgstr ""
+
+#. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid ""
 "bank account(s).<br/>\n"

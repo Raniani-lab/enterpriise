@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from markupsafe import Markup
 
 from odoo import api, fields, models, _
 from odoo.tools import config, date_utils
@@ -319,7 +320,7 @@ class SaleSubscription(models.Model):
                      }
         }
 
-    def get_pdf(self, body_html, minimal_layout=True ):
+    def get_pdf(self, body_html):
         # As the assets are generated during the same transaction as the rendering of the
         # templates calling them, there is a scenario where the assets are unreachable: when
         # you make a request to read the assets while the transaction creating them is not done.
@@ -336,21 +337,22 @@ class SaleSubscription(models.Model):
             'mode': 'print',
             'base_url': base_url,
             'company': self.env.company,
-            'body_html': body_html,
         }
-        body = self.env['ir.ui.view']._render_template("sale_subscription_dashboard.print_template", values=dict(rcontext))
-        if minimal_layout:
-            header = ''
-            footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
-            spec_paperformat_args = {'data-report-margin-top': 10, 'data-report-header-spacing': 10}
-            footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
 
-        landscape = False
+        body = self.env['ir.ui.view']._render_template(
+            "sale_subscription_dashboard.print_template",
+            values=dict(rcontext, body_html=body_html)
+        )
+        footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
+        footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=Markup(footer.decode())))
+
         return self.env['ir.actions.report']._run_wkhtmltopdf(
             [body],
-            header=header, footer=footer,
-            landscape=landscape,
-            specific_paperformat_args=spec_paperformat_args
+            footer=footer.decode(),
+            specific_paperformat_args={
+                'data-report-margin-top': 10,
+                'data-report-header-spacing': 10
+            }
         )
 
     def get_report_filename(self,):

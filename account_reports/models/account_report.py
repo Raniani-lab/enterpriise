@@ -13,6 +13,7 @@ from math import copysign, inf
 import lxml.html
 from babel.dates import get_quarter_names
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 
 from odoo import models, fields, api, _
 from odoo.addons.web.controllers.main import clean_action
@@ -1573,7 +1574,7 @@ class AccountReport(models.AbstractModel):
             markupsafe.Markup('</a>'): markupsafe.Markup('</span>')
         }
 
-    def get_pdf(self, options, minimal_layout=True):
+    def get_pdf(self, options):
         # As the assets are generated during the same transaction as the rendering of the
         # templates calling them, there is a scenario where the assets are unreachable: when
         # you make a request to read the assets while the transaction creating them is not done.
@@ -1597,39 +1598,8 @@ class AccountReport(models.AbstractModel):
             "account_reports.print_template",
             values=dict(rcontext, body_html=body_html),
         )
-        if minimal_layout:
-            header = ''
-            footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
-            spec_paperformat_args = {'data-report-margin-top': 10, 'data-report-header-spacing': 10}
-            footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
-        else:
-            rcontext.update({
-                    'css': '',
-                    'o': self.env.user,
-                    'res_company': self.env.company,
-                })
-            header = self.env['ir.actions.report']._render_template("web.external_layout", values=rcontext)
-            spec_paperformat_args = {}
-            # Default header and footer in case the user customized web.external_layout and removed the header/footer
-            headers = header.encode()
-            footer = b''
-            # parse header as new header contains header, body and footer
-            try:
-                root = lxml.html.fromstring(header)
-                match_klass = "//div[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
-
-                for node in root.xpath(match_klass.format('header')):
-                    headers = lxml.html.tostring(node)
-                    headers = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=headers))
-
-                for node in root.xpath(match_klass.format('footer')):
-                    footer = lxml.html.tostring(node)
-                    footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
-
-            except lxml.etree.XMLSyntaxError:
-                headers = header.encode()
-                footer = b''
-            header = headers
+        footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
+        footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=Markup(footer.decode())))
 
         landscape = False
         if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
@@ -1637,9 +1607,12 @@ class AccountReport(models.AbstractModel):
 
         return self.env['ir.actions.report']._run_wkhtmltopdf(
             [body],
-            header=header, footer=footer,
+            footer=footer.decode(),
             landscape=landscape,
-            specific_paperformat_args=spec_paperformat_args
+            specific_paperformat_args={
+                'data-report-margin-top': 10,
+                'data-report-header-spacing': 10
+            }
         )
 
     def print_xlsx(self, options):

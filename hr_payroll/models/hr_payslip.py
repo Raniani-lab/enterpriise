@@ -909,17 +909,17 @@ class HrPayslip(models.Model):
 
     @api.model
     def _cron_generate_pdf(self):
-        BATCH_SIZE = 10
-
-        def _fetch_payslips(self):
-            return self.search([
-                ('state', 'in', ['done', 'paid']),
-                ('queued_for_pdf', '=', True),
-            ], limit=BATCH_SIZE)
-        payslips = _fetch_payslips(self)
-        while payslips:
-            payslips._generate_pdf()
-            payslips.write({'queued_for_pdf': False})
-            self.env.cr.commit()
-            payslips = _fetch_payslips(self)
+        payslips = self.search([
+            ('state', 'in', ['done', 'paid']),
+            ('queued_for_pdf', '=', True),
+        ])
+        if not payslips:
+            return
+        BATCH_SIZE = 50
+        payslips_batch = payslips[:BATCH_SIZE]
+        payslips_batch._generate_pdf()
+        payslips_batch.write({'queued_for_pdf': False})
+        # if necessary, retrigger the cron to generate more pdfs
+        if len(payslips) > BATCH_SIZE:
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
 

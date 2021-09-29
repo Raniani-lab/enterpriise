@@ -656,35 +656,23 @@ class Task(models.Model):
     # Overlapping tasks
     # ----------------------------------------------------
 
-    def _get_task_overlap_domain(self):
-        domain_mapping = {}
-        for task in self:
-            domain_mapping[task.id] = [
-                '&',
-                    '&',
-                        ('user_ids', 'in', task.user_ids.ids),
-                        '&',
-                            ('planned_date_begin', '<', task.planned_date_end),
-                            ('planned_date_end', '>', task.planned_date_begin),
-                    ('project_id', '!=', False)
-            ]
-        return domain_mapping
-
     def action_fsm_view_overlapping_tasks(self):
         self.ensure_one()
         action = self.env['ir.actions.act_window']._for_xml_id('project.action_view_all_task')
-        domain = self._get_task_overlap_domain()[self.id]
         if 'views' in action:
             gantt_view = self.env.ref("project_enterprise.project_task_dependency_view_gantt")
             map_view = self.env.ref('project_enterprise.project_task_map_view_no_title')
             action['views'] = [(gantt_view.id, 'gantt'), (map_view.id, 'map')] + [(state, view) for state, view in action['views'] if view not in ['gantt', 'map']]
         action.update({
             'name': _('Overlapping Tasks'),
-            'domain': domain,
             'context': {
                 'fsm_mode': False,
                 'task_nameget_with_hours': False,
                 'initialDate': self.planned_date_begin,
+                'search_default_conflict_task': True,
+                'search_default_planned_date_begin': self.planned_date_begin,
+                'search_default_planned_date_end': self.planned_date_end,
+                'search_default_user_ids': self.user_ids.ids,
             }
         })
         return action

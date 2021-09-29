@@ -712,15 +712,15 @@ class Planning(models.Model):
         return {'type': 'ir.actions.act_window_close'}
 
     def action_see_overlaping_slots(self):
-        domain_map = self._get_overlap_domain()
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'planning.slot',
             'name': _('Shifts in Conflict'),
             'view_mode': 'gantt,list,form',
-            'domain': domain_map[self.id],
             'context': {
-                'initialDate': min([slot.start_datetime for slot in self.search(domain_map[self.id])])
+                'initialDate': min(self.mapped('start_datetime')),
+                'search_default_conflict_shifts': True,
+                'search_default_resource_id': self.resource_id.ids
             }
         }
 
@@ -1241,17 +1241,6 @@ class Planning(models.Model):
                 or self._context.get('tz')
                 or self.company_id.resource_calendar_id.tz
                 or 'UTC')
-
-    def _get_overlap_domain(self):
-        """ get overlapping domain for current shifts
-            :returns dict : map with slot id as key and domain as value
-        """
-        # We create a dictionnary of simple domain to retrieve the conflicting slots
-        domain_mapping = {}
-        for slot in self:
-            # The view displays the conflicting slots + the one affected
-            domain_mapping[slot.id] = [('id', 'in', slot.conflicting_slot_ids.ids + [slot.id])]
-        return domain_mapping
 
     def _prepare_template_values(self):
         """ extract values from shift to create a template """

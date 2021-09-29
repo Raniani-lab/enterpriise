@@ -8,6 +8,15 @@ from odoo import models, fields, api
 class ResourceCalendar(models.Model):
     _inherit = 'resource.calendar'
 
+    @api.model
+    def default_get(self, fields):
+        res = super(ResourceCalendar, self).default_get(fields)
+        if 'full_time_required_hours' in fields and not res.get('full_time_required_hours'):
+            company_id = res.get('company_id', self.env.company.id)
+            company = self.env['res.company'].browse(company_id)
+            res['full_time_required_hours'] = company.resource_calendar_id.full_time_required_hours
+        return res
+
     hours_per_week = fields.Float(compute="_compute_hours_per_week", string="Hours per Week", store=True)
     full_time_required_hours = fields.Float(string="Fulltime Hours", help="Number of hours to work to be considered as fulltime.")
     is_fulltime = fields.Boolean(compute='_compute_is_fulltime', string="Is Full Time")

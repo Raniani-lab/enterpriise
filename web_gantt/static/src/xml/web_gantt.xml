@@ -97,7 +97,8 @@
 
     <div t-name="GanttView.Row" t-attf-class="row no-gutters o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
         <div t-if="!widget.options.hideSidebar" t-attf-class="col-2 o_gantt_row_sidebar flex-grow-1 flex-shrink-0 position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
-            <div t-attf-class="o_gantt_row_title text-truncate pr-1 #{widget.isTotal ? 'text-right pr-3 h4 my-0 font-weight-bold' : ''}" t-att-title="widget.name or ''">
+            <div t-attf-class="o_gantt_row_title text-truncate pr-1 #{widget.isTotal ? 'text-right pr-3 h4 my-0 font-weight-bold' : ''}" t-att-title="widget.name or ''"
+                t-att-style="widget.cellHeight ? 'line-height: ' + widget.cellHeight + 'px;' : ''">
                 <i t-if="!widget.isTotal &amp; widget.isGroup"
                     t-attf-class="fa small #{widget.isOpen ? 'fa-minus' : 'fa-plus'}"/>
                 <div t-if="widget.thumbnailUrl and widget.resId"

@@ -226,9 +226,9 @@ class TestPlanning(TestCommonPlanning):
             'template_id': template_slot.id,
         })
 
-        self.assertEqual(slot.start_datetime, datetime(2021, 1, 1, 22, 0), 'The start datetime should have the same hour and minutes defined in the template.')
-        self.assertEqual(slot.end_datetime, datetime(2021, 1, 2, 1, 0), 'The end datetime of this slot should be 3 hours after the start datetime as mentionned in the template.')
-        self.assertEqual(slot.allocated_hours, 3, 'The allocated hours of this slot should be the duration defined in the template.')
+        self.assertEqual(slot.start_datetime, datetime(2021, 1, 1, 23, 0), 'The start datetime should have the same hour and minutes defined in the template in the resource timezone.')
+        self.assertEqual(slot.end_datetime, datetime(2021, 1, 2, 2, 0), 'The end datetime of this slot should be 3 hours after the start datetime as mentionned in the template in the resource timezone.')
+        self.assertEqual(slot.allocated_hours, 3, 'The allocated hours of this slot should be the duration defined in the template in the resource timezone.')
 
     def test_planning_state(self):
         """ The purpose of this test case is to check the planning state """

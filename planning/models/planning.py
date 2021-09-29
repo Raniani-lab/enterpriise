@@ -37,10 +37,10 @@ class Planning(models.Model):
     _check_company_auto = True
 
     def _default_start_datetime(self):
-        return datetime.combine(fields.Datetime.now(), datetime.min.time())
+        return datetime.combine(fields.Date.context_today(self), time.min)
 
     def _default_end_datetime(self):
-        return datetime.combine(fields.Datetime.now(), datetime.max.time())
+        return datetime.combine(fields.Date.context_today(self), time.max)
 
     name = fields.Text('Note')
     resource_id = fields.Many2one('resource.resource', 'Resource', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", group_expand='_read_group_resource_id')
@@ -484,32 +484,52 @@ class Planning(models.Model):
                                  template_id,
                                  previous_template_id,
                                  template_reset):
+
+        def convert_datetime_timezone(dt, tz):
+            return dt and pytz.utc.localize(dt).astimezone(tz)
+
         user_tz = pytz.timezone(self._get_tz())
         resource = resource_id or self.env.user.employee_id.resource_id
 
-        start = start_datetime or self._default_start_datetime()
-        end = end_datetime or self._default_end_datetime()
-        if resource and resource.tz == self.env.user.tz:
-            work_interval_start, work_interval_end = resource._adjust_to_calendar(start, end)[resource]
+        # start_datetime and end_datetime are from 00:00 to 23:59 in user timezone
+        # Converted in UTC, it gives an offset for any other timezone, _convert_datetime_timezone removes the offset
+        start = convert_datetime_timezone(start_datetime, user_tz) if start_datetime else user_tz.localize(self._default_start_datetime())
+        end = convert_datetime_timezone(end_datetime, user_tz) if end_datetime else user_tz.localize(self._default_end_datetime())
+
+        # Get start and end in resource timezone so that it begins/ends at the same hour of the day as it would be in the user timezone
+        # This is needed because _adjust_to_calendar takes start as datetime for the start of the day and end as end time for the end of the day
+        # This can lead to different results depending on the timezone difference between the current user and the resource.
+        # Example:
+        # The user is in Europe/Brussels timezone (CET, UTC+1)
+        # The resource is Asia/Krasnoyarsk timezone (IST, UTC+7)
+        # The resource has two shifts during the day:
+        #       - Morning shift: 8 to 12
+        #       - Afternoon shift: 13 to 17
+        # When the user selects a day to plan a shift for the resource, he expects to have the shift scheduled according to the resource's calendar given a search range between 00:00 and 23:59
+        # The datetime received from the frontend is in the user's timezone meaning that the search interval will be between 23:00 and 22:59 in UTC
+        # If the datetime is not adjusted to the resource's calendar beforehand, _adjust_to_calendar and _get_closest_work_time will shift the time to the resource's timezone.
+        # The datetime given to _get_closest_work_time will be 6 AM once shifted in the resource's timezone. This will properly find the start of the morning shift at 8AM
+        # For the afternoon shift, _get_closest_work_time will search the end of the shift that is close to 6AM the day after.
+        # The closest shift found based on the end datetime will be the morning shift meaning that the work_interval_end will be the end of the morning shift the following day.
+        if resource:
+            work_interval_start, work_interval_end = resource._adjust_to_calendar(start.replace(tzinfo=pytz.timezone(resource.tz)), end.replace(tzinfo=pytz.timezone(resource.tz)))[resource]
             start, end = (work_interval_start or start, work_interval_end or end)
 
         if not previous_template_id and not template_reset:
-            if start and not start_datetime:
-                start = start.astimezone(pytz.utc).replace(tzinfo=None)
-            if end and not end_datetime:
-                end = end.astimezone(pytz.utc).replace(tzinfo=None)
+            start = start.astimezone(pytz.utc).replace(tzinfo=None)
+            end = end.astimezone(pytz.utc).replace(tzinfo=None)
 
         if template_id and start_datetime:
             h = int(template_id.start_time)
             m = round(modf(template_id.start_time)[0] * 60.0)
-            start = pytz.utc.localize(start_datetime).astimezone(user_tz)
+            start = pytz.utc.localize(start_datetime).astimezone(pytz.timezone(resource.tz) if
+                                                                 resource else user_tz)
             start = start.replace(hour=int(h), minute=int(m))
             start = start.astimezone(pytz.utc).replace(tzinfo=None)
 
             h, m = divmod(template_id.duration, 1)
             delta = timedelta(hours=int(h), minutes=int(m * 60))
             end = start + delta
-
         return (start, end)
 
     @api.depends('template_id')

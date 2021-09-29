@@ -51,6 +51,7 @@ var GanttRow = Widget.extend({
         this.groupedByField = pillsInfo.groupedByField;
         this.pills = _.map(pillsInfo.pills, _.clone);
         this.resId = pillsInfo.resId;
+        this.progressBar = pillsInfo.progressBar;
 
         this.viewInfo = viewInfo;
         this.fieldsInfo = viewInfo.fieldsInfo;

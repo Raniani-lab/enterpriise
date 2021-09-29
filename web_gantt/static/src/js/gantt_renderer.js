@@ -393,6 +393,7 @@ var GanttRenderer = AbstractRenderer.extend({
             resId: row.resId,
             pills: row.records,
             groupLevel: groupLevel,
+            progressBar: row.progressBar,
         };
     },
 

@@ -820,7 +820,7 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def message_new(self, msg, custom_values=None):
-        values = dict(custom_values or {}, partner_email=msg.get('from'), partner_id=msg.get('author_id'))
+        values = dict(custom_values or {}, partner_email=msg.get('from'), partner_id=msg.get('author_id'), description=msg.get('body'))
         ticket = super(HelpdeskTicket, self.with_context(mail_notify_author=True)).message_new(msg, custom_values=values)
         partner_ids = [x.id for x in self.env['mail.thread']._mail_find_partner_from_emails(self._ticket_email_split(msg), records=ticket) if x]
         customer_ids = [p.id for p in self.env['mail.thread']._mail_find_partner_from_emails(tools.email_split(values['partner_email']), records=ticket) if p]

@@ -14,5 +14,8 @@ Create Credit Notes from Helpdesk tickets
         'wizard/account_move_reversal_views.xml',
         'views/helpdesk_views.xml',
     ],
+    'demo': [
+       'data/helpdesk_account_demo.xml'
+    ],
     'license': 'OEEL-1',
 }

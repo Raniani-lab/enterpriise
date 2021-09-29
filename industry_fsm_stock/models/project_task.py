@@ -42,15 +42,15 @@ class Task(models.Model):
             fsm_sn_moves = self.env['stock.move']
             if not qty:
                 continue
-            for last_move in so_line.move_ids.filtered(lambda p: p.state not in ['done', 'cancel']):
+            for last_move in so_line.move_ids.filtered(lambda p: p.state not in ['done', 'cancel'] and p.quantity_done < qty):
                 move = last_move
                 fsm_sn_moves |= last_move
-                while move.move_orig_ids:
+                while move.move_orig_ids.filtered(lambda m: m.quantity_done < qty):
                     move = move.move_orig_ids
                     fsm_sn_moves |= move
             for fsm_sn_move in fsm_sn_moves:
                 ml_vals = fsm_sn_move._prepare_move_line_vals(quantity=0)
-                ml_vals['qty_done'] = qty
+                ml_vals['qty_done'] = qty - fsm_sn_move.quantity_done
                 ml_vals['lot_id'] = so_line.fsm_lot_id.id
                 ml_to_create.append(ml_vals)
             all_fsm_sn_moves |= fsm_sn_moves

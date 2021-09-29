@@ -296,3 +296,41 @@ class TestFsmFlowStock(TestFsmFlowSale):
 
         product.set_fsm_quantity(3)
         self.assertEqual(line01.product_uom_qty, 3)
+
+    def test_validate_task_before_delivery(self):
+        """ Suppose a 3-steps delivery. After confirming the two first steps, the user directly validates the task
+        The three pickings should be done with a correct value"""
+        product = self.product_a
+        task = self.task
+
+        # 3 steps
+        self.warehouse.delivery_steps = 'pick_pack_ship'
+
+        product.type = 'product'
+        self.env['stock.quant']._update_available_quantity(product, self.warehouse.lot_stock_id, 5)
+
+        task.write({'partner_id': self.partner_1.id})
+        task.with_user(self.project_user)._fsm_ensure_sale_order()
+        so = task.sale_order_id
+        so.write({
+            'order_line': [
+                (0, 0, {
+                    'product_id': product.id,
+                    'product_uom_qty': 1,
+                    'task_id': task.id,
+                })
+            ]
+        })
+        so.action_confirm()
+
+        # Confirm two first pickings
+        for picking in so.picking_ids.sorted(lambda p: p.id)[:2]:
+            picking.move_line_ids_without_package.qty_done = 1
+            picking.button_validate()
+
+        task.with_user(self.project_user).action_fsm_validate()
+
+        for picking in so.picking_ids:
+            self.assertEqual(picking.state, 'done')
+            self.assertEqual(len(picking.move_line_ids_without_package), 1)
+            self.assertEqual(picking.move_line_ids_without_package.qty_done, 1)

@@ -5,7 +5,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 import pytz
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.osv import expression
 from odoo.tools import float_utils, DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -608,3 +608,23 @@ class PlanningSlot(models.Model):
             'end_datetime': False,
             'employee_id': False,
         })
+
+    # -----------------------------------
+    # Gantt Progress Bar
+    # -----------------------------------
+    def _gantt_progress_bar_sale_line_id(self, res_ids):
+        return {
+            sol.id: {
+                'value': sol.planning_hours_planned,
+                'max_value': sol.planning_hours_to_plan,
+            }
+            for sol in self.env['sale.order.line'].browse(res_ids)
+        }
+
+    def _gantt_progress_bar(self, field, res_ids, start, stop):
+        if field == 'sale_line_id':
+            return dict(
+                self._gantt_progress_bar_sale_line_id(res_ids),
+                warning=_("This Sale Order Item doesn't have a target value of planned hours. Planned hours :")
+            )
+        return super()._gantt_progress_bar(field, res_ids, start, stop)

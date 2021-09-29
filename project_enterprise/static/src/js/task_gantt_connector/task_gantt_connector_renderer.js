@@ -47,6 +47,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
             pill: '.o_gantt_pill',
             pillWrapper: '.o_gantt_pill_wrapper',
             wrapper: '.o_connector_creator_wrapper',
+            groupByNoGroup: '.o_gantt_row_nogroup',
         };
     },
     /**
@@ -72,7 +73,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         await this._super(...arguments);
         this._connectorContainerComponent = new ComponentWrapper(this, ConnectorContainer, this._getConnectorContainerProps());
         this._throttledReRender = throttle(async () => {
-            if (!(this.state.isSample || device.isMobile)) {
+            if (this._shouldRenderConnectors()) {
                 await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
             }
         }, 100);
@@ -109,76 +110,198 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
      * @private
      */
     _generateConnectors() {
+        /*
+            First we need to build a dictionary in order to be able to manage the cases when a task is present
+            multiple times in the gantt view, in order to draw the connectors accordingly.
+            Structure of dict:
+            {
+                records : {
+                    #ID_RECORD_1: {
+                        record: STATE_RECORD,
+                        rowsInfo: {
+                            #ID_ROW_1: {
+                                pillElement: HTMLElementPill1,
+                            },
+                            ...
+                        }
+                    },
+                    ...
+                },
+                rows: {
+                    #ID_ROW_1: {
+                        records: {
+                            #ID_RECORD_1: {
+                                pillElement: HTMLElementPill1,
+                                record: STATE_RECORD
+                            },
+                            ...
+                        }
+                    },
+                    ...
+                },
+            }
+        */
+        this._rowsAndRecordsDict = {
+            records: { },
+            rows: { },
+        };
+        for (const row of this.state.rows) {
+            // We need to escape '"' & '\' from the row.id before calling the querySelector
+            const rowElementSelector = `${this._connectorsCssSelectors.groupByNoGroup}[data-row-id="${row.id.replace(/["\\]/g, '\\$&')}"]`;
+            const rowElement = this.el.querySelector(rowElementSelector);
+            this._rowsAndRecordsDict.rows[row.id] = {
+                records: { }
+            };
+            for (const record of row.records) {
+                const recordElementSelector = `${this._connectorsCssSelectors.pill}[data-id="${record.id}"]`;
+                const pillElement = rowElement.querySelector(recordElementSelector);
+                this._rowsAndRecordsDict.rows[row.id].records[record.id] = {
+                    pillElement: pillElement,
+                    record: record,
+                };
+                if (!(record.id in this._rowsAndRecordsDict.records)) {
+                    this._rowsAndRecordsDict.records[record.id] = {
+                        record: record,
+                        rowsInfo: { },
+                    };
+                }
+                this._rowsAndRecordsDict.records[record.id].rowsInfo[row.id] = {
+                    pillElement: pillElement,
+                };
+            }
+        }
+
+        // Then we go over the rows and records one by one in order to create the connectors
+        const connector_id_generator = {
+            _value: 1,
+            getNext() {
+                return this._value++;
+            }
+        };
         this._connectors = { };
-        this._idToRecordStateDict = { };
-        // Generate a dict in order to be able to check that task dependencies 'depend_on_ids' is part of the records.
-        // The dict is used in _generateConnectorsForTask.
-        this._idToRecordStateDict = this.state.records.reduce(
-            (dict, record, index) => {
-                dict[record.id] = index;
-                return dict;
-            },
-            { }
-        );
-        // Sample data may include records that are not rendered
-        this._connectors = this.state.records.reduce(
-            (connectors, task) => {
-                const taskConnectors = this._generateConnectorsForTask(task);
-                Object.assign(connectors, taskConnectors);
-                return connectors;
-            },
-            { }
-        );
+        for (const record of this.state.records) {
+            const taskConnectors = this._generateConnectorsForTask(record, connector_id_generator);
+            Object.assign(this._connectors, taskConnectors);
+        }
     },
     /**
      * Generates the connectors (from depend_on_ids tasks to the task) for the provided task.
      *
      * @param {Object} task task record.
+     * @param {{ getNext(): Number }} connector_id_generator a connector_id generator.
      * @private
      */
-    _generateConnectorsForTask(task) {
-        return task.depend_on_ids.reduce((taskConnectors, masterTaskId) => {
-            if (masterTaskId in this._idToRecordStateDict) {
-                const masterTaskPill = this._getPillForTaskId(masterTaskId);
-                const slaveTaskPill = this._getPillForTaskId(task.id);
-                let source = this._connectorContainerComponent.componentRef.comp.getAnchorsPositions(masterTaskPill);
-                let target = this._connectorContainerComponent.componentRef.comp.getAnchorsPositions(slaveTaskPill);
-
-                const connector = {
-                    id: masterTaskId + '_to_' + task.id,
-                    source: source.right,
-                    canBeRemoved: true,
-                    data: {
-                        id: task.id,
-                        masterId: masterTaskId,
-                    },
-                    target: target.left,
-                };
-
-                const masterTask = this._getRecordForTaskId(masterTaskId);
-                const slaveTask = this._getRecordForTaskId(task.id);
-                let specialColors;
-                if (masterTask['display_warning_dependency_in_gantt'] &&
-                    slaveTask['display_warning_dependency_in_gantt'] &&
-                    slaveTask['planned_date_begin'].isBefore(masterTask['planned_date_end'])) {
-                    specialColors = this._connectorsStrokeWarningColors;
-                    if (slaveTask['planned_date_begin'].isBefore(masterTask['planned_date_begin'])) {
-                        specialColors = this._connectorsStrokeErrorColors;
+    _generateConnectorsForTask(task, connector_id_generator) {
+        const result = {};
+        for (const masterTaskId of task.depend_on_ids) {
+            if (masterTaskId in this._rowsAndRecordsDict.records) {
+                let connectors = [];
+                for (const taskRowId in this._rowsAndRecordsDict.records[task.id].rowsInfo) {
+                    for (const masterTaskRowId in this._rowsAndRecordsDict.records[masterTaskId].rowsInfo) {
+                        /**
+                         *   Having:
+                         *      * B dependent on A
+                         *      * C dependent on B
+                         *      * D dependent on C
+                         *   Prevent:
+                         *      * Connectors between B & C that are not in the same group if B is in same group than C:
+                         *          G1        B --- C                  B --- C
+                         *                  /   \ /   \              /         \
+                         *          G2    A             D    =>    A             D
+                         *                  \   / \   /              \         /
+                         *          G3        B --- C                  B --- C
+                         *      * Connectors between A & B if A has already a link to B in the same group:
+                         *          G1        --------- B              --------- B
+                         *                  /       /                /
+                         *          G2    A      /           =>    A
+                         *                    /
+                         *          G3    A ----------- B          A ----------- B
+                         *   Allow:
+                         *      * Connectors between C & B when A & B are always present in the same groups
+                         *          G1    A ------ B          A ------ B
+                         *                                           /
+                         *          G2    A               =>  A ====
+                         *                                           \
+                         *          G3    A ------ B          A ------ B
+                         */
+                        if (masterTaskRowId === taskRowId
+                            || !(
+                                task.id in this._rowsAndRecordsDict.rows[masterTaskRowId].records
+                                || masterTaskId in this._rowsAndRecordsDict.rows[taskRowId].records
+                            )
+                            || Object.keys(this._rowsAndRecordsDict.records[task.id].rowsInfo).every(
+                                (rowId) => (masterTaskRowId !== rowId && masterTaskId in this._rowsAndRecordsDict.rows[rowId].records)
+                            )
+                            || Object.keys(this._rowsAndRecordsDict.records[masterTaskId].rowsInfo).every(
+                                (rowId) => (taskRowId !== rowId && task.id in this._rowsAndRecordsDict.rows[rowId].records)
+                            )
+                        ) {
+                            connectors.push(
+                                this._generateConnector(
+                                    masterTaskRowId,
+                                    this._rowsAndRecordsDict.records[masterTaskId].record,
+                                    taskRowId,
+                                    task,
+                                    connector_id_generator)
+                            );
+                        }
                     }
                 }
-                if (specialColors) {
-                    connector['style'] = {
-                        stroke: {
-                            color: specialColors.stroke,
-                            hoveredColor: specialColors.hoveredStroke,
-                        }
-                    };
+                for (const connector of connectors) {
+                    result[connector.id] = connector;
                 }
-
-                taskConnectors[connector.id] = connector;
             }
-            return taskConnectors;
-        }, { });
+        }
+        return result;
+    },
+    /**
+     *
+     * @param masterTaskRowId the row id of the masterTask (in order to handle m2m grouping)
+     * @param masterTask a task record corresponding to the depend_on_id.
+     * @param taskRowId the row id of the task (in order to handle m2m grouping)
+     * @param task a task record.
+     * @param {{ getNext(): Number }} connector_id_generator a connector_id generator.
+     * @return {Object} a connector for the provided parameters.
+     * @private
+     */
+    _generateConnector(masterTaskRowId, masterTask, taskRowId, task, connector_id_generator) {
+        const masterTaskPill = this._rowsAndRecordsDict.rows[masterTaskRowId].records[masterTask.id].pillElement;
+        const taskPill = this._rowsAndRecordsDict.rows[taskRowId].records[task.id].pillElement;
+        let source = this._connectorContainerComponent.componentRef.comp.getAnchorsPositions(masterTaskPill);
+        let target = this._connectorContainerComponent.componentRef.comp.getAnchorsPositions(taskPill);
+
+        let connector = {
+            id: connector_id_generator.getNext(),
+            source: source.right,
+            canBeRemoved: true,
+            data: {
+                taskId: task.id,
+                taskRowId: taskRowId,
+                masterTaskId: masterTask.id,
+                masterTaskRowId: masterTaskRowId,
+            },
+            target: target.left,
+        };
+
+        let specialColors;
+        if (masterTask.display_warning_dependency_in_gantt &&
+            task.display_warning_dependency_in_gantt &&
+            task.planned_date_begin.isBefore(masterTask.planned_date_end)) {
+            specialColors = this._connectorsStrokeWarningColors;
+            if (task.planned_date_begin.isBefore(masterTask.planned_date_begin)) {
+                specialColors = this._connectorsStrokeErrorColors;
+            }
+        }
+        if (specialColors) {
+            connector['style'] = {
+                stroke: {
+                    color: specialColors.stroke,
+                    hoveredColor: specialColors.hoveredStroke,
+                }
+            };
+        }
+
+        return connector;
     },
     /**
      * Gets the connector creator info for the provided element.
@@ -278,7 +401,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
      * @private
      */
     _getRecordForTaskId(taskId) {
-        return this.state.records[this._idToRecordStateDict[taskId]];
+        return this._rowsAndRecordsDict.records[taskId];
     },
     /**
      * Gets the stroke's rgba css string corresponding to the provided parameters for both the stroke and its
@@ -346,12 +469,25 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         }
     },
     _mountConnectorContainer() {
-        if (!(this.state.isSample || device.isMobile)) {
+        if (this._shouldRenderConnectors()) {
             this.el.classList.toggle('position-relative', true);
             this._connectorContainerComponent.mount(this.el).then(
                 (result) => this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps())
             );
         }
+    },
+    /**
+     * Returns whether should be rendered or not.
+     * The connectors won't be rendered on sampleData as we can't be sure that data are coherent.
+     * The connectors won't be rendered on mobile as the usability is not guarantied.
+     * The connectors won't be rendered on multiple groupBy as we would need to manage groups folding which seems
+     *     overkill at this stage.
+     *
+     * @return {boolean}
+     * @private
+     */
+    _shouldRenderConnectors() {
+        return !this.state.isSample && !device.isMobile && this.state.groupedBy.length <= 1;
     },
     /**
      * Toggles popover visibility.
@@ -418,8 +554,10 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
      * @param {boolean} highlighted
      */
     toggleConnectorHighlighting(connector, highlighted) {
-        const sourceConnectorCreatorInfo = this._getConnectorCreatorInfo(this._getPillForTaskId(connector.data.masterId));
-        const targetConnectorCreatorInfo = this._getConnectorCreatorInfo(this._getPillForTaskId(connector.data.id));
+        const masterTaskPill = this._rowsAndRecordsDict.rows[connector.data.masterTaskRowId].records[connector.data.masterTaskId].pillElement;
+        const taskPill = this._rowsAndRecordsDict.rows[connector.data.taskRowId].records[connector.data.taskId].pillElement;
+        const sourceConnectorCreatorInfo = this._getConnectorCreatorInfo(masterTaskPill);
+        const targetConnectorCreatorInfo = this._getConnectorCreatorInfo(taskPill);
         if (!this._isConnectorCreatorDragged(sourceConnectorCreatorInfo)) {
             sourceConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
         }
@@ -444,25 +582,32 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
      */
     togglePillHighlighting(element, highlighted) {
         const connectorCreatorInfo = this._getConnectorCreatorInfo(element);
-        const connectedConnectors = Object.values(this._connectors)
-                                          .filter((connector) => {
-                                              const ids = [connector.data.id, connector.data.masterId];
-                                              return ids.includes(
-                                                  parseInt(connectorCreatorInfo.pill.dataset.id)
-                                              );
-                                          });
-        if (connectedConnectors.length) {
-            connectedConnectors.forEach((connector) => {
-                connector.hovered = highlighted;
-                connector.canBeRemoved = !highlighted;
-            });
-            this._connectorContainerComponent.update(this._getConnectorContainerProps());
-        }
-        if (highlighted || !this._isConnectorCreatorDragged(connectorCreatorInfo)) {
-            connectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
-            for (let connectorCreator of connectorCreatorInfo.connectorCreators) {
-                connectorCreator.classList.toggle('invisible', !highlighted);
-                connectorCreator.parentElement.classList.toggle('o_highlight_connector_creator', highlighted);
+        if (connectorCreatorInfo.pill.dataset.id != 0) {
+            const connectedConnectors = Object.values(this._connectors)
+                                              .filter((connector) => {
+                                                  const ids = [connector.data.taskId, connector.data.masterTaskId];
+                                                  return ids.includes(
+                                                      parseInt(connectorCreatorInfo.pill.dataset.id)
+                                                  );
+                                              });
+            if (connectedConnectors.length) {
+                connectedConnectors.forEach((connector) => {
+                    connector.hovered = highlighted;
+                    connector.canBeRemoved = !highlighted;
+                });
+                this._connectorContainerComponent.update(this._getConnectorContainerProps());
+            }
+            for (const pill of Object.values(this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo).map((rowInfo) => rowInfo.pillElement)) {
+                const tempConnectorCreatorInfo = this._getConnectorCreatorInfo(pill);
+                if (highlighted || !this._isConnectorCreatorDragged(tempConnectorCreatorInfo)) {
+                    tempConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
+                    if (connectorCreatorInfo.pill === tempConnectorCreatorInfo.pill) {
+                        for (let connectorCreator of tempConnectorCreatorInfo.connectorCreators) {
+                            connectorCreator.classList.toggle('invisible', !highlighted);
+                            connectorCreator.parentElement.classList.toggle('o_highlight_connector_creator', highlighted);
+                        }
+                    }
+                }
             }
         }
     },
@@ -551,8 +696,8 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         this.trigger_up(
         'on_remove_connector',
         {
-            masterTaskId: payload.data.masterId,
-            slaveTaskId: payload.data.id,
+            masterTaskId: payload.data.masterTaskId,
+            slaveTaskId: payload.data.taskId,
         });
     },
     /**
@@ -568,8 +713,8 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         'on_reschedule_task',
         {
             direction: 'forward',
-            masterTaskId: payload.data.masterId,
-            slaveTaskId: payload.data.id,
+            masterTaskId: payload.data.masterTaskId,
+            slaveTaskId: payload.data.taskId,
         });
     },
     /**
@@ -585,8 +730,8 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         'on_reschedule_task',
         {
             direction: 'backward',
-            masterTaskId: payload.data.masterId,
-            slaveTaskId: payload.data.id,
+            masterTaskId: payload.data.masterTaskId,
+            slaveTaskId: payload.data.taskId,
         });
     },
     /**

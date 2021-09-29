@@ -14,6 +14,8 @@ class TestCommonSalePlanning(TestCommonPlanning):
             'tz': 'Europe/Brussels',
             'employee_type': 'freelance',
         })
+        cls.env.cr.execute("UPDATE hr_employee SET create_date=%s WHERE id=%s",
+                           ('2021-01-01 00:00:00', cls.employee_wout.id))
 
     @classmethod
     def setUpClass(cls):

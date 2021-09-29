@@ -45,18 +45,24 @@ class TestCommonPlanning(TransactionCase):
         cls.employee_joseph = cls.env['hr.employee'].create({
             'name': 'joseph',
             'work_email': 'joseph@a.be',
-            'tz': 'UTC'
+            'tz': 'UTC',
+            'employee_type': 'freelance',
         })
         cls.resource_joseph = cls.employee_joseph.resource_id
         cls.employee_bert = cls.env['hr.employee'].create({
             'name': 'bert',
             'work_email': 'bert@a.be',
-            'tz': 'UTC'
+            'tz': 'UTC',
+            'employee_type': 'freelance',
         })
         cls.resource_bert = cls.employee_bert.resource_id
         cls.employee_janice = cls.env['hr.employee'].create({
             'name': 'janice',
             'work_email': 'janice@a.be',
-            'tz': 'America/New_York'
+            'tz': 'America/New_York',
+            'employee_type': 'freelance',
         })
         cls.resource_janice = cls.employee_janice.resource_id
+
+        cls.env.cr.execute("UPDATE hr_employee SET create_date=%s WHERE id in %s",
+                           ('2015-01-01 00:00:00', (cls.employee_janice.id, cls.employee_bert.id, cls.employee_joseph.id)))

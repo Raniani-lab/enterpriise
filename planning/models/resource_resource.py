@@ -16,7 +16,6 @@ class ResourceResource(models.Model):
         return randint(1, 11)
 
     color = fields.Integer(default=_default_color)
-    employee_id = fields.One2many('hr.employee', 'resource_id', domain="[('company_id', '=', company_id)]")
     avatar_128 = fields.Image(related='employee_id.avatar_128')
 
     def get_formview_id(self, access_uid=None):
@@ -103,48 +102,3 @@ class ResourceResource(models.Model):
             }
             for resource in self
         }
-
-    def _get_calendars_validity_within_period(self, start, end, default_company=None):
-        """
-            Returns a dict of dict with resource's id as first key and resource's calendar as secondary key
-            The value is the validity interval of the calendar for the given resource.
-
-            Here the validity interval for each calendar is the whole interval but it's meant to be overriden in further modules
-            handling resource's employee contracts.
-        """
-        assert start.tzinfo and end.tzinfo
-        calendars_within_period_per_resource = defaultdict(lambda: defaultdict(Intervals))  # keys are [resource id:integer][calendar:self.env['resource.calendar']]
-        default_calendar = default_company and default_company.resource_calendar_id or self.env.company.resource_calendar_id
-        if not self:
-            # if no resource, add the company resource calendar.
-            calendars_within_period_per_resource[False][default_calendar] = Intervals([(start, end, self.env['resource.calendar.attendance'])])
-        for resource in self:
-            calendar = resource.calendar_id or resource.company_id.resource_calendar_id or default_calendar
-            calendars_within_period_per_resource[resource.id][calendar] = Intervals([(start, end, self.env['resource.calendar.attendance'])])
-        return calendars_within_period_per_resource
-
-    def _get_work_intervals_batch(self, start, end):
-        """
-            Returns the work intervals of the resource following their calendars between ``start`` and ``end``
-
-            This methods handle the eventuality of an resource having multiple resource calendars, see _get_calendars_validity_within_period method
-            for further explanation.
-        """
-        assert start.tzinfo and end.tzinfo
-        resource_calendar_validity_intervals = {}
-        resource_per_calendar = defaultdict(lambda: self.env['resource.resource'])
-        work_intervals_per_resource = defaultdict(Intervals)
-
-        resource_calendar_validity_intervals = self._get_calendars_validity_within_period(start, end)
-        for resource_id in self:
-            # For each resource, retrieve its calendar and their validity intervals
-            for calendar in resource_calendar_validity_intervals[resource_id.id].keys():
-                resource_per_calendar[calendar] |= resource_id
-        for calendar in resource_per_calendar.keys():
-            # For each calendar used by the resources, retrieve the work intervals for every resources using it
-            work_intervals_batch = calendar._work_intervals_batch(start, end, resources=resource_per_calendar[calendar])
-            for resource_id in resource_per_calendar[calendar]:
-                # Make the conjonction between work intervals and calendar validity
-                work_intervals_per_resource[resource_id.id] |= work_intervals_batch[resource_id.id] & resource_calendar_validity_intervals[resource_id.id][calendar]
-
-        return work_intervals_per_resource

@@ -78,7 +78,7 @@ class TestPlanningHr(TestCommonPlanning):
     def test_employee_work_intervals(self):
         start = datetime(2015, 11, 8, 00, 00, 00, tzinfo=pytz.UTC)
         end = datetime(2015, 11, 21, 23, 59, 59, tzinfo=pytz.UTC)
-        work_intervals = self.employee_joseph.resource_id._get_work_intervals_batch(start, end)
+        work_intervals, _ = self.employee_joseph.resource_id._get_valid_work_intervals(start, end)
         sum_work_intervals = sum(
             (stop - start).total_seconds() / 3600
             for start, stop, _resource in work_intervals[self.employee_joseph.resource_id.id]

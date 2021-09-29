@@ -19,7 +19,7 @@ class SocialPushNotificationsCase(SocialCase, CronMixinCase):
         super(SocialPushNotificationsCase, cls).setUpClass()
         cls.social_accounts.write({
             'firebase_use_own_account': True,
-            'firebase_admin_key_file': base64.b64encode(b'My attachment')
+            'firebase_admin_key_file': base64.b64encode(b'{}')
         })
 
     def test_post(self):
@@ -69,16 +69,10 @@ class SocialPushNotificationsCase(SocialCase, CronMixinCase):
         self.assertTrue(all(live_post.state == 'ready' for live_post in live_posts))
         self.assertEqual(self.social_post.state, 'posting')
 
-        responses = [self._makeSendResponse() for i in range(2)]
-
-        def _patched_send_multicast(*args, **kwargs):
-            return messaging.BatchResponse(
-                responses
-            )
-
-        # Post for visitor for which their timezone allows to receive the push notification (if their time > time of the one who created the post)
-        with patch.object(SocialAccountPushNotifications, '_init_firebase_app', lambda *args, **kwargs: None), \
-                patch.object(messaging, 'send_multicast', _patched_send_multicast):
+        with patch.object(
+             SocialAccountPushNotifications,
+             '_firebase_send_message_from_configuration',
+             lambda self, data, visitors: visitors.mapped('push_token'), []):
             live_posts._post_push_notifications()
 
         self.assertFalse(all(live_post.state == 'posted' for live_post in live_posts))
@@ -87,14 +81,13 @@ class SocialPushNotificationsCase(SocialCase, CronMixinCase):
         # simulate that everyone can receive the push notif (because their time >= time of the one who created the post)
         visitors.write({'timezone': self.env.user.tz})
 
-        with patch.object(SocialAccountPushNotifications, '_init_firebase_app', lambda *args, **kwargs: None), \
-                patch.object(messaging, 'send_multicast', _patched_send_multicast):
+        with patch.object(
+             SocialAccountPushNotifications,
+             '_firebase_send_message_from_configuration',
+             lambda self, data, visitors: visitors.mapped('push_token'), []):
             live_posts._post_push_notifications()
 
         self._checkPostedStatus(True)
-
-    def _makeSendResponse(self):
-        return messaging.SendResponse(None, None)
 
     @classmethod
     def _get_social_media(cls):

@@ -31,7 +31,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
     willStart: async function () {
         await this._super(...arguments);
 
-        let projectDomain = [['allow_timesheet_timer', '=', true]];
+        const projectDomain = [['allow_timesheets', '=', true]];
         if (session.user_companies) {
             // As the TimerHeaderComponent (in which TimerHeaderM2O is injected) is not injected unless the current
             // company timesheet UOM is hours, we can assume that current_uom_id is always hours UOM. Thus,

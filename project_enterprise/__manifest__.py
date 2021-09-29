@@ -36,5 +36,8 @@ Bridge module for project and enterprise
             ('remove', 'project/static/src/project_sharing/main.js'),
             'project_enterprise/static/src/project_sharing/**/*',
         ],
+        'web.assets_tests': [
+            'project_enterprise/static/tests/tours/**/*',
+        ],
     }
 }

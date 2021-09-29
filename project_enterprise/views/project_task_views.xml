@@ -46,7 +46,8 @@
                 display_unavailability="1"
                 precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:half'}"
                 decoration-danger="planning_overlap &gt; 0"
-                default_group_by="user_ids">
+                default_group_by="user_ids"
+                progress_bar="user_ids">
                 <templates>
                     <div t-name="gantt-popover">
                         <div name="project_id">

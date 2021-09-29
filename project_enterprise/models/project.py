@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.addons.resource.models.resource import Intervals, sum_intervals
+from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
 
 DATE_AUTO_SHIFT_CONTEXT_KEY = 'date_auto_shift'
@@ -901,3 +901,61 @@ class Task(models.Model):
         action = super().action_recurring_tasks()
         action['view_mode'] = 'tree,form,kanban,calendar,pivot,graph,gantt,activity,map'
         return action
+
+    def _gantt_progress_bar_user_ids(self, res_ids, start, stop):
+        start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
+        users = self.env['res.users'].browse(res_ids)
+        project_tasks = self.env['project.task'].search([
+            ('user_ids', 'in', res_ids),
+            ('planned_date_begin', '<=', stop_naive),
+            ('planned_date_end', '>=', start_naive),
+        ])
+
+        planned_hours_mapped = defaultdict(float)
+        user_work_intervals, _dummy = users._get_valid_work_intervals(start, stop)
+        for task in project_tasks:
+            # if the task goes over the gantt period, compute the duration only within
+            # the gantt period
+            max_start = max(start, utc.localize(task.planned_date_begin))
+            min_end = min(stop, utc.localize(task.planned_date_end))
+            # for forecast tasks, use the conjunction between work intervals and task.
+            interval = Intervals([(
+                max_start, min_end, self.env['resource.calendar.attendance']
+            )])
+            nb_hours_per_user = (sum_intervals(interval) / (len(task.user_ids) or 1)) if task.allocation_type == 'duration' else 0.0
+            for user in task.user_ids:
+                if task.allocation_type == 'duration':
+                    planned_hours_mapped[user.id] += nb_hours_per_user
+                else:
+                    work_intervals = interval & user_work_intervals[user.id]
+                    planned_hours_mapped[user.id] += sum_intervals(work_intervals)
+        # Compute employee work hours based on its work intervals.
+        work_hours = {
+            user_id: sum_intervals(work_intervals)
+            for user_id, work_intervals in user_work_intervals.items()
+        }
+        return {
+            user.id: {
+                'value': planned_hours_mapped[user.id],
+                'max_value': work_hours.get(user.id, 0.0),
+            }
+            for user in users
+        }
+
+    def _gantt_progress_bar(self, field, res_ids, start, stop):
+        if field == 'user_ids':
+            return dict(
+                self._gantt_progress_bar_user_ids(res_ids, start, stop),
+                warning=_("This user isn't expected to have task during this period. Planned hours :"),
+            )
+        raise NotImplementedError("This Progress Bar is not implemented.")
+
+    @api.model
+    def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):
+        start_utc, stop_utc = string_to_datetime(date_start_str), string_to_datetime(date_stop_str)
+
+        progress_bars = {}
+        for field in fields:
+            progress_bars[field] = self._gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
+
+        return progress_bars

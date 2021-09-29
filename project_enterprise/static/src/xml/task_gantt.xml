@@ -23,6 +23,12 @@
                  t-attf-class="o_project_milestone {{slot.milestonesInfo.hasDeadLineExceeded ? 'o_unreached_milestones' : ''}}">
             </div>
         </t>
+        <t t-jquery="*[t-esc='widget.progressBar.value_formatted']" t-operation="after">
+            h
+        </t>
+        <t t-jquery="*[t-esc='widget.progressBar.max_value_formatted']" t-operation="after">
+            h
+        </t>
     </t>
     <t t-name="gantt-milestone-popover">
         <ul class="mb-0 list-unstyled">

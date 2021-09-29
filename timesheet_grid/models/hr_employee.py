@@ -67,6 +67,13 @@ class Employee(models.Model):
             result[employee.id]['working_hours'] = float_round(working_hours, 2)
         return result
 
+    def _get_timesheets_and_working_hours_query(self):
+        return """
+            SELECT aal.employee_id as employee_id, COALESCE(SUM(aal.unit_amount), 0) as worked_hours
+            FROM account_analytic_line aal
+            WHERE aal.employee_id IN %s AND date >= %s AND date <= %s
+            GROUP BY aal.employee_id
+        """
 
     @api.model
     def get_timesheet_and_working_hours_for_employees(self, employees_grid_data, date_start, date_stop):
@@ -105,12 +112,8 @@ class Employee(models.Model):
 
             result[employee.id] = {'units_to_work': units_to_work, 'uom': uom}
 
-        self.env.cr.execute("""
-                    SELECT aal.employee_id as employee_id, COALESCE(SUM(aal.unit_amount), 0) as worked_hours
-                    FROM account_analytic_line aal
-                    WHERE aal.employee_id IN %s AND date >= %s AND date <= %s
-                    GROUP BY aal.employee_id
-                """, (tuple(employee_ids), date_start, date_stop))
+        query = self._get_timesheets_and_working_hours_query()
+        self.env.cr.execute(query, (tuple(employee_ids), date_start, date_stop))
 
         for data_row in self.env.cr.dictfetchall():
 

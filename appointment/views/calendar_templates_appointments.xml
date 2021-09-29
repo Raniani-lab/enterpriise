@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Pages -->
-    <template id="appointments_list_layout" name="Appointments List Layout">
+    <template id="appointments_list_layout" name="Appointment Types">
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="portal.portal_layout">
             <div id="wrap" class="o_appointment_index">

@@ -29,7 +29,7 @@
 
     <!-- Pages -->
 
-    <template id="appointments_cards_layout" name="Appointments Cards Layout">
+    <template id="appointments_cards_layout" name="Appointment Types">
         <t t-call="website.layout">
             <div id="wrap" class="o_appointment_index h-100">
                 <t t-call="website_appointment.website_calendar_index"/>

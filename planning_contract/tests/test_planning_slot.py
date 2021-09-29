@@ -102,5 +102,7 @@ class TestPlanningContract(TransactionCase):
         self.assertEqual(75, sum_work_intervals, "Sum of the work intervals for the employee Jules should be 40h+35h = 75h")
 
     def test_employee_work_planning_hours_info(self):
-        planning_hours_info = self.jules_emp.resource_id.get_planning_hours_info('2015-11-08 00:00:00', '2015-11-21 23:59:59')
-        self.assertEqual(75, planning_hours_info[self.jules_emp.resource_id.id]['work_hours'], "Work hours for the employee Jules should be 40h+35h = 75h")
+        planning_hours_info = self.env['planning.slot'].gantt_progress_bar(
+            ['resource_id'], {'resource_id': self.jules_emp.resource_id.ids}, '2015-11-08 00:00:00', '2015-11-21 23:59:59'
+        )['resource_id']
+        self.assertEqual(75, planning_hours_info[self.jules_emp.resource_id.id]['max_value'], "Work hours for the employee Jules should be 40h+35h = 75h")

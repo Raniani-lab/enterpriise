@@ -10,7 +10,7 @@ from math import ceil, modf
 from random import randint
 
 from odoo import api, fields, models, _
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_utils, format_datetime
@@ -1523,6 +1523,77 @@ class Planning(models.Model):
             previous_end_datetime = slot['end_datetime']
         new_slots_vals_list += to_merge
         return new_slots_vals_list
+
+    def _get_duration_over_period(self, start_utc, stop_utc, work_intervals, calendar_intervals, has_allocated_hours=True):
+        assert start_utc.tzinfo and stop_utc.tzinfo
+        self.ensure_one()
+        start, stop = start_utc.replace(tzinfo=None), stop_utc.replace(tzinfo=None)
+        if has_allocated_hours and self.start_datetime >= start and self.end_datetime <= stop:
+            return self.allocated_hours
+        # if the slot goes over the gantt period, compute the duration only within
+        # the gantt period
+        ratio = self.allocated_percentage / 100.0 or 1
+        start = max(start_utc, pytz.utc.localize(self.start_datetime))
+        end = min(stop_utc, pytz.utc.localize(self.end_datetime))
+        if self.allocation_type == 'planning':
+            return (end - start).total_seconds() / 3600
+        else:
+            # for forecast slots, use the conjunction between work intervals and slot.
+            slot_interval = Intervals([(
+                start, end, self.env['resource.calendar.attendance']
+            )])
+            if self.resource_id:
+                working_intervals = work_intervals[self.resource_id.id]
+            else:
+                working_intervals = calendar_intervals[self.company_id.resource_calendar_id.id]
+            return sum_intervals(slot_interval & working_intervals) * ratio
+
+    def _gantt_progress_bar_resource_id(self, res_ids, start, stop):
+        start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
+
+        resources = self.env['resource.resource'].browse(res_ids)
+        planning_slots = self.env['planning.slot'].search([
+            ('resource_id', 'in', res_ids),
+            ('start_datetime', '<=', stop_naive),
+            ('end_datetime', '>=', start_naive),
+        ])
+        planned_hours_mapped = defaultdict(float)
+        resource_work_intervals, calendar_work_intervals = resources._get_valid_work_intervals(start, stop)
+        for slot in planning_slots:
+            planned_hours_mapped[slot.resource_id.id] += slot._get_duration_over_period(
+                start, stop, resource_work_intervals, calendar_work_intervals
+            )
+        # Compute employee work hours based on its work intervals.
+        work_hours = {
+            resource_id: sum_intervals(work_intervals)
+            for resource_id, work_intervals in resource_work_intervals.items()
+        }
+        return {
+            resource.id: {
+                'value': planned_hours_mapped[resource.id],
+                'max_value': work_hours.get(resource.id, 0.0),
+                'employee_id': resource.employee_id.id,
+            }
+            for resource in resources
+        }
+
+    def _gantt_progress_bar(self, field, res_ids, start, stop):
+        if field == 'resource_id':
+            return dict(
+                self._gantt_progress_bar_resource_id(res_ids, start, stop),
+                warning=_("This resource isn't expected to have a shift during this period. Planned hours :")
+            )
+        raise NotImplementedError("This Progress Bar is not implemented.")
+
+    @api.model
+    def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):
+        start_utc, stop_utc = string_to_datetime(date_start_str), string_to_datetime(date_stop_str)
+
+        progress_bars = {}
+        for field in fields:
+            progress_bars[field] = self._gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
+
+        return progress_bars
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

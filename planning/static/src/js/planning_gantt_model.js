@@ -26,32 +26,19 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
     /**
      * @override
      */
+    _fetchData: function () {
+        this.context.planning_gantt_view = true;
+        return this._super.apply(this, arguments);
+    },
+    /**
+     * @override
+     */
     __reload(handle, params) {
         if ("context" in params && params.context.planning_groupby_role && !params.groupBy.length) {
             params.groupBy.unshift('resource_id');
             params.groupBy.unshift('role_id');
         }
         return this._super(handle, params);
-    },
-    _fetchData: function () {
-        this.context.planning_gantt_view = true;
-        return this._super(...arguments).then((result) => {
-            if (!this.isSampleModel && this.ganttData.groupedBy.includes('resource_id')) {
-                const employeeIds = this._getResourceResIds(this.ganttData.rows);
-                if (employeeIds.length) {
-                    return this._rpc({
-                        model: 'resource.resource',
-                        method: 'get_planning_hours_info',
-                        args: [employeeIds,
-                            this.convertToServerTime(this.ganttData.startDate),
-                            this.convertToServerTime(this.ganttData.endDate || this.ganttData.startDate.clone().add(1, this.ganttData.scale)),
-                        ],
-                    }).then((planningHoursInfo) => {
-                        this._addPlanningHoursInfo(this.ganttData.rows, planningHoursInfo);
-                    });
-                }
-            }
-        });
     },
     /**
      * Check if the given groupedBy includes fields for which an empty fake group will be created
@@ -144,42 +131,6 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
         if (emptyIndex) {
             const emptyRow = rows.splice(emptyIndex, 1)[0];
             rows.unshift(emptyRow);
-        }
-    },
-
-    /**
-     * Utils
-     */
-    /**
-     * Recursive function to get resIds of employee
-     *
-     * @private
-     */
-    _getResourceResIds(rows) {
-        const resIds = [];
-        for (let row of rows) {
-            if (row.groupedByField === "resource_id") {
-                if (row.resId !== false) {
-                    resIds.push(row.resId);
-                }
-            } else {
-                resIds.push(...this._getResourceResIds(row.rows));
-            }
-        }
-        return [...new Set(resIds)];
-    },
-    /**
-     * Recursive function to add planningHours to employee
-     *
-     * @private
-     */
-    _addPlanningHoursInfo(rows, planningHoursInfo) {
-        for (let row of rows) {
-            if (row.groupedByField === "resource_id") {
-                row.planningHoursInfo = planningHoursInfo[row.resId];
-            } else {
-                this._addPlanningHoursInfo(row.rows, planningHoursInfo);
-            }
         }
     },
 });

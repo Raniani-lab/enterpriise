@@ -4,9 +4,7 @@ from datetime import datetime
 import pytz
 
 from odoo.addons.resource.models.resource import Intervals
-from odoo.tests.common import Form
 from .common import TestCommonPlanning
-
 
 class TestPlanningHr(TestCommonPlanning):
     @classmethod
@@ -115,18 +113,24 @@ class TestPlanningHr(TestCommonPlanning):
             # allocated_hours will be : 4h (see calendar)
         }])
 
-        planning_hours_info = joseph_resource_id.get_planning_hours_info('2015-11-08 00:00:00', '2015-11-28 23:59:59')
-        self.assertEqual(24, planning_hours_info[joseph_resource_id.id]['work_hours'], "Work hours for the employee Jules should be 8h+8h+8h = 24h")
-        self.assertEqual(39, planning_hours_info[joseph_resource_id.id]['planned_hours'], "Planned hours for the employee Jules should be 3*9h+8h+4h = 39h")
+        planning_hours_info = self.env['planning.slot'].gantt_progress_bar(
+            ['resource_id'], {'resource_id': joseph_resource_id.ids}, '2015-11-08 00:00:00', '2015-11-28 23:59:59'
+        )['resource_id']
+        self.assertEqual(24, planning_hours_info[joseph_resource_id.id]['max_value'], "Work hours for the employee Jules should be 8h+8h+8h = 24h")
+        self.assertEqual(39, planning_hours_info[joseph_resource_id.id]['value'], "Planned hours for the employee Jules should be 3*9h+8h+4h = 39h")
 
-        planning_hours_info = joseph_resource_id.get_planning_hours_info('2015-11-12 00:00:00', '2015-11-12 23:59:59')
-        self.assertEqual(8, planning_hours_info[joseph_resource_id.id]['work_hours'],
+        planning_hours_info = self.env['planning.slot'].gantt_progress_bar(
+            ['resource_id'], {'resource_id': joseph_resource_id.ids}, '2015-11-12 00:00:00', '2015-11-12 23:59:59'
+        )['resource_id']
+        self.assertEqual(8, planning_hours_info[joseph_resource_id.id]['max_value'],
                          "Work hours for the employee Jules should be 8h as its a Thursday.")
-        self.assertEqual(8, planning_hours_info[joseph_resource_id.id]['planned_hours'],
+        self.assertEqual(8, planning_hours_info[joseph_resource_id.id]['value'],
                          "Planned hours for the employee Jules should be 8h as its a Thursday and hours are computed on a forecast slot.")
 
-        planning_hours_info = joseph_resource_id.get_planning_hours_info('2015-11-26 00:00:00', '2015-11-26 23:59:59')
-        self.assertEqual(8, planning_hours_info[joseph_resource_id.id]['work_hours'],
+        planning_hours_info = self.env['planning.slot'].gantt_progress_bar(
+            ['resource_id'], {'resource_id': joseph_resource_id.ids}, '2015-11-26 00:00:00', '2015-11-26 23:59:59'
+        )['resource_id']
+        self.assertEqual(8, planning_hours_info[joseph_resource_id.id]['max_value'],
                          "Work hours for the employee Jules should be 8h as its a Thursday.")
-        self.assertEqual(4, planning_hours_info[joseph_resource_id.id]['planned_hours'],
+        self.assertEqual(4, planning_hours_info[joseph_resource_id.id]['value'],
                          "Planned hours for the employee Jules should be 4h as its a Thursday and hours are computed on a forecast slot (allocated_percentage = 50).")

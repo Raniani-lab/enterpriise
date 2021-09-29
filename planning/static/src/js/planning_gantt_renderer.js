@@ -101,19 +101,6 @@ odoo.define('planning.PlanningGanttRenderer', function (require) {
                 pill.label = labelElements.filter(el => !!el).join(' - ');
 
             });
-
-        },
-        /**
-         * Get pillsInfo with the planning hours info
-         *
-         * @param {Object} row
-         * @param {*} groupLevel
-         */
-        _getPillsInfo: function (row, groupLevel) {
-            return {
-                ...this._super.apply(this, arguments),
-                planningHoursInfo: row.planningHoursInfo,
-            };
         },
     });
 

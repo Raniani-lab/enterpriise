@@ -20,7 +20,7 @@ class TestAdvantages(TransactionCase):
         cls.contract = cls.env['hr.contract'].create({
             'name': "Contract",
             'employee_id': cls.employee.id,
-            'wage': 1000,
+            'wage': 6500,
             'structure_type_id': cls.structure_type.id,
         })
 
@@ -46,3 +46,15 @@ class TestAdvantages(TransactionCase):
                 'structure_type_id': self.structure_type.id,
             })
         self.assertEqual(self.contract.final_yearly_costs, 12 * (self.contract.wage + 50), "The new advantage should have updated the yearly cost")
+
+    def test_holidays_yearly_cost(self):
+        # yearly cost should not change even if the number of extra time off changes
+        with patch.object(HrContract, '_get_advantages_costs', lambda self: 250):
+            self.contract._compute_final_yearly_costs()
+            base_yearly_cost = self.contract.final_yearly_costs
+            self.contract.holidays = 15
+            # this is triggered when configuring/signing a contract
+            # and recomputes the final_yearly_costs field
+            self.contract.wage_with_holidays = 6076.57
+            self.assertAlmostEqual(base_yearly_cost, self.contract.final_yearly_costs, 2,
+                'Yearly costs should stay the same')

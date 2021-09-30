@@ -7,6 +7,11 @@
         <field name="arch" type="xml">
             <filter name="my_ticket" position="after">
                 <filter string="My Team's Tickets" name="my_team_ticket" domain="[('user_id.employee_parent_id.user_id', '=', uid)]"/>
+                <filter string="My Department" name="my_department" domain="['|', ('department_id.member_ids.user_id', '=', uid), ('user_id', '=', uid)]"/>
+            </filter>
+            <filter name="team" position="after">
+                <filter string="Department" name="department" context="{'group_by':'department_id'}"/>
+                <filter string="Manager" name="manager" context="{'group_by': 'manager_id'}"/>
             </filter>
         </field>
     </record>

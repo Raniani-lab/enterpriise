@@ -62,7 +62,7 @@ class HelpdeskSLAStatus(models.Model):
     reached_datetime = fields.Datetime("Reached Date", help="Datetime at which the SLA stage was reached for the first time")
     status = fields.Selection([('failed', 'Failed'), ('reached', 'Reached'), ('ongoing', 'Ongoing')], string="Status", compute='_compute_status', compute_sudo=True, search='_search_status')
     color = fields.Integer("Color Index", compute='_compute_color')
-    exceeded_days = fields.Float("Excedeed Working Days", compute='_compute_exceeded_days', compute_sudo=True, store=True, help="Working days exceeded for reached SLAs compared with deadline. Positive number means the SLA was eached after the deadline.")
+    exceeded_hours = fields.Float("Excedeed Working Hours", compute='_compute_exceeded_hours', compute_sudo=True, store=True, help="Working hours exceeded for reached SLAs compared with deadline. Positive number means the SLA was reached after the deadline.")
 
     @api.depends('ticket_id.create_date', 'sla_id', 'ticket_id.stage_id')
     def _compute_deadline(self):
@@ -145,7 +145,7 @@ class HelpdeskSLAStatus(models.Model):
                 status.color = 0
 
     @api.depends('deadline', 'reached_datetime')
-    def _compute_exceeded_days(self):
+    def _compute_exceeded_hours(self):
         for status in self:
             if status.reached_datetime and status.deadline and status.ticket_id.team_id.resource_calendar_id:
                 if status.reached_datetime <= status.deadline:
@@ -157,9 +157,9 @@ class HelpdeskSLAStatus(models.Model):
                     end_dt = status.reached_datetime
                     factor = 1
                 duration_data = status.ticket_id.team_id.resource_calendar_id.get_work_duration_data(start_dt, end_dt, compute_leaves=True)
-                status.exceeded_days = duration_data['days'] * factor
+                status.exceeded_hours = duration_data['hours'] * factor
             else:
-                status.exceeded_days = False
+                status.exceeded_hours = False
 
     def _get_freezed_hours(self, working_calendar):
         self.ensure_one()
@@ -270,6 +270,7 @@ class HelpdeskTicket(models.Model):
     sla_ids = fields.Many2many('helpdesk.sla', 'helpdesk_sla_status', 'ticket_id', 'sla_id', string="SLAs", copy=False)
     sla_status_ids = fields.One2many('helpdesk.sla.status', 'ticket_id', string="SLA Status")
     sla_reached_late = fields.Boolean("Has SLA reached late", compute='_compute_sla_reached_late', compute_sudo=True, store=True)
+    sla_reached = fields.Boolean("Has SLA reached", compute='_compute_sla_reached', compute_sudo=True, store=True)
     sla_deadline = fields.Datetime("SLA Deadline", compute='_compute_sla_deadline', compute_sudo=True, store=True, help="The closest deadline of all SLA applied on this ticket")
     sla_fail = fields.Boolean("Failed SLA Policy", compute='_compute_sla_fail', search='_search_sla_fail')
     sla_success = fields.Boolean("Success SLA Policy", compute='_compute_sla_success', search='_search_sla_success')
@@ -337,6 +338,17 @@ class HelpdeskTicket(models.Model):
             ticket.sla_reached_late = mapping.get(ticket.id, 0) > 0
 
     @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
+    def _compute_sla_reached(self):
+        sla_status_read_group = self.env['helpdesk.sla.status'].read_group(
+            [('exceeded_hours', '<', 0), ('ticket_id', 'in', self.ids)],
+            ['ticket_id', 'ids:array_agg(id)'],
+            ['ticket_id'],
+        )
+        sla_status_ids_per_ticket = {res['ticket_id'][0]: res['ids'] for res in sla_status_read_group}
+        for ticket in self:
+            ticket.sla_reached = bool(sla_status_ids_per_ticket.get(ticket.id))
+
+    @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
     def _compute_sla_deadline(self):
         """ Keep the deadline for the last stage (closed one), so a closed ticket can have a status failed.
             Note: a ticket in a closed stage will probably have no deadline
@@ -383,7 +395,7 @@ class HelpdeskTicket(models.Model):
         datetime_now = fields.Datetime.now()
         if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is failed
             return [('sla_status_ids.reached_datetime', '>', datetime_now), ('sla_reached_late', '!=', False)]
-        return [('sla_status_ids.reached_datetime', '<', datetime_now), ('sla_reached_late', '=', False)]  # is success
+        return [('sla_status_ids.reached_datetime', '<', datetime_now), ('sla_reached', '=', True)]  # is success
 
     @api.depends('team_id')
     def _compute_user_and_stage_ids(self):

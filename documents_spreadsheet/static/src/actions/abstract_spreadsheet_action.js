@@ -31,11 +31,6 @@ export class AbstractSpreadsheetAction extends owl.Component {
         this.trigger("controller-title-updated", this.state.spreadsheetName);
     }
 
-    _onSpreadSheetNameChanged(ev) {
-        this.state.spreadsheetName = ev.detail.name;
-        this.trigger("controller-title-updated", this.state.spreadsheetName);
-    }
-
     /**
      * Create a copy of the given spreadsheet and display it
      */
@@ -65,6 +60,7 @@ export class AbstractSpreadsheetAction extends owl.Component {
     _onSpreadSheetNameChanged(ev) {
         const { name } = ev.detail;
         this.state.spreadsheetName = name;
+        this.trigger("controller-title-updated", this.state.spreadsheetName);
         return this.service.saveName(this.resId, name);
     }
 

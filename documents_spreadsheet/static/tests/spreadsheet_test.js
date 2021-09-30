@@ -512,6 +512,43 @@ module(
             assert.equal(breadcrumb3, "Partner");
         });
 
+        test("Spreadsheet action is named in breadcrumb with the updated name", async function (assert) {
+            assert.expect(3);
+            const arch = `
+            <pivot string="Partners">
+                <field name="bar" type="col"/>
+                <field name="foo" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`;
+            const { webClient } = await createSpreadsheetFromPivot({
+                pivotView: {
+                    model: "partner",
+                    data: this.data,
+                    arch,
+                    archs: {
+                        "partner,false,pivot": arch,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
+            });
+            const input = $(webClient.el).find(".breadcrumb-item input")[0];
+            await fields.editAndTrigger(input, "My awesome spreadsheet", ["change"]);
+            await doAction(webClient, {
+                name: "Partner",
+                res_model: "partner",
+                type: "ir.actions.act_window",
+                views: [[false, "pivot"]],
+            });
+            await nextTick();
+            const items = $(webClient.el).find(".breadcrumb-item");
+            const [breadcrumb1, breadcrumb2, breadcrumb3] = Array.from(items).map(
+                (item) => item.innerText
+            );
+            assert.equal(breadcrumb1, "pivot view");
+            assert.equal(breadcrumb2, "My awesome spreadsheet");
+            assert.equal(breadcrumb3, "Partner");
+        });
+
         module("Spreadsheet");
 
         QUnit.test("relational PIVOT.HEADER with missing id", async function (assert) {

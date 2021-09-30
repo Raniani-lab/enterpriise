@@ -28,7 +28,8 @@ class HrContract(models.Model):
                     [('driver_id', '=', driver_id.id if driver_id else False)],
                     [('plan_to_change_car', '=', True)] if vehicle_type == 'car' else [('plan_to_change_bike', '=', True)]
                 ])
-            ])
+            ]),
+            [('write_off_date', '=', False)],
         ])
 
     def _get_possible_model_domain(self, vehicle_type='car'):

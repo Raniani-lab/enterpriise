@@ -37,7 +37,10 @@ var PlanningGanttController = GanttController.extend({
         const today = moment().startOf('date'); // for the context we want the beginning of the day and not the actual hour.
         if (startDate.isSameOrBefore(today, 'day') && stopDate.isSameOrAfter(today, 'day')) {
             // get the today date if the interval dates contain the today date.
-            const context = this._getDialogContext(today);
+            const context = {};
+            const state = this.model.get();
+            context[state.dateStartField] = this.model.convertToServerTime(today);
+            context[state.dateStopField] = this.model.convertToServerTime(today.clone().endOf('day'));
             for (const k in context) {
                 context[`default_${k}`] = context[k];
             }

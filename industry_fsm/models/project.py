@@ -66,11 +66,6 @@ class Task(models.Model):
             if not date_end:
                 date_end = date_begin.replace(hour=23, minute=59, second=59)
             date_diff = date_end - date_begin
-            if date_diff.days > 0:
-                # force today if default is more than 24 hours (for eg. "Add" button in gantt view)
-                today = fields.Date.context_today(self)
-                date_begin = datetime.combine(today, time(0, 0, 0))
-                date_end = datetime.combine(today, time(23, 59, 59))
             if date_diff.seconds / 3600 > 23.5:
                 # if the interval between both dates are more than 23 hours and 30 minutes
                 # then we changes those dates to fit with the working schedule of the assigned user or the current company
@@ -92,10 +87,14 @@ class Task(models.Model):
                     resources_work_intervals = resource_calendar._work_intervals_batch(date_begin, date_end)
                     work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[False]]
                     if work_intervals:
-                        planned_date_begin = work_intervals[0][0].astimezone(pytz.utc).replace(tzinfo=None)
-                        planned_date_end = work_intervals[-1][1].astimezone(pytz.utc).replace(tzinfo=None)
-                        result['planned_date_begin'] = planned_date_begin
-                        result['planned_date_end'] = planned_date_end
+                        planned_date_begin = work_intervals[0][0]
+                        planned_date_end = work_intervals[0][1]
+                        for dummy, stop in work_intervals[1:]:
+                            if stop.date() != planned_date_begin.date():  # when it is no longer the case we keep the previous stop date.
+                                break
+                            planned_date_end = stop
+                        result['planned_date_begin'] = planned_date_begin.astimezone(pytz.utc).replace(tzinfo=None)
+                        result['planned_date_end'] = planned_date_end.astimezone(pytz.utc).replace(tzinfo=None)
                 else:
                     result['planned_date_begin'] = date_begin.replace(hour=9, minute=0, second=1).astimezone(pytz.utc).replace(tzinfo=None)
                     result['planned_date_end'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)

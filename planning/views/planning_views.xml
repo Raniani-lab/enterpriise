@@ -266,6 +266,7 @@
                 <filter name="past" string="Past" domain="[('start_datetime', '&lt;=', time.strftime('%Y-%m-%d 23:59:59'))]" />
                 <group string="Group By">
                     <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}" groups="planning.group_planning_user"/>
+                    <filter name="group_by_manager" string="Manager" context="{'group_by': 'manager_id'}" groups="planning.group_planning_user"/>
                     <filter name="group_by_resource" string="Resource" context="{'group_by': 'resource_id'}" groups="planning.group_planning_user"/>
                     <filter name="group_by_role" string="Role" context="{'group_by': 'role_id'}"/>
                     <filter name="group_by_start_datetime" string="Start Date" context="{'group_by':'start_datetime:day'}"/>

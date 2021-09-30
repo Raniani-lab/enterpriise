@@ -50,7 +50,7 @@ class Planning(models.Model):
     work_address_id = fields.Many2one(related='employee_id.address_id', store=True)
     department_id = fields.Many2one(related='employee_id.department_id', store=True)
     user_id = fields.Many2one('res.users', string="User", related='resource_id.user_id', store=True, readonly=True)
-    manager_id = fields.Many2one(related='employee_id.parent_id')
+    manager_id = fields.Many2one(related='employee_id.parent_id', store=True)
     job_title = fields.Char(related='employee_id.job_title')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
     role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id')

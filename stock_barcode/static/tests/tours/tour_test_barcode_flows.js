@@ -582,8 +582,8 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock');
             helper.assertPreviousVisible(true);
             helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
+            helper.assertNextVisible(true);
+            helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(0);
             helper.assertScanMessage('scan_product');
@@ -634,30 +634,26 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock/Section 2');
             helper.assertPreviousVisible(true);
             helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
+            helper.assertNextVisible(true);
+            helper.assertNextEnabled(true);
+            helper.assertNextIsHighlighted(true);
             helper.assertLinesCount(1);
             helper.assertScanMessage('scan_src');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('3/3');
+            helper.assertPager('2/3');
             helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false);
             var $lineproduct1 = helper.getLine({barcode: 'product1'});
             helper.assertLineIsHighlighted($lineproduct1, false);
         }
     },
 
-    /* Hit two times previous to get to the shelf1 to shelf2 page.
-     */
-    {
-        'trigger': '.o_previous_page',
-    },
-
-    {
-        'trigger': '.o_previous_page',
+    /* Hit previous to get from shelf1 to shelf2 page.
+    */
+   {
+       'trigger': '.o_previous_page',
     },
 
     {
@@ -808,8 +804,13 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
         }
     },
 
-    /* Hit next. The write should happen.
+    /*
+    Hit next 2 times to go to the end and have the validate button.
+    The write should happen.
      */
+    {
+        'trigger': '.o_next_page',
+    },
     {
         'trigger': '.o_next_page',
     },
@@ -820,17 +821,17 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock/Section 4');
             helper.assertPreviousVisible(true);
             helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
             helper.assertScanMessage('scan_src');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('2/3');
-            helper.assertValidateVisible(false);
+            helper.assertPager('3/3');
+            helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
+            helper.assertValidateEnabled(true);
 
             var $line = helper.getLine({barcode: 'product2'});
             var $line_qty = $line.find('.fa-cube').parent();

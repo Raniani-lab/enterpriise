@@ -132,7 +132,7 @@ function assertValidateEnabled (expected) {
 function assertValidateIsHighlighted (expected) {
     var $validate = $('.o_validate_page');
     var current = $validate.hasClass('btn-success');
-    assert(current, expected, 'Validte button is highlighted');
+    assert(current, expected, 'Validate button is highlighted');
 }
 
 function assertLinesCount(expected) {

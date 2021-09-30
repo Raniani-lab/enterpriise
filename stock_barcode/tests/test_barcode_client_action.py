@@ -214,10 +214,10 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(prod1_ml[1].location_dest_id, self.shelf3)
         self.assertEqual(prod2_ml[0].qty_done, 1)
         self.assertEqual(prod2_ml[0].location_id, self.shelf1)
-        self.assertEqual(prod2_ml[0].location_dest_id, self.shelf3)
+        self.assertEqual(prod2_ml[0].location_dest_id, self.shelf2)
         self.assertEqual(prod2_ml[1].qty_done, 1)
         self.assertEqual(prod2_ml[1].location_id, self.shelf1)
-        self.assertEqual(prod2_ml[1].location_dest_id, self.shelf2)
+        self.assertEqual(prod2_ml[1].location_dest_id, self.shelf3)
 
     def test_internal_picking_reserved_1(self):
         """ Open a reserved internal picking
@@ -1078,12 +1078,12 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[0].qty_done, 0.0)
         self.assertEqual(lines[0].product_qty, 4.0)
         self.assertEqual(lines.mapped('location_id.name'), ['Vendors'])
-        self.assertEqual(lines[1].lot_name, 'lot1')
-        self.assertEqual(lines[2].lot_name, 'lot2')
+        self.assertEqual(lines[3].lot_name, 'lot1')
+        self.assertEqual(lines[1].lot_name, 'lot2')
         self.assertEqual(lines[1].qty_done, 2)
         self.assertEqual(lines[2].qty_done, 2)
-        self.assertEqual(lines[1].location_dest_id.name, 'Section 2')
-        self.assertEqual(lines[2].location_dest_id.name, 'Section 1')
+        self.assertEqual(lines[3].location_dest_id.name, 'Section 2')
+        self.assertEqual(lines[1].location_dest_id.name, 'Section 1')
 
     def test_pack_multiple_scan(self):
         """ Make a reception of two products, put them in pack and validate.

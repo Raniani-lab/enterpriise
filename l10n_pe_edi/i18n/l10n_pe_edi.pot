@@ -1349,8 +1349,8 @@ msgstr ""
 #, python-format
 msgid ""
 "The name of the file depends on the sequence in the journal, please go to "
-"the journal and configure the prefix as LLL- (three (3) letters plus a dash "
-"and the 3 letters must be UPPERCASE."
+"the journal and configure the shortcode as LLL- (three (3) letters plus a dash "
+"and the 3 letters must be UPPERCASE.)"
 msgstr ""
 
 #. module: l10n_pe_edi

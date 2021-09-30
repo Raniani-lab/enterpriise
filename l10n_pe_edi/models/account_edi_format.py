@@ -92,7 +92,7 @@ class AccountEdiFormat(models.Model):
                         "document must return to Draft state and change the type of operation."),
             '2022': _lt("The name of the Partner must be changed to at least 2 characters to meet the proper standard."),
             '151': _lt("The name of the file depends on the sequence in the journal, please go to the journal and "
-                       "configure the prefix as LLL- (three (3) letters plus a dash and the 3 letters must be UPPERCASE."),
+                       "configure the shortcode as LLL- (three (3) letters plus a dash and the 3 letters must be UPPERCASE.)"),
             '156': _lt("The zip file is corrupted, check again if the file trying to access is not damaged."),
             '2119': _lt("The invoice related to this Credit Note has not been reported, go to the invoice related and "
                         "sign it in order to generate this Credit Note."),
@@ -285,7 +285,7 @@ class AccountEdiFormat(models.Model):
             'doc_type': invoice.l10n_latam_document_type_id.code,
             'dbuuid': dbuuid,
             'fname': edi_filename,
-            'xml': base64.b64encode(edi_str).decode('utf-8'),
+            'xml': base64.b64encode(edi_str).decode(),
             'token': iap_token,
         }
 
@@ -312,7 +312,7 @@ class AccountEdiFormat(models.Model):
             return {'error': cdr_decoded['error'], 'blocking_level': 'error'}
 
         xml_document = result.get('signed') and self._l10n_pe_edi_unzip_edi_document(base64.b64decode(result['signed']))
-        return {'xml_document': xml_document, 'cdr': cdr_str}
+        return {'success': True, 'xml_document': xml_document, 'cdr': cdr_str}
 
     def _l10n_pe_edi_cancel_invoices_step_1_iap(self, company, invoices, void_filename, void_str):
         self.ensure_one()
@@ -396,7 +396,7 @@ class AccountEdiFormat(models.Model):
         res = getattr(self, '_l10n_pe_edi_sign_invoices_%s' % provider)(invoice, edi_filename, edi_str)
 
         if res.get('error'):
-            return {invoice: res}
+            return res
 
         # Chatter.
         documents = []
@@ -619,6 +619,8 @@ class AccountEdiFormat(models.Model):
 
         if not move.company_id.vat:
             res.append(_("VAT number is missing on company %s") % move.company_id.display_name)
+        if not move.commercial_partner_id.vat:
+            res.append(_("VAT number is missing on partner %s") % move.commercial_partner_id.display_name)
         lines = move.invoice_line_ids.filtered(lambda line: not line.display_type)
         for line in lines:
             taxes = line.tax_ids
@@ -660,7 +662,7 @@ class AccountEdiFormat(models.Model):
             return {invoice: {'error': _("Missing LATAM document code.")}}
 
         edi_values = self._l10n_pe_edi_get_edi_values(invoice)
-        edi_str = self.env.ref('l10n_pe_edi.%s' % latam_invoice_type)._render(edi_values)
+        edi_str = self.env.ref('l10n_pe_edi.%s' % latam_invoice_type)._render(edi_values).encode()
 
         res = self._l10n_pe_edi_post_invoice_web_service(invoice, edi_filename, edi_str)
 
@@ -680,7 +682,7 @@ class AccountEdiFormat(models.Model):
             'company': company,
             'records': invoices,
         }
-        void_str = self.env.ref('l10n_pe_edi.pe_ubl_2_1_void_documents')._render(void_values)
+        void_str = self.env.ref('l10n_pe_edi.pe_ubl_2_1_void_documents')._render(void_values).encode()
         void_filename = '%s-%s' % (company.vat, void_number)
 
         res = getattr(self, '_l10n_pe_edi_cancel_invoices_step_1_%s' % provider)(company, invoices, void_filename, void_str)

@@ -1440,11 +1440,11 @@ msgstr ""
 #, python-format
 msgid ""
 "The name of the file depends on the sequence in the journal, please go to "
-"the journal and configure the prefix as LLL- (three (3) letters plus a dash "
-"and the 3 letters must be UPPERCASE."
+"the journal and configure the shortcode as LLL- (three (3) letters plus a dash "
+"and the 3 letters must be UPPERCASE.)"
 msgstr ""
 "El nombre del archivo depende de la secuencia del diario, por favor dirígete a "
-"el diario y configura el prefijo como LLL- (tres (3) letras en mayúsculas y un guión"
+"el diario y configura el prefijo/código abreviado ( como LLL- (tres (3) letras en mayúsculas y un guión.)"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_res_company__l10n_pe_edi_provider_password

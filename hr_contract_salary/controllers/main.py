@@ -135,6 +135,51 @@ class HrContractSalary(http.Controller):
         except:
             return request.env['hr.contract']
 
+    def _apply_url_value(self, contract, field_name, value):
+        old_value = contract
+        configurator_fields = [
+            'applicant_id', 'employee_contract_id', 'contract_type_id',
+            'employee_job_id', 'department_id', 'job_title',
+        ]
+        if field_name in configurator_fields:
+            return {field_name: value}
+        if field_name == 'job_id':
+            return {'redirect_to_job': value}
+        if field_name == 'allow':
+            return {'whitelist': value}
+
+        if field_name in old_value:
+            old_value = old_value[field_name]
+        else:
+            old_value = ""
+
+        if isinstance(old_value, models.BaseModel):
+            old_value = ""
+        elif old_value:
+            try:
+                value = float(value)
+            except Exception:
+                pass
+            if field_name == "final_yearly_costs":
+                return {'final_yearly_costs': value}
+            setattr(contract, field_name, value)
+        return {}
+
+    def _get_default_template_values(self, contract):
+        values = self._get_salary_package_values(contract)
+        values.update({
+            'redirect_to_job': False,
+            'applicant_id': False,
+            'contract_type_id': False,
+            'employee_contract_id': False,
+            'employee_job_id': False,
+            'department_id': False,
+            'job_title': False,
+            'whitelist': False,
+            'final_yearly_costs': contract.final_yearly_costs,
+        })
+        return values
+
     @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
     def salary_package(self, contract_id=None, **kw):
 
@@ -193,71 +238,19 @@ class HrContractSalary(http.Controller):
 
         if 'applicant_id' in kw:
             contract = contract.with_context(is_applicant=True)
-        values = self._get_salary_package_values(contract)
 
-        redirect_to_job = False
-        applicant_id = False
-        contract_type_id = False
-        employee_contract_id = False
-        job_title = False
-        employee_job_id = False
-        department_id = False
-        whitelist = False
-
-        final_yearly_costs = contract.final_yearly_costs
-
+        values = self._get_default_template_values(contract)
         for field_name, value in kw.items():
-            old_value = contract
-            if field_name == 'job_id':
-                redirect_to_job = value
-            elif field_name == 'applicant_id':
-                applicant_id = value
-            elif field_name == 'employee_contract_id':
-                employee_contract_id = value
-            elif field_name == 'contract_type_id':
-                contract_type_id = value
-            elif field_name == 'employee_job_id':
-                employee_job_id = value
-            elif field_name == 'job_title':
-                job_title = value
-            elif field_name == 'department_id':
-                department_id = value
-            elif field_name in old_value:
-                old_value = old_value[field_name]
-            elif field_name == 'allow':
-                whitelist = value
-            else:
-                old_value = ""
-
-            if isinstance(old_value, models.BaseModel):
-                old_value = ""
-            elif old_value:
-                try:
-                    value = float(value)
-                except:
-                    continue
-                if field_name == "final_yearly_costs":
-                    final_yearly_costs = value
-                else:
-                    setattr(contract, field_name, value)
-
-        new_gross = contract.sudo()._get_gross_from_employer_costs(final_yearly_costs)
+            values.update(self._apply_url_value(contract, field_name, value))
+        new_gross = contract.sudo()._get_gross_from_employer_costs(values['final_yearly_costs'])
         contract.wage = new_gross
-
         values.update({
-            'need_personal_information': not redirect_to_job,
-            'submit': not redirect_to_job,
-            'redirect_to_job': redirect_to_job,
-            'applicant_id': applicant_id,
-            'employee_contract_id': employee_contract_id,
-            'contract_type_id': contract_type_id,
-            'job_title': job_title,
-            'employee_job_id': employee_job_id,
-            'department_id': department_id,
+            'need_personal_information': not values['redirect_to_job'],
+            'submit': not values['redirect_to_job'],
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
             'original_link': get_current_url(request.httprequest.environ),
-            'whitelist': whitelist,
-            'token': kw.get('token')})
+            'token': kw.get('token')
+        })
 
         response = request.render("hr_contract_salary.salary_package", values)
         response.flatten()

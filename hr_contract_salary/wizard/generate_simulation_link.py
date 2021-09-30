@@ -80,8 +80,6 @@ class GenerateSimulationLink(models.TransientModel):
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_start_date = fields.Date("Contract Start Date", default=fields.Date.context_today)
 
-    contract_start_date = fields.Date()
-
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
     url = fields.Char('Offer link', compute='_compute_url')
 

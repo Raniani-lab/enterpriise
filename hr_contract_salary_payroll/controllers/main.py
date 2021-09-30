@@ -26,7 +26,6 @@ class HrContractSalary(main.HrContractSalary):
         payslip = self._generate_payslip(new_contract)
 
         payslip.with_context(salary_simulation=True, lang=None).compute_sheet()
-
         result['payslip_lines'] = [(
             line.name,
             abs(round(line.total, 2)),

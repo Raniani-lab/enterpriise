@@ -321,7 +321,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     // Scan productlot1 then scan lot0002 x4
     { trigger: '.o_barcode_client_action', run: 'scan productlot1' },
     {
-        trigger: '.o_sublines .qty-done:contains("4")',
+        trigger: '.o_sublines .o_barcode_line:first-child.o_selected',
         run: function() {
             checkState(currentViewState);
             const sublines = document.querySelectorAll('.o_sublines [data-barcode=productlot1]');

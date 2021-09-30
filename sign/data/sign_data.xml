@@ -197,7 +197,7 @@
     </record>
 
     <record model="sign.item.role" id="sign_item_role_default">
-        <field name="name">Default</field>
+        <field name="name">Standard</field>
         <field name="default" eval="True"/>
     </record>
 

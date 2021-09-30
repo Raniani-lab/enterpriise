@@ -160,7 +160,7 @@ class ResCompany(models.Model):
                 'tax_closing_end_date': period_end,
                 'fiscal_position_id': fpos.id if fpos else None,
                 'ref': ref,
-                'name': '', # Explicitly set a void name so that we don't set the sequence for the journal and don't consume a sequence number
+                'name': '/', # Explicitly set a void name so that we don't set the sequence for the journal and don't consume a sequence number
             }
 
             if tax_closing_move:

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields
+import datetime
+
 from odoo.addons.approvals_purchase.tests.common import TestApprovalsCommon
 from odoo.exceptions import UserError
 from odoo.tests.common import Form
@@ -284,6 +285,7 @@ class TestApprovalsPurchase(TestApprovalsCommon):
     def test_purchase_05_convert_price_currency(self):
         """ Checks the price is correclty set when create a purchase order line
         for a product (currency conversion). """
+        date_now = datetime.datetime.now()
         currency_a = self.env['res.currency'].create({
             'name': 'ZEN',
             'symbol': 'Z',
@@ -313,6 +315,7 @@ class TestApprovalsPurchase(TestApprovalsCommon):
             'rate_ids': [(0, 0, {
                 'rate': 2.5,
                 'company_id': new_company.id,
+                'name': date_now,
             })],
         })
         # Set price vendor with currency_b.

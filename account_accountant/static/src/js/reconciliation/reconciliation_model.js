@@ -957,6 +957,7 @@ var StatementModel = BasicModel.extend({
                                 'tax_ids': tax.tax_ids,
                                 'tax_repartition_line_id': tax.tax_repartition_line_id,
                                 'tax_tag_ids': tax.tag_ids,
+                                'tax_base_amount': tax.base,
                                 'amount': tax.amount,
                                 'name': prop.name ? prop.name + " " + tax.name : tax.name,
                                 'date': prop.date,
@@ -1287,6 +1288,7 @@ var StatementModel = BasicModel.extend({
             'tax_ids': this._formatMany2ManyTagsTax(values.tax_ids || []),
             'tax_tag_ids': this._formatMany2ManyTagsTax(values.tax_tag_ids || []),
             'tax_repartition_line_id': values.tax_repartition_line_id,
+            'tax_base_amount': values.tax_base_amount,
             'debit': 0,
             'credit': 0,
             'date': values.date ? values.date : field_utils.parse.date(today, {}, {isUTC: true}),
@@ -1417,6 +1419,7 @@ var StatementModel = BasicModel.extend({
         if (prop.tax_ids && prop.tax_ids.length) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
         if (prop.tax_tag_ids && prop.tax_tag_ids.length) result.tax_tag_ids = [[6, null, _.pluck(prop.tax_tag_ids, 'id')]];
         if (prop.tax_repartition_line_id) result.tax_repartition_line_id = prop.tax_repartition_line_id;
+        if (prop.tax_base_amount) result.tax_base_amount = prop.tax_base_amount;
         if (prop.reconcile_model_id) result.reconcile_model_id = prop.reconcile_model_id
         if (prop.currency_id) result.currency_id = prop.currency_id;
         return result;

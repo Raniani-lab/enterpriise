@@ -57,6 +57,7 @@ class AccountMove(models.Model):
             },
             'fiscal_position': fpos_option,
             'tax_report': tax_report_option,
+            'tax_unit': 'company_only',
         }
 
         return self.env['account.generic.tax.report']._get_options(options)

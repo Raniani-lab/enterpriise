@@ -353,9 +353,19 @@ var GanttRow = Widget.extend({
             } else {
                 var color = minColor - ((pill.count - 1) / maxCount) * (minColor - maxColor);
                 pill.style = _.str.sprintf("background-color: rgba(%s, %s, %s, 0.6)", color, color, color);
-                pill.display_name = pill.count;
+                pill.display_name = self._getAggregateGroupedPillsDisplayName(pill);
             }
         });
+    },
+    /**
+     * Returns the count of pill
+     *
+     * @private
+     * @param {Object} pill
+     * @returns {integer}
+     */
+    _getAggregateGroupedPillsDisplayName(pill) {
+        return pill.count;
     },
     /**
      * Calculate left margin and width for pills

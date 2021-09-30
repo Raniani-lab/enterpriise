@@ -48,6 +48,20 @@ const PlanningGanttRow = HrGanttRow.extend({
         this.avatarWidget = new EmployeeWithJobTitle(this, employee, this.planningHoursInfo);
         return this.avatarWidget.appendTo(document.createDocumentFragment());
     },
+
+    /**
+     * Return the total allocated hours
+     *
+     * @private
+     * @override
+     * @param {Object} pill
+     * @returns {string}
+     */
+    _getAggregateGroupedPillsDisplayName(pill) {
+        const totalAllocatedHours = pill.aggregatedPills.reduce((acc, val) => acc + val.allocated_hours, 0).toFixed(2);
+        return fieldUtils.format.float_time(totalAllocatedHours);
+    },
+
 });
 
 export default PlanningGanttRow;

@@ -44,8 +44,8 @@ async function openView(viewType, options = {}) {
         {
             Component: InsertViewSpreadsheet,
             groupNumber: 4,
-            isDisplayed: ({ isSmall, searchModel }) =>
-                !isSmall && searchModel.action.type === "ir.actions.act_window"
+            isDisplayed: ({ isSmall, config }) =>
+                !isSmall && config.actionType === "ir.actions.act_window"
         },
         { sequence: 1 }
     );

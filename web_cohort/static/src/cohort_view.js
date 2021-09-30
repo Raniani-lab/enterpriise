@@ -3,11 +3,10 @@
 import { download } from "@web/core/network/download";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { useSetupView } from "@web/views/helpers/view_hook";
+import { Layout } from "@web/views/layout";
 import { CohortArchParser } from "./cohort_arch_parser";
 import { CohortModel } from "./cohort_model";
 import { CohortRenderer } from "./cohort_renderer";
@@ -65,7 +64,7 @@ class CohortView extends owl.Component {
         const context = Object.assign({}, this.model.searchParams.context);
         const domain = row.domain;
         const views = {};
-        for (const [viewId, viewType] of this.props.info.views || []) {
+        for (const [viewId, viewType] of this.env.config.views || []) {
             views[viewType] = viewId;
         }
         function getView(viewType) {
@@ -137,7 +136,7 @@ CohortView.icon = "fa-signal";
 CohortView.multiRecord = true;
 CohortView.template = "web_cohort.CohortView";
 CohortView.buttonTemplate = "web_cohort.CohortView.Buttons";
-CohortView.components = { ControlPanel, Renderer: CohortRenderer, SearchPanel };
+CohortView.components = { Layout, Renderer: CohortRenderer };
 CohortView.props = {
     ...standardViewProps,
     additionalMeasures: { type: Array, elements: String, optional: 1 },

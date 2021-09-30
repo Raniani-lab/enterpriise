@@ -40,30 +40,25 @@
     </t>
 
     <t t-name="web_cohort.CohortView" owl="1">
-        <div class="o_cohort_view" t-att-class="{ o_view_sample_data: model.useSampleModel }">
-            <ControlPanel t-if="env.searchModel.display.controlPanel" t-props="props.info">
-                <t t-set-slot="control-panel-bottom-left">
-                    <t t-call="{{ constructor.buttonTemplate }}"/>
+        <Layout viewType="'cohort'" useSampleModel="model.useSampleModel">
+            <t t-set-slot="control-panel-bottom-left">
+                <t t-call="{{ constructor.buttonTemplate }}"/>
+            </t>
+            <t t-set="displayNoContent" t-value="
+                props.info.noContentHelp !== false and (
+                    !model.hasData() or model.useSampleModel
+                )"
+            />
+            <t t-if="displayNoContent">
+                <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
+                    <t t-set="noContentHelp" t-value="props.info.noContentHelp"/>
                 </t>
-            </ControlPanel>
-            <div class="o_content">
-                <SearchPanel t-if="env.searchModel.display.searchPanel" />
-                <t t-set="displayNoContent" t-value="
-                    props.info.noContentHelp !== false and (
-                        !model.hasData() or model.useSampleModel
-                    )"
-                />
-                <t t-if="displayNoContent">
-                    <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
-                        <t t-set="noContentHelp" t-value="props.info.noContentHelp"/>
-                    </t>
-                    <t t-else="" t-call="web.NoContentHelper"/>
-                </t>
-                <t t-if="model.hasData()">
-                    <Renderer class="o_renderer" model="model" onRowClicked="(row) => onRowClicked(row)"/>
-                </t>
-            </div>
-        </div>
+                <t t-else="" t-call="web.NoContentHelper"/>
+            </t>
+            <t t-if="model.hasData()">
+                <Renderer class="o_renderer" model="model" onRowClicked="(row) => onRowClicked(row)"/>
+            </t>
+        </Layout>
     </t>
 
 </templates>

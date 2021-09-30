@@ -121,8 +121,7 @@ export class DashboardCompiler {
     }
 
     compileDashboard(node, params) {
-        const dash = this.doc.createElement("div");
-        dash.classList.add("o_dashboard_view");
+        const dash = this.doc.createElement("t");
         for (const child of node.children) {
             appendTo(dash, this.compileNode(child, params));
         }
@@ -135,22 +134,11 @@ export class DashboardCompiler {
             return;
         }
         switch (node.tagName) {
-            case "dashboard":
+            case "dashboard": {
                 return this.compileDashboard(node, params);
+            }
             case "group": {
-                const group = compileGroup(
-                    {
-                        compileNode: this.compileNode.bind(this),
-                        outerGroupCol: this.OUTER_GROUP_COL,
-                        document: this.doc,
-                    },
-                    { node, compilationContext: params }
-                );
-                if (node.children.length && node.children[0].tagName === "widget") {
-                    group.classList.add("o_has_widget");
-                }
-                setSampleDisable(group);
-                return group;
+                return this.compileGroup(node, params);
             }
             case "aggregate": {
                 return this.compileStatistic(node, params);
@@ -165,6 +153,22 @@ export class DashboardCompiler {
                 return compileWidget({ document: this.doc }, { node });
             }
         }
+    }
+
+    compileGroup(node, params) {
+        const group = compileGroup(
+            {
+                compileNode: this.compileNode.bind(this),
+                outerGroupCol: this.OUTER_GROUP_COL,
+                document: this.doc,
+            },
+            { node, compilationContext: params }
+        );
+        if (node.children.length && node.children[0].tagName === "widget") {
+            group.classList.add("o_has_widget");
+        }
+        setSampleDisable(group);
+        return group;
     }
 
     compileView(node) {

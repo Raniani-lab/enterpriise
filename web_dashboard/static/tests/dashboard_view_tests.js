@@ -1,49 +1,48 @@
 /** @odoo-module **/
 
-import { browser } from "@web/core/browser/browser";
-import { makeView } from "@web/../tests/views/helpers";
+import { MockServer } from "@web/../tests/helpers/mock_server";
+import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
+    click,
+    legacyExtraNextTick,
+    nextTick,
+    patchDate,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
+import {
+    editFavoriteName,
     getFacetTexts,
+    isItemSelected,
+    isOptionSelected,
+    saveFavorite,
     setupControlPanelFavoriteMenuRegistry,
     setupControlPanelServiceRegistry,
     toggleAddCustomFilter,
-    toggleFilterMenu,
-    toggleMenuItem,
-    toggleGroupByMenu,
-    isItemSelected,
-    toggleMenuItemOption,
-    isOptionSelected,
-    toggleFavoriteMenu,
-    toggleSaveFavorite,
-    editFavoriteName,
-    saveFavorite,
-    toggleMenu,
     toggleComparisonMenu,
+    toggleFavoriteMenu,
+    toggleFilterMenu,
+    toggleGroupByMenu,
+    toggleMenu,
+    toggleMenuItem,
+    toggleMenuItemOption,
+    toggleSaveFavorite,
     validateSearch,
 } from "@web/../tests/search/helpers";
+import { makeView } from "@web/../tests/views/helpers";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import { browser } from "@web/core/browser/browser";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
-import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import PieChart from "web.PieChart";
-import {
-    click,
-    nextTick,
-    patchWithCleanup,
-    patchDate,
-    legacyExtraNextTick,
-} from "@web/../tests/helpers/utils";
-import { companyService } from "@web/webclient/company_service";
 import { session } from "@web/session";
-import Widget from "web.Widget";
-import widgetRegistry from "web.widget_registry";
 import { GraphView } from "@web/views/graph/graph_view";
 import { actionService } from "@web/webclient/actions/action_service";
-import { MockServer } from "@web/../tests/helpers/mock_server";
-import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
+import { companyService } from "@web/webclient/company_service";
 import { DashboardModel } from "@web_dashboard/dashboard_model";
-
-import legacyFieldRegistry from "web.field_registry";
 import { FieldFloat } from "web.basic_fields";
+import legacyFieldRegistry from "web.field_registry";
+import PieChart from "web.PieChart";
+import Widget from "web.Widget";
+import widgetRegistry from "web.widget_registry";
 
 const serviceRegistry = registry.category("services");
 
@@ -165,11 +164,7 @@ QUnit.module("Views", (hooks) => {
                 </dashboard>
             `,
         });
-        assert.containsOnce(
-            dashboard,
-            ".o_dashboard_view",
-            "root has a child with 'o_dashboard_view' class"
-        );
+        assert.hasClass(dashboard.el, "o_dashboard_view");
         assert.containsN(dashboard, ".o_group", 2, "should have rendered two groups");
         assert.hasClass(
             dashboard.el.querySelector(".o_group .o_group"),
@@ -473,17 +468,17 @@ QUnit.module("Views", (hooks) => {
             assert.expect(3);
 
             serverData.models.test_report.fields.sold.group_operator = "fromField";
-            const dashboard = await makeView({
+            await makeView({
                 type: "dashboard",
                 resModel: "test_report",
                 serverData,
                 arch: `
-                <dashboard>
-                    <group>
-                        <aggregate name="sold" field="sold" group_operator="fromArch"/>
-                    </group>
-                </dashboard>
-            `,
+                    <dashboard>
+                        <group>
+                            <aggregate name="sold" field="sold" group_operator="fromArch"/>
+                        </group>
+                    </dashboard>
+                `,
                 mockRPC(route, args) {
                     assert.step(args.method || route);
                     if (args.method === "read_group") {
@@ -504,7 +499,7 @@ QUnit.module("Views", (hooks) => {
         assert.expect(3);
 
         serverData.models.test_report.fields.sold.group_operator = "fromField";
-        const dashboard = await makeView({
+        await makeView({
             type: "dashboard",
             resModel: "test_report",
             serverData,
@@ -3617,7 +3612,6 @@ QUnit.module("Views", (hooks) => {
                 `,
                 searchViewArch,
             });
-            const el = dashboard.el;
 
             await toggleGroupByMenu(dashboard);
 
@@ -4018,7 +4012,7 @@ QUnit.module("Views", (hooks) => {
 
         registry.category("fields").add("custom", CustomField);
 
-        const dashboard = await makeView({
+        await makeView({
             type: "dashboard",
             resModel: "test_report",
             serverData,

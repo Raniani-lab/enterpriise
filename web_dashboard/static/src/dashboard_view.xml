@@ -2,21 +2,16 @@
 <templates>
 
     <t t-name="web_dashboard.DashboardView" owl="1">
-        <div t-att-class="{ o_view_sample_data: model.useSampleModel }">
-            <ControlPanel t-if="env.searchModel.display.controlPanel" t-props="props.info" />
-            <div class="o_content">
-                <Banner bannerRoute="props.bannerRoute" t-if="props.bannerRoute"/>
-                <SearchPanel t-if="env.searchModel.display.searchPanel" />
-                <t t-set="displayNoContent" t-value="props.info.noContentHelp !== false and (model.useSampleModel)" />
-                <t t-if="displayNoContent">
-                    <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
-                        <t t-set="noContentHelp" t-value="props.info.noContentHelp" />
-                    </t>
-                    <t t-else="" t-call="web.NoContentHelper" />
+        <Layout viewType="'dashboard'" useSampleModel="model.useSampleModel">
+            <t t-set="displayNoContent" t-value="props.info.noContentHelp !== false and (model.useSampleModel)" />
+            <t t-if="displayNoContent">
+                <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
+                    <t t-set="noContentHelp" t-value="props.info.noContentHelp" />
                 </t>
-                <t t-call="{{ template }}" />
-            </div>
-        </div>
+                <t t-else="" t-call="web.NoContentHelper" />
+            </t>
+            <t t-call="{{ template }}" />
+        </Layout>
     </t>
 
 </templates>

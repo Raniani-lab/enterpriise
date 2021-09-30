@@ -275,6 +275,15 @@ class HrContractSalary(http.Controller):
             'responsible_phone': contract.hr_responsible_id.partner_id.phone or contract.job_id.user_id.partner_id.phone,
         })
 
+    def _get_personal_infos_countries(self, contract, personal_info):
+        return request.env['res.country'].search([])
+
+    def _get_personal_infos_states(self, contract, personal_info):
+        return request.env['res.country.state'].search([])
+
+    def _get_personal_infos_langs(self, contract, personal_info):
+        return request.env['res.lang'].search([])
+
     def _get_personal_infos(self, contract):
         initial_values = {}
         dropdown_options = {}
@@ -284,9 +293,6 @@ class HrContractSalary(http.Controller):
             'bank_account': contract.employee_id.bank_account_id,
         }
 
-        countries = request.env['res.country'].search([])
-        states = request.env['res.country.state'].search([])
-        langs = request.env['res.lang'].search([])
 
         # PERSONAL INFOS
         personal_infos = request.env['hr.contract.salary.personal.info'].sudo().search([
@@ -325,11 +331,11 @@ class HrContractSalary(http.Controller):
                 if personal_info.dropdown_selection == 'specific':
                     values = [(value.value, value.name) for value in personal_info.value_ids]
                 elif personal_info.dropdown_selection == 'country':
-                    values = [(country.id, country.name) for country in countries]
+                    values = [(country.id, country.name) for country in self._get_personal_infos_countries(contract, personal_info)]
                 elif personal_info.dropdown_selection == 'state':
-                    values = [(state.id, state.name, state.country_id.id) for state in states]
+                    values = [(state.id, state.name, state.country_id.id) for state in self._get_personal_infos_states(contract, personal_info)]
                 elif personal_info.dropdown_selection == 'lang':
-                    values = [(lang.code, lang.name) for lang in langs]
+                    values = [(lang.code, lang.name) for lang in self._get_personal_infos_langs(contract, personal_info)]
                 dropdown_options[personal_info.field] = values
         return mapped_personal_infos, dropdown_options, initial_values
 

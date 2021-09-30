@@ -20,6 +20,8 @@
  */
 
 import spreadsheet from "../../o_spreadsheet_loader";
+import PivotDataSource from "../../helpers/pivot_data_source";
+
 import { getFirstPivotFunction } from "../../helpers/odoo_functions_helpers";
 import { getMaxObjectId } from "../../helpers/helpers";
 
@@ -27,10 +29,12 @@ const { astToFormula } = spreadsheet;
 const { isFormula } = spreadsheet.helpers;
 
 export default class PivotPlugin extends spreadsheet.CorePlugin {
-    constructor() {
-        super(...arguments);
+    constructor(getters, history, range, dispatch, config) {
+        super(getters, history, range, dispatch, config);
         /** @type {Object.<string, SpreadsheetPivot>} */
         this.pivots = {};
+        this.dataSources = config.dataSources;
+        this.rpc = config.evalContext.env ? config.evalContext.env.delayedRPC : undefined;
     }
 
     /**
@@ -44,6 +48,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                 const pivots = { ...this.pivots };
                 pivots[cmd.pivot.id] = cmd.pivot;
                 this.history.update("pivots", pivots);
+                this._addPivotSource(cmd.pivot.id);
                 break;
             }
             case "ADD_PIVOT_FORMULA":
@@ -204,6 +209,25 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
         return this.pivots[pivotId];
     }
 
+    /**
+     * Adds the data source information to the local state
+     *
+     * @param {string} pivotId Id of the pivot
+     *
+     * @private
+     */
+     _addPivotSource(pivotId) {
+        const definition = this.getPivotForRPC(pivotId);
+        this.dataSources.add(
+            `PIVOT_${pivotId}`,
+            new PivotDataSource({
+                rpc: this.rpc,
+                definition,
+                model: definition.model,
+            })
+        );
+    }
+
     // ---------------------------------------------------------------------
     // Import/Export
     // ---------------------------------------------------------------------
@@ -216,6 +240,9 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     import(data) {
         if (data.pivots) {
             this.pivots = JSON.parse(JSON.stringify(data.pivots));
+        }
+        for (const pivotId in this.pivots){
+            this._addPivotSource(pivotId);
         }
     }
     /**

@@ -1,6 +1,8 @@
 /** @odoo-module */
 
 import spreadsheet from "../../o_spreadsheet_loader";
+import ListDataSource from "../../helpers/list_data_source";
+
 import CommandResult from "../cancelled_reason";
 import { getFirstListFunction } from "../../helpers/odoo_functions_helpers";
 import { getMaxObjectId } from "../../helpers/helpers";
@@ -25,9 +27,11 @@ const { isFormula } = spreadsheet.helpers;
  * @property {Array<string>} orderBy
  */
 export default class ListPlugin extends spreadsheet.CorePlugin {
-    constructor() {
-        super(...arguments);
+    constructor(getters, history, range, dispatch, config) {
+        super(getters, history, range, dispatch, config);
         this.lists = {};
+        this.dataSources = config.dataSources;
+        this.rpc = config.evalContext.env ? config.evalContext.env.delayedRPC : undefined;
     }
 
     allowDispatch(cmd) {
@@ -52,6 +56,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 const lists = { ...this.lists };
                 lists[cmd.list.id] = cmd.list;
                 this.history.update("lists", lists);
+                this._createListSource(cmd.list.id);
                 break;
             }
 
@@ -183,6 +188,9 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         if (data.lists) {
             this.lists = JSON.parse(JSON.stringify(data.lists));
         }
+        for (const listId in this.lists) {
+            this._createListSource(listId);
+        }
     }
     /**
      * Export the lists
@@ -209,6 +217,22 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             throw new Error(`There is not list with the id "${listId}"`);
         }
         return this.lists[listId];
+    }
+
+    /**
+     * Creates a list source for the newly inserted list
+     * @param {number} listId Id of the list
+     */
+    _createListSource(listId) {
+        const definition = this.getListForRPC(listId);
+        this.dataSources.add(
+            `LIST_${listId}`,
+            new ListDataSource({
+                rpc: this.rpc,
+                definition,
+                model: definition.model,
+            })
+        );
     }
 }
 

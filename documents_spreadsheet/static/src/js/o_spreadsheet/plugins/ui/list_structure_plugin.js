@@ -28,7 +28,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     handle(cmd) {
         switch (cmd.type) {
             case "START":
-                this._createAllListSource();
+                this._refreshOdooLists();
                 break;
             case "BUILD_ODOO_LIST":
                 this._handleBuildList(
@@ -54,9 +54,6 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
             }
             case "SELECT_ODOO_LIST":
                 this._selectList(cmd.listId);
-                break;
-            case "ADD_ODOO_LIST":
-                this._createListSource(cmd.list.id);
                 break;
             case "REFRESH_ODOO_LIST":
                 this._refreshOdooList(cmd.listId);
@@ -334,32 +331,6 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
             }
             col++;
         }
-    }
-
-    /**
-     * Create a list source for the newly inserted list
-     * @param {number} listId Id of the list
-     */
-    _createListSource(listId) {
-        const definition = this.getters.getListForRPC(listId);
-        this.dataSources.add(
-            `LIST_${listId}`,
-            new ListDataSource({
-                rpc: this.rpc,
-                definition,
-                model: definition.model,
-            })
-        );
-    }
-
-    /**
-     * Create a ListSource for all the lists registered
-     */
-    _createAllListSource() {
-        for (const listId of this.getters.getListIds()) {
-            this._createListSource(listId);
-        }
-        this._refreshOdooLists();
     }
 
     /**

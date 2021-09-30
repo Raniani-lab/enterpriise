@@ -94,7 +94,7 @@ QUnit.test("Add a pivot", async (assert) => {
 });
 
 QUnit.test("Add two pivots concurrently", async (assert) => {
-    assert.expect(3);
+    assert.expect(6);
     const sheetId = alice.getters.getActiveSheetId();
     const { pivot: pivot1, cache: cache1 } = await getPivot(rpc, 1);
     const { pivot: pivot2, cache: cache2 } = await getPivot(rpc, 1);
@@ -125,6 +125,25 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
         [alice, bob, charlie],
         (user) => getCellFormula(user, "B26"),
         `=PIVOT.HEADER("2","foo","1")`
+    );
+    await alice.waitForIdle();
+    await bob.waitForIdle();
+    await charlie.waitForIdle();
+
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => getCellValue(user, "B4"),
+        11
+    );
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => getCellValue(user, "B29"),
+        11
+    );
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.config.dataSources.getAll().length,
+        2
     );
 });
 
@@ -353,7 +372,7 @@ QUnit.test("Add a list", async (assert) => {
 });
 
 QUnit.test("Add two lists concurrently", async (assert) => {
-    assert.expect(3);
+    assert.expect(6);
     const sheetId = alice.getters.getActiveSheetId();
     const list1 = getList(1);
     const list2 = getList(1);
@@ -386,6 +405,25 @@ QUnit.test("Add two lists concurrently", async (assert) => {
         [alice, bob, charlie],
         (user) => getCellFormula(user, "A26"),
         `=LIST.HEADER("2","foo")`
+    );
+    await alice.waitForIdle();
+    await bob.waitForIdle();
+    await charlie.waitForIdle();
+
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => getCellValue(user, "A4"),
+        17
+    );
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => getCellValue(user, "A29"),
+        17
+    );
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.config.dataSources.getAll().length,
+        2
     );
 });
 

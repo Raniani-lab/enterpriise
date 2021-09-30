@@ -19,13 +19,9 @@ import { PERIODS, formatDate } from "../../helpers/pivot_helpers";
 export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     constructor(getters, history, dispatch, config) {
         super(getters, history, dispatch, config);
-        this.rpc = config.evalContext.env ? config.evalContext.env.delayedRPC : undefined;
         this.dataSources = config.dataSources;
         /** @type {string} */
         this.selectedPivotId = undefined;
-        /* This flag is used to avoid refresh the cache during the model
-               initialization (filters, ...) */
-        this.started = false;
     }
 
     /**
@@ -47,14 +43,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
                 this._addDomain(cmd.id, cmd.domain, cmd.refresh);
                 break;
             case "START":
-                this.started = true;
-                for (const pivotId of this.getters.getPivotIds()) {
-                    this._onAddPivot(pivotId);
-                }
                 this._refreshOdooPivots();
-                break;
-            case "ADD_PIVOT":
-                this._onAddPivot(cmd.pivot.id);
                 break;
             case "REFRESH_PIVOT":
                 this._refreshOdooPivot(cmd.id);
@@ -381,25 +370,6 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      */
     _getDataSource(pivotId) {
         return this.dataSources.get(`PIVOT_${pivotId}`);
-    }
-
-    /**
-     * Add the data source information to the local state
-     *
-     * @param {string} pivotId If of the pivot
-     *
-     * @private
-     */
-    _onAddPivot(pivotId) {
-        const definition = this.getters.getPivotForRPC(pivotId);
-        this.dataSources.add(
-            `PIVOT_${pivotId}`,
-            new PivotDataSource({
-                rpc: this.rpc,
-                definition,
-                model: definition.model,
-            })
-        );
     }
 
     /**

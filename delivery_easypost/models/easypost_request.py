@@ -399,8 +399,8 @@ class EasypostRequest():
         response = self._post_process_ship_response(response, carrier=carrier, picking=picking)
         # explicitly check response for any messages
         messages = response.get('messages', [])
-        message_type = len(messages) and messages[0].get('type')
-        if message_type not in NON_BLOCKING_MESSAGES:
+        message_type = messages[0].get('type') if messages else None
+        if message_type and message_type not in NON_BLOCKING_MESSAGES:
             raise UserError('\n'.join([x['carrier'] + ': ' + x['type'] + ' -- ' + x['message'] for x in response['messages']]))
 
         # get tracking code and lable file url

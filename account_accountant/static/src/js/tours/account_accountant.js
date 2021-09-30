@@ -15,7 +15,7 @@ odoo.define('account_accountant.tour', function (require) {
             content: _t('Go to invoicing'),
             auto: true,
         }, {
-            trigger: 'li[data-menu-xmlid="account.menu_action_move_out_invoice_type"]',
+            trigger: '.dropdown-item[data-menu-xmlid="account.menu_action_move_out_invoice_type"]',
             content: _t('Go to invoicing'),
             auto: true,
         }
@@ -55,7 +55,7 @@ odoo.define('account_accountant.tour', function (require) {
                 content: _t('Check & validate the bill. If no vendor has been found, add one before validating.'),
                 position: 'bottom',
             }, {
-                trigger: 'li[data-menu-xmlid="account.menu_board_journal_1"]',
+                trigger: '.dropdown-item[data-menu-xmlid="account.menu_board_journal_1"]',
                 extra_trigger: 'button[data-value="posted"].btn-primary',
                 content: _t('Let’s go back to the dashboard.'),
                 position: 'bottom',

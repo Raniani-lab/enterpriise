@@ -247,7 +247,7 @@ var DashboardRenderer = FormRenderer.extend({
         // and put it/them into this group
         var $buttonGroup = $('<div class="btn-group">');
         $buttonGroup.append($buttons.find('[aria-label="Main actions"]'));
-        $buttonGroup.append($buttons.find('.o_dropdown:has(.o_group_by_menu)'));
+        $buttonGroup.append($buttons.find('.dropdown:has(.o_group_by_menu)'));
         $buttonGroup.prependTo($buttons);
 
         // render the button to open the view in full screen

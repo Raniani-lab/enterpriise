@@ -3,7 +3,7 @@
 <data>
 
     <template id="search_template_date_filter">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
             <t t-if="options['date'].get('string') and options['date'].get('filter') != 'custom'"><t t-esc="options['date']['string']"/></t>
             <t t-if="options['date'].get('filter') == 'custom'">
@@ -53,7 +53,7 @@
     </template>
 
     <template id="search_template_comparison">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-bar-chart"/> Comparison:
             <t t-if="options['comparison'].get('string') and options['comparison'].get('filter') != 'custom'"><t t-esc="options['comparison']['string']"/></t>
             <t t-if="options['comparison'].get('filter') == 'custom'">
@@ -103,7 +103,7 @@
     </template>
 
     <template id="search_template_extra_options">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-filter"/> Options:
             <t t-if="options.get('all_entries') != None" groups="account.group_account_readonly">
                 <t t-if="options['all_entries']">With Draft Entries</t>
@@ -123,7 +123,7 @@
     </template>
 
     <template id="search_template_journals">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-book"/>
             Journals:
             <t t-set="selected_journals" t-value="options.get('name_journal_group') or ', '.join(journal.get('code') for journal in options['journals'] if journal.get('selected'))"/>
@@ -134,7 +134,7 @@
                 All
             </t>
         </button>
-        <div class="o_dropdown_menu dropdown-menu o_filter_menu" role="menu">
+        <div class="dropdown-menu o_filter_menu" role="menu">
             <t t-foreach="options['journals']" t-as="j">
                 <t t-if="j.get('id') == 'divider'">
                     <div role="separator" class="dropdown-divider"/>
@@ -158,7 +158,7 @@
     </template>
 
     <template id="search_template_account_type">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-user"/>
             Account:
             <t t-set="account_value">Both</t>
@@ -178,7 +178,7 @@
     </template>
 
     <template id="search_template_analytic">
-        <button t-if="options.get('analytic')" type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle account_analytic_filter" data-toggle="dropdown">
+        <button t-if="options.get('analytic')" type="button" class="o-no-caret btn btn-secondary dropdown-toggle account_analytic_filter" data-toggle="dropdown">
             <span class="fa fa-folder-open"/> Analytic
         </button>
         <ul class="dropdown-menu o_filter_menu" role="menu">
@@ -187,7 +187,7 @@
     </template>
 
     <template id="search_template_ir_filters">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-filter"/>
             Filters:
             <t t-set="filter_name">None</t>
@@ -229,7 +229,7 @@
     </template>
 
     <template id="search_template_partner">
-        <button t-if="options.get('partner')" type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle account_partner_filter" data-toggle="dropdown">
+        <button t-if="options.get('partner')" type="button" class="o-no-caret btn btn-secondary dropdown-toggle account_partner_filter" data-toggle="dropdown">
             <span class="fa fa-folder-open"/> Partners
         </button>
         <ul class="dropdown-menu o_filter_menu" role="menu">
@@ -254,7 +254,7 @@
 
     <!-- ec sales report goods, triangular & services filter -->
     <template id="search_template_ec_sale_code">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-filter"/>
             Codes:
             <t t-set="code_value">All</t>
@@ -278,7 +278,7 @@
     </template>
 
     <template id="search_template_fiscal_position_choser">
-        <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-book"/>
             Fiscal Position:
             <t t-if="options['fiscal_position'] == 'domestic'">
@@ -305,41 +305,41 @@
     </template>
 
     <template id="search_template">
-        <div class="btn-group o_dropdown o_account_reports_filter_date" t-if="options.get('date') != None">
+        <div class="btn-group dropdown o_account_reports_filter_date" t-if="options.get('date') != None">
             <t t-call="account_reports.search_template_date_filter"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_date_cmp" t-if="options.get('comparison') != None">
+        <div class="btn-group dropdown o_account_reports_filter_date_cmp" t-if="options.get('comparison') != None">
             <t t-call="account_reports.search_template_comparison"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_journals" t-if="options.get('journals') != None">
+        <div class="btn-group dropdown o_account_reports_filter_journals" t-if="options.get('journals') != None">
             <t t-call="account_reports.search_template_journals"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_account_type" t-if="options.get('account_type') != None">
+        <div class="btn-group dropdown o_account_reports_filter_account_type" t-if="options.get('account_type') != None">
             <t t-call="account_reports.search_template_account_type"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_analytic" t-if="options.get('analytic') != None or options.get('analytic_tags') != None">
+        <div class="btn-group dropdown o_account_reports_filter_analytic" t-if="options.get('analytic') != None or options.get('analytic_tags') != None">
             <t t-call="account_reports.search_template_analytic"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_ir_filters" t-if="options.get('ir_filters') != None">
+        <div class="btn-group dropdown o_account_reports_filter_ir_filters" t-if="options.get('ir_filters') != None">
             <t t-call="account_reports.search_template_ir_filters"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_groupby_fields" t-if="options.get('groupby_fields')">
+        <div class="btn-group dropdown o_account_reports_filter_groupby_fields" t-if="options.get('groupby_fields')">
             <t t-call="account_reports.search_template_groupby_fields"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_partner" t-if="options.get('partner')">
+        <div class="btn-group dropdown o_account_reports_filter_partner" t-if="options.get('partner')">
             <t t-call="account_reports.search_template_partner"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_currency" t-if="options.get('currency_rates')">
+        <div class="btn-group dropdown o_account_reports_filter_currency" t-if="options.get('currency_rates')">
             <t t-call="account_reports.search_template_currency"/>
         </div>
-        <div id="extra_options_dropdown" class="btn-group o_dropdown o_account_reports_filter_bool" t-if="options.get('cash_basis') != None or options.get('all_entries') != None or options.get('unfold_all') != None">
+        <div id="extra_options_dropdown" class="btn-group dropdown o_account_reports_filter_bool" t-if="options.get('cash_basis') != None or options.get('all_entries') != None or options.get('unfold_all') != None">
             <t t-call="account_reports.search_template_extra_options"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_ec_sale_code"
+        <div class="btn-group dropdown o_account_reports_filter_ec_sale_code"
                 t-if="options.get('ec_sale_code') != None">
             <t t-call="account_reports.search_template_ec_sale_code"/>
         </div>
-        <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position"
+        <div id="fiscal_position_choice_option" class="btn-group dropdown o_account_reports_filter_fiscal_position"
             t-if="len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1)">
             <t t-call="account_reports.search_template_fiscal_position_choser"/>
         </div>
@@ -372,8 +372,8 @@
     </template>
 
     <template id="search_template_tax_report_choser">
-        <div id="tax_report_choice_option" class="btn-group o_dropdown o_account_reports_filter_tax_report">
-            <button type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <div id="tax_report_choice_option" class="btn-group dropdown o_account_reports_filter_tax_report">
+            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-book"/>
                 Tax Report:
                 <t t-if="options['tax_report'] == 'generic'">
@@ -423,8 +423,8 @@
     </template>
 
     <template id="search_template_tax_unit_chooser">
-        <div id="tax_unit_option" class="btn-group o_dropdown">
-            <button t-if="options['available_tax_units']" type="button" class="o_dropdown_toggler btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <div id="tax_unit_option" class="btn-group dropdown">
+            <button t-if="options['available_tax_units']" type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-home"/>
                 Tax Unit:
                 <t>

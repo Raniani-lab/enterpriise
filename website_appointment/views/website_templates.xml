@@ -8,7 +8,7 @@
             <attribute name="t-att-data-module-shortdesc"/>
             <attribute name="if">env.user.has_group('appointment.group_calendar_manager')</attribute>
         </xpath>
-        <xpath expr="//li[@id='edit-page-menu']" position="after">
+        <xpath expr="//div[@id='edit-page-menu']" position="after">
             <t t-if="main_object._name == 'calendar.appointment.type'" t-set="action" t-value="'appointment.calendar_appointment_type_action'"/>
         </xpath>
     </template>

@@ -2,13 +2,13 @@
     .o_pivot {
         height: 100%;
 
-        .o_dropdown.show {
-            > .o_dropdown_toggler::after {
+        .dropdown.show {
+            > .dropdown-toggle::after {
                 @include o-caret-down;
             }
         }
 
-        th > .o_group_by_menu  > .o_dropdown_menu {
+        th > .o_group_by_menu  > .dropdown-menu {
             // realign under the header
             left: -20px !important;
             top: 10px !important;
@@ -16,14 +16,14 @@
             overflow: initial;
             max-height: none;
 
-            .o_dropdown_item {
+            .dropdown-item {
                 // caret centered vertically
-                .o_dropdown_toggler::after{
+                .dropdown-toggle::after{
                     top: 12px;
                 }
 
                 // nested dropdown should be *under* the parent, not on its side
-                .o_dropdown_menu {
+                .dropdown-menu {
                     top: initial !important;
                     left: 5% !important;
                     width: 95%;

@@ -2,9 +2,9 @@
 <templates>
 
 <t t-name="web_studio.NewModel">
-    <li>
+    <div>
         <a href="#" class="o_web_create_new_model" role="button"><i class="fa fa-fw fa-plus"/> New Model</a>
-    </li>
+    </div>
 </t>
 
 <div t-name="web_studio.NewModel.Dialog">

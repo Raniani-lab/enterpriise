@@ -12,7 +12,8 @@ const { registry } = require("@web/core/registry");
 var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
-const { legacyExtraNextTick, click } = require("@web/../tests/helpers/utils");
+const { legacyExtraNextTick, click, patchWithCleanup } = require("@web/../tests/helpers/utils");
+const { browser } = require('@web/core/browser/browser');
 const CohortView = require('web_cohort.CohortView');
 
 const {
@@ -83,6 +84,7 @@ QUnit.module('Views', {
             },
         };
         serverData = { models: this.data };
+        patchWithCleanup(browser, { setTimeout: (fn) => fn() });
     }
 }, function () {
 

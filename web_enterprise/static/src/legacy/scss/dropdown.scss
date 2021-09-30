@@ -1,12 +1,22 @@
 // = Enterprise dropdown customizations
 // ----------------------------------------------------------------------------
-.dropdown-item {
-    @extend %dropdown-li-a-padding;
+.o_web_client.o_touch_device {
+    .o-dropdown--menu {
+        position: absolute;
+    }
+
+    .dropdown-item > *:first-child {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        &:before {
+            padding-top: 7.5px;
+        }
+    }
 }
 
-.o_dropdown {
-    &.show .o_dropdown_toggler.btn-secondary,
-    .o_dropdown_toggler.o_dropdown_active.btn-secondary {
+.dropdown {
+    &.show .dropdown-toggle.btn-light,
+    .dropdown-toggle.o_dropdown_active.btn-light {
         @include plain-hover-focus() {
             position: relative;
             z-index: $zindex-dropdown + 1;
@@ -17,7 +27,7 @@
             color: $dropdown-link-active-color;
         }
 
-        + .o_dropdown_menu {
+        + .dropdown-menu {
             margin-top: $dropdown-border-width * -1;
         }
     }

@@ -19,7 +19,7 @@
         <attribute name="t-call">web_studio.NavBar.SectionsMenu</attribute>
       </xpath>
 
-      <xpath expr="//ul[contains(@class, 'o_menu_systray')]" position="replace"/>
+      <xpath expr="//div[contains(@class, 'o_menu_systray')]" position="replace"/>
   </t>
 
   <t t-name="web_studio.masterButtons" owl="1">
@@ -36,7 +36,7 @@
   </t>
 
   <t t-name="web_studio.NavBar.SectionsMenu" t-inherit="web.NavBar.SectionsMenu" owl="1">
-    <xpath expr="//ul" position="inside">
+    <xpath expr="//div" position="inside">
       <t t-if="studio.mode === studio.MODES.EDITOR" >
         <EditMenuItem />
         <NewModelItem />

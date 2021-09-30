@@ -1,13 +1,5 @@
 
 .o_web_client.o_touch_device {
-    %dropdown-li-a-padding {
-        padding-top: 15px;
-        padding-bottom: 15px;
-        &:before {
-            padding-top: 7.5px;
-        }
-    }
-
     .btn {
         &, .btn-sm {
             font-size: $font-size-base;

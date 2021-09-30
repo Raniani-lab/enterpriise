@@ -248,7 +248,7 @@ $grid-pill-height: 3rem;
 }
 
 @include media-breakpoint-down(sm) {
-    .o_grid_range.show > ul.dropdown-menu {
+    .o_grid_range.show > .dropdown-menu {
         display: inline-flex;
         min-width: 0px;
     }

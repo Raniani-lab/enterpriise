@@ -122,7 +122,7 @@ test("pivot with two levels of group bys in rows", async (assert) => {
         },
         actions: async (pivot) => {
             await click(pivot.el.querySelector("tbody .o_pivot_header_cell_closed"));
-            await click(pivot.el.querySelectorAll(".o_dropdown_item")[1]);
+            await click(pivot.el.querySelectorAll(".dropdown-item")[1]);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 16);
@@ -547,7 +547,7 @@ test("pivot with two levels of group bys in cols", async (assert) => {
         },
         actions: async (pivot) => {
             await click(pivot.el.querySelector("thead .o_pivot_header_cell_closed"));
-            await click(pivot.el.querySelectorAll(".o_dropdown_item")[1]);
+            await click(pivot.el.querySelectorAll(".dropdown-item")[1]);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 20);
@@ -614,7 +614,7 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
         },
         actions: async (pivot) => {
             await click(pivot.el.querySelector("thead .o_pivot_header_cell_closed"));
-            await click(pivot.el.querySelectorAll(".o_dropdown_item")[1]);
+            await click(pivot.el.querySelectorAll(".dropdown-item")[1]);
         },
     });
     // 72 products * 1 groups + 1 row header + 1 total col + 1 extra empty col at the end

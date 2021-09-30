@@ -3,7 +3,7 @@
 import testUtils from "web.test_utils";
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, nextTick } from "@web/../tests/helpers/utils";
+import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import { removeFacet, setupControlPanelServiceRegistry } from "@web/../tests/search/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
@@ -16,6 +16,7 @@ import {
     toggleMenu,
 } from "@web/../tests/search/helpers";
 import { makeDeferred, mockDownload, patchDate } from "@web/../tests/helpers/utils";
+import { browser } from "@web/core/browser/browser";
 
 const serviceRegistry = registry.category("services");
 
@@ -133,7 +134,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         await toggleMenu(cohort, "Measures");
-        assert.containsOnce(cohort, ".o_dropdown_menu", 1, "should have list of measures");
+        assert.containsOnce(cohort, ".dropdown-menu", 1, "should have list of measures");
         assert.containsN(
             cohort,
             ".o_cohort_interval_button",
@@ -192,7 +193,7 @@ QUnit.module("Views", (hooks) => {
         await toggleMenu(cohort, "Measures");
 
         assert.equal(
-            cohort.el.querySelector(".o_dropdown_menu li.selected").textContent,
+            cohort.el.querySelector(".dropdown-menu span.selected").textContent,
             "Count",
             "count should be the default for measure field"
         );
@@ -235,7 +236,7 @@ QUnit.module("Views", (hooks) => {
 
         await toggleMenu(cohort, "Measures");
 
-        const measureButtonEls = cohort.el.querySelectorAll(".o_dropdown_menu li");
+        const measureButtonEls = cohort.el.querySelectorAll(".dropdown-menu span");
         assert.deepEqual(
             [...measureButtonEls].map((e) => e.innerText.trim()),
             ["Abc", "add", "Recurring Price", "Zoo", "Count"]
@@ -254,7 +255,7 @@ QUnit.module("Views", (hooks) => {
         await toggleMenu(cohort, "Measures");
 
         assert.equal(
-            cohort.el.querySelector(".o_dropdown_menu li.selected").textContent,
+            cohort.el.querySelector(".dropdown-menu span.selected").textContent,
             "Recurring Price",
             "should recurring for measure"
         );
@@ -275,9 +276,9 @@ QUnit.module("Views", (hooks) => {
             'should contain "Stop - By Week" in title'
         );
 
-        await testUtils.dom.click(cohort.el.querySelector(".o_dropdown_menu li:not(.selected)"));
+        await testUtils.dom.click(cohort.el.querySelector(".dropdown-menu span:not(.selected)"));
         assert.equal(
-            cohort.el.querySelector(".o_dropdown_menu li.selected").textContent,
+            cohort.el.querySelector(".dropdown-menu span.selected").textContent,
             "Count",
             "should active count for measure"
         );
@@ -309,7 +310,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         await toggleMenu(cohort, "Measures");
-        const cohortMeasureList = cohort.el.querySelectorAll(".o_dropdown_menu li");
+        const cohortMeasureList = cohort.el.querySelectorAll(".dropdown-menu span");
         assert.equal(cohortMeasureList.length, 2);
         assert.equal(cohortMeasureList[0].textContent, "Recurring Price");
         assert.equal(cohortMeasureList[1].textContent, "Count");
@@ -327,9 +328,9 @@ QUnit.module("Views", (hooks) => {
         });
 
         await toggleMenu(cohort, "Measures");
-        assert.containsOnce(cohort, ".o_dropdown_menu li");
+        assert.containsOnce(cohort, ".dropdown-menu span");
         assert.notEqual(
-            cohort.el.querySelector(".o_dropdown_menu li").textContent,
+            cohort.el.querySelector(".dropdown-menu span").textContent,
             "Recurring Price"
         );
     });
@@ -613,6 +614,7 @@ QUnit.module("Views", (hooks) => {
                 </search>
             `,
         };
+        patchWithCleanup(browser, { setTimeout: (fn) => fn() });
         const webClient = await createWebClient({
             serverData,
         });

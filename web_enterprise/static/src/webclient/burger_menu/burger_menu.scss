@@ -61,20 +61,8 @@
       background-color: darken($-base-bg, 5%);
     }
 
-    // Reset inner components
-    ul, .o_dropdown_item, .o_dropdown_toggler {
-      padding: 0;
-      border: 0;
-      position: relative;
-      background-color: initial;
-
-      &:after {
-        display: none; // Remove inner dropdown caret
-      }
-    }
-
     // Menu entries size and layout
-    .o_dropdown_item, .o_dropdown_toggler {
+    .dropdown-item, .dropdown-toggle {
       &, > span {
         display: flex;
         justify-content: space-between;
@@ -94,35 +82,48 @@
     }
 
     // Handle menu text-indentation
-    .o_dropdown_menu {
+    .dropdown-menu {
       margin-top: 0;
       text-indent: 1em;
       width: 100%;
       max-height: none;
 
-      .o_dropdown_toggler {
+      .dropdown-toggle {
         text-indent: 1em;
       }
 
-      .o_dropdown_menu {
+      .dropdown-menu {
         text-indent: 2em;
       }
 
-      .o_dropdown_item:last-child {
+      .dropdown-item:last-child {
         padding-bottom: 1em;
       }
     }
 
     // First menu level entries are always bigger
     .o_user_menu_mobile > .dropdown-item,
-    .o_menu_sections > .o_dropdown_item > span,
-    .o_menu_sections > .o_burger_menu_section > .o_dropdown_toggler > span {
+    .o_menu_sections > .dropdown-item > span,
+    .o_menu_sections > .o_burger_menu_section > .dropdown-toggle > span {
       @extend %-main-entries-size;
     }
 
     // ====== 'App menu' spefic design rules
     .o_burger_menu_app {
-      .o_dropdown_item span, .o_dropdown_toggler {
+
+      // Reset inner components
+      .dropdown-menu, .dropdown-item, .dropdown-toggle {
+        padding: 0;
+        border: 0;
+        position: relative;
+        background-color: initial;
+
+        &:after {
+          display: none; // Remove inner dropdown caret
+        }
+      }
+
+      .dropdown-item span, .dropdown-toggle {
         @include o-hover-text-color(rgba($-base-color, .8), $-base-color);
       }
 
@@ -130,11 +131,11 @@
         box-shadow: inset 0 1px 0 rgba(invert($-base-color), .1);
       }
 
-      .o_dropdown_active, .o_dropdown_menu {
+      .o_dropdown_active, .dropdown-menu {
         background-color: rgba(invert($-base-color), .1);
       }
 
-      .o_dropdown_menu {
+      .dropdown-menu {
         box-shadow: inset 0 -1px 0 rgba($-base-color, .1);
       }
     }

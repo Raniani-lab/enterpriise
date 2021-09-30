@@ -383,50 +383,50 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             };
             patchWithCleanup(odoo, { debug: "1" });
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
-            await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
+            await click(webClient.el.querySelector(".o_debug_manager .dropdown-toggle"));
             assert.containsOnce(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('globalItem')"
+                ".o_debug_manager .dropdown-item:contains('globalItem')"
             );
             assert.containsNone(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('Edit View: Kanban')"
+                ".o_debug_manager .dropdown-item:contains('Edit View: Kanban')"
             );
-            await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
+            await click(webClient.el.querySelector(".o_debug_manager .dropdown-toggle"));
             await doAction(webClient, 1);
-            await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
+            await click(webClient.el.querySelector(".o_debug_manager .dropdown-toggle"));
             assert.containsOnce(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('globalItem')"
+                ".o_debug_manager .dropdown-item:contains('globalItem')"
             );
             assert.containsOnce(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('Edit View: Kanban')"
+                ".o_debug_manager .dropdown-item:contains('Edit View: Kanban')"
             );
             await click(webClient.el.querySelector(".o_menu_toggle"));
-            await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
+            await click(webClient.el.querySelector(".o_debug_manager .dropdown-toggle"));
             assert.containsOnce(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('globalItem')"
+                ".o_debug_manager .dropdown-item:contains('globalItem')"
             );
             assert.containsNone(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('Edit View: Kanban')"
+                ".o_debug_manager .dropdown-item:contains('Edit View: Kanban')"
             );
-            await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
+            await click(webClient.el.querySelector(".o_debug_manager .dropdown-toggle"));
             await doAction(webClient, 3);
-            await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
+            await click(webClient.el.querySelector(".o_debug_manager .dropdown-toggle"));
             assert.containsOnce(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('globalItem')"
+                ".o_debug_manager .dropdown-item:contains('globalItem')"
             );
             assert.containsOnce(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('Edit View: List')"
+                ".o_debug_manager .dropdown-item:contains('Edit View: List')"
             );
             assert.containsNone(
                 webClient.el,
-                ".o_debug_manager .o_dropdown_item:contains('Edit View: Kanban')"
+                ".o_debug_manager .dropdown-item:contains('Edit View: Kanban')"
             );
         }
     );

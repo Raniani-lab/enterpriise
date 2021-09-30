@@ -79,9 +79,9 @@ QUnit.test("Burger Menu on an App", async (assert) => {
 
     await click(wc.el, ".o_mobile_menu_toggle");
     assert.containsOnce(wc, ".o_burger_menu");
-    assert.containsOnce(wc, ".o_burger_menu .o_burger_menu_app .o_menu_sections .o_dropdown_item");
+    assert.containsOnce(wc, ".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item");
     assert.strictEqual(
-        wc.el.querySelector(".o_burger_menu .o_burger_menu_app .o_menu_sections .o_dropdown_item")
+        wc.el.querySelector(".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item")
             .textContent,
         "SubMenu"
     );

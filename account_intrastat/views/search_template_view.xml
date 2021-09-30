@@ -56,15 +56,15 @@
 
         <template id="search_template" inherit_id="account_reports.search_template">
             <xpath expr="." position="inside">
-                <div class="btn-group o_dropdown o_account_reports_filter_intrastat_type"
+                <div class="btn-group dropdown o_account_reports_filter_intrastat_type"
                      t-if="options.get('intrastat_type') != None">
                     <t t-call="account_intrastat.search_template_intrastat_type"/>
                 </div>
-                <div class="btn-group o_dropdown o_account_reports_filter_intrastat_extended"
+                <div class="btn-group dropdown o_account_reports_filter_intrastat_extended"
                      t-if="options.get('intrastat_extended') != None">
                     <t t-call="account_intrastat.search_template_intrastat_extended"/>
                 </div>
-                <div class="btn-group o_dropdown o_account_reports_filter_vat"
+                <div class="btn-group dropdown o_account_reports_filter_vat"
                      t-if="options.get('with_vat') != None">
                     <t t-call="account_intrastat.search_template_vat"/>
                 </div>

@@ -53,7 +53,7 @@ QUnit.test("'backbutton' event should close messaging menu", async function (ass
     });
     assert.doesNotHaveClass(
         document.querySelector('.o_MessagingMenu'),
-        'o-is-open',
+        'show',
         "messaging menu should be closed after receiving the backbutton event"
     );
 

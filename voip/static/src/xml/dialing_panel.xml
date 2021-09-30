@@ -2,11 +2,11 @@
 <templates xml:space="preserve">
 
 <t t-name="voip.SystrayItem" owl="1">
-    <li>
+    <div>
         <a href="#" title="Display Dialing Panel" t-on-click.prevent="onClick">
             <i aria-label="Display Dialing Panel" class="fa fa-fw fa-phone" role="img"/>
         </a>
-    </li>
+    </div>
 </t>
 
 <!--

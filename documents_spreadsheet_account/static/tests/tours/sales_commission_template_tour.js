@@ -21,7 +21,7 @@ odoo.define('documents_spreadsheet_account.spreadsheet_template_sales_commission
             run: 'click',
         },
         {
-            trigger: 'li[data-menu-xmlid="documents_spreadsheet.menu_technical_spreadsheet_template"]',
+            trigger: '.dropdown-item[data-menu-xmlid="documents_spreadsheet.menu_technical_spreadsheet_template"]',
             content: 'Open Configuration menu',
             run: 'click',
         },

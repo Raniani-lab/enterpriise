@@ -16,7 +16,7 @@ tour.register('rental_tour', {
     position: 'bottom',
     edition: 'enterprise'
 }, {
-    trigger: 'li[data-menu-xmlid="sale_renting.menu_rental_products"]',
+    trigger: '.dropdown-item[data-menu-xmlid="sale_renting.menu_rental_products"]',
     content: _t("At first, let's create some products to rent."),
     position: 'bottom',
 }, {
@@ -42,7 +42,7 @@ tour.register('rental_tour', {
     content: _t("Let's now create an order."),
     position: 'bottom',
 }, {
-    trigger: 'li[data-menu-xmlid="sale_renting.rental_orders_all"]',
+    trigger: '.dropdown-item[data-menu-xmlid="sale_renting.rental_orders_all"]',
     content: _t("Go to the orders menu."),
     position: 'bottom',
 }, {

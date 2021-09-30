@@ -2,9 +2,9 @@
 <templates>
 
 <t t-name="web_studio.EditMenu.MenuItem">
-    <li>
+    <div>
         <a href="#" class="o_web_edit_menu" role="button"><i class="fa fa-fw fa-pencil"/> Edit Menu</a>
-    </li>
+    </div>
 </t>
 
 <!--

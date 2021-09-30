@@ -362,7 +362,7 @@ tour.register('web_studio_tests_tour', {
     extra_trigger: '.o_web_studio_search_view_editor',
     trigger: '.o_menu_toggle.fa-th',
 }, {
-    trigger: '.o_web_studio_home_studio_menu .o_dropdown_toggler',
+    trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',
 }, {
     // export all modifications
     trigger: '.o_web_studio_export',

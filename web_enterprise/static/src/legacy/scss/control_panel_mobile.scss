@@ -33,7 +33,7 @@
         padding: 8px 20px 15%;
         flex: auto;
 
-        .o_dropdown {
+        .dropdown {
             margin-top: 15px;
             flex-direction: column;
             line-height: 2;
@@ -43,7 +43,7 @@
             }
         }
 
-        .o_dropdown, .o_dropdown_toggler {
+        .dropdown, .dropdown-toggle {
             width: 100%;
         }
 

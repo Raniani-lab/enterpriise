@@ -18,13 +18,13 @@ tour.register(
             extra_trigger: ".o_home_menu",
         },
         {
-            trigger: ".o_web_studio_home_studio_menu .o_dropdown_toggler",
+            trigger: ".o_web_studio_home_studio_menu .dropdown-toggle",
             content: _t("Click here."),
             position: "right",
         },
         {
             trigger:
-                ".o_web_studio_home_studio_menu .o_dropdown_menu .o_dropdown_item.o_web_studio_change_background",
+                ".o_web_studio_home_studio_menu .dropdown-menu .dropdown-item.o_web_studio_change_background",
             content: _t("Change the <b>background</b>, make it yours."),
             position: "bottom",
         },

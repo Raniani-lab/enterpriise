@@ -134,7 +134,7 @@ QUnit.module("Views", (hooks) => {
         serviceRegistry.add("dialog", dialogService);
         serviceRegistry.add("company", companyService);
         serviceRegistry.add("user", makeFakeUserService());
-
+        patchWithCleanup(browser, { setTimeout: (fn) => fn() });
         patchWithCleanup(session, {
             companies_currency_id: {
                 1: 11,

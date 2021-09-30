@@ -183,7 +183,7 @@ QUnit.module("Studio", (hooks) => {
         // the menu is rendered once the action is ready, so potentially in the next animation frame
         await testUtils.nextTick();
         await testUtils.dom.click(
-            $(webClient.el).find('.o_menu_sections li:contains("Partners (Action 3)")')
+            $(webClient.el).find('.o_menu_sections .o_nav_entry:contains("Partners (Action 3)")')
         );
         await legacyExtraNextTick();
         assert.containsOnce(webClient, ".o_list_view");

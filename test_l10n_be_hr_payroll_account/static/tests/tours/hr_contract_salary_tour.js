@@ -18,18 +18,18 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Log into Belgian Company",
-            trigger: '.o_menu_systray .o_switch_company_menu button.o_dropdown_toggler',
+            trigger: '.o_menu_systray .o_switch_company_menu button.dropdown-toggle',
             run: 'click',
         },
         {
             content: "Log into Belgian Company",
-            trigger: ".o_menu_systray .o_switch_company_menu .o_dropdown_item div span:contains('My Belgian Company - TEST')",
+            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item div span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Recruitment",
             trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-            extra_trigger: ".o_menu_systray .o_switch_company_menu button.o_dropdown_toggler span:contains('My Belgian Company - TEST')",
+            extra_trigger: ".o_menu_systray .o_switch_company_menu button.dropdown-toggle span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
@@ -39,7 +39,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Jobs",
-            trigger: 'li[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+            trigger: '.dropdown-item[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
             run: 'click',
         },
         {
@@ -686,18 +686,18 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
 },[
     {
         content: "Log into Belgian Company",
-        trigger: '.o_menu_systray .o_switch_company_menu button.o_dropdown_toggler',
+        trigger: '.o_menu_systray .o_switch_company_menu button.dropdown-toggle',
         run: 'click',
     },
     {
         content: "Log into Belgian Company",
-        trigger: ".o_menu_systray .o_switch_company_menu .o_dropdown_item div span:contains('My Belgian Company - TEST')",
+        trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item div span:contains('My Belgian Company - TEST')",
         run: 'click',
     },
     {
         content: "Recruitment",
         trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-        extra_trigger: ".o_menu_systray .o_switch_company_menu button.o_dropdown_toggler span:contains('My Belgian Company - TEST')",
+        extra_trigger: ".o_menu_systray .o_switch_company_menu button.dropdown-toggle span:contains('My Belgian Company - TEST')",
         run: 'click',
     },
     {
@@ -707,7 +707,7 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
     },
     {
         content: "Jobs",
-        trigger: 'li[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+        trigger: '.dropdown-item[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
         run: 'click',
     },
     {
@@ -769,18 +769,18 @@ Tour.register('hr_contract_salary_tour_2', {
     },[
         {
             content: "Log into Belgian Company",
-            trigger: '.o_menu_systray .o_switch_company_menu button.o_dropdown_toggler',
+            trigger: '.o_menu_systray .o_switch_company_menu button.dropdown-toggle',
             run: 'click',
         },
         {
             content: "Log into Belgian Company",
-            trigger: ".o_menu_systray .o_switch_company_menu .o_dropdown_item div span:contains('My Belgian Company - TEST')",
+            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item div span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Recruitment",
             trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-            extra_trigger: ".o_menu_systray .o_switch_company_menu button.o_dropdown_toggler span:contains('My Belgian Company - TEST')",
+            extra_trigger: ".o_menu_systray .o_switch_company_menu button.dropdown-toggle span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
@@ -790,7 +790,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Jobs",
-            trigger: 'li[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+            trigger: '.dropdown-item[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
             run: 'click',
         },
         {

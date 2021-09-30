@@ -4,6 +4,7 @@ import {
     legacyExtraNextTick,
     makeDeferred,
     nextTick,
+    patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
 import {
@@ -24,6 +25,7 @@ import { spreadsheetService } from "@documents_spreadsheet/actions/spreadsheet/s
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu";
 import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/js/components/insert_action_link/insert_action_link_menu";
+import { browser } from "@web/core/browser/browser";
 
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -314,6 +316,8 @@ QUnit.module(
             "dashboard view with custom chart type, group by and measure",
             async function (assert) {
                 assert.expect(4);
+
+                patchWithCleanup(browser, { setTimeout: (fn) => fn() });
                 const webClient = await openView("dashboard");
                 await click(webClient.el, ".fa-pie-chart");
 

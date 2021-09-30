@@ -73,7 +73,7 @@ tour.register('website_appointment_tour', {
         content: 'return in backend',
         run: 'click',
     }, {
-        trigger: 'button.o_dropdown_toggler',
+        trigger: 'button.dropdown-toggle',
         content: 'click on Action dropdown',
         run: 'click',
     }, {

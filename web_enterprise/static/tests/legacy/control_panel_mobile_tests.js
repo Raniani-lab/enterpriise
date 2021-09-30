@@ -5,6 +5,8 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
     const testUtils = require('web.test_utils');
 
     const cpHelpers = require('@web/../tests/search/helpers');
+    const { browser } = require("@web/core/browser/browser");
+    const { patchWithCleanup } = require("@web/../tests/helpers/utils");
     const { createControlPanel, createView } = testUtils;
 
     const { createWebClient, doAction, getActionManagerServerData } = require('@web/../tests/webclient/helpers');
@@ -45,6 +47,10 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             });
             serverData = getActionManagerServerData();
             Object.assign(serverData, { models: this.data, views: this.archs, actions });
+            patchWithCleanup(browser, {
+                setTimeout: (fn) => fn(),
+                clearTimeout: () => {},
+            });
         },
     }, function () {
 

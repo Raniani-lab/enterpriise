@@ -14,12 +14,13 @@ const {
     toggleMenuItem,
     toggleMenuItemOption,
 } = require('@web/../tests/search/helpers');
+const { browser } = require('@web/core/browser/browser');
 var createView = testUtils.createView;
 var patchDate = testUtils.mock.patchDate;
 
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 let serverData;
-const { nextTick } = require('@web/../tests/helpers/utils');
+const { nextTick, patchWithCleanup } = require('@web/../tests/helpers/utils');
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -486,6 +487,7 @@ QUnit.module('Views', {
         assert.expect(29);
 
         var unpatchDate = patchDate(2017, 7, 25, 1, 0, 0);
+        patchWithCleanup(browser, { setTimeout: (fn) => fn() });
 
         const views = {
             'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />',

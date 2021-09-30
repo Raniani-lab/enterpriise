@@ -208,7 +208,7 @@
     </t>
 
     <t t-name="mrp_mps_control_panel_option_buttons">
-        <div class="o_dropdown dropdown o_mps_columns_filter">
+        <div class="dropdown dropdown o_mps_columns_filter">
             <a type="button" class="dropdown-toggle" data-toggle="dropdown">
                 Rows
             </a>

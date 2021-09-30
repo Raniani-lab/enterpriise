@@ -6,7 +6,7 @@
                 <ENC_2>213123432</ENC_2>
                 <ENC_3>213.123.432</ENC_3>
                 <ENC_4>UBL 2.1</ENC_4>
-                <ENC_5>DIAN 2.1</ENC_5>
+                <ENC_5>DIAN 2.1: Nota Crédito de Factura Electrónica de Venta</ENC_5>
                 <ENC_6>RINV/2020/00001</ENC_6>
                 <ENC_7>2020-08-27</ENC_7>
                 <ENC_8>19:00:00-05:00</ENC_8>
@@ -19,7 +19,7 @@
             </ENC>
 
             <EMI>
-                <EMI_1>3</EMI_1>
+                <EMI_1>1</EMI_1>
                 <EMI_2>213123432</EMI_2>
                 <EMI_3>31</EMI_3>
                 <EMI_4>48</EMI_4>
@@ -46,6 +46,7 @@
 
                 <ICC>
                     <ICC_1></ICC_1>
+                    <ICC_9>RINV/2020/</ICC_9>
                 </ICC>
 
                 <DFE>
@@ -72,10 +73,10 @@
                 </CDE>
             </EMI>
             <ADQ>
-                <ADQ_1>3</ADQ_1>
+                <ADQ_1>1</ADQ_1>
                 <ADQ_2>213.123.432</ADQ_2>
                 <ADQ_3>31</ADQ_3>
-                <ADQ_4>48</ADQ_4>
+                <ADQ_4>No Aplica</ADQ_4>
 
                 <ADQ_6>company_2_data</ADQ_6>
                 <ADQ_7>company_2_data</ADQ_7>
@@ -114,7 +115,11 @@
                 <DFA>
                     <DFA_1>CO</DFA_1>
                     <DFA_2>08</DFA_2>
+                    <DFA_3>4567</DFA_3>
                     <DFA_4>00000</DFA_4>
+                    <DFA_5>Colombia</DFA_5>
+                    <DFA_6>Atlántico</DFA_6>
+                    <DFA_7>Medellín</DFA_7>
                     <DFA_8></DFA_8>
                 </DFA>
 
@@ -148,7 +153,8 @@
                 <TIM_1>false</TIM_1>
                 <TIM_2>5062.50</TIM_2>
                 <TIM_3>COP</TIM_3>
-
+                <TIM_4>0.000</TIM_4>
+                <TIM_5>COP</TIM_5>
                 <IMP>
                     <IMP_1>01</IMP_1>
                     <IMP_2>33750.00</IMP_2>
@@ -156,7 +162,7 @@
                     <IMP_4>5062.50</IMP_4>
                     <IMP_5>COP</IMP_5>
 
-                        <IMP_6>15.0</IMP_6>
+                        <IMP_6>15.00</IMP_6>
                         <IMP_7></IMP_7>
                         <IMP_8></IMP_8>
                         <IMP_9></IMP_9>
@@ -167,7 +173,8 @@
                 <TIM_1>false</TIM_1>
                 <TIM_2>5062.50</TIM_2>
                 <TIM_3>COP</TIM_3>
-
+                <TIM_4>0.000</TIM_4>
+                <TIM_5>COP</TIM_5>
                 <IMP>
                     <IMP_1>22</IMP_1>
                     <IMP_2>33750.00</IMP_2>
@@ -175,7 +182,7 @@
                     <IMP_4>5062.50</IMP_4>
                     <IMP_5>COP</IMP_5>
 
-                        <IMP_6>15.0</IMP_6>
+                        <IMP_6>15.00</IMP_6>
                         <IMP_7></IMP_7>
                         <IMP_8></IMP_8>
                         <IMP_9></IMP_9>
@@ -242,11 +249,47 @@
                 <IEN_2>08</IEN_2>
                 <IEN_3></IEN_3>
                 <IEN_4>Medellín</IEN_4>
+                <IEN_5>4567</IEN_5>
                 <IEN_6>CO</IEN_6>
                 <IEN_7>company_2_data</IEN_7>
                 <IEN_8>2020-08-28</IEN_8>
                 <IEN_12>00000</IEN_12>
+                <IEN_22>Atlántico</IEN_22>
+                <IEN_23>Colombia</IEN_23>
+                <IEN_24>en</IEN_24>
             </IEN>
+
+            <TDE>
+                <TDE_1>company_1_data</TDE_1>
+                <TDE_2>CO</TDE_2>
+                <TDE_3>05</TDE_3>
+                <TDE_4>1234</TDE_4>
+                <TDE_5>00000</TDE_5>
+                <TDE_7>Antioquia</TDE_7>
+                <TDE_8>Colombia</TDE_8>
+                <TDE_9>en</TDE_9>
+                <TDE_10>Route de Ramilies </TDE_10>
+                <ITT>
+                    <ITT_1>company_1_data</ITT_1>
+                    <ITT_2>O-47</ITT_2>
+                    <ITT_3>48</ITT_3>
+                    <ITT_4>213123432</ITT_4>
+                    <ITT_5>31</ITT_5>
+                    <ITT_6>1</ITT_6>
+                </ITT>
+                <DFT>
+                    <DFT_1>01</DFT_1>
+                    <DFT_2>IVA</DFT_2>
+                    <DFT_3>CO</DFT_3>
+                    <DFT_4>05</DFT_4>
+                    <DFT_5>1234</DFT_5>
+                    <DFT_6>00000</DFT_6>
+                    <DFT_8>Antioquia</DFT_8>
+                    <DFT_9>Colombia</DFT_9>
+                    <DFT_10>en</DFT_10>
+                    <DFT_11>Route de Ramilies </DFT_11>
+                </DFT>
+            </TDE>
 
             <MEP>
                 <MEP_1>1</MEP_1>
@@ -263,9 +306,6 @@
 
             </CDN>
 
-            <DCN>
-
-            </DCN>
 
 
 
@@ -317,6 +357,8 @@
                         <TII_1>5062.50</TII_1>
                         <TII_2>COP</TII_2>
                         <TII_3>false</TII_3>
+                        <TII_4>0.000</TII_4>
+                        <TII_5>COP</TII_5>
                         <IIM>
                             <IIM_1>01</IIM_1>
                             <IIM_2>5062.50</IIM_2>
@@ -335,6 +377,8 @@
                         <TII_1>5062.50</TII_1>
                         <TII_2>COP</TII_2>
                         <TII_3>false</TII_3>
+                        <TII_4>0.000</TII_4>
+                        <TII_5>COP</TII_5>
                         <IIM>
                             <IIM_1>22</IIM_1>
                             <IIM_2>5062.50</IIM_2>
@@ -354,6 +398,7 @@
 
                         <IAE_1>P0000</IAE_1>
                         <IAE_2>999</IAE_2>
+                        <IAE_4>Estándar de adopción del contribuyente</IAE_4>
                     </IAE>
 
 

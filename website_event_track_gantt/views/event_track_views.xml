@@ -14,8 +14,8 @@
                 dynamic_range="1">
                 <templates>
                     <div t-name="gantt-popover">
-                        <div><strong>Start — </strong> <t t-esc="date.format('l LT')"/></div>
-                        <div t-if="partner_name"><strong>Proposed By — </strong> <t t-esc="partner_name"/></div>
+                        <div><strong>Start — </strong> <t t-out="date.format('l LT')"/></div>
+                        <div t-if="partner_name"><strong>Proposed By — </strong> <t t-out="partner_name"/></div>
                     </div>
                 </templates>
                 <field name="partner_name"/>

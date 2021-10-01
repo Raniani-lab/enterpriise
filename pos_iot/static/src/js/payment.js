@@ -102,10 +102,7 @@ var PaymentIOT = PaymentInterface.extend({
     },
 
     _waitingCancel: function (resolve, data) {
-        if (['Finished', 'None'].includes(data.Stage)) {
-            this.get_terminal().remove_listener();
-            resolve(true);
-        } else if (data.Error) {
+        if (data.Stage === 'Finished' || data.Error) {
             this.get_terminal().remove_listener();
             resolve(true);
         }

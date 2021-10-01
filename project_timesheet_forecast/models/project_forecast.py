@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
+from datetime import datetime
+
 from odoo import _, api, fields, models
 from odoo.osv import expression
 
@@ -118,6 +121,97 @@ class Forecast(models.Model):
                 warning=_("This project isn't expected to have slot during this period. Planned hours :"),
             )
         return super()._gantt_progress_bar(field, res_ids, start, stop)
+
+    def _action_generate_timesheet(self):
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_user'):
+            return self._get_notification_action("warning", _('You do not have the right to create timesheets.'))
+
+        filter_domain = [
+            ('project_id', '!=', False),
+            ('allow_timesheets', '!=', False),
+            ('state', '=', 'published'),
+            ('employee_id', '!=', False),
+            ('start_datetime', '<', fields.Datetime.now())
+        ]
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
+            filter_domain = expression.AND([[('user_id', '=', self.env.uid)], filter_domain])
+
+        slots = self.filtered_domain(filter_domain)
+        if not slots:
+            return self._get_notification_action("warning", _("There are no timesheets to generate or you don't have the right."))
+
+        today = fields.Datetime.now()
+        interval_per_employee = defaultdict(lambda: (today, datetime(1970, 1, 1)))
+        for slot in slots:
+            start_datetime, end_datetime = interval_per_employee[slot.employee_id]
+            if start_datetime > slot.start_datetime:
+                start_datetime = slot.start_datetime
+            if end_datetime < slot.end_datetime:
+                end_datetime = slot.end_datetime if slot.end_datetime <= today else today
+            interval_per_employee[slot.employee_id] = (start_datetime, end_datetime)
+
+        work_data_per_employee_id = {}
+        min_date, max_date = today.date(), None
+        for employee, (start_datetime, end_datetime) in interval_per_employee.items():
+            work_data = employee.list_work_time_per_day(
+                start_datetime,
+                end_datetime,
+            )
+            work_data_per_employee_id[employee.id] = work_data
+            if work_data:
+                start_date = work_data[0][0]
+                end_date = work_data[-1][0]
+                if start_date < min_date:
+                    min_date = start_date
+                if not max_date or end_date > max_date:
+                    max_date = end_date
+
+        timesheet_read_group = self.env['account.analytic.line'].read_group(
+            [('project_id', 'in', slots.project_id.ids),
+             ('task_id', 'in', slots.task_id.ids),
+             ('employee_id', 'in', list(work_data_per_employee_id.keys())),
+             ('date', '>=', min_date),
+             ('date', '<=', max_date),
+             ('slot_id', '!=', False)],
+            ['task_id', 'employee_id', 'date', 'timesheet_count:count(id)'],
+            ['task_id', 'employee_id', 'date:day'],
+            lazy=False,
+        )
+        timesheet_count_per_dates_per_task_and_employee = defaultdict(lambda: defaultdict(int))
+        for res in timesheet_read_group:
+            timesheet_date = datetime.strptime(res['date:day'], '%d %b %Y').date()
+            timesheet_count_per_dates_per_task_and_employee[(res['task_id'][0], res['employee_id'][0])][timesheet_date] = res['timesheet_count']
+        vals_list = []
+        for slot in slots:
+            work_hours_data = work_data_per_employee_id[slot.employee_id.id]
+            timesheet_count_per_dates = timesheet_count_per_dates_per_task_and_employee[(slot.task_id.id, slot.employee_id.id)]
+            for day_date, work_hours_count in work_hours_data:
+                if timesheet_count_per_dates.get(day_date, 0.0):
+                    continue
+                if slot.start_datetime.date() <= day_date <= slot.end_datetime.date():
+                    vals_list.append(slot.sudo()._prepare_slot_analytic_line(day_date, work_hours_count))
+
+        if not vals_list:
+            return self._get_notification_action("warning", _("There are no timesheets to generate or you don't have the right."))
+        # Create with sudo as user does not have right for some private project and task of slots
+        self.env['account.analytic.line'].sudo().create(vals_list)
+        return self._get_notification_action("success", _('The timesheet entries have successfully been generated.'))
+
+    def _prepare_slot_analytic_line(self, day_date, work_hours_count):
+        self.ensure_one()
+        ratio = self.allocated_percentage / 100.0 or 1
+        return {
+            'name': '/',
+            'project_id': self.project_id.id,
+            'task_id': self.task_id.id,
+            'account_id': self.project_id.analytic_account_id.id,
+            'unit_amount': work_hours_count * ratio,
+            'user_id': self.user_id.id,
+            'slot_id': self.id,
+            'date': day_date,
+            'employee_id': self.employee_id.id,
+            'company_id': self.task_id.company_id.id or self.project_id.company_id.id,
+        }
 
     def action_open_timesheets(self):
         self.ensure_one()

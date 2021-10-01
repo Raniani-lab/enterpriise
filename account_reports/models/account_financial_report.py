@@ -417,7 +417,7 @@ class ReportAccountFinancialReport(models.Model):
             values_map = {None: (len(ids_set) + 1, _('Undefined'))}
             if groupby_field.relational:
                 # Preserve the table order by using search instead of browse.
-                sorted_records = self.env[groupby_field.comodel_name].search([('id', 'in', tuple(ids_set))])
+                sorted_records = self.env[groupby_field.comodel_name].with_context(active_test=False).search([('id', 'in', tuple(ids_set))])
                 index = 0
                 for record, name_get_res in zip(sorted_records, sorted_records.name_get()):
                     values_map[record.id] = (index, name_get_res[1])

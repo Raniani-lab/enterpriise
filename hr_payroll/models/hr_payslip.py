@@ -110,8 +110,8 @@ class HrPayslip(models.Model):
     # YTI TODO: normal_wage to be removed
     normal_wage = fields.Integer(compute='_compute_normal_wage', store=True)
     compute_date = fields.Date('Computed On')
-    basic_wage = fields.Monetary(compute='_compute_basic_net')
-    net_wage = fields.Monetary(compute='_compute_basic_net')
+    basic_wage = fields.Monetary(compute='_compute_basic_net', store=True)
+    net_wage = fields.Monetary(compute='_compute_basic_net', store=True)
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(compute='_compute_warning_message', store=True, readonly=False)
     is_regular = fields.Boolean(compute='_compute_is_regular')
@@ -259,6 +259,7 @@ class HrPayslip(models.Model):
         for payslip in self.filtered(lambda p: p.line_ids and p.state in ['draft', 'verify']):
             payslip.line_ids = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in payslip._get_payslip_lines()]
 
+    @api.depends('line_ids.total')
     def _compute_basic_net(self):
         line_values = (self._origin)._get_line_values(['BASIC', 'NET'])
         for payslip in self:

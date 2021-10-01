@@ -223,7 +223,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             _logger.info("Payslips Creation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Computation
-        with self.assertQueryCount(admin=3149):
+        with self.assertQueryCount(admin=3151):
             start_time = time.time()
             payslips.compute_sheet()
             # --- 9.298089027404785 seconds ---

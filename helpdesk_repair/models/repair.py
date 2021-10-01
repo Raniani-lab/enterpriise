@@ -16,9 +16,11 @@ class Repair(models.Model):
         res = super().write(vals)
         if 'state' in vals:
             tracked_repairs = self.filtered(
-                lambda r: r.ticket_id.use_product_repairs and r.state == 'done' and previous_states[r] != r.state)
-            subtype_id = self.env.ref('helpdesk.mt_ticket_repair_done')
+                lambda r: r.ticket_id.use_product_repairs and r.state in ('done', 'cancel') and previous_states[r] != r.state)
             for repair in tracked_repairs:
+                subtype_id = self.env.ref('helpdesk.mt_ticket_repair_' + repair.state, raise_if_not_found=False)
+                if not subtype_id:
+                    continue
                 body = '<a href="#" data-oe-model="repair.order" data-oe-id="%s">%s</a>' % (repair.id, repair.display_name)
                 repair.ticket_id.sudo().message_post(subtype_id=subtype_id.id, body=body)
         return res

@@ -22,6 +22,7 @@ class Task(models.Model):
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
+    invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
 
     # Project Sharing fields
     portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')

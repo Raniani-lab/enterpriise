@@ -128,7 +128,7 @@ class ECSalesReport(models.AbstractModel):
     @api.model
     def _get_query_from(self, options):
         return '''
-             LEFT JOIN res_partner p ON account_move_line.partner_id = p.id
+                  JOIN res_partner p ON account_move_line.partner_id = p.id
                   JOIN account_account_tag_account_move_line_rel aml_tag ON account_move_line.id = aml_tag.account_move_line_id
                   JOIN account_account_tag tag ON tag.id = aml_tag.account_account_tag_id
                   JOIN account_tax_report_line_tags_rel ON account_tax_report_line_tags_rel.account_account_tag_id = tag.id

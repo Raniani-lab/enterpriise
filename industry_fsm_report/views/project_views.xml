@@ -11,7 +11,7 @@
             <field name="partner_id" position="before">
                 <field name="worksheet_template_id"/>
             </field>
-            <xpath expr="//div[@t-if='project_id']" position="after">
+            <xpath expr="//div[@name='project_id']" position="after">
                 <div t-if="worksheet_template_id">
                     <strong>Template — </strong> <t t-esc="worksheet_template_id[1]"/>
                 </div>

@@ -11,29 +11,19 @@ Tour.register('bank_statement_reconciliation', {
         test: true,
         // Go to the reconciliation page of the statement: "BNK/2014/001"
     }, [
-        // Reconciliation of 'line1' (350.0) with 'out_invoice_1' (100.0) and 'out_invoice_2' (250.0).
-        // Both lines should be suggested directly to the user thanks to the reconcile model.
+        // The first line, 'line1' (350.0) should automatically have been
+        // reconciled with with 'out_invoice_1' (100.0) and 'out_invoice_2' (250.0).
 
-        {
-            content: "Reconcile 'line1' with 'out_invoice_1' & 'out_invoice_2'",
-            trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
-        },
-
-        // Reconciliation of 'line2' (-500.0) with 'in_invoice_1' (-1175.0).
-        // Since the amounts doesn't match exactly, this should make a partial reconciliation.
+        // 'line2' should be matched for partial reconciliation with 'in_invoice_1' (-1175.0).
 
         {
             content: "Open the receivable/payable tab for 'line2'",
-            extra_trigger: '.o_reconciliation_line:first[data-mode="match_rp"]',
-            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line2")'
-        },
-        {
-            content: "Select the line corresponding to 'in_invoice_1'",
-            trigger: '.o_reconciliation_line:nth-child(1) .o_notebook .cell_left:contains("1,175.00")'
+            extra_trigger: '.o_reconciliation_line:first[data-mode="inactive"]',
+            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line2")',
         },
         {
             content: "Check the line has been added to the propositions",
-            trigger: '.o_reconciliation_line:nth-child(1) .accounting_view .line_amount:contains("500.00")'
+            trigger: '.o_reconciliation_line:nth-child(1) .accounting_view .line_amount:contains("500.00")',
         },
         {
             content: "Reconcile 'line2' with 'in_invoice_1'",
@@ -46,7 +36,8 @@ Tour.register('bank_statement_reconciliation', {
         {
             content: "Open the receivable/payable tab for 'line3'",
             extra_trigger: '.o_reconciliation_line:first[data-mode="match_rp"]',
-            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line3")'
+            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line3")',
+            run: 'click',
         },
         {
             content: "Search 'partner_b'",

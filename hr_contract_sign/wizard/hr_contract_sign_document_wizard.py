@@ -118,7 +118,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 template_id=sign_request_values[0].id,
                 signers=sign_request_values[1],
                 followers=self.follower_ids.ids.append(self.responsible_id.partner_id.id),
-                reference=_('Signature Request - %s', self.contract_id.name),
+                reference=_('Signature Request - %s', sign_request_values[0].name),
                 subject=self.subject,
                 message=self.message
             )

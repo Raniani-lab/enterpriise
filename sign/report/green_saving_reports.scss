@@ -1,18 +1,20 @@
+.o_in_iframe {
+    background-color: var(--gray-100);
+}
+
 .green-savings-card {
-    border-radius: 1rem;
-    box-shadow: 0 0 2.5rem -.5rem rgba(black, .1);
-    transition: .3s;
+    &, * {
+        transition: all .15s;
+    }
     cursor: pointer;
 
     &:hover {
-        box-shadow: 0 0 5rem -.5rem rgba(black, .2);
+        * {
+            color: #7C6576 !important;
+        }
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+        border-color: #7C6576 !important;
     }
-
-    &:active {
-        transform: scale(1.1);
-        box-shadow: 0 0 5rem -1rem rgba(black, .3);
-    }
-
 }
 
 .green-savings-page-pdf {

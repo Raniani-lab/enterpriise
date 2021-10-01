@@ -66,6 +66,7 @@
                 <t t-call="sign.green_report_el">
                     <t t-set="green_report_el_id" t-value="'water'"/>
                     <t t-set="green_report_el_color" t-value="'success'"/>
+                    <t t-set="green_report_el_img" t-value="'paper_savings'"/>
                     <t t-set="green_report_el_fa" t-value="'recycle'"/>
                     <t t-set="green_report_el_title" t-value="'Paper Savings'"/>
                     <t t-set="green_report_el_type" t-value="sheets_sum"/>
@@ -76,6 +77,7 @@
                 <t t-call="sign.green_report_el">
                     <t t-set="green_report_el_id" t-value="'water'"/>
                     <t t-set="green_report_el_color" t-value="'primary'"/>
+                    <t t-set="green_report_el_img" t-value="'water'"/>
                     <t t-set="green_report_el_fa" t-value="'tint'"/>
                     <t t-set="green_report_el_title" t-value="'Water'"/>
                     <t t-set="green_report_el_type" t-value="water"/>
@@ -89,6 +91,7 @@
                 <t t-call="sign.green_report_el">
                     <t t-set="green_report_el_id" t-value="'wood'"/>
                     <t t-set="green_report_el_color" t-value="'success'"/>
+                    <t t-set="green_report_el_img" t-value="'wood_3'"/>
                     <t t-set="green_report_el_fa" t-value="'tree'"/>
                     <t t-set="green_report_el_title" t-value="'Wood'"/>
                     <t t-set="green_report_el_type" t-value="wood"/>
@@ -102,6 +105,7 @@
                 <t t-call="sign.green_report_el">
                     <t t-set="green_report_el_id" t-value="'carbon'"/>
                     <t t-set="green_report_el_color" t-value="'secondary'"/>
+                    <t t-set="green_report_el_img" t-value="'carbon_5'"/>
                     <t t-set="green_report_el_fa" t-value="'car'"/>
                     <t t-set="green_report_el_title" t-value="'Carbon'"/>
                     <t t-set="green_report_el_type" t-value="carbon"/>
@@ -115,6 +119,7 @@
                 <t t-call="sign.green_report_el">
                     <t t-set="green_report_el_id" t-value="'waste'"/>
                     <t t-set="green_report_el_color" t-value="'dark'"/>
+                    <t t-set="green_report_el_img" t-value="'waste'"/>
                     <t t-set="green_report_el_fa" t-value="'trash'"/>
                     <t t-set="green_report_el_title" t-value="'Waste'"/>
                     <t t-set="green_report_el_type" t-value="waste"/>
@@ -128,6 +133,7 @@
                 <t t-call="sign.green_report_el">
                     <t t-set="green_report_el_id" t-value="'energy'"/>
                     <t t-set="green_report_el_color" t-value="'warning'"/>
+                    <t t-set="green_report_el_img" t-value="'energy'"/>
                     <t t-set="green_report_el_fa" t-value="'bolt'"/>
                     <t t-set="green_report_el_title" t-value="'Energy'"/>
                     <t t-set="green_report_el_type" t-value="energy"/>
@@ -150,12 +156,13 @@
     <!-- Ideally using display grid with flexbox would allow using the same container from html report in pdf, however wkhtmltopdf doesn't support grid -->
     <template id="green_report_container_pdf">
         <h1 class="text-center">Green Savings Report</h1>
-        <section t-attf-class="container green-savings-page-pdf">
+        <section t-attf-class="green-savings-page-pdf">
             <div class="row align-items-stretch pt-4">
                 <!-- Paper Savings -->
                 <t t-call="sign.green_report_el_pdf">
                     <t t-set="green_report_el_id" t-value="'water'"/>
                     <t t-set="green_report_el_color" t-value="'success'"/>
+                    <t t-set="green_report_el_img" t-value="'paper_savings'"/>
                     <t t-set="green_report_el_fa" t-value="'recycle'"/>
                     <t t-set="green_report_el_title" t-value="'Paper Savings'"/>
                     <t t-set="green_report_el_type" t-value="sheets_sum"/>
@@ -166,6 +173,7 @@
                 <t t-call="sign.green_report_el_pdf">
                     <t t-set="green_report_el_id" t-value="'water'"/>
                     <t t-set="green_report_el_color" t-value="'primary'"/>
+                    <t t-set="green_report_el_img" t-value="'water'"/>
                     <t t-set="green_report_el_fa" t-value="'tint'"/>
                     <t t-set="green_report_el_title" t-value="'Water'"/>
                     <t t-set="green_report_el_type" t-value="water"/>
@@ -180,6 +188,7 @@
                 <t t-call="sign.green_report_el_pdf">
                     <t t-set="green_report_el_id" t-value="'wood'"/>
                     <t t-set="green_report_el_color" t-value="'success'"/>
+                    <t t-set="green_report_el_img" t-value="'wood_3'"/>
                     <t t-set="green_report_el_fa" t-value="'tree'"/>
                     <t t-set="green_report_el_title" t-value="'Wood'"/>
                     <t t-set="green_report_el_type" t-value="wood"/>
@@ -193,6 +202,7 @@
                 <t t-call="sign.green_report_el_pdf">
                     <t t-set="green_report_el_id" t-value="'carbon'"/>
                     <t t-set="green_report_el_color" t-value="'secondary'"/>
+                    <t t-set="green_report_el_img" t-value="'carbon_5'"/>
                     <t t-set="green_report_el_fa" t-value="'car'"/>
                     <t t-set="green_report_el_title" t-value="'Carbon'"/>
                     <t t-set="green_report_el_type" t-value="carbon"/>
@@ -207,6 +217,7 @@
                 <t t-call="sign.green_report_el_pdf">
                     <t t-set="green_report_el_id" t-value="'waste'"/>
                     <t t-set="green_report_el_color" t-value="'dark'"/>
+                    <t t-set="green_report_el_img" t-value="'waste'"/>
                     <t t-set="green_report_el_fa" t-value="'trash'"/>
                     <t t-set="green_report_el_title" t-value="'Waste'"/>
                     <t t-set="green_report_el_type" t-value="waste"/>
@@ -220,6 +231,7 @@
                 <t t-call="sign.green_report_el_pdf">
                     <t t-set="green_report_el_id" t-value="'energy'"/>
                     <t t-set="green_report_el_color" t-value="'warning'"/>
+                    <t t-set="green_report_el_img" t-value="'energy'"/>
                     <t t-set="green_report_el_fa" t-value="'bolt'"/>
                     <t t-set="green_report_el_title" t-value="'Energy'"/>
                     <t t-set="green_report_el_type" t-value="energy"/>
@@ -233,43 +245,13 @@
     </template>
 
     <!-- Element Templates -->
-    <template id="green_report_el">
-        <div t-attf-id="{{green_report_el_id}}" class="col-12 col-md-4 py-4">
-            <div t-attf-class="green-savings-card p-3 d-flex align-items-stretch h-100" name='modal_green_savings' data-toggle="modal" data-target=".modal_green_savings" t-attf-aria-label="{{green_report_el_title}} Summary">
-                <div class="row m-0 w-100">
-                    <div class="col-lg-5 p-0">
-                        <div t-attf-class="d-flex w-100 h-100 align-items-center justify-content-center display-3 text-{{green_report_el_color}} rounded-circle p-3">
-                            <i t-attf-class="fa fa-{{green_report_el_fa}}" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 p-0">
-                        <div class="card-body d-flex flex-column text-center justify-content-center text-lg-left h-100">
-                            <h3 class="card-title" t-out="green_report_el_title"/>
-                            <p class="card-text"><t t-out="green_report_el_type"/> <t t-out="green_report_el_text"/></p>
-                            <t t-if="green_report_el_waste">
-                                <p class="font-weight-light">
-                                    <t t-if="green_report_el_waste > 1">
-                                        like <t t-out="green_report_el_waste"/> <t t-out="green_report_el_waste_text_1"/>
-                                    </t>
-                                    <t t-elif="green_report_el_waste == 1">
-                                        like <t t-out="green_report_el_waste"/> <t t-out="green_report_el_waste_text_2"/>
-                                    </t>
-                                </p>
-                            </t>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </template>
-
     <template id="green_report_el_pdf">
         <div t-attf-id="{{green_report_el_id}}" t-attf-class="green-savings-card-pdf">
             <div name='modal_green_savings' t-attf-aria-label="{{green_report_el_title}} Summary">
                 <div class="row m-0 w-100">
                     <div class="col-5 p-0">
                         <div t-attf-class="display-3 align-items-center justify-content-center text-{{green_report_el_color}} rounded-circle p-3">
-                            <i t-attf-class="fa fa-{{green_report_el_fa}}" aria-hidden="true"></i>
+                            <img t-attf-src="/sign/static/img/{{green_report_el_img}}.svg" t-attf-alt="{{green_report_el_title}}" style="height: 100px; width: 200px;"/>
                         </div>
                     </div>
                     <div class="col-7 p-0">
@@ -292,4 +274,35 @@
             </div>
         </div>
     </template>
+
+    <template id="green_report_el">
+        <div t-attf-id="{{green_report_el_id}}" class="col-12 col-md-4 py-4">
+            <div t-attf-class="green-savings-card card card-default p-3 d-flex align-items-stretch h-100" name='modal_green_savings' data-toggle="modal" data-target=".modal_green_savings" t-attf-aria-label="{{green_report_el_title}} Summary">
+                <div class="row m-0 w-100 h-100">
+                    <div class="col-lg-5 p-0">
+                        <div t-attf-class="d-flex w-100 h-100 align-items-center justify-content-center display-3 text-{{green_report_el_color}} rounded-circle p-3">
+                            <img t-attf-src="/sign/static/img/{{green_report_el_img}}.svg" t-attf-alt="{{green_report_el_title}}"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 p-0">
+                        <div class="card-body d-flex flex-column text-center justify-content-start text-lg-left h-100">
+                            <h3 class="card-title" t-out="green_report_el_title"/>
+                            <p class="card-text"><t t-out="green_report_el_type"/> <t t-out="green_report_el_text"/></p>
+                            <t t-if="green_report_el_waste">
+                                <p class="font-italic">
+                                    <t t-if="green_report_el_waste > 1">
+                                        like <t t-out="green_report_el_waste"/> <t t-out="green_report_el_waste_text_1"/>
+                                    </t>
+                                    <t t-elif="green_report_el_waste == 1">
+                                        like <t t-out="green_report_el_waste"/> <t t-out="green_report_el_waste_text_2"/>
+                                    </t>
+                                </p>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
 </odoo>

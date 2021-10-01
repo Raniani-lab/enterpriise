@@ -244,6 +244,11 @@ class AccountMove(models.Model):
 
         response_parsed = etree.fromstring(response.encode('utf-8'))
 
+        if response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO') in ['001', '002', '003']:
+            digital_signature.last_token = False
+            _logger.error('Token is invalid.')
+            return
+
         try:
             self.l10n_cl_dte_status = self._analyze_sii_result(response_parsed)
         except UnexpectedXMLResponse:
@@ -257,16 +262,13 @@ class AccountMove(models.Model):
             self.l10n_cl_dte_partner_status = 'not_sent'
             if send_dte_to_partner:
                 self._l10n_cl_send_dte_to_partner()
-        if response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO') in ['001', '002', '003']:
-            digital_signature.last_token = False
-            _logger.error('Token is invalid.')
-        else:
-            self.message_post(
-                body=_('Asking for DTE status with response:') +
-                     '<br /><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
-                         response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO'),
-                         response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA'),
-                         response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION')))
+
+        self.message_post(
+            body=_('Asking for DTE status with response:') +
+                 '<br /><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
+                     response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO'),
+                     response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA'),
+                     response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION')))
 
     def l10n_cl_verify_claim_status(self):
         if self.company_id.l10n_cl_dte_service_provider == 'SIITEST':

@@ -789,8 +789,8 @@ class SignRequestItem(models.Model):
 
                 signature = dict(new_items_signature, **old_items_signature)
 
-                self.env['sign.log']._create_log(request, "update", True, partner_id=self.env.user.partner_id.id)
-                body = _("The signature request was edited by: %s.", self.env.user.partner_id.name)
+                self.env['sign.log']._create_log(request, "update", True, partner_id=self.partner_id.id)
+                body = _("The signature request was edited by: %s.", self.partner_id.name)
                 request.message_post(body=body)
             elif new_sign_ids:
                 return False

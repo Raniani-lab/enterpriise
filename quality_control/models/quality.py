@@ -8,7 +8,7 @@ import random
 
 from odoo import api, models, fields, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round
-from odoo.osv.expression import AND, OR
+from odoo.osv.expression import OR
 
 
 class QualityPoint(models.Model):
@@ -347,8 +347,7 @@ class ProductTemplate(models.Model):
 
         domain_in_products_or_categs = ['|', ('product_ids', 'in', self.product_variant_ids.ids), ('product_category_ids', 'parent_of', self.categ_id.ids)]
         domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
-        domain_products = OR([domain_in_products_or_categs, domain_no_products_and_categs])
-        action['domain'] = AND([domain_products, [('bom_active', '=', True)]])
+        action['domain'] = OR([domain_in_products_or_categs, domain_no_products_and_categs])
         return action
 
     def action_see_quality_checks(self):
@@ -429,8 +428,7 @@ class ProductProduct(models.Model):
 
         domain_in_products_or_categs = ['|', ('product_ids', 'in', self.ids), ('product_category_ids', 'parent_of', self.categ_id.ids)]
         domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
-        domain_products = OR([domain_in_products_or_categs, domain_no_products_and_categs])
-        action['domain'] = AND([domain_products, [('bom_active', '=', True)]])
+        action['domain'] = OR([domain_in_products_or_categs, domain_no_products_and_categs])
         return action
 
     def action_see_quality_checks(self):

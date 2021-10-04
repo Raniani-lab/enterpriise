@@ -31,13 +31,15 @@ class TestSMSPerformance(BaseMailPerformance, sms_common.SMSCase):
                 'country_id': self.env.ref('base.be').id,
             })
 
+        self._init_mail_gateway()
+
     @mute_logger('odoo.addons.sms.models.sms_sms')
     @users('employee')
     @warmup
     def test_message_sms_record_1_partner(self):
         record = self.test_record.with_user(self.env.user)
         pids = self.customer.ids
-        with self.mockSMSGateway(), self.assertQueryCount(employee=19):
+        with self.mockSMSGateway(), self.assertQueryCount(employee=21):
             messages = record._message_sms(
                 body='Performance Test',
                 partner_ids=pids,

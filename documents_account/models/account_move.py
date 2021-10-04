@@ -48,34 +48,38 @@ class AccountMove(models.Model):
         # when writing on invoices in batch.
         # To make it work in batch if we want to update multiple main_attachment_ids simultaneously,
         # most of this function may need to be rewritten.
-        if main_attachment_id and not self._context.get('no_document') and len(self) == 1:
+        if main_attachment_id and not self._context.get('no_document') and len(self) == 1 and self.move_type != 'entry':
             previous_attachment_id = self.message_main_attachment_id.id
             document = False
             if previous_attachment_id:
                 document = self.env['documents.document'].sudo().search([('attachment_id', '=', previous_attachment_id)], limit=1)
             if document:
                 document.attachment_id = main_attachment_id
-            elif self.company_id.documents_account_settings:
-                setting = self.env['documents.account.folder.setting'].sudo().search(
-                    [('journal_id', '=', self.journal_id.id),
-                     ('company_id', '=', self.company_id.id)], limit=1)
-                if setting:
-                    values = {
-                        'folder_id': setting.folder_id.id,
-                        'partner_id': self.partner_id.id,
-                        'owner_id': self.create_uid.id,
-                        'tag_ids': [(6, 0, setting.tag_ids.ids if setting.tag_ids else [])],
-                    }
-                    Documents = self.env['documents.document'].with_context(default_type='empty').sudo()
-                    doc = Documents.search([('attachment_id', '=', main_attachment_id)], limit=1)
-                    if doc:
-                        doc.write(values)
-                    else:
-                        # backward compatibility with documents that may be not
-                        # registered as attachments yet
-                        values.update({'attachment_id' : main_attachment_id})
-                        doc.create(values)
+            else:
+                self._update_or_create_document(main_attachment_id)
         return super(AccountMove, self).write(vals)
+
+    def _update_or_create_document(self, attachment_id):
+        if self.company_id.documents_account_settings:
+            setting = self.env['documents.account.folder.setting'].sudo().search(
+                [('journal_id', '=', self.journal_id.id),
+                 ('company_id', '=', self.company_id.id)], limit=1)
+            if setting:
+                values = {
+                    'folder_id': setting.folder_id.id,
+                    'partner_id': self.partner_id.id,
+                    'owner_id': self.create_uid.id,
+                    'tag_ids': [(6, 0, setting.tag_ids.ids if setting.tag_ids else [])],
+                }
+                Documents = self.env['documents.document'].with_context(default_type='empty').sudo()
+                doc = Documents.search([('attachment_id', '=', attachment_id)], limit=1)
+                if doc:
+                    doc.write(values)
+                else:
+                    # backward compatibility with documents that may be not
+                    # registered as attachments yet
+                    values.update({'attachment_id': attachment_id})
+                    doc.create(values)
 
 
 class AccountMoveLine(models.Model):

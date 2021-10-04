@@ -144,3 +144,36 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         invoice = self.env['account.move'].browse(action['res_id'])
         self.assertEqual(invoice.document_request_line_id.id, account_move_line_test.id,
                          'the new invoice should store the ID of the move line on which its document was attached')
+
+    def test_journal_entry(self):
+        """
+        Makes sure the settings apply their values when an ir_attachment is set as message_main_attachment_id
+        on invoices.
+        """
+        folder_test = self.env['documents.folder'].create({'name': 'Bills'})
+        self.env.user.company_id.documents_account_settings = True
+
+        invoice_test = self.env['account.move'].with_context(default_move_type='entry').create({
+            'name': 'Journal Entry',
+            'move_type': 'entry',
+        })
+        setting = self.env['documents.account.folder.setting'].create({
+            'folder_id': folder_test.id,
+            'journal_id': invoice_test.journal_id.id,
+        })
+        attachments = self.env['ir.attachment'].create([{
+            'datas': TEXT,
+            'name': 'fileText_test.txt',
+            'mimetype': 'text/plain',
+            'res_model': 'account.move',
+            'res_id': invoice_test.id
+        }, {
+            'datas': TEXT,
+            'name': 'fileText_test2.txt',
+            'mimetype': 'text/plain',
+            'res_model': 'account.move',
+            'res_id': invoice_test.id
+        }])
+        documents = self.env['documents.document'].search([('attachment_id', 'in', attachments.ids)])
+        self.assertEqual(len(documents), 2)
+        setting.unlink()

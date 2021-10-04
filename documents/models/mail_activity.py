@@ -4,15 +4,6 @@
 from odoo import api, models, fields, _
 
 
-class MailActivityType(models.Model):
-    _inherit = "mail.activity.type"
-
-    tag_ids = fields.Many2many('documents.tag')
-    folder_id = fields.Many2one('documents.folder',
-                                help="By defining a folder, the upload activities will generate a document")
-    default_user_id = fields.Many2one('res.users', string="Default User")
-
-
 class MailActivity(models.Model):
     _inherit = 'mail.activity'
 

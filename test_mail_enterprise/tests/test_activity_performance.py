@@ -42,9 +42,28 @@ class TestActivityPerformance(BaseMailPerformance):
             'phone_nbr': '0456999999',
         })
 
+        # documents records for activities
+        cls.documents_test_folder = cls.env['documents.folder'].create({
+            'name': 'Test Folder',
+        })
+        cls.documents_test_facet = cls.env['documents.facet'].create({
+            'folder_id': cls.documents_test_folder.id,
+            'name': 'Test Facet',
+        })
+        cls.documents_test_tags = cls.env['documents.tag'].create([
+            {'facet_id': cls.documents_test_facet.id,
+             'folder_id': cls.documents_test_folder.id,
+             'name': 'Test Tag %d' % index,
+            } for index in range(2)
+        ])
         cls.phonecall_activity = cls.env.ref('mail.mail_activity_data_call')
         cls.phonecall_activity.write({
             'default_user_id': cls.user_admin.id,
+        })
+        cls.upload_activity = cls.env.ref('mail.mail_activity_data_upload_document')
+        cls.upload_activity.write({
+            'default_user_id': cls.user_admin.id,
+            'folder_id': cls.documents_test_folder.id,
         })
 
         cls.env['mail.activity.type'].search([
@@ -83,6 +102,23 @@ class TestActivityPerformance(BaseMailPerformance):
 
         with self.assertQueryCount(employee=37):  # TME only: 36
             activity = record.activity_schedule('mail.mail_activity_data_call', summary='Call Activity')
+            activity.flush()
+
+        # check business information (to benefits from this test)
+        self.assertEqual(record.activity_ids, activity)
+        self.assertEqual(activity.user_id, self.user_admin)
+
+    @users('employee')
+    @warmup
+    def test_activity_mixin_schedule_document(self):
+        """ Simply check CRUD operations on records having advanced mixing
+        enabled. No computed fields are involved. """
+        record = self.env['mail.test.activity.bl.sms.voip'].browse(self.test_record_voip.ids)
+
+        with self.assertQueryCount(employee=43):  # TME only: 42
+            activity = record.activity_schedule(
+                'mail.mail_activity_data_upload_document',
+                summary='Upload Activity')
             activity.flush()
 
         # check business information (to benefits from this test)

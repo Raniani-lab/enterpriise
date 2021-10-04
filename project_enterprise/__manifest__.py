@@ -15,6 +15,7 @@ Bridge module for project and enterprise
         'views/project_task_views.xml',
         'views/project_sharing_templates.xml',
     ],
+    'demo': ['data/project_demo.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

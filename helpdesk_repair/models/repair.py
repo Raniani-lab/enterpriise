@@ -21,7 +21,7 @@ class Repair(models.Model):
                 subtype_id = self.env.ref('helpdesk.mt_ticket_repair_' + repair.state, raise_if_not_found=False)
                 if not subtype_id:
                     continue
-                body = '<a href="#" data-oe-model="repair.order" data-oe-id="%s">%s</a>' % (repair.id, repair.display_name)
+                body = '<a href="#" data-oe-model="repair.order" data-oe-id="%s">%s</a> %s' % (repair.id, repair.display_name, subtype_id.name)
                 repair.ticket_id.sudo().message_post(subtype_id=subtype_id.id, body=body)
         return res
 

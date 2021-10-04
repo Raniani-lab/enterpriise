@@ -25,7 +25,7 @@ class AccountMove(models.Model):
                     subtype_id = self.env.ref('helpdesk.mt_ticket_refund_' + invoices[0].state, raise_if_not_found=False)
                     if not subtype_id:
                         continue
-                    body = '</br>'.join(('<a href="#" data-oe-model="account.move" data-oe-id="%s">%s</a>' % (invoice.id, invoice.display_name))\
+                    body = '</br>'.join(('<a href="#" data-oe-model="account.move" data-oe-id="%s">%s</a> %s' % (invoice.id, invoice.display_name, subtype_id.name))\
                         for invoice in invoices)
                     ticket.message_post(subtype_id=subtype_id.id, body=body)
         return res

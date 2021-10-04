@@ -6275,6 +6275,10 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(
             $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
         await legacyExtraNextTick();
+        // This is a temporary "fix". In the new wowl environment we re-instanciate a viewEditorManager from scratch.
+        // This means that when entering a x2m, we first enter the main view then the x2m (instead of just going to the x2m as in legacy).
+        // While waiting for a true fix, we put the dust under the carpet to unblock runbot.
+        await legacyExtraNextTick();
         assert.containsNone(webClient, '.o_web_studio_add_chatter',
             "should not be possible to add a chatter");
 

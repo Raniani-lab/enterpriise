@@ -164,6 +164,13 @@ export function getBasicData() {
                     store: true,
                     sortable: true,
                 },
+                tag_ids: {
+                    string: "Tags",
+                    type: "many2many",
+                    relation: "tag",
+                    store: true,
+                    sortable: true,
+                },
                 probability: {
                     string: "Probability",
                     type: "integer",
@@ -186,6 +193,7 @@ export function getBasicData() {
                     product_id: 37,
                     probability: 10,
                     field_with_array_agg: 1,
+                    tag_ids: [42, 67],
                 },
                 {
                     id: 2,
@@ -195,6 +203,7 @@ export function getBasicData() {
                     product_id: 41,
                     probability: 11,
                     field_with_array_agg: 2,
+                    tag_ids: [42, 67],
                 },
                 {
                     id: 3,
@@ -204,6 +213,7 @@ export function getBasicData() {
                     product_id: 41,
                     probability: 95,
                     field_with_array_agg: 3,
+                    tag_ids: [],
                 },
                 {
                     id: 4,
@@ -213,6 +223,7 @@ export function getBasicData() {
                     product_id: 41,
                     probability: 15,
                     field_with_array_agg: 4,
+                    tag_ids: [42],
                 },
             ],
         },
@@ -229,6 +240,21 @@ export function getBasicData() {
                 {
                     id: 41,
                     display_name: "xpad",
+                },
+            ],
+        },
+        tag: {
+            fields: {
+                name: { string: "Tag Name", type: "char" },
+            },
+            records: [
+                {
+                    id: 42,
+                    display_name: "isCool",
+                },
+                {
+                    id: 67,
+                    display_name: "Growing",
                 },
             ],
         },

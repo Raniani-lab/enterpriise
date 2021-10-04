@@ -898,7 +898,7 @@ test("group by regular field defined with not supported aggregate", async functi
     assert.equal(B7.evaluated.value, `#ERROR`);
 });
 
-QUnit.test("group by related field with archived record", async function (assert) {
+test("group by related field with archived record", async function (assert) {
     assert.expect(3);
 
     const data = getBasicData();
@@ -1123,4 +1123,49 @@ test("Format header correctly works with non-existing field", async function (as
     await nextTick();
     assert.equal(getCellValue(model, "G10"), "non-existing");
     assert.equal(getCellValue(model, "G11"), "(Undefined)");
+});
+
+test("Add pivot with grouping on a many2many", async function (assert) {
+    assert.expect(9);
+
+    const data = getBasicData();
+    let spreadsheetLoaded = false;
+    const { model } = await createSpreadsheetFromPivot({
+        pivotView: {
+            data,
+            arch: `
+            <pivot string="Partners">
+                <field name="product_id" type="col"/>
+                <field name="tag_ids" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+            mockRPC: function (route, args) {
+                if (args.method === "join_spreadsheet_session") {
+                    spreadsheetLoaded = true;
+                }
+                if (
+                    ['product', 'tag'].includes(args.model)
+                    && args.method === "search_read"
+                    && spreadsheetLoaded
+                    ) {
+                    // check that every argument of the domain is json parsed.
+                    // Since the values refer to record ids (since we group by
+                    // relational field) in this case, we should only have
+                    // integers or boolean (false) values
+                    const domain = args.kwargs.domain[0];
+                    assert.ok(
+                        domain[2].every(id => Number.isInteger(id) || id === false),
+                        "Every value in the domain should either be an integer or a boolean (false)"
+                    )
+                }
+            }
+        },
+    });
+    assert.equal(getCellContent(model, "A3"), `=PIVOT.HEADER("1","tag_ids","42")`);
+    assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","tag_ids","67")`);
+    assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER("1","tag_ids","false")`);
+    assert.equal(getCellContent(model, "A6"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
+    assert.equal(getCellContent(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
+    assert.equal(getCellContent(model, "D1"), `=PIVOT.HEADER("1")`);
 });

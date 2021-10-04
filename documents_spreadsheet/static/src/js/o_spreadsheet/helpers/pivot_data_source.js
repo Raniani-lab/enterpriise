@@ -254,7 +254,7 @@ export default class PivotDataSource extends BasicDataSource {
      */
     async _orderValues(values, fieldName, field, model, context) {
         const requestField = field.relation ? "id" : fieldName;
-        values = ["boolean", "many2one", "integer", "float"].includes(field.type)
+        values = ["boolean", "many2one", "many2many", "integer", "float"].includes(field.type)
             ? values.map((value) => JSON.parse(value))
             : values;
         const records = await this.rpc({

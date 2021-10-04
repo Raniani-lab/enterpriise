@@ -9,7 +9,7 @@
                 <button name="action_create_new_post"
                         type="object"
                         class="oe_highlight order-2"
-                        string="Send Social Post"
+                        string="Add Post"
                         groups="social.group_social_user"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">

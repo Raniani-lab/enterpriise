@@ -12,14 +12,20 @@
 
       <xpath expr='//nav' position="inside">
         <HomeMenuCustomizer t-if="studio.mode === studio.MODES.HOME_MENU" t-on-dropdown-item-selected.stop=""/>
+        <t t-call="web_studio.menuButtons" />
         <t t-call="web_studio.masterButtons" />
       </xpath>
 
-      <xpath expr="//t[@t-call='web.NavBar.SectionsMenu']" position="attributes">
-        <attribute name="t-call">web_studio.NavBar.SectionsMenu</attribute>
-      </xpath>
-
       <xpath expr="//div[contains(@class, 'o_menu_systray')]" position="replace"/>
+  </t>
+
+  <t t-name="web_studio.menuButtons" owl="1">
+    <div class="o-studio--menu">
+      <t t-if="studio.mode === studio.MODES.EDITOR" >
+          <EditMenuItem />
+          <NewModelItem />
+      </t>
+    </div>
   </t>
 
   <t t-name="web_studio.masterButtons" owl="1">
@@ -33,15 +39,6 @@
           <a class="btn btn-primary">Close</a>
       </div>
     </div>
-  </t>
-
-  <t t-name="web_studio.NavBar.SectionsMenu" t-inherit="web.NavBar.SectionsMenu" owl="1">
-    <xpath expr="//div" position="inside">
-      <t t-if="studio.mode === studio.MODES.EDITOR" >
-        <EditMenuItem />
-        <NewModelItem />
-      </t>
-    </xpath>
   </t>
 
 </templates>

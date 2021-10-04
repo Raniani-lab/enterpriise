@@ -3,7 +3,7 @@
 
 <t t-name="web_studio.NewModel">
     <div>
-        <a href="#" class="o_web_create_new_model" role="button"><i class="fa fa-fw fa-plus"/> New Model</a>
+        <a href="#" class="o_web_create_new_model o_nav_entry" role="button"><i class="fa fa-fw fa-plus"/> New Model</a>
     </div>
 </t>
 

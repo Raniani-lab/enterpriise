@@ -734,14 +734,8 @@ class AccountMove(models.Model):
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
-        if 'default_journal_id' in self._context:
-            self_ctx = self
-        else:
-            # we need to make sure the type is in the context as _get_default_journal uses it
-            self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
-            self_ctx = self_ctx.with_company(self.company_id.id)
-            self_ctx = self_ctx.with_context(default_journal_id=self_ctx.journal_id.id)
-        with patch('odoo.tests.common.Form._process_fvg', _process_fvg), Form(self_ctx) as move_form:
+        patched_process_fvg, move_form = self.get_form_context_manager()
+        with patched_process_fvg, move_form:
             move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
             if not move_form.partner_id:
                 if vat_number_ocr:
@@ -822,39 +816,7 @@ class AccountMove(models.Model):
                 move_form.save()
 
                 vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
-                for i, line_val in enumerate(vals_invoice_lines):
-                    with move_form.invoice_line_ids.new() as line:
-                        line.name = line_val['name']
-                        line.price_unit = line_val['price_unit']
-                        line.quantity = line_val['quantity']
-
-                        if not line.account_id:
-                            raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
-
-                    move_form.save()  # We save to trigger the re-computation of the taxes on the line
-                    with move_form.invoice_line_ids.edit(i) as line:
-                        taxes_dict = {}
-                        for tax in line.tax_ids:
-                            taxes_dict[(tax.amount, tax.amount_type, tax.price_include)] = {
-                                'found_by_OCR': False,
-                                'tax_record': tax,
-                            }
-                        for taxes_record in line_val['tax_ids']:
-                            tax_tuple = (taxes_record.amount, taxes_record.amount_type, taxes_record.price_include)
-                            if tax_tuple not in taxes_dict:
-                                if taxes_record.price_include:
-                                    line.price_unit *= 1 + taxes_record.amount/100
-                                line.tax_ids.add(taxes_record)
-                            else:
-                                taxes_dict[tax_tuple]['found_by_OCR'] = True
-                        for _dummy, tax_info in taxes_dict.items():
-                            if not tax_info['found_by_OCR']:
-                                amount_before = line.price_total
-                                line.tax_ids.remove(tax_info['tax_record'].id)
-                                # If the total amount didn't change after removing it, we can actually leave it.
-                                # This is intended as a way to keep intra-community taxes
-                                if line.price_total == amount_before:
-                                    line.tax_ids.add(tax_info['tax_record'])
+                self._set_invoice_lines(move_form, vals_invoice_lines)
 
                 # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
                 for i in range(len(move_form.line_ids)):
@@ -865,6 +827,51 @@ class AccountMove(models.Model):
                             if not move_form.currency_id.is_zero(rounding_error) and abs(rounding_error) < threshold:
                                 line.debit -= rounding_error
                             break
+
+    def _set_invoice_lines(self, move_form, vals_invoice_lines):
+        for i, line_val in enumerate(vals_invoice_lines, start=len(move_form.invoice_line_ids)):
+            with move_form.invoice_line_ids.new() as line:
+                line.name = line_val['name']
+                line.price_unit = line_val['price_unit']
+                line.quantity = line_val['quantity']
+
+                if not line.account_id:
+                    raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
+
+            move_form.save()  # We save to trigger the re-computation of the taxes on the line
+            with move_form.invoice_line_ids.edit(i) as line:
+                taxes_dict = {}
+                for tax in line.tax_ids:
+                    taxes_dict[(tax.amount, tax.amount_type, tax.price_include)] = {
+                        'found_by_OCR': False,
+                        'tax_record': tax,
+                    }
+                for taxes_record in line_val['tax_ids']:
+                    tax_tuple = (taxes_record.amount, taxes_record.amount_type, taxes_record.price_include)
+                    if tax_tuple not in taxes_dict:
+                        if taxes_record.price_include:
+                            line.price_unit *= 1 + taxes_record.amount / 100
+                        line.tax_ids.add(taxes_record)
+                    else:
+                        taxes_dict[tax_tuple]['found_by_OCR'] = True
+                for tax_info in taxes_dict.values():
+                    if not tax_info['found_by_OCR']:
+                        amount_before = line.price_total
+                        line.tax_ids.remove(tax_info['tax_record'].id)
+                        # If the total amount didn't change after removing it, we can actually leave it.
+                        # This is intended as a way to keep intra-community taxes
+                        if line.price_total == amount_before:
+                            line.tax_ids.add(tax_info['tax_record'])
+
+    def get_form_context_manager(self):
+        if 'default_journal_id' in self._context:
+            self_ctx = self
+        else:
+            # we need to make sure the type is in the context as _get_default_journal uses it
+            self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
+            self_ctx = self_ctx.with_company(self.company_id.id)
+            self_ctx = self_ctx.with_context(default_journal_id=self_ctx.journal_id.id)
+        return patch('odoo.tests.common.Form._process_fvg', _process_fvg), Form(self_ctx)
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')

@@ -2934,12 +2934,6 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
             $line = helper.getLine({barcode: 'productlot1'});
             helper.assertLineQty($line, "2");
             helper.assert($line.find('.o_line_lot_name').text().trim(), 'lot1');
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: function () {
             helper.assertErrorMessage('The scanned serial number is already used.');
         },
     },
@@ -2950,12 +2944,12 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:contains("serial2")',
         run: 'scan productlot1',
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:contains("productlot1")',
         run: 'scan lot1',
     },
 
@@ -2965,7 +2959,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:contains("productserial1")',
         run: 'scan serial3',
     },
 

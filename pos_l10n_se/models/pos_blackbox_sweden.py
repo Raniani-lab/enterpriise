@@ -106,8 +106,6 @@ class PosConfig(models.Model):
             raise ValidationError(_("The company require an VAT number when you are using the blackbox."))
         if self.iface_sweden_fiscal_data_module and not self.cash_control:
             raise ValidationError(_("You cannot use the sweden blackbox without cash control."))
-        if self.iface_sweden_fiscal_data_module and not self.manage_orders:
-            raise ValidationError(_("You cannot use the sweden blackbox without the manage orders setting."))
         if self.iface_sweden_fiscal_data_module and self.iface_splitbill:
             raise ValidationError(_("You cannot use the sweden blackbox with the bill splitting setting."))
 

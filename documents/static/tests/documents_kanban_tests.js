@@ -2067,6 +2067,8 @@ QUnit.module('documents_kanban_tests.js', {
         // Document with a non-editable link
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
         assert.containsNone(kanban, 'o_inspector_custom_field .o_model_container',
             "should display a record link to the document");
         assert.containsNone(kanban, '.o_inspector_model_button.o_inspector_model_edit',

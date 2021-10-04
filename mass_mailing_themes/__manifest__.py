@@ -20,9 +20,4 @@ Design gorgeous mails
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
-    'assets': {
-        'mass_mailing.assets_mail_themes': [
-            'mass_mailing_themes/static/src/scss/**/*',
-        ],
-    }
 }

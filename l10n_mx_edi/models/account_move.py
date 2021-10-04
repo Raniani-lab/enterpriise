@@ -115,8 +115,12 @@ class AccountMove(models.Model):
         compute='_compute_cfdi_values')
 
     # ==== Other fields ====
-    l10n_mx_edi_payment_method_id = fields.Many2one('l10n_mx_edi.payment.method',
+    l10n_mx_edi_payment_method_id = fields.Many2one(
+        comodel_name='l10n_mx_edi.payment.method',
         string="Payment Way",
+        compute='_compute_l10n_mx_edi_payment_method_id',
+        store=True,
+        readonly=False,
         help="Indicates the way the invoice was/will be paid, where the options could be: "
              "Cash, Nominal Check, Credit Card, etc. Leave empty if unkown and the XML will show 'Unidentified'.",
         default=lambda self: self.env.ref('l10n_mx_edi.payment_method_otros', raise_if_not_found=False))
@@ -328,6 +332,16 @@ class AccountMove(models.Model):
                     move.l10n_mx_edi_payment_policy = 'PUE'
             else:
                 move.l10n_mx_edi_payment_policy = False
+
+    @api.depends('journal_id')
+    def _compute_l10n_mx_edi_payment_method_id(self):
+        for move in self:
+            if move.l10n_mx_edi_payment_method_id:
+                move.l10n_mx_edi_payment_method_id = move.l10n_mx_edi_payment_method_id
+            elif move.journal_id.l10n_mx_edi_payment_method_id:
+                move.l10n_mx_edi_payment_method_id = move.journal_id.l10n_mx_edi_payment_method_id
+            else:
+                move.l10n_mx_edi_payment_method_id = None
 
     # -------------------------------------------------------------------------
     # CONSTRAINTS

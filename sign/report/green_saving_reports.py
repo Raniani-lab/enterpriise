@@ -40,7 +40,8 @@ class GreenSavingsReport(models.AbstractModel):
             'waste': round(waste, 2),
             'cans': round(cans),
             'energy': round(energy, 2),
-            'computer_hours': round(computer_hours)
+            'computer_hours': round(computer_hours),
+            'title': 'Green Savings Report'
         }
 
     @api.model

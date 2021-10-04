@@ -494,7 +494,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test(
         "open Studio with editable form view and check context propagation",
         async function (assert) {
-            assert.expect(7);
+            assert.expect(6);
 
             serverData.menus[43] = {
                 id: 43,

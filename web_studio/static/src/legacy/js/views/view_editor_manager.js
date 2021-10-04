@@ -76,6 +76,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
         toggle_form_invisible: '_onShowInvisibleToggled',
     }),
     /**
+     * The init always takes the main view's descriptions as parameters.
+     * If we are editing a nested x2m field, the ViewManager's properties are changed
+     * in order to target the right field and the right view.
+     *
      * @override
      * @param {Widget} parent
      * @param {Object} params
@@ -93,14 +97,34 @@ var ViewEditorManager = AbstractEditorManager.extend({
         this.action = params.action;
 
         this.fields_view = params.fields_view;
-        this.view_id = this.fields_view.view_id;
-        this.model_name = this.fields_view.model;
-
         this.fields = this._processFields(this.fields_view.fields);
 
-        // do not take it from the fields_view as it directly comes from the
-        // server and might be `tree` sometimes
+        this.model_name = this.fields_view.model;
         this.view_type = params.viewType;
+        this.mainViewType = this.view_type;
+        this.view_id = this.fields_view.view_id;
+
+        this.studio_view_id = params.studio_view_id;
+        this.studio_view_arch = params.studio_view_arch;
+
+        this.isEditingX2m = params.x2mEditorPath && params.x2mEditorPath.length;
+        if (this.isEditingX2m) {
+            this.x2mEditorPath = params.x2mEditorPath;
+            this.chatter_allowed = false;
+
+            const currentX2m = this.x2mEditorPath[this.x2mEditorPath.length - 1];
+            this.currentX2m = currentX2m;
+
+            this.x2mField = currentX2m.x2mField;
+            this.x2mViewType = currentX2m.x2mViewType;
+            this.x2mModel = currentX2m.x2mModel;
+
+            this.view_type = this.x2mViewType;
+            this.x2mViewParams = currentX2m.x2mViewParams;
+        } else {
+            this.chatter_allowed = params.chatter_allowed || false;
+            this.controllerState = params.controllerState;
+        }
 
         this.renamingAllowedFields = []; // those fields can be renamed
 
@@ -112,35 +136,23 @@ var ViewEditorManager = AbstractEditorManager.extend({
             'div': ['name'],
             'filter': ['name'],
         };
-
-        this.chatter_allowed = params.chatter_allowed || false;
-        this.studio_view_id = params.studio_view_id;
-        this.studio_view_arch = params.studio_view_arch;
-        this.x2mEditorPath = params.x2mEditorPath ? params.x2mEditorPath.slice() : [];
-
-        this.controllerState = params.controllerState;
     },
     /**
      * @override
      */
-    start: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (self.x2mEditorPath.length) {
-                var currentX2m = self.x2mEditorPath.slice(-1)[0];
-                const upstreamx2mEditorPath = self.x2mEditorPath.slice(0, -1);
-                var fields_view;
-                var x2mData;
-                if (upstreamx2mEditorPath.length) {
-                    x2mData = self.x2mEditorPath.slice(-1)[0].x2mData;
-                    fields_view = self._getX2mFieldsView(self.view_type, currentX2m.x2mModel, upstreamx2mEditorPath, x2mData);
-                }
-                return self._openX2mEditor(currentX2m.x2mField,
-                    currentX2m.x2mViewType, true, fields_view, x2mData);
+    start: async function () {
+        const _super = this._super;
+        if (this.isEditingX2m) {
+            let fieldsView = this._getX2mFieldsView(this.fields_view);
+
+            if (!fieldsView || fieldsView.name) {
+                fieldsView = await this._createInlineView(this.x2mViewType, this.x2mField)
+                fieldsView = this._getX2mFieldsView(fieldsView);
             }
-            // TODO: useless I think
-            return Promise.resolve();
-        });
+            this.fields_view = fieldsView;
+            this.fields = await this._getProcessedX2mFields();
+        }
+        return _super.apply(this, arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -641,7 +653,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * @override
      */
-    _applyChangeHandling: function (result, opID) {
+    _applyChangeHandling: async function (result, opID) {
         var self = this;
         var prom = Promise.resolve();
 
@@ -660,26 +672,22 @@ var ViewEditorManager = AbstractEditorManager.extend({
             this.studio_view_id = result.studio_view_id;
         }
 
-        if (this.x2mField) {
-            this.view_type = this.mainViewType;
-        }
-
         // NOTE: fields & fields_view are from the base model here.
         // fields will be updated accordingly if editing a x2m (see
         // @_setX2mParameters).
         this.fields = this._processFields(result.fields);
-        this.fields_view = result.fields_views[this.view_type];
+        this.fields_view = result.fields_views[this.mainViewType];
         // TODO: this processing is normally done in data_manager so we need
         // to duplicate it here ; it should be moved in init of
         // abstract_view to avoid the duplication
         this.fields_view.viewFields = this.fields_view.fields;
         this.fields_view.fields = result.fields;
 
-        // fields and fields_view has been updated so let's update everything
-        // (i.e. the sidebar which displays the 'Existing Fields', etc.)
-        if (this.x2mField) {
-            prom = this._setX2mParameters();
+        if (this.isEditingX2m) {
+            this.fields_view = this._getX2mFieldsView(this.fields_view);
+            this.fields = await this._getProcessedX2mFields();
         }
+
         return prom.then(self.updateEditor.bind(self));
     },
     /**
@@ -718,8 +726,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @param {string} field_name
      * @return {Promise}
      */
-    _createInlineView: function (type, field_name) {
-        var self = this;
+    _createInlineView: async function (type, field_name) {
         var subviewType = type === 'list' ? 'tree' : type;
         // We build the correct xpath if we are editing a 'sub' subview
         var subviewXpath = this._getSubviewXpath(this.x2mEditorPath.slice(0, -1));
@@ -729,7 +736,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         if (specific_view) {
             context[subviewType+'_view_ref'] = specific_view;
         }
-        var prom = this._rpc({
+        const studioViewArch = await this._rpc({
             route: '/web_studio/create_inline_view',
             params: {
                 model: this.x2mModel,
@@ -742,21 +749,17 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 context: context,
             },
         });
-        return prom
-            .then(function (studio_view_arch) {
-                // We clean the stack of operations because the edited view will change
-                self.operations = [];
-                self.studio_view_arch = studio_view_arch;
-                var params = self.view.loadParams;
-                return self.loadViews(
-                    self.model_name,
-                    params.context || {},
-                    [[self.view_id, params.viewType]]
-                );
-            }).then(function (viewInfo) {
-                self.fields_view = viewInfo[self.view_type];
-                return self._instantiateX2mEditor();
-            });
+
+        this.operations = [];
+        this.studio_view_arch = studioViewArch;
+
+        const viewInfo = await this.loadViews(
+            this.model_name,
+            this.currentX2m.x2mViewContext || {},
+            [[this.view_id, this.mainViewType]]
+        );
+
+        return viewInfo[this.mainViewType];
     },
     /**
      * @override
@@ -935,6 +938,17 @@ var ViewEditorManager = AbstractEditorManager.extend({
         );
     },
     /**
+     * Makes a fields_get onto the current x2m model
+     * @private
+     */
+    async _getProcessedX2mFields() {
+        const fields = await this._rpc({
+            model: this.x2mModel,
+            method: 'fields_get',
+        })
+        return this._processFields(fields);
+    },
+    /**
      * @override
      * @param {Object} [params]
      * @param {Object} [params.node] mandatory if mode "properties"
@@ -1009,35 +1023,39 @@ var ViewEditorManager = AbstractEditorManager.extend({
         return subviewXpath;
     },
     /**
-     * Goes through the x2mEditorPath to get the current x2m fields_view
+     * From the main view's fields_view, go through the x2mEditorPath to get the current x2m fields_view
      *
      * @private
+     * @param {Object} fieldsView: the main view's field_view
      * @return {Object} the fields_view of the x2m field
      */
-    _getX2mFieldsView: function (mainViewType, x2mModel, x2mEditorPath, x2mViewParams) {
+    _getX2mFieldsView(fieldsView) {
         // this is a crappy way of processing the arch received as string
         // because we need a processed fields_view to find the x2m fields view
-        const View = view_registry.get(mainViewType);
-        const view = new View(this.fields_view, Object.assign({}, x2mViewParams));
+        const View = view_registry.get(this.mainViewType);
+        const view = new View(fieldsView, _.extend({}, this.x2mViewParams));
 
         let fields_view = view.fieldsView;
-        for ( const step of x2mEditorPath) {
-            var x2mField = fields_view.fieldsInfo[step.view_type][step.x2mField];
+
+        const x2mEditorPath = this.x2mEditorPath;
+        for (let index = 0; index < x2mEditorPath.length; index++) {
+            const step = x2mEditorPath[index];
+            const x2mField = fields_view.fieldsInfo[step.parentViewType][step.x2mField];
             fields_view = x2mField.views[step.x2mViewType];
         }
-        fields_view.model = x2mModel;
+        if (fields_view) {
+            fields_view.model = this.x2mModel;
+        }
         return fields_view;
     },
     /**
      * @override
      * @returns {Promise<Widget>}
      */
-    _instantiateEditor: function (params) {
+    _instantiateEditor: async function (params) {
         params = params || {};
 
-        var fields_view = this.x2mField ?
-            this._getX2mFieldsView(this.mainViewType, this.x2mModel, this.x2mEditorPath, this.x2mViewParams) :
-            this.fields_view;
+        const fields_view = this.fields_view;
 
         var viewParams = this.x2mField ? this.x2mViewParams : {
             action: this.action,
@@ -1108,7 +1126,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 });
             }
         }
-        return def;
+        const editor = await def;
+        return editor;
     },
     /**
      * @override
@@ -1156,20 +1175,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
 
         return new ViewEditorSidebar(this, params);
     },
-    /**
-     * Changes the environment variables before updating the editor
-     * with the x2m information.
-     *
-     * @private
-     * @return {Promise}
-     */
-    _instantiateX2mEditor: function () {
-        var self = this;
-        this.mainViewType = this.view_type;
-        return this._setX2mParameters().then(function () {
-            return self.updateEditor();
-        });
-    },
 
     _computeX2mPath(x2mField, x2mViewType, fieldsView=null, x2mData=null) {
         let fields = this.fields;
@@ -1178,86 +1183,34 @@ var ViewEditorManager = AbstractEditorManager.extend({
         }
         const x2mModel = fields[x2mField].relation;
 
-        return  {
-            view_type: this.view_type,
-            x2mField: x2mField,
-            x2mViewType: x2mViewType,
-            x2mModel,
-            x2mData,
-        };
-    },
-    /**
-     * Called when the x2m editor needs to be opened. Makes the check if an
-     * inline view needs to be create or directly instantiate the x2m editor.
-     *
-     * @private
-     * @param {string} fieldName x2m field name
-     * @param {string} viewType x2m viewtype being edited
-     * @param {boolean} fromBreadcrumb
-     * @param {object} fieldsView
-     * @param {object} x2mData
-     * @return {Promise}
-     */
-    _openX2mEditor: function (fieldName, viewType, fromBreadcrumb, fieldsView, x2mData) {
-        var self = this;
-        this.editor.unselectedElements();
-        this.x2mField = fieldName;
-        this.x2mViewType = viewType;
-        var fields = this.fields;
-        var fieldsInfo = this.editor.state.fieldsInfo;
-        if (fieldsView) {
-            fields = fieldsView.fields;
-            fieldsInfo = fieldsView.fieldsInfo;
-        }
-        this.x2mModel = fields[this.x2mField].relation;
-
-        var data = x2mData || this.editor.state.data[this.x2mField];
-        if (viewType === 'form' && data.count) {
+        let data = x2mData;
+        if (x2mViewType === 'form' && data.count) {
             // the x2m data is a datapoint type list and we need the datapoint
             // type record to open the form view with an existing record
             data = data.data[0];
         }
-
-        // WARNING: these attributes are critical when editing a x2m !
-        //
-        // A x2m view can use a special variable `parent` (in a field domain for
-        // example) which refers to the parent datapoint data (this is added in
-        // the context, see @_getEvalContext).
-        // When editing x2m view, the view is opened as if it was the main view
-        // and a new view means a new basic model (the reference to the parent
-        // will thus lost). This is why we reuse the same model and specify a
-        // `parentID` (see @_onOpenOne2ManyRecord in FormController).
-
-        // Remove default_* keys from parent context to avoid issue of same field name in x2m.
-        var context = _.omit(data.getContext(), function (val, key) {
-            return _.str.startsWith(key, 'default_');
+        const context = _.omit(data.getContext(), function (val, key) {
+            return key.startsWith('default_');
         });
-        this.x2mViewParams = {
+
+        const x2mViewParams = {
             currentId: data.res_id,
             context: context,
             ids: data.res_ids,
             model: this.editor.model,  // reuse the same BasicModel instance
-            modelName: this.x2mModel,
+            modelName: x2mModel,
             parentID: this.editor.state.id,
         };
-        this.renamingAllowedFields = [];
 
-        var field = fieldsInfo[this.view_type][this.x2mField];
-        var def;
-        // If there is no name for the subview then it's an inline view. So if there is a name,
-        // we create the inline view to avoid modifying the external subview. This is a hack
-        // because there is no better way to find out if the subview is inline or not.
-        if (!(viewType in field.views) || field.views[viewType].name) {
-            def = this._createInlineView(viewType, field.name);
-        } else {
-            def = this._instantiateX2mEditor();
-        }
-        return def.then(function () {
-            if (!fromBreadcrumb) {
-                bus.trigger('edition_x2m_entered', viewType, self.x2mEditorPath.slice());
-            }
-            self._updateSidebar('new');
-        });
+        return  {
+            parentViewType: this.view_type,
+            x2mField: x2mField,
+            x2mViewType: x2mViewType,
+            x2mModel,
+            x2mData,
+            x2mViewParams,
+            x2mViewContext: this.view.loadParams.context,
+        };
     },
     /**
      * Processes the fields to write the field name inside the description. This
@@ -1420,23 +1373,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
             // the node also comes from the subview in 'move' operations
             op.node.subview_xpath = subviewXpath;
         }
-    },
-    /**
-     * Changes the widget variables to match the x2m field data.
-     * The rpc is done in order to get the relational fields info of the x2m
-     * being edited.
-     *
-     * @private
-     */
-    _setX2mParameters: function () {
-        var self = this;
-        this.view_type = this.x2mViewType;
-        return this._rpc({
-            model: this.x2mModel,
-            method: 'fields_get',
-        }).then(function (fields) {
-            self.fields = self._processFields(fields);
-        });
     },
     /**
      * Slugifies a string (used to transform a label into a field name)

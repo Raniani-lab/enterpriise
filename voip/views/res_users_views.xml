@@ -7,7 +7,8 @@
             <field name="arch" type="xml">
                 <data>
                     <group name="messaging" position="after">
-                        <group name="voip_config" string="VOIP Configuration" col="4" groups="base.group_user">
+                        <group name="voip_config" string="VOIP Configuration" col="4" groups="base.group_user"
+                            attrs="{'invisible': [('share', '=', True)]}">
                             <field name="sip_login" class="oe_inline" readonly="0"/>
                             <field name="sip_external_phone" class="oe_inline" readonly="0"/>
                             <field name="sip_always_transfer" class="oe_inline" readonly="0"/>

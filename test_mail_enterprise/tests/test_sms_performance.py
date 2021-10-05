@@ -13,18 +13,7 @@ class TestSMSPerformance(BaseMailPerformance, sms_common.SMSCase):
 
     def setUp(self):
         super(TestSMSPerformance, self).setUp()
-        self.user_employee.write({
-            'login': 'employee',
-            'country_id': self.env.ref('base.be').id,
-        })
-        self.admin = self.env.user
 
-        self.customer = self.env['res.partner'].with_context(self._quick_create_ctx).create({
-            'name': 'Test Customer',
-            'email': 'test@example.com',
-            'mobile': '0456123456',
-            'country_id': self.env.ref('base.be').id,
-        })
         self.test_record = self.env['mail.test.sms'].with_context(self._quick_create_ctx).create({
             'name': 'Test',
             'customer_id': self.customer.id,
@@ -41,9 +30,6 @@ class TestSMSPerformance(BaseMailPerformance, sms_common.SMSCase):
                 'mobile': '0456%s%s0000' % (x, x),
                 'country_id': self.env.ref('base.be').id,
             })
-
-        # patch registry to simulate a ready environment
-        self.patch(self.env.registry, 'ready', True)
 
     @mute_logger('odoo.addons.sms.models.sms_sms')
     @users('employee')

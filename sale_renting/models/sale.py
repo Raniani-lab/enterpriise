@@ -90,6 +90,9 @@ class RentalOrder(models.Model):
                 currency=self.currency_id,
                 company=self.company_id
             )
+            if not pricing:
+                sol.price_unit = sol.product_id.lst_price
+                continue
             duration_dict = self.env['rental.pricing']._compute_duration_vals(sol.pickup_date, sol.return_date)
             price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
 

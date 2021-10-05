@@ -373,7 +373,7 @@ class Picking(models.Model):
                                        'N-A', 20)
         if self.l10n_latam_document_type_id._is_doc_type_voucher():
             return 'N-A'
-        return self.partner_id.city or self.partner_id.commercial_partner.city or False
+        return self.partner_id.city or self.partner_id.commercial_partner_id.city or False
 
     def _l10n_cl_get_sii_reception_status_message(self, sii_response_status):
         """

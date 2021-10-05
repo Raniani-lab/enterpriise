@@ -589,6 +589,12 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     else:
         rate = get_rate(entry_details, entry, target_currency=journal_currency.name)
         if not rate:
+            amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters, target_currency=journal_currency.name)
+            if not amount:
+                amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters, target_currency=journal_currency.name)
+            if amount_currency_name == journal_currency.name:
+                rate = 1.0
+        if not rate:
             raise ValidationError(_("No exchange rate was found to convert an amount into the currency of the journal"))
 
     sign = 1 if _get_credit_debit_indicator(*nodes, namespaces=namespaces) == "CRDT" else -1

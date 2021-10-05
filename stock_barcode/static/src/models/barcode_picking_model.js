@@ -266,6 +266,11 @@ export default class BarcodePickingModel extends BarcodeModel {
     // Private
     // -------------------------------------------------------------------------
 
+    async _assignEmptyPackage(line, resultPackage) {
+        const fieldsParams = this._convertDataToFieldsParams({ resultPackage });
+        await this.updateLine(line, fieldsParams);
+    }
+
     _getNewLineDefaultContext() {
         const picking = this.cache.getRecord(this.params.model, this.params.id);
         return {
@@ -524,10 +529,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         if (!quants.length) { // Empty package => Assigns it to the last scanned line.
             const currentLine = this.selectedLine || this.lastScannedLine;
             if (currentLine && !currentLine.package_id && !currentLine.result_package_id) {
-                const fieldsParams = this._convertDataToFieldsParams({
-                    resultPackage: recPackage,
-                });
-                await this.updateLine(currentLine, fieldsParams);
+                await this._assignEmptyPackage(currentLine, recPackage);
                 barcodeData.stopped = true;
                 this.selectedLineVirtualId = false;
                 this.lastScannedPackage = recPackage.id;

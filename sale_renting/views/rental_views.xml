@@ -18,7 +18,7 @@
       <field name="context">{
         'default_sale_ok': False,
         'default_rent_ok': True,
-        'default_type': 'consu',
+        'default_detailed_type': 'consu',
         'default_purchase_ok': False,
         'search_default_filter_to_rent': True,
         }

@@ -56,8 +56,9 @@ result = payslip.dict.company_id.currency_id.round(ceil(result))
         </record>
         <record id="uae_end_of_service_provision_salary_rule" model="hr.salary.rule">
             <field name="name">End of Service Provision</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="category_id" ref="hr_payroll.COMP"/>
             <field name="code">EOSP</field>
+            <field name="appears_on_payslip">False</field>
             <field name="sequence">90</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = employee.active</field>

@@ -563,44 +563,4 @@ QUnit.module("Studio", (hooks) => {
             );
         }
     );
-
-    QUnit.module("Report Editor", (hooks) => {
-        hooks.beforeEach(() => {
-            serverData.models["ir.actions.report"] = {
-                fields: {
-                    model: { type: "char", string: "Model" },
-                },
-                records: [
-                    {
-                        id: 1,
-                        display_name: "report1",
-                        model: "partner",
-                    },
-                ],
-            };
-
-            serverData.models["ir.model"] = {
-                fields: {},
-                records: [],
-            };
-
-            Object.assign(serverData.views, {
-                "ir.actions.report,false,kanban": `
-          <kanban class="o_web_studio_report_kanban" js_class="studio_report_kanban">
-            <field name="display_name"/>
-            <templates>
-              <t t-name="kanban-box">
-                <div class="oe_kanban_global_click">
-                  <t t-esc="record.display_name.value" />
-                </div>
-              </t>
-            </templates>
-         </kanban>
-        `,
-
-                "ir.actions.report,false,form": `<form><field name="display_name" /></form>`,
-                "ir.actions.report,false,search": `<search><field name="display_name" /></search>`,
-            });
-        });
-    });
 });

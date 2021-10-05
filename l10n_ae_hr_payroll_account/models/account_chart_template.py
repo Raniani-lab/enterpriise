@@ -66,7 +66,7 @@ class AccountChartTemplate(models.Model):
                 ('struct_id', '=', self.env.ref('l10n_ae_hr_payroll.uae_employee_payroll_structure').id),
                 ('code', '=', 'BASIC')
             ]
-            self.env['hr.salary.rule'].search(salary_rule_domain_basic, limit=1).write({'account_credit': accounts['400003'].id})
+            self.env['hr.salary.rule'].search(salary_rule_domain_basic, limit=1).write({'account_debit': accounts['400003'].id})
             # self.env.ref('l10n_ae_hr_payroll.uae_basic_salary_rule').write({"account_debit": accounts['400003'].id})
             self.env.ref('l10n_ae_hr_payroll.uae_housing_allowance_salary_rule').write(
                 {"account_debit": accounts['400004'].id})

@@ -59,5 +59,5 @@ class MailActivity(models.Model):
                     existing_doc_req.write({'request_activity_id': activity.id})
 
         if doc_vals:
-            self.env['documents.document'].create(doc_vals)
+            self.env['documents.document'].sudo().create(doc_vals)
         return activities

@@ -29,7 +29,7 @@
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary"
                         close="1" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary"
-                        close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'published'), ('resource_type', '=', 'material')]}"/>
+                        close="1" groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}"/>
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It"
                         attrs="{'invisible': ['|', '|', ('resource_id', '!=', False), ('start_datetime', '=', False), ('end_datetime', '=', False)]}" close="1"/>
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I Am Unavailable"

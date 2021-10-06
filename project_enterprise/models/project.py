@@ -819,6 +819,7 @@ class Task(models.Model):
         return True
 
     def _get_recurrence_start_date(self):
+        self.ensure_one()
         return self.planned_date_begin or fields.Date.today()
 
     @api.depends('planned_date_begin')

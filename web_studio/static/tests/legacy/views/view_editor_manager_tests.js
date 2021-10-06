@@ -5831,6 +5831,49 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('click on the "More" Button', async function (assert) {
+        assert.expect(2);
+
+        // the 'More' button is only available in debug mode
+        patchWithCleanup(odoo, { debug: true });
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name='display_name'/>
+                    <field name='product_ids'>
+                        <tree><field name='display_name'/></tree>
+                    </field>
+                </sheet>
+            </form>`;
+        serverData.views["coucou,false,search"] = `<search></search>`;
+
+        Object.assign(serverData.models, {
+            "ir.ui.view": {
+                fields: {
+                    model: { type: "char" },
+                },
+                records: [{  id: 1, model: "bloups" }],
+            },
+        });
+
+        serverData.views["ir.ui.view,false,form"] = /*xml */ `<form><field name="model" /></form>`;
+        serverData.views["ir.ui.view,false,search"] = /*xml */ `<search />`;
+
+        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        await testUtils.dom.click(webClient.el.querySelector(".o_web_studio_view"));
+
+        assert.containsOnce(webClient, '.o_web_studio_sidebar .o_web_studio_parameters',
+            "there should be the button to go to the ir.ui.view form");
+        await testUtils.dom.click(webClient.el.querySelector('.o_web_studio_sidebar .o_web_studio_parameters'));
+        await legacyExtraNextTick();
+        assert.containsOnce(webClient, ".o_studio .o_action_manager .o_form_view");
+    });
+
     QUnit.module('X2Many');
 
     QUnit.test('disable creation(no_create options) in many2many_tags widget', async function (assert) {

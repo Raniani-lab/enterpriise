@@ -6,7 +6,7 @@
         t-on-switch-tab="onSwitchTab"
         t-on-studio-switch-view="switchView"
         t-on-studio-edit-view="switchViewLegacy"
-        t-on-do-action="onDoAction"
+        t-on-do-action.stop="onDoAction"
         class="o_web_studio_editor">
         <EditorMenu/>
         <StudioActionContainer initialAction="initialAction"/>

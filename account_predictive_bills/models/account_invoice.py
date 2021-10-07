@@ -24,6 +24,7 @@ class AccountMove(models.Model):
                     if predicted_product_id and predicted_product_id != line.product_id.id:
                         line.product_id = predicted_product_id
                         line._onchange_product_id()
+                        line._onchange_price_subtotal()
                         line.recompute_tax_line = True
 
                 # Product may or may not have been set above, if it has been set, account and taxes are set too

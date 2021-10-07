@@ -106,3 +106,27 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
             'product_id': product.id,
             'account_id': self.company_data['default_account_expense'].id,
         }])
+
+    def test_product_prediction_price_subtotal_computation(self):
+        invoice_form = Form(self.env['account.move'].with_context(default_move_type='in_invoice'))
+        invoice_form.partner_id = self.test_partners[0]
+        invoice_form.invoice_date = self.frozen_today
+        with invoice_form.invoice_line_ids.new() as invoice_line_form:
+            invoice_line_form.product_id = self.product_a
+        invoice = invoice_form.save()
+        invoice.action_post()
+
+        invoice_form = Form(self.env['account.move'].with_context(default_move_type='in_invoice'))
+        invoice_form.partner_id = self.test_partners[0]
+        invoice_form.invoice_date = self.frozen_today
+        with invoice_form.invoice_line_ids.new() as invoice_line_form:
+            invoice_line_form.price_unit = 42.0
+            invoice_line_form.name = 'product_a'
+        invoice = invoice_form.save()
+
+        self.assertRecordValues(invoice.invoice_line_ids, [{
+            'quantity': 1.0,
+            'price_unit': 800.0,
+            'price_subtotal': 800.0,
+            'balance': 800.0,
+        }])

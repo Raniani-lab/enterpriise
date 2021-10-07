@@ -5,6 +5,7 @@ import { registry } from "@web/core/registry";
 const servicesToRemove = [
     'studio',
     'studio_legacy',
+    'spreadsheet',
 ];
 
 const servicesRegistry = registry.category('services');

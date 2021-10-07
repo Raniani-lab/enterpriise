@@ -1,6 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.MenuItemRegistry */
 
-import { _t } from "web.core";
+import { _t, _lt } from "web.core";
 import { getFirstPivotFunction, getNumberOfPivotFormulas } from "../helpers/odoo_functions_helpers";
 import { pivotFormulaRegex } from "../helpers/pivot_helpers";
 import spreadsheet from "../o_spreadsheet_loader";
@@ -16,28 +16,28 @@ const { astToFormula } = spreadsheet;
 
 topbarMenuRegistry.add("file", { name: _t("File"), sequence: 10 });
 topbarMenuRegistry.addChild("new_sheet", ["file"], {
-    name: _t("New"),
+    name: _lt("New"),
     sequence: 10,
     action: (env) => env.newSpreadsheet(),
 });
 topbarMenuRegistry.addChild("make_copy", ["file"], {
-    name: _t("Make a copy"),
+    name: _lt("Make a copy"),
     sequence: 20,
     action: (env) => env.makeCopy(),
 });
 topbarMenuRegistry.addChild("save_as_template", ["file"], {
-    name: _t("Save as Template"),
+    name: _lt("Save as Template"),
     sequence: 40,
     action: (env) => env.saveAsTemplate(),
 });
 topbarMenuRegistry.addChild("download", ["file"], {
-    name: _t("Download"),
+    name: _lt("Download"),
     sequence: 50,
     action: (env) => env.download(),
     isReadonlyAllowed:true,
 });
 topbarMenuRegistry.add("data", {
-    name: _t("Data"),
+    name: _lt("Data"),
     sequence: 60,
     children: function (env) {
         const pivots = env.getters.getPivotIds();
@@ -100,20 +100,20 @@ topbarMenuRegistry.add("data", {
 
 cellMenuRegistry
     .add("reinsert_pivot", {
-        name: _t("Re-insert pivot"),
+        name: _lt("Re-insert pivot"),
         sequence: 185,
         children: REINSERT_PIVOT_CHILDREN,
         isVisible: (env) => env.getters.getPivotIds().length,
         separator: true,
     })
     .add("insert_pivot_cell", {
-        name: _t("Insert pivot cell"),
+        name: _lt("Insert pivot cell"),
         sequence: 180,
         children: INSERT_PIVOT_CELL_CHILDREN,
         isVisible: (env) => env.getters.getPivotIds().length,
     })
     .add("pivot_properties", {
-        name: _t("Pivot properties"),
+        name: _lt("Pivot properties"),
         sequence: 170,
         action(env) {
             const [col, row] = env.getters.getPosition();
@@ -128,7 +128,7 @@ cellMenuRegistry
         },
     })
     .add("listing_properties", {
-        name: _t("List properties"),
+        name: _lt("List properties"),
         sequence: 190,
         action(env) {
             const [col, row] = env.getters.getPosition();
@@ -144,14 +144,14 @@ cellMenuRegistry
         },
     })
     .add("reinsert_list", {
-        name: _t("Re-insert list"),
+        name: _lt("Re-insert list"),
         sequence: 195,
         children: REINSERT_LIST_CHILDREN,
         isVisible: (env) => env.getters.getListIds().length,
         separator: true,
     })
     .add("see records", {
-        name: _t("See records"),
+        name: _lt("See records"),
         sequence: 175,
         async action(env) {
             const [col, row] = env.getters.getPosition();

@@ -106,7 +106,7 @@ class AccountMoveLine(models.Model):
                         ON tax.id = tax_rel.account_tax_id
                     WHERE move.move_type = 'in_invoice'
                         AND move.state = 'posted'
-                        AND tax.active = TRUE OR tax.active IS NULL
+                        AND (tax.active = TRUE OR tax.active IS NULL)
                         AND aml.display_type IS NULL
                         AND NOT aml.exclude_from_invoice_tab
                         AND aml.company_id = %(company_id)s
@@ -148,7 +148,7 @@ class AccountMoveLine(models.Model):
 
                     WHERE inv.move_type = 'in_invoice'
                         AND inv.state = 'posted'
-                        AND pr.active = TRUE OR pr.active IS NULL
+                        AND (pr.active = TRUE OR pr.active IS NULL)
                         AND ail.display_type IS NULL
                         AND NOT ail.exclude_from_invoice_tab
                         AND ail.company_id = %(company_id)s

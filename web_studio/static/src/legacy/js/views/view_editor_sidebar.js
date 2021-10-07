@@ -445,7 +445,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this.state.attrs.required = this.state.field.required || this.state.modifiers.required;
         this.state.attrs.domain = this.state.attrs.domain || this.state.field.domain;
         this.state.attrs.context = this.state.attrs.context || this.state.field.context;
-        this.state.attrs.related = this.state.field.related ? this.state.field.related.join('.'): false;
+        this.state.attrs.related = this.state.field.related ? this.state.field.related : false;
     },
     /**
      * @private

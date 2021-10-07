@@ -2680,6 +2680,30 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('sidebar for a related field', async function (assert) {
+        assert.expect(2);
+
+        this.data.product.fields.related = { type: "char", related: "partner.display_name", string: "myRelatedField"};
+        const arch = `<form>
+                <sheet>
+                    <div class='oe_title'>
+                        <field name='related'/>
+                    </div>
+                </sheet>
+            </form>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'product',
+            arch: arch,
+        });
+
+        await testUtils.dom.click(vem.el.querySelector("[name='related']"));
+        assert.containsOnce(vem.el, ".o_web_studio_sidebar .o_web_studio_properties.active");
+        assert.strictEqual(vem.el.querySelector("input[name='string']").value, "myRelatedField");
+        vem.destroy();
+    });
+
     QUnit.module('Kanban');
 
     QUnit.test('empty kanban editor', async function (assert) {

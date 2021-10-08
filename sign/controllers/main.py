@@ -9,7 +9,7 @@ import re
 
 from PyPDF2 import PdfFileReader
 
-from odoo import http, _
+from odoo import http, models, _
 from odoo.http import request
 from odoo.addons.web.controllers.main import content_disposition
 from odoo.addons.iap.tools import iap_tools
@@ -39,15 +39,11 @@ class Sign(http.Controller):
         if current_request_item:
             for item_type in sign_item_types:
                 if item_type['auto_field']:
-                    fields = item_type['auto_field'].split('.')
-                    auto_field = current_request_item.partner_id
-                    for field in fields:
-                        if auto_field and field in auto_field:
-                            auto_field = auto_field[field]
-                        else:
-                            auto_field = ""
-                            break
-                    item_type['auto_field'] = auto_field
+                    try:
+                        auto_field = current_request_item.partner_id.mapped(item_type['auto_field'])
+                        item_type['auto_field'] = auto_field[0] if auto_field and not isinstance(auto_field, models.BaseModel) else ''
+                    except Exception:
+                        item_type['auto_field'] = ''
 
             if current_request_item.state not in ['completed', 'refused']:
                 """ When signer attempts to sign the request again,

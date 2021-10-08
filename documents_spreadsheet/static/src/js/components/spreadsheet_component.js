@@ -309,3 +309,4 @@ export default class SpreadsheetComponent extends owl.Component {
 
 SpreadsheetComponent.template = "documents_spreadsheet.SpreadsheetComponent";
 SpreadsheetComponent.components = { Spreadsheet, Dialog, PivotDialog };
+Spreadsheet._t = _t;

@@ -2109,7 +2109,6 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/insert_action_link_menu/insert_action_link_menu.xml:0
-#: code:addons/documents_spreadsheet/static/src/js/components/insert_action_link/insert_action_link_menu.xml:0
 #, python-format
 msgid "Link menu in spreadsheet"
 msgstr ""
@@ -2489,6 +2488,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_template_dialog.js:0
 #: code:addons/documents_spreadsheet/static/src/js/spreadsheet_selector_dialog.xml:0
 #, python-format
 msgid "New Spreadsheet"
@@ -2503,8 +2503,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/insert_action_link_menu/insert_action_link_menu.js:0
-#: code:addons/documents_spreadsheet/static/src/js/components/insert_action_link/insert_action_link_menu.js:0
+#: code:addons/documents_spreadsheet/static/src/actions/spreadsheet/spreadsheet_service.js:0
 #: code:addons/documents_spreadsheet/static/src/js/list_controller.js:0
 #: code:addons/documents_spreadsheet/static/src/js/pivot_view.js:0
 #, python-format
@@ -2526,8 +2525,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/actions/spreadsheet/spreadsheet_action.js:0
-#: code:addons/documents_spreadsheet/static/src/insert_action_link_menu/insert_action_link_menu.js:0
-#: code:addons/documents_spreadsheet/static/src/js/components/insert_action_link/insert_action_link_menu.js:0
+#: code:addons/documents_spreadsheet/static/src/actions/spreadsheet/spreadsheet_service.js:0
 #: code:addons/documents_spreadsheet/static/src/js/list_controller.js:0
 #: code:addons/documents_spreadsheet/static/src/js/pivot_view.js:0
 #, python-format

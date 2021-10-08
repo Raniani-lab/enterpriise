@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="documents_spreadsheet.TemplateDialog" owl="1">
         <div>
-            <Dialog t-if="state.isOpen" title="'New Spreadsheet'" t-on-dialog-closed="state.isOpen = false" contentClass="'o-spreadsheet-templates-dialog'">
+            <Dialog t-if="state.isOpen" title="dialogTitle" t-on-dialog-closed="state.isOpen = false" contentClass="'o-spreadsheet-templates-dialog'">
                 <div class="o_searchview">
                     <SearchBar fields="props.searchView.fields"/>
                 </div>

@@ -15,6 +15,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
     class TemplateDialog extends owl.Component {
         constructor() {
             super(...arguments);
+            this.dialogTitle = this.env._t("New Spreadsheet");
             this.limit = 9;
             this.state = useState({
                 isOpen: true,

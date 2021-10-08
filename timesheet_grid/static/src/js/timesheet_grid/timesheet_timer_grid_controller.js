@@ -2,8 +2,9 @@ odoo.define('timesheet_grid.TimerGridController', function (require) {
     "use strict";
 
     const GridController = require('web_grid.GridController');
+    const TimesheetGridControllerMixin = require('timesheet_grid.TimesheetGridControllerMixin');
 
-    const TimerGridController = GridController.extend({
+    const TimerGridController = GridController.extend(TimesheetGridControllerMixin, {
         custom_events: Object.assign({}, GridController.prototype.custom_events, {
             update_timer: '_onUpdateTimer',
             update_timer_description: '_onUpdateTimerDescription',

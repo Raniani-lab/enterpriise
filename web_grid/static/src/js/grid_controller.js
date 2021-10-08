@@ -87,14 +87,21 @@ var GridController = AbstractController.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Get the context for the form view.
+     * @private
+     */
+    _getFormContext() {
+        return Object.assign({}, this.model.getContext(), { view_grid_add_line: true });
+    },
+
+    /**
      * Open a form View to create a new entry in the grid
      * @private
      */
     _addLine: function () {
-        var context = this.model.getContext();
-        var formContext = _.extend({}, context, {view_grid_add_line: true});
+        const formContext = this._getFormContext();
         // TODO: document quick_create_view (?) context key
-        var formViewID = context.quick_create_view || this.formViewID || false;
+        var formViewID = formContext.quick_create_view || this.formViewID || false;
         new dialogs.FormViewDialog(this, {
             res_model: this.modelName,
             res_id: false,

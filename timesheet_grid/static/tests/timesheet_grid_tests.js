@@ -114,6 +114,14 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                         '<field name="unit_amount" type="measure" widget="float_time"/>' +
                         '<button string="Action" type="action" name="action_name"/>' +
                     '</grid>';
+            this.archs = {
+            'analytic.line,23,form': '<form string="Add a line"><group><group>' +
+                                  '<field name="project_id"/>' +
+                                  '<field name="task_id"/>' +
+                                  '<field name="date"/>' +
+                                  '<field name="unit_amount" string="Time spent"/>' +
+                                '</group></group></form>',
+            };
         }
     }, function () {
         QUnit.module('TimesheetGridView');
@@ -362,6 +370,58 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
 
             const numberOfSpanWhereAllDaysAreNotDoneYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('-1.00 days')").length;
             assert.strictEqual(numberOfSpanWhereAllDaysAreNotDoneYetAreRed, numberOfSpanWhereAllHoursCompleted, 'The employee has not done enough days, thus we display the number of days in red.');
+
+            grid.destroy();
+        });
+
+        QUnit.test('when in Next week date should be first working day', async function(assert) {
+
+            assert.expect(2);
+
+            const grid = await createView({
+                View: TimesheetGridView,
+                model: 'analytic.line',
+                data: this.data,
+                arch: this.arch,
+                currentDate: "2017-01-25",
+                archs: this.archs,
+            });
+
+            // click on previous button
+            await testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
+
+            // click on 'Add a Line' button
+            await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
+            assert.ok($('.modal').length, "should have opened a modal");
+            assert.strictEqual($('.modal-body.o_act_window input[name="date"]').val(), "01/30/2017", "date should be first working day");
+            // close the modal
+            await testUtils.dom.click($('.modal .modal-footer button.o_form_button_cancel'));
+
+            grid.destroy();
+        });
+
+        QUnit.test('when in previous week date should be first working day', async function(assert) {
+
+            assert.expect(2);
+
+            const grid = await createView({
+                View: TimesheetGridView,
+                model: 'analytic.line',
+                data: this.data,
+                arch: this.arch,
+                currentDate: "2017-01-25",
+                archs: this.archs,
+            });
+
+            // click on previous button
+            await testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
+
+            // click on 'Add a Line' button
+            await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
+            assert.ok($('.modal').length, "should have opened a modal");
+            assert.strictEqual($('.modal-body.o_act_window input[name="date"]').val(), "01/16/2017", "date should be first working day");
+            // close the modal
+            await testUtils.dom.click($('.modal .modal-footer button.o_form_button_cancel'));
 
             grid.destroy();
         });

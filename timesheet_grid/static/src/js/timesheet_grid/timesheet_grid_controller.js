@@ -2,8 +2,9 @@ odoo.define('timesheet_grid.GridController', function (require) {
     "use strict";
 
     const GridController = require('web_grid.GridController');
+    const TimesheetGridControllerMixin = require('timesheet_grid.TimesheetGridControllerMixin');
 
-    const TimesheetGridController = GridController.extend({
+    const TimesheetGridController = GridController.extend(TimesheetGridControllerMixin, {
 
         /**
          * @override

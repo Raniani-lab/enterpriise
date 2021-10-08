@@ -39,6 +39,7 @@
             'timesheet_grid/static/src/js/timesheet_uom_timer.js',
             'timesheet_grid/static/src/js/timesheet_config_mixin.js',
             'timesheet_grid/static/src/js/timesheet_gantt/task_progress_gantt_view.js',
+            'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_model.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_renderer.js',

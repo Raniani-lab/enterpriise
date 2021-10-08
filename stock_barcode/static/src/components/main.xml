@@ -104,8 +104,10 @@
                     t-on-click="print(button.action, button.method)"/>
             </t>
             <button t-if="env.model.displayCancelButton"
-                t-esc="'Cancel'" t-on-click="cancel"
-                class="o_cancel_operation btn-lg btn btn-dark text-uppercase"/>
+                t-on-click="cancel"
+                class="o_cancel_operation btn-lg btn btn-dark text-uppercase">
+                Cancel
+            </button>
         </div>
         <div t-if="displayBarcodeLines" class="fixed-bottom"> <!-- Footer -->
             <div class="o_barcode_control o_action_buttons d-flex">

@@ -331,6 +331,7 @@ export const ActionEditorMain = Widget.extend({
             if (initial_view_mode) {
                 result.initial_view_types = initial_view_mode.split(",");
             }
+            /* non-working action removed in #21562: we should never get here */
             return self.do_action("action_web_studio_action_editor", {
                 action: result,
                 noEdit: true,

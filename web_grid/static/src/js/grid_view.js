@@ -130,26 +130,27 @@ var GridView = AbstractView.extend({
      * @private
      * @param {node} col_node - the node of 'col' in grid view arch definition
      * @param {Object} context - the context used to instanciate the view
+     * @returns {Array<{name: string, string: string, span: string, step: string}>}
      */
-     _extract_ranges: function(col_node, context) {
-        var ranges = [];
-        if (config.device.isMobile) {
-            ranges.push({
+    _extract_ranges: function(col_node, context) {
+        let ranges = [];
+        const pyevalContext = py.dict.fromJSON(context || {});
+        for (const range of col_node.children.map(node => node.attrs)) {
+            if (range.invisible && pyUtils.py_eval(range.invisible, { 'context': pyevalContext })) {
+                continue;
+            }
+            ranges.push(range);
+        }
+        if (config.device.isMobile && !ranges.find(r => r.name === 'day')) {
+            ranges.unshift({
                 name: 'day',
                 string: _t('Day'),
                 span: 'day',
                 step: 'day',
             });
         }
-        var pyevalContext = py.dict.fromJSON(context || {});
-        _.each(_.pluck(col_node.children, 'attrs'), function(range) {
-            if (range.invisible && pyUtils.py_eval(range.invisible, {'context': pyevalContext})) {
-                return;
-            }
-            ranges.push(range);
-        });
         return ranges;
-     },
+    },
 
 });
 

@@ -212,6 +212,7 @@ class AnalyticLine(models.Model):
                     if not any(record == row for row in res_rows):
                         rows.append({'values': record, 'domain': [('id', '=', -1)]})
 
+        rows = sorted(rows, key=lambda l: [l['values'][field][1] if l['values'][field] else " " for field in row_fields[0:2]])
         # _grid_make_empty_cell return a dict, in this dictionary,
         # we need to check if the cell is in the current date,
         # then, we add a key 'is_current' into this dictionary
@@ -795,6 +796,7 @@ class AnalyticLine(models.Model):
             'group_expand': True,
         }
         if (type_view == 'week'):
+            context['grid_range'] = 'week'
             context['grid_anchor'] = fields.Date.today() - relativedelta(weeks=1)
         elif type_view == 'month':
             context['grid_range'] = 'month'

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 import re
 
 import logging
@@ -20,7 +20,7 @@ class AccountMove(models.Model):
             for line in to_predict_lines:
                 # Predict product.
                 if not line.product_id:
-                    predicted_product_id = line._predict_product(line.name)
+                    predicted_product_id = line._predict_product()
                     if predicted_product_id and predicted_product_id != line.product_id.id:
                         line.product_id = predicted_product_id
                         line._onchange_product_id()
@@ -30,14 +30,14 @@ class AccountMove(models.Model):
                 # Product may or may not have been set above, if it has been set, account and taxes are set too
                 if not line.product_id:
                     # Predict account.
-                    predicted_account_id = line._predict_account(line.name, line.partner_id)
+                    predicted_account_id = line._predict_account()
                     if predicted_account_id and predicted_account_id != line.account_id.id:
                         line.account_id = predicted_account_id
                         line._onchange_account_id()
                         line.recompute_tax_line = True
 
                     # Predict taxes
-                    predicted_tax_ids = line._predict_taxes(line.name)
+                    predicted_tax_ids = line._predict_taxes()
                     if predicted_tax_ids == [None]:
                         predicted_tax_ids = []
                     if predicted_tax_ids is not False and set(predicted_tax_ids) != set(line.tax_ids.ids):
@@ -57,174 +57,127 @@ class AccountMoveLine(models.Model):
         lang = self._context.get('lang') and self._context.get('lang')[:2]
         return {'fr': 'french'}.get(lang, 'english')
 
-    def _predict_field(self, sql_query, description):
+    def _build_query(self, additional_domain=None):
+        query = self.env['account.move.line']._where_calc([
+            ('move_id.move_type', '=', 'in_invoice'),
+            ('move_id.state', '=', 'posted'),
+            ('display_type', '=', False),
+            ('exclude_from_invoice_tab', '=', False),
+            ('company_id', '=', self.move_id.journal_id.company_id.id or self.env.company.id),
+        ] + (additional_domain or []))
+        query.order = 'account_move_line__move_id.invoice_date DESC'
+        query.limit = int(self.env["ir.config_parameter"].sudo().get_param(
+            "account.bill.predict.history.limit",
+            '10000',
+        ))
+        return query
+
+    def _predicted_field(self, field, query=None, additional_queries=None):
+        r"""Predict the most likely value based on the previous history.
+
+        This method uses postgres tsvector in order to try to deduce a field of
+        an invoice line based on the text entered into the name (description)
+        field and the partner linked.
+        We give some more weight to search with the same partner_id (roughly
+        20%) in order to have better result
+        We only limit the search on the previous 10000 entries, which according
+        to our tests bore the best results. However this limit parameter is
+        configurable by creating a config parameter with the key:
+        account.bill.predict.history.limit
+
+        For information, the tests were executed with a dataset of 40 000 bills
+        from a live database, We split the dataset in 2, removing the 5000 most
+        recent entries and we tried to use this method to guess the account of
+        this validation set based on the previous entries.
+        The result is roughly 90% of success.
+
+        :param field (str): the sql column that has to be predicted.
+            /!\ it is injected in the query without any checks.
+        :param query (osv.Query): the query object on account.move.line that is
+            used to do the ranking, containing the right domain, limit, etc. If
+            it is omitted, a default query is used.
+        :param additional_queries (list<str>): can be used in addition to the
+            default query on account.move.line to fetch data coming from other
+            tables, to have starting values for instance.
+            /!\ it is injected in the query without any checks.
+        """
+        if not self.name or not self.partner_id:
+            return False
+
         psql_lang = self._get_predict_postgres_dictionary()
+        description = self.name + ' partnerid' + str(self.partner_id.id or '').replace('-', 'x')
         parsed_description = re.sub(r"[*&()|!':<>=%/~@,.;$\[\]]+", " ", description)
         parsed_description = ' | '.join(parsed_description.split())
-        limit_parameter = self.env["ir.config_parameter"].sudo().get_param("account.bill.predict.history.limit", '10000')
-        params = {
-            'lang': psql_lang,
-            'description': parsed_description,
-            'company_id': self.move_id.journal_id.company_id.id or self.env.company.id,
-            'limit_parameter': int(limit_parameter),
-        }
+
+        from_clause, where_clause, params = (query if query is not None else self._build_query()).get_sql()
         try:
-            self.env.cr.execute(sql_query, params)
-            result = self.env.cr.fetchone()
+            self.env.cr.execute(f"""
+                WITH source AS ({'(' + ') UNION ALL ('.join([self.env.cr.mogrify(f'''
+                    SELECT {field} AS prediction,
+                           (
+                               setweight(to_tsvector(%%(lang)s, account_move_line.name), 'B'))
+                               || (setweight(to_tsvector(
+                                   'simple',
+                                   'partnerid' || replace(account_move_line.partner_id::text, '-', 'x')
+                               ), 'A')
+                           ) AS document
+                      FROM {from_clause}
+                     WHERE {where_clause}
+                  GROUP BY account_move_line.id
+                ''', params).decode()] + (additional_queries or [])) + ')'}
+                ),
+
+                ranking AS (
+                    SELECT prediction, ts_rank(source.document, query_plain) AS rank
+                      FROM source, to_tsquery(%(lang)s, %(description)s) query_plain
+                     WHERE source.document @@ query_plain
+                )
+
+                SELECT prediction, MAX(rank) AS ranking, COUNT(*)
+                  FROM ranking
+              GROUP BY prediction
+              ORDER BY ranking DESC, count DESC
+            """, {
+                'lang': psql_lang,
+                'description': parsed_description,
+                'company_id': self.move_id.journal_id.company_id.id or self.env.company.id,
+            })
+            result = self.env.cr.dictfetchone()
             if result:
-                return result[1]
-        except Exception as e:
+                return result['prediction']
+        except Exception:
             # In case there is an error while parsing the to_tsquery (wrong character for example)
             # We don't want to have a blocking traceback, instead return False
             _logger.exception('Error while predicting invoice line fields')
-            return False
         return False
 
-    def _predict_taxes(self, description):
-        if not description:
-            return False
+    def _predict_taxes(self, description=None):
+        field = 'array_agg(account_move_line__tax_rel__tax_ids.id ORDER BY account_move_line__tax_rel__tax_ids.id)'
+        query = self._build_query()
+        query.left_join('account_move_line', 'id', 'account_move_line_account_tax_rel', 'account_move_line_id', 'tax_rel')
+        query.left_join('account_move_line__tax_rel', 'account_tax_id', 'account_tax', 'id', 'tax_ids')
+        query.add_where('account_move_line__tax_rel__tax_ids.active IS NOT FALSE')
+        return self._predicted_field(field, query)
 
-        sql_query = """
-            SELECT
-                max(f.rel) AS ranking,
-                f.tax_ids,
-                count(coalesce(f.tax_ids)) AS count
-            FROM (
-                SELECT
-                    p_search.tax_ids,
-                    ts_rank(p_search.document, query_plain) AS rel
-                FROM (
-                    SELECT
-                        array_agg(tax_rel.account_tax_id ORDER BY tax_rel.account_tax_id) AS tax_ids,
-                        (setweight(to_tsvector(%(lang)s, aml.name), 'B'))
-                        AS document
-                    FROM account_move_line aml
-                    JOIN account_move move
-                        ON aml.move_id = move.id
-                    LEFT JOIN account_move_line_account_tax_rel tax_rel
-                        ON tax_rel.account_move_line_id = aml.id
-                    LEFT JOIN account_tax tax
-                        ON tax.id = tax_rel.account_tax_id
-                    WHERE move.move_type = 'in_invoice'
-                        AND move.state = 'posted'
-                        AND (tax.active = TRUE OR tax.active IS NULL)
-                        AND aml.display_type IS NULL
-                        AND NOT aml.exclude_from_invoice_tab
-                        AND aml.company_id = %(company_id)s
-                    GROUP BY aml.id, aml.name, move.invoice_date
-                    ORDER BY move.invoice_date DESC
-                    LIMIT %(limit_parameter)s
-                ) p_search,
-                to_tsquery(%(lang)s, %(description)s) query_plain
-                WHERE (p_search.document @@ query_plain)
-            ) AS f
-            GROUP BY f.tax_ids
-            ORDER BY ranking DESC, count DESC
-        """
-        return self._predict_field(sql_query, description)
+    def _predict_product(self, description=None):
+        return self._predicted_field('account_move_line.product_id')
 
-    def _predict_product(self, description):
-        if not description:
-            return False
-
-        sql_query = """
-            SELECT
-                max(f.rel) AS ranking,
-                f.product_id,
-                count(coalesce(f.product_id, 1)) AS count
-            FROM (
-                SELECT
-                    p_search.product_id,
-                    ts_rank(p_search.document, query_plain) AS rel
-                FROM (
-                    SELECT
-                        ail.product_id,
-                        (setweight(to_tsvector(%(lang)s, ail.name), 'B'))
-                         AS document
-                    FROM account_move_line ail
-                    JOIN account_move inv
-                        ON ail.move_id = inv.id
-                    LEFT JOIN product_product pr
-                        ON ail.product_id = pr.id
-
-                    WHERE inv.move_type = 'in_invoice'
-                        AND inv.state = 'posted'
-                        AND (pr.active = TRUE OR pr.active IS NULL)
-                        AND ail.display_type IS NULL
-                        AND NOT ail.exclude_from_invoice_tab
-                        AND ail.company_id = %(company_id)s
-                    ORDER BY inv.invoice_date DESC
-                    LIMIT %(limit_parameter)s
-                ) p_search,
-                to_tsquery(%(lang)s, %(description)s) query_plain
-                WHERE (p_search.document @@ query_plain)
-            ) AS f
-            GROUP BY f.product_id
-            ORDER BY ranking desc, count desc
-        """
-        return self._predict_field(sql_query, description)
-
-    def _predict_account(self, description, partner):
-        # This method uses postgres tsvector in order to try to deduce the account_id of an invoice line
-        # based on the text entered into the name (description) field.
-        # We give some more weight to search with the same partner_id (roughly 20%) in order to have better result
-        # We only limit the search on the previous 10000 entries, which according to our tests bore the best
-        # results. However this limit parameter is configurable by creating a config parameter with the key:
-        # account.bill.predict.history.limit
-
-        # For information, the tests were executed with a dataset of 40 000 bills from a live database, We splitted
-        # the dataset in 2, removing the 5000 most recent entries and we tried to use this method to guess the account
-        # of this validation set based on the previous entries.
-        # The result is roughly 90% of success.
-        if not description or not partner:
-            return False
-
-        sql_query = """
-            SELECT
-                max(f.rel) AS ranking,
-                f.account_id,
-                count(f.account_id) AS count
-            FROM (
-                SELECT
-                    p_search.account_id,
-                    ts_rank(p_search.document, query_plain) AS rel
-                FROM (
-                    (SELECT
-                        ail.account_id,
-                        (setweight(to_tsvector(%(lang)s, ail.name), 'B')) ||
-                        (setweight(to_tsvector('simple', 'partnerid'|| replace(ail.partner_id::text, '-', 'x')), 'A')) AS document
-                    FROM account_move_line ail
-                    JOIN account_move inv ON ail.move_id = inv.id
-                    JOIN account_account account ON ail.account_id = account.id
-                    WHERE inv.move_type = 'in_invoice'
-                        AND inv.state = 'posted'
-                        AND ail.display_type IS NULL
-                        AND NOT ail.exclude_from_invoice_tab
-                        AND ail.company_id = %(company_id)s
-                        AND account.deprecated IS NOT TRUE
-                    ORDER BY inv.invoice_date DESC
-                    LIMIT %(limit_parameter)s
-                    ) UNION ALL (
-                    SELECT
-                        id as account_id,
-                        (setweight(to_tsvector(%(lang)s, name), 'B')) AS document
-                    FROM account_account account
-                    WHERE account.deprecated IS NOT TRUE
-                      AND user_type_id IN (
-                        SELECT id
-                        FROM account_account_type
-                        WHERE internal_group = 'expense')
-                        AND company_id = %(company_id)s
-                    )
-                ) p_search,
-                to_tsquery(%(lang)s, %(description)s) query_plain
-                WHERE (p_search.document @@ query_plain)
-            ) AS f
-            GROUP BY f.account_id
-            ORDER BY ranking desc, count desc
-        """
-        description += ' partnerid' + str(partner.id or '').replace('-', 'x')
-        return self._predict_field(sql_query, description)
+    def _predict_account(self, description=None, partner=None):
+        field = 'account_move_line.account_id'
+        additional_queries = ["""
+                SELECT id as account_id,
+                       setweight(to_tsvector(%(lang)s, name), 'B') AS document
+                  FROM account_account account
+                 WHERE account.deprecated IS NOT TRUE
+                   AND user_type_id IN (
+                           SELECT id
+                             FROM account_account_type
+                            WHERE internal_group = 'expense'
+                       )
+                   AND company_id = %(company_id)s
+        """]
+        query = self._build_query([('account_id.deprecated', '=', False)])
+        return self._predicted_field(field, query, additional_queries)
 
     @api.onchange('name')
     def _onchange_enable_predictive(self):

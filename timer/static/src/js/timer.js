@@ -35,19 +35,28 @@ var TimerFieldWidget = AbstractField.extend({
     _startTimeCounter: async function () {
         if (this.record.data.timer_start) {
             const serverTime = this.record.data.timer_pause || await this._getServerTime();
+            this.timeOffset = moment.duration(moment.utc(serverTime).diff(moment()));
             this.time = Timer.createTimer(0, this.record.data.timer_start, serverTime);
             this.$el.text(this.time.toString());
             this.timer = setInterval(() => {
                 if (this.record.data.timer_pause) {
                     clearInterval(this.timer);
                 } else {
-                    this.time.addSecond();
-                    this.$el.text(this.time.toString());
+                    this._updateTimer();
                 }
             }, 1000);
         } else if (!this.record.data.timer_pause){
             clearInterval(this.timer);
         }
+    },
+    /**
+     * @private
+     */
+    _updateTimer() {
+        const currentTime = moment().add(this.timeOffset);
+        const timeElapsed = moment.duration(currentTime.diff(moment.utc(this.record.data.timer_start)));
+        this.time.addSeconds(timeElapsed.asSeconds() - this.time.convertToSeconds());
+        this.$el.text(this.time.toString());
     },
     _getServerTime: function () {
         return this._rpc({

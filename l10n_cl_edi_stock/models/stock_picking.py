@@ -7,6 +7,7 @@ from lxml import etree
 from html import unescape
 
 from odoo import models, fields, _
+from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse
 from odoo.exceptions import UserError
 from odoo.tools import float_repr, html_escape
 from odoo.tools import BytesIO
@@ -544,18 +545,29 @@ class Picking(models.Model):
             return None
 
         response_parsed = etree.fromstring(response.encode('utf-8'))
-        self.l10n_cl_dte_status = self._analyze_sii_result(response_parsed)
+
+        if response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO') in ['001', '002', '003']:
+            digital_signature.last_token = False
+            _logger.error('Token is invalid.')
+            return
+
+        try:
+            self.l10n_cl_dte_status = self._analyze_sii_result(response_parsed)
+        except UnexpectedXMLResponse:
+            # The assumption here is that the unexpected input is intermittent,
+            # so we'll retry later. If the same input appears regularly, it should
+            # be handled properly in _analyze_sii_result.
+            _logger.error("Unexpected XML response:\n%s", response)
+            return
+
         if self.l10n_cl_dte_status in ['accepted', 'objected']:
             self.l10n_cl_dte_partner_status = 'not_sent'
             if send_dte_to_partner:
                 self._l10n_cl_send_dte_to_partner()
-        if response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO') in ['001', '002', '003']:
-            digital_signature.last_token = False
-            _logger.error('Token is invalid.')
-        else:
-            self.message_post(
-                body=_('Asking for DTE status with response:') +
-                     '<br /><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
-                         html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO')),
-                         html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA')),
-                         html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION'))))
+
+        self.message_post(
+            body=_('Asking for DTE status with response:') +
+                 '<br /><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
+                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO')),
+                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA')),
+                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION'))))

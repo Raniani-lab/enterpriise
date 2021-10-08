@@ -288,7 +288,6 @@ var GanttRenderer = AbstractRenderer.extend({
     _renderRows: function (rows, groupedBy) {
         var self = this;
         var rowWidgets = [];
-        var disableResize = this.state.scale === 'year';
 
         var groupLevel = this.state.groupedBy.length - groupedBy.length;
         // FIXME: could we get rid of collapseFirstLevel in Renderer, and fully
@@ -312,7 +311,6 @@ var GanttRenderer = AbstractRenderer.extend({
                 consolidate: (groupLevel === 0) && (self.state.groupedBy[0] === self.consolidationParams.maxField),
                 hideSidebar: hideSidebar,
                 isOpen: row.isOpen,
-                disableResize: disableResize,
                 disableDragdrop: self.disableDragdrop,
                 rowId: row.id,
                 fromServer: row.fromServer,

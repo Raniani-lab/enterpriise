@@ -2348,6 +2348,27 @@ document.createElement("a").classList.contains
         gantt.destroy();
     });
 
+    QUnit.test('resize pill in year mode', async function (assert) {
+        assert.expect(1);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_scale="year" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
+
+        assert.containsOnce(gantt, '.o_gantt_pill.ui-resizable',
+            "in the year mode the pill should be resizable after mouse enter");
+
+        gantt.destroy();
+    });
+
     QUnit.test('resize a pill (2)', async function (assert) {
         // This test checks a tricky situation where the user resizes a pill, and
         // triggers the mouseup (i.e. release the mouse) over the pill. In this

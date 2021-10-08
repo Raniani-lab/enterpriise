@@ -35,7 +35,6 @@ var GanttRow = Widget.extend({
      * @param {Object} options
      * @param {boolean} options.canCreate
      * @param {boolean} options.canEdit
-     * @param {boolean} options.disableResize Disable resize for pills
      * @param {boolean} options.disableDragdrop Disable drag and drop for pills
      * @param {boolean} options.hideSidebar Hide sidebar
      * @param {boolean} options.isGroup If is group, It will display all its
@@ -429,9 +428,11 @@ var GanttRow = Widget.extend({
                         if (monthsDiff > 2) { // start and end months are already covered
                             // If the pill spans more than 2 months, we know
                             // that the middle months are fully covered
-                            width += (monthsDiff - 2) * 100;
+                            monthsDiff = Math.floor(monthsDiff)
+                            width += (monthsDiff - 1) * 100;
                         }
-                        pill.width = `calc(${width}% - ${margin}px)`;
+                        // Added months difference in calculation in px as its width reduces inversely as we increases the width of pill
+                        pill.width = `calc(${width}% + ${monthsDiff}px - ${margin}px)`;
                     }
                     break;
                 default:
@@ -854,7 +855,7 @@ var GanttRow = Widget.extend({
         if (!pill.disableStopResize) {
             handles.push('e');
         }
-        if (handles.length && !self.options.disableResize && !self.isGroup && self.options.canEdit) {
+        if (handles.length && !self.isGroup && self.options.canEdit) {
             $pill.resizable({
                 handles: handles.join(', '),
                 odoo_isRTL: this.isRTL,

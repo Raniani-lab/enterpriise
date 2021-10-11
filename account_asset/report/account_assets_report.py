@@ -212,6 +212,7 @@ class assets_report(models.AbstractModel):
                     'id': asset_line_id,
                     'level': 1,
                     'name': name,
+                    'account_code': al['account_code'],
                     'columns': [
                         {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
                         {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},

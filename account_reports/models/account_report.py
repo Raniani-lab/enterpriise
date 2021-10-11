@@ -614,7 +614,7 @@ class AccountReport(models.AbstractModel):
                 for l in val_dict['lines']:
                     l['level'] = level + 1
                     l['parent_id'] = val_dict['id']
-                lines.extend(sorted(val_dict['lines'] + children, key=lambda k: k['name']))
+                lines.extend(sorted(val_dict['lines'] + children, key=lambda k: k.get('account_code', '') + k['name']))
 
         def compute_hierarchy(lines, level, parent_id):
             # put every line in each of its parents (from less global to more global) and compute the totals

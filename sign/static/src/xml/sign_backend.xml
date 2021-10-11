@@ -134,4 +134,8 @@
             <i>Ctrl + Left click to add a field</i>
         </div>
     </t>
+    <t t-name="sign.rotate_pdf_button">
+        <button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' t-att-title='title'/>
+    </t>
+
 </templates>

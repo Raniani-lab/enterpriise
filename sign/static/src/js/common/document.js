@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=sign.Document **/
 
 'use strict';
 
@@ -50,3 +50,5 @@ export const Document = Widget.extend({
         return Promise.resolve();
     },
 });
+
+export default Document;

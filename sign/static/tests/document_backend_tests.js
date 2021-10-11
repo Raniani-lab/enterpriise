@@ -1,15 +1,17 @@
+/** @odoo-module alias=sign.document_backend_tests **/
+
 "use strict";
 
 import FormView from 'web.FormView';
 import framework from 'web.framework';
 import testUtils from 'web.test_utils';
 
-var createView = testUtils.createView;
+const { createView } = testUtils;
 
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 let serverData;
 
-import { DocumentBackend } from 'sign.DocumentBackend';
+import { DocumentBackend } from '@sign/js/backend/document_backend';
 
 QUnit.module('document_backend_tests', {
     beforeEach: function () {
@@ -144,7 +146,7 @@ QUnit.module('document_backend_tests', {
             {id: 17, display_name: "Template 17"},
         ]);
 
-        var form = await createView({
+        const form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,

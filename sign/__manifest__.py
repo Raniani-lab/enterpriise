@@ -71,7 +71,6 @@ Let your customers follow the signature process easily.
         'web.assets_common': [
             'sign/static/src/js/common/*',
             'sign/static/src/scss/sign_common.scss',
-            'sign/static/src/js/multi_file_upload.js',
         ],
         'web.assets_backend': [
             'sign/static/src/js/backend/*',

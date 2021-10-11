@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=sign.template **/
 
 'use strict';
 
@@ -10,29 +10,28 @@ import framework from 'web.framework';
 import session from 'web.session';
 import Widget from 'web.Widget';
 import { PDFIframe } from '@sign/js/common/PDFIframe';
-import { sign_utils } from '@sign/js/common/utils';
+import { sign_utils } from '@sign/js/backend/utils';
 import StandaloneFieldManagerMixin from 'web.StandaloneFieldManagerMixin';
 import { FormFieldMany2ManyTags } from 'web.relational_fields';
 import SmoothScrollOnDrag from 'web/static/src/js/core/smooth_scroll_on_drag.js';
 import { FieldSelection as FormFieldSelection } from 'web.relational_fields';
-import multiFileUpload from 'sign.multiFileUpload';
+import { multiFileUpload } from '@sign/js/common/multi_file_upload';
 
-var _t = core._t;
+const { _t } = core;
 
 PDFIframe.include({
     enableSignTemplateEdition: async function () {
-        const self = this;
-        self._rpc({
+        this._rpc({
             model: 'sign.request',
             method: 'check_request_edit_during_sign',
-            args: [self.getParent().requestID],
-        }).then(function(allowEdit) {
+            args: [this.getParent().requestID],
+        }).then((allowEdit) => {
             if (!allowEdit) {
                 return;
             }
-            self.$('.page').off('click').on('click', function (e) {
+            this.$('.page').off('click').on('click', (e) => {
                 if(e.ctrlKey) {
-                    self.handleControlClick(e)
+                    this.handleControlClick(e)
                 }
             })
         })
@@ -49,11 +48,11 @@ PDFIframe.include({
             left: e.pageX - $pageElement.offset().left
         })
 
-        $dropdown.find('.dropdown_close_icon').on('click', function (e) {
+        $dropdown.find('.dropdown_close_icon').on('click', (e) => {
             $dropdown.remove();
         })
 
-        $dropdown.find('.o_edit_mode_dropdown_item').on('click', function (e) {
+        $dropdown.find('.o_edit_mode_dropdown_item').on('click', (e) => {
             function getSignItemSize (type) {
                 const signatureWidth = 0.15;
                 const defaultWidth = 0.1;
@@ -139,7 +138,7 @@ PDFIframe.include({
     }
 })
 
-var SignItemCustomPopover = Widget.extend({
+const SignItemCustomPopover = Widget.extend({
     template: 'sign.sign_item_custom_popover',
     events: {
         'click .o_sign_delete_field_button': function(e) {
@@ -171,69 +170,66 @@ var SignItemCustomPopover = Widget.extend({
         sign_utils.resetResponsibleSelectConfiguration();
         sign_utils.resetOptionsSelectConfiguration();
 
-        var self = this;
-        return this._super().then(function() {
-            const fieldType = self.$currentTarget.prop('field-type');
+        return this._super().then(() => {
+            const fieldType = this.$currentTarget.prop('field-type');
             if (['text', 'textarea'].includes(fieldType)) {
-                self.$('.o_sign_field_align_group button[data-align="'+ self.$currentTarget.data('alignment') +'"]').addClass("btn-primary");
+                this.$('.o_sign_field_align_group button[data-align="'+ this.$currentTarget.data('alignment') +'"]').addClass("btn-primary");
             } else {
-                self.$('.o_sign_field_align_group').hide();
+                this.$('.o_sign_field_align_group').hide();
             }
-            sign_utils.setAsResponsibleSelect(self.$responsibleSelect.find('select'), self.$currentTarget.data('responsible'), self.parties);
-            sign_utils.setAsOptionsSelect(self.$optionsSelect.find('input'), self.$currentTarget.data('itemId'), self.$currentTarget.data('option_ids'), self.select_options);
-            self.$('input[type="checkbox"]').prop('checked', self.$currentTarget.data('required'));
+            sign_utils.setAsResponsibleSelect(this.$responsibleSelect.find('select'), this.$currentTarget.data('responsible'), this.parties);
+            sign_utils.setAsOptionsSelect(this.$optionsSelect.find('input'), this.$currentTarget.data('itemId'), this.$currentTarget.data('option_ids'), this.select_options);
+            this.$('input[type="checkbox"]').prop('checked', this.$currentTarget.data('required'));
 
-            self.$('#o_sign_name').val(self.$currentTarget.data('name') || "");
-            self.title = self.$currentTarget.prop('field-name');
+            this.$('#o_sign_name').val(this.$currentTarget.data('name') || "");
+            this.title = this.$currentTarget.prop('field-name');
             if (fieldType !== 'selection') {
-                self.$('.o_sign_options_group').hide();
+                this.$('.o_sign_options_group').hide();
             }
         });
     },
 
     create: function($targetEl) {
-        var self = this;
         this.$currentTarget = $targetEl;
         this.$elPopover = $("<div class='o_sign_item_popover'/>");
-        var buttonClose = '<button class="o_sign_close_button">&times;</button>';
-        var isRTL = _t.database.parameters.direction === "rtl";
+        const buttonClose = '<button class="o_sign_close_button">&times;</button>';
+        const isRTL = _t.database.parameters.direction === "rtl";
 
-        this.appendTo(this.$elPopover).then(function() {
-            var options = {
-                title: self.title + buttonClose,
-                content: function () {
-                    return self.$el;
+        this.appendTo(this.$elPopover).then(() => {
+            const options = {
+                title: this.title + buttonClose,
+                content: () => {
+                    return this.$el;
                 },
                 html: true,
                 placement: isRTL ? 'left': 'right',
                 trigger:'focus',
                 container: '.o_sign_template',
             };
-            self.$currentTarget.popover(options).one('inserted.bs.popover', function (e) {
+            this.$currentTarget.popover(options).one('inserted.bs.popover', (e) => {
                 $('.popover').addClass('o_popover_offset');
-                $('.o_sign_close_button').on('click', function (e) {
-                    self.$currentTarget.popover("hide");
+                $('.o_sign_close_button').on('click', (e) => {
+                    this.$currentTarget.popover("hide");
                 });
             });
-            self.$currentTarget.popover("toggle");
+            this.$currentTarget.popover("toggle");
             //  Don't display placeholders of checkboxes: empty element
-            if (self.$currentTarget.prop('field-type') === 'checkbox') {
+            if (this.$currentTarget.prop('field-type') === 'checkbox') {
                 $('.o_popover_placeholder').text('');
             }
         });
     },
     hide: function() {
-        var self = this;
-        var resp = parseInt(this.$responsibleSelect.find('select').val());
-        var selected_options = this.$optionsSelect.find('#o_sign_options_select_input').data('item_options');
-        var required = this.$('input[type="checkbox"]').prop('checked');
+        const resp = parseInt(this.$responsibleSelect.find('select').val());
+        const selected_options = this.$optionsSelect.find('#o_sign_options_select_input').data('item_options');
+        const required = this.$('input[type="checkbox"]').prop('checked');
         const alignment = this.$('.o_sign_field_align_group .o_sign_align_button.btn-primary').data('align');
-        var name = this.$('#o_sign_name').val();
+        let name = this.$('#o_sign_name').val();
         this.getParent().currentRole = resp;
-        if (! name) {
-            name = self.$currentTarget.prop('field-name');
+        if (!name) {
+            name = this.$currentTarget.prop('field-name');
         }
-        if (self.$currentTarget.prop('field-type') != "checkbox") {
+        if (this.$currentTarget.prop('field-type') != "checkbox") {
             this.$currentTarget.find(".o_placeholder").text(name);
         }
         this.$currentTarget.data({responsible: resp, alignment: alignment, required: required, name: name, option_ids: selected_options}).trigger('itemChange');
@@ -241,7 +237,7 @@ var SignItemCustomPopover = Widget.extend({
     }
 });
 
-var InitialAllPagesDialog = Dialog.extend({
+const InitialAllPagesDialog = Dialog.extend({
     template: 'sign.initial_all_pages_dialog',
 
     init: function(parent, parties, options) {
@@ -270,10 +266,8 @@ var InitialAllPagesDialog = Dialog.extend({
 
     start: function() {
         this.$responsibleSelect = this.$('.o_sign_responsible_select_initials');
-
-        var self = this;
-        return this._super.apply(this, arguments).then(function() {
-            sign_utils.setAsResponsibleSelect(self.$responsibleSelect.find('select'), self.getParent().currentRole, self.parties);
+        return this._super.apply(this, arguments).then(() => {
+            sign_utils.setAsResponsibleSelect(this.$responsibleSelect.find('select'), this.getParent().currentRole, this.parties);
         });
     },
 
@@ -283,20 +277,20 @@ var InitialAllPagesDialog = Dialog.extend({
     },
 
     updateTargetResponsible: function() {
-        var resp = parseInt(this.$responsibleSelect.find('select').val());
+        const resp = parseInt(this.$responsibleSelect.find('select').val());
         this.getParent().currentRole = resp;
         this.$currentTarget.data('responsible', resp);
     },
 });
 
-var EditablePDFIframe = PDFIframe.extend({
+const EditablePDFIframe = PDFIframe.extend({
     init: function() {
         this._super.apply(this, arguments);
         if (this.editMode) {
             document.body.classList.add('o_block_scroll');
         }
         this.customPopovers = {};
-        this.events = _.extend(this.events || {}, {
+        this.events = Object.assign(this.events || {}, {
             'itemChange .o_sign_sign_item': function (e) {
                 this.updateSignItem($(e.target));
                 this.$iframe.trigger('templateChange');
@@ -308,27 +302,29 @@ var EditablePDFIframe = PDFIframe.extend({
             },
 
             'itemClone .o_sign_sign_item': function (e) {
-                var $target = $(e.target);
+                const $target = $(e.target);
                 this.updateSignItem($target);
 
-                page_loop:
-                for (var i = 1; i <= this.nbPages; i++) {
-                    for (var j = 0; j < this.configuration[i].length; j++) {
-                        // Add initials only if there is no Signature on the page.
-                        if (this.types[this.configuration[i][j].data('type')].item_type === 'signature') {
-                            continue page_loop;
-                        }
+                for (let i = 1; i <= this.nbPages; i++) {
+                    const hasSignatureInPage = this.configuration[i].some(item => this.types[item.data('type')].item_type === 'signature');
+                    if (!hasSignatureInPage) {
+                        const $newElem = $target.clone(true);
+                        this.enableCustom($newElem);
+                        this.configuration[i].push($newElem);
                     }
-
-                    var $newElem = $target.clone(true);
-                    this.enableCustom($newElem);
-                    this.configuration[i].push($newElem);
                 }
 
                 this.deleteSignItem($target);
                 this.refreshSignItems();
                 this.$iframe.trigger('templateChange');
             },
+
+            'click .o_sign_rotate': function (e) {
+                const button = $(e.target);
+                button.prepend('<i class="fa fa-spin fa-circle-o-notch"/>');
+                button.attr('disabled', true);
+                this._rotateDocument();
+            }
         });
     },
 
@@ -338,13 +334,12 @@ var EditablePDFIframe = PDFIframe.extend({
             document.body.classList.remove('o_block_scroll');
         }
     },
-
     doPDFPostLoad: function() {
-        var self = this;
-        this.fullyLoaded.then(function() {
+        const self = this;
+        this.fullyLoaded.then(() => {
             if(self.editMode) {
                 if(self.$iframe.prop('disabled')) {
-                    var $div = $('<div/>').css({
+                    const $div = $('<div/>').css({
                         position: "absolute",
                         top: 0,
                         left: 0,
@@ -373,37 +368,19 @@ var EditablePDFIframe = PDFIframe.extend({
                     self.$('#outerContainer').css('margin-left', '14rem');
                     self.$iframe.get(0).contentWindow.dispatchEvent(new Event('resize'));
 
-                    var rotateText = _t("Rotate Clockwise");
-                    var rotateButton = $("<button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' title='" + rotateText + "'/>");
+                    const rotateButton = $(core.qweb.render('sign.rotate_pdf_button', {title: _t("Rotate Clockwise")}));
                     rotateButton.insertBefore(self.$('#print'));
-                    rotateButton.on('click', function(e) {
-                        rotateButton.prepend('<i class="fa fa-spin fa-circle-o-notch"/>');
-                        rotateButton.attr('disabled', true);
-                        self._rotateDocument();
-                    });
+
+                    // set helper lines when dragging
                     self.$hBarTop = $('<div/>');
                     self.$hBarBottom = $('<div/>');
-                    self.$hBarTop.add(self.$hBarBottom).css({
-                        position: 'fixed',
-                        "border-top": "1px dashed orange",
-                        width: "100%",
-                        height: 0,
-                        "z-index": 103,
-                        left: 0
-                    });
+                    self.$hBarTop.add(self.$hBarBottom).addClass("o_sign_drag_helper o_sign_drag_top_helper");
                     self.$vBarLeft = $('<div/>');
                     self.$vBarRight = $('<div/>');
-                    self.$vBarLeft.add(self.$vBarRight).css({
-                        position: 'fixed',
-                        "border-left": "1px dashed orange",
-                        width: 0,
-                        height: "100%",
-                        "z-index": 103,
-                        top: 0
-                    });
+                    self.$vBarLeft.add(self.$vBarRight).addClass("o_sign_drag_helper o_sign_drag_side_helper");
 
-                    var typesArr = _.toArray(self.types);
-                    var $fieldTypeButtons = $(core.qweb.render('sign.type_buttons', {sign_item_types: typesArr}));
+                    const typesArray = Object.values(self.types);
+                    const $fieldTypeButtons = $(core.qweb.render('sign.type_buttons', { sign_item_types: typesArray }));
                     self.$fieldTypeToolbar = $('<div/>').addClass('o_sign_field_type_toolbar d-flex flex-column');
                     self.$fieldTypeToolbar.prependTo(self.$('body'));
                     self.$('#outerContainer').addClass('o_sign_field_type_toolbar_visible');
@@ -415,10 +392,10 @@ var EditablePDFIframe = PDFIframe.extend({
                         jQueryDraggableOptions: {
                             cancel: false,
                             distance: 0,
-                            cursorAt: {top:5, left:5},
-                            helper: function(e) {
-                                var type = self.types[$(this).data('item-type-id')];
-                                var $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '', []);
+                            cursorAt: { top: 5, left: 5 },
+                            helper: function (e) {
+                                const type = self.types[$(this).data('item-type-id')];
+                                const $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '', []);
                                 if(!e.ctrlKey) {
                                     self.$('.o_sign_sign_item').removeClass('ui-selected');
                                 }
@@ -435,7 +412,7 @@ var EditablePDFIframe = PDFIframe.extend({
                         }
                     };
                     $fieldTypeButtons.appendTo(self.$fieldTypeToolbar)
-                    var $fieldTypeButtonItems = $fieldTypeButtons.children('.o_sign_field_type_button')
+                    const $fieldTypeButtonItems = $fieldTypeButtons.children('.o_sign_field_type_button')
                     self.buttonsDraggableComponent = new SmoothScrollOnDrag(this, $fieldTypeButtonItems, self.$('#viewerContainer'), smoothScrollOptions);
                     $fieldTypeButtonItems.each(function(i, el) {
                         self.enableCustomBar($(el));
@@ -458,19 +435,19 @@ var EditablePDFIframe = PDFIframe.extend({
                             const pageNo = parseInt($parent.data('page-number'));
 
                             let $signatureItem;
-                            if (ui.draggable.hasClass('o_sign_sign_item')){
+                            if (ui.draggable.hasClass('o_sign_sign_item')) {
                                 let pageNoOri = parseInt($(ui.draggable).parent().attr('data-page-number'));
-                                if (pageNoOri === pageNo){ // if sign_item is dragged to its previous page
+                                if (pageNoOri === pageNo) { // if sign_item is dragged to its previous page
                                     return true;
                                 }
                                 $signatureItem = $(ui.draggable);
                                 self.detachSignItem($signatureItem);
                             }
-                            else{
+                            else {
                                 $signatureItem = ui.helper.clone(true).removeClass().addClass('o_sign_sign_item o_sign_sign_item_required');
                             }
-                            var posX = (ui.offset.left - $parent.find('.textLayer').offset().left) / $parent.innerWidth();
-                            var posY = (ui.offset.top - $parent.find('.textLayer').offset().top) / $parent.innerHeight();
+                            const posX = (ui.offset.left - $parent.find('.textLayer').offset().left) / $parent.innerWidth();
+                            const posY = (ui.offset.top - $parent.find('.textLayer').offset().top) / $parent.innerHeight();
                             $signatureItem.data({posx: posX, posy: posY});
 
                             self.configuration[pageNo].push($signatureItem);
@@ -478,7 +455,7 @@ var EditablePDFIframe = PDFIframe.extend({
                             self.enableCustom($signatureItem);
 
                             // updateSignItem and trigger('templateChange') are done in "dragstop" for sign_items
-                            // trigger('tempateChange)' twice may cause 'concurrent update' for server
+                            // trigger('templateChange)' twice may cause 'concurrent update' for server
                             if(!ui.draggable.hasClass('o_sign_sign_item')) {
                                 self.updateSignItem($signatureItem);
                                 self.$iframe.trigger('templateChange');
@@ -497,7 +474,7 @@ var EditablePDFIframe = PDFIframe.extend({
                         filter: '.o_sign_sign_item',
                     });
 
-                    $(document).add(self.$el).on('keyup', function(e) {
+                    $(document).add(self.$el).on('keyup', (e) => {
                         if(e.which !== 46) {
                             return true;
                         }
@@ -505,10 +482,10 @@ var EditablePDFIframe = PDFIframe.extend({
                         self.$('.ui-selected').each(function(i, el) {
                             self.deleteSignItem($(el));
                             // delete the associated popovers. At this point, there should only be one popover
-                            var popovers = window.document.querySelectorAll('[id^="popover"]');
-                            for (let i = 0; i < popovers.length; i += 1) {
-                                    document.getElementById(popovers[i].id).remove();
-                            }
+                            const popovers = window.document.querySelectorAll('[id^="popover"]');
+                            popovers.forEach(popover => {
+                                document.getElementById(popover.id).remove();
+                            })
                         });
                         self.$iframe.trigger('templateChange');
                     });
@@ -524,23 +501,25 @@ var EditablePDFIframe = PDFIframe.extend({
     },
 
     enableCustom: function($signatureItem) {
-        var self = this;
+        const self = this;
 
         $signatureItem.prop('field-type', this.types[$signatureItem.data('type')].item_type);
         $signatureItem.prop('field-name', this.types[$signatureItem.data('type')].name);
-        var itemId = $signatureItem.data('itemId');
-        var $configArea = $signatureItem.find('.o_sign_config_area');
+        const itemId = $signatureItem.data('itemId');
+        const $configArea = $signatureItem.find('.o_sign_config_area');
+
         $configArea.find('.o_sign_item_display').off('mousedown').on('mousedown', function(e) {
             e.stopPropagation();
             self.$('.ui-selected').removeClass('ui-selected');
             $signatureItem.addClass('ui-selected');
 
-            _.each(_.keys(self.customPopovers), function(keyId) {
+            Object.keys(self.customPopovers).forEach(keyId => {
                 if (keyId != itemId && self.customPopovers[keyId] && ((keyId && itemId) || (keyId != 'undefined' && !itemId))) {
                     self.customPopovers[keyId].$currentTarget.popover('hide');
                     self.customPopovers[keyId] = false;
                 }
-            });
+            })
+
             if (self.customPopovers[itemId]) {
                 self._closePopover(itemId);
             } else {
@@ -611,11 +590,11 @@ var EditablePDFIframe = PDFIframe.extend({
     },
 
     enableCustomBar: function($item) {
-        var self = this;
+        const self = this;
 
         const itemId = $item.data('itemId');
         $item.on('dragstart resizestart', function(e, ui) {
-            var $target = $(e.target);
+            const $target = $(e.target);
             if (!$target.hasClass('ui-draggable') && !$target.hasClass('ui-resizable')) {
                 // The element itself is not draggable or resizable
                 // Let the event propagate to its parents
@@ -634,7 +613,7 @@ var EditablePDFIframe = PDFIframe.extend({
             process.call(self, $item);
         });
         $item.on('drag resize', function(e, ui) {
-            var $target = $(e.target);
+            const $target = $(e.target);
             if (!$target.hasClass('ui-draggable') && !$target.hasClass('ui-resizable')) {
                 // The element itself is not draggable or resizable
                 // Let the event propagate to its parents
@@ -685,43 +664,41 @@ var EditablePDFIframe = PDFIframe.extend({
         this._super.apply(this, arguments);
 
         if(this.editMode) {
-            var responsibleName = this.parties[$signatureItem.data('responsible')].name;
+            const responsibleName = this.parties[$signatureItem.data('responsible')].name;
             const colorIndex = this.parties[$signatureItem.data('responsible')].color;
             const currentColor = $signatureItem.attr('class').match(/o_color_responsible_\d+/);
             $signatureItem.removeClass((currentColor && currentColor[0]));
             $signatureItem.addClass("o_color_responsible_" + colorIndex);
             $signatureItem.find('.o_sign_responsible_display').text(responsibleName).prop('title', responsibleName);
-            var option_ids = $signatureItem.data('option_ids') || [];
-            var $options_display = $signatureItem.find('.o_sign_select_options_display');
+            const option_ids = $signatureItem.data('option_ids') || [];
+            const $options_display = $signatureItem.find('.o_sign_select_options_display');
             this.display_select_options($options_display, this.select_options, option_ids);
         }
     },
 
     _rotateDocument: function () {
-        var self = this;
         this._rpc({
             model: 'sign.template',
             method: 'rotate_pdf',
             args: [this.getParent().templateID],
-        })
-        .then(function (response) {
+        }).then((response) => {
             if (response) {
-                self.$('#pageRotateCw').click();
-                self.$('#rotateCw').text('');
-                self.$('#rotateCw').attr('disabled', false);
-                self.refreshSignItems();
+                this.$('#pageRotateCw').click();
+                this.$('#rotateCw').text('');
+                this.$('#rotateCw').attr('disabled', false);
+                this.refreshSignItems();
             } else {
-                Dialog.alert(self, _t('Somebody is already filling a document which uses this template'), {
-                    confirm_callback: function () {
-                        self.getParent().go_back_to_kanban();
+                Dialog.alert(this, _t('Somebody is already filling a document which uses this template'), {
+                    confirm_callback: () => {
+                        this.getParent().go_back_to_kanban();
                     },
                 });
             }
         });
     },
 });
-
-var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
+//TODO refactor
+const Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
     hasControlPanel: true,
     events: {
         'click .fa-pencil': function(e) {
@@ -788,7 +765,7 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
             this.do_action({
                 type: "ir.actions.client",
                 tag: 'sign.Template',
-                name: _.str.sprintf(_t('Template "%s"'), templateName),
+                name: core.utils.sprintf(_t('Template "%s"'), templateName),
                 context: {
                     sign_edit_call: 'sign_template_edit',
                     id: templateId,
@@ -831,7 +808,7 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
     },
 
     renderButtons: function () {
-        this.$buttons = $(core.qweb.render("sign.template_cp_buttons", {'widget':this, 'action_type':this.actionType}));
+        this.$buttons = $(core.qweb.render("sign.template_cp_buttons", { 'widget': this, 'action_type': this.actionType }));
     },
 
     willStart: function() {
@@ -840,10 +817,10 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
         }
         return Promise.all([this._super(), this.perform_rpc()]);
     },
-
+    // TODO: probably this can be removed
     createTemplateTagsField: function () {
-        var self = this;
-        var params = {
+        const self = this;
+        const params = {
             modelName: 'sign.template',
             res_id: self.templateID,
             fields : {
@@ -1018,25 +995,22 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
     },
 
     _onFieldChanged: function (event) {
-        var self = this;
-        var $majInfo = this.$(event.target.$el).parent().next('.o_sign_template_saved_info');
+        const $majInfo = this.$(event.target.$el).parent().next('.o_sign_template_saved_info');
         StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-        this.model.save(this.handleRecordId, {reload:true}).then(function (fieldNames) {
-            self.record = self.model.get(self.handleRecordId);
-            self.tag_idsMany2Many.reset(self.record);
+        this.model.save(this.handleRecordId, {reload:true}).then((fieldNames) => {
+            this.record = this.model.get(this.handleRecordId);
+            this.tag_idsMany2Many.reset(this.record);
             $majInfo.stop().css('opacity', 1).animate({'opacity': 0}, 1500);
         });
     },
 
     perform_rpc: function() {
-        var self = this;
-
-        var defTemplates = this._rpc({
+        const self = this;
+        const defTemplates = this._rpc({
                 model: 'sign.template',
                 method: 'read',
                 args: [[this.templateID]],
-            })
-            .then(function prepare_template(template) {
+            }).then(function prepare_template(template) {
                 if (template.length === 0) {
                     self.templateID = undefined;
                     self.displayNotification({ title: _t("Warning"), message: _t("The template doesn't exist anymore.") });
@@ -1046,13 +1020,12 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
                 self.sign_template = template;
                 self.has_sign_requests = (template.sign_request_ids.length > 0);
 
-                var defSignItems = self._rpc({
+                const defSignItems = self._rpc({
                         model: 'sign.item',
                         method: 'search_read',
                         args: [[['template_id', '=', template.id]]],
                         kwargs: {context: session.user_context},
-                    })
-                    .then(function (sign_items) {
+                    }).then(function (sign_items) {
                         self.sign_items = sign_items;
                         return self._rpc({
                             model: 'sign.item.option',
@@ -1061,13 +1034,12 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
                             kwargs: {context: session.user_context},
                         });
                     });
-                var defIrAttachments = self._rpc({
+                const defIrAttachments = self._rpc({
                         model: 'ir.attachment',
                         method: 'read',
                         args: [[template.attachment_id[0]], ['mimetype', 'name']],
                         kwargs: {context: session.user_context},
-                    })
-                    .then(function(attachment) {
+                    }).then(function(attachment) {
                         attachment = attachment[0];
                         self.sign_template.attachment_id = attachment;
                         self.isPDF = (attachment.mimetype.indexOf('pdf') > -1);
@@ -1076,83 +1048,75 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
                 return Promise.all([defSignItems, defIrAttachments]);
             });
 
-        var defSelectOptions = this._rpc({
+        const defSelectOptions = this._rpc({
                 model: 'sign.item.option',
                 method: 'search_read',
                 args: [[]],
                 kwargs: {context: session.user_context},
-            })
-            .then(function (options) {
+            }).then(function (options) {
                 self.sign_item_options = options;
             });
 
-        var defParties = this._rpc({
+        const defParties = this._rpc({
                 model: 'sign.item.role',
                 method: 'search_read',
-                args: [[['default', '=', false]]],
                 kwargs: {context: session.user_context},
-            })
-            .then(function(parties) {
+            }).then(function(parties) {
                 self.sign_item_parties = parties;
             });
 
-        var defItemTypes = this._rpc({
+        const defItemTypes = this._rpc({
                 model: 'sign.item.type',
                 method: 'search_read',
                 kwargs: {context: session.user_context},
-            })
-            .then(function(types) {
+            }).then(function(types) {
                 self.sign_item_types = types;
             });
 
         return Promise.all([defTemplates, defParties, defItemTypes, defSelectOptions]);
     },
 
-    start: function() {
-        var self = this;
+    start: function () {
         if(this.templateID === undefined) {
             return this.go_back_to_kanban();
         }
-        return this._super().then(function () {
-            self.renderButtons();
-            var status = {
-                cp_content: {$buttons: self.$buttons},
+        return this._super().then(() => {
+            this.renderButtons();
+            const status = {
+                cp_content: {$buttons: this.$buttons},
             };
-            return self.updateControlPanel(status);
-        }).then(function () {
-            self.initialize_content();
-
-
-            self.createTemplateTagsField();
-            if(self.$('iframe').length) {
-                core.bus.on('DOM_updated', self, init_iframe);
+            return this.updateControlPanel(status);
+        }).then(() => {
+            this.initialize_content();
+            this.createTemplateTagsField();
+            if(this.$('iframe').length) {
+                core.bus.on('DOM_updated', this, init_iframe);
             }
-
-            self.$('.o_content').addClass('o_sign_template');
-
+            this.$('.o_content').addClass('o_sign_template');
         });
-        function init_iframe() {
+        function init_iframe () {
             if(this.$el.parents('html').length && !this.$el.parents('html').find('.modal-dialog').length) {
-                var self = this;
                 framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
-                this.iframeWidget = new EditablePDFIframe(this,
-                                                            '/web/content/' + this.sign_template.attachment_id.id,
-                                                            true,
-                                                            {
-                                                                parties: this.sign_item_parties,
-                                                                types: this.sign_item_types,
-                                                                signatureItems: this.sign_items,
-                                                                select_options: this.sign_item_options,
-                                                            });
-                return this.iframeWidget.attachTo(this.$('iframe')).then(function() {
+                this.iframeWidget = new EditablePDFIframe (
+                    this,
+                    '/web/content/' + this.sign_template.attachment_id.id,
+                    true,
+                    {
+                        parties: this.sign_item_parties,
+                        types: this.sign_item_types,
+                        signatureItems: this.sign_items,
+                        select_options: this.sign_item_options,
+                    }
+                );
+                return this.iframeWidget.attachTo(this.$('iframe')).then(() => {
                     framework.unblockUI();
-                    self.iframeWidget.currentRole = self.sign_item_parties[0].id;
+                    this.iframeWidget.currentRole = this.sign_item_parties[0].id;
                 });
             }
         }
     },
 
-    initialize_content: function() {
+    initialize_content: function () {
         this.$('.o_content').empty();
         this.debug = config.isDebug();
         this.$('.o_content').append(core.qweb.render('sign.template', {widget: this}));
@@ -1164,84 +1128,76 @@ var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
         this.initialTemplateName = this.$templateNameInput.val();
     },
 
-    do_show: function() {
+    do_show: function () {
         this._super();
 
         // the iframe cannot be detached normally
         // we have to reload it entirely and re-apply the sign items on it
-        var self = this;
-        return this.perform_rpc().then(function() {
-            if(self.iframeWidget) {
-                self.iframeWidget.destroy();
-                self.iframeWidget = undefined;
+        return this.perform_rpc().then(() => {
+            if(this.iframeWidget) {
+                this.iframeWidget.destroy();
+                this.iframeWidget = undefined;
             }
-            self.$('iframe').remove();
-            self.initialize_content();
+            this.$('iframe').remove();
+            this.initialize_content();
         });
     },
 
-    prepareTemplateData: function() {
+    prepareTemplateData: function () {
         this.rolesToChoose = {};
-        var data = {}, newId = 0;
-        var configuration = (this.iframeWidget)? this.iframeWidget.configuration : {};
-        for(var page in configuration) {
-            for(var i = 0 ; i < configuration[page].length ; i++) {
-                var id = configuration[page][i].data('item-id') || (newId--);
-                var resp = configuration[page][i].data('responsible');
+        let data = {}, newId = 0;
+        const configuration = (this.iframeWidget)? this.iframeWidget.configuration : {};
+        for(let page in configuration) {
+            configuration[page].forEach(signItem => {
+                const id = signItem.data('item-id') || (newId--);
+                const resp = signItem.data('responsible');
                 data[id] = {
-                    'type_id': configuration[page][i].data('type'),
-                    'required': configuration[page][i].data('required'),
-                    'name': configuration[page][i].data('name'),
-                    'alignment': configuration[page][i].data('alignment'),
-                    'option_ids': configuration[page][i].data('option_ids'),
+                    'type_id': signItem.data('type'),
+                    'required': signItem.data('required'),
+                    'name': signItem.data('name'),
+                    'alignment': signItem.data('alignment'),
+                    'option_ids': signItem.data('option_ids'),
                     'responsible_id': resp,
                     'page': page,
-                    'posX': configuration[page][i].data('posx'),
-                    'posY': configuration[page][i].data('posy'),
-                    'width': configuration[page][i].data('width'),
-                    'height': configuration[page][i].data('height'),
+                    'posX': signItem.data('posx'),
+                    'posY': signItem.data('posy'),
+                    'width': signItem.data('width'),
+                    'height': signItem.data('height'),
                 };
-
                 this.rolesToChoose[resp] = this.iframeWidget.parties[resp];
-            }
+            });
         }
         return data;
     },
 
-    saveTemplate: function(duplicate) {
-        duplicate = (duplicate === undefined)? false : duplicate;
-
-        var data = this.prepareTemplateData();
-        var $majInfo = this.$('.o_sign_template_saved_info').first();
-
-        var self = this;
+    saveTemplate: function (duplicate=false) {
+        const data = this.prepareTemplateData();
+        const $majInfo = this.$('.o_sign_template_saved_info').first();
         this._rpc({
-                model: 'sign.template',
-                method: 'update_from_pdfviewer',
-                args: [this.templateID, !!duplicate, data, this.$templateNameInput.val() || this.initialTemplateName],
-            })
-            .then(function(templateID) {
-                if(!templateID) {
-                    Dialog.alert(self, _t('Somebody is already filling a document which uses this template'), {
-                        confirm_callback: function() {
-                            self.go_back_to_kanban();
-                        },
-                    });
-                }
-
-                if(duplicate) {
-                    self.do_action({
-                        type: "ir.actions.client",
-                        tag: 'sign.Template',
-                        name: _t("Duplicated Template"),
-                        context: {
-                            id: templateID,
-                        },
-                    });
-                } else {
-                    $majInfo.stop().css('opacity', 1).animate({'opacity': 0}, 1500);
-                }
-            });
+            model: 'sign.template',
+            method: 'update_from_pdfviewer',
+            args: [this.templateID, !!duplicate, data, this.$templateNameInput.val() || this.initialTemplateName],
+        }).then((templateID) => {
+            if(!templateID) {
+                Dialog.alert(this, _t('Somebody is already filling a document which uses this template'), {
+                    confirm_callback: () => {
+                        this.go_back_to_kanban();
+                    },
+                });
+            }
+            if(duplicate) {
+                this.do_action({
+                    type: "ir.actions.client",
+                    tag: 'sign.Template',
+                    name: _t("Duplicated Template"),
+                    context: {
+                        id: templateID,
+                    },
+                });
+            } else {
+                $majInfo.stop().css('opacity', 1).animate({'opacity': 0}, 1500);
+            }
+        });
     },
 });
 

@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=sign.PDFIframe **/
 
 'use strict';
 
@@ -27,7 +27,7 @@ const PinchItemMixin = {
      *        Handler called when the distance pinched between the 2 pointer is increased
      * }
      */
-    init(options) {
+    init (options) {
         this.prevDiff = null;
         this.$target = options.$target;
         this.$target.addClass('o_pinch_item');
@@ -50,7 +50,7 @@ const PinchItemMixin = {
      * @param ev
      * @private
      */
-    _onPinchMove(ev) {
+    _onPinchMove (ev) {
         const touches = ev.touches;
         // If two pointers are down, check for pinch gestures
         if (touches.length === 2) {
@@ -80,18 +80,18 @@ const PinchItemMixin = {
 };
 
 export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
-    init: function(parent, attachmentLocation, editMode, datas, role) {
+    init: function (parent, attachmentLocation, editMode, datas, role) {
         this._super(parent);
-        const self = this;
         this.attachmentLocation = attachmentLocation;
         this.editMode = editMode;
         this.requestState = parent.requestState;
         this.templateID = parent.templateID;
         this.templateItemsInProgress = parent.templateItemsInProgress;
         this.templateName = parent.templateName;
-        for(const dataName in datas) {
+        // sets datas values to this
+        Object.keys(datas).forEach(dataName => {
             this._set_data(dataName, datas[dataName]);
-        }
+        });
 
         this.normalSize = () => this.$('.page').first().innerHeight() * 0.015;
         this.role = role || 0;
@@ -101,12 +101,12 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         this.fullyLoaded = new Promise(function(resolve, reject) {
             _res = resolve;
             _rej = reject;
-        }).then(function() {
+        }).then(() => {
             // Init pinch event only after have the pdf loaded
-            PinchItemMixin.init.call(self, {
-                $target: self.$el.find('#viewerContainer #viewer'),
-                decreaseDistanceHandler: () => self.$('button#zoomIn').click(),
-                increaseDistanceHandler: () => self.$('button#zoomOut').click()
+            PinchItemMixin.init({
+                $target: this.$el.find('#viewerContainer #viewer'),
+                decreaseDistanceHandler: () => this.$('button#zoomIn').click(),
+                increaseDistanceHandler: () => this.$('button#zoomOut').click()
             });
             return arguments;
         });
@@ -117,6 +117,9 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+    /**
+     * Adds buttons for completed signature download/certificate download
+     */
     _managedToolBarButtonsForSignedDocument() {
         const cloneDownloadButton = $button => $button.clone()
             .attr('id', $button.attr('id') + '_completed')
@@ -138,7 +141,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
      * @param { String } dataName 
      * @param {*} data 
      */
-    _set_data: function(dataName, data) {
+    _set_data: function (dataName, data) {
         this[dataName] = {};
         if(data instanceof jQuery) {
             const self = this;
@@ -152,7 +155,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         }
     },
 
-    start: function() {
+    start: function () {
         const self = this;
         self.$iframe = self.$el; // this.$el will be changed to the iframe html tag once loaded
         self.pdfView = (self.$iframe.attr('readonly') === "readonly");
@@ -169,7 +172,10 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         return Promise.all([self._super(), self.fullyLoaded]);
     },
 
-    waitForPDF: function() {
+    /**
+     * Waits for PDF to be loaded by PDFjs lib
+     */
+    waitForPDF: function () {
         if(this.$iframe.contents().find('#errorMessage').is(":visible")) {
             this.fullyLoaded.resolve();
             return Dialog.alert(this, _t("Need a valid PDF to add signature fields !"));
@@ -185,7 +191,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         }
     },
 
-    doPDFPostLoad: function() {
+    doPDFPostLoad: function () {
         const self = this;
         const signature_keys = Object.keys(this.signatureItems);
         const is_all_signed = signature_keys.filter(key=>this.signatureItems[key].value).length == signature_keys.length
@@ -203,11 +209,8 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         if (this.readonlyFields && !this.editMode && is_all_signed) {
             this._managedToolBarButtonsForSignedDocument();
         }
-        if (config.device.isMobile) {
-            this.$('button#zoomIn').click();
-        } else {
-            this.$('button#zoomOut').click().click();
-        }
+
+        config.device.isMobile ? this.$('button#zoomIn').click() : this.$('button#zoomOut').click().click();
 
         for(let i = 1 ; i <= this.nbPages ; i++) {
             this.configuration[i] = [];
@@ -253,7 +256,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
                     el.alignment,
                     false
                 );
-                $signatureItem.data({itemId: el.id, order: i});
+                $signatureItem.data({ itemId: el.id, order: i });
                 self.configuration[parseInt(el.page)].push($signatureItem);
             });
 
@@ -289,7 +292,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         });
     },
 
-    refreshSignItems: function() {
+    refreshSignItems: function () {
         Object.keys(this.configuration).forEach(page => {
             const $pageContainer = this.$('.page[data-page-number="' + page + '"]');
             this.configuration[page].forEach(item => {
@@ -340,9 +343,9 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         }
     },
 
-    updateFontSize: function() {
+    updateFontSize: function () {
         const self = this;
-        const normalSize = this.normalSize();
+        const normalSize = self.normalSize();
         this.$('.o_sign_sign_item').each(function(i, el) {
             const $elem = $(el);
             self.updateSignItemFontSize($elem, normalSize);
@@ -353,7 +356,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
      * @param {jQuery} $signItem the signItem the font size has to be set
      * @param {number} normalSize the normal font size
      */
-    updateSignItemFontSize: function($signItem, normalSize) {
+    updateSignItemFontSize: function ($signItem, normalSize) {
         let size = parseFloat($signItem.css('height'));
         if (['signature', 'initial', 'textarea', 'selection'].includes(this.types[$signItem.data('type')].item_type)) {
             size = normalSize;
@@ -385,7 +388,6 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         }
 
         if (type.item_type === 'selection') {
-            debugger;
             const $options_display = $signatureItem.find('.o_sign_select_options_display');
             this.display_select_options($options_display, this.select_options, selected_options, readonly, value);
         }
@@ -401,7 +403,7 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
     deleteSignItem: function($item, detach=false) {
         const pageNo = parseInt($item.parent().data('page-number'));
         detach ? $item.detach() : $item.remove();
-        for(var i = 0 ; i < this.configuration[pageNo].length ; i++) {
+        for(let i = 0 ; i < this.configuration[pageNo].length ; i++) {
             if(this.configuration[pageNo][i].data('posx') === $item.data('posx') && this.configuration[pageNo][i].data('posy') === $item.data('posy')) {
                 this.configuration[pageNo].splice(i, 1);
             }
@@ -417,27 +419,25 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
     },
 
     updateSignItem: function($signatureItem) {
-        let posX = $signatureItem.data('posx'), posY = $signatureItem.data('posy');
+        const setPosition = (pos, dimension) => {
+            if (pos < 0) {
+                return 0;
+            } else if (pos + dimension > 1.0) {
+                return 1.0 - dimension;
+            }
+            return pos;
+        }
         const width = $signatureItem.data('width'), height = $signatureItem.data('height');
-
-        if (posX < 0) {
-            posX = 0;
-        } else if(posX + width > 1.0) {
-            posX = 1.0 - width;
-        }
-        if (posY < 0) {
-            posY = 0;
-        } else if (posY + height > 1.0) {
-            posY = 1.0 - height;
-        }
+        const posX = setPosition($signatureItem.data('posx'), width), posY = setPosition($signatureItem.data('posy'), height);
 
         const alignment = $signatureItem.data('alignment');
         $signatureItem.data({ posx: Math.round(posX * 1000) / 1000, posy: Math.round(posY * 1000) / 1000 })
             .css({left: posX * 100 + '%', top: posY * 100 + '%', width: width * 100 + '%', height: height * 100 + '%', textAlign: alignment});
 
         const resp = $signatureItem.data('responsible');
-        $signatureItem.toggleClass('o_sign_sign_item_required', ($signatureItem.data('required') && (this.editMode || resp <= 0 || resp === this.role)))
-            .toggleClass('o_sign_sign_item_pdfview', (this.pdfView || !!$signatureItem.data('hasValue') || (resp !== this.role && resp > 0 && !this.editMode)));
+        const isSignItemRequired = $signatureItem.data('required') && (this.editMode || resp <= 0 || resp === this.role);
+        const isSignItemNotSigned = (this.pdfView || !!$signatureItem.data('hasValue') || (resp !== this.role && resp > 0 && !this.editMode))
+        $signatureItem.toggleClass('o_sign_sign_item_required', isSignItemRequired).toggleClass('o_sign_sign_item_pdfview', isSignItemNotSigned);
     },
 
     disableItems: function() {
@@ -449,3 +449,5 @@ export const PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         this._super.apply(this, arguments);
     },
 }));
+
+export default PDFIframe;

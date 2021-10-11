@@ -160,7 +160,7 @@ function setAsOptionsSelect($select, item_id, selected, select_options) {
 function setAsSelect(configuration, $select, selected) {
     $select.select2('destroy');
     if (configuration.html) {
-        $select.html(configuration.html).addClass('form-control');
+        $select.empty().append(configuration.html).addClass('form-control');
     }
     $select.select2(configuration.options);
     if(selected !== undefined) {
@@ -176,3 +176,5 @@ export const sign_utils = {
     setAsOptionsSelect,
     resetOptionsSelectConfiguration,
 }
+
+export default sign_utils;

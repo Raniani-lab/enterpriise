@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=sign.views_custo **/
 
 'use strict';
 
@@ -10,7 +10,7 @@ import KanbanRecord from "web.KanbanRecord";
 import ListController from "web.ListController";
 import utils from 'web.utils';
 import session from 'web.session';
-import multiFileUpload from 'sign.multiFileUpload';
+import { multiFileUpload } from '@sign/js/common/multi_file_upload';
 
 const { _t } = core;
 
@@ -37,26 +37,25 @@ KanbanRecord.include({
      * @private
      */
     _openRecord: function () {
-        var self = this;
         if (this.modelName === 'sign.template' && this.$el.parents('.o_sign_template_kanban').length) {
             // don't allow edit on mobile
             if (config.device.isMobile) {
                 return;
             }
-            self._rpc({
-                model: 'sign.template',
+            this._rpc({
+                model: this.modelName,
                 method: 'go_to_custom_template',
-                args: [self.recordData.id],
-            }).then(function(action) {
-                self.do_action(action);
+                args: [this.recordData.id],
+            }).then((action) => {
+                this.do_action(action);
             });
         } else if (this.modelName === 'sign.request' && this.$el.parents('.o_sign_request_kanban').length) {
             this._rpc({
-                model: 'sign.request',
+                model: this.modelName,
                 method: 'go_to_document',
-                args: [self.recordData.id],
-            }).then(function(action) {
-                self.do_action(action);
+                args: [this.recordData.id],
+            }).then((action) => {
+                this.do_action(action);
             });
         } else {
             this._super.apply(this, arguments);
@@ -85,7 +84,6 @@ function _make_custo(selector_button) {
             }
             if (this.modelName === "sign.template") {
                 this._sign_upload_file_button();
-
             } else if (this.modelName === "sign.request") {
                 if (this.$buttons) {
                     this._sign_create_request_button();
@@ -94,11 +92,10 @@ function _make_custo(selector_button) {
         },
 
         _sign_upload_file_button: function () {
-            var self = this;
-            this.$buttons.find(selector_button).text(_t('UPLOAD A PDF TO SIGN')).off("click").on("click", function (e) {
+            this.$buttons.find(selector_button).text(_t('UPLOAD A PDF TO SIGN')).off("click").on("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                _sign_upload_file.call(self, true, false, 'sign_send_request');
+                _sign_upload_file.bind(this)(true, false, 'sign_send_request');
             });
             // don't allow template creation on mobile devices
             if (config.device.isMobile) {
@@ -106,25 +103,24 @@ function _make_custo(selector_button) {
                 return;
             }
 
-            session.user_has_group('sign.group_sign_user').then(function (has_group) {
+            session.user_has_group('sign.group_sign_user').then((has_group) => {
                 if (has_group) {
-                    self.$buttons.find(selector_button).after(
+                    this.$buttons.find(selector_button).after(
                         $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>').off('click')
-                            .on('click', function (e) {
+                            .on('click', (e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                _sign_upload_file.call(self, false, false, 'sign_template_edit');
+                                _sign_upload_file.bind(this)(false, false, 'sign_template_edit');
                             }));
                 }
             });
         },
 
         _sign_create_request_button: function () {
-            var self = this;
-            this.$buttons.find(selector_button).text(_t('UPLOAD A PDF TO SIGN')).off("click").on("click", function (e) {
+            this.$buttons.find(selector_button).text(_t('UPLOAD A PDF TO SIGN')).off("click").on("click", (e) => {
                 e.preventDefault();
                 e.stopImmediatePropagation();
-                _sign_upload_file.call(self, true, false, 'sign_send_request');
+                _sign_upload_file.bind(this)(true, false, 'sign_send_request');
             });
             if (config.device.isMobile) {
                 this.$buttons.find(selector_button).hide();
@@ -135,17 +131,15 @@ function _make_custo(selector_button) {
 }
 
 function _sign_upload_file(inactive, sign_directly_without_mail, sign_edit_context) {
-    var self = this;
-    var sign_directly_without_mail =  sign_directly_without_mail || false;
-    var $upload_input = $('<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf" multiple="true"/>');
-    $upload_input.on('change', function (e) {
+    const $upload_input = $('<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf" multiple="true"/>');
+    $upload_input.on('change', (e) => {
         let files = e.target.files;
         Promise.all(
             Array.from(files).map((file) => {
                 return utils.getDataURLFromFile(file).then((result) => {
                     const args = [file.name, result, !inactive]
 
-                    return self._rpc({
+                    return this._rpc({
                         model: 'sign.template',
                         method: 'upload_template',
                         args: args,
@@ -163,15 +157,14 @@ function _sign_upload_file(inactive, sign_directly_without_mail, sign_edit_conte
             if(templates.length) {
                 multiFileUpload.addNewFiles(templates);
             }
-
-            self.do_action({
+            this.do_action({
                 type: "ir.actions.client",
                 tag: 'sign.Template',
-                name: _.str.sprintf(_t('Template "%s"'), file.name),
+                name: core.utils.sprintf(_t('Template "%s"'), file.name),
                 context: {
                     sign_edit_call: sign_edit_context,
                     id: file.template,
-                    sign_directly_without_mail: sign_directly_without_mail,
+                    sign_directly_without_mail: sign_directly_without_mail || false,
                 }
             });
         }).then(() => {

@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=sign.document_signing_backend **/
 
 'use strict';
 
@@ -21,14 +21,13 @@ var NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
     },
 
     on_closed: function () {
-        var self = this;
-        self._rpc({
+        this._rpc({
             model: 'sign.request',
             method: 'go_to_document',
-            args: [self.requestID],
-        }).then(function(action) {
-            self.do_action(action);
-            self.destroy();
+            args: [this.requestID],
+        }).then((action) => {
+            this.do_action(action);
+            this.destroy();
         });
     },
 });
@@ -52,7 +51,7 @@ const SignableDocumentBackend = DocumentBackend.extend({
                 args: [this.documentID],
             })
         ])
-        if(allowEdit  && !config.device.isMobile) {
+        if(allowEdit && !config.device.isMobile) {
             this.$buttons.push($(qweb.render('sign.edit_mode_info'))[0]);
             this.updateControlPanel({cp_content: {$buttons: this.$buttons}});
         }

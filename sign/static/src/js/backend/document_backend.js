@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=sign.DocumentBackend **/
 
 'use strict';
 import AbstractAction from 'web.AbstractAction';
@@ -6,7 +6,7 @@ import core from 'web.core';
 import { Document } from '@sign/js/common/document';
 import framework from 'web.framework';
 
-var _t = core._t;
+const { _t } = core;
 
 export const DocumentBackend = AbstractAction.extend({
     hasControlPanel: true,
@@ -23,7 +23,7 @@ export const DocumentBackend = AbstractAction.extend({
 
     init: function (parent, action) {
         this._super.apply(this, arguments);
-        var context = action.context;
+        const context = action.context;
         if(context.id === undefined) {
             return;
         }
@@ -47,63 +47,58 @@ export const DocumentBackend = AbstractAction.extend({
      * @returns {Promise|undefined}
      */
     _init_page: function () {
-        var self = this;
         if(this.$el.parents('html').length) {
-            return this.refresh_cp().then(function () {
+            return this.refresh_cp().then(() => {
                 framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
-                if (!self.documentPage) {
-                    self.documentPage = new (self.get_document_class())(self);
-                    return self.documentPage.attachTo(self.$el);
+                if (!this.documentPage) {
+                    this.documentPage = new (this.get_document_class())(this);
+                    return this.documentPage.attachTo(this.$el);
                 } else {
-                    return self.documentPage.initialize_iframe();
+                    return this.documentPage.initialize_iframe();
                 }
-            }).then(function () {
-                framework.unblockUI();
-            });
+            }).then(() => framework.unblockUI());
         }
     },
     start: function () {
-        var self = this;
         if(this.documentID === undefined) {
             return this.go_back_to_kanban();
         }
-        var def = this._rpc({
+        const def = this._rpc({
             route: '/sign/get_document/' + this.documentID + '/' + this.token,
             params: {message: this.message}
-        }).then(function(html) {
+        }).then((html) => {
+            const $html = $(html.trim());
+            const $signDocumentButton = $html.find('.o_sign_sign_document_button').detach();
 
-            var $html = $(html.trim());
-            var $signDocumentButton = $html.find('.o_sign_sign_document_button').detach();
+            this.$('.o_content').append($html);
+            this.$('.o_content').addClass('o_sign_document');
 
-            self.$('.o_content').append($html);
-            self.$('.o_content').addClass('o_sign_document');
-
-            var $cols = self.$('.col-lg-4');
-            var $buttonsContainer = $cols.first().remove();
+            const $cols = this.$('.col-lg-4');
+            const $buttonsContainer = $cols.first().remove();
             $cols.eq(1).toggleClass( 'col-lg-3 col-lg-4');
             $cols.eq(1).find('.o_sign_request_from').removeClass('d-flex justify-content-center flex-wrap');
             $cols.eq(2).toggleClass( 'col-lg-9 col-lg-4');
 
-            var url = $buttonsContainer.find('.o_sign_download_document_button').attr('href');
-            var logUrl = $buttonsContainer.find('.o_sign_download_log_button').attr('href');
-            self.$buttons = (self.cp_content && self.cp_content.$buttons && self.cp_content.$buttons.length) ? self.cp_content.$buttons : $('');
+            const url = $buttonsContainer.find('.o_sign_download_document_button').attr('href');
+            const logUrl = $buttonsContainer.find('.o_sign_download_log_button').attr('href');
+            this.$buttons = (this.cp_content && this.cp_content.$buttons && this.cp_content.$buttons.length) ? this.cp_content.$buttons : $('');
             if (url) {
-                self.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary mr-2');
-                self.$downloadButton.attr('href', url);
-                self.$buttons = self.$buttons.add(self.$downloadButton);
+                this.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary mr-2');
+                this.$downloadButton.attr('href', url);
+                this.$buttons = this.$buttons.add(this.$downloadButton);
             }
             if (logUrl) {
-                self.$downloadLogButton = $('<a/>', {html: _t("Certificate")}).addClass(url ? 'btn btn-secondary' : 'btn btn-primary');
-                self.$downloadLogButton.attr('href', logUrl);
-                self.$buttons = self.$buttons.add(self.$downloadLogButton);
+                this.$downloadLogButton = $('<a/>', {html: _t("Certificate")}).addClass(url ? 'btn btn-secondary' : 'btn btn-primary');
+                this.$downloadLogButton.attr('href', logUrl);
+                this.$buttons = this.$buttons.add(this.$downloadLogButton);
             }
             if ($signDocumentButton)
-                self.$buttons = $signDocumentButton.add(self.$buttons);
+                this.$buttons = $signDocumentButton.add(this.$buttons);
 
-            if (self.$buttons.length){
-                self.cp_content = {$buttons: self.$buttons};
+            if (this.$buttons.length){
+                this.cp_content = {$buttons: this.$buttons};
             }
-            core.bus.on('DOM_updated', self, self._init_page);
+            core.bus.on('DOM_updated', this, this._init_page);
         });
         return Promise.all([this._super(), def]);
     },
@@ -118,3 +113,5 @@ export const DocumentBackend = AbstractAction.extend({
         });
     },
 });
+
+export default DocumentBackend;

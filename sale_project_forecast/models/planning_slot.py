@@ -8,14 +8,13 @@ class PlanningSlot(models.Model):
 
     sale_line_id = fields.Many2one(compute='_compute_sale_line_id', store=True, readonly=False)
 
-    @api.depends('sale_line_id.project_id')
+    @api.depends('sale_line_id.project_id', 'sale_line_id.task_id.project_id')
     def _compute_project_id(self):
         slot_without_sol_project = self.env['planning.slot']
         for slot in self:
-            if not slot.project_id and slot.sale_line_id:
-                # Isn't it weird that sale_line_id has a task_id and no project_id
+            if not slot.project_id and slot.sale_line_id and (slot.sale_line_id.project_id or slot.sale_line_id.task_id.project_id):
                 slot.project_id = slot.sale_line_id.project_id or slot.sale_line_id.task_id.project_id
-            if not slot.project_id:
+            else:
                 slot_without_sol_project |= slot
         super(PlanningSlot, slot_without_sol_project)._compute_project_id()
 

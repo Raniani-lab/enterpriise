@@ -40,8 +40,7 @@ class SocialTwitterController(SocialController):
             try:
                 self._twitter_create_accounts(oauth_token, oauth_verifier, media)
             except SocialValidationException as e:
-                return request.render('social.social_http_error_view',
-                                      {'error_message': str(e)})
+                return request.render('social.social_http_error_view', {'error_message': e.get_message(), 'documentation_data': e.get_documentation_data()})
 
         url_params = {
             'action': request.env.ref('social.action_social_stream_post').id,
@@ -192,7 +191,11 @@ class SocialTwitterController(SocialController):
         )
 
         if response.status_code != 200:
-            raise SocialValidationException(_('Twitter did not provide a valid access token or it may have expired.'))
+            message = _('Twitter did not provide a valid access token or it may have expired.')
+            documentation_link = 'https://help.twitter.com/en/forms/account-access'
+            documentation_link_label = _('Read More about Twitter Accounts')
+            documentation_link_icon_class = 'fa fa-twitter'
+            raise SocialValidationException(message, documentation_link, documentation_link_label, documentation_link_icon_class)
 
         response_values = {
             response_value.split('=')[0]: response_value.split('=')[1]

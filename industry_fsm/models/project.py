@@ -92,7 +92,7 @@ class Task(models.Model):
         return result
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
-    fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
+    fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True, copy=False)
     user_ids = fields.Many2many(group_expand='_read_group_user_ids')
     # Use to count conditions between : time, worksheet and materials
     # If 2 over 3 are enabled for the project, the required count = 2

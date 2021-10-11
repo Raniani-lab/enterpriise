@@ -283,6 +283,7 @@ class HrAppraisal(models.Model):
 
     def write(self, vals):
         if 'state' in vals and vals['state'] == 'pending':
+            self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
             self.send_appraisal()
         if 'state' in vals and vals['state'] == 'done':
             vals['employee_feedback_published'] = True

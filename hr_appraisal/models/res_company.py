@@ -80,12 +80,13 @@ class ResCompany(models.Model):
         current_date = datetime.date.today() + relativedelta(days=days)
 
         for company in companies:
-            first_appraisal = company.duration_after_recruitment + company.duration_first_appraisal
             domain = [
                 ('company_id', '=', company.id),
                 ('next_appraisal_date', '=', False),
                 '|', # After Recruitment
                     '&',
+                    '&',
+                    ('appraisal_count', '=', 0),
                     ('create_date', '>', current_date - relativedelta(months=company.duration_after_recruitment + 1)),
                     ('create_date', '<=', current_date - relativedelta(months=company.duration_after_recruitment)),
                 '|', # First Appraisal
@@ -114,8 +115,8 @@ class ResCompany(models.Model):
             if employee.user_id:
                 # an appraisal has been just created
                 if employee.appraisal_count == 1:
-                    months = (today.year - employee.create_date.year) * \
-                        12 + (today.month - employee.create_date.month)
+                    months = (appraisal.date_close.year - employee.create_date.year) * \
+                        12 + (appraisal.date_close.month - employee.create_date.month)
                     note = _("You arrived %s months ago. Your appraisal is created you can assess yourself here. Your manager will determinate the date for your '1to1' meeting.") % (months)
                 else:
                     note = _("Your last appraisal was %s months ago. Your appraisal is created you can assess yourself here. Your manager will determinate the date for your '1to1' meeting.") % (

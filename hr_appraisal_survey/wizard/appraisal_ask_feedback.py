@@ -16,9 +16,6 @@ class AppraisalAskFeedback(models.TransientModel):
     _inherit = 'mail.composer.mixin'
     _description = "Ask Feedback for Appraisal"
 
-    def _get_default_deadline(self):
-        return fields.Date.today() + relativedelta(months=1)
-
     @api.model
     def default_get(self, fields):
         if not self.env.user.email:
@@ -49,7 +46,7 @@ class AppraisalAskFeedback(models.TransientModel):
     survey_template_id = fields.Many2one('survey.survey', required=True, domain=[('is_appraisal', '=', True)])
     employee_ids = fields.Many2many(
         'hr.employee', string="Recipients", domain=[('user_id', '!=', False)], required=True)
-    deadline = fields.Date(string="Answer Deadline", required=True, default=_get_default_deadline)
+    deadline = fields.Date(string="Answer Deadline", required=True, compute='_compute_deadline', store=True, readonly=False)
 
     # Overrides of mail.composer.mixin
     @api.depends('survey_template_id')  # fake trigger otherwise not computed in new mode
@@ -61,6 +58,12 @@ class AppraisalAskFeedback(models.TransientModel):
         for wizard in self.filtered('employee_id'):
             if wizard.template_id:
                 wizard.subject = self.sudo()._render_template(wizard.template_id.subject, 'hr.appraisal', wizard.appraisal_id.ids, post_process=True)[wizard.appraisal_id.id]
+
+    @api.depends('appraisal_id.date_close')
+    def _compute_deadline(self):
+        date_in_month = fields.Date.today() + relativedelta(months=1)
+        for wizard in self:
+            wizard.deadline = min(date_in_month, wizard.appraisal_id.date_close + relativedelta(days=-1))
 
     def _prepare_survey_anwers(self, partners):
         answers = self.env['survey.user_input']

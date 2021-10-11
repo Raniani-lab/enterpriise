@@ -1,16 +1,15 @@
-odoo.define('sign.document_backend_tests', function (require) {
 "use strict";
 
-var FormView = require('web.FormView');
-const framework = require('web.framework');
-var testUtils = require('web.test_utils');
+import FormView from 'web.FormView';
+import framework from 'web.framework';
+import testUtils from 'web.test_utils';
 
 var createView = testUtils.createView;
 
-const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 let serverData;
 
-const DocumentBackend = require('sign.DocumentBackend');
+import { DocumentBackend } from 'sign.DocumentBackend';
 
 QUnit.module('document_backend_tests', {
     beforeEach: function () {
@@ -165,6 +164,4 @@ QUnit.module('document_backend_tests', {
 
         form.destroy();
     });
-});
-
 });

@@ -69,12 +69,12 @@ Let your customers follow the signature process easily.
             'sign/report/green_saving_reports.scss'
         ],
         'web.assets_common': [
-            'sign/static/src/js/sign_common.js',
+            'sign/static/src/js/common/*',
             'sign/static/src/scss/sign_common.scss',
             'sign/static/src/js/multi_file_upload.js',
         ],
         'web.assets_backend': [
-            'sign/static/src/js/sign_backend.js',
+            'sign/static/src/js/backend/*',
             'sign/static/src/js/tours/sign.js',
             'sign/static/src/js/activity.js',
             'sign/static/src/components/sign_request/sign_request.js',

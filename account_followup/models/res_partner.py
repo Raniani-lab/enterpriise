@@ -136,6 +136,19 @@ class ResPartner(models.Model):
             }
             self.env['account.followup.report'].send_email(options)
 
+    def send_followup_sms(self):
+        """
+        Send a follow-up report by sms to customers in self
+        """
+        for partner in self:
+            options = {
+                'partner_id': partner.id,
+            }
+            partner._message_sms(
+                body=self.env['account.followup.report'].with_context(lang=self.lang or self.env.user.lang)._get_sms_summary(options),
+                partner_ids=partner.ids
+            )
+
     def get_followup_html(self):
         """
         Return the content of the follow-up report in HTML
@@ -291,6 +304,8 @@ class ResPartner(models.Model):
             if followup_line:
                 next_date = followup_line._get_next_date()
                 self.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'action': 'done'})
+            if followup_line.send_sms:
+                self.send_followup_sms()
             if followup_line.print_letter:
                 return self
         return None

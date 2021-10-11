@@ -27,9 +27,7 @@
     <record id="l10n_pe.tax_group_det" model="account.tax.group">
         <field name="l10n_pe_edi_code">DET</field>
     </record>
-    <record id="tax_group_icbper" model="account.tax.group">
-        <field name="name">ICBPER</field>
-        <field name="sequence">0</field>
+    <record id="l10n_pe.tax_group_icbper" model="account.tax.group">
         <field name="l10n_pe_edi_code">ICBPER</field>
     </record>
 </odoo>

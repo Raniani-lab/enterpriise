@@ -6,6 +6,7 @@ var view_registry = require('web.view_registry');
 const FieldOne2Many = require('web.relational_fields').FieldOne2Many;
 var FormView = require('web.FormView');
 var FormController = require('web.FormController');
+const FormRenderer = require('web.FormRenderer');
 
 
 const PayslipLineOne2Many = FieldOne2Many.extend({
@@ -96,9 +97,24 @@ var PayslipEditLinesFormController = FormController.extend({
     },
 });
 
+const PayslipEditLinesFormRenderer = FormRenderer.extend({
+
+    /**
+     * o_xxl_form_view causes issues if the tree views are too large to be shown at one time and require a
+     * scrollbar, since this can happen frequently in this view we completely remove that class
+     *
+     * We want both scrollbar to be on the same element to make sure that both are visible at all time.
+     */
+    _applyFormSizeClass() {
+        this._super.apply(this, arguments);
+        this.$el[0].classList.remove('o_xxl_form_view');
+    }
+});
+
 var PayslipEditLinesFormView = FormView.extend({
     config: _.extend({}, FormView.prototype.config, {
         Controller: PayslipEditLinesFormController,
+        Renderer: PayslipEditLinesFormRenderer,
     }),
 });
 

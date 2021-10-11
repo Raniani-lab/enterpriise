@@ -1562,6 +1562,7 @@ class AccountReport(models.AbstractModel):
                          'options': json.dumps(options),
                          'output_format': 'pdf',
                          'financial_id': self.env.context.get('id'),
+                         'allowed_company_ids': self.env.context.get('allowed_company_ids'),
                          }
                 }
 
@@ -1624,6 +1625,7 @@ class AccountReport(models.AbstractModel):
                          'options': json.dumps(options),
                          'output_format': 'xlsx',
                          'financial_id': self.env.context.get('id'),
+                         'allowed_company_ids': self.env.context.get('allowed_company_ids'),
                          }
                 }
 
@@ -1740,6 +1742,7 @@ class AccountReport(models.AbstractModel):
                          'options': json.dumps(options),
                          'output_format': 'xml',
                          'financial_id': self.env.context.get('id'),
+                         'allowed_company_ids': self.env.context.get('allowed_company_ids'),
                          }
                 }
 
@@ -1753,6 +1756,7 @@ class AccountReport(models.AbstractModel):
                          'options': json.dumps(options),
                          'output_format': 'txt',
                          'financial_id': self.env.context.get('id'),
+                         'allowed_company_ids': self.env.context.get('allowed_company_ids'),
                          }
                 }
 

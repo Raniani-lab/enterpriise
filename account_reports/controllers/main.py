@@ -16,7 +16,9 @@ class FinancialReportController(http.Controller):
         uid = request.session.uid
         account_report_model = request.env['account.report']
         options = json.loads(options)
-        cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
+        cids = kw.get('allowed_company_ids')
+        if not cids or cids == 'null':
+            cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
         allowed_company_ids = [int(cid) for cid in cids.split(',')]
         report_obj = request.env[model].with_user(uid).with_context(allowed_company_ids=allowed_company_ids)
         if financial_id and financial_id != 'null':

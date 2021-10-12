@@ -57,6 +57,7 @@ CalendarController.include({
                 route: '/appointment/calendar_appointment_type/create_custom',
                 params: {
                     slots: slots,
+                    context: this.context, // To pass default values like opportunity_id for appointment_crm
                 },
             });
             if (customAppointment.id) {

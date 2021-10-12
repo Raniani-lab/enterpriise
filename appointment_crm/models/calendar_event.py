@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, Command
+from odoo import api, fields, models, Command
 
 
 class CalendarEventCrm(models.Model):
     _inherit = 'calendar.event'
+
+    opportunity_id = fields.Many2one(compute="_compute_opportunity_id", readonly=False, store=True)
+
+    @api.depends('appointment_type_id')
+    def _compute_opportunity_id(self):
+        for event in self:
+            if event.appointment_type_id.opportunity_id:
+                event.opportunity_id = event.appointment_type_id.opportunity_id
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -59,7 +59,7 @@ tour.register('sign_tour', {
     content: Markup(_t("Draw your most beautiful signature!<br>You can also create one automatically or load a signature from your computer.")),
     position: "bottom",
 }, {
-    trigger: '.modal-dialog button:contains("' + _t('Adopt and Sign') + '")',
+    trigger: '.modal-dialog button:contains("' + _t('Adopt & Sign') + '")',
     content: _t("Confirm and continue."),
     position: "bottom",
 }, {

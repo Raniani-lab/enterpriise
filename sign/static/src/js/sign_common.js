@@ -861,14 +861,14 @@ odoo.define('sign.document_signing', function (require) {
 
             if (!options.buttons) {
                 options.buttons = [];
-                options.buttons.push({text: _t("Cancel"), close: true});
+                options.buttons.push({text: _t("Adopt & Sign"), classes: "btn-primary", disabled: true, click: (e) => {
+                    this.confirmFunction();
+                }});
                 options.buttons.push({text: _t("Sign all"), classes: "btn-secondary", disabled: true, click: (e) => {
                     //this.confirmAllFunction is undefined in documents with no sign items
                     this.confirmAllFunction ? this.confirmAllFunction() : this.confirmFunction();
                 }});
-                options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: (e) => {
-                    this.confirmFunction();
-                }});
+                options.buttons.push({text: _t("Cancel"), close: true});
             }
 
             this._super(parent, options);

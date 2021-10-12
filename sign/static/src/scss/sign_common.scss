@@ -225,8 +225,8 @@
         }
     }
 
-    .modal .modal-footer .btn {
-        width: 30% !important;
+    .modal.o_sign_signature_dialog .modal-footer .btn {
+        width: calc((100% - 4 * 0.25rem) / 3) !important;
     }
 }
 
@@ -240,4 +240,20 @@
 
 .o_sign_signer_waiting {
     color: #0123BC;
+}
+
+@media only screen and (max-width:380px) {
+    .mobile-xs-hide{
+        display: none !important;
+    }
+}
+.mobile-xs-show{
+    .dropdown-item{
+        margin-bottom: 3px;
+    }
+}
+@media only screen and (min-width:381px) {
+    .mobile-xs-show{
+        display: none !important;
+    }
 }

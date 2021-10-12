@@ -648,7 +648,7 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
-            content: "Adopt and Sign",
+            content: "Adopt & Sign",
             trigger: 'footer.modal-footer button.btn-primary:enabled',
             run: 'click',
         },
@@ -1196,7 +1196,7 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'click',
         },
         {
-            content: "Adopt and Sign",
+            content: "Adopt & Sign",
             trigger: 'footer.modal-footer button.btn-primary:enabled',
             run: 'click',
         },

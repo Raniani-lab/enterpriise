@@ -67,16 +67,16 @@
                     <tr>
                         <td class="o_text">Avg Open Hours</td>
                         <td title="My Open Tickets Analysis"  t-att-class="demo_class + ' o_main o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_dashboard" t-attr-show_demo="{{show_demo}}">
-                            <a href="#"><t t-esc="values['my_all']['hours']"/></a>
+                            <a href="#"><t t-esc="format_time(values['my_all']['hours'])"/></a>
                         </td>
                         <td title="My High Priority Tickets Analysis" t-att-class="demo_class + ' o_main o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_dashboard" context="{'search_default_priority': '2'}" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
-                                <t t-esc="values['my_high']['hours']"/>
+                                <t t-esc="format_time(values['my_high']['hours'])"/>
                             </a>
                         </td>
                         <td title="My Urgent Tickets Analysis" t-att-class="demo_class + ' o_main o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_dashboard" context="{'search_default_priority': '3'}" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
-                                <t t-esc="values['my_urgent']['hours']"/>
+                                <t t-esc="format_time(values['my_urgent']['hours'])"/>
                             </a>
                         </td>
                     </tr>
@@ -107,9 +107,9 @@
                             <div class="o_highlight">My Performance</div>
                             Today
                         </td>
-                        <td title="Tickets Closed Today" 
+                        <td title="Tickets Closed Today"
                             t-att-class=" 'o_dashboard_action ' + demo_class + ((values and values['helpdesk_target_closed'] and values['today']['count'] >=values['helpdesk_target_closed'])?'o_main':'o_secondary') "
-                            name="helpdesk.helpdesk_ticket_action_close_analysis" 
+                            name="helpdesk.helpdesk_ticket_action_close_analysis"
                             t-attr-show_demo="{{show_demo}}">
                             <a href="#">
                                 <span class="o_highlight">
@@ -118,29 +118,29 @@
                                 Closed Tickets
                             </a>
                         </td>
-                        <td t-if="rating_enable" 
-                            title="Today Happy Rating" 
-                            t-att-class="'o_dashboard_action ' + demo_class + ((values and values['helpdesk_target_rating'] and values['helpdesk_target_rating'] &lt;= values['today']['rating'])?'o_main':'o_secondary')" 
-                            name="action_view_rating_today" 
+                        <td t-if="rating_enable"
+                            title="Today Happy Rating"
+                            t-att-class="'o_dashboard_action ' + demo_class + ((values and values['helpdesk_target_rating'] and values['helpdesk_target_rating'] &lt;= values['today']['rating'])?'o_main':'o_secondary')"
+                            name="action_view_rating_today"
                             type="object"
                             t-attr-show_demo="{{show_demo}}">
                             <a href="#">
                                 <span class="o_highlight">
-                                    <t t-esc="values['today']['rating']"/> %
+                                    <t t-esc="format_float(values['today']['rating'])"/> %
                                 </span><br/>
                                 Happy Rating
                             </a>
                         </td>
-                        <td t-if="success_rate_enable" 
+                        <td t-if="success_rate_enable"
                             title="Percentage of tickets that were closed without failing any SLAs."
                             data-action-title="Tickets Analysis"
                             t-att-class="'o_dashboard_action ' + demo_class + ((values and values['helpdesk_target_success'] and values['helpdesk_target_success'] &lt;= values['today']['success'])?'o_main':'o_secondary')"
-                            name="helpdesk.helpdesk_ticket_action_success" 
+                            name="helpdesk.helpdesk_ticket_action_success"
                             t-attr-show_demo="{{show_demo}}">
 
                             <a href="#">
                                 <span class="o_highlight">
-                                    <t t-esc="values['today']['success']"/>%
+                                    <t t-esc="format_float(values['today']['success'])"/> %
                                 </span><br/>
                                 Success Rate
                             </a>
@@ -155,20 +155,20 @@
                         </td>
                         <td t-if="rating_enable" title="Avg 7 Days Happy Rating" t-att-class="demo_class + 'o_secondary o_dashboard_action'" name="action_view_rating_7days" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
-                                <t t-esc="values['7days']['rating']"/> %
+                                <t t-esc="format_float(values['7days']['rating'])"/> %
                             </a>
                         </td>
                         <td t-if="success_rate_enable" data-action-title="Tickets Analysis" title="Percentage of tickets that were closed without failing any SLAs." t-att-class="demo_class + 'o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_7dayssuccess" t-attr-show_demo="{{show_demo}}">
                             <a href="#">
-                                <t t-esc="values['7days']['success']"/>%
+                                <t t-esc="format_float(values['7days']['success'])"/> %
                             </a>
                         </td>
                     </tr><tr>
                         <td class="o_text">Daily Target</td>
                         <td t-att-class="demo_class + 'o_secondary'">
-                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_closed' t-att-value="values['helpdesk_target_closed'] ? values['helpdesk_target_closed'] : undefined" t-att-title=" show_demo ? 'Tickets closed daily target' : 'Click to set'">
+                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_closed' t-att-value="values['helpdesk_target_closed'] ? format_float(values['helpdesk_target_closed']) : undefined" t-att-title=" show_demo ? 'Tickets closed daily target' : 'Click to set'">
                                 <t t-if="values['helpdesk_target_closed']">
-                                    <t t-esc="values['helpdesk_target_closed']"/>
+                                    <t t-esc="format_float(values['helpdesk_target_closed'])"/>
                                 </t>
                                 <t t-if="!values['helpdesk_target_closed']">
                                     Click to set
@@ -176,9 +176,9 @@
                             </span>
                         </td>
                         <td t-att-class="demo_class + 'o_secondary'" t-if="rating_enable">
-                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_rating' t-att-value="values['helpdesk_target_rating'] ? values['helpdesk_target_rating'] : undefined" t-att-title=" show_demo ? 'Happy rating daily target' : 'Click to set'">
+                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_rating' t-att-value="values['helpdesk_target_rating'] ? format_float(values['helpdesk_target_rating']) : undefined" t-att-title=" show_demo ? 'Happy rating daily target' : 'Click to set'">
                                 <t t-if="values['helpdesk_target_rating']">
-                                    <t t-esc="values['helpdesk_target_rating']"/>%
+                                    <t t-esc="format_float(values['helpdesk_target_rating'])"/> %
                                 </t>
                                 <t t-if="!values['helpdesk_target_rating']">
                                     Click to set
@@ -186,9 +186,9 @@
                             </span>
                         </td>
                         <td t-att-class="demo_class + 'o_secondary'" t-if="success_rate_enable">
-                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_success' t-att-value="values['helpdesk_target_success'] ? values['helpdesk_target_success'] : undefined" t-att-title="show_demo ? 'Success rate daily target' : 'Click to set'">
+                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_success' t-att-value="values['helpdesk_target_success'] ? format_float(values['helpdesk_target_success']) : undefined" t-att-title="show_demo ? 'Success rate daily target' : 'Click to set'">
                                 <t t-if="values['helpdesk_target_success']">
-                                    <t t-esc="values['helpdesk_target_success']"/>%
+                                    <t t-esc="format_float(values['helpdesk_target_success'])"/> %
                                 </t>
                                 <t t-if="!values['helpdesk_target_success']">
                                     Click to set

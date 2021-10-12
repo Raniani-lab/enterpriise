@@ -17,6 +17,7 @@ var KanbanView = require('web.KanbanView');
 var KanbanRecord = require('web.KanbanRecord');
 var session = require('web.session');
 var view_registry = require('web.view_registry');
+const { format } = require('web.field_utils');
 
 var QWeb = core.qweb;
 
@@ -77,6 +78,8 @@ var HelpdeskDashboardRenderer = KanbanRenderer.extend({
                 rating_enable: values.rating_enable,
                 success_rate_enable: values.success_rate_enable,
                 values: values,
+                format_float: (value) => format.float(value),
+                format_time: (value) => format.float_time(value),
             });
             if (!self.$el.parent('.o_kanban_view_wrapper').length) {
                 self.$el.wrap('<div class="o_kanban_view_wrapper d-flex flex-column align-items-start"></div>');
@@ -210,8 +213,7 @@ var HelpdeskDashboardModel = KanbanModel.extend({
             context: session.user_context,
         });
         return Promise.all([super_def, dashboard_def]).then(function(results) {
-            var id = results[0];
-            var dashboardValues = results[1];
+            const [id, dashboardValues] = results;
             self.dashboardValues[id] = dashboardValues;
             return id;
         });

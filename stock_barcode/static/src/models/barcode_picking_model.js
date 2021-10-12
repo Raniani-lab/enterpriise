@@ -583,6 +583,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             await this._putInPack(additionalContext);
         } else if (resultPackage.package_type_id.id !== packageType.id) {
             // Changes the package type for the scanned one.
+            await this.save();
             await this.orm.write('stock.quant.package', [resultPackage.id], {
                 package_type_id: packageType.id,
             });

@@ -1832,6 +1832,11 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         grp_pack = self.env.ref('stock.group_tracking_lot')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
 
+        # Set package's sequence to 123 to generate always the same package's name in the tour.
+        sequence = self.env['ir.sequence'].search([('code', '=', 'stock.quant.package')], limit=1)
+        sequence.write({'number_next_actual': 123})
+
+        # Creates two products and two package's types.
         product1 = self.env['product.product'].create({
             'name': 'PRO_GTIN_8',
             'type': 'product',
@@ -1846,6 +1851,14 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'barcode': '584687955629',  # GTIN-12
             'uom_id': self.env.ref('uom.product_uom_unit').id,
         })
+        wooden_chest_package_type = self.env['stock.package.type'].create({
+            'name': 'Wooden Chest',
+            'barcode': 'WOODC',
+        })
+        iron_chest_package_type = self.env['stock.package.type'].create({
+            'name': 'Iron Chest',
+            'barcode': 'IRONC',
+        })
 
         action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
         url = "/web#action=" + str(action_id.id)
@@ -1853,11 +1866,18 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_gs1_package_receipt', login='admin', timeout=180)
         # Checks the package is in the stock location with the products.
         package = self.env['stock.quant.package'].search([('name', '=', '546879213579461324')])
+        package2 = self.env['stock.quant.package'].search([('name', '=', '130406658041178543')])
+        package3 = self.env['stock.quant.package'].search([('name', '=', 'PACK0000123')])
         self.assertEqual(len(package), 1)
         self.assertEqual(len(package.quant_ids), 2)
+        self.assertEqual(package.package_type_id.id, wooden_chest_package_type.id)
         self.assertEqual(package.quant_ids[0].product_id.id, product1.id)
         self.assertEqual(package.quant_ids[1].product_id.id, product2.id)
         self.assertEqual(package.location_id.id, self.stock_location.id)
+        self.assertEqual(package2.package_type_id.id, iron_chest_package_type.id)
+        self.assertEqual(package2.quant_ids.product_id.id, product1.id)
+        self.assertEqual(package3.package_type_id.id, iron_chest_package_type.id)
+        self.assertEqual(package3.quant_ids.product_id.id, product2.id)
 
         self.start_tour(url, 'test_gs1_package_delivery', login='admin', timeout=180)
         # Checks the package is in the customer's location.

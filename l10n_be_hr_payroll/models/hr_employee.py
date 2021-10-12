@@ -52,7 +52,9 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
     certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])
     l10n_be_scale_seniority = fields.Integer(string="Seniority at Hiring", groups="hr.group_hr_user", tracking=True)
 
-    double_pay_line_ids = fields.One2many('l10n.be.double.pay.recovery.line', 'employee_id', string='Previous Occupations')
+    double_pay_line_ids = fields.One2many(
+        'l10n.be.double.pay.recovery.line', 'employee_id',
+        string='Previous Occupations', groups="hr_payroll.group_hr_payroll_user")
 
     def _compute_spouse_fiscal_status_explanation(self):
         low_income_threshold = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('spouse_low_income_threshold')

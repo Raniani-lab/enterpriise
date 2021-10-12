@@ -10,7 +10,7 @@ class ProjectProductEmployeeMap(models.Model):
     timesheet_product_id = fields.Many2one(
         'product.product', string='Service',
         domain="""[
-            ('type', '=', 'service'),
+            ('detailed_type', '=', 'service'),
             ('invoice_policy', '=', 'delivery'),
             ('service_type', '=', 'timesheet'),
             '|', ('company_id', '=', False), ('company_id', '=', company_id)]""")

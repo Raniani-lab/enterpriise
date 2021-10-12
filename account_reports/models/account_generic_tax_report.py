@@ -537,6 +537,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         # (if 2 tax groups share the same 3 accounts, they should consolidate in the vat closing entry)
         move_vals_lines = []
         tax_group_subtotal = {}
+        currency = self.env.company.currency_id
         for tg, values in tax_groups.items():
             total = 0
             # ignore line that have no property defined on tax group
@@ -549,7 +550,7 @@ class AccountGenericTaxReport(models.AbstractModel):
                     move_vals_lines.append((0, 0, {'name': tax_name, 'debit': abs(amt) if amt < 0 else 0, 'credit': amt if amt > 0 else 0, 'account_id': account_id}))
                     total += amt
 
-            if total != 0:
+            if not currency.is_zero(total):
                 # Add total to correct group
                 key = (tg.property_advance_tax_payment_account_id.id or False, tg.property_tax_receivable_account_id.id, tg.property_tax_payable_account_id.id)
 
@@ -594,12 +595,12 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         Used to balance the tax group accounts for the creation of the vat closing entry.
         """
-        def _add_line(account, name):
+        def _add_line(account, name, company_currency):
             self.env.cr.execute(sql_account, (account, end_date))
             result = self.env.cr.dictfetchone()
             advance_balance = result.get('balance') or 0
             # Deduct/Add advance payment
-            if advance_balance != 0:
+            if not company_currency.is_zero(advance_balance):
                 line_ids_vals.append((0, 0, {
                     'name': name,
                     'debit': abs(advance_balance) if advance_balance < 0 else 0,
@@ -608,6 +609,7 @@ class AccountGenericTaxReport(models.AbstractModel):
                 }))
             return advance_balance
 
+        currency = self.env.company.currency_id
         sql_account = '''
             SELECT SUM(aml.balance) AS balance
             FROM account_move_line aml
@@ -623,16 +625,16 @@ class AccountGenericTaxReport(models.AbstractModel):
             total = value
             # Search if any advance payment done for that configuration
             if key[0] and key[0] not in account_already_balanced:
-                total += _add_line(key[0], _('Balance tax advance payment account'))
+                total += _add_line(key[0], _('Balance tax advance payment account'), currency)
                 account_already_balanced.append(key[0])
             if key[1] and key[1] not in account_already_balanced:
-                total += _add_line(key[1], _('Balance tax current account (receivable)'))
+                total += _add_line(key[1], _('Balance tax current account (receivable)'), currency)
                 account_already_balanced.append(key[1])
             if key[2] and key[2] not in account_already_balanced:
-                total += _add_line(key[2], _('Balance tax current account (payable)'))
+                total += _add_line(key[2], _('Balance tax current account (payable)'), currency)
                 account_already_balanced.append(key[2])
             # Balance on the receivable/payable tax account
-            if total != 0:
+            if not currency.is_zero(total):
                 line_ids_vals.append((0, 0, {
                     'name': total < 0 and _('Payable tax amount') or _('Receivable tax amount'),
                     'debit': total if total > 0 else 0,

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+import re
 
 from PIL import Image
 from io import BytesIO
@@ -130,10 +131,9 @@ class MobileRoutesTest(HttpCase):
         self.assertEqual(error["code"], 200)
         self.assertEqual(error["message"], "Odoo Server Error")
         self.assertEqual(error["data"]["name"], "psycopg2.OperationalError")
-        self.assertEqual(
-            error["data"]["message"],
-            'FATAL:  database "%s" does not exist\n' % db_name,
-        )
+        regex = re.compile("database .* does not exist")
+        self.assertTrue(regex.search(error["data"]["message"]),
+            "Error message %r doesn't contain regex %r" % (error["data"]["message"], regex.pattern))
 
     def test_avatar(self):
         """

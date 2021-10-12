@@ -303,7 +303,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'partner_name': 'test',
         })
         tax = self.tax_purchase_a.copy()
-        tax.invoice_repartition_line_ids[0].write({
+        tax.refund_repartition_line_ids[0].write({
             'tag_ids': [(0, 0, {
                 'name': 'the_tag',
                 'applicability': 'taxes',
@@ -321,7 +321,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
                 'tax_ids': [(6, 0, [tax.id])]
             })]
         })
-        res = self.env["account.reconciliation.widget"].get_reconciliation_dict_from_model(reconciliation_model.id, bank_stmt_line.id, 7.50, bank_stmt_line.partner_id)
+        res = self.env["account.reconciliation.widget"].get_reconciliation_dict_from_model(reconciliation_model.id, bank_stmt_line.id, -bank_stmt_line.amount, bank_stmt_line.partner_id)
 
         self.assertEqual(len(res), 2)
         self.assertEqual(res[0]['tax_ids'][0]['id'], tax.id)

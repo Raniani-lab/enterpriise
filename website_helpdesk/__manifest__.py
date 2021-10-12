@@ -19,7 +19,7 @@
         'views/snippets.xml',
     ],
     'license': 'OEEL-1',
-    'post_init_hook': 'post_install_hook_ensure_team_forms',
+    'post_init_hook': '_configure_teams',
     'assets': {
         'web.assets_frontend': [
             'website_helpdesk/static/**/*',

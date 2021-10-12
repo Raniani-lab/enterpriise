@@ -140,6 +140,9 @@ class HelpdeskTeam(models.Model):
     def _compute_assign_stage_id(self):
         stages_dict = {stage['id']: 1 if stage['is_close'] else 2 for stage in self.env['helpdesk.stage'].search_read([('id', 'in', self.stage_ids.ids), '|', ('is_close', '=', True), ('fold', '=', True)], ['id', 'is_close'])}
         for team in self:
+            if not team.stage_ids:
+                team.to_stage_id = False
+                continue
             stage_ids = sorted([
                 (val, stage_id) for stage_id, val in stages_dict.items() if stage_id in team.stage_ids.ids
             ])

@@ -67,7 +67,7 @@ odoo.define('sign.views_custo', function(require) {
                 (this.modelName === "sign.template" || this.modelName === "sign.request")) {
                 // LPE to APP: data-mobile feature has been deprecated and removed
                 // the dialog feature in mobile should be rethought with something like https://material.io/components/sheets-bottom
-                this.$('.o_kanban_record_bottom .oe_kanban_bottom_left button:not(.o_kanban_sign_directly)')
+                this.$('.o_kanban_record_bottom .oe_kanban_bottom_left button')
                     .attr('data-mobile', '{"fullscreen": true}');
             }
         }

@@ -120,4 +120,10 @@ class AccountMoveLine(models.Model):
         # Ensure no account will be set at creation
         if self.display_type:
             vals['account_id'] = False
+
+        # Set company of analytic account to false to avoid inconsistencies in company record rules
+        company = self.env['res.company']._find_company_from_partner(self.move_id.partner_id.id)
+        analytic_company = self.analytic_account_id.company_id
+        if company and analytic_company and company.rule_type == 'invoice_and_refund' and company != analytic_company:
+            self.analytic_account_id.company_id = False
         return vals

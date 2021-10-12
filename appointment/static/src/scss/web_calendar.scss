@@ -1,6 +1,11 @@
-.o_calendar_view .fc-view {
-    .fc-bgevent.o_calendar_slot {
-        opacity: 1;
+.o_calendar_container {
+    .o_calendar_view .fc-view {
+        .fc-bgevent.o_calendar_slot {
+            opacity: 1;
+        }
+    }
+    .o_calendar_sidebar_container .o_appointment_appointment_group_buttons .dropdown-toggle:after {
+        display: none;
     }
 }
 

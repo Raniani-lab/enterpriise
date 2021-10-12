@@ -144,7 +144,7 @@ class analytic_report(models.AbstractModel):
 
         # Archived accounts that aren't used on that period shouldn't be displayed
         account_ids_to_not_display = self._context.get('account_ids_to_not_display')
-        if not account_ids_to_not_display:
+        if account_ids_to_not_display is None:
             self.env.cr.execute(
                 """
                     SELECT COALESCE(ARRAY_AGG(account.id),'{}')

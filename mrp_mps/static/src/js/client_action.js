@@ -9,7 +9,6 @@ var Pager = require('web.Pager');
 var AbstractAction = require('web.AbstractAction');
 var Dialog = require('web.Dialog');
 var field_utils = require('web.field_utils');
-var session = require('web.session');
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -21,6 +20,7 @@ var ClientAction = AbstractAction.extend({
     hasControlPanel: true,
     loadControlPanel: true,
     withSearchBar: true,
+    searchMenuTypes: ['filter', 'favorite'],
     custom_events: _.extend({}, AbstractAction.prototype.custom_events, {
         pager_changed: '_onPagerChanged',
     }),
@@ -111,24 +111,31 @@ var ClientAction = AbstractAction.extend({
      * custom menu with checkbox buttons in order to hide/display the different
      * rows.
      */
-    update_cp: function () {
-        var self = this;
-        this.$buttons = $(QWeb.render('mrp_mps_control_panel_buttons'));
+    update_cp: async function () {
+        this.$buttons = $(QWeb.render('mrp_mps_control_panel_buttons', {groups: this.groups}));
         this._update_cp_buttons();
         var $replenishButton = this.$buttons.find('.o_mrp_mps_replenish');
-        $replenishButton.on('click', self._onClickReplenish.bind(self));
-        $replenishButton.on('mouseover', self._onMouseOverReplenish.bind(self));
-        $replenishButton.on('mouseout', self._onMouseOutReplenish.bind(self));
-        this.$buttons.find('.o_mrp_mps_create').on('click', self._onClickCreate.bind(self));
-        this.$searchview_buttons = $(QWeb.render('mrp_mps_control_panel_option_buttons', {groups: self.groups}));
-        this.$searchview_buttons.find('.o_mps_mps_show_line').on('click', self._onChangeCompany.bind(self));
-        return this.updateControlPanel({
+        $replenishButton.on('click', this._onClickReplenish.bind(this));
+        $replenishButton.on('mouseover', this._onMouseOverReplenish.bind(this));
+        $replenishButton.on('mouseout', this._onMouseOutReplenish.bind(this));
+        this.$buttons.find('.o_mrp_mps_create').on('click', this._onClickCreate.bind(this));
+        this.$buttons.find('.o_mps_mps_show_line').on('click', this._onChangeCompany.bind(this));
+        const res = await this.updateControlPanel({
             title: _t('Master Production Schedule'),
             cp_content: {
                 $buttons: this.$buttons,
-                $searchview_buttons: this.$searchview_buttons,
             },
         });
+        this._controlPanelWrapper.$el.find('.o_filter_menu').before(
+            $(QWeb.render('mrp_mps_control_panel_option_buttons', {groups: this.groups}))
+        );
+        return res;
+    },
+
+    loadFieldView: function (modelName, context, view_id, view_type, options) {
+        // add the action_id to get favorite search correctly
+        options.action_id = this.action.id;
+        return this._super(...arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -724,15 +731,14 @@ var ClientAction = AbstractAction.extend({
      * @private
      * @param {Object} searchQuery
      */
-    _onSearch: function (searchQuery) {
-        var self = this;
+    _onSearch: async function (searchQuery) {
         this.domain = searchQuery.domain;
         this.$pager.remove();
         this.pager.destroy();
-        this._getRecordIds().then(function () {
-            self.renderPager();
-            self._reloadContent();
-        });
+        await this._getRecordIds();
+        await this.renderPager();
+        await this._reloadContent();
+        await this.updateControlPanel();
     },
 });
 

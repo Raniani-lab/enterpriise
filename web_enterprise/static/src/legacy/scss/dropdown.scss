@@ -1,9 +1,6 @@
 // = Enterprise dropdown customizations
 // ----------------------------------------------------------------------------
 .o_web_client.o_touch_device {
-    .o-dropdown--menu {
-        position: absolute;
-    }
 
     .dropdown-item > *:first-child {
         padding-top: 15px;

@@ -9,13 +9,6 @@
         }
 
         th > .o_group_by_menu  > .dropdown-menu {
-            // realign under the header
-            left: -20px !important;
-            top: 10px !important;
-            // let the pivot itself be the scroll referential
-            overflow: initial;
-            max-height: none;
-
             .dropdown-item {
                 // caret centered vertically
                 .dropdown-toggle::after{
@@ -28,7 +21,6 @@
                     left: 5% !important;
                     width: 95%;
                 }
-
             }
         }
     }

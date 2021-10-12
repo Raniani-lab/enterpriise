@@ -36,11 +36,13 @@ class analytic_report(models.AbstractModel):
             options['hierarchy'] = self.filter_hierarchy
 
     def open_analytic_entries(self, options, params):
+        date = options.get('date', {})
         action = self.env["ir.actions.actions"]._for_xml_id("analytic.account_analytic_line_action")
         action = clean_action(action, env=self.env)
         action['context'] = {
             'active_id': int(params['id'].split('analytic_account_')[1]),
         }
+        action['domain'] = [('date', '>=', date.get('date_from')), ('date', '<=', date.get('date_to'))]
         return action
 
     def _get_amount_of_parents(self, group):

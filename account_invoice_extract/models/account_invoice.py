@@ -2,7 +2,7 @@
 
 from unittest.mock import patch
 
-from odoo import api, fields, models, tools, _lt
+from odoo import api, fields, models, tools, _, _lt
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
@@ -831,7 +831,7 @@ class AccountMove(models.Model):
                                 line.tax_ids.add(taxes_record)
                             else:
                                 taxes_dict[tax_tuple]['found_by_OCR'] = True
-                        for (tax_amount, _, tax_price_include), tax_info in taxes_dict.items():
+                        for _dummy, tax_info in taxes_dict.items():
                             if not tax_info['found_by_OCR']:
                                 amount_before = line.price_total
                                 line.tax_ids.remove(tax_info['tax_record'].id)

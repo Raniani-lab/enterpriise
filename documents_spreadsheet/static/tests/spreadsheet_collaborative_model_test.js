@@ -77,7 +77,7 @@ QUnit.test("A simple test", (assert) => {
 });
 
 QUnit.test("Add a pivot", async (assert) => {
-    assert.expect(1);
+    assert.expect(7);
     const sheetId = alice.getters.getActiveSheetId();
     const { pivot, cache } = await getPivot(rpc, 1);
     alice.dispatch("BUILD_PIVOT", {
@@ -91,6 +91,21 @@ QUnit.test("Add a pivot", async (assert) => {
         (user) => user.getters.getPivotIds().length,
         1
     );
+    const cellFormulas = {
+        B1: `=PIVOT.HEADER("1","foo","1")`, // header col
+        A3: `=PIVOT.HEADER("1","bar","false")`, // header row
+        B2: `=PIVOT.HEADER("1","foo","1","measure","probability")`, // measure
+        B3: `=PIVOT("1","probability","bar","false","foo","1")`, // value
+        F1: `=PIVOT.HEADER("1")`, // total header rows
+        A5: `=PIVOT.HEADER("1")`, // total header cols
+    }
+    for (const [cellXc, formula] of Object.entries(cellFormulas)) {
+        assert.spreadsheetIsSynchronized(
+            [alice, bob, charlie],
+            (user) => getCellContent(user, cellXc),
+            formula
+        );
+    }
 });
 
 QUnit.test("Add two pivots concurrently", async (assert) => {

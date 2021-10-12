@@ -543,11 +543,9 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         // 3) Create the total for measures
         let row = rowAnchor + levels - 1;
         for (let i = length; i < cache.getTopHeaderCount(); i++) {
-            const args = [pivotId];
-            this._applyFormula(sheetId, col, row, args, true);
+            this._applyFormula(sheetId, col, row, [pivotId], true);
             bold.push({ top: row, bottom: row, left: col, right: col });
-            args.push("measure");
-            args.push(cache.getColGroupHierarchy(i, 1)[0]);
+            const args = [pivotId, "measure", cache.getColGroupHierarchy(i, 1)[0]];
             this._applyFormula(sheetId, col, row + 1, args, true);
             col++;
         }

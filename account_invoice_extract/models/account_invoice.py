@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from unittest.mock import patch
+
 from odoo import api, fields, models, tools, _lt
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError , UserError
@@ -723,7 +725,7 @@ class AccountMove(models.Model):
             self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
             self_ctx = self_ctx.with_company(self.company_id.id)
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx.journal_id.id)
-        with Form(self_ctx) as move_form:
+        with patch('odoo.tests.common.Form._process_fvg', _process_fvg), Form(self_ctx) as move_form:
             move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
             if not move_form.partner_id:
                 if vat_number_ocr:
@@ -868,3 +870,13 @@ class AccountMove(models.Model):
                 if codes[int(math.log2(warning_code))] == '1':
                     warnings.add(warning_code)
         return warnings
+
+
+old_process_fvg = Form._process_fvg
+
+
+def _process_fvg(self, model, fvg, level=2):
+    old_process_fvg(self, model, fvg, level=level)
+    for modifiers in fvg['modifiers'].values():
+        if 'required' in modifiers:
+            modifiers['required'] = False

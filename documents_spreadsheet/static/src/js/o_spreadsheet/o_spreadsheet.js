@@ -52,6 +52,8 @@
             toString: function () {
                 return sprintf(_t(s), ...values);
             },
+            // casts the object to unknown then to string to trick typescript into thinking that the object it receives is actually a string
+            // this way it will be typed correctly (behaves like a string) but tests like typeof _lt("whatever") will be object and not string !
         };
     };
 
@@ -6346,7 +6348,7 @@
     // -----------------------------------------------------------------------------
     // EQ
     // -----------------------------------------------------------------------------
-    function isEmpty$1(value) {
+    function isEmpty(value) {
         return value === null || value === undefined;
     }
     const getNeutral = { number: 0, string: "", boolean: false };
@@ -6358,8 +6360,8 @@
     `),
         returns: ["BOOLEAN"],
         compute: function (value1, value2) {
-            value1 = isEmpty$1(value1) ? getNeutral[typeof value2] : value1;
-            value2 = isEmpty$1(value2) ? getNeutral[typeof value1] : value2;
+            value1 = isEmpty(value1) ? getNeutral[typeof value2] : value1;
+            value2 = isEmpty(value2) ? getNeutral[typeof value1] : value2;
             if (typeof value1 === "string") {
                 value1 = value1.toUpperCase();
             }
@@ -6373,8 +6375,8 @@
     // GT
     // -----------------------------------------------------------------------------
     function applyRelationalOperator(value1, value2, cb) {
-        value1 = isEmpty$1(value1) ? getNeutral[typeof value2] : value1;
-        value2 = isEmpty$1(value2) ? getNeutral[typeof value1] : value2;
+        value1 = isEmpty(value1) ? getNeutral[typeof value2] : value1;
+        value2 = isEmpty(value2) ? getNeutral[typeof value1] : value2;
         if (typeof value1 !== "number") {
             value1 = toString(value1).toUpperCase();
         }
@@ -7821,6 +7823,15 @@
             this.style = properties.style;
             this.format = properties.format;
         }
+        isFormula() {
+            return false;
+        }
+        isLink() {
+            return false;
+        }
+        isEmpty() {
+            return false;
+        }
         get formattedValue() {
             return formatValue(this.evaluated.value, this.format);
         }
@@ -7871,6 +7882,9 @@
             super(id, { value: "", type: CellValueType.empty }, properties);
             this.content = "";
         }
+        isEmpty() {
+            return true;
+        }
     }
     class NumberCell extends AbstractCell {
         constructor(id, value, properties = {}) {
@@ -7918,6 +7932,9 @@
             super(id, { value: link.label, type: CellValueType.text }, properties);
             this.link = link;
             this.content = content;
+        }
+        isLink() {
+            return true;
         }
         get composerContent() {
             return this.link.label;
@@ -7975,6 +7992,12 @@
         }
         get content() {
             return this.buildFormulaString(this.normalizedText, this.dependencies);
+        }
+        isFormula() {
+            return true;
+        }
+        startEvaluation() {
+            this.evaluated = { value: LOADING, type: CellValueType.text };
         }
         assignValue(value) {
             switch (typeof value) {
@@ -8036,15 +8059,6 @@
             super(id, { value: "#BAD_EXPR", type: CellValueType.error, error }, properties);
             this.content = content;
         }
-    }
-    function isFormula(cell) {
-        return cell instanceof FormulaCell;
-    }
-    function isEmpty(cell) {
-        return !cell || cell instanceof EmptyCell;
-    }
-    function isLink(cell) {
-        return cell instanceof LinkCell;
     }
 
     cellRegistry
@@ -8747,7 +8761,7 @@
         adaptRanges(applyChange, sheetId) {
             for (const sheet of Object.keys(this.cells)) {
                 for (const cell of Object.values(this.cells[sheet] || {})) {
-                    if (isFormula(cell)) {
+                    if (cell.isFormula()) {
                         for (const range of cell.dependencies) {
                             if (!sheetId || range.sheetId === sheetId) {
                                 const change = applyChange(range);
@@ -9053,7 +9067,7 @@
                         style: cell.style && getStyleId(cell.style),
                         format: cell.format,
                     };
-                    if (isFormula(cell)) {
+                    if (cell.isFormula()) {
                         cells[xc].formula = {
                             text: cell.normalizedText || "",
                             dependencies: ((_a = cell.dependencies) === null || _a === void 0 ? void 0 : _a.map((d) => this.getters.getRangeString(d, _sheet.id))) || [],
@@ -9230,7 +9244,7 @@
              *     - or there was a cell at this place, but it's an empty cell and the command says border/format/style is empty
              *  */
             if (((hasContent && !afterContent && !after.formula) ||
-                (!hasContent && (isEmpty(before) || !before))) &&
+                (!hasContent && (!before || before.isEmpty()))) &&
                 !style &&
                 !format) {
                 if (before) {
@@ -9316,7 +9330,15 @@
                     case "RESIZE":
                     case "MOVE":
                     case "CHANGE":
-                        this.history.update("chartFigures", chartId, "dataSets", chart.dataSets.indexOf(ds), "dataRange", dataRangeChange.range);
+                        // We have to remove the ranges that are #REF
+                        if (this.getters.getRangeString(dataRangeChange.range, dataRangeChange.range.sheetId) !==
+                            INCORRECT_RANGE_STRING) {
+                            this.history.update("chartFigures", chartId, "dataSets", chart.dataSets.indexOf(ds), "dataRange", dataRangeChange.range);
+                        }
+                        else {
+                            const newDataSets = chart.dataSets.filter((dataset) => dataset !== ds);
+                            this.history.update("chartFigures", chartId, "dataSets", newDataSets);
+                        }
                         break;
                 }
             }
@@ -10294,7 +10316,7 @@
                 for (let col = left; col <= right; col++) {
                     if (col !== left || row !== top) {
                         const cell = actualRow.cells[col];
-                        if (cell && !isEmpty(cell)) {
+                        if (cell && !cell.isEmpty()) {
                             return true;
                         }
                     }
@@ -10699,7 +10721,15 @@
             return (_a = this.tryGetSheet(sheetId)) === null || _a === void 0 ? void 0 : _a.name;
         }
         getSheetIdByName(name) {
-            return name && this.sheetIds[getUnquotedSheetName(name)];
+            if (name) {
+                const unquotedName = getUnquotedSheetName(name);
+                for (const key in this.sheetIds) {
+                    if (key.toUpperCase() === unquotedName.toUpperCase()) {
+                        return this.sheetIds[key];
+                    }
+                }
+            }
+            return undefined;
         }
         getSheets() {
             const { visibleSheets, sheets } = this;
@@ -10779,7 +10809,7 @@
             const sheet = this.getSheet(sheetId);
             return mapCellsInZone(zone, sheet, (cell) => cell, undefined)
                 .flat()
-                .every(isEmpty);
+                .every((cell) => !cell || cell.isEmpty());
         }
         setHeaderSize(sheet, dimension, index, size) {
             let start, end;
@@ -11426,7 +11456,7 @@
                     y = 0;
                     break;
             }
-            if (!data.cell || !isFormula(data.cell)) {
+            if (!data.cell || !data.cell.isFormula()) {
                 return { cellData: {} };
             }
             const sheetId = data.sheetId;
@@ -11485,7 +11515,7 @@
         .add("simple_value_copy", {
         condition: (cell, cells) => {
             var _a;
-            return cells.length === 1 && !isFormula(cell) && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
+            return cells.length === 1 && !cell.isFormula() && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
         },
         generateRule: () => {
             return { type: "COPY_MODIFIER" };
@@ -11493,14 +11523,14 @@
         sequence: 10,
     })
         .add("copy_text", {
-        condition: (cell) => !isFormula(cell) && cell.evaluated.type === CellValueType.text,
+        condition: (cell) => !cell.isFormula() && cell.evaluated.type === CellValueType.text,
         generateRule: () => {
             return { type: "COPY_MODIFIER" };
         },
         sequence: 20,
     })
         .add("update_formula", {
-        condition: isFormula,
+        condition: (cell) => cell.isFormula(),
         generateRule: (_, cells) => {
             return { type: "FORMULA_MODIFIER", increment: cells.length, current: 0 };
         },
@@ -13224,7 +13254,7 @@
 
     const { Component: Component$q, useState: useState$l } = owl__namespace;
     const { xml: xml$t, css: css$r } = owl__namespace.tags;
-    const uuidGenerator = new UuidGenerator();
+    const uuidGenerator$1 = new UuidGenerator();
     const TEMPLATE$q = xml$t /* xml */ `
   <div class="o-selection">
     <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input">
@@ -13319,7 +13349,7 @@
     class SelectionInput extends Component$q {
         constructor() {
             super(...arguments);
-            this.id = uuidGenerator.uuidv4();
+            this.id = uuidGenerator$1.uuidv4();
             this.previousRanges = this.props.ranges || [];
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
@@ -13713,7 +13743,8 @@
         }
         get isDatasetInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) || ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
+            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) ||
+                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
         }
         get isLabelInvalid() {
             var _a;
@@ -15494,7 +15525,7 @@
             let row = zone.bottom;
             if (col > 0) {
                 let left = this.getters.getCell(sheetId, col - 1, row);
-                while (!isEmpty(left)) {
+                while (left && !left.isEmpty()) {
                     row += 1;
                     left = this.getters.getCell(sheetId, col - 1, row);
                 }
@@ -15503,7 +15534,7 @@
                 col = zone.right;
                 if (col <= this.getters.getActiveSheet().cols.length) {
                     let right = this.getters.getCell(sheetId, col + 1, row);
-                    while (!isEmpty(right)) {
+                    while (right && !right.isEmpty()) {
                         row += 1;
                         right = this.getters.getCell(sheetId, col + 1, row);
                     }
@@ -16396,7 +16427,7 @@
                     return;
                 }
                 let content = origin.cell.content;
-                if (isFormula(origin.cell)) {
+                if (origin.cell.isFormula()) {
                     const offsetX = col - origin.position.col;
                     const offsetY = row - origin.position.row;
                     content = this.getUpdatedContent(sheetId, origin.cell, offsetX, offsetY, zones, operation);
@@ -16594,9 +16625,6 @@
                 case "UPDATE_FIGURE":
                 case "EVALUATE_CELLS":
                 case "DISABLE_SELECTION_INPUT":
-                case "HIGHLIGHT_SELECTION":
-                case "RESET_PENDING_HIGHLIGHT":
-                case "REMOVE_ALL_HIGHLIGHTS":
                 case "ENABLE_NEW_SELECTION_INPUT":
                     break;
                 case "DELETE_FIGURE":
@@ -17344,7 +17372,6 @@
                     break;
                 case "START_EDITION":
                     this.startEdition(cmd.text, cmd.selection);
-                    this.highlightRanges();
                     break;
                 case "STOP_EDITION":
                     if (cmd.cancel) {
@@ -17357,9 +17384,6 @@
                     break;
                 case "SET_CURRENT_CONTENT":
                     this.setContent(cmd.content, cmd.selection);
-                    if (this.mode !== "inactive") {
-                        this.highlightRanges();
-                    }
                     break;
                 case "REPLACE_COMPOSER_CURSOR_SELECTION":
                     this.replaceSelection(cmd.text);
@@ -17557,7 +17581,6 @@
             this.row = row;
             this.sheet = this.getters.getActiveSheetId();
             this.setContent(str || this.initialContent, selection);
-            this.dispatch("REMOVE_ALL_HIGHLIGHTS");
             this.colorIndexByRange = {};
         }
         stopEdition() {
@@ -17580,7 +17603,7 @@
                             content += new Array(missing).fill(")").join("");
                         }
                     }
-                    else if (isLink(cell)) {
+                    else if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
                         content = markdownLink(content, cell.link.url);
                     }
                     this.dispatch("UPDATE_CELL", {
@@ -17609,7 +17632,6 @@
         }
         cancelEdition() {
             this.mode = "inactive";
-            this.dispatch("REMOVE_ALL_HIGHLIGHTS");
         }
         /**
          * Reset the current content to the active cell content
@@ -17716,11 +17738,10 @@
         /**
          * Highlight all ranges that can be found in the composer content.
          */
-        highlightRanges() {
-            if (!this.currentContent.startsWith("=")) {
-                return;
+        getComposerHighlights() {
+            if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
+                return [];
             }
-            this.dispatch("REMOVE_ALL_HIGHLIGHTS"); //cleanup highlights for references
             const ranges = [];
             const colorIndexByRange = {};
             for (let token of this.currentTokens.filter((token) => token.type === "SYMBOL")) {
@@ -17739,20 +17760,16 @@
             this.colorIndexByRange = colorIndexByRange;
             let colorIndexes = Object.values(colorIndexByRange);
             let nextColorIndex = 0;
-            if (ranges.length) {
-                this.dispatch("ADD_HIGHLIGHTS", {
-                    ranges: ranges.map((r) => {
-                        if (this.colorIndexByRange[r] === undefined) {
-                            while (colorIndexes.includes(nextColorIndex)) {
-                                nextColorIndex++;
-                            }
-                            colorIndexes.push(nextColorIndex);
-                            this.colorIndexByRange[r] = nextColorIndex;
-                        }
-                        return [r, colors$1[this.colorIndexByRange[r] % colors$1.length]];
-                    }),
-                });
-            }
+            return ranges.map((r) => {
+                if (this.colorIndexByRange[r] === undefined) {
+                    while (colorIndexes.includes(nextColorIndex)) {
+                        nextColorIndex++;
+                    }
+                    colorIndexes.push(nextColorIndex);
+                    this.colorIndexByRange[r] = nextColorIndex;
+                }
+                return [r, colors$1[this.colorIndexByRange[r] % colors$1.length]];
+            });
         }
         /**
          * Function used to determine when composer selection can start.
@@ -17799,7 +17816,6 @@
             return false;
         }
     }
-    EditionPlugin.layers = [1 /* Highlights */];
     EditionPlugin.getters = [
         "getEditionMode",
         "isSelectingForComposer",
@@ -17808,6 +17824,7 @@
         "getComposerSelection",
         "getCurrentTokens",
         "getTokenAtCursor",
+        "getComposerHighlights",
     ];
     EditionPlugin.modes = ["normal"];
 
@@ -17890,12 +17907,15 @@
         // Evaluator
         // ---------------------------------------------------------------------------
         evaluate(sheetId) {
-            this.evaluateCells(makeObjectIterator(this.getters.getCells(sheetId)), sheetId);
-        }
-        evaluateCells(cells, sheetId) {
+            const cells = this.getters.getCells(sheetId);
             const params = this.getFormulaParameters(computeValue);
             const visited = {};
-            for (let cell of cells) {
+            for (let cell of makeObjectIterator(cells)) {
+                if (cell.isFormula()) {
+                    cell.startEvaluation();
+                }
+            }
+            for (let cell of makeObjectIterator(cells)) {
                 computeValue(cell, sheetId);
             }
             function handleError(e, cell) {
@@ -17910,7 +17930,7 @@
                 }
             }
             function computeValue(cell, sheetId) {
-                if (!isFormula(cell)) {
+                if (!cell.isFormula()) {
                     return;
                 }
                 const position = params[2].getters.getCellPosition(cell.id);
@@ -17958,14 +17978,14 @@
                 else {
                     throw new Error(_lt("Invalid sheet name"));
                 }
-                if (!cell || isEmpty(cell)) {
+                if (!cell || cell.isEmpty()) {
                     // magic "empty" value
                     return null;
                 }
                 return getCellValue(cell, range.sheetId);
             }
             function getCellValue(cell, sheetId) {
-                if (isFormula(cell) && cell.evaluated.type === CellValueType.error) {
+                if (cell.isFormula() && cell.evaluated.type === CellValueType.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
                 }
                 computeValue(cell, sheetId);
@@ -18209,17 +18229,17 @@
                     },
                     elements: {
                         line: {
-                            fill: false,
+                            fill: false, // do not fill the area under line charts
                         },
                         point: {
-                            hitRadius: 15,
+                            hitRadius: 15, // increased hit radius to display point tooltip when hovering nearby
                         },
                     },
                     animation: {
-                        duration: 0,
+                        duration: 0, // general animation time
                     },
                     hover: {
-                        animationDuration: 10,
+                        animationDuration: 10, // duration of animations when hovering an item
                     },
                     responsiveAnimationDuration: 0,
                     title: {
@@ -18252,7 +18272,7 @@
                             position: definition.verticalAxisPosition,
                             ticks: {
                                 // y axis configuration
-                                beginAtZero: true,
+                                beginAtZero: true, // the origin of the y axis is always zero
                             },
                         },
                     ],
@@ -18342,6 +18362,12 @@
             else if (definition.dataSets.length === 1) {
                 for (let i = 0; i < this.getData(definition.dataSets[0], definition.sheetId).length; i++) {
                     labels.push("");
+                }
+            }
+            else {
+                if (definition.dataSets[0]) {
+                    const ranges = this.getData(definition.dataSets[0], definition.sheetId);
+                    labels = range(0, ranges.length).map((r) => r.toString());
                 }
             }
             const runtime = this.getDefaultConfiguration(definition, labels);
@@ -18900,7 +18926,7 @@
                     if (cell &&
                         this.currentSearchRegex &&
                         this.currentSearchRegex.test(this.searchOptions.searchFormulas
-                            ? isFormula(cell)
+                            ? cell.isFormula()
                                 ? cell.content
                                 : String(cell.evaluated.value)
                             : String(cell.evaluated.value))) {
@@ -19011,10 +19037,10 @@
          */
         toReplace(cell, sheetId) {
             if (cell) {
-                if (this.searchOptions.searchFormulas && isFormula(cell)) {
+                if (this.searchOptions.searchFormulas && cell.isFormula()) {
                     return cell.content;
                 }
-                else if (this.replaceOptions.modifyFormulas || !isFormula(cell)) {
+                else if (this.replaceOptions.modifyFormulas || !cell.isFormula()) {
                     return cell.evaluated.value.toString();
                 }
             }
@@ -19051,69 +19077,15 @@
      * HighlightPlugin
      */
     class HighlightPlugin extends UIPlugin {
-        constructor() {
-            super(...arguments);
-            this.highlights = [];
-            this.color = "#000";
-            this.highlightSelectionEnabled = false;
-            this.pendingHighlights = [];
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        handle(cmd) {
-            switch (cmd.type) {
-                case "ADD_HIGHLIGHTS":
-                    this.addHighlights(cmd.ranges);
-                    break;
-                case "REMOVE_ALL_HIGHLIGHTS":
-                    this.highlights = [];
-                    break;
-                case "REMOVE_HIGHLIGHTS":
-                    this.removeHighlights(cmd.ranges);
-                    break;
-                case "SELECT_CELL":
-                case "SET_SELECTION":
-                    if (this.highlightSelectionEnabled) {
-                        this.highlightSelection();
-                    }
-                    break;
-                case "START_SELECTION_EXPANSION":
-                    this.color = getNextColor();
-                    break;
-                case "HIGHLIGHT_SELECTION":
-                    this.highlightSelectionEnabled = cmd.enabled;
-                    if (!cmd.enabled) {
-                        this.dispatch("RESET_PENDING_HIGHLIGHT");
-                    }
-                    break;
-                case "RESET_PENDING_HIGHLIGHT":
-                    this.pendingHighlights = [];
-                    break;
-                case "ADD_PENDING_HIGHLIGHTS":
-                    this.addPendingHighlight(cmd.ranges);
-                    break;
-                case "SET_HIGHLIGHT_COLOR":
-                    this.color = cmd.color;
-            }
-        }
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
         getHighlights() {
-            return this.highlights;
+            return this.prepareHighlights(this.getters.getComposerHighlights().concat(this.getters.getSelectionInputHighlights()));
         }
         // ---------------------------------------------------------------------------
         // Other
         // ---------------------------------------------------------------------------
-        addHighlights(ranges) {
-            let highlights = this.prepareHighlights(ranges);
-            this.highlights = this.highlights.concat(highlights);
-        }
-        addPendingHighlight(ranges) {
-            let highlights = this.prepareHighlights(ranges);
-            this.pendingHighlights = this.pendingHighlights.concat(highlights);
-        }
         prepareHighlights(ranges) {
             if (ranges.length === 0) {
                 return [];
@@ -19133,67 +19105,6 @@
                 x.zone.bottom < this.getters.getSheet(x.sheet).rows.length &&
                 x.zone.right < this.getters.getSheet(x.sheet).cols.length);
         }
-        /**
-         *
-         * @param ranges {"[sheet!]XC": color}
-         * @private
-         */
-        removeHighlights(ranges) {
-            const activeSheetId = this.getters.getActiveSheetId();
-            const rangesBySheets = {};
-            for (let [range, color] of ranges) {
-                const [xc, sheetName] = range.split("!").reverse();
-                const sheetId = this.getters.getSheetIdByName(sheetName);
-                rangesBySheets[sheetId || activeSheetId] = Object.assign({ [xc]: color }, rangesBySheets[sheetId || activeSheetId] || {});
-            }
-            const shouldBeKept = (highlight) => !(rangesBySheets[highlight.sheet] &&
-                rangesBySheets[highlight.sheet][this.getters.zoneToXC(activeSheetId, highlight.zone)] ===
-                    highlight.color);
-            this.highlights = this.highlights.filter(shouldBeKept);
-        }
-        /**
-         * Highlight selected zones (which are not already highlighted).
-         */
-        highlightSelection() {
-            this.removePendingHighlights();
-            const zones = this.getters.getSelectedZones().filter((z) => !this.isHighlighted(z));
-            const ranges = [];
-            const colorByRange = {};
-            let color = this.color;
-            const activeSheetId = this.getters.getActiveSheetId();
-            for (const zone of zones) {
-                const range = this.getters.zoneToXC(activeSheetId, zone);
-                // if the range reference is already present in ranges, we reuse its color
-                if (colorByRange[range]) {
-                    ranges.push([range, colorByRange[range]]);
-                }
-                else {
-                    ranges.push([range, color]);
-                    colorByRange[range] = color;
-                    color = getNextColor();
-                }
-            }
-            this.dispatch("ADD_HIGHLIGHTS", { ranges });
-            this.dispatch("ADD_PENDING_HIGHLIGHTS", { ranges });
-        }
-        isHighlighted(zone) {
-            return !!this.highlights.find((h) => isEqual(h.zone, zone));
-        }
-        /**
-         * Remove pending highlights which are not selected.
-         * Highlighted zones which are selected are still considered
-         * pending.
-         */
-        removePendingHighlights() {
-            const ranges = [];
-            const [selected, notSelected] = this.pendingHighlights.reduce(([y, n], highlight) => this.getters.isSelected(highlight.zone) ? [[...y, highlight], n] : [y, [...n, highlight]], [[], []]);
-            const activeSheetId = this.getters.getActiveSheetId();
-            for (const { zone, color } of notSelected) {
-                ranges.push([this.getters.zoneToXC(activeSheetId, zone), color]);
-            }
-            this.dispatch("REMOVE_HIGHLIGHTS", { ranges });
-            this.pendingHighlights = selected;
-        }
         // ---------------------------------------------------------------------------
         // Grid rendering
         // ---------------------------------------------------------------------------
@@ -19210,10 +19121,9 @@
              * In order to avoid superposing the same color layer and modifying the final
              * opacity, we filter highlights to remove duplicates.
              */
-            for (let h of this.highlights.filter((highlight, index) => 
+            for (let h of this.getHighlights().filter((highlight, index) => 
             // For every highlight in the sheet, deduplicated by zone
-            this.highlights.findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheet === sheetId) ===
-                index)) {
+            this.getHighlights().findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheet === sheetId) === index)) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeStyle = h.color;
@@ -19233,7 +19143,7 @@
     // Constants, types, helpers, ...
     // -----------------------------------------------------------------------------
     function computeAlign(cell, isShowingFormulas) {
-        if (isFormula(cell) && isShowingFormulas) {
+        if (cell.isFormula() && isShowingFormulas) {
             return "left";
         }
         return cell.defaultAlign;
@@ -19608,7 +19518,7 @@
         hasContent(col, row) {
             const sheetId = this.getters.getActiveSheetId();
             const cell = this.getters.getCell(sheetId, col, row);
-            return !isEmpty(cell) || this.getters.isInMerge(sheetId, col, row);
+            return (cell && !cell.isEmpty()) || this.getters.isInMerge(sheetId, col, row);
         }
         getGridBoxes(renderingContext) {
             const { viewport } = renderingContext;
@@ -19859,6 +19769,7 @@
     ];
     RendererPlugin.modes = ["normal"];
 
+    const uuidGenerator = new UuidGenerator();
     /**
      * Selection input Plugin
      *
@@ -19902,8 +19813,6 @@
                     break;
                 case "DISABLE_SELECTION_INPUT":
                     if (this.focusedInputId === cmd.id) {
-                        this.dispatch("HIGHLIGHT_SELECTION", { enabled: false });
-                        this.dispatch("REMOVE_ALL_HIGHLIGHTS");
                         this.focusedRange = null;
                         this.focusedInputId = null;
                     }
@@ -19917,15 +19826,17 @@
                 case "CHANGE_RANGE": {
                     const index = this.getIndex(cmd.id, cmd.rangeId);
                     if (index !== null) {
-                        this.changeRange(cmd.id, index, cmd.value);
+                        const id = cmd.id;
+                        if (this.focusedInputId !== id || this.focusedRange !== index) {
+                            this.dispatch("FOCUS_RANGE", { id, rangeId: this.inputs[id][index].id });
+                        }
+                        const values = cmd.value.split(",").map((reference) => reference.trim());
+                        this.setRange(id, index, values);
                     }
                     break;
                 }
                 case "ADD_EMPTY_RANGE":
-                    this.inputs[cmd.id] = [
-                        ...this.inputs[cmd.id],
-                        Object.freeze({ xc: "", id: (this.inputs[cmd.id].length + 1).toString() }),
-                    ];
+                    this.insertNewRange(cmd.id, this.inputs[cmd.id].length, [""]);
                     this.focusLast(cmd.id);
                     break;
                 case "REMOVE_RANGE":
@@ -19934,14 +19845,20 @@
                         this.removeRange(cmd.id, index);
                     }
                     break;
-                case "ADD_HIGHLIGHTS":
-                    const highlights = this.getters.getHighlights();
-                    this.add(highlights.slice(highlights.length - Object.keys(cmd.ranges).length));
-                    break;
-                case "START_SELECTION_EXPANSION":
-                    if (this.willAddNewRange) {
-                        this.dispatch("RESET_PENDING_HIGHLIGHT");
+                case "SELECT_CELL":
+                case "SET_SELECTION":
+                    if (!this.focusedInputId) {
+                        break;
                     }
+                    const all = this.getSelectionInputValue(this.focusedInputId);
+                    const selectedZones = this.getters
+                        .getSelectedZones()
+                        .map(zoneToXc)
+                        .filter((zoneXc) => !all.includes(zoneXc));
+                    const inputSheetId = this.activeSheets[this.focusedInputId];
+                    const sheetId = this.getters.getActiveSheetId();
+                    const sheetName = this.getters.getSheetName(sheetId);
+                    this.add(selectedZones.map((xc) => sheetId === inputSheetId ? xc : `${getComposerSheetName(sheetName)}!${xc}`));
                     break;
                 case "PREPARE_SELECTION_EXPANSION": {
                     const [id, index] = [this.focusedInputId, this.focusedRange];
@@ -19950,11 +19867,6 @@
                     }
                     break;
                 }
-                case "ACTIVATE_SHEET":
-                    if (this.focusedInputId !== null && this.focusedRange !== null) {
-                        this.highlightAllRanges(this.focusedInputId);
-                    }
-                    break;
             }
         }
         // ---------------------------------------------------------------------------
@@ -19969,7 +19881,9 @@
                 return [];
             }
             return this.inputs[id].map((input, index) => Object.assign({}, input, {
-                color: this.focusedInputId === id && this.focusedRange !== null ? input.color : null,
+                color: this.focusedInputId === id && this.focusedRange !== null && this.isRangeValid(input.xc)
+                    ? input.color
+                    : null,
                 isFocused: this.focusedInputId === id && this.focusedRange === index,
             }));
         }
@@ -19986,14 +19900,20 @@
                 return range.xc ? range.xc : "";
             }));
         }
+        getSelectionInputHighlights() {
+            if (!this.focusedInputId) {
+                return [];
+            }
+            return this.inputs[this.focusedInputId]
+                .map((input) => this.inputToHighlights(this.focusedInputId, input))
+                .flat();
+        }
         // ---------------------------------------------------------------------------
         // Other
         // ---------------------------------------------------------------------------
         initInput(id, initialRanges, maximumRanges) {
-            this.inputs[id] = initialRanges.map((r, i) => Object.freeze({
-                xc: r,
-                id: i.toString(),
-            }));
+            this.inputs[id] = [];
+            this.insertNewRange(id, 0, initialRanges);
             this.activeSheets[id] = this.getters.getActiveSheetId();
             if (maximumRanges !== undefined) {
                 this.inputMaximums[id] = maximumRanges;
@@ -20006,147 +19926,68 @@
          * Focus a given range or remove the focus.
          */
         focus(id, index) {
-            const currentFocusedInput = this.focusedInputId;
-            const currentFocusedRange = this.focusedInputId && this.focusedRange;
             this.focusedInputId = id;
-            if (currentFocusedRange !== null && index == null) {
-                this.dispatch("HIGHLIGHT_SELECTION", { enabled: false });
-                this.removeAllHighlights();
-            }
-            if (currentFocusedInput !== null && id !== null && currentFocusedInput !== id) {
-                this.removeAllHighlights();
-            }
-            if ((currentFocusedRange === null && index !== null) || currentFocusedInput !== id) {
-                this.dispatch("HIGHLIGHT_SELECTION", { enabled: true });
-                this.highlightAllRanges(id);
-            }
-            this.setPendingRange(id, index);
-            if (index !== null) {
-                const color = this.inputs[id][index].color || getNextColor();
-                this.dispatch("SET_HIGHLIGHT_COLOR", { color });
-            }
             this.focusedRange = index;
         }
         focusLast(id) {
             this.focus(id, this.inputs[id].length - 1);
         }
-        removeAllHighlights() {
-            this.dispatch("REMOVE_ALL_HIGHLIGHTS");
-        }
-        /**
-         * Highlight all valid ranges of the current sheet.
-         */
-        highlightAllRanges(id) {
-            const inputs = this.inputs[id];
-            for (const [index, input] of inputs.entries()) {
-                this.focusedRange = index;
-                const ranges = this.inputToHighlights(id, input);
-                if (Object.keys(ranges).length > 0) {
-                    this.dispatch("ADD_HIGHLIGHTS", { ranges });
-                }
-            }
-        }
-        add(newHighlights) {
+        add(newRanges) {
             if (this.focusedInputId === null ||
                 this.focusedRange === null ||
                 this.getters.isSelectingForComposer() ||
-                newHighlights.length === 0) {
+                newRanges.length === 0) {
                 return;
             }
             const mode = this.getters.getSelectionMode();
-            const sheet = this.activeSheets[this.focusedInputId];
             if (mode === SelectionMode.expanding && this.willAddNewRange) {
-                this.addNewRange(this.focusedInputId, this.highlightsToInput(newHighlights, sheet));
+                const id = this.focusedInputId;
+                this.insertNewRange(id, this.inputs[id].length, newRanges);
                 this.focusLast(this.focusedInputId);
                 this.willAddNewRange = false;
             }
             else {
-                this.setRange(this.focusedInputId, this.focusedRange, this.highlightsToInput(newHighlights, sheet));
+                this.setRange(this.focusedInputId, this.focusedRange, newRanges);
             }
         }
-        /**
-         * Add a new input at the end.
-         */
-        addNewRange(id, values) {
-            this.insertNewRange(id, this.inputs[id].length, values);
+        setContent(id, index, xc) {
+            this.inputs[id][index] = {
+                ...this.inputs[id][index],
+                id: uuidGenerator.uuidv4(),
+                xc,
+            };
         }
         /**
          * Insert new inputs after the given index.
          */
         insertNewRange(id, index, values) {
-            if (this.inputMaximums[id] < this.inputs[id].length + values.length) {
-                return;
+            if (this.inputs[id].length + values.length > this.inputMaximums[id]) {
+                values = values.slice(0, this.inputMaximums[id] - this.inputs[id].length);
             }
-            this.inputs[id].splice(index, 0, ...values);
-        }
-        setRange(id, index, values) {
-            let [existingRange, ...newRanges] = values;
-            const additionalRanges = this.inputs[id].length + newRanges.length - this.inputMaximums[id];
-            if (additionalRanges) {
-                newRanges = newRanges.slice(0, newRanges.length - additionalRanges);
-            }
-            this.inputs[id].splice(index, 1, existingRange, ...newRanges);
-            // focus the last newly added range
-            if (newRanges.length) {
-                this.focus(id, index + newRanges.length);
-            }
-        }
-        changeRange(id, index, value) {
-            if (this.focusedInputId !== id || this.focusedRange !== index) {
-                this.dispatch("FOCUS_RANGE", { id, rangeId: this.inputs[id][index].id });
-            }
-            const input = this.inputs[id][index];
-            const valuesNotHighlighted = value
-                .split(",")
-                .map((reference) => reference.trim())
-                .filter((reference) => !this.shouldBeHighlighted(this.activeSheets[id], reference));
-            const highlightRanges = this.inputToHighlights(id, {
-                color: input.color,
-                xc: value,
-            });
-            this.dispatch("REMOVE_HIGHLIGHTS", { ranges: this.inputToHighlights(id, input) });
-            this.dispatch("ADD_HIGHLIGHTS", {
-                ranges: highlightRanges,
-            });
-            const highlightNumber = Object.keys(highlightRanges).length;
-            const setRange = highlightNumber
-                ? this.insertNewRange.bind(this)
-                : this.setRange.bind(this);
-            setRange(id, index + highlightNumber, valuesNotHighlighted.map((value, i) => ({
-                id: i.toString(),
-                xc: value,
+            this.inputs[id].splice(index, 0, ...values.map((xc, i) => ({
+                xc,
+                id: (this.inputs[id].length + i + 1).toString(),
+                color: getNextColor(),
             })));
         }
+        /**
+         * Set a new value in a given range input. If more than one value is provided,
+         * new inputs will be added.
+         */
+        setRange(id, index, values) {
+            let [, ...additionalValues] = values;
+            this.setContent(id, index, values[0]);
+            this.insertNewRange(id, index + 1, additionalValues);
+            // focus the last newly added range
+            if (additionalValues.length) {
+                this.focus(id, index + additionalValues.length);
+            }
+        }
         removeRange(id, index) {
-            const [removedRange] = this.inputs[id].splice(index, 1);
+            this.inputs[id].splice(index, 1);
             if (this.focusedInputId === id && this.focusedRange !== null) {
-                this.dispatch("REMOVE_HIGHLIGHTS", {
-                    ranges: this.inputToHighlights(id, removedRange),
-                });
                 this.focusLast(id);
             }
-        }
-        setPendingRange(id, index) {
-            this.dispatch("RESET_PENDING_HIGHLIGHT");
-            if (index !== null && this.inputs[id][index].xc) {
-                this.dispatch("ADD_PENDING_HIGHLIGHTS", {
-                    ranges: this.inputToHighlights(id, this.inputs[id][index]),
-                });
-            }
-        }
-        /**
-         * Convert highlights to the input format
-         */
-        highlightsToInput(highlights, activeSheetId) {
-            const toXC = this.getters.zoneToXC;
-            const sheetId = this.getters.getActiveSheetId();
-            return highlights.map((h, i) => Object.freeze({
-                xc: h.sheet !== activeSheetId
-                    ? `${getComposerSheetName(this.getters.getSheetName(h.sheet))}!${toXC(sheetId, h.zone)}`
-                    : toXC(sheetId, h.zone),
-                id: i.toString(),
-                color: h.color,
-            }));
         }
         /**
          * Convert highlights input format to the command format.
@@ -20200,7 +20041,12 @@
     }
     SelectionInputPlugin.modes = ["normal"];
     SelectionInputPlugin.layers = [1 /* Highlights */];
-    SelectionInputPlugin.getters = ["getSelectionInput", "getSelectionInputValue", "isRangeValid"];
+    SelectionInputPlugin.getters = [
+        "getSelectionInput",
+        "getSelectionInputValue",
+        "isRangeValid",
+        "getSelectionInputHighlights",
+    ];
 
     /**
      * This is a generic event bus based on the Owl event bus.
@@ -21008,7 +20854,7 @@
                     };
                     if (cell) {
                         let content = cell.content;
-                        if (isFormula(cell)) {
+                        if (cell.isFormula()) {
                             const position = this.getters.getCellPosition(cell.id);
                             const offsetY = newRow - position.row;
                             // we only have a vertical offset
@@ -21140,7 +20986,7 @@
             return fontSizeMap[sizeInPt];
         }
         getCellText(cell, showFormula = false) {
-            if (showFormula && (isFormula(cell) || cell.evaluated.type === CellValueType.error)) {
+            if (showFormula && (cell.isFormula() || cell.evaluated.type === CellValueType.error)) {
                 return cell.content;
             }
             else {
@@ -23412,7 +23258,7 @@
         "mmss.0": 47,
         "##0.0E+0": 48,
         "@": 49,
-        "hh:mm:ss a": 19,
+        "hh:mm:ss a": 19, // TODO: discuss: this format is not recognized by excel for example (doesn't follow their guidelines I guess)
     };
     const XLSX_ICONSET_MAP = {
         arrow: "3Arrows",
@@ -23624,9 +23470,10 @@
                 family: 2,
                 name: "Arial",
             },
-            fill: (style === null || style === void 0 ? void 0 : style.fillColor) ? {
-                fgColor: style.fillColor,
-            }
+            fill: (style === null || style === void 0 ? void 0 : style.fillColor)
+                ? {
+                    fgColor: style.fillColor,
+                }
                 : { reservedAttribute: "none" },
             numFmt: cell.format,
             border: border || {},
@@ -23770,7 +23617,7 @@
         const parserError = document.querySelector("parsererror");
         if (parserError) {
             const errorString = parserError.innerHTML;
-            const lineNumber = parseInt(errorString.split(":")[1], 10);
+            const lineNumber = parseInt(errorString.split(":")[0], 10);
             const xmlStringArray = xmlString.toString().trim().split("\n");
             const xmlPreview = xmlStringArray
                 .slice(Math.max(lineNumber - 3, 0), Math.min(lineNumber + 2, xmlStringArray.length))
@@ -25603,6 +25450,7 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       cursor: pointer;
+      user-select: none;
 
       &.o-menu-root {
         display: flex;
@@ -25974,6 +25822,7 @@
             window.removeEventListener("mouseup", _onMouseUp);
             window.removeEventListener("dragstart", _onDragStart);
             window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("wheel", onMouseMove);
         };
         function _onDragStart(ev) {
             ev.preventDefault();
@@ -25981,6 +25830,7 @@
         window.addEventListener("mouseup", _onMouseUp);
         window.addEventListener("dragstart", _onDragStart);
         window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("wheel", onMouseMove);
     }
     /**
      * Function to be used during a mousedown event, this function allows to
@@ -26122,7 +25972,11 @@
         onMouseDown(ev) {
             this.state.handler = true;
             this.state.position = { left: 0, top: 0 };
-            const start = { left: ev.clientX, top: ev.clientY };
+            const { offsetY, offsetX } = this.env.getters.getActiveSnappedViewport();
+            const start = {
+                left: ev.clientX + offsetX,
+                top: ev.clientY + offsetY,
+            };
             let lastCol;
             let lastRow;
             const onMouseUp = () => {
@@ -26130,13 +25984,13 @@
                 this.env.dispatch("AUTOFILL");
             };
             const onMouseMove = (ev) => {
-                this.state.position = {
-                    left: ev.clientX - start.left,
-                    top: ev.clientY - start.top,
-                };
                 const parent = this.el.parentElement;
                 const position = parent.getBoundingClientRect();
-                const { top: viewportTop, left: viewportLeft } = this.env.getters.getActiveSnappedViewport();
+                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.getters.getActiveSnappedViewport();
+                this.state.position = {
+                    left: ev.clientX - start.left + offsetX,
+                    top: ev.clientY - start.top + offsetY,
+                };
                 const col = this.env.getters.getColIndex(ev.clientX - position.left, viewportLeft);
                 const row = this.env.getters.getRowIndex(ev.clientY - position.top, viewportTop);
                 if (lastCol !== col || lastRow !== row) {
@@ -27941,7 +27795,7 @@
             const { col, row } = this.props.cellPosition;
             const sheetId = this.getters.getActiveSheetId();
             const cell = this.getters.getCell(sheetId, col, row);
-            if (isLink(cell)) {
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
                 return cell;
             }
             throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
@@ -28099,7 +27953,7 @@
             const { col, row } = this.props.cellPosition;
             const sheetId = this.getters.getActiveSheetId();
             const cell = this.getters.getCell(sheetId, col, row);
-            if (isLink(cell)) {
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
                 return {
                     link: { url: cell.link.url, label: cell.formattedValue },
                     urlRepresentation: cell.urlRepresentation,
@@ -29102,7 +28956,7 @@
             this.keyDownMapping = {
                 ENTER: () => {
                     const cell = this.getters.getActiveCell();
-                    isEmpty(cell)
+                    !cell || cell.isEmpty()
                         ? this.trigger("composer-cell-focused")
                         : this.trigger("composer-content-focused");
                 },
@@ -29110,7 +28964,7 @@
                 "SHIFT+TAB": () => this.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
                 F2: () => {
                     const cell = this.getters.getActiveCell();
-                    isEmpty(cell)
+                    !cell || cell.isEmpty()
                         ? this.trigger("composer-cell-focused")
                         : this.trigger("composer-content-focused");
                 },
@@ -29233,7 +29087,8 @@
             const viewport = this.getters.getActiveSnappedViewport();
             const cell = this.getters.getCell(sheetId, col, row);
             return (this.getters.isVisibleInViewport(col, row, viewport) &&
-                isLink(cell) &&
+                !!cell &&
+                cell.isLink() &&
                 !this.menuState.isOpen &&
                 !this.props.linkEditorIsOpen &&
                 !this.props.sidePanelIsOpen);
@@ -29385,7 +29240,7 @@
             const sheetId = this.getters.getActiveSheetId();
             const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
             const cell = this.getters.getCell(sheetId, mainCol, mainRow);
-            if (!isLink(cell)) {
+            if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
                 this.closeLinkEditor();
             }
             this.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
@@ -29462,7 +29317,7 @@
             const [col, row] = this.getCartesianCoordinates(ev);
             if (this.clickedCol === col && this.clickedRow === row) {
                 const cell = this.getters.getActiveCell();
-                isEmpty(cell)
+                !cell || cell.isEmpty()
                     ? this.trigger("composer-cell-focused")
                     : this.trigger("composer-content-focused");
             }
@@ -30062,6 +29917,7 @@
       flex-direction: column;
       font-size: 13px;
       line-height: 1.2;
+      user-select: none;
 
       .o-topbar-top {
         border-bottom: 1px solid #e0e2e4;
@@ -30100,7 +29956,7 @@
           background-color: ${BACKGROUND_HEADER_COLOR};
           padding-left: 18px;
           padding-right: 18px;
-          }
+        }
         .o-composer-container {
           height: 34px;
           border: 1px solid #e0e2e4;
@@ -30234,6 +30090,7 @@
           margin: 0;
           line-height: 34px;
           white-space: nowrap;
+          user-select: text;
         }
       }
     }
@@ -30306,8 +30163,8 @@
 `;
     const t = (s) => s;
     class Spreadsheet extends Component {
-        constructor() {
-            super(...arguments);
+        constructor(parent, props = {}) {
+            super(parent, props);
             this.model = new Model(this.props.data, {
                 notifyUser: (content) => this.trigger("notify-user", { content }),
                 askConfirmation: (content, confirm, cancel) => this.trigger("ask-confirmation", { content, confirm, cancel }),
@@ -30353,6 +30210,7 @@
             useExternalListener(document.body, "paste", this.paste);
             useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
             useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
+            this.activateFirstSheet();
         }
         get focusTopBarComposer() {
             return this.model.getters.getEditionMode() === "inactive"
@@ -30382,6 +30240,13 @@
         leaveCollaborativeSession() {
             this.model.off("update", this);
             this.model.leaveSession();
+        }
+        activateFirstSheet() {
+            const sheetId = this.model.getters.getActiveSheetId();
+            const [firstSheet] = this.model.getters.getSheets();
+            if (firstSheet.id !== sheetId) {
+                this.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: sheetId, sheetIdTo: firstSheet.id });
+            }
         }
         destroy() {
             this.model.destroy();
@@ -30569,7 +30434,6 @@
         UuidGenerator,
         formatDecimal,
         computeTextWidth,
-        isFormula,
         isMarkdownLink,
         parseMarkdownLink,
         markdownLink,
@@ -30601,8 +30465,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-09-14T08:28:11.979Z';
-    exports.__info__.hash = '6ff67fb';
+    exports.__info__.date = '2021-10-14T07:35:50.463Z';
+    exports.__info__.hash = 'f9a6801';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

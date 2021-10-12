@@ -4,7 +4,6 @@ import { getNumberOfListFormulas } from "../helpers/odoo_functions_helpers";
 import spreadsheet from "../o_spreadsheet_loader";
 
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;
-const { isFormula } = spreadsheet.helpers;
 
 const UP = 0;
 const DOWN = 1;
@@ -24,10 +23,10 @@ AutofillTooltip.template = "documents_spreadsheet.AutofillTooltip";
 autofillRulesRegistry
     .add("autofill_pivot", {
         condition: (cell) =>
-            cell && isFormula(cell) && cell.content.match(/=\s*PIVOT/),
+            cell && cell.isFormula() && cell.content.match(/=\s*PIVOT/),
         generateRule: (cell, cells) => {
             const increment = cells.filter(
-                (cell) => cell && isFormula(cell) && cell.content.match(/=\s*PIVOT/)
+                (cell) => cell && cell.isFormula() && cell.content.match(/=\s*PIVOT/)
             ).length;
             return { type: "PIVOT_UPDATER", increment, current: 0 };
         },
@@ -35,18 +34,18 @@ autofillRulesRegistry
     })
     .add("autofill_pivot_position", {
         condition: (cell) =>
-            cell && isFormula(cell) && cell.content.match(/=.*PIVOT.*PIVOT\.POSITION/),
+            cell && cell.isFormula() && cell.content.match(/=.*PIVOT.*PIVOT\.POSITION/),
         generateRule: () => ({ type: "PIVOT_POSITION_UPDATER", current: 0 }),
         sequence: 1,
     })
     .add("autofill_list", {
         condition: (cell) =>
-            cell && isFormula(cell) && getNumberOfListFormulas(cell.content) === 1,
+            cell && cell.isFormula() && getNumberOfListFormulas(cell.content) === 1,
         generateRule: (cell, cells) => {
             const increment = cells.filter(
                 (cell) =>
                     cell &&
-                    isFormula(cell) &&
+                    cell.isFormula()&&
                     getNumberOfListFormulas(cell.content) === 1
             ).length;
             return { type: "LIST_UPDATER", increment, current: 0 };

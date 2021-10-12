@@ -19,7 +19,7 @@ import { registry } from "@web/core/registry";
 import { spreadsheetService } from "@documents_spreadsheet/actions/spreadsheet/spreadsheet_service";
 
 const { Model } = spreadsheet;
-const { toCartesian, toZone, isFormula } = spreadsheet.helpers;
+const { toCartesian, toZone } = spreadsheet.helpers;
 const { jsonToBase64 } = pivotUtils;
 const { loadJS } = owl.utils;
 
@@ -135,7 +135,7 @@ export function getCells(model, sheetId = model.getters.getActiveSheetId()) {
  */
 export function getCellFormula(model, xc, sheetId = model.getters.getActiveSheetId()) {
     const cell = getCell(model, xc, sheetId);
-    return cell && isFormula(cell) ? model.getters.getFormulaCellContent(sheetId, cell) : "";
+    return cell && cell.isFormula() ? model.getters.getFormulaCellContent(sheetId, cell) : "";
 }
 
 /**

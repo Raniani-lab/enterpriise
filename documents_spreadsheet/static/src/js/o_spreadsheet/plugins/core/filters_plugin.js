@@ -15,11 +15,10 @@
  */
 
 import spreadsheet from "../../o_spreadsheet_loader";
-import { getPeriodOptions } from "web.searchUtils";
 import CommandResult from "../cancelled_reason";
 import { checkFiltersTypeValueCombination } from "../../helpers/helpers";
 
-const { isFormula, UuidGenerator } = spreadsheet.helpers;
+const { UuidGenerator } = spreadsheet.helpers;
 const uuidGenerator = new UuidGenerator();
 
 export default class FiltersPlugin extends spreadsheet.CorePlugin {
@@ -284,7 +283,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
         const sheets = this.getters.getSheets();
         for (let sheet of sheets) {
             for (let cell of Object.values(this.getters.getCells(sheet.id))) {
-                if (isFormula(cell)) {
+                if (cell.isFormula()) {
                     const newContent = cell.content.replace(
                         new RegExp(`FILTER\\.VALUE\\(\\s*"${currentLabel}"\\s*\\)`, "g"),
                         `FILTER.VALUE("${newLabel}")`

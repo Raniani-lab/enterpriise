@@ -7,7 +7,7 @@ import spreadsheet from "../o_spreadsheet_loader";
 import { REINSERT_LIST_CHILDREN } from "./list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "./pivot_actions";
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
-const { createFullMenuItem, isFormula } = spreadsheet.helpers;
+const { createFullMenuItem } = spreadsheet.helpers;
 const { astToFormula } = spreadsheet;
 
 //--------------------------------------------------------------------------
@@ -124,7 +124,7 @@ cellMenuRegistry
         },
         isVisible: (env) => {
             const cell = env.getters.getActiveCell();
-            return cell && isFormula(cell) && cell.content.match(pivotFormulaRegex);
+            return cell && cell.isFormula() && cell.content.match(pivotFormulaRegex);
         },
     })
     .add("listing_properties", {

@@ -5,7 +5,6 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
     const CommandResult = require("documents_spreadsheet.CommandResult");
     const { pivotFormulaRegex } = require("documents_spreadsheet.pivot_utils");
     const { parse, astToFormula } = spreadsheet;
-    const { isFormula } = spreadsheet.helpers;
 
     class PivotTemplatePlugin extends spreadsheet.UIPlugin {
         constructor(getters, history, dispatch, config) {
@@ -66,7 +65,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          */
         _convertFormulas(cells, convertFunction, ...args) {
             cells.forEach((cell) => {
-                if (isFormula(cell)) {
+                if (cell.isFormula()) {
                     const { col, row, sheetId } = this.getters.getCellPosition(cell.id);
                     const ast = convertFunction(parse(cell.normalizedText), ...args);
                     if (ast) {
@@ -104,7 +103,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 .map((sheet) =>
                     Object.values(this.getters.getCells(sheet.id)).filter(
                         (cell) =>
-                            isFormula(cell) &&
+                            cell.isFormula() &&
                             regex.test(this.getters.getFormulaCellContent(sheet.id, cell))
                     )
                 )
@@ -303,7 +302,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
                     const { cells } = this.getters.getRow(sheet.id, rowIndex);
                     const [valid, invalid] = Object.values(cells)
-                        .filter((cell) => isFormula(cell) && /^\s*=.*PIVOT/.test(cell.content))
+                        .filter((cell) => cell.isFormula() && /^\s*=.*PIVOT/.test(cell.content))
                         .reduce(
                             ([valid, invalid], cell) => {
                                 const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.content);

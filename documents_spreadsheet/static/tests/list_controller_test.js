@@ -11,11 +11,12 @@ import {
     getCells,
     getCellValue,
     setCellContent,
+    setSelection
 } from "./spreadsheet_test_utils";
 import { nextTick, createView } from "web.test_utils";
 import { getBasicData, getBasicListArch } from "./spreadsheet_test_data";
 
-const { topbarMenuRegistry } = spreadsheet.registries;
+const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     QUnit.test("List export", async (assert) => {
@@ -238,6 +239,14 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         model.dispatch("SELECT_ODOO_LIST", { listId });
         const selectedListId = model.getters.getSelectedListId();
         assert.strictEqual(selectedListId, "1");
+    });
+
+    QUnit.test("Verify absence of pivot properties on non-pivot cell", async function (assert) {
+        assert.expect(1);
+        const { model, env } = await createSpreadsheetFromList();
+        setSelection(model, "Z26");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "listing_properties");
+        assert.notOk(root.isVisible(env));
     });
 
     QUnit.test("Referencing non-existing fields does not crash", async function (assert) {

@@ -24,7 +24,7 @@ class MrpProductionSchedule(models.Model):
         'Forecasted quantity at date')
     company_id = fields.Many2one('res.company', 'Company',
         default=lambda self: self.env.company)
-    product_id = fields.Many2one('product.product', string='Product', required=True)
+    product_id = fields.Many2one('product.product', string='Product', required=True, index=True)
     product_tmpl_id = fields.Many2one('product.template', related="product_id.product_tmpl_id", readonly=True)
     product_uom_id = fields.Many2one('uom.uom', string='Product UoM',
         related='product_id.uom_id')
@@ -228,7 +228,28 @@ class MrpProductionSchedule(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """ If the BoM is pass at the creation, create MPS for its components """
+        existing_mps = []
+        for i, vals in enumerate(vals_list):
+            # Allow to add components of a BoM for MPS already created
+            if vals.get('bom_id'):
+                mps = self.search([
+                    ('product_id', '=', vals['product_id']),
+                    ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
+                    ('company_id', '=', vals.get('company_id', self.env.company.id)),
+                ], limit=1)
+                if mps:
+                    existing_mps.append((i, mps.id))
+
+        for i_remove, __ in reversed(existing_mps):
+            del vals_list[i_remove]
+
         mps = super().create(vals_list)
+
+        mps_ids = mps.ids
+        for i, mps_id in existing_mps:
+            mps_ids.insert(i, mps_id)
+        mps = self.browse(mps_ids)
+
         components_list = set()
         components_vals = []
         for record in mps:
@@ -239,11 +260,11 @@ class MrpProductionSchedule(models.Model):
             for component in components:
                 components_list.add((component[0].product_id.id, record.warehouse_id.id, record.company_id.id))
         for component in components_list:
-            if self.env['mrp.production.schedule'].search_count([
+            if self.env['mrp.production.schedule'].search([
                 ('product_id', '=', component[0]),
                 ('warehouse_id', '=', component[1]),
                 ('company_id', '=', component[2]),
-            ]):
+            ], limit=1):
                 continue
             components_vals.append({
                 'product_id': component[0],

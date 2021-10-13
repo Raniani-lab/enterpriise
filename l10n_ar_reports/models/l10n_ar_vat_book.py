@@ -340,6 +340,11 @@ class L10nARVatBook(models.AbstractModel):
             mun_perc_amount = amounts['mun_perc_amount']
             intern_tax_amount = amounts['intern_tax_amount']
             perc_imp_nacionales_amount = amounts['profits_perc_amount'] + amounts['other_perc_amount']
+            if inv.move_type in ('out_refund', 'in_refund') and \
+                    inv.l10n_latam_document_type_id.code in inv._get_l10n_ar_codes_used_for_inv_and_ref():
+                amount_total = -inv.amount_total
+            else:
+                amount_total = inv.amount_total
 
             if vat_exempt_base_amount:
                 if inv.partner_id.l10n_ar_afip_responsibility_type_id.code == '10':  # free zone operation
@@ -377,7 +382,7 @@ class L10nARVatBook(models.AbstractModel):
                 doc_code,  # Field 6: Código de documento del comprador.
                 doc_number,  # Field 7: Número de Identificación del comprador
                 inv.commercial_partner_id.name.ljust(30, ' ')[:30],  # Field 8: Apellido y Nombre del comprador.
-                self._format_amount(inv.amount_total),  # Field 9: Importe Total de la Operación.
+                self._format_amount(amount_total),  # Field 9: Importe Total de la Operación.
                 self._format_amount(vat_untaxed_base_amount),  # Field 10: Importe total de conceptos que no integran el precio neto gravado
             ]
 

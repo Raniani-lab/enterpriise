@@ -7,7 +7,7 @@
         <field name="domain_force">[
             ('company_id', 'in', company_ids),
             ('state', 'in', ['sale', 'done']),
-            ('is_service', '=', True),
+            ('product_id.type', '=', 'service'),
         ]</field>
         <field name="perm_read" eval="True"/>
         <field name="groups" eval="[(4,ref('planning.group_planning_manager'))]"/>

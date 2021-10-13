@@ -437,7 +437,7 @@
                     <attribute name="class">ml-2</attribute>
                 </xpath>
                 <xpath expr="//field[@name='stage_id']" position="before">
-                    <field name="timer_start" widget="timer_timer" class="text-secondary mr-auto h2 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    <field name="timer_start" widget="timer_timer" class="text-secondary mr-auto h2 ml-2 ml-sm-0 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
                 </xpath>
             </field>
         </record>

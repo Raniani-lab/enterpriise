@@ -48,6 +48,78 @@ class TestEdiResults(TestMxEdiCommon):
             expected_etree = self.get_xml_tree_from_string(self.expected_invoice_cfdi_values)
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
+    def test_invoice_cfdi_tax_price_included(self):
+        # company = MXN, invoice = Gol
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
+            tax_16_incl = self.env['account.tax'].create({
+                'name': 'tax_16',
+                'amount_type': 'percent',
+                'amount': 16,
+                'type_tax_use': 'sale',
+                'l10n_mx_tax_type': 'Tasa',
+                'price_include': True,
+                'include_base_amount': True,
+            })
+
+            self.invoice.write({
+                'invoice_line_ids': [(1, self.invoice.invoice_line_ids.id, {'tax_ids': [(6, 0, tax_16_incl.ids)]})],
+            })
+            self.invoice.action_post()
+
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                      <attribute name="SubTotal">8620.690</attribute>
+                    </xpath>
+                    <xpath expr="//Comprobante" position="attributes">
+                      <attribute name="Descuento">1724.138</attribute>
+                    </xpath>
+                    <xpath expr="//Comprobante" position="attributes">
+                      <attribute name="Total">8000.000</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto" position="attributes">
+                      <attribute name="ValorUnitario">1724.138</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto" position="attributes">
+                      <attribute name="Importe">8620.690</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto" position="attributes">
+                      <attribute name="Descuento">1724.138</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto/Impuestos" position="replace">
+                      <Impuestos>
+                        <Traslados>
+                          <Traslado
+                            Base="6896.552"
+                            Importe="1103.45"
+                            TasaOCuota="0.160000"
+                            TipoFactor="Tasa"/>
+                        </Traslados>
+                      </Impuestos>
+                    </xpath>
+                    <xpath expr="//Comprobante/Impuestos" position="replace">
+                      <Impuestos TotalImpuestosTrasladados="1103.448">
+                        <Traslados>
+                          <Traslado
+                            Importe="1103.448"
+                            TasaOCuota="0.160000"
+                            TipoFactor="Tasa"/>
+                        </Traslados>
+                      </Impuestos>
+                    </xpath>
+                ''',
+            )
+
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
     def test_invoice_cfdi_addenda(self):
         with freeze_time(self.frozen_today), \
              mute_logger('py.warnings'), \

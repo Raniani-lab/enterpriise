@@ -11,7 +11,12 @@ Adds fleet data to documents
 """,
     'website': ' ',
     'depends': ['documents', 'fleet'],
-    'data': ['data/data.xml'],
+    'data': [
+        'data/data.xml',
+        'data/workflow_data.xml',
+        'views/fleet_vehicle_views.xml',
+        'views/res_config_settings_views.xml',
+    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

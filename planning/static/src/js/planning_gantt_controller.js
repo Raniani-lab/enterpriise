@@ -6,8 +6,9 @@ import {Markup} from 'web.utils';
 import Dialog from 'web.Dialog';
 import {FormViewDialog} from 'web.view_dialogs';
 import {_displayDialogWhenEmployeeNoEmail} from './planning_send/form_controller';
+import { PlanningControllerMixin } from './planning_mixins';
 
-var PlanningGanttController = GanttController.extend({
+const PlanningGanttController = GanttController.extend(PlanningControllerMixin, {
     events: Object.assign({}, GanttController.prototype.events, {
         'click .o_gantt_button_copy_previous_week': '_onCopyWeekClicked',
         'click .o_gantt_button_send_all': '_onSendAllClicked',
@@ -24,6 +25,14 @@ var PlanningGanttController = GanttController.extend({
         });
     },
 
+    /**
+     * @private
+     * @returns {Array} Array of objects
+     */
+    _getRecords() {
+        return this.model.get().records;
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -37,10 +46,7 @@ var PlanningGanttController = GanttController.extend({
         const today = moment().startOf('date'); // for the context we want the beginning of the day and not the actual hour.
         if (startDate.isSameOrBefore(today, 'day') && stopDate.isSameOrAfter(today, 'day')) {
             // get the today date if the interval dates contain the today date.
-            const context = {};
-            const state = this.model.get();
-            context[state.dateStartField] = this.model.convertToServerTime(today);
-            context[state.dateStopField] = this.model.convertToServerTime(today.clone().endOf('day'));
+            const context = this._getDialogContext(today);
             for (const k in context) {
                 context[`default_${k}`] = context[k];
             }
@@ -148,68 +154,6 @@ var PlanningGanttController = GanttController.extend({
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    async _onCopyWeekClicked(ev) {
-        ev.preventDefault();
-        const result = await this._rpc({
-            model: this.modelName,
-            method: 'action_copy_previous_week',
-            args: [
-                this.model.convertToServerTime(this.model.get().startDate),
-                this.model._getDomain(),
-            ],
-            context: this.context || {},
-        });
-        if (result) {
-            const message = _t("The shifts from the previous week have successfully been copied.");
-            this.displayNotification({
-                type: 'success',
-                message: Markup`<i class="fa fa-fw fa-check"></i><span class="ml-1">${message}</span>`,
-            });
-        } else {
-            this.displayNotification({
-                type: 'danger',
-                message: _t('The previous shifts have already been copied, or there are no shifts to copy.'),
-            });
-        }
-        this.reload();
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onSendAllClicked: function (ev) {
-        ev.preventDefault();
-        var self = this;
-        var state = this.model.get();
-
-        if (!state.records || state.records.length === 0) {
-            this.displayNotification({
-                type: 'danger',
-                message: _t("The shifts have already been published, or there are no shifts to publish.")
-            });
-            return;
-        }
-
-        var additional_context = _.extend({}, this.context, {
-           'default_start_datetime': this.model.convertToServerTime(state.startDate),
-           'default_end_datetime': this.model.convertToServerTime(state.stopDate),
-           'default_slot_ids': _.pluck(this.model.get().records, 'id'),
-           'scale': state.scale,
-           'active_domain': this.model.domain,
-           'active_ids': this.model.get().records,
-           'default_employee_ids': _.filter(_.pluck(self.initialState.rows, 'resId'), Boolean),
-        });
-        return this.do_action('planning.planning_send_action', {
-            additional_context: additional_context,
-            on_close: function () {
-                self.reload();
-            }
-        });
-    },
     /**
      * @private
      * @override

@@ -23,6 +23,31 @@ const GROUPBY_COMBINATIONS = [
 ];
 
 const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
+
+    /**
+     * @public
+     * @returns {moment} startDate
+     */
+    getStartDate() {
+        return this.convertToServerTime(this.get().startDate);
+    },
+    /**
+     * @public
+     * @param {Object} ctx
+     * @returns {Object} context
+     */
+    getAdditionalContext(ctx) {
+        const state = this.get();
+        return Object.assign({}, ctx, {
+            'default_start_datetime': this.convertToServerTime(state.startDate),
+            'default_end_datetime': this.convertToServerTime(state.stopDate),
+            'default_slot_ids': state.records.map(record => record.id),
+            'scale': state.scale,
+            'active_domain': this.domain,
+            'active_ids': state.records,
+            'default_employee_ids': state.rows.map(row => row.resId).filter(resId => !!resId),
+        });
+    },
     /**
      * @override
      */

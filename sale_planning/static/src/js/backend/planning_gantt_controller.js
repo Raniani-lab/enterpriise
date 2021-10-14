@@ -1,7 +1,10 @@
 /** @odoo-module **/
 
 import PlanningGanttController from '@planning/js/planning_gantt_controller';
+import { SalePlanningControllerMixin } from './sale_planning_mixin';
 import { _t } from 'web.core';
+
+PlanningGanttController.include(SalePlanningControllerMixin);
 
 PlanningGanttController.include({
     events: Object.assign({}, PlanningGanttController.prototype.events, {
@@ -26,6 +29,13 @@ PlanningGanttController.include({
             start_date: this.model.convertToServerTime(state.startDate),
             stop_date: this.model.convertToServerTime(state.stopDate),
         });
+    },
+    /**
+     * @param {Object} context
+     * @returns {Object} object
+     */
+    addViewContextValues(context) {
+        return this._addGanttContextValues(context);
     },
 
     //--------------------------------------------------------------------------
@@ -54,37 +64,5 @@ PlanningGanttController.include({
         });
         this._addGanttContextValues(this.model.context);
         this._super.apply(this, arguments);
-    },
-
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onPlanSOClicked: function (ev) {
-        ev.preventDefault();
-        const self = this;
-        this._rpc({
-            model: this.modelName,
-            method: 'action_plan_sale_order',
-            args: [
-                this.model._getDomain(),
-            ],
-            context: this._addGanttContextValues(this.context),
-        }).then(function (result) {
-            let notificationOptions;
-            if (result) {
-                notificationOptions = {
-                    type: 'success',
-                    message: _t("The sales orders have successfully been assigned."),
-                };
-            } else {
-                notificationOptions = {
-                    type: 'danger',
-                    message: _t('There are no sales orders to assign or no employees are available.'),
-                };
-            }
-            self.displayNotification(notificationOptions);
-            self.reload();
-        });
     },
 });

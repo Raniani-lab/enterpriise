@@ -1,15 +1,12 @@
-/** @odoo-module alias=planning.Calendar **/
+/** @odoo-module */
 
 import { qweb as QWeb } from 'web.core';
 
 import CalendarPopover from 'web.CalendarPopover';
-import CalendarRenderer from 'web.CalendarRenderer';
-import CalendarView from 'web.CalendarView';
 import fieldUtils from 'web.field_utils';
 import view_registry from 'web.view_registry';
-import session from 'web.session';
 
-    var PlanningCalendarPopover = CalendarPopover.extend({
+    const PlanningCalendarPopover = CalendarPopover.extend({
         template: 'Planning.event.popover',
 
         init () {
@@ -18,15 +15,15 @@ import session from 'web.session';
             this.allocated_percentage = fieldUtils.format.float(this.event.extendedProps.record.allocated_percentage);
         },
 
-        willStart: function() {
+        willStart() {
             const self = this;
             const check_group = this.getSession().user_has_group('planning.group_planning_manager').then(function(has_group) {
                 self.is_manager = has_group;
             });
-            return Promise.all([this._super.apply(this, arguments), check_group]);
+            return Promise.all([this._super(...arguments), check_group]);
         },
 
-        renderElement: function () {
+        renderElement() {
             let render = $(QWeb.render(this.template, { widget: this }));
             if(!this.is_manager) {
                 render.find('.card-footer').remove();
@@ -39,7 +36,7 @@ import session from 'web.session';
          * Hide empty fields from the calendar popover
          * @override
          */
-        _processFields: function () {
+        _processFields() {
             var self = this;
 
             if (!CalendarPopover.prototype.origDisplayFields) {
@@ -54,31 +51,8 @@ import session from 'web.session';
                 } 
             });
 
-            return this._super.apply(this, arguments);
+            return this._super(...arguments);
         }
     });
 
-    var PlanningCalendarRenderer = CalendarRenderer.extend({
-        template: "Planning.CalendarView.extend",
-
-        /**
-         * Check the planning manager group
-         * @override
-         */
-        async willStart() {
-            await this._super.apply(this, arguments);
-            this.is_manager = await session.user_has_group('planning.group_planning_manager');
-        },
-
-        config: _.extend({}, CalendarRenderer.prototype.config, {
-            CalendarPopover: PlanningCalendarPopover,
-        }),
-    });
-
-    var PlanningCalendarView = CalendarView.extend({
-        config: _.extend({}, CalendarView.prototype.config, {
-            Renderer: PlanningCalendarRenderer,
-        }),
-    });
-
-    view_registry.add('planning_calendar', PlanningCalendarView);
+    export default PlanningCalendarPopover;

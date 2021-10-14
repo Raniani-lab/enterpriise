@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from freezegun import freeze_time
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
@@ -108,22 +109,51 @@ class TestHrAppraisal(TransactionCase):
 
         self.assertEqual(hr_employee3.last_appraisal_date, date.today())
 
-    def test_01_appraisal_generation(self):
+    def test_01_appraisal_next_appraisal_date(self):
         """
-            Set appraisal date at the exact time it should be to 
-            generate a new appraisal
-            Run the cron and check that the next appraisal_date is set properly
+            An employee has just started working.
+            Check that next_appraisal_date is set properly.
+            Also, When there is ongoing appraisal for an employee,
+            it means that there is no appraisal plan yet.
+            Thus, next_appraisal_date should be empty.
         """
-        self.hr_employee.last_appraisal_date = date.today() - relativedelta(months=6, days=-8)
-        self.env['res.company']._run_employee_appraisal_plans()
-        appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
-        self.assertTrue(appraisals, "Appraisal not created")
-        self.assertEqual(appraisals.date_close, date.today() + relativedelta(days=8))
-        self.assertEqual(self.hr_employee.next_appraisal_date, date.today() + relativedelta(days=8))
+        self.hr_employee.create_date = date.today()
+        self.hr_employee.last_appraisal_date = date.today()
 
-        self.env['res.company']._run_employee_appraisal_plans()
-        appraisals_2 = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
-        self.assertEqual(len(appraisals), len(appraisals_2))
+        months = self.hr_employee.company_id.duration_after_recruitment
+        days = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_create_in_advance_days', 8))
+        upcoming_appraisal_date = date.today() + relativedelta(months=months, days=-days)
+
+        self.assertEqual(self.hr_employee.next_appraisal_date, upcoming_appraisal_date, 'next_appraisal_date is not set properly for an employee that has just started')
+
+        # create appraisal manually
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() + relativedelta(months=1),
+            'state': 'new'
+        })
+        self.assertEqual(self.hr_employee.next_appraisal_date, False, 'There is an ongoing appraisal for an employee, next_appraisal_date should be empty.')
+
+    def test_appraisal_next_appraisal_date_uppcoming_appraisal(self):
+        """
+        Check that next_appraisal_date is correct and that indeed,
+        appraisal plan generates appraisal at that time.
+        """
+
+        self.hr_employee.create_date = date.today()
+        self.hr_employee.last_appraisal_date = date.today()
+
+        month = self.hr_employee.company_id.duration_after_recruitment
+        days = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_create_in_advance_days', 8))
+
+        upcoming_appraisal_date = date.today() + relativedelta(months=month, days=-days)
+
+        self.assertEqual(self.hr_employee.next_appraisal_date, upcoming_appraisal_date, 'next_appraisal_date is not set properly')
+
+        with freeze_time(self.hr_employee.next_appraisal_date):
+            self.env['res.company']._run_employee_appraisal_plans()
+            appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
+            self.assertTrue(appraisals, "Appraisal not created by appraisal plan at next_appraisal_date")
 
     def test_02_no_appraisal_generation(self):
         """
@@ -151,23 +181,9 @@ class TestHrAppraisal(TransactionCase):
         appraisals = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
         self.assertTrue(appraisals, "Appraisal not created")
         self.assertEqual(appraisals.date_close, date.today() + relativedelta(days=8))
-        self.assertEqual(self.hr_employee.next_appraisal_date, date.today() + relativedelta(days=8))
-
         self.env['res.company']._run_employee_appraisal_plans()
         appraisals_2 = self.HrAppraisal.search([('employee_id', '=', self.hr_employee.id)])
         self.assertEqual(len(appraisals), len(appraisals_2))
-
-    def test_07_check_manual_appraisal_set_appraisal_date(self):
-        """
-            Create manualy an appraisal with a date_close
-            Check the appraisal_date is set properly
-        """
-        future_appraisal = self.HrAppraisal.create({
-            'employee_id': self.hr_employee.id,
-            'date_close': date.today() + relativedelta(months=1),
-            'state': 'new'
-        })
-        self.assertEqual(self.hr_employee.next_appraisal_date, date.today() + relativedelta(months=1))
 
     def test_08_check_new_employee_no_appraisal(self):
         """

@@ -262,23 +262,12 @@ class HrAppraisal(models.Model):
                 else:
                     appraisal.previous_appraisal_id = False
 
-    def _update_next_appraisal_date(self):
-        for employee in set(self.mapped('employee_id')):
-            appraisals = employee.appraisal_ids.filtered(lambda a: a.state not in ['done', 'cancel']).sorted('date_close')
-            employee.sudo().write({'next_appraisal_date': appraisals[0].date_close if appraisals else False})
-            if employee.last_appraisal_id.state != 'done':
-                employee.sudo().write({
-                    'last_appraisal_id': appraisals[0].id if appraisals else False,
-                    'last_appraisal_date': appraisals[0].date_close if appraisals else False
-                })
-
     @api.model
     def create(self, vals):
         result = super(HrAppraisal, self).create(vals)
         result.sudo()._update_previous_appraisal()
         if vals.get('state') and vals['state'] == 'pending':
             self.send_appraisal()
-        result.sudo()._update_next_appraisal_date()
         result.subscribe_employees()
         return result
 
@@ -294,8 +283,7 @@ class HrAppraisal(models.Model):
             for appraisal in self:
                 appraisal.employee_id.sudo().write({
                     'last_appraisal_id': appraisal.id,
-                    'last_appraisal_date': current_date,
-                    'next_appraisal_date': False})
+                    'last_appraisal_date': current_date})
             vals['date_close'] = current_date
             self._appraisal_plan_post()
         if 'state' in vals and vals['state'] == 'cancel':
@@ -309,22 +297,20 @@ class HrAppraisal(models.Model):
         result = super(HrAppraisal, self).write(vals)
         if 'employee_id' in vals or 'date_close' in vals:
             self.sudo()._update_previous_appraisal()
-        if vals.get('date_close'):
-            self.sudo()._update_next_appraisal_date()
         if 'manager_ids' in vals:
             self._sync_meeting_attendees(previous_managers)
         return result
 
     def _appraisal_plan_post(self):
         odoobot = self.env.ref('base.partner_root')
-        days = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_create_in_advance_days', 8))
+        dates = self.employee_id.sudo()._upcoming_appraisal_creation_date()
         for appraisal in self:
-            if not appraisal.appraisal_plan_posted and appraisal.company_id.appraisal_plan and not appraisal.employee_id.next_appraisal_date:
-                month = appraisal.company_id.duration_first_appraisal if appraisal.employee_id.sudo().appraisal_count == 1 else appraisal.company_id.duration_next_appraisal
-                date = (datetime.date.today() + relativedelta(months=month, days=-days))
+            # The only ongoing appraisal is the current one
+            if not appraisal.appraisal_plan_posted and appraisal.company_id.appraisal_plan and appraisal.employee_id.ongoing_appraisal_count == 1:
+                date = dates[appraisal.employee_id.id]
                 formated_date = format_date(self.env, date, date_format="MMM d y")
                 body = _('Thanks to your Appraisal Plan, without any new manual Appraisal, the new Appraisal will be automatically created on %s.', formated_date)
-                appraisal.message_post(body=body, author_id=odoobot.id)
+                appraisal._message_log(body=body, author_id=odoobot.id)
                 appraisal.appraisal_plan_posted = True
 
     def _sync_meeting_attendees(self, manager_ids):

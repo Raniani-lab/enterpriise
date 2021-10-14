@@ -21,6 +21,7 @@
             </xpath>
             <div name="button_box" position="inside">
                 <field name="appraisal_count" invisible="1"/>
+                <field name="ongoing_appraisal_count" invisible="1"/>
                 <button name="action_open_last_appraisal"
                     class="oe_stat_button" attrs="{'invisible': [('last_appraisal_id', '=', False)]}"
                     icon="fa-star-half-o"

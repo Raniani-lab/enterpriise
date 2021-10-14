@@ -73,6 +73,34 @@ class ResCompany(models.Model):
         } for employee in employees]
         return self.env['hr.appraisal'].create(appraisal_values)
 
+    def _get_appraisal_plan_domain(self, current_date):
+        self.ensure_one()
+        start_date_field = self._get_employee_start_date_field()
+        domain = [
+                ('company_id', '=', self.id),
+                ('ongoing_appraisal_count', '=', 0),
+                '|', # After Recruitment
+                    '&',
+                    '&',
+                    ('appraisal_count', '=', 0),
+                    (start_date_field, '>', current_date - relativedelta(months=self.duration_after_recruitment + 1)),
+                    (start_date_field, '<=', current_date - relativedelta(months=self.duration_after_recruitment)),
+                '|', # First Appraisal
+                    '&',
+                    ('appraisal_count', '=', 1),
+                    ('last_appraisal_date', '<=', current_date - relativedelta(months=self.duration_first_appraisal)),
+                # Next Appraisal
+                    '&',
+                    ('appraisal_count', '>', 1),
+                    ('last_appraisal_date', '<=', current_date - relativedelta(months=self.duration_next_appraisal))
+        ]
+        return domain
+
+    @api.model
+    def _get_employee_start_date_field(self):
+        self.ensure_one()
+        return 'create_date'
+
     # CRON job
     def _run_employee_appraisal_plans(self):
         companies = self.env['res.company'].search([('appraisal_plan', '=', True)])
@@ -80,25 +108,7 @@ class ResCompany(models.Model):
         current_date = datetime.date.today() + relativedelta(days=days)
 
         for company in companies:
-            domain = [
-                ('company_id', '=', company.id),
-                ('next_appraisal_date', '=', False),
-                '|', # After Recruitment
-                    '&',
-                    '&',
-                    ('appraisal_count', '=', 0),
-                    ('create_date', '>', current_date - relativedelta(months=company.duration_after_recruitment + 1)),
-                    ('create_date', '<=', current_date - relativedelta(months=company.duration_after_recruitment)),
-                '|', # First Appraisal
-                    '&',
-                    ('appraisal_count', '=', 1),
-                    ('last_appraisal_date', '<=', current_date - relativedelta(months=company.duration_first_appraisal)),
-                # Next Appraisal
-                    '&',
-                    ('appraisal_count', '>', 1),
-                    ('last_appraisal_date', '<=', current_date - relativedelta(months=company.duration_next_appraisal))
-            ]
-
+            domain = company._get_appraisal_plan_domain(current_date)
             all_employees = self.env['hr.employee'].search(domain)
             if all_employees:
                 appraisals = self._create_new_appraisal(all_employees)

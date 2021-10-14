@@ -826,10 +826,11 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         tax_report_date['strict_range'] = True
         tax_report_options = self.env['account.generic.tax.report']._get_options()
         tax_report_options.update({
-                'tax_grids': False,
-                'date': tax_report_date,
-                'journals': options['journals'],
-                'all_entries': options['all_entries'],
+            'tax_grids': False,
+            'date': tax_report_date,
+            'journals': options['journals'],
+            'all_entries': options['all_entries'],
+            'tax_report': 'generic',
         })
         journal = self.env['account.journal'].browse(self._get_options_journals(options)[0]['id'])
         tax_report_lines = self.env['account.generic.tax.report'].with_company(journal.company_id)._get_lines(tax_report_options)

@@ -56,6 +56,9 @@
             'timesheet_grid/static/src/js/tours/timesheet_grid.js',
             'timesheet_grid/static/src/js/widgets/timesheets_m2o_avatar_employee.js',
         ],
+        'web.assets_tests': [
+            'timesheet_grid/static/tests/tours/timesheet_record_time.js',
+        ],
         'web.qunit_suite_tests': [
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/timesheet_uom_tests.js'),
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/timesheet_grid_tests.js'),

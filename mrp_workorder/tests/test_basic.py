@@ -1195,6 +1195,52 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.assertAlmostEqual(workorder.date_planned_start, workorder_prev.date_planned_finished, delta=timedelta(seconds=10), msg="Workorder should be planned after the first one")
         self.assertAlmostEqual(workorder.date_planned_finished, workorder_prev.date_planned_finished + timedelta(hours=1), delta=timedelta(seconds=10), msg="Workorder should be done one hour later.")
 
+    def test_planning_overlaps_wo_02(self):
+        """ Test that workorder doesn't overlaps between then when plan the MO
+
+            For example if it is November 30, here is the expected result:
+                MO1 : 01/dec/2021 00:00 → 01/dec/2021 10:00
+                MO2 : 01/dec/2021 10:00 → 01/dec/2021 20:00
+                MO3 : 02/dec/2021 00:00 → 02/dec/2021 10:00
+                MO4 : 02/dec/2021 10:00 → 02/dec/2021 20:00
+                MO5 : 02/dec/2021 20:00 → 02/dec/2021 06:00
+        """
+        self.full_availability()
+        calendar = self.env['resource.calendar'].search([])
+        # Possible working hours: every day from 00:00 to 22:00 (UTC)
+        calendar.attendance_ids.hour_to = 22
+        calendar.tz = 'UTC'
+
+        dining_table = self.dining_table
+        # Set the work order duration to 10 hours
+        dining_table.bom_ids.operation_ids[0].time_cycle_manual = 600
+
+        # Set the date_start to tomorrow midnight
+        date_start = datetime.combine(datetime.today(), datetime.min.time()) + timedelta(1)
+
+        # Create 5 MO. one of them has a different date from the others
+        all_production = self.env['mrp.production']
+        for date in [date_start, date_start, (date_start+ timedelta(days=1)), date_start, date_start]:
+            production_table_form = Form(self.env['mrp.production'])
+            production_table_form.product_id = dining_table
+            production_table_form.bom_id = self.mrp_bom_desk
+            production_table_form.product_qty = 1.0
+            production_table_form.product_uom_id = dining_table.uom_id
+            production_table_form.date_planned_start = date
+            all_production += production_table_form.save()
+
+        all_production.action_confirm()
+        all_production.button_plan()
+
+        workorder_a = all_production[3].workorder_ids[0]
+        workorder_b = all_production[4].workorder_ids[0]
+
+        # Check that the workorders are planned correctly and that it lasts 10 hours
+        self.assertAlmostEqual(workorder_a.date_planned_start, (date_start + timedelta(days=1, hours=10)), delta=timedelta(seconds=10), msg="The workorder should be planned for the first available interval")
+        self.assertAlmostEqual(workorder_a.date_planned_finished, (date_start + timedelta(days=1, hours=20)), delta=timedelta(seconds=10), msg="Workorder should be done in 10 hours")
+        self.assertAlmostEqual(workorder_b.date_planned_start, (date_start + timedelta(days=1, hours=20)), delta=timedelta(seconds=10), msg="The workorder should be planned for the first available interval")
+        self.assertAlmostEqual(workorder_b.date_planned_finished, (date_start + timedelta(days=2, hours=8)), delta=timedelta(seconds=10), msg="Workorder should be done in +10hours")
+
     def test_change_production_1(self):
         """Change the quantity to produce on the MO while workorders are already planned."""
         dining_table = self.dining_table

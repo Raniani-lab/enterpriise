@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mail_enterprise.ThreadNeedactionPreview" t-inherit="mail.ThreadNeedactionPreview" t-inherit-mode="extension" owl="1">
+        <!--
+            This template wraps the ThreadNeedactionPreview in an ActionSwiper to mark as read messages in a thread
+        -->
+        <xpath expr="//*[hasclass('o_ThreadNeedactionPreview')]" position="after">
+            <ActionSwiper
+                onRightSwipe="messaging and messaging.device.isMobile and thread ?
+                    {
+                        action: () => thread and messaging.models['mail.message'].markAllAsRead([
+                            ['model', '=', thread.model],
+                            ['res_id', '=', thread.id],
+                        ]),
+                        icon: 'fa-check-circle',
+                        bgColor: 'bg-success',
+                    } : undefined"
+            />
+        </xpath>
+        <xpath expr="//ActionSwiper" position="inside">
+            <xpath expr="//*[hasclass('o_ThreadNeedactionPreview')]" position="move"/>
+        </xpath>
+    </t>
+</templates>

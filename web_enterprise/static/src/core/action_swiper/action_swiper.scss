@@ -1,0 +1,21 @@
+.o_actionswiper {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+}
+.o_actionswiper_target_container {
+    transition: transform 0.4s;
+}
+.o_actionswiper_swiping {
+    transition: none;
+}
+.o_actionswiper_offset0 {
+    left: 0;
+    top: 0;
+}
+.o_actionswiper_right_swipe_area {
+    transform: translateX(-100%);
+}
+.o_actionswiper_left_swipe_area {
+    transform: translateX(100%);
+}

@@ -20,6 +20,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
     'assets': {
         'web.assets_qweb': [
             'web_enterprise/static/src/**/*.xml',
+            'web_enterprise/static/src/core/**/*.xml',
         ],
         'web._assets_primary_variables': [
             ('prepend', 'web_enterprise/static/src/legacy/scss/primary_variables.scss'),
@@ -67,6 +68,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
 
             ('replace', 'web/static/src/legacy/js/fields/upgrade_fields.js', 'web_enterprise/static/src/legacy/js/apps.js'),
 
+            'web_enterprise/static/src/core/**/*',
             'web_enterprise/static/src/search/**/*.js',
             'web_enterprise/static/src/webclient/**/*.js',
             'web_enterprise/static/src/views/**/*.js',

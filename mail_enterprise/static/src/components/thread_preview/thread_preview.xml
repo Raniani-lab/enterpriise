@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mail_enterprise.ThreadPreview" t-inherit="mail.ThreadPreview" t-inherit-mode="extension" owl="1">
+        <!--
+            This template wraps the ThreadPreview in an ActionSwiper to mark as seen the channel or unpin a conversation
+        -->
+        <xpath expr="//*[hasclass('o_ThreadPreview')]" position="after">
+            <ActionSwiper
+                onLeftSwipe="messaging and messaging.device.isMobile and thread and thread.isChatChannel and thread.isPinned ?
+                    {
+                        action: () => thread and thread.unpin(),
+                        icon: 'fa-times-circle ',
+                        bgColor: 'bg-danger',
+                    } : undefined"
+                onRightSwipe="messaging and messaging.device.isMobile and thread and thread.localMessageUnreadCounter > 0 ?
+                    {
+                        action: () => thread and thread.markAsSeen(thread.lastNonTransientMessage),
+                        icon: 'fa-check-circle',
+                        bgColor: 'bg-success',
+                    } : undefined"
+            />
+        </xpath>
+        <xpath expr="//ActionSwiper" position="inside">
+            <xpath expr="//*[hasclass('o_ThreadPreview')]" position="move"/>
+        </xpath>
+    </t>
+</templates>

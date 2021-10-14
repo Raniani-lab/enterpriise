@@ -19,6 +19,7 @@ screen devices.
             'web_enterprise/static/src/webclient/webclient.scss',
             'mail_enterprise/static/src/components/*/*',
             'mail_enterprise/static/src/models/*/*.js',
+            'web_enterprise/static/src/core/action_swiper/*',
             'web_mobile/static/src/js/core/mixins.js',
             'web_mobile/static/src/js/core/session.js',
             'web_mobile/static/src/js/services/core.js',

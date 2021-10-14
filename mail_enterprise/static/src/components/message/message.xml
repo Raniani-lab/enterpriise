@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mail_enterprise.Message" t-inherit="mail.Message" t-inherit-mode="extension" owl="1">
+        <!--
+            This template wraps the Message in an ActionSwiper to mark it as read
+        -->
+        <xpath expr="//*[hasclass('o_Message')]" position="after">
+            <ActionSwiper
+                onRightSwipe="messaging and messaging.device.isMobile and messageView and messageView.message and messageView.message.isNeedaction and messageView.message.markAsRead?
+                    {
+                        action: () => messageView and messageView.message and messageView.message.markAsRead(),
+                        icon: 'fa-check-circle',
+                        bgColor: 'bg-success',
+                    } : undefined"
+            />
+        </xpath>
+        <xpath expr="//ActionSwiper" position="inside">
+            <xpath expr="//*[hasclass('o_Message')]" position="move"/>
+        </xpath>
+    </t>
+</templates>

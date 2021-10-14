@@ -304,6 +304,7 @@ var GanttModel = AbstractModel.extend({
             model: this.modelName,
             fields: this._getFields(),
             context: context,
+            orderBy: [{name: this.ganttData.dateStartField}],
             domain: domain,
         });
 

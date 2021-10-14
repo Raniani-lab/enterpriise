@@ -4,7 +4,6 @@
 import base64
 import datetime
 
-from firebase_admin import messaging
 from unittest.mock import patch
 
 from odoo import fields

@@ -89,7 +89,7 @@ FIELDS_TO_EXPORT = {
 # list of relational fields to NOT export, by model
 FIELDS_NOT_TO_EXPORT = {
     'base.automation': ['trg_date_calendar_id'],
-    'ir.actions.server': ['channel_ids', 'fields_lines', 'partner_ids'],
+    'ir.actions.server': ['fields_lines', 'partner_ids'],
     'ir.filter': ['user_id'],
     'mail.template': ['attachment_ids', 'mail_server_id'],
     'report.paperformat': ['report_ids'],

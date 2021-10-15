@@ -41,6 +41,7 @@ def format_amount(amount, width=11, hundredth=True):
 # Présence autorisée pour le code travailleur (zone 00037) et le code
 # travailleur cotisation (zone 00082)
 WORKER_CODE = 495
+STUDENT_CODE = 841
 
 # ANNEXE 4: DEDUCTIONS (Only current ones)
 # Current data of interest: Employment bonus (code 0001)
@@ -210,17 +211,41 @@ class DMFAWorker(DMFANode):
         self.frontier_worker = 0
         self.activity_with_risk = -1
 
-        self.worker_code = WORKER_CODE
+        student_struct = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_student_regular_pay')
+        self.student_payslips = payslips.filtered(lambda p: p.struct_id == student_struct)
+        payslips = payslips - self.student_payslips
+
+        if self.student_payslips:
+            self.worker_code = STUDENT_CODE
+        else:
+            self.worker_code = WORKER_CODE
+
         self.local_unit_id = -1 # Deprecated since 2014
 
-        self.occupations = self._prepare_occupations(self.payslips.mapped('contract_id'), self.quarter_start, self.quarter_end)
-        skip_remun = all(o.skip_remun for o in self.occupations)
+        if self.student_payslips:
+            self.occupations = []
+            skip_remun = False
+        else:
+            self.occupations = self._prepare_occupations(self.payslips.mapped('contract_id'), self.quarter_start, self.quarter_end)
+            skip_remun = all(o.skip_remun for o in self.occupations)
+
+        self.student_contributions = []
+        self.contributions = []
+        self.deductions = []
         if not skip_remun:
             self.deductions = self._prepare_deductions()
-            self.contributions = self._prepare_contributions()
-        else:
-            self.deductions = []
-            self.contributions = []
+            if self.student_payslips:
+                self.student_contributions = self._prepare_student_contributions()
+            if payslips:
+                self.contributions = self._prepare_contributions()
+
+    def _prepare_student_contributions(self):
+        payslips = self.student_payslips
+        basis = round(payslips._get_line_values(['BASIC'], compute_sum=True)['BASIC']['sum']['total'], 2)
+        contributions = [
+            DMFAStudentContribution(self.student_payslips, basis)
+        ]
+        return contributions
 
     def _prepare_contributions(self):
         basis_lines = {
@@ -452,6 +477,21 @@ class DMFAWorker(DMFANode):
         return []
 
 
+class DMFAStudentContribution(DMFANode):
+    """
+    Represents the paid amounts on the student payslips
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        work_address = payslips.mapped('contract_id.employee_id.address_id')[0]
+        location_unit = self.env['l10n_be.dmfa.location.unit'].search([
+            ('partner_id', '=', work_address.id)])
+        self.local_unit_id = format_amount(location_unit._get_code(), width=10, hundredth=False)
+        self.student_remun_amount = format_amount(basis, width=9)
+        self.student_contribution_amount = format_amount(round(basis * 0.0813, 2), width=9)
+        self.student_nbr_days = -1
+        self.student_hours_nbr = round(payslips._get_worked_days_line_number_of_hours('WORK100'))
+
 class DMFAWorkerContribution(DMFANode):
     """
     Represents the paid amounts on the employee payslips
@@ -675,6 +715,11 @@ class DMFAOccupation(DMFANode):
         # +------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
         # YTI TODO: Add a field dmfa_remuneration_code on hr.salary.rule
         regular_gross = self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_gross_salary')
+        student_struct = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_student_regular_pay')
+        regular_gross_student = self.env['hr.salary.rule'].search([
+            ('struct_id', '=', student_struct.id),
+            ('code', '=', 'BASIC'),
+        ])
         regular_car = self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_company_car')
         rule_13th_month_gross = self.env.ref('l10n_be_hr_payroll.cp200_employees_thirteen_month_gross_salary')
         termination_n = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_pay_simple')
@@ -682,9 +727,9 @@ class DMFAOccupation(DMFANode):
         termination_fees = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_basic')
         holiday_pay_recovery_n = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n', raise_if_not_found=False)
         holiday_pay_recovery_n1 = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n1', raise_if_not_found=False)
-        # YTI TODO: Students
         codes = {
             regular_gross: 1,
+            regular_gross_student: 1,
             rule_13th_month_gross: 2,
             termination_n: 7,
             termination_n1: 7,
@@ -1000,6 +1045,8 @@ class HrDMFAReport(models.Model):
             for worker_record in natural_person.worker_records:
                 for contribution in worker_record.contributions:
                     total += int(contribution.amount) / 100.0
+                for contribution in worker_record.student_contributions:
+                    total += int(contribution.student_contribution_amount) / 100.0
         # Sum all employee contributions
         for natural_person in employees_infos:
             for worker_record in natural_person.worker_records:

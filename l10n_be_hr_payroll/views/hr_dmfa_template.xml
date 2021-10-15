@@ -498,15 +498,14 @@
             <t t-foreach="worker.occupations" t-as="occupation">
                 <t t-call="l10n_be_hr_payroll.Occupation"/>
             </t>
-            <!-- YTI TODO: Manage students
-            <t t-foreach="worker.student_contributions" t-as="contribution">
-                <t t-call="l10n_be_hr_payroll.StudentContribution"/>
-            </t> -->
             <t t-foreach="worker.contributions" t-as="contribution">
                 <t t-call="l10n_be_hr_payroll.WorkerContribution"/>
             </t>
             <t t-foreach="worker.deductions" t-as="deduction">
                 <t t-call="l10n_be_hr_payroll.WorkerDeduction"/>
+            </t>
+            <t t-foreach="worker.student_contributions" t-as="contribution">
+                <t t-call="l10n_be_hr_payroll.StudentContribution"/>
             </t>
         </WorkerRecord>
     </template>
@@ -665,12 +664,9 @@
         - 90578 ActivationInformation
      -->
 
-    <!-- YTI TODO -->
     <template id="StudentContribution">
         <!-- 90003: Bloc fonctionnel permettant de déclarer la cotisation de solidarité due pour un étudiant. -->
         <StudentContribution>
-            <!-- See 00042 -->
-            <LocalUnitID t-esc="contribution.local_unit_id"/>
             <!-- 00076
                 DESCRIPTION:    Rémunération qui donne lieu au calcul de la cotisation de solidarité pour les étudiants occupés dans le cadre d'un contrat d'occupation d'étudiants à condition que la durée d'engagement n'excède pas un certain nombre d'heures (à partir du 1/2017) ou de journées de travail (avant 1/2017) sur l'ensemble de l'année civile (voir zones nombre d’heures étudiant ou nombre de jours étudiant).
                 DOMAINE DE DEFINITION:  [0;999999999]
@@ -697,7 +693,9 @@
                 PRESENCE:   Obligatoire si le travailleur étudiant est déclaré pour un trimestre antérieur au 1/2017.
                 Interdit à partir des déclarations du 1/2017.
             -->
-            <StudentNbrDays t-esc="contribution.student_nbr_days"/>
+            <t t-if="contribution.student_nbr_days != -1">
+                <StudentNbrDays t-esc="contribution.student_nbr_days"/>
+            </t>
             <!--
                 DESCRIPTION:    A partir du 1er trimestre 2017 :
                 Nombre d’heures rémunérées à déclarer pour les étudiants occupés dans le cadre d'un contrat d'occupation d'étudiants à condition que la durée d'engagement n'excède pas un certain nombre d'heures de travail sur l'ensemble de l'année civile (voir domaine de définition).
@@ -708,6 +706,8 @@
                 Interdit pour les déclarations antérieures au 1/2017.
              -->
             <StudentHoursNbr t-esc="contribution.student_hours_nbr"/>
+            <!-- See 00042 -->
+            <LocalUnitID t-esc="contribution.local_unit_id"/>
         </StudentContribution>
     </template>
 

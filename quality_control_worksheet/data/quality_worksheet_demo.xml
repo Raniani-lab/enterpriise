@@ -8,44 +8,7 @@
             <field name="res_model">quality.check</field>
         </record>
 
-        <record id="quality_control_worksheet_template_field1" model="ir.model.fields">
-            <field name="name">x_date</field>
-            <field name="ttype">date</field>
-            <field name="field_description">Date</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('quality_control_worksheet.quality_control_worksheet_template1').model_id.id"/>
-        </record>
-
-        <record id="quality_control_worksheet_template_field2" model="ir.model.fields">
-            <field name="name">x_product</field>
-            <field name="ttype">many2one</field>
-            <field name="relation">product.product</field>
-            <field name="field_description">Product</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('quality_control_worksheet.quality_control_worksheet_template1').model_id.id"/>
-        </record>
-
-        <record id="quality_control_worksheet_template_field3" model="ir.model.fields">
-            <field name="name">x_responsible</field>
-            <field name="ttype">many2one</field>
-            <field name="relation">res.users</field>
-            <field name="field_description">Responsible</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('quality_control_worksheet.quality_control_worksheet_template1').model_id.id"/>
-        </record>
-
-        <record id="quality_control_worksheet_template_field4" model="ir.model.fields">
-            <field name="name">x_texture</field>
-            <field name="ttype">selection</field>
-            <field name="field_description">Wood Texture</field>
-            <field name="selection">[('rough','Rough'),('smooth','Smooth')]</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('quality_control_worksheet.quality_control_worksheet_template1').model_id.id"/>
-        </record>
-
-        <record id="quality_control_worksheet_template_field5" model="ir.model.fields">
-            <field name="name">x_length</field>
-            <field name="ttype">selection</field>
-            <field name="field_description">Length</field>
-            <field name="selection">[('short','1.80m ~ 1.85m'), ('medium','1.86m ~ 1.90m'), ('long', '1.91m ~ 2.00m')]</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('quality_control_worksheet.quality_control_worksheet_template1').model_id.id"/>
-        </record>
+        <function model="worksheet.template" name="_create_demo_data_quality"/>
 
         <record id="quality_control_worksheet_template1_form_view" model="ir.ui.view">
             <field name="name">quality.worksheet.template1.form.view</field>

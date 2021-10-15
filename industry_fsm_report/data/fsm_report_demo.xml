@@ -8,56 +8,7 @@
             <field name="color">3</field>
         </record>
 
-        <record id="fsm_template_field1" model="ir.model.fields">
-            <field name="name">x_intervention_type</field>
-            <field name="ttype">selection</field>
-            <field name="field_description">Intervention Type</field>
-            <field name="selection">[('first_installation','First installation'),('technical_maintenance','Technical maintenance')]</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
-
-        <record id="fsm_template_field2" model="ir.model.fields">
-            <field name="name">x_description</field>
-            <field name="ttype">text</field>
-            <field name="field_description">Description of the Intervention</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
-
-        <record id="fsm_template_field3" model="ir.model.fields">
-            <field name="name">x_manufacturer</field>
-            <field name="ttype">many2one</field>
-            <field name="relation">res.partner</field>
-            <field name="field_description">Manufacturer</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
-
-        <record id="fsm_template_field5" model="ir.model.fields">
-            <field name="name">x_checkbox</field>
-            <field name="ttype">boolean</field>
-            <field name="field_description">I hereby certify that this device meets the requirements of an acceptable device at the time of testing.</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
-
-        <record id="fsm_template_field6" model="ir.model.fields">
-            <field name="name">x_serial_number</field>
-            <field name="ttype">char</field>
-            <field name="field_description">Serial Number</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
-
-        <record id="fsm_template_field7" model="ir.model.fields">
-            <field name="name">x_date</field>
-            <field name="ttype">date</field>
-            <field name="field_description">Date</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
-
-        <record id="fsm_template_field8" model="ir.model.fields">
-            <field name="name">x_worker_signature</field>
-            <field name="ttype">binary</field>
-            <field name="field_description">Worker Signature</field>
-            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template2').model_id.id"/>
-        </record>
+        <function model="worksheet.template" name="_create_demo_data_fsm"/>
 
         <record id="fsm_worksheet_template2_form_inherit" model="ir.ui.view">
             <field name="name">fsm.worksheet.template2.form.inherit</field>

@@ -57,3 +57,38 @@ class WorksheetTemplate(models.Model):
         res = super()._get_models_to_check_dict()
         res['quality.check'] = [('quality.check', 'Quality Check'), ('quality.point', 'Quality Point')]
         return res
+
+    @api.model
+    def _create_demo_data_quality(self):
+        # create demo data in batch for performance reasons (avoid multiple calls to setup_models)
+        model_id = self.env.ref('quality_control_worksheet.quality_control_worksheet_template1').model_id.id
+        self.env['ir.model.fields'].create([{
+            'name': 'x_date',
+            'ttype': 'date',
+            'field_description': 'Date',
+            'model_id': model_id,
+        }, {
+            'name': 'x_product',
+            'ttype': 'many2one',
+            'relation': 'product.product',
+            'field_description': 'Product',
+            'model_id': model_id,
+        }, {
+            'name': 'x_responsible',
+            'ttype': 'many2one',
+            'relation': 'res.users',
+            'field_description': 'Responsible',
+            'model_id': model_id,
+        }, {
+            'name': 'x_texture',
+            'ttype': 'selection',
+            'field_description': 'Wood Texture',
+            'selection': "[('rough','Rough'),('smooth','Smooth')]",
+            'model_id': model_id,
+        }, {
+            'name': 'x_length',
+            'ttype': 'selection',
+            'field_description': 'Length',
+            'selection': "[('short','1.80m ~ 1.85m'), ('medium','1.86m ~ 1.90m'), ('long', '1.91m ~ 2.00m')]",
+            'model_id': model_id,
+        }])

@@ -359,6 +359,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 },
             });
             await salesman_dashboard.appendTo($('#qunit-fixture'));
+            salesman_dashboard.on_attach_callback();
             await testUtils.nextTick();
             var id = self.data.fetch_salesmen.salesman_ids[0].id;
             assert.containsOnce(salesman_dashboard, '#mrr_growth_salesman_' + id, " should display the salesman graph");
@@ -372,6 +373,43 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             assert.containsOnce(salesman_dashboard, '#NRR_invoices_' + id, "should display the list of NRR Invoices");
             assert.strictEqual(salesman_dashboard.$('#NRR_invoices_' + id + ' tr:eq(2) td:eq(1)').text(), "Agrolait", "should contain NRR Invoices partner 'Agrolait'");
             assert.strictEqual(salesman_dashboard.$('#NRR_invoices_' + id + ' tr:eq(2) td:eq(3)').text(), "525", "should contain NRR Invoices Amount '525'");
+            salesman_dashboard.destroy();
+        });
+
+        QUnit.test('can renderer the sale_subscription_salesman in a fragment', async function (assert) {
+            // With owl (and the compatibility layer), the client action is rendered in memory and
+            // inserted in the DOM before the next animation frame. With this in mind, code using
+            // Chart.js must ensure to be in the DOM before trying to use it to render a chart,
+            // otherwise it crashes when the lib tries to compute positions in the DOM.
+            assert.expect(1);
+
+            const self = this;
+            const salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman(null, {});
+            salesman_dashboard.salesman = this.data.fetch_salesmen.default_salesman;
+            await testUtils.mock.addMockEnvironment(salesman_dashboard, {
+                mockRPC(route) {
+                    if (route === '/sale_subscription_dashboard/fetch_salesmen') {
+                        return Promise.resolve(self.data.fetch_salesmen);
+                    }
+                    if (route === '/sale_subscription_dashboard/get_values_salesmen') {
+                        return Promise.resolve(self.data.salesman_values);
+                    }
+                    return Promise.resolve();
+                },
+            });
+            await salesman_dashboard.appendTo(document.createDocumentFragment());
+            await testUtils.nextTick();
+
+            salesman_dashboard.$el.appendTo($('#qunit-fixture'));
+            salesman_dashboard.on_attach_callback();
+            await testUtils.nextTick();
+
+            const id = this.data.fetch_salesmen.salesman_ids[0].id;
+            assert.containsOnce(
+                salesman_dashboard, '#mrr_growth_salesman_' + id,
+                " should display the salesman graph"
+            );
+
             salesman_dashboard.destroy();
         });
     });

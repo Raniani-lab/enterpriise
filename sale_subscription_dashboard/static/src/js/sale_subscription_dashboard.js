@@ -1172,6 +1172,23 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         this.barGraph = {};
         this.migrationDate = false;
         this.currentCompany = $.bbq.getState('cids') && parseInt($.bbq.getState('cids').split(',')[0]);
+        // Chart.js requires the canvas to be in the DOM when the chart is rendered (s.t. it is able
+        // to compute positions and stuff), so we use the following promise to ensure that we don't
+        // try to render a chart before being in the DOM.
+        this._mountedProm = new Promise((r) => {
+            this._resolveMountedProm = r;
+        });
+    },
+
+    on_attach_callback() {
+        this._super(...arguments);
+        this._resolveMountedProm();
+    },
+    on_detach_callback() {
+        this._super(...arguments);
+        this._mountedProm = new Promise((r) => {
+            this._resolveMountedProm = r;
+        });
     },
 
     willStart: function() {
@@ -1221,8 +1238,8 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                 salesman_ids: this.salesman,
                 context: session.user_context,
             },
-
-        }, {shadow: true}).then(function (result) {
+        }, {shadow: true}).then(async function (result) {
+            await self._mountedProm;
             var salespersons_statistics = result.salespersons_statistics;
             Object.keys(salespersons_statistics).forEach(element => {
                 var cur_salesman = self.salesman_ids.find(val => val.id === Number(element));

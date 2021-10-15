@@ -646,7 +646,7 @@ class AccountGenericTaxReport(models.AbstractModel):
     def _generate_tax_closing_entries(self, options, closing_moves=False):
         """Generates and/or updates VAT closing entries.
 
-        This method does computes the content of the tax closing in the following way:
+        This method computes the content of the tax closing in the following way:
         - Search on all taxe lines in the given period, group them by tax_group (each tax group might have its own
         tax receivable/payable account).
         - Create a move line that balances each tax account and add the difference in the correct receivable/payable
@@ -734,7 +734,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         }
 
         raise RedirectWarning(
-            _('Some of your tax groups are missing information in company %s. Please complete their configuration.', company.display_name),
+            _('Please specify the accounts necessary for the Tax Closing Entry.'),
             need_config_action,
             _('Configure your TAX accounts - %s', company.display_name),
             additional_context={'allowed_company_ids': company.ids, 'force_account_company': company.id}

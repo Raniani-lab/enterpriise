@@ -40,7 +40,7 @@ class Applicant(models.Model):
     def _check_referral_fields_access(self, fields):
         referral_fields = {'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points',
                            'shared_item_infos', 'referral_state', 'user_id', 'friend_id', '__last_update'}
-        if not self.user_has_groups('hr_recruitment.group_hr_recruitment_user'):
+        if not (self.user_has_groups('hr_recruitment.group_hr_recruitment_interviewer') or self.user_has_groups('hr_recruitment.group_hr_recruitment_user')):
             if set(fields or []) - referral_fields:
                 raise AccessError(_('You are not allowed to access applicant records.'))
 
@@ -49,7 +49,7 @@ class Applicant(models.Model):
         self._check_referral_fields_access(fields)
         return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
 
-    def read(self, fields, load='_classic_read'):
+    def read(self, fields=None, load='_classic_read'):
         self._check_referral_fields_access(fields)
         return super().read(fields, load)
 

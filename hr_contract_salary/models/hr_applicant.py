@@ -15,6 +15,8 @@ class HrApplicant(models.Model):
     access_token_end_date = fields.Date('Access Token Validity Date', copy=False)
 
     def action_show_proposed_contracts(self):
+        self._check_interviewer_access()
+
         return {
             "type": "ir.actions.act_window",
             "res_model": "hr.contract",

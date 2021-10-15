@@ -20,6 +20,5 @@ This module allows Employees (and not users) to log in to the Point of Sale appl
     ],
     'installable': False,
     'auto_install': False,
-    'qweb': [],
     'license': 'OEEL-1',
 }

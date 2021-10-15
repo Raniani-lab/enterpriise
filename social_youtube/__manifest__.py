@@ -17,9 +17,6 @@
         'views/social_stream_post_views.xml',
         'views/social_youtube_templates.xml',
     ],
-    'qweb': [
-        "static/src/xml/social_youtube_templates.xml",
-    ],
     # 'auto_install': True,  # temporarily disabled until approved by YouTube
     'assets': {
         'web.assets_backend': [

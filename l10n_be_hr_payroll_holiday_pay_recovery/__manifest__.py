@@ -12,7 +12,6 @@
         'views/hr_employee_views.xml',
         'data/cp200/employee_salary_data.xml',
     ],
-    'qweb': [],
     'demo': [],
     'auto_install': True,
     'license': 'OEEL-1',

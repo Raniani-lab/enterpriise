@@ -517,6 +517,15 @@ _source_rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
 ]
 
+# These are pair of getters: (getter for the amount, getter for the amount's currency)
+_currency_amount_getters = [
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:Amt/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:NtryDtls/ns:TxDtls/ns:AmtDtls/ns:InstdAmt/ns:Amt/text()'), partial(_generic_get, xpath='ns:NtryDtls/ns:TxDtls/ns:AmtDtls/ns:InstdAmt/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:NtryDtls/ns:TxDtls/ns:AmtDtls/ns:TxAmt/ns:Amt/text()'), partial(_generic_get, xpath='ns:NtryDtls/ns:TxDtls/ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:Amt/text()'), partial(_generic_get, xpath='ns:Amt/@Ccy')),
+]
+
 _get_credit_debit_indicator = partial(_generic_get,
     xpath='ns:CdtDbtInd/text()')
 
@@ -607,13 +616,15 @@ def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
     return 'Dbtr' if ind == 'CRDT' else 'Cdtr'
 
-def _set_amount_currency_and_currency_id(node, path, entry_vals, currency, curr_cache, has_multi_currency, namespaces):
-    instruc_amount = node.xpath('%s/text()' % path, namespaces=namespaces)
-    instruc_curr = node.xpath('%s/@Ccy' % path, namespaces=namespaces)
-    if (has_multi_currency and instruc_amount and instruc_curr and
-            instruc_curr[0] != currency and instruc_curr[0] in curr_cache):
-        entry_vals['amount_currency'] = math.copysign(abs(sum(map(float, instruc_amount))), entry_vals['amount'])
-        entry_vals['foreign_currency_id'] = curr_cache[instruc_curr[0]]
+def _set_amount_in_currency(node, getters, entry_vals, currency, curr_cache, has_multi_currency, namespaces):
+    for value_getter, currency_getter in getters:
+        instruc_amount = value_getter(node, namespaces=namespaces)
+        instruc_curr = currency_getter(node, namespaces=namespaces)
+        if (has_multi_currency and instruc_amount and instruc_curr and
+                instruc_curr != currency and instruc_curr in curr_cache):
+            entry_vals['amount_currency'] = math.copysign(abs(float(instruc_amount)), entry_vals['amount'])
+            entry_vals['foreign_currency_id'] = curr_cache[instruc_curr]
+            break
 
 def _get_transaction_name(node, namespaces):
     xpaths = ('.//ns:RmtInf/ns:Ustrd/text()',
@@ -747,9 +758,9 @@ class AccountBankStatementImport(models.TransientModel):
                         unique_import_set=unique_import_set,
                         namespaces=ns)
 
-                    _set_amount_currency_and_currency_id(
+                    _set_amount_in_currency(
                         node=entry_details,
-                        path=transaction_details and 'ns:AmtDtls/ns:InstdAmt/ns:Amt' or 'ns:NtryDtls/ns:TxDtls/ns:AmtDtls/ns:InstdAmt/ns:Amt',
+                        getters=_currency_amount_getters,
                         entry_vals=entry_vals,
                         currency=currency,
                         curr_cache=curr_cache,

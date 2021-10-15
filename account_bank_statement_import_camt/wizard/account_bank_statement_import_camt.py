@@ -506,12 +506,15 @@ _amount_getters = [
 # These are pair of getters: (getter for the exchange rate, getter for the target currency)
 _target_rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:SrcCcy/text()')),
 ]
 
 # These are pair of getters: (getter for the exchange rate, getter for the source currency)
 _source_rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:SrcCcy/text()')),
     (partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:SrcCcy/text()')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
+    (partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:InstdAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
 ]
 
 _get_credit_debit_indicator = partial(_generic_get,

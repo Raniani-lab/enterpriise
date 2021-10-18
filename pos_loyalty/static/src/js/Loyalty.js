@@ -246,17 +246,34 @@ models.Order = models.Order.extend({
                         }
                     }
                 }
-             }
+                if(reward.discount_max_amount !== 0 && discount > reward.discount_max_amount)
+                    discount = reward.discount_max_amount;
 
-            if(reward.discount_max_amount !== 0 && discount > reward.discount_max_amount)
-                discount = reward.discount_max_amount;
+                this.add_product(product, {
+                    price: -discount,
+                    quantity: 1,
+                    merge: false,
+                    extras: { reward_id: reward.id },
+                });
+            }
+            if (reward.discount_type == "fixed_amount") {
+                let discount_fixed_amount = reward.discount_fixed_amount;
+                let point_cost = reward.point_cost;
+                let quantity_to_apply = Math.floor(spendable/point_cost);
+                let amount_discounted = discount_fixed_amount * quantity_to_apply;
 
-            this.add_product(product, {
-                price: (reward.discount_type === "percentage")? -discount: -reward.discount_fixed_amount,
-                quantity: 1,
-                merge: false,
-                extras: { reward_id: reward.id },
-            });
+                if (amount_discounted > order_total) {
+                    quantity_to_apply = Math.floor(order_total / discount_fixed_amount);
+                }
+
+                this.add_product(product, {
+                    price: - discount_fixed_amount,
+                    quantity: quantity_to_apply,
+                    merge: false,
+                    extras: { reward_id: reward.id },
+                });
+
+            }
         }
     },
 

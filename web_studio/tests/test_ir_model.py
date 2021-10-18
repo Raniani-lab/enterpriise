@@ -1,3 +1,8 @@
+
+from unittest.mock import patch
+
+import odoo
+
 from odoo.tests.common import TransactionCase
 from odoo.addons.web_studio.models.ir_model import OPTIONS_WL
 from odoo.exceptions import ValidationError
@@ -415,3 +420,15 @@ class TestStudioIrModel(TransactionCase):
         # rename the menu name
         new_menu.name = 'new Rockets'
         self.assertEqual(action.name, new_menu.name, 'rename the menu name should rename the window action name')
+
+    def test_performance_01_fields_batch(self):
+        """Test number of call to setup_models when creating a model with multiple"""
+        count_setup_models = 0
+        orig_setup_models = odoo.modules.registry.Registry.setup_models
+        def setup_models(registry, cr):
+            nonlocal count_setup_models
+            count_setup_models += 1
+            orig_setup_models(registry, cr)
+        with patch('odoo.modules.registry.Registry.setup_models', new=setup_models):
+            self.env['ir.model'].with_context(studio=True).studio_model_create('Rockets', options=OPTIONS_WL)
+        self.assertEqual(count_setup_models, 51)

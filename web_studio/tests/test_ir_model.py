@@ -44,7 +44,7 @@ class TestStudioIrModel(TransactionCase):
         model_options = ['use_partner', 'use_stages', 'use_image',
                          'use_responsible', 'lines']
         (model, extra_models) = self.env['ir.model'].studio_model_create('Rockets', options=model_options)
-        self.assertEqual(len(extra_models), 1, 'one extra model should have been created for stages')
+        self.assertEqual(extra_models.mapped('name'), ['Rockets Stages'], 'Only stages should be returned')
 
         line_model = self.env['ir.model'].search([('model', 'like', model.model + '_line')])
         self.assertEqual(len(line_model), 1, 'one extra model should have been created for lines')
@@ -184,7 +184,7 @@ class TestStudioIrModel(TransactionCase):
         self.assertTrue(value_field.tracking, 'the x_studio_value field should be tracked')
         main_company = self.env.ref('base.main_company')
         default = self.env['ir.default'].get(model.model, 'x_studio_currency_id', company_id=main_company.id)
-        self.assertEqual(default, main_company.id, 'the default value for the x_studio_currency_id should be set')
+        self.assertEqual(default, main_company.currency_id.id, 'the default value for the x_studio_currency_id should be set')
         new_company = self.env['res.company'].create({'name': 'SpaceY', 'currency_id': self.env.ref('base.INR').id})
         new_default = self.env['ir.default'].get(model.model, 'x_studio_currency_id', company_id=new_company.id)
         self.assertEqual(new_default, new_company.currency_id.id, 'default currency for new companies should be create with the company')
@@ -430,5 +430,7 @@ class TestStudioIrModel(TransactionCase):
             count_setup_models += 1
             orig_setup_models(registry, cr)
         with patch('odoo.modules.registry.Registry.setup_models', new=setup_models):
-            self.env['ir.model'].with_context(studio=True).studio_model_create('Rockets', options=OPTIONS_WL)
-        self.assertEqual(count_setup_models, 51)
+            # not: using a specific model (PerformanceIssues and not Rockets) is important since after the rollback of the test,
+            # the model will be missing but x_rockets is still in the pool, breaking some optimizations
+            self.env['ir.model'].with_context(studio=True).studio_model_create('PerformanceIssues', options=OPTIONS_WL)
+        self.assertEqual(count_setup_models, 1)

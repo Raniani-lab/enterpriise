@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import logging
 import unicodedata
 import uuid
 import re
@@ -10,11 +9,22 @@ from odoo import api, fields, models, _, Command
 from odoo.tools import ustr
 from odoo.exceptions import ValidationError
 
-_logger = logging.getLogger(__name__)
-
-OPTIONS_WL = ['use_active', 'use_responsible', 'use_partner', 'use_company',
-              'use_notes', 'use_value', 'use_image', 'use_tags', 'use_sequence',
-              'use_mail', 'use_stages', 'use_date', 'use_double_dates', 'lines']
+OPTIONS_WL = [
+    'use_mail',          # add mail_thread to record
+    'use_active',        # allows to archive records (active field)
+    'use_responsible',   # add user field
+    'use_partner',       # adds partner and related phone and email fields
+    'use_company',       # add company field and corresponding access rules
+    'use_notes',         # html note field
+    'use_date',          # date field
+    'use_double_dates',  # date start and date begin
+    'use_value',         # value and currency
+    'use_image',         # image field
+    'use_sequence',      # allows to order records (sequence field)
+    'lines',             # create a default One2Many targeting a generated lines models
+    'use_stages',        # add stages and stage model to record (kanban)
+    'use_tags'           # add tags and tags model to record (kanban)
+]
 
 
 def sanitize_for_xmlid(s):
@@ -84,11 +94,10 @@ class IrModel(models.Model):
         return [('model', dom_operator, abstract_models)]
 
     @api.model
-    def studio_model_create(self, name, vals=None, options=None):
+    def studio_model_create(self, name, options=()):
         """ Allow quick creation of models through Studio.
-        
+
         :param name: functional name of the model (_description attribute)
-        :param vals: dict of values that will be included in the create call
         :param options: list of options that can trigger automated behaviours,
                         in the form of 'use_<behaviour>' (e.g. 'use_tags')
         :return: the main model created as well as extra models needed for the
@@ -96,71 +105,66 @@ class IrModel(models.Model):
                  a tuple (main_model, extra_models)
         :rtype: tuple
         """
-        model_name = vals and vals.get('model') or ('x_' + sanitize_for_xmlid(name))
-        # will contain extra models (tags, stages) for which a menu entry might need to be created
-        extra_models = self
-        options = options if options is not None else []
-        valid_options = [opt for opt in options if opt in OPTIONS_WL]
-        auto_vals = {
+        options = set(options)
+        use_mail = 'use_mail' in options
+
+        model_values = {
             'name': name,
-            'model': model_name,
+            'model': 'x_' + sanitize_for_xmlid(name),
+            'is_mail_thread': use_mail,
+            'is_mail_activity': use_mail,
+            'field_id': [
+                Command.create({
+                    'name': 'x_name',
+                    'ttype': 'char',
+                    'required': True,
+                    'field_description': _('Description'),
+                    'translate': True,
+                    'tracking': use_mail,
+                })
+            ]
         }
-        if vals is not None:
-            vals.update(auto_vals)
-        else:
-            vals = auto_vals
-        main_model = self.create(vals)
-        # setup mail first so that other behaviours know if they can
-        # enable tracking on important fields
-        if 'use_mail' in options:
-            main_model.write({
-                'is_mail_thread': True,
-                'is_mail_activity': True,
-            })
-            main_model.field_id.filtered(lambda f: f.name == 'x_name').tracking = True
+
         # now let's check other options and accumulate potential extra models (tags, stages)
         # created during this process, they will need to get their own action and menu
         # (which will be done at the controller level)
-        if 'use_active' in valid_options:
-            extra_models |= main_model._setup_active()
-        if 'use_responsible' in valid_options:
-            extra_models |= main_model._setup_responsible()
-        if 'use_partner' in valid_options:
-            extra_models |= main_model._setup_partner()
-        if 'use_company' in valid_options:
-            extra_models |= main_model._setup_company()
-        if 'use_notes' in valid_options:
-            extra_models |= main_model._setup_notes()
-        if 'use_value' in valid_options:
-            extra_models |= main_model._setup_value()
-        if 'use_image' in valid_options:
-            extra_models |= main_model._setup_image()
-        if 'use_tags' in valid_options:
-            extra_models |= main_model._setup_tags()
-        if 'use_sequence' in valid_options or 'use_stages' in valid_options:
-            extra_models |= main_model._setup_sequence()
-        if 'use_stages' in valid_options:
-            extra_models |= main_model._setup_stages()
-        if 'use_date' in valid_options:
-            extra_models |= main_model._setup_date()
-        if 'use_double_dates' in valid_options:
-            extra_models |= main_model._setup_double_dates()
-        if 'lines' in valid_options:
-            main_model._setup_one2many_lines()
-        # set the ordering of the model, depending on the use of sequences and stages
-        # stages create a kanban view and a priority field, in which case the list view
-        # will not have the handle widget to avoid inconsistencies
-        # note that using stages will automatically add sequences as well, since the
-        # kanban view needs both for ordering anyway
-        if 'use_stages' in valid_options:
-            # need to order by priority then sequence
-            main_model.order = 'x_studio_priority desc, x_studio_sequence asc, id asc'
-        elif 'use_sequence' in valid_options:
-            main_model.order = 'x_studio_sequence asc, id asc'
-        # Create automatic views that will include fields and views relevant to the model's options
+        if 'use_stages' in options:
+            options.add('use_sequence')
+        extra_models_keys = []
+        extra_models_values = []
+
+        options.discard('use_mail')
+        for option in OPTIONS_WL:
+            if option in options:
+                method = f'_create_option_{option}'
+                model_to_create = getattr(self, method)(model_values)
+                if model_to_create:
+                    extra_models_keys.append(option)
+                    extra_models_values.append(model_to_create)
+
+        all_models = self.create([model_values] + extra_models_values)
+        main_model, *extra_models = all_models
+        extra_models_dict = dict(zip(extra_models_keys, extra_models))
+
+        all_models._setup_access_rights()
+
+        for option in OPTIONS_WL:
+            if option in options:
+                method = f'_post_create_option_{option}'
+                getattr(main_model, method, lambda m: None)(extra_models_dict.get(option))
+
         self.env['ir.ui.view'].create_automatic_views(main_model.model)
-        main_model._setup_access_rights()
-        return (main_model, extra_models)
+
+        ListEditableView = self.env['ir.ui.view'].with_context(list_editable="bottom")
+        for extra_model in extra_models:
+            ListEditableView.create_automatic_views(extra_model.model)
+
+        models_with_menu = self.browse(
+            model.id
+            for key, model in extra_models_dict.items()
+            if key in ('use_stages', 'use_tags')
+        )
+        return (main_model, models_with_menu)
 
     @api.model
     def name_create(self, name):
@@ -169,329 +173,334 @@ class IrModel(models.Model):
             return main_model.name_get()[0]
         return super().name_create(name)
 
-    def _setup_one2many_lines(self):
+    def _create_option_lines(self, model_vals):
         """ Creates a new model (with sequence and description fields) and a
             one2many field pointing to that model.
         """
         # create the Line model
+        line_model_values, field_values = self._values_lines(model_vals.get('model'))
+
+        model_vals['field_id'].append(
+            Command.create(field_values)
+        )
+        return line_model_values
+
+    def _setup_one2many_lines(self):
+        # create the Line model
         model_name = self.model.replace('.', '_')
         if model_name[:2] != 'x_':
             model_name = 'x_' + model_name
+        model_values, field_values = self._values_lines(model_name)
+        line_model = self.create(model_values)
+        line_model._setup_access_rights()
+        self.env['ir.ui.view'].create_automatic_views(line_model.model)
+        field_values['model_id'] = self.id
+        return self.env['ir.model.fields'].create(field_values)
 
-        relation_field_name = model_name + '_id'
+    def _values_lines(self, model_name):
+        """ Creates a new model (with sequence and description fields) and a
+            one2many field pointing to that model.
+        """
+        # create the Line model
+        model_table = model_name.replace('.', '_')
+        model_line_name = model_table[2:] + '_line'
+        model_line_model = model_table + '_line_' + uuid.uuid4().hex[:5]
+        relation_field_name = model_table + '_id'
         line_model_values = {
-            'name': model_name[2:] + '_line',
-            'model': model_name + '_line_' + uuid.uuid4().hex[:5],
+            'name': model_line_name,
+            'model': model_line_model,
             'field_id': [
-                (Command.create({
+                Command.create({
                     'name': 'x_studio_sequence',
                     'ttype': 'integer',
                     'field_description': _('Sequence'),
-                })),
-                (Command.create({
+                }),
+                Command.create({
                     'name': 'x_name',
                     'ttype': 'char',
                     'required': True,
                     'field_description': _('Description'),
                     'translate': True,
-                })),
-                (Command.create({
+                }),
+                Command.create({
                     'name': relation_field_name,
                     'ttype': 'many2one',
-                    'relation': self.model,
-                })),
+                    'relation': model_name,
+                }),
             ],
         }
-        line_model = self.with_context(list_editable="bottom").studio_model_create(
-            '%s  Lines' % model_name[2:].replace('_', ' ').title(),
-            vals=line_model_values,
-        )[0]
-        line_model._setup_access_rights()
-        self.env['ir.ui.view'].create_automatic_views(line_model.model)
-
-        # create and return the one2many pointing to the Line model
-        return self.env['ir.model.fields'].create({
+        field_values = {
             'name': model_name + '_line_ids_' + uuid.uuid4().hex[:5],
             'ttype': 'one2many',
-            'relation': line_model.model,
+            'relation': model_line_model,
             'relation_field': relation_field_name,
             'field_description': _('New Lines'),
-            'model_id': self.id,
-        })
+        }
+        return line_model_values, field_values
 
-    def _setup_active(self):
-        for model in self:
-            active_field = self.env['ir.model.fields'].create({
+    def _create_option_use_active(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_active',  # can't use x_studio_active as not supported by ORM
                 'ttype': 'boolean',
                 'field_description': _('Active'),
-                'model_id': model.id,
-                'tracking': model.is_mail_thread,
+                'tracking': model_vals.get('is_mail_thread'),
             })
-            self.env['ir.default'].set(model.model, active_field.name, True)
-        return self.env['ir.model']
+        )
 
-    def _setup_sequence(self):
-        for model in self:
-            sequence_field = self.env['ir.model.fields'].create({
+    def _post_create_option_use_active(self, _model):
+        self.env['ir.default'].set(self.model, 'x_active', True)
+
+    def _create_option_use_sequence(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_sequence',
                 'ttype': 'integer',
                 'field_description': _('Sequence'),
-                'model_id': model.id,
                 'copied': True,
             })
-            # set a default to 10 like most other sequence fields, avoid
-            # new stages to become the first one upon creation 'by accident'
-            self.env['ir.default'].set(model.model, sequence_field.name, 10)
-        return self.env['ir.model']
+        )
+        model_vals['order'] = 'x_studio_sequence asc, id asc'
 
-    def _setup_responsible(self):
-        for model in self:
-            responsible_field = self.env['ir.model.fields'].create({
+    def _post_create_option_use_sequence(self, _model):
+        self.env['ir.default'].set(self.model, 'x_studio_sequence', 10)
+
+    def _create_option_use_responsible(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_user_id',
                 'ttype': 'many2one',
                 'relation': 'res.users',
                 'domain': "[('share', '=', False)]",
                 'field_description': _('Responsible'),
-                'model_id': model.id,
-                'tracking': model.is_mail_thread,
                 'copied': True,
+                'tracking': model_vals.get('is_mail_thread'),
             })
-        return self.env['ir.model']
+        )
 
-    def _setup_partner(self):
-        for model in self:
-            partner_field = self.env['ir.model.fields'].create({
+    def _create_option_use_partner(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_partner_id',
                 'ttype': 'many2one',
                 'relation': 'res.partner',
                 'field_description': _('Contact'),
-                'model_id': model.id,
-                'tracking': model.is_mail_thread,
                 'copied': True,
+                'tracking': model_vals.get('is_mail_thread'),
             })
-            phone_field = self.env['ir.model.fields'].create({
+        )
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_partner_phone',
                 'ttype': 'char',
                 'related': 'x_studio_partner_id.phone',
                 'field_description': _('Phone'),
-                'model_id': model.id,
             })
-            email_field = self.env['ir.model.fields'].create({
+        )
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_partner_email',
                 'ttype': 'char',
                 'related': 'x_studio_partner_id.email',
                 'field_description': _('Email'),
-                'model_id': model.id,
             })
-        return self.env['ir.model']
+        )
 
-    def _setup_company(self):
-        for model in self:
-            company_field = self.env['ir.model.fields'].create({
+    def _create_option_use_company(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_company_id',
                 'ttype': 'many2one',
                 'relation': 'res.company',
                 'field_description': _('Company'),
-                'model_id': model.id,
-                'tracking': model.is_mail_thread,
                 'copied': True,
+                'tracking': model_vals.get('is_mail_thread'),
             })
-            rule = self.env['ir.rule'].create({
-                'name': '%s - Multi-Company' % model.name,
-                'model_id': model.id,
-                'domain_force': "['|', ('x_studio_company_id', '=', False), ('x_studio_company_id', 'in', company_ids)]"
-            })
-            # generate default for each company (note: also done when creating a new company)
-            for company in self.env['res.company'].sudo().search([]):
-                self.env['ir.default'].set(model.model, company_field.name, company.id, company_id=company.id)
-        return self.env['ir.model']
+        )
 
-    def _setup_notes(self):
-        for model in self:
-            note_field = self.env['ir.model.fields'].create({
+    def _post_create_option_use_company(self, _model):
+        # generate default for each company (note: also done when creating a new company)
+        self.env['ir.rule'].create({
+            'name': '%s - Multi-Company' % self.name,
+            'model_id': self.id,
+            'domain_force': "['|', ('x_studio_company_id', '=', False), ('x_studio_company_id', 'in', company_ids)]"
+        })
+        for company in self.env['res.company'].sudo().search([]):
+            self.env['ir.default'].set(self.model, 'x_studio_company_id', company.id, company_id=company.id)
+
+    def _create_option_use_notes(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_notes',
                 'ttype': 'html',
                 'field_description': _('Notes'),
-                'model_id': model.id,
                 'copied': True,
             })
-        return self.env['ir.model']
+        )
 
-    def _setup_date(self):
-        for model in self:
-            date_field = self.env['ir.model.fields'].create({
+    def _create_option_use_date(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_date',
                 'ttype': 'date',
                 'field_description': _('Date'),
-                'model_id': model.id,
                 'copied': True,
             })
-        return self.env['ir.model']
+        )
 
-    def _setup_double_dates(self):
-        for model in self:
-            stop_field = self.env['ir.model.fields'].create({
+    def _create_option_use_double_dates(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_date_stop',
                 'ttype': 'datetime',
                 'field_description': _('End Date'),
-                'model_id': model.id,
                 'copied': True,
             })
-            start_field = self.env['ir.model.fields'].create({
+        )
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_date_start',
                 'ttype': 'datetime',
                 'field_description': _('Start Date'),
-                'model_id': model.id,
                 'copied': True,
             })
-        return self.env['ir.model']
+        )
 
-    def _setup_value(self):
-        for model in self:
-            currency_field = self.env['ir.model.fields'].create({
+    def _create_option_use_value(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_currency_id',
                 'ttype': 'many2one',
                 'relation': 'res.currency',
                 'field_description': _('Currency'),
-                'model_id': model.id,
                 'copied': True,
             })
-            value_field = self.env['ir.model.fields'].create({
+        )
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_value',
                 'ttype': 'float',
                 'field_description': _('Value'),
-                'model_id': model.id,
-                'tracking': model.is_mail_thread,
                 'copied': True,
+                'tracking': model_vals.get('is_mail_thread'),
             })
-            # generate default for each company (note: also done when creating a new company)
-            for company in self.env['res.company'].sudo().search([]):
-                self.env['ir.default'].set(model.model, currency_field.name, company.currency_id.id, company_id=company.id)
-        return self.env['ir.model']
+        )
 
-    def _setup_image(self):
-        for model in self:
-            image_field = self.env['ir.model.fields'].create({
+    def _post_create_option_use_value(self, _model):
+        for company in self.env['res.company'].sudo().search([]):
+            self.env['ir.default'].set(self.model, 'x_studio_currency_id', company.currency_id.id, company_id=company.id)
+
+    def _create_option_use_image(self, model_vals):
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_image',
                 'ttype': 'binary',
                 'field_description': _('Image'),
-                'model_id': model.id,
                 'copied': True,
             })
-        return self.env['ir.model']
+        )
 
-    def _setup_stages(self):
-        stage_models = self.env['ir.model']
-        for model in self:
-            # 1. Create the stage model
-            stage_model_vals = {
-                'name': '%s Stages' % model.name,
-                'model': '%s_stage' % model.model,
-                'field_id' : list(),
-            }
-            stage_model_vals['field_id'].append((0, 0, {
-                'name': 'x_name',
-                'ttype': 'char',
-                'required': True,
-                'field_description': _('Stage Name'),
-                'translate': True,
-                'copied': True,
-            }))
-            stage_options = ['use_sequence']
-            stage_model = self.with_context(list_editable="bottom").studio_model_create(
-                '%s Stages' % model.name,
-                vals=stage_model_vals,
-                options=stage_options
-            )[0]
-            _logger.info('created stage model %s (%s) for main model %s', stage_model.model, stage_model.name, model.model)
-            # 2. Link our model with the tag model
-            stage_field = self.env['ir.model.fields'].create({
+    def _create_option_use_stages(self, model_vals):
+        # 1. Create the stage model
+        stage_model_vals = {
+            'name': '%s Stages' % model_vals.get('name'),
+            'model': '%s_stage' % model_vals.get('model'),
+            'field_id': [
+                Command.create({
+                    'name': 'x_name',
+                    'ttype': 'char',
+                    'required': True,
+                    'field_description': _('Stage Name'),
+                    'translate': True,
+                    'copied': True,
+                })
+            ],
+        }
+        self._create_option_use_sequence(stage_model_vals)
+
+        # 2. Link our model with the tag model
+        model_vals['field_id'].extend([
+            Command.create({
                 'name': 'x_studio_stage_id',
                 'ttype': 'many2one',
-                'relation': stage_model.model,
+                'relation': stage_model_vals['model'],
                 'on_delete': 'restrict',
                 'required': True,
                 'field_description': _('Stage'),
-                'model_id': model.id,
-                'tracking': model.is_mail_thread,
+                'tracking': model_vals.get('is_mail_thread'),
                 'copied': True,
                 'group_expand': True,
-            })
-            # create stage 'New','In Progress','Done' and set 'New' as default
-            default_stage = self.env[stage_model.model].create({'x_name': _('New')})
-            self.env[stage_model.model].create([{'x_name': _('In Progress')}, {'x_name': _('Done')}])
-            self.env['ir.default'].set(model.model, stage_field.name, default_stage.id)
-            priority_field = self.env['ir.model.fields'].create({
+            }),
+            Command.create({
                 'name': 'x_studio_priority',
                 'ttype': 'boolean',
                 'field_description': _('High Priority'),
-                'model_id': model.id,
                 'copied': True,
-            })
-            self.env['ir.model.fields'].create({
+            }),
+            Command.create({
                 'name': 'x_color',
                 'ttype': 'integer',
                 'field_description': _('Color'),
-                'model_id': model.id,
-            })
-            kanban_state_field = self.env['ir.model.fields'].create({
+            }),
+            Command.create({
                 'name': 'x_studio_kanban_state',
                 'ttype': 'selection',
                 'selection_ids': [
-                    (0, 0 ,{'value': 'normal', 'name': _('In Progress'), 'sequence': 10}),
-                    (0, 0 ,{'value': 'done', 'name': _('Ready'), 'sequence': 20}),
-                    (0, 0 ,{'value': 'blocked', 'name': _('Blocked'), 'sequence': 30})
+                    Command.create({'value': 'normal', 'name': _('In Progress'), 'sequence': 10}),
+                    Command.create({'value': 'done', 'name': _('Ready'), 'sequence': 20}),
+                    Command.create({'value': 'blocked', 'name': _('Blocked'), 'sequence': 30}),
                 ],
-                'relation': stage_model.model,
                 'field_description': _('Kanban State'),
-                'model_id': model.id,
                 'copied': True,
-            })
-            stage_models |= stage_model
-        return stage_models
+            }),
+        ])
+        model_vals['order'] = 'x_studio_priority desc, x_studio_sequence asc, id asc'
+        return stage_model_vals
 
-    def _setup_tags(self):
-        tag_models = self.env['ir.model']
-        for model in self:
-            # 1. Create the tag model
-            tag_model_vals = {
-                'name': '%s Tags' % model.name,
-                'model': '%s_tag' % model.model,
-                'field_id' : list(),
-            }
-            tag_model_vals['field_id'].append((0, 0, {
-                'name': 'x_name',
-                'ttype': 'char',
-                'required': True,
-                'field_description': _('Name'),
-                'copied': True,
-            }))
-            tag_model_vals['field_id'].append((0, 0, {
-                'name': 'x_color',
-                'ttype': 'integer',
-                'field_description': _('Color'),
-                'copied': True,
-            }))
-            tag_model = self.with_context(list_editable="bottom").studio_model_create(
-                '%s Tags' % model.name,
-                vals=tag_model_vals
-            )[0]
-            _logger.info('created tag model %s (%s) for main model %s', tag_model.model, tag_model.name, model.model)
-            # 2. Link our model with the tag model
-            tag_field = self.env['ir.model.fields'].create({
+    def _post_create_option_use_stages(self, stage_model):
+        # create stage 'New','In Progress','Done' and set 'New' as default
+        stages = self.env[stage_model.model].create([
+            {'x_name': _('New')},
+            {'x_name': _('In Progress')},
+            {'x_name': _('Done')}
+        ])
+        self.env['ir.default'].set(self.model, 'x_studio_stage_id', stages[0].id)
+
+    def _create_option_use_tags(self, model_vals):
+        # 1. Create the tag model
+        tag_model_vals = {
+            'name': '%s Tags' % model_vals.get('name'),
+            'model': '%s_tag' % model_vals.get('model'),
+            'field_id': [
+                Command.create({
+                    'name': 'x_name',
+                    'ttype': 'char',
+                    'required': True,
+                    'field_description': _('Name'),
+                    'copied': True,
+                }),
+                Command.create({
+                    'name': 'x_color',
+                    'ttype': 'integer',
+                    'field_description': _('Color'),
+                    'copied': True,
+                }),
+            ],
+        }
+        # 2. Link our model with the tag model
+        model_vals['field_id'].append(
+            Command.create({
                 'name': 'x_studio_tag_ids',
                 'ttype': 'many2many',
-                'relation': tag_model.model,
+                'relation': tag_model_vals['model'],
                 'field_description': _('Tags'),
-                'model_id': model.id,
-                'relation_table': '%s_tag_rel' % model.model,
-                'column1': '%s_id' % model.model,
+                'relation_table': '%s_tag_rel' % model_vals.get('model'),
+                'column1': '%s_id' % model_vals.get('model'),
                 'column2': 'x_tag_id',
                 'copied': True,
             })
-            tag_models |= tag_model
-        return tag_models
+        )
+        return tag_model_vals
 
     def _setup_access_rights(self):
         for model in self:

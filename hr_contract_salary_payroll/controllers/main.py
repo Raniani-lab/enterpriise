@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime, time
+
 from odoo import _
 from odoo.addons.hr_contract_salary.controllers import main
 from odoo.http import route, request
@@ -9,13 +11,11 @@ from odoo.tools.float_utils import float_compare
 
 class HrContractSalary(main.HrContractSalary):
 
-    @route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
-    def salary_package(self, contract_id=None, **kw):
-        contract = request.env['hr.contract'].sudo().browse(contract_id)
-        if contract and contract.wage_type == 'hourly':
-            return request.render('http_routing.http_error', {'status_code': _('Oops'),
-                'status_message': _('The salary configurator does not support hourly wage contracts.')})
-        return super().salary_package(contract_id, **kw)
+    def _get_new_contract_values(self, contract, employee, advantages):
+        contract_vals = super()._get_new_contract_values(contract, employee, advantages)
+        if contract.wage_type == 'hourly':
+            contract_vals['hourly_wage'] = contract.hourly_wage
+        return contract_vals
 
     def _generate_payslip(self, new_contract):
         return request.env['hr.payslip'].sudo().create({
@@ -34,6 +34,19 @@ class HrContractSalary(main.HrContractSalary):
         # generate a payslip corresponding to only this contract
         payslip = self._generate_payslip(new_contract)
 
+        # For hourly wage contracts generate the worked_days_line_ids manually
+        if new_contract.wage_type == 'hourly':
+            work_days_data = new_contract.employee_id._get_work_days_data_batch(
+                datetime.combine(payslip.date_from, time.min), datetime.combine(payslip.date_to, time.max),
+                compute_leaves=False, calendar=new_contract.resource_calendar_id,
+            )[new_contract.employee_id.id]
+            payslip.worked_days_line_ids = request.env['hr.payslip.worked_days'].with_context(salary_simulation=True).sudo().create({
+                'payslip_id': payslip.id,
+                'work_entry_type_id': new_contract._get_default_work_entry_type().id,
+                'number_of_days': work_days_data.get('days', 0),
+                'number_of_hours': work_days_data.get('hours', 0),
+            })
+
         payslip.with_context(salary_simulation=True, lang=None).compute_sheet()
         result['payslip_lines'] = [(
             line.name,
@@ -49,11 +62,24 @@ class HrContractSalary(main.HrContractSalary):
         monthly_total = 0
         monthly_total_lines = resume_lines.filtered(lambda l: l.value_type == 'monthly_total')
 
+        # new categories could be introduced at this step
+        # recreate resume_categories
+        resume_categories = request.env['hr.contract.salary.resume'].sudo().with_company(new_contract.company_id).search([
+            '|', '&', '|',
+                    ('structure_type_id', '=', False),
+                    ('structure_type_id', '=', new_contract.structure_type_id.id),
+                ('value_type', 'in', ['fixed', 'contract', 'monthly_total', 'sum']),
+            ('id', 'in', resume_lines.ids)]).category_id
+        result['resume_categories'] = [c.name for c in sorted(resume_categories, key=lambda x: x.sequence)]
+
         all_codes = (resume_lines - monthly_total_lines).mapped('code')
         line_values = payslip._get_line_values(all_codes)
         for resume_line in resume_lines - monthly_total_lines:
             value = round(line_values[resume_line.code][payslip.id]['total'], 2)
-            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, new_contract.company_id.currency_id.symbol, False)
+            resume_explanation = False
+            if resume_line.code == 'GROSS' and new_contract.wage_type == 'hourly':
+                resume_explanation = _('This is the gross calculated for the current month with a total of %s hours.', work_days_data.get('hours', 0))
+            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, new_contract.company_id.currency_id.symbol, resume_explanation)
             if resume_line.impacts_monthly_total:
                 monthly_total += value / 12.0 if resume_line.category_id.periodicity == 'yearly' else value
 

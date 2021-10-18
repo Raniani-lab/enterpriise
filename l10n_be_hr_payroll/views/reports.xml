@@ -110,4 +110,12 @@
             <field name="report_file">l10n_be_hr_payroll.report_social_security_certificate</field>
         </record>
 
+        <record id="action_report_dmfa" model="ir.actions.report">
+            <field name="name">DmfA</field>
+            <field name="model">l10n_be.dmfa</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_be_hr_payroll.dmfa_pdf_report</field>
+            <field name="report_file">l10n_be_hr_payroll.dmfa_pdf_report</field>
+        </record>
+
 </odoo>

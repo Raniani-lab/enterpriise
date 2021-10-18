@@ -273,6 +273,9 @@ class DMFAWorker(DMFANode):
         line_values = contribution_payslips._get_line_values(['SALARY', 'BASIC', 'PAY_SIMPLE'])
         basis = round(sum(line_values[basis_lines[p.struct_id.code]][p.id]['total'] for p in contribution_payslips), 2)
 
+        if not basis:
+            return []
+
         contributions = [
             DMFAWorkerContribution(contribution_payslips, basis)
         ] + [
@@ -874,13 +877,19 @@ class HrDMFAReport(models.Model):
         ('3', '3rd'),
         ('4', '4th'),
     ], required=True, default=lambda self: str(date_utils.get_quarter_number(fields.Date.today())))
+    declaration_type = fields.Selection([
+        ('web', 'Via Web',),
+        ('batch', 'Via Batch'),
+    ], default='web', required=True)
     file_type = fields.Selection([
         ('R', 'Real File (R)'),
         ('S', 'Declaration Test (S)'),
         ('T', 'Circuit Test (T)'),
     ], default='R', required=True)
     dmfa_xml = fields.Binary(string="XML file")
-    dmfa_xml_filename = fields.Char(compute='_compute_filename', store=True)
+    dmfa_xml_filename = fields.Char(compute='_compute_xml_filename', store=True)
+    dmfa_pdf = fields.Binary(string="PDF file")
+    dmfa_pdf_filename = fields.Char(compute='_compute_pdf_filename', store=True)
     quarter_start = fields.Date(compute='_compute_dates')
     quarter_end = fields.Date(compute='_compute_dates')
     validation_state = fields.Selection([
@@ -930,7 +939,7 @@ class HrDMFAReport(models.Model):
                     dmfa.error_message = str(err)
 
     @api.depends('dmfa_xml')
-    def _compute_filename(self):
+    def _compute_xml_filename(self):
         # https://www.socialsecurity.be/site_fr/general/helpcentre/batch/files/directives.htm
         num_expedition = self.env["ir.config_parameter"].sudo().get_param("l10n_be.dmfa_expeditor_nbr", False)
         now = fields.Date.today()
@@ -946,9 +955,27 @@ class HrDMFAReport(models.Model):
             num_suite = str(num_suite).zfill(5)
             file_type = dmfa.file_type
 
-            # YTI TODO master: Add is_test field, to set R or T accordingly
             filename = 'FI.DMFA.%s.%s.%s.%s.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite, file_type)
             dmfa.dmfa_xml_filename = filename
+
+    @api.depends('dmfa_pdf')
+    def _compute_pdf_filename(self):
+        num_expedition = self.env["ir.config_parameter"].sudo().get_param("l10n_be.dmfa_expeditor_nbr", False)
+        now = fields.Date.today()
+        if not num_expedition:
+            raise UserError(_('There is no defined expeditor number for the company.'))
+
+        for dmfa in self:
+            if not dmfa._origin.dmfa_pdf_filename:
+                num_suite = 0
+            else:
+                num_suite = dmfa.dmfa_pdf_filename.split('.')[4]
+                num_suite = str(int(num_suite) + 1)
+            num_suite = str(num_suite).zfill(5)
+            file_type = dmfa.file_type
+
+            filename = 'FI.DMFA.%s.%s.%s.%s.1.1.pdf' % (num_expedition, now.strftime('%Y%m%d'), num_suite, file_type)
+            dmfa.dmfa_pdf_filename = filename
 
     @api.depends('year', 'quarter')
     def _compute_dates(self):
@@ -957,7 +984,7 @@ class HrDMFAReport(models.Model):
             month = int(dmfa.quarter) * 3
             self.quarter_start, self.quarter_end = date_utils.get_quarter(date(year, month, 1))
 
-    def generate_dmfa_report(self):
+    def generate_dmfa_xml_report(self):
         # Sources:
         # Procedure: https://www.socialsecurity.be/site_fr/employer/applics/dmfa/batch/outline.htm
         # XML Specification: https://www.socialsecurity.be/site_fr/employer/applics/dmfa/batch/outline.htm
@@ -975,6 +1002,11 @@ class HrDMFAReport(models.Model):
         xml_formatted_str = etree.tostring(root, pretty_print=True, encoding='UTF-8', xml_declaration=True)
 
         self.dmfa_xml = base64.encodebytes(xml_formatted_str)
+
+    def generate_dmfa_pdf_report(self):
+        dmfa_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_dmfa').sudo()._render_qweb_pdf(
+            res_ids=self.ids, data=self._get_rendering_data())
+        self.dmfa_pdf = base64.encodebytes(dmfa_pdf)
 
     def _get_rendering_data(self):
         payslips = self.env['hr.payslip'].search([
@@ -1020,6 +1052,7 @@ class HrDMFAReport(models.Model):
             'onss_company_id': format_amount(self.company_id.onss_company_id or 0, width=10, hundredth=False),
             'onss_registration_number': format_amount(self.company_id.onss_registration_number or 0, width=9, hundredth=False),
             'quarter_repr': '%s%s' % (self.year, self.quarter),
+            'quarter_display': '%s/%s' % (self.year, self.quarter),
             'quarter_start': self.quarter_start,
             'quarter_end': self.quarter_end,
             'data': self,
@@ -1033,6 +1066,7 @@ class HrDMFAReport(models.Model):
                 worker_count) for employee in employees]),
             'double_holiday_pay_contribution': format_amount(double_onss),
             'unrelated_calculation_basis': format_amount(double_basis),
+            'pretty_format': lambda a: str(round(int(a) / 100.0, 2)),
         }
         result['global_contribution'] = format_amount(self._get_global_contribution(result['natural_persons'], format_amount(double_onss)))
         return result

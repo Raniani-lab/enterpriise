@@ -9,4 +9,13 @@
             </ContributionUnrelatedToNP>
         </xpath>
     </template>
+
+    <template id="dmfa_pdf_report" inherit_id="l10n_be_hr_payroll.dmfa_pdf_report">
+        <xpath expr="//tr[@name='double_pay_global']" position="after">
+            <tr>
+                <td>Group Insurance Global Contributions:</td>
+                <td style="text-align: right;"><t t-esc="pretty_format(data['group_insurance_cotisation'])"/> €</td>
+            </tr>
+        </xpath>
+    </template>
 </odoo>

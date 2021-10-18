@@ -14,6 +14,29 @@
         </xpath>
     </template>
 
+    <template id="dmfa_pdf_report" inherit_id="l10n_be_hr_payroll.dmfa_pdf_report">
+        <xpath expr="//tr[@name='double_pay_global']" position="after">
+            <tr>
+                <td>Company Cars Global Contributions:</td>
+                <td style="text-align: right;"><t t-esc="pretty_format(data['vehicles_cotisation'])"/> €</td>
+            </tr>
+        </xpath>
+        <xpath expr="//div[@name='employees_information']" position="before">
+            <p style="page-break-before:always;"> </p>
+            <div class="mt-4 row" name="cars_information">
+                <div class="col-12">
+                    <div class="font-weight-bold">Company Cars List</div>
+                </div>
+            </div>
+            <ul>
+                <t t-foreach="data['vehicles']" t-as="vehicle">
+                    <li><t t-esc="vehicle.license_plate"/></li>
+                </t>
+            </ul>
+            <p style="page-break-before:always;"> </p>
+        </xpath>
+    </template>
+
     <template id="CompanyVehicle">
         <!-- 90294 Bloc fonctionnel permettant de déclarer les informations relatives à un véhicule de société.
         Un véhicule de société (un numéro de plaque) ne peut se retrouver qu'une seule fois par déclaration. -->

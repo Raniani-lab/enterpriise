@@ -711,7 +711,7 @@ class AccountReconciliation(models.AbstractModel):
             amount_str = formatLang(self.env, abs(balance), currency_obj=currency)
             amount_currency_str = formatLang(self.env, abs(amount_currency), currency_obj=line.company_currency_id)
             total_amount_currency_str = formatLang(self.env, abs(rec_vals['debit'] - rec_vals['credit']), currency_obj=line.company_currency_id)
-            total_amount_str = formatLang(self.env, abs(rec_vals['amount_currency']), currency_obj=line.company_currency_id)
+            total_amount_str = formatLang(self.env, abs(rec_vals['amount_currency']), currency_obj=currency)
         else:
             balance = rec_vals_residual['debit'] - rec_vals_residual['credit']
             amount_currency = 0.0

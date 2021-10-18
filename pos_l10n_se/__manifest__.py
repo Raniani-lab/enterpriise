@@ -19,7 +19,6 @@
     'assets': {
         'point_of_sale.assets': [
             'pos_l10n_se/static/src/js/PosBlackBoxSweden.js',
-            'pos_l10n_se/static/src/js/NumpadWidget.js',
             'pos_l10n_se/static/src/js/PrintBill.js',
             'pos_l10n_se/static/src/js/ReprintReceiptButton.js',
             'pos_l10n_se/static/src/js/OrderReceipt.js'

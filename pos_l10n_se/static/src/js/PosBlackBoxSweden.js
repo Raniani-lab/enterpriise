@@ -1,22 +1,26 @@
 odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
-    var models = require('point_of_sale.models');
+    var { PosGlobalState, Order, Orderline } = require('point_of_sale.models');
     const { Gui } = require('point_of_sale.Gui');
     var core    = require('web.core');
-    var Class = require('web.Class');
-    var devices = require('point_of_sale.devices');
     var _t      = core._t;
+    const Registries = require('point_of_sale.Registries');
 
 
-    var posModelSuper = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
-        useBlackBoxSweden: function() {
+
+    const PosBlackBoxSwedenPosGlobalState = (PosGlobalState) => class PosBlackBoxSwedenPosGlobalState extends PosGlobalState {
+        useBlackBoxSweden() {
             return !!this.config.iface_sweden_fiscal_data_module;
-        },
+        }
+        cashierHasPriceControlRights() {
+            if (this.useBlackBoxSweden())
+                return false;
+            return super.cashierHasPriceControlRights();
+        }
         disallowLineQuantityChange() {
-            let result = posModelSuper.disallowLineQuantityChange.bind(this)();
+            let result = super.disallowLineQuantityChange(...arguments);
             return this.useBlackBoxSweden() || result;
-        },
-        push_single_order: async function (order, opts) {
+        }
+        async push_single_order(order, opts) {
             if (this.useBlackBoxSweden() && order) {
                 if(!order.receipt_type) {
                     order.receipt_type = "normal";
@@ -29,18 +33,17 @@ odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
                     order.blackbox_tax_category_d = order.get_specific_tax(0);
                     var data = await this.push_order_to_blackbox(order);
                     this.set_data_for_push_order_from_blackbox(order, data);
-                    return await posModelSuper.push_single_order.apply(this, arguments);
+                    return super.push_single_order(...arguments);
                 } catch(err) {
                     order.finalized = false;
                     return Promise.reject({code:700, message:'Blackbox Error', data:{order: order, error: err}});
                 }
             } else {
-                return await posModelSuper.push_single_order.apply(this, arguments);
+                return super.push_single_order(...arguments);
             }
-        },
-        push_order_to_blackbox: async function(order) {
-            let fdm = this.iot_device_proxies.fiscal_data_module;
-            let date = order.creation_date.toJSON();
+        }
+        async push_order_to_blackbox(order) {
+            let fdm = this.env.proxy.iot_device_proxies.fiscal_data_module;
             let data = {
                 'date': moment(order.creation_date).format("YYYYMMDDHHmm"),
                 'receipt_id': order.sequence_number.toString(),
@@ -67,48 +70,37 @@ odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
                     });
                 }
             });
-        },
-        set_data_for_push_order_from_blackbox: function(order, data) {
+        }
+        set_data_for_push_order_from_blackbox(order, data) {
             order.blackbox_signature = data.signature_control;
             order.blackbox_unit_id = data.unit_id;
-        },
-        push_and_invoice_order: async function (order) {
-            if(this.useBlackBoxSweden()) {
-                try {
-                    order.receipt_type = "normal";
-                    var data = await this.push_order_to_blackbox(order);
-                    this.set_data_for_push_order_from_blackbox(order, data);
-                } catch (err) {
-                    return Promise.reject({code:700, message:'Blackbox error', data:{}, status: err.status});
-                }
-            }
-            return posModelSuper.push_and_invoice_order.apply(this, [order]);
-        },
-        get_order_sequence_number: async function() {
-            return await this.rpc({
+        }
+        async get_order_sequence_number() {
+            return await this.env.services.rpc({
                 model: 'pos.config',
                 method: 'get_order_sequence_number',
                 args: [this.config.id],
             });
-        },
-        get_profo_order_sequence_number: async function() {
-            return await this.rpc({
+        }
+        async get_profo_order_sequence_number() {
+            return await this.env.services.rpc({
                 model: 'pos.config',
                 method: 'get_profo_order_sequence_number',
                 args: [this.config.id],
             });
-        },
-    });
+        }
+    }
+    Registries.Model.extend(PosGlobalState, PosBlackBoxSwedenPosGlobalState);
 
-    var order_model_super = models.Order.prototype;
-    models.Order = models.Order.extend({
-        get_specific_tax: function(amount) {
+
+    const PosBlackBoxSwedenOrder = (Order) => class PosBlackBoxSwedenOrder extends Order {
+        get_specific_tax(amount) {
             var tax = this.get_tax_details().find(tax => tax.tax.amount === amount);
             if(tax)
                 return tax.amount;
             return false;
-        },
-        add_product: async function (product, options) {
+        }
+        async add_product(product, options) {
             if (this.pos.useBlackBoxSweden() && product.taxes_id.length === 0) {
                 await Gui.showPopup('ErrorPopup',{
                     'title': _t("POS error"),
@@ -130,21 +122,21 @@ odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
                     'body':  _t("You can only make positive or negative order. You cannot mix both."),
                 });
             } else {
-                return order_model_super.add_product.apply(this, arguments);
+                return super.add_product(...arguments);
             }
             return false;
-        },
-        wait_for_push_order: function () {
-            var result = order_model_super.wait_for_push_order.apply(this,arguments);
+        }
+        wait_for_push_order() {
+            var result = super.wait_for_push_order(...arguments);
             result = Boolean(this.pos.useBlackBoxSweden() || result);
             return result;
-        },
-        init_from_JSON: function(json) {
-            order_model_super.init_from_JSON.apply(this,arguments);
+        }
+        init_from_JSON(json) {
+            super.init_from_JSON(...arguments);
             this.is_refund = json.is_refund || false;
-        },
-        export_as_JSON: function () {
-            var json = order_model_super.export_as_JSON.bind(this)();
+        }
+        export_as_JSON() {
+            var json = super.export_as_JSON(...arguments);
 
             var to_return = _.extend(json, {
                 'receipt_type': this.receipt_type,
@@ -157,8 +149,8 @@ odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
                 'is_refund': this.is_refund,
             });
             return to_return;
-        },
-        hasNegativeAndPositiveProducts: function (product) {
+        }
+        hasNegativeAndPositiveProducts(product) {
             var isPositive = product.lst_price >= 0;
             for(let id in this.get_orderlines()) {
                 let line = this.get_orderlines()[id];
@@ -167,22 +159,19 @@ odoo.define('pos_l10n_se.PosBlackboxSweden', function (require) {
             }
             return false;
         }
-    });
+    }
+    Registries.Model.extend(Order, PosBlackBoxSwedenOrder);
 
-    var orderline_model_super = models.Orderline.prototype;
-    models.Orderline = models.Orderline.extend({
-        export_for_printing: function(){
-            var json = orderline_model_super.export_for_printing.bind(this)();
+
+    const PosBlackBoxSwedenOrderline = (Orderline) => class PosBlackBoxSwedenOrderline extends Orderline {
+        export_for_printing(){
+            var json = super.export_for_printing(...arguments);
 
             var to_return = _.extend(json, {
                 product_type: this.get_product().type,
             });
             return to_return;
         }
-
-    })
-
-    models.load_fields("product.product", "type");
-    models.load_fields("account.tax", "identification_letter");
-    models.load_fields("pos.order", "is_refund");
+    }
+    Registries.Model.extend(Orderline, PosBlackBoxSwedenOrderline)
 });

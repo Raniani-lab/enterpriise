@@ -28,7 +28,7 @@ odoo.define('pos_hr_mobile.LoginScreen', function (require) {
                 throw error;
             }
             if (data) {
-                this.env.pos.barcode_reader.scan(data);
+                this.env.barcode_reader.scan(data);
                 if ('vibrate' in window.navigator) {
                     window.navigator.vibrate(100);
                 }

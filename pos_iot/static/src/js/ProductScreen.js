@@ -8,7 +8,7 @@ odoo.define('pos_iot.ProductScreen', function(require) {
     const PosIotProductScreen = ProductScreen =>
         class extends ProductScreen {
             get isScaleAvailable() {
-                return super.isScaleAvailable && Boolean(this.env.pos.iot_device_proxies.scale);
+                return super.isScaleAvailable && Boolean(this.env.proxy.iot_device_proxies.scale);
             }
             async _onScaleNotAvailable() {
                 await Gui.showPopup('ErrorPopup', {

@@ -6,7 +6,7 @@ var BarcodeReader = require('point_of_sale.BarcodeReader');
 BarcodeReader.include({
     connect_to_proxy: function () {
         var self = this;
-        this.scanners = this.pos.iot_device_proxies.scanners;
+        this.scanners = this.env.proxy.iot_device_proxies.scanners;
         for (var identifier in this.scanners) {
             this.scanners[identifier].add_listener(function (barcode) {
                 self.scan(barcode.value);

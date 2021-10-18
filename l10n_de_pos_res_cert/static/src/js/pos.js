@@ -1,45 +1,46 @@
 odoo.define('l10n_de_pos_res_cert.pos', function(require) {
     "use strict";
 
-    const models = require('point_of_sale.models');
+    const { PosGlobalState, Order } = require('point_of_sale.models');
     const { uuidv4 } = require('l10n_de_pos_cert.utils');
+    const Registries = require('point_of_sale.Registries');
 
-    const _super_posmodel = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
+
+    const L10nDePosResPosGlobalState = (PosGlobalState) => class L10nDePosResPosGlobalState extends PosGlobalState {
         isRestaurantCountryGermanyAndFiskaly() {
             return this.isCountryGermanyAndFiskaly() && this.config.iface_floorplan;
-        },
+        }
         //@Override
         disallowLineQuantityChange() {
-            let result = _super_posmodel.disallowLineQuantityChange.apply(this, arguments);
+            let result = super.disallowLineQuantityChange(...arguments);
             return this.isRestaurantCountryGermanyAndFiskaly() || result;
-        },
+        }
         update_table_order(server_id, table_orders) {
-            const order = _super_posmodel.update_table_order.apply(this,arguments);
+            const order = super.update_table_order(...arguments);
             if (this.isRestaurantCountryGermanyAndFiskaly() && server_id.differences && order) {
                     order.createAndFinishOrderTransaction(server_id.differences)
                 }
             return order
-        },
+        }
         _post_remove_from_server(server_ids, data) {
             if (this.isRestaurantCountryGermanyAndFiskaly() && data.length > 0) {
                 // at this point of the flow, it's impossible to retrieve the local order, only the ids were stored
                 // therefore we create an "empty" order object in order to call the needed methods
                 data.forEach(async elem => {
-                    const order = new models.Order({}, {pos: this});
+                    const order = Order.create({}, {pos: this});
                     await order.cancelOrderTransaction(elem.differences);
                     order.destroy();
                 })
             }
-            return _super_posmodel._post_remove_from_server.apply(this, arguments);
-        },
+            return super._post_remove_from_server(...arguments);
+        }
         //@Override
         /**
          * We first have to send the line items to Fiskaly from the orders offline queue
          */
         async _flush_orders(orders, options) {
             if (!this.isRestaurantCountryGermanyAndFiskaly()) {
-                return _super_posmodel._flush_orders.apply(this, arguments);
+                return super._flush_orders(...arguments);
             }
             if (!orders || !orders.length) {
                 return Promise.resolve([]);
@@ -48,7 +49,7 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
             let differences = {};
             if (ordersCheckDifference.length > 0) {
                 try {
-                    differences = await this.rpc({
+                    differences = await this.env.services.rpc({
                         model: 'pos.order',
                         method: 'retrieve_line_difference',
                         args: [ordersCheckDifference]
@@ -64,7 +65,7 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                 const ordersToUpdate = {}
                 for (const orderJsonData of ordersCheckDifference) {
                     if (!fiskalyError && differences[orderJsonData.uid].length > 0) {
-                        let order = new models.Order({}, {pos: this, json: orderJsonData});
+                        let order = Order.create({}, {pos: this, json: orderJsonData});
                         try {
                             await order.sendLineDifference(differences[orderJsonData.uid]);
                             ordersToUpdate[orderJsonData.uid] = order.export_as_JSON();
@@ -89,40 +90,41 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                 }
             }
 
-            return _super_posmodel._flush_orders.apply(this, arguments);
+            return super._flush_orders(...arguments);
         }
-    });
+    }
+    Registries.Model.extend(PosGlobalState, L10nDePosResPosGlobalState);
 
-    const _super_order = models.Order.prototype;
-    models.Order = models.Order.extend({
+
+    const L10nDePosResOrder = (Order) => class L10nDePosResOrder extends Order {
         // @Override
-        initialize() {
-            _super_order.initialize.apply(this,arguments);
+        constructor() {
+            super(...arguments);
             if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
                 this.fiskalyLinesSent = false; // this is mainly used for offline scenario
                 this.save_to_db();
             }
-        },
+        }
         //@Override
         export_as_JSON() {
-            const json = _super_order.export_as_JSON.apply(this, arguments);
+            const json = super.export_as_JSON(...arguments);
             if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
                 json['fiskaly_lines_sent'] = this.fiskalyLinesSent;
             }
             return json;
-        },
+        }
         //@Override
         init_from_JSON(json) {
-            _super_order.init_from_JSON.apply(this, arguments);
+            super.init_from_JSON(...arguments);
             if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
                 this.fiskalyLinesSent = json.fiskaly_lines_sent;
             }
-        },
+        }
         _updateTimeStart(seconds) {
             if (!(this.pos.isRestaurantCountryGermanyAndFiskaly() && this.tssInformation.time_start.value)) {
-                _super_order._updateTimeStart.apply(this, arguments);
+                super._updateTimeStart(...arguments);
             }
-        },
+        }
         async createAndFinishOrderTransaction(lineDifference) {
             const transactionUuid = uuidv4();
             if (!this.pos.getApiToken()) {
@@ -172,10 +174,10 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                 // Return a Promise with rejected value for errors that are not handled here
                 return Promise.reject(error);
             });
-        },
+        }
         exportOrderLinesAsJson() {
             const orderLines = [];
-            this.orderlines.each(_.bind( function(item) {
+            this.orderlines.forEach(_.bind( function(item) {
                 return orderLines.push([0, 0, item.export_as_JSON()]);
             }, this));
 
@@ -184,9 +186,9 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                 uid: this.uid,
                 lines: orderLines,
             }
-        },
+        }
         async retrieveAndSendLineDifference() {
-            await this.pos.rpc({
+            await this.pos.env.services.rpc({
                 model: 'pos.order',
                 method: 'retrieve_line_difference',
                 args: [[this.exportOrderLinesAsJson()]]
@@ -195,12 +197,11 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                     await this.sendLineDifference(data[this.uid])
                 }
             });
-        },
+        }
         async sendLineDifference(difference) {
             await this.createAndFinishOrderTransaction(difference);
             this.fiskalyLinesSent = true;
-            this.trigger('change');
-        },
+        }
         async cancelOrderTransaction(lineDifference) {
             if (lineDifference.length > 0) {
                 await this.createAndFinishOrderTransaction(lineDifference);
@@ -208,5 +209,6 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
             await this.createTransaction();
             await this.cancelTransaction();
         }
-    });
+    }
+    Registries.Model.extend(Order, L10nDePosResOrder);
 });

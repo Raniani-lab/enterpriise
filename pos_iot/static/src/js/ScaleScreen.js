@@ -8,7 +8,7 @@ odoo.define('pos_iot.ScaleScreen', function(require) {
     const PosIotScaleScreen = ScaleScreen =>
         class extends ScaleScreen {
             get scale() {
-                return this.env.pos.iot_device_proxies.scale;
+                return this.env.proxy.iot_device_proxies.scale;
             }
             get isManualMeasurement() {
                 return this.scale && this.scale.manual_measurement;
@@ -17,11 +17,11 @@ odoo.define('pos_iot.ScaleScreen', function(require) {
              * @override
              */
             mounted() {
-                this.iot_box = _.find(this.env.pos.proxy.iot_boxes, iot_box => {
+                this.iot_box = _.find(this.env.proxy.iot_boxes, iot_box => {
                     return iot_box.ip == this.scale._iot_ip;
                 });
                 this._error = false;
-                this.env.pos.proxy.on('change:status', this, async (eh, status) => {
+                this.env.proxy.on('change:status', this, async (eh, status) => {
                     if (
                         !this.iot_box.connected ||
                         !status.newValue.drivers.scale ||
@@ -41,7 +41,7 @@ odoo.define('pos_iot.ScaleScreen', function(require) {
                     }
                 });
                 if (!this.isManualMeasurement) {
-                    this.env.pos.proxy_queue.schedule(() =>
+                    this.env.proxy_queue.schedule(() =>
                         this.scale.action({ action: 'start_reading' })
                     );
                 }
@@ -52,20 +52,20 @@ odoo.define('pos_iot.ScaleScreen', function(require) {
              */
             willUnmount() {
                 super.willUnmount();
-                this.env.pos.proxy_queue.schedule(() =>
+                this.env.proxy_queue.schedule(() =>
                     this.scale.action({ action: 'stop_reading' })
                 );
                 if (this.scale) this.scale.remove_listener();
             }
             measureWeight() {
-                this.env.pos.proxy_queue.schedule(() => this.scale.action({ action: 'read_once' }));
+                this.env.proxy_queue.schedule(() => this.scale.action({ action: 'read_once' }));
             }
             /**
              * @override
              * Completely replace how the original _readScale works.
              */
             _readScale() {
-                this.env.pos.proxy_queue.schedule(async () => {
+                this.env.proxy_queue.schedule(async () => {
                     await this.scale.add_listener(this._onValueChange.bind(this));
                     await this.scale.action({ action: 'read_once' });
                 });

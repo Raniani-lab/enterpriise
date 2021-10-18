@@ -11,8 +11,8 @@ odoo.define('pos_restaurant.DebugWidget', function(require) {
              */
             refreshDisplay(event) {
                 event.preventDefault();
-                if (this.env.pos.iot_device_proxies.display) {
-                    this.env.pos.iot_device_proxies.display.action({ action: 'display_refresh' });
+                if (this.env.proxy.display) {
+                    this.env.proxy.display.action({ action: 'display_refresh' });
                 }
             }
         };

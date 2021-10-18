@@ -9,8 +9,8 @@ ProxyDevice.include({
      * @override
      */
     connect_to_printer: function () {
-        this.pos.iot_device_proxies.printer.pos = this.pos;
-        this.printer = this.pos.iot_device_proxies.printer;
+        this.env.proxy.iot_device_proxies.printer.pos = this.pos;
+        this.printer = this.env.proxy.iot_device_proxies.printer;
     },
     /**
      * Ping all of the IoT Boxes of the devices set on POS config and update the

@@ -17,7 +17,7 @@ odoo.define('pos_loyalty.RewardButton', function(require) {
         }
         async onClick() {
             let order = this.env.pos.get_order();
-            let client = this.env.pos.get('client') || this.env.pos.get_client();
+            let client = order.get_client();
             if (!client) {
                 this.trigger('close-popup');
                 // IMPROVEMENT: This code snippet is similar to selectClient of PaymentScreen.

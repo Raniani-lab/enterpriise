@@ -28,7 +28,7 @@ Tour.register('pos_iot_scale_tour', {
     }, {
         trigger: '.pos .pos-content',
         run: function () {
-            posmodel.iot_device_proxies.scale = new PosScaleDummy(posmodel, { iot_ip: '', identifier: '' });
+            posmodel.env.proxy.iot_device_proxies.scale = new PosScaleDummy(null, { iot_ip: '', identifier: '' });
         }
     }, { // Leave category displayed by default
         trigger: ".breadcrumb-home",

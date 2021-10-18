@@ -1,77 +1,47 @@
 odoo.define('pos_loyalty.pos_loyalty', function (require) {
 "use strict";
 
-var models = require('point_of_sale.models');
-var core = require('web.core');
+var { PosGlobalState, Order, Orderline } = require('point_of_sale.models');
 var utils = require('web.utils');
+const Registries = require('point_of_sale.Registries');
 
 var round_pr = utils.round_precision;
 
-var _t = core._t;
+const PosLoyaltyPosGlobalState = (PosGlobalState) => class PosLoyaltyPosGlobalState extends PosGlobalState {
+    async _processData(loadedData) {
+        super._processData(...arguments);
+        if (!!this.config.loyalty_id[0]) {
+            this.loyalty = loadedData['loyalty.program'];
+        }
+    }
+}
+Registries.Model.extend(PosGlobalState, PosLoyaltyPosGlobalState);
 
-models.load_fields('res.partner','loyalty_points');
 
-models.load_models([
-    {
-        model: 'loyalty.program',
-        condition: function(self){ return !!self.config.loyalty_id[0]; },
-        fields: ['name','points'],
-        domain: function(self){ return [['id','=',self.config.loyalty_id[0]]]; },
-        loaded: function(self,loyalties){
-            self.loyalty = loyalties[0];
-            self.loyalty.rules = [];
-            self.loyalty.rewards = [];
-        },
-    },{
-        model: 'loyalty.rule',
-        condition: function(self){ return self.loyalty; },
-        fields: ['name','valid_product_ids','points_quantity','points_currency','loyalty_program_id'],
-        domain: function(self){ return [['loyalty_program_id','=',self.loyalty.id]]; },
-        loaded: function(self,rules){
-            rules.forEach(function(rule) {
-                self.loyalty.rules.push(rule);
-            });
-        },
-    },{
-        model: 'loyalty.reward',
-        condition: function(self){ return self.loyalty; },
-        fields: ['name','reward_type','minimum_points','gift_product_id','point_cost','discount_product_id',
-                'discount_percentage', 'discount_fixed_amount', 'discount_apply_on', 'discount_type', 'discount_apply_on',
-                'discount_specific_product_ids', 'discount_max_amount', 'minimum_amount', 'loyalty_program_id'],
-        domain: function(self){ return [['loyalty_program_id','=',self.loyalty.id]]; },
-        loaded: function(self,rewards){
-            rewards.forEach(function(reward) {
-                self.loyalty.rewards.push(reward);
-            });
-        },
-    },
-],{'after': 'product.product'});
-
-var _super_orderline = models.Orderline;
-models.Orderline = models.Orderline.extend({
-    get_reward: function(){
+const PosLoyaltyOrderline = (Orderline) => class PosLoyaltyOrderline extends Orderline {
+    get_reward(){
         var reward_id = this.reward_id;
         return this.pos.loyalty.rewards.find(function(reward){return reward.id === reward_id;});
-    },
-    set_reward: function(reward){
+    }
+    set_reward(reward){
         this.reward_id = reward.id;
-    },
-    export_as_JSON: function(){
-        var json = _super_orderline.prototype.export_as_JSON.apply(this,arguments);
+    }
+    export_as_JSON(){
+        var json = super.export_as_JSON(...arguments);
         json.reward_id = this.reward_id;
         return json;
-    },
-    init_from_JSON: function(json){
-        _super_orderline.prototype.init_from_JSON.apply(this,arguments);
+    }
+    init_from_JSON(json){
+        super.init_from_JSON(...arguments);
         this.reward_id = json.reward_id;
-    },
-});
+    }
+}
+Registries.Model.extend(Orderline, PosLoyaltyOrderline);
 
-var _super = models.Order;
-models.Order = models.Order.extend({
+const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
 
     /* The total of points won, excluding the points spent on rewards */
-    get_won_points: function(){
+    get_won_points(){
         if (!this.pos.loyalty || !this.get_client()) {
             return 0;
         }
@@ -96,10 +66,10 @@ models.Order = models.Order.extend({
         }
         total_points += this.get_total_with_tax() * this.pos.loyalty.points;
         return round_pr(total_points, 1);
-    },
+    }
 
     /* The total number of points spent on rewards */
-    get_spent_points: function() {
+    get_spent_points() {
         if (!this.pos.loyalty || !this.get_client()) {
             return 0;
         } else {
@@ -113,19 +83,19 @@ models.Order = models.Order.extend({
             }
             return points;
         }
-    },
+    }
 
     /* The total number of points lost or won after the order is validated */
-    get_new_points: function() {
+    get_new_points() {
         if (!this.pos.loyalty || !this.get_client()) {
             return 0;
         } else {
             return round_pr(this.get_won_points() - this.get_spent_points(), 1);
         }
-    },
+    }
 
     /* The total number of points that the customer will have after this order is validated */
-    get_new_total_points: function() {
+    get_new_total_points() {
         if (!this.pos.loyalty || !this.get_client()) {
             return 0;
         } else {
@@ -136,24 +106,24 @@ models.Order = models.Order.extend({
                 return round_pr(this.get_client().loyalty_points, 1);
             }
         }
-    },
+    }
 
     /* The number of loyalty points currently owned by the customer */
-    get_current_points: function(){
+    get_current_points(){
         return this.get_client() ? this.get_client().loyalty_points : 0;
-    },
+    }
 
     /* The total number of points spendable on rewards */
-    get_spendable_points: function(){
+    get_spendable_points(){
         if (!this.pos.loyalty || !this.get_client()) {
             return 0;
         } else {
             return round_pr(this.get_client().loyalty_points - this.get_spent_points(), 1);
         }
-    },
+    }
 
     /* The list of rewards that the current customer can get */
-    get_available_rewards: function(){
+    get_available_rewards(){
         var client = this.get_client();
         if (!client) {
             return [];
@@ -182,9 +152,9 @@ models.Order = models.Order.extend({
             rewards.push(reward);
         }
         return rewards;
-    },
+    }
 
-    apply_reward: function(reward){
+    apply_reward(reward){
         var client = this.get_client();
         var product, product_price, order_total, spendable;
         var crounding;
@@ -275,18 +245,18 @@ models.Order = models.Order.extend({
 
             }
         }
-    },
+    }
 
-    finalize: function(){
+    finalize(){
         var client = this.get_client();
         if ( client ) {
             client.loyalty_points = this.get_new_total_points();
         }
-        _super.prototype.finalize.apply(this,arguments);
-    },
+        super.finalize(...arguments);
+    }
 
-    export_for_printing: function(){
-        var json = _super.prototype.export_for_printing.apply(this,arguments);
+    export_for_printing(){
+        var json = super.export_for_printing(...arguments);
         if (this.pos.loyalty && this.get_client()) {
             json.loyalty = {
                 name:         this.pos.loyalty.name,
@@ -297,13 +267,14 @@ models.Order = models.Order.extend({
             };
         }
         return json;
-    },
+    }
 
-    export_as_JSON: function(){
-        var json = _super.prototype.export_as_JSON.apply(this,arguments);
+    export_as_JSON(){
+        var json = super.export_as_JSON(...arguments);
         json.loyalty_points = this.get_new_points();
         return json;
-    },
-});
+    }
+}
+Registries.Model.extend(Order, PosLoyaltyOrder);
 
 });

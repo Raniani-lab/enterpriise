@@ -8,13 +8,13 @@ odoo.define('pos_restaurant.ClientScreenButton', function(require) {
         class extends ClientScreenButton {
             async onClickProxy() {
                 const renderedHtml = await this.env.pos.render_html_for_customer_facing_display();
-                this.env.pos.proxy.take_ownership_over_client_screen(renderedHtml);
+                this.env.proxy.take_ownership_over_client_screen(renderedHtml);
             }
             _start() {
-                if (this.env.pos.iot_device_proxies.display) {
-                    this.env.pos.iot_device_proxies.display.add_listener(this._checkOwner.bind(this));
+                if (this.env.proxy.iot_device_proxies.display) {
+                    this.env.proxy.iot_device_proxies.display.add_listener(this._checkOwner.bind(this));
                     setTimeout(() => {
-                        this.env.pos.iot_device_proxies.display.action({action: 'get_owner'});
+                        this.env.proxy.iot_device_proxies.display.action({action: 'get_owner'});
                     }, 1500);
                 }
             }

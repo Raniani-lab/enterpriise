@@ -1,10 +1,3 @@
-odoo.define('pos_settle_due.models', function (require) {
-    'use strict';
-
-    const models = require('point_of_sale.models');
-    models.load_fields('res.partner', 'total_due');
-});
-
 odoo.define('pos_settle_due.PaymentScreen', function (require) {
     'use strict';
 
@@ -26,7 +19,7 @@ odoo.define('pos_settle_due.PaymentScreen', function (require) {
                     .find((payment) => payment.payment_method.type == 'pay_later');
                 if (
                     order.get_orderlines().length === 0 &&
-                    !float_is_zero(change, this.env.pos.currency.decimals) &&
+                    !float_is_zero(change, this.env.pos.currency.decimal_places) &&
                     paylaterPaymentMethod &&
                     !existingPayLaterPayment
                 ) {

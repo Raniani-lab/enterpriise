@@ -14,7 +14,7 @@ IoTLongpolling.include({
             title: _t('Connection to IoT Box failed'),
             url: url,
         });
-        posmodel.proxy.proxy_connection_status(url, false);
+        posmodel.env.proxy.proxy_connection_status(url, false);
 
         if (posmodel.get_order().selected_paymentline &&
             posmodel.get_order().selected_paymentline.payment_method.use_payment_terminal === 'worldline' &&
@@ -25,15 +25,15 @@ IoTLongpolling.include({
     },
 
     _onSuccess: function (iot_ip, result) {
-        posmodel.proxy.proxy_connection_status(iot_ip, true);
+        posmodel.env.proxy.proxy_connection_status(iot_ip, true);
         return this._super.apply(this, arguments);
     },
     action: function (iot_ip, device_identifier, data) {
         var res = this._super.apply(this, arguments);
         res.then(function () {
-            posmodel.proxy.proxy_connection_status(iot_ip, true);
+            posmodel.env.proxy.proxy_connection_status(iot_ip, true);
         }).guardedCatch(function () {
-            posmodel.proxy.proxy_connection_status(iot_ip, false);
+            posmodel.env.proxy.proxy_connection_status(iot_ip, false);
         });
         return res;
     },

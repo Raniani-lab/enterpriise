@@ -1,11 +1,12 @@
 odoo.define('l10n_de_pos_cert.pos', function(require) {
     "use strict";
 
-    const models = require('point_of_sale.models');
+    const { PosGlobalState, Order } = require('point_of_sale.models');
     const { uuidv4, convertFromEpoch } = require('l10n_de_pos_cert.utils');
     const { TaxError } = require('l10n_de_pos_cert.errors');
     var utils = require('web.utils');
     const round_di = utils.round_decimals;
+    const Registries = require('point_of_sale.Registries');
 
     const RATE_ID_MAPPING = {
         1: 'NORMAL',
@@ -15,18 +16,18 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         5: 'NULL',
     };
 
-    let _super_posmodel = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
+
+    const L10nDePosGlobalState = (PosGlobalState) => class L10nDePosGlobalState extends PosGlobalState {
         // @Override
-        initialize(attributes) {
-            _super_posmodel.initialize.apply(this,arguments);
+        constructor() {
+            super(...arguments);
             this.token = '';
             this.vatRateMapping = {};
-        },
+        }
         //@Override
         async after_load_server_data() {
             if (this.isCountryGermanyAndFiskaly()) {
-                await this.rpc({
+                await this.env.services.rpc({
                     model: 'pos.config',
                     method: 'l10n_de_get_fiskaly_urls_and_keys',
                     args: [this.config.id]
@@ -38,42 +39,42 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     this.initVatRates(data['dsfinvk_url'] + '/api/v0');
                 })
             }
-            return _super_posmodel.after_load_server_data.apply(this, arguments);
-        },
+            return super.after_load_server_data(...arguments);
+        }
         getApiToken() {
             return this.token;
-        },
+        }
         setApiToken(token) {
             this.token = token;
-        },
+        }
         getApiUrl() {
             return this.apiUrl;
-        },
+        }
         getApiKey() {
             return this.company.l10n_de_fiskaly_api_key;
-        },
+        }
         getApiSecret() {
             return this.company.l10n_de_fiskaly_api_secret;
-        },
+        }
         getTssId() {
             return this.config.l10n_de_fiskaly_tss_id && this.config.l10n_de_fiskaly_tss_id.split('|')[0];
-        },
+        }
         getClientId() {
             return this.config.l10n_de_fiskaly_client_id;
-        },
+        }
         isUsingApiV2() {
             return this.useKassensichvVersion2;
-        },
+        }
         isCountryGermany() {
             return this.config.is_company_country_germany;
-        },
+        }
         isCountryGermanyAndFiskaly() {
             return this.isCountryGermany() && !!this.getTssId();
-        },
+        }
         format_round_decimals_currency(value) {
-            const decimals = this.currency.decimals;
+            const decimals = this.currency.decimal_places;
             return round_di(value, decimals).toFixed(decimals);
-        },
+        }
         initVatRates(url) {
             const data = {
                 'api_key': this.getApiKey(),
@@ -110,7 +111,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     };
                 })
             })
-        },
+        }
         //@Override
         /**
          * This function first attempts to send the orders remaining in the queue to Fiskaly before trying to
@@ -120,7 +121,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
          */
         async _flush_orders(orders, options) {
             if (!this.isCountryGermanyAndFiskaly()) {
-                return _super_posmodel._flush_orders.apply(this, arguments);
+                return super._flush_orders(...arguments);
             }
             if (!orders || !orders.length) {
                 return Promise.resolve([]);
@@ -128,7 +129,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
 
             const orderObjectMap = {};
             for (const orderJson of orders) {
-                orderObjectMap[orderJson['id']] = new models.Order({}, {pos: this, json: orderJson['data']});
+                orderObjectMap[orderJson['id']] = Order.create({}, {pos: this, json: orderJson['data']});
             }
 
             let fiskalyError;
@@ -168,15 +169,12 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     }
                 }
                 try {
-                    result = await _super_posmodel._flush_orders.apply(this, [sentToFiskaly, options]);
+                    result = await super._flush_orders(...arguments);
                 } catch (error) {
                     odooError = error;
                 }
             }
             if (result && fiskalyFailure.length === 0) {
-                for (const id in orderObjectMap) {
-                    orderObjectMap[id].finalize(); // Destroy the order so that it's not stored in the unpaid order
-                }
                 return result;
             } else {
                 if (Object.keys(ordersToUpdate).length) {
@@ -189,30 +187,28 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     this.db.save('orders',ordersToSave);
                 }
                 this.set_synch('disconnected');
-                for (const id in orderObjectMap) {
-                    orderObjectMap[id].finalize(); // Destroy the order so that it's not stored in the unpaid order
-                }
                 throw odooError || fiskalyError;
             }
-        },
+        }
         // @Override
         htmlToImgLetterRendering() {
-            return this.isCountryGermanyAndFiskaly() || _super_posmodel.htmlToImgLetterRendering.apply(this, arguments);
+            return this.isCountryGermanyAndFiskaly() || super.htmlToImgLetterRendering(...arguments);
         }
-    });
+    }
+    Registries.Model.extend(PosGlobalState, L10nDePosGlobalState);
 
-    var _super_order = models.Order.prototype;
-    models.Order = models.Order.extend({
+
+    const L10nDeOrder = (Order) => class L10nDeOrder extends Order {
         // @Override
-        initialize() {
-            _super_order.initialize.apply(this,arguments);
+        constructor() {
+            super(...arguments);
             if (this.pos.isCountryGermanyAndFiskaly()) {
                 this.fiskalyUuid = this.fiskalyUuid || null;
                 this.transactionState = this.transactionState || 'inactive'; // Used to know when we need to create the fiskaly transaction
                 this.tssInformation = this.tssInformation || this._initTssInformation();
                 this.save_to_db();
             }
-        },
+        }
         _initTssInformation() {
             return {
                 'transaction_number': { 'name': 'TSE-Transaktion', 'value': null },
@@ -226,25 +222,25 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 'client_serial_number': { 'name': 'ClientID / KassenID', 'value': null },
                 'erstBestellung': { 'name': 'TSE-Erstbestellung', 'value': null }
             };
-        },
+        }
         isTransactionInactive() {
             return this.transactionState === 'inactive';
-        },
+        }
         transactionStarted() {
             this.transactionState = 'started';
-        },
+        }
         isTransactionStarted() {
             return this.transactionState === 'started';
-        },
+        }
         transactionFinished() {
             this.transactionState = 'finished';
-        },
+        }
         isTransactionFinished() {
             return this.transactionState === 'finished' || this.tssInformation.time_start.value;
-        },
+        }
         // @Override
         export_for_printing() {
-            const receipt = _super_order.export_for_printing.apply(this, arguments);
+            const receipt = super.export_for_printing(...arguments);
             if (this.pos.isCountryGermanyAndFiskaly()) {
                 if (this.isTransactionFinished()) {
                     receipt['tss'] = {};
@@ -256,10 +252,10 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 receipt['test_environment'] = true;
             }
             return receipt;
-        },
+        }
         //@Override
         export_as_JSON() {
-            const json = _super_order.export_as_JSON.apply(this, arguments);
+            const json = super.export_as_JSON(...arguments);
             if (this.pos.isCountryGermanyAndFiskaly()) {
                 json['fiskaly_uuid'] = this.fiskalyUuid;
                 json['transaction_state'] = this.transactionState;
@@ -271,10 +267,10 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 }
             }
             return json;
-        },
+        }
         //@Override
         init_from_JSON(json) {
-            _super_order.init_from_JSON.apply(this, arguments);
+            super.init_from_JSON(...arguments);
             if (this.pos.isCountryGermanyAndFiskaly()) {
                 this.fiskalyUuid = json.fiskaly_uuid;
                 this.transactionState = json.transaction_state;
@@ -288,7 +284,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     }
                 }
             }
-        },
+        }
         //@Override
         add_product(product, options) {
             if (this.pos.isCountryGermanyAndFiskaly()) {
@@ -296,8 +292,8 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     throw new TaxError(product);
                 }
             }
-            _super_order.add_product.apply(this, arguments);
-        },
+            super.add_product(...arguments);
+        }
         _authenticate() {
             const data = {
                 'api_key': this.pos.getApiKey(),
@@ -316,7 +312,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 error.source = 'authenticate';
                 return Promise.reject(error);
             });
-        },
+        }
         async createTransaction() {
             if (!this.pos.getApiToken()) {
                 await this._authenticate(); //  If there's an error, a promise is created with a rejected value
@@ -338,7 +334,6 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             }).then((data) => {
                 this.fiskalyUuid = transactionUuid;
                 this.transactionStarted();
-                this.trigger('change');
             }).catch(async (error) => {
                 if (error.status === 401) {  // Need to update the token
                     await this._authenticate();
@@ -347,7 +342,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 // Return a Promise with rejected value for errors that are not handled here
                 return Promise.reject(error);
             });
-        },
+        }
         /*
          *  Return an array of { 'vat_rate': ..., 'amount': ...}
          */
@@ -370,7 +365,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             }
             return Object.keys(amountPerVatRate).filter((rate) => !!amountPerVatRate[rate])
                 .map((rate) => ({ 'vat_rate': rate, 'amount': this.pos.format_round_decimals_currency(amountPerVatRate[rate])}));
-        },
+        }
         /*
          *  Return an array of { 'payment_type': ..., 'amount': ...}
          */
@@ -390,10 +385,10 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 });
             }
             return amountPerPaymentTypeArray;
-        },
+        }
         _updateTimeStart(seconds) {
             this.tssInformation.time_start.value = convertFromEpoch(seconds);
-        },
+        }
         _updateTssInfo(data) {
             this.tssInformation.transaction_number.value = data.number;
             this._updateTimeStart(data.time_start);
@@ -407,7 +402,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             this.tssInformation.client_serial_number.value = data.client_serial_number;
             this.tssInformation.erstBestellung.value = this.get_orderlines()[0].get_product().display_name;
             this.transactionFinished();
-        },
+        }
         async finishShortTransaction() {
             if (!this.pos.getApiToken()) {
                 await this._authenticate();
@@ -437,7 +432,6 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 timeout: 5000
             }).then((data) => {
                 this._updateTssInfo(data);
-                this.trigger('change');
             }).catch(async (error) => {
                 if (error.status === 401) {  // Need to update the token
                     await this._authenticate();
@@ -446,7 +440,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 // Return a Promise with rejected value for errors that are not handled here
                 return Promise.reject(error);
             });;
-        },
+        }
         async cancelTransaction() {
             if (!this.pos.getApiToken()) {
                 await this._authenticate();
@@ -481,5 +475,6 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 return Promise.reject(error);
             });;
         }
-    });
+    }
+    Registries.Model.extend(Order, L10nDeOrder);
 });

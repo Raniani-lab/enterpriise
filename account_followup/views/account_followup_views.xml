@@ -133,10 +133,9 @@
                                 <group string="Email Subject" attrs="{'invisible': [('send_email', '=', False)]}">
                                     <field name="email_subject" nolabel="1" colspan="2"/>
                                 </group>
-                                <group string="Description" attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
+                                <group id='description' string="Description" attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
                                     <field name="description" nolabel="1" colspan="2" />
                                 </group>
-                                
                                 <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2" attrs="{'invisible': [('send_sms', '=', False)]}"/>
                                 <group  string="Manual Action" attrs="{'invisible': [('manual_action', '=', False)]}">
                                     <group>
@@ -146,7 +145,7 @@
                                             placeholder="e.g. Call the customer, check if it's paid, ..."/>
                                     </group>
                                 </group>
-                                <group attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False), ('send_sms', '=', False)]}">
+                                <group id='instructions' attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False), ('send_sms', '=', False)]}">
                                     <div class='alert alert-info' role="alert">
                                         <h4 class="alert-heading" role="alert">In order to build customized messages:</h4>
                                         <p>

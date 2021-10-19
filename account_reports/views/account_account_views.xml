@@ -5,8 +5,8 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
-            <field name="currency_id" position="after">
-                <field name="exclude_from_aged_reports" attrs="{'invisible': [('internal_type', 'not in', ('payable','receivable'))]}"/>
+            <field name="currency_id" position="before">
+                <field name="non_trade" attrs="{'invisible': [('internal_type', 'not in', ('payable','receivable'))]}"/>
             </field>
         </field>
     </record>

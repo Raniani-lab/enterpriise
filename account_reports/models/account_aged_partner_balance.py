@@ -143,8 +143,6 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 period_table.date_stop IS NULL
                 OR COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)
             )
-            WHERE account.internal_type = %(account_type)s
-            AND account.exclude_from_aged_reports IS NOT TRUE
             GROUP BY account_move_line.id, partner.id, trust_property.id, journal.id, move.id, account.id,
                      period_table.period_index, currency_table.rate, currency_table.precision
             HAVING ROUND(account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0), currency_table.precision) != 0
@@ -154,8 +152,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             period_table=self._get_query_period_table(options),
         )
         params = {
-            'account_type': options['filter_account_type'],
-            'sign': 1 if options['filter_account_type'] == 'receivable' else -1,
+            'sign': options['account_type_aml_sign'],
             'date': options['date']['date_to'],
         }
         return self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
@@ -232,11 +229,15 @@ class ReportAccountAgedReceivable(models.Model):
     _inherit = "account.aged.partner"
     _auto = False
 
-    def _get_options(self, previous_options=None):
+    filter_account_type = [
+        {'id': 'trade_receivable', 'selected': True},
+        {'id': 'non_trade_receivable', 'selected': False},
+    ]
+
+    def _init_filter_account_type(self, options, previous_options=None):
         # OVERRIDE
-        options = super(ReportAccountAgedReceivable, self)._get_options(previous_options=previous_options)
-        options['filter_account_type'] = 'receivable'
-        return options
+        super()._init_filter_account_type(options, previous_options=previous_options)
+        options['account_type_aml_sign'] = 1
 
     @api.model
     def _get_report_name(self):
@@ -256,11 +257,15 @@ class ReportAccountAgedPayable(models.Model):
     _inherit = "account.aged.partner"
     _auto = False
 
-    def _get_options(self, previous_options=None):
+    filter_account_type = [
+        {'id': 'trade_payable', 'selected': True},
+        {'id': 'non_trade_payable', 'selected': False},
+    ]
+
+    def _init_filter_account_type(self, options, previous_options=None):
         # OVERRIDE
-        options = super(ReportAccountAgedPayable, self)._get_options(previous_options=previous_options)
-        options['filter_account_type'] = 'payable'
-        return options
+        super()._init_filter_account_type(options, previous_options=previous_options)
+        options['account_type_aml_sign'] = -1
 
     @api.model
     def _get_report_name(self):

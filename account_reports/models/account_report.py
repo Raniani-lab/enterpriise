@@ -60,6 +60,7 @@ class AccountReport(models.AbstractModel):
     filter_journals = None
     filter_analytic = None
     filter_unfold_all = None
+    filter_account_type = None
     filter_hierarchy = None
     filter_partner = None
     filter_fiscal_position = None
@@ -548,6 +549,83 @@ class AccountReport(models.AbstractModel):
             return [('move_id.state', '!=', 'cancel')]
 
     ####################################################
+    # OPTIONS: account_type
+    ####################################################
+
+    def _init_filter_account_type(self, options, previous_options=None):
+        '''
+        Initialize a filter based on the account_type of the line (trade/non trade, payable/receivable).
+        Selects a name to display according to the selections.
+        The group display name is selected according to the display name of the options selected.
+        '''
+        if not self.filter_account_type:
+            return
+
+        display_names = {
+            'trade_receivable': _("Receivable"),
+            'trade_payable': _("Payable"),
+            'non_trade_receivable': _("Non Trade Receivable"),
+            'non_trade_payable': _("Non Trade Payable"),
+        }
+        options['account_type'] = [{
+            **x,
+            'name': display_names[x['id']],
+        } for x in self.filter_account_type]
+
+        if previous_options and previous_options.get('account_type'):
+            previously_selected_ids = {x['id'] for x in previous_options['account_type'] if x.get('selected')}
+            for opt in options['account_type']:
+                opt['selected'] = opt['id'] in previously_selected_ids
+
+        selected_options = {x['id']: x['name'] for x in options['account_type'] if x['selected']}
+        selected_ids = set(selected_options.keys()) or set(display_names.keys())
+        display_names = []
+
+        def check_if_name_applicable(ids_to_match, string_if_match):
+            '''
+            If the ids selected are part of a possible grouping,
+                - append the name of the grouping to display_names
+                - Remove the concerned ids
+            ids_to_match : the ids forming a group
+            string_if_match : the group's name
+            '''
+            if len(selected_ids) == 0:
+                return
+            if ids_to_match.issubset(selected_ids):
+                display_names.append(string_if_match)
+                for selected_id in ids_to_match:
+                    selected_ids.remove(selected_id)
+
+        check_if_name_applicable({'trade_receivable', 'trade_payable', 'non_trade_receivable', 'non_trade_payable'}, _("All receivable/payable"))
+        check_if_name_applicable({'trade_receivable', 'non_trade_receivable'}, _("All Receivable"))
+        check_if_name_applicable({'trade_payable', 'non_trade_payable'}, _("All Payable"))
+        check_if_name_applicable({'trade_receivable', 'trade_payable'}, _("Trade Partners"))
+        check_if_name_applicable({'non_trade_receivable', 'non_trade_payable'}, _("Non Trade Partners"))
+        for sel in selected_ids:
+            display_names.append(selected_options.get(sel))
+        options['account_display_name'] = ', '.join(display_names)
+
+    @api.model
+    def _get_options_account_type_domain(self, options):
+        all_domains = []
+        selected_domains = []
+        if not options.get('account_type') or len(options.get('account_type')) == 0:
+            return []
+        for opt in options.get('account_type', []):
+            if opt['id'] == 'trade_receivable':
+                domain = [('account_id.non_trade', '=', False), ('account_id.internal_type', '=', 'receivable')]
+            elif opt['id'] == 'trade_payable':
+                domain = [('account_id.non_trade', '=', False), ('account_id.internal_type', '=', 'payable')]
+            elif opt['id'] == 'non_trade_receivable':
+                domain = [('account_id.non_trade', '=', True), ('account_id.internal_type', '=', 'receivable')]
+            elif opt['id'] == 'non_trade_payable':
+                domain = [('account_id.non_trade', '=', True), ('account_id.internal_type', '=', 'payable')]
+            if opt['selected']:
+                selected_domains.append(domain)
+            all_domains.append(domain)
+        return expression.OR(selected_domains or all_domains)
+
+    ####################################################
     # OPTIONS: order column
     ####################################################
 
@@ -827,6 +905,7 @@ class AccountReport(models.AbstractModel):
         domain += self._get_options_partner_domain(options)
         domain += self._get_options_all_entries_domain(options)
         domain += self._get_options_fiscal_position_domain(options)
+        domain += self._get_options_account_type_domain(options)
         return domain
 
     ####################################################

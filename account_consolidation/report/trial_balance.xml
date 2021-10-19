@@ -56,7 +56,7 @@
         </template>
         <!-- Search template used in trial balance report for consolidation : add journals and comparisons-->
         <template id="search_template" inherit_id="account_reports.search_template">
-            <xpath expr="//div[hasclass('o_account_reports_filter_journals')]" position="after">
+            <xpath expr="//div[hasclass('o_account_reports_filter_account_type')]" position="after">
                 <div class="btn-group dropdown o_account_reports_filter_consolidation_period_comparisons">
                     <t t-call="account_consolidation.search_template_consolidation_period_comparisons"/>
                 </div>

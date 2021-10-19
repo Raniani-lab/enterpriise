@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, _, _lt, fields
+from odoo import models, api, _, fields
 from odoo.tools.misc import format_date
 from datetime import timedelta
 
 from collections import defaultdict
+
 
 class ReportPartnerLedger(models.AbstractModel):
     _inherit = "account.report"
@@ -16,9 +17,12 @@ class ReportPartnerLedger(models.AbstractModel):
     filter_all_entries = False
     filter_unfold_all = False
     filter_account_type = [
-        {'id': 'receivable', 'name': _lt('Receivable'), 'selected': False},
-        {'id': 'payable', 'name': _lt('Payable'), 'selected': False},
+        {'id': 'trade_receivable', 'selected': True},
+        {'id': 'trade_payable', 'selected': True},
+        {'id': 'non_trade_receivable', 'selected': False},
+        {'id': 'non_trade_payable', 'selected': False},
     ]
+
     filter_unreconciled = False
     filter_partner = True
 
@@ -34,31 +38,15 @@ class ReportPartnerLedger(models.AbstractModel):
     ####################################################
 
     @api.model
-    def _get_options_account_type(self, options):
-        ''' Get select account type in the filter widget (see filter_account_type).
-        :param options: The report options.
-        :return:        Selected account types.
-        '''
-        all_account_types = []
-        account_types = []
-        for account_type_option in options.get('account_type', []):
-            if account_type_option['selected']:
-                account_types.append(account_type_option)
-            all_account_types.append(account_type_option)
-        return account_types or all_account_types
-
-    @api.model
     def _get_options_domain(self, options):
         # OVERRIDE
-        # Handle filter_unreconciled + filter_account_type
-        domain = super(ReportPartnerLedger, self)._get_options_domain(options)
+        # Handle filter_unreconciled
+        domain = super()._get_options_domain(options)
         if options.get('unreconciled'):
             domain += ['&', ('full_reconcile_id', '=', False), ('balance', '!=', '0')]
         exch_code = self.env['res.company'].browse(self.env.context.get('company_ids')).mapped('currency_exchange_journal_id')
         if exch_code:
             domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id.id', 'in', exch_code.ids)]
-        domain.append(('account_id.internal_type', 'in', [t['id'] for t in self._get_options_account_type(options)]))
-
         return domain
 
     @api.model
@@ -492,9 +480,10 @@ class ReportPartnerLedger(models.AbstractModel):
             caret_type = 'account.move'
 
         date_maturity = aml['date_maturity'] and format_date(self.env, fields.Date.from_string(aml['date_maturity']))
+
         columns = [
             {'name': aml['journal_code']},
-            {'name': aml['account_code']},
+            {'name': '%s %s' % (aml['account_code'], aml['account_name'])},
             {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'class': 'o_account_report_line_ellipsis'},
             {'name': date_maturity or '', 'class': 'date'},
             {'name': aml['matching_number'] or ''},

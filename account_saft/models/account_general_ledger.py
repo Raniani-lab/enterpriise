@@ -195,8 +195,10 @@ class AccountGeneralLedger(models.AbstractModel):
         # Fill 'customer_vals_list' and 'supplier_vals_list'
         new_options = dict(options)
         new_options['account_type'] = [
-            {'id': 'receivable', 'selected': True},
-            {'id': 'payable', 'selected': True},
+            {'id': 'trade_receivable', 'selected': True},
+            {'id': 'non_trade_receivable', 'selected': True},
+            {'id': 'trade_payable', 'selected': True},
+            {'id': 'non_trade_payable', 'selected': True},
         ]
         partners_results = self.env['account.partner.ledger']._do_query(new_options)
         partner_vals_list = []

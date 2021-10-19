@@ -615,6 +615,7 @@ class AccountReconciliation(models.AbstractModel):
     def _get_query_reconciliation_widget_receivable_payable_lines(self, statement_line, domain=[]):
         domain = domain + [
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
+            ('account_id.non_trade', '=', False),
             ('payment_id', '=', False),
         ]
         tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
@@ -671,7 +672,9 @@ class AccountReconciliation(models.AbstractModel):
             account_ids.add(account.id)
 
         domain = domain + [
+            '|',
             ('account_id.internal_type', 'not in', ('receivable', 'payable')),
+            ('account_id.non_trade', '=', True),
             '|',
             ('journal_id.type', 'not in', ('bank', 'cash')),
             ('account_id', 'not in', list(account_ids)),

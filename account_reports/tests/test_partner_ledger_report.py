@@ -189,13 +189,13 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
 
     def test_partner_ledger_filter_account_types(self):
         ''' Test building the report with a filter on account types.
-        When filtering on receivable accounts, partner_b should disappear from the report.
+        When filtering on receivable accounts (i.e. trade_receivable and/or non_trade_receivable), partner_b should disappear from the report.
         '''
         report = self.env['account.partner.ledger']
         line_id = 'partner_%s' % self.partner_a.id
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['unfolded_lines'] = [line_id]
-        options = self._update_multi_selector_filter(options, 'account_type', ['receivable'])
+        options = self._update_multi_selector_filter(options, 'account_type', ['non_trade_receivable', 'trade_receivable'])
 
         self.assertLinesValues(
             report._get_lines(options),
@@ -211,6 +211,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Total',                               -350.0,         15200.0,        21200.0,        -6350.0),
             ],
         )
+
 
     def test_partner_ledger_filter_partners(self):
         ''' Test the filter on top allowing to filter on res.partner.'''

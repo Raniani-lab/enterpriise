@@ -188,6 +188,7 @@ class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
     _description = 'Helpdesk Ticket'
     _order = 'priority desc, id desc'
+    _primary_email = 'partner_email'
     _inherit = ['portal.mixin', 'mail.thread.cc', 'utm.mixin', 'rating.mixin', 'mail.activity.mixin']
 
     @api.model

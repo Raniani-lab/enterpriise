@@ -423,6 +423,7 @@ class HrContractSalary(http.Controller):
             'contract_update_template_id': contract.contract_update_template_id.id,
             'date_start': fields.Date.today().replace(day=1),
             'contract_type_id': contract.contract_type_id.id,
+            'work_entry_source': contract.work_entry_source,
         }
         for advantage in contract_advantages:
             if advantage.field not in contract:
@@ -650,7 +651,9 @@ class HrContractSalary(http.Controller):
 
         result = {}
         result['wage_with_holidays'] = round(new_contract.wage_with_holidays, 2)
-        resume_lines = request.env['hr.contract.salary.resume'].search([
+        # Allowed company ids might not be filled or request.env.user.company_ids might be wrong
+        # since we are in route context, force the company to make sure we load everything
+        resume_lines = request.env['hr.contract.salary.resume'].sudo().with_company(new_contract.company_id).search([
             '|',
             ('structure_type_id', '=', False),
             ('structure_type_id', '=', new_contract.structure_type_id.id),

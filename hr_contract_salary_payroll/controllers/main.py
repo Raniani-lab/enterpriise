@@ -54,7 +54,9 @@ class HrContractSalary(main.HrContractSalary):
             line.code,
             'no_sign' if line.code in ['BASIC', 'SALARY', 'GROSS', 'NET'] else float_compare(line.total, 0, precision_digits=2)
         ) for line in payslip.line_ids.filtered(lambda l: l.appears_on_payslip)]
-        resume_lines = request.env['hr.contract.salary.resume'].search([
+        # Allowed company ids might not be filled or request.env.user.company_ids might be wrong
+        # since we are in route context, force the company to make sure we load everything
+        resume_lines = request.env['hr.contract.salary.resume'].sudo().with_company(new_contract.company_id).search([
             '|',
             ('structure_type_id', '=', False),
             ('structure_type_id', '=', new_contract.structure_type_id.id),
@@ -73,7 +75,7 @@ class HrContractSalary(main.HrContractSalary):
         result['resume_categories'] = [c.name for c in sorted(resume_categories, key=lambda x: x.sequence)]
 
         all_codes = (resume_lines - monthly_total_lines).mapped('code')
-        line_values = payslip._get_line_values(all_codes)
+        line_values = payslip._get_line_values(all_codes) if all_codes else False
         for resume_line in resume_lines - monthly_total_lines:
             value = round(line_values[resume_line.code][payslip.id]['total'], 2)
             resume_explanation = False

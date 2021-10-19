@@ -104,8 +104,9 @@ class HrAppraisal(models.Model):
     def _compute_user_manager_rights(self):
         for appraisal in self:
             appraisal.manager_user_ids = appraisal.manager_ids.mapped('user_id')
-        self.is_appraisal_manager = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
-        if self.is_appraisal_manager:
+        is_appraisal_manager = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
+        self.is_appraisal_manager = is_appraisal_manager
+        if is_appraisal_manager:
             self.is_implicit_manager = False
             self.employee_autocomplete_ids = self.env['hr.employee'].search([('company_id', '=', self.env.company.id)])
         else:

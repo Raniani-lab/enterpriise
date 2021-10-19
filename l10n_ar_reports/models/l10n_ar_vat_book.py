@@ -21,6 +21,18 @@ class L10nARVatBook(models.AbstractModel):
     def _get_country_for_fiscal_position_filter(self, options):
         return self.env.ref('base.ar')
 
+    def _get_report_name(self):
+        name = super(L10nARVatBook, self)._get_report_name()
+        if self._context.get('journal_type') in ['sale', 'purchase']:
+            name = _("Sales VAT book") if self._context.get('journal_type') == 'sale' else _("Purchases VAT book")
+        return name
+
+    def _set_context(self, options):
+        ctx = super(L10nARVatBook, self)._set_context(options)
+        if options.get('journal_type'):
+            ctx['journal_type'] = options.get('journal_type')
+        return ctx
+
     def print_pdf(self, options):
         options.update({
             'journal_type': self.env.context.get('journal_type')

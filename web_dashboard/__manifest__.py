@@ -12,6 +12,7 @@ This module defines the Dashboard view, a new type of reporting view. This view
 can embed graph and/or pivot views, and displays aggregate values.
         """,
     'depends': ['web'],
+    'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [

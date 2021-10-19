@@ -1099,12 +1099,13 @@ class HrDMFAReport(models.Model):
         payslips = payslips.filtered(lambda p: not p.contract_id.no_onss)
 
         basis_lines = {
+            'CP200MONTHLY': 'DOUBLE.DECEMBER.SALARY',
             'CP200DOUBLE': 'SALARY',
-            'CP200HOLN1': 'PAY DOUBLE',
+            'CP200HOLN': 'PAY DOUBLE',
             'CP200HOLN1': 'PAY DOUBLE',
         }
         payslips = payslips.filtered(lambda p: p.struct_id.code in basis_lines)
-        line_values = payslips._get_line_values(['SALARY', 'PAY DOUBLE'])
+        line_values = payslips._get_line_values(list(basis_lines.values()))
         basis_raw = sum(line_values[basis_lines[p.struct_id.code]][p.id]['total'] for p in payslips)
         basis = round(basis_raw, 2)
         onss_amount = round(basis_raw * 0.1307, 2)

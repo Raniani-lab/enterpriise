@@ -766,7 +766,10 @@ def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, i
 
     employee = payslip.contract_id.employee_id
 
-    gross = categories.GROSS
+    if payslip.struct_id.code == "CP200DOUBLE":
+        gross = categories.GROSS
+    elif payslip.struct_id.code == "CP200MONTHLY":
+        gross = categories.DDPG
 
     contract = payslip.dict.contract_id
     monthly_revenue = contract._get_contract_wage()

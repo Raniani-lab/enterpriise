@@ -667,6 +667,7 @@ class HrContractSalary(http.Controller):
 
         uoms = {'days': _('Days'), 'percent': '%', 'currency': new_contract.company_id.currency_id.symbol}
 
+        resume_explanation = False
         for resume_line in resume_lines - monthly_total_lines:
             value = 0
             uom = uoms[resume_line.uom]

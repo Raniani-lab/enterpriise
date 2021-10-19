@@ -63,9 +63,9 @@ Phone.include({
         if (this.mode !== 'readonly' || !window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
             return;
         }
-        ev.preventDefault();
         const canMadeVoipCall = await this._hasPbxConfig();
         if (canMadeVoipCall) {
+            ev.preventDefault();
             this._call(this.value);
         }
     },

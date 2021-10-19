@@ -137,14 +137,14 @@ class AccountMove(models.Model):
         error occurs after CAE requested, the invoice has been already validated on AFIP """
         ar_invoices = self.filtered(lambda x: x.is_invoice() and x.company_id.account_fiscal_country_id.code == "AR")
         sale_ar_invoices = ar_invoices.filtered(lambda x: x.move_type in ['out_invoice', 'out_refund'])
-        sale_ar_edi_invoices = sale_ar_invoices.filtered(lambda x: x.journal_id.l10n_ar_afip_ws)
 
         # Verify only Vendor bills (only when verification is configured as 'required')
         (ar_invoices - sale_ar_invoices)._l10n_ar_check_afip_auth_verify_required()
 
         # Send invoices to AFIP and get the return info
+        ar_edi_invoices = ar_invoices.filtered(lambda x: x.journal_id.l10n_ar_afip_ws)
         validated = error_invoice = self.env['account.move']
-        for inv in sale_ar_edi_invoices:
+        for inv in ar_edi_invoices:
 
             # If we are on testing environment and we don't have certificates we validate only locally.
             # This is useful when duplicating the production database for training purpose or others
@@ -169,7 +169,7 @@ class AccountMove(models.Model):
 
         if error_invoice:
             if error_invoice.exists():
-                msg = _('We couldn\'t validate the invoice "%s" (Draft Invoice *%s) in AFIP') % (
+                msg = _('We couldn\'t validate the document "%s" (Draft Invoice *%s) in AFIP') % (
                     error_invoice.partner_id.name, error_invoice.id)
             else:
                 msg = _('We couldn\'t validate the invoice in AFIP.')
@@ -181,11 +181,11 @@ class AccountMove(models.Model):
             if validated:
                 unprocess = self - validated - error_invoice
                 msg = _(
-                    """Some invoices where validated in AFIP but as we have an error with one invoice the batch validation was stopped
+                    """Some documents where validated in AFIP but as we have an error with one document the batch validation was stopped
 
-* These invoices were validated:
+* These documents were validated:
 %(validate_invoices)s
-* These invoices weren\'t validated:
+* These documents weren\'t validated:
 %(invalide_invoices)s
 """,
                     validate_invoices="\n   * ".join(validated.mapped('name')),
@@ -195,7 +195,7 @@ class AccountMove(models.Model):
                 )
             raise UserError(msg)
 
-        return validated + super(AccountMove, self - sale_ar_edi_invoices)._post(soft=soft)
+        return validated + super(AccountMove, self - ar_edi_invoices)._post(soft=soft)
 
     def l10n_ar_verify_on_afip(self):
         """ This method let us to connect to AFIP using WSCDC webservice to verify if a vendor bill is valid on AFIP """

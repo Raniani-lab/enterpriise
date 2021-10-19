@@ -31,8 +31,9 @@ class L10nArAfipWsConsult(models.TransientModel):
         self.available_document_type_ids = False
         with_journal = self.filtered('journal_id')
         for rec in with_journal:
-            codes = rec.journal_id._get_journal_codes()
-            rec.available_document_type_ids = self.env['l10n_latam.document.type'].search([('code', 'in', codes)]) if codes else False
+            rec.available_document_type_ids = self.env['l10n_latam.document.type'].search(
+                rec.journal_id._get_journal_codes_domain()
+            )
         remaining = self - with_journal
         remaining.available_document_type_ids = False
 

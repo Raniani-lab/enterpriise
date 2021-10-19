@@ -657,6 +657,7 @@
         </record>
 
         <record id="mod_303_casilla_61" model="account.financial.html.report.line">
+            <!--Should always be 0 since Q3 2021; replaced by grids 120, 122, 123 and 124-->
             <field name="name">[61] Operaciones no sujetas o con inversión del sujeto pasivo que originan derecho a dedución - Base ventas</field>
             <field name="code">aeat_mod_303_61</field>
             <field name="parent_id" ref="mod_303_title_16"/>
@@ -668,11 +669,59 @@
             <field name="special_date_changer">strict_range</field>
         </record>
 
+        <record id="mod_303_casilla_120" model="account.financial.html.report.line">
+            <field name="name">[120] Operaciones no sujetas por reglas de localización (excepto las incluidas en la casilla 123)</field>
+            <field name="code">aeat_mod_303_120</field>
+            <field name="parent_id" ref="mod_303_title_16"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_120'))]"/>
+            <field name="formulas">-sum</field>
+            <field name="groupby">account_id</field>
+            <field name="sequence" eval="63"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
+        <record id="mod_303_casilla_122" model="account.financial.html.report.line">
+            <field name="name">[122] Operaciones sujetas con inversión del sujeto pasivo</field>
+            <field name="code">aeat_mod_303_122</field>
+            <field name="parent_id" ref="mod_303_title_16"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_122'))]"/>
+            <field name="formulas">-sum</field>
+            <field name="groupby">account_id</field>
+            <field name="sequence" eval="64"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
+        <record id="mod_303_casilla_123" model="account.financial.html.report.line">
+            <field name="name">[123] OSS. Operaciones no sujetas por reglas de localización acogidas a la OSS</field>
+            <field name="code">aeat_mod_303_123</field>
+            <field name="parent_id" ref="mod_303_title_16"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_123'))]"/>
+            <field name="formulas">-sum</field>
+            <field name="groupby">account_id</field>
+            <field name="sequence" eval="65"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
+        <record id="mod_303_casilla_124" model="account.financial.html.report.line">
+            <field name="name">[124] OSS. Operaciones sujetas y acogidas a la OSS</field>
+            <field name="code">aeat_mod_303_124</field>
+            <field name="parent_id" ref="mod_303_title_16"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_124'))]"/>
+            <field name="formulas">-sum</field>
+            <field name="groupby">account_id</field>
+            <field name="sequence" eval="66"/>
+            <field name="level" eval="3"/>
+            <field name="special_date_changer">strict_range</field>
+        </record>
+
         <record id="mod_303_title_17" model="account.financial.html.report.line">
             <field name="name">Importes de las entregas de bienes y prestaciones de servicios a las que habiéndoles sido aplicado el régimen especial del criterio de caja hubieran resultado devengadas</field>
             <field name="code">aeat_mod_303_title_17</field>
             <field name="parent_id" ref="mod_303_title_16"/>
-            <field name="sequence" eval="63"/>
+            <field name="sequence" eval="67"/>
             <field name="level" eval="3"/>
         </record>
 
@@ -681,7 +730,7 @@
             <field name="code">aeat_mod_303_62</field>
             <field name="parent_id" ref="mod_303_title_17"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="64"/>
+            <field name="sequence" eval="68"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -691,7 +740,7 @@
             <field name="code">aeat_mod_303_63</field>
             <field name="parent_id" ref="mod_303_title_17"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="65"/>
+            <field name="sequence" eval="69"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -700,7 +749,7 @@
             <field name="name">Resultado</field>
             <field name="code">aeat_mod_303_title_18</field>
             <field name="financial_report_id" ref="mod_303"/>
-            <field name="sequence" eval="66"/>
+            <field name="sequence" eval="70"/>
             <field name="level" eval="2"/>
         </record>
 
@@ -710,7 +759,7 @@
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
             <field name="figure_type">percents</field>
-            <field name="sequence" eval="67"/>
+            <field name="sequence" eval="71"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -726,7 +775,7 @@
                 Should normally be casilla 64 * percentage in 65 (64 = sum of casillas 46, 58 and 76),
                 but only casilla 46 is in our version of the report.
             -->
-            <field name="sequence" eval="68"/>
+            <field name="sequence" eval="72"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -736,7 +785,7 @@
             <field name="code">aeat_mod_303_67</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="69"/>
+            <field name="sequence" eval="73"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -746,7 +795,7 @@
             <field name="code">aeat_mod_303_68</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="70"/>
+            <field name="sequence" eval="74"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -756,7 +805,7 @@
             <field name="code">aeat_mod_303_69</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">aeat_mod_303_66 + aeat_mod_303_77 - aeat_mod_303_78 + aeat_mod_303_68</field>
-            <field name="sequence" eval="71"/>
+            <field name="sequence" eval="75"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -766,7 +815,7 @@
             <field name="code">aeat_mod_303_70</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="72"/>
+            <field name="sequence" eval="76"/>
             <field name="level" eval="3"/>
         </record>
 
@@ -775,7 +824,7 @@
             <field name="code">aeat_mod_303_71</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">aeat_mod_303_69 - aeat_mod_303_70</field>
-            <field name="sequence" eval="73"/>
+            <field name="sequence" eval="77"/>
             <field name="level" eval="3"/>
         </record>
 
@@ -783,7 +832,7 @@
             <field name="name">Importe de las adquisiciones de bienes y servicios a las que sea de aplicación o afecte el régimen especial del criterio de caja</field>
             <field name="code">aeat_mod_303_title_19</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="sequence" eval="74"/>
+            <field name="sequence" eval="78"/>
             <field name="level" eval="3"/>
         </record>
 
@@ -791,8 +840,8 @@
             <field name="name">[74] Base imponible</field>
             <field name="code">aeat_mod_303_74</field>
             <field name="parent_id" ref="mod_303_title_19"/>
-            <field name="formulas">from_context</field>
             <field name="sequence" eval="75"/>
+            <field name="sequence" eval="79"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -802,7 +851,7 @@
             <field name="code">aeat_mod_303_75</field>
             <field name="parent_id" ref="mod_303_title_19"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="76"/>
+            <field name="sequence" eval="80"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -812,7 +861,7 @@
             <field name="code">aeat_mod_303_77</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="77"/>
+            <field name="sequence" eval="81"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -822,7 +871,7 @@
             <field name="code">aeat_mod_303_78</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="78"/>
+            <field name="sequence" eval="82"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -832,7 +881,7 @@
             <field name="code">aeat_mod_303_87</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">aeat_mod_303_110 - aeat_mod_303_78</field>
-            <field name="sequence" eval="79"/>
+            <field name="sequence" eval="83"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -842,7 +891,7 @@
             <field name="code">aeat_mod_303_110</field>
             <field name="parent_id" ref="mod_303_title_18"/>
             <field name="formulas">from_context</field>
-            <field name="sequence" eval="80"/>
+            <field name="sequence" eval="84"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
         </record>

@@ -650,11 +650,11 @@ class AEATAccountFinancialReport(models.Model):
             rslt += self._boe_format_number(casilla_lines_map[str(casilla)], length=17, decimal_places=2, signed=True, in_currency=True)
 
         # Reserved for AEAT
+        rslt += self._boe_format_number(casilla_lines_map['120'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
-        rslt += self._boe_format_number(0, length=17)
+        rslt += self._boe_format_number(casilla_lines_map['122'], length=17, decimal_places=2, signed=True, in_currency=True)
+        rslt += self._boe_format_number(casilla_lines_map['123'], length=17, decimal_places=2, signed=True, in_currency=True)
+        rslt += self._boe_format_number(casilla_lines_map['124'], length=17, decimal_places=2, signed=True, in_currency=True)
 
         # Next casillas
         for casilla in (62, 63, 74, 75):

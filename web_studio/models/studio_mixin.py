@@ -24,6 +24,12 @@ class StudioMixin(models.AbstractModel):
         return res
 
     def write(self, vals):
+        if 'display_name' in vals and len(vals) == 1 and not type(self).display_name.base_field.store:
+            # the call _compute_display_name() above performs an unexpected call
+            # to write with 'display_name', which triggers a costly registry
+            # setup when applied on ir.model or ir.model.fields.
+            return
+
         res = super(StudioMixin, self).write(vals)
 
         if self._context.get('studio') and not self._context.get('install_mode'):

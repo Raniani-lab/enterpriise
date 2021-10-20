@@ -86,6 +86,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         return line.product_uom_qty;
     }
 
+    getEditedLineParams(line) {
+        return Object.assign(super.getEditedLineParams(...arguments), { canBeDeleted: !line.product_uom_qty });
+    }
+
     nextPage() {
         this.highlightDestinationLocation = false;
         return super.nextPage(...arguments);

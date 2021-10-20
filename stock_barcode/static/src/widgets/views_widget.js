@@ -9,6 +9,7 @@ const ViewsWidget = Widget.extend({
     events: {
         'click .o_save': '_onClickSave',
         'click .o_discard': '_onClickDiscard',
+        'click .o_delete': '_onClickDelete',
         'click .o_reception_report': '_onClickReceptionReport',
     },
 
@@ -17,6 +18,7 @@ const ViewsWidget = Widget.extend({
         this.model = model;
         this.view = view;
         this.params = params || {};
+        this.canBeDeleted = this.params.canBeDeleted;
         this.mode = mode || 'edit';
         this.view_type = view_type || 'form';
         this.context = {};
@@ -114,6 +116,20 @@ const ViewsWidget = Widget.extend({
     _onClickDiscard: function (ev) {
         ev.stopPropagation();
         this.trigger_up('exit');
+    },
+
+    /**
+     * Handles the click on the `delete button`.
+     *
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickDelete: function (ev) {
+        ev.stopPropagation();
+        const record = this.controller.model.get(this.controller.handle);
+        this.controller.model.deleteRecords([record.id], this.controller.modelName).then(() => {
+            this.trigger_up('refresh');
+        });
     },
 
     /**

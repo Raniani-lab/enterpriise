@@ -422,7 +422,7 @@ class MainComponent extends Component {
         if (!line.id && virtualId) {
             line = this.env.model.pageLines.find(l => Number(l.dummy_id) === virtualId);
         }
-        this._editedLineParams = { currentId: line.id };
+        this._editedLineParams = this.env.model.getEditedLineParams(line);
         await this.openProductPage();
     }
 

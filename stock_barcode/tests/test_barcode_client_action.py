@@ -1580,6 +1580,39 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         line_owner = move_line.owner_id
         self.assertEqual(line_owner.id, self.owner.id)
 
+    def test_receipt_delete_button(self):
+        """ Scan products that not part of a receipt. Check that products not part of original receipt
+        can be deleted, but the products that are part of the original receipt cannot be deleted.
+        """
+        clean_access_rights(self.env)
+        receipt_picking = self.env['stock.picking'].create({
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+        self.env['stock.move'].create({
+            'name': 'test_receipt_1',
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.product1.uom_id.id,
+            'product_uom_qty': 1,
+            'picking_id': receipt_picking.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+        # extra product to test that deleting works
+        self.env['product.product'].create({
+            'name': 'product3',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'product3',
+        })
+
+        url = self._get_client_action_url(receipt_picking.id)
+        receipt_picking.action_confirm()
+        self.start_tour(url, 'test_receipt_delete_button', login='admin', timeout=180)
+        self.assertEqual(len(receipt_picking.move_line_ids), 2, "2 lines expected: product1 + product2")
+
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.
         """

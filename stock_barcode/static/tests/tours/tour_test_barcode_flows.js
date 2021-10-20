@@ -3815,6 +3815,58 @@ tour.register('test_picking_owner_scan_package', {test: true}, [
     },
 ]);
 
+tour.register('test_receipt_delete_button', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+    // ensure receipt's extra product CAN be deleted
+    {
+        trigger: '.o_barcode_line[data-barcode="product2"] .o_edit',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function () {
+            helper.assert($('.o_delete').length, 1);
+        },
+    },
+    {
+        trigger: '.o_discard',
+    },
+    // ensure receipt's original move CANNOT be deleted
+    {
+        trigger: '.o_barcode_line:nth-child(2) .o_edit',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function () {
+            helper.assert($('.o_delete').length, 0);
+        },
+    },
+    {
+        trigger: '.o_discard',
+    },
+    // add extra product not in original move + delete it
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product3',
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="product3"] .o_edit',
+    },
+    {
+        trigger: '.o_delete',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+]);
+
 tour.register('test_inventory_owner_scan_package', {test: true}, [
     {
         trigger: '.button_inventory',

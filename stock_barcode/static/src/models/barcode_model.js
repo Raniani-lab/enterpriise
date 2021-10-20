@@ -83,6 +83,10 @@ export default class BarcodeModel extends owl.core.EventBus {
         return 1;
     }
 
+    getEditedLineParams(line) {
+        return { currentId: line.id };
+    }
+
     async apply() {
         throw new Error('Not Implemented');
     }

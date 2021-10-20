@@ -125,7 +125,8 @@ class AccountEdiFormat(models.Model):
         def _format_float_cfdi(amount, precision):
             if amount is None or amount is False:
                 return None
-            return '%.*f' % (precision, amount)
+            # Avoid things like -0.0, see: https://stackoverflow.com/a/11010869
+            return '%.*f' % (precision, amount if amount != 0 else 0.0)
 
         company = move.company_id
         certificate = company.l10n_mx_edi_certificate_ids.sudo().get_valid_certificate()

@@ -6,18 +6,20 @@
     'category': 'Productivity/Documents',
     'summary': 'Documents Spreadsheet bundle of assets',
     'description': 'Documents Spreadsheet bundle of assets',
-    'depends': ['documents_spreadsheet'],
+    'depends': ['web'],
     'data': [],
     'demo': [],
     'application': False,
     'installable': True,
-    'auto_install': True,
+    'auto_install': False,
     'license': 'OEEL-1',
     'assets': {
         'documents_spreadsheet.o_spreadsheet': [
             'documents_spreadsheet_bundle/static/src/o_spreadsheet/o_spreadsheet.js',
             'documents_spreadsheet_bundle/static/src/**/*.js',
         ],
+        'web.assets_qweb': [
+            'documents_spreadsheet_bundle/static/src/**/*.xml',
     'web.assets_qweb': [
         'documents_spreadsheet_bundle/static/src/**/*.xml',
     ],

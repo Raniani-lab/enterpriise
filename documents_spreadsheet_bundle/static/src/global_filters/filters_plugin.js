@@ -14,9 +14,9 @@
  * @property {string} [modelName] Name of the related model
  */
 
-import spreadsheet from "../../o_spreadsheet_loader";
-import CommandResult from "../cancelled_reason";
-import { checkFiltersTypeValueCombination } from "../../helpers/helpers";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+import CommandResult from "../o_spreadsheet/cancelled_reason";
+import { checkFiltersTypeValueCombination } from "./helpers";
 
 const { UuidGenerator } = spreadsheet.helpers;
 const uuidGenerator = new UuidGenerator();

@@ -19,11 +19,10 @@
  * @property {Array<string>} rowGroupBys
  */
 
-import spreadsheet from "../../o_spreadsheet_loader";
-import PivotDataSource from "../../helpers/pivot_data_source";
-
-import { getFirstPivotFunction } from "../../helpers/odoo_functions_helpers";
-import { getMaxObjectId } from "../../helpers/helpers";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_loader";
+import { getFirstPivotFunction } from "../pivot_helpers";
+import { getMaxObjectId } from "../../o_spreadsheet/helpers";
+import PivotDataSource from "../pivot_data_source";
 
 const { astToFormula } = spreadsheet;
 
@@ -215,7 +214,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      *
      * @private
      */
-     _addPivotSource(pivotId) {
+    _addPivotSource(pivotId) {
         const definition = this.getPivotForRPC(pivotId);
         this.dataSources.add(
             `PIVOT_${pivotId}`,
@@ -240,7 +239,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
         if (data.pivots) {
             this.pivots = JSON.parse(JSON.stringify(data.pivots));
         }
-        for (const pivotId in this.pivots){
+        for (const pivotId in this.pivots) {
             this._addPivotSource(pivotId);
         }
     }

@@ -2,10 +2,14 @@
 /* global moment */
 
 import { _t } from "web.core";
-import { BasicDataSource } from "./basic_data_source";
+
+import { BasicDataSource } from "../o_spreadsheet/basic_data_source";
+import { formats } from "../o_spreadsheet/constants";
+
 import PivotCache from "./pivot_cache";
-import { formats } from "../constants";
-import { intersect } from "./helpers";
+import { intersect } from "../o_spreadsheet/helpers";
+
+
 /**
  * @typedef {import("../plugins/core/pivot_plugin").SpreadsheetPivotForRPC} SpreadsheetPivotForRPC
  * @typedef {import("./basic_data_source").Field} Field

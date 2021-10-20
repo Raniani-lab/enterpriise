@@ -3,17 +3,18 @@
 
 /**
  * @typedef {import("../../helpers/basic_data_source").Field} Field
- * @typedef {import("../core/filters_plugin").GlobalFilter} GlobalFilter
+ * @typedef {import("./filters_plugin").GlobalFilter} GlobalFilter
  */
 
 import { _t } from "web.core";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
 import Domain from "web.Domain";
-import { constructDateDomain, constructDateRange, yearSelected } from "web.searchUtils";
+import { constructDateDomain, constructDateRange, yearSelected, getPeriodOptions } from "web.searchUtils";
 import pyUtils from "web.py_utils";
-import { getPeriodOptions } from "web.searchUtils";
-import CommandResult from "../cancelled_reason";
-import { checkFiltersTypeValueCombination } from "../../helpers/helpers";
+
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+import CommandResult from "../o_spreadsheet/cancelled_reason";
+
+import { checkFiltersTypeValueCombination } from "./helpers";
 
 const MONTHS = {
     january: { value: 0, granularity: "month" },
@@ -225,12 +226,12 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         const dateFilterRange =
             filter.rangeType === "month"
                 ? constructDateRange({
-                      referenceMoment: moment(),
-                      fieldName: field,
-                      fieldType: type,
-                      granularity: "month",
-                      setParam: this._getSelectedOptions(values),
-                  })
+                    referenceMoment: moment(),
+                    fieldName: field,
+                    fieldType: type,
+                    granularity: "month",
+                    setParam: this._getSelectedOptions(values),
+                })
                 : constructDateDomain(moment(), field, type, values);
         return Domain.prototype.arrayToString(pyUtils.eval("domain", dateFilterRange.domain, {}));
     }

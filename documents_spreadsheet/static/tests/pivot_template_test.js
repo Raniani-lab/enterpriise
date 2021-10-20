@@ -29,6 +29,7 @@ import { ClientActionAdapter } from "@web/legacy/action_adapters";
 import { actionService } from "@web/webclient/actions/action_service";
 import { spreadsheetService } from "../src/actions/spreadsheet/spreadsheet_service";
 
+
 const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
 const { jsonToBase64, base64ToJson } = pivotUtils;

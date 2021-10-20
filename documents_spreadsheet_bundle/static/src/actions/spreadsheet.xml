@@ -28,7 +28,7 @@
         </Dialog>
     </div>
 
-   
+
 
     <div t-name="documents_spreadsheet.AutofillTooltip" owl="1">
         <t t-foreach="props.content" t-as="line">

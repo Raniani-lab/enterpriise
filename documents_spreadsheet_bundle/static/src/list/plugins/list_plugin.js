@@ -1,11 +1,10 @@
 /** @odoo-module */
 
-import spreadsheet from "../../o_spreadsheet_loader";
-import ListDataSource from "../../helpers/list_data_source";
-
-import CommandResult from "../cancelled_reason";
-import { getFirstListFunction } from "../../helpers/odoo_functions_helpers";
-import { getMaxObjectId } from "../../helpers/helpers";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
+import CommandResult from "../../o_spreadsheet/cancelled_reason";
+import { getFirstListFunction } from "../list_helpers";
+import { getMaxObjectId } from "../../o_spreadsheet/helpers";
+import ListDataSource from "../list_data_source";
 
 const { astToFormula } = spreadsheet;
 

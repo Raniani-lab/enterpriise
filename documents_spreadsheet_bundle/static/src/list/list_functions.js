@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { _t } from "web.core";
-import spreadsheet from "../o_spreadsheet_loader";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+
 const { args, toString, toNumber } = spreadsheet.helpers;
 const { functionRegistry } = spreadsheet.registries;
 

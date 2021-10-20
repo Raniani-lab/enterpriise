@@ -1,6 +1,7 @@
 /** @odoo-module */
 
-import { UIPlugin } from "documents_spreadsheet.spreadsheet";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+const { UIPlugin } = spreadsheet;
 
 export default class IrMenuPlugin extends UIPlugin {
     constructor(getters, history, dispatch, config) {

@@ -3,7 +3,8 @@
 import DomainSelector from "web.DomainSelector";
 import { _t } from "web.core";
 import { time_to_str } from "web.time";
-import DomainComponentAdapter from "../domain_component_adapter";
+
+import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 
 export class ListingDetailsSidePanel extends owl.Component {
     constructor() {

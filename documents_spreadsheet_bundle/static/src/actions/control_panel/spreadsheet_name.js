@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { UNTITLED_SPREADSHEET_NAME } from "../../constants";
+import { UNTITLED_SPREADSHEET_NAME } from "../../o_spreadsheet/constants";
 
 const { useState, useRef } = owl.hooks;
 

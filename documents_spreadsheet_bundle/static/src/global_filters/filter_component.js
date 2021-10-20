@@ -1,12 +1,11 @@
-/** @odoo-module alias=documents_spreadsheet.filter_component **/
+/** @odoo-module */
 
-import spreadsheet from "../o_spreadsheet_loader";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { Component } = owl;
 const { Menu } = spreadsheet;
-const { topbarComponentRegistry } = spreadsheet.registries;
 
-class FilterComponent extends Component {
+export class FilterComponent extends Component {
     get activeFilter() {
         return this.env.getters.getActiveFilterCount();
     }
@@ -20,10 +19,4 @@ FilterComponent.template = "documents_spreadsheet.FilterComponent";
 
 FilterComponent.components = { Menu };
 
-topbarComponentRegistry.add("filter_component", {
-    component: FilterComponent,
-    isVisible: (env) => {
-        return (!env.getters.isReadonly() && (env.getters.getPivotIds().length + env.getters.getListIds().length)) ||
-        (env.getters.isReadonly() && env.getters.getGlobalFilters().length)
-    },
-});
+

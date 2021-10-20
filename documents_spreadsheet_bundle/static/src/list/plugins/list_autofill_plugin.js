@@ -1,11 +1,11 @@
 /** @odoo-module */
 
 import { _t } from "web.core";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import {
     getFirstListFunction,
     getNumberOfListFormulas,
-} from "../../helpers/odoo_functions_helpers";
+} from "../list_helpers";
 
 const { astToFormula } = spreadsheet;
 

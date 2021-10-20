@@ -4,7 +4,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     "use strict";
 
     const core = require("web.core");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
     const CommandResult = require("documents_spreadsheet.CommandResult");
     const {
@@ -14,7 +14,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     const {
         ModelSelectorWidgetAdapter,
     } = require("documents_spreadsheet.model_selector_widget");
-    const { StandaloneMany2OneField } = require("@documents_spreadsheet/js/widgets/standalone_many2one_field");
+    const { StandaloneMany2OneField } = require("@documents_spreadsheet/widgets/standalone_many2one_field");
     const {
         TagSelectorWidget,
         TagSelectorWidgetAdapter,
@@ -22,11 +22,10 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     const { useService } = require("@web/core/utils/hooks");
     const _t = core._t;
     const { useState } = owl.hooks;
-    const sidePanelRegistry = spreadsheet.registries.sidePanelRegistry;
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     /**
-     * @typedef {import("../o_spreadsheet/helpers/basic_data_source").Field} Field
+     * @typedef {import("../o_spreadsheet/basic_data_source").Field} Field
      */
 
     /**
@@ -309,11 +308,6 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         TagSelectorWidgetAdapter,
         DateFilterValue,
     };
-
-    sidePanelRegistry.add("FILTERS_SIDE_PANEL", {
-        title: _t("Filter properties"),
-        Body: FilterEditorSidePanel,
-    });
 
     return FilterEditorSidePanel;
 });

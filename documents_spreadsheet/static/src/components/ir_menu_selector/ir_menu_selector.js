@@ -14,7 +14,7 @@ const STYLE = css/* scss */ `
     }
 `;
 
-class MenuSelectorWidgetAdapter extends ComponentAdapter {
+export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
         this.env = owl.Component.env;
     }

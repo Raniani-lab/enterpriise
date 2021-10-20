@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
 import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { SpreadsheetName } from "./spreadsheet_name";
 import { useService } from "@web/core/utils/hooks";
+import { SpreadsheetName } from "./spreadsheet_name";
 
-const { Component, hooks } = owl;
-const { useSubEnv } = hooks;
+const { Component } = owl;
 
 export class SpreadsheetControlPanel extends Component {
+
 
     constructor() {
         super(...arguments);

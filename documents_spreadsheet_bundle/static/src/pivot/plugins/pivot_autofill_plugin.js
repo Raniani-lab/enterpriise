@@ -2,11 +2,11 @@
 
 import core from "web.core";
 import spreadsheet from "documents_spreadsheet.spreadsheet";
-import { formats } from "../../constants";
+import { formats } from "../../o_spreadsheet/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
-} from "../../helpers/odoo_functions_helpers";
+} from "../pivot_helpers";
 
 const { astToFormula } = spreadsheet;
 const _t = core._t;

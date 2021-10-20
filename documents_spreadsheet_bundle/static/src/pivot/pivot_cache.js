@@ -3,7 +3,7 @@
 import { _t } from "web.core";
 import Domain from "web.Domain";
 import pyUtils from "web.py_utils";
-import spreadsheet from "../o_spreadsheet_loader";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_loader";
 
 const { toString } = spreadsheet.helpers;
 const functionRegistry = spreadsheet.registries.functionRegistry;

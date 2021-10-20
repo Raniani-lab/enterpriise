@@ -6,6 +6,9 @@ import Domain from "web.Domain";
 import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
+import { sprintf } from "@web/core/utils/strings"
+
+
 
 const { Component } = owl;
 
@@ -13,7 +16,7 @@ export class InsertViewSpreadsheet extends Component {
     constructor() {
         super(...arguments);
         this.model = useModel("searchModel");
-        this.spreadsheet = useService("spreadsheet");
+        this.notification = useService("notification");
     }
 
     //---------------------------------------------------------------------
@@ -39,7 +42,29 @@ export class InsertViewSpreadsheet extends Component {
      */
     async _insertInSpreadsheet({ id: spreadsheet }) {
         const actionToLink = this._getViewDescription();
-        return this.spreadsheet.insertInSpreadsheet(spreadsheet, actionToLink);
+        // do action with action link
+        let notificationMessage;
+        const actionOptions = {
+            preProcessingAction: "insertLink",
+            preProcessingActionData: actionToLink
+        };
+
+        if (!spreadsheet.id) {
+            actionOptions.alwaysCreate = true;
+            notificationMessage = this.env._t("New spreadsheet created in Documents");
+        } else {
+            actionOptions.spreadsheet_id = spreadsheet.id;
+            notificationMessage = sprintf(
+                this.env._t("New sheet inserted in '%s'"),
+                spreadsheet.name
+            );
+        }
+
+        this.notification.notify({ title: "", message: notificationMessage, type: "info" });
+        this.trigger("do-action", {
+            action: "action_open_spreadsheet",
+            options: { additional_context: actionOptions }
+        });
     }
 
     _getViewDescription() {

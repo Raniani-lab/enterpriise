@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <templates xml:space="preserve">
     <t t-name="documents_spreadsheet.PivotDialog" owl="1">
         <div class="o_missing_values_dialog">
@@ -10,7 +10,8 @@
             <PivotDialogTable  t-if="tableData.values.length > 0 or tableData.rows.length > 0"
                 colHeaders="tableData.columns"
                 rowHeaders="tableData.rows"
-                values="tableData.values" />
+                values="tableData.values"
+                t-on-cell-selected="_onCellClicked" />
 
             <div class="alert alert-info" role="alert" t-else="1"><span t-esc="props.title" /> has no cell missing from this sheet</div>
 

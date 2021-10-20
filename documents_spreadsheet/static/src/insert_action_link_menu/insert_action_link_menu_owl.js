@@ -2,7 +2,9 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
+import { sprintf } from "@web/core/utils/strings";
+
+import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog"
 
 const { Component } = owl;
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -14,7 +16,8 @@ const favoriteMenuRegistry = registry.category("favoriteMenu");
 export class InsertViewSpreadsheet extends Component {
     setup() {
         this.orm = useService("orm");
-        this.spreadsheet = useService("spreadsheet");
+        this.notification = useService("notification");
+        this.actionService = useService("action");
     }
 
     //-------------------------------------------------------------------------
@@ -32,7 +35,30 @@ export class InsertViewSpreadsheet extends Component {
      */
     async insertInSpreadsheet({ id: spreadsheet }) {
         const actionToLink = this.getViewDescription();
-        return this.spreadsheet.insertInSpreadsheet(spreadsheet, actionToLink);
+        // do action with action link
+        let notificationMessage;
+        const actionOptions = {
+            preProcessingAction: "insertLink",
+            preProcessingActionData: actionToLink
+        };
+
+        if (!spreadsheet.id) {
+            actionOptions.alwaysCreate = true;
+            notificationMessage = this.env._t("New spreadsheet created in Documents");
+        } else {
+            actionOptions.spreadsheet_id = spreadsheet.id;
+            notificationMessage = sprintf(
+                this.env._t("New sheet inserted in '%s'"),
+                spreadsheet.name
+            );
+        }
+
+        this.notification.add(notificationMessage, { type: "info" });
+        this.actionService.doAction({
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: actionOptions,
+        });
     }
 
     getViewDescription() {

@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { MAXIMUM_CELLS_TO_INSERT } from "../constants";
-import spreadsheet from "../o_spreadsheet_loader";
+import { MAXIMUM_CELLS_TO_INSERT } from "../o_spreadsheet/constants";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { createFullMenuItem } = spreadsheet.helpers;
 

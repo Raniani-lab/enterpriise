@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { PivotDetailsSidePanel } from "./pivot_details_side_panel";
+import PivotDetailsSidePanel from "./pivot_details_side_panel";
 
 export default class PivotSidePanel extends owl.Component {
     constructor() {

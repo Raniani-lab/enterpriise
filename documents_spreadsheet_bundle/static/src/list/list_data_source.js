@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { BasicDataSource } from "./basic_data_source";
+import { BasicDataSource } from "../o_spreadsheet/basic_data_source";
 import { _t } from "web.core";
 
 // -----------------------------------------------------------------------------

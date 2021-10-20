@@ -1,10 +1,8 @@
 /** @odoo-module */
 
-import spreadsheet from "../o_spreadsheet_loader";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { _lt } from "@web/core/l10n/translation";
-import { IrMenuSelector } from "../../components/ir_menu_selector/ir_menu_selector";
 
-const { cellRegistry, linkMenuRegistry } = spreadsheet.registries;
 const { LinkCell } = spreadsheet.cellTypes;
 const { isMarkdownLink, parseMarkdownLink } = spreadsheet.helpers;
 
@@ -31,7 +29,7 @@ const IR_MENU_XML_ID_PREFIX = "odoo://ir_menu_xml_id/";
  * @param {string} str
  * @returns {boolean}
  */
-function isMarkdownViewLink(str) {
+export function isMarkdownViewLink(str) {
     if (!isMarkdownLink(str)) {
         return false;
     }
@@ -44,7 +42,7 @@ function isMarkdownViewLink(str) {
  * @param {string} viewLink
  * @returns {ViewLinkDescription}
  */
-function parseViewLink(viewLink) {
+export function parseViewLink(viewLink) {
     if (viewLink.startsWith(VIEW_PREFIX)) {
         return JSON.parse(viewLink.substr(VIEW_PREFIX.length))
     }
@@ -64,7 +62,7 @@ export function buildViewLink(viewDescription) {
  * @param {string} str
  * @returns
  */
-function isMarkdownIrMenuIdLink(str) {
+export function isMarkdownIrMenuIdLink(str) {
     if (!isMarkdownLink(str)) {
         return false;
     }
@@ -77,7 +75,7 @@ function isMarkdownIrMenuIdLink(str) {
  * @param {string} irMenuLink
  * @returns ir.ui.menu record id
  */
-function parseIrMenuIdLink(irMenuLink) {
+export function parseIrMenuIdLink(irMenuLink) {
     if (irMenuLink.startsWith(IR_MENU_ID_PREFIX)) {
         return parseInt(irMenuLink.substr(IR_MENU_ID_PREFIX.length), 10);
     }
@@ -97,7 +95,7 @@ export function buildIrMenuIdLink(menuId) {
  * @param {string} str
  * @returns
  */
-function isMarkdownIrMenuXmlLink(str) {
+export function isMarkdownIrMenuXmlLink(str) {
     if (!isMarkdownLink(str)) {
         return false;
     }
@@ -110,7 +108,7 @@ function isMarkdownIrMenuXmlLink(str) {
  * @param {string} irMenuLink
  * @returns ir.ui.menu record id
  */
-function parseIrMenuXmlLink(irMenuLink) {
+export function parseIrMenuXmlLink(irMenuLink) {
     if (irMenuLink.startsWith(IR_MENU_XML_ID_PREFIX)) {
         return irMenuLink.substr(IR_MENU_XML_ID_PREFIX.length);
     }
@@ -120,11 +118,11 @@ function parseIrMenuXmlLink(irMenuLink) {
  * @param {number} menuXmlId
  * @returns
  */
-function buildIrMenuXmlLink(menuXmlId) {
+export function buildIrMenuXmlLink(menuXmlId) {
     return `${IR_MENU_XML_ID_PREFIX}${menuXmlId}`;
 }
 
-class OdooMenuLinkCell extends LinkCell {
+export class OdooMenuLinkCell extends LinkCell {
     constructor(id, content, menuId, menuName, properties = {}) {
         super(id, content, properties);
         this.urlRepresentation = menuName;
@@ -137,7 +135,7 @@ class OdooMenuLinkCell extends LinkCell {
     }
 }
 
-class OdooViewLinkCell extends LinkCell {
+export class OdooViewLinkCell extends LinkCell {
     /**
      * 
      * @param {string} id
@@ -169,55 +167,3 @@ class OdooViewLinkCell extends LinkCell {
     }
 }
 
-cellRegistry.add("OdooMenuIdLink", {
-    sequence: 65,
-    match: isMarkdownIrMenuIdLink,
-    createCell: (id, content, properties, sheetId, getters) => {
-        const { url } = parseMarkdownLink(content);
-        const menuId = parseIrMenuIdLink(url);
-        const menuName = getters.getIrMenuNameById(menuId);
-        return new OdooMenuLinkCell(id, content, menuId, menuName, properties);
-    },
-}).add("OdooMenuXmlLink", {
-    sequence: 66,
-    match: isMarkdownIrMenuXmlLink,
-    createCell: (id, content, properties, sheetId, getters) => {
-        const { url } = parseMarkdownLink(content);
-        const xmlId = parseIrMenuXmlLink(url);
-        const menuId = getters.getIrMenuIdByXmlId(xmlId);
-        const menuName = getters.getIrMenuNameByXmlId(xmlId);
-        return new OdooMenuLinkCell(id, content, menuId, menuName, properties);
-    },
-}).add("OdooIrFilterLink", {
-    sequence: 67,
-    match: isMarkdownViewLink,
-    createCell: (id, content, properties, sheetId, getters) => {
-        const { url } = parseMarkdownLink(content);
-        const actionDescription = parseViewLink(url);
-        return new OdooViewLinkCell(id, content, actionDescription, properties);
-    },
-});
-
-linkMenuRegistry.add("odooMenu", {
-    name: _lt("Link an Odoo menu"),
-    sequence: 20,
-    action: async (env) => {
-        return new Promise((resolve) => {
-            const closeDialog = env.services.dialog.add(IrMenuSelector, {
-                onMenuSelected: (menuId) => {
-                    closeDialog();
-                    const menu = env.services.menu.getMenu(menuId);
-                    const xmlId = menu.xmlid;
-                    const url = xmlId ? buildIrMenuXmlLink(xmlId) : buildIrMenuIdLink(menuId);
-                    const name = menu.name;
-                    const link = { url, label: name };
-                    resolve({
-                        link,
-                        isUrlEditable: false,
-                        urlRepresentation: name,
-                    });
-                },
-            });
-        });
-    },
-});

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "../o_spreadsheet_loader";
+import spreadsheet from "./o_spreadsheet_extended";
 import { legacyRPC } from "./helpers";
 
 const { DataSource } = spreadsheet;

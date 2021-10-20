@@ -2,7 +2,6 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
     "use strict";
 
     const core = require("web.core");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
     const {
         TagSelectorWidget,
@@ -11,11 +10,10 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
     const { getPeriodOptions } = require("web.searchUtils");
 
     const _t = core._t;
-    const sidePanelRegistry = spreadsheet.registries.sidePanelRegistry;
 
     /**
      * This is the side panel to define/edit a global filter.
-     * It can be of 3 differents type: text, date and relation.
+     * It can be of 3 different type: text, date and relation.
      */
     class GlobalFiltersSidePanel extends owl.Component {
         /**
@@ -80,11 +78,6 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
     }
     GlobalFiltersSidePanel.template = "documents_spreadsheet.GlobalFiltersSidePanel";
     GlobalFiltersSidePanel.components = { TagSelectorWidgetAdapter, DateFilterValue };
-
-    sidePanelRegistry.add("GLOBAL_FILTERS_SIDE_PANEL", {
-        title: _t("Filters"),
-        Body: GlobalFiltersSidePanel,
-    });
 
     return GlobalFiltersSidePanel;
 });

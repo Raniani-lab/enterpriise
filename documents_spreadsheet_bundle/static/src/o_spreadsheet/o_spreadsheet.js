@@ -30469,6 +30469,7 @@
     exports.DataSource = DataSource;
     exports.DispatchResult = DispatchResult;
     exports.Model = Model;
+    exports.Registry = Registry;
     exports.Revision = Revision;
     exports.SPREADSHEET_DIMENSIONS = SPREADSHEET_DIMENSIONS;
     exports.Spreadsheet = Spreadsheet;

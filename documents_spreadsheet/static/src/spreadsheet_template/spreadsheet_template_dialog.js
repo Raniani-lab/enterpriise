@@ -6,8 +6,6 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
     const Pager = require("web.Pager");
     const ActionModel = require("web.ActionModel");
 
-    const { UNTITLED_SPREADSHEET_NAME } = require("@documents_spreadsheet/constants");
-    const { getDataFromTemplate } = require("documents_spreadsheet.pivot_utils");
     const { DropPrevious } = require("web.concurrency");
 
     const { useState, useSubEnv } = owl.hooks;
@@ -94,34 +92,35 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
             if (!this._hasSelection()) return;
             this.state.isCreating = true;
             const templateId = this.state.selectedTemplateId;
-            const data =
-                templateId !== null
-                    ? await getDataFromTemplate(this.env.services.rpc, templateId)
-                    : {};
-            const name =
-                templateId !== null
-                    ? this.state.templates.find((template) => template.id === templateId).name
-                    : UNTITLED_SPREADSHEET_NAME;
-            const spreadsheetId = await this.env.services.rpc({
-                model: "documents.document",
-                method: "create",
-                args: [
-                    {
-                        name,
-                        mimetype: "application/o-spreadsheet",
-                        folder_id: this.props.folderId,
-                        handler: "spreadsheet",
-                        raw: JSON.stringify(data),
-                    },
-                ],
-                context: this.props.context,
-            });
+
             this.env.services.notification.notify({
                 type: "info",
                 message: this.env._t("New sheet saved in Documents"),
                 sticky: false,
             });
-            this.trigger("spreadsheet-created", { spreadsheetId });
+
+            const template = this.state.templates.find(
+                (template) => template.id === templateId
+            );
+            // this.env.services.action.doAction({
+            //     type: "ir.actions.client",
+            //     tag: "action_open_spreadsheet",
+            //     params: {
+            //         alwaysCreate: true,
+            //         createFromTemplateId: templateId,
+            //         createFromTemplateName: template && template.name,
+            //     }});
+            this.trigger("do_action", {
+              action: {
+                type: "ir.actions.client",
+                tag: "action_open_spreadsheet",
+                params: {
+                  alwaysCreate: true,
+                  createFromTemplateId: templateId,
+                  createFromTemplateName: template && template.name,
+                },
+              },
+            });
         }
 
         /**

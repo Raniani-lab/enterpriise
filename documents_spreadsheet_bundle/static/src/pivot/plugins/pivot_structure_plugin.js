@@ -5,16 +5,16 @@ import { _t } from "web.core";
 import Domain from "web.Domain";
 import pyUtils from "web.py_utils";
 
-import spreadsheet from "../../o_spreadsheet_loader";
-import PivotDataSource from "../../helpers/pivot_data_source";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_loader";
+import PivotDataSource from "../pivot_data_source";
 
-import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../constants";
-import PivotCache from "../../helpers/pivot_cache"; //Used for types
-import { PERIODS, formatDate } from "../../helpers/pivot_helpers";
+import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../o_spreadsheet/constants"
+import PivotCache from "../pivot_cache"; //Used for types
+import { PERIODS, formatDate } from "../pivot_helpers";
 
 /**
- * @typedef {import("../core/pivot_plugin").SpreadsheetPivot} SpreadsheetPivot
- * @typedef {import("../../helpers/basic_data_source").Field} Field
+ * @typedef {import("./pivot_plugin").SpreadsheetPivot} SpreadsheetPivot
+ * @typedef {import("../../o_spreadsheet/basic_data_source").Field} Field
  */
 export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     constructor(getters, history, dispatch, config) {

@@ -2,18 +2,13 @@
 /* global _ */
 
 import ListController from "web.ListController";
-import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
-import spreadsheet from "./o_spreadsheet/o_spreadsheet_extended";
 import { _t } from "web.core";
-import { createEmptySpreadsheet } from "./o_spreadsheet/helpers/helpers";
-import { MAXIMUM_CELLS_TO_INSERT } from "./o_spreadsheet/constants";
+import { sprintf } from "@web/core/utils/strings";
 
-/**
- * @typedef {import("./o_spreadsheet/plugins/core/list_plugin").SpreadsheetList} SpreadsheetList
- * @typedef {import("./o_spreadsheet/plugins/core/list_plugin").SpreadsheetListForRPC} SpreadsheetListForRPC
- */
+import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
+export const MAXIMUM_CELLS_TO_INSERT = 20000;
 
-const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
+
 
 ListController.include({
     async _insertListSpreadsheet() {
@@ -69,74 +64,44 @@ ListController.include({
         const data = this.model.get(this.handle);
         const columns = this._getColumnsForSpreadsheet();
         return {
-            model: data.model,
-            domain: data.domain,
-            orderBy: data.orderedBy,
-            context: data.context,
-            columns,
+            list: {
+                model: data.model,
+                domain: data.domain,
+                orderBy: data.orderedBy,
+                context: data.context,
+                columns,
+            }, fields: this.model.get(this.handle).fields
         };
     },
 
-    /**
-     * Get the function that have to be executed to insert the given list in the
-     * given spreadsheet. The returned function has to be called with the model
-     * of the spreadsheet and the dataSource of this list
-     *
-     * @private
-     *
-     * @param {SpreadsheetList} list
-     * @param {number} linesNumber
-     * @param {boolean} isNewSpreadsheet If set to false, a new sheet is
-     * inserted in the spreadsheet
-     *
-     * @returns {Function}
-     */
-    _getCallbackListInsertion(list, linesNumber, isNewSpreadsheet) {
-        return (model) => {
-            if (!isNewSpreadsheet) {
-                const sheetId = uuidGenerator.uuidv4();
-                const sheetIdFrom = model.getters.getActiveSheetId();
-                model.dispatch("CREATE_SHEET", {
-                    sheetId,
-                    position: model.getters.getVisibleSheets().length,
-                });
-                model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId });
-            }
-            list.id = model.getters.getNextListId();
-            const fields = this.model.get(this.handle).fields;
-            const types = list.columns.reduce((acc, current) => {
-                acc[current] = fields[current].type;
-                return acc;
-            }, {});
-            model.dispatch("BUILD_ODOO_LIST", {
-                sheetId: model.getters.getActiveSheetId(),
-                anchor: [0, 0],
-                list,
-                types,
-                linesNumber,
-            });
-        };
-    },
+
     /**
      * Open a new spreadsheet or an existing one and insert the list in it.
      *
      * @private
      *
      * @param {Object} params
-     * @param {Object|false} params.id Document in which the list should be inserted. False if it's a new spreadsheet
-     * @param {number} params.threshold Number of lines to insert
+     * @param {object} params.spreadsheet details of the selected document 
+     *                                  in which the pivot should be inserted. undefined if
+     *                                  it's a new sheet. Might be null is no spreadsheet was selected
+     * @param {number} params.spreadsheet.id the id of the selected spreadsheet
+     * @param {string} params.spreadsheet.name the name of the selected spreadsheet
      *
      */
     async _insertInSpreadsheet({ id: spreadsheet, threshold }) {
-        let documentId;
         let notificationMessage;
         const list = this._getListForSpreadsheet();
+        const actionOptions = {
+            preProcessingAction: "insertList",
+            preProcessingActionData: { list: list.list, threshold, fields: list.fields }
+        };
+
         if (!spreadsheet) {
-            documentId = await createEmptySpreadsheet(this._rpc.bind(this));
+            actionOptions.alwaysCreate = true;
             notificationMessage = _t("New spreadsheet created in Documents");
         } else {
-            documentId = spreadsheet.id;
-            notificationMessage = notificationMessage = _.str.sprintf(
+            actionOptions.spreadsheet_id = spreadsheet.id;
+            notificationMessage = sprintf(
                 _t("New sheet inserted in '%s'"),
                 spreadsheet.name
             );
@@ -149,10 +114,7 @@ ListController.include({
         this.do_action({
             type: "ir.actions.client",
             tag: "action_open_spreadsheet",
-            params: {
-                active_id: documentId,
-                initCallback: this._getCallbackListInsertion(list, threshold, !spreadsheet),
-            },
+            params: actionOptions,
         });
     },
 

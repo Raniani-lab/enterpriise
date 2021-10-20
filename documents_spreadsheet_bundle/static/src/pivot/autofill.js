@@ -3,13 +3,16 @@
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;
-const { autofillModifiersRegistry } = spreadsheet.registries;
 
 const UP = 0;
 const DOWN = 1;
 const LEFT = 2;
 const RIGHT = 3;
-
+//--------------------------------------------------------------------------
+// Autofill Component
+//--------------------------------------------------------------------------
+export class AutofillTooltip extends owl.Component {}
+AutofillTooltip.template = "documents_spreadsheet.AutofillTooltip";
 
 //--------------------------------------------------------------------------
 // Autofill Rules

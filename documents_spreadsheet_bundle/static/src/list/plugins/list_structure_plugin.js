@@ -1,10 +1,12 @@
 /** @odoo-module */
-import spreadsheet from "../../o_spreadsheet_loader";
+
 import Domain from "web.Domain";
 import pyUtils from "web.py_utils";
-import ListDataSource from "../../helpers/list_data_source";
 
-import { TOP_LEVEL_STYLE } from "../../constants";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
+import ListDataSource from "../list_data_source";
+
+import { TOP_LEVEL_STYLE } from "../../o_spreadsheet/constants";
 
 /**
  * @typedef {import("../core/list_plugin").SpreadsheetListForRPC} SpreadsheetListForRPC

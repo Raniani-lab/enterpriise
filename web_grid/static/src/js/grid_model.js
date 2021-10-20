@@ -4,6 +4,7 @@ odoo.define('web_grid.GridModel', function (require) {
 var AbstractModel = require('web.AbstractModel');
 var concurrency = require('web.concurrency');
 var utils = require('web.utils');
+const fieldUtils = require('web.field_utils');
 
 const { _t } = require('web.core');
 
@@ -315,6 +316,7 @@ const GridModel = AbstractModel.extend({
             });
         });
 
+        this._updateContext(results);
         this._gridData = {
             isGrouped: true,
             data: results,
@@ -353,9 +355,11 @@ const GridModel = AbstractModel.extend({
             result.rows[rowIndex].label = label;
             result.rows[rowIndex].id = id;
         });
+        const data = [result];
+        this._updateContext(data);
         this._gridData = {
             isGrouped: false,
-            data: [result],
+            data,
             totals: this._computeTotals(result.grid),
             groupBy,
             colField: this.colField,
@@ -363,6 +367,26 @@ const GridModel = AbstractModel.extend({
             range: this.currentRange.name,
             context: this.context,
         };
+    },
+    /**
+     *
+     * @param {Array<Record<string, any>>} records
+     * @returns
+     */
+    _updateContext(records) {
+        if (this.currentRange.span && this.currentRange.step && records && records.length) {
+            // then the colField should be a date/datetime and we need to check if the grid anchor is in the right place.
+            const record = records[0];
+            const previousAnchor = fieldUtils.parse.date(record.prev.grid_anchor);
+            const initialAnchor = fieldUtils.parse.date(record.initial.grid_anchor);
+            const nextAnchor = fieldUtils.parse.date(record.next.grid_anchor);
+
+            if (previousAnchor < initialAnchor && initialAnchor < nextAnchor) {
+                // then the context will be the initial one.
+                this.context = Object.assign({}, this.context, record.initial);
+            }
+        }
+        return this.context;
     },
 });
 

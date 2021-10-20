@@ -374,7 +374,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('Removing groupBy defaults to initial groupings', async function (assert) {
-        assert.expect(6);
+        assert.expect(5);
 
         var grid = await createView({
             View: GridView,
@@ -408,9 +408,6 @@ QUnit.module('Views', {
             "Should be grouped by default (Project > Task)."
         );
         assert.strictEqual(grid.$('tr:eq(3) th').text(), 'Undefined',
-            "Should be grouped by default (Project > Task)."
-        );
-        assert.strictEqual(grid.$('tr:eq(4) th').text(), 'Webocalypse Now',
             "Should be grouped by default (Project > Task)."
         );
 
@@ -673,12 +670,13 @@ QUnit.module('Views', {
     QUnit.test('editing a value [REQUIRE FOCUS]', async function (assert) {
         assert.expect(12);
 
+        const currentDate = "2017-01-25";
         var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
             arch: this.arch,
-            currentDate: "2017-01-25",
+            currentDate: currentDate,
             viewOptions: {
                 context: {some_value: 2},
             },
@@ -689,7 +687,11 @@ QUnit.module('Views', {
                 if (args.method === 'adjust_grid') {
                     assert.strictEqual(args.model, 'analytic.line',
                         'should call with correct model in env');
-                    assert.deepEqual(args.kwargs.context, {some_value: 2},
+                    assert.deepEqual(args.kwargs.context, {
+                            some_value: 2,
+                            default_date: currentDate,
+                            grid_anchor: currentDate,
+                        },
                         'should call with correct context');
                     assert.strictEqual(args.args[0].length, 0,
                         'should call method with no specific res ids');
@@ -701,7 +703,11 @@ QUnit.module('Views', {
                 execute_action: function (event) {
                     assert.strictEqual(event.data.env.model, 'analytic.line',
                         'should call with correct model in env');
-                    assert.deepEqual(event.data.env.context, {some_value: 2},
+                    assert.deepEqual(event.data.env.context, {
+                            some_value: 2,
+                            default_date: currentDate,
+                            grid_anchor: currentDate,
+                        },
                         'should call with correct context in env');
                     assert.deepEqual(event.data.env.resIDs, [1, 2, 3, 4, 5],
                         'should call with correct resIDs in env');
@@ -2021,5 +2027,39 @@ QUnit.module('Views', {
 
         grid.destroy();
     });
+
+    QUnit.test('update context to get the current date when the current date is in the range.', async function (assert) {
+        assert.expect(5);
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `
+                <grid string="Timesheet" adjustment="action" adjust_name="123">
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_toggle" options="{'factor': 0.125, 'range': [0.0, 0.5, 1.0]}"/>
+                </grid>`,
+            currentDate: "2017-01-31",
+        });
+
+        const $weekRangeButton = grid.$buttons.find('button.grid_arrow_range[data-name="week"]');
+        const $monthRangeButton = grid.$buttons.find('button.grid_arrow_range[data-name="month"]');
+        assert.hasClass($weekRangeButton,'active', 'current range is shown as active');
+        assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-31', 'the grid anchor should be the current date.');
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
+        assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-24', 'the grid anchor should move 7 days before the current one since we are in week range.');
+        await testUtils.dom.click($monthRangeButton);
+        assert.hasClass($monthRangeButton,'active', 'current range should be month one.');
+        assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-31',
+            'Since with the month range, the current day is in the range, the grid anchor should be the current date and not 7 days before the current one.');
+        grid.destroy();
+    });
+
 });
 });

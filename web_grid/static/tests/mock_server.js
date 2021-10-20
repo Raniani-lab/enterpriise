@@ -43,6 +43,7 @@ MockServer.include({
 
         // various useful dates
         var gridAnchor = moment(kwargs.context.grid_anchor || this.currentDate);
+        const currentDate = kwargs.context.grid_anchor ? moment(this.currentDate) : gridAnchor;
         var today = moment();
         var span = kwargs.range.span;
         var start = gridAnchor.clone().startOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
@@ -149,6 +150,10 @@ MockServer.include({
             next: {
                 default_date: nextAnchor,
                 grid_anchor: nextAnchor,
+            },
+            initial: {
+                default_date: currentDate.format('YYYY-MM-DD'),
+                grid_anchor: currentDate.format('YYYY-MM-DD'),
             },
         });
     },

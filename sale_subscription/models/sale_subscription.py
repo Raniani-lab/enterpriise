@@ -937,18 +937,27 @@ class SaleSubscription(models.Model):
             return True
         return False
 
-    def _recurring_create_invoice(self, automatic=False):
+    def _recurring_create_invoice(self, automatic=False, batch_size=20):
         auto_commit = self.env.context.get('auto_commit', True)
         cr = self.env.cr
         invoices = self.env['account.move']
         current_date = datetime.date.today()
+
         if len(self) > 0:
             subscriptions = self
+            need_cron_trigger = False
         else:
-            domain = [('recurring_next_date', '<=', current_date),
-                      ('template_id.payment_mode', '!=','manual'),
-                      '|', ('stage_category', '=', 'progress'), ('to_renew', '=', True)]
-            subscriptions = self.search(domain)
+            subscriptions = self.search([
+                ('recurring_next_date', '<=', current_date),
+                ('template_id.payment_mode', '!=', 'manual'),
+                '|',
+                ('stage_category', '=', 'progress'),
+                ('to_renew', '=', True),
+            ], limit=batch_size + 1)
+            need_cron_trigger = len(subscriptions) > batch_size
+            if need_cron_trigger:
+                subscriptions = subscriptions[:batch_size]
+
         if subscriptions:
             sub_data = subscriptions.read(fields=['id', 'company_id'])
             for company_id in set(data['company_id'][0] for data in sub_data):
@@ -1080,7 +1089,7 @@ class SaleSubscription(models.Model):
                                 # write() will skip resetting `recurring_invoice_day` value based on this context value
                                 subscription.with_context(skip_update_recurring_invoice_day=True).increment_period()
                                 if subscription.template_id.payment_mode == 'validate_send':
-                                    subscription.validate_and_send_invoice(new_invoice)
+                                    new_invoice.action_post()
                                 if automatic and auto_commit:
                                     cr.commit()
                         except Exception:
@@ -1089,6 +1098,33 @@ class SaleSubscription(models.Model):
                                 _logger.exception('Fail to create recurring invoice for subscription %s', subscription.code)
                             else:
                                 raise
+
+        # Retrieve the invoice to send mails.
+        self._cr.execute('''
+            SELECT
+                DISTINCT aml.move_id,
+                move.date
+            FROM account_move_line aml
+            JOIN sale_subscription subscr ON subscr.id = aml.subscription_id
+            JOIN sale_subscription_template subscr_tpl ON subscr_tpl.id = subscr.template_id
+            JOIN account_move move ON move.id = aml.move_id
+            WHERE move.state = 'posted'
+                AND move.is_move_sent IS FALSE
+                AND subscr_tpl.payment_mode = 'validate_send'
+            ORDER BY move.date DESC
+        ''')
+        invoice_to_send_ids = [row[0] for row in self._cr.fetchall()]
+
+        invoices_to_send = self.env['account.move'].browse(invoice_to_send_ids)
+        for invoice in invoices_to_send:
+            if invoice._is_ready_to_be_sent():
+                subscription = invoice.line_ids.subscription_id
+                subscription.validate_and_send_invoice(invoice)
+
+        # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.
+        if need_cron_trigger:
+            self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
+
         return invoices
 
     def send_success_mail(self, tx, invoice):

@@ -1,4 +1,6 @@
-/** @odoo-module alias=ds.Constants default=0 */
+/** @odoo-module */
+
+import { _lt } from "@web/core/l10n/translation";
 
 export const DEFAULT_LINES_NUMBER = 20;
 export const MAXIMUM_CELLS_TO_INSERT = 20000;
@@ -14,3 +16,5 @@ export const formats = {
 export const HEADER_STYLE = { fillColor: "#f2f2f2" };
 export const TOP_LEVEL_STYLE = { bold: true, fillColor: "#f2f2f2" };
 export const MEASURE_STYLE = { fillColor: "#f2f2f2", textColor: "#756f6f" };
+
+export const UNTITLED_SPREADSHEET_NAME = _lt("Untitled spreadsheet")

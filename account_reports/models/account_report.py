@@ -475,6 +475,8 @@ class AccountReport(models.AbstractModel):
         if not self.filter_analytic:
             return
 
+        options['analytic'] = True
+
         enable_analytic_accounts = self.user_has_groups('analytic.group_analytic_accounting')
         enable_analytic_tags = self.user_has_groups('analytic.group_analytic_tags')
         if not enable_analytic_accounts and not enable_analytic_tags:

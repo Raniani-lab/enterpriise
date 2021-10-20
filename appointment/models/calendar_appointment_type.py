@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from babel.dates import format_datetime
 from werkzeug.urls import url_join
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
 from odoo.tools.misc import get_lang
 from odoo.addons.base.models.res_partner import _tz_get
@@ -33,7 +33,7 @@ class CalendarAppointmentType(models.Model):
             if not result.get('name'):
                 result['name'] = _("Meeting with %s", self.env.user.name)
             if not result.get('employee_ids'):
-                result['employee_ids'] = self.env.user.employee_id.ids
+                result['employee_ids'] = [Command.set(self.env.user.employee_id.ids)]
         return result
 
     sequence = fields.Integer('Sequence', default=10)

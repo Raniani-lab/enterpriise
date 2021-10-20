@@ -57,5 +57,8 @@
         'web.assets_qweb': [
             'planning/static/src/xml/**/*',
         ],
+        'web.assets_tests': [
+            'planning/static/tests/tours/*',
+        ],
     }
 }

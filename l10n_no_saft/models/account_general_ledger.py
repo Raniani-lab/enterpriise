@@ -9,9 +9,9 @@ from odoo import api, models, tools, _
 class AccountGeneralLedger(models.AbstractModel):
     _inherit = 'account.general.ledger'
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         # OVERRIDE
-        buttons = super()._get_reports_buttons()
+        buttons = super()._get_reports_buttons(options)
         if self.env.company.account_fiscal_country_id.code == 'NO':
             buttons.append({'name': _('SAF-T'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
         return buttons

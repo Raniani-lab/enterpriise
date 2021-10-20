@@ -148,9 +148,9 @@ class L10nARVatBook(models.AbstractModel):
         filename = {'sale': 'Libro_IVA_Ventas', 'purchase': 'Libro_IVA_Compras'}.get(journal_type, 'Libro_IVA')
         return "%s_%s" % (filename, options['date']['date_to'])
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         """ Add buttons to print the txt files used for AFIP to report the vat books """
-        buttons = super(L10nARVatBook, self)._get_reports_buttons()
+        buttons = super(L10nARVatBook, self)._get_reports_buttons(options)
         buttons += [{'name': _('VAT Book (ZIP)'), 'sequence': 3, 'action': 'export_vat_book_files', 'file_export_type': _('ZIP')}]
         return buttons
 

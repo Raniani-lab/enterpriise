@@ -10,10 +10,10 @@ _logger = logging.getLogger(__name__)
 class AccountGeneralLedger(models.AbstractModel):
     _inherit = "account.general.ledger"
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         """ Add the Export (XML Polizas) Button to the General Ledger """
-        buttons = super()._get_reports_buttons()
-        if self.env.company.account_tax_fiscal_country_id.code == 'MX':
+        buttons = super()._get_reports_buttons(options)
+        if self.env.company.account_fiscal_country_id.code == 'MX':
             buttons.append({
                 'name': _('XML (Polizas)'),
                 'sequence': 3,

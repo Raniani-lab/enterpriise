@@ -184,9 +184,6 @@ class Appointment(http.Controller):
         if description_bits:
             description = '<ul>' + ''.join(['<li>%s</li>' % bit for bit in description_bits]) + '</ul>'
 
-        categ_id = request.env.ref('appointment.calendar_event_type_data_online_appointment')
-        alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
-        partner_ids = list(set([employee.user_id.partner_id.id] + [Partner.id]))
         # FIXME AWA/TDE double check this and/or write some tests to ensure behavior
         # The 'mail_notify_author' is only placed here and not in 'calendar.attendee#_send_mail_to_attendees'
         # Because we only want to notify the author in the context of Online Appointments
@@ -194,7 +191,20 @@ class Appointment(http.Controller):
         event = request.env['calendar.event'].with_context(
             mail_notify_author=True,
             allowed_company_ids=employee.user_id.company_ids.ids,
-        ).sudo().create({
+        ).sudo().create(
+                self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, name, employee, Partner)
+            )
+        event.attendee_ids.write({'state': 'accepted'})
+        return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
+
+    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, name, employee, partner):
+        """
+        prepares all values needed to create a new calendar.event
+        """
+        categ_id = request.env.ref('appointment.calendar_event_type_data_online_appointment')
+        alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
+        partner_ids = list(set([employee.user_id.partner_id.id] + [partner.id]))
+        return {
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),
             # FIXME master
@@ -213,9 +223,7 @@ class Appointment(http.Controller):
             'categ_ids': [(4, categ_id.id, False)],
             'appointment_type_id': appointment_type.id,
             'user_id': employee.user_id.id,
-        })
-        event.attendee_ids.write({'state': 'accepted'})
-        return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
+        }
 
     @http.route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
     def calendar_appointment_view(self, access_token, partner_id, state=False, **kwargs):

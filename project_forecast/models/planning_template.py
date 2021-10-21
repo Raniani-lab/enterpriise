@@ -6,11 +6,20 @@ from odoo import fields, models, api
 class PlanningTemplate(models.Model):
     _inherit = 'planning.slot.template'
 
-    project_id = fields.Many2one('project.project', compute='_compute_project_id',
-                                 store=True, readonly=False, string="Project",
+    project_id = fields.Many2one('project.project', string="Project",
                                  company_dependent=True, domain="[('allow_forecast', '=', True)]")
     task_id = fields.Many2one('project.task', string="Task",
                               company_dependent=True, domain="[('project_id', '=?', project_id)]")
+
+    @api.onchange('project_id')
+    def _onchange_project_id(self):
+        if self.task_id.project_id != self.project_id:
+            self.task_id = False
+
+    @api.onchange('task_id')
+    def _onchange_task_id(self):
+        if self.task_id:
+            self.project_id = self.task_id.project_id
 
     def name_get(self):
         name_template = super(PlanningTemplate, self).name_get()
@@ -25,9 +34,3 @@ class PlanningTemplate(models.Model):
                 name = name_dict[shift_template.id]
             result.append([shift_template.id, name])
         return result
-
-    @api.depends('task_id')
-    def _compute_project_id(self):
-        for slot in self:
-            if slot.task_id:
-                slot.project_id = slot.task_id.project_id

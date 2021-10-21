@@ -69,7 +69,7 @@ class TestApprovalsPurchase(TestApprovalsCommon):
         self.assertEqual(request_purchase.purchase_order_count, 0)
         # Edit mouse product to add a vendor, then try again.
         self.product_mouse.seller_ids = [(0, 0, {
-            'name': self.partner_seller_1.id,
+            'partner_id': self.partner_seller_1.id,
             'min_qty': 1,
             'price': 15,
         })]
@@ -225,7 +225,7 @@ class TestApprovalsPurchase(TestApprovalsCommon):
         order line or edit the product quantity of the order line. """
         # Add seller for product mouse.
         self.product_mouse.seller_ids = [(0, 0, {
-            'name': self.partner_seller_1.id,
+            'partner_id': self.partner_seller_1.id,
             'min_qty': 1,
             'price': 15,
         })]
@@ -320,7 +320,7 @@ class TestApprovalsPurchase(TestApprovalsCommon):
         })
         # Set price vendor with currency_b.
         self.product_mouse.seller_ids = [(0, 0, {
-            'name': self.partner_seller_1.id,
+            'partner_id': self.partner_seller_1.id,
             'min_qty': 1,
             'price': 5,
             'currency_id': currency_b.id,

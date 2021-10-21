@@ -35,17 +35,17 @@ class TestApprovalsCommon(TransactionCase):
             'name': 'Laptop',
             'seller_ids': [
                 (0, 0, {
-                    'name': cls.partner_seller_1.id,
+                    'partner_id': cls.partner_seller_1.id,
                     'min_qty': 1,
                     'price': 250,
                 }),
                 (0, 0, {
-                    'name': cls.partner_seller_2.id,
+                    'partner_id': cls.partner_seller_2.id,
                     'min_qty': 1,
                     'price': 260,
                 }),
                 (0, 0, {
-                    'name': cls.partner_seller_2.id,
+                    'partner_id': cls.partner_seller_2.id,
                     'min_qty': 10,
                     'price': 230,
                 }),
@@ -55,7 +55,7 @@ class TestApprovalsCommon(TransactionCase):
             'name': 'Earphone',
             'seller_ids': [
                 (0, 0, {
-                    'name': cls.partner_seller_1.id,
+                    'partner_id': cls.partner_seller_1.id,
                     'min_qty': 1,
                     'price': 8,
                 }),

@@ -240,7 +240,7 @@ class TestMpsMps(common.TransactionCase):
             'name': 'Jhon'
         })
         seller = self.env['product.supplierinfo'].create({
-            'name': partner.id,
+            'partner_id': partner.id,
             'price': 12.0,
             'delay': 0
         })
@@ -297,7 +297,7 @@ class TestMpsMps(common.TransactionCase):
             'name': 'Jhon'
         })
         seller = self.env['product.supplierinfo'].create({
-            'name': partner.id,
+            'partner_id': partner.id,
             'price': 12.0,
             'delay': 7,
         })

@@ -458,7 +458,7 @@ class FetchmailServer(models.Model):
         4) if 3 previous criteria fail, check product name, and return false if fails
         """
         if partner_id:
-            supplier_info_domain = [('name', '=', partner_id), ('company_id', 'in', [company_id, False])]
+            supplier_info_domain = [('partner_id', '=', partner_id), ('company_id', 'in', [company_id, False])]
             if product_code:
                 # 1st criteria
                 supplier_info_domain.append(('product_code', '=', product_code))

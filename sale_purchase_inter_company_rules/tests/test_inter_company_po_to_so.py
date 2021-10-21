@@ -147,13 +147,13 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommonSOPO):
             'company_id': False,
             'seller_ids': [
                 (0, 0, {
-                    'name': self.company_a.partner_id.id,
+                    'partner_id': self.company_a.partner_id.id,
                     'min_qty': 1,
                     'price': 250,
                     'company_id': self.company_b.id,
                 }),
                 (0, 0, {
-                    'name': supplier.id,
+                    'partner_id': supplier.id,
                     'min_qty': 1,
                     'price': 200,
                     'company_id': self.company_a.id,

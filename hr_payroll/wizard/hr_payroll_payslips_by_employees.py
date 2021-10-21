@@ -56,7 +56,8 @@ class HrPayslipEmployees(models.TransientModel):
             calendar_end = pytz.utc.localize(datetime.combine(min(contract.date_end or date.max, payslip_run.date_end), time.max))
             outside = contract.resource_calendar_id._attendance_intervals_batch(calendar_start, calendar_end)[False] - work_entries._to_intervals()
             if outside:
-                raise UserError(_("Some part of %s's calendar is not covered by any work entry. Please complete the schedule.", contract.employee_id.name))
+                time_intervals_str = "\n - ".join(['', *["%s -> %s" % (s[0], s[1]) for s in outside._items]])
+                raise UserError(_("Some part of %s's calendar is not covered by any work entry. Please complete the schedule. Time intervals to look for:%s") % (contract.employee_id.name, time_intervals_str))
 
     def compute_sheet(self):
         self.ensure_one()
@@ -110,11 +111,20 @@ class HrPayslipEmployees(models.TransientModel):
         if(self.structure_id.type_id.default_struct_id == self.structure_id):
             work_entries = work_entries.filtered(lambda work_entry: work_entry.state != 'validated')
             if work_entries._check_if_error():
+                work_entries_by_contract = defaultdict(lambda: self.env['hr.work.entry'])
+
+                for work_entry in work_entries.filtered(lambda w: w.state == 'conflict'):
+                    work_entries_by_contract[work_entry.contract_id] |= work_entry
+
+                for contract, work_entries in work_entries_by_contract.items():
+                    conflicts = work_entries._to_intervals()
+                    time_intervals_str = "\n - ".join(['', *["%s -> %s" % (s[0], s[1]) for s in conflicts._items]])
                 return {
                     'type': 'ir.actions.client',
                     'tag': 'display_notification',
                     'params': {
                         'title': _('Some work entries could not be validated.'),
+                        'message': _('Time intervals to look for:%s', time_intervals_str),
                         'sticky': False,
                     }
                 }

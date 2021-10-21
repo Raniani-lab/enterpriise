@@ -5,7 +5,7 @@ import json
 import pytz
 
 from babel.dates import format_datetime, format_date
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from werkzeug.exceptions import NotFound
 
@@ -17,6 +17,20 @@ from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
 from odoo.tools.misc import babel_locale_parse, get_lang
 
+def _formated_weekdays(locale):
+    """ Return the weekdays' name for the current locale
+        from Mon to Sun.
+        :param locale: locale
+    """
+    formated_days = [
+        format_date(date(2021, 3, day), 'EEE', locale=locale)
+        for day in range(1, 8)
+    ]
+    # Get the first weekday based on the lang used on the website
+    first_weekday_index = babel_locale_parse(locale).first_week_day
+    # Reorder the list of days to match with the first weekday
+    formated_days = list(formated_days[first_weekday_index:] + formated_days)[:7]
+    return formated_days
 
 class Appointment(http.Controller):
 
@@ -71,21 +85,19 @@ class Appointment(http.Controller):
 
     @route(['/calendar/<model("calendar.appointment.type"):appointment_type>'],
            type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment_type(self, appointment_type, filter_staff_user_ids=None, timezone=None, state=False, **kwargs):
+    def calendar_appointment_type(self, appointment_type, filter_staff_user_ids=None, state=False, **kwargs):
         """
         Render the appointment information alongside the calendar for the slot selection
 
         :param appointment_type: the appointment type we are currently on
         :param filter_staff_user_ids: the users that will be displayed for the appointment registration, if not given
             all users set for the appointment type are used
-        :param timezone: the timezone used to display the available slots
         :param state: the type of message that will be displayed in case of an error/info. Possible values:
             - cancel: Info message to confirm that an appointment has been canceled
             - failed-staff-user: Error message displayed when the slot has been taken while doing the registration
             - failed-partner: Info message displayed when the partner has already an event in the time slot selected
         """
         appointment_type = appointment_type.sudo()
-        request.session['timezone'] = timezone or appointment_type.appointment_tz
 
         filtered_staff_user_ids = self._get_filtered_staff_user_ids(appointment_type, filter_staff_user_ids, **kwargs)
 
@@ -94,6 +106,7 @@ class Appointment(http.Controller):
         else:
             suggested_staff_users = appointment_type.staff_user_ids.filtered(lambda staff_user: staff_user.id in filtered_staff_user_ids)
 
+        request.session.timezone = self._get_default_timezone(appointment_type)
         slots = appointment_type._get_appointment_slots(
             request.session['timezone'],
             suggested_staff_users[0] if suggested_staff_users else request.env['res.users']
@@ -147,7 +160,7 @@ class Appointment(http.Controller):
         :param appointment_type: the appointment type related
         :param staff_user_id: the user selected for the appointment
         :param date_time: the slot datetime selected for the appointment
-        :param fitler_appointment_type_ids: see ``Appointment.calendar_appointments()`` route
+        :param filter_appointment_type_ids: see ``Appointment.calendar_appointments()`` route
         """
         partner = self._get_customer_partner()
         partner_data = partner.read(fields=['name', 'mobile', 'email'])[0] if partner else {}
@@ -262,6 +275,15 @@ class Appointment(http.Controller):
             country = request.env.user.country_id if not request.env.user._is_public() else country
         return country
 
+    def _get_default_timezone(self, appointment_type):
+        """
+            Find the default timezone from the geoip lib or fallback on the user or the visitor
+        """
+        timezone = appointment_type.appointment_tz if appointment_type.location else request.httprequest.cookies.get('tz')
+        if not timezone:
+            timezone = appointment_type.appointment_tz
+        return timezone
+
     def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, name, staff_user, partner):
         """
         prepares all values needed to create a new calendar.event
@@ -315,9 +337,12 @@ class Appointment(http.Controller):
         staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)) if staff_user_id else None
         slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], staff_user)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), 0)
+        formated_days = _formated_weekdays(get_lang(request.env).code)
 
         return request.env.ref('appointment.appointment_calendar')._render({
             'appointment_type': appointment_type,
+            'timezone': request.session['timezone'],
+            'formated_days': formated_days,
             'slots': slots,
             'month_first_available': month_first_available,
         })

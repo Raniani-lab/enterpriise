@@ -185,29 +185,19 @@
                         </tr>
                     </table>
                 </div>
-                <div id="timezoneSelection" class="mt-lg-0 px-1 px-md-3 mt-3">
-                    <span>Time displayed in <strong t-out="request.session['timezone']"/> timezone</span>
-                </div>
-            </div>
-            <div id="slotsList" class="o_appointment_availabilities col-lg-4"/>
-        </div>
-    </template>
-
-    <template id="appointment_select_timezone" inherit_id="appointment.appointment_calendar" active="False" customize_show="True" name="Allow Tz Choice">
-        <xpath expr="//div[@id='timezoneSelection']" position="replace">
-            <div id="timezoneSelection" class="mt-lg-0 mt-3">
-                <div class="d-flex">
-                    <label for="timezone" class="col-form-label"><strong>Timezone</strong></label>
-                    <div class="mx-2">
-                        <select class="form-control" name="timezone">
-                            <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="timezone">
-                                <option t-att-value="timezone[0]" t-out="timezone[1]" t-att-selected="(timezone[1] == request.session.timezone) and 1 or None"/>
+                <div class="mt-lg-0 mt-3">
+                    <div class="d-flex">
+                        <label for="timezone" class="col-form-label">Timezone: </label>
+                        <select class="text-primary form-control border-0 px-1" id="timezone" name="timezone" style="cursor: pointer; appearance:none">
+                            <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="tz">
+                                <option t-att-value="tz[0]" t-out="tz[1]" t-att-selected="(tz[0] == timezone) or None" />
                             </t>
                         </select>
                     </div>
                 </div>
             </div>
-        </xpath>
+            <div id="slotsList" class="o_appointment_availabilities col-lg-4"/>
+        </div>
     </template>
 
 </odoo>

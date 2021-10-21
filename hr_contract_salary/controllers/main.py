@@ -105,7 +105,7 @@ class SignContract(Sign):
                         'partner_id': contract.hr_responsible_id.partner_id.id
                     }],
                     followers=[contract.hr_responsible_id.partner_id.id],
-                    refererence=_('Signature Request - %s', advantage.name or contract.name),
+                    reference=_('Signature Request - %s', advantage.name or contract.name),
                     subject=_('Signature Request - %s', advantage.name or contract.name),
                     message='',
                     send=False)

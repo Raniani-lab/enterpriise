@@ -19,16 +19,13 @@ QUnit.module('chat_window_manager_tests.js', {
         beforeEach(this);
 
         this.start = async params => {
-            const { env, widget } = await start(Object.assign(
+            return start(Object.assign(
                 {
                     data: this.data,
                     hasChatWindow: true,
-                    hasMessagingMenu: true,
                 },
                 params,
             ));
-            this.env = env;
-            this.widget = widget;
         };
     },
     afterEach() {
@@ -79,13 +76,14 @@ QUnit.test('[technical] chat window should properly override the back button', a
     this.data['mail.channel'].records.push({
         id: 20,
     });
-    await this.start({
+    const { createMessagingMenuComponent } = await this.start({
         env: {
             device: {
                 isMobile: true,
             },
         },
     });
+    await createMessagingMenuComponent();
     await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());
     await afterNextRender(() =>
         document.querySelector(`.o_MessagingMenu_dropdownMenu .o_NotificationList_preview`).click()

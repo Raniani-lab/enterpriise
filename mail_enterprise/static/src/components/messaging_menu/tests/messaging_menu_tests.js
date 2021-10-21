@@ -19,15 +19,10 @@ QUnit.module('messaging_menu_tests.js', {
         beforeEach(this);
 
         this.start = async params => {
-            const { env, widget } = await start(Object.assign(
-                {
-                    data: this.data,
-                    hasMessagingMenu: true,
-                },
+            return start(Object.assign(
+                { data: this.data },
                 params,
             ));
-            this.env = env;
-            this.widget = widget;
         };
     },
     afterEach() {
@@ -42,8 +37,8 @@ QUnit.test("'backbutton' event should close messaging menu", async function (ass
     mock.patch(methods, {
         overrideBackButton({ enabled }) {},
     });
-
-    await this.start();
+    const { createMessagingMenuComponent } = await this.start();
+    await createMessagingMenuComponent();
     await afterNextRender(() => document.querySelector('.o_MessagingMenu_toggler').click());
 
     await afterNextRender(() => {
@@ -71,14 +66,14 @@ QUnit.test('[technical] messaging menu should properly override the back button'
             assert.step(`overrideBackButton: ${enabled}`);
         },
     });
-
-    await this.start({
+    const { createMessagingMenuComponent } = await this.start({
         env: {
             device: {
                 isMobile: true,
             },
         },
     });
+    await createMessagingMenuComponent();
 
     await afterNextRender(() =>
         document.querySelector('.o_MessagingMenu_toggler').click()

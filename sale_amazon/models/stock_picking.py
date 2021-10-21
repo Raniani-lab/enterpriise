@@ -44,7 +44,7 @@ class StockPicking(models.Model):
             # To assess the completion of a sales order line, we group related moves together and
             # sum the total demand and done quantities.
             sales_order_lines_completion = {}
-            for move in picking.move_lines.filtered('sale_line_id.amazon_item_ref'):
+            for move in picking.move_ids.filtered('sale_line_id.amazon_item_ref'):
                 completion = sales_order_lines_completion.setdefault(move.sale_line_id, [0, 0])
                 completion[0] += move.product_uom_qty
                 completion[1] += move.quantity_done
@@ -157,7 +157,7 @@ class StockPicking(models.Model):
         """
         self.ensure_one()
 
-        return self.move_lines.filtered(
+        return self.move_ids.filtered(
             lambda m: m.sale_line_id.amazon_item_ref  # Only consider moves for Amazon products
             and m.quantity_done > 0  # Only notify Amazon for shipped products
             and m.quantity_done == m.product_uom_qty  # Only consider fully shipped products

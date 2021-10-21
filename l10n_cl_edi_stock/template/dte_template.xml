@@ -51,7 +51,7 @@
                 </Totales>
             </Encabezado>
         <t t-set="line_number" t-value="1"/>
-        <t t-foreach="picking.move_lines" t-as="line">
+        <t t-foreach="picking.move_ids" t-as="line">
             <t t-set="line_amounts" t-value="total_line_amounts.get(line, {})"/>
             <Detalle>
                 <NroLinDet t-esc="line_number"/>

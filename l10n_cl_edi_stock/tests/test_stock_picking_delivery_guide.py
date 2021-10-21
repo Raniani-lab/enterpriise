@@ -100,8 +100,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
         picking = sale_order.picking_ids[0]
         picking.action_assign()
-        picking.move_lines[0].write({'quantity_done': 10})
-        picking.move_lines[1].write({'quantity_done': 1})
+        picking.move_ids[0].write({'quantity_done': 10})
+        picking.move_ids[1].write({'quantity_done': 1})
         picking.button_validate()
 
         picking.create_delivery_guide()
@@ -153,8 +153,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
         picking = sale_order.picking_ids[0]
         picking.action_assign()
-        picking.move_lines[0].write({'quantity_done': 5})
-        picking.move_lines[1].write({'quantity_done': 10})
+        picking.move_ids[0].write({'quantity_done': 5})
+        picking.move_ids[1].write({'quantity_done': 10})
         picking.button_validate()
 
         picking.create_delivery_guide()
@@ -200,7 +200,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
         picking = sale_order.picking_ids[0]
         picking.action_assign()
-        picking.move_lines[0].write({'quantity_done': 3})
+        picking.move_ids[0].write({'quantity_done': 3})
         picking.button_validate()
 
         picking.create_delivery_guide()

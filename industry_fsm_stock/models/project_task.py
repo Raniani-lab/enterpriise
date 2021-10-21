@@ -57,7 +57,7 @@ class Task(models.Model):
         self.env['stock.move.line'].create(ml_to_create)
 
         def is_fsm_material_picking(picking, task):
-            for move in picking.move_lines:
+            for move in picking.move_ids:
                 while move.move_dest_ids:
                     move = move.move_dest_ids
                 sol = move.sale_line_id
@@ -72,7 +72,7 @@ class Task(models.Model):
 
         pickings_to_do = self.sale_order_id.picking_ids.filtered(lambda p: p.state not in ['done', 'cancel'] and is_fsm_material_picking(p, self))
         # set the quantity done as the initial demand before validating the pickings
-        for move in pickings_to_do.move_lines:
+        for move in pickings_to_do.move_ids:
             if move.state in ('done', 'cancel') or move in all_fsm_sn_moves:
                 continue
             rounding = move.product_uom.rounding

@@ -47,7 +47,7 @@ class StockPicking(models.Model):
             return res
         for backorder in res:
             backorder.backorder_id.check_ids.filtered(lambda qc: qc.quality_state == 'none').unlink()
-            backorder.move_lines._create_quality_checks()
+            backorder.move_ids._create_quality_checks()
         return res
 
     def _action_done(self):

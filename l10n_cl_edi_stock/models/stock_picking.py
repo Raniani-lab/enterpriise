@@ -208,7 +208,7 @@ class Picking(models.Model):
                               'create the delivery guide', self.l10n_latam_document_type_id.code))
 
     def _l10n_cl_edi_prepare_values(self):
-        move_lines = self.move_lines
+        move_ids = self.move_ids
         values = {
             'format_vat': self._l10n_cl_format_vat,
             'format_length': self._format_length,
@@ -222,7 +222,7 @@ class Picking(models.Model):
             'rsr_value': self._format_length(self.partner_id.name, 40),
             'mnt_value': float_repr(self._l10n_cl_get_tax_amounts()[0]['total_amount'], 0),
             'picking': self,
-            'it1_value': self._format_length(move_lines[0].product_id.name, 40) if move_lines else '',
+            'it1_value': self._format_length(move_ids[0].product_id.name, 40) if move_ids else '',
         }
         return values
 
@@ -249,7 +249,7 @@ class Picking(models.Model):
             guide_price = "product"
         max_vat_perc = 0.0
         move_retentions = self.env['account.tax']
-        for move in self.move_lines:
+        for move in self.move_ids:
             if guide_price == "product" or not move.sale_line_id:
                 taxes = move.product_id.taxes_id.filtered(lambda t: t.company_id == self.company_id)
                 price = move.product_id.lst_price

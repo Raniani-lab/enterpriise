@@ -184,7 +184,7 @@
                             <t t-set="prepared_amounts" t-value="o._prepare_pdf_values()"/>
                             <t t-set="has_unit_price" t-value="prepared_amounts['has_unit_price']"/>
                             <t t-set="has_discount" t-value="prepared_amounts['has_discount']"/>
-                            <table class="table table-sm" t-if="o.move_lines">
+                            <table class="table table-sm" t-if="o.move_ids">
                                 <thead>
                                     <tr>
                                         <th name="th_code">
@@ -214,7 +214,7 @@
                                 <tbody>
                                     <t t-set="total_line_amounts" t-value="prepared_amounts.get('total_line_amounts', {})"/>
                                     <t t-set="float_repr" t-value="prepared_amounts['float_repr']"/>
-                                    <t t-foreach="o.move_lines" t-as="line">
+                                    <t t-foreach="o.move_ids" t-as="line">
                                         <t t-set="line_amounts" t-value="total_line_amounts.get(line, {})"/>
                                         <tr>
                                             <td>

@@ -79,7 +79,7 @@
                     <field name="priority" readonly="1" attrs="{'invisible': [('priority', '=', False)]}"/>
                     <field name="owner_id" readonly="1" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner"/>
                     <field name="company_id" readonly="1" groups="base.group_multi_company"/>
-                    <field name="move_lines" readonly="1" attrs="{'invisible': [('move_lines', '=', False)]}">
+                    <field name="move_ids" readonly="1" attrs="{'invisible': [('move_ids', '=', False)]}">
                         <tree>
                             <field name="product_id"/>
                             <field name="description_picking" string="Description"/>

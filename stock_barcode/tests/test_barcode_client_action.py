@@ -761,7 +761,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         delivery_picking.action_confirm()
         delivery_picking.action_assign()
-        self.assertEqual(len(delivery_picking.move_lines), 2)
+        self.assertEqual(len(delivery_picking.move_ids), 2)
 
         self1 = self
 
@@ -868,8 +868,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         delivery_picking.action_confirm()
         delivery_picking.action_assign()
-        self.assertEqual(delivery_picking.move_lines.state, 'assigned')
-        self.assertEqual(len(delivery_picking.move_lines.move_line_ids), 2)
+        self.assertEqual(delivery_picking.move_ids.state, 'assigned')
+        self.assertEqual(len(delivery_picking.move_ids.move_line_ids), 2)
 
         self.start_tour(url, 'test_delivery_reserved_lots_1', login='admin', timeout=180)
 
@@ -929,7 +929,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery_picking.action_confirm()
         delivery_picking.action_assign()
 
-        self.assertEqual(len(delivery_picking.move_lines), 2)
+        self.assertEqual(len(delivery_picking.move_ids), 2)
 
         self.start_tour(url, 'test_delivery_different_products_with_same_lot_name', login='admin', timeout=180)
 
@@ -1644,8 +1644,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_gs1_reserved_delivery', login='admin', timeout=180)
 
         self.assertEqual(delivery.state, 'done')
-        self.assertEqual(len(delivery.move_lines), 1)
-        self.assertEqual(delivery.move_lines.product_qty, 14)
+        self.assertEqual(len(delivery.move_ids), 1)
+        self.assertEqual(delivery.move_ids.product_qty, 14)
         self.assertEqual(len(delivery.move_line_ids), 2)
         self.assertEqual(delivery.move_line_ids[0].qty_done, 10)
         self.assertEqual(delivery.move_line_ids[1].qty_done, 4)
@@ -1811,8 +1811,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         url = self._get_client_action_url(receipt.id)
         self.start_tour(url, 'test_gs1_receipt_quantity_with_uom', login='admin', timeout=180)
         # Checks the moves' quantities and UoM.
-        self.assertTrue(len(receipt.move_lines), 3)
-        move1, move2, move3 = receipt.move_lines
+        self.assertTrue(len(receipt.move_ids), 3)
+        move1, move2, move3 = receipt.move_ids
         self.assertTrue(move1.product_id.id, product_by_units.id)
         self.assertTrue(move1.quantity_done, 4)
         self.assertTrue(move1.product_uom.id, uom_unit.id)

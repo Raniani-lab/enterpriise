@@ -8,11 +8,13 @@ from dateutil.relativedelta import relativedelta
 @tagged('post_install', '-at_install', 'contract_schedule_change')
 class TestContractScheduleChange(TransactionCase):
 
-    def setUp(self):
-        self.employee = self.env['hr.employee'].create({
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.employee = cls.env['hr.employee'].create({
             'name': 'Richard',
         })
-        self.calendars = self.env['resource.calendar'].create([
+        cls.calendars = cls.env['resource.calendar'].create([
             {'name': 'Calendar 1', 'full_time_required_hours': 40},
             {'name': 'Calendar 2', 'full_time_required_hours': 50},
             {'name': 'Calendar 3', 'full_time_required_hours': 60},

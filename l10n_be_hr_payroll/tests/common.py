@@ -111,23 +111,18 @@ class TestPayrollCommon(TransactionCase):
         })
         cls.resource_calendar_30_hours_per_week._onchange_hours_per_day()
 
-    def setUp(self):
-        super(TestPayrollCommon, self).setUp()
-
-        today = date.today()
-
-        address_home_georges = self.env['res.partner'].create({
+        address_home_georges = cls.env['res.partner'].create({
             'name': 'Georges',
-            'company_id': self.belgian_company.id,
+            'company_id': cls.belgian_company.id,
             'type': 'private',
-            'country_id': self.env.ref('base.be').id
+            'country_id': cls.env.ref('base.be').id
         })
 
-        self.employee_georges = self.env['hr.employee'].create({
+        cls.employee_georges = cls.env['hr.employee'].create({
             'name': 'Georges',
             'address_home_id': address_home_georges.id,
-            'resource_calendar_id': self.resource_calendar.id,
-            'company_id': self.belgian_company.id,
+            'resource_calendar_id': cls.resource_calendar.id,
+            'company_id': cls.belgian_company.id,
             'marital': "single",
             'spouse_fiscal_status': "without_income",
             'disabled': False,
@@ -142,12 +137,12 @@ class TestPayrollCommon(TransactionCase):
             'has_bicycle': False
         })
 
-        first_contract_georges = self.env['hr.contract'].create({
+        first_contract_georges = cls.env['hr.contract'].create({
             'name': "Georges's contract",
-            'employee_id': self.employee_georges.id,
-            'resource_calendar_id': self.resource_calendar.id,
-            'company_id': self.belgian_company.id,
-            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
+            'employee_id': cls.employee_georges.id,
+            'resource_calendar_id': cls.resource_calendar.id,
+            'company_id': cls.belgian_company.id,
+            'structure_type_id': cls.env.ref('hr_contract.structure_type_employee_cp200').id,
             'date_start': date(today.year - 2, 1, 1),
             'date_end': date(today.year - 2, 12, 31),
             'wage': 2500.0,
@@ -167,139 +162,139 @@ class TestPayrollCommon(TransactionCase):
             'fiscal_voluntary_rate': 0.0
         })
 
-        self.georges_contracts = first_contract_georges
+        cls.georges_contracts = first_contract_georges
 
-        self.georges_contracts |= first_contract_georges.copy({
+        cls.georges_contracts |= first_contract_georges.copy({
             'date_start': date(today.year - 1, 1, 1),
             'date_end': date(today.year - 1, 5, 31),
-            'resource_calendar_id': self.resource_calendar_mid_time.id,
+            'resource_calendar_id': cls.resource_calendar_mid_time.id,
             'wage': 1250
         })
 
-        self.georges_contracts |= first_contract_georges.copy({
+        cls.georges_contracts |= first_contract_georges.copy({
             'date_start': date(today.year - 1, 6, 1),
             'date_end': date(today.year - 1, 8, 31),
         })
 
-        self.georges_contracts |= first_contract_georges.copy({
+        cls.georges_contracts |= first_contract_georges.copy({
             'date_start': date(today.year - 1, 9, 1),
             'date_end': date(today.year - 1, 12, 31),
-            'resource_calendar_id': self.resource_calendar_4_5.id,
+            'resource_calendar_id': cls.resource_calendar_4_5.id,
             'wage': 2500 * 4 / 5
         })
 
-        self.georges_contracts.write({'state': 'close'})  # By default, the state is 'draft' when we create a new contract
+        cls.georges_contracts.write({'state': 'close'})  # By default, the state is 'draft' when we create a new contract
 
         contract = first_contract_georges.copy({
             'date_start': date(today.year, 1, 1),
             'date_end': False,
-            'resource_calendar_id': self.resource_calendar_4_5.id,
+            'resource_calendar_id': cls.resource_calendar_4_5.id,
             'wage': 2500 * 4 / 5
         })
         contract.write({'state': 'open'})  # By default, the state is 'draft' when we create a new contract
-        self.georges_contracts |= contract
+        cls.georges_contracts |= contract
 
-        address_home_john = self.env['res.partner'].create({
+        address_home_john = cls.env['res.partner'].create({
             'name': 'John Doe',
-            'company_id': self.belgian_company.id,
+            'company_id': cls.belgian_company.id,
             'type': 'private',
-            'country_id': self.env.ref('base.be').id
+            'country_id': cls.env.ref('base.be').id
         })
 
-        self.employee_john = self.employee_georges.copy({
+        cls.employee_john = cls.employee_georges.copy({
             'name': 'John Doe',
             'address_home_id': address_home_john.id,
-            'resource_calendar_id': self.resource_calendar.id,
+            'resource_calendar_id': cls.resource_calendar.id,
             'contract_ids': []
         })
 
         first_contract_john = first_contract_georges.copy({
             'name': "John's Contract",
-            'employee_id': self.employee_john.id,
-            'resource_calendar_id': self.resource_calendar.id
+            'employee_id': cls.employee_john.id,
+            'resource_calendar_id': cls.resource_calendar.id
         })
 
-        self.john_contracts = first_contract_john
+        cls.john_contracts = first_contract_john
 
-        self.john_contracts |= first_contract_john.copy({
+        cls.john_contracts |= first_contract_john.copy({
             'date_start': date(today.year - 1, 1, 1),
             'date_end': date(today.year - 1, 3, 31)
         })
 
-        self.john_contracts |= first_contract_john.copy({
+        cls.john_contracts |= first_contract_john.copy({
             'date_start': date(today.year - 1, 4, 1),
             'date_end': date(today.year - 1, 6, 30),
-            'resource_calendar_id': self.resource_calendar_9_10.id,
+            'resource_calendar_id': cls.resource_calendar_9_10.id,
             'time_credit': True
         })
 
-        self.john_contracts |= first_contract_john.copy({
+        cls.john_contracts |= first_contract_john.copy({
             'date_start': date(today.year - 1, 7, 1),
             'date_end': date(today.year - 1, 9, 30),
-            'resource_calendar_id': self.resource_calendar_4_5.id,
+            'resource_calendar_id': cls.resource_calendar_4_5.id,
             'time_credit': True
         })
 
-        self.john_contracts.write({'state': 'close'})  # By default, the state is 'draft' when we create a new contract
+        cls.john_contracts.write({'state': 'close'})  # By default, the state is 'draft' when we create a new contract
 
         contract = first_contract_john.copy({
             'date_start': date(today.year - 1, 10, 1),
             'date_end': False,
-            'resource_calendar_id': self.resource_calendar_mid_time.id,
+            'resource_calendar_id': cls.resource_calendar_mid_time.id,
             'time_credit': True
         })
         contract.write({'state': 'open'})  # By default, the state is 'draft' when we create a new contract
 
-        self.john_contracts |= contract
+        cls.john_contracts |= contract
 
-        address_home_a = self.env['res.partner'].create({
+        address_home_a = cls.env['res.partner'].create({
             'name': 'A',
-            'company_id': self.belgian_company.id,
+            'company_id': cls.belgian_company.id,
             'type': 'private',
-            'country_id': self.env.ref('base.be').id
+            'country_id': cls.env.ref('base.be').id
         })
 
-        self.employee_a = self.employee_georges.copy({
+        cls.employee_a = cls.employee_georges.copy({
             'name': 'A',
             'address_home_id': address_home_a.id,
-            'resource_calendar_id': self.resource_calendar.id,
+            'resource_calendar_id': cls.resource_calendar.id,
             'contract_ids': []
         })
 
         first_contract_a = first_contract_georges.copy({
             'name': "A's Contract",
-            'employee_id': self.employee_a.id,
-            'resource_calendar_id': self.resource_calendar.id,
+            'employee_id': cls.employee_a.id,
+            'resource_calendar_id': cls.resource_calendar.id,
             'date_start': date(today.year - 1, 1, 1),
             'date_end': False
         })
 
         first_contract_a.write({'state': 'open'})
 
-        self.a_contracts = first_contract_a
+        cls.a_contracts = first_contract_a
 
-        address_home_test = self.env['res.partner'].create({
+        address_home_test = cls.env['res.partner'].create({
             'name': 'Employee Test',
-            'company_id': self.belgian_company.id,
+            'company_id': cls.belgian_company.id,
             'type': 'private',
-            'country_id': self.env.ref('base.be').id
+            'country_id': cls.env.ref('base.be').id
         })
 
-        self.employee_test = self.employee_georges.copy({
+        cls.employee_test = cls.employee_georges.copy({
             'name': 'Employee Test',
             'address_home_id': address_home_test.id,
-            'resource_calendar_id': self.resource_calendar.id,
+            'resource_calendar_id': cls.resource_calendar.id,
             'contract_ids': []
         })
 
         first_contract_test = first_contract_georges.copy({
             'name': "Employee Test's Contract",
-            'employee_id': self.employee_test.id,
-            'resource_calendar_id': self.resource_calendar.id,
+            'employee_id': cls.employee_test.id,
+            'resource_calendar_id': cls.resource_calendar.id,
             'date_start': date(2017, 1, 1),
             'date_end': False
         })
 
         first_contract_test.write({'state': 'open'})
 
-        self.test_contracts = first_contract_test
+        cls.test_contracts = first_contract_test

@@ -11,52 +11,56 @@ except ImportError:
 
 class TestHrReferralBase(TransactionCase):
 
-    def setUp(self):
-        super(TestHrReferralBase, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.company_1 = self.env['res.company'].create({'name': 'Opoo'})
-        self.company_2 = self.env['res.company'].create({'name': 'Otoo'})
-        self.company_ids = [self.company_1.id, self.company_2.id]
+        cls.company_1 = cls.env['res.company'].create({'name': 'Opoo'})
+        cls.company_2 = cls.env['res.company'].create({'name': 'Otoo'})
+        cls.company_ids = [cls.company_1.id, cls.company_2.id]
 
-        self.dep_rd = self.env['hr.department'].create({
+        cls.dep_rd = cls.env['hr.department'].create({
             'name': 'Research and Development',
-            'company_id': self.company_1.id
+            'company_id': cls.company_1.id
         })
 
         # I create a new user "Richard"
-        self.richard_user = self.env['res.users'].create({
+        cls.richard_user = cls.env['res.users'].create({
             'name': 'Richard',
             'login': 'ric'
         })
 
         # I create a new user "Steve"
-        self.steve_user = self.env['res.users'].create({
+        cls.steve_user = cls.env['res.users'].create({
             'name': 'Steve',
             'login': 'stv'
         })
 
-        self.job_dev = self.env['hr.job'].create({
+        cls.job_dev = cls.env['hr.job'].create({
             'name': 'Dev',
             'no_of_recruitment': '5',
-            'department_id': self.dep_rd.id,
-            'company_id': self.company_1.id,
+            'department_id': cls.dep_rd.id,
+            'company_id': cls.company_1.id,
         })
 
-        self.mug_shop = self.env['hr.referral.reward'].create({
+        cls.mug_shop = cls.env['hr.referral.reward'].create({
             'name': 'Mug',
             'description': 'Beautiful and usefull',
             'cost': '5',
-            'company_id': self.company_1.id,
+            'company_id': cls.company_1.id,
         })
 
-        self.red_mug_shop = self.env['hr.referral.reward'].create({
+        cls.red_mug_shop = cls.env['hr.referral.reward'].create({
             'name': 'Red Mug',
             'description': 'It\'s red',
             'cost': '10',
-            'company_id': self.company_2.id,
+            'company_id': cls.company_2.id,
         })
 
-        self.mug_shop = self.mug_shop.with_user(self.richard_user.id)
+        cls.mug_shop = cls.mug_shop.with_user(cls.richard_user.id)
+
+    def setUp(self):
+        super().setUp()
 
         def _get_title_from_url(u):
             return "Hello"

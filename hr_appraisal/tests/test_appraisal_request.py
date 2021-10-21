@@ -9,23 +9,24 @@ from odoo.tests.common import TransactionCase, new_test_user
 
 class TestHrAppraisalRequest(TransactionCase):
 
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.manager_user = new_test_user(self.env, login='Lucky Luke')
-        self.manager = self.env['hr.employee'].create({
+        cls.manager_user = new_test_user(cls.env, login='Lucky Luke')
+        cls.manager = cls.env['hr.employee'].create({
             'name': 'Manager Tiranique',
-            'user_id': self.manager_user.id,
+            'user_id': cls.manager_user.id,
         })
-        self.employee_user = new_test_user(self.env, login='Rantanplan')
-        self.employee = self.env['hr.employee'].create({
+        cls.employee_user = new_test_user(cls.env, login='Rantanplan')
+        cls.employee = cls.env['hr.employee'].create({
             'name': "Michaël Hawkins",
-            'parent_id': self.manager.id,
+            'parent_id': cls.manager.id,
             'work_email': 'michael@odoo.com',
-            'user_id': self.employee_user.id,
-            'address_home_id': self.env['res.partner'].create({'name': 'Private contact', 'email': 'private@email.com'}).id,
+            'user_id': cls.employee_user.id,
+            'address_home_id': cls.env['res.partner'].create({'name': 'Private contact', 'email': 'private@email.com'}).id,
         })
-        self.employee.work_email = 'chouxblanc@donc.com'
+        cls.employee.work_email = 'chouxblanc@donc.com'
 
     def request_appraisal_from(self, record, user):
         """ An appraisal can be requested from appraisal form only """

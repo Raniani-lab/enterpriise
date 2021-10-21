@@ -12,59 +12,60 @@ from odoo.tests.common import TransactionCase
 class TestHrAppraisal(TransactionCase):
     """ Test used to check that when doing appraisal creation."""
 
-    def setUp(self):
-        super(TestHrAppraisal, self).setUp()
-        self.HrEmployee = self.env['hr.employee']
-        self.HrAppraisal = self.env['hr.appraisal']
-        self.main_company = self.env.ref('base.main_company')
+    @classmethod
+    def setUpClass(cls):
+        super(TestHrAppraisal, cls).setUpClass()
+        cls.HrEmployee = cls.env['hr.employee']
+        cls.HrAppraisal = cls.env['hr.appraisal']
+        cls.main_company = cls.env.ref('base.main_company')
 
-        self.dep_rd = self.env['hr.department'].create({'name': 'RD Test'})
-        self.manager_user = self.env['res.users'].create({
+        cls.dep_rd = cls.env['hr.department'].create({'name': 'RD Test'})
+        cls.manager_user = cls.env['res.users'].create({
             'name': 'Manager User',
             'login': 'manager_user',
             'password': 'manager_user',
             'email': 'demo@demo.com',
-            'partner_id': self.env['res.partner'].create({'name': 'Manager Partner'}).id,
+            'partner_id': cls.env['res.partner'].create({'name': 'Manager Partner'}).id,
         })
-        self.manager = self.env['hr.employee'].create({
+        cls.manager = cls.env['hr.employee'].create({
             'name': 'Manager Test',
-            'department_id': self.dep_rd.id,
-            'user_id': self.manager_user.id,
+            'department_id': cls.dep_rd.id,
+            'user_id': cls.manager_user.id,
         })
 
-        self.job = self.env['hr.job'].create({'name': 'Developer Test', 'department_id': self.dep_rd.id})
-        self.colleague = self.env['hr.employee'].create({'name': 'Colleague Test', 'department_id': self.dep_rd.id})
+        cls.job = cls.env['hr.job'].create({'name': 'Developer Test', 'department_id': cls.dep_rd.id})
+        cls.colleague = cls.env['hr.employee'].create({'name': 'Colleague Test', 'department_id': cls.dep_rd.id})
 
-        group = self.env.ref('hr_appraisal.group_hr_appraisal_user').id
-        self.user = self.env['res.users'].create({
+        group = cls.env.ref('hr_appraisal.group_hr_appraisal_user').id
+        cls.user = cls.env['res.users'].create({
             'name': 'Michael Hawkins',
             'login': 'test',
             'groups_id': [(6, 0, [group])],
             'notification_type': 'email',
         })
 
-        self.hr_employee = self.HrEmployee.create(dict(
+        cls.hr_employee = cls.HrEmployee.create(dict(
             name="Michael Hawkins",
-            user_id=self.user.id,
-            department_id=self.dep_rd.id,
-            parent_id=self.manager.id,
-            job_id=self.job.id,
+            user_id=cls.user.id,
+            department_id=cls.dep_rd.id,
+            parent_id=cls.manager.id,
+            job_id=cls.job.id,
             work_phone="+3281813700",
             work_email='michael@odoo.com',
             create_date=date.today() + relativedelta(months=-6),
             last_appraisal_date=date.today() + relativedelta(months=-6)
         ))
-        self.hr_employee.write({'work_location_id': [(0, 0, {'name': "Grand-Rosière"})]})
+        cls.hr_employee.write({'work_location_id': [(0, 0, {'name': "Grand-Rosière"})]})
 
-        self.env.company.appraisal_plan = True
-        self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_create_in_advance_days", 8)
-        self.duration_after_recruitment = 6
-        self.duration_first_appraisal = 9
-        self.duration_next_appraisal = 12
-        self.env.company.write({
-            'duration_after_recruitment': self.duration_after_recruitment,
-            'duration_first_appraisal': self.duration_first_appraisal,
-            'duration_next_appraisal': self.duration_next_appraisal,
+        cls.env.company.appraisal_plan = True
+        cls.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_create_in_advance_days", 8)
+        cls.duration_after_recruitment = 6
+        cls.duration_first_appraisal = 9
+        cls.duration_next_appraisal = 12
+        cls.env.company.write({
+            'duration_after_recruitment': cls.duration_after_recruitment,
+            'duration_first_appraisal': cls.duration_first_appraisal,
+            'duration_next_appraisal': cls.duration_next_appraisal,
         })
 
     def test_hr_appraisal(self):

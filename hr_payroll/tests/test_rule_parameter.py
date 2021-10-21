@@ -12,9 +12,10 @@ from odoo.tests.common import TransactionCase, new_test_user
 @tests.tagged('post_install', '-at_install')
 class TestRuleParameter(TransactionCase):
 
-    def setUp(self):
-        super().setUp()
-        self.rule_parameter = self.env['hr.rule.parameter'].create({
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.rule_parameter = cls.env['hr.rule.parameter'].create({
             'name': 'Test Parameter',
             'code': 'test_param',
         })
@@ -22,11 +23,11 @@ class TestRuleParameter(TransactionCase):
         values = []
         for year in [2016, 2017, 2018, 2020]:
             values.append({
-                'rule_parameter_id': self.rule_parameter.id,
+                'rule_parameter_id': cls.rule_parameter.id,
                 'parameter_value': str(year),
                 'date_from': date(year, 1, 1)
             })
-        self.env['hr.rule.parameter.value'].create(values)
+        cls.env['hr.rule.parameter.value'].create(values)
 
     @patch.object(Date, 'today', lambda: date(2019, 10, 10))
     def test_get_last_version(self):

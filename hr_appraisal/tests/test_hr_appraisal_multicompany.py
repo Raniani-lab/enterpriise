@@ -12,29 +12,30 @@ from odoo.tests.common import TransactionCase, new_test_user
 class TestHrAppraisal(TransactionCase):
     """ Test used to check that appraisal works in multicompany."""
 
-    def setUp(self):
-        super(TestHrAppraisal, self).setUp()
-        self.HrEmployee = self.env['hr.employee']
-        self.HrAppraisal = self.env['hr.appraisal']
-        self.main_company = self.env['res.company'].create({'name': 'main'})
-        self.other_company = self.env['res.company'].create({'name': 'other'})
+    @classmethod
+    def setUpClass(cls):
+        super(TestHrAppraisal, cls).setUpClass()
+        cls.HrEmployee = cls.env['hr.employee']
+        cls.HrAppraisal = cls.env['hr.appraisal']
+        cls.main_company = cls.env['res.company'].create({'name': 'main'})
+        cls.other_company = cls.env['res.company'].create({'name': 'other'})
 
-        self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_create_in_advance_days", 8)
+        cls.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_create_in_advance_days", 8)
 
-        self.user = new_test_user(self.env, login='My super login', groups='hr_appraisal.group_hr_appraisal_user', 
-                                  company_ids=[(6, 0, (self.main_company | self.other_company).ids)], company_id=self.main_company.id)
+        cls.user = new_test_user(cls.env, login='My super login', groups='hr_appraisal.group_hr_appraisal_user',
+                                  company_ids=[(6, 0, (cls.main_company | cls.other_company).ids)], company_id=cls.main_company.id)
 
-        self.hr_employee = self.HrEmployee.create(dict(
+        cls.hr_employee = cls.HrEmployee.create(dict(
             name="Michael Hawkins",
-            user_id=self.user.id,
+            user_id=cls.user.id,
             create_date=date.today() - relativedelta(months=3),
             last_appraisal_date=date.today() - relativedelta(months=3),
-            company_id=self.main_company.id,
+            company_id=cls.main_company.id,
         ))
 
-        self.hr_employee2 = self.HrEmployee.create(dict(
-            user_id=self.user.id,
-            company_id=self.other_company.id,
+        cls.hr_employee2 = cls.HrEmployee.create(dict(
+            user_id=cls.user.id,
+            company_id=cls.other_company.id,
             create_date=date.today() - relativedelta(months=6, days=6),
             last_appraisal_date=date.today() - relativedelta(months=6, days=6),
         ))

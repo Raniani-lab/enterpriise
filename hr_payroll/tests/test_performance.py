@@ -8,22 +8,23 @@ from odoo.tests.common import users, warmup
 
 class TestPayrollPerformance(TestPayslipBase):
 
-    def setUp(self):
-        super().setUp()
-        self.jack = self.env['hr.employee'].create({'name': 'Jack'})
-        self.employees = self.richard_emp | self.jack
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.jack = cls.env['hr.employee'].create({'name': 'Jack'})
+        cls.employees = cls.richard_emp | cls.jack
 
-        self.env['hr.contract'].create([{
+        cls.env['hr.contract'].create([{
             'date_start': date(2018, 1, 1),
             'date_end': date(2018, 2, 1),
             'name': 'Contract for %s' % employee.name,
             'wage': 5000.0,
             'state': 'open',
             'employee_id': employee.id,
-            'structure_type_id': self.structure_type.id,
+            'structure_type_id': cls.structure_type.id,
             'date_generated_from': datetime(2018, 1, 1, 0, 0),
             'date_generated_to': datetime(2018, 1, 1, 0, 0),
-        } for employee in self.employees])
+        } for employee in cls.employees])
 
     def reset_work_entries(self):
         self.employees.contract_id.write({

@@ -141,8 +141,8 @@ odoo.define('web_grid.GridRenderer', function (require) {
          * @returns {Boolean}
          */
         get showNoContentHelp() {
-            const state = Array.isArray(this.props.data) ? this.props.data[0] : this.props.data;
-            return state.rows[0] === undefined && !!this.props.noContentHelp;
+            const stateRow = Array.isArray(this.props.data) ? this.props.data.find(data => data.rows[0]) : this.props.data.rows[0];
+            return stateRow === undefined && !!this.props.noContentHelp;
         }
 
         //----------------------------------------------------------------------

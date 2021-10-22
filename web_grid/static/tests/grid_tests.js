@@ -1964,5 +1964,39 @@ QUnit.module('Views', {
         assert.strictEqual($button.text(), '0.50');
         grid.destroy();
     });
+
+    QUnit.test('display the grid if the first row is empty', async function (assert) {
+        assert.expect(1);
+        this.arch = `<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">
+                <field name="project_id" type="row" section="1"/>
+                <field name="task_id" type="row"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                    <range name="month" string="Month" span="month" step="day"/>
+                </field>
+                <field name="unit_amount" type="measure" widget="float_time"/>
+            </grid>`;
+        
+        this.data['analytic.line'].records = [];
+        this.data['analytic.line'].records.push({id: 2, project_id: 31, task_id: 1, date: "2017-01-10", unit_amount: 0});
+        this.data['analytic.line'].records.push({id: 6, project_id: 142, task_id: 12, date: "2017-01-26", unit_amount: 3.5});
+
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-24",
+            viewOptions: {
+                noContentHelp: `<p class="o_view_nocontent_smiling_face">
+                        No activities found. Let's start a new one!
+                    </p>`
+            }
+        });
+
+        assert.containsOnce(grid, '.o_view_grid', "Grid should be shown");
+
+        grid.destroy();
+    });
 });
 });

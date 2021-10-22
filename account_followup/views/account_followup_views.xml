@@ -128,16 +128,28 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Message" name="message"
-                                    id='letter_format' attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False), ('send_sms', '=', False), ('manual_action', '=', False)]}">
+                            <!-- Message -->
+                            <page string="Message" name="message" id='letter_format'
+                                attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
+                                <!-- Subject -->
                                 <group string="Email Subject" attrs="{'invisible': [('send_email', '=', False)]}">
                                     <field name="email_subject" nolabel="1" colspan="2"/>
                                 </group>
-                                <group id='description' string="Description" attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
+                                <!-- Description -->
+                                <group attrs="{'invisible': [('send_email', '=', True)]}">
                                     <field name="description" nolabel="1" colspan="2" />
                                 </group>
-                                <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2" attrs="{'invisible': [('send_sms', '=', False)]}"/>
-                                <group  string="Manual Action" attrs="{'invisible': [('manual_action', '=', False)]}">
+                                <group string="Message Body" attrs="{'invisible': [('send_email', '=', False)]}">
+                                    <field name="description" nolabel="1" colspan="2" />
+                                </group>
+                            </page>
+                            <!-- SMS Message -->
+                            <page string="SMS Message" name="sms_message" attrs="{'invisible': [('send_sms', '=', False)]}">
+                                <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2"/>
+                            </page>
+                            <!-- Manual Action -->
+                            <page string="Manual Action" name="manual_action" attrs="{'invisible': [('manual_action', '=', False)]}">
+                                <group>
                                     <group>
                                         <field name="manual_action_responsible_id"/>
                                         <field name="manual_action_type_id" attrs="{'required': [('manual_action', '!=', False)]}"/>
@@ -145,25 +157,27 @@
                                             placeholder="e.g. Call the customer, check if it's paid, ..."/>
                                     </group>
                                 </group>
-                                <group id='instructions' attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False), ('send_sms', '=', False)]}">
-                                    <div class='alert alert-info' role="alert">
-                                        <h4 class="alert-heading" role="alert">In order to build customized messages:</h4>
-                                        <p>
-                                            Write here the introduction in the letter and mail or sms,
-                                            according to the level of the follow-up. You can
-                                            use the following keywords in the text. Don't
-                                            forget to translate in all languages you installed
-                                            using to top right icon.
-                                            <table>
-                                                <tr><td t-translation="off">%%(partner_name)s</td><td>: Partner Name</td></tr>
-                                                <tr><td t-translation="off">%%(date)s</td><td>: Current Date</td></tr>
-                                                <tr><td t-translation="off">%%(amount_due)s</td><td>: Amount Due by the partner</td></tr>
-                                                <tr><td t-translation="off">%%(user_signature)s</td><td>: User Name</td></tr>
-                                                <tr><td t-translation="off">%%(company_name)s</td><td>: User's Company Name</td></tr>
-                                            </table>
-                                        </p>
-                                    </div>
-                                </group>
+                            </page>
+                            <!-- How To Customize -->
+                            <page id='how_to_customize' string="How to customize your messages?"
+                                attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False), ('send_sms', '=', False)]}">
+                                <div class='alert alert-info' role="alert">
+                                    <h4 class="alert-heading" role="alert">In order to build customized messages:</h4>
+                                    <p>
+                                        Write here the introduction in the letter and mail or sms,
+                                        according to the level of the follow-up. You can
+                                        use the following keywords in the text. Don't
+                                        forget to translate in all languages you installed
+                                        using to top right icon.
+                                        <table>
+                                            <tr><td t-translation="off">%%(partner_name)s</td><td>: Partner Name</td></tr>
+                                            <tr><td t-translation="off">%%(date)s</td><td>: Current Date</td></tr>
+                                            <tr><td t-translation="off">%%(amount_due)s</td><td>: Amount Due by the partner</td></tr>
+                                            <tr><td t-translation="off">%%(user_signature)s</td><td>: User Name</td></tr>
+                                            <tr><td t-translation="off">%%(company_name)s</td><td>: User's Company Name</td></tr>
+                                        </table>
+                                    </p>
+                                </div>
                             </page>
                         </notebook>
                     </sheet>

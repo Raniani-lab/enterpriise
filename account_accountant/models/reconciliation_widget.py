@@ -679,7 +679,7 @@ class AccountReconciliation(models.AbstractModel):
         tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
 
         query = '''
-            SELECT ''' + self._get_query_select_clause() + '''
+            SELECT ''' + self._get_query_select_clause() + ''', count(*) OVER() AS full_count
             FROM ''' + tables + '''
             JOIN account_account account ON account.id = account_move_line.account_id
             LEFT JOIN res_partner partner ON partner.id = account_move_line.partner_id

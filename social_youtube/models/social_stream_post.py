@@ -163,6 +163,16 @@ class SocialStreamPostYoutube(models.Model):
     # MISC / UTILITY
     # ========================================================
 
+    def _fetch_matching_post(self):
+        self.ensure_one()
+
+        if self.account_id.media_type == 'youtube' and self.youtube_video_id:
+            return self.env['social.live.post'].search(
+                [('youtube_video_id', '=', self.youtube_video_id)], limit=1
+            ).post_id
+        else:
+            return super(SocialStreamPostYoutube, self)._fetch_matching_post()
+
     @api.autovacuum
     def _gc_youtube_data(self):
         """ According to Youtube API terms of service, users Youtube data have to be removed

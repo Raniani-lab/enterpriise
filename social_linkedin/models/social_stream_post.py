@@ -170,3 +170,13 @@ class SocialStreamPostLinkedIn(models.Model):
             }
 
         return data
+
+    def _fetch_matching_post(self):
+        self.ensure_one()
+
+        if self.account_id.media_type == 'linkedin' and self.linkedin_post_urn:
+            return self.env['social.live.post'].search(
+                [('linkedin_post_id', '=', self.linkedin_post_urn)], limit=1
+            ).post_id
+        else:
+            return super(SocialStreamPostLinkedIn, self)._fetch_matching_post()

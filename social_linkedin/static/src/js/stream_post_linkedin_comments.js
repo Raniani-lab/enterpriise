@@ -14,6 +14,7 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
         });
 
         this.commentsCount = options.commentsCount;
+        this.accountId = options.accountId;
         this.postAuthorImage = options.postAuthorImage;
         this.currentUserUrn = options.currentUserUrn;
         this.totalLoadedComments = options.comments.length;
@@ -53,6 +54,14 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
 
     isCommentDeletable: function (comment) {
         return comment.from.id === this.currentUserUrn;
+    },
+
+    isCommentAuthor: function (comment) {
+        return comment.from.id === this.currentUserUrn;
+    },
+
+    isPostAuthor: function (post) {
+        return post.authorLink.split('/').pop() === (this.currentUserUrn && this.currentUserUrn.split(':').pop());
     },
 
     canAddImage: function () {
@@ -129,6 +138,9 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
                     comments_count: this.commentsCount
                 }
             }).then(function (result) {
+                // add the newly fetched comments into the "this.comments" variable
+                // this is important for the social_crm module
+                self.comments.push(...result.comments);
                 $target.data('innerComments', result.comments);
                 return superMethod.apply(self, superArguments);
             });

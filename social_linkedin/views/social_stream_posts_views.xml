@@ -41,6 +41,7 @@
                         t-att-data-link-image="record.link_image_url.raw_value"
                         t-att-data-link-title="record.link_title.raw_value"
                         t-att-data-link-description="record.link_description.raw_value"
+                        t-att-data-linkedin-account-id="record.account_id.raw_value"
                         t-att-data-likes-count="record.linkedin_likes_count.raw_value">
                         <i class="fa fa-comments" title="Comments"></i>
                         <b t-esc="record.linkedin_comments_count.value !== '0' ? record.linkedin_comments_count.value : ''"/>

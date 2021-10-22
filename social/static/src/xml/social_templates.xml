@@ -55,7 +55,7 @@
 
             <div class="flex-grow-1">
                 <div class="o_social_comment_content">
-                    <div t-attf-class="o_social_comment_message #{widget.isCommentEditable(comment) || widget.isCommentDeletable(comment) ? 'o_social_comment_editable' : ''}">
+                    <div class="o_social_comment_message">
                         <a t-att-href="widget.getAuthorLink(comment)"
                             class="o_social_comment_author_name font-weight-bold"
                             t-esc="comment.from.name"
@@ -74,21 +74,22 @@
 
                         <div class="d-flex">
                             <t t-set="originalMessage" t-value="widget._htmlEscape(comment.message)"/>
-                            <div t-attf-class="o_social_comment_text flex-grow-1 #{bubble_design? 'bg-200 py-2 px-3 mr-2 o_social_bubble_radius' : ''}"
+                            <div t-attf-class="d-flex flex-grow-1 #{bubble_design? 'bg-200 py-1 pl-3 pr-1 mr-2 o_social_bubble_radius' : ''}">
+                                <div class="o_social_comment_text"
                                 t-att-data-original-message="originalMessage"
                                 t-out="widget._formatCommentStreamPost(comment.message)"/>
-
-                            <div class="o_social_icon_dropdown o_social_manage_comment dropdown">
-                                <button t-attf-class="btn btn-light dropdown-toggle #{bubble_design? 'bg-200 px-3 rounded-pill' : ''}"
-                                    type="button" t-attf-id="post_actions_#{comment.id}"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="fa fa-ellipsis-v"/>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" t-attf-aria-labelledby="post_actions_#{comment.id}">
-                                    <a t-if="widget.isCommentEditable(comment)" class="o_social_edit_comment dropdown-item" href="#">Edit Comment</a>
-                                    <a t-if="widget.isCommentDeletable(comment)" class="o_social_delete_comment dropdown-item" href="#">Delete Comment</a>
+                                <div t-attf-class="o_social_icon_dropdown o_social_manage_comment dropdown #{widget.isCommentManageable(comment) ? '' : 'd-none'}">
+                                    <button t-attf-class="btn btn-light dropdown-toggle #{bubble_design? 'bg-200 px-3 rounded-pill border-0' : ''}"
+                                        type="button" t-attf-id="post_actions_#{comment.id}"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"/>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" t-attf-aria-labelledby="post_actions_#{comment.id}">
+                                        <a t-if="widget.isCommentEditable(comment)" class="o_social_edit_comment dropdown-item text-decoration-none" href="#">Edit Comment</a>
+                                        <a t-if="widget.isCommentDeletable(comment)" class="o_social_delete_comment dropdown-item text-decoration-none" href="#">Delete Comment</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

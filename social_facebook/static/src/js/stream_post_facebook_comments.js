@@ -79,6 +79,14 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         return comment.from.id === this.pageFacebookId;
     },
 
+    isCommentAuthor: function (comment) {
+        return comment.from.id === this.pageFacebookId;
+    },
+
+    isPostAuthor: function (post) {
+        return parseInt(this.pageFacebookId) === post.facebookAuthorId;
+    },
+
     getAddCommentEndpoint: function () {
         return '/social_facebook/comment';
     },

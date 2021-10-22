@@ -6,7 +6,7 @@
     'category': 'Marketing/Social Marketing',
     'sequence': 175,
     'summary': 'Manage your social media and website visitors',
-    'version': '1.2',
+    'version': '1.3',
     'description': """Manage your social media and website visitors""",
     'website': 'https://www.odoo.com/app/social-marketing',
     'depends': ['web', 'mail', 'iap', 'link_tracker'],

@@ -83,6 +83,14 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             return false;
         },
 
+        isCommentAuthor: function (comment) {
+            return this.twitterUserId === comment.from.id;
+        },
+
+        isPostAuthor: function (post) {
+            return this.twitterUserId === post.twitterAuthorId;
+        },
+
         showMoreComments: function (result) {
             return this.page * this.commentsCount < this.allComments.length;
         },

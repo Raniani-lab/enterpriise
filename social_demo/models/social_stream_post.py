@@ -132,6 +132,7 @@ class DemoSocialStreamPost(models.Model):
 
         return [{
             'id': 1,
+            'created_time': '2019-02-10T09:12:30+0000',
             'formatted_created_time': '10/02/2019',
             'likes': {'summary': {'total_count': 53}},
             'from': {
@@ -144,6 +145,7 @@ class DemoSocialStreamPost(models.Model):
             'comments': {'data': self._get_demo_sub_comments()},
         }, {
             'id': 2,
+            'created_time': '2019-02-09T08:12:30+0000',
             'formatted_created_time': '09/02/2019',
             'likes': {'summary': {'total_count': 4}},
             'from': {
@@ -167,6 +169,7 @@ class DemoSocialStreamPost(models.Model):
         return [{
             'id': 3,
             'formatted_created_time': '10/02/2019',
+            'created_time': '2019-02-10T10:12:30+0000',
             'likes': {'summary': {'total_count': 21}},
             'from': {
                 'name': 'Ready Mat',
@@ -176,6 +179,7 @@ class DemoSocialStreamPost(models.Model):
             'message': 'I agree!'
         }, {
             'id': 4,
+            'created_time': '2019-02-10T12:12:30+0000',
             'formatted_created_time': '10/02/2019',
             'likes': {'summary': {'total_count': 13}},
             'from': {

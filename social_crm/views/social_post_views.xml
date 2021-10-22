@@ -18,6 +18,7 @@
             </xpath>
         </field>
     </record>
+
     <record id="social_post_view_kanban" model="ir.ui.view">
         <field name="name">social.post.view.kanban.inherit.social.crm</field>
         <field name="model">social.post</field>

@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=social.social_post_kanban_comments **/
 
 import BasicFields from 'web.basic_fields';
 import { qweb as QWeb, _t } from 'web.core';
@@ -105,8 +105,32 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         return false;
     },
 
+    isCommentManageable: function (comment) {
+        return this.isCommentDeletable(comment) || this.isCommentEditable(comment);
+    },
+
     isCommentLikable: function () {
         return true;
+    },
+
+    /**
+     * Defines whether the current user is the author if this comment or not.
+     * Useful to determine actions that you can do (ex: cannot edit a comment that is not yours).
+     *
+     * @param {Object} comment
+     */
+    isCommentAuthor: function (comment) {
+        return false;
+    },
+
+    /**
+     * Defines whether the current user is the author if this post or not.
+     * Useful to determine actions that you can do.
+     *
+     * @param {Object} post
+     */
+    isPostAuthor: function (post) {
+        return false;
     },
 
     getAuthorLink: function (comment) {
@@ -124,7 +148,6 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
     getDeleteCommentEndpoint: function () {
         return null;
     },
-
 
     canAddImage: function () {
         return true;

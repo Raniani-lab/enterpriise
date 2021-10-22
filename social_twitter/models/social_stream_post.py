@@ -245,3 +245,13 @@ class SocialStreamPostTwitter(models.Model):
                 query_count=(query_count + 1),
                 force_max_id=str(max_id)
             )
+
+    def _fetch_matching_post(self):
+        self.ensure_one()
+
+        if self.account_id.media_type == 'twitter' and self.twitter_tweet_id:
+            return self.env['social.live.post'].search(
+                [('twitter_tweet_id', '=', self.twitter_tweet_id)], limit=1
+            ).post_id
+        else:
+            return super(SocialStreamPostTwitter, self)._fetch_matching_post()

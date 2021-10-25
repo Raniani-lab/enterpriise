@@ -430,6 +430,7 @@
                 <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
                 <field name="priority" invisible="1"/>
                 <field name="sla_deadline" groups="helpdesk.group_use_sla"/>
+                <field name="rating_last_text"/>
 
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
                 <filter string="Followed" domain="[('message_is_follower', '=', True)]" name="my_follow_ticket"/>
@@ -525,6 +526,10 @@
                 <field name="sla_deadline" attrs="{'invisible': [('use_sla', '=', False)]}" optional="show" widget="remaining_days"/>
                 <field name="ticket_type_id" options="{'no_create_edit': True}" optional="hide"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="rating_last_text" string="Rating" decoration-danger="rating_last_text == 'ko'"
+                    decoration-warning="rating_last_text == 'ok'" decoration-success="rating_last_text == 'top'"
+                    attrs="{'invisible': [('rating_last_text', '=', 'none')]}"
+                    class="font-weight-bold" widget="badge" optional="hide"/>
                 <field name="kanban_state" optional="hide" readonly="1" widget="state_selection"/>
                 <field name="stage_id" optional="show" readonly="not context.get('default_team_id', False)"/>
             </tree>

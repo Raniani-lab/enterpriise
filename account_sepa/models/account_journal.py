@@ -100,7 +100,11 @@ class AccountJournal(models.Model):
         GrpHdr = etree.SubElement(CstmrCdtTrfInitn, "GrpHdr")
         MsgId = etree.SubElement(GrpHdr, "MsgId")
         val_MsgId = str(int(time.time() * 100))[-10:]
-        val_MsgId = sanitize_communication(self.company_id.name[-15:]) + val_MsgId
+        if self.company_id.sepa_initiating_party_name:
+            company_name = self.company_id.sepa_initiating_party_name[:15]
+        else:
+            company_name = self.company_id.name[:15]
+        val_MsgId = sanitize_communication(company_name) + val_MsgId
         val_MsgId = str(random.random()) + val_MsgId
         val_MsgId = val_MsgId[-30:]
         MsgId.text = val_MsgId
@@ -228,7 +232,11 @@ class AccountJournal(models.Model):
 
         if nm:
             Nm = etree.Element("Nm")
-            Nm.text = sanitize_communication(company.sepa_initiating_party_name[:name_length])
+            if company.sepa_initiating_party_name:
+                company_name = company.sepa_initiating_party_name[:name_length]
+            else:
+                company_name = company.name[:name_length]
+            Nm.text = sanitize_communication(company_name)
             ret.append(Nm)
 
         if postal_address:

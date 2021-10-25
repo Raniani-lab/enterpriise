@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 class Project(models.Model):
     _inherit = 'project.project'
 
-    contracts_count = fields.Integer('# Contracts', compute='_compute_contracts_count')
+    contracts_count = fields.Integer('# Contracts', compute='_compute_contracts_count', groups='hr_payroll.group_hr_payroll_user')
 
     @api.depends('analytic_account_id')
     def _compute_contracts_count(self):

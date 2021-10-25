@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 class Project(models.Model):
     _inherit = 'project.project'
 
-    subscriptions_count = fields.Integer('# Subscriptions', compute='_compute_subscriptions_count', compute_sudo=True)
+    subscriptions_count = fields.Integer('# Subscriptions', compute='_compute_subscriptions_count', groups='sale_subscription.group_sale_subscription_view')
 
     @api.depends('analytic_account_id')
     def _compute_subscriptions_count(self):

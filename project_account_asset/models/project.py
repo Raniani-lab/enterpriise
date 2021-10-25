@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 class Project(models.Model):
     _inherit = 'project.project'
 
-    assets_count = fields.Integer('# Assets', compute='_compute_assets_count')
+    assets_count = fields.Integer('# Assets', compute='_compute_assets_count', groups='account.group_account_readonly')
 
     @api.depends('analytic_account_id')
     def _compute_assets_count(self):

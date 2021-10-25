@@ -147,9 +147,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
-
     <record id="hr_payslip_demo_lap_february" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=2)).strftime('%B %Y')"/>
         <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -161,9 +158,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
-
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_february')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_february')]]"/>
 
     <record id="hr_payslip_demo_lap_march" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=3)).strftime('%B %Y')"/>
@@ -177,9 +171,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
-
     <record id="hr_payslip_demo_lap_april" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=4)).strftime('%B %Y')"/>
         <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -191,9 +182,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
-
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_april')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_april')]]"/>
 
     <record id="hr_payslip_demo_lap_may" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=5)).strftime('%B %Y')"/>
@@ -207,9 +195,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
-
     <record id="hr_payslip_demo_lap_june" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=6)).strftime('%B %Y')"/>
         <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -221,9 +206,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
-
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_june')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_june')]]"/>
 
     <record id="hr_payslip_demo_lap_july" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=7)).strftime('%B %Y')"/>
@@ -237,9 +219,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
-
     <record id="hr_payslip_demo_lap_august" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=8)).strftime('%B %Y')"/>
         <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -251,9 +230,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
-
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_august')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_august')]]"/>
 
     <record id="hr_payslip_demo_lap_september" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=9)).strftime('%B %Y')"/>
@@ -267,9 +243,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
-
     <record id="hr_payslip_demo_lap_october" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=10)).strftime('%B %Y')"/>
         <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -281,9 +254,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
-
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_october')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_october')]]"/>
 
     <record id="hr_payslip_demo_lap_november" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=11)).strftime('%B %Y')"/>
@@ -297,9 +267,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
-
     <record id="hr_payslip_demo_lap_december" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=12)).strftime('%B %Y')"/>
         <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -311,9 +278,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
-
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_december')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_december')]]"/>
 
     <record id="hr_payslip_demo_lap_13th_month" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) - 13th Month - ' + (DateTime.today() + relativedelta(years=-1, month=12)).strftime('%B %Y')"/>
@@ -327,8 +291,36 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_13th_month')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_13th_month')]]"/>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[
+        ref('hr_payslip_demo_lap_january'),
+        ref('hr_payslip_demo_lap_february'),
+        ref('hr_payslip_demo_lap_march'),
+        ref('hr_payslip_demo_lap_april'),
+        ref('hr_payslip_demo_lap_may'),
+        ref('hr_payslip_demo_lap_june'),
+        ref('hr_payslip_demo_lap_july'),
+        ref('hr_payslip_demo_lap_august'),
+        ref('hr_payslip_demo_lap_september'),
+        ref('hr_payslip_demo_lap_october'),
+        ref('hr_payslip_demo_lap_november'),
+        ref('hr_payslip_demo_lap_december'),
+        ref('hr_payslip_demo_lap_13th_month'),
+    ]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[
+        ref('hr_payslip_demo_lap_january'),
+        ref('hr_payslip_demo_lap_february'),
+        ref('hr_payslip_demo_lap_march'),
+        ref('hr_payslip_demo_lap_april'),
+        ref('hr_payslip_demo_lap_may'),
+        ref('hr_payslip_demo_lap_june'),
+        ref('hr_payslip_demo_lap_july'),
+        ref('hr_payslip_demo_lap_august'),
+        ref('hr_payslip_demo_lap_september'),
+        ref('hr_payslip_demo_lap_october'),
+        ref('hr_payslip_demo_lap_november'),
+        ref('hr_payslip_demo_lap_december'),
+        ref('hr_payslip_demo_lap_13th_month'),
+    ]]"/>
 
     <!-- Additional Demo Data -->
     <record id="hr_department_0" model="hr.department">
@@ -2494,8 +2486,6 @@
         <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
         <field name="amount">2000</field>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_january_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_january_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_february_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - February 2019"</field>
@@ -2509,8 +2499,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_february_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_february_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_march_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - March 2019"</field>
@@ -2524,8 +2512,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_march_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_march_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_april_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - April 2019"</field>
@@ -2539,8 +2525,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_april_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_april_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_warrant_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - Warrant - 2019"</field>
@@ -2554,8 +2538,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_warrant_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_warrant_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_may_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - May 2019"</field>
@@ -2569,8 +2551,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_may_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_may_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_june_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - June 2019"</field>
@@ -2584,8 +2564,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_june_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_june_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_double_holiday_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - Double Holidays - 2019"</field>
@@ -2599,8 +2577,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_double_holiday_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_double_holiday_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_july_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - July 2019"</field>
@@ -2619,8 +2595,6 @@
         <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
         <field name="amount">2000</field>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_july_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_july_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_august_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - August 2019"</field>
@@ -2634,8 +2608,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_august_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_august_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_september_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - September 2019"</field>
@@ -2649,8 +2621,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_september_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_september_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_october_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - October 2019"</field>
@@ -2669,8 +2639,6 @@
         <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
         <field name="amount">2000</field>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_october_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_october_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_november_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - November 2019"</field>
@@ -2684,8 +2652,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_november_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_november_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_december_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - December 2019"</field>
@@ -2699,8 +2665,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_december_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_december_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_13th_month_2019" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - Thirteen Month 2019"</field>
@@ -2714,8 +2678,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_13th_month_2019')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_13th_month_2019')]]"/>
 
     <record id="hr_payslip_demo_jon_january_2020" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - January 2020"</field>
@@ -2734,8 +2696,6 @@
         <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
         <field name="amount">2000</field>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_january_2020')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_january_2020')]]"/>
 
     <record id="hr_payslip_demo_jon_february_2020" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - February 2020"</field>
@@ -2749,8 +2709,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_february_2020')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_february_2020')]]"/>
 
     <record id="hr_payslip_demo_jon_march_2020" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - March 2020"</field>
@@ -2764,8 +2722,48 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_march_2020')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_march_2020')]]"/>
+
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[
+        ref('hr_payslip_demo_jon_march_2020'),
+        ref('hr_payslip_demo_jon_january_2019'),
+        ref('hr_payslip_demo_jon_february_2019'),
+        ref('hr_payslip_demo_jon_march_2019'),
+        ref('hr_payslip_demo_jon_april_2019'),
+        ref('hr_payslip_demo_jon_warrant_2019'),
+        ref('hr_payslip_demo_jon_may_2019'),
+        ref('hr_payslip_demo_jon_june_2019'),
+        ref('hr_payslip_demo_jon_double_holiday_2019'),
+        ref('hr_payslip_demo_jon_july_2019'),
+        ref('hr_payslip_demo_jon_august_2019'),
+        ref('hr_payslip_demo_jon_september_2019'),
+        ref('hr_payslip_demo_jon_october_2019'),
+        ref('hr_payslip_demo_jon_november_2019'),
+        ref('hr_payslip_demo_jon_december_2019'),
+        ref('hr_payslip_demo_jon_13th_month_2019'),
+        ref('hr_payslip_demo_jon_january_2020'),
+        ref('hr_payslip_demo_jon_february_2020'),
+    ]]"/>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[
+        ref('hr_payslip_demo_jon_march_2020'),
+        ref('hr_payslip_demo_jon_january_2019'),
+        ref('hr_payslip_demo_jon_february_2019'),
+        ref('hr_payslip_demo_jon_march_2019'),
+        ref('hr_payslip_demo_jon_april_2019'),
+        ref('hr_payslip_demo_jon_warrant_2019'),
+        ref('hr_payslip_demo_jon_may_2019'),
+        ref('hr_payslip_demo_jon_june_2019'),
+        ref('hr_payslip_demo_jon_double_holiday_2019'),
+        ref('hr_payslip_demo_jon_july_2019'),
+        ref('hr_payslip_demo_jon_august_2019'),
+        ref('hr_payslip_demo_jon_september_2019'),
+        ref('hr_payslip_demo_jon_october_2019'),
+        ref('hr_payslip_demo_jon_november_2019'),
+        ref('hr_payslip_demo_jon_december_2019'),
+        ref('hr_payslip_demo_jon_13th_month_2019'),
+        ref('hr_payslip_demo_jon_january_2020'),
+        ref('hr_payslip_demo_jon_february_2020'),
+    ]]"/>
 
     <record id="notice_period_wizard" model="hr.payslip.employee.depature.notice" forcecreate="False">
         <field name="employee_id" ref="hr_employee_joseph_noluck"/>

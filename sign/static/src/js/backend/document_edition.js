@@ -29,7 +29,7 @@ const EditableDocumentBackend = DocumentBackend.extend({
         this.is_sent = (this.state === 'sent');
 
         if (action && action.context && action.context.sign_token) {
-            var $signButton = $('<button/>', {html: _t("Sign Document"), type: "button", 'class': 'btn btn-primary mr-2'});
+            const $signButton = $('<button/>', {html: _t("Sign Document"), type: "button", 'class': 'btn btn-primary mr-2'});
             $signButton.on('click', () => {
                 this.do_action({
                     type: "ir.actions.client",

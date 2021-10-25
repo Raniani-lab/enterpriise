@@ -247,16 +247,7 @@ const InitialAllPagesDialog = Dialog.extend({
         options.size = options.size || "medium";
 
         if(!options.buttons) {
-            options.buttons = [];
-            options.buttons.push({text: _t('Add once'), classes: 'btn-primary', close: true, click: function(e) {
-                this.updateTargetResponsible();
-                this.$currentTarget.trigger('itemChange');
-            }});
-            options.buttons.push({text: _t('Add to all pages'), classes: 'btn-secondary', close: true, click: function(e) {
-                this.updateTargetResponsible();
-                this.$currentTarget.draggable('destroy').resizable('destroy');
-                this.$currentTarget.trigger('itemClone');
-            }});
+            options.buttons = this.addDefaultButtons();
         }
 
         this._super(parent, options);
@@ -280,6 +271,20 @@ const InitialAllPagesDialog = Dialog.extend({
         const resp = parseInt(this.$responsibleSelect.find('select').val());
         this.getParent().currentRole = resp;
         this.$currentTarget.data('responsible', resp);
+    },
+
+    addDefaultButtons() {
+        const buttons = [];
+        buttons.push({text: _t('Add once'), classes: 'btn-primary', close: true, click: (e) => {
+            this.updateTargetResponsible();
+            this.$currentTarget.trigger('itemChange');
+        }});
+        buttons.push({text: _t('Add to all pages'), classes: 'btn-secondary', close: true, click: (e) => {
+            this.updateTargetResponsible();
+            this.$currentTarget.draggable('destroy').resizable('destroy');
+            this.$currentTarget.trigger('itemClone');
+        }});
+        return buttons;
     },
 });
 
@@ -460,8 +465,8 @@ const EditablePDFIframe = PDFIframe.extend({
                                 self.updateSignItem($signatureItem);
                                 self.$iframe.trigger('templateChange');
 
-                                if (self.types[$signatureItem.data('type')].item_type === 'initial'){
-                                        (new InitialAllPagesDialog(self, self.parties)).open($signatureItem);
+                                if (self.types[$signatureItem.data('type')].item_type === 'initial') {
+                                    (new InitialAllPagesDialog(self, self.parties)).open($signatureItem);
                                 }
                             }
 

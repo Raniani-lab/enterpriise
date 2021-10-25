@@ -173,15 +173,7 @@ const SignatureDialog = Dialog.extend({
         }
 
         if (!options.buttons) {
-            options.buttons = [];
-            options.buttons.push({text: _t("Cancel"), close: true});
-            options.buttons.push({text: _t("Sign all"), classes: "btn-secondary", disabled: true, click: (e) => {
-                //this.confirmAllFunction is undefined in documents with no sign items
-                this.confirmAllFunction ? this.confirmAllFunction() : this.confirmFunction();
-            }});
-            options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: (e) => {
-                this.confirmFunction();
-            }});
+            options.buttons = this.addDefaultButtons();
         }
 
         this._super(parent, options);
@@ -224,6 +216,19 @@ const SignatureDialog = Dialog.extend({
 
     onConfirmAll: function (fct) {
         this.confirmAllFunction = fct;
+    },
+
+    addDefaultButtons () {
+        const buttons = [];
+        buttons.push({text: _t("Cancel"), close: true});
+        buttons.push({text: _t("Sign all"), classes: "btn-secondary", disabled: true, click: (e) => {
+            //this.confirmAllFunction is undefined in documents with no sign items
+            this.confirmAllFunction ? this.confirmAllFunction() : this.confirmFunction();
+        }});
+        buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: (e) => {
+            this.confirmFunction();
+        }});
+        return buttons;
     },
 
     /**
@@ -569,11 +574,7 @@ const SMSSignerDialog = Dialog.extend({
         options.title = options.title || _t("Final Validation");
         options.size = options.size || "medium";
         if(!options.buttons) {
-            options.buttons = [{
-                text: _t("Verify"),
-                classes: "btn btn-primary o_sign_validate_sms",
-                click: this._onValidateSMS
-            }];
+            options.buttons = this.addDefaultButtons();
         }
         this._super(parent, options);
         this.requestID = requestID;
@@ -584,6 +585,13 @@ const SMSSignerDialog = Dialog.extend({
         this.RedirectURL = RedirectURL;
         this.sent = $.Deferred();
     },
+    addDefaultButtons() {
+        return [{
+            text: _t("Verify"),
+            classes: "btn btn-primary o_sign_validate_sms",
+            click: this._onValidateSMS
+        }];
+    }
 });
 
 const EncryptedDialog = Dialog.extend({
@@ -620,11 +628,7 @@ const EncryptedDialog = Dialog.extend({
         options.title = options.title || _t("PDF is encrypted");
         options.size = options.size || "medium";
         if(!options.buttons) {
-            options.buttons = [{
-                text: _t("Generate PDF"),
-                classes: "btn btn-primary o_sign_validate_encrypted",
-                click: this._onValidatePassword
-            }];
+            options.buttons = this.addDefaultButtons();
         }
         this._super(parent, options);
         this.requestID = requestID;
@@ -637,6 +641,13 @@ const EncryptedDialog = Dialog.extend({
         this._super.apply(this, arguments);
         this.$modal.find('button.close').addClass('invisible');
     },
+    addDefaultButtons () {
+        return [{
+            text: _t("Generate PDF"),
+            classes: "btn btn-primary o_sign_validate_encrypted",
+            click: this._onValidatePassword
+        }];
+    }
 });
 
 const ThankYouDialog = Dialog.extend({

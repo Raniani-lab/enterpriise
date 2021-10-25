@@ -10,7 +10,7 @@ import { document_signing } from '@sign/js/common/document_signing';
 const { _t } = core;
 const { qweb } = core;
 
-var NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
+const NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
     template: "sign.no_pub_thank_you_dialog",
     init: function (parent, RedirectURL, RedirectURLText, requestID, options) {
         options = (options || {});
@@ -32,7 +32,7 @@ var NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
     },
 });
 
-var SignableDocument2 = document_signing.SignableDocument.extend({
+const SignableDocument2 = document_signing.SignableDocument.extend({
     get_thankyoudialog_class: function () {
         return NoPubThankYouDialog;
     },

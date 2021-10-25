@@ -37,11 +37,11 @@ function getSelect2Options(placeholder) {
 
 function getOptionsSelectConfiguration(item_id, select_options, selected) {
     if(getOptionsSelectConfiguration.configuration === undefined) {
-        var data = [];
-        for (var id in select_options) {
+        let data = [];
+        for (let id in select_options) {
             data.push({id: parseInt(id), text: select_options[id].value});
         }
-        var select2Options = {
+        const select2Options = {
             data: data,
             multiple: true,
             placeholder: _t("Select available options"),
@@ -54,11 +54,11 @@ function getOptionsSelectConfiguration(item_id, select_options, selected) {
             },
         };
 
-        var selectChangeHandler = function(e) {
-            var $select = $(e.target), option = e.added || e.removed;
+        const selectChangeHandler = function(e) {
+            const $select = $(e.target), option = e.added || e.removed;
             $select.data('item_options', $select.select2('val'));
-            var option_id = option.id;
-            var value = option.text || option.data('create_name');
+            const option_id = option.id;
+            const value = option.text || option.data('create_name');
             if (option_id >= 0 || !value) {
                 return false;
             }
@@ -70,7 +70,7 @@ function getOptionsSelectConfiguration(item_id, select_options, selected) {
             }).then(process_option);
 
             function process_option(optionId) {
-                var option = {id: optionId, value: value};
+                const option = {id: optionId, value: value};
                 select_options[optionId] = option;
                 selected = $select.select2('val');
                 selected.pop(); // remove temp element (with id=-1)
@@ -94,13 +94,13 @@ function getOptionsSelectConfiguration(item_id, select_options, selected) {
 
 function getResponsibleSelectConfiguration(parties) {
     if(getResponsibleSelectConfiguration.configuration === undefined) {
-        var select2Options = getSelect2Options(_t("Select the responsible"));
+        const select2Options = getSelect2Options(_t("Select the responsible"));
 
-        var selectChangeHandler = function(e) {
-            var $select = $(e.target), $option = $(e.added.element[0]);
+        const selectChangeHandler = function(e) {
+            const $select = $(e.target), $option = $(e.added.element[0]);
 
-            var resp = parseInt($option.val());
-            var name = $option.text() || $option.data('create_name');
+            const resp = parseInt($option.val());
+            const name = $option.text() || $option.data('create_name');
 
             if(resp >= 0 || !name) {
                 return false;
@@ -120,8 +120,8 @@ function getResponsibleSelectConfiguration(parties) {
             }
         };
 
-        var $responsibleSelect = $('<select/>').append($('<option/>'));
-        for(var id in parties) {
+        const $responsibleSelect = $('<select/>').append($('<option/>'));
+        for(let id in parties) {
             $responsibleSelect.append($('<option/>', {
                 value: parseInt(id),
                 text: parties[id].name,
@@ -148,12 +148,12 @@ function resetOptionsSelectConfiguration() {
 }
 
 function setAsResponsibleSelect($select, selected, parties) {
-    var configuration = getResponsibleSelectConfiguration(parties);
+    const configuration = getResponsibleSelectConfiguration(parties);
     setAsSelect(configuration, $select, selected);
 }
 
 function setAsOptionsSelect($select, item_id, selected, select_options) {
-    var configuration = getOptionsSelectConfiguration(item_id, select_options, selected);
+    const configuration = getOptionsSelectConfiguration(item_id, select_options, selected);
     setAsSelect(configuration, $select, selected);
 }
 

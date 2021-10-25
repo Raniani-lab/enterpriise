@@ -20,6 +20,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "click a[name='recompute']": "recompute",
         "click button[name='toggle_personal_information']": "togglePersonalInformation",
         "change input.bg-danger": "checkFormValidity",
+        "change select": "checkFormValidity",
         "change div.invalid_radio": "checkFormValidity",
         "change input.document": "onchangeDocument",
         "input input[type='range']": "onchangeSlider",
@@ -392,6 +393,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         const dotpos = email.lastIndexOf(".");
         const invalid_email = atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length;
         const isInvalidInput = this._isInvalidInput();
+        let elementToScroll;
+        let elementToScrollPosition;
+        const isEmailEmpty = email === '';
 
         let requiredEmptyRadio;
         const radios = Array.prototype.slice.call(document.querySelectorAll('input[type=radio]:required'));
@@ -405,7 +409,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 $warning.textContent = _t('Some required fields are not filled');
                 document.querySelector("button#hr_cs_submit").parentElement.append($warning);
                 $radio.classList.toggle('invalid_radio', requiredEmptyRadio);
-                document.querySelector("section#hr_cs_personal_information").scrollIntoView({block: "start", behavior: "smooth"});
+                elementToScroll = $radio;
+                elementToScrollPosition = $($radio).offset().top;
             } else if ($radio.classList.contains('invalid_radio')) {
                 $radio.classList.toggle('invalid_radio');
             }
@@ -417,25 +422,51 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 .appendTo($("button#hr_cs_submit").parent());
             $("input:required").toArray().forEach(input => {
                 $(input).toggleClass('bg-danger', input.value === '');
+                let inputPosition = $(input).offset().top;
+                if ((!elementToScroll || inputPosition < elementToScrollPosition) && input.value === '') {
+                    elementToScroll = $(input)[0];
+                    elementToScrollPosition = $(input).offset().top;
+                }
             });
             $("select:required").toArray().forEach(select =>  {
                 const selectParent = $(select).parent().find('.select2-choice');
                 selectParent.toggleClass('bg-danger', $(select).val() === '');
+                let selectPosition = selectParent.offset().top;
+                if ((!elementToScroll || selectPosition <= elementToScrollPosition) && $(select).val() === '') {
+                    elementToScroll = selectParent[0];
+                    elementToScrollPosition = selectParent.offset().top;
+                }
             });
-            $("section#hr_cs_personal_information")[0].scrollIntoView({block: "start", behavior: "smooth"});
+        }
+        else{
+            $("input:required").toArray().forEach(input => {
+                $(input).removeClass('bg-danger');
+            });
+            $("select:required").toArray().forEach(select => {
+                const selectParent = $(select).parent().find('.select2-choice');
+                if ($(select).val() !== '') {
+                    selectParent.removeClass('bg-danger');
+                }
+            });
         }
         if (invalid_email) {
             $("input[name='email']").addClass('bg-danger');
-            $("<div class='alert alert-danger alert-dismissable fade show'>")
-                .text(_t('Not a valid e-mail address'))
-                .appendTo($("button#hr_cs_submit").parent());
-            $("section#hr_cs_personal_information")[0].scrollIntoView({block: "start", behavior: "smooth"});
-        } else {
-            $("input[name='email']").removeClass('bg-danger');
+            if (!isEmailEmpty) {
+                $("<div class='alert alert-danger alert-dismissable fade show'>")
+                    .text(_t('Not a valid e-mail address'))
+                    .appendTo($("button#hr_cs_submit").parent());
+            }
+            let emailPosition = $("input[name='email']").offset().top;
+            if (!elementToScroll || emailPosition <= elementToScrollPosition) {
+                elementToScroll = $("input[name='email']")[0];
+            }
         }
         $(".alert").delay(4000).slideUp(200, function () {
             $(this).alert('close');
         });
+        if (elementToScroll) {
+            elementToScroll.scrollIntoView({block: 'center', behavior: 'smooth'});
+        }
         return !invalid_email && !requiredEmptyInput && !requiredEmptySelect && !requiredEmptyRadio && !isInvalidInput;
     },
 

@@ -23,7 +23,7 @@ class LoyaltyRule(models.Model):
     _description = 'Loyalty Rule'
 
     name = fields.Char(index=True, required=True, help="An internal identification for this loyalty program rule")
-    loyalty_program_id = fields.Many2one('loyalty.program', ondelete='cascade', string='Loyalty Program', help='The Loyalty Program this exception belongs to')
+    loyalty_program_id = fields.Many2one('loyalty.program', required=True, ondelete='cascade', string='Loyalty Program', help='The Loyalty Program this exception belongs to')
     points_quantity = fields.Float(string="Points per Unit")
     points_currency = fields.Float(string="Points per $ spent")
     rule_domain = fields.Char()
@@ -45,7 +45,7 @@ class LoyaltyReward(models.Model):
     _description = 'Loyalty Reward'
 
     name = fields.Char(index=True, required=True, help='An internal identification for this loyalty reward')
-    loyalty_program_id = fields.Many2one('loyalty.program', string='Loyalty Program', help='The Loyalty Program this reward belongs to')
+    loyalty_program_id = fields.Many2one('loyalty.program', required=True, ondelete='cascade', string='Loyalty Program', help='The Loyalty Program this reward belongs to')
     minimum_points = fields.Float(help='The minimum amount of points the customer must have to qualify for this reward')
     reward_type = fields.Selection([('gift', 'Free Product'), ('discount', 'Discount')], required=True, help='The type of the reward', default="gift")
     gift_product_id = fields.Many2one('product.product', string='Gift Product', help='The product given as a reward')

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="program" model="loyalty.program">
+        <field name="name">Loyalty Program</field>
+        <field name="points">10</field>
+    </record>
     <record id="simple_pen" model="product.product">
         <field name="available_in_pos">True</field>
         <field name="list_price">1.20</field>
@@ -13,15 +17,10 @@
 
     <record id="reward_01" model="loyalty.reward">
         <field name="name">Free Pen</field>
+        <field name="loyalty_program_id" ref="pos_loyalty.program"></field>
         <field name="reward_type">gift</field>
         <field name="point_cost">5</field>
         <field name="gift_product_id" ref="pos_loyalty.simple_pen" />
-    </record>
-
-    <record id="program" model="loyalty.program">
-        <field name="name">Loyalty Program</field>
-        <field name="points">10</field>
-        <field name="reward_ids" eval="[(6, 0, [ref('pos_loyalty.reward_01')])]" />
     </record>
 
     <function model="pos.config" name="set_loyalty_program_to_main_config" />

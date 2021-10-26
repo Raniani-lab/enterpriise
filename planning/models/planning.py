@@ -87,7 +87,7 @@ class Planning(models.Model):
         compute='_compute_allocated_percentage', store=True, readonly=False,
         help="Percentage of time the employee is supposed to work during the shift.",
         group_operator="avg")
-    working_days_count = fields.Float("Number of Working Days", compute='_compute_working_days_count', store=True)
+    working_days_count = fields.Float("Working Days", compute='_compute_working_days_count', store=True)
     duration = fields.Float("Duration", compute="_compute_slot_duration")
 
     # publication and sending

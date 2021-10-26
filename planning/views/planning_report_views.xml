@@ -7,8 +7,7 @@
         <field name="arch" type="xml">
             <pivot string="Planning Analysis" sample="1">
                 <field name="start_datetime" interval="month" type="row"/>
-                <field name="resource_id" type="col"/>
-                <field name="allocated_hours" type="measure"/>
+                <field name="allocated_hours" type="measure" widget="float_time"/>
             </pivot>
         </field>
     </record>
@@ -17,9 +16,10 @@
         <field name="name">planning.slot.report.graph</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <graph string="Planning Analysis" sample="1">
-                <field name="start_datetime"/>
-                <field name="allocated_hours" type="measure"/>
+            <graph string="Planning Analysis" sample="1" order="desc">
+                <field name="start_datetime" interval="month"/>
+                <field name="resource_id"/>
+                <field name="allocated_hours" type="measure" widget="float_time"/>
             </graph>
         </field>
     </record>
@@ -60,7 +60,7 @@
             <p class="o_view_nocontent_empty_folder">
                 No data yet!
             </p><p>
-                Create shifts to get statistics.
+                Get statistics on the allocation of your employees across roles.
             </p>
         </field>
     </record>
@@ -82,23 +82,6 @@
         <field name="view_mode">gantt</field>
         <field name="view_id" ref="planning_slot_report_view_gantt"/>
         <field name="act_window_id" ref="planning_report_action_analysis"/>
-    </record>
-
-    <!-- Filter for graph view -->
-    <record id="planning_filter_by_employee" model="ir.filters">
-        <field name="name">Hours per Resource</field>
-        <field name="model_id">planning.slot</field>
-        <field name="user_id" eval="False"/>
-        <field name="is_default" eval="True"/>
-        <field name="context">{
-            'pivot_measures': ['allocated_hours'],
-            'pivot_column_groupby': ['start_datetime:month'],
-            'pivot_row_groupby': ['resource_id'],
-            'graph_measures': ['allocated_hours'],
-            'graph_column_groupby': ['start_datetime:month'],
-            'graph_row_groupby': ['resource_id']
-        }</field>
-        <field name="action_id" ref="planning_report_action_analysis"/>
     </record>
 
     <menuitem

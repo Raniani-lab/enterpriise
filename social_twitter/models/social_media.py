@@ -192,6 +192,7 @@ class SocialMediaTwitter(models.Model):
             'from': {
                 'id': tweet.get('user').get('id_str'),
                 'name': tweet.get('user').get('name'),
+                'screen_name': tweet.get('user', {}).get('screen_name', ''),  # Pseudo of the author
                 'profile_image_url_https': tweet.get('user').get('profile_image_url_https')
             },
             'created_time': tweet.get('created_at'),
@@ -204,6 +205,7 @@ class SocialMediaTwitter(models.Model):
                     'total_count': tweet.get('favorite_count')
                 }
             },
+            'in_reply_to_status_id_str': tweet.get('in_reply_to_status_id_str'),
         }
 
         attachment = False

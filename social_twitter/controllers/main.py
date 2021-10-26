@@ -56,12 +56,36 @@ class SocialTwitterController(SocialController):
     # ========================================================
 
     @http.route('/social_twitter/<int:stream_id>/comment', type='http', methods=['POST'])
-    def social_twitter_comment(self, stream_id=None, stream_post_id=None, comment_id=None, message=None, **kwargs):
+    def social_twitter_comment(self, stream_id=None, stream_post_id=None, comment_id=None,
+                               message=None, answering_to=None, **kwargs):
+        """Send a Tweet as an answer of an other Tweet.
+
+        When answering to a Tweet, its author will be automatically mention in the answer
+        so our Tweet will be correctly displayed as an answer on Tweeter.
+
+        All other mention will be removed to avoid spam abuse.
+
+        :param stream_id: Id of the original <social.stream>
+        :param stream_post_id: Id of the original <social.stream.post>
+        :param comment_id: We if reply to a "comment" (aka tweet), this is the Tweeter id
+        :param message: Text message to send
+        :param answering_to: If we reply to a "comment", this is the screen name of the
+            "comment" author (it will be automatically mention in the answer)
+        """
         stream = request.env['social.stream'].browse(stream_id)
         if not stream.exists() or stream.media_id.media_type != 'twitter':
             raise Forbidden()
 
         stream_post = self._get_social_stream_post(stream_post_id, 'twitter')
+        answering_to = answering_to if comment_id else stream_post.twitter_screen_name
+
+        # Add mention in the message if not present and remove other mentions.
+        # This is needed when answering to a tweet, otherwise the new tweet will not be
+        # displayed as a response on Twitter.
+        message = request.env["social.live.post"]._remove_mentions(message, [answering_to])
+        if f'@{answering_to.lower()}' not in message.lower():
+            message = f"@{answering_to} {message}"
+
         return json.dumps(stream_post._twitter_comment_add(stream, comment_id, message))
 
     @http.route('/social_twitter/delete_tweet', type='json')

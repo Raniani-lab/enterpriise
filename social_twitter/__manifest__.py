@@ -29,6 +29,9 @@
         'web.assets_qweb': [
             'social_twitter/static/src/xml/**/*',
         ],
+        'web.assets_tests': [
+            'social_twitter/static/tests/tours/tour_social_twitter_spam.js',
+        ],
     },
     'license': 'OEEL-1',
 }

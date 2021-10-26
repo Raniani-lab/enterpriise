@@ -238,6 +238,7 @@ class MrpProductionSchedule(models.Model):
                     ('company_id', '=', vals.get('company_id', self.env.company.id)),
                 ], limit=1)
                 if mps:
+                    mps.bom_id = vals.get('bom_id')
                     existing_mps.append((i, mps.id))
 
         for i_remove, __ in reversed(existing_mps):

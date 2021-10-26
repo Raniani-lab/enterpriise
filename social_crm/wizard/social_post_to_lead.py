@@ -104,7 +104,7 @@ class SocialPostConvert2Lead(models.TransientModel):
                 social_post = wizard.social_stream_post_id.sudo()._fetch_matching_post()
                 if social_post:
                     wizard.utm_campaign_id = social_post.utm_campaign_id.id
-                    wizard.utm_source_id = social_post.utm_source_id.id
+                    wizard.utm_source_id = social_post.source_id.id
                 elif utm_source_social_post:
                     wizard.utm_source_id = utm_source_social_post.id
 

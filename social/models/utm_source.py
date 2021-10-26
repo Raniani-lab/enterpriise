@@ -13,7 +13,7 @@ class UtmSource(models.Model):
     def _unlink_except_linked_social_posts(self):
         """ Already handled by ondelete='restrict', but let's show a nice error message """
         linked_social_posts = self.env['social.post'].sudo().search([
-            ('utm_source_id', 'in', self.ids)
+            ('source_id', 'in', self.ids)
         ])
 
         if linked_social_posts:

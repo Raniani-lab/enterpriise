@@ -82,9 +82,10 @@
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
-                        <h1><field class="o_text_overflow" name="name" required="1" placeholder="e.g. eCommerce Offers Plan" /></h1>
+                        <h1><field class="o_text_overflow" name="title" required="1" placeholder="e.g. eCommerce Offers Plan" /></h1>
                     </div>
                     <group>
+                        <field name="name" invisible="1"/>
                         <label for="unique_field_id" string="Target"/>
                         <div name="mailing_container">
                             <div class="row">

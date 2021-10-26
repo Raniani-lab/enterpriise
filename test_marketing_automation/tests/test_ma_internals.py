@@ -44,9 +44,10 @@ class MarketingCampaignTest(TestMACommon):
         self.assertEqual(campaign2.state, 'draft')
         self.assertEqual(campaign2.participant_ids, self.env['marketing.participant'])
 
-        # Two activities with the same name but not related to the same campaign
-        activities = self.env['marketing.activity'].search([('name', '=', "ShouldDuplicate")])
-        activities2 = self.env['marketing.activity'].search([('name', '=', "ShouldDuplicate2")])
+        # activities: Two activities with similar name (one with an counter, the other without) but not related to the same campaign
+        # see utm.mixin#_get_unique_names
+        activities = self.env['marketing.activity'].search([('name', 'in', ('ShouldDuplicate', 'ShouldDuplicate [2]'))])
+        activities2 = self.env['marketing.activity'].search([('name', 'in', ('ShouldDuplicate2', 'ShouldDuplicate2 [2]'))])
         activity_dup = campaign2.marketing_activity_ids.filtered(lambda activity: not activity.parent_id)
         activity2_dup = campaign2.marketing_activity_ids.filtered(lambda activity: activity.parent_id)
         self.assertEqual(activities, activity | activity_dup)

@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
+from datetime import timedelta, datetime
+from freezegun import freeze_time
+from unittest.mock import patch
 
 from odoo import fields
 from odoo.addons.social.tests import common
 from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
+from odoo.sql_db import Cursor
 from odoo.tests.common import users
 
 
@@ -78,8 +81,55 @@ class TestSocialBasics(common.SocialCase, CronMixinCase):
         }])
 
         self.assertEqual(2, len(social_posts))
-        self.assertEqual(2, len(social_posts.utm_source_id))
-        self.assertNotEqual(social_posts[0].utm_source_id, social_posts[1].utm_source_id)
+        self.assertEqual(2, len(social_posts.source_id))
+        self.assertNotEqual(social_posts[0].source_id, social_posts[1].source_id)
+
+    @freeze_time('2022-01-02')
+    @patch.object(Cursor, 'now', lambda *args, **kwargs: datetime(2022, 1, 2))
+    @users('social_user')
+    def test_social_post_utm(self):
+        """Test that the name of the UTM source is generated from the message of the post."""
+        post_1, post_2, post_3, post_4, post_5, post_6, post_7 = self.env['social.post'].create([{
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Message 1',
+        }, {
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Message 1',
+        }, {
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Message 1',
+            'name': 'Source Name Social Post (Social Post created on 2022-01-02)',
+        }, {
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Message 2',
+            'name': 'Message 1 (Social Post created on 2022-01-02) [1337]',
+        }, {
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Source Name Social Post',
+        }, {
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Long message %s' % ('x' * 500),
+        }, {
+            'account_ids': [(4, self.social_account.id)],
+            'message': 'Long message %s different' % ('x' * 500),
+        }])
+
+        self.assertEqual(post_1.name, 'Message 1 (Social Post created on 2022-01-02)',
+            msg='Should have generated the name from the post message')
+        self.assertEqual(post_2.name, 'Message 1 (Social Post created on 2022-01-02) [2]',
+            msg='Should have added a counter at the end of the name')
+        self.assertEqual(post_3.name, 'Source Name Social Post (Social Post created on 2022-01-02)',
+            msg='Should not have generated the name from the content')
+        self.assertEqual(post_4.name, 'Message 1 (Social Post created on 2022-01-02) [3]',
+            msg='Should have fixed the counter of the given name')
+        self.assertEqual(post_5.name, 'Source Name Social Post (Social Post created on 2022-01-02) [2]',
+            msg='Name already generated from the content of a different record')
+
+        # The 2 next social posts have different message, but they are the same once truncated
+        self.assertEqual(post_6.name, 'Long message xxxxxxx... (Social Post created on 2022-01-02)',
+            msg='Should have truncated the message')
+        self.assertEqual(post_7.name, 'Long message xxxxxxx... (Social Post created on 2022-01-02) [2]',
+            msg='Should have truncated the message and added a counter at the end')
 
     @classmethod
     def _get_social_media(cls):

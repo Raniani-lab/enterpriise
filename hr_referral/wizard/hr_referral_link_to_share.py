@@ -26,8 +26,9 @@ class HrReferralLinkToShare(models.TransientModel):
         self.ensure_one()
 
         if not self.env.user.utm_source_id:
-            utm_name = ('%s-%s') % (self.env.user.name, str(uuid.uuid4())[:6])
-            self.env.user.utm_source_id = self.env['utm.source'].create({'name': utm_name}).id
+            self.env.user.utm_source_id = self.env['utm.source'].create({
+                'name': self.env['utm.source']._generate_name(self, self.env.user.name),
+            }).id
 
         if self.job_id and not self.job_id.utm_campaign_id:
             self.job_id.utm_campaign_id = self.env['utm.campaign'].create({'name': self.job_id.name}).id

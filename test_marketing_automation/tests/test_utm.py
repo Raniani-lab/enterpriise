@@ -26,7 +26,7 @@ class TestUTMConsistencyMassMailing(TestUTMCommon, TestMACommon):
 
         marketing_activity = self._create_activity(marketing_campaign)
         # the source is automatically created when creating a marketing activity
-        utm_source = marketing_activity.utm_source_id
+        utm_source = marketing_activity.source_id
 
         with self.assertRaises(UserError):
             # can't unlink the source as it's used by a marketing.activity as its source

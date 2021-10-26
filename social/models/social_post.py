@@ -21,7 +21,7 @@ class SocialPost(models.Model):
     that will publish their content through the third party API of the social.account. """
 
     _name = 'social.post'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'social.post.template']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'social.post.template', 'utm.source.mixin']
     _description = 'Social Post'
     _order = 'create_date desc'
 
@@ -58,7 +58,7 @@ class SocialPost(models.Model):
     #UTM
     utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_auto_campaign', '=', False)]",
         string="UTM Campaign", ondelete="set null")
-    utm_source_id = fields.Many2one('utm.source', string="UTM Source", readonly=True, required=True, ondelete="restrict")
+    source_id = fields.Many2one(readonly=True)
     # Statistics
     stream_posts_count = fields.Integer("Feed Posts Count", compute='_compute_stream_posts_count',
         help="Number of linked Feed Posts")
@@ -154,8 +154,8 @@ class SocialPost(models.Model):
         # on the current companies (1 account == 1 medium)
         medium_ids = self.account_ids.mapped('utm_medium_id')
 
-        if not self.utm_source_id.ids or not medium_ids.ids:
-            # not "utm_source_id", the records are not yet created
+        if not self.source_id.ids or not medium_ids.ids:
+            # not "source_id", the records are not yet created
             for post in self:
                 post.click_count = 0
         else:
@@ -167,11 +167,11 @@ class SocialPost(models.Model):
               GROUP BY link.source_id
             """
 
-            self.env.cr.execute(query, [tuple(self.utm_source_id.ids), tuple(medium_ids.ids)])
+            self.env.cr.execute(query, [tuple(self.source_id.ids), tuple(medium_ids.ids)])
             click_data = self.env.cr.dictfetchall()
             mapped_data = {datum['source_id']: datum['click_count'] for datum in click_data}
             for post in self:
-                post.click_count = mapped_data.get(post.utm_source_id.id, 0)
+                post.click_count = mapped_data.get(post.source_id.id, 0)
 
     def _prepare_preview_values(self, media):
         values = super(SocialPost, self)._prepare_preview_values(media)
@@ -213,14 +213,6 @@ class SocialPost(models.Model):
     def create(self, vals_list):
         """Every post will have a unique corresponding utm.source for statistics computation purposes.
         This way, it will be possible to see every leads/quotations generated through a particular post."""
-
-        sources = self.env['utm.source'].create([{
-            'name': self._prepare_post_name(vals.get('message'), include_datetime=True)
-        } for vals in vals_list])
-
-        for source, vals in zip(sources, vals_list):
-            vals['utm_source_id'] = source.id
-
         res = super(SocialPost, self).create(vals_list)
 
         cron = self.env.ref('social.ir_cron_post_scheduled')
@@ -288,7 +280,7 @@ class SocialPost(models.Model):
     def action_redirect_to_clicks(self):
         action = self.env["ir.actions.actions"]._for_xml_id("link_tracker.link_tracker_action")
         action['domain'] = [
-            ('source_id', '=', self.utm_source_id.id),
+            ('source_id', '=', self.source_id.id),
             ('medium_id', 'in', self.account_ids.mapped('utm_medium_id').ids),
         ]
         return action
@@ -338,7 +330,7 @@ class SocialPost(models.Model):
         } for account in self.account_ids]
 
     @api.model
-    def _prepare_post_name(self, message, state=False, include_datetime=False):
+    def _prepare_post_name(self, message, state=False):
         name = _('Post')
         if message:
             message = message.replace('\n', ' ')  # replace carriage returns as needed name is usually a Char
@@ -351,10 +343,6 @@ class SocialPost(models.Model):
             state_description_values = {elem[0]: elem[1] for elem in self._fields['state']._description_selection(self.env)}
             state_translated = state_description_values.get(state)
             name += ' (' + state_translated + ')'
-
-        if include_datetime:
-            context_now = fields.Datetime.context_timestamp(self, fields.Datetime.now())
-            name += ' ' + fields.Datetime.to_string(context_now)
 
         return name
 

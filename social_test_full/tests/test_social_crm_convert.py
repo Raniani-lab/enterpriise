@@ -82,7 +82,7 @@ class TestSocialCrmConvert(common.SocialCase):
         self.assertEqual(len(created_lead), 1)
         self.assertEqual(created_lead.campaign_id, self.utm_campaign_id)
         self.assertEqual(created_lead.medium_id, self.social_account.utm_medium_id)
-        self.assertEqual(created_lead.source_id, self.social_post.utm_source_id)
+        self.assertEqual(created_lead.source_id, self.social_post.source_id)
 
     @users('user_social_crm')
     @mock_void_external_calls()

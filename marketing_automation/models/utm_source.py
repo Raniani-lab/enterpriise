@@ -13,7 +13,7 @@ class UtmSource(models.Model):
     def _unlink_except_linked_activities(self):
         """ Already handled by ondelete='restrict', but let's show a nice error message """
         linked_activities = self.env['marketing.activity'].sudo().search([
-            ('utm_source_id', 'in', self.ids)
+            ('source_id', 'in', self.ids)
         ])
 
         if linked_activities:

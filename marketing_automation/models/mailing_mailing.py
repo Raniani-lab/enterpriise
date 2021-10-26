@@ -30,7 +30,7 @@ class MassMailing(models.Model):
                 vals = {
                     'mass_mailing_id': mass_mailing.id,
                     'campaign_id': activity.campaign_id.utm_campaign_id.id,
-                    'source_id': activity.utm_source_id.id,
+                    'source_id': activity.source_id.id,
                     'medium_id': mass_mailing.medium_id.id,
                 }
                 res[mass_mailing.id] = mass_mailing._shorten_links(
@@ -50,5 +50,5 @@ class MassMailing(models.Model):
         if self.env.context.get('default_marketing_activity_id'):
             activity = self.env['marketing.activity'].browse(self.env.context['default_marketing_activity_id'])
             res['campaign_id'] = activity.campaign_id.utm_campaign_id.id
-            res['source_id'] = activity.utm_source_id.id
+            res['source_id'] = activity.source_id.id
         return res

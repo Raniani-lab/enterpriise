@@ -49,7 +49,7 @@ class TestUTMConsistencySocial(TestUTMCommon, SocialCase):
             'message': 'Message 1',
         })
         # the source is automatically created when creating a post
-        utm_source = social_post.utm_source_id
+        utm_source = social_post.source_id
 
         with self.assertRaises(UserError):
             # can't unlink the source as it's used by a social.post as its source

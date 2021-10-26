@@ -21,7 +21,7 @@ _logger = logging.getLogger(__name__)
 class MarketingActivity(models.Model):
     _name = 'marketing.activity'
     _description = 'Marketing Activity'
-    _inherits = {'utm.source': 'utm_source_id'}
+    _inherit = ['utm.source.mixin']
     _order = 'interval_standardized'
 
     # definition and UTM
@@ -38,7 +38,6 @@ class MarketingActivity(models.Model):
     server_action_id = fields.Many2one(
         'ir.actions.server', string='Server Action', compute='_compute_server_action_id',
         readonly=False, store=True)
-    utm_source_id = fields.Many2one('utm.source', 'Source', ondelete='restrict', required=True)
     campaign_id = fields.Many2one(
         'marketing.campaign', string='Campaign',
         index=True, ondelete='cascade', required=True)

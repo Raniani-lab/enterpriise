@@ -34,7 +34,7 @@ class SocialLivePost(models.Model):
     company_id = fields.Many2one('res.company', 'Company', related='account_id.company_id')
 
     @api.depends(lambda self:
-        ['post_id.message', 'post_id.utm_campaign_id', 'account_id.media_type', 'account_id.utm_medium_id', 'post_id.utm_source_id'] +
+        ['post_id.message', 'post_id.utm_campaign_id', 'account_id.media_type', 'account_id.utm_medium_id', 'post_id.source_id'] +
         ['post_id.%s' % field for field in self.env['social.post']._get_post_message_modifying_fields()])
     def _compute_message(self):
         """ Prepares the message of the parent post, and shortens links to contain UTM data. """
@@ -102,7 +102,7 @@ class SocialLivePost(models.Model):
         return {
             'campaign_id': post_id.utm_campaign_id.id,
             'medium_id': self.account_id.utm_medium_id.id,
-            'source_id': post_id.utm_source_id.id
+            'source_id': post_id.source_id.id,
         }
 
     def _filter_by_media_types(self, media_types):

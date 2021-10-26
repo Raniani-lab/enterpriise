@@ -31,6 +31,7 @@
             <optional><attribute name="attrs"/></optional>
             <optional><attribute name="string"/></optional>
             <optional><attribute name="invisible"/></optional>
+            <optional><attribute name="groups"/></optional>
             <zeroOrMore>
                 <choice>
                     <ref name="field"/>

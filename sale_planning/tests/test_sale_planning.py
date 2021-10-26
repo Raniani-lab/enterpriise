@@ -143,7 +143,7 @@ class TestSalePlanning(TestCommonSalePlanning):
         so_form.partner_id = self.planning_partner
         with so_form.order_line.new() as sol_form:
             sol_form.product_id = self.plannable_product
-            sol_form.product_uom_qty = 50
+            sol_form.product_uom_qty = 150
         so = so_form.save()
         so.action_confirm()
         Slot = self.env['planning.slot'].with_context(
@@ -158,6 +158,17 @@ class TestSalePlanning(TestCommonSalePlanning):
             Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
         self.employee_wout.write({'default_planning_role_id': False, 'planning_role_ids': [(5, 0, 0)]})
         self.employee_joseph.write({'default_planning_role_id': self.planning_role_junior.id})
+        with freeze_time('2021-07-26'):
+            Slot.with_context(
+                start_date='2021-08-01 00:00:00',
+                stop_date='2021-08-07 23:59:59'
+            ).action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-08-01 00:00:00'), ('end_datetime', '=', '2021-08-07 23:59:59')])
+        slots = so.order_line.planning_slot_ids.filtered('start_datetime')
+        self.assertEqual(len(slots), 2, 'It should exists two slots')
+        for slot in slots:
+            self.assertEqual(slot.employee_id, self.employee_wout, 'Planning should be assigned to the employee previously assigned to the slot')
+
+        # Ensure no one is assigned once again since employee_wout is already planned this week
         with freeze_time('2021-07-26'):
             Slot.with_context(
                 start_date='2021-08-01 00:00:00',

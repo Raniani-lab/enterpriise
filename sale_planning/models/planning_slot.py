@@ -446,11 +446,19 @@ class PlanningSlot(models.Model):
             cache[priority] = [res['id'] for res in search]
         return cache[priority].pop(0) if cache.get(priority) else None
 
-    def _get_employee_to_assign(self, default_priority, employee_ids_to_exclude, cache):
+    def _get_employee_to_assign(self, default_priority, employee_ids_to_exclude, cache, employee_per_sol):
         """
             Returns the id of the employee to assign and its corresponding priority
         """
         self.ensure_one()
+        if self.sale_line_id.id in employee_per_sol:
+            employee_id = next(
+                (employee_id
+                 for employee_id in employee_per_sol[self.sale_line_id.id]
+                 if employee_id not in employee_ids_to_exclude),
+                None
+            )
+            return employee_id, default_priority
         # This method is written to be overridden, so as every module can keep the priority ordered as its required.
         priority_list = self._get_employee_to_assign_priority_list()
         for priority in priority_list:
@@ -472,7 +480,30 @@ class PlanningSlot(models.Model):
         return self.search(domain, order='sale_line_id desc')
 
     @api.model
+    def _get_employee_per_sol_within_period(self, slots, start, end):
+        """ Gets the employees already assigned during this period.
+
+            :returns: a dict with key : SOL id, and values : a list of employee ids
+        """
+        assert start and end
+        if isinstance(end, str):
+            end = datetime.strptime(end, DEFAULT_SERVER_DATETIME_FORMAT)
+
+        employee_per_sol = self.env['planning.slot'].read_group([
+            ('sale_line_id', 'in', slots.sale_line_id.ids),
+            ('start_datetime', '<', end),
+            ('end_datetime', '>', start),
+            ('employee_id', '!=', False),
+        ], ['sale_line_id', 'employee_ids:array_agg(employee_id)'], ['sale_line_id'])
+
+        return {
+            sol['sale_line_id'][0]: sol['employee_ids']
+            for sol in employee_per_sol
+        }
+
+    @api.model
     def action_plan_sale_order(self, view_domain):
+        assert self.env.context.get('start_date') and self.env.context.get('stop_date'), "`start_date` and `stop_date` attributes should be in the context"
         new_view_domain = []
         for clause in view_domain:
             # remove clauses on start_datetime and end_datetime
@@ -482,8 +513,9 @@ class PlanningSlot(models.Model):
         if self.env.context.get('planning_gantt_active_sale_order_id'):
             domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
         slots_to_assign = self._get_ordered_slots_to_assign(domain)
-        slots_assigned = False
         start_datetime = max(datetime.strptime(self.env.context.get('start_date'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
+        employee_per_sol = self._get_employee_per_sol_within_period(slots_to_assign, start_datetime, self.env.context.get('stop_date'))
+        slots_assigned = False
         employee_ids_to_exclude = []
         for slot in slots_to_assign:
             slot_assigned = False
@@ -492,7 +524,7 @@ class PlanningSlot(models.Model):
             while not slot_assigned:
                 # Retrieve an employee_id that may be assigned to this slot, excluding the ones who have no time left.
                 # The previous priority is given in order to get the second employee that respects the previous criterias
-                employee_id, previous_priority = slot._get_employee_to_assign(previous_priority, employee_ids_to_exclude, cache)
+                employee_id, previous_priority = slot._get_employee_to_assign(previous_priority, employee_ids_to_exclude, cache, employee_per_sol)
                 if not employee_id:
                     break
                 # The browse is mandatory to access the resource calendar
@@ -502,12 +534,12 @@ class PlanningSlot(models.Model):
                     'end_datetime': start_datetime + timedelta(days=1),
                     'resource_id': employee.resource_id.id
                 }
-                # With the context keys, the maximal date to assign the slot will be self.env.context.get('end_date')
+                # With the context keys, the maximal date to assign the slot will be self.env.context.get('stop_date')
                 slot_assigned = slot.write(vals)
                 if not slot_assigned:
                     # if no slot was generated (it uses the write method), then the employee_id is excluded from the employees assignable on this slot.
                     employee_ids_to_exclude.append(employee_id)
-            slots_assigned = slot_assigned or slots_assigned
+            slots_assigned |= slot_assigned
         return slots_assigned
 
     # -------------------------------------------

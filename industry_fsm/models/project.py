@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, time
 import pytz
 
 from odoo import fields, models, api, _
@@ -44,44 +44,51 @@ class Task(models.Model):
     @api.model
     def default_get(self, fields_list):
         result = super(Task, self).default_get(fields_list)
-        if 'project_id' in fields_list and not result.get('project_id') and self._context.get('fsm_mode'):
+        is_fsm_mode = self._context.get('fsm_mode')
+        if 'project_id' in fields_list and not result.get('project_id') and is_fsm_mode:
             company_id = self.env.context.get('default_company_id') or self.env.company.id
             fsm_project = self.env['project.project'].search([('is_fsm', '=', True), ('company_id', '=', company_id)], order='sequence', limit=1)
             result['project_id'] = fsm_project.id
 
         date_begin = result.get('planned_date_begin')
         date_end = result.get('planned_date_end')
-        # force today if default is more than 25 hours (for eg. "Add" button in gantt view)
-        if self._context.get('fsm_mode'):
-            if date_begin and date_end and abs(date_end - date_begin).total_seconds() > 90000:
-                date_begin = fields.Datetime.now()
-        if date_begin and self._context.get('fsm_mode'):
-            # If the task is assigned, the default start/end hours correspond to what is configured on the employee calendar
-            user = self.env['res.users'].sudo().browse(result.get('user_id', False))
-            if user and user.employee_id:
-                resource_calendar = user.resource_calendar_id
-            # If the task is unassigned, the default start/end hours correspond to what is configured on the company calendar
-            else:
-                company = self.env['res.company'].sudo().browse(result.get('company_id')) if result.get(
-                    'company_id') else self.env.user.company_id
-                resource_calendar = company.resource_calendar_id
-            user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
-            if (result.get('planned_date_end')-result.get('planned_date_begin')).days == 0:
-                date_begin = result.get('planned_date_begin')
-            date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
-            start_dt = date_begin.replace(hour=0, minute=0, second=1)
-            end_dt = date_begin.replace(hour=23, minute=59, second=59)
-            if resource_calendar:
-                resources_work_intervals = resource_calendar._work_intervals_batch(start_dt, end_dt)
-                work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[False]]
-                if work_intervals:
-                    planned_date_begin = work_intervals[0][0].astimezone(pytz.utc).replace(tzinfo=None)
-                    planned_date_end = work_intervals[-1][1].astimezone(pytz.utc).replace(tzinfo=None)
-                    result['planned_date_begin'] = planned_date_begin
-                    result['planned_date_end'] = planned_date_end
-            else:
-                result['planned_date_begin'] = start_dt.replace(hour=9, minute=0, second=1).astimezone(pytz.utc).replace(tzinfo=None)
-                result['planned_date_end'] = end_dt.astimezone(pytz.utc).replace(tzinfo=None)
+        if is_fsm_mode and (date_begin or date_end):
+            if not date_begin:
+                date_begin = date_end.replace(hour=0, minute=0, second=1)
+            if not date_end:
+                date_end = date_begin.replace(hour=23, minute=59, second=59)
+            date_diff = date_end - date_begin
+            if date_diff.days > 0:
+                # force today if default is more than 24 hours (for eg. "Add" button in gantt view)
+                today = fields.Date.context_today(self)
+                date_begin = datetime.combine(today, time(0, 0, 0))
+                date_end = datetime.combine(today, time(23, 59, 59))
+            if date_diff.seconds / 3600 > 23.5:
+                # if the interval between both dates are more than 23 hours and 30 minutes
+                # then we changes those dates to fit with the working schedule of the assigned user or the current company
+                # because we assume here, the planned dates are not the ones chosen by the current user.
+                user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
+                date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
+                date_end = pytz.utc.localize(date_end).astimezone(user_tz)
+                users = self.env['res.users'].sudo().browse(result.get('user_ids', []))
+                user = len(users) == 1 and users[0]
+                if user and user.employee_id:  # then the default start/end hours correspond to what is configured on the employee calendar
+                    resource_calendar = user.resource_calendar_id
+                else:  # Otherwise, the default start/end hours correspond to what is configured on the company calendar
+                    company = self.env['res.company'].sudo().browse(result.get('company_id')) if result.get(
+                        'company_id') else self.env.user.company_id
+                    resource_calendar = company.resource_calendar_id
+                if resource_calendar:
+                    resources_work_intervals = resource_calendar._work_intervals_batch(date_begin, date_end)
+                    work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[False]]
+                    if work_intervals:
+                        planned_date_begin = work_intervals[0][0].astimezone(pytz.utc).replace(tzinfo=None)
+                        planned_date_end = work_intervals[-1][1].astimezone(pytz.utc).replace(tzinfo=None)
+                        result['planned_date_begin'] = planned_date_begin
+                        result['planned_date_end'] = planned_date_end
+                else:
+                    result['planned_date_begin'] = date_begin.replace(hour=9, minute=0, second=1).astimezone(pytz.utc).replace(tzinfo=None)
+                    result['planned_date_end'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)
         return result
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')

@@ -3,7 +3,6 @@
 import ConnectorContainer from '../connector/connector_container';
 import { device } from 'web.config';
 import { ComponentWrapper, WidgetAdapterMixin } from 'web.OwlCompatibility';
-import { throttle } from "@web/core/utils/timing";
 import TaskGanttRenderer from '../task_gantt_renderer';
 import TaskGanttConnectorRow from "./task_gantt_connector_row";
 
@@ -65,6 +64,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         // As we needs the source and target of the connectors to be part of the dom,
         // we need to use the on_attach_callback in order to have the first rendering successful.
         this._mountConnectorContainer();
+        window.addEventListener('resize', this._throttledReRender);
     },
     /**
      * @override
@@ -72,20 +72,21 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     async start() {
         await this._super(...arguments);
         this._connectorContainerComponent = new ComponentWrapper(this, ConnectorContainer, this._getConnectorContainerProps());
-        this._throttledReRender = throttle(async () => {
+        this._throttledReRender = _.throttle(async () => {
             if (this._shouldRenderConnectors()) {
                 await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
             }
         }, 100);
-        window.addEventListener('resize', this._throttledReRender);
     },
     /**
       * Make sure the connectorManager Component is updated each time the view is updated.
       *
       * @override
       */
-    async _update() {
-        await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+    async update() {
+        if (this._shouldRenderConnectors()) {
+            await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+        }
         await this._super(...arguments);
     },
 
@@ -465,15 +466,14 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         if (this._isInDom) {
             // If the renderer is not yet part of the dom (during first rendering), then
             // the call will be performed in the on_attach_callback.
-            this._mountConnectorContainer();
+            await this._mountConnectorContainer();
         }
     },
-    _mountConnectorContainer() {
+    async _mountConnectorContainer() {
         if (this._shouldRenderConnectors()) {
             this.el.classList.toggle('position-relative', true);
-            this._connectorContainerComponent.mount(this.el).then(
-                (result) => this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps())
-            );
+            await this._connectorContainerComponent.mount(this.el);
+            await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
         }
     },
     /**
@@ -487,7 +487,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
      * @private
      */
     _shouldRenderConnectors() {
-        return !this.state.isSample && !device.isMobile && this.state.groupedBy.length <= 1;
+        return this._isInDom && !this.state.isSample && !device.isMobile && this.state.groupedBy.length <= 1;
     },
     /**
      * Toggles popover visibility.
@@ -580,7 +580,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
      * @param {HTMLElement} element
      * @param {boolean} highlighted
      */
-    togglePillHighlighting(element, highlighted) {
+    async togglePillHighlighting(element, highlighted) {
         const connectorCreatorInfo = this._getConnectorCreatorInfo(element);
         if (connectorCreatorInfo.pill.dataset.id != 0) {
             const connectedConnectors = Object.values(this._connectors)
@@ -595,7 +595,7 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
                     connector.hovered = highlighted;
                     connector.canBeRemoved = !highlighted;
                 });
-                this._connectorContainerComponent.update(this._getConnectorContainerProps());
+                await this._connectorContainerComponent.update(this._getConnectorContainerProps());
             }
             for (const pill of Object.values(this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo).map((rowInfo) => rowInfo.pillElement)) {
                 const tempConnectorCreatorInfo = this._getConnectorCreatorInfo(pill);
@@ -604,7 +604,6 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
                     if (connectorCreatorInfo.pill === tempConnectorCreatorInfo.pill) {
                         for (let connectorCreator of tempConnectorCreatorInfo.connectorCreators) {
                             connectorCreator.classList.toggle('invisible', !highlighted);
-                            connectorCreator.parentElement.classList.toggle('o_highlight_connector_creator', highlighted);
                         }
                     }
                 }

@@ -47,7 +47,6 @@ const TaskGanttConnectorController = TaskGanttController.extend({
             });
         this.renderer.display_milestone_popover(ev.data.popoverData, ev.data.targetElement);
     },
-
     /**
      * @override
      * @param {OdooEvent} ev
@@ -109,9 +108,8 @@ const TaskGanttConnectorController = TaskGanttController.extend({
      */
     async _onCreateConnector(ev) {
         ev.stopPropagation();
-        return this.model.createDependency(ev.data.masterTaskId, ev.data.slaveTaskId).then(
-            (result) => this.reload()
-        );
+        await this.model.createDependency(ev.data.masterTaskId, ev.data.slaveTaskId);
+        await this.reload();
     },
     /**
      * Handler for renderer on-connector-end-drag event.
@@ -119,10 +117,10 @@ const TaskGanttConnectorController = TaskGanttController.extend({
      * @param {OdooEvent} ev
      * @private
      */
-    _onPillHighlight(ev) {
+    async _onPillHighlight(ev) {
         ev.stopPropagation();
         if (!this._updating || !ev.data.highlighted) {
-            this.renderer.togglePillHighlighting(ev.data.element, ev.data.highlighted);
+            await this.renderer.togglePillHighlighting(ev.data.element, ev.data.highlighted);
         }
     },
     /**
@@ -133,9 +131,8 @@ const TaskGanttConnectorController = TaskGanttController.extend({
      */
     async _onRemoveConnector(ev) {
         ev.stopPropagation();
-        return this.model.removeDependency(ev.data.masterTaskId, ev.data.slaveTaskId).then(
-            (result) => this.reload()
-        );
+        await this.model.removeDependency(ev.data.masterTaskId, ev.data.slaveTaskId);
+        await this.reload();
     },
     /**
      * Handler for renderer on-reschedule-task event.
@@ -145,15 +142,12 @@ const TaskGanttConnectorController = TaskGanttController.extend({
      */
     async _onRescheduleTask(ev) {
         ev.stopPropagation();
-        return this.model.rescheduleTask(ev.data.direction, ev.data.masterTaskId, ev.data.slaveTaskId).then(
-            (result) => {
-                if (result.type !== 'ir.actions.client') {
-                    this.reload();
-                } else {
-                    this.do_action(result);
-                }
-            }
-        );
+        const result = await this.model.rescheduleTask(ev.data.direction, ev.data.masterTaskId, ev.data.slaveTaskId);
+        if (result.type !== 'ir.actions.client') {
+            await this.reload();
+        } else {
+            this.do_action(result);
+        }
     },
 });
 

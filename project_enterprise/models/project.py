@@ -49,6 +49,7 @@ class Task(models.Model):
             result.update(planned_date_begin=planned_date_begin, planned_date_end=planned_date_end)
         return result
 
+    @api.depends('stage_id')
     def _compute_display_warning_dependency_in_gantt(self):
         for task in self:
             task.display_warning_dependency_in_gantt = not (task.stage_id.is_closed or task.stage_id.fold)

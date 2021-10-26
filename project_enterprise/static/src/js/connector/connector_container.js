@@ -2,7 +2,6 @@
 
 import Connector from "./connector";
 import { deepMerge } from "./connector_utils";
-import { throttle } from "@web/core/utils/timing";
 const { Component } = owl;
 const { css } = owl.tags;
 
@@ -99,9 +98,8 @@ class ConnectorContainer extends Component {
      * @private
      */
     _createsParentListenerHandlers() {
-        this._throttledOnParentMouseOverHandler = throttle((ev) => this._onParentMouseOver(ev), 50);
+        this._throttledOnParentMouseOverHandler = _.throttle((ev) => this._onParentMouseOver(ev), 50);
         this._onParentMouseDownHandler = (ev) => this._onParentMouseDown(ev);
-        this._onParentMouseOverHandler = (ev) => this._onParentMouseOver(ev);
         this._onParentMouseUpHandler = (ev) => this._onParentMouseUp(ev);
     }
 

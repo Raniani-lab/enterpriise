@@ -157,7 +157,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     <CustomerAssignedAccountID>20557912879</CustomerAssignedAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="6">20557912879</ID>
+                            <ID schemeID="0">20557912879</ID>
                         </PartyIdentification>
                         <PartyName>
                             <Name>company_1_data</Name>
@@ -171,10 +171,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     </Party>
                 </AccountingSupplierParty>
                 <AccountingCustomerParty>
-                    <AdditionalAccountID>6</AdditionalAccountID>
+                    <AdditionalAccountID>0</AdditionalAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="6">20462509236</ID>
+                            <ID schemeID="0">20462509236</ID>
                         </PartyIdentification>
                         <PartyLegalEntity>
                             <RegistrationName>partner_a</RegistrationName>
@@ -289,7 +289,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     <CustomerAssignedAccountID>20557912879</CustomerAssignedAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="6">20557912879</ID>
+                            <ID schemeID="0">20557912879</ID>
                         </PartyIdentification>
                         <PartyName>
                             <Name>company_1_data</Name>
@@ -303,10 +303,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     </Party>
                 </AccountingSupplierParty>
                 <AccountingCustomerParty>
-                    <AdditionalAccountID>6</AdditionalAccountID>
+                    <AdditionalAccountID>0</AdditionalAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="6">20462509236</ID>
+                            <ID schemeID="0">20462509236</ID>
                         </PartyIdentification>
                         <PartyLegalEntity>
                             <RegistrationName>partner_a</RegistrationName>
@@ -417,7 +417,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     <CustomerAssignedAccountID>20557912879</CustomerAssignedAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="6">20557912879</ID>
+                            <ID schemeID="0">20557912879</ID>
                         </PartyIdentification>
                         <PartyName>
                             <Name>company_1_data</Name>
@@ -431,10 +431,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     </Party>
                 </AccountingSupplierParty>
                 <AccountingCustomerParty>
-                    <AdditionalAccountID>6</AdditionalAccountID>
+                    <AdditionalAccountID>0</AdditionalAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="6">20462509236</ID>
+                            <ID schemeID="0">20462509236</ID>
                         </PartyIdentification>
                         <PartyLegalEntity>
                             <RegistrationName>partner_a</RegistrationName>

@@ -28,7 +28,7 @@
         <field name="name">event.event.view.map</field>
         <field name="model">event.event</field>
         <field name="arch" type="xml">
-            <map res_partner="address_id" hide_name="true">
+            <map res_partner="address_id" hide_name="1">
                 <field name="name" string="Name"/>
                 <field name="address_id" string="Venue"/>
             </map>

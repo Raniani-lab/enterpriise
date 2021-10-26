@@ -1,17 +1,11 @@
 /** @odoo-module **/
 
-import {
-    registerClassPatchModel,
-    registerFieldPatchModel,
-    registerInstancePatchModel,
-} from '@mail/model/model_core';
+import { addFields, addLifecycleHooks, addRecordMethods, patchModelMethods } from '@mail/model/model_core';
 import { attr } from '@mail/model/model_field';
+// ensure that the model definition is loaded before the patch
+import '@mail/models/activity/activity';
 
-registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
+patchModelMethods('mail.activity', {
     /**
      * @override
      */
@@ -27,7 +21,7 @@ registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activi
     },
 });
 
-registerFieldPatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
+addFields('mail.activity', {
     /**
      * String to store the mobile number in a call activity.
      */
@@ -38,29 +32,17 @@ registerFieldPatchModel('mail.activity', 'voip/static/src/models/activity/activi
     phone: attr(),
 });
 
-registerInstancePatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
-
-    /**
-     * @override
-     */
+addLifecycleHooks('mail.activity', {
     _created() {
-        const res = this._super(...arguments);
         this._onReloadChatter = this._onReloadChatter.bind(this);
         this.env.bus.on('voip_reload_chatter', undefined, this._onReloadChatter);
-        return res;
     },
-    /**
-     * @override
-     */
     _willDelete() {
         this.env.bus.off('voip_reload_chatter', undefined, this._onReloadChatter);
-        return this._super(...arguments);
     },
+});
 
-    //----------------------------------------------------------------------
-    // Handlers
-    //----------------------------------------------------------------------
-
+addRecordMethods('mail.activity', {
     /**
      * @private
      */

@@ -1,16 +1,12 @@
 /** @odoo-module **/
 
-import { registerNewModel } from '@mail/model/model_core';
+import { registerModel } from '@mail/model/model_core';
 import { attr, one2one } from '@mail/model/model_field';
 
-function factory(dependencies) {
-
-    class Approval extends dependencies['mail.model'] {
-
-        //----------------------------------------------------------------------
-        // Public
-        //----------------------------------------------------------------------
-
+registerModel({
+    name: 'approvals.approval',
+    identifyingFields: ['id'],
+    recordMethods: {
         /**
          * Approves the current `approval.approver`.
          */
@@ -24,8 +20,7 @@ function factory(dependencies) {
                 this.activity.delete();
             }
             this.delete();
-        }
-
+        },
         /**
          * Refuses the current `approval.approver`.
          */
@@ -39,11 +34,9 @@ function factory(dependencies) {
                 this.activity.delete();
             }
             this.delete();
-        }
-
-    }
-
-    Approval.fields = {
+        },
+    },
+    fields: {
         activity: one2one('mail.activity', {
             inverse: 'approval',
         }),
@@ -56,11 +49,5 @@ function factory(dependencies) {
             related: 'activity.isCurrentPartnerAssignee',
         }),
         status: attr(),
-    };
-    Approval.identifyingFields = ['id'];
-    Approval.modelName = 'approvals.approval';
-
-    return Approval;
-}
-
-registerNewModel('approvals.approval', factory);
+    },
+});

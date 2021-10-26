@@ -1,17 +1,12 @@
 /** @odoo-module **/
 
-import {
-    registerClassPatchModel,
-    registerFieldPatchModel,
-} from '@mail/model/model_core';
+import { addFields, patchModelMethods } from '@mail/model/model_core';
 import { one2one } from '@mail/model/model_field';
 import { insert, unlinkAll } from '@mail/model/model_field_command';
+// ensure that the model definition is loaded before the patch
+import '@mail/models/activity/activity';
 
-registerClassPatchModel('mail.activity', 'approvals/static/src/models/activity/activity.js', {
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
+patchModelMethods('mail.activity', {
     /**
      * @override
      */
@@ -30,7 +25,7 @@ registerClassPatchModel('mail.activity', 'approvals/static/src/models/activity/a
     },
 });
 
-registerFieldPatchModel('mail.activity', 'approvals/static/src/models/activity/activity.js', {
+addFields('mail.activity', {
     approval: one2one('approvals.approval', {
         inverse: 'activity',
     }),

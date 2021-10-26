@@ -547,6 +547,7 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
             this.$('.o_inspector_delete').prop('disabled', true);
             this.$('.o_inspector_archive').prop('disabled', true);
             this.$('.o_inspector_lock').prop('disabled', true);
+            this.$('.o_inspector_split').prop('disabled', true);
             this.$('.o_inspector_table .o_field_widget').prop('disabled', true);
             this.$('.o_inspector_split').prop('disabled', !this.disableInspector);
             this.$('.o_inspector_download').prop('disabled', !this.disableInspector);

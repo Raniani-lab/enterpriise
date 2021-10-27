@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="o_line_buttons">
-                <button t-on-click="edit" class="o_line_button o_edit btn btn-secondary ml-2 ml-sm-4">
+                <button t-on-click="edit" class="o_line_button o_edit btn btn-secondary">
                     <i class="fa fa-2x fa-pencil"/>
                 </button>
                 <button t-if="env.model.displaySetButton" t-on-click="setOnHandQuantity"
@@ -76,6 +76,13 @@
                         t-on-click="addQuantity(incrementQty)" t-esc="'+' + incrementQty"
                         class="o_line_button o_add_quantity btn btn-primary ml-2 ml-sm-4"/>
                 </span>
+                <button t-if="isSelected and env.model.getDisplayIncrementPackagingBtn(line)" name="incrementPackagingButton"
+                    t-on-click="addQuantity(line.product_packaging_uom_qty)"
+                    class="o_line_button w-100 btn btn-primary my-3 d-block">
+                    <div class="text-capitalize">
+                        + <t t-esc="line.product_packaging_id.name"/>
+                    </div>
+	            </button>
             </div>
         </div>
     </t>

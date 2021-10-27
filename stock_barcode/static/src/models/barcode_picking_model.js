@@ -90,6 +90,12 @@ export default class BarcodePickingModel extends BarcodeModel {
         return Object.assign(super.getEditedLineParams(...arguments), { canBeDeleted: !line.product_uom_qty });
     }
 
+    getDisplayIncrementPackagingBtn(line) {
+        const packagingQty = line.product_packaging_uom_qty;
+        return packagingQty &&
+            (!this.getQtyDemand(line) || this.getQtyDemand(line) >= this.getQtyDone(line) + packagingQty);
+    }
+
     nextPage() {
         this.highlightDestinationLocation = false;
         return super.nextPage(...arguments);
@@ -342,6 +348,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             smlData.lot_id = smlData.lot_id && this.cache.getRecord('stock.production.lot', smlData.lot_id);
             smlData.owner_id = smlData.owner_id && this.cache.getRecord('res.partner', smlData.owner_id);
             smlData.package_id = smlData.package_id && this.cache.getRecord('stock.quant.package', smlData.package_id);
+            smlData.product_packaging_id = smlData.product_packaging_id && this.cache.getRecord('product.packaging', smlData.product_packaging_id);
             const resultPackage = smlData.result_package_id && this.cache.getRecord('stock.quant.package', smlData.result_package_id);
             if (resultPackage) { // Fetch the package type if needed.
                 smlData.result_package_id = resultPackage;

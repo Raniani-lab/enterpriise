@@ -72,6 +72,10 @@ export default class BarcodeModel extends owl.core.EventBus {
         return false;
     }
 
+    getDisplayIncrementPackagingBtn(line) {
+        return false;
+    }
+
     getActionRefresh(newId) {
         return {
             route: '/stock_barcode/get_barcode_data',

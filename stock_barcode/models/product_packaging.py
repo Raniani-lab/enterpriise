@@ -10,4 +10,4 @@ class ProductPackaging(models.Model):
 
     @api.model
     def _get_fields_stock_barcode(self):
-        return ['barcode', 'product_id', 'qty']
+        return ['barcode', 'product_id', 'qty', 'name']

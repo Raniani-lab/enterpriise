@@ -13,6 +13,8 @@ class StockMoveLine(models.Model):
     picking_location_id = fields.Many2one(related='picking_id.location_id')
     picking_location_dest_id = fields.Many2one(related='picking_id.location_dest_id')
     product_stock_quant_ids = fields.One2many('stock.quant', compute='_compute_product_stock_quant_ids')
+    product_packaging_id = fields.Many2one(related='move_id.product_packaging_id')
+    product_packaging_uom_qty = fields.Float('Packaging Quantity', compute='_compute_product_packaging_uom_qty', help="Quantity of the Packaging in the UoM of the Stock Move Line.")
 
     @api.depends('product_id', 'product_id.stock_quant_ids')
     def _compute_product_stock_quant_ids(self):
@@ -21,6 +23,10 @@ class StockMoveLine(models.Model):
 
     def _compute_dummy_id(self):
         self.dummy_id = ''
+
+    def _compute_product_packaging_uom_qty(self):
+        for sml in self:
+            sml.product_packaging_uom_qty = sml.product_packaging_id.product_uom_id._compute_quantity(sml.product_packaging_id.qty, sml.product_uom_id)
 
     def _inverse_dummy_id(self):
         pass
@@ -41,4 +47,6 @@ class StockMoveLine(models.Model):
             'package_id',
             'result_package_id',
             'dummy_id',
+            'product_packaging_id',
+            'product_packaging_uom_qty',
         ]

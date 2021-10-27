@@ -349,14 +349,14 @@ class PlanningSlot(models.Model):
         attendance_intervals = Intervals()
         unavailability_intervals = Intervals()
         # retrieves attendances and unavailabilities of the resource
-        for calendar in resource_calendar_validity_intervals.keys():
+        for calendar, validity_intervals in resource_calendar_validity_intervals.items():
             attendance = calendar._attendance_intervals_batch(
                 start_dt, end_dt, resources=resource)[resource.id]
             leaves = calendar._leave_intervals_batch(
                 start_dt, end_dt, resources=resource)[resource.id]
             # The calendar is valid only during its validity interval (see resource_resource:_get_calendars_validity_within_period)
-            attendance_intervals |= attendance & resource_calendar_validity_intervals[calendar]
-            unavailability_intervals |= leaves & resource_calendar_validity_intervals[calendar]
+            attendance_intervals |= attendance & validity_intervals
+            unavailability_intervals |= leaves & validity_intervals
         partial_slots = {}
         partial_interval_slots = defaultdict(list)
         if resource:

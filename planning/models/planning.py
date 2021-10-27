@@ -223,14 +223,14 @@ class Planning(models.Model):
     def _compute_allocated_hours(self):
         percentage_field = self._fields['allocated_percentage']
         self.env.remove_to_compute(percentage_field, self)
-        planning_slots = self.filtered(lambda s: s.allocation_type == 'planning')
-        forecast_slots = self - planning_slots
+        forecast_slots = self.filtered(lambda s: s.allocation_type == 'forecast' and (s.resource_id or s.company_id))
+        planning_slots = self - forecast_slots
         for slot in planning_slots:
             # for each planning slot, compute the duration
             ratio = slot.allocated_percentage / 100.0 or 1
             slot.allocated_hours = slot._get_slot_duration() * ratio
         if forecast_slots:
-            # for forecasted slots, compute the Conjonction of the slot resource's work intervals and the slot.
+            # for forecasted slots, compute the conjunction of the slot resource's work intervals and the slot.
             unplanned_forecast_slots = forecast_slots.filtered_domain([
                 '|', ('start_datetime', "=", False), ('end_datetime', "=", False),
             ])
@@ -241,30 +241,18 @@ class Planning(models.Model):
             planned_forecast_slots = forecast_slots - unplanned_forecast_slots
             if not planned_forecast_slots:
                 return
-            # if there are at least one slot having start or end date, call the _get_work_intervals_batch
+            # if there are at least one slot having start or end date, call the _get_valid_work_intervals
             start_utc = pytz.utc.localize(min(planned_forecast_slots.mapped('start_datetime')))
             end_utc = pytz.utc.localize(max(planned_forecast_slots.mapped('end_datetime')))
             # work intervals per resource are retrieved with a batch
-            work_intervals_per_resource = forecast_slots.resource_id._get_work_intervals_batch(start_utc, end_utc)
+            resource_work_intervals, calendar_work_intervals = forecast_slots.resource_id._get_valid_work_intervals(
+                start_utc, end_utc, calendars=forecast_slots.company_id.resource_calendar_id
+            )
             for slot in planned_forecast_slots:
-                ratio = slot.allocated_percentage / 100.0 or 1
-                if not slot.resource_id:
-                    # if there are no resource on the slot, use the company calendar
-                    calendar = slot.company_id.resource_calendar_id
-                    hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime) if calendar else slot._get_slot_duration()
-                    slot.allocated_hours = hours * ratio
-                else:
-                    interval = Intervals([(
-                        pytz.utc.localize(slot.start_datetime),
-                        pytz.utc.localize(slot.end_datetime),
-                        self.env['resource.calendar.attendance']
-                    )])
-                    # Conjonction between work_intervals and the slot interval.
-                    work_intervals = interval & work_intervals_per_resource[slot.resource_id.id]
-                    slot.allocated_hours = sum(
-                        (stop - start).total_seconds() / 3600
-                        for start, stop, _resource in work_intervals
-                    ) * ratio
+                slot.allocated_hours = slot._get_duration_over_period(
+                    pytz.utc.localize(slot.start_datetime), pytz.utc.localize(slot.end_datetime),
+                    resource_work_intervals, calendar_work_intervals, has_allocated_hours=False
+                )
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_working_days_count(self):
@@ -1116,26 +1104,26 @@ class Planning(models.Model):
             start_dt_delta_utc, end_dt_delta_utc)
         for slot in self:
             if slot.resource_id:
-                for calendar in resource_calendar_validity_intervals[slot.resource_id.id].keys():
+                for calendar in resource_calendar_validity_intervals[slot.resource_id.id]:
                     resource_per_calendar[calendar] |= slot.resource_id
             company_calendar_id = slot.company_id.resource_calendar_id
             resource_per_calendar[company_calendar_id] |= self.env['resource.resource']  # ensures the company_calendar will be in resource_per_calendar keys.
         # 3)
-        for calendar in resource_per_calendar.keys():
+        for calendar, resources in resource_per_calendar.items():
             # For each calendar, retrieves the work intervals of every resource
             attendances = calendar._attendance_intervals_batch(
                 start_dt_delta_utc,
                 end_dt_delta_utc,
-                resources=resource_per_calendar[calendar]
+                resources=resources
             )
             leaves = calendar._leave_intervals_batch(
                 start_dt_delta_utc,
                 end_dt_delta_utc,
-                resources=resource_per_calendar[calendar]
+                resources=resources
             )
             attendance_intervals_per_calendar[calendar] = attendances[False]
             leave_intervals_per_calendar[calendar] = leaves[False]
-            for resource in resource_per_calendar[calendar]:
+            for resource in resources:
                 # for each resource, adds his/her attendances and unavailabilities for this calendar, during the calendar validity interval.
                 attendance_intervals_per_resource[resource] |= (attendances[resource.id] & resource_calendar_validity_intervals[resource.id][calendar])
                 unavailable_intervals_per_resource[resource] |= (leaves[resource.id] & resource_calendar_validity_intervals[resource.id][calendar])

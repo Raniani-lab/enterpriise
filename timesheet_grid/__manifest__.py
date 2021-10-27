@@ -52,6 +52,7 @@
             'timesheet_grid/static/src/js/timesheet_grid/timer_header_component.js',
             'timesheet_grid/static/src/js/timesheet_grid/timer_start_component.js',
             'timesheet_grid/static/src/js/timesheet_kanban/timesheet_kanban_view.js',
+            'timesheet_grid/static/src/js/timesheet_kanban/timesheet_validation_kanban.js',
             'timesheet_grid/static/src/js/timesheet_list/timesheet_list_view.js',
             'timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_view.js',
             'timesheet_grid/static/src/js/tours/timesheet_grid.js',

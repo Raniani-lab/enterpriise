@@ -785,11 +785,11 @@ class AnalyticLine(models.Model):
         view_order = [view[1] for view in action_validate.get('views', [])]
         views = [
             [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
+            [self.env.ref('timesheet_grid.view_kanban_account_analytic_line_inherit_timesheet_grid_validation').id, 'kanban'],
             [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
             [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
             [pivot_view_id, 'pivot'],
             [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
-            [self.env.ref('hr_timesheet.view_kanban_account_analytic_line').id, 'kanban'],
         ]
         views.sort(key=lambda v: view_order.index(v[1]) if v[1] in view_order else 10000)
         action.update({
@@ -797,7 +797,7 @@ class AnalyticLine(models.Model):
             "name": name,
             "display_name": name,
             "views": views,
-            "view_mode": 'grid,tree,pivot,graph,kanban',
+            "view_mode": 'grid,tree,kanban,pivot,graph',
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
             "context": context,

@@ -79,6 +79,19 @@
             </field>
         </record>
 
+        <!-- Timesheet kanban view with validation button -->
+        <record id="view_kanban_account_analytic_line_inherit_timesheet_grid_validation" model="ir.ui.view">
+            <field name="name">account.analytic.line.kanban.timesheet_grid.validation.btn</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="timesheet_grid.view_kanban_account_analytic_line_inherit_timesheet_grid"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <kanban position="attributes">
+                    <attribute name="js_class">timesheet_validation_kanban</attribute>
+                </kanban>
+            </field>
+        </record>
+
         <!-- Override Kanban view -->
         <record id="timesheet_kanban_view" model="ir.ui.view">
             <field name="name">account.analytic.line.kanban.timesheet_grid</field>

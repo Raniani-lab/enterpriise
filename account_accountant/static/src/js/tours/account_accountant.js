@@ -43,7 +43,7 @@ odoo.define('account_accountant.tour', function (require) {
             }, {
                 trigger: 'button[name="apply"]',
                 content: _t('Great! Let’s continue.'),
-                position: 'bottom',
+                position: 'top',
             }, {
                 trigger: '.o_data_cell',
                 extra_trigger: 'tr:not(.o_sample_data_disabled)>td:has(span[name="payment_state"])',

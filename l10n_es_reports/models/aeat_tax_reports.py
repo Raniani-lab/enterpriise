@@ -676,13 +676,46 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.complementary_declaration and boe_wizard.previous_report_number or '', length=13)
         rslt += self._boe_format_string(casilla_lines_map['71'] == 0 and 'X' or ' ')
-        bic, iban = self.get_bic_and_iban(boe_wizard.partner_bank_id)
-        rslt += self._boe_format_string(bic, length=11)
+
+        gov_giving_back = current_company.currency_id.compare_amounts(casilla_lines_map['71'], 0) == -1
+        partner_bank = boe_wizard.partner_bank_id
+
+        bic, iban = self.get_bic_and_iban(partner_bank)
+        rslt += self._boe_format_string(bic if gov_giving_back else '', length=11)
         rslt += self._boe_format_string(iban, length=34)
 
         # Reserved by AEAT
         rslt += self._boe_format_string(' ' * 17)
-        rslt += self._boe_format_string(' ' * 583)
+
+        # Devolución
+        if gov_giving_back:
+            bank = partner_bank.bank_id
+            rslt += self._boe_format_string(bank.name or '', length=70)
+            rslt += self._boe_format_string(' '.join([bank.street or '', bank.street2 or '']), length=35)
+            rslt += self._boe_format_string(bank.city or '', length=30)
+            rslt += self._boe_format_string(bank.country.code or '', length=2)
+
+            # Marca SEPA
+            if iban:
+                iban_country_code = iban[:2]
+                if iban_country_code == 'ES':
+                    marca = '1'
+                elif iban_country_code in self.env.ref('base.sepa_zone').mapped('country_ids.code'):
+                    marca = '2'
+                else:
+                    marca = '3'
+            else:
+                marca = '0'
+
+            rslt += self._boe_format_string(marca, length=1)
+
+        else:
+            # All those fields must be empty if the report for the current period isn't a return (Devolución),
+            # the file is rejected if they are not.
+            rslt += self._boe_format_string('', length=138)
+
+        # Reserved by AEAT
+        rslt += self._boe_format_string(' ' * 445)
 
         # Footer of page 3
         rslt += self._boe_format_string('</T30303000>')

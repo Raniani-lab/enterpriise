@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
     @api.model
     def _process_order_new(self, order, transaction):
         (partner, shipping_partner) = self._process_order_new_find_partners(order)
-        fp = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=shipping_partner.id)
+        fp = self.env['account.fiscal.position']._get_fiscal_position(partner, delivery=shipping_partner)
         if fp:
             partner.property_account_position_id = fp
         create_values = {

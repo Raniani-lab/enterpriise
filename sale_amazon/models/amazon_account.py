@@ -453,8 +453,8 @@ class AmazonAccount(models.Model):
                 [('name', '=', currency_code)], limit=1)
             pricelist = self._get_pricelist(currency)
             contact_partner, delivery_partner = self._get_partners(order_data, amazon_order_ref)
-            fiscal_position = self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(
-                contact_partner.id, delivery_partner.id)
+            fiscal_position = self.env['account.fiscal.position'].with_company(self.company_id)._get_fiscal_position(
+                contact_partner, delivery_partner)
 
             order_lines_vals = self._process_order_lines(
                 items_data, shipping_code, shipping_product, currency, fiscal_position,

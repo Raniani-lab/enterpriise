@@ -51,16 +51,13 @@
                                                 <span t-esc="data['F2015']"/> <!-- Partner Address -->
                                                 <br/>
                                                 <span t-esc="data['F2016']"/> <span t-esc="data['F2017']"/> <!-- Partner ZIP & City -->
+                                                <br/>
+                                                <span t-esc="data['F2018_display']"/> <!-- Partner Country name -->
                                             </p>
                                             <br/>
-                                            <p class="text-left">
-                                                N° d'entreprise ou n° national:
-                                                <t t-if="data['F50_2030'] == '1'">
-                                                    <span t-esc="data['F2011']"/>
-                                                </t>
-                                                <t t-else="">
-                                                    <span t-esc="data['F50_2110']"/>
-                                                </t>
+                                            <p class="text-left" t-if="data['F50_2030'] == '2'">
+                                                N° d'entreprise:
+                                                <span t-esc="data['F50_2110']"/>
                                             </p>
                                             <p class="text-left" t-if="data['F50_2030'] == '1'">
                                                 Profession exercée:

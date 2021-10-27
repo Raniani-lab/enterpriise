@@ -4,21 +4,62 @@
 import zipfile
 import tempfile
 import base64
+from stdnum.be import vat
 from collections import Counter
 from lxml import etree
-from operator import itemgetter
-from itertools import groupby
 
-from odoo import api, fields, models, _
+from odoo import _, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_round
+
+ONSS_COUNTRY_CODE_MAPPING = {
+    'AD': '00102', 'AE': '00260', 'AF': '00251', 'AG': '00403', 'AI': '00490', 'AL': '00101', 'AM': '00249',
+    'AO': '00341', 'AR': '00511', 'AS': '00690', 'AT': '00105', 'AU': '00611', 'AZ': '00250', 'BA': '00149',
+    'BB': '00423', 'BD': '00237', 'BE': '00000', 'BF': '00308', 'BG': '00106', 'BH': '00268', 'BI': '00303',
+    'BJ': '00310', 'BM': '00485', 'BN': '00224', 'BO': '00512', 'BR': '00513', 'BS': '00425', 'BT': '00223',
+    'BW': '00302', 'BY': '00142', 'BZ': '00430', 'CA': '00401', 'CD': '00306', 'CF': '00305', 'CG': '00307',
+    'CH': '00127', 'CI': '00309', 'CK': '00687', 'CL': '00514', 'CM': '00304', 'CN': '00218', 'CO': '00515',
+    'CR': '00411', 'CU': '00412', 'CV': '00339', 'CY': '00107', 'CZ': '00140', 'DE': '00103', 'DJ': '00345',
+    'DK': '00108', 'DM': '00480', 'DO': '00427', 'DZ': '00351', 'EC': '00516', 'EE': '00136', 'EG': '00352',
+    'EH': '00388', 'ER': '00349', 'ES': '00109', 'ET': '00311', 'FI': '00110', 'FJ': '00617', 'FK': '00580',
+    'FM': '00602', 'FR': '00111', 'GA': '00312', 'GB': '00112', 'GD': '00426', 'GE': '00253', 'GF': '00581',
+    'GH': '00314', 'GI': '00180', 'GL': '00498', 'GM': '00313', 'GN': '00315', 'GP': '00496', 'GQ': '00337',
+    'GR': '00114', 'GT': '00413', 'GU': '00681', 'GW': '00338', 'GY': '00521', 'HK': '00234', 'HN': '00414',
+    'HR': '00146', 'HT': '00419', 'HU': '00115', 'ID': '00208', 'IE': '00116', 'IL': '00256', 'IN': '00207',
+    'IQ': '00254', 'IR': '00255', 'IS': '00117', 'IT': '00128', 'JM': '00415', 'JO': '00257', 'JP': '00209',
+    'KE': '00336', 'KG': '00226', 'KH': '00216', 'KI': '00622', 'KM': '00343', 'KN': '00431', 'KP': '00219',
+    'KR': '00206', 'KW': '00264', 'KY': '00492', 'KZ': '00225', 'LA': '00210', 'LB': '00258', 'LC': '00428',
+    'LI': '00118', 'LK': '00203', 'LR': '00318', 'LS': '00301', 'LT': '00137', 'LU': '00113', 'LV': '00135',
+    'LY': '00353', 'MA': '00354', 'MC': '00120', 'MD': '00144', 'ME': '00151', 'MG': '00324', 'MH': '00603',
+    'MK': '00148', 'ML': '00319', 'MM': '00201', 'MN': '00221', 'MO': '00281', 'MQ': '00497', 'MR': '00355',
+    'MS': '00493', 'MT': '00119', 'MU': '00317', 'MV': '00222', 'MW': '00358', 'MX': '00416', 'MY': '00212',
+    'MZ': '00340', 'NA': '00384', 'NC': '00683', 'NE': '00321', 'NG': '00322', 'NI': '00417', 'NL': '00129',
+    'NO': '00121', 'NP': '00213', 'NR': '00615', 'NU': '00604', 'NZ': '00613', 'OM': '00266', 'PA': '00418',
+    'PE': '00518', 'PF': '00684', 'PG': '00619', 'PH': '00214', 'PK': '00259', 'PL': '00122', 'PM': '00495',
+    'PN': '00692', 'PR': '00487', 'PS': '00271', 'PT': '00123', 'PW': '00679', 'PY': '00517', 'QA': '00267',
+    'RE': '00387', 'RO': '00124', 'RS': '00152', 'RU': '00145', 'RW': '00327', 'SA': '00252', 'SB': '00623',
+    'SC': '00342', 'SD': '00356', 'SE': '00126', 'SG': '00205', 'SH': '00389', 'SI': '00147', 'SK': '00141',
+    'SL': '00328', 'SM': '00125', 'SN': '00320', 'SO': '00329', 'SR': '00522', 'SS': '00365', 'SV': '00421',
+    'SY': '00261', 'SZ': '00347', 'TC': '00488', 'TD': '00333', 'TG': '00334', 'TH': '00235', 'TJ': '00228',
+    'TL': '00282', 'TM': '00229', 'TN': '00357', 'TO': '00616', 'TR': '00262', 'TT': '00422', 'TV': '00621',
+    'TW': '00204', 'TZ': '00332', 'UA': '00143', 'UG': '00323', 'US': '00402', 'UY': '00519', 'UZ': '00227',
+    'VA': '00133', 'VC': '00429', 'VE': '00520', 'VG': '00479', 'VI': '00478', 'VN': '00220', 'VU': '00624',
+    'WF': '00689', 'WS': '00614', 'XK': '00153', 'YE': '00270', 'ZA': '00325', 'ZM': '00335', 'ZW': '00344'
+}
+
+def _vat_to_bce(vat_number: str) -> str:
+    return vat.compact(vat_number)
+
+def format_if_float(amount):
+    return f"{amount * 100:.0f}" if isinstance(amount, float) else amount  # amounts in € requires to be formatted for xml
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     citizen_identification = fields.Char(string="Citizen Identification",
-                    help="This code corresponds to the personal identification number for the tax authorities.\nMore information here:\nhttps://ec.europa.eu/taxation_customs/tin/pdf/fr/TIN_-_subject_sheet_-_3_examples_fr.pdf")
+                                         help="This code corresponds to the personal identification number for the tax authorities.\n"
+                                              "More information here:\n"
+                                              "https://ec.europa.eu/taxation_customs/tin/pdf/fr/TIN_-_subject_sheet_-_3_examples_fr.pdf")
     form_file = fields.Binary(readonly=True, help="Technical field to store all forms file.")
 
     def create_281_50_form(self):
@@ -33,7 +74,7 @@ class ResPartner(models.Model):
     def _generate_281_50_form(self, file_type, wizard_values):
         '''
         Main function for the creation of the 281.50 form.\n
-        This function calls severales functions to create a dictionary
+        This function calls several functions to create a dictionary
         and send it into two templates.\n
         One template for the creation of the XML file and another one
         for the creation of the PDF file.\n
@@ -44,24 +85,30 @@ class ResPartner(models.Model):
         like the reference year, if it is a test file, etc.
         :returns: An action to download form files (XML and PDF).
         '''
+        reference_year = wizard_values['reference_year']
+
         tag_281_50_commissions = self.env.ref('l10n_be_reports.account_tag_281_50_commissions')
         tag_281_50_fees = self.env.ref('l10n_be_reports.account_tag_281_50_fees')
         tag_281_50_atn = self.env.ref('l10n_be_reports.account_tag_281_50_atn')
         tag_281_50_exposed_expenses = self.env.ref('l10n_be_reports.account_tag_281_50_exposed_expenses')
-        tags = self.env['account.account.tag'] + tag_281_50_commissions + tag_281_50_fees + tag_281_50_atn + tag_281_50_exposed_expenses
-
-        reference_year = wizard_values['reference_year']
+        account_281_50_tags = self.env['account.account.tag'] + tag_281_50_commissions + tag_281_50_fees + tag_281_50_atn + tag_281_50_exposed_expenses
 
         commissions_per_partner = self._get_balance_per_partner(tag_281_50_commissions, reference_year)
         fees_per_partner = self._get_balance_per_partner(tag_281_50_fees, reference_year)
         atn_per_partner = self._get_balance_per_partner(tag_281_50_atn, reference_year)
         exposed_expenses_per_partner = self._get_balance_per_partner(tag_281_50_exposed_expenses, reference_year)
-        paid_amount_per_partner = self._get_paid_amount_per_partner(reference_year, tags)
+        paid_amount_per_partner = self._get_paid_amount_per_partner(reference_year, account_281_50_tags)
 
         if not any([commissions_per_partner, fees_per_partner, atn_per_partner, exposed_expenses_per_partner, paid_amount_per_partner]):
             raise UserError(_('There are no accounts or partner with a 281.50 tag.'))
 
-        partners = self._get_partners(commissions_per_partner, fees_per_partner, atn_per_partner, exposed_expenses_per_partner, paid_amount_per_partner) # Get only partner with a balance > 0
+        partners = self.env['res.partner'].browse(set(
+            list(commissions_per_partner)
+            + list(fees_per_partner)
+            + list(atn_per_partner)
+            + list(exposed_expenses_per_partner)
+            + list(paid_amount_per_partner)
+        ))
 
         attachments = []
         for partner in partners:
@@ -78,17 +125,17 @@ class ResPartner(models.Model):
             partner_information = partner._get_partner_information(partner_remunerations, paid_amount)
             values_dict = partner._generate_codes_values(wizard_values, partner_information)
 
-            file_name = '%s_%s_281_50' % (partner.name, reference_year)
-            if wizard_values.get('is_test', False):
+            file_name = f'{partner.name}_{reference_year}_281_50'
+            if wizard_values.get('is_test'):
                 file_name += '_test'
             if 'xml' in file_type:
-                attachments.append((file_name+'.xml', partner._generate_281_50_xml(values_dict)))
+                values_dict_amount_formatted = {k: format_if_float(v) for k, v in values_dict.items()}
+                attachments.append((f'{file_name}.xml', partner._generate_281_50_xml(values_dict_amount_formatted)))
             if 'pdf' in file_type:
-                attachments.append((file_name+'.pdf', partner._generate_281_50_pdf(values_dict)))
+                attachments.append((f'{file_name}.pdf', partner._generate_281_50_pdf(values_dict)))
 
-        downloaded_filename = ''
         if len(attachments) > 1: # If there are more than one file, we zip all these files.
-            downloaded_filename = '281_50_forms_%s.zip' % reference_year
+            downloaded_filename = f'281_50_forms_{reference_year}.zip'
             with tempfile.SpooledTemporaryFile() as tmp_file: # We store the zip into a temporary file.
                 with zipfile.ZipFile(tmp_file, 'w', zipfile.ZIP_DEFLATED) as archive: # We create the zip archive.
                     for attach in attachments: # And we store each file in the archive.
@@ -102,7 +149,7 @@ class ResPartner(models.Model):
         return {
             'type': 'ir.actions.act_url',
             'name': 'Download 281.50 Form',
-            'url': '/web/content/res.partner/%s/form_file/%s?download=true' % (partners[0].id, downloaded_filename),
+            'url': f'/web/content/res.partner/{partners[0].id}/form_file/{downloaded_filename}?download=true'
         }
 
     def _generate_281_50_xml(self, values_dict):
@@ -149,7 +196,12 @@ class ResPartner(models.Model):
             raise UserError(_("Your company is not correctly configured. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
         if not self.parent_id:
             if not (self.street and self.zip and (self.citizen_identification or self.vat)):
-                raise UserError(_("The partner %s is not correctly configured. Plsea be sure that the following pieces of information are set: street, zip code and vat.", self.name))
+                raise UserError(_(
+                    "The partner %(partner_name)s is not correctly configured. "
+                    "Please be sure that the following pieces of information are set: "
+                    "street, zip code and vat.",
+                    partner_name=self.name,
+                ))
         elif not (self.parent_id.street and self.parent_id.zip and self.parent_id.vat):
             raise UserError(_("Partner %s is not correctly configured. Please be sure that the following pieces of information are set: street, zip code and vat.", self.parent_id.name))
 
@@ -164,73 +216,95 @@ class ResPartner(models.Model):
         '''
         self.ensure_one()
         current_company = self.env.company
+
+        sum_control = sum([
+            partner_information.get('remunerations')['commissions'],
+            partner_information.get('remunerations')['fees'],
+            partner_information.get('remunerations')['atn'],
+            partner_information.get('remunerations')['exposed_expenses'],
+            partner_information.get('total_amount'),
+            partner_information.get('paid_amount'),
+        ])
+        sender_bce_number = income_debtor_bce_number = _vat_to_bce(current_company.vat)
+        is_partner_from_belgium = partner_information.get('country_code') == 'BE'
+
         return {
+            # V0XXX: info about the sender and the sending
             'V0002': wizard_values.get('reference_year'),
             'V0010': wizard_values.get('is_test') and 'BELCOTST' or 'BELCOTAX',
             'V0011': fields.Date.today().strftime('%d-%m-%Y'),
             'V0014': current_company.name,
-            'V0015': current_company.street + (current_company.street2 or ''),
+            'V0015': f"{current_company.street}, {(current_company.street2 or '')}",
             'V0016': current_company.zip,
             'V0017': current_company.city,
-            'V0018': current_company.phone,
+            'V0018': current_company.phone.replace(" ", ""),
             'V0021': self.env.user.name,
             'V0022': current_company.partner_id._get_lang_code(),
             'V0023': self.env.user.email,
-            'V0024': current_company.vat[2:],
+            'V0024': sender_bce_number,
             'V0025': wizard_values.get('type_sending'),
+            # A1XXX: info for this declaration
             'A1002': wizard_values.get('reference_year'),
-            'A1005': current_company.vat[2:],
+            'A1005': income_debtor_bce_number,
             'A1011': current_company.name,
             'A1013': current_company.street + (current_company.street2 or ''),
+            'A1014': current_company.zip,
             'A1015': current_company.city,
-            'A1020': 1,
+            'A1016': ONSS_COUNTRY_CODE_MAPPING.get(current_company.country_id.code),
+            'A1020': 1,  # language code for field 1011 to 1013 and 1015
+            # F2XXX: info for this 281.XX tax form
             'F2002': wizard_values.get('reference_year'),
-            'F2005': current_company.vat[2:],
-            'F2008': 28150,
-            'F2009': 0,
-            'F2011': partner_information.get('nature') == '1' and partner_information.get('citizen_identification') or partner_information.get('vat'),
+            'F2005': income_debtor_bce_number,
+            'F2008': 28150,  # fiche type
+            'F2009': 0,  # id number of this fiche for this beneficiary
             'F2013': partner_information.get('name'),
             'F2015': partner_information.get('address'),
-            'F2016': partner_information.get('zip'),
+            'F2016': partner_information.get('zip') if is_partner_from_belgium else '',
             'F2017': partner_information.get('city'),
-            'F2028': wizard_values.get('type_treatment'),
+            'F2028': wizard_values.get('type_treatment'),  # fiche treatment: 0 -> ordinary, 1 -> modification, 2 -> adding, 3 -> cancellation
             'F2029': 0,
-            'F2105': 0,
-            'F2114': 0,
+            'F2105': 0,  # birthplace
+            'F2018': ONSS_COUNTRY_CODE_MAPPING.get(partner_information.get('country_code')),
+            'F2018_display': partner_information.get('country_name'),
+            'F2112': '' if is_partner_from_belgium else partner_information.get('zip'),
+            'F2114': '',   # firstname: full name is set on F2013
+            # F50_2XXX: info for this 281.50 tax form
             'F50_2030': partner_information.get('nature'),
-            'F50_2031': partner_information.get('paid_amount') != 0 and 0 or 1,
-            'F50_2059': partner_information.get('total_amount'), # Total control
+            'F50_2031': 0 if partner_information.get('paid_amount') != 0 else 1,
+            'F50_2059': sum_control,  # Total control : sum 2060 to 2088 for this 281.50 form
             'F50_2060': partner_information.get('remunerations')['commissions'],
             'F50_2061': partner_information.get('remunerations')['fees'],
             'F50_2062': partner_information.get('remunerations')['atn'],
             'F50_2063': partner_information.get('remunerations')['exposed_expenses'],
-            'F50_2064': partner_information.get('total_amount'), #Total from 2060 to 2063
+            'F50_2064': partner_information.get('total_amount'),  # Total from 2060 to 2063
             'F50_2065': partner_information.get('paid_amount'),
-            'F50_2066': 0.0,
-            'F50_2067': 0.0,
-            'F50_2099': '', # We want no comment for this field.
-            'F50_2103': '', # This field is useless, if there is a problem. Please contact avw/flg.
+            'F50_2066': 0,  # irrelevant: sport remuneration
+            'F50_2067': 0,  # irrelevant: manager remuneration
+            'F50_2099': '',  # further comments concerning amounts from 2060 to 2067
+            'F50_2103': '',  # nature of the amounts
             'F50_2107': partner_information.get('job_position'),
             'F50_2109': partner_information.get('citizen_identification'),
-            'F50_2110': partner_information.get('nature') == '2' and partner_information.get('vat') or '',
+            'F50_2110': partner_information.get('bce_number') if is_partner_from_belgium else '',  # KBO/BCE number
+            # R8XXX: controls for the declaration
             'R8002': wizard_values.get('reference_year'),
-            'R8010': 1,
+            'R8005': income_debtor_bce_number,
+            'R8010': 3,  # number of record for this declaration: A1XXX, F50_2XXX, R8XXX -> 3
             'R8011': 0,
-            'R8012': partner_information.get('total_amount'),
+            'R8012': sum_control,  # sum of all 2059 from all 281.50 form
+            # R9XXX: controls for the whole sending
             'R9002': wizard_values.get('reference_year'),
-            'R9010': 1,
-            'R9011': 1,
+            'R9010': 3,  # from the xml validation: should be equal to the number of declaration + 2 (number of F50 + 2 ~R8010)
+            'R9011': 5,  # same than previous + 2
             'R9012': 0,
-            'R9013': partner_information.get('total_amount'),
+            'R9013': sum_control,  # sum of all 8012
         }
 
     def _get_lang_code(self):
-        if self.lang == 'nl_BE':
-            return '1'
-        elif self.lang == 'fr_BE':
-            return '2'
-        else:
-            return '3'
+        return {
+            'nl': '1',
+            'fr': '2',
+            'de': '3',
+        }.get((self.lang or "")[:2], '2')
 
     def _get_partner_information(self, partner_remuneration, paid_amount):
         self.ensure_one()
@@ -239,16 +313,18 @@ class ResPartner(models.Model):
         return {
             'name':  is_company_partner and company_partner.name or self.name,
             'address': is_company_partner and (company_partner.street + (company_partner.street2 or '')) or (self.street + (self.street2 or '')),
+            'country_code': is_company_partner and company_partner.country_id and company_partner.country_id.code or self.country_id.code,
+            'country_name': is_company_partner and company_partner.country_id and company_partner.country_id.name or self.country_id.name,
             'zip': is_company_partner and company_partner.zip or self.zip,
             'city': is_company_partner and company_partner.city or self.city,
             'nature': (is_company_partner or self.is_company) and '2' or '1',
-            'vat': (is_company_partner or self.is_company) and company_partner.vat[2:] or '',
+            'bce_number': (is_company_partner or self.is_company) and _vat_to_bce(company_partner.vat) or '',
             'remunerations': partner_remuneration,
             'paid_amount': paid_amount,
             'total_amount': sum(partner_remuneration.values()),
             'job_position': (is_company_partner or self.is_company) and '' or self.function,
             'citizen_identification': (is_company_partner or self.is_company) and '' or self.citizen_identification,
-            }
+        }
 
     def _get_balance_per_partner(self, tag, reference_year):
         '''
@@ -264,134 +340,127 @@ class ResPartner(models.Model):
         :return: A dict of partner_id: balance
         '''
         accounts = self.env['account.account'].search([('tag_ids', 'in', tag.ids)])
-        partner_tag_281_50 = self.env.ref('l10n_be_reports.res_partner_tag_281_50')
         if not accounts:
             return {}
         date_from = fields.Date().from_string(reference_year+'-01-01')
         date_to = fields.Date().from_string(reference_year+'-12-31')
 
         self._cr.execute('''
-            SELECT line.partner_id, SUM(line.balance) AS balance
-            FROM account_move_line line
-            INNER JOIN res_partner_res_partner_category_rel partner_category
-            ON line.partner_id = partner_category.partner_id
-            WHERE line.partner_id in %s
-            AND partner_category.category_id = %s
-            AND line.account_id IN %s
-            AND line.date BETWEEN %s AND %s
-            AND line.parent_state = 'posted'
-            AND line.company_id = %s
-            GROUP BY line.partner_id
-        ''', [tuple(self.ids), partner_tag_281_50.id, tuple(accounts.ids), date_from, date_to, self.env.company.id])
-        balance_per_partner_list = self._cr.dictfetchall()
-        tmp = {}
-        for bpp in balance_per_partner_list:
-            bpp['balance'] = self.filtered(lambda p: p.id == bpp['partner_id']).currency_id.round(bpp['balance'])
-            tmp.update({bpp['partner_id']: bpp['balance']})
-
-        return tmp
-
-    def _get_partners(self, commissions, fees, atn, exposed_expenses, paid_amount_per_partner):
-        '''
-        This method gets all partner_ids from each list in params
-        and returns a recordset of res.partner.\n
-        It allows us to know all partners who have been paid.\n
-        :params commissions: Dict of balance by partner for the commissions tag.
-        :params fees: Dict of balance by partner for the fees tag.
-        :params atn: Dict of balance by partner for the atn tag.
-        :params exposed_expenses: Dict of balance by partner for the exposed_expenses tag.
-        :return: A recordset of res.partner
-        '''
-        tmp = list(commissions) + list(fees) + list(atn) + list(exposed_expenses) + list(paid_amount_per_partner)
-        partner_ids = set(tmp)
-        return self.env['res.partner'].browse(partner_ids)
+            SELECT line.partner_id, ROUND(SUM(line.balance), currency.decimal_places) AS balance
+              FROM account_move_line line
+              JOIN res_currency AS currency ON line.company_currency_id = currency.id
+             WHERE line.partner_id = ANY(%(partners)s)
+               AND line.account_id = ANY(%(accounts)s)
+               AND line.date BETWEEN %(date_from)s AND %(date_to)s
+               AND line.parent_state = 'posted'
+               AND line.company_id = %(company)s
+          GROUP BY line.partner_id, currency.id
+        ''', {
+            'partners': self.ids,
+            'accounts': accounts.ids,
+            'date_from': date_from,
+            'date_to': date_to,
+            'company': self.env.company.id,
+        })
+        return dict(self._cr.fetchall())
 
     def _get_paid_amount_per_partner(self, reference_year, tags):
         '''
         Get all paid amount for each partner for a specific year and the previous year.
-        :params reference_year: The selected year
-        :params tags: Which tags to get paid amount for
+        :param reference_year: The selected year
+        :param tags: Which tags to get paid amount for
         :return: A dict of paid amount (for the specific year and the previous year) per partner.
         '''
-        partner_tag_281_50 = self.env.ref('l10n_be_reports.res_partner_tag_281_50')
-        date_from = reference_year+'-01-01'
-        date_to = reference_year+'-12-31'
-        max_date_from = date_from
-        max_date_to = date_to
+        max_date_from = date_from = f'{reference_year}-01-01'
+        max_date_to = date_to = f'{reference_year}-12-31'
         company_id = self.env.company.id
         self._cr.execute('''
-            SELECT sub.partner_id, SUM(sub.paid_amount) AS paid_amount FROM
-            (SELECT mv.partner_id AS partner_id,
-            (paid_per_partner.paid_amount/SUM(mv.amount_total)) * SUM(line1.balance) AS paid_amount
-            FROM
-            (SELECT aml.partner_id, SUM(apr.amount) AS paid_amount
-            FROM account_move_line aml
-            INNER JOIN account_partial_reconcile apr ON aml.id = apr.credit_move_id
-            INNER JOIN account_move_line aml2 ON aml2.id = apr.debit_move_id
-            WHERE aml.parent_state = 'posted' AND aml2.parent_state = 'posted'
-            AND aml.company_id = %s AND apr.max_date <= %s
-            AND aml.date BETWEEN %s AND %s
-            GROUP BY aml.partner_id) paid_per_partner, account_move mv
-            INNER JOIN account_move_line line1 ON line1.move_id = mv.id
-            INNER JOIN account_account_account_tag account_tag
-            ON line1.account_id = account_tag.account_account_id
-            INNER JOIN res_partner_res_partner_category_rel partner_category
-            ON mv.partner_id = partner_category.partner_id
-            WHERE account_tag.account_account_tag_id IN %s
-            AND partner_category.category_id = %s
-            AND mv.state = 'posted' AND mv.company_id = %s
-            AND mv.date BETWEEN %s AND %s
-            AND mv.partner_id IN %s
-            AND mv.partner_id = paid_per_partner.partner_id
-            GROUP BY mv.partner_id, paid_per_partner.paid_amount
-            ORDER BY mv.partner_id ASC) sub
-            GROUP BY sub.partner_id
-        ''', [company_id, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to, tuple(self.ids)])
-        amount_per_partner = self._cr.dictfetchall()
-
-        dict_amount_per_partner = {}
-        for app in amount_per_partner:
-            app['paid_amount'] = self.filtered(lambda p: p.id == app['partner_id']).currency_id.round(app['paid_amount'])
-            dict_amount_per_partner.update({app['partner_id']: app['paid_amount']})
+    SELECT sub.partner_id, ROUND(SUM(sub.paid_amount), currency.decimal_places) AS paid_amount
+      FROM (
+           SELECT move.partner_id AS partner_id,
+                  (paid_per_partner.paid_amount / SUM(move.amount_total)) * SUM(move_line.balance) AS paid_amount,
+                  paid_per_partner.currency_id AS currency_id
+             FROM (
+                  SELECT aml1.partner_id, SUM(apr.amount) AS paid_amount, currency.id AS currency_id
+                    FROM account_move_line aml1
+                    JOIN account_partial_reconcile apr ON aml1.id = apr.credit_move_id
+                    JOIN account_move_line aml2 ON aml2.id = apr.debit_move_id
+                    JOIN res_currency currency ON aml1.company_currency_id = currency.id
+                   WHERE aml1.parent_state = 'posted'
+                     AND aml2.parent_state = 'posted'
+                     AND aml1.company_id = %(company_id)s AND apr.max_date <= %(max_date_to)s
+                     AND aml1.date BETWEEN %(date_from)s AND %(date_to)s
+                GROUP BY aml1.partner_id, currency.id
+                  ) AS paid_per_partner
+             JOIN account_move move ON move.partner_id = paid_per_partner.partner_id
+             JOIN account_move_line move_line ON move_line.move_id = move.id
+             JOIN account_account_account_tag account_tag ON move_line.account_id = account_tag.account_account_id
+            WHERE account_tag.account_account_tag_id = ANY (%(tag_ids)s)
+              AND move.state = 'posted'
+              AND move.company_id = %(company_id)s
+              AND move.date BETWEEN %(date_from)s AND %(date_to)s
+              AND move.partner_id = ANY(%(partner_ids)s)
+         GROUP BY move.partner_id, paid_per_partner.paid_amount, paid_per_partner.currency_id
+         ORDER BY move.partner_id ASC
+           ) sub
+      JOIN res_currency currency ON currency.id = sub.currency_id
+  GROUP BY sub.partner_id, currency.id
+        ''', {
+            'company_id': company_id,
+            'max_date_to': max_date_to,
+            'date_from': date_from,
+            'date_to': date_to,
+            'tag_ids': tags.ids,
+            'partner_ids': self.ids,
+        })
+        amount_per_partner_specific_year = dict(self._cr.fetchall())
 
         # Get all paid amount for each partner for the previous year
         # Pay attention that the SQL query is not exactly the same as above.
-        date_from = str(int(reference_year)-1)+'-01-01'
-        date_to = str(int(reference_year)-1)+'-12-31'
+        date_from = f'{int(reference_year) - 1}-01-01'
+        date_to = f'{int(reference_year) - 1}-12-31'
         self._cr.execute('''
-            SELECT sub.partner_id, SUM(sub.paid_amount) AS paid_amount FROM
-            (SELECT mv.partner_id AS partner_id,
-            (paid_per_partner.paid_amount/SUM(mv.amount_total)) * SUM(line1.balance) AS paid_amount
-            FROM
-            (SELECT aml.partner_id, SUM(apr.amount) AS paid_amount
-            FROM account_move_line aml
-            INNER JOIN account_partial_reconcile apr ON aml.id = apr.credit_move_id
-            INNER JOIN account_move_line aml2 ON aml2.id = apr.debit_move_id
-            WHERE aml.parent_state = 'posted' AND aml2.parent_state = 'posted'
-            AND aml.company_id = %s AND apr.max_date BETWEEN %s AND %s
-            AND aml.date BETWEEN %s AND %s
-            GROUP BY aml.partner_id) paid_per_partner, account_move mv
-            INNER JOIN account_move_line line1 ON line1.move_id = mv.id
-            INNER JOIN account_account_account_tag account_tag
-            ON line1.account_id = account_tag.account_account_id
-            INNER JOIN res_partner_res_partner_category_rel partner_category
-            ON mv.partner_id = partner_category.partner_id
-            WHERE account_tag.account_account_tag_id IN %s
-            AND partner_category.category_id = %s
-            AND mv.state = 'posted' AND mv.company_id = %s
-            AND mv.date BETWEEN %s AND %s
-            AND mv.partner_id IN %s
-            AND mv.partner_id = paid_per_partner.partner_id
-            GROUP BY mv.partner_id, paid_per_partner.paid_amount
-            ORDER BY mv.partner_id ASC) sub
-            GROUP BY sub.partner_id
-        ''', [company_id, max_date_from, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to, tuple(self.ids)])
-        amount_for_previous_year = self._cr.dictfetchall()
+    SELECT sub.partner_id, ROUND(SUM(sub.paid_amount), currency.decimal_places) AS paid_amount
+      FROM (
+           SELECT move.partner_id AS partner_id,
+                  (paid_per_partner.paid_amount/SUM(move.amount_total)) * SUM(move_line.balance) AS paid_amount,
+                  paid_per_partner.currency_id AS currency_id
+             FROM (
+                  SELECT aml1.partner_id, SUM(apr.amount) AS paid_amount, currency.id AS currency_id
+                    FROM account_move_line aml1
+                    JOIN account_partial_reconcile apr ON aml1.id = apr.credit_move_id
+                    JOIN account_move_line aml2 ON aml2.id = apr.debit_move_id
+                    JOIN res_currency currency ON aml1.company_currency_id = currency.id
+                   WHERE aml1.parent_state = 'posted'
+                     AND aml2.parent_state = 'posted'
+                     AND aml1.company_id = %(company_id)s
+                     AND apr.max_date BETWEEN %(max_date_from)s AND %(max_date_to)s
+                     AND aml1.date BETWEEN %(date_from)s AND %(date_to)s
+                GROUP BY aml1.partner_id, currency.id
+                  ) AS paid_per_partner
+             JOIN account_move move ON move.partner_id = paid_per_partner.partner_id
+             JOIN account_move_line move_line ON move_line.move_id = move.id
+             JOIN account_account_account_tag account_tag ON move_line.account_id = account_tag.account_account_id
+            WHERE account_tag.account_account_tag_id = ANY(%(tag_ids)s)
+              AND move.state = 'posted'
+              AND move.company_id = %(company_id)s
+              AND move.date BETWEEN %(date_from)s AND %(date_to)s
+              AND move.partner_id = ANY(%(partner_ids)s)
+         GROUP BY move.partner_id, paid_per_partner.paid_amount, paid_per_partner.currency_id
+         ORDER BY move.partner_id ASC
+           ) AS sub
+      JOIN res_currency currency ON currency_id = currency.id
+  GROUP BY sub.partner_id, currency.id
+        ''', {
+            'company_id': company_id,
+            'max_date_from': max_date_from,
+            'max_date_to': max_date_to,
+            'date_from': date_from,
+            'date_to': date_to,
+            'tag_ids': tags.ids,
+            'partner_ids': self.ids,
+        })
+        amount_per_partner_previous_year = dict(self._cr.fetchall())
 
-        dict_amount_for_previous_year = {}
-        for app in amount_for_previous_year:
-            app['paid_amount'] = self.filtered(lambda p: p.id == app['partner_id']).currency_id.round(app['paid_amount'])
-            dict_amount_for_previous_year.update({app['partner_id']: app['paid_amount']})
-
-        # Merge amount for previous year and amount for reference_year
-        return Counter(dict_amount_per_partner) + Counter(dict_amount_for_previous_year)
+        # Merge amount from previous year and amount from reference_year
+        return Counter(amount_per_partner_specific_year) + Counter(amount_per_partner_previous_year)

@@ -309,7 +309,7 @@ class MxReportAccountTrial(models.AbstractModel):
             for i, res in enumerate(periods_results):
                 account_init_bal = res.get('initial_balance', {})
                 if i == 0:
-                    initial_balances[account] = res.get('initial_balance', {}).get('balance', 0.0)
+                    initial_balances[account] = res.get('initial_balance', {}).get('balance', 0.0) + res.get('unaffected_earnings', {}).get('balance', 0.0)
                 sums = [
                     res.get('sum', {}).get('debit', 0.0) - account_init_bal.get('debit', 0.0),
                     res.get('sum', {}).get('credit', 0.0) - account_init_bal.get('credit', 0.0),

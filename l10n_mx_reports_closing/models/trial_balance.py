@@ -5,17 +5,15 @@ from odoo import fields, models, api
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 
-class MxReportAccountTrial(models.AbstractModel):
-    _inherit = 'l10n_mx.trial.report'
+class AccountGeneralLedgerReport(models.AbstractModel):
+    _inherit = 'account.general.ledger'
 
-    @api.model
-    def _get_options_initial_balance(self, options):
+    def _get_options_sum_balance(self, options):
         # OVERRIDE to fetch the closing moves.
-        options = super()._get_options_initial_balance(options)
-
-        closing_moves = self.env['account.move']._get_closing_move(fields.Date.from_string(options['date']['date_to']))
-        options['closing_move_ids'] = closing_moves.ids
-
+        options = super()._get_options_sum_balance(options)
+        if self.env.context.get('model') == 'l10n_mx.trial.report':
+            closing_moves = self.env['account.move']._get_closing_move(fields.Date.from_string(options['date']['date_to']))
+            options['closing_move_ids'] = closing_moves.ids
         return options
 
     @api.model

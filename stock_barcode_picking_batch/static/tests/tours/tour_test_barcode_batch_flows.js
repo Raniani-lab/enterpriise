@@ -756,7 +756,7 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
         run: 'scan O-CMD.NEXT',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.btn.o_validate_page',
         run: function() {
             const $lineFromPicking1 = $('.o_barcode_line:contains("test_delivery_1")');
             const $lineFromPicking2 = $('.o_barcode_line:contains("test_delivery_2")');

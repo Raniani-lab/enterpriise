@@ -13,23 +13,20 @@ class TestSpreadsheetBus(SpreadsheetTestCommon, MailCase):
         # Simulates what's done in the /longpolling/poll controller.
         # MockRequest would be usefull, but it's currently only defined with website
         channels = SpreadsheetCollaborationController._add_spreadsheet_collaborative_bus_channels(self.env, channels)
-        return self.env["bus.bus"].poll(channels, last, options)
+        return self.env["bus.bus"]._poll(channels, last, options)
 
     def poll_spreadsheet(self, spreadsheet_id):
         external_channel = f"spreadsheet_collaborative_session_{spreadsheet_id}"
-        communication_channel = [self.cr.dbname, "spreadsheet", spreadsheet_id]
         notifs = self.poll(external_channel)
         return [
-            m["message"]
+            m["message"]["payload"]
             for m in notifs
-            if m["channel"] == communication_channel
         ]
 
     def test_simple_bus_message_still_works(self):
-        self.env["bus.bus"].sendone("a-channel", "a message")
+        self.env["bus.bus"]._sendone("a-channel", "message-type", "a message")
         message = self.poll("a-channel")
-        self.assertEqual(message[0]["channel"], "a-channel")
-        self.assertEqual(message[0]["message"], "a message")
+        self.assertEqual(message[0]["message"]["payload"], "a message")
 
     def test_active_spreadsheet(self):
         spreadsheet = self.create_spreadsheet()

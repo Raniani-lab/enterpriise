@@ -92,7 +92,7 @@ class MailChannel(models.Model):
                         if len(tickets) > 10:
                             break
                 if tickets:
-                    link_tickets = ['<br/><a href="#" data-oe-id='+str(ticket.id)+' data-oe-model="helpdesk.ticket">#'+ticket.name+'</a>' for ticket in tickets]
+                    link_tickets = [f'<br/><a href="#" data-oe-id={str(ticket.id)} data-oe-model="helpdesk.ticket">#{html_escape(ticket.name)}</a>' for ticket in tickets]
                     msg = _('We found some matched ticket(s) related to the search query: %s') % ''.join(link_tickets)
                 else:
                     msg = _('No tickets found related to the search query. <br> make sure to use the right format: (/helpdesk_search Keyword1 Keyword2 etc...)')

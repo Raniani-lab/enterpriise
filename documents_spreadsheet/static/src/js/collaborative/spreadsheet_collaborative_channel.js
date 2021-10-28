@@ -84,12 +84,9 @@ export default class SpreadsheetCollaborativeChannel {
      * @returns {Array} notifs which are related to spreadsheet
      */
     _filterSpreadsheetNotifs(notifs) {
-        return notifs.filter(([channel]) => {
-            if (Array.isArray(channel) && channel.length === 3) {
-                const [, model, id] = channel;
-                return model === "spreadsheet" && id === this._documentId;
-            }
-            return false;
+        return notifs.filter((notification) => {
+            const { payload, type } = notification;
+            return type === 'spreadsheet' && payload.id === this._documentId;
         });
     }
 
@@ -101,11 +98,11 @@ export default class SpreadsheetCollaborativeChannel {
      * @param {Array} notifs
      */
     _handleNotifications(notifs) {
-        for (const [, message] of notifs) {
+        for (const { payload } of notifs) {
             if (!this._listener) {
-                this._queue.push(message);
+                this._queue.push(payload);
             } else {
-                this._listener(message);
+                this._listener(payload);
             }
         }
     }

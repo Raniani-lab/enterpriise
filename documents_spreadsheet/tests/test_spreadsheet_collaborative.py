@@ -43,7 +43,7 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
         )
         self.assertEqual(
             json.loads(spreadsheet.spreadsheet_revision_ids.commands),
-            {"commands": commands["commands"], "type": commands["type"]},
+            {"commands": commands["commands"], "id": spreadsheet.id, "type": commands["type"]},
             "It should have saved the revision data",
         )
 
@@ -340,7 +340,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.spreadsheet.with_user(self.user).dispatch_spreadsheet_message(commands)
         self.assertEqual(
             json.loads(self.spreadsheet.spreadsheet_revision_ids.commands),
-            {"commands": commands["commands"], "type": commands["type"]},
+            {"commands": commands["commands"], "id": self.spreadsheet.id, "type": commands["type"]},
         )
 
     def test_dispatch_user_with_read_doc_access(self):

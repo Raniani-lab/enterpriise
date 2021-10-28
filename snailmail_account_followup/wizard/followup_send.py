@@ -67,11 +67,10 @@ class FollowupSend(models.TransientModel):
 
     def notify_invalid_addresses(self):
         self.ensure_one()
-        self.env['bus.bus'].sendone(
-            (self._cr.dbname, 'res.partner', self.env.user.partner_id.id),
-            {'type': 'snailmail_invalid_address', 'title': _("Invalid Addresses"),
-                'message': _("%s of the selected partner(s) had an invalid address. The corresponding followups were not sent", self.invalid_addresses)}
-        )
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'snailmail_invalid_address', {
+            'title': _("Invalid Addresses"),
+            'message': _("%s of the selected partner(s) had an invalid address. The corresponding followups were not sent", self.invalid_addresses),
+        })
 
     def invalid_addresses_action(self):
         return {

@@ -20,8 +20,8 @@ class MockBusService {
         this._bus.on("notif", parent, handler);
     }
 
-    notify(channel, message) {
-        this._bus.trigger("notif", [[channel, message]]);
+    notify(message) {
+        this._bus.trigger("notif", [message]);
     }
 }
 
@@ -32,8 +32,7 @@ QUnit.module("documents_spreadsheet > SpreadsheetCollaborativeChannel", {
             // Mock the server behavior: new revisions are pushed in the bus
             if (params.method === "dispatch_spreadsheet_message") {
                 const [documentId, message] = params.args;
-                const channel = [, "spreadsheet", documentId];
-                bus.notify(channel, message);
+                bus.notify({ type: 'spreadsheet', payload: { id: documentId, message } });
             }
         }
         this.env = makeTestEnvironment({ services: { bus_service: bus }}, rpc);
@@ -45,7 +44,7 @@ QUnit.test("sending a message forward it to the registered listener", function (
     const channel = new SpreadsheetCollaborativeChannel(this.env, 5);
     channel.onNewMessage("anId", (message) => {
         assert.step("message");
-        assert.strictEqual(message, "hello", "It should have the correct message content");
+        assert.strictEqual(message.message, "hello", "It should have the correct message content");
     });
     channel.sendMessage("hello");
     assert.verifySteps(["message"], "It should have received the message");
@@ -57,7 +56,7 @@ QUnit.test("previous messages are forwarded when registering a listener", functi
     channel.sendMessage("hello");
     channel.onNewMessage("anId", (message) => {
         assert.step("message");
-        assert.strictEqual(message, "hello", "It should have the correct message content");
+        assert.strictEqual(message.message, "hello", "It should have the correct message content");
     });
     assert.verifySteps(["message"], "It should have received the pending message");
 });

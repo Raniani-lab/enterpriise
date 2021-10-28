@@ -27,14 +27,9 @@ class StockPicking(models.Model):
     def message_post(self, **kwargs):
         message = super(StockPicking, self).message_post(**kwargs)
         if message.attachment_ids and 'Label' in ''.join(message.attachment_ids.mapped('name')) and self.picking_type_id.iot_printer_id:
-            labelMessages = message.attachment_ids.filtered(lambda a: 'Label' in a.name)
-            self.env['bus.bus'].sendone(
-                (self._cr.dbname, 'res.partner', self.env.user.partner_id.id),
-                {
-                    'type': 'iot_print_documents',
-                    'documents': labelMessages.mapped('datas'),
-                    'iot_device_identifier': self.picking_type_id.iot_printer_id.identifier,
-                    'iot_ip': self.picking_type_id.iot_printer_id.iot_ip,
-                }
-            )
+            self.env['bus.bus']._sendone(self.env.user.partner_id, 'iot_print_documents', {
+                'documents': message.attachment_ids.mapped('datas'),
+                'iot_device_identifier': self.picking_type_id.iot_printer_id.identifier,
+                'iot_ip': self.picking_type_id.iot_printer_id.iot_ip,
+            })
         return message

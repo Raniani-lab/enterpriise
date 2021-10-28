@@ -51,6 +51,7 @@ class SpreadsheetTestCommon(TransactionCase):
     def new_revision_data(self, spreadsheet, **kwargs):
         return dict(
             {
+                "id": spreadsheet.id,
                 "type": "REMOTE_REVISION",
                 "clientId": "john",
                 "commands": [{"type": "A_COMMAND"}],

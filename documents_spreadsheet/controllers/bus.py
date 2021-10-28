@@ -26,8 +26,8 @@ class SpreadsheetCollaborationController(BusController):
         Listening to channel "spreadsheet_collaborative_session_{document_id}"
         tells the server the spreadsheet is active. But only users with read access
         can actually read the associate bus messages.
-        We manually add the channel [{dbname}, "spreadsheet", {document_id}] if the
-        user has read access. This channel is used to safely send messages to allowed users.
+        We manually add the channel if the user has read access.
+        This channel is used to safely send messages to allowed users.
 
         :param channels: bus channels
         :return: channels
@@ -40,10 +40,7 @@ class SpreadsheetCollaborationController(BusController):
                 env["documents.document"].with_context(active_test=False)
                 .search([("id", "in", active_spreadsheet_ids)])
             )
-            channels.extend(
-                (env.cr.dbname, "spreadsheet", spreadsheet.id)
-                for spreadsheet in spreadsheets
-            )
+            channels.extend(spreadsheet for spreadsheet in spreadsheets)
         return channels
 
     @staticmethod

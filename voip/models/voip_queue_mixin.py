@@ -64,7 +64,4 @@ class VoipQueueMixin(models.AbstractModel):
         phonecalls = self.env['voip.phonecall'].search(domain)
         for phonecall in phonecalls:
             phonecall.remove_from_queue()
-        self.env['bus.bus'].sendone(
-            (self._cr.dbname, 'res.partner', self.env.user.partner_id.id),
-            {'type': 'refresh_voip'}
-        )
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'refresh_voip', {})

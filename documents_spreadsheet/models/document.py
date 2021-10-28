@@ -112,6 +112,7 @@ class Document(models.Model):
         self._check_collaborative_spreadsheet_access("read")
         can_write = self._check_collaborative_spreadsheet_access("write", raise_exception=False)
         return {
+            "id": self.id,
             "name": self.name,
             "is_favorited": self.is_favorited,
             "raw": self._get_spreadsheet_snapshot(),
@@ -154,6 +155,7 @@ class Document(models.Model):
         """
         self.ensure_one()
 
+        message = dict(message, id=self.id)
         if message["type"] in ["REMOTE_REVISION", "REVISION_UNDONE", "REVISION_REDONE"]:
             self._check_collaborative_spreadsheet_access("write")
             is_accepted = self._save_concurrent_revision(
@@ -286,8 +288,7 @@ class Document(models.Model):
     def _broadcast_spreadsheet_message(self, message: CollaborationMessage):
         """Send the message to the spreadsheet channel"""
         self.ensure_one()
-        channel = (self.env.cr.dbname, "spreadsheet", self.id)
-        self.env["bus.bus"].sendone(channel, message)
+        self.env["bus.bus"]._sendone(self, 'spreadsheet', message)
 
     def _delete_spreadsheet_revisions(self):
         """Delete spreadsheet revisions"""

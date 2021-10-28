@@ -766,8 +766,8 @@ const DialingPanel = Widget.extend({
      * @param {string} [notifications[i].type]
      */
     async _onLongpollingNotifications(notifications) {
-        for (const notification of notifications) {
-            if (notification[1].type === 'refresh_voip') {
+        for (const { type } of notifications) {
+            if (type === 'refresh_voip') {
                 if (this._isInCall) {
                     return;
                 }

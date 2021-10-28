@@ -97,15 +97,12 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
      * @private
      * @param {Object[]} notifs
      */
-    _onNotification: function (notifs) {
-        var self = this;
-        _.each(notifs, function (notif) {
-            var model = notif[0][1];
-            var data = notif[1];
-            if (model === 'res.partner' && data.type === 'iot_print_documents' && self.call('bus_service', 'isMasterTab')) {
-                self._printDocuments(data.iot_device_identifier, data.iot_ip, data.documents);
+    _onNotification: function(notifications) {
+        for (const { payload, type } of notifications) {
+            if (type === "iot_print_documents" && this.call('bus_service', 'isMasterTab')) {
+                this._printDocuments(payload.iot_device_identifier, payload.iot_ip, payload.documents);
             }
-        });
+        }
     },
 
     /**

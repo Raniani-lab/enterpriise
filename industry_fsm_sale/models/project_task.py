@@ -293,7 +293,6 @@ class Task(models.Model):
             'analytic_account_id': self._get_task_analytic_account_id().id,
             'team_id': team.id if team else False,
         })
-        sale_order.onchange_partner_id()
         # update after creation since onchange_partner_id sets the current user
         sale_order.user_id = user_id.id
         sale_order.onchange_user_id()

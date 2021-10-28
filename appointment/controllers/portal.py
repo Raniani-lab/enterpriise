@@ -41,7 +41,7 @@ class AppointmentPortal(portal.CustomerPortal):
             search_domain = OR([search_domain, [('description', 'ilike', search)]])
         return search_domain
 
-    def _get_groupby_mapping(self):
+    def _appointment_get_groupby_mapping(self):
         return {
             'responsible': 'user_id',
         }
@@ -82,7 +82,7 @@ class AppointmentPortal(portal.CustomerPortal):
         if not sortby:
             sortby = 'date'
         sort_order = searchbar_sortings[sortby]['order']
-        groupby_mapping = self._get_groupby_mapping()
+        groupby_mapping = self._appointment_get_groupby_mapping()
         groupby_field = groupby_mapping.get(groupby, None)
         if groupby_field is not None and groupby_field not in Appointment._fields:
             raise ValueError(_("The field '%s' does not exist in the targeted model", groupby_field))

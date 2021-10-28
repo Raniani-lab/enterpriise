@@ -512,7 +512,7 @@ class Planning(models.Model):
         # For the afternoon shift, _get_closest_work_time will search the end of the shift that is close to 6AM the day after.
         # The closest shift found based on the end datetime will be the morning shift meaning that the work_interval_end will be the end of the morning shift the following day.
         if resource:
-            work_interval_start, work_interval_end = resource._adjust_to_calendar(start.replace(tzinfo=pytz.timezone(resource.tz)), end.replace(tzinfo=pytz.timezone(resource.tz)))[resource]
+            work_interval_start, work_interval_end = resource._adjust_to_calendar(start.replace(tzinfo=pytz.timezone(resource.tz)), end.replace(tzinfo=pytz.timezone(resource.tz)), compute_leaves=False)[resource]
             start, end = (work_interval_start or start, work_interval_end or end)
 
         if not previous_template_id and not template_reset:

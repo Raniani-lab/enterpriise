@@ -220,7 +220,7 @@ class ECSalesReport(models.AbstractModel):
     @api.model
     def get_ec_country_codes(self, options):
         rslt = {'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU',
-                'IE', 'IT', 'LV', 'LY', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'}
+                'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'}
 
         # GB left the EU on January 1st 2021. But before this date, it's still to be considered as a EC country
         if fields.Date.from_string(options['date']['date_from']) < fields.Date.from_string('2021-01-01'):

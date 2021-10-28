@@ -221,6 +221,7 @@ class DocumentShare(models.Model):
         new_context.update({
             'default_owner_id': self.env.uid,
             'default_folder_id': vals.get('folder_id'),
+            'default_tag_ids': vals.get('tag_ids'),
             'default_type': vals.get('type', 'domain'),
             'default_domain': vals.get('domain') if vals.get('type', 'domain') == 'domain' else False,
             'default_document_ids': vals.get('document_ids', False),

@@ -306,6 +306,33 @@ class TestCaseDocuments(TransactionCase):
         # Expiration date
         self.assertEqual(self.result_share_documents_act.state, 'expired', "failed at share_link expired")
 
+    def test_documents_share_popup(self):
+        share_folder = self.env['documents.folder'].create({
+            'name': 'share folder',
+        })
+        share_tag_category = self.env['documents.facet'].create({
+            'folder_id': share_folder.id,
+            'name': "share category",
+        })
+        share_tag = self.env['documents.tag'].create({
+            'facet_id': share_tag_category.id,
+            'name': "share tag",
+        })
+        domain = [('folder_id', 'in', share_folder.id)]
+        action = self.env['documents.share'].open_share_popup({
+            'domain': domain,
+            'folder_id': share_folder.id,
+            'tag_ids': [[6, 0, [share_tag.id]]],
+            'type': 'domain',
+        })
+        action_context = action['context']
+        self.assertTrue(action_context)
+        self.assertEqual(action_context['default_owner_id'], self.env.uid, "the action should open a view with the current user as default owner")
+        self.assertEqual(action_context['default_folder_id'], share_folder.id, "the action should open a view with the right default folder")
+        self.assertEqual(action_context['default_tag_ids'], [[6, 0, [share_tag.id]]], "the action should open a view with the right default tags")
+        self.assertEqual(action_context['default_type'], 'domain', "the action should open a view with the right default type")
+        self.assertEqual(action_context['default_domain'], domain, "the action should open a view with the right default domain")
+
     def test_request_activity(self):
         """
         Makes sure the document request activities are working properly

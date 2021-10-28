@@ -593,6 +593,12 @@ class AccountEdiFormat(models.Model):
 
         return invoice.l10n_pe_edi_is_required
 
+    def _get_invoice_edi_content(self, move):
+        #OVERRIDE
+        if self.code != 'pe_ubl_2_1':
+            return super()._get_invoice_edi_content(move)
+        return self._generate_edi_invoice_bstr(move)
+
     def _needs_web_services(self):
         # OVERRIDE
         return self.code == 'pe_ubl_2_1' or super()._needs_web_services()
@@ -637,17 +643,26 @@ class AccountEdiFormat(models.Model):
             return super()._is_compatible_with_journal(journal)
         return journal.type == 'sale' and journal.country_code == 'PE' and journal.l10n_latam_use_documents
 
-    def _post_invoice_edi(self, invoices):
-        # OVERRIDE
-        if self.code != 'pe_ubl_2_1':
-            return super()._post_invoice_edi(invoices)
+    def _generate_edi_invoice_bstr(self, invoice):
+        latam_invoice_type = self._get_latam_invoice_type(invoice.l10n_latam_document_type_id.code)
+        if not latam_invoice_type:
+            return _("Missing LATAM document code.").encode()
+        edi_values = self._l10n_pe_edi_get_edi_values(invoice)
+        return self.env.ref('l10n_pe_edi.%s' % latam_invoice_type)._render(edi_values)
 
+    def _get_latam_invoice_type(self, code):
         template_by_latam_type_mapping = {
             '07': 'pe_ubl_2_1_credit_note',
             '08': 'pe_ubl_2_1_debit_note',
             '01': 'pe_ubl_2_1_invoice',
             '03': 'pe_ubl_2_1_invoice',
         }
+        return template_by_latam_type_mapping.get(code, False)
+
+    def _post_invoice_edi(self, invoices):
+        # OVERRIDE
+        if self.code != 'pe_ubl_2_1':
+            return super()._post_invoice_edi(invoices)
 
         invoice = invoices # Batching is disabled for this EDI.
 
@@ -656,7 +671,7 @@ class AccountEdiFormat(models.Model):
             invoice.l10n_latam_document_type_id.code,
             invoice.name.replace(' ', ''),
         )
-        latam_invoice_type = template_by_latam_type_mapping.get(invoice.l10n_latam_document_type_id.code)
+        latam_invoice_type = self._get_latam_invoice_type(invoice.l10n_latam_document_type_id.code)
 
         if not latam_invoice_type:
             return {invoice: {'error': _("Missing LATAM document code.")}}

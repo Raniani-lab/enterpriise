@@ -94,6 +94,22 @@ class AccountEdiFormat(models.Model):
                 "You must get manually a key from the PAC to confirm the "
                 "currency rate is accurate enough.") % move.currency_id)
 
+        # == Check the invoice ==
+        if move.l10n_mx_edi_cfdi_request in ('on_invoice', 'on_refund'):
+            negative_lines = move.invoice_line_ids.filtered(lambda line: line.price_subtotal < 0)
+            if negative_lines:
+                # Line having a negative amount is not allowed.
+                if not move._l10n_mx_edi_is_managing_invoice_negative_lines_allowed():
+                    errors.append(_("Invoice lines having a negative amount are not allowed to generate the CFDI. "
+                                    "Please create a credit note instead."))
+                # Discount line without taxes is not allowed.
+                if negative_lines.filtered(lambda line: not line.tax_ids):
+                    errors.append(_("Invoice lines having a negative amount without a tax set is not allowed to "
+                                    "generate the CFDI."))
+            invalid_unspcs_products = move.invoice_line_ids.product_id.filtered(lambda product: not product.unspsc_code_id)
+            if invalid_unspcs_products:
+                errors.append(_("You need to define an 'UNSPSC Product Category' on the following products: %s")
+                              % ', '.join(invalid_unspcs_products.mapped('display_name')))
         return errors
 
     @api.model
@@ -919,6 +935,23 @@ Content-Disposition: form-data; name="xml"; filename="xml"
     # -------------------------------------------------------------------------
     # BUSINESS FLOW: EDI
     # -------------------------------------------------------------------------
+
+    def _check_move_configuration(self, move):
+        if self.code != 'cfdi_3_3':
+            return super()._check_move_configuration(move)
+        return self._l10n_mx_edi_check_configuration(move)
+
+    def _get_invoice_edi_content(self, move):
+        #OVERRIDE
+        if self.code != 'cfdi_3_3':
+            return super()._get_invoice_edi_content(move)
+        return self._l10n_mx_edi_export_invoice_cfdi(move).get('cfdi_str')
+
+    def _get_payment_edi_content(self, move):
+        #OVERRIDE
+        if self.code != 'cfdi_3_3':
+            return super()._get_payment_edi_content(move)
+        return self._l10n_mx_edi_export_payment_cfdi(move).get('cfdi_str')
 
     def _needs_web_services(self):
         # OVERRIDE

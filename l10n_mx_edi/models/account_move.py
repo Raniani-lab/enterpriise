@@ -478,28 +478,6 @@ class AccountMove(models.Model):
             move.l10n_mx_edi_post_time = fields.Datetime.to_string(datetime.now(tz))
 
             if move.l10n_mx_edi_cfdi_request in ('on_invoice', 'on_refund'):
-
-                # ==== Invoice + Refund ====
-
-                for line in move.invoice_line_ids:
-
-                    if line.price_subtotal < 0:
-
-                        # Line having a negative amount is not allowed.
-                        if not move._l10n_mx_edi_is_managing_invoice_negative_lines_allowed():
-                            raise UserError(_("Invoice lines having a negative amount are not allowed to generate the CFDI. "
-                                              "Please create a credit note instead."))
-
-                        # Discount line without taxes is not allowed.
-                        if not line.tax_ids:
-                            raise UserError(_("Invoice lines having a negative amount without a tax set is not allowed to"
-                                              "generate the CFDI."))
-
-                invalid_unspcs_products = move.invoice_line_ids.product_id.filtered(lambda product: not product.unspsc_code_id)
-                if invalid_unspcs_products:
-                    raise UserError(_("You need to define an 'UNSPSC Product Category' on the following products: %s")
-                                    % ', '.join(invalid_unspcs_products.mapped('display_name')))
-
                 # Assign time and date coming from a certificate.
                 if not move.invoice_date:
                     move.invoice_date = certificate_date.date()

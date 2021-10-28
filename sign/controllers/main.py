@@ -134,8 +134,10 @@ class Sign(http.Controller):
             document = sign_request.template_id.attachment_id.datas
         elif download_type == "completed":
             document = sign_request.completed_document
-            if not document: # if the document is completed but the document is encrypted
-                return request.redirect('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
+            if not document:
+                if sign_request.check_is_encrypted():# if the document is completed but the document is encrypted
+                    return http.redirect('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
+                document = sign_request.get_completed_document()
 
         if not document:
             # Shouldn't it fall back on 'origin' download type?

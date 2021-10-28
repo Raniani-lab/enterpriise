@@ -257,6 +257,13 @@ class SignTemplate(models.Model):
             item_id_map[str(sign_item.id)] = str(new_sign_item.id)
         return item_id_map
 
+    def get_sign_items_by_page(self):
+        self.ensure_one()
+        items = defaultdict(list)
+        for item in self.sign_item_ids:
+            items[item.page].append(item)
+        return items
+
 
 class SignTemplateTag(models.Model):
 
@@ -302,14 +309,6 @@ class SignItem(models.Model):
     alignment = fields.Char(default="center", required=True)
 
     transaction_id = fields.Integer(copy=False)
-
-    def getByPage(self):
-        items = {}
-        for item in self:
-            if item.page not in items:
-                items[item.page] = []
-            items[item.page].append(item)
-        return items
 
 
 class SignItemType(models.Model):

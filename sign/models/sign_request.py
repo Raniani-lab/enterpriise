@@ -451,7 +451,7 @@ class SignRequest(models.Model):
 
             packet = io.BytesIO()
             can = canvas.Canvas(packet)
-            itemsByPage = self.template_id.sign_item_ids.getByPage()
+            itemsByPage = self.template_id.get_sign_items_by_page()
             SignItemValue = self.env['sign.request.item.value']
             for p in range(0, old_pdf.getNumPages()):
                 page = old_pdf.getPage(p)

@@ -40,7 +40,6 @@ class SaleSubscriptionWizard(models.TransientModel):
         order.message_post(body=(_("This upsell order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.subscription_id.id, self.subscription_id.display_name)))
         for line in self.option_lines:
             self.subscription_id.partial_invoice_line(order, line, date_from=self.date_from)
-        order.order_line._compute_tax_id()
         return {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",

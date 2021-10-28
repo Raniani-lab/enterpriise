@@ -84,6 +84,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
      */
     async _onClickDocumentsPdfManagerButton(ev) {
         ev.stopPropagation();
+        ev.preventDefault();
         await this._renderPdfManager([this.activeAttachment]);
     },
 

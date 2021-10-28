@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 import os
 
@@ -94,6 +94,87 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         self.assertEqual(move.currency_id.name, 'CLP')
         self.assertEqual(move.amount_total, 351390)
         self.assertEqual(move.amount_tax, 56104)
+
+    # Patch out the VAT check since the VAT number from the sender is invalid
+    @patch('odoo.addons.base_vat.models.res_partner.ResPartner.check_vat', MagicMock())
+    def test_create_invoice_33_from_attachment_with_sending_partner_defined_on_other_company(self):
+        """DTE with unknown partner for the receiving company, but known partner for
+        another company. Make sure we don't match with a partner the company associated
+        with the invoice can't access.
+        """
+
+        self.env['res.partner'].create({
+            'name': 'Other Partner SII Other Company',
+            'is_company': 1,
+            # Different company from the receiver on the XML (which is self.company_data['company'])
+            'company_id': self.company_data_2['company'].id,
+            # Same VAT as in the invoice XML
+            'vat': '76086428-1',
+        })
+
+        att_name = 'incoming_invoice_33.xml'
+        from_address = 'incoming_dte@test.com'
+        att_content = misc.file_open('l10n_cl_edi/tests/fetchmail_dtes/{}'.format(att_name)).read()
+
+        # Sudo to run like when OdooBot does the fetching. If we use a normal user,
+        # `_get_invoice_form` will override `allowed_company_ids` in the context,
+        # overriding anything we might set here. We want the user to be able to
+        # access both company 1 (which is associated with the invoice) and company 2
+        # (which is associated with the partner we just created) to trigger the
+        # issue
+        moves = self.env['fetchmail.server'].sudo()._create_invoice_from_attachment(
+            att_content, att_name, from_address, self.company_data['company'].id)
+
+        self.assertEqual(len(moves), 1)
+        move = moves[0]
+        # There's no valid partner, so it should be undefined.
+        self.assertEqual(move.partner_id, self.env['res.partner'])
+        self.assertEqual(move.company_id, self.company_data['company'])
+
+    # Patch out the VAT check since the VAT number from the sender is invalid
+    @patch('odoo.addons.base_vat.models.res_partner.ResPartner.check_vat', MagicMock())
+    def test_create_invoice_33_from_attachment_with_sending_partner_defined_on_two_companies(self):
+        """DTE with known partner for the receiving company and another company.
+        Make sure the one from the receiving company gets picked, because otherwise
+        there will be an access rights issue where the user accessing the invoice won't
+        be able to access the partner.
+        """
+
+        self.env['res.partner'].create({
+            'name': 'Other Partner SII Other Company',
+            'is_company': 1,
+            # Different company from the receiver on the XML (which is self.company_data['company'])
+            'company_id': self.company_data_2['company'].id,
+            # Same VAT as in the invoice XML
+            'vat': '76086428-1',
+        })
+
+        partner_sii_same_company = self.env['res.partner'].create({
+            'name': 'Other Partner SII Same Company',
+            'is_company': 1,
+            # Same company as the receiver on the XML
+            'company_id': self.company_data['company'].id,
+            # Same VAT as in the invoice XML
+            'vat': '76086428-1',
+        })
+
+        att_name = 'incoming_invoice_33.xml'
+        from_address = 'incoming_dte@test.com'
+        att_content = misc.file_open('l10n_cl_edi/tests/fetchmail_dtes/{}'.format(att_name)).read()
+
+        # Sudo to run like when OdooBot does the fetching. If we use a normal user,
+        # `_get_invoice_form` will override `allowed_company_ids` in the context,
+        # overriding anything we might set here. We want the user to be able to
+        # access both company 1 (which is associated with the invoice and
+        # one of the partners we created) and company 2 (which is associated with
+        # the other partner we created) to trigger the issue
+        moves = self.env['fetchmail.server'].sudo()._create_invoice_from_attachment(
+            att_content, att_name, from_address, self.company_data['company'].id)
+
+        self.assertEqual(len(moves), 1)
+        move = moves[0]
+        self.assertEqual(move.partner_id, partner_sii_same_company)
+        self.assertEqual(move.company_id, self.company_data['company'])
 
     def test_create_invoice_34_from_attachment(self):
         """Include Invoice Reference"""

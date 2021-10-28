@@ -166,7 +166,7 @@ class FetchmailServer(models.Model):
         for dte in xml_content.xpath('//ns0:%s' % dte_tag, namespaces=XML_NAMESPACES):
             document_number = self._get_document_number(dte)
             issuer_vat = self._get_dte_receptor_vat(dte)
-            partner = self._get_partner(issuer_vat)
+            partner = self._get_partner(issuer_vat, company_id)
             if not partner:
                 _logger.error('Partner for incoming customer claim has not been found for %s' % issuer_vat)
                 continue
@@ -237,7 +237,7 @@ class FetchmailServer(models.Model):
                 continue
 
             issuer_vat = self._get_dte_issuer_vat(dte_xml)
-            partner = self._get_partner(issuer_vat)
+            partner = self._get_partner(issuer_vat, company_id)
             if partner and self._check_document_number_exists(partner.id, document_number, document_type, company_id) \
                     or (not partner and self._check_document_number_exists_no_partner(document_number, document_type,
                                                                                       company_id, issuer_vat)):
@@ -388,8 +388,23 @@ class FetchmailServer(models.Model):
             return 'incoming_sii_dte_result'
         return 'not_classified'
 
-    def _get_partner(self, partner_rut):
-        return self.env['res.partner'].search([('vat', '=', partner_rut)], limit=1)
+    def _get_partner(self, partner_rut, company_id=False):
+        if not company_id:
+            # The company_id parameter was added to fix a bug where partners that were
+            # inaccessible to the company could be returned, resulting in access errors
+            # later. If the company is not specified, use the old logic that still has
+            # the bug to keep the function signature stable. To be removed in master.
+            return self.env['res.partner'].search([('vat', '=', partner_rut)], limit=1)
+
+        return self.env["res.partner"].search(
+            [
+                ("vat", "=", partner_rut),
+                "|",
+                ("company_id", "=", company_id),
+                ("company_id", "=", False),
+            ],
+            limit=1,
+        )
 
     def _get_dte_issuer_vat(self, xml_content):
         return (xml_content.findtext('.//ns0:RUTEmisor', namespaces=XML_NAMESPACES).upper() or

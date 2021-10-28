@@ -27,9 +27,6 @@ class HrPayslipRun(models.Model):
     date_end = fields.Date(string='Date To', required=True, readonly=True,
         states={'draft': [('readonly', False)]},
         default=lambda self: fields.Date.to_string((datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()))
-    credit_note = fields.Boolean(string='Credit Note', readonly=True,
-        states={'draft': [('readonly', False)]},
-        help="If its checked, indicates that all payslips generated from here are refund payslips.")
     payslip_count = fields.Integer(compute='_compute_payslip_count')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,
         default=lambda self: self.env.company)

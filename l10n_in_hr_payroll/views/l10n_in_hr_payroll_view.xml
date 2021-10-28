@@ -26,7 +26,7 @@
             <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
             <field name="arch" type="xml">
             <data>
-                <xpath expr="//field[@name='credit_note']" position="after">
+                <xpath expr="//field[@name='date_end']" position="after">
                     <newline/>
                     <field name="available_advice" attrs="{'invisible': [('country_code', '!=', 'IN')]}"/>
                 </xpath>

@@ -24,7 +24,6 @@
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
-                <field name="credit_note"/>
                 <field name="state"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
@@ -51,9 +50,6 @@
                                 <div class="col-12">
                                     <span>
                                         <field name="date_start"/> - <field name="date_end"/>
-                                    </span>
-                                    <span class="float-right" title="Is a Blocking Reason?">
-                                        <field name="credit_note" widget="boolean"/>
                                     </span>
                                 </div>
                             </div>
@@ -97,7 +93,6 @@
                          </div>
                      </group>
                      <group>
-                        <field name="credit_note"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                         <field name="country_id" invisible="1"/>
                         <field name="country_code" invisible="1"/>

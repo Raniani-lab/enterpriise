@@ -4,7 +4,7 @@
 from datetime import timedelta, datetime, time
 import pytz
 
-from odoo import fields, models, api, _
+from odoo import Command, fields, models, api, _
 
 
 # YTI TODO: Split file into 2
@@ -70,8 +70,10 @@ class Task(models.Model):
                 user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
                 date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
                 date_end = pytz.utc.localize(date_end).astimezone(user_tz)
-                users = self.env['res.users'].sudo().browse(result.get('user_ids', []))
-                user = len(users) == 1 and users[0]
+                user_ids_list = [res[2] for res in result.get('user_ids', []) if len(res) == 3 and res[0] == Command.SET]  # user_ids = [(Command.SET, 0, <user_ids>)]
+                user_ids = user_ids_list[-1] if user_ids_list else []
+                users = self.env['res.users'].sudo().browse(user_ids)
+                user = len(users) == 1 and users
                 if user and user.employee_id:  # then the default start/end hours correspond to what is configured on the employee calendar
                     resource_calendar = user.resource_calendar_id
                 else:  # Otherwise, the default start/end hours correspond to what is configured on the company calendar

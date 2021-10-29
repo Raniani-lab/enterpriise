@@ -221,6 +221,12 @@ msgid "The access token is used to perform request to the REST API"
 msgstr ""
 
 #. module: social_linkedin
+#: code:addons/social_linkedin/controllers/main.py:0
+#, python-format
+msgid "There is no page linked to this account"
+msgstr ""
+
+#. module: social_linkedin
 #: code:addons/social_linkedin/models/social_media.py:0
 #, python-format
 msgid ""

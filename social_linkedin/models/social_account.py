@@ -6,7 +6,7 @@ import requests
 from datetime import datetime, timedelta
 from werkzeug.urls import url_join
 
-from odoo import models, fields, api
+from odoo import _, models, fields, api
 from odoo.addons.social.controllers.main import SocialValidationException
 
 
@@ -140,6 +140,9 @@ class SocialAccountLinkedin(models.Model):
 
     def _create_linkedin_accounts(self, access_token, media):
         linkedin_accounts = self._get_linkedin_accounts(access_token)
+        if not linkedin_accounts:
+            raise SocialValidationException(_('There is no page linked to this account'))
+
         social_accounts = self.sudo().with_context(active_test=False).search([
             ('media_id', '=', media.id),
             ('linkedin_account_urn', 'in', [l.get('linkedin_account_urn') for l in linkedin_accounts])])

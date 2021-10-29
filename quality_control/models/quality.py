@@ -137,7 +137,7 @@ class QualityCheck(models.Model):
         ('product', 'Product')], string="Control per", default='operation', required=True, help="Defines if the Quality Check is done at the Operation level or at a more granular Lot/SN level")
     move_line_id = fields.Many2one('stock.move.line', 'Stock Move Line', check_company=True, help="In case of Quality Check by Lot/SN, Move Line on which the Quality Check applies")
     lot_name = fields.Char('Lot/Serial Number Name')
-    lot_line_id = fields.Many2one('stock.production.lot', store=True, compute='_compute_lot_line_id')
+    lot_line_id = fields.Many2one('stock.lot', store=True, compute='_compute_lot_line_id')
     qty_line = fields.Float(compute='_compute_qty_line', string="Quantity")
     uom_id = fields.Many2one(related='product_id.uom_id', string="Product Unit of Measure")
     show_lot_text = fields.Boolean(compute='_compute_show_lot_text')

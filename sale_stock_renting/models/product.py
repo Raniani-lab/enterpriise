@@ -129,7 +129,7 @@ class Product(models.Model):
         :param datetime fro:
         :param datetime to:
         :param dict kwargs: search domain restrictions (ignored_soline_id, warehouse_id)
-        :return tuple(float, array(stock.production.lot)):
+        :return tuple(float, array(stock.lot)):
         """
         def unavailable_qty(so_line):
             return so_line.product_uom_qty - so_line.qty_returned

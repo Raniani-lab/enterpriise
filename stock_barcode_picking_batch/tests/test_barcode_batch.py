@@ -218,8 +218,8 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         """
         batch_form = Form(self.env['stock.picking.batch'])
         # Adds two quantities for product tracked by SN.
-        sn1 = self.env['stock.production.lot'].create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
-        sn2 = self.env['stock.production.lot'].create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        sn1 = self.env['stock.lot'].create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        sn2 = self.env['stock.lot'].create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         self.env['stock.quant'].with_context(inventory_mode=True).create({
             'product_id': self.productserial1.id,
             'inventory_quantity': 1,

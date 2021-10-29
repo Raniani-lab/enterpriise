@@ -442,7 +442,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.picking_type_in.use_create_lots = True
         self.picking_type_in.use_existing_lots = True
-        snObj = self.env['stock.production.lot']
+        snObj = self.env['stock.lot']
         snObj.create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
 
         receipt_picking = self.env['stock.picking'].create({
@@ -599,7 +599,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
 
         # Creates 4 serial numbers and adds 2 qty. for the reservation.
-        snObj = self.env['stock.production.lot']
+        snObj = self.env['stock.lot']
         sn1 = snObj.create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         sn2 = snObj.create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         sn3 = snObj.create({'name': 'sn3', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
@@ -816,7 +816,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
 
         # Adds lot1 and lot2 for productlot1
-        lotObj = self.env['stock.production.lot']
+        lotObj = self.env['stock.lot']
         lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
         lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
 
@@ -859,7 +859,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         })
 
         # Add lot1 et lot2 sur productlot1
-        lotObj = self.env['stock.production.lot']
+        lotObj = self.env['stock.lot']
         lot1 = lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
         lot2 = lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
 
@@ -920,8 +920,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         })
 
         # Create 2 lots with the same name for productlot1 and productlot2
-        lot1 = self.env['stock.production.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
-        lot2 = self.env['stock.production.lot'].create({'name': 'lot1', 'product_id': self.productlot2.id, 'company_id': self.env.company.id})
+        lot1 = self.env['stock.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lot2 = self.env['stock.lot'].create({'name': 'lot1', 'product_id': self.productlot2.id, 'company_id': self.env.company.id})
 
         self.env['stock.quant']._update_available_quantity(self.productlot1, self.stock_location, 2, lot_id=lot1)
         self.env['stock.quant']._update_available_quantity(self.productlot2, self.stock_location, 2, lot_id=lot2)
@@ -951,7 +951,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
 
         # Add 4 serial numbers productserial1
-        snObj = self.env['stock.production.lot']
+        snObj = self.env['stock.lot']
         sn1 = snObj.create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         sn2 = snObj.create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         sn3 = snObj.create({'name': 'sn3', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
@@ -1065,7 +1065,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         })
 
         # Creates lot1 and lot2 for productlot1.
-        lotObj = self.env['stock.production.lot']
+        lotObj = self.env['stock.lot']
         lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
         lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
 
@@ -1345,8 +1345,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
 
-        lot1 = self.env['stock.production.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
-        lot2 = self.env['stock.production.lot'].create({'name': 'serial1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        lot1 = self.env['stock.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lot2 = self.env['stock.lot'].create({'name': 'serial1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
 
         pack1 = self.env['stock.quant.package'].create({
             'name': 'THEPACK',

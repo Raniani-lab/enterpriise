@@ -15,7 +15,7 @@ export default class LazyBarcodeCache {
             'stock.package.type': 'barcode',
             'stock.picking': 'name',
             'stock.quant.package': 'name',
-            'stock.production.lot': 'name', // Also ref, should take in account multiple fields ?
+            'stock.lot': 'name', // Also ref, should take in account multiple fields ?
         };
         this.gs1LengthsByModel = {
             'product.product': 14,

@@ -583,7 +583,7 @@ export default class BarcodeModel extends owl.core.EventBus {
         }
         if (lot_id) {
             if (typeof lot_id === 'number') {
-                lot_id = this.cache.getRecord('stock.production.lot', args.lot_id);
+                lot_id = this.cache.getRecord('stock.lot', args.lot_id);
             }
             line.lot_id = lot_id;
         }
@@ -944,7 +944,7 @@ export default class BarcodeModel extends owl.core.EventBus {
                         result.match = true;
                     } else if (rule.type === 'lot') {
                         if (this.useExistingLots) {
-                            result.lot = await this.cache.getRecordByBarcode(value, 'stock.production.lot');
+                            result.lot = await this.cache.getRecordByBarcode(value, 'stock.lot');
                         }
                         if (!result.lot) { // No existing lot found, set a lot name.
                             result.lotName = value;
@@ -1036,7 +1036,7 @@ export default class BarcodeModel extends owl.core.EventBus {
             result.match = true;
         }
         if (this.useExistingLots) {
-            const lot = recordByData.get('stock.production.lot');
+            const lot = recordByData.get('stock.lot');
             if (lot) {
                 result.lot = lot;
                 result.match = true;
@@ -1075,7 +1075,7 @@ export default class BarcodeModel extends owl.core.EventBus {
         // when multiple records have the same model and barcode.
         const filters = {};
         if (this.selectedLine && this.selectedLine.product_id.tracking !== 'none') {
-            filters['stock.production.lot'] = {
+            filters['stock.lot'] = {
                 product_id: this.selectedLine.product_id.id,
             };
         }

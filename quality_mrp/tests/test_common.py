@@ -49,17 +49,17 @@ class TestQualityMrpCommon(common.TransactionCase):
         })
         cls.bom_id = cls.bom.id
 
-        cls.lot_product_27_0 = cls.env['stock.production.lot'].create({
+        cls.lot_product_27_0 = cls.env['stock.lot'].create({
             'name': '0000000000030',
             'product_id': cls.product_id,
             'company_id': cls.env.company.id,
         })
-        cls.env['stock.production.lot'].create({
+        cls.env['stock.lot'].create({
             'name': '0000000010001',
             'product_id': product_product_drawer_drawer.id,
             'company_id': cls.env.company.id,
         })
-        cls.env['stock.production.lot'].create({
+        cls.env['stock.lot'].create({
             'name': '0000000020045',
             'product_id': product_product_drawer_case.id,
             'company_id': cls.env.company.id,

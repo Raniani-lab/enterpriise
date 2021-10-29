@@ -11,11 +11,11 @@ class RentalOrderLine(models.Model):
 
     tracking = fields.Selection(related='product_id.tracking')
 
-    reserved_lot_ids = fields.Many2many('stock.production.lot', 'rental_reserved_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
-    pickedup_lot_ids = fields.Many2many('stock.production.lot', 'rental_pickedup_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
-    returned_lot_ids = fields.Many2many('stock.production.lot', 'rental_returned_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
+    reserved_lot_ids = fields.Many2many('stock.lot', 'rental_reserved_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
+    pickedup_lot_ids = fields.Many2many('stock.lot', 'rental_pickedup_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
+    returned_lot_ids = fields.Many2many('stock.lot', 'rental_returned_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
 
-    unavailable_lot_ids = fields.Many2many('stock.production.lot', 'unreturned_reserved_serial', compute='_compute_unavailable_lots', store=False)
+    unavailable_lot_ids = fields.Many2many('stock.lot', 'unreturned_reserved_serial', compute='_compute_unavailable_lots', store=False)
 
     @api.depends('pickup_date', 'return_date', 'product_id', 'order_id.warehouse_id')
     def _compute_qty_at_date(self):
@@ -122,7 +122,7 @@ class RentalOrderLine(models.Model):
     def _move_serials(self, lot_ids, location_id, location_dest_id):
         """Move the given lots from location_id to location_dest_id.
 
-        :param stock.production.lot lot_ids:
+        :param stock.lot lot_ids:
         :param stock.location location_id:
         :param stock.location location_dest_id:
         """
@@ -156,7 +156,7 @@ class RentalOrderLine(models.Model):
     def _return_serials(self, lot_ids, location_id, location_dest_id):
         """Undo the move of lot_ids from location_id to location_dest_id.
 
-        :param stock.production.lot lot_ids:
+        :param stock.lot lot_ids:
         :param stock.location location_id:
         :param stock.location location_dest_id:
         """

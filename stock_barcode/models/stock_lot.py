@@ -4,8 +4,8 @@
 from odoo import models, api
 
 
-class StockProductionLot(models.Model):
-    _inherit = 'stock.production.lot'
+class StockLot(models.Model):
+    _inherit = 'stock.lot'
     _barcode_field = 'name'
 
     def _get_stock_barcode_specific_data(self):

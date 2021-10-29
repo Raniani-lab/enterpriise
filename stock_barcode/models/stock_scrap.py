@@ -20,7 +20,7 @@ class StockScrap(models.Model):
             self.product_id = product
             self.lot_id = False
         else:
-            lot = self.env['stock.production.lot'].search([('name', '=', barcode)])
+            lot = self.env['stock.lot'].search([('name', '=', barcode)])
             if lot and self.lot_id == lot:
                 self.scrap_qty += 1
             elif lot:

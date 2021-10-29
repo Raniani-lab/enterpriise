@@ -20,7 +20,7 @@ class TestDuplicateProducts(common.TransactionCase):
             'name': 'Painted boat',
             'type': 'product',
             'tracking': 'serial'})
-        cls.pb1 = cls.env['stock.production.lot'].create({
+        cls.pb1 = cls.env['stock.lot'].create({
             'company_id': cls.env.company.id,
             'product_id': cls.painted_boat.id,
             'name': 'pb1'})
@@ -28,7 +28,7 @@ class TestDuplicateProducts(common.TransactionCase):
             'name': 'Blank Boat',
             'type': 'product',
             'tracking': 'serial'})
-        cls.bb1 = cls.env['stock.production.lot'].create({
+        cls.bb1 = cls.env['stock.lot'].create({
             'company_id': cls.env.company.id,
             'product_id': cls.blank_boat.id,
             'name': 'bb1'})
@@ -36,7 +36,7 @@ class TestDuplicateProducts(common.TransactionCase):
             'name': 'Color Painting',
             'type': 'product',
             'tracking': 'lot'})
-        cls.p1 = cls.env['stock.production.lot'].create({
+        cls.p1 = cls.env['stock.lot'].create({
             'company_id': cls.env.company.id,
             'product_id': cls.painting.id,
             'name': 'p1'})
@@ -149,7 +149,7 @@ class TestDuplicateProducts(common.TransactionCase):
             bp.product_id = self.painting
             bp.product_qty = 1.0
         bom_form.save()
-        self.p2 = self.env['stock.production.lot'].create({
+        self.p2 = self.env['stock.lot'].create({
             'company_id': self.env.company.id,
             'product_id': self.painting.id,
             'name': 'p2'})

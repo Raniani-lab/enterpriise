@@ -24,14 +24,14 @@ class RentalWizard(models.TransientModel):
     # Serial number management (lots are disabled for Rental Products)
     tracking = fields.Selection(related='product_id.tracking')
     lot_ids = fields.Many2many(
-        'stock.production.lot',
+        'stock.lot',
         string="Serial Numbers", help="Only available serial numbers are suggested.",
         domain="[(qty_available_during_period > 0, '=', 1), ('id', 'not in', rented_lot_ids), ('id', 'in', rentable_lot_ids)]")
     rentable_lot_ids = fields.Many2many(
-        'stock.production.lot',
+        'stock.lot',
         string="Serials available in Stock", compute='_compute_rentable_lots')
     rented_lot_ids = fields.Many2many(
-        'stock.production.lot',
+        'stock.lot',
         string="Serials in rent for given period", compute='_compute_rented_during_period')
 
     # Rental Availability
@@ -85,7 +85,7 @@ class RentalWizard(models.TransientModel):
     def _compute_rentable_lots(self):
         for rent in self:
             if rent.product_id and rent.tracking == 'serial':
-                rentable_lots = self.env['stock.production.lot']._get_available_lots(rent.product_id, rent.warehouse_id.lot_stock_id)
+                rentable_lots = self.env['stock.lot']._get_available_lots(rent.product_id, rent.warehouse_id.lot_stock_id)
                 domain = [
                     ('is_rental', '=', True),
                     ('product_id', '=', rent.product_id.id),
@@ -98,7 +98,7 @@ class RentalWizard(models.TransientModel):
                 rentable_lots += self.env['sale.order.line'].search(domain).mapped('pickedup_lot_ids')
                 rent.rentable_lot_ids = rentable_lots
             else:
-                rent.rentable_lot_ids = self.env['stock.production.lot']
+                rent.rentable_lot_ids = self.env['stock.lot']
 
     @api.depends('quantity', 'rentable_qty', 'rented_qty_during_period')
     def _compute_rental_availability(self):
@@ -125,7 +125,7 @@ class RentalWizard(models.TransientModel):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         if self.lot_ids and self.lot_ids.mapped('product_id') != self.product_id:
-            self.lot_ids = self.env['stock.production.lot']
+            self.lot_ids = self.env['stock.lot']
 
     @api.constrains('product_id', 'rental_order_line_id')
     def _pickedup_product_no_change(self):

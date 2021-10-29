@@ -5,7 +5,7 @@ from odoo import api, models
 from odoo.osv import expression
 
 class ProductionLot(models.Model):
-    _inherit = 'stock.production.lot'
+    _inherit = 'stock.lot'
 
     def _get_available_lots(self, product, location=None):
         """Get available lots for product in location.

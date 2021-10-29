@@ -108,7 +108,7 @@ class StockPicking(models.Model):
                 "stock.location": locations.read(locations._get_fields_stock_barcode(), load=False),
                 "stock.package.type": package_types.read(package_types._get_fields_stock_barcode(), False),
                 "stock.quant.package": packages.read(packages._get_fields_stock_barcode(), load=False),
-                "stock.production.lot": lots.read(lots._get_fields_stock_barcode(), load=False),
+                "stock.lot": lots.read(lots._get_fields_stock_barcode(), load=False),
                 "uom.uom": uoms.read(uoms._get_fields_stock_barcode(), load=False),
             },
             "nomenclature_id": [self.env.company.nomenclature_id.id],

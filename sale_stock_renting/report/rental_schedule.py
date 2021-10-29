@@ -8,7 +8,7 @@ class RentalSchedule(models.Model):
 
     is_available = fields.Boolean(compute='_compute_is_available', readonly=True, compute_sudo=True)
 
-    lot_id = fields.Many2one('stock.production.lot', 'Serial Number', readonly=True)
+    lot_id = fields.Many2one('stock.lot', 'Serial Number', readonly=True)
     warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', readonly=True)
     # TODO color depending on report_line_status
 
@@ -98,26 +98,26 @@ class RentalSchedule(models.Model):
                     lot.name,
                     COALESCE(res.sale_order_line_id, pickedup.sale_order_line_id) as sol_id,
                     CASE
-                        WHEN returned.stock_production_lot_id IS NOT NULL THEN 'returned'
-                        WHEN pickedup.stock_production_lot_id IS NOT NULL THEN 'pickedup'
+                        WHEN returned.stock_lot_id IS NOT NULL THEN 'returned'
+                        WHEN pickedup.stock_lot_id IS NOT NULL THEN 'pickedup'
                         ELSE 'reserved'
                     END AS report_line_status
                     FROM
                         rental_reserved_lot_rel res
                     FULL OUTER JOIN rental_pickedup_lot_rel pickedup
                         ON res.sale_order_line_id=pickedup.sale_order_line_id
-                        AND res.stock_production_lot_id=pickedup.stock_production_lot_id
+                        AND res.stock_lot_id=pickedup.stock_lot_id
                     LEFT OUTER JOIN rental_returned_lot_rel returned
                         ON returned.sale_order_line_id=pickedup.sale_order_line_id
-                        AND returned.stock_production_lot_id=pickedup.stock_production_lot_id
-                    JOIN stock_production_lot lot
-                        ON res.stock_production_lot_id=lot.id
-                        OR pickedup.stock_production_lot_id=lot.id
+                        AND returned.stock_lot_id=pickedup.stock_lot_id
+                    JOIN stock_lot lot
+                        ON res.stock_lot_id=lot.id
+                        OR pickedup.stock_lot_id=lot.id
                 ),
                 sol_id_max (id) AS
                     (SELECT MAX(id) FROM sale_order_line),
                 lot_id_max (id) AS
-                    (SELECT MAX(id) FROM stock_production_lot),
+                    (SELECT MAX(id) FROM stock_lot),
                 padding (max_id) AS
                     (SELECT CASE when lot_id_max > sol_id_max then lot_id_max ELSE sol_id_max END as max_id from lot_id_max, sol_id_max)
         """

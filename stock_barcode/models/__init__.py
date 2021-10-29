@@ -6,7 +6,7 @@ from . import stock_scrap
 from . import stock_location
 from . import stock_move_line
 from . import stock_package_type
-from . import stock_production_lot
+from . import stock_lot
 from . import stock_quant_package
 from . import product_product
 from . import product_packaging

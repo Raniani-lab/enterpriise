@@ -21,19 +21,19 @@ class TestFsmFlowStock(TestFsmFlowSale):
             'tracking': 'lot',
         })
 
-        cls.lot_id1 = cls.env['stock.production.lot'].create({
+        cls.lot_id1 = cls.env['stock.lot'].create({
             'product_id': cls.product_lot.id,
             'name': "Lot_1",
             'company_id': cls.env.company.id,
         })
 
-        cls.lot_id2 = cls.env['stock.production.lot'].create({
+        cls.lot_id2 = cls.env['stock.lot'].create({
             'product_id': cls.product_lot.id,
             'name': "Lot_2",
             'company_id': cls.env.company.id,
         })
 
-        cls.lot_id3 = cls.env['stock.production.lot'].create({
+        cls.lot_id3 = cls.env['stock.lot'].create({
             'product_id': cls.product_lot.id,
             'name': "Lot_3",
             'company_id': cls.env.company.id,

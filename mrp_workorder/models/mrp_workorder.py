@@ -138,10 +138,10 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def action_generate_serial(self):
         self.ensure_one()
-        self.finished_lot_id = self.env['stock.production.lot'].create({
+        self.finished_lot_id = self.env['stock.lot'].create({
             'product_id': self.product_id.id,
             'company_id': self.company_id.id,
-            'name': self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
+            'name': self.env['stock.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
         })
 
     def action_print(self):
@@ -693,26 +693,26 @@ class MrpProductionWorkcenterLine(models.Model):
         lot = False
 
         if self.component_tracking:
-            lot = self.env['stock.production.lot'].search([
+            lot = self.env['stock.lot'].search([
                 ('name', '=', barcode),
                 ('product_id', '=', self.component_id.id)
             ])
             if not lot:
                 # create a new lot
                 # create in an onchange is necessary here ("new" cannot work here)
-                lot = self.env['stock.production.lot'].with_context(active_mo_id=self.production_id.id).create({
+                lot = self.env['stock.lot'].with_context(active_mo_id=self.production_id.id).create({
                     'name': barcode,
                     'product_id': self.component_id.id,
                     'company_id': self.company_id.id,
                 })
             self.lot_id = lot
         elif self.production_id.product_id.tracking and self.production_id.product_id.tracking != 'none':
-            lot = self.env['stock.production.lot'].search([
+            lot = self.env['stock.lot'].search([
                 ('name', '=', barcode),
                 ('product_id', '=', self.product_id.id)
             ])
             if not lot:
-                lot = self.env['stock.production.lot'].create({
+                lot = self.env['stock.lot'].create({
                     'name': barcode,
                     'product_id': self.product_id.id,
                     'company_id': self.company_id.id,

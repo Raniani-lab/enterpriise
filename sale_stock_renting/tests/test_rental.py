@@ -32,19 +32,19 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         # Set Stock quantities
 
-        cls.lot_id1 = cls.env['stock.production.lot'].create({
+        cls.lot_id1 = cls.env['stock.lot'].create({
             'product_id': cls.tracked_product_id.id,
             'name': "RentalLot1",
             'company_id': cls.env.company.id,
         })
 
-        cls.lot_id2 = cls.env['stock.production.lot'].create({
+        cls.lot_id2 = cls.env['stock.lot'].create({
             'product_id': cls.tracked_product_id.id,
             'name': "RentalLot2",
             'company_id': cls.env.company.id,
         })
 
-        cls.lot_id3 = cls.env['stock.production.lot'].create({
+        cls.lot_id3 = cls.env['stock.lot'].create({
             'product_id': cls.tracked_product_id.id,
             'name': "RentalLot3",
             'company_id': cls.env.company.id,
@@ -305,8 +305,8 @@ class TestRentalCommon(common.SingleTransactionCase):
     def test_rental_lot_flow(self):
         self.lots_rental_order.action_confirm()
 
-        lots = self.env['stock.production.lot'].search([('product_id', '=', self.tracked_product_id.id)])
-        rentable_lots = self.env['stock.production.lot']._get_available_lots(self.tracked_product_id)
+        lots = self.env['stock.lot'].search([('product_id', '=', self.tracked_product_id.id)])
+        rentable_lots = self.env['stock.lot']._get_available_lots(self.tracked_product_id)
         self.assertEqual(set(lots.ids), set(rentable_lots.ids))  # set is here to ensure that order wont break test
 
         self.order_line_id2.reserved_lot_ids += self.lot_id1
@@ -325,7 +325,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         One sale.order.line with 3 different lots (reserved/pickedup/returned)
         is represented by 3 sale.rental.schedule to allow grouping reservation information
-        by stock.production.lot .
+        by stock.lot .
 
         Note that a lot can be pickedup (sol.pickedup_lot_ids) even if not reserved (sol.reserved_lot_ids).
         """

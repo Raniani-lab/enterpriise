@@ -475,7 +475,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
         if (existingQuant.length) {
             Object.assign(line, existingQuant[0]);
             if (line.lot_id) {
-                line.lot_id = await this.cache.getRecordByBarcode(lotName, 'stock.production.lot');
+                line.lot_id = await this.cache.getRecordByBarcode(lotName, 'stock.lot');
             }
         }
     }
@@ -496,7 +496,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             const previousVirtualId = prevLine && prevLine.virtual_id;
             quant.virtual_id = quant.dummy_id || previousVirtualId || this._uniqueVirtualId;
             quant.product_id = this.cache.getRecord('product.product', quant.product_id);
-            quant.lot_id = quant.lot_id && this.cache.getRecord('stock.production.lot', quant.lot_id);
+            quant.lot_id = quant.lot_id && this.cache.getRecord('stock.lot', quant.lot_id);
             quant.package_id = quant.package_id && this.cache.getRecord('stock.quant.package', quant.package_id);
             quant.owner_id = quant.owner_id && this.cache.getRecord('res.partner', quant.owner_id);
             lines.push(Object.assign({}, quant));

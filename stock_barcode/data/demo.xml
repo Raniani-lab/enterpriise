@@ -59,7 +59,7 @@
 
         <record id="demo_package" model="stock.quant.package" />
 
-        <record id="stock.lot_product_cable_management" model="stock.production.lot">
+        <record id="stock.lot_product_cable_management" model="stock.lot">
             <field name="ref">0000000000017</field>
         </record>
 

@@ -5,7 +5,7 @@ from odoo import fields, models
 
 
 class ProductionLot(models.Model):
-    _inherit = 'stock.production.lot'
+    _inherit = 'stock.lot'
 
     quality_check_qty = fields.Integer(
         compute='_compute_quality_check_qty', groups='quality.group_quality_user')

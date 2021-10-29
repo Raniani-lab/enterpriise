@@ -14,7 +14,7 @@ class HelpdeskTicket(models.Model):
     suitable_product_ids = fields.Many2many('product.product', compute='_compute_suitable_product_ids')
     has_partner_picking = fields.Boolean(compute='_compute_suitable_product_ids')
     tracking = fields.Selection(related='product_id.tracking')
-    lot_id = fields.Many2one('stock.production.lot', string='Lot/Serial Number', help="Lot/Serial number concerned by the ticket", domain="[('product_id', '=', product_id)]")
+    lot_id = fields.Many2one('stock.lot', string='Lot/Serial Number', help="Lot/Serial number concerned by the ticket", domain="[('product_id', '=', product_id)]")
 
     pickings_count = fields.Integer('Return Orders Count', compute="_compute_pickings_count")
     picking_ids = fields.Many2many('stock.picking', string="Return Orders", copy=False)

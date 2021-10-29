@@ -115,9 +115,9 @@ class StockBarcodeLot(models.TransientModel):
 
 
     def get_lot_or_create(self, barcode):
-        lot = self.env['stock.production.lot'].search([('name', '=', barcode), ('product_id', '=', self.product_id.id)])
+        lot = self.env['stock.lot'].search([('name', '=', barcode), ('product_id', '=', self.product_id.id)])
         if not lot:
-            lot = self.env['stock.production.lot'].create({'name': barcode, 'product_id': self.product_id.id})
+            lot = self.env['stock.lot'].create({'name': barcode, 'product_id': self.product_id.id})
         return lot
 
 class StockBarcodeLotLine(models.TransientModel):

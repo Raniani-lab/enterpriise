@@ -71,7 +71,7 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
     def test_receipt_tracked_subcontracted_product(self):
         clean_access_rights(self.env)
         self.subcontracted_component.tracking = 'lot'
-        lot_id = self.env['stock.production.lot'].create({
+        lot_id = self.env['stock.lot'].create({
             'product_id': self.subcontracted_component.id,
             'company_id': self.env.ref('base.main_company').id,
             'name': 'C01',

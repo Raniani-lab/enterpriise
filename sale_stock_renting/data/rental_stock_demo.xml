@@ -44,25 +44,25 @@
     <field name="rental_pricing_ids" eval="[(6,0,[ref('rental_stock_pricing_1'), ref('rental_stock_pricing_2'), ref('rental_stock_pricing_3')])]"/>
   </record>
 
-  <record id="rental_stock_lot_1" model="stock.production.lot">
+  <record id="rental_stock_lot_1" model="stock.lot">
     <field name="name">PRINT001</field>
     <field name="product_id" ref="rental_stock_product_1"/>
     <field name="company_id" ref="base.main_company"/>
   </record>
 
-  <record id="rental_stock_lot_2" model="stock.production.lot">
+  <record id="rental_stock_lot_2" model="stock.lot">
     <field name="name">PRINT002</field>
     <field name="product_id" ref="rental_stock_product_1"/>
     <field name="company_id" ref="base.main_company"/>
   </record>
 
-  <record id="rental_stock_lot_3" model="stock.production.lot">
+  <record id="rental_stock_lot_3" model="stock.lot">
     <field name="name">PRINT003</field>
     <field name="product_id" ref="rental_stock_product_1"/>
     <field name="company_id" ref="base.main_company"/>
   </record>
 
-  <record id="rental_stock_lot_4" model="stock.production.lot">
+  <record id="rental_stock_lot_4" model="stock.lot">
     <field name="name">PRINT004</field>
     <field name="product_id" ref="rental_stock_product_1"/>
     <field name="company_id" ref="base.main_company"/>

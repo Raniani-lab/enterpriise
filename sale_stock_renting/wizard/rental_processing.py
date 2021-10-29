@@ -35,8 +35,8 @@ class RentalProcessingLine(models.TransientModel):
             'tracking': line.product_id.tracking,
         })
 
-        pickeable_lots = self.env['stock.production.lot']
-        returnable_lots = self.env['stock.production.lot']
+        pickeable_lots = self.env['stock.lot']
+        returnable_lots = self.env['stock.lot']
         reserved_lots = line.reserved_lot_ids
         pickedup_lots = line.pickedup_lot_ids
         returned_lots = line.returned_lot_ids
@@ -45,7 +45,7 @@ class RentalProcessingLine(models.TransientModel):
             if line.product_id.tracking == 'serial':
                 # If product is tracked by serial numbers
                 # Get lots in stock:
-                rentable_lots = self.env['stock.production.lot']._get_available_lots(line.product_id, line.order_id.warehouse_id.lot_stock_id)
+                rentable_lots = self.env['stock.lot']._get_available_lots(line.product_id, line.order_id.warehouse_id.lot_stock_id)
                 # Get lots reserved/pickedup and not already returned
                 rented_lots = line.product_id._get_unavailable_lots(
                     fields.Datetime.now(),
@@ -112,14 +112,14 @@ class RentalProcessingLine(models.TransientModel):
     tracking = fields.Selection(related='product_id.tracking')
 
     pickeable_lot_ids = fields.Many2many(
-        'stock.production.lot', 'wizard_pickeable_serial', store=False)
+        'stock.lot', 'wizard_pickeable_serial', store=False)
     returnable_lot_ids = fields.Many2many(
-        'stock.production.lot', 'wizard_returnable_serial', store=False)
+        'stock.lot', 'wizard_returnable_serial', store=False)
     pickedup_lot_ids = fields.Many2many(
-        'stock.production.lot', 'wizard_pickedup_serial',
+        'stock.lot', 'wizard_pickedup_serial',
         domain="[('id', 'in', pickeable_lot_ids)]")
     returned_lot_ids = fields.Many2many(
-        'stock.production.lot', 'wizard_returned_serial',
+        'stock.lot', 'wizard_returned_serial',
         domain="[('id', 'in', returnable_lot_ids)]")
 
     @api.depends('product_id')

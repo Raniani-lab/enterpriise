@@ -28,7 +28,7 @@ class StockQuant(models.Model):
         for val in vals:
             if val[0] in (0, 1) and not val[2].get('lot_id') and val[2].get('lot_name'):
                 quant_db = val[0] == 1 and Quant.browse(val[1]) or False
-                val[2]['lot_id'] = self.env['stock.production.lot'].create({
+                val[2]['lot_id'] = self.env['stock.lot'].create({
                     'name': val[2].pop('lot_name'),
                     'product_id': val[2].get('product_id', quant_db and quant_db.product_id.id or False),
                     'company_id': self.env['stock.location'].browse(val[2].get('location_id') or quant_db.location_id.id).company_id.id
@@ -106,7 +106,7 @@ class StockQuant(models.Model):
                 "stock.quant.package": packages.read(packages._get_fields_stock_barcode(), load=False),
                 "res.company": companies.read(['name']),
                 "res.partner": owners.read(owners._get_fields_stock_barcode(), load=False),
-                "stock.production.lot": lots.read(lots._get_fields_stock_barcode(), load=False),
+                "stock.lot": lots.read(lots._get_fields_stock_barcode(), load=False),
                 "uom.uom": uoms.read(uoms._get_fields_stock_barcode(), load=False),
             },
             "nomenclature_id": [self.env.company.nomenclature_id.id],

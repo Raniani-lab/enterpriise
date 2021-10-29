@@ -230,12 +230,6 @@ class SignTemplate(models.Model):
 
         return True
 
-    @api.model
-    def add_option(self, value):
-        option = self.env['sign.item.option'].search([('value', '=', value)])
-        option_id = option if option else self.env['sign.item.option'].create({'value': value})
-        return option_id.id
-
     def open_requests(self):
         return {
             "type": "ir.actions.act_window",
@@ -284,6 +278,11 @@ class SignItemSelectionOption(models.Model):
     _description = "Option of a selection Field"
 
     value = fields.Text(string="Option")
+
+    @api.model
+    def get_or_create(self, value):
+        option = self.search([('value', '=', value)], limit=1)
+        return option.id if option else self.create({'value': value}).id
 
 
 class SignItem(models.Model):
@@ -357,6 +356,6 @@ class SignItemParty(models.Model):
     change_authorized = fields.Boolean('Change Authorized')
 
     @api.model
-    def add(self, name):
-        party = self.search([('name', '=', name)])
+    def get_or_create(self, name):
+        party = self.search([('name', '=', name)], limit=1)
         return party.id if party else self.create({'name': name}).id

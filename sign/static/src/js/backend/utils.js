@@ -70,9 +70,9 @@ function getOptionsSelectConfiguration(item_id, select_options, selected) {
         return false;
       }
       const optionId = await ajax
-        .rpc("/web/dataset/call_kw/sign.template/add_option", {
-          model: "sign.template",
-          method: "add_option",
+        .rpc("/web/dataset/call_kw/sign.item.option/get_or_create", {
+          model: "sign.item.option",
+          method: "get_or_create",
           args: [value],
           kwargs: {},
         });
@@ -117,9 +117,9 @@ function getResponsibleSelectConfiguration(parties) {
       }
 
       const partyId = await ajax
-        .rpc("/web/dataset/call_kw/sign.item.role/add", {
+        .rpc("/web/dataset/call_kw/sign.item.role/get_or_create", {
           model: "sign.item.role",
-          method: "add",
+          method: "get_or_create",
           args: [name],
           kwargs: {},
         });

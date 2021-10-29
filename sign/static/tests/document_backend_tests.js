@@ -11,7 +11,7 @@ const { createView } = testUtils;
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 let serverData;
 
-import { DocumentBackend } from '@sign/js/backend/document_backend';
+import { DocumentBackend } from '@sign/js/backend/document';
 
 QUnit.module('document_backend_tests', {
     beforeEach: function () {

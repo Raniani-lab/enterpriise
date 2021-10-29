@@ -108,11 +108,12 @@ class SaleOrderLine(models.Model):
         self._check_taxcloud_promo(vals)
         return super(SaleOrderLine, self).write(vals)
 
-    @api.model
-    def create(self, vals):
-        line = super(SaleOrderLine, self).create(vals)
-        line._check_taxcloud_promo(vals)
-        return line
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super(SaleOrderLine, self).create(vals_list)
+        for line, vals in zip(lines, vals_list):
+            line._check_taxcloud_promo(vals)
+        return lines
 
     def _get_taxcloud_price(self):
         self.ensure_one()

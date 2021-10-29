@@ -5876,6 +5876,61 @@ QUnit.module('ViewEditorManager', {
 
     QUnit.module('X2Many');
 
+    QUnit.test('edit one2many form view (2 level) and check that the correct model is passed', async function (assert) {
+        assert.expect(1);
+
+        patchWithCleanup(framework, {
+            blockUI: () => Promise.resolve(),
+            unblockUI: () => Promise.resolve()
+        });
+
+        serverData.models.coucou.records = [{
+            id: 11,
+            display_name: 'Coucou 11',
+            product_ids: [37],
+        }];
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = 11;
+        serverData.views["coucou,1,form"] = /*xml */ `
+            <form>
+                <sheet>
+                    <field name="display_name"/>
+                    <field name="product_ids">
+                        <form>
+                            <sheet>
+                                <field name="m2m" widget='many2many_tags'/>
+                            </sheet>
+                        </form>
+                    </field>
+                </sheet>
+            </form>`;
+
+        Object.assign(serverData.views, {
+            "product,2,list": "<tree><field name='display_name'/></tree>",
+            "partner,3,list": "<tree><field name='display_name'/></tree>",
+        });
+
+        patchWithCleanup(MockServer.prototype, {
+            mockEditView(args) {
+                assert.equal(args.model, "product")
+                return this._super(...arguments);
+            }
+        });
+
+        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
+        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+
+        // edit the x2m form view
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+        await legacyExtraNextTick();
+        await testUtils.dom.click($(webClient.el).find('.o_field_many2manytags'));
+        await testUtils.dom.click($(webClient.el).find('#option_no_create'));
+    });
+
     QUnit.test('disable creation(no_create options) in many2many_tags widget', async function (assert) {
         assert.expect(3);
 

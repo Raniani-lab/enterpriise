@@ -551,7 +551,7 @@ class WebStudioController(http.Controller):
         return True
 
     @http.route('/web_studio/edit_view', type='json', auth='user')
-    def edit_view(self, view_id, studio_view_arch, operations=None):
+    def edit_view(self, view_id, studio_view_arch, operations=None, model=None):
         IrModelFields = request.env['ir.model.fields']
         view = request.env['ir.ui.view'].browse(view_id)
         operations = operations or []
@@ -562,7 +562,7 @@ class WebStudioController(http.Controller):
         if studio_view_arch == "":
             studio_view_arch = '<data/>'
         arch = etree.fromstring(studio_view_arch, parser=parser)
-        model = view.model
+        model = model or view.model
 
         # Determine whether an operation is associated with
         # the creation of a binary field

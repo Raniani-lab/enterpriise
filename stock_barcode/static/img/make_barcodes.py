@@ -46,14 +46,14 @@ def create_page(barcodes, font_size_and_texts):
 footer = [(45, 45, "Don't have any barcode scanner? Right click on your screen > Inspect > Console and type the following command:"),
           (45, 35, '   odoo.__DEBUG__.services["web.core"].bus.trigger("barcode_scanned", "setyourbarcodehere", $(".o_web_client")[0])'),
           (45, 25, 'and replace "setyourbarcodehere" by the barcode you would like to scan OR use our mobile app.'),
-          (45, 15, 'For GS1 barcodes, add "\\u001d" in front of all "("s and remove the "(" and ")"s')]
+          (45, 15, 'For GS1 barcodes, remove all "("s and ")"s')]
 
 # page 1
 # format is (x, y, "barcode")
 # barcodes to generate
-barcodes = [(65, 635, "WH-RECEIPTS"), (250, 635, "0106016478556677\u001d305\u001d10Lot0001"), (435, 635, "0106016478556677\u001d305\u001d10Lot0002"),
-            (65, 500, "0106016478556677305\u001d10Lot0003"), (250, 500, "O-BTN.validate"),
-            (65, 345, "WH-RECEIPTS"), (250, 345, "0106016478559999\u001d3650000010"), (435, 345, "0106016478559982\u001d3160000002"),
+barcodes = [(65, 635, "WH-RECEIPTS"), (250, 623, "0106016478556677300000000510Lot0001"), (435, 623, "0106016478556677300000000510Lot0002"),
+            (65, 490, "0106016478556677300000000510Lot0003"), (250, 500, "O-BTN.validate"),
+            (65, 345, "WH-RECEIPTS"), (250, 345, "01060164785599993650000010"), (435, 345, "01060164785599823160000002"),
             (65, 215, "O-BTN.validate")]
 
 header = [(45, 785, "GS1 Barcodes (set Barcode Nomenclature to Default GS1 Nomenclature)")]
@@ -68,8 +68,8 @@ barcode_titles = [(55, 733, "YourCompany Receipts"), (215, 733, "Cable Managemen
                   (93, 315, "Validate")]
 
 # text of barcode code (below), but made to look pretty (not literal barcode)
-barcode_code = [(85, 631, "WH-RECEIPTS"), (230, 631, "(01)06016478556677(30)5(10)Lot0001"), (415, 631, "(01)06016478556677(30)5(10)Lot0002"),
-                (45, 495, "(01)06016478556677(30)5(10)Lot0003"), (275, 495, "O-BTN.validate"),
+barcode_code = [(85, 631, "WH-RECEIPTS"), (220, 619, "(01)06016478556677(30)00000005(10)Lot0001"), (405, 619, "(01)06016478556677(30)00000005(10)Lot0002"),
+                (45, 485, "(01)06016478556677(30)00000005(10)Lot0003"), (275, 495, "O-BTN.validate"),
                 (85, 340, "WH-RECEIPTS"), (238, 340, "(01)06016478559999(3650)000010"), (425, 340, "(01)06016478559982(3160)000002"),
                 (85, 212, "O-BTN.validate")]
 
@@ -85,7 +85,7 @@ page1 = create_page(barcodes, font_size_and_texts)
 # page 2
 # format is (x, y, "barcode")
 # barcodes to generate
-barcodes = [(65, 635, "WH-RECEIPTS"), (250, 635, "0106016478556332\u001d305"), (435, 635, "00060164712345678905\u001d91PAL"),
+barcodes = [(65, 635, "WH-RECEIPTS"), (250, 635, "0106016478556332305"), (435, 635, "0006016471234567890591PAL"),
             (65, 500, "O-BTN.validate")]
 
 header = []

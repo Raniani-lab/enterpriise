@@ -91,25 +91,25 @@
         <div id="signature" position="replace">
             <div id="signature" class="row">
                 <div class="col-6">
-                    <t t-if="mandate.verified">
-                        <div t-if="mandate.signature" name="signature">
+                    <t t-if="o.verified">
+                        <div t-if="o.signature" name="signature">
                             <div>
-                                <img t-att-src="image_data_uri(mandate.signature)"
+                                <img t-att-src="image_data_uri(o.signature)"
                                      style="max-height: 4cm; max-width: 8cm;"/>
                             </div>
                             <div class="text-left">
-                                <p t-field="mandate.signed_by"/>
+                                <p t-field="o.signed_by"/>
                             </div>
                         </div>
                         <div t-else="">
                             <p>
-                                Signed online on<t t-esc="mandate.signed_on" t-options="{'widget': 'date'}"/>.
+                                Signed online on<t t-esc="o.signed_on" t-options="{'widget': 'date'}"/>.
                             </p>
                         </div>
-                        <div t-if="mandate.phone_number" name="phone_number">
+                        <div t-if="o.phone_number" name="phone_number">
                             <p>
                                 <strong>Authenticated by SMS by:</strong>
-                                <span t-field="mandate.phone_number"/>
+                                <span t-field="o.phone_number"/>
                             </p>
                         </div>
                     </t>
@@ -126,8 +126,8 @@
                 <div class="col-6">
                     <p>
                         <strong>Date and place of signature:</strong>
-                        <t t-if="not mandate.signed_on">......................................</t>
-                        <span t-else="" t-esc="mandate.signed_on" t-options="{'widget': 'date'}"/>
+                        <t t-if="not o.signed_on">......................................</t>
+                        <span t-else="" t-esc="o.signed_on" t-options="{'widget': 'date'}"/>
                     </p>
                 </div>
             </div>

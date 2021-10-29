@@ -35,7 +35,7 @@ class AccountReport(models.AbstractModel):
                 'phone': phone and re.sub(r'[./()\s]', '', phone),  # Exclude what's not a number
             }
 
-            missing_fields = [k for k, v in node_values.items() if not v]
+            missing_fields = [k for k, v in node_values.items() if not v or v == ' ']
             if missing_fields:
                 message = _('Some fields required for the export are missing. Please specify them.')
                 action = {

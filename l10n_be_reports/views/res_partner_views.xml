@@ -17,6 +17,9 @@
                 <xpath expr="//field[@name='zip']" position="attributes">
                     <attribute name="required">'zip' in context.get('required_fields', [])</attribute>
                 </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="required">'country_code' in context.get('required_fields', [])</attribute>
+                </xpath>
                 <xpath expr="//field[@name='vat']" position="attributes">
                     <attribute name="required">'vat' in context.get('required_fields', [])</attribute>
                 </xpath>
@@ -31,21 +34,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='email']" position="attributes">
                     <attribute name="required">'email' in context.get('required_fields', [])</attribute>
-                </xpath>
-            </field>
-        </record>
-
-        <record id="res_partner_view_form_inherit_sms" model="ir.ui.view">
-            <field name="name">res.partner.view.form.inherit.sms</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="sms.res_partner_view_form" />
-            <field name="priority" eval="1"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='phone']" position="attributes">
-                    <attribute name="required">'phone' in context.get('required_fields', [])</attribute>
-                </xpath>
-                <xpath expr="//field[@name='mobile']" position="attributes">
-                    <attribute name="required">'mobile' in context.get('required_fields', [])</attribute>
                 </xpath>
             </field>
         </record>

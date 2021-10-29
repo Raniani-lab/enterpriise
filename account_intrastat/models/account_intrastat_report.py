@@ -149,7 +149,7 @@ class IntrastatReport(models.AbstractModel):
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN inv_line_uom.factor ELSE 1 END
                 ) AS quantity,
-                inv_line.price_subtotal AS value,
+                CASE WHEN inv_line.price_subtotal = 0 THEN inv_line.price_unit * inv_line.quantity ELSE inv_line.price_subtotal END AS value,
                 CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL
                      THEN \'QU\'  -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
                      ELSE product_country.code

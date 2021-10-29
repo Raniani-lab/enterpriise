@@ -223,7 +223,7 @@
 
             <ORC>
                 <ORC_1 t-out="invoice.ref and invoice.ref[:35]"/>
-                <ORC_4 t-out="invoice.invoice_origin"/>
+                <ORC_4 t-out="invoice.invoice_origin and invoice.invoice_origin[:35]"/>
             </ORC>
 
             <t t-set="origin_invoice" t-value="invoice.reversed_entry_id or invoice.debit_origin_id or False"/>

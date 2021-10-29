@@ -33,17 +33,21 @@
                     There are no signatures request.
                 </div>
             <t t-if="grouped_signatures" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Document</th>
+                        <th class="text-center">Signature Date</th>
+                        <th class="text-right">Status</th>
+                    </tr>
+                </thead>
                 <t t-foreach="grouped_signatures" t-as="signature_requests">
-                    <thead>
-                        <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
-                            <th t-if="groupby == 'none'">Document</th>
-                            <th t-else="">
+                    <tbody>
+                        <tr t-if="not groupby =='none'" class="thead-light">
+                            <th t-if="groupby != 'none'" colspan="3">
                                 <span t-field="signature_requests[0].sudo().state"/>
                             </th>
-                            <th class="text-center">Signature Date</th>
-                            <th class="text-right">Status</th>
                         </tr>
-                    </thead>
+                    </tbody>
                     <tbody>
                         <tr t-foreach="signature_requests" t-as="sign_request_item">
                             <td>

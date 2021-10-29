@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+import logging
+
+from odoo import fields, models
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
-import logging
 _logger = logging.getLogger(__name__)
 
 
 class VoipQueueMixin(models.AbstractModel):
     _name = 'voip.queue.mixin'
     _description = 'Add voip queue support to a model'
+
     has_call_in_queue = fields.Boolean("Is in the Call Queue", compute='_compute_has_call_in_queue')
 
     def _compute_has_call_in_queue(self):
@@ -54,7 +56,8 @@ class VoipQueueMixin(models.AbstractModel):
         for activity in activities:
             if not activity.voip_phonecall_id:
                 record = self.env[activity.res_model_id.model].browse(activity.res_id)
-                raise UserError(_('Phone call cannot be created. Is it any phone number linked to record %s?', record.name))
+                raise UserError(_('Could not add "%s" to the call queue. Are you sure it has a phone number set ?', record.name))
+        return activities
 
     def delete_call_in_queue(self):
         domain = self._linked_phone_call_domain()

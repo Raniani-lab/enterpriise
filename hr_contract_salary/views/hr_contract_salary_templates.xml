@@ -337,7 +337,7 @@
         </t>
         <t t-if="personal_info.display_type == 'integer'">
             <input
-                type="number"
+                type="number" min="0"
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
                 t-att-data-field-type="personal_info.display_type"

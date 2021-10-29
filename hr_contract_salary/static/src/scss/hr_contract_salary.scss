@@ -206,6 +206,11 @@
                 z-index: -1;
                 opacity: 0;
             }
+            &:focus-within {
+                .hr_cs_control_indicator {
+                    border: 1px solid $o-brand-primary;
+                }
+            }
         }
 
         .hr_cs_control_indicator {

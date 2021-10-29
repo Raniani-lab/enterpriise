@@ -137,82 +137,123 @@ Tour.register('hr_contract_salary_tour', {
             content: "Choose a car",
             trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Unchoose a car",
             trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
             extra_trigger: 'input[name="Gross"][value="2676.12"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose Public Transportation",
             trigger: 'input[name="fold_public_transport_reimbursed_amount"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+            },
         },
         {
             content: "Set Public Transportation Amount",
             trigger: 'input[name="public_transport_reimbursed_amount_manual"]',
-            run: 'text 100',
+            run: function (actions) {
+                actions.text("100");
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Unchoose Public Transportation",
             trigger: 'input[name="fold_public_transport_reimbursed_amount"]',
             extra_trigger: 'input[name="Gross"][value="2976.62"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose Train Transportation",
             trigger: 'input[name="fold_train_transport_reimbursed_amount"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Set Train Transportation Amount",
             trigger: 'input[name="train_transport_reimbursed_amount_manual"]',
-            run: 'text 150',
+            run: function (actions) {
+                actions.text("150");
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Unchoose Public Transportation",
             trigger: 'input[name="fold_train_transport_reimbursed_amount"]',
             extra_trigger: 'input[name="Gross"][value="2917.47"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose Private Car Transportation",
             trigger: 'input[name="fold_private_car_reimbursed_amount"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Set Private Car Transportation Amount",
             trigger: 'input[name="private_car_reimbursed_amount_manual"]',
-            run: 'text 150',
+            run: function (actions) {
+                actions.text("150");
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Change km_home_work on personal info",
             trigger: 'input[name="km_home_work"]',
             extra_trigger: 'input[name="Gross"][value="2886.87"]',
-            run: 'text 75',
+            run: function (actions) {
+                actions.text('75', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: "Reset 150 km",
             trigger: 'input[name="km_home_work"]',
             extra_trigger: 'input[name="Gross"][value="2930.88"]',
-            run: 'text 150',
+            run: function (actions) {
+                actions.text('150', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: "Unchoose Private Car Transportation",
             trigger: 'input[name="fold_private_car_reimbursed_amount"]',
             extra_trigger: 'input[name="Gross"][value="2886.87"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose a Bike",
             trigger: 'input[name="fold_company_bike_depreciated_cost"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose Bike 2",
@@ -220,7 +261,7 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="2982.81"]',
             run: function () {
                 $('select[name=select_company_bike_depreciated_cost] option:contains(Bike 2)').prop('selected', true);
-                $('select[name=select_company_bike_depreciated_cost]').trigger('change');
+                $('select[name=select_company_bike_depreciated_cost]').trigger('blur');
             },
         },
         {
@@ -229,38 +270,53 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="2965.61"]',
             run: function () {
                 $('select[name=select_company_bike_depreciated_cost] option:contains(Bike 1)').prop('selected', true);
-                $('select[name=select_company_bike_depreciated_cost]').trigger('change');
+                $('select[name=select_company_bike_depreciated_cost]').trigger('blur');
             },
         },
         {
             content: "Unchoose Bike",
             trigger: 'input[name="fold_company_bike_depreciated_cost"]',
             extra_trigger: 'input[name="Gross"][value="2982.81"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Unset Internet",
             trigger: 'input[name="internet_manual"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'text 0',
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: "Reset Internet",
             trigger: 'input[name="internet_manual"]',
             extra_trigger: 'input[name="Gross"][value="3026.13"]',
-            run: 'text 38',
+            run: function (actions) {
+                actions.text('38', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: "Unset Mobile",
             trigger: 'input[name="mobile_radio"]:eq(0)',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Reset Mobile",
             trigger: 'input[name="mobile_radio"]:eq(1)',
             extra_trigger: 'input[name="Gross"][value="3020.63"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Take Extra-Legal Leaves",
@@ -268,7 +324,7 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="3000"]',
             run: function () {
                 $('input[list="holidays_range"]').val(10);
-                $('input[list="holidays_range"]').trigger('change');
+                $('input[list="holidays_range"]').trigger('blur');
             },
         },
         {
@@ -277,32 +333,44 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="2860.17"]',
             run: function () {
                 $('input[list="holidays_range"]').val(0);
-                $('input[list="holidays_range"]').trigger('change');
+                $('input[list="holidays_range"]').trigger('blur');
             },
         },
         {
             content: "Take IP",
             trigger: 'input[name="ip_value_radio"]:eq(1)',
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Untake IP",
             trigger: 'input[name="ip_value_radio"]:eq(0)',
             extra_trigger: 'input[name="Net"][value="2382.56"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Untake Rep Fees",
             trigger: 'input[name="representation_fees_radio"]:eq(0)',
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Retake Rep Fees",
             trigger: 'input[name="representation_fees_radio"]:eq(1)',
             extra_trigger: 'input[name="Gross"][value="3103.16"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Take Fuel Card",
@@ -310,7 +378,7 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="3000"]',
             run: function () {
                 $('input[list="fuel_card_range"]').val(250);
-                $('input[list="fuel_card_range"]').trigger('change');
+                $('input[list="fuel_card_range"]').trigger('blur');
             },
         },
         {
@@ -319,7 +387,7 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="2828.06"]',
             run: function () {
                 $('input[list="fuel_card_range"]').val(0);
-                $('input[list="fuel_card_range"]').trigger('change');
+                $('input[list="fuel_card_range"]').trigger('blur');
             },
         },
         {
@@ -332,6 +400,7 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'input[name="birthday"]',
             run: function () {
                 $("input[name='birthday']").val('2017-09-01');
+                $("input[name='birthday']").trigger('blur');
             },
         },
         {
@@ -339,6 +408,7 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'input[name="gender"]',
             run: function () {
                 $('input[value="female"]').prop('checked', true);
+                $('input[value="female"]').trigger('blur');
             },
         },
         {
@@ -386,7 +456,7 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'label[for=certificate]',
             run: function () {
                 $('select[name=certificate] option:contains(Master)').prop('selected', true);
-                $('select[name=certificate]').trigger('change');
+                $('select[name=certificate]').trigger('blur');
             },
         },
         {
@@ -424,7 +494,7 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'label[for=country_id]:eq(0)',
             run: function () {
                 $('select[name=country_id] option:contains(Belgium)').prop('selected', true);
-                $('select[name=country_id]').trigger('change');
+                $('select[name=country_id]').trigger('blur');
             },
         },
         {
@@ -432,7 +502,7 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'label[for=country_of_birth]',
             run: function () {
                 $('select[name=country_of_birth] option:contains(Belgium)').prop('selected', true);
-                $('select[name=country_of_birth]').trigger('change');
+                $('select[name=country_of_birth]').trigger('blur');
             },
         },
         {
@@ -440,7 +510,7 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'label[for=country_id]:eq(0)',
             run: function () {
                 $('select[name=country] option:contains(Belgium)').prop('selected', true);
-                $('select[name=country]').trigger('change');
+                $('select[name=country]').trigger('blur');
             },
         },
         {
@@ -448,19 +518,25 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'label[for=lang]:eq(0)',
             run: function () {
                 $('select[name=lang] option:contains(English)').prop('selected', true);
-                $('select[name=lang]').trigger('change');
+                $('select[name=lang]').trigger('blur');
             },
         },
         {
             content: 'Check Disabled',
             trigger: "input[name='disabled']",
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: 'Uncheck Disabled',
             trigger: "input[name='disabled']",
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Set Married",
@@ -468,20 +544,26 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: function () {
                 $('select[name=marital] option:contains(Married)').prop('selected', true);
-                $('select[name=marital]').trigger('change');
+                $('select[name=marital]').trigger('blur');
             },
         },
         {
             content: "Check Disabled Spouse Bool",
             trigger: 'input[name=disabled_spouse_bool]',
             extra_trigger: 'input[name="Net"][value="2399.84"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Uncheck Disabled Spouse Bool",
             trigger: 'input[name=disabled_spouse_bool]',
             extra_trigger: 'input[name="Net"][value="2399.84"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Set High Spouse Income",
@@ -489,7 +571,7 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Net"][value="2399.84"]',
             run: function () {
                 $('select[name=spouse_fiscal_status] option:contains("With High Income")').prop('selected', true);
-                $('select[name=spouse_fiscal_status]').trigger('change');
+                $('select[name=spouse_fiscal_status]').trigger('blur');
             },
         },
         {
@@ -498,111 +580,159 @@ Tour.register('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: function () {
                 $('select[name=marital] option:contains(Single)').prop('selected', true);
-                $('select[name=marital]').trigger('change');
+                $('select[name=marital]').trigger('blur');
             },
         },
         {
             content: 'Set Children',
             trigger: 'input[name=children]',
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'text 3'
+            run: function (actions) {
+                actions.text('3', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Check Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
             extra_trigger: 'input[name="Net"][value="2408.59"]',
-            run: 'click'
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: 'Set 1 Disabled Children',
             trigger: 'input[name=disabled_children_number]',
             extra_trigger: 'input[name="Net"][value="2408.59"]',
-            run: 'text 1'
+            run: function (actions) {
+                actions.text('1', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Uncheck Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
             extra_trigger: 'input[name="Net"][value="2620.59"]',
-            run: 'click'
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: 'Unset Children',
             trigger: 'input[name=children]',
             extra_trigger: 'input[name="Net"][value="2408.59"]',
-            run: 'text 0'
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Check Other Dependent People',
             trigger: 'input[name=other_dependent_people]',
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: 'Set 2 Senior',
             trigger: 'input[name=other_senior_dependent]',
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'text 2',
+            run: function (actions) {
+                actions.text('2', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Set 1 disabled Senior',
             trigger: 'input[name=other_disabled_senior_dependent]',
             extra_trigger: 'input[name="Net"][value="2251.59"]',
-            run: 'text 1',
+            run: function (actions) {
+                actions.text('1', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Set 2 Juniors',
             trigger: 'input[name=other_juniors_dependent]',
             extra_trigger: 'input[name="Net"][value="2332.59"]',
-            run: 'text 2',
+            run: function (actions) {
+                actions.text('2', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Set 1 disabled Junior',
             trigger: 'input[name=other_disabled_juniors_dependent]',
             extra_trigger: 'input[name="Net"][value="2406.59"]',
-            run: 'text 1',
+            run: function (actions) {
+                actions.text('1', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Unset 1 disabled Senior over 2',
             trigger: 'input[name=other_disabled_juniors_dependent]',
             extra_trigger: 'input[name="Net"][value="2443.59"]',
-            run: 'text 0',
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Unset 2 Juniors',
             trigger: 'input[name=other_juniors_dependent]',
             extra_trigger: 'input[name="Net"][value="2406.59"]',
-            run: 'text 0',
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Unset 1 disabled Senior',
             trigger: 'input[name=other_disabled_senior_dependent]',
             extra_trigger: 'input[name="Net"][value="2332.59"]',
-            run: 'text 0',
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Unset 2 Seniors',
             trigger: 'input[name=other_senior_dependent]',
             extra_trigger: 'input[name="Net"][value="2251.59"]',
-            run: 'text 0',
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
         },
         {
             content: 'Uncheck Other Dependent People',
             trigger: 'input[name=other_dependent_people]',
             extra_trigger: 'input[name="Net"][value="2089.59"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose a car",
             trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',
-            run: 'click',
+            run: function (actions) {
+                actions.click(this.$anchor);
+                this.$anchor.trigger('blur');
+            },
         },
         {
             content: "Choose a new car",
             trigger: 'label[for=company_car_total_depreciated_cost]',
             run: function () {
                 $('select[name="select_company_car_total_depreciated_cost"] option:contains(Opel)').prop('selected', true);
-                $('select[name="select_company_car_total_depreciated_cost"]').trigger('change');
+                $('select[name="select_company_car_total_depreciated_cost"]').trigger('blur');
             },
         },
         {

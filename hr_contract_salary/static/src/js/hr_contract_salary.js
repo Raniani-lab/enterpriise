@@ -13,9 +13,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     ],
 
     events: {
-        "change .advantage_input": "onchangeAdvantage",
+        "blur .advantage_input": "onchangeAdvantage",
         "change input.folded": "onchangeFolded",
-        "change .personal_info": "onchangePersonalInfo",
+        "blur .personal_info": "onchangePersonalInfo",
         "click #hr_cs_submit": "submitSalaryPackage",
         "click a[name='recompute']": "recompute",
         "click button[name='toggle_personal_information']": "togglePersonalInformation",
@@ -24,15 +24,14 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change input.document": "onchangeDocument",
         "input input[type='range']": "onchangeSlider",
         "change select[name='country_id']": "onchangeCountry",
+        "keydown input[type='number']": "onkeydownInput",
     },
 
     init(parent, options) {
         this._super(parent);
         this.dp = new concurrency.DropPrevious();
         $('body').attr('id', 'hr_contract_salary');
-        $("#hr_contract_salary select").select2({
-            minimumResultsForSearch: -1
-        });
+        $("#hr_contract_salary select").select2();
 
         $('b[role="presentation"]').hide();
         $('.select2-arrow').append('<i class="fa fa-chevron-down"></i>');
@@ -56,6 +55,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     }
                 });
         }
+        this.stateElements = $("select[name='state_id']").find('option');
         this.onchangeCountry();
 
         // When user use back button, unfold previously unfolded items.
@@ -180,17 +180,30 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         let countryID = parseInt($("select[name='country_id'][applies-on='address']").val());
         let enableState = true;
         stateElement.select2('val', '');
+        stateElement.find('option').remove();
+        stateElement.append(this.stateElements);
         stateElement.find('option').toArray().forEach(option => {
             let $option = $(option);
             let stateCountryID = $option.data('additional-info');
             if (countryID === stateCountryID) {
-                $option.removeClass('d-none');
                 enableState = false;
             } else {
-                $option.addClass('d-none');
+                $option.remove();
             }
         });
         stateElement.attr('disabled', enableState);
+    },
+
+    onkeydownInput(event) {
+        const disallowedKeys = {
+            69: "KEY_E",
+            109: "KEY_MINUS_KEYPAD",
+            110: "KEY_DOT_KEYPAD",
+            189: "KEY_MINUS",
+            190: "KEY_DOT"
+        };
+        // Only allow numbers to be written in the input fields with type="number"
+        return !(event.keyCode in disallowedKeys);
     },
 
     _isInvalidInput() {

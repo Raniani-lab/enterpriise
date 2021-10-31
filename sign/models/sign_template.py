@@ -53,14 +53,6 @@ class SignTemplate(models.Model):
 
     group_ids = fields.Many2many("res.groups", string="Template Access Group")
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        is_sign_user = self.env.user.has_group('sign.group_sign_user')
-        for vals in vals_list:
-            if 'active' in vals and vals['active'] and not is_sign_user:
-                raise AccessError(_("Do not have access to create templates"))
-        return super().create(vals_list)
-
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         # Display favorite templates first
@@ -104,13 +96,35 @@ class SignTemplate(models.Model):
             return '<p class="o_view_nocontent_smiling_face">%s</p>' % _('Upload a PDF')
         return super().get_empty_list_help(help)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        attachments = self.env['ir.attachment'].browse([vals.get('attachment_id') for vals in vals_list])
+        for attachment in attachments:
+            self.check_pdf_data_validity(attachment.datas)
+        # copy the attachment if it has been attached to a record
+        for vals, attachment in zip(vals_list, attachments):
+            if attachment.res_model or attachment.res_id:
+                vals['attachment_id'] = attachment.copy().id
+            else:
+                attachment.res_model = self._name
+        templates = super().create(vals_list)
+        for template, attachment in zip(templates, templates.attachment_id):
+            attachment.write({
+                'res_model': self._name,
+                'res_id': template.id
+            })
+        return templates
+
     def copy(self, default=None):
         self.ensure_one()
         default = default or {}
-        if "attachment_id" not in default:
-            new_attachment = self.attachment_id.copy({"name": self._get_copy_name(self.name)})
-            default["attachment_id"] = new_attachment.id
+        default['name'] = default.get('name', self._get_copy_name(self.name))
         return super().copy(default)
+
+    @api.model
+    def create_with_attachment_data(self, name, datas, active=True):
+        attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas})
+        return self.create({'attachment_id': attachment.id, 'active': active}).id
 
     @api.model
     def get_pdf_number_of_pages(self, pdf_data):
@@ -145,23 +159,11 @@ class SignTemplate(models.Model):
                 "exist but you can archive it instead."))
 
     @api.model
-    def upload_template(self, name=None, dataURL=None, active=True):
-        mimetype = dataURL[dataURL.find(':')+1:dataURL.find(',')]
-        datas = dataURL[dataURL.find(',')+1:]
-        # TODO: for now, PDF files without extension are recognized as application/octet-stream;base64
+    def check_pdf_data_validity(self, datas):
         try:
-            file_pdf = PdfFileReader(io.BytesIO(base64.b64decode(datas)), strict=False, overwriteWarnings=False)
-            file_pdf.getNumPages()
+            self.get_pdf_number_of_pages(base64.b64decode(datas))
         except Exception as e:
-            raise UserError(_("This file cannot be read. Is it a valid PDF?"))
-        file_type = mimetype.replace('application/', '').replace(';base64', '')
-        extension = re.compile(re.escape(file_type), re.IGNORECASE)
-        name = extension.sub(file_type, name)
-        attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas, 'mimetype': mimetype})
-        template = self.create({'attachment_id': attachment.id, 'favorited_ids': [(4, self.env.user.id)], 'active': active})
-        attachment.write({'res_model': self._name, 'res_id': template.id})
-
-        return {'template': template.id, 'attachment': attachment.id}
+            raise UserError(_("One uploaded file cannot be read. Is it a valid PDF?"))
 
     def update_from_pdfviewer(self, sign_items=None, deleted_sign_item_ids=None, name=None):
         """ Update a sign.template from the pdfviewer

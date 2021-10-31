@@ -171,11 +171,11 @@ function _sign_upload_file(
     Promise.all(
       Array.from(files).map((file) => {
         return utils.getDataURLFromFile(file).then((result) => {
-          const args = [file.name, result, !inactive];
+          const args = [file.name, result.split(',')[1], !inactive];
 
           return this._rpc({
             model: "sign.template",
-            method: "upload_template",
+            method: "create_with_attachment_data",
             args: args,
           });
         });
@@ -184,7 +184,7 @@ function _sign_upload_file(
       .then((uploadedTemplateData) => {
         let templates = uploadedTemplateData.map((template, index) => {
           return {
-            template: template.template,
+            template: template,
             name: files[index].name,
           };
         });

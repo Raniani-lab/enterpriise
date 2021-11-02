@@ -333,9 +333,9 @@
                                     <group>
                                         <group string="Invoicing" name="invoicing" colspan="2">
                                             <field name="payment_term_id" string="Payment Terms"/>
-                                            <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
+                                            <field name="partner_invoice_id" groups="account.group_delivery_invoice_address"
                                        context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
-                                             <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
+                                             <field name="partner_shipping_id" groups="account.group_delivery_invoice_address"
                                        context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
                                             <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                                             <field name="payment_mode" invisible="1"/>

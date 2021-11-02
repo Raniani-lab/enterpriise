@@ -73,7 +73,7 @@ class AccountEdiFormat(models.Model):
             vals.update({
                 'ext_trade_goods_details': ext_trade_goods_details,
                 'ext_trade_total_price_subtotal_usd': ext_trade_total_price_subtotal_usd,
-                'ext_trade_delivery_partner': self.env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()),
+                'ext_trade_delivery_partner': invoice.partner_shipping_id,
                 'ext_trade_customer_reg_trib': customer.vat,
                 'customer_fiscal_residence': customer_fiscal_residence,
             })

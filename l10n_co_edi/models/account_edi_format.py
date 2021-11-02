@@ -182,7 +182,6 @@ class AccountEdiFormat(models.Model):
 
             withholding_amount = invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda line: line.tax_line_id and not line.tax_line_id.l10n_co_edi_type.retention).mapped('price_total'))
             amount_in_words = invoice.currency_id.with_context(lang=invoice.partner_id.lang or 'es_ES').amount_to_text(withholding_amount)
-            shipping_partner = self.env['res.partner'].browse(invoice._get_invoice_delivery_partner_id())
             notas = [
                 '1.-%s|%s|%s|%s|%s|%s' % (invoice.company_id.l10n_co_edi_header_gran_contribuyente or '',
                                           invoice.company_id.l10n_co_edi_header_tipo_de_regimen or '',
@@ -194,7 +193,7 @@ class AccountEdiFormat(models.Model):
                 '3.- %s' % (html2plaintext(invoice.narration or 'N/A')),
                 '6.- %s|%s' % (html2plaintext(invoice.invoice_payment_term_id.note), amount_in_words),
                 '7.- %s' % (invoice.company_id.website),
-                '8.-%s|%s|%s' % (invoice.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', shipping_partner.phone or '', invoice.invoice_origin or ''),
+                '8.-%s|%s|%s' % (invoice.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', invoice.partner_shipping_id.phone or '', invoice.invoice_origin or ''),
                 '10.- | | | |%s' % (invoice.invoice_origin or 'N/A'),
                 '11.- |%s| |%s|%s' % (total_units, total_weight, total_volume)
             ]
@@ -289,7 +288,7 @@ class AccountEdiFormat(models.Model):
             'tax_types': invoice.mapped('line_ids.tax_ids.l10n_co_edi_type'),
             'exempt_tax_dict': exempt_tax_dict,
             'currency_rate': currency_rate,
-            'shipping_partner': self.env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()),
+            'shipping_partner': invoice.partner_shipping_id,
             'invoice_type_to_ref_1': invoice_type_to_ref_1,
             'ovt_taxes': ovt_taxes,
             'float_compare': float_compare,

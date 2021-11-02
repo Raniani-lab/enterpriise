@@ -64,8 +64,7 @@ class AccountMove(models.Model):
         request = self._get_TaxCloudRequest(api_id, api_key)
 
         request.set_location_origin_detail(shipper)
-        request.set_location_destination_detail(
-            self.env['res.partner'].browse(self._get_invoice_delivery_partner_id()))
+        request.set_location_destination_detail(self.partner_shipping_id)
 
         request.set_invoice_items_detail(self)
 

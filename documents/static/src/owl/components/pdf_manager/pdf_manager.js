@@ -131,10 +131,10 @@ class PdfManager extends owl.Component {
         }
         const pageCount = pdf.numPages;
         const { pageIds, newPages } = this._createPages({ fileId, name, pageCount });
-        await this._loadCanvases({ newPages, pageCount, pdf });
-
         this._newFiles[fileId].pageIds = this._newFiles[fileId].activePageIds = pageIds;
         this.state.uploadingLock = false;
+
+        await this._loadCanvases({ newPages, pageCount, pdf });
     }
 
     /**
@@ -316,6 +316,9 @@ class PdfManager extends owl.Component {
      */
     async _loadCanvases({ newPages, pageCount, pdf }) {
         for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
+            if (!this.el) {
+                break;
+            }
             const pageId = newPages[pageNumber];
             const page = await pdf.getPage(pageNumber);
             const canvas = await this._renderCanvas(page, {

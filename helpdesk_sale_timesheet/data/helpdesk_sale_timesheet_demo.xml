@@ -41,9 +41,33 @@
         <field name="price_unit">30.75</field>
     </record>
     <function model="sale.order" name="action_confirm" eval="[ref('sale_order_helpdesk_sale_timesheet_1')]"/>
+
+    <!-- create sla for sale order -->
+    <record id="helpdesk_sla_4" model="helpdesk.sla">
+        <field name="name">4 hours to finish</field>
+        <field name="team_id" ref="helpdesk.helpdesk_team3"/>
+        <field name="stage_id" ref="helpdesk.stage_solved"/>
+        <field name="time">4</field>
+        <field name="ticket_type_ids" eval="[Command.link(ref('helpdesk.type_question'))]"/>
+        <field name="sale_line_ids" eval="[Command.link(ref('sale_order_line_helpdesk_sale_timesheet_1'))]"/>
+        <field name="exclude_stage_ids" eval="[Command.link(ref('helpdesk.stage_in_progress'))]"/>
+    </record>
+    <record id="helpdesk_ticket_24" model="helpdesk.ticket">
+        <field name="name">Where can I shop the chair cover?</field>
+        <field name="team_id" ref="helpdesk.helpdesk_team3"/>
+        <field name="priority">1</field>
+        <field name="partner_id" ref="base.res_partner_4"/>
+        <field name="ticket_type_id" ref="helpdesk.type_question"/>
+        <field name="sale_line_id" ref="sale_order_line_helpdesk_sale_timesheet_1"/>
+    </record>
+    <!-- fail the sla status -->
+    <function model="helpdesk.sla.status" name="write">
+        <value model="helpdesk.sla.status" search="[('ticket_id', '=', ref('helpdesk_ticket_24'))]"/>
+        <value eval="{'deadline': DateTime.now() - relativedelta(hour=5)}"/>
+    </function>
+
     <record id="helpdesk.helpdesk_ticket_17" model="helpdesk.ticket">
-        <field name="sale_order_id" ref="sale_order_helpdesk_sale_timesheet_1"/>
-        <field name="project_id" model="helpdesk.ticket" eval="obj().env.ref('helpdesk.helpdesk_team3').project_id.id"/>
+        <field name="sale_line_id" ref="sale_order_line_helpdesk_sale_timesheet_1"/>
     </record>
     <!-- make project allow_billable True as project is already created from another module -->
     <function model="project.project" name="write">

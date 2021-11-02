@@ -53,25 +53,25 @@ class TestRentalCommon(common.SingleTransactionCase):
         quants = cls.env['stock.quant'].create({
             'product_id': cls.product_id.id,
             'inventory_quantity': 4.0,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
             'inventory_quantity': 1.0,
             'lot_id': cls.lot_id1.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
             'inventory_quantity': 1.0,
             'lot_id': cls.lot_id2.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
             'inventory_quantity': 1.0,
             'lot_id': cls.lot_id3.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants.action_apply_inventory()
 

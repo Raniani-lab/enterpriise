@@ -575,7 +575,11 @@ class AccountMove(models.Model):
         type_tax_use = 'purchase' if self.move_type in {'in_invoice', 'in_refund'} else 'sale'
         for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
-                related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('move_type', '=', self.move_type), ('partner_id', '=', self.partner_id.id)])
+                related_documents = self.env['account.move'].search([
+                    ('state', '!=', 'draft'),
+                    ('move_type', '=', self.move_type),
+                    ('partner_id', '=', self.partner_id.id),
+                ], limit=100, order='id desc')
                 lines = related_documents.mapped('invoice_line_ids')
                 taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
                 taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == type_tax_use)

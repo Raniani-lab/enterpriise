@@ -100,7 +100,7 @@ result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result= max(0, result_rules['DOUBLE_BASIC']['total'] + result_rules['EUROPEAN']['total'] + result_rules['DHALREADYPAID']['total']) + result_rules['DOUBLE_PAY_DECEMBER']['total']
+result= max(0, result_rules['DOUBLE_BASIC']['total'] + result_rules['EUROPEAN']['total'] + result_rules['DHALREADYPAID']['total'] + result_rules['DOUBLE_PAY_DECEMBER']['total'])
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays"/>
     </record>
@@ -115,7 +115,7 @@ result= max(0, result_rules['DOUBLE_BASIC']['total'] + result_rules['EUROPEAN'][
         <field name="amount_python_compute">
 result_qty = 1
 result_rate = 0.87
-result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
+result = result_rules['PAY DOUBLE']['total'] / 0.068
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays"/>
     </record>

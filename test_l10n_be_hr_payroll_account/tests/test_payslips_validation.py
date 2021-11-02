@@ -4781,9 +4781,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.holiday_pay_2020.compute_sheet()
         self.assertEqual(len(self.holiday_pay_2020.worked_days_line_ids), 0)
         self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 9)
-        self.assertEqual(len(self.holiday_pay_2020.line_ids), 16)
+        self.assertEqual(len(self.holiday_pay_2020.line_ids), 17)
         payslip_results = {
             'PAY_SIMPLE': 1137.92,
+            'DOUBLE_BASIC': 1008.85,
             'PAY DOUBLE': 1008.85,
             'PAY DOUBLE COMPLEMENTARY': 129.07,
             'BASIC': 2275.84,
@@ -4920,9 +4921,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(self.holiday_pay_2020.worked_days_line_ids), 0)
         self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 4)
-        self.assertEqual(len(self.holiday_pay_2020.line_ids), 11)
+        self.assertEqual(len(self.holiday_pay_2020.line_ids), 12)
         payslip_results = {
             'PAY_SIMPLE': 1137.92,
+            'DOUBLE_BASIC': 1008.85,
             'PAY DOUBLE': 1008.85,
             'PAY DOUBLE COMPLEMENTARY': 129.07,
             'BASIC': 2275.84,
@@ -4944,20 +4946,20 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'DOUBLE_BASIC': 3006.17,
             'EUROPEAN': -1384.62,
             'PAY DOUBLE': 1621.55,
-            'PAY DOUBLE COMPLEMENTARY': 384.61,
-            'BASIC': 4973.11,
+            'PAY DOUBLE COMPLEMENTARY': 207.46,
+            'BASIC': 4795.96,
             'ONSS1': -387.78,
             'ONSS2': -211.94,
             'ONSSTOTAL': 599.72,
-            'GROSS': 4373.39,
-            'PROF_TAX': -1589.29,
-            'PPTOTAL': 1589.29,
-            'NET': 2784.1,
+            'GROSS': 4196.24,
+            'PROF_TAX': -1524.91,
+            'PPTOTAL': 1524.91,
+            'NET': 2671.33,
             'BASIC_PAY_SIMPLE': 2966.94,
             'SIMPLE_PAY_DECEMBER': 0.0,
             'DHALREADYPAID': 0.0,
             'DOUBLE_PAY_DECEMBER': 0.0,
-            'CDHBASIC': 384.61,
+            'CDHBASIC': 207.46,
             'CDHALREADYPAID': 0.0,
             'COMP_DOUBLE_PAY_DECEMBER': 0.0,
         }
@@ -5940,18 +5942,18 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'DHALREADYPAID': -10.0,
             'DOUBLE_PAY_DECEMBER': 20.0,
             'PAY DOUBLE': 2975.37,
-            'CDHBASIC': 379.39,
+            'CDHBASIC': 380.67,
             'CDHALREADYPAID': -10.0,
             'COMP_DOUBLE_PAY_DECEMBER': 20.0,
-            'PAY DOUBLE COMPLEMENTARY': 389.39,
-            'BASIC': 5893.34,
+            'PAY DOUBLE COMPLEMENTARY': 390.67,
+            'BASIC': 5894.62,
             'ONSS1': -330.49,
             'ONSS2': -388.88,
             'ONSSTOTAL': 719.37,
-            'GROSS': 5173.98,
-            'PROF_TAX': -1619.46,
-            'PPTOTAL': 1619.45,
-            'NET': 3554.52,
+            'GROSS': 5175.26,
+            'PROF_TAX': -1619.86,
+            'PPTOTAL': 1619.86,
+            'NET': 3555.4,
         }
         self._validate_payslip(termination_payslips, payslip_results)
 

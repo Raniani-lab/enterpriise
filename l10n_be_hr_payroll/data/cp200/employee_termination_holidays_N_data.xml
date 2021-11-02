@@ -4,7 +4,7 @@
         <field name="category_id" ref="hr_payroll_termination_holidays_simple"/>
         <field name="name">Pay simple</field>
         <field name="code">PAY_SIMPLE</field>
-        <field name="sequence">1</field>
+        <field name="sequence">15</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -18,11 +18,11 @@ result = (inputs.GROSS_REF.amount if inputs.GROSS_REF else 0) * qty
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>
 
-    <record id="cp200_employees_termination_n_pay_double" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_termination_holidays_double"/>
-        <field name="name">Pay double</field>
-        <field name="code">PAY DOUBLE</field>
-        <field name="sequence">2</field>
+    <record id="cp200_employees_termination_n_pay_double_basic" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_termination_holidays_double_basic"/>
+        <field name="name">Basic double</field>
+        <field name="code">DOUBLE_BASIC</field>
+        <field name="sequence">20</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -33,17 +33,41 @@ result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>
 
+    <record id="cp200_employees_termination_n_additional_leave" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_termination_holidays_additional_leave"/>
+        <field name="name">Additional Time Off</field>
+        <field name="code">EUROPEAN</field>
+        <field name="sequence">25</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result=-inputs.EUROPEAN.amount if inputs.EUROPEAN else 0</field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays"/>
+    </record>
+
+    <record id="cp200_employees_termination_n_pay_double" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_termination_holidays_double"/>
+        <field name="name">Pay double</field>
+        <field name="code">PAY DOUBLE</field>
+        <field name="sequence">40</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result= max(0, result_rules['DOUBLE_BASIC']['total'] + result_rules['EUROPEAN']['total'])
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
+    </record>
+
     <record id="cp200_employees_termination_n_pay_double_complementary" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_termination_holidays_double"/>
         <field name="name">Pay double complementary</field>
         <field name="code">PAY DOUBLE COMPLEMENTARY</field>
-        <field name="sequence">3</field>
+        <field name="sequence">60</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result_qty = 1
 result_rate = 0.87
-result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
+result = result_rules['PAY DOUBLE']['total'] / 0.068
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>
@@ -52,7 +76,7 @@ result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
         <field name="category_id" ref="hr_payroll_termination_holidays"/>
         <field name="name">Total</field>
         <field name="code">BASIC</field>
-        <field name="sequence">4</field>
+        <field name="sequence">65</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -65,7 +89,7 @@ result = categories.TERMINAISON_SIMPLE + categories.TERMINAISON_DOUBLE
         <field name="category_id" ref="hr_payroll_head_onss"/>
         <field name="name">ONSS (Simple Holiday)</field>
         <field name="code">ONSS1</field>
-        <field name="sequence">10</field>
+        <field name="sequence">70</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result=not contract.no_onss</field>
         <field name="amount_select">percentage</field>
@@ -79,7 +103,7 @@ result = categories.TERMINAISON_SIMPLE + categories.TERMINAISON_DOUBLE
         <field name="category_id" ref="hr_payroll_head_onss"/>
         <field name="name">ONSS (Double Holiday)</field>
         <field name="code">ONSS2</field>
-        <field name="sequence">11</field>
+        <field name="sequence">80</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result=not contract.no_onss</field>
         <field name="amount_select">code</field>
@@ -94,7 +118,7 @@ result_rate = -13.07
         <field name="category_id" ref="hr_salary_rule_category_onss_total"/>
         <field name="name">ONSS (TOTAL)</field>
         <field name="code">ONSSTOTAL</field>
-        <field name="sequence">15</field>
+        <field name="sequence">85</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="appears_on_payslip" eval="False"/>
@@ -108,7 +132,7 @@ result = - result_rules['ONSS1']['total'] - result_rules['ONSS2']['total']
         <field name="category_id" ref="hr_payroll_head_onss"/>
         <field name="name">Taxable Termination Amount</field>
         <field name="code">GROSS</field>
-        <field name="sequence">20</field>
+        <field name="sequence">90</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -121,7 +145,7 @@ result = BASIC + result_rules['ONSS1']['total'] + result_rules['ONSS2']['total']
         <field name="category_id" ref="hr_payroll_head_onss"/>
         <field name="name">Professional Tax</field>
         <field name="code">PROF_TAX</field>
-        <field name="sequence">25</field>
+        <field name="sequence">95</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result=not contract.no_withholding_taxes</field>
         <field name="amount_select">code</field>
@@ -142,7 +166,7 @@ result_rate = - compute_termination_withholding_rate(payslip, categories, worked
         <field name="name">Withholding Taxes (Total)</field>
         <field name="code">PPTOTAL</field>
         <field name="amount_select">code</field>
-        <field name="sequence">26</field>
+        <field name="sequence">100</field>
         <field name="condition_select">none</field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="amount_select">code</field>

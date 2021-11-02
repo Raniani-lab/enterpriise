@@ -3969,7 +3969,24 @@ tour.register('test_inventory_using_buttons', {test: true}, [
             helper.assert(Boolean(setButton), true);
         }
     },
-    // Clicks on set button: must unset the quantity.
+    // Clicks on set button: must set the inventory quantity equals to the quantity .
+    { trigger: '.o_barcode_line:contains("productserial1") .o_line_button.o_set' },
+    {
+        trigger: '.o_barcode_line.o_selected .fa-check',
+        run: function () {
+            helper.assertLinesCount(2);
+            const $line = helper.getLine({barcode: 'productserial1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '0');
+            helper.assertButtonIsNotVisible($line, 'add_quantity');
+            helper.assertButtonIsNotVisible($line, 'remove_unit');
+            const goodQuantitySetButton = document.querySelector('.o_selected .o_line_button.o_set > .fa-check');
+            helper.assert(Boolean(goodQuantitySetButton), true);
+            const differenceSetButton = document.querySelector('.o_selected .o_line_button.o_set.o_difference');
+            helper.assert(Boolean(differenceSetButton), false);
+        }
+    },
+    // Clicks again on set button: must unset the quantity.
     { trigger: '.o_barcode_line:contains("productserial1") .o_line_button.o_set' },
     {
         trigger: '.o_barcode_line:contains("productserial1"):contains("?")',

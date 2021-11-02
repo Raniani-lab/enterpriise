@@ -136,11 +136,12 @@ export default class BarcodeQuantModel extends BarcodeModel {
      */
     setOnHandQuantity(line) {
         if (line.product_id.tracking === 'serial') { // Special case for product tracked by SN.
+            const quantity = !(line.lot_name || line.lot_id) && line.quantity || 1;
             if (line.inventory_quantity_set) {
-                line.inventory_quantity = line.inventory_quantity ? 0 : 1;
-                line.inventory_quantity_set = line.inventory_quantity != line.quantity;
+                line.inventory_quantity = line.inventory_quantity ? 0 : quantity;
+                line.inventory_quantity_set = line.inventory_quantity != quantity;
             } else {
-                line.inventory_quantity = line.quantity;
+                line.inventory_quantity = quantity;
                 line.inventory_quantity_set = true;
             }
             this._markLineAsDirty(line);
@@ -215,7 +216,11 @@ export default class BarcodeQuantModel extends BarcodeModel {
             ['product_id', '=', product.id],
         ];
         if (product.tracking !== 'none') {
-            domain.push(['lot_id.name', '=', params.fieldsParams.lot_name]);
+            if (params.fieldsParams.lot_name) { // Search for a quant with the exact same lot.
+                domain.push(['lot_id.name', '=', params.fieldsParams.lot_name]);
+            } else { // Search for a quant with no lot.
+                domain.push(['lot_id', '=', false]);
+            }
         }
         if (params.fieldsParams.package_id) {
             domain.push(['package_id', '=', params.fieldsParams.package_id]);

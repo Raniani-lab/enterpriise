@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import re
+import markupsafe
+import stdnum
+
 from odoo import models, _
 from odoo.exceptions import RedirectWarning
-import re
 
 
 class AccountReport(models.AbstractModel):
@@ -22,15 +25,14 @@ class AccountReport(models.AbstractModel):
             country = self.env['res.country'].search([('code', '=', country_from_vat)], limit=1)
             phone = representative.phone or representative.mobile
             node_values = {
-                'vat': vat_no,
+                'vat': stdnum.get_cc_module('be', 'vat').compact(vat_no),   # Sanitize VAT number
                 'name': representative.name,
                 'street': "%s %s" % (representative.street or "", representative.street2 or ""),
                 'zip': representative.zip,
                 'city': representative.city,
                 'country_code': (country or representative.country_id).code,
                 'email': representative.email,
-                # exclude what's not a number
-                'phone': phone and re.sub(r'[./()\s]', '', phone),
+                'phone': phone and re.sub(r'[./()\s]', '', phone),  # Exclude what's not a number
             }
 
             missing_fields = [k for k, v in node_values.items() if not v]
@@ -50,7 +52,7 @@ class AccountReport(models.AbstractModel):
                 additional_context = {'required_fields': missing_fields}
                 raise RedirectWarning(message, action, button_text, additional_context)
 
-            return """
+            return str(markupsafe.Markup("""
     <ns2:Representative>
         <RepresentativeID identificationType="NVAT" issuedBy="%(country_code)s">%(vat)s</RepresentativeID>
         <Name>%(name)s</Name>
@@ -61,6 +63,6 @@ class AccountReport(models.AbstractModel):
         <EmailAddress>%(email)s</EmailAddress>
         <Phone>%(phone)s</Phone>
     </ns2:Representative>
-            """ % node_values
+            """) % node_values)
 
         return ""

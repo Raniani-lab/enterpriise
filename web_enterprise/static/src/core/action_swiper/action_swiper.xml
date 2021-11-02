@@ -2,19 +2,21 @@
 <templates xml:space="preserve">                  
     <t t-name="web_enterprise.ActionSwiper" owl="1">
         <t t-if="props.onRightSwipe || props.onLeftSwipe">
-            <div class="o_actionswiper" t-attf-style="min-height:{{state.dimensions.height}}px;" t-on-touchend="_onTouchEndSwipe" t-on-touchmove="_onTouchMoveSwipe" t-on-touchstart="_onTouchStartSwipe">
-                <div class="o_actionswiper_target_container" t-ref="targetContainer" t-att-style="state.containerStyle" t-att-class="{ o_actionswiper_swiping: state.isSwiping }">
-                    <t t-slot="default"/>
-                    <t t-if="props.onRightSwipe">
-                        <div class="o_actionswiper_right_swipe_area o_actionswiper_offset0 position-absolute w-100 h-100 d-flex align-items-center justify-content-center rounded-lg" t-att-class="props.onRightSwipe.bgColor">
-                            <span><i class="fa fa-2x" t-att-class="props.onRightSwipe.icon"/></span>
-                        </div>
-                    </t>
-                    <t t-if="props.onLeftSwipe">
-                        <div class="o_actionswiper_left_swipe_area o_actionswiper_offset0 position-absolute w-100 h-100 d-flex align-items-center justify-content-center rounded-lg" t-att-class="props.onLeftSwipe.bgColor">
-                            <span><i class="fa fa-2x" t-att-class="props.onLeftSwipe.icon"/></span>
-                        </div>
-                    </t>
+            <div class="o_actionswiper" t-on-touchend="_onTouchEndSwipe" t-on-touchmove="_onTouchMoveSwipe" t-on-touchstart="_onTouchStartSwipe">
+                <div class="o_actionswiper_overflow_container position-relative overflow-hidden">
+                    <div class="o_actionswiper_target_container" t-ref="targetContainer" t-att-style="state.containerStyle" t-att-class="{ o_actionswiper_swiping: state.isSwiping }">
+                        <t t-slot="default"/>
+                        <t t-if="localizedProps.onRightSwipe">
+                            <div t-att-style="'max-width: ' + swipedDistance + 'px;'" class="o_actionswiper_right_swipe_area position-absolute overflow-hidden w-100 h-100 d-flex align-items-center justify-content-center rounded-right" t-att-class="localizedProps.onRightSwipe.bgColor">
+                                <span><i class="fa fa-2x" t-att-class="localizedProps.onRightSwipe.icon"/></span>
+                            </div>
+                        </t>
+                        <t t-if="localizedProps.onLeftSwipe">
+                            <div t-att-style="'max-width: ' + -swipedDistance + 'px;'" class="o_actionswiper_left_swipe_area position-absolute overflow-hidden w-100 h-100 d-flex align-items-center justify-content-center rounded-left" t-att-class="localizedProps.onLeftSwipe.bgColor">
+                                <span><i class="fa fa-2x" t-att-class="localizedProps.onLeftSwipe.icon"/></span>
+                            </div>
+                        </t>
+                    </div>
                 </div>
             </div>
         </t>

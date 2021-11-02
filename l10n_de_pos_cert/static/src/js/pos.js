@@ -4,6 +4,8 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
     const models = require('point_of_sale.models');
     const { uuidv4, convertFromEpoch } = require('l10n_de_pos_cert.utils');
     const { TaxError } = require('l10n_de_pos_cert.errors');
+    var utils = require('web.utils');
+    const round_di = utils.round_decimals;
 
     const RATE_ID_MAPPING = {
         1: 'NORMAL',
@@ -23,7 +25,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         },
         //@Override
         async after_load_server_data() {
-            if (this.isCountryGermany()) {
+            if (this.isCountryGermanyAndFiskaly()) {
                 await this.rpc({
                     model: 'pos.config',
                     method: 'l10n_de_get_fiskaly_urls_and_keys',
@@ -31,7 +33,8 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 }).then(data => {
                     this.company.l10n_de_fiskaly_api_key = data['api_key'];
                     this.company.l10n_de_fiskaly_api_secret = data['api_secret'];
-                    this.apiUrl = data['kassensichv_url'] + '/api/v1';
+                    this.useKassensichvVersion2 = this.config.l10n_de_fiskaly_tss_id.includes('|');
+                    this.apiUrl = data['kassensichv_url'] + '/api/v' + (this.useKassensichvVersion2 ? '2' : '1'); // use correct version
                     this.initVatRates(data['dsfinvk_url'] + '/api/v0');
                 })
             }
@@ -53,13 +56,23 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             return this.company.l10n_de_fiskaly_api_secret;
         },
         getTssId() {
-            return this.config.l10n_de_fiskaly_tss_id;
+            return this.config.l10n_de_fiskaly_tss_id && this.config.l10n_de_fiskaly_tss_id.split('|')[0];
         },
         getClientId() {
             return this.config.l10n_de_fiskaly_client_id;
         },
+        isUsingApiV2() {
+            return this.useKassensichvVersion2;
+        },
         isCountryGermany() {
             return this.config.is_company_country_germany;
+        },
+        isCountryGermanyAndFiskaly() {
+            return this.isCountryGermany() && this.getTssId();
+        },
+        format_round_decimals_currency(value) {
+            const decimals = this.currency.decimals;
+            return round_di(value, decimals).toFixed(decimals);
         },
         initVatRates(url) {
             const data = {
@@ -106,7 +119,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
          * - Failure to send to Odoo => the order is already sent to Fiskaly, we store them locally with the TSS info
          */
         async _flush_orders(orders, options) {
-            if (!this.isCountryGermany()) {
+            if (!this.isCountryGermanyAndFiskaly()) {
                 return _super_posmodel._flush_orders.apply(this, arguments);
             }
             if (!orders || !orders.length) {
@@ -162,11 +175,11 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             }
             if (result && fiskalyFailure.length === 0) {
                 for (const id in orderObjectMap) {
-                    orderObjectMap[id].finalize();
+                    orderObjectMap[id].finalize(); // Destroy the order so that it's not stored in the unpaid order
                 }
                 return result;
             } else {
-                if (Object.keys(ordersToUpdate).length ) {
+                if (Object.keys(ordersToUpdate).length) {
                     for (const orderJson of fiskalyFailure) {
                         if (ordersToUpdate[orderJson['id']]) {
                             orderJson['data'] = orderObjectMap[orderJson['id']].export_as_JSON();
@@ -177,14 +190,14 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 }
                 this.set_synch('disconnected');
                 for (const id in orderObjectMap) {
-                    orderObjectMap[id].finalize();
+                    orderObjectMap[id].finalize(); // Destroy the order so that it's not stored in the unpaid order
                 }
                 throw odooError || fiskalyError;
             }
         },
         // @Override
         htmlToImgLetterRendering() {
-            return this.isCountryGermany() || _super_posmodel.htmlToImgLetterRendering.apply(this, arguments);
+            return this.isCountryGermanyAndFiskaly() || _super_posmodel.htmlToImgLetterRendering.apply(this, arguments);
         }
     });
 
@@ -193,7 +206,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         // @Override
         initialize() {
             _super_order.initialize.apply(this,arguments);
-            if (this.pos.isCountryGermany()) {
+            if (this.pos.isCountryGermanyAndFiskaly()) {
                 this.fiskalyUuid = this.fiskalyUuid || null;
                 this.transactionState = this.transactionState || 'inactive'; // Used to know when we need to create the fiskaly transaction
                 this.tssInformation = this.tssInformation || this._initTssInformation();
@@ -232,16 +245,22 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         // @Override
         export_for_printing() {
             const receipt = _super_order.export_for_printing.apply(this, arguments);
-            if (this.pos.isCountryGermany() && this.isTransactionFinished()) {
-                receipt['tss'] = {};
-                $.extend(true, receipt['tss'], this.tssInformation);
+            if (this.pos.isCountryGermanyAndFiskaly()) {
+                if (this.isTransactionFinished()) {
+                    receipt['tss'] = {};
+                    $.extend(true, receipt['tss'], this.tssInformation);
+                } else {
+                    receipt['tss_issue'] = true;
+                }
+            } else if (this.pos.isCountryGermany() && !this.pos.getTssId()) {
+                receipt['test_environment'] = true;
             }
             return receipt;
         },
         //@Override
         export_as_JSON() {
             const json = _super_order.export_as_JSON.apply(this, arguments);
-            if (this.pos.isCountryGermany()) {
+            if (this.pos.isCountryGermanyAndFiskaly()) {
                 json['fiskaly_uuid'] = this.fiskalyUuid;
                 json['transaction_state'] = this.transactionState;
                 json['tss_info'] = {};
@@ -256,7 +275,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         //@Override
         init_from_JSON(json) {
             _super_order.init_from_JSON.apply(this, arguments);
-            if (this.pos.isCountryGermany()) {
+            if (this.pos.isCountryGermanyAndFiskaly()) {
                 this.fiskalyUuid = json.fiskaly_uuid;
                 this.transactionState = json.transaction_state;
                 if (json.tss_info) {
@@ -272,7 +291,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         },
         //@Override
         add_product(product, options) {
-            if (this.pos.isCountryGermany()) {
+            if (this.pos.isCountryGermanyAndFiskaly()) {
                 if (product.taxes_id.length === 0 || !(this.pos.taxes_by_id[product.taxes_id[0]].amount in this.pos.vatRateMapping)) {
                     throw new TaxError(product);
                 }
@@ -310,7 +329,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             };
 
             return $.ajax({
-                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${transactionUuid}`,
+                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${transactionUuid}${this.pos.isUsingApiV2() ? '?tx_revision=1' : ''}`,
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${this.pos.getApiToken()}` },
                 data: JSON.stringify(data),
@@ -350,7 +369,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 });
             }
             return Object.keys(amountPerVatRate).filter((rate) => !!amountPerVatRate[rate])
-                .map((rate) => ({ 'vat_rate': rate, 'amount': amountPerVatRate[rate].toFixed(2) }));
+                .map((rate) => ({ 'vat_rate': rate, 'amount': this.pos.format_round_decimals_currency(amountPerVatRate[rate])}));
         },
         /*
          *  Return an array of { 'payment_type': ..., 'amount': ...}
@@ -360,14 +379,14 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             this.get_paymentlines().forEach((line) => {
                 amountPerPaymentTypeArray.push({
                     'payment_type': line.payment_method.name.toLowerCase() === 'cash' ? 'CASH' : 'NON_CASH',
-                    'amount' : line.amount.toFixed(2)
+                    'amount' : this.pos.format_round_decimals_currency(line.amount)
                  });
             });
             const change = this.get_change();
             if (!!change) {
                 amountPerPaymentTypeArray.push({
                     'payment_type': 'CASH',
-                    'amount': (-change).toFixed(2)
+                    'amount': this.pos.format_round_decimals_currency(-change)
                 });
             }
             return amountPerPaymentTypeArray;
@@ -410,7 +429,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             };
             return $.ajax({
                 headers: { 'Authorization': `Bearer ${this.pos.getApiToken()}` },
-                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${this.fiskalyUuid}?last_revision=1`,
+                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${this.fiskalyUuid}?${this.pos.isUsingApiV2() ? 'tx_revision=2' : 'last_revision=1'}`,
                 method: 'PUT',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
@@ -446,7 +465,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             };
 
             return $.ajax({
-                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${this.fiskalyUuid}?last_revision=1`,
+                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${this.fiskalyUuid}?${this.pos.isUsingApiV2() ? 'tx_revision=2' : 'last_revision=1'}`,
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${this.pos.getApiToken()}` },
                 data: JSON.stringify(data),

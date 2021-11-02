@@ -9,7 +9,7 @@ odoo.define('l10n_de_pos_cert.PaymentScreen', function(require) {
         //@Override
         constructor() {
             super(...arguments);
-            if (this.env.pos.isCountryGermany()) {
+            if (this.env.pos.isCountryGermanyAndFiskaly()) {
                 const _super_handlePushOrderError = this._handlePushOrderError.bind(this);
                 this._handlePushOrderError = async (error) => {
                     if (error.source === 'fiskaly') {
@@ -27,7 +27,7 @@ odoo.define('l10n_de_pos_cert.PaymentScreen', function(require) {
         }
         // Almost the same as in the basic module but we don't finalize if the api call has failed
         async validateOrder(isForceValidate) {
-            if (this.env.pos.isCountryGermany()) {
+            if (this.env.pos.isCountryGermanyAndFiskaly()) {
                 if (!this.validateOrderFree) {
                     return;
                 }

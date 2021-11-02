@@ -11,7 +11,7 @@ odoo.define('l10n_de_pos_cert.ProductScreen', function(require) {
             try {
                 await super._clickProduct(...arguments)
             } catch (error) {
-                if (this.env.pos.isCountryGermany() && error instanceof TaxError) {
+                if (this.env.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
                     await this._showTaxError()
                 } else {
                     throw error;
@@ -23,7 +23,7 @@ odoo.define('l10n_de_pos_cert.ProductScreen', function(require) {
             try {
                 await super._barcodeProductAction(...arguments);
             } catch(error) {
-                if (this.env.pos.isCountryGermany() && error instanceof TaxError) {
+                if (this.env.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
                     await this._showTaxError()
                 } else {
                     throw error;

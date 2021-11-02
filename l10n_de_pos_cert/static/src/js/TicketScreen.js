@@ -8,7 +8,7 @@ odoo.define('l10n_de_pos_cert.TicketScreen', function(require) {
         // @Override
         async _onBeforeDeleteOrder(order) {
             try {
-                if (this.env.pos.isCountryGermany() && order.isTransactionStarted()) {
+                if (this.env.pos.isCountryGermanyAndFiskaly() && order.isTransactionStarted()) {
                     await order.cancelTransaction();
                 }
                 return super._onBeforeDeleteOrder(...arguments);

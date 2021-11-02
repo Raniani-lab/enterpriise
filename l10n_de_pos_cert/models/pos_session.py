@@ -117,7 +117,7 @@ class PosSession(models.Model):
         json = {
             'cash_register_type': {
                 'type': 'MASTER',
-                'tss_id': self.config_id.l10n_de_fiskaly_tss_id
+                'tss_id': self.config_id._l10n_de_get_tss_id()
             },
             'brand': 'Odoo',
             'model': 'Odoo',

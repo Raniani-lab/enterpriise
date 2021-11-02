@@ -28,7 +28,7 @@ class ResCompany(models.Model):
     def write(self, values):
         res = super().write(values)
         for company in self:
-            if company.is_country_germany and company.l10n_de_fiskaly_organization_id:
+            if company.l10n_de_is_germany_and_fiskaly():
                 on_change_fields = ['name', 'street', 'street2', 'zip', 'city', 'vat', 'l10n_de_stnr',
                                     'l10n_de_widnr']
                 if set(on_change_fields) & set(values):
@@ -36,9 +36,12 @@ class ResCompany(models.Model):
                     self._l10n_de_fiskaly_iap_rpc('/update', params=params)
         return res
 
+    def l10n_de_is_germany_and_fiskaly(self):
+        return self.is_country_germany and self.l10n_de_fiskaly_organization_id
+
     @api.model
     def _l10n_de_fiskaly_kassensichv_url(self):
-        return self.env['ir.config_parameter'].sudo().get_param('l10n_de_fiskaly_kassensichv_url', 'https://kassensichv.io')
+        return self.env['ir.config_parameter'].sudo().get_param('l10n_de_fiskaly_kassensichv_url', 'https://kassensichv-middleware.fiskaly.com')
 
     @api.model
     def _l10n_de_fiskaly_dsfinvk_api_url(self):
@@ -61,7 +64,7 @@ class ResCompany(models.Model):
         headers = {'Authorization': 'Bearer ' + self.sudo().l10n_de_fiskaly_kassensichv_token}
         return url, headers
 
-    def _l10n_de_fiskaly_kassensichv_rpc(self, method, path, json=None, version=1, recursive=False):
+    def _l10n_de_fiskaly_kassensichv_rpc(self, method, path, json=None, version=2, recursive=False):
         try:
             timeout = 5
             url, headers = self._l10n_de_fiskaly_kassensichv_auth(version)
@@ -71,6 +74,8 @@ class ResCompany(models.Model):
                 res = requests.post(url + path, headers=headers, json=json, timeout=timeout)
             elif method == 'PUT':
                 res = requests.put(url + path, headers=headers, json=json, timeout=timeout)
+            elif method == 'PATCH':
+                res = requests.patch(url + path, headers=headers, json=json, timeout=timeout)
             else:
                 raise UserError(_('Invalid method'))
             if res.status_code == 401 and not recursive:

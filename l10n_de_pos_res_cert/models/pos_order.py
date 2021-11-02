@@ -20,7 +20,7 @@ class PosOrder(models.Model):
             config = self.env['pos.session'].browse(session_id).config_id
         elif order_id:
             config = self.browse(order_id).config_id
-        return bool(config and config.is_company_country_germany and config.floor_ids)
+        return bool(config and config.company_id.l10n_de_is_germany_and_fiskaly() and config.floor_ids)
 
     @api.model
     def _order_fields(self, ui_order):
@@ -108,14 +108,14 @@ class PosOrder(models.Model):
 
     def _get_fields_for_draft_order(self):
         field_list = super()._get_fields_for_draft_order()
-        if self.env.company.is_country_germany:
+        if self.env.company.l10n_de_is_germany_and_fiskaly():
             field_list.append('l10n_de_fiskaly_time_start')
         return field_list
 
     @api.model
     def get_table_draft_orders(self, table_id):
         table_orders = super().get_table_draft_orders(table_id)
-        if self.env.company.is_country_germany:
+        if self.env.company.l10n_de_is_germany_and_fiskaly():
             for order in table_orders:
                 order['tss_info'] = {}
                 order['tss_info']['time_start'] = order['l10n_de_fiskaly_time_start']
@@ -124,22 +124,20 @@ class PosOrder(models.Model):
         return table_orders
 
     @api.model
-    def retrieve_line_difference(self, ui_order):
-        existing_order = None
-        if ui_order.get('server_id'):
-            existing_order = self.browse(ui_order['server_id'])
-        differences = self._line_differences(existing_order, ui_order)
+    def retrieve_line_difference(self, ui_orders):
+        res = {}
+        for order in ui_orders:
+            existing_order = None if not order.get('server_id') else self.browse(order['server_id'])
+            res[order['uid']] = self._line_differences(existing_order, order)
 
-        return {
-            'differences': differences
-        }
+        return res
 
     @api.model
     def remove_from_ui(self, server_ids):
         """
         Almost the same as the original method except that we compute the line difference and add it to the response
         """
-        if self.env.company.is_country_germany:
+        if self.env.company.l10n_de_is_germany_and_fiskaly():
             orders = self.search([('id', 'in', server_ids), ('state', '=', 'draft')])
             res = []
             for order in orders:

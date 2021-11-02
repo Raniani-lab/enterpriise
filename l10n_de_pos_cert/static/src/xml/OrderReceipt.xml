@@ -10,7 +10,10 @@
                     </div>
                 </t>
             </t>
-            <t t-else="">
+            <t t-elif="receipt['test_environment']">
+                This is a TEST receipt. Go to your company settings to be in a production environment.
+            </t>
+            <t t-elif="receipt['tss_issue']">
                 This receipt is invalid because of TSS issue.
             </t>
         </xpath>

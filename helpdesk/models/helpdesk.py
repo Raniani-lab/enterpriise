@@ -209,7 +209,8 @@ class HelpdeskTeam(models.Model):
             self.with_context(active_test=False).mapped('ticket_ids').write({'active': vals['active']})
         if vals.get('privacy_visibility'):
             self._change_privacy_visibility()
-        self.sudo()._check_sla_group()
+        if 'use_sla' in vals:
+            self.sudo()._check_sla_group()
         self.sudo()._check_modules_to_install()
         if 'auto_close_ticket' in vals:
             self._update_cron()

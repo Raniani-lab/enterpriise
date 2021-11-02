@@ -17,6 +17,9 @@ class CrmLeadConvert2Ticket(models.TransientModel):
             if lead_id:
                 lead = self.env['crm.lead'].browse(lead_id)
                 result['partner_id'] = lead._find_matching_partner().id
+        if 'team_id' in fields:
+            team_ids = self.env['helpdesk.team'].search([], limit=2)
+            result['team_id'] = team_ids[0].id if len(team_ids) == 1 else None
         return result
 
     lead_id = fields.Many2one(
@@ -43,7 +46,10 @@ class CrmLeadConvert2Ticket(models.TransientModel):
             "team_id": self.team_id.id,
             "ticket_type_id": self.ticket_type_id.id,
             "partner_id": partner.id,
-            "user_id": None
+            "user_id": None,
+            "campaign_id": lead.campaign_id.id,
+            "medium_id": lead.medium_id.id,
+            "source_id": lead.source_id.id,
         }
         if lead.contact_name:
             vals["partner_name"] = lead.contact_name

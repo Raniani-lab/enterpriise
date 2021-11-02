@@ -24,9 +24,24 @@ class TestLeadConvertToTicket(crm_common.TestCrmCommon):
         cls.test_ticket_type = cls.env['helpdesk.ticket.type'].create({
             'name': 'Test Type'
         })
+
+        # UTM fields
+        cls.test_campaign = cls.env["utm.campaign"].create({
+            'name': 'A test UTM campaign',
+        })
+        cls.test_medium = cls.env["utm.medium"].create({
+            'name': 'A test UTM medium'
+        })
+        cls.test_source = cls.env["utm.source"].create({
+            'name': 'A test UTM source'
+        })
+
         cls.lead_1.write({
             'user_id': cls.user_sales_salesman.id,
             'description': 'Lead Description',
+            'campaign_id': cls.test_campaign.id,
+            'medium_id': cls.test_medium.id,
+            'source_id': cls.test_source.id
         })
 
     def assertTicketLeadConvertData(self, ticket, lead, team, ticket_type, partner):
@@ -43,6 +58,9 @@ class TestLeadConvertToTicket(crm_common.TestCrmCommon):
         self.assertEqual(ticket.partner_name, partner.name)
         self.assertEqual(ticket.ticket_type_id, ticket_type)
         self.assertFalse(ticket.user_id)
+        self.assertEqual(ticket.campaign_id, lead.campaign_id)
+        self.assertEqual(ticket.medium_id, lead.medium_id)
+        self.assertEqual(ticket.source_id, lead.source_id)
 
     @users('user_sales_salesman')
     def test_lead_convert_to_ticket_corner_cases(self):

@@ -82,6 +82,9 @@ class HelpdeskTicketConvert2Lead(models.TransientModel):
             'user_id': self.user_id.id,
             'description': self.ticket_id.description,
             'email_cc': self.ticket_id.email_cc,
+            "campaign_id": self.ticket_id.campaign_id.id,
+            "medium_id": self.ticket_id.medium_id.id,
+            "source_id": self.ticket_id.source_id.id,
         })
         lead_sudo.message_post_with_view(
             'mail.message_origin_link', values={'self': lead_sudo, 'origin': self.ticket_id},

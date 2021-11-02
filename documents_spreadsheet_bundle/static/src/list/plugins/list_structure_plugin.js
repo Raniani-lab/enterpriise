@@ -4,14 +4,13 @@ import Domain from "web.Domain";
 import pyUtils from "web.py_utils";
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
-import ListDataSource from "../list_data_source";
 
 import { TOP_LEVEL_STYLE } from "../../o_spreadsheet/constants";
 
 /**
- * @typedef {import("../core/list_plugin").SpreadsheetListForRPC} SpreadsheetListForRPC
- * @typedef {import("../core/list_plugin").SpreadsheetList} SpreadsheetList
- * @typedef {import("../../helpers/basic_data_source").Field} Field
+ * @typedef {import("./list_plugin").SpreadsheetListForRPC} SpreadsheetListForRPC
+ * @typedef {import("./list_plugin").SpreadsheetList} SpreadsheetList
+ * @typedef {import("../../o_spreadsheet/basic_data_source").Field} Field
  */
 
 export default class ListStructurePlugin extends spreadsheet.UIPlugin {

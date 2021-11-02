@@ -2,7 +2,7 @@
 /* global $ */
 
 import ListView from "web.ListView";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import {
     createSpreadsheetFromList,
     getCell,
@@ -15,6 +15,7 @@ import {
 } from "./spreadsheet_test_utils";
 import { nextTick, createView } from "web.test_utils";
 import { getBasicData, getBasicListArch } from "./spreadsheet_test_data";
+import { insertList } from "../src/list/list_init_callback";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
@@ -144,9 +145,9 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             session: { user_has_group: async () => true },
         });
         const list = listView._getListForSpreadsheet();
-        const callback = await listView._getCallbackListInsertion(list, 10, false);
         listView.destroy();
         const { model } = await createSpreadsheetFromList();
+        const callback = await insertList.bind({isEmptySpreadsheet: false})({list:list.list, threshold:10,fields: list.fields});
         model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
         const activeSheetId = model.getters.getActiveSheetId();
         assert.deepEqual(model.getters.getVisibleSheets(), [activeSheetId, "42"]);
@@ -269,7 +270,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                             return result;
                         }
                     else if (args.method === "join_spreadsheet_session")
-                    { 
+                    {
                         spreadsheetLoaded = true;
                     }
                     else if (

@@ -21,10 +21,9 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "../spreadsheet_test_data";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
-import { spreadsheetService } from "@documents_spreadsheet/actions/spreadsheet/spreadsheet_service";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu";
-import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/js/components/insert_action_link/insert_action_link_menu";
+import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_owl"
+import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_legacy";
 import { browser } from "@web/core/browser/browser";
 
 const serviceRegistry = registry.category("services");
@@ -51,7 +50,6 @@ async function openView(viewType, options = {}) {
         },
         { sequence: 1 }
     );
-    serviceRegistry.add("spreadsheet", spreadsheetService);
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,

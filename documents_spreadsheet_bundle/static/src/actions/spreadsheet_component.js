@@ -257,12 +257,6 @@ export default class SpreadsheetComponent extends owl.Component {
     this.state.dialog.isDisplayed = true;
   }
 
-  // openPivotDialog(ev) {
-  //     this.pivotId = ev.pivotId;
-  //     this.insertPivotValueCallback = ev.insertPivotValueCallback;
-  //     this.state.pivotDialog.isDisplayed = true;
-  // }
-
   _onLeave() {
     if (this.alreadyLeft) {
       return;

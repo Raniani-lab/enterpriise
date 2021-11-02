@@ -6,7 +6,7 @@
     'category': 'Productivity/Documents',
     'summary': 'Documents Spreadsheet',
     'description': 'Documents Spreadsheet',
-    'depends': ['documents', 'documents_spreadsheet_bundle'],
+    'depends': ['documents'],
     'data': [
         'data/documents_data.xml',
         'security/ir.model.access.csv',
@@ -29,14 +29,11 @@
             'documents_spreadsheet/static/src/**/*.js',
             'documents_spreadsheet/static/src/scss/**/*',
         ],
-        'web.qunit_suite_tests': [
-            'documents_spreadsheet/static/tests/**/*',
-        ],
-        'web.assets_tests': [
-            'documents_spreadsheet/static/tests/tours/**/*',
-        ],
         'web.assets_qweb': [
             'documents_spreadsheet/static/src/**/*.xml',
+        ],
+        'web.assets_tests': [
+            'documents_spreadsheet/static/tests/**/*',
         ],
     }
 }

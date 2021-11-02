@@ -117,7 +117,7 @@ export function getNumberOfPivotFormulas(formula) {
  *
  * @param {string} formula
  *
- * @returns {OdooFunctionDescription|undefined}
+ * @returns {import("../o_spreadsheet/odoo_functions_helpers").OdooFunctionDescription|undefined}
  */
 export function getFirstPivotFunction(formula) {
   return getOdooFunctions(formula, (functionName) =>

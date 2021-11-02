@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { nextTick } from "web.test_utils";
-import CachedRPC from "../src/js/o_spreadsheet/helpers/cached_rpc";
+import CachedRPC from "@documents_spreadsheet_bundle/o_spreadsheet/cached_rpc";
 
 const { module, test } = QUnit;
 

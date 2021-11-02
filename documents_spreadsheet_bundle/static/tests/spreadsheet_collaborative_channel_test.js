@@ -1,6 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.SpreadsheetCollaborativeChannelTests */
 
-import SpreadsheetCollaborativeChannel from "documents_spreadsheet.SpreadsheetCollaborativeChannel";
+import SpreadsheetCollaborativeChannel from "@documents_spreadsheet_bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_channel";
 import makeTestEnvironment from "web.test_env";
 
 

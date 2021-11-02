@@ -1,11 +1,6 @@
 /** @odoo-module */
-
-import {
-    getNumberOfPivotFormulas,
-    getNumberOfListFormulas,
-    getFirstPivotFunction,
-    getFirstListFunction,
-} from "../src/js/o_spreadsheet/helpers/odoo_functions_helpers";
+import { getFirstPivotFunction, getNumberOfPivotFormulas } from "@documents_spreadsheet_bundle/pivot/pivot_helpers";
+import { getFirstListFunction, getNumberOfListFormulas } from "@documents_spreadsheet_bundle/list/list_helpers";
 
 function stringArg(value) {
     return { type: "STRING", value: `"${value}"` };

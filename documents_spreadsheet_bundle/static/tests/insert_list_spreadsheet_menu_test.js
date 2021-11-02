@@ -5,7 +5,8 @@ import testUtils from "web.test_utils";
 import { createSpreadsheetFromList } from "./spreadsheet_test_utils";
 import { doAction } from "@web/../tests/webclient/helpers";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/js/components/insert_list_spreadsheet_menu";
+import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/components/insert_list_spreadsheet_menu";
+import { getBasicData } from "./spreadsheet_test_data";
 
 const createView = testUtils.createView;
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
@@ -57,7 +58,16 @@ QUnit.module(
                         }
                         if (args.method === "create" && args.model === "documents.document") {
                             assert.step("create");
-                            return [1];
+                            return 1;
+                        }
+                        if (args.method === "join_spreadsheet_session" && args.model === "documents.document") {
+                            return {
+                                raw: "{}",
+                                name: "",
+                                is_favorited: false,
+                                revisions: [],
+                                isReadonly: false
+                            };
                         }
                         if (this) {
                             return this._super.apply(this, arguments);
@@ -79,7 +89,7 @@ QUnit.module(
         });
 
         QUnit.test("Can save a list in existing spreadsheet", async (assert) => {
-            assert.expect(3);
+            assert.expect(4);
 
             const { webClient } = await createSpreadsheetFromList({
                 listView: {
@@ -113,7 +123,8 @@ QUnit.module(
                 },
             });
             await doAction(webClient, 1); // leave the spreadsheet action
-            assert.verifySteps(["get_spreadsheets_to_display", "join_spreadsheet_session"]);
+            assert.verifySteps(["get_spreadsheets_to_display", "create", "join_spreadsheet_session"],
+                "get spraedsheet, then create, then join");
         });
     }
 );

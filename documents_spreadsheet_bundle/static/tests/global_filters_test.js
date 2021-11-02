@@ -2,8 +2,8 @@
 /* global $ moment */
 
 import testUtils from "web.test_utils";
-import CommandResult from "../src/js/o_spreadsheet/plugins/cancelled_reason";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
+import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason";
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import {
     createSpreadsheetFromPivot,
     setCellContent,

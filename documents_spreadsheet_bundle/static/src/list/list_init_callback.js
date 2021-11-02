@@ -10,7 +10,7 @@ const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
      *
      * @private
      *
-     * @param {SpreadsheetList} list
+     * @param {import("./plugins/list_plugin").SpreadsheetList} list
      * @param {number} threshold
      * @param {object} fields fields coming from list_model
      *

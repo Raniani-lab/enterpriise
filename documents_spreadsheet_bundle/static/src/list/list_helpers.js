@@ -15,13 +15,13 @@ export function getNumberOfListFormulas(formula) {
       ["LIST", "LIST.HEADER"].includes(functionName)
     ).filter((fn) => fn.isMatched).length;
   }
-  
+
   /**
    * Get the first List function description of the given formula.
    *
    * @param {string} formula
    *
-   * @returns {OdooFunctionDescription|undefined}
+   * @returns {import("../o_spreadsheet/odoo_functions_helpers").OdooFunctionDescription|undefined}
    */
   export function getFirstListFunction(formula) {
     return getOdooFunctions(formula, (functionName) =>

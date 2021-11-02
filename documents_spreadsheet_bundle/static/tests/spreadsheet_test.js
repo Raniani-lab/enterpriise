@@ -8,7 +8,7 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
 import * as BusService from "bus.BusService";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import { fields, nextTick, dom } from "web.test_utils";
@@ -27,7 +27,9 @@ import {
 } from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { getBasicPivotArch } from "./spreadsheet_test_data";
-import { spreadsheetService } from "../src/actions/spreadsheet/spreadsheet_service";
+import { getPivotCache } from "@documents_spreadsheet_bundle/pivot/pivot_init_callback";
+import CachedRPC from "../src/o_spreadsheet/cached_rpc";
+import { legacyRPC } from "../src/o_spreadsheet/helpers";
 
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
@@ -62,6 +64,11 @@ module(
                         mimetype: { string: "Mimetype", type: "char" },
                         favorited_ids: { string: "Name", type: "many2many" },
                         is_favorited: { string: "Name", type: "boolean" },
+                        handler: {
+                            string: "Handler",
+                            type: "selection",
+                            selection: [["spreadsheet", "Spreadsheet"]],
+                        },
                     },
                     records: [
                         { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false },
@@ -225,7 +232,6 @@ module(
 
         test("open spreadsheet with deprecated `active_id` params", async function (assert) {
             assert.expect(4);
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData: { models: this.data },
                 mockRPC: async function (route, args) {
@@ -253,7 +259,6 @@ module(
 
         test("download spreadsheet with the action param `download`", async function (assert) {
             assert.expect(4);
-            registry.category("services").add("spreadsheet", spreadsheetService);
             mockDownload(async (options) => {
                 assert.step(options.url);
                 assert.ok(options.data.zip_name);
@@ -321,7 +326,6 @@ module(
             };
             const serverData = { actions, models: this.data, views };
 
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -532,7 +536,7 @@ module(
                 (item) => item.innerText
             );
             assert.equal(breadcrumb1, "pivot view");
-            assert.equal(breadcrumb2, "pivot spreadsheet");
+            assert.equal(breadcrumb2, "Untitled spreadsheet");
             assert.equal(breadcrumb3, "Partner");
         });
 
@@ -940,36 +944,18 @@ module(
         test("Verify presence of pivots in top menu bar in a spreadsheet with a pivot", async function (assert) {
             assert.expect(8);
 
-            let pivot;
-            let cache;
-
-            const { webClient, model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                <pivot string="Partners">
-                    <field name="product" type="col"/>
-                    <field name="bar" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
-                },
-                async actions(pivotView) {
-                    pivot = pivotView.getPivotForSpreadsheet();
-                    cache = await pivotView.getPivotCache(pivot);
-                },
-            });
-
-            pivot.id = model.getters.getNextPivotId();
-            const sheetId = model.getters.getActiveSheetId();
-
-            model.dispatch("BUILD_PIVOT", {
-                sheetId,
-                anchor: [12, 0], // this position is still free
-                pivot,
-                cache,
-            });
-            await model.waitForIdle();
+            const pivotView = {
+                model: "partner",
+                data: this.data,
+                arch: `
+            <pivot string="Partners">
+                <field name="product" type="col"/>
+                <field name="bar" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+            };
+            const { webClient: webClient1, spreadsheetAction } = await createSpreadsheetFromPivot({ pivotView });
+            const { webClient, env } = await createSpreadsheetFromPivot({ webClient: webClient1, pivotView, resId: spreadsheetAction.resId })
 
             assert.ok(
                 $(webClient.el).find("div[data-id='data']")[0],
@@ -978,7 +964,7 @@ module(
 
             const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
             const children = topbarMenuRegistry.getChildren(root, env);
-            assert.equal(children.length, 6, "There should be 6 children in the menu");
+            assert.equal(children.length, 6, "There should be 5 children in the menu");
             assert.equal(children[0].name, "(#1) partner");
             assert.equal(children[1].name, "(#2) partner");
             // bottom children
@@ -991,36 +977,20 @@ module(
         test("Pivot focus changes on top bar menu click", async function (assert) {
             assert.expect(3);
 
-            let pivot;
-            let cache;
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                <pivot string="Partners">
-                    <field name="product" type="col"/>
-                    <field name="bar" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
-                },
-                async actions(pivotView) {
-                    pivot = pivotView.getPivotForSpreadsheet();
-                    cache = await pivotView.getPivotCache(pivot);
-                },
-            });
+            const pivotView = {
+                model: "partner",
+                data: this.data,
+                arch: `
+            <pivot string="Partners">
+                <field name="product" type="col"/>
+                <field name="bar" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+            };
+            const { webClient: webClient1, spreadsheetAction } = await createSpreadsheetFromPivot({ pivotView });
+            const { webClient, env, model } = await createSpreadsheetFromPivot({ webClient: webClient1, pivotView, resId: spreadsheetAction.resId })
 
-            pivot.id = model.getters.getNextPivotId();
-            const sheetId = model.getters.getActiveSheetId();
-
-            model.dispatch("BUILD_PIVOT", {
-                sheetId,
-                anchor: [12, 0], // this position is still free
-                pivot,
-                cache,
-            });
-            await model.waitForIdle();
 
             const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
             const children = topbarMenuRegistry.getChildren(root, env);
@@ -1044,35 +1014,19 @@ module(
         test("Pivot focus changes on sidepanel click", async function (assert) {
             assert.expect(6);
 
-            let pivot;
-            let cache;
+            const pivotView = {
+                model: "partner",
+                data: this.data,
+                arch: `
+            <pivot string="Partners">
+                <field name="product" type="col"/>
+                <field name="bar" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+            };
+            let { webClient: webClient1, spreadsheetAction } = await createSpreadsheetFromPivot({ pivotView });
+            let { webClient, env, model } = await createSpreadsheetFromPivot({ webClient: webClient1, pivotView, resId: spreadsheetAction.resId })
 
-            const { webClient, model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                <pivot string="Partners">
-                    <field name="product" type="col"/>
-                    <field name="bar" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
-                },
-                async actions(pivotView) {
-                    pivot = pivotView.getPivotForSpreadsheet();
-                    cache = await pivotView.getPivotCache(pivot);
-                },
-            });
-            pivot.id = model.getters.getNextPivotId();
-            const sheetId = model.getters.getActiveSheetId();
-
-            model.dispatch("BUILD_PIVOT", {
-                sheetId,
-                anchor: [12, 0], // this position is still free
-                pivot,
-                cache,
-            });
-            await model.waitForIdle();
 
             env.dispatch("SELECT_CELL", { col: 11, row: 0 }); //target empty cell
             const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_properties");
@@ -1139,7 +1093,7 @@ module(
             legacyServicesRegistry.add(
                 "bus_service",
                 BusService.extend({
-                    _poll() {},
+                    _poll() { },
                 })
             );
             legacyServicesRegistry.add("local_storage", LocalStorageService);
@@ -2126,7 +2080,7 @@ module(
             assert.expect(3);
             const mock = (message) => {
                 assert.step(`create (${message})`);
-                return () => {};
+                return () => { };
             };
             registry.category("services").add("notification", makeFakeNotificationService(mock), {
                 force: true,

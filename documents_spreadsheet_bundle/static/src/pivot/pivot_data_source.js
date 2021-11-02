@@ -11,8 +11,8 @@ import { intersect } from "../o_spreadsheet/helpers";
 
 
 /**
- * @typedef {import("../plugins/core/pivot_plugin").SpreadsheetPivotForRPC} SpreadsheetPivotForRPC
- * @typedef {import("./basic_data_source").Field} Field
+ * @typedef {import("plugins/pivot_plugin").SpreadsheetPivotForRPC} SpreadsheetPivotForRPC
+ * @typedef {import("../o_spreadsheet/basic_data_source").Field} Field
  */
 export default class PivotDataSource extends BasicDataSource {
     /**
@@ -29,7 +29,7 @@ export default class PivotDataSource extends BasicDataSource {
      * @override
      * @param {Object} params
      * @param {boolean|undefined} params.initialDomain True to fetch with the
-     * domain which does not contains the global filters
+     * domain which does not contain the global filters
      */
     async _fetch(params = {}) {
         const result = await this.rpc({
@@ -71,7 +71,7 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {Field} field Name of the field
      * @param {string} value Value
      *
-     * @returns {Promise<string>}
+     * @returns {Promise<void>}
      */
     async _fetchLabel(field, value) {
         const model = field.relation;
@@ -99,7 +99,7 @@ export default class PivotDataSource extends BasicDataSource {
      *
      * @private
      *
-     * @returns {PivotCache} Cache for pivot object
+     * @returns {Promise<PivotCache>} Cache for pivot object
      */
     async _createCache(readGroups) {
         const formulaToDomain = {};
@@ -158,7 +158,7 @@ export default class PivotDataSource extends BasicDataSource {
     }
 
     /**
-     * Retrieves the id and the label of a field/value. It also convert dates
+     * Retrieves the id and the label of a field/value. It also converts dates
      * to non-locale version (i.e. March 2020 => 03/2020)
      *
      * @param {string} fieldDesc Field (create_date:month)
@@ -206,7 +206,7 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {string} params.model model name
      * @param {Object} params.context
      * @param {Object} groupBys
-     * @returns {Object}
+     * @returns {Promise<Object>}
      */
     async _getOrderedValues({ model, context }, groupBys) {
         return Object.fromEntries(
@@ -254,7 +254,7 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {Field} field
      * @param {string} model
      * @param {Object} context
-     * @returns {Array}
+     * @returns {Promise<Array>}
      */
     async _orderValues(values, fieldName, field, model, context) {
         const requestField = field.relation ? "id" : fieldName;
@@ -381,7 +381,7 @@ export default class PivotDataSource extends BasicDataSource {
      *
      * @param {Array<string>} groupBys Name of the fields of groupBys
      *
-     * @returns {Object<string, bool>} Dictionary specifying for each fields
+     * @returns {Object<string, Boolean>} Dictionary specifying for each field
      *                                 if the children should be filtered(true) or joined(false)
      * @private
      */

@@ -1,18 +1,18 @@
 /** @odoo-module alias=documents_spreadsheet.PivotTemplateTests */
 
 import { nextTick, dom, fields, createView } from "web.test_utils";
-import pivotUtils from "documents_spreadsheet.pivot_utils";
-import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
-import CommandResult from "../src/js/o_spreadsheet/plugins/cancelled_reason";
-import DocumentsListView from "documents_spreadsheet.ListView";
 import { registry } from "@web/core/registry";
-import { ormService } from "@web/core/orm_service";
-import TemplateListView from "documents_spreadsheet.TemplateListView";
 import { afterEach, beforeEach } from "@mail/utils/test_utils";
-import { createDocumentsView } from "documents.test_utils";
-import spreadsheet from "../src/js/o_spreadsheet/o_spreadsheet_extended";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
-import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/spreadsheet_template_action";
+
+import { jsonToBase64, base64ToJson } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
+import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
+import DocumentsListView from "documents_spreadsheet.ListView";
+import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason"
+import TemplateListView from "documents_spreadsheet.TemplateListView";
+import { createDocumentsView } from "documents.test_utils";
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
 
 import {
     createSpreadsheetFromPivot,
@@ -27,12 +27,10 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { ClientActionAdapter } from "@web/legacy/action_adapters";
 import { actionService } from "@web/webclient/actions/action_service";
-import { spreadsheetService } from "../src/actions/spreadsheet/spreadsheet_service";
 
 
 const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
-const { jsonToBase64, base64ToJson } = pivotUtils;
 
 const { module, test } = QUnit;
 
@@ -289,7 +287,6 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -358,7 +355,6 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -402,7 +398,6 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -472,7 +467,6 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -529,7 +523,6 @@ module(
             </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -606,7 +599,6 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -821,7 +813,7 @@ module(
                                 const cells = data.sheets[0].cells;
                                 assert.equal(
                                     name,
-                                    "pivot spreadsheet - Template",
+                                    "Untitled spreadsheet - Template",
                                     "It should be named after the spreadsheet"
                                 );
                                 assert.ok(context.default_thumbnail);
@@ -1285,145 +1277,6 @@ module(
             kanban.destroy();
         });
 
-        test("Can create a spreadsheet from template", async function (assert) {
-            assert.expect(5);
-            const kanban = await createDocumentsView({
-                View: DocumentsKanbanView,
-                model: "documents.document",
-                data: this.data,
-                arch: `
-                    <kanban><templates><t t-name="kanban-box">
-                        <field name="name"/>
-                    </t></templates></kanban>
-                `,
-                archs: {
-                    "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-                },
-                mockRPC: function (route, args) {
-                    if (args.method === "create" && args.model === "documents.document") {
-                        assert.step("create_sheet");
-                        assert.equal(
-                            args.args[0].name,
-                            "Template 2",
-                            "It should have been named after the template"
-                        );
-                    }
-                    if (args.method === "search_read" && args.model === "ir.model") {
-                        return Promise.resolve([{ name: "partner" }]);
-                    }
-                    return this._super.apply(this, arguments);
-                },
-                intercepts: {
-                    do_action: function (ev) {
-                        assert.step("redirect");
-                        assert.equal(ev.data.action.tag, "action_open_spreadsheet");
-                    },
-                },
-            });
-
-            await dom.click(".o_documents_kanban_spreadsheet");
-            const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
-
-            // select template 2
-            await dom.triggerEvent(dialog.querySelectorAll(".o-template img")[2], "focus");
-            await dom.click(dialog.querySelector(".o-spreadsheet-create"));
-            assert.verifySteps(["create_sheet", "redirect"]);
-            kanban.destroy();
-        });
-
-        test("Will convert additional template position to empty cell", async function (assert) {
-            assert.expect(5);
-            const data = Object.assign({}, this.data);
-
-            // 0. Create a spreadsheet from the template
-            // @legacy: The kanban is created before the call to "createSpreadsheetFromPivot"
-            // to allow the execution environment of this test to be created and then cleaned up
-            // in the right order. For this exact same reason, the mockRPC that the kanban will actually use
-            // after the call to "createSpreadsheetFromPivot" is defined in "createSpreadsheetFromPivot".
-            // The code responsible for this is located at @web/legacy/utils:mapLegacyEnvToWowlEnv
-            const kanban = await createDocumentsView({
-                View: DocumentsKanbanView,
-                model: "documents.document",
-                data,
-                arch: `
-                    <kanban><templates><t t-name="kanban-box">
-                        <field name="name"/>
-                    </t></templates></kanban>
-                `,
-                archs: {
-                    "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-                },
-            });
-            registerCleanup(() => kanban.destroy());
-
-            // 1. create a spreadsheet with a pivot
-            const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
-                    mockRPC: function (route, args) {
-                        if (args.method === "create" && args.model === "documents.document") {
-                            const data = JSON.parse(args.args[0].raw);
-                            assert.step("create_sheet");
-                            assert.equal(
-                                data.sheets[0].cells.F15.content,
-                                `Coucou petite perruche`,
-                                "Row 15 should have been deleted"
-                            );
-                            assert.equal(
-                                data.sheets[0].cells.G15,
-                                undefined,
-                                "(previous) Row 15 should have been deleted"
-                            );
-                            assert.notOk(
-                                data.sheets[0].cells.F1,
-                                "The invalid F1 cell should be empty"
-                            );
-                        }
-                        if (args.method === "search_read" && args.model === "ir.model") {
-                            return Promise.resolve([{ name: "partner" }]);
-                        }
-                    },
-                },
-            });
-            await model.waitForIdle();
-
-            // 2. Set a template position which is too high
-            // there are other pivot headers on row 1
-            setCellContent(
-                model,
-                "F1",
-                `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",999),"bar","110")`
-            );
-            // there are not other pivot headers on row 15
-            setCellContent(
-                model,
-                "F15",
-                `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",888),"bar","110")`
-            );
-            setCellContent(model, "G15", `Hello`);
-            setCellContent(model, "F16", `Coucou petite perruche`);
-            const modelData = model.exportData();
-            data["spreadsheet.template"].records.push({
-                id: 99,
-                name: "template",
-                data: btoa(JSON.stringify(modelData)),
-            });
-
-            await dom.click(".o_documents_kanban_spreadsheet");
-            const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
-            // select template 2
-            await dom.triggerEvent(dialog.querySelectorAll(".o-template img")[3], "focus");
-            await dom.click(dialog.querySelector(".o-spreadsheet-create"));
-            assert.verifySteps(["create_sheet"]);
-        });
-
         test("Name template with spreadsheet name", async function (assert) {
             assert.expect(3);
             const serviceRegistry = registry.category("services");
@@ -1461,7 +1314,6 @@ module(
                 },
             });
 
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1652,46 +1504,8 @@ module(
             list.destroy();
         });
 
-        test("Create new spreadsheet from template from list view", async function (assert) {
-            assert.expect(4);
-            const list = await createView({
-                View: TemplateListView,
-                model: "spreadsheet.template",
-                data: this.data,
-                arch: `
-                    <tree>
-                        <field name="name"/>
-                        <button string="New spreadsheet" class="o-new-spreadsheet float-right" name="create_spreadsheet" icon="fa-plus" />
-                    </tree>
-                `,
-                mockRPC: async function (route, args) {
-                    if (args.method === "create" && args.model === "documents.document") {
-                        assert.step("spreadsheet_created");
-                        return 42;
-                    }
-                    return this._super.apply(this, arguments);
-                },
-                intercepts: {
-                    do_action: function ({ data }) {
-                        assert.deepEqual(data.action, {
-                            type: "ir.actions.client",
-                            tag: "action_open_spreadsheet",
-                            params: {
-                                spreadsheet_id: 42,
-                            },
-                        });
-                        assert.step("redirect_to_spreadsheet");
-                    },
-                },
-            });
-            await dom.clickFirst(`button[name="create_spreadsheet"]`);
-            assert.verifySteps(["spreadsheet_created", "redirect_to_spreadsheet"]);
-            list.destroy();
-        });
-
         test("open template client action without collaborative indicators", async function (assert) {
             assert.expect(2);
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1707,7 +1521,6 @@ module(
 
         test("collaboration communication is disabled", async function (assert) {
             assert.expect(1);
-            registry.category("services").add("spreadsheet", spreadsheetService);
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1726,36 +1539,6 @@ module(
                 params: { spreadsheet_id: 1 },
             });
             assert.ok(true);
-        });
-
-        test("Create new spreadsheet from template containing non Latin characters", async function (assert) {
-            assert.expect(1);
-            const model = new Model();
-            setCellContent(model, "A1", "😃");
-            this.data["spreadsheet.template"].records = [
-                {
-                    id: 99,
-                    name: "template",
-                    data: jsonToBase64(model.exportData()),
-                },
-            ];
-            const list = await createView({
-                View: TemplateListView,
-                model: "spreadsheet.template",
-                data: this.data,
-                arch: `
-                    <tree>
-                        <field name="name"/>
-                        <button string="New spreadsheet" class="o-new-spreadsheet float-right" name="create_spreadsheet" icon="fa-plus" />
-                    </tree>
-                `,
-            });
-            await dom.click(`button[name="create_spreadsheet"]`);
-            const documents = this.data["documents.document"].records;
-            const data = JSON.parse(documents[documents.length - 1].raw);
-            const cells = data.sheets[0].cells;
-            assert.equal(cells.A1.content, "😃");
-            list.destroy();
         });
 
         test("open template with non Latin characters", async function (assert) {

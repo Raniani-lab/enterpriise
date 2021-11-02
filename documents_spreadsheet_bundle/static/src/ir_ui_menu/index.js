@@ -17,7 +17,7 @@ import {
     buildViewLink,
     parseViewLink,
     buildIrMenuXmlLink,
-    buildIrMenuIdLink, 
+    buildIrMenuIdLink,
     parseIrMenuIdLink
 } from "./odoo_menu_link_cell"
 
@@ -85,10 +85,7 @@ linkMenuRegistry.add("odooMenu", {
 /**
  * Helper to get the function to be called when the spreadsheet is opened
  * in order to insert the link.
- * @param {boolean} isEmptySpreadsheet True if the link is inserted in
- *                                     an empty spreadsheet, false
- *                                     otherwise
- * @param {ViewLinkDescription} actionToLink
+ * @param {import("./odoo_menu_link_cell").ViewLinkDescription} actionToLink
  * @returns Function to call
  */
 function insertLink(actionToLink) {

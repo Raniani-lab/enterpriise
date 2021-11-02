@@ -25,7 +25,7 @@ import * as BusService from "bus.BusService";
 import * as legacyRegistry from "web.Registry";
 import * as RamStorage from "web.RamStorage";
 import * as AbstractStorageService from "web.AbstractStorageService";
-import { spreadsheetService } from "../src/actions/spreadsheet/spreadsheet_service";
+import { insertPivot } from "@documents_spreadsheet_bundle/pivot/pivot_init_callback";
 
 const { module, test } = QUnit;
 
@@ -650,7 +650,7 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
     legacyServicesRegistry.add(
         "bus_service",
         BusService.extend({
-            _poll() {},
+            _poll() { },
         })
     );
     legacyServicesRegistry.add("local_storage", LocalStorageService);
@@ -665,7 +665,6 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
             "partner,false,search": `<search/>`,
         },
     };
-    registry.category("services").add("spreadsheet", spreadsheetService);
     const webClient = await createWebClient({
         serverData,
         legacyParams: {
@@ -707,7 +706,7 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
     legacyServicesRegistry.add(
         "bus_service",
         BusService.extend({
-            _poll() {},
+            _poll() { },
         })
     );
 
@@ -721,7 +720,6 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
             "partner,false,search": `<search/>`,
         },
     };
-    registry.category("services").add("spreadsheet", spreadsheetService);
     const webClient = await createWebClient({
         serverData,
         legacyParams: {
@@ -769,11 +767,8 @@ test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
     assert.expect(4);
 
     let callback;
-    const { model } = await createSpreadsheetFromPivot({
-        async actions(pivot) {
-            callback = await pivot.getCallbackBuildPivot(false);
-        },
-    });
+    const { model, spreadsheetAction, pivotData } = await createSpreadsheetFromPivot();
+    callback = await insertPivot.bind({...spreadsheetAction, isEmptySpreadsheet: false })(pivotData);
     model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
     const activeSheetId = model.getters.getActiveSheetId();
     assert.deepEqual(model.getters.getVisibleSheets(), [activeSheetId, "42"]);
@@ -1147,7 +1142,7 @@ test("Add pivot with grouping on a many2many", async function (assert) {
                     ['product', 'tag'].includes(args.model)
                     && args.method === "search_read"
                     && spreadsheetLoaded
-                    ) {
+                ) {
                     // check that every argument of the domain is json parsed.
                     // Since the values refer to record ids (since we group by
                     // relational field) in this case, we should only have

@@ -13,7 +13,7 @@ import {
     setGlobalFilterValue,
 } from "./spreadsheet_test_utils";
 import { getBasicData } from "./spreadsheet_test_data";
-import PivotDataSource from "@documents_spreadsheet/js/o_spreadsheet/helpers/pivot_data_source";
+import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
 
 async function getPivot(rpc, id) {
     const pivot = {

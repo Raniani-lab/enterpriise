@@ -8,6 +8,7 @@ import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 const { useState } = owl.hooks;
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+import PivotCache from "./pivot_cache";
 
 const formatDecimal = spreadsheet.helpers.formatDecimal;
 
@@ -44,7 +45,6 @@ export class PivotDialog extends Dialog {
             showMissingValuesOnly: false,
         });
         this.title = this.props.title;
-        // this._onCellClick = this.props.insertPivotValueCallback;
         this.renderHeader = true;
         this.renderFooter = false;
         this.size = "large";
@@ -139,7 +139,7 @@ export class PivotDialog extends Dialog {
      */
     _buildColumnsMissing(indexes) {
         // columnsMap explode the columns in an array of array of the same
-        // size with the index of each columns, repeated 'span' times.
+        // size with the index of each column, repeated 'span' times.
         // ex:
         //  | A     | B |
         //  | 1 | 2 | 3 |
@@ -209,7 +209,7 @@ export class PivotDialog extends Dialog {
      * @private
      * @param {Array<number>} colIndexes Indexes of columns with a missing value
      * @param {Array<number>} rowIndexes Indexes of rows with a missing value
-     * @returns {Array<PivotDialogValue}
+     * @returns {Array<PivotDialogValue>}
      */
     _buildValuesMissing(colIndexes, rowIndexes) {
         const values = colIndexes.map(() => []);

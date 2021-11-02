@@ -1,6 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.TestUtils default=0 */
-import spreadsheet from "documents_spreadsheet.spreadsheet";
-import pivotUtils from "documents_spreadsheet.pivot_utils";
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+import { jsonToBase64 } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
 import { createView } from "web.test_utils";
 import ListView from "web.ListView";
 import MockServer from "web.MockServer";
@@ -10,17 +10,15 @@ import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborativ
 import { getBasicPivotArch, getBasicData, getBasicListArch } from "./spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { SpreadsheetAction } from "../src/actions/spreadsheet/spreadsheet_action";
-import { SpreadsheetTemplateAction } from "../src/actions/spreadsheet_template/spreadsheet_template_action";
-import { UNTITLED_SPREADSHEET_NAME } from "../src/constants";
+import { SpreadsheetAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_action";
+import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
+import { UNTITLED_SPREADSHEET_NAME } from "@documents_spreadsheet_bundle/o_spreadsheet/constants";
 import { PivotView } from "@web/views/pivot/pivot_view";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
-import { spreadsheetService } from "@documents_spreadsheet/actions/spreadsheet/spreadsheet_service";
 
 const { Model } = spreadsheet;
 const { toCartesian, toZone } = spreadsheet.helpers;
-const { jsonToBase64 } = pivotUtils;
 const { loadJS } = owl.utils;
 
 const serviceRegistry = registry.category("services");
@@ -227,7 +225,6 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
     // TODO convert tests to use "serverData"
     const serverData = params.serverData || { models: data, views: arch };
     if (!webClient) {
-        serviceRegistry.add("spreadsheet", spreadsheetService);
         webClient = await createWebClient({
             serverData,
             mockRPC,
@@ -312,7 +309,6 @@ export async function createSpreadsheetFromList(params = {}) {
     };
     const { data } = listView;
     if (!webClient) {
-        serviceRegistry.add("spreadsheet", spreadsheetService);
         const serverData = { models: data, views: listView.archs };
         webClient = await createWebClient({
             serverData,
@@ -326,13 +322,7 @@ export async function createSpreadsheetFromList(params = {}) {
         View: ListView,
         ...listView,
     });
-    const documents = data["documents.document"].records;
-    const id = Math.max(...documents.map((d) => d.id)) + 1;
-    documents.push({
-        id,
-        name: "pivot spreadsheet",
-        raw: "{}",
-    });
+
     if (listView.services) {
         const serviceRegistry = new LegacyRegistry();
         for (const sname in listView.services) {
@@ -345,14 +335,14 @@ export async function createSpreadsheetFromList(params = {}) {
     const transportService = new MockSpreadsheetCollaborativeChannel();
 
     const list = controller._getListForSpreadsheet();
-    const initCallback = controller._getCallbackListInsertion(list, linesNumber, true);
     await doAction(webClient, {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
-            spreadsheet_id: id,
             transportService,
-            initCallback,
+            alwaysCreate: true,
+            preProcessingAction: "insertList",
+            preProcessingActionData: { list: list.list, threshold: linesNumber, fields: list.fields }
         },
     });
     const spreadSheetComponent = spreadsheetAction.spreadsheetRef.comp;
@@ -394,31 +384,12 @@ export async function createSpreadsheetWithPivotAndList() {
         serviceRegistry.add("user", makeFakeUserService(() => true));
     }
 
-    const { model: listModel, webClient: listWebClient } = await createSpreadsheetFromList({ listView });
+    const { webClient: listWebClient, spreadsheetAction } = await createSpreadsheetFromList({ listView });
     const { model, webClient, env } = await createSpreadsheetFromPivot({
         webClient: listWebClient,
+        resId: spreadsheetAction.resId
     });
 
-    model.dispatch("CREATE_SHEET", {
-        sheetId: "LIST",
-        position: model.getters.getVisibleSheets().length,
-    });
-    const list = listModel.getters.getListForRPC("1");
-    list.id = "1";
-    const types = {
-        foo: "integer",
-        bar: "boolean",
-        date: "date",
-        product_id: "many2one",
-    };
-    model.dispatch("BUILD_ODOO_LIST", {
-        sheetId: "LIST",
-        anchor: [0, 0],
-        list,
-        linesNumber: 10,
-        types,
-    });
-    await model.waitForIdle();
     return { model, webClient, env };
 }
 
@@ -473,7 +444,6 @@ export async function createSpreadsheetFromPivot(params = {}) {
         if (!serviceRegistry.contains("user")) {
             serviceRegistry.add("user", makeFakeUserService(() => true));
         }
-        serviceRegistry.add("spreadsheet", spreadsheetService);
         webClient = await createWebClient({
             serverData,
             legacyParams: {
@@ -501,23 +471,27 @@ export async function createSpreadsheetFromPivot(params = {}) {
         await actions(pivot);
     }
 
-    const documents = serverData.models["documents.document"].records;
-    const id = Math.max(...documents.map((d) => d.id)) + 1;
-    documents.push({
-        id,
-        name: "pivot spreadsheet",
-        raw: "{}",
-    });
-
     const transportService = new MockSpreadsheetCollaborativeChannel();
+    const data = {
+        data: pivot.model.data,
+        metaData: pivot.model.metaData,
+        searchParams: pivot.model.searchParams
+    };
+    const actionParams = {
+        preProcessingAction: "insertPivot",
+        preProcessingActionData: data,
+        transportService,
+    };
+    if (params.resId) {
+        actionParams.spreadsheet_id = params.resId;
+    }
+    else {
+        actionParams.alwaysCreate = true;
+    }
     await doAction(webClient, {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
-        params: {
-            spreadsheet_id: id,
-            transportService,
-            initCallback: await pivot.getCallbackBuildPivot(true),
-        },
+        params: actionParams,
     });
     const spreadSheetComponent = spreadsheetAction.spreadsheetRef.comp;
     const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp;
@@ -534,6 +508,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
         env,
         model,
         transportService,
+        pivotData: data,
         get spreadsheetAction() {
             return spreadsheetAction;
         },

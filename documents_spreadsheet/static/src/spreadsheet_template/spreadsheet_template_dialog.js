@@ -102,14 +102,6 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
             const template = this.state.templates.find(
                 (template) => template.id === templateId
             );
-            // this.env.services.action.doAction({
-            //     type: "ir.actions.client",
-            //     tag: "action_open_spreadsheet",
-            //     params: {
-            //         alwaysCreate: true,
-            //         createFromTemplateId: templateId,
-            //         createFromTemplateName: template && template.name,
-            //     }});
             this.trigger("do_action", {
               action: {
                 type: "ir.actions.client",

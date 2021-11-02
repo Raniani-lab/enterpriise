@@ -1,29 +1,29 @@
 <?xml version ="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="web_map.MapRenderer" owl="1">
-        <div class="o_map_view row no-gutters">
+    <t t-name="web_map.legacy.MapRenderer" owl="1">
+        <div class="o_map_view o_legacy row no-gutters">
             <t t-if="props.routingError">
-                <t t-call="web_map.MapRenderer.RountingUnavailable"/>
+                <t t-call="web_map.legacy.MapRenderer.RountingUnavailable"/>
             </t>
             <t t-elif="props.routing and !props.mapBoxToken">
-                <t t-call="web_map.MapRenderer.NoMapToken"/>
+                <t t-call="web_map.legacy.MapRenderer.NoMapToken"/>
             </t>
             <t t-if="props.fetchingCoordinates">
-                <t t-call="web_map.MapRenderer.FetchingCoordinates"/>
+                <t t-call="web_map.legacy.MapRenderer.FetchingCoordinates"/>
             </t>
             <div class="o_map_container col-md-12 col-lg-10" t-ref="mapContainer"/>
-            <t t-call="web_map.MapRenderer.PinListContainer"/>
+            <t t-call="web_map.legacy.MapRenderer.PinListContainer"/>
         </div>
     </t>
 
-    <t t-name="web_map.MapRenderer.FetchingCoordinates" owl="1">
+    <t t-name="web_map.legacy.MapRenderer.FetchingCoordinates" owl="1">
         <div class="alert alert-info col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
             role="status">
             <i class="fa fa-spin fa-circle-o-notch"/> Locating new addresses...
         </div>
     </t>
 
-    <t t-name="web_map.MapRenderer.NoMapToken" owl="1">
+    <t t-name="web_map.legacy.MapRenderer.NoMapToken" owl="1">
         <div class="alert alert-info alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
              role="status">
             To get routing on your map, you first need to setup your Mapbox token.
@@ -37,7 +37,7 @@
         </div>
     </t>
 
-    <t t-name="web_map.MapRenderer.PinListContainer" owl="1">
+    <t t-name="web_map.legacy.MapRenderer.PinListContainer" owl="1">
         <div class="o_pin_list_container d-none d-lg-block col-2">
             <div t-if="!props.hideTitle" class="o_pin_list_header">
                 <header>
@@ -57,7 +57,7 @@
                             <t t-else="">Undefined</t>
                         </div>
                         <t t-if="!state.closedGroupIds.includes(groupId)">
-                            <t t-call="web_map.MapRenderer.PinList">
+                            <t t-call="web_map.legacy.MapRenderer.PinList">
                                 <t t-set="records" t-value="group.records"/>
                             </t>
                         </t>
@@ -65,23 +65,23 @@
                 </t>
             </t>
             <t t-else="">
-                <t t-call="web_map.MapRenderer.PinList">
+                <t t-call="web_map.legacy.MapRenderer.PinList">
                     <t t-set="records" t-value="props.records"/>
                 </t>
             </t>
         </div>
     </t>
 
-    <t t-name="web_map.MapRenderer.PinList" owl="1">
+    <t t-name="web_map.legacy.MapRenderer.PinList" owl="1">
         <ol t-if="props.numbering" class="o_pin_list_details">
-            <t t-call="web_map.MapRenderer.PinListItems"/>
+            <t t-call="web_map.legacy.MapRenderer.PinListItems"/>
         </ol>
         <ul t-else="" class="o_pin_list_details">
-            <t t-call="web_map.MapRenderer.PinListItems"/>
+            <t t-call="web_map.legacy.MapRenderer.PinListItems"/>
         </ul>
     </t>
 
-    <t t-name="web_map.MapRenderer.PinListItems" owl="1">
+    <t t-name="web_map.legacy.MapRenderer.PinListItems" owl="1">
         <t t-foreach="records" t-as="record" t-key="record.id">
             <t t-set="latitude" t-value="record.partner and record.partner.partner_latitude"/>
             <t t-set="longitude" t-value="record.partner and record.partner.partner_longitude"/>
@@ -112,7 +112,7 @@
         </t>
     </t>
 
-    <t t-name="web_map.MapRenderer.RountingUnavailable" owl="1">
+    <t t-name="web_map.legacy.MapRenderer.RountingUnavailable" owl="1">
         <div class="alert alert-warning alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
              role="status">
             <strong>Unsuccessful routing request: </strong>
@@ -123,30 +123,30 @@
         </div>
     </t>
 
-    <t t-name="web_map.marker" owl="1">
+    <t t-name="web_map.legacy.marker" owl="1">
         <div t-att-style="color and ('color:' + color)">
             <t t-raw="pinSVG"/>
-            <t t-if="numbering" t-call="web_map.markerNumber"/>
-            <t t-elif="isMulti" t-call="web_map.markerBadge"/>
+            <t t-if="numbering" t-call="web_map.legacy.markerNumber"/>
+            <t t-elif="isMulti" t-call="web_map.legacy.markerBadge"/>
         </div>
     </t>
 
-    <t t-name="web_map.markerBadge" owl="1">
+    <t t-name="web_map.legacy.markerBadge" owl="1">
         <span class="badge badge-danger badge-pill border-0 o_map_marker_badge">
             <t t-esc="count"/>
         </span>
     </t>
 
-    <t t-name="web_map.markerNumber" owl="1">
+    <t t-name="web_map.legacy.markerNumber" owl="1">
         <p class="o_number_icon">
             <t t-esc="number"/>
             <t t-if="count gt 1">
-                <t t-call="web_map.markerBadge"/>
+                <t t-call="web_map.legacy.markerBadge"/>
             </t>
         </p>
     </t>
 
-    <t t-name="web_map.markerPopup" owl="1">
+    <t t-name="web_map.legacy.markerPopup" owl="1">
         <div>
             <table class="o_map_popup_table">
                 <thead>
@@ -179,7 +179,7 @@
         </div>
     </t>
 
-    <t t-name="MapView.buttons">
+    <t t-name="web_map.legacy.buttons">
         <div>
             <a class ="btn btn-primary" style="color:white"
                t-att-href="widget" target="_blank">View in Google Maps</a>

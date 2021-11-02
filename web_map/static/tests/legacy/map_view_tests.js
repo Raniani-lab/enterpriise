@@ -733,6 +733,7 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
+
         assert.strictEqual(map.renderer.props.records.length, 2,
             'There should be no records');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',

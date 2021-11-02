@@ -182,7 +182,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                 // Icon creation
                 const iconInfo = {
                     className: 'o_map_marker',
-                    html: this.env.qweb.renderToString('web_map.marker', params),
+                    html: this.env.qweb.renderToString('web_map.legacy.marker', params),
                 };
 
                 // Attach marker with icon and popup
@@ -243,7 +243,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         _createMarkerPopup(markerInfo) {
             const popupFields = this._getMarkerPopupFields(markerInfo);
             const partner = markerInfo.record.partner;
-            const popupHtml = this.env.qweb.renderToString('web_map.markerPopup', {
+            const popupHtml = this.env.qweb.renderToString('web_map.legacy.markerPopup', {
                 fields: popupFields,
                 hasFormView: this.props.hasFormView,
                 url: `https://www.google.com/maps/dir/?api=1&destination=${partner.partner_latitude},${partner.partner_longitude}`,
@@ -459,7 +459,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         },
         shouldUpdatePosition: Boolean,
     };
-    MapRenderer.template = 'web_map.MapRenderer';
+    MapRenderer.template = 'web_map.legacy.MapRenderer';
 
     return MapRenderer;
 });

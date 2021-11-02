@@ -28,16 +28,23 @@ export default class BarcodeQuantModel extends BarcodeModel {
         const action = await this.orm.call('stock.quant', 'action_validate',
             [linesToApply.map(quant => quant.id)]
         );
+        const notifyAndGoAhead = res => {
+            if (res && res.special) { // Do nothing if come from a discarded wizard.
+                return;
+            }
+            if (this.pages.length > 1) { // Stay in inventory if there is multiple pages.
+                this.notification.add(_t("Inventory adjustment was saved"), { type: 'success' });
+                this.trigger('refresh');
+            } else { // Go back to the menu if it's only one page.
+                this.notification.add(_t("The inventory adjustment has been validated"), { type: 'success' });
+                this.trigger('history-back');
+            }
+        };
         if (action && action.res_model) {
-            return this.trigger('do-action', { action });
+            const options = { on_close: notifyAndGoAhead };
+            return this.trigger('do-action', { action, options });
         }
-        if (this.pages.length > 1) { // Stay in inventory if there is multiple pages.
-            this.notification.add(_t("Inventory adjustment was saved"), { type: 'success' });
-            this.trigger('refresh');
-        } else { // Go back to the menu if it's only one page.
-            this.notification.add(_t("The inventory adjustment has been validated"), { type: 'success' });
-            this.trigger('history-back');
-        }
+        notifyAndGoAhead();
     }
 
     get applyOn() {

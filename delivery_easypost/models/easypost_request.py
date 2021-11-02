@@ -7,7 +7,7 @@ from werkzeug.urls import url_join
 
 from odoo import _
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_round, float_is_zero
+from odoo.tools.float_utils import float_round, float_is_zero, float_repr
 
 API_BASE_URL = 'https://api.easypost.com/v2/'
 NON_BLOCKING_MESSAGES = ['rate_message']
@@ -253,10 +253,11 @@ class EasypostRequest():
                 unit_quantity = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id, rounding_method='HALF-UP')
             else:
                 unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
+            rounded_qty = float_repr(float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'), precision_digits=0)
             hs_code = line.product_id.hs_code or ''
             customs_info.update({
                 'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): line.product_id.name,
-                'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): unit_quantity,
+                'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): rounded_qty,
                 'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): line.sale_price,
                 'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, customs_item_id): line.picking_id.company_id.currency_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, customs_item_id): line.env['delivery.carrier']._easypost_convert_weight(line.product_id.weight * unit_quantity),

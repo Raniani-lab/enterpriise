@@ -40,7 +40,6 @@
                                 </t>
                             </a>
                         </div>
-                        <tr><td style="padding:15px 20px 10px 20px;"><t t-out="object.signature or ''">--<br/>Addison Olson</t></td></tr>
                     </p>
                 </div>
             </field>

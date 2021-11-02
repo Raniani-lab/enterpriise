@@ -157,6 +157,62 @@ class TestRentalCommon(common.SingleTransactionCase):
             ), 3
         )
 
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin - timedelta(days=1),
+                self.order_line_id1.return_date,
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin,
+                self.order_line_id1.return_date - timedelta(days=1),
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin - timedelta(days=1),
+                self.order_line_id1.return_date - timedelta(days=1),
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin + timedelta(days=1),
+                self.order_line_id1.return_date + timedelta(days=1),
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin,
+                self.order_line_id1.return_date + timedelta(days=1),
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin + timedelta(days=1),
+                self.order_line_id1.return_date,
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin - timedelta(days=1),
+                self.order_line_id1.return_date + timedelta(days=1),
+            )[0], 3
+        )
+
+        self.assertEqual(
+            self.product_id._get_unavailable_qty_and_lots(
+                self.order_line_id1.reservation_begin + timedelta(days=1),
+                self.order_line_id1.return_date - timedelta(days=1),
+            )[0], 3
+        )
+
         """
             Total Pickup
         """

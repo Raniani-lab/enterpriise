@@ -151,7 +151,7 @@ class AccountMoveLine(models.Model):
             _logger.exception('Error while predicting invoice line fields')
         return False
 
-    def _predict_taxes(self, description=None):
+    def _predict_taxes(self):
         field = 'array_agg(account_move_line__tax_rel__tax_ids.id ORDER BY account_move_line__tax_rel__tax_ids.id)'
         query = self._build_query()
         query.left_join('account_move_line', 'id', 'account_move_line_account_tax_rel', 'account_move_line_id', 'tax_rel')
@@ -159,10 +159,10 @@ class AccountMoveLine(models.Model):
         query.add_where('account_move_line__tax_rel__tax_ids.active IS NOT FALSE')
         return self._predicted_field(field, query)
 
-    def _predict_product(self, description=None):
+    def _predict_product(self):
         return self._predicted_field('account_move_line.product_id')
 
-    def _predict_account(self, description=None, partner=None):
+    def _predict_account(self):
         field = 'account_move_line.account_id'
         additional_queries = ["""
                 SELECT id as account_id,

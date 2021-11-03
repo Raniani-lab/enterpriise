@@ -22,7 +22,7 @@ class HelpdeskTeam(models.Model):
 
     _sql_constraints = [('not_portal_show_rating_if_not_use_rating',
                          'check (portal_show_rating = FALSE OR use_rating = TRUE)',
-                         'Cannot show ratings in portal if not using them'), ]
+                         'It is necessary to enable customer ratings in the settings of your helpdesk team so that they can be displayed on the portal.'), ]
 
     def _default_stage_ids(self):
         default_stages = self.env['helpdesk.stage']

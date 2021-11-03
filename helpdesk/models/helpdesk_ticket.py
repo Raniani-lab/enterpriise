@@ -30,7 +30,7 @@ class HelpdeskTag(models.Model):
     color = fields.Integer('Color', default=_get_default_color)
 
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', "Tag name already exists !"),
+        ('name_uniq', 'unique (name)', "A tag with the same name already exists."),
     ]
 
 
@@ -43,7 +43,7 @@ class HelpdeskTicketType(models.Model):
     sequence = fields.Integer(default=10)
 
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', "Type name already exists !"),
+        ('name_uniq', 'unique (name)', "A type with the same name already exists."),
     ]
 
 

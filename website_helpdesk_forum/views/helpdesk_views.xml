@@ -14,7 +14,7 @@
                 <button name="forum_post_new" attrs="{'invisible': ['|', ('use_website_helpdesk_forum','=',False), ('forum_post_id','!=',False)]}" type="object" string="Share on Forum" />
             </xpath>
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
-                <button name="forum_post_open" type="object" class="oe_stat_button" icon="fa-comments" attrs="{'invisible': [('forum_post_id', '=', False)]}" string="Forum Post"/>
+                <button name="forum_post_open" type="object" class="oe_stat_button" icon="fa-comments" attrs="{'invisible': ['|', ('use_website_helpdesk_forum', '=', False), ('forum_post_id', '=', False)]}" string="Forum Post"/>
             </xpath>
         </field>
     </record>

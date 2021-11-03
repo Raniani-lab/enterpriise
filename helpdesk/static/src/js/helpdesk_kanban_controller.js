@@ -89,7 +89,7 @@ export const HelpdeskKanbanController = KanbanController.extend({
         const targetName = e.data.target_name;
         const targetValue = e.data.target_value;
         if (isNaN(targetValue)) {
-            this.displayNotification({ message: _t("Please enter an integer value"), type: 'danger' });
+            this.displayNotification({ message: _t("Please enter a number."), type: 'danger' });
         } else {
             const values = {};
             values[targetName] = parseInt(targetValue);

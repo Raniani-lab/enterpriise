@@ -8,8 +8,6 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
     _name = 'helpdesk.ticket.create.timesheet'
     _description = "Create Timesheet from ticket"
 
-    _sql_constraints = [('time_positive', 'CHECK(time_spent > 0)', "The timesheet's time must be positive" )]
-
     time_spent = fields.Float('Time', digits=(16, 2))
     description = fields.Char('Description')
     ticket_id = fields.Many2one(

@@ -15,7 +15,7 @@ class AccountAnalyticLine(models.Model):
     def _check_no_link_task_and_ticket(self):
         # Check if any timesheets are not linked to a ticket and a task at the same time
         if any(timesheet.task_id and timesheet.helpdesk_ticket_id for timesheet in self):
-            raise ValidationError(_("A timesheet cannot be linked to a task and a ticket at the same time."))
+            raise ValidationError(_("You cannot link a timesheet entry to a task and a ticket at the same time."))
 
     def _timesheet_preprocess(self, vals):
         helpdesk_ticket_id = vals.get('helpdesk_ticket_id')

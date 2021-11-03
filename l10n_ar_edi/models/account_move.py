@@ -2,7 +2,7 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, RedirectWarning
 from odoo.tools.float_utils import float_repr, float_round
-from odoo.tools import html2plaintext
+from odoo.tools import html2plaintext, plaintext2html
 from datetime import datetime
 from . import afip_errors
 import re
@@ -330,7 +330,6 @@ class AccountMove(models.Model):
                     return_codes += [str(response.BFEErr.ErrCode)]
                 if response.BFEEvents.EventCode != 0 or response.BFEEvents.EventMsg:
                     events = '\n* Code %s: %s' % (response.BFEEvents.EventCode, response.BFEEvents.EventMsg)
-                    return_codes += [str(response.BFEEvents.EventCode)]
                 if result.Obs:
                     obs = result.Obs
                     return_codes += [result.Obs]
@@ -362,7 +361,7 @@ class AccountMove(models.Model):
             values.update(l10n_ar_afip_xml_request=xml_request, l10n_ar_afip_xml_response=xml_response)
             inv.sudo().write(values)
             if return_info:
-                inv.message_post(body='<p><b>' + _('AFIP Messages') + '</b></p><p><i>%s</i></p>' % (return_info))
+                inv.message_post(body='<p><b>' + _('AFIP Messages') + '</b></p>' + (plaintext2html(return_info, 'em')))
 
     # Helpers
 

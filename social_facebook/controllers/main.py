@@ -159,6 +159,9 @@ class SocialFacebookController(SocialController):
         if 'data' not in json_response:
             raise SocialValidationException(_('Facebook did not provide a valid access token or it may have expired.'))
 
+        if not json_response['data']:
+            raise SocialValidationException(_('There is no page linked to this account'))
+
         accounts_to_create = []
         existing_accounts = self._facebook_get_existing_accounts(media, json_response)
         for account in json_response.get('data'):

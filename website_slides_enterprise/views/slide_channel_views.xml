@@ -9,9 +9,16 @@
             </dashboard>
         </field>
     </record>
+
     <record id="website_slides.slide_channel_action_report" model="ir.actions.act_window">
         <field name="view_mode">dashboard,tree,graph,pivot,form</field>
-        <field name="view_id" ref="slide_channel_view_dashboard"/>
+        <field name="view_id" eval="False"/>
     </record>
 
+    <record id="slide_channel_action_report_view_dashboard" model="ir.actions.act_window.view">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">dashboard</field>
+        <field name="view_id" ref="slide_channel_view_dashboard"/>
+        <field name="act_window_id" ref="website_slides.slide_channel_action_report"/>
+    </record>
 </odoo>

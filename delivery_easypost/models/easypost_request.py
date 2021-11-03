@@ -32,7 +32,11 @@ class EasypostRequest():
             response = response.json()
             # check for any error in response
             if 'error' in response:
-                raise UserError(_('Easypost returned an error: %s', response['error'].get('message')))
+                error_message = response['error'].get('message')
+                error_detail = response['error'].get('errors')
+                if error_detail:
+                    error_message += ''.join(['\n - %s: %s' % (err.get('field', _('Unspecified field')), err.get('message', _('Unknown error'))) for err in error_detail])
+                raise UserError(_('Easypost returned an error: %s', error_message))
             return response
         except Exception as e:
             raise e

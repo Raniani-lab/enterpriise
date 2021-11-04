@@ -111,7 +111,7 @@
                             </field>
                         </page>
                         <page string="Related Purchase" name="related_items" attrs="{'invisible' : [('original_move_line_ids', '=', [])]}">
-                            <field name="original_move_line_ids" attrs="{'readonly': [('state','=','posted')]}" domain="[('credit', '=', '0'), ('move_id.state', '=', 'posted')]" class="original_move_line_ids_field">
+                            <field name="original_move_line_ids" attrs="{'readonly': [('state','=','posted')]}" domain="[('credit', '=', '0'), ('move_id.state', '=', 'posted'), ('company_id', '=', company_id)]" class="original_move_line_ids_field">
                                 <tree create="0">
                                     <field name="date"/>
                                     <field name="account_id"/>

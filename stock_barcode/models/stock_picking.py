@@ -69,7 +69,7 @@ class StockPicking(models.Model):
         return self.action_open_label_layout()
 
     def action_print_delivery_slip(self):
-        return self.env.ref('stock.action_report_picking').report_action(self)
+        return self.env.ref('stock.action_report_delivery').report_action(self)
 
     def _get_stock_barcode_data(self):
         # Avoid to get the products full name because code and name are separate in the barcode app.

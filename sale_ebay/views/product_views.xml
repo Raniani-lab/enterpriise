@@ -64,6 +64,7 @@
                   <field name="ebay_use"/>
                   <field name="ebay_fixed_price" string="Fixed Price" widget="monetary"/>
                   <field name="ebay_quantity"/>
+                  <field name="uom_id" invisible="1"/>
                   <field name="virtual_available"/>
                   <field name="ebay_quantity_sold"/>
                 </tree>

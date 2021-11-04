@@ -133,8 +133,8 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommonSOPO):
             'company_id': False
         })
 
-        mto_route = self.env['stock.location.route'].with_context(active_test=False).search([('name', '=', 'Replenish on Order (MTO)')])
-        buy_route = self.env['stock.location.route'].search([('name', '=', 'Buy')])
+        mto_route = self.env['stock.route'].with_context(active_test=False).search([('name', '=', 'Replenish on Order (MTO)')])
+        buy_route = self.env['stock.route'].search([('name', '=', 'Buy')])
         mto_route.active = True
 
         product_storable = self.env['product.product'].create({

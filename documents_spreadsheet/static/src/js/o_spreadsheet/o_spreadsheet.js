@@ -52,8 +52,6 @@
             toString: function () {
                 return sprintf(_t(s), ...values);
             },
-            // casts the object to unknown then to string to trick typescript into thinking that the object it receives is actually a string
-            // this way it will be typed correctly (behaves like a string) but tests like typeof _lt("whatever") will be object and not string !
         };
     };
 
@@ -6935,6 +6933,7 @@
                 tokenizeString(chars) ||
                 tokenizeDebugger(chars) ||
                 tokenizeNormalizedReferences(chars) ||
+                tokenizeInvalidRange(chars) ||
                 tokenizeSymbol(chars);
             if (!token) {
                 token = { type: "UNKNOWN", value: chars.shift() };
@@ -7086,6 +7085,13 @@
         }
         return null;
     }
+    function tokenizeInvalidRange(chars) {
+        if (startsWith(chars, INCORRECT_RANGE_STRING)) {
+            chars.splice(0, INCORRECT_RANGE_STRING.length);
+            return { type: "INVALID_REFERENCE", value: INCORRECT_RANGE_STRING };
+        }
+        return null;
+    }
 
     const UNARY_OPERATORS = ["-", "+"];
     const OP_PRIORITY = {
@@ -7166,6 +7172,8 @@
                     type: "REFERENCE",
                     value: parseInt(current.value, 10),
                 };
+            case "INVALID_REFERENCE":
+                throw new Error(_lt("Invalid reference"));
             case "SYMBOL":
                 if (["TRUE", "FALSE"].includes(current.value.toUpperCase())) {
                     return { type: "BOOLEAN", value: current.value.toUpperCase() === "TRUE" };
@@ -13378,7 +13386,7 @@
             return this.ranges.filter((i) => i.isFocused).length > 0;
         }
         get canAddRange() {
-            return !this.props.maximumRanges || this.ranges.length < this.props.maximumRanges;
+            return !this.props.hasSingleRange;
         }
         get isInvalid() {
             return this.props.isInvalid || this.state.isMissing;
@@ -13387,7 +13395,7 @@
             this.dispatch("ENABLE_NEW_SELECTION_INPUT", {
                 id: this.id,
                 initialRanges: this.props.ranges,
-                maximumRanges: this.props.maximumRanges,
+                hasSingleRange: this.props.hasSingleRange,
             });
         }
         async willUnmount() {
@@ -13410,6 +13418,7 @@
         }
         focus(rangeId) {
             this.state.isMissing = false;
+            this.dispatch("STOP_EDITION", { cancel: true });
             this.dispatch("FOCUS_RANGE", {
                 id: this.id,
                 rangeId,
@@ -13434,10 +13443,7 @@
             this.triggerChange();
         }
         disable() {
-            this.dispatch("FOCUS_RANGE", {
-                id: this.id,
-                rangeId: null,
-            });
+            this.dispatch("UNFOCUS_SELECTION_INPUT");
             const ranges = this.getters.getSelectionInputValue(this.id);
             if (this.props.required && ranges.length === 0) {
                 this.state.isMissing = true;
@@ -13593,14 +13599,14 @@
 <div>
   <div class="o-section">
     <div class="o-section-title" t-esc="env._t('${chartTerms.ChartType}')"/>
-    <select t-model="state.type" class="o-input o-type-selector" t-on-change="updateSelect('type')">
+    <select t-model="state.chart.type" class="o-input o-type-selector" t-on-change="updateSelect('type')">
       <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
       <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
       <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
     </select>
-    <t t-if="state.type === 'bar'">
+    <t t-if="state.chart.type === 'bar'">
       <div class="o_checkbox">
-        <input type="checkbox" name="stackedBar" t-model="state.stackedBar" t-on-change="updateStacked"/>
+        <input type="checkbox" name="stackedBar" t-model="state.chart.stackedBar" t-on-change="updateStacked"/>
         <t t-esc="env._t('${chartTerms.StackedBar}')"/>
       </div>
     </t>
@@ -13608,19 +13614,19 @@
   <div class="o-section o-data-series">
     <div class="o-section-title" t-esc="env._t('${chartTerms.DataSeries}')"/>
     <SelectionInput t-key="getKey('dataSets')"
-                    ranges="state.dataSets"
+                    ranges="state.chart.dataSets"
                     isInvalid="isDatasetInvalid"
                     required="true"
                     t-on-selection-changed="onSeriesChanged"
                     t-on-selection-confirmed="updateDataSet" />
-    <input type="checkbox" t-model="state.dataSetsHaveTitle" t-on-change="updateDataSet"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
+    <input type="checkbox" t-model="state.chart.dataSetsHaveTitle" t-on-change="updateDataSet"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
   </div>
   <div class="o-section o-data-labels">
     <div class="o-section-title" t-esc="env._t('${chartTerms.DataCategories}')"/>
     <SelectionInput t-key="getKey('label')"
-                    ranges="[state.labelRange || '']"
+                    ranges="[state.chart.labelRange || '']"
                     isInvalid="isLabelInvalid"
-                    maximumRanges="1"
+                    hasSingleRange="true"
                     t-on-selection-changed="onLabelRangeChanged"
                     t-on-selection-confirmed="updateLabelRange" />
   </div>
@@ -13637,25 +13643,25 @@
     <div class="o-section-title" t-esc="env._t('${chartTerms.BackgroundColor}')"/>
     <div class="o-with-color-picker">
       <t t-esc="env._t('${chartTerms.SelectColor}')"/>
-      <span t-attf-style="border-color:{{state.background}}"
+      <span t-attf-style="border-color:{{state.chart.background}}"
             t-on-click.stop="toggleColorPicker">${FILL_COLOR_ICON}</span>
       <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor" t-key="backgroundColor"/>
     </div>
   </div>
   <div class="o-section o-chart-title">
     <div class="o-section-title" t-esc="env._t('${chartTerms.Title}')"/>
-    <input type="text" t-model="state.title" t-on-change="updateTitle" class="o-input" t-att-placeholder="env._t('${chartTerms.TitlePlaceholder}')"/>
+    <input type="text" t-model="state.chart.title" t-on-change="updateTitle" class="o-input" t-att-placeholder="env._t('${chartTerms.TitlePlaceholder}')"/>
   </div>
   <div class="o-section">
     <div class="o-section-title"><t t-esc="env._t('${chartTerms.VerticalAxisPosition}')"/></div>
-    <select t-model="state.verticalAxisPosition" class="o-input o-type-selector" t-on-change="updateSelect('verticalAxisPosition')">
+    <select t-model="state.chart.verticalAxisPosition" class="o-input o-type-selector" t-on-change="updateSelect('verticalAxisPosition')">
       <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
       <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
     </select>
   </div>
   <div class="o-section">
     <div class="o-section-title"><t t-esc="env._t('${chartTerms.LegendPosition}')"/></div>
-    <select t-model="state.legendPosition" class="o-input o-type-selector" t-on-change="updateSelect('legendPosition')">
+    <select t-model="state.chart.legendPosition" class="o-input o-type-selector" t-on-change="updateSelect('legendPosition')">
       <option value="top" t-esc="env._t('${chartTerms.Top}')"/>
       <option value="bottom" t-esc="env._t('${chartTerms.Bottom}')"/>
       <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
@@ -13730,7 +13736,11 @@
                 return;
             }
             if (nextProps.figure.id !== this.props.figure.id) {
-                this.state = this.initialState(nextProps.figure);
+                this.state.panel = "configuration";
+                this.state.fillColorTool = false;
+                this.state.datasetDispatchResult = undefined;
+                this.state.labelsDispatchResult = undefined;
+                this.state.chart = this.env.getters.getChartDefinitionUI(this.env.getters.getActiveSheetId(), nextProps.figure.id);
             }
         }
         get errorMessages() {
@@ -13743,35 +13753,34 @@
         }
         get isDatasetInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) ||
-                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
+            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) || ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
         }
         get isLabelInvalid() {
             var _a;
             return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(27 /* InvalidLabelRange */));
         }
         onSeriesChanged(ev) {
-            this.state.dataSets = ev.detail.ranges;
+            this.state.chart.dataSets = ev.detail.ranges;
         }
         updateDataSet() {
             this.state.datasetDispatchResult = this.updateChart({
-                dataSets: this.state.dataSets,
-                dataSetsHaveTitle: this.state.dataSetsHaveTitle,
+                dataSets: this.state.chart.dataSets,
+                dataSetsHaveTitle: this.state.chart.dataSetsHaveTitle,
             });
         }
         updateStacked() {
-            this.updateChart({ stackedBar: this.state.stackedBar });
+            this.updateChart({ stackedBar: this.state.chart.stackedBar });
         }
         updateTitle() {
-            this.updateChart({ title: this.state.title });
+            this.updateChart({ title: this.state.chart.title });
         }
         updateSelect(attr, ev) {
-            this.state[attr] = ev.target.value;
+            this.state.chart[attr] = ev.target.value;
             this.updateChart({ [attr]: ev.target.value });
         }
         updateLabelRange() {
             this.state.labelsDispatchResult = this.updateChart({
-                labelRange: this.state.labelRange || null,
+                labelRange: this.state.chart.labelRange || null,
             });
         }
         updateChart(definition) {
@@ -13782,7 +13791,7 @@
             });
         }
         onLabelRangeChanged(ev) {
-            this.state.labelRange = ev.detail.ranges[0];
+            this.state.chart.labelRange = ev.detail.ranges[0];
         }
         getKey(label) {
             return label + this.props.figure.id;
@@ -13791,16 +13800,16 @@
             this.state.fillColorTool = !this.state.fillColorTool;
         }
         setColor(ev) {
-            this.state.background = ev.detail.color;
+            this.state.chart.background = ev.detail.color;
             this.state.fillColorTool = false;
-            this.updateChart({ background: this.state.background });
+            this.updateChart({ background: this.state.chart.background });
         }
         activate(panel) {
             this.state.panel = panel;
         }
         initialState(figure) {
             return {
-                ...this.env.getters.getChartDefinitionUI(this.env.getters.getActiveSheetId(), figure.id),
+                chart: this.env.getters.getChartDefinitionUI(this.env.getters.getActiveSheetId(), figure.id),
                 panel: "configuration",
                 fillColorTool: false,
             };
@@ -18229,17 +18238,17 @@
                     },
                     elements: {
                         line: {
-                            fill: false, // do not fill the area under line charts
+                            fill: false,
                         },
                         point: {
-                            hitRadius: 15, // increased hit radius to display point tooltip when hovering nearby
+                            hitRadius: 15,
                         },
                     },
                     animation: {
-                        duration: 0, // general animation time
+                        duration: 0,
                     },
                     hover: {
-                        animationDuration: 10, // duration of animations when hovering an item
+                        animationDuration: 10,
                     },
                     responsiveAnimationDuration: 0,
                     title: {
@@ -18272,7 +18281,7 @@
                             position: definition.verticalAxisPosition,
                             ticks: {
                                 // y axis configuration
-                                beginAtZero: true, // the origin of the y axis is always zero
+                                beginAtZero: true,
                             },
                         },
                     ],
@@ -19782,7 +19791,7 @@
             super(...arguments);
             this.inputs = {};
             this.activeSheets = {};
-            this.inputMaximums = {};
+            this.inputHasSingleRange = {};
             this.focusedInputId = null;
             this.focusedRange = null;
             this.willAddNewRange = false;
@@ -19799,7 +19808,7 @@
                     }
                     break;
                 case "ADD_EMPTY_RANGE":
-                    if (this.inputs[cmd.id].length === this.inputMaximums[cmd.id]) {
+                    if (this.inputHasSingleRange[cmd.id] && this.inputs[cmd.id].length === 1) {
                         return 23 /* MaximumRangesReached */;
                     }
                     break;
@@ -19809,16 +19818,18 @@
         handle(cmd) {
             switch (cmd.type) {
                 case "ENABLE_NEW_SELECTION_INPUT":
-                    this.initInput(cmd.id, cmd.initialRanges || [], cmd.maximumRanges);
+                    this.initInput(cmd.id, cmd.initialRanges || [], cmd.hasSingleRange);
                     break;
                 case "DISABLE_SELECTION_INPUT":
                     if (this.focusedInputId === cmd.id) {
-                        this.focusedRange = null;
-                        this.focusedInputId = null;
+                        this.unfocus();
                     }
                     delete this.inputs[cmd.id];
                     delete this.activeSheets[cmd.id];
-                    delete this.inputMaximums[cmd.id];
+                    delete this.inputHasSingleRange[cmd.id];
+                    break;
+                case "UNFOCUS_SELECTION_INPUT":
+                    this.unfocus();
                     break;
                 case "FOCUS_RANGE":
                     this.focus(cmd.id, this.getIndex(cmd.id, cmd.rangeId));
@@ -19851,18 +19862,18 @@
                         break;
                     }
                     const all = this.getSelectionInputValue(this.focusedInputId);
-                    const selectedZones = this.getters
-                        .getSelectedZones()
-                        .map(zoneToXc)
-                        .filter((zoneXc) => !all.includes(zoneXc));
+                    const selectedZones = this.inputHasSingleRange[this.focusedInputId]
+                        ? [this.getters.getSelectedZone()]
+                        : this.getters.getSelectedZones();
+                    const selectedXCs = selectedZones.map(zoneToXc).filter((zoneXc) => !all.includes(zoneXc));
                     const inputSheetId = this.activeSheets[this.focusedInputId];
                     const sheetId = this.getters.getActiveSheetId();
                     const sheetName = this.getters.getSheetName(sheetId);
-                    this.add(selectedZones.map((xc) => sheetId === inputSheetId ? xc : `${getComposerSheetName(sheetName)}!${xc}`));
+                    this.add(selectedXCs.map((xc) => sheetId === inputSheetId ? xc : `${getComposerSheetName(sheetName)}!${xc}`));
                     break;
                 case "PREPARE_SELECTION_EXPANSION": {
                     const [id, index] = [this.focusedInputId, this.focusedRange];
-                    if (id !== null && index !== null) {
+                    if (id !== null && index !== null && !this.inputHasSingleRange[id]) {
                         this.willAddNewRange = this.inputs[id][index].xc.trim() !== "";
                     }
                     break;
@@ -19911,13 +19922,11 @@
         // ---------------------------------------------------------------------------
         // Other
         // ---------------------------------------------------------------------------
-        initInput(id, initialRanges, maximumRanges) {
+        initInput(id, initialRanges, inputHasSingleRange = false) {
             this.inputs[id] = [];
             this.insertNewRange(id, 0, initialRanges);
             this.activeSheets[id] = this.getters.getActiveSheetId();
-            if (maximumRanges !== undefined) {
-                this.inputMaximums[id] = maximumRanges;
-            }
+            this.inputHasSingleRange[id] = inputHasSingleRange;
             if (this.inputs[id].length === 0) {
                 this.dispatch("ADD_EMPTY_RANGE", { id });
             }
@@ -19931,6 +19940,10 @@
         }
         focusLast(id) {
             this.focus(id, this.inputs[id].length - 1);
+        }
+        unfocus() {
+            this.focusedInputId = null;
+            this.focusedRange = null;
         }
         add(newRanges) {
             if (this.focusedInputId === null ||
@@ -19961,9 +19974,6 @@
          * Insert new inputs after the given index.
          */
         insertNewRange(id, index, values) {
-            if (this.inputs[id].length + values.length > this.inputMaximums[id]) {
-                values = values.slice(0, this.inputMaximums[id] - this.inputs[id].length);
-            }
             this.inputs[id].splice(index, 0, ...values.map((xc, i) => ({
                 xc,
                 id: (this.inputs[id].length + i + 1).toString(),
@@ -19975,7 +19985,7 @@
          * new inputs will be added.
          */
         setRange(id, index, values) {
-            let [, ...additionalValues] = values;
+            const [, ...additionalValues] = values;
             this.setContent(id, index, values[0]);
             this.insertNewRange(id, index + 1, additionalValues);
             // focus the last newly added range
@@ -23258,7 +23268,7 @@
         "mmss.0": 47,
         "##0.0E+0": 48,
         "@": 49,
-        "hh:mm:ss a": 19, // TODO: discuss: this format is not recognized by excel for example (doesn't follow their guidelines I guess)
+        "hh:mm:ss a": 19,
     };
     const XLSX_ICONSET_MAP = {
         arrow: "3Arrows",
@@ -23470,10 +23480,9 @@
                 family: 2,
                 name: "Arial",
             },
-            fill: (style === null || style === void 0 ? void 0 : style.fillColor)
-                ? {
-                    fgColor: style.fillColor,
-                }
+            fill: (style === null || style === void 0 ? void 0 : style.fillColor) ? {
+                fgColor: style.fillColor,
+            }
                 : { reservedAttribute: "none" },
             numFmt: cell.format,
             border: border || {},
@@ -25289,13 +25298,26 @@
     }
 
     const { useComponent, useState: useState$e, onPatched, useRef: useRef$7, onMounted: onMounted$1 } = owl.hooks;
-    function spreadsheetPosition() {
-        const spreadsheetElement = document.querySelector(".o-spreadsheet");
-        if (spreadsheetElement) {
-            const { top, left } = spreadsheetElement === null || spreadsheetElement === void 0 ? void 0 : spreadsheetElement.getBoundingClientRect();
-            return { top, left };
+    /**
+     * Return the o-spreadsheet element position relative
+     * to the browser viewport.
+     */
+    function useSpreadsheetPosition() {
+        const position = useState$e({ x: 0, y: 0 });
+        let spreadsheetElement = document.querySelector(".o-spreadsheet");
+        function updatePosition() {
+            if (!spreadsheetElement) {
+                spreadsheetElement = document.querySelector(".o-spreadsheet");
+            }
+            if (spreadsheetElement) {
+                const { top, left } = spreadsheetElement.getBoundingClientRect();
+                position.x = left;
+                position.y = top;
+            }
         }
-        return { top: 0, left: 0 };
+        onMounted$1(updatePosition);
+        onPatched(updatePosition);
+        return position;
     }
     /**
      * Return the component (or ref's component) top left position (in pixels) relative
@@ -25307,12 +25329,12 @@
     function useAbsolutePosition(ref) {
         const position = useState$e({ x: 0, y: 0 });
         const component = useComponent();
-        const { top: spreadsheetTop, left: spreadsheetLeft } = spreadsheetPosition();
+        const spreadsheet = useSpreadsheetPosition();
         function updateElPosition() {
             const el = (ref === null || ref === void 0 ? void 0 : ref.el) || component.el;
             const { top, left } = el.getBoundingClientRect();
-            const x = left - spreadsheetLeft;
-            const y = top - spreadsheetTop;
+            const x = left - spreadsheet.x;
+            const y = top - spreadsheet.y;
             if (x !== position.x || y !== position.y) {
                 position.x = x;
                 position.y = y;
@@ -30348,6 +30370,7 @@
             this.composer.topBarFocus = "contentFocus";
             this.composer.gridFocusMode = "inactive";
             this.setComposerContent(ev.detail || {});
+            this.env.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         onGridComposerContentFocused(ev) {
             if (this.model.getters.isReadonly()) {
@@ -30356,6 +30379,7 @@
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "contentFocus";
             this.setComposerContent(ev.detail || {});
+            this.env.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         onGridComposerCellFocused(ev) {
             if (this.model.getters.isReadonly()) {
@@ -30364,6 +30388,7 @@
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "cellFocus";
             this.setComposerContent(ev.detail || {});
+            this.env.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         /**
          * Start the edition or update the content if it's already started.
@@ -30465,8 +30490,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-10-14T07:35:50.463Z';
-    exports.__info__.hash = 'f9a6801';
+    exports.__info__.date = '2021-11-04T08:21:14.108Z';
+    exports.__info__.hash = 'd3e2f6c';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

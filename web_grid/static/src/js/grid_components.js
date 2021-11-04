@@ -208,27 +208,6 @@ odoo.define('web_grid.components', function (require) {
         //----------------------------------------------------------------------
 
         /**
-         * This handler is called when a user blurs the button
-         * if the value in the cell has changed, it will trigger an event
-         * to update the value in database. it will also disable the button as
-         * long as the callbackfunction is not called.
-         *
-         * @private
-         * @param {MouseEvent} ev
-         */
-        _onBlurButton() {
-            if (this.state.value !== this.initialValue) {
-                this.state.disabled = true;
-                this.trigger('grid-cell-update', {
-                    path: this.props.path,
-                    value: this.state.value,
-                    doneCallback: () => {
-                        this.state.disabled = false;
-                    }
-                });
-            }
-        }
-        /**
          * This handler is called when a user clicks on a button
          * it will change the value in the state
          *
@@ -242,9 +221,13 @@ odoo.define('web_grid.components', function (require) {
             const closestIndex = range.indexOf(closest);
             const nextIndex = closestIndex + 1 < range.length ? closestIndex + 1 : 0;
             this.state.value = this._parse(fieldUtils.format.float(range[nextIndex]));
-            this.trigger('grid-cell-update-temporary', {
+            this.state.disabled = true;
+            this.trigger('grid-cell-update', {
                 path: this.props.path,
-                value: this.state.value
+                value: this.state.value,
+                doneCallback: () => {
+                    this.state.disabled = false;
+                }
             });
         }
 

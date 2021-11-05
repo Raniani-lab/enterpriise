@@ -7,6 +7,7 @@
         <field name="inherit_id" ref="project.project_sharing_project_task_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
+                <!-- [XBO] TODO: remove me in master -->
                 <field string="Tickets" name="helpdesk_ticket_id" invisible="1" />
                 <button
                     string="Ticket"
@@ -14,7 +15,7 @@
                     name="action_view_ticket"
                     type="object"
                     icon="fa-life-ring"
-                    attrs="{'invisible': [('helpdesk_ticket_id', '=', False)]}"
+                    invisible="1"
                     help="Ticket from this task"/>
             </xpath>
         </field>

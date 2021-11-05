@@ -58,7 +58,7 @@ class Task(models.Model):
         return super().SELF_READABLE_FIELDS | {
             'allow_worksheets',
             'worksheet_count',
-            'worksheet_signature',
+            'worksheet_signature',  # [XBO] TODO: remove me in master
             'worksheet_template_id',
         }
 

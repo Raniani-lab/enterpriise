@@ -18,6 +18,7 @@
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('is_closed', '=', True)]}</attribute>
             </div>
             <div name="date_deadline" position="after">
+                <!-- [XBO] TODO: remove me in master -->
                 <t t-if="record.planned_date_begin.raw_value">
                     <t t-if="('fsm_task_kanban_whole_date' in context) || context.fsm_task_kanban_whole_date">
                         <t t-if="record.is_fsm.raw_value" t-set="deadline_class" t-value="" />
@@ -34,8 +35,9 @@
                             t-set="deadline_class" t-value="'oe_kanban_text_red'" />
                         <t t-set="date_format" t-value="'HH:mm A'"/>
                     </t>
-                    <span name="date" title="Start Date" t-attf-class="#{deadline_class || ''}"><t t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)"/></span>
+                    <span name="date" title="Start Date" t-attf-class="d-none #{deadline_class || ''}"><t t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)"/></span>
                 </t>
+                <field name="planned_date_begin" />
             </div>
             <xpath expr="//field[@name='kanban_state']" position="attributes">
                 <attribute name="invisible">context.get('fsm_mode', False)</attribute>
@@ -77,19 +79,18 @@
                 </div>
             </xpath>
             <field name="partner_id" position="attributes">
-                <attribute name="options">{'always_reload': True, 'no_open': True, 'no_create': True, 'no_edit': True}</attribute>
-                <attribute name="context">{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}</attribute>
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
             </field>
+            <!-- [XBO] TODO: remove me in master -->
             <field name="partner_id" position="after">
-                <field name="partner_phone" widget="phone" attrs="{'invisible': ['|', ('partner_id', '=', False), ('is_fsm', '=', False)]}"/>
+                <field name="partner_phone" widget="phone" invisible="1"/>
                 <field name="has_complete_partner_address" invisible="1"/>
                 <label class="oe_read_only" for="has_complete_partner_address" invisible="1"/>
-                <div class="oe_read_only">
+                <div class="oe_read_only" invisible="1">
                     <button
                         name="action_fsm_navigate" type="object" class="btn btn-link pl-0 pt-0 pb-2"
                         icon="fa-arrow-right" string="Navigate To" colspan="2"
-                        attrs="{'invisible': ['|', ('has_complete_partner_address', '=', False), ('is_fsm', '=', False)]}"/>
+                        invisible="1"/>
                 </div>
             </field>
         </field>

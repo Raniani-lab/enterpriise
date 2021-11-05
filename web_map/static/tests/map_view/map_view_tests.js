@@ -10,7 +10,7 @@ import {
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { dialogService } from "@web/core/dialog/dialog_service";
-import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
 import {
@@ -2365,5 +2365,68 @@ QUnit.module("Views", (hooks) => {
             "https://www.google.com/maps/dir/?api=1&destination=11,11.5&waypoints=10,10.5",
             "The link's URL initially should contain the coordinates for all records"
         );
+    });
+
+    QUnit.test("Do not notify if unmounted after fetching coordinate", async function (assert) {
+        const def = makeDeferred();
+
+        patchWithCleanup(MapModel.prototype, {
+            _fetchCoordinatesFromAddressOSM() {
+                return def;
+            },
+            _notifyFetchedCoordinate() {
+                assert.step("notify");
+            },
+        });
+
+        const map = await makeView({
+            config: { views: [] },
+            serverData,
+            type: "map",
+            resModel: "project.task",
+            arch: `<map res_partner="partner_id" routing="1"/>`,
+        });
+
+        map.destroy();
+
+        def.resolve();
+        await nextTick();
+
+        assert.verifySteps([]);
+    });
+
+    QUnit.test("Do not fetch if unmounted after waiting interval", async function (assert) {
+        const def = makeDeferred();
+
+        patchWithCleanup(browser, {
+            setTimeout(fn) {
+                def.then(fn);
+            },
+        });
+
+        patchWithCleanup(MapModel.prototype, {
+            async _fetchCoordinatesFromAddressOSM() {
+                assert.step("fetch");
+                return [];
+            },
+            _notifyFetchedCoordinate() {
+                assert.step("notify");
+            },
+        });
+
+        const map = await makeView({
+            config: { views: [] },
+            serverData,
+            type: "map",
+            resModel: "project.task",
+            arch: `<map res_partner="partner_id" routing="1"/>`,
+        });
+
+        map.destroy();
+
+        def.resolve();
+        await nextTick();
+
+        assert.verifySteps([]);
     });
 });

@@ -518,6 +518,9 @@ export class MapModel extends Model {
                         data,
                         partners[0]
                     );
+                    if (!this.shouldFetchCoordinates) {
+                        return;
+                    }
                     if (coordinates.length) {
                         for (const partner of partners) {
                             partner.partner_longitude = coordinates[0].lon;

@@ -319,14 +319,3 @@ class SignItemParty(models.Model):
     def add(self, name):
         party = self.search([('name', '=', name)])
         return party.id if party else self.create({'name': name}).id
-
-    def buy_credits(self):
-        service_name = 'sms'
-        url = self.env['iap.account'].get_credits_url(service_name)
-        return {
-            'name': 'Buy SMS credits',
-            'res_model': 'ir.actions.act_url',
-            'type': 'ir.actions.act_url',
-            'target': 'current',
-            'url': url
-        }

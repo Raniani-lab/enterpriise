@@ -984,15 +984,15 @@ class AccountFinancialReportLine(models.Model):
 
             # Check 'groupby' must be a valid field.
             if rec.groupby:
-                groupby_field = AccountMoveLine._fields.get(self.groupby)
+                groupby_field = AccountMoveLine._fields.get(rec.groupby)
                 if not groupby_field or not self.env['account.financial.html.report']._is_allowed_groupby_field(groupby_field):
-                    raise ValidationError(_("Groupby field %s is invalid on line with name '%s'") % (self.groupby, rec.name))
+                    raise ValidationError(_("Groupby field %s is invalid on line with name '%s'") % (rec.groupby, rec.name))
 
             # Make sure groupby is specified in conjunction with 'sum_if_pos_groupby' or 'sum_if_neg_groupby'
             if rec.formulas:
                 if any(key in rec.formulas for key in ('sum_if_pos_groupby', 'sum_if_neg_groupby')) and not rec.groupby:
                     raise ValidationError(_("Please specify a Group by field when using '%s' in Formulas, on line with name '%s'")
-                                          % (self.formulas, rec.name))
+                                          % (rec.formulas, rec.name))
 
     @api.constrains('domain')
     def _validate_domain(self):

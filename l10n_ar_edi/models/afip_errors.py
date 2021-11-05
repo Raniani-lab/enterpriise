@@ -86,7 +86,12 @@ def _hint_msg(error_code, afipws):
     elif error_code == "17;;":
         return str(ERRORS["17"])
 
-    elif error_code == "11;13":
-        return str(ERRORS["11"]) + "\n" + str(ERRORS["13"])
+    res = []
+    # Observations can separate using ; multiple values can came at the same time, so we split the codes
+    # in order to show all the related help
+    for item in error_code.split(';'):
+        code = item.strip()
+        if ERRORS.get(code):
+            res.append(code + ' - ' + ERRORS.get(code))
 
-    return ""
+    return '\n* '.join(res)

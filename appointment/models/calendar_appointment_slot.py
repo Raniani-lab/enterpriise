@@ -13,7 +13,7 @@ class CalendarAppointmentSlot(models.Model):
 
     appointment_type_id = fields.Many2one('calendar.appointment.type', 'Appointment Type', ondelete='cascade')
     slot_type = fields.Selection([('recurring', 'Recurring'), ('unique', 'One Shot')],
-        string='Slot type', default='recurring', required=True,
+        string='Slot type', default='recurring', required=True, compute="_compute_slot_type", store=True,
         help="""Defines the type of slot. The recurring slot is the default type which is used for
         appointment type that are used recurringly in type like medical appointment.
         The one shot type is only used when an user create a custom appointment type for a client by
@@ -45,6 +45,11 @@ class CalendarAppointmentSlot(models.Model):
                 slot.duration = round(duration, 2)
             else:
                 slot.duration = 0
+
+    @api.depends('appointment_type_id')
+    def _compute_slot_type(self):
+        for slot in self:
+            slot.slot_type = 'unique' if slot.appointment_type_id.category == 'custom' else 'recurring'
 
     @api.constrains('start_hour')
     def _check_hour(self):

@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from babel.dates import format_datetime
 from werkzeug.urls import url_join
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
 from odoo.tools.misc import get_lang
 from odoo.addons.base.models.res_partner import _tz_get
@@ -33,7 +33,7 @@ class CalendarAppointmentType(models.Model):
             if not result.get('name'):
                 result['name'] = _("Meeting with %s", self.env.user.name)
             if not result.get('employee_ids'):
-                result['employee_ids'] = self.env.user.employee_id.ids
+                result['employee_ids'] = [Command.set(self.env.user.employee_id.ids)]
         return result
 
     sequence = fields.Integer('Sequence', default=10)
@@ -321,8 +321,9 @@ class CalendarAppointmentType(models.Model):
         requested_tz = pytz.timezone(timezone)
         first_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(hours=self.min_schedule_hours))
         appointment_duration_days = self.max_schedule_days
-        if self.category == 'custom':
-            appointment_duration_days = (self.slot_ids[-1].end_datetime - datetime.utcnow()).days
+        unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique')
+        if self.category == 'custom' and unique_slots:
+            appointment_duration_days = (unique_slots[-1].end_datetime - datetime.utcnow()).days
         last_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)

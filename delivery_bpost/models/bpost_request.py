@@ -290,7 +290,7 @@ class BpostRequest():
         URLS = {'rate': url_join(self.base_url, '%s/productconfig' % supercarrier.bpost_account_number),
                 'send': url_join(self.base_url, '%s/orders' % supercarrier.bpost_account_number),
                 'label': label_url}
-        self.debug_logger("%s\n%s\n%s" % (URLS[action], HEADERS[action], xml.decode('utf-8') if xml else None), 'bpost_request_%s' % action)
+        self.debug_logger("%s\n%s\n%s" % (URLS[action], HEADERS[action], xml if xml else None), 'bpost_request_%s' % action)
         try:
             response = requests.request(METHODS[action], URLS[action], headers=HEADERS[action], data=xml, timeout=15)
         except requests.exceptions.Timeout:

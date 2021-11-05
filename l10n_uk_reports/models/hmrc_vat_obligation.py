@@ -136,22 +136,20 @@ class HmrcVatObligation(models.Model):
         reverse_table = {}
         for line_xml_id in translation_table:
             uk_report_id = self.env.ref('l10n_uk.' + translation_table[line_xml_id])
-            if line_xml_id in ('netVatDue', 'totalVatDue'): #Ids of totals are "total_" + id
-                reverse_table['total_' + str(uk_report_id.id)] = line_xml_id
-            else:
-                reverse_table[uk_report_id.id] = line_xml_id
+            reverse_table[uk_report_id.id] = line_xml_id
 
         values = {}
         for line in lines:
-            if reverse_table.get(line['id']):
+            line_id = self.env['account.generic.tax.report']._parse_line_id(line['id'])[-1][-1]
+            if reverse_table.get(line_id):
                 # Do a get for the no_format_name as for the totals you have twice the line, without and with amount
                 # We cannot pass a negative netVatDue to the API and the amounts of sales/purchases/goodssupplied/ ... must be rounded
-                if reverse_table[line['id']] == 'netVatDue':
-                    values[reverse_table[line['id']]] = abs(round(line['columns'][0].get('balance', 0.0), 2))
-                elif reverse_table[line['id']] in ('totalValueSalesExVAT', 'totalValuePurchasesExVAT', 'totalValueGoodsSuppliedExVAT', 'totalAcquisitionsExVAT'):
-                    values[reverse_table[line['id']]] = round(line['columns'][0].get('balance', 0.0))
+                if reverse_table[line_id] == 'netVatDue':
+                    values[reverse_table[line_id]] = abs(round(line['columns'][0].get('balance', 0.0), 2))
+                elif reverse_table[line_id] in ('totalValueSalesExVAT', 'totalValuePurchasesExVAT', 'totalValueGoodsSuppliedExVAT', 'totalAcquisitionsExVAT'):
+                    values[reverse_table[line_id]] = round(line['columns'][0].get('balance', 0.0))
                 else:
-                    values[reverse_table[line['id']]] = round(line['columns'][0].get('balance', 0.0), 2)
+                    values[reverse_table[line_id]] = round(line['columns'][0].get('balance', 0.0), 2)
         return values
 
     def action_submit_vat_return(self):

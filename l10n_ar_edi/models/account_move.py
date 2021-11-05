@@ -148,7 +148,7 @@ class AccountMove(models.Model):
 
             # If we are on testing environment and we don't have certificates we validate only locally.
             # This is useful when duplicating the production database for training purpose or others
-            if inv._is_dummy_afip_validation():
+            if inv._is_dummy_afip_validation() and not inv.l10n_ar_afip_auth_code:
                 inv._dummy_afip_validation()
                 validated += super(AccountMove, inv)._post(soft)
                 continue

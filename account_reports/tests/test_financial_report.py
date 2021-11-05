@@ -119,9 +119,70 @@ class TestFinancialReport(TestAccountReportsCommon):
         cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
         cls.report.applicable_filters_ids |= cls.filter
 
+        cls.report_no_parent_id = cls.env["account.financial.html.report"].create({"name": "Test report"})
+        cls.report_no_parent_id["line_ids"] = [
+            (0, 0, {
+                "name": "Invisible Partner A line",
+                "code": "INVA",
+                "domain": [("partner_id", "=", cls.partner_a.id)],
+                "level": 2,
+                "groupby": "account_id",
+                "formulas": "sum",
+                "special_date_changer": "strict_range"
+            }),
+            (0, 0, {
+                "name": "Invisible Partner B line",
+                "code": "INVB",
+                "domain": [("partner_id", "=", cls.partner_b.id)],
+                "level": 2,
+                "groupby": "account_id",
+                "formulas": "sum",
+                "special_date_changer": "strict_range"
+            }),
+            (0, 0, {
+                "name": "Total of Invisible lines",
+                "code": "INVT",
+                "parent_id": cls.report_no_parent_id.id,
+                "level": 1,
+                "formulas": "INVA + INVB"
+            })
+        ]
+
     def _build_generic_id_from_financial_line(self, financial_rep_ln_xmlid):
         report_line = self.env.ref(financial_rep_ln_xmlid)
         return '-account.financial.html.report.line-%s' % report_line.id
+
+    def test_financial_report_strict_range_on_report_lines_with_no_parent_id(self):
+        """ Tests that lines with no parent can be correctly filtered by date range """
+        options = self._init_options(self.report_no_parent_id, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        options.pop('multi_company', None)
+
+        _headers, lines = self.report_no_parent_id._get_table(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                         Balance
+            [   0,                           1],
+            [
+                ('Invisible Partner A line', 1150.0),
+                ('Invisible Partner B line', -1675.0),
+                ('Total of Invisible lines', -525.0),
+            ])
+
+    def test_financial_report_strict_empty_range_on_report_lines_with_no_parent_id(self):
+        """ Tests that lines with no parent can be correctly filtered by date range with no invoices"""
+        options = self._init_options(self.report_no_parent_id, fields.Date.from_string('2019-03-01'), fields.Date.from_string('2019-03-31'))
+        options.pop('multi_company', None)
+
+        _headers, lines = self.report_no_parent_id._get_table(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                         Balance
+            [   0,                           1],
+            [
+                ('Invisible Partner A line', 0.0),
+                ('Invisible Partner B line', 0.0),
+                ('Total of Invisible lines', 0.0),
+            ])
 
     def test_financial_report_single_company(self):
         line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')

@@ -1022,7 +1022,7 @@ class AccountFinancialReportLine(models.Model):
         # This is necessary when the 'date' filter mode is not the same in both reports. For example, some P&L lines
         # are used in some balance sheet formulas. However, the balance sheet is a single-date mode report but not the
         # P&L.
-        if calling_financial_report != parent_financial_report:
+        if parent_financial_report and calling_financial_report != parent_financial_report:
             new_options = parent_financial_report._get_options(previous_options=options)
 
             # Propate the 'ir_filters' manually because 'applicable_filters_ids' could be different

@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.resource import Intervals, sum_intervals
 
 
 DATE_AUTO_SHIFT_CONTEXT_KEY = 'date_auto_shift'
@@ -39,6 +39,14 @@ class Task(models.Model):
 
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
+
+    # Allocated hours
+    allocated_hours = fields.Float("Allocated Hours", compute='_compute_allocated_hours', store=True)
+    allocation_type = fields.Selection([
+        ('working_hours', 'Working Hours'),
+        ('duration', 'Duration'),
+    ], default='duration', compute='_compute_allocation_type')
+    duration = fields.Float(compute='_compute_duration')
 
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
@@ -136,6 +144,55 @@ class Task(models.Model):
     def _compute_user_names(self):
         for task in self:
             task.user_names = ', '.join(task.user_ids.mapped('name'))
+
+    @api.depends('planned_date_begin', 'planned_date_end', 'company_id.resource_calendar_id', 'user_ids')
+    def _compute_allocated_hours(self):
+        task_working_hours = self.filtered(lambda s: s.allocation_type == 'working_hours' and (s.user_ids or s.company_id))
+        task_duration = self - task_working_hours
+        for task in task_duration:
+            # for each planning slot, compute the duration
+            task.allocated_hours = task.duration * (len(task.user_ids) or 1)
+        # This part of the code comes in major parts from planning, with adaptations.
+        # Compute the conjunction of the task user's work intervals and the task.
+        if not task_working_hours:
+            return
+        # if there are at least one task having start or end date, call the _get_valid_work_intervals
+        start_utc = utc.localize(min(task_working_hours.mapped('planned_date_begin')))
+        end_utc = utc.localize(max(task_working_hours.mapped('planned_date_end')))
+        # work intervals per user/per calendar are retrieved with a batch
+        user_work_intervals, calendar_work_intervals = task_working_hours.user_ids._get_valid_work_intervals(
+            start_utc, end_utc, calendars=task_working_hours.company_id.resource_calendar_id
+        )
+        for task in task_working_hours:
+            start = max(start_utc, utc.localize(task.planned_date_begin))
+            end = min(end_utc, utc.localize(task.planned_date_end))
+            interval = Intervals([(
+                start, end, self.env['resource.calendar.attendance']
+            )])
+            sum_allocated_hours = 0.0
+            if task.user_ids:
+                # we sum up the allocated hours for each user
+                for user in task.user_ids:
+                    sum_allocated_hours += sum_intervals(user_work_intervals[user.id] & interval)
+            else:
+                sum_allocated_hours += sum_intervals(calendar_work_intervals[task.company_id.resource_calendar_id.id] & interval)
+            task.allocated_hours = sum_allocated_hours
+
+    @api.depends('planned_date_begin', 'planned_date_end')
+    def _compute_allocation_type(self):
+        for task in self:
+            if task.duration < 24:
+                task.allocation_type = 'duration'
+            else:
+                task.allocation_type = 'working_hours'
+
+    @api.depends('planned_date_begin', 'planned_date_end')
+    def _compute_duration(self):
+        for task in self:
+            if not (task.planned_date_begin and task.planned_date_end):
+                task.duration = 0.0
+            else:
+                task.duration = (task.planned_date_end - task.planned_date_begin).total_seconds() / 3600.0
 
     @api.model
     def _calculate_planned_dates(self, date_start, date_stop, user_id=None, calendar=None):

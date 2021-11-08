@@ -91,7 +91,7 @@ class TestDeliveryFedex(TransactionCase):
             picking = sale_order.picking_ids[0]
             self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-            picking.move_lines[0].quantity_done = 1.0
+            picking.move_ids[0].quantity_done = 1.0
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
             picking._action_done()
@@ -139,7 +139,7 @@ class TestDeliveryFedex(TransactionCase):
             picking = sale_order.picking_ids[0]
             self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-            picking.move_lines[0].quantity_done = 1.0
+            picking.move_ids[0].quantity_done = 1.0
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
             picking._action_done()
@@ -192,10 +192,10 @@ class TestDeliveryFedex(TransactionCase):
             picking = sale_order.picking_ids[0]
             self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-            move0 = picking.move_lines[0]
+            move0 = picking.move_ids[0]
             move0.quantity_done = 1.0
             self.wiz_put_in_pack(picking)
-            move1 = picking.move_lines[1]
+            move1 = picking.move_ids[1]
             move1.quantity_done = 1.0
             self.wiz_put_in_pack(picking)
             self.assertEqual(len(picking.move_line_ids.mapped('result_package_id')), 2, "2 Packages should have been created at this point")

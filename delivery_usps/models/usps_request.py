@@ -70,9 +70,9 @@ class USPSRequest():
             weight_in_pounds = weight_uom_id._compute_quantity(tot_weight, order.env.ref('uom.product_uom_lb'))
             if weight_in_pounds > 4 and order.carrier_id.usps_service == 'First Class':     # max weight of FirstClass Service
                 return _("Please choose another service (maximum weight of this service is 4 pounds)")
-        if picking and picking.move_lines:
+        if picking and picking.move_ids:
             # https://www.usps.com/business/web-tools-apis/evs-international-label-api.htm
-            if max(picking.move_lines.mapped('product_uom_qty')) > 999:
+            if max(picking.move_ids.mapped('product_uom_qty')) > 999:
                 return _("Quantity for each move line should be less than 1000.")
         return False
 
@@ -179,7 +179,7 @@ class USPSRequest():
 
         api = self._api_url(carrier.usps_delivery_nature, carrier.usps_service)
 
-        for line in picking.move_lines:
+        for line in picking.move_ids:
             USD = carrier.env['res.currency'].search([('name', '=', 'USD')], limit=1)
             order = picking.sale_id
             company = order.company_id or picking.company_id or self.env.company

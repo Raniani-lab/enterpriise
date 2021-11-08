@@ -528,7 +528,7 @@ class TestQualityCheck(TestQualityCommon):
         # Confirm incoming shipment.
         self.picking_in.action_confirm()
         for line in self.picking_in.move_line_ids:
-            line.qty_done = line.product_qty
+            line.qty_done = line.reserved_qty
         # Check that Quality Check for incoming shipment have been created for all the good move lines
         self.assertEqual(len(self.picking_in.check_ids), 3)
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product.id)), 1)

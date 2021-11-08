@@ -88,9 +88,9 @@ class EasypostRequest():
 
         # check required value for picking
         if picking:
-            if not picking.move_lines:
+            if not picking.move_ids:
                 raise UserError(_("Please provide at least one item to ship."))
-            if picking.move_lines.filtered(lambda line: not line.weight):
+            if picking.move_ids.filtered(lambda line: not line.weight):
                 raise UserError(_('The estimated price cannot be computed because the weight of your product is missing.'))
         return True
 

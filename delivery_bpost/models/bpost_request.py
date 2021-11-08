@@ -329,12 +329,12 @@ class BpostRequest():
         return boxes
 
     def _compute_return_boxes(self, picking, carrier):
-        weight = sum(move.product_qty * move.product_id.weight for move in picking.move_lines)
+        weight = sum(move.product_qty * move.product_id.weight for move in picking.move_ids)
         weight_in_kg = carrier._bpost_convert_weight(weight)
-        parcel_value = sum(move.product_qty * move.product_id.lst_price for move in picking.move_lines)
+        parcel_value = sum(move.product_qty * move.product_id.lst_price for move in picking.move_ids)
         boxes = [{
             'weight': str(_grams(weight_in_kg)),
             'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
-            'contentDescription': ' '.join(["%d %s" % (line.product_qty, re.sub('[\W_]+', '', line.product_id.name or '')) for line in picking.move_lines])[:50],
+            'contentDescription': ' '.join(["%d %s" % (line.product_qty, re.sub(r'[\W_]+', '', line.product_id.name or '')) for line in picking.move_ids])[:50],
         }]
         return boxes

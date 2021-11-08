@@ -110,7 +110,7 @@ class TestDeliveryBpost(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_lines[0].quantity_done = 1.0
+        picking.move_ids[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         move_lines_to_pack = picking.move_line_ids.filtered(lambda line: line.product_id.id in [self.product2.id, self.product3.id])
@@ -157,7 +157,7 @@ class TestDeliveryBpost(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_lines[0].quantity_done = 1.0
+        picking.move_ids[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         try:
@@ -204,7 +204,7 @@ class TestDeliveryBpost(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_lines[0].quantity_done = 1.0
+        picking.move_ids[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         try:

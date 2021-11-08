@@ -252,7 +252,7 @@ class ProviderUPS(models.Model):
                 packages.append(Package(self, picking.weight_bulk))
 
         invoice_line_total = 0
-        for move in picking.move_lines:
+        for move in picking.move_ids:
             invoice_line_total += picking.company_id.currency_id.round(move.product_id.lst_price * move.product_qty)
 
         shipment_info = {

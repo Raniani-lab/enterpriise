@@ -205,7 +205,7 @@ class Providerdhl(models.Model):
             shipment_request['Billing'] = srm._set_billing(account_number, "S", self.dhl_duty_payment, self.dhl_dutiable)
             shipment_request['Consignee'] = srm._set_consignee(picking.partner_id)
             shipment_request['Shipper'] = srm._set_shipper(account_number, picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
-            total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
+            total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_ids])
             currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
             if self.dhl_dutiable:
                 shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name)

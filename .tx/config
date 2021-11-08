@@ -657,6 +657,11 @@ file_filter = purchase_enterprise/i18n/<lang>.po
 source_file = purchase_enterprise/i18n/purchase_enterprise.pot
 source_lang = en
 
+[odoo-15.purchase_stock_enterprise]
+file_filter = purchase_stock_enterprise/i18n/<lang>.po
+source_file = purchase_stock_enterprise/i18n/purchase_stock_enterprise.pot
+source_lang = en
+
 [odoo-15.quality]
 file_filter = quality/i18n/<lang>.po
 source_file = quality/i18n/quality.pot

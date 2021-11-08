@@ -181,7 +181,7 @@ class StockPicking(models.Model):
                 'location_id': self.location_id.id,
                 'location_dest_id': self.location_dest_id.id,
                 'qty_done': (product.tracking == 'none' and picking_type_lots) and qty or 0.0,
-                'product_uom_qty': 0.0,
+                'reserved_uom_qty': 0.0,
                 'date': fields.datetime.now(),
             })
             if self.show_reserved:
@@ -193,7 +193,7 @@ class StockPicking(models.Model):
     def _check_source_package(self, package):
         corresponding_po = self.move_line_ids.filtered(lambda r: r.package_id.id == package.id and r.result_package_id.id == package.id)
         for po in corresponding_po:
-            po.qty_done = po.product_uom_qty
+            po.qty_done = po.reserved_uom_qty
         if corresponding_po:
             self.package_level_ids_details.filtered(lambda p: p.package_id == package).is_done = True
             return True
@@ -216,7 +216,7 @@ class StockPicking(models.Model):
         # one with the initial values.
         for ml in corresponding_ml:
             rounding = ml.product_uom_id.rounding
-            if float_compare(ml.qty_done, ml.product_uom_qty, precision_rounding=rounding) == -1:
+            if float_compare(ml.qty_done, ml.reserved_uom_qty, precision_rounding=rounding) == -1:
                 self.move_line_ids += self.move_line_ids.new({
                     'product_id': ml.product_id.id,
                     'package_id': ml.package_id.id,
@@ -248,7 +248,7 @@ class StockPicking(models.Model):
         # quantity as `qty_done` and another one with the initial values.
         for ml in corresponding_ml:
             rounding = ml.product_uom_id.rounding
-            if float_compare(ml.qty_done, ml.product_uom_qty, precision_rounding=rounding) == -1:
+            if float_compare(ml.qty_done, ml.reserved_uom_qty, precision_rounding=rounding) == -1:
                 self.move_line_ids += self.move_line_ids.new({
                     'product_id': ml.product_id.id,
                     'package_id': ml.package_id.id,

@@ -37,11 +37,11 @@ class StockBarcodeLot(models.TransientModel):
                     lot_name = ml.lot_name
                 lines.append({
                     'lot_name': lot_name,
-                    'qty_reserved': ml.product_uom_qty,
+                    'qty_reserved': ml.reserved_uom_qty,
                     'qty_done': ml.qty_done,
                     'move_line_id': ml.id,
                 })
-                qty_reserved += ml.product_uom_qty
+                qty_reserved += ml.reserved_uom_qty
                 qty_done += ml.qty_done
             res['stock_barcode_lot_line_ids'] = [(0, 0, x) for x in lines]
         if 'qty_reserved' in fields:

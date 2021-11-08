@@ -175,7 +175,7 @@ class EasypostRequest():
             # The user still able to reorganise its packages if a
             # mistake happens.
             if picking.picking_type_code == 'incoming':
-                weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.product_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
+                weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.reserved_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
             else:
                 weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.qty_done, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
             weight = carrier._easypost_convert_weight(weight)
@@ -190,7 +190,7 @@ class EasypostRequest():
                 # compute move line weight in package
                 move_lines = picking.move_line_ids.filtered(lambda ml: ml.result_package_id == package)
                 if picking.picking_type_code == 'incoming':
-                    weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.product_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines])
+                    weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.reserved_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines])
                 else:
                     weight = package.shipping_weight
                 weight = carrier._easypost_convert_weight(weight)
@@ -254,7 +254,7 @@ class EasypostRequest():
             if line.product_id.type not in ['product', 'consu']:
                 continue
             if line.picking_id.picking_type_code == 'incoming':
-                unit_quantity = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id, rounding_method='HALF-UP')
+                unit_quantity = line.product_uom_id._compute_quantity(line.reserved_qty, line.product_id.uom_id, rounding_method='HALF-UP')
             else:
                 unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
             rounded_qty = max(1, float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'))

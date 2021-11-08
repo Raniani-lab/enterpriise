@@ -344,7 +344,7 @@ export default class BarcodeModel extends owl.core.EventBus {
         const packageLines = [];
         for (const key in groupedLines) {
             // Check if the package is reserved.
-            const reservedPackage = groupedLines[key].every(line => line.product_uom_qty);
+            const reservedPackage = groupedLines[key].every(line => line.reserved_uom_qty);
             groupedLines[key][0].reservedPackage = reservedPackage;
             packageLines.push(groupedLines[key][0]);
         }
@@ -1200,8 +1200,8 @@ export default class BarcodeModel extends owl.core.EventBus {
             let exceedingQuantity = 0;
             if (this.canCreateNewLine) {
                 // Checks the quantity doesn't exceed the line's remaining quantity.
-                if (currentLine.product_uom_qty && product.tracking === 'none') {
-                    const remainingQty = currentLine.product_uom_qty - currentLine.qty_done;
+                if (currentLine.reserved_uom_qty && product.tracking === 'none') {
+                    const remainingQty = currentLine.reserved_uom_qty - currentLine.qty_done;
                     if (barcodeData.quantity > remainingQty) {
                         // In this case, lowers the increment quantity and keeps
                         // the excess quantity to create a new line.
@@ -1368,7 +1368,7 @@ export default class BarcodeModel extends owl.core.EventBus {
             if ((
                     !dataLotName || !lineLotName || dataLotName !== lineLotName
                 ) && (
-                    line.qty_done && line.qty_done > line.product_uom_qty &&
+                    line.qty_done && line.qty_done > line.reserved_uom_qty &&
                     line.virtual_id != this.selectedLine.virtual_id
             )) {
                 continue;

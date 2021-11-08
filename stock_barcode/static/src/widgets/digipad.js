@@ -96,7 +96,7 @@ const Digipad = Widget.extend({
     _setSpecialButtons: function () {
         this.specialButtons = ['increase', 'decrease'];
         const record = this.parent.state.data;
-        const demandQty = record.product_uom_qty;
+        const demandQty = record.reserved_uom_qty;
         const domain = [['product_id', '=', record.product_id.res_id]];
         if (demandQty) { // Doesn't fetch packaging with a too high quantity.
             domain.push(['qty', '<=', demandQty]);

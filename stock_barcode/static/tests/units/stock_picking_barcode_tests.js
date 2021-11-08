@@ -64,7 +64,7 @@ QUnit.module('Barcode', {
             'stock.move.line': {
                 fields: {
                     product_id: {string: "Product", type: 'many2one', relation: 'product'},
-                    product_qty: {string: "To Do", type: 'float', digits: [16,1]},
+                    reserved_qty: {string: "To Do", type: 'float', digits: [16,1]},
                     qty_done: {string: "Done", type: 'float', digits: [16,1]},
                     product_barcode: {string: "Product Barcode", type: 'char'},
                     lots_visible: {string: "Product tracked by lots", type: 'boolean'},
@@ -72,13 +72,13 @@ QUnit.module('Barcode', {
                 records: [{
                     id: 3,
                     product_id: 1,
-                    product_qty: 2.0,
+                    reserved_qty: 2.0,
                     qty_done: 0.0,
                     product_barcode: "543982671252",
                 }, {
                     id: 5,
                     product_id: 4,
-                    product_qty: 2.0,
+                    reserved_qty: 2.0,
                     qty_done: 0.0,
                     product_barcode: "678582670967",
                 }],
@@ -119,7 +119,7 @@ QUnit.test('scan a product (no tracking)', async function (assert) {
                             '<field name="move_line_ids_without_package">' +
                                 '<tree>' +
                                     '<field name="product_id"/>' +
-                                    '<field name="product_qty"/>' +
+                                    '<field name="reserved_qty"/>' +
                                     '<field name="qty_done"/>' +
                                     '<field name="product_barcode"/>' +
                                     '<field name="lots_visible" invisible="1"/>' +
@@ -170,7 +170,7 @@ QUnit.test('scan a product tracked by lot', async function (assert) {
                             '<field name="move_line_ids_without_package">' +
                                 '<tree>' +
                                     '<field name="product_id"/>' +
-                                    '<field name="product_qty"/>' +
+                                    '<field name="reserved_qty"/>' +
                                     '<field name="qty_done"/>' +
                                     '<field name="product_barcode"/>' +
                                     '<field name="lots_visible" invisible="1"/>' +
@@ -236,7 +236,7 @@ QUnit.test('scan a product verify onChange', async function (assert) {
                             '<field name="move_line_ids_without_package">' +
                                 '<tree>' +
                                     '<field name="product_id"/>' +
-                                    '<field name="product_qty"/>' +
+                                    '<field name="reserved_qty"/>' +
                                     '<field name="qty_done"/>' +
                                     '<field name="product_barcode"/>' +
                                 '</tree>' +

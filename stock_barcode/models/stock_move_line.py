@@ -38,7 +38,7 @@ class StockMoveLine(models.Model):
             'location_dest_id',
             'qty_done',
             'display_name',
-            'product_uom_qty',
+            'reserved_uom_qty',
             'product_uom_id',
             'product_barcode',
             'owner_id',

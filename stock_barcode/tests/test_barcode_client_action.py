@@ -1076,7 +1076,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         receipts_picking.invalidate_cache()
         lines = receipts_picking.move_line_ids
         self.assertEqual(lines[0].qty_done, 0.0)
-        self.assertEqual(lines[0].product_qty, 4.0)
+        self.assertEqual(lines[0].reserved_qty, 4.0)
         self.assertEqual(lines.mapped('location_id.name'), ['Vendors'])
         self.assertEqual(lines[3].lot_name, 'lot1')
         self.assertEqual(lines[1].lot_name, 'lot2')

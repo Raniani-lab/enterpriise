@@ -238,20 +238,20 @@ class MrpProductionWorkcenterLine(models.Model):
             # Write the lot and qty to the move line
             if self.move_line_id:
                 rounding = self.move_line_id.product_uom_id.rounding
-                if float_compare(self.qty_done, self.move_line_id.product_uom_qty, precision_rounding=rounding) >= 0:
+                if float_compare(self.qty_done, self.move_line_id.reserved_uom_qty, precision_rounding=rounding) >= 0:
                     self.move_line_id.write({
                         'qty_done': self.qty_done,
                         'lot_id': self.lot_id.id,
                     })
                 else:
-                    new_qty_reserved = self.move_line_id.product_uom_qty - self.qty_done
+                    new_qty_reserved = self.move_line_id.reserved_uom_qty - self.qty_done
                     default = {
-                        'product_uom_qty': new_qty_reserved,
+                        'reserved_uom_qty': new_qty_reserved,
                         'qty_done': 0,
                     }
                     self.move_line_id.copy(default=default)
                     self.move_line_id.with_context(bypass_reservation_update=True).write({
-                        'product_uom_qty': self.qty_done,
+                        'reserved_uom_qty': self.qty_done,
                         'qty_done': self.qty_done,
                     })
                     self.move_line_id.lot_id = self.lot_id
@@ -540,7 +540,7 @@ class MrpProductionWorkcenterLine(models.Model):
             'move_id': self.move_id.id,
             'product_id': self.move_id.product_id.id,
             'location_dest_id': location_dest_id.id,
-            'product_uom_qty': 0,
+            'reserved_uom_qty': 0,
             'product_uom_id': self.move_id.product_uom.id,
             'lot_id': self.lot_id.id,
             'company_id': self.move_id.company_id.id,
@@ -580,7 +580,7 @@ class MrpProductionWorkcenterLine(models.Model):
             vals.update({
                 'move_line_id': move_line_id.id,
                 'lot_id': move_line_id.lot_id.id,
-                'qty_done': move_line_id.product_uom_qty or 1.0
+                'qty_done': move_line_id.reserved_uom_qty or 1.0
             })
         return vals
 
@@ -738,7 +738,7 @@ class MrpProductionWorkcenterLine(models.Model):
         qty_todo = float_round(new_qty, precision_rounding=rounding)
         qty_todo = qty_todo - move.quantity_done
         if self.move_line_id and self.move_line_id.lot_id:
-            qty_todo = min(self.move_line_id.product_uom_qty, qty_todo)
+            qty_todo = min(self.move_line_id.reserved_uom_qty, qty_todo)
         self.qty_done = qty_todo
 
     def _action_confirm(self):

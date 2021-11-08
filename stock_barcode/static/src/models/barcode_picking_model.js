@@ -29,7 +29,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         data.data.destination_locations_ids.forEach(id => {
             this.destLocationList.push(this.cache.getRecord('stock.location', id));
         });
-        this._useReservation = this.initialState.lines.some(line => line.product_uom_qty);
+        this._useReservation = this.initialState.lines.some(line => line.reserved_uom_qty);
     }
 
     async changeDestinationLocation(id, moveScannedLineOnly) {
@@ -38,7 +38,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             this.currentDestLocationId = id;
             for (const line of this.previousScannedLines) {
                 // If the line is complete, we move it...
-                if (!line.product_uom_qty || line.qty_done >= line.product_uom_qty) {
+                if (!line.reserved_uom_qty || line.qty_done >= line.reserved_uom_qty) {
                     line.location_dest_id = id;
                     this._markLineAsDirty(line);
                 } else { // ... otherwise, we split it to a new line.
@@ -83,11 +83,11 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     getQtyDemand(line) {
-        return line.product_uom_qty;
+        return line.reserved_uom_qty;
     }
 
     getEditedLineParams(line) {
-        return Object.assign(super.getEditedLineParams(...arguments), { canBeDeleted: !line.product_uom_qty });
+        return Object.assign(super.getEditedLineParams(...arguments), { canBeDeleted: !line.reserved_uom_qty });
     }
 
     getDisplayIncrementPackagingBtn(line) {
@@ -193,7 +193,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             return false;
         }
         for (const line of this.pageLines) {
-            if (line.product_uom_qty && line.qty_done < line.product_uom_qty) {
+            if (line.reserved_uom_qty && line.qty_done < line.reserved_uom_qty) {
                 return false;
             }
         }
@@ -221,7 +221,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     lineIsFaulty(line) {
-        return this._useReservation && line.qty_done > line.product_uom_qty;
+        return this._useReservation && line.qty_done > line.reserved_uom_qty;
     }
 
     get printButtons() {
@@ -417,7 +417,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         const defaultValues = super._getNewLineDefaultValues(...arguments);
         return Object.assign(defaultValues, {
             location_dest_id: this.destLocation.id,
-            product_uom_qty: false,
+            reserved_uom_qty: false,
             qty_done: 0,
             picking_id: this.params.id,
         });
@@ -454,7 +454,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     _groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone) {
         return Object.assign(super._groupSublines(...arguments), {
-            product_uom_qty: qtyDemand,
+            reserved_uom_qty: qtyDemand,
             qty_done: qtyDone,
         });
     }
@@ -464,7 +464,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     _lineIsNotComplete(line) {
-        return line.product_uom_qty && line.qty_done < line.product_uom_qty;
+        return line.reserved_uom_qty && line.qty_done < line.reserved_uom_qty;
     }
 
     _moveEntirePackage() {

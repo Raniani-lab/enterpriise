@@ -56,7 +56,7 @@
         <t t-if="action_type===''||action_type==='sign_send_request'">
             <button type="button" class="btn btn-primary mr-2 o_sign_template_send">Send</button>
             <button type="button" class="btn btn-primary mr-2 o_sign_template_sign_now">Sign Now</button>
-            <t t-if="action_type!=='sign_send_request' &amp;&amp; widget.sign_template.sign_request_ids.length&lt;=1">
+            <t t-if="action_type!=='sign_send_request' &amp;&amp; widget.sign_template.responsible_count &lt;=1">
                 <button type="button" class="btn btn-secondary mr-2 o_sign_template_share">Share</button>
             </t>
         </t>

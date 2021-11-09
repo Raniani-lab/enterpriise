@@ -48,7 +48,7 @@
                         <field name="asset_type" invisible="1"/>
                         <field name="active" invisible="1"/>
                         <group string="Asset Values" attrs="{'invisible': [('state', '=', 'model')]}">
-                            <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted">Set manually the original values or <button class="btn btn-link oe_inline align-baseline p-0 add_original_move_line" string="select the related purchases"/></span>
+                            <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted">Set manually the original values or <button name="btn_choose_aml" class="btn btn-link oe_inline align-baseline p-0 add_original_move_line" string="select the related purchases"/></span>
                             <field name="original_value" attrs="{'invisible': [('state', '=', 'model')], 'readonly': [('state','!=','draft')]}"/>
                             <field name="gross_increase_value" widget="monetary" attrs="{'invisible': ['|', ('state', '=', 'model'), ('gross_increase_value', '=', 0)]}" options="{'currency_field': 'currency_id'}"/>
                             <field name="acquisition_date" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])], 'readonly': [('state', '!=', 'draft')]}"/>
@@ -79,9 +79,41 @@
                         </group>
                         <group string="Accounting">
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-                            <field name="account_asset_id" attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')], 'required': [('state', '!=', 'model')]}"/>
-                            <field name="account_depreciation_id" required="1"/>
-                            <field name="account_depreciation_expense_id" required="1"/>
+                            <field
+                                name="account_asset_id"
+                                domain="[('user_type_id', 'in', [
+                                    %(account.data_account_type_fixed_assets)d,
+                                    %(account.data_account_type_non_current_assets)d,
+                                    %(account.data_account_type_current_assets)d])]"
+                                context="{
+                                    'default_user_type_id': %(account.data_account_type_fixed_assets)d,
+                                    'account_type_domain': [('id', 'in', [
+                                        %(account.data_account_type_fixed_assets)d,
+                                        %(account.data_account_type_non_current_assets)d])]}"
+                                attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')], 'required': [('state', '!=', 'model')]}"/>
+                            <field
+                                name="account_depreciation_id"
+                                domain="[('user_type_id', 'in', [
+                                    %(account.data_account_type_fixed_assets)d,
+                                    %(account.data_account_type_non_current_assets)d,
+                                    %(account.data_account_type_current_assets)d])]"
+                                context="{
+                                    'default_user_type_id': %(account.data_account_type_non_current_assets)d,
+                                    'account_type_domain': [('id', 'in', [
+                                        %(account.data_account_type_fixed_assets)d,
+                                        %(account.data_account_type_non_current_assets)d])]}"
+                                required="1"/>
+                            <field
+                                name="account_depreciation_expense_id"
+                                domain="[('user_type_id', 'in', [
+                                    %(account.data_account_type_depreciation)d,
+                                    %(account.data_account_type_expenses)d])]"
+                                context="{
+                                    'default_user_type_id': %(account.data_account_type_depreciation)d,
+                                    'account_type_domain': [('id', 'in', [
+                                        %(account.data_account_type_depreciation)d,
+                                        %(account.data_account_type_expenses)d])]}"
+                                required="1"/>
                             <field name="journal_id" required="1"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting" />
                             <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags"/>
@@ -110,7 +142,15 @@
                             </field>
                         </page>
                         <page string="Related Purchase" name="related_items" attrs="{'invisible' : [('original_move_line_ids', '=', [])]}">
-                            <field name="original_move_line_ids" attrs="{'readonly': [('state','=','posted')]}" domain="[('credit', '=', '0'), ('move_id.state', '=', 'posted'), ('company_id', '=', company_id)]" class="original_move_line_ids_field">
+                            <field
+                                name="original_move_line_ids"
+                                attrs="{'readonly': [('state','=','posted')]}"
+                                domain="[
+                                    ('parent_state', '=', 'posted'),
+                                    ('company_id', '=', company_id),
+                                    ('account_id.user_type_id', 'in', [%(account.data_account_type_fixed_assets)d, %(account.data_account_type_non_current_assets)d])
+                                ]"
+                                class="original_move_line_ids_field">
                                 <tree create="0">
                                     <field name="date"/>
                                     <field name="account_id"/>

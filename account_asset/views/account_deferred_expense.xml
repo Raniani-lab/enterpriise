@@ -74,13 +74,20 @@
             <field name="name" position="attributes">
                 <attribute name="placeholder">e.g. Annually Paid Insurance</attribute>
             </field>
+            <xpath expr="//button[@name='btn_choose_aml']" position="attributes">
+                <attribute name="string">select the related expense</attribute>
+            </xpath>
             <field name="account_depreciation_expense_id" position="attributes">
                 <attribute name="string">Expense Account</attribute>
                 <attribute name="help">Account used to recognize the expense</attribute>
+                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_expenses)d])]</attribute>
+                <attribute name="context">{'default_user_type_id': %(account.data_account_type_expenses)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_expenses)d])]}</attribute>
             </field>
             <field name="account_depreciation_id" position="attributes">
                 <attribute name="string">Deferred Expense Account</attribute>
                 <attribute name="help">Account used to record the deferred expense</attribute>
+                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_current_assets)d])]</attribute>
+                <attribute name="context">{'default_user_type_id': %(account.data_account_type_current_assets)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_current_assets)d])]}</attribute>
             </field>
             <field name="book_value" position="attributes">
                 <attribute name="string">Deferred Expense Amount</attribute>
@@ -108,7 +115,12 @@
                 <attribute name="string">Next Period Expense</attribute>
             </xpath>
             <field name="original_move_line_ids" position="attributes">
-                <attribute name="domain">[('credit', '=', '0'), ('move_id.state', '=', 'posted')]</attribute>
+                <attribute name="domain">[
+                    ('parent_state', '=', 'posted'),
+                    ('credit', '=', '0'),
+                    ('company_id', '=', company_id),
+                    ('account_id.user_type_id', 'in', [%(account.data_account_type_expenses)d])
+                ]</attribute>
             </field>
         </field>
     </record>

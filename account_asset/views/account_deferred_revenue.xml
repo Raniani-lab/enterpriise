@@ -77,16 +77,23 @@
             <field name="name" position="attributes">
                 <attribute name="placeholder">e.g. Annual Subscription</attribute>
             </field>
+            <xpath expr="//button[@name='btn_choose_aml']" position="attributes">
+                <attribute name="string">select the related income</attribute>
+            </xpath>
             <field name="first_depreciation_date" position="attributes">
                 <attribute name="string">First Recognition Date</attribute>
             </field>
             <field name="account_depreciation_id" position="attributes">
                 <attribute name="string">Revenue Account</attribute>
                 <attribute name="help">Account used to recognize the revenue</attribute>
+                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_revenue)d, %(account.data_account_type_other_income)d])]</attribute>
+                <attribute name="context">{'default_user_type_id': %(account.data_account_type_revenue)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_revenue)d, %(account.data_account_type_other_income)d])]}</attribute>
             </field>
             <field name="account_depreciation_expense_id" position="attributes">
                 <attribute name="string">Deferred Revenue Account</attribute>
                 <attribute name="help">Account used to record the deferred income</attribute>
+                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_current_liabilities)d])]</attribute>
+                <attribute name="context">{'default_user_type_id': %(account.data_account_type_current_liabilities)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_current_liabilities)d])]}</attribute>
             </field>
             <field name="method_number" position="attributes">
                 <attribute name="string">Number of Recognitions</attribute>
@@ -123,7 +130,12 @@
                 <attribute name="string">Next Period Revenue</attribute>
             </xpath>
             <field name="original_move_line_ids" position="attributes">
-                <attribute name="domain">[('debit', '=', '0'), ('move_id.state', '=', 'posted')]</attribute>
+                <attribute name="domain">[
+                    ('parent_state', '=', 'posted'),
+                    ('debit', '=', '0'),
+                    ('company_id', '=', company_id),
+                    ('account_id.user_type_id', 'in', [%(account.data_account_type_revenue)d, %(account.data_account_type_other_income)d])
+                ]</attribute>
             </field>
         </field>
     </record>

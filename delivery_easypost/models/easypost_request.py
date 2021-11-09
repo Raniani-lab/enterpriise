@@ -257,7 +257,7 @@ class EasypostRequest():
                 unit_quantity = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id, rounding_method='HALF-UP')
             else:
                 unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
-            rounded_qty = float_repr(float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'), precision_digits=0)
+            rounded_qty = max(1, float_repr(float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'), precision_digits=0))
             hs_code = line.product_id.hs_code or ''
             customs_info.update({
                 'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): line.product_id.name,

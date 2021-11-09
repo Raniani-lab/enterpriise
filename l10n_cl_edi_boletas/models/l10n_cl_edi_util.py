@@ -29,9 +29,10 @@ REST_SERVER_URL = {
         }
 }
 
-SII_STATUS_RESULTS_REST = {
-    **dict.fromkeys(['EPR', 'CRT', 'FOK', 'PRD', 'SOK'], 'ask_for_status'),
-    **dict.fromkeys(['-3', 'RCH', 'RCO', 'VOF', 'RFR', 'RPT', 'RSC', 'RCT'], 'rejected')
+SII_DETAIL_STATUS_RESULTS_REST = {
+    **dict.fromkeys(['DOK'], 'accepted'),
+    **dict.fromkeys(['RPR', 'RLV'], 'objected'),
+    **dict.fromkeys(['RCH'], 'rejected'),
 }
 
 TIMEOUT_REST = 5
@@ -137,12 +138,19 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         if detail_rep_rech is None:
             return 'ask_for_status'
         for doc in detail_rep_rech:
-            status = SII_STATUS_RESULTS_REST.get(doc['estado'])
-            if doc['folio'] is None and status == 'rejected':
+            detail_status = SII_DETAIL_STATUS_RESULTS_REST.get(doc['estado'])
+            if doc['folio'] is None and detail_status == 'rejected':
                 return 'rejected'
-            if status is not None and doc['folio'] == int(self.l10n_latam_document_type_id.code):
-                return status
+            matching_folio = doc.get('folio') == int(self.l10n_latam_document_number)
+            matching_tipo = doc.get('tipo') == int(self.l10n_latam_document_type_id.code)
+            if detail_status is not None and matching_folio and matching_tipo:
+                return detail_status
+        # The message may or may not include data into the 'detalle_rep_rech' section so the number of the DTE
+        # reported, objected and accepted will be verified from the 'estadistica' section. For now the message will
+        # only include a DTE.
         for summary in message.get('estadistica', []):
+            if summary['tipo'] != int(self.l10n_latam_document_type_id.code):
+                continue
             if summary['aceptados'] == summary['informados']:
                 return 'accepted'
             if summary['reparos'] >= 1:

@@ -503,6 +503,14 @@ _amount_getters = [
     (partial(_generic_get, xpath='ns:Amt/text()'), partial(_generic_get, xpath='ns:Amt/@Ccy')),
 ]
 
+_charges_getters = [
+    (partial(_generic_get, xpath='ns:Chrgs/ns:Rcrd/ns:Amt/text()'), partial(_generic_get, xpath='ns:Chrgs/ns:Rcrd/ns:Amt/@Ccy')),
+]
+
+_amount_charges_getters = [
+    (partial(_generic_get, xpath='ns:Amt/text()'), partial(_generic_get, xpath='ns:Amt/@Ccy')),
+]
+
 # These are pair of getters: (getter for the exchange rate, getter for the target currency)
 _target_rate_getters = [
     (partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'), partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()')),
@@ -589,12 +597,22 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
                 return rate
         return None
 
+    def get_charges(*entries, target_currency=None):
+        for entry in entries:
+            charges = get_value_and_currency_name(entry, _charges_getters, target_currency=target_currency)[0]
+            if charges:
+                return charges
+        return None
+
     entry_details = nodes[0]
     entry = nodes[1] if len(nodes) > 1 else nodes[0]
 
-    amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters)
+    charges = get_charges(entry_details, entry)
+    getters = _amount_charges_getters if charges else _amount_getters
+
+    amount, amount_currency_name = get_value_and_currency_name(entry_details, getters)
     if not amount:
-        amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters)
+        amount, amount_currency_name = get_value_and_currency_name(entry, getters)
 
     if not journal_currency or amount_currency_name == journal_currency.name:
         rate = 1.0

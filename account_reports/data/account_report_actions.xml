@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Account Financial Report Actions -->
+        <record id="action_account_report_pnl" model="ir.actions.client">
+            <field name="name">Profit And Loss</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.financial.html.report', 'id': ref('account_financial_report_profitandloss0')}" />
+        </record>
+        <record id="action_account_report_bs" model="ir.actions.client">
+            <field name="name">Balance Sheet</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.financial.html.report', 'id': ref('account_financial_report_balancesheet0')}" />
+        </record>
+        <record id="action_account_report_cs" model="ir.actions.client">
+            <field name="name">Cash Flow Statement</field>
+            <field name="tag">account_report</field>
+        <field name="context" eval="{'model': 'account.cash.flow.report'}"/>
+        </record>
+        <record id="action_account_report_gt" model="ir.actions.client">
+            <field name="name">Tax Report</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.generic.tax.report'}" />
+        </record>
+        <record id="action_account_report_cj" model="ir.actions.client">
+            <field name="name">Consolidated Journals</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.consolidated.journal'}" />
+        </record>
+        <record id="action_account_report_bank_reconciliation" model="ir.actions.client">
+            <field name="name">Bank Reconciliation</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.bank.reconciliation.report'}" />
+        </record>
+        <record id="action_account_report_bank_reconciliation_with_journal" model="ir.actions.client">
+            <field name="name">Bank Reconciliation</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.bank.reconciliation.report'}" />
+        </record>
+        <record id="action_account_report_general_ledger" model="ir.actions.client">
+            <field name="name">General Ledger</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.general.ledger'}" />
+        </record>
+        <record id="action_account_report_multicurrency_revaluation" model="ir.actions.client">
+            <field name="name">Unrealized Currency Gains/Losses</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.multicurrency.revaluation'}" />
+        </record>
+        <record id="action_account_report_ar" model="ir.actions.client">
+            <field name="name">Aged Receivable</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.aged.receivable'}" />
+        </record>
+        <record id="action_account_report_ap" model="ir.actions.client">
+            <field name="name">Aged Payable</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.aged.payable'}" />
+        </record>
+        <record id="action_account_report_coa" model="ir.actions.client">
+            <field name="name">Trial Balance</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.coa.report'}" />
+        </record>
+        <record id="action_account_report_partner_ledger" model="ir.actions.client">
+            <field name="name">Partner Ledger</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.partner.ledger'}" />
+        </record>
+        <record id="action_account_report_analytic" model="ir.actions.client">
+            <field name="name">Analytic Report</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.analytic.report'}" />
+        </record>
+        <record id="action_account_report_sales" model="ir.actions.client">
+            <field name="name">EC Sales List</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.sales.report'}" />
+        </record>
+
+        <!-- Journals Audit Report PDF only, needs to be converted -->
+        <record id="account_report_print_journal_view" model="ir.ui.view">
+            <field name="name">Journals Audit</field>
+            <field name="model">account.print.journal</field>
+            <field name="inherit_id" ref="account.account_common_report_view"/>
+            <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='target_move']" position="after">
+                    <field name="amount_currency" groups="base.group_multi_currency"/>
+                    <field name="sort_selection" widget="radio"/>
+                    <newline/>
+                </xpath>
+            </data>
+            </field>
+        </record>
+        <record id="action_account_print_journal_menu" model="ir.actions.act_window">
+            <field name="name">Journals Audit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.print.journal</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_report_print_journal_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Account Financial Report Links Actions -->
+        <record id="account_financial_current_year_earnings_line_1" model="account.financial.html.report.line">
+            <field name="action_id" ref='action_account_report_pnl' />
+        </record>
+        <record id="account_financial_report_executivesummary_profitability0" model="account.financial.html.report.line">
+            <field name="action_id" ref='action_account_report_pnl' />
+        </record>
+        <record id="account_financial_report_executivesummary_balancesheet0" model="account.financial.html.report.line">
+            <field name="action_id" ref='action_account_report_bs' />
+        </record>
+
+    </data>
+</odoo>

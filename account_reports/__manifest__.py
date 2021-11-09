@@ -11,7 +11,11 @@ Accounting Reports
     'depends': ['account_accountant'],
     'data': [
         'security/ir.model.access.csv',
-        'data/account_financial_report_data.xml',
+        'data/balance_sheet.xml',
+        'data/executive_summary.xml',
+        'data/profit_and_loss.xml',
+        'data/account_report_actions.xml',
+        'data/menuitems.xml',
         'data/mail_data.xml',
         'views/account_report_view.xml',
         'views/report_financial.xml',

@@ -84,7 +84,7 @@ FormRenderer.include({
             // We also test the existance of parent.classList. At start of the
             // form_renderer, parent is a DocumentFragment and not the parent of
             // the chatter. DocumentFragment doesn't have a classList property.
-            !(parent && parent.classList && parent.classList.contains('o_form_sheet'))
+            !(parent && parent.classList && (parent.classList.contains('o_form_sheet') || parent.classList.contains('tab-pane')))
         );
     },
     /**

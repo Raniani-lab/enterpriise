@@ -701,7 +701,7 @@
                         By default, the alert is triggered weekly and applies on the subscriptions that match
                         the following criterias. The next run is on <field name="cron_nextcall" nolabel="1"/>.
                     </div>
-                    <div attrs="{'invisible': [('cron_nextcall', '!=', False)]}">
+                    <div attrs="{'invisible': ['|', ('cron_nextcall', '!=', False), ('id', '=', False)]}">
                         The scheduled action for alerts has been deleted. Update the Subscriptions module to re-create it.
                     </div>
                     <group name="apply_on_panel" string="Apply on">

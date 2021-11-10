@@ -188,10 +188,9 @@ class RentalOrderLine(models.Model):
         if self.qty_delivered > self.product_uom_qty:
             self.product_uom_qty = self.qty_delivered
 
-    @api.onchange('pickup_date', 'return_date')
-    def _onchange_rental_info(self):
-        """Trigger description recomputation"""
-        self.product_id_change()
+    @api.depends('pickup_date', 'return_date')
+    def _compute_name(self):
+        super()._compute_name()
 
     @api.onchange('is_rental')
     def _onchange_is_rental(self):

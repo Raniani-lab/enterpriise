@@ -26,7 +26,6 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheet):
             'price_unit': self.product_delivery_timesheet3.list_price,
             'order_id': sale_order.id,
         })
-        so_line_product_1.product_id_change()
 
         # confirm SO
         sale_order.action_confirm()
@@ -43,7 +42,6 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheet):
             'price_unit': self.product_delivery_timesheet1.list_price,
             'order_id': sale_order.id,
         })
-        so_line_product_2.product_id_change()
 
         # let's log some timesheets
         timesheet_1 = self.env['account.analytic.line'].create({

@@ -131,10 +131,6 @@
       <field name="reserved_lot_ids" eval="[(6,0,[ref('rental_stock_lot_1'), ref('rental_stock_lot_2')])]"/>
   </record>
 
-  <!-- Trigger so_line name recomputation -->
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_stock_order_line_1')]]"/>
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_stock_order_line_2')]]"/>
-
   <!-- CONFIRM Rental Sale Order -->
   <function model="sale.order" name="action_confirm" eval="[[ref('rental_stock_order_1')]]"/>
 

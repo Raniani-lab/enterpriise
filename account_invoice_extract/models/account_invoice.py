@@ -808,7 +808,6 @@ class AccountMove(models.Model):
                 vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
                 for i, line_val in enumerate(vals_invoice_lines):
                     with move_form.invoice_line_ids.new() as line:
-                        line.tax_ids.clear()
                         line.name = line_val['name']
                         line.price_unit = line_val['price_unit']
                         line.quantity = line_val['quantity']
@@ -832,8 +831,13 @@ class AccountMove(models.Model):
                             else:
                                 taxes_dict[tax_tuple]['found_by_OCR'] = True
                         for (tax_amount, _, tax_price_include), tax_info in taxes_dict.items():
-                            if not tax_info['found_by_OCR'] and (tax_amount == 0 or not tax_price_include):
+                            if not tax_info['found_by_OCR']:
+                                amount_before = line.price_total
                                 line.tax_ids.remove(tax_info['tax_record'].id)
+                                # If the total amount didn't change after removing it, we can actually leave it.
+                                # This is intended as a way to keep intra-community taxes
+                                if line.price_total == amount_before:
+                                    line.tax_ids.add(tax_info['tax_record'])
 
                 # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
                 for i in range(len(move_form.line_ids)):

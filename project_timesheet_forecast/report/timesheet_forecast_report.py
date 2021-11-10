@@ -23,6 +23,7 @@ class TimesheetForecastReport(models.Model):
     planned_hours = fields.Float('Planned Hours', readonly=True)
     difference = fields.Float('Remaining Hours', readonly=True)
     user_id = fields.Many2one('res.users', string='Assigned to', readonly=True)
+    is_published = fields.Boolean(readonly=True)
 
     @api.model
     def _select(self):
@@ -38,7 +39,8 @@ class TimesheetForecastReport(models.Model):
                 F.allocated_hours / NULLIF(F.working_days_count, 0) AS planned_hours,
                 F.allocated_hours / NULLIF(F.working_days_count, 0) AS difference,
                 'forecast' AS line_type,
-                F.id AS id
+                F.id AS id,
+                CASE WHEN F.state = 'published' THEN TRUE ELSE FALSE END AS is_published
         """
         return select_str
 
@@ -80,7 +82,8 @@ class TimesheetForecastReport(models.Model):
                 0.0 AS planned_hours,
                 -A.unit_amount / UOM.factor * HOUR_UOM.factor AS difference,
                 'timesheet' AS line_type,
-                -A.id AS id
+                -A.id AS id,
+                TRUE AS is_published
         """
         return select_str
 

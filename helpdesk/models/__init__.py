@@ -3,6 +3,7 @@
 
 from . import digest
 from . import ir_module
+from . import ir_ui_menu
 from . import helpdesk
 from . import helpdesk_ticket
 from . import res_users

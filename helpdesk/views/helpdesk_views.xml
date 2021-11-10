@@ -959,12 +959,10 @@
     </record>
 
     <menuitem id="helpdesk_ticket_report_menu_main" name="Reporting"
-        sequence="20" parent="helpdesk.menu_helpdesk_root"
-        groups="helpdesk.group_helpdesk_manager"/>
+        sequence="20" parent="helpdesk.menu_helpdesk_root"/>
 
     <menuitem id="helpdesk_ticket_report_menu" name="Tickets Analysis" action="helpdesk.helpdesk_ticket_analysis_action"
-        sequence="10" parent="helpdesk_ticket_report_menu_main"
-        groups="helpdesk.group_helpdesk_manager"/>
+        sequence="10" parent="helpdesk_ticket_report_menu_main"/>
 
     <!-- helpdesk team pivot View -->
     <record id="helpdesk_team_view_pivot_analysis" model="ir.ui.view">

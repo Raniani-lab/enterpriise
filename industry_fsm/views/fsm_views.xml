@@ -857,15 +857,13 @@
     <menuitem id="fsm_menu_reporting"
         name="Reporting"
         sequence="40"
-        parent="fsm_menu_root"
-        groups="industry_fsm.group_fsm_manager"/>
+        parent="fsm_menu_root"/>
 
         <menuitem id="fsm_menu_reporting_task_analysis"
             name="Tasks Analysis"
             sequence="10"
             action="project_task_user_action_report_fsm"
-            parent="industry_fsm.fsm_menu_reporting"
-            groups="industry_fsm.group_fsm_manager"/>
+            parent="industry_fsm.fsm_menu_reporting"/>
 
     <menuitem id="fsm_menu_settings"
               name="Configuration"

@@ -89,13 +89,13 @@
         name="Reporting"
         parent="planning_menu_root"
         sequence="40"
-        groups="planning.group_planning_manager"/>
+        groups="planning.group_planning_user"/>
 
     <menuitem
         id="planning_menu_planning_analysis"
         name="Planning Analysis"
         action="planning_report_action_analysis"
         sequence="10" parent="planning_menu_reporting"
-        groups="planning.group_planning_manager"/>
+        groups="planning.group_planning_user"/>
 
 </odoo>

@@ -34,7 +34,6 @@
                 <button name="%(hr_contract_salary.generate_simulation_link_action)d" type="action" string="Generate Simulation Link" attrs="{'invisible': [('employee_id', '=', False)]}"/>
             </xpath>
             <field name="job_id" position="after">
-                <field name="contract_type_id"/>
                 <label for="wage_on_signature"/>
                 <div class="o_row" name="wage">
                     <field name="wage_on_signature" nolabel="1"/>

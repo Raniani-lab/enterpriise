@@ -93,7 +93,7 @@
             <field name="uom_id" ref="uom.product_uom_cubic_foot"/>
             <field name="uom_po_id" ref="uom.product_uom_cubic_foot"/>
             <field name="default_code">E-COM99</field>
-            <field name="image_1920" type="base64" file="product/static/img/product_product_10-image.png"/>
+            <field name="image_1920" type="base64" file="product/static/img/product_product_10-image.jpg"/>
             <field name="barcode">06016478559999</field>
         </record>
         <record id="product_custom_cabinet_metric" model="product.product">
@@ -106,7 +106,7 @@
             <field name="uom_id" ref="uom.product_uom_cubic_meter"/>
             <field name="uom_po_id" ref="uom.product_uom_cubic_meter"/>
             <field name="default_code">E-COM98</field>
-            <field name="image_1920" type="base64" file="product/static/img/product_product_10-image.png"/>
+            <field name="image_1920" type="base64" file="product/static/img/product_product_10-image.jpg"/>
             <field name="barcode">06016478559982</field>
         </record>
 

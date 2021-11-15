@@ -261,7 +261,7 @@ class WorksheetTemplate(models.Model):
             'name': 'template_view_' + "_".join(self.name.split(' ')),
             'model': model.model,
             'arch': form_arch_func and form_arch_func() or """
-                <form create="false">
+                <form create="false" duplicate="false">
                     <sheet>
                         <h1 invisible="context.get('studio') or context.get('default_x_%s_id')">
                             <field name="x_%s_id"/>

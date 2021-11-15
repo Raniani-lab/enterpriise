@@ -41,7 +41,7 @@ class ProductProduct(models.Model):
             return
 
         task = self.env['project.task'].browse(task_id)
-        if not task or task.fsm_done:
+        if not task:
             self.quantity_decreasable = False
             return
         elif task.sale_order_id.sudo().state in ['draft', 'sent']:
@@ -59,7 +59,7 @@ class ProductProduct(models.Model):
     def write(self, vals):
         new_fsm_quantity = vals.get('fsm_quantity')
         if new_fsm_quantity and any(not product.quantity_decreasable and product.fsm_quantity > new_fsm_quantity for product in self):
-            raise UserError(_('You can no longer decrease the delivered quantity of a product once the task is marked as done. Please, create a return in your Inventory instead.'))
+            raise UserError(_('The ordered quantity cannot be decreased below the amount already delivered. Instead, create a return in your inventory.'))
         return super().write(vals)
 
     def action_assign_serial(self):

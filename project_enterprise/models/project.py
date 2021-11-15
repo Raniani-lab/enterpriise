@@ -56,7 +56,7 @@ class Task(models.Model):
     duration = fields.Float(compute='_compute_duration')
 
     _sql_constraints = [
-        ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
+        ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be before the planned end date."),
     ]
 
     @property

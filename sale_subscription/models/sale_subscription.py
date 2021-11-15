@@ -350,7 +350,7 @@ class SaleSubscription(models.Model):
         subscription = super(SaleSubscription, self).create(vals)
         if vals.get('stage_id'):
             subscription._send_subscription_rating_mail(force_send=True)
-        if subscription.partner_id:
+        if subscription.partner_id and subscription.stage_category == "progress":
             subscription.message_subscribe(subscription.partner_id.ids)
         return subscription
 
@@ -361,8 +361,8 @@ class SaleSubscription(models.Model):
                 vals['recurring_invoice_day'] = recurring_next_date.day
             else:
                 vals['recurring_invoice_day'] = fields.Date.from_string(recurring_next_date).day
-        if vals.get('partner_id'):
-            self.message_subscribe([vals['partner_id']])
+        old_partners = {s.id: s.partner_id.id for s in self}
+        old_in_progress = {s.id: s.stage_category == "progress" for s in self}
         if vals.get('payment_token_id'):
             # check access rule for token to make sure the user is allowed to read it. This prevents
             # assigning unowned tokens through RPC calls
@@ -370,6 +370,14 @@ class SaleSubscription(models.Model):
         result = super(SaleSubscription, self).write(vals)
         if vals.get('stage_id'):
             self._send_subscription_rating_mail(force_send=True)
+        for subscription in self:
+            diff_partner = subscription.partner_id.id != old_partners[subscription.id]
+            diff_in_progress = (subscription.stage_category == "progress") != old_in_progress[subscription.id]
+            if diff_partner or diff_in_progress:
+                if subscription.stage_category == "progress":
+                    subscription.message_subscribe(subscription.partner_id.ids)
+                if diff_partner or subscription.stage_category != "progress":
+                    subscription.message_unsubscribe([old_partners[subscription.id]])
         return result
 
     def _init_column(self, column_name):

@@ -835,3 +835,13 @@ class Task(models.Model):
     @api.depends('planned_date_begin')
     def _compute_recurrence_message(self):
         return super(Task, self)._compute_recurrence_message()
+
+    def action_dependent_tasks(self):
+        action = super().action_dependent_tasks()
+        action['view_mode'] = 'tree,form,kanban,calendar,pivot,graph,gantt,activity,map'
+        return action
+
+    def action_recurring_tasks(self):
+        action = super().action_recurring_tasks()
+        action['view_mode'] = 'tree,form,kanban,calendar,pivot,graph,gantt,activity,map'
+        return action

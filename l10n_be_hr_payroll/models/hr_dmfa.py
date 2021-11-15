@@ -1042,8 +1042,11 @@ class HrDMFAReport(models.Model):
             raise UserError(_('The following work entry types do not have any DMFA code set:\n %s', '\n'.join(invalid_types.mapped('name'))))
 
         employee_payslips = defaultdict(lambda: self.env['hr.payslip'])
+        payslips_salary = payslips._get_line_values(['SALARY'])
         for payslip in payslips:
-            employee_payslips[payslip.employee_id] |= payslip
+            salary = payslips_salary['SALARY'][payslip.id]['total']
+            if payslip.struct_id.code != "CP200MONTHLY" or salary:
+                employee_payslips[payslip.employee_id] |= payslip
 
         double_basis, double_onss = self._get_double_holiday_pay_contribution(payslips)  # rounded
 

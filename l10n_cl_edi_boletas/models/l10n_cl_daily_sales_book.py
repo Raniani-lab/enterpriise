@@ -7,6 +7,7 @@ from datetime import timedelta
 from lxml import etree
 
 from odoo import _, api, fields, models, _lt
+from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse
 from odoo.exceptions import UserError
 from odoo.tools import float_repr, html_escape
 
@@ -14,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 SII_STATUS_SALES_BOOK_RESULT = {
     **dict.fromkeys(['-11', 'REC', 'SOK', 'FOK', 'PRD', 'CRT'], 'ask_for_status'),
-    **dict.fromkeys(['-3', 'RPT', 'RFR', 'VOF', 'RCT'], 'rejected'),
+    **dict.fromkeys(['-3', 'RPT', 'RFR', 'VOF', 'RCT', 'RCH', 'RSC'], 'rejected'),
     'EPR': 'accepted',
     'RPR': 'objected',
 }
@@ -261,24 +262,37 @@ class L10nClDailySalesBook(models.Model):
         # The response from SII has the encoding declaration then it's re-encoding with encode()
         # to ensure the string could be parsed
         response_parsed = etree.fromstring(response.encode())
-        self.l10n_cl_dte_status = self._analyze_sii_sales_book_result(response_parsed)
+
         if response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO') in ['001', '002', '003']:
             digital_signature.last_token = False
             _logger.error('Token is invalid.')
-        else:
-            self.message_post(
-                body=_('Asking for DTE status with response:') +
-                     '<br/><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
-                         html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO')),
-                         html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA')),
-                         html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION'))))
+            return
+
+        try:
+            self.l10n_cl_dte_status = self._analyze_sii_sales_book_result(response_parsed)
+        except UnexpectedXMLResponse:
+            # The assumption here is that the unexpected input is intermittent,
+            # so we'll retry later. If the same input appears regularly, it should
+            # be handled properly in _analyze_sii_sales_book_result.
+            _logger.error("Unexpected XML response:\n%s", response)
+            return
+
+        self.message_post(
+            body=_('Asking for DTE status with response:') +
+                 '<br/><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
+                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO')),
+                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA')),
+                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION'))))
 
     def _analyze_sii_sales_book_result(self, xml_message):
         """Returns the status of the DTE from the xml_message. The status could be:
         ask_for_status, rejected, accepted, objected
         """
         status = xml_message.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO')
-        return SII_STATUS_SALES_BOOK_RESULT.get(status, 'rejected')
+        if status in SII_STATUS_SALES_BOOK_RESULT:
+            return SII_STATUS_SALES_BOOK_RESULT[status]
+        else:
+            raise UnexpectedXMLResponse()
 
     def _l10n_cl_ask_dte_status(self):
         for record in self.search([('l10n_cl_dte_status', '=', 'ask_for_status')]):

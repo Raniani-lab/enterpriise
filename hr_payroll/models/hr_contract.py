@@ -36,7 +36,8 @@ class HrContract(models.Model):
         self.ensure_one()
         contract_type = self.contract_type_id
         work_time_rate = self.resource_calendar_id.work_time_rate
-        return contract_type == contract.contract_type_id and work_time_rate == contract.resource_calendar_id.work_time_rate
+        same_type = contract_type == contract.contract_type_id and work_time_rate == contract.resource_calendar_id.work_time_rate
+        return same_type
 
     def _get_occupation_dates(self, include_future_contracts=False):
         # Takes several contracts and returns all the contracts under the same occupation (i.e. the same
@@ -46,6 +47,24 @@ class HrContract(models.Model):
         result = []
         done_contracts = self.env['hr.contract']
         date_today = fields.Date.today()
+
+        def remove_gap(contract, other_contracts, before=False):
+            # We do not consider a gap of more than 4 days to be a same occupation
+            # other_contracts is considered to be ordered correctly in function of `before`
+            current_date = contract.date_start if before else contract.date_end
+            for i, other_contract in enumerate(other_contracts):
+                if not current_date:
+                    return other_contracts[0:i]
+                if before:
+                    # Consider contract.date_end being false as an error and cut the loop
+                    gap = (current_date - (other_contract.date_end or date(2100, 1, 1))).days
+                    current_date = other_contract.date_start
+                else:
+                    gap = (other_contract.date_start - current_date).days
+                    current_date = other_contract.date_end
+                if gap >= 4:
+                    return other_contracts[0:i]
+            return other_contracts
 
         for contract in self:
             if contract in done_contracts:
@@ -61,7 +80,9 @@ class HrContract(models.Model):
                 )
             ) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
             before_contracts = all_contracts.filtered(lambda c: c.date_start < contract.date_start) # hr.contract(39, 41)
+            before_contracts = remove_gap(contract, before_contracts, before=True)
             after_contracts = all_contracts.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
+            after_contracts = remove_gap(contract, after_contracts)
 
             for before_contract in before_contracts:
                 if contract._is_same_occupation(before_contract):

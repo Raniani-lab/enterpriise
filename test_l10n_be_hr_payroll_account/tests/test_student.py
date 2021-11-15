@@ -97,7 +97,7 @@ class TestStudent(AccountTestInvoicingCommon):
 
         payslip.compute_sheet()
 
-        self.assertEqual(len(payslip.line_ids), 6)
+        self.assertEqual(len(payslip.line_ids), 7)
 
         payslip_results = {
             'BASIC': 587.06,  # 10.8714 * 54 = 587.0556
@@ -106,5 +106,6 @@ class TestStudent(AccountTestInvoicingCommon):
             'CAR.PRIV': 13.86,
             'MEAL_V_EMP': -6.54,
             'NET': 578.46,
+            'ONSSEMPLOYER': 31.82,
         }
         self._validate_payslip(payslip, payslip_results)

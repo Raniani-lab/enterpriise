@@ -48,4 +48,17 @@ else:
         <field name="partner_id" ref="l10n_be_hr_payroll.res_partner_meal_vouchers"/>
         <field name="struct_id" ref="hr_payroll_structure_student_regular_pay"/>
     </record>
+
+    <record id="hr_salary_rule_student_onss_employer" model="hr.salary.rule">
+        <field name="category_id" ref="hr_salary_rule_category_onss_employer"/>
+        <field name="name">Accounting: ONSS (Employer)</field>
+        <field name="code">ONSSEMPLOYER</field>
+        <field name="sequence">502</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = BASIC * 0.0542</field>
+        <field name="partner_id" ref="res_partner_onss"/>
+        <field name="struct_id" ref="hr_payroll_structure_student_regular_pay"/>
+        <field name="appears_on_payslip" eval="False"/>
+    </record>
 </odoo>

@@ -480,7 +480,7 @@ class ResCompany(models.Model):
             'USD': 'PD04640PD',
             'EUR': 'PD04648PD',
         }
-        date_pe = datetime.datetime.now(timezone('America/Lima')) if not self.currency_next_execution_date else self.currency_next_execution_date
+        date_pe = self.mapped('currency_next_execution_date')[0] or datetime.datetime.now(timezone('America/Lima'))
         # In case the desired date does not have an exchange rate, it means that we must use the previous day until we
         # find a change. It is left 7 since in tests we have found cases of up to 5 days without update but no more
         # than that. That is not to say that that cannot change in the future, so we leave a little margin.

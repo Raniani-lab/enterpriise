@@ -834,7 +834,7 @@ tour.register('web_studio_approval_tour', {
     extra_trigger: '.o_studio_sidebar_approval_rule:eq(1)',
 }, {
     // set stupid domain that is always truthy
-    trigger: '.o_domain_debug_container input',
+    trigger: '.o_domain_debug_container textarea',
     run: function () {
         this.$anchor.focusIn();
         this.$anchor.val('[["id", "!=", False]]');
@@ -843,7 +843,6 @@ tour.register('web_studio_approval_tour', {
 }, {
     // save domain and close modal
     trigger:' .modal-footer .btn-primary',
-    extra_trigger: '.o_domain_leaf_edition',
 }, {
     // add second approval rule when the first is set
     trigger: '.o_web_studio_sidebar_approval .o_approval_new',

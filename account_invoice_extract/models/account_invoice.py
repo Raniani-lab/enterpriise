@@ -815,6 +815,7 @@ class AccountMove(models.Model):
                         if not line.account_id:
                             raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
 
+                    move_form.save()  # We save to trigger the re-computation of the taxes on the line
                     with move_form.invoice_line_ids.edit(i) as line:
                         taxes_dict = {}
                         for tax in line.tax_ids:

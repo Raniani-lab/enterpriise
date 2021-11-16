@@ -52,7 +52,7 @@ tour.register('industry_fsm_tour', {
     content: Markup(_t('Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this form to your needs and create as many templates as you want.</i>')),
     position: 'bottom'
 }, {
-    trigger: ".breadcrumb-item:not(.active):last",
+    trigger: ".breadcrumb-item.o_back_button:nth-of-type(2)",
     content: Markup(_t("Use the breadcrumbs to go back to your <b>task</b>.")),
     position: 'bottom'
 }, {
@@ -63,7 +63,6 @@ tour.register('industry_fsm_tour', {
     trigger: 'button[name="save_timesheet"]',
     content: Markup(_t('Confirm the <b>time spent</b> on your task. <i>Tip: a rounding of 15min has automatically been applied.</i>')),
     position: 'bottom',
-    id: 'fsm_save_timesheet',
 }, {
     trigger: 'button[name="action_preview_worksheet"]',
     extra_trigger: '.o_form_project_tasks',

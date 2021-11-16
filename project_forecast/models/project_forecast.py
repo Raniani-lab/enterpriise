@@ -39,7 +39,7 @@ class PlanningShift(models.Model):
     resource_id = fields.Many2one(compute='_compute_resource_id', store=True, readonly=False)
 
     _sql_constraints = [
-        ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
+        ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "You cannot set a task linked to a shift as private."),
     ]
 
     @api.depends('task_id', 'allocated_hours', 'project_id')
@@ -86,8 +86,8 @@ class PlanningShift(models.Model):
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):
         for forecast in self:
-            if forecast.task_id and (forecast.task_id not in forecast.project_id.with_context(active_test=False).tasks):
-                raise ValidationError(_("Your task is not in the selected project."))
+            if forecast.project_id and forecast.task_id and (forecast.task_id not in forecast.project_id.with_context(active_test=False).tasks):
+                raise ValidationError(_("You cannot set a task linked to a shift as private."))
 
     def _read_group_project_id(self, projects, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]

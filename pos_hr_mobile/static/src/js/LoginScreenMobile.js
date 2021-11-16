@@ -12,7 +12,21 @@ odoo.define('pos_hr_mobile.LoginScreen', function (require) {
         }
 
         async open_mobile_scanner() {
-            const data = await BarcodeScanner.scanBarcode();
+            let data;
+            try {
+                data = await BarcodeScanner.scanBarcode();
+            } catch (error) {
+                if (error.error && error.error.message) {
+                    // Here, we know the structure of the error raised by BarcodeScanner.
+                    this.showPopup('ErrorPopup', {
+                        title: this.env._t('Unable to scan'),
+                        body: error.error.message,
+                    });
+                    return;
+                }
+                // Just raise the other errors.
+                throw error;
+            }
             if (data) {
                 this.env.pos.barcode_reader.scan(data);
                 if ('vibrate' in window.navigator) {

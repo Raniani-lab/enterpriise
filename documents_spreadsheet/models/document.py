@@ -230,7 +230,7 @@ class Document(models.Model):
                 self.env["spreadsheet.revision"].sudo().create(
                     {
                         "document_id": self.id,
-                        "commands": commands,
+                        "commands": json.dumps(commands),
                         "parent_revision_id": parent_revision_id,
                         "revision_id": next_revision_id,
                         "create_date": fields.Datetime.now(),
@@ -246,7 +246,7 @@ class Document(models.Model):
             _logger.info("Wrong base spreadsheet revision on %s", self)
             return False
 
-    def _build_spreadsheet_revision_data(self, message: CollaborationMessage) -> str:
+    def _build_spreadsheet_revision_data(self, message: CollaborationMessage) -> dict:
         """Prepare revision data to save in the database from
         the collaboration message.
         """
@@ -254,7 +254,7 @@ class Document(models.Model):
         message.pop("serverRevisionId", None)
         message.pop("nextRevisionId", None)
         message.pop("clientId", None)
-        return json.dumps(message)
+        return message
 
     def _build_spreadsheet_messages(self) -> List[CollaborationMessage]:
         """Build spreadsheet collaboration messages from the saved

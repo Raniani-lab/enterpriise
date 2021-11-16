@@ -66,8 +66,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
         xml_expected_dte = misc.file_open('l10n_cl_edi_stock/tests/expected_dtes/delivery_guide_products_with_taxes.xml').read()
 
         self.assertXmlTreeEqual(
-            etree.fromstring(xml_expected_dte.encode()),
-            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas))
+            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas)),
+            etree.fromstring(xml_expected_dte.encode())
         )
 
     @freeze_time('2019-10-24')
@@ -118,8 +118,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
         xml_expected_dte = misc.file_open('l10n_cl_edi_stock/tests/expected_dtes/delivery_guide_products_with_taxes.xml').read()
 
         self.assertXmlTreeEqual(
-            etree.fromstring(xml_expected_dte.encode()),
-            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas))
+            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas)),
+            etree.fromstring(xml_expected_dte.encode())
         )
 
     @freeze_time('2019-10-24')
@@ -171,8 +171,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
         xml_expected_dte = misc.file_open('l10n_cl_edi_stock/tests/expected_dtes/delivery_guide_products_without_taxes.xml').read()
 
         self.assertXmlTreeEqual(
-            etree.fromstring(xml_expected_dte.encode()),
-            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas))
+            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas)),
+            etree.fromstring(xml_expected_dte.encode())
         )
 
     @freeze_time('2019-10-24')
@@ -217,6 +217,6 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
         xml_expected_dte = misc.file_open('l10n_cl_edi_stock/tests/expected_dtes/delivery_guide_no_price.xml').read()
 
         self.assertXmlTreeEqual(
-            etree.fromstring(xml_expected_dte.encode()),
-            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas))
+            etree.fromstring(base64.b64decode(picking.l10n_cl_sii_send_file.with_context(bin_size=False).datas)),
+            etree.fromstring(xml_expected_dte.encode())
         )

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2021-11-16 16:42+0000\n"
+"PO-Revision-Date: 2021-11-16 16:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3561,11 +3561,6 @@ msgid "Studio"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.actions.client,name:web_studio.action_web_studio_action_editor
-msgid "Studio Action Editor"
-msgstr ""
-
-#. module: web_studio
 #: model:ir.actions.client,name:web_studio.action_web_studio_app_creator
 msgid "Studio App Creator"
 msgstr ""
@@ -3611,11 +3606,6 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
 msgid "Studio Mixin"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.actions.client,name:web_studio.action_web_studio_report_editor
-msgid "Studio Report Editor"
 msgstr ""
 
 #. module: web_studio
@@ -4424,13 +4414,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/client_action/navbar/navbar.xml:0
-#, python-format
-msgid "web_studio.NavBar.SectionsMenu"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
@@ -4450,24 +4433,4 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "year"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/client_action/studio_home_menu/studio_home_menu.xml:0
-#, python-format
-msgid ""
-"{\n"
-"            o_focused: appIndex === app_index,\n"
-"            o_web_studio_new_app: app.isNewAppButton\n"
-"        }"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/home_menu/home_menu.xml:0
-#, python-format
-msgid ""
-"{{ backgroundImageUrl ? \"background-image: url(\" + backgroundImageUrl + "
-"\");\" : '' }}"
 msgstr ""

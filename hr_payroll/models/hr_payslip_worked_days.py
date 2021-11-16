@@ -19,7 +19,7 @@ class HrPayslipWorkedDays(models.Model):
     is_paid = fields.Boolean(compute='_compute_is_paid', store=True)
     amount = fields.Monetary(string='Amount', compute='_compute_amount', store=True, copy=True)
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract',
-        help="The contract for which apply this worked days")
+        help="The contract this worked days should be applied to")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')
 
     @api.depends(

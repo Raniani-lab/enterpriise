@@ -1281,7 +1281,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
     def test_planning_1(self):
         """ Testing planning workorder with alternative workcenters
-        Plan 6 times the same MO, the workorders should be split accross workcenters
+        Plan 6 times the same MO, the workorders should be split across workcenters
         The 3 workcenters are free, this test plans 3 workorder in a row then three next.
         The workcenters have not exactly the same parameters (efficiency, start time) so the
         the last 3 workorder are not dispatched like the 3 first.

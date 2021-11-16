@@ -258,7 +258,7 @@ class ECSalesReport(models.AbstractModel):
             cperiodmonth = int(cperiod) * 3 if ctype[-1] == 'T' else int(cperiod)
             dperiod = int(month) if month else quarter * 3 - 2
             if int(cyear) > int(year) or cperiodmonth >= dperiod and int(cyear) == int(year):
-                raise ValidationError(_("Some problems with the comparison declarations occured. "
+                raise ValidationError(_("Some problems with the comparison declarations occurred. "
                                         "The comparison declarations must refer to earlier periods."))
 
         # L & T

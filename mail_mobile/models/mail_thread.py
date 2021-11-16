@@ -104,7 +104,7 @@ class MailThread(models.AbstractModel):
                 try:
                     iap_tools.iap_jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
                 except Exception as e:
-                    _logger.error('An error occured while contacting the ocn server: %s', e)
+                    _logger.error('An error occurred while contacting the ocn server: %s', e)
 
     def _notify_by_ocn_send_prepare_payload(self, message, receiver_ids, msg_vals=False):
         """Returns dictionary containing message information for mobile device.

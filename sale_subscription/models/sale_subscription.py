@@ -1429,7 +1429,7 @@ class SaleSubscriptionLog(models.Model):
     category = fields.Selection([
         ('draft', 'Draft'),
         ('progress', 'In Progress'),
-        ('closed', 'Closed')], required=True, default='draft', help="Subscription stage category when the change occured")
+        ('closed', 'Closed')], required=True, default='draft', help="Subscription stage category when the change occurred")
 
     user_id = fields.Many2one('res.users', string='Salesperson')
     team_id = fields.Many2one('crm.team', string='Sales Team', ondelete="set null")

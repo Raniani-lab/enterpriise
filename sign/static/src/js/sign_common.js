@@ -2039,7 +2039,7 @@ odoo.define('sign.document_signing', function (require) {
                 session.rpc(route, params).then(function(response) {
                     $btn.text(init_btn_text);
                     if (!response) {
-                        Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
+                        Dialog.alert(self, _t("Sorry, an error occurred, please try to fill the document again."), {
                             title: _t("Error"),
                             confirm_callback: function() {
                                 window.location.reload();
@@ -2117,7 +2117,7 @@ odoo.define('sign.document_signing', function (require) {
                     }).then(function(success) {
                         if(!success) {
                             setTimeout(function() { // To be sure this dialog opens after the thank you dialog below
-                                Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
+                                Dialog.alert(self, _t("Sorry, an error occurred, please try to fill the document again."), {
                                     title: _t("Error"),
                                     confirm_callback: function() {
                                         window.location.reload();

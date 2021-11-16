@@ -35,7 +35,7 @@
                         </a>
                     </div>
                     <div class="col-lg-4 text-right o_mail_no_resize">
-                        <div class="o_mail_header_social">
+                        <div class="o_mail_header_social" t-translation="off">
                             <a title="Facebook" href="https://www.facebook.com/Odoo">
                                 <span class="fa fa-facebook rounded-circle text-white" style="background-color: rgb(43, 59, 88) !important;" contenteditable="false">​</span>
                             </a>&amp;nbsp;&amp;nbsp;
@@ -142,7 +142,7 @@
                         </a>
                     </div>
                     <div class="col-4 o_mail_no_resize" style="text-align:center;">
-                        <div class="o_mail_header_social">
+                        <div class="o_mail_header_social" t-translation="off">
                             <a title="Facebook" href="https://www.facebook.com/Odoo">
                                 <span class="fa fa-facebook o_default_snippet_text" style="color: rgb(54, 166, 210) !important; font-size: 18px;" contenteditable="false">​</span>
                             </a>
@@ -346,7 +346,7 @@
         <div class="s_footer_social o_mail_block_footer_social o_mail_footer_social_center o_mail_snippet_general" data-snippet="s_mail_block_footer_social" data-name="Footer Center" style="background-color: rgb(36, 37, 48) !important;">
             <div cellspacing="0" cellpadding="0" class="container o_mail_table_styles">
                 <div class="row">
-                    <div class="col-lg o_mail_footer_social">
+                    <div class="col-lg o_mail_footer_social" t-translation="off">
                         <a aria-label="Facebook" title="Facebook" href="https://www.facebook.com/Odoo">
                             <span class="fa fa-facebook rounded-circle" style="background-color: rgb(198, 150, 120) !important; color: rgb(36, 37, 48) !important;"></span>
                         </a>&amp;nbsp;&amp;nbsp;
@@ -597,7 +597,7 @@
         <div class="s_footer_social o_mail_block_footer_social o_mail_footer_social_center o_mail_snippet_general bg-200" data-snippet="s_mail_block_footer_social" data-name="Footer Center">
             <div cellspacing="0" cellpadding="0" class="container o_mail_table_styles">
                 <div class="row">
-                    <div class="col-lg o_mail_footer_social">
+                    <div class="col-lg o_mail_footer_social" t-translation="off">
                         <a aria-label="Facebook" title="Facebook" href="https://www.facebook.com/Odoo">
                             <span class="fa fa-facebook" contenteditable="false" style="color: rgb(186, 0, 19) !important;">​</span>
                         </a>&amp;nbsp;&amp;nbsp;
@@ -708,7 +708,7 @@
                         </div>
                     </div>
                     <div class="col-lg" align="right">
-                        <div class="o_mail_footer_social pb16">
+                        <div class="o_mail_footer_social pb16" t-translation="off">
                             <a aria-label="Facebook" title="Facebook" href="https://www.facebook.com/Odoo">
                                 <span class="fa fa-facebook rounded bg-black" contenteditable="false" style="color: rgb(255, 187, 0) !important;">​</span>
                             </a>&amp;nbsp;&amp;nbsp;

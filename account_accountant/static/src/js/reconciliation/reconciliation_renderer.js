@@ -73,9 +73,9 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
             },
             message: sprintf(
                 _t(`Congrats, you're all done! You reconciled %s transactions in %s. That's on average %s seconds per transaction.`),
-                this.number,
-                this.duration,
-                this.timePerTransaction
+                number,
+                duration,
+                timePerTransaction
             )
         });
     },

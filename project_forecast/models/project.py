@@ -27,11 +27,6 @@ class Project(models.Model):
         for project in self:
             project.total_forecast_time = shifts_per_project.get(project.id, 0)
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_contains_plannings(self):
-        if self.env['planning.slot'].sudo().search_count([('project_id', 'in', self.ids)]) > 0:
-            raise UserError(_('You cannot delete a project containing plannings. You can either delete all the project\'s forecasts and then delete the project or simply deactivate the project.'))
-
     @api.depends('is_fsm')
     def _compute_allow_forecast(self):
         for project in self:
@@ -88,11 +83,6 @@ class Task(models.Model):
         for task in self:
             hours = mapped_data.get(task.id, 0) + sum(mapped_data.get(child_task.id, 0) for child_task in task._get_all_subtasks())
             task.forecast_hours = int(round(hours))
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_contains_plannings(self):
-        if self.env['planning.slot'].sudo().search_count([('task_id', 'in', self.ids)]) > 0:
-            raise UserError(_('You cannot delete a task containing plannings. You can either delete all the task\'s plannings and then delete the task or simply deactivate the task.'))
 
     def action_get_project_forecast_by_user(self):
         allowed_tasks = (self | self._get_all_subtasks() | self.depend_on_ids)

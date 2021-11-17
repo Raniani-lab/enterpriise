@@ -88,7 +88,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     const notification = ev.data.args[0];
                     assert.deepEqual(notification, {
                         type: 'danger',
-                        message: "There are no shifts to send or publish.",
+                        message: "The shifts have already been published, or there are no shifts to publish.",
                     }, 'A danger notification should be displayed since there are no slots to send.');
                 }
             }, true);

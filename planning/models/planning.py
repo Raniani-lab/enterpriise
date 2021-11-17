@@ -118,8 +118,8 @@ class Planning(models.Model):
     is_hatched = fields.Boolean(compute='_compute_is_hatched')
 
     _sql_constraints = [
-        ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
-        ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
+        ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'The end date of a shift should be after its start date.'),
+        ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'Allocated hours and allocated time percentage cannot be negative.'),
     ]
 
     @api.depends('role_id.color', 'resource_id.color')
@@ -138,7 +138,7 @@ class Planning(models.Model):
     @api.constrains('repeat_until')
     def _check_repeat_until(self):
         if any([slot.repeat_until and slot.repeat_until < slot.start_datetime.date() for slot in self]):
-            raise UserError(_('The recurrence until date should be after the shift start date'))
+            raise UserError(_("The recurrence's end date should fall after the shift's start date."))
 
     @api.onchange('repeat_until')
     def _onchange_repeat_until(self):

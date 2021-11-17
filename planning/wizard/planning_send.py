@@ -58,14 +58,19 @@ class PlanningSend(models.TransientModel):
         }
 
     def action_send(self):
-        if not self.employee_ids:
-            raise UserError(_('Select the employees you would like to send the planning to.'))
         if self.include_unassigned:
             slot_to_send = self.slot_ids.filtered(lambda s: not s.employee_id or s.employee_id in self.employee_ids)
         else:
             slot_to_send = self.slot_ids.filtered(lambda s: s.employee_id in self.employee_ids)
         if not slot_to_send:
-            raise UserError(_('This action is not allowed as there are no shifts planned for the selected time period.'))
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'danger',
+                    'message': _("The shifts have already been published, or there are no shifts to publish."),
+                }
+            }
         # create the planning
         planning = self.env['planning.planning'].create({
             'start_datetime': self.start_datetime,
@@ -98,7 +103,16 @@ class PlanningSend(models.TransientModel):
     def action_publish(self):
         slot_to_publish = self.slot_ids
         if not self.include_unassigned:
-            slot_to_publish = slot_to_publish.filtered(lambda s: s.employee_id)
+            slot_to_publish = slot_to_publish.filtered(lambda s: s.employee_id in self.employee_ids)
+        if not slot_to_publish:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'danger',
+                    'message': _("The shifts have already been published, or there are no shifts to publish."),
+                }
+            }
         slot_to_publish.write({
             'state': 'published',
             'publication_warning': False

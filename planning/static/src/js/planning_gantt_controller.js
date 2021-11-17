@@ -172,7 +172,7 @@ var PlanningGanttController = GanttController.extend({
         } else {
             this.displayNotification({
                 type: 'danger',
-                message: _t('There are no shifts to copy or the previous shifts were already copied.'),
+                message: _t('The previous shifts have already been copied, or there are no shifts to copy.'),
             });
         }
         this.reload();
@@ -189,7 +189,7 @@ var PlanningGanttController = GanttController.extend({
         if (!state.records || state.records.length === 0) {
             this.displayNotification({
                 type: 'danger',
-                message: _t("There are no shifts to send or publish.")
+                message: _t("The shifts have already been published, or there are no shifts to publish.")
             });
             return;
         }

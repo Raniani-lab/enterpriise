@@ -21,9 +21,9 @@ class PlanningTemplate(models.Model):
     duration = fields.Float('Duration (Hours)', default=0, group_operator=None)
 
     _sql_constraints = [
-        ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'You cannot have a start hour greater than 24'),
-        ('check_start_time_positive', 'CHECK(start_time >= 0)', 'Start hour must be a positive number'),
-        ('check_duration_positive', 'CHECK(duration >= 0)', 'You cannot have a negative duration')
+        ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'The start hour cannot be greater than 24.'),
+        ('check_start_time_positive', 'CHECK(start_time >= 0)', 'The start hour cannot be negative.'),
+        ('check_duration_positive', 'CHECK(duration >= 0)', 'The duration cannot be negative.')
     ]
 
     @api.depends('start_time', 'duration')

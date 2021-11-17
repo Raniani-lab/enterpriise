@@ -568,18 +568,6 @@ class HrContract(models.Model):
                 return partial_sick_work_entry_type
         return result
 
-    def _get_work_entries_values(self, date_start, date_stop):
-        res = super()._get_work_entries_values(date_start, date_stop)
-        partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
-        leave_ids = list(set([we['leave_id'] for we in res if we['work_entry_type_id'] == partial_sick_work_entry_type.id and 'leave_id' in we]))
-        for leave in self.env['hr.leave'].sudo().browse(leave_ids):
-            leave.activity_schedule(
-                'mail.mail_activity_data_todo',
-                note=_("Sick time off to report to DRS for %s.,", date_start.strftime('%B %Y')),
-                user_id=leave.holiday_status_id.responsible_id.id or self.env.user.id,
-            )
-        return res
-
     def _get_bypassing_work_entry_type_codes(self):
         return super()._get_bypassing_work_entry_type_codes() + [
             'LEAVE280', # Long term sick

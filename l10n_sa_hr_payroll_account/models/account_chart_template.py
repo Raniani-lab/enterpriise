@@ -15,9 +15,9 @@ class AccountChartTemplate(models.Model):
         """
         if self == self.env.ref('l10n_sa.sa_chart_template_standard'):
             sa_companies = self.env['res.company'].search([('partner_id.country_id.code', '=', 'SA')])
-            self._configure_payroll_account_data(sa_companies)
+            self._configure_payroll_account_data_saudi(sa_companies)
 
-    def _configure_payroll_account_data(self, companies):
+    def _configure_payroll_account_data_saudi(self, companies):
         accounts_codes = [
             '201002',  # Payables
             '201016',  # Accrued Others

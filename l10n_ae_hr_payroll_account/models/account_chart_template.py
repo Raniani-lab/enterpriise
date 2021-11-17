@@ -15,9 +15,9 @@ class AccountChartTemplate(models.Model):
         """
         if self == self.env.ref('l10n_ae.uae_chart_template_standard'):
             ae_companies = self.env['res.company'].search([('partner_id.country_id.code', '=', 'AE')])
-            self._configure_payroll_account_data(ae_companies)
+            self._configure_payroll_account_data_uae(ae_companies)
 
-    def _configure_payroll_account_data(self, companies):
+    def _configure_payroll_account_data_uae(self, companies):
         accounts_codes = [
             '201002',  # Payables
             '202001',  # End of Service Provision

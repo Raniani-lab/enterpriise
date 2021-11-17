@@ -523,9 +523,10 @@ class AmazonAccount(models.Model):
             description_template = "[%s] %s" \
                 if not main_condition or main_condition.lower() == 'new' \
                 else _("[%s] %s\nCondition: %s - %s")
-            description_fields = (sku, mwsc.get_string_value(item_data, 'Title')) \
+            description_fields = (sku, mwsc.get_string_value(item_data, 'Title', unescape_html=True)) \
                 if not main_condition or main_condition.lower() == 'new' \
-                else (sku, mwsc.get_string_value(item_data, 'Title'), main_condition, sub_condition)
+                else (sku, mwsc.get_string_value(item_data, 'Title', unescape_html=True),
+                      main_condition, sub_condition)
             new_order_lines_vals.append(_get_order_line_vals(
                 product_id=offer.product_id.id,
                 description=description_template % description_fields,
@@ -557,7 +558,7 @@ class AmazonAccount(models.Model):
                             gift_wrap_code, offer.product_id.name),
                         subtotal=gift_wrap_subtotal,
                         tax_ids=gift_wrap_taxes.ids))
-                gift_message = mwsc.get_string_value(item_data, 'GiftMessageText')
+                gift_message = mwsc.get_string_value(item_data, 'GiftMessageText', unescape_html=True)
                 if gift_message:
                     new_order_lines_vals.append(_get_order_line_vals(
                         description=_("Gift message:\n%s", gift_message),
@@ -622,15 +623,20 @@ class AmazonAccount(models.Model):
         """ Find or create two partners of respective type contact and delivery from Amazon data. """
         self.ensure_one()
         anonymized_email = mwsc.get_string_value(order_data, 'BuyerEmail', False)
-        buyer_name = mwsc.get_string_value(order_data, 'BuyerName', False)
-        shipping_address_name = mwsc.get_string_value(order_data, ('ShippingAddress', 'Name'))
-        street = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine1'))
-        address_line2 = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine2'))
-        address_line3 = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine3'))
+        buyer_name = mwsc.get_string_value(order_data, 'BuyerName', False, unescape_html=True)
+        shipping_address_name = mwsc.get_string_value(order_data, ('ShippingAddress', 'Name'),
+                                                      unescape_html=True)
+        street = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine1'),
+                                       unescape_html=True)
+        address_line2 = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine2'),
+                                       unescape_html=True)
+        address_line3 = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine3'),
+                                       unescape_html=True)
         street2 = "%s %s" % (address_line2, address_line3) \
             if address_line2 or address_line3 else None
         zip_code = mwsc.get_string_value(order_data, ('ShippingAddress', 'PostalCode'))
-        city = mwsc.get_string_value(order_data, ('ShippingAddress', 'City'))
+        city = mwsc.get_string_value(order_data, ('ShippingAddress', 'City'),
+                                     unescape_html=True)
         country_code = mwsc.get_string_value(order_data, ('ShippingAddress', 'CountryCode'))
         state_code = mwsc.get_string_value(order_data, ('ShippingAddress', 'StateOrRegion'))
         phone = mwsc.get_string_value(order_data, ('ShippingAddress', 'Phone'), None)

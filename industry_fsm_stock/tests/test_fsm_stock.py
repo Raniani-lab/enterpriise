@@ -171,13 +171,13 @@ class TestFsmFlowStock(TestFsmFlowSale):
         picking_ids = self.task.sale_order_id.picking_ids
         picking_ids.with_context(skip_sms=True, cancel_backorder=True).button_validate()
         self.assertEqual(picking_ids.mapped('state'), ['done'], "Pickings should be set as done")
-        self.assertNotEqual(move.move_line_ids.lot_id, self.lot_id2, "Lot automatically added on move lines is not the same as asked. (By default, it's the first lot available)")
+        self.assertEqual(move.move_line_ids.lot_id, self.lot_id2, "The line has lot_id2")
 
         wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
         wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
         self.assertFalse(wizard_id.tracking_line_ids, "There aren't line to validate")
         self.assertEqual(wizard_id.tracking_validated_line_ids.product_id, self.product_lot, "There are one line with the right product")
-        self.assertEqual(wizard_id.tracking_validated_line_ids.lot_id, self.lot_id1, "The line has lot_id1, (not the lot choosed at the beginning, but the lot put in picking)")
+        self.assertEqual(wizard_id.tracking_validated_line_ids.lot_id, self.lot_id2, "The line has lot_id2 (the lot choosed at the beginning)")
 
         wizard_id.write({
             'tracking_line_ids': [
@@ -194,7 +194,7 @@ class TestFsmFlowStock(TestFsmFlowSale):
         order_line_ids = self.task.sale_order_id.order_line.filtered(lambda l: l.product_id == self.product_lot)
         move = order_line_ids.move_ids
         self.assertEqual(len(order_line_ids), 2, "There are 2 order lines.")
-        self.assertEqual(move.move_line_ids.lot_id, self.lot_id1 + self.lot_id3, "Lot stay the same.")
+        self.assertEqual(move.move_line_ids.lot_id, self.lot_id2 + self.lot_id3, "Lots stay the same.")
         self.assertEqual(sum(move.move_line_ids.mapped('qty_done')), 4, "We deliver 4 (1+3)")
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done'], "The 2 pickings should be set as done")

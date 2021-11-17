@@ -9,9 +9,10 @@
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar" optional="show"
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}"/>
                 <field name="role_id" optional="show"/>
+                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
-                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="allocated_hours" widget="float_time" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
                 <field name="allocated_percentage" readonly="1" optional="hide" decoration-danger="allocated_percentage &gt; 100"/>
                 <field name="name" optional="hide" />
@@ -80,6 +81,7 @@
                                 attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar"/>
                             <field name="role_id" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
                             <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
                         <group>
                             <label for="start_datetime" string="Date"/>
@@ -127,6 +129,7 @@
                 <field name="employee_id"/>
                 <field name="resource_id"/>
                 <field name="role_id"/>
+                <field name="tag_ids"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="start_datetime"/>
                 <field name="end_datetime"/>
@@ -160,6 +163,7 @@
                             </div>
                             <div>
                                 <span name="role"><field name="role_id"/></span>
+                                <span name="tags"><field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/></span>
                             </div>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left"/>
@@ -239,6 +243,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="role_id" groups="planning.group_planning_user"/>
+                <field name="tag_ids" groups="planning.group_planning_user"/>
                 <field name="department_id" groups="planning.group_planning_user"/>
                 <field name="resource_id" groups="planning.group_planning_user"/>
                 <field name="manager_id" groups="planning.group_planning_user"/>
@@ -247,17 +252,18 @@
                 <filter name="open_shifts_my_role" string="Open Shifts for my Roles" domain="[('resource_id', '=', False), ('role_id.employee_ids.user_id', 'in', [uid])]" />
                 <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]" />
                 <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
+                <filter name="my_department_shifts" string="My Department" domain="[('employee_id.member_of_department', '=', True)]" help="Shifts of Your Department Member" groups="planning.group_planning_user"/>
+                <separator/>
+                <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]"/>
                 <separator/>
                 <filter string="Human" name="human" domain="[('resource_type','=', 'user')]"/>
                 <filter string="Material" name="material" domain="[('resource_type','=', 'material')]"/>
                 <separator/>
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
-                <filter name="unpublished_shifts" string="Unpublished" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
+                <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
                 <filter name="future" string="Future" domain="[('start_datetime', '>=', time.strftime('%Y-%m-%d 00:00:00'))]" />
                 <filter name="past" string="Past" domain="[('start_datetime', '&lt;=', time.strftime('%Y-%m-%d 23:59:59'))]" />
-                <separator/>
-                <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]"/>
                 <group string="Group By">
                     <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}" groups="planning.group_planning_user"/>
                     <filter name="group_by_resource" string="Resource" context="{'group_by': 'resource_id'}" groups="planning.group_planning_user"/>

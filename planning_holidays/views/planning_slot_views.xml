@@ -38,9 +38,9 @@
         <field name="name">planning.slot.search.inherit.planning_holidays</field>
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_search"/>
+        <field name="priority">25</field>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='conflict_shifts']" position="after">
-                <separator/>
                 <filter name="is_absent" string="Employees on Time Off" domain="[('is_absent', '=', True)]" groups="planning.group_planning_manager"/>
             </xpath>
         </field>

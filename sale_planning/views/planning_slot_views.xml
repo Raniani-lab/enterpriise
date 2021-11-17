@@ -92,7 +92,7 @@
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_tree"/>
         <field name="arch" type="xml">
-            <field name="role_id" position="after">
+            <field name="tag_ids" position="before">
                 <field name="sale_line_id" optional="show" options="{'no_create': True}"/>
                 <field name="sale_line_plannable" invisible="1"/>
             </field>

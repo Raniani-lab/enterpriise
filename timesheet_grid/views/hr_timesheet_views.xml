@@ -451,6 +451,9 @@
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
             <field name="arch" type="xml">
+                <xpath expr="//gantt" position="attributes">
+                    <attribute name="progress_bar">user_ids,project_id</attribute>
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="progress"/>
                     <field name="allow_subtasks"/>

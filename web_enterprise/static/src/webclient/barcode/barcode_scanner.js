@@ -142,7 +142,7 @@ class BarcodeDialog extends Component {
             DetectorClass = BarcodeDetector;
         } else {
             await loadAssets({
-                jsLibs: ["/web_enterprise/static/lib/zxing-library/zxing-library.js"],
+                jsLibs: ["/web/static/lib/zxing-library/zxing-library.js"],
             });
             DetectorClass = buildZXingBarcodeDetector(window.ZXing);
         }

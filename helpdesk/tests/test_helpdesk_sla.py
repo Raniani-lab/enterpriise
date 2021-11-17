@@ -195,21 +195,21 @@ class HelpdeskSLA(TransactionCase):
 
         ticket.write({'stage_id': self.stage_progress.id})
         initial_values = {ticket.id: {'stage_id': self.stage_new}}
-        ticket.message_track(['stage_id'], initial_values)
+        ticket._message_track(['stage_id'], initial_values)
         self._utils_set_create_date(ticket.message_ids.tracking_value_ids, '2019-01-08 11:09:50', ticket)
         self.assertEqual(status.deadline, datetime(2019, 1, 9, 12, 2, 0), 'No waiting time, deadline = creation date + 1 day + 2 hours + 2 minutes')
 
         # We are in waiting stage, they are no more deadline.
         ticket.write({'stage_id': self.stage_wait.id})
         initial_values = {ticket.id: {'stage_id': self.stage_progress}}
-        ticket.message_track(['stage_id'], initial_values)
+        ticket._message_track(['stage_id'], initial_values)
         self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-08 12:15:00', ticket)
         self.assertFalse(status.deadline, 'In waiting stage: no more deadline')
 
         #  We have a response of our customer, the ticket switch to in progress stage (outside working hours)
         ticket.write({'stage_id': self.stage_progress.id})
         initial_values = {ticket.id: {'stage_id': self.stage_wait}}
-        ticket.message_track(['stage_id'], initial_values)
+        ticket._message_track(['stage_id'], initial_values)
         self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-12 10:35:58', ticket)
         # waiting time = 3 full working days 9 - 10 - 11 January (12 doesn't count as it's Saturday)
         #  + (8 January) 12:15:00 -> 16:00:00 (end of working day) 3,75 hours
@@ -219,7 +219,7 @@ class HelpdeskSLA(TransactionCase):
 
         ticket.write({'stage_id': self.stage_wait.id})
         initial_values = {ticket.id: {'stage_id': self.stage_progress}}
-        ticket.message_track(['stage_id'], initial_values)
+        ticket._message_track(['stage_id'], initial_values)
         self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-14 15:30:00', ticket)
         self.assertFalse(status.deadline, 'In waiting stage: no more deadline')
 
@@ -227,7 +227,7 @@ class HelpdeskSLA(TransactionCase):
         with patch.object(fields.Datetime, 'now', lambda: datetime(2019, 1, 16, 15, 0)):
             ticket.write({'stage_id': self.stage_done.id})
             initial_values = {ticket.id: {'stage_id': self.stage_wait}}
-            ticket.message_track(['stage_id'], initial_values)
+            ticket._message_track(['stage_id'], initial_values)
             self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-16 15:00:00', ticket)
             self.assertEqual(status.deadline, datetime(2019, 1, 16, 15, 17), 'We have waiting time: deadline = old_deadline +  7.5 hours (waiting)')
 

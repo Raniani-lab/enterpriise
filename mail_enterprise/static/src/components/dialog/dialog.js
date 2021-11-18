@@ -8,8 +8,8 @@ patch(Dialog.prototype, 'mail_enterprise/static/src/components/dialog/dialog.js'
     /**
      * @override
      */
-    _constructor() {
-        this._super(...arguments);
+    setup() {
+        this._super();
         this._onBackButtonGlobal = this._onBackButtonGlobal.bind(this);
         this._backButtonHandler = useBackButton(this._onBackButtonGlobal);
     },

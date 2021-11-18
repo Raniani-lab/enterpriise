@@ -9,8 +9,8 @@ patch(ChatWindow.prototype, 'mail_enterprise/static/src/components/chat_window/c
     /**
      * @override
      */
-    _constructor() {
-        this._super(...arguments);
+    setup() {
+        this._super();
         this._onBackButtonGlobal = this._onBackButtonGlobal.bind(this);
         useBackButton(this._onBackButtonGlobal);
     },

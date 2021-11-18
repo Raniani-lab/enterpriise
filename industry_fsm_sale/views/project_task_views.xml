@@ -43,10 +43,21 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
         <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="sale_order_id"/>
+                <field name="sale_line_id"/>
+            </field>
             <xpath expr="//filter[@name='todo']" position='after'>
                 <filter string="To Invoice" domain="[('invoice_status', '=', 'to invoice')]" name="to_invoice"/>
                 <field name="invoice_status"/>
             </xpath>
+            <xpath expr="//filter[@name='late']" position="after">
+                <filter string="Tasks in Overtime" name="overtime" domain="['|', ('remaining_hours', '&lt;', 0), ('remaining_hours_so', '&lt;', 0)]"/>
+            </xpath>
+            <filter name="groupby_customer" position="after">
+                <filter name="group_sale_order" context="{'group_by':'sale_order_id'}"/>
+                <filter name="sale_line_id" context="{'group_by':'sale_line_id'}"/>
+            </filter>
         </field>
     </record>
 
@@ -163,7 +174,7 @@
             </xpath>
             <xpath expr="//span[@id='button_products']" position="replace">
                 <button class="oe_stat_button" name="action_fsm_view_material"
-                    type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
+                    type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False), ('allow_material', '=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
@@ -187,6 +198,15 @@
                 <attribute name="context">{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}</attribute>
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
             </field>
+            <xpath expr="//field[@name='partner_phone']" position="replace">
+                <field name="is_task_phone_update" invisible="1"/>
+                <label for="partner_phone" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
+                <div class="o_row o_row_readonly" attrs="{'invisible': [('is_fsm', '=', False)]}">
+                    <field name="partner_phone" widget="phone"/>
+                    <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
+                        title="By saving this change, the customer phone number will also be updated." attrs="{'invisible': ['|', ('partner_id', '=', False), ('is_task_phone_update', '=', False)]}"/>
+                </div>
+            </xpath>
         </field>
     </record>
 

@@ -46,7 +46,7 @@
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('comment', '!=', False)]}">
+                    attrs="{'invisible': ['|', '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False), '|', ('allow_worksheets', '=', False), ('comment', '!=', False)]}">
                 </button>
                 <button
                     string="Worksheet Complete"
@@ -125,7 +125,7 @@
             </xpath>
             <field name="partner_phone" position="attributes">
                 <attribute name="attrs">
-                    {'invisible': ['|', ('partner_id', '=', False), ('is_fsm', '=', False)]}
+                    {'invisible': [('is_fsm', '=', False)]}
                 </attribute>
             </field>
         </field>

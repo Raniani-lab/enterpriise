@@ -31,7 +31,7 @@ class Task(models.Model):
 
     worksheet_template_id = fields.Many2one(
         'worksheet.template', string="Worksheet Template",
-        compute='_compute_worksheet_template_id', store=True, readonly=False,
+        compute='_compute_worksheet_template_id', store=True, readonly=False, tracking=True,
         domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]",
         group_expand='_read_group_worksheet_template_id')
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')

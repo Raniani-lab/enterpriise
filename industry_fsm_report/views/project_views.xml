@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Project gantt view -->
     <record id="project_task_view_gantt_fsm_worksheet" model="ir.ui.view">
@@ -178,12 +179,27 @@
         </field>
     </record>
 
+    <record id="view_project_project_filter_inherit_industry_fsm_report" model="ir.ui.view">
+        <field name="name">view.project.project.filter.inherit.industry.fsm.report</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="industry_fsm.view_project_project_filter_inherit_industry_fsm"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="worksheet_template_id"/>
+            </field>
+            <filter name="Manager" position="after">
+                <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>
+            </filter>
+        </field>
+    </record>
+
     <record id="project_task_view_search_fsm_report" model="ir.ui.view">
         <field name="name">project.task.search.fsm</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='groupby_company']" position="before">
+            <xpath expr="//group/filter[@name='groupby_project']" position="after">
                 <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>
             </xpath>
             <xpath expr="//field[@name='project_id']" position="after">
@@ -220,7 +236,7 @@
                 <field name="worksheet_count" invisible="1"/>
             </xpath>
             <xpath expr="//button[hasclass('oe_worksheet')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False),  ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0), ('comment', '!=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '&amp;', ('is_fsm', '=', False), ('partner_id', '=', False), '|', '|', '|', ('allow_worksheets', '=', False),  ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0), ('comment', '!=', False)]}</attribute>
             </xpath>
             <xpath expr="//button[hasclass('oe_worksheet_completed')]" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), ('comment', '=', False)]}</attribute>
@@ -335,12 +351,13 @@
             'default_allow_worksheets': True,
             }
         </field>
+        <field name="search_view_id" ref="industry_fsm_report.view_project_project_filter_inherit_industry_fsm_report"/>
     </record>
 
     <!-- action planning by worksheet -->
 
     <record id="project_task_action_fsm_planning_groupby_worksheet" model="ir.actions.act_window">
-        <field name="name">Planning by Worksheet</field>
+        <field name="name">Planning by Worksheet Template</field>
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
         <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
@@ -399,7 +416,7 @@
 
     <!-- planning by worksheet menu -->
     <menuitem id="project_task_menu_planning_by_project_fsm"
-        name="By Worksheet"
+        name="By Worksheet Template"
         sequence="20"
         action="project_task_action_fsm_planning_groupby_worksheet"
         parent="industry_fsm.fsm_menu_planning"

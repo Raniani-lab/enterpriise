@@ -23,6 +23,7 @@ class Task(models.Model):
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
+    is_task_phone_update = fields.Boolean(compute='_compute_is_task_phone_update')
 
     # Project Sharing fields
     portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
@@ -51,6 +52,11 @@ class Task(models.Model):
                 'display_enabled_conditions_count': enabled,
                 'display_satisfied_conditions_count': satisfied
             })
+
+    @api.depends('partner_phone', 'partner_id.phone')
+    def _compute_is_task_phone_update(self):
+        for task in self:
+            task.is_task_phone_update = task.partner_phone != task.partner_id.phone
 
     def _compute_quotation_count(self):
         quotation_data = self.sudo().env['sale.order'].read_group([('task_id', 'in', self.ids)], ['task_id'], ['task_id'])

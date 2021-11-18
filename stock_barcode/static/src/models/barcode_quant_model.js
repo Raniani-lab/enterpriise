@@ -30,7 +30,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
         );
         const notifyAndGoAhead = res => {
             if (res && res.special) { // Do nothing if come from a discarded wizard.
-                return;
+                return this.trigger('refresh');
             }
             if (this.pages.length > 1) { // Stay in inventory if there is multiple pages.
                 this.notification.add(_t("Inventory adjustment was saved"), { type: 'success' });
@@ -495,11 +495,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
     _createLinesState() {
         const today = new Date().toISOString().slice(0, 10);
         const lines = [];
-        // Should use info in the params and not in cache instead (ids in params ?)
-        for (const id of Object.keys(this.cache.dbIdCache['stock.quant'])) {
+        for (const id of Object.keys(this.cache.dbIdCache['stock.quant']).map(id => Number(id))) {
             const quant = this.cache.getRecord('stock.quant', id);
             if (quant.user_id !== this.userId || quant.inventory_date > today) {
-                // Don't take quants who must to be count by another user or in the future.
+                // Doesn't take quants who must be counted by another user or in the future.
                 continue;
             }
             // Checks if this line is already in the quant state to get back

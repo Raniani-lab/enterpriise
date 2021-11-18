@@ -91,7 +91,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.company = self.env.company
         self.company.country_id = self.env.ref('base.us')
 
-        self.account_type_receivable = self.env['account.account.type'].create({
+        self.account_type_receivable = self.env['account.account.type'].sudo().create({
             'name': 'receivable',
             'type': 'receivable',
             'internal_group': 'asset',
@@ -104,7 +104,7 @@ class TestSubscription(TestSubscriptionCommon):
              'company_id': self.company.id,
              'reconcile': True})
 
-        self.account_type_sale = self.env['account.account.type'].create({
+        self.account_type_sale = self.env['account.account.type'].sudo().create({
             'name': 'income',
             'type': 'other',
             'internal_group': 'income',

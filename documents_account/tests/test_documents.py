@@ -118,7 +118,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
             setting.unlink()
 
     def test_reconciliation_request(self):
-        account_type_test = self.env['account.account.type'].create({'name': 'account type test', 'type': 'other', 'internal_group': 'asset'})
+        account_type_test = self.env['account.account.type'].sudo().create({'name': 'account type test', 'type': 'other', 'internal_group': 'asset'})
         account_test = self.env['account.account'].create(
             {'name': 'Receivable', 'code': '0000222', 'user_type_id': account_type_test.id, 'reconcile': True})
         journal_test = self.env['account.journal'].create({'name': 'journal test', 'type': 'bank', 'code': 'BNK67'})

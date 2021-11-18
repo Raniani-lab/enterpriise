@@ -18,7 +18,7 @@ class HrContractSalary(main.HrContractSalary):
             adult_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_adult', default=20.5))
             adv = advantages['contract']
             child_count = int(adv['l10n_be_ambulatory_insured_children_manual'] or False)
-            l10n_be_has_ambulatory_insurance = adv['l10n_be_has_ambulatory_insurance_radio'] == 1
+            l10n_be_has_ambulatory_insurance = float(adv['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in adv else False
             adult_count = int(adv['l10n_be_ambulatory_insured_adults_manual'] or False) \
                         + int(adv['fold_l10n_be_ambulatory_insured_spouse']) \
                         + int(l10n_be_has_ambulatory_insurance)
@@ -35,5 +35,5 @@ class HrContractSalary(main.HrContractSalary):
 
     def _get_new_contract_values(self, contract, employee, advantages):
         res = super()._get_new_contract_values(contract, employee, advantages)
-        res['l10n_be_has_ambulatory_insurance'] = advantages['l10n_be_has_ambulatory_insurance_radio'] == 1 if 'l10n_be_has_ambulatory_insurance_radio' in advantages else False
+        res['l10n_be_has_ambulatory_insurance'] = float(advantages['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in advantages else False
         return res

@@ -117,7 +117,7 @@ class HrContractSalary(main.HrContractSalary):
             adult_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_adult', default=20.5))
             adv = advantages['contract']
             child_count = int(adv['insured_relative_children_manual'] or False)
-            has_hospital_insurance = adv['has_hospital_insurance_radio'] == 1
+            has_hospital_insurance = float(adv['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in adv else False
             adult_count = int(adv['insured_relative_adults_manual'] or False) + int(adv['fold_insured_relative_spouse']) + int(has_hospital_insurance)
             insurance_amount = request.env['hr.contract']._get_insurance_amount(child_amount, child_count, adult_amount, adult_count)
             res['extra_values'] = [('has_hospital_insurance', insurance_amount)]
@@ -299,7 +299,7 @@ class HrContractSalary(main.HrContractSalary):
         for field_to_copy in fields_to_copy:
             if field_to_copy in contract:
                 res[field_to_copy] = contract[field_to_copy]
-        res['has_hospital_insurance'] = advantages['has_hospital_insurance_radio'] == 1 if 'has_hospital_insurance_radio' in advantages else False
+        res['has_hospital_insurance'] = float(advantages['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in advantages else False
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):

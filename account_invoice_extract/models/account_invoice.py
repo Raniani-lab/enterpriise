@@ -65,7 +65,7 @@ class AccountInvoiceExtractionWords(models.Model):
     _name = "account.invoice_extract.words"
     _description = "Extracted words from invoice scan"
 
-    invoice_id = fields.Many2one("account.move", help="Invoice id")
+    invoice_id = fields.Many2one("account.move", required=True, ondelete='cascade', index=True, help="Account move id")
     field = fields.Char()
     selected_status = fields.Integer("Invoice extract selected status.",
                                      help="0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for 'ocr selected with user selection (user may have selected the same box)")

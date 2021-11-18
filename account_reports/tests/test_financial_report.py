@@ -142,7 +142,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             (0, 0, {
                 "name": "Total of Invisible lines",
                 "code": "INVT",
-                "parent_id": cls.report_no_parent_id.id,
+                "financial_report_id": cls.report_no_parent_id.id,
                 "level": 1,
                 "formulas": "INVA + INVB"
             })

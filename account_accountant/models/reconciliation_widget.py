@@ -37,7 +37,7 @@ class AccountReconciliation(models.AbstractModel):
                 st_line.write({'partner_id': datum['partner_id']})
 
             st_line.with_context(ctx).reconcile(datum.get('lines_vals_list', []), to_check=datum.get('to_check', False))
-        return {'statement_line_ids': st_lines}
+        return {'statement_line_ids': st_lines, 'moves': st_lines.move_id}
 
     @api.model
     def get_move_lines_for_bank_statement_line(self, st_line_id, partner_id=None, excluded_ids=None, search_str=False, offset=0, limit=None, mode=None):

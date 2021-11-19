@@ -24,6 +24,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-6 o_setting_box" id="prevent_old_timesheets_encoding_setting">
+                    <div class="o_setting_left_pane">
+                        <field name="prevent_old_timesheets_encoding"/>
+                    </div>
+                    <div class="o_setting_right_pane" id="prevent_old_timesheets_encoding" data-toggle="tooltip" title="After a certain date, users will not be able to create, modify, or delete their timesheets. However, managers will still be able to do so.">
+                        <label for="prevent_old_timesheets_encoding"/>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." groups="base.group_multi_company"/>
+                        <div class="row">
+                            <div class="text-muted col-md-12">
+                                Block encoding of timesheets after a certain date
+                            </div>
+                            <div class="text-muted col-md-12" attrs="{'invisible': [('prevent_old_timesheets_encoding', '=', False)]}">
+                                Block timesheets older than <field name="timesheets_past_days_encoding_limit" class="col-lg-2 text-center"/> days
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </xpath>
             <xpath expr="//div[@id='reminder_user_allow']" position="inside">
                 <div class="content-group" attrs="{'invisible': [('reminder_user_allow', '=', False)]}">

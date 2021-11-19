@@ -2,14 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import re
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from lxml import etree
 from collections import defaultdict
-from pytz import utc
 
 from odoo import tools, models, fields, api, _
-from odoo.addons.web_grid.models.models import END_OF, STEP_BY, START_OF
 from odoo.addons.resource.models.resource import make_aware
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
@@ -379,6 +377,31 @@ class AnalyticLine(models.Model):
             return notification
         return True
 
+    def check_if_allowed(self, vals=None, delete=False,):
+        if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            is_timesheet_approver = self.user_has_groups('hr_timesheet.group_hr_timesheet_approver')
+            employees = self.env['hr.employee'].search([
+                ('id', 'in', self.employee_id.ids),
+                '|',
+                    ('parent_id.user_id', '=', self._uid),
+                    ('timesheet_manager_id', '=', self._uid),
+            ])
+
+            action = "delete" if delete else "modify" if vals is not None and "date" in vals else "create or edit"
+            for line in self:
+                show_access_error = False
+                company = line.company_id
+                # When an user having this group tries to modify the timesheets of another user in his own team, we shouldn't raise any validation error
+                if not is_timesheet_approver or line.employee_id not in employees:
+                    if line.is_timesheet and company.prevent_old_timesheets_encoding:
+                        if action == "modify" and (date.today() - fields.Date.to_date(str(vals['date']))).days > company.timesheets_past_days_encoding_limit:
+                            show_access_error = True
+                        elif (date.today() - line.date).days > company.timesheets_past_days_encoding_limit:
+                            show_access_error = True
+
+                if show_access_error:
+                    raise AccessError(_('You cannot %s timesheets older than %d days.', action, company.timesheets_past_days_encoding_limit))
+
     @api.model_create_multi
     def create(self, vals_list):
         analytic_lines = super(AnalyticLine, self).create(vals_list)
@@ -386,6 +409,7 @@ class AnalyticLine(models.Model):
         # Check if the user has the correct access to create timesheets
         if not (self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') or self.env.su) and any(line.is_timesheet and line.user_id.id != self.env.user.id for line in analytic_lines):
             raise AccessError(_("You cannot access timesheets that are not yours."))
+        self.check_if_allowed()
         return analytic_lines
 
     def write(self, vals):
@@ -395,6 +419,8 @@ class AnalyticLine(models.Model):
             elif self.filtered(lambda r: r.is_timesheet and r.validated):
                 raise AccessError(_('Only a Timesheets Approver or Manager is allowed to modify a validated entry.'))
 
+        self.check_if_allowed(vals)
+
         return super(AnalyticLine, self).write(vals)
 
     @api.ondelete(at_uninstall=False)
@@ -402,6 +428,8 @@ class AnalyticLine(models.Model):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(
                 lambda r: r.is_timesheet and r.validated):
             raise AccessError(_('You cannot delete a validated entry. Please, contact your manager or your timesheet approver.'))
+
+        self.check_if_allowed(delete=True)
 
     def unlink(self):
         res = super(AnalyticLine, self).unlink()

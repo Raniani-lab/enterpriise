@@ -4,6 +4,7 @@ from odoo.exceptions import AccessError, UserError
 
 from odoo.tests.common import new_test_user
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
+from datetime import timedelta
 
 
 class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
@@ -22,7 +23,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         self.empl_approver2 = self.env['hr.employee'].create({
             'name': 'Empl Approver 2',
-            'user_id': self.user_approver2.id
+            'user_id': self.user_approver2.id,
         })
 
         self.empl_employee.write({
@@ -55,6 +56,24 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'date': today,
             'unit_amount': 2,
             'employee_id': self.empl_employee3.id
+        })
+
+        self.timesheet3 = self.env['account.analytic.line'].with_user(self.user_manager).create({
+            'name': 'My old timesheet',
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'date': fields.Datetime.today() - timedelta(days=10),
+            'unit_amount': 2,
+            'employee_id': self.empl_employee3.id,
+        })
+
+        self.timesheet4 = self.env['account.analytic.line'].with_user(self.user_manager).create({
+            'name': 'My old timesheet 2',
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'date': fields.Datetime.today() - timedelta(days=10),
+            'unit_amount': 2,
+            'employee_id': self.empl_employee2.id,
         })
 
         self.project_follower = self.env['project.project'].create({
@@ -249,3 +268,40 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
         # the employee 1 can read this timesheet because his own
         res = self.timesheet.with_user(self.user_employee).read(['name'])
         self.assertEqual(res[0]['name'], 'My timesheet 1')
+
+    def test_employee_cannot_delete_locked_timesheet(self):
+        """ Check if an employee cannot create, modify or
+            delete an old timesheet that has been locked.
+        """
+
+        # Set the settings accordingly
+        timesheet_settings = self.env["res.config.settings"].create({
+            'prevent_old_timesheets_encoding': True,
+            'timesheets_past_days_encoding_limit': 5,
+        })
+        timesheet_settings.execute()
+
+        # An user without the timesheet approver rights should not be able to create, modify or delete old timesheets
+        with self.assertRaises(AccessError):
+            self.timesheet3.with_user(self.user_employee3).write({
+                'date': fields.Datetime.today() - timedelta(days=15)
+            })
+            self.timesheet3.with_user(self.user_employee3).unlink()
+
+        # An user with the timesheet approver rights should be to modify only his employees timesheets
+        self.timesheet3.with_user(self.user_approver).write({
+            'date': fields.Datetime.today() - timedelta(days=12)
+        })
+
+        # But in this case, this user shouldn't be able to touch the timesheets belonging to an user which is not one of his employees
+        with self.assertRaises(AccessError):
+            self.timesheet4.with_user(self.user_employee3).write({
+                'date': fields.Datetime.today() - timedelta(days=15)
+            })
+            self.timesheet4.with_user(self.user_employee3).unlink()
+
+        # The manager should be able to do what he wants
+        self.timesheet3.with_user(self.user_manager).write({
+            'date': fields.Datetime.today() - timedelta(days=15)
+        })
+        self.timesheet3.with_user(self.user_manager).unlink()

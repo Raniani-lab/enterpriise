@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="approvals.Approval" owl="1">
-        <div class="o_Approval">
+        <div class="o_Approval" t-ref="root">
             <t t-if="approval">
                 <t t-if="approval.status === 'pending'">
                     <t t-if="approval.isCurrentPartnerApprover">

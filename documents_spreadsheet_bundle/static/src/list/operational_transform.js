@@ -1,6 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.OperationalTransform */
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_loader";
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 const { inverseCommandRegistry, otRegistry } = spreadsheet.registries;
 
 function identity(cmd) {
@@ -8,7 +8,7 @@ function identity(cmd) {
 }
 
 otRegistry
-    
+
     .addTransformation("ADD_ODOO_LIST", ["ADD_ODOO_LIST_FORMULA"], (toTransform) => ({
         ...toTransform,
         args: [toTransform.args[0] + 1, ...toTransform.args.slice(1)],

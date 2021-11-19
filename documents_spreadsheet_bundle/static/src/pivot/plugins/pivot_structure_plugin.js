@@ -5,7 +5,7 @@ import { _t } from "web.core";
 import Domain from "web.Domain";
 import pyUtils from "web.py_utils";
 
-import spreadsheet from "../../o_spreadsheet/o_spreadsheet_loader";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import PivotDataSource from "../pivot_data_source";
 
 import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../o_spreadsheet/constants"

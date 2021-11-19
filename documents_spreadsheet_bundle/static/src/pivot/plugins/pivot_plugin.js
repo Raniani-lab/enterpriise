@@ -19,7 +19,7 @@
  * @property {Array<string>} rowGroupBys
  */
 
-import spreadsheet from "../../o_spreadsheet/o_spreadsheet_loader";
+import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import { getFirstPivotFunction } from "../pivot_helpers";
 import { getMaxObjectId } from "../../o_spreadsheet/helpers";
 import PivotDataSource from "../pivot_data_source";

@@ -629,7 +629,7 @@ class HrContractSalary(http.Controller):
             result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, round(float(monthly_total), 2), uoms['currency'], resume_explanation)
         return result
 
-    @http.route(['/salary_package/onchange_advantage/'], type='json', auth='public')
+    @http.route(['/salary_package/onchange_advantage'], type='json', auth='public')
     def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
         # Return a dictionary describing the new advantage configuration:
         # - new_value: The advantage new_value (same by default)
@@ -648,7 +648,7 @@ class HrContractSalary(http.Controller):
             description = advantage.description
         return {'new_value': new_value, 'description': description, 'extra_values': False}
 
-    @http.route(['/salary_package/onchange_personal_info/'], type='json', auth='public')
+    @http.route(['/salary_package/onchange_personal_info'], type='json', auth='public')
     def onchange_personal_info(self, field, value):
         # sudo as public users can't access ir.model.fields
         info = request.env['hr.contract.salary.personal.info'].sudo().search([('field', '=', field)])
@@ -727,7 +727,7 @@ class HrContractSalary(http.Controller):
             values=values)
         return contract.id
 
-    @http.route(['/salary_package/submit/'], type='json', auth='public')
+    @http.route(['/salary_package/submit'], type='json', auth='public')
     def submit(self, contract_id=None, advantages=None, **kw):
         contract = self._check_access_rights(contract_id)
         if kw.get('employee_contract_id', False):

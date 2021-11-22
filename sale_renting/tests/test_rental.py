@@ -121,7 +121,6 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
 
         sol = self.env['sale.order.line'].create({
             'product_id': self.product_id.id,
-            'product_uom_qty': 1,
             'order_id': sale_order.id,
             'reservation_begin': reservation_begin,
             'pickup_date': pickup_date,

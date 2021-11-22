@@ -261,9 +261,7 @@ class SaleOrder(models.Model):
         sol = self.env['sale.order.line'].create({
             'product_id': variant.id,
             'order_id': self.id,
-            'name': variant.name,
             'product_uom_qty': qty,
-            'product_uom': variant.uom_id.id,
             'price_unit': price_unit,
             'tax_id': tax_commands,
         })

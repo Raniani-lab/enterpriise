@@ -27,7 +27,6 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         self.env['sale.order.line'].create({
             'product_id': product.id,
             'price_unit': 10,
-            'product_uom_qty': 1,
             'order_id': so.id,
         })
         so.action_confirm()

@@ -416,7 +416,6 @@ class Task(models.Model):
                     'project_id': self.project_id.id,
                     'task_id': self.id,
                     'product_uom_qty': self.total_hours_spent,
-                    'product_uom': self.timesheet_product_id.uom_id.id,
                 })
             self.sudo().write({  # We need to sudo in case the user cannot see all timesheets in the current task.
                 'sale_line_id': sale_order_line.id,

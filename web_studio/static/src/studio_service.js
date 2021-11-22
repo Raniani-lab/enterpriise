@@ -191,6 +191,8 @@ export const studioService = {
             }
             user.removeFromContext("studio");
             await env.services.action.doAction(actionId, options);
+            // force rendering of the main navbar to allow adaptation of the size
+            env.bus.trigger("MENUS:APP-CHANGED");
             state.studioMode = null;
             state.x2mEditorPath = [];
         }

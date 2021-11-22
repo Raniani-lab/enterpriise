@@ -9,11 +9,11 @@ from odoo import models, _
 class AccountChartTemplate(models.Model):
     _inherit = "account.chart.template"
 
-    def _load(self, sale_tax_rate, purchase_tax_rate, company):
+    def _load(self, company):
         """
         Override to configure payroll accounting data as well as accounting data.
         """
-        res = super()._load(sale_tax_rate, purchase_tax_rate, company)
+        res = super()._load(company)
         if self == self.env.ref('l10n_lu.lu_2011_chart_1'):
             self._configure_payroll_account_luxembourg(company)
         return res

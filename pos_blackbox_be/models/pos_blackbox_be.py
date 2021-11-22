@@ -773,8 +773,8 @@ class ProductProduct(models.Model):
 class AccountChartTemplate(models.Model):
     _inherit = "account.chart.template"
 
-    def _load(self, sale_tax_rate, purchase_tax_rate, company):
-        super(AccountChartTemplate, self)._load(sale_tax_rate, purchase_tax_rate, company)
+    def _load(self, company):
+        super(AccountChartTemplate, self)._load(company)
         if self == self.env.ref('l10n_be.l10nbe_chart_template'):
             work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
             work_out = self.env.ref('pos_blackbox_be.product_product_work_out')

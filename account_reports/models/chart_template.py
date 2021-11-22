@@ -5,8 +5,8 @@ from odoo import models, fields
 class AccountChartTemplate(models.Model):
     _inherit = 'account.chart.template'
 
-    def _load(self, sale_tax_rate, purchase_tax_rate, company):
-        res = super(AccountChartTemplate, self)._load(sale_tax_rate, purchase_tax_rate, company)
+    def _load(self, company):
+        res = super(AccountChartTemplate, self)._load(company)
 
         # by default, anglo-saxon companies should have totals
         # displayed below sections in their reports

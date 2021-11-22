@@ -690,9 +690,13 @@ class MrpProductionWorkcenterLine(models.Model):
                     }
                 }
 
-        lot = self.env['stock.production.lot'].search([('name', '=', barcode)])
+        lot = False
 
         if self.component_tracking:
+            lot = self.env['stock.production.lot'].search([
+                ('name', '=', barcode),
+                ('product_id', '=', self.component_id.id)
+            ])
             if not lot:
                 # create a new lot
                 # create in an onchange is necessary here ("new" cannot work here)
@@ -703,6 +707,10 @@ class MrpProductionWorkcenterLine(models.Model):
                 })
             self.lot_id = lot
         elif self.production_id.product_id.tracking and self.production_id.product_id.tracking != 'none':
+            lot = self.env['stock.production.lot'].search([
+                ('name', '=', barcode),
+                ('product_id', '=', self.product_id.id)
+            ])
             if not lot:
                 lot = self.env['stock.production.lot'].create({
                     'name': barcode,

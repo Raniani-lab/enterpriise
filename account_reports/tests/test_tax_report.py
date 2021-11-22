@@ -885,6 +885,57 @@ class TestTaxReport(TestAccountReportsCommon):
 
         return rslt
 
+    def _create_taxes_for_report_lines(self, report_lines_dict, company):
+        """ report_lines_dict is a dictionnary mapping tax_type_use values to
+        tax report lines.
+        """
+        rslt = self.env['account.tax']
+        for tax_type, report_line in report_lines_dict.items():
+            tax_template = self.env['account.tax.template'].create({
+                'name': 'Impôt sur tout ce qui bouge',
+                'amount': '20',
+                'amount_type': 'percent',
+                'type_tax_use': tax_type,
+                'chart_template_id': company.chart_template_id.id,
+                'invoice_repartition_line_ids': [
+                    (0,0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'base',
+                        'plus_report_line_ids': report_line[0].ids,
+                    }),
+
+                    (0,0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'tax',
+                        'plus_report_line_ids': report_line[1].ids,
+                    }),
+                ],
+                'refund_repartition_line_ids': [
+                    (0,0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'base',
+                        'plus_report_line_ids': report_line[0].ids,
+                    }),
+
+                    (0,0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'tax',
+                        'plus_report_line_ids': report_line[1].ids,
+                    }),
+                ],
+            })
+
+            # The template needs an xmlid in order so that we can call _generate_tax
+            self.env['ir.model.data'].create({
+                'name': 'account_reports.test_tax_report_tax_' + tax_type,
+                'module': 'account_reports',
+                'res_id': tax_template.id,
+                'model': 'account.tax.template',
+            })
+            rslt += tax_template._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template]
+
+        return rslt
+
     def _run_caba_generic_test(self, expected_columns, expected_lines, on_invoice_created=None, on_all_invoices_created=None, invoice_generator=None):
         """ Generic test function called by several cash basis tests.
 
@@ -1915,3 +1966,82 @@ class TestTaxReport(TestAccountReportsCommon):
                     ('%s-refund--5' % self.test_fpos_tax_purchase.id,         16.5),
                 ],
             )
+
+    def test_tax_report_with_entries_with_sale_and_purchase_taxes (self):
+        """ Ensure signs are managed properly for entry moves.
+        This test runs the case where invoice/bill like entries are created and reverted.
+        """
+        today = fields.Date.today()
+        company = self.env.user.company_id
+        tax_report = self.env['account.tax.report'].create({
+            'name': 'Test',
+            'country_id': self.fiscal_country.id,
+        })
+
+        # We create some report lines
+        report_lines_dict = {
+            'sale': [
+                self._create_tax_report_line('Sale base', tax_report, sequence=1, tag_name='sale_b'),
+                self._create_tax_report_line('Sale tax', tax_report, sequence=1, tag_name='sale_t'),
+            ],
+            'purchase': [
+                self._create_tax_report_line('Purchase base', tax_report, sequence=2, tag_name='purchase_b'),
+                self._create_tax_report_line('Purchase tax', tax_report, sequence=2, tag_name='purchase_t'),
+            ],
+        }
+
+        # We create a sale and a purchase tax, linked to our report line tags
+        taxes = self._create_taxes_for_report_lines(report_lines_dict, company)
+
+        account_types = {
+            'sale': self.env.ref('account.data_account_type_revenue').id,
+            'purchase': self.env.ref('account.data_account_type_expenses').id,
+        }
+        for tax in taxes:
+            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax.type_tax_use])], limit=1)
+            # create one entry and it's reverse
+            move_form = Form(self.env['account.move'].with_context(default_move_type='entry'))
+            with move_form.line_ids.new() as line:
+                line.account_id = account
+                if tax.type_tax_use == 'sale':
+                    line.credit = 1000
+                else:
+                    line.debit = 1000
+                line.tax_ids.clear()
+                line.tax_ids.add(tax)
+
+                self.assertTrue(line.recompute_tax_line)
+            # Create a third account.move.line for balance.
+            with move_form.line_ids.new() as line:
+                if tax.type_tax_use == 'sale':
+                    line.debit = 1200
+                else:
+                    line.credit = 1200
+            move = move_form.save()
+            move.action_post()
+            refund_wizard = self.env['account.move.reversal'].with_context(active_model="account.move", active_ids=move.ids).create({
+                'reason': 'reasons',
+                'refund_method': 'cancel',
+                'journal_id': self.company_data['default_journal_misc'].id,
+            })
+            refund_wizard.reverse_moves()
+
+        # Generate the report and check the results
+        report = self.env['account.generic.tax.report']
+        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': today, 'mode': 'range', 'date_from': today}})
+        new_context = report._set_context(report_opt)
+
+        # We check the taxes on entries have impacted the report properly
+        inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
+
+        self.assertLinesValues(
+            inv_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                ('Sale base',             2000),
+                ('Sale tax',              400),
+                ('Purchase base',         2000),
+                ('Purchase tax',          400),
+            ],
+        )

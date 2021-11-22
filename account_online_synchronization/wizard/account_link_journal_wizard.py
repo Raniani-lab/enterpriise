@@ -10,8 +10,6 @@ class AccountLinkJournalLine(models.TransientModel):
     _name = "account.link.journal.line"
     _description = "Link one bank account to a journal"
 
-    # Deprecated
-    action = fields.Selection([('create', 'Create new journal'), ('link', 'Link to existing journal')], default='create')
     journal_id = fields.Many2one('account.journal', domain="[('type', '=', 'bank'), ('account_online_account_id', '=', False)]")
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
     online_account_id = fields.Many2one('account.online.account')
@@ -19,13 +17,6 @@ class AccountLinkJournalLine(models.TransientModel):
     balance = fields.Float(related='online_account_id.balance', readonly=True)
     account_online_wizard_id = fields.Many2one('account.link.journal')
     account_number = fields.Char(related='online_account_id.account_number', readonly=False)
-    # Deprecated
-    journal_statements_creation = fields.Selection(
-        selection=lambda x: x.env['account.journal']._get_statement_creation_possible_values(),
-        default='month',
-        string="Synchronization frequency",
-        required=True,
-    )
 
     def unlink(self):
         self.mapped('online_account_id').filtered(lambda acc: not acc.journal_ids).unlink()

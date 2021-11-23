@@ -8,11 +8,14 @@ from odoo.tools.sql import column_exists, create_column
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    intrastat_transport_mode_id = fields.Many2one('account.intrastat.code', string='Intrastat Transport Mode',
+    intrastat_transport_mode_id = fields.Many2one(
+        'account.intrastat.code', string='Intrastat Transport Mode',
         readonly=True, states={'draft': [('readonly', False)]}, domain="[('type', '=', 'transport')]")
-    intrastat_country_id = fields.Many2one('res.country', string='Intrastat Country',
+    intrastat_country_id = fields.Many2one(
+        'res.country', string='Intrastat Country',
         help='Intrastat country, arrival for sales, dispatch for purchases',
-        readonly=True, states={'draft': [('readonly', False)]}, domain=[('intrastat', '=', True)])
+        readonly=False, states={'posted': [('readonly', True)], 'cancel': [('readonly', True)]},
+        domain=[('intrastat', '=', True)])
 
     def _get_invoice_intrastat_country_id(self):
         ''' Hook allowing to retrieve the intrastat country depending of installed modules.

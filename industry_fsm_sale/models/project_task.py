@@ -135,7 +135,6 @@ class Task(models.Model):
         context.update({
             'active_id': self.sale_order_id.id if len(self) == 1 else False,
             'active_ids': self.mapped('sale_order_id').ids,
-            'default_company_id': self.company_id.id,
             'industry_fsm_message_post_task_id': so_task_mapping,
         })
         action['context'] = context

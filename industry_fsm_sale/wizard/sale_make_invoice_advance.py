@@ -3,6 +3,7 @@
 
 from odoo import models, _
 
+
 class SaleAdvancePaymentInv(models.TransientModel):
     _inherit = 'sale.advance.payment.inv'
 

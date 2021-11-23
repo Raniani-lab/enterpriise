@@ -15,7 +15,7 @@ import { multiFileUpload } from "@sign/js/common/multi_file_upload";
 
 const { _t } = core;
 
-KanbanController.include(_make_custo("button.o-kanban-button-new"));
+KanbanController.include(makeCusto("button.o-kanban-button-new"));
 KanbanColumn.include({
   /**
    * @override
@@ -77,15 +77,15 @@ KanbanRecord.include({
       // LPE to APP: data-mobile feature has been deprecated and removed
       // the dialog feature in mobile should be rethought with something like https://material.io/components/sheets-bottom
       this.$(
-        ".o_kanban_record_bottom .oe_kanban_bottom_left button:not(.o_kanban_sign_directly)"
+        ".o_kanban_record_bottom .oe_kanban_bottom_left button"
       ).attr("data-mobile", '{"fullscreen": true}');
     }
   },
 });
 
-ListController.include(_make_custo(".o_list_button_add"));
+ListController.include(makeCusto(".o_list_button_add"));
 
-function _make_custo(selector_button) {
+function makeCusto(selector_button) {
   return {
     renderButtons: function () {
       this._super.apply(this, arguments);

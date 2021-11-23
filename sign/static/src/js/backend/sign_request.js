@@ -4,7 +4,7 @@
 
 import core from "web.core";
 import session from "web.session";
-import { DocumentBackend } from "@sign/js/backend/document_backend";
+import { DocumentBackend } from "@sign/js/backend/document";
 import { multiFileUpload } from "@sign/js/common/multi_file_upload";
 import { sprintf } from "@web/core/utils/strings";
 
@@ -12,16 +12,15 @@ const { _t } = core;
 
 const EditableDocumentBackend = DocumentBackend.extend({
   events: {
-    "click .o_sign_resend_access_button": function (e) {
+    "click .o_sign_resend_access_button": async function (e) {
       const $envelope = $(e.target);
-      this._rpc({
+      await this._rpc({
         model: "sign.request.item",
         method: "resend_access",
         args: [parseInt($envelope.parent(".o_sign_signer_status").data("id"))],
         context: session.user_context,
-      }).then(() => {
-        $envelope.empty().append(_t("Resent !"));
       });
+      $envelope.empty().append(_t("Resent !"));
     },
   },
 
@@ -57,7 +56,7 @@ const EditableDocumentBackend = DocumentBackend.extend({
     }
   },
 
-  start: function () {
+  start: async function () {
     const nextTemplate = multiFileUpload.getNext();
 
     if (nextTemplate && nextTemplate.template) {
@@ -89,29 +88,29 @@ const EditableDocumentBackend = DocumentBackend.extend({
       }
     }
 
-    return this._super.apply(this, arguments).then(() => {
-      if (this.is_author && this.is_sent) {
-        this.$(".o_sign_signer_status")
-          .not(".o_sign_signer_signed")
-          .each((i, el) => {
-            $(el).append(
-              $("<button/>", {
-                type: "button",
-                title:
-                  this.requestStates && this.requestStates[el.dataset.id]
-                    ? _t("Resend the invitation")
-                    : _t("Send the invitation"),
-                text:
-                  this.requestStates && this.requestStates[el.dataset.id]
-                    ? _t("Resend")
-                    : _t("Send"),
-                class: "o_sign_resend_access_button btn btn-link ml-2 mr-2",
-                style: "vertical-align: baseline;",
-              })
-            );
-          });
-      }
-    });
+    await this._super.apply(this, arguments);
+
+    if (this.is_author && this.is_sent) {
+      this.$(".o_sign_signer_status")
+        .not(".o_sign_signer_signed")
+        .each((i, el) => {
+          $(el).append(
+            $("<button/>", {
+              type: "button",
+              title:
+                this.requestStates && this.requestStates[el.dataset.id]
+                  ? _t("Resend the invitation")
+                  : _t("Send the invitation"),
+              text:
+                this.requestStates && this.requestStates[el.dataset.id]
+                  ? _t("Resend")
+                  : _t("Send"),
+              class: "o_sign_resend_access_button btn btn-link ml-2 mr-2",
+              style: "vertical-align: baseline;",
+            })
+          );
+        });
+    }
   },
 });
 

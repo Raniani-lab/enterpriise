@@ -4,13 +4,13 @@
 
 import core from "web.core";
 import config from "web.config";
-import { DocumentBackend } from "@sign/js/backend/document_backend";
-import { document_signing } from "@sign/js/common/document_signing";
+import { DocumentBackend } from "@sign/js/backend/document";
+import { document_signable } from "@sign/js/common/document_signable";
 
 const { _t } = core;
 const { qweb } = core;
 
-const NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
+const NoPubThankYouDialog = document_signable.ThankYouDialog.extend({
   template: "sign.no_pub_thank_you_dialog",
   init: function (parent, RedirectURL, RedirectURLText, requestID, options) {
     options = options || {};
@@ -20,19 +20,19 @@ const NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
     this._super(parent, RedirectURL, RedirectURLText, requestID, options);
   },
 
-  on_closed: function () {
-    this._rpc({
+  on_closed: async function () {
+    const action = await this._rpc({
       model: "sign.request",
       method: "go_to_document",
       args: [this.requestID],
-    }).then((action) => {
-      this.do_action(action);
-      this.destroy();
     });
+
+    this.do_action(action);
+    this.destroy();
   },
 });
 
-const SignableDocument2 = document_signing.SignableDocument.extend({
+const SignableDocument2 = document_signable.SignableDocument.extend({
   get_thankyoudialog_class: function () {
     return NoPubThankYouDialog;
   },

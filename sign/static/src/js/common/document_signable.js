@@ -233,7 +233,14 @@ const SignatureDialog = Dialog.extend({
 
   addDefaultButtons() {
     const buttons = [];
-    buttons.push({ text: _t("Cancel"), close: true });
+    buttons.push({
+      text: _t("Adopt & Sign"),
+      classes: "btn-primary",
+      disabled: true,
+      click: (e) => {
+        this.confirmFunction();
+      },
+    });
     buttons.push({
       text: _t("Sign all"),
       classes: "btn-secondary",
@@ -245,14 +252,7 @@ const SignatureDialog = Dialog.extend({
           : this.confirmFunction();
       },
     });
-    buttons.push({
-      text: _t("Adopt and Sign"),
-      classes: "btn-primary",
-      disabled: true,
-      click: (e) => {
-        this.confirmFunction();
-      },
-    });
+    buttons.push({ text: _t("Cancel"), close: true });
     return buttons;
   },
 
@@ -763,6 +763,7 @@ const EncryptedDialog = Dialog.extend({
 });
 
 const ThankYouDialog = Dialog.extend({
+  template: "sign.thank_you_dialog",
   events: {
     "click .o_go_to_document": "on_closed",
   },
@@ -775,6 +776,7 @@ const ThankYouDialog = Dialog.extend({
     options = options || {};
     options.title = options.title || _t("Thank You !");
     options.subtitle = options.subtitle || _t("Your signature has been saved.");
+    options.message = options.message || _t("You will receive a copy of the signed document by mail");
     options.size = options.size || "medium";
     options.technical = false;
     options.buttons = [];
@@ -1151,15 +1153,22 @@ const SignablePDFIframe = PDFIframe.extend({
       );
     }
     if (type.item_type === "signature" || type.item_type === "initial") {
-      // in edit while signing mode, both edit and sign are possible.
-      // So we sign when .o_sign_item_display is clicked, instead of a click in the signatureItem
-      const clickableSignItem = isSignItemEditable
-        ? $signatureItem.find(".o_sign_item_display")
-        : $signatureItem;
-      clickableSignItem.on(
+      $signatureItem.on(
         "click",
         debounce(
-          () => this.handleSignatureDialogClick($signatureItem, type),
+          (e) => {
+            // when signing for the first time in edit mode, clicking in .o_sign_item_display should cause the sign.
+            // (because both edit and sign are possible) However if you want to change the signature after another
+            // one is set, .o_sign_item_display is not there anymore.
+            if (
+              isSignItemEditable &&
+              $signatureItem.find('.o_sign_item_display').length &&
+              !$(e.target).hasClass('o_sign_item_display')
+            ) {
+              return;
+            }
+            this.handleSignatureDialogClick($signatureItem, type)
+          },
           800
         )
       );
@@ -1302,18 +1311,18 @@ const SignablePDFIframe = PDFIframe.extend({
     });
 
     signDialog.onConfirmAll(async () => {
+      const name = signDialog.getName();
+      const signature = signDialog.getSignatureImageSrc();
+      this.getParent().signerName = name;
+
+      this.updateNextSignatureOrInitial(type.item_type, signature);
+
+      if (signDialog.nameAndSignature.signatureChanged) {
+        this.updateUserSignature(type.item_type, signature);
+      }
+
       for (const pageNumber of Object.keys(this.configuration)) {
         const page = this.configuration[pageNumber];
-        const name = signDialog.getName();
-        const signature = signDialog.getSignatureImageSrc();
-        this.getParent().signerName = name;
-
-        this.updateNextSignatureOrInitial(type.item_type, signature);
-
-        if (signDialog.nameAndSignature.signatureChanged) {
-          this.updateUserSignature(type.item_type, signature);
-        }
-
         await Promise.all(
           page.reduce((promise, item) => {
             if (
@@ -1545,6 +1554,7 @@ const SignableDocument = Document.extend({
 
     "click .o_sign_validate_banner button": "signItemDocument",
     "click .o_sign_sign_document_button": "signDocument",
+    "click .o_sign_refuse_document_button": "refuseDocument",
   },
 
   custom_events: {
@@ -1836,6 +1846,60 @@ const SignableDocument = Document.extend({
     return session.rpc(route, params).then(callback);
   },
 
+  refuseDocument: function (e) {
+    const $content = $(core.qweb.render('sign.refuse_confirm_dialog', { widget: this }));
+    const buttons = [
+      {
+        text: _t("Refuse"),
+        classes: 'btn-primary o_safe_confirm_button',
+        close: true,
+        click: this._refuse.bind(this),
+        disabled: true,
+      },
+      {
+        text: _t("Cancel"),
+        close: true,
+      }
+    ];
+    const dialog = new Dialog(this, {
+      size: 'medium',
+      buttons: buttons,
+      $content: $content,
+      title: _t("Refuse Document"),
+    });
+    dialog.opened(() => {
+      const $button = dialog.$footer.find('.o_safe_confirm_button');
+      dialog.$content.find(".o_sign_refuse_confirm_message").on('change keyup paste',  function (ev) {
+          $button.prop('disabled', $(this).val().length === 0);
+      });
+    });
+    return dialog.open();
+},
+
+  _refuse: function () {
+    const refusalReason = this.$(".o_sign_refuse_confirm_message").val();
+
+    // refuse sign request
+    const route = `/sign/refuse/${this.requestID}/${this.accessToken}`;
+    const params = {
+      refusal_reason: refusalReason
+    };
+    session.rpc(route, params).then(response => {
+      if (!response) {
+        this.openErrorDialog (
+          _t("Sorry, you cannot refuse this document"),
+          window.location.reload
+        )
+      }
+      this.iframeWidget.disableItems();
+      (new (this.get_thankyoudialog_class())(this, this.RedirectURL, this.RedirectURLText, this.requestID, {
+        'nextSign': 0,
+        'subtitle': _t("The document has been refused"),
+        'message': _t("We'll send an email to warn other followers & signers with the reason you provided."),
+      })).open();
+    });
+  },
+
   textareaApplyLineBreak: function (oTextarea) {
     // Removing wrap in order to have scrollWidth > width
     oTextarea.setAttribute("wrap", "off");
@@ -1904,7 +1968,7 @@ function initDocumentToSign(parent) {
   });
 }
 
-export const document_signing = {
+export const document_signable = {
   EncryptedDialog,
   ThankYouDialog,
   initDocumentToSign,
@@ -1913,4 +1977,4 @@ export const document_signing = {
   SMSSignerDialog,
 };
 
-export default document_signing;
+export default document_signable;

@@ -60,7 +60,7 @@ function getOptionsSelectConfiguration(item_id, select_options, selected) {
       },
     };
 
-    const selectChangeHandler = function (e) {
+    const selectChangeHandler = async function (e) {
       const $select = $(e.target),
         option = e.added || e.removed;
       $select.data("item_options", $select.select2("val"));
@@ -69,14 +69,14 @@ function getOptionsSelectConfiguration(item_id, select_options, selected) {
       if (option_id >= 0 || !value) {
         return false;
       }
-      ajax
+      const optionId = await ajax
         .rpc("/web/dataset/call_kw/sign.template/add_option", {
           model: "sign.template",
           method: "add_option",
           args: [value],
           kwargs: {},
-        })
-        .then(process_option);
+        });
+      process_option(optionId);
 
       function process_option(optionId) {
         const option = { id: optionId, value: value };
@@ -105,7 +105,7 @@ function getResponsibleSelectConfiguration(parties) {
   if (getResponsibleSelectConfiguration.configuration === undefined) {
     const select2Options = getSelect2Options(_t("Select the responsible"));
 
-    const selectChangeHandler = function (e) {
+    const selectChangeHandler = async function (e) {
       const $select = $(e.target),
         $option = $(e.added.element[0]);
 
@@ -116,14 +116,14 @@ function getResponsibleSelectConfiguration(parties) {
         return false;
       }
 
-      ajax
+      const partyId = await ajax
         .rpc("/web/dataset/call_kw/sign.item.role/add", {
           model: "sign.item.role",
           method: "add",
           args: [name],
           kwargs: {},
-        })
-        .then(process_party);
+        });
+      process_party(partyId);
 
       function process_party(partyID) {
         parties[partyID] = { id: partyID, name: name };

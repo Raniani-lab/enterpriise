@@ -1768,7 +1768,7 @@ tour.register('test_delivery_reserved_3', {test: true}, [
     { trigger: '.o_barcode_client_action', run: 'scan product1' },
     { trigger: '.o_barcode_client_action', run: 'scan this_is_not_a_barcode_dude' },
     {
-        trigger: '.o_barcode_line',
+        trigger: '.o_barcode_line.o_highlight',
         run: function() {
             helper.assertPageSummary('');
             helper.assertPreviousVisible(true);

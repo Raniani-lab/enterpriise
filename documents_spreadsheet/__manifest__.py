@@ -28,19 +28,12 @@
         'web.assets_backend': [
             'documents_spreadsheet/static/src/**/*.js',
             'documents_spreadsheet/static/src/scss/**/*',
-            ('remove', 'documents_spreadsheet/static/src/legacy/**/*.js')
-        ],
-        'web.assets_backend_prod_only': [
-            'documents_spreadsheet/static/src/legacy/**/*.js',
-        ],
-        'web.qunit_suite_tests': [
-            'documents_spreadsheet/static/tests/**/*',
-        ],
-        'web.assets_tests': [
-            'documents_spreadsheet/static/tests/tours/**/*',
         ],
         'web.assets_qweb': [
             'documents_spreadsheet/static/src/**/*.xml',
+        ],
+        'web.assets_tests': [
+            'documents_spreadsheet/static/tests/**/*',
         ],
     }
 }

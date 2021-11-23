@@ -95,7 +95,8 @@ class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
     _inherit = ['helpdesk.ticket', 'timer.mixin']
 
-    project_id = fields.Many2one("project.project", related="team_id.project_id", readonly=True, store=True)
+    project_id = fields.Many2one(
+        "project.project", related="team_id.project_id", readonly=True, store=True, precompute=True)
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')

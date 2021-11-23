@@ -118,3 +118,16 @@ class sale_order(models.Model):
             'date_planned': so_line.order_id.expected_date or date_order,
             'display_type': so_line.display_type,
         }
+
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    def _purchase_service_create(self, quantity=False):
+        line_to_purchase = set()
+        for line in self:
+            # Do not auto purchase as the sale order is automatically created in a intercompany flow
+            if self.env.user != line.company_id.intercompany_user_id:
+                line_to_purchase.add(line.id)
+        line_to_purchase = self.env['sale.order.line'].browse(list(line_to_purchase))
+        return super(SaleOrderLine, line_to_purchase)._purchase_service_create(quantity=quantity)

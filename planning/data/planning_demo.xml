@@ -45,16 +45,19 @@
             <field name="role_id" ref="planning_role_management"/>
             <field name="start_time" eval="8"/>
             <field name="duration" eval="4"/>
+            <field name="sequence">1</field>
         </record>
         <record id="planning_template_developer_morning" model="planning.slot.template">
             <field name="role_id" ref="planning_role_developer"/>
             <field name="start_time" eval="8"/>
             <field name="duration" eval="4"/>
+            <field name="sequence">2</field>
         </record>
         <record id="planning_template_cm_morning" model="planning.slot.template">
             <field name="role_id" ref="planning_role_cm"/>
             <field name="start_time" eval="8"/>
             <field name="duration" eval="4"/>
+            <field name="sequence">3</field>
         </record>
 
         <!-- Shift templates (evening shifts) -->
@@ -62,16 +65,19 @@
             <field name="role_id" ref="planning_role_management"/>
             <field name="start_time" eval="13"/>
             <field name="duration" eval="4"/>
+            <field name="sequence">5</field>
         </record>
         <record id="planning_template_developer_evening" model="planning.slot.template">
             <field name="role_id" ref="planning_role_developer"/>
             <field name="start_time" eval="13"/>
             <field name="duration" eval="4"/>
+            <field name="sequence">6</field>
         </record>
         <record id="planning_template_cm_evening" model="planning.slot.template">
             <field name="role_id" ref="planning_role_cm"/>
             <field name="start_time" eval="13"/>
             <field name="duration" eval="4"/>
+            <field name="sequence">7</field>
         </record>
 
         <!-- Material Resources -->
@@ -84,6 +90,12 @@
             <field name="name">Continuity Tester</field>
             <field name="resource_type">material</field>
             <field name="color">10</field>
+        </record>
+        <record id="planning_resource_laptop" model="resource.resource">
+            <field name="name">Laptop</field>
+            <field name="resource_type">material</field>
+            <field name="calendar_id" ref="resource.resource_calendar_std_35h"></field>
+            <field name="color">8</field>
         </record>
         <record id="planning_resource_3" model="resource.resource">
             <field name="name">Intervention Van</field>
@@ -100,6 +112,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_qdp').resource_id.id"/>
             <field name="role_id" ref="planning_role_developer"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="25"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_112" model="planning.slot">
@@ -114,6 +127,13 @@
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 10:00:00')"/>
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jod').resource_id.id"/>
+            <field name="role_id" ref="planning_role_cm"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+        <record id="planning_slot_120" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 10:00:00')"/>
             <field name="role_id" ref="planning_role_cm"/>
             <field name="publication_warning" eval="False"/>
             <field name="state">published</field>
@@ -142,6 +162,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_niv').resource_id.id"/>
             <field name="role_id" ref="planning_role_developer"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="75"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_118" model="planning.slot">
@@ -149,6 +170,14 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 15:00:00')"/>
             <field name="resource_id" ref="planning_resource_it_toolbox"/>
             <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+        <record id="planning_slot_119" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 15:00:00')"/>
+            <field name="role_id" ref="planning_role_cm"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
             <field name="state">published</field>
         </record>
 
@@ -167,6 +196,7 @@
             <field name="role_id" ref="planning_role_management"/>
             <field name="name" eval="'Check with Katy from the employment agency if they have someone to replace Randall this day'"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_123" model="planning.slot">
@@ -193,6 +223,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_ngh').resource_id.id"/>
             <field name="role_id" ref="planning_role_cm"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_126" model="planning.slot">
@@ -239,6 +270,13 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 10:00:00')"/>
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jod').resource_id.id"/>
             <field name="role_id" ref="planning_role_cm"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+        <record id="planning_slot_139" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" ref="planning_resource_laptop"/>
             <field name="publication_warning" eval="False"/>
             <field name="state">published</field>
         </record>
@@ -310,6 +348,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jth').resource_id.id"/>
             <field name="role_id" ref="planning_role_management"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_145" model="planning.slot">
@@ -333,6 +372,7 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  15:00:00')"/>
             <field name="resource_id" ref="planning_resource_it_toolbox"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="75"/>
             <field name="state">published</field>
         </record>
 
@@ -368,6 +408,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jth').resource_id.id"/>
             <field name="role_id" ref="planning_role_management"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_155" model="planning.slot">
@@ -376,6 +417,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_admin').resource_id.id"/>
             <field name="role_id" ref="planning_role_cm"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
             <field name="state">published</field>
         </record>
         <record id="planning_slot_156" model="planning.slot">
@@ -400,6 +442,13 @@
             <field name="publication_warning" eval="False"/>
             <field name="state">published</field>
         </record>
+        <record id="planning_slot_159" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  15:00:00')"/>
+            <field name="resource_id" ref="planning_resource_laptop"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
 
         <!--                                        Week 2                                        -->
 
@@ -417,6 +466,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_lur').resource_id.id"/>
             <field name="role_id" ref="planning_role_management"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
         </record>
         <record id="planning_slot_213" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -447,6 +497,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_niv').resource_id.id"/>
             <field name="role_id" ref="planning_role_developer"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="25"/>
         </record>
         <record id="planning_slot_218" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -476,6 +527,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jep').resource_id.id"/>
             <field name="role_id" ref="planning_role_cm"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
         </record>
 
         <!-- Tuesday evening shifts -->
@@ -527,6 +579,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jod').resource_id.id"/>
             <field name="role_id" ref="planning_role_cm"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
         </record>
 
         <!-- Wednesday evening shifts -->
@@ -571,6 +624,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_lur').resource_id.id"/>
             <field name="role_id" ref="planning_role_management"/>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="75"/>
         </record>
         <record id="planning_slot_243" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -578,6 +632,13 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jod').resource_id.id"/>
             <field name="role_id" ref="planning_role_cm"/>
             <field name="publication_warning" eval="False"/>
+        </record>
+        <record id="planning_slot_249" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" ref="planning_resource_laptop"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
         </record>
 
         <!-- Thursday evening shifts -->
@@ -630,6 +691,7 @@
             <field name="repeat_interval" eval="1"/>
             <field name="repeat_type">forever</field>
             <field name="publication_warning" eval="False"/>
+            <field name="allocated_percentage" eval="50"/>
         </record>
         <record id="planning_slot_253" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d 06:00:00')"/>

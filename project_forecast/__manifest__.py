@@ -11,6 +11,7 @@
     'depends': ['project', 'planning', 'web_grid'],
     'demo': [
         'data/project_planning_demo.xml',
+        'data/planning_demo.xml',
     ],
     'data': [
         'views/planning_template_views.xml',

@@ -761,7 +761,7 @@ class SignRequestItem(models.Model):
             request_items_reassigned |= self.filtered(lambda sri: self.partner_id.id != vals['partner_id'])
             if any(sri.state not in ['sent', 'draft']
                    or sri.sign_request_id.state not in ['sent', 'canceled']
-                   or not sri.role_id.change_authorized
+                   or (sri.partner_id and not sri.role_id.change_authorized)
                    for sri in request_items_reassigned):
                 raise UserError(_("You cannot reassign this signatory"))
             new_sign_partner = self.env['res.partner'].browse(vals.get('partner_id'))

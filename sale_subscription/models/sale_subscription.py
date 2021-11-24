@@ -622,6 +622,8 @@ class SaleSubscription(models.Model):
             'invoice_user_id': self.user_id.id,
             'partner_bank_id': company.partner_id.bank_ids.filtered(lambda b: not b.company_id or b.company_id == company)[:1].id,
         }
+        if self.env.context.get('new_invoice_ref'):
+            res['ref'] = self.env.context['new_invoice_ref']
         if self.team_id:
             res['team_id'] = self.team_id.id
         return res
@@ -979,6 +981,15 @@ class SaleSubscription(models.Model):
                 subs_order_lines = self.env['sale.order.line'].search([('subscription_id', 'in', sub_ids)])
                 for subscription in subs:
                     subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
+                    sub_so = subs_order_lines.filtered(lambda ol: ol.subscription_id.id == subscription.id).order_id
+                    sub_so_renewal = sub_so.filtered(lambda so: so.subscription_management == 'renew')
+                    reference_so = max(sub_so_renewal, key=lambda so: so.date_order, default=False) or min(sub_so,
+                                                                                                           key=lambda
+                                                                                                               so: so.date_order,
+                                                                                                           default=False)
+                    invoice_ctx = {'lang': subscription.partner_id.lang}
+                    if reference_so and reference_so.client_order_ref:
+                        invoice_ctx['new_invoice_ref'] = reference_so.client_order_ref
                     if automatic and auto_commit:
                         cr.commit()
 
@@ -993,7 +1004,8 @@ class SaleSubscription(models.Model):
                             payment_token = subscription.payment_token_id
                             tx = None
                             if payment_token:
-                                invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
+
+                                invoice_values = subscription.with_context(invoice_ctx)._prepare_invoice()
                                 new_invoice = Invoice.create(invoice_values)
                                 if subscription.analytic_account_id or subscription.tag_ids:
                                     for line in new_invoice.invoice_line_ids:
@@ -1080,7 +1092,7 @@ class SaleSubscription(models.Model):
                             if subscription.date and subscription.recurring_next_date >= subscription.date:
                                 return
                             else:
-                                invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
+                                invoice_values = subscription.with_context(invoice_ctx)._prepare_invoice()
                                 new_invoice = Invoice.create(invoice_values)
                                 if subscription.analytic_account_id or subscription.tag_ids:
                                     for line in new_invoice.invoice_line_ids:
@@ -1088,10 +1100,6 @@ class SaleSubscription(models.Model):
                                             line.analytic_account_id = subscription.analytic_account_id
                                         if subscription.tag_ids:
                                             line.analytic_tag_ids = subscription.tag_ids
-                                sub_so = subs_order_lines.filtered(lambda ol: ol.subscription_id.id == subscription.id).order_id
-                                sub_so_renewal = sub_so.filtered(lambda so: so.subscription_management == 'renew')
-                                reference_so = max(sub_so_renewal, key=lambda so: so.date_order, default=False) or min(sub_so, key=lambda so: so.date_order, default=False)
-                                new_invoice.ref = reference_so.client_order_ref if reference_so else False
                                 new_invoice.message_post_with_view(
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},

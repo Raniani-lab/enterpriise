@@ -98,7 +98,7 @@ var EventScanView = AbstractAction.extend({
         if (this.isMultiEvent) {
             this.do_action("event.event_registration_action");
         } else {
-            this.do_action("event.act_event_registration_from_event", {
+            this.do_action("event.event_registration_action_kanban", {
                 additional_context: {
                     active_id: this.eventId,
                     search_default_unconfirmed: true,

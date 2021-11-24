@@ -25,6 +25,7 @@ import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_owl"
 import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_legacy";
 import { browser } from "@web/core/browser/browser";
+import { makeFakeSpreadsheetService } from "../spreadsheet_test_utils";
 
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -50,6 +51,7 @@ async function openView(viewType, options = {}) {
         },
         { sequence: 1 }
     );
+    serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,

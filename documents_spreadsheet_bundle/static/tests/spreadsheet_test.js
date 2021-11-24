@@ -21,6 +21,7 @@ import {
     getCellValue,
     joinSession,
     leaveSession,
+    makeFakeSpreadsheetService,
     setCellContent,
     setGlobalFilterValue,
     setSelection,
@@ -159,9 +160,7 @@ module(
 
         test("Number of connected users is correctly rendered", async function (assert) {
             assert.expect(7);
-            const transportService = new MockSpreadsheetCollaborativeChannel();
-            const { webClient } = await createSpreadsheet({
-                transportService,
+            const { webClient, transportService } = await createSpreadsheet({
                 data: this.data,
             });
             assert.equal(
@@ -232,6 +231,7 @@ module(
 
         test("open spreadsheet with deprecated `active_id` params", async function (assert) {
             assert.expect(4);
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData: { models: this.data },
                 mockRPC: async function (route, args) {
@@ -259,6 +259,7 @@ module(
 
         test("download spreadsheet with the action param `download`", async function (assert) {
             assert.expect(4);
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             mockDownload(async (options) => {
                 assert.step(options.url);
                 assert.ok(options.data.zip_name);
@@ -326,6 +327,7 @@ module(
             };
             const serverData = { actions, models: this.data, views };
 
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -427,7 +429,6 @@ module(
 
         test("receiving bad revision reload", async function (assert) {
             assert.expect(2);
-            const transportService = new MockSpreadsheetCollaborativeChannel();
             const serviceRegistry = registry.category("services");
             serviceRegistry.add("actionMain", actionService);
             const fakeActionService = {
@@ -445,9 +446,8 @@ module(
                 },
             };
             serviceRegistry.add("action", fakeActionService, { force: true });
-            await createSpreadsheet({
+            const { transportService } = await createSpreadsheet({
                 data: this.data,
-                transportService,
             });
             transportService.broadcast({
                 type: "REMOTE_REVISION",

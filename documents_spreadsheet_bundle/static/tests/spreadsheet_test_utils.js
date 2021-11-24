@@ -16,6 +16,7 @@ import { UNTITLED_SPREADSHEET_NAME } from "@documents_spreadsheet_bundle/o_sprea
 import { PivotView } from "@web/views/pivot/pivot_view";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
+import { spreadsheetCollaborativeService } from "@documents_spreadsheet_bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
 
 const { Model } = spreadsheet;
 const { toCartesian, toZone } = spreadsheet.helpers;
@@ -225,6 +226,7 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
     // TODO convert tests to use "serverData"
     const serverData = params.serverData || { models: data, views: arch };
     if (!webClient) {
+        serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
         webClient = await createWebClient({
             serverData,
             mockRPC,
@@ -237,19 +239,18 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
         legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
     }
 
-    const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
     await doAction(webClient, {
         type: "ir.actions.client",
         tag: actionTag,
         params: {
             spreadsheet_id: spreadsheetId,
-            transportService,
         },
     });
     return {
         webClient,
         model: getSpreadsheetActionModel(spreadsheetAction),
         env: getSpreadsheetActionEnv(spreadsheetAction),
+        transportService: spreadsheetAction.transportService,
     };
 }
 
@@ -309,6 +310,7 @@ export async function createSpreadsheetFromList(params = {}) {
     };
     const { data } = listView;
     if (!webClient) {
+        serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
         const serverData = { models: data, views: listView.archs };
         webClient = await createWebClient({
             serverData,
@@ -332,14 +334,12 @@ export async function createSpreadsheetFromList(params = {}) {
     if (actions) {
         await actions(controller);
     }
-    const transportService = new MockSpreadsheetCollaborativeChannel();
 
     const list = controller._getListForSpreadsheet();
     await doAction(webClient, {
         type: "ir.actions.client",
         tag: "action_open_spreadsheet",
         params: {
-            transportService,
             alwaysCreate: true,
             preProcessingAction: "insertList",
             preProcessingActionData: { list: list.list, threshold: linesNumber, fields: list.fields }
@@ -359,7 +359,7 @@ export async function createSpreadsheetFromList(params = {}) {
         webClient,
         env,
         model,
-        transportService,
+        transportService: spreadSheetComponent.transportService,
         get spreadsheetAction() {
             return spreadsheetAction;
         },
@@ -444,6 +444,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
         if (!serviceRegistry.contains("user")) {
             serviceRegistry.add("user", makeFakeUserService(() => true));
         }
+        serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
         webClient = await createWebClient({
             serverData,
             legacyParams: {
@@ -471,7 +472,6 @@ export async function createSpreadsheetFromPivot(params = {}) {
         await actions(pivot);
     }
 
-    const transportService = new MockSpreadsheetCollaborativeChannel();
     const data = {
         data: pivot.model.data,
         metaData: pivot.model.metaData,
@@ -480,7 +480,6 @@ export async function createSpreadsheetFromPivot(params = {}) {
     const actionParams = {
         preProcessingAction: "insertPivot",
         preProcessingActionData: data,
-        transportService,
     };
     if (params.resId) {
         actionParams.spreadsheet_id = params.resId;
@@ -507,12 +506,23 @@ export async function createSpreadsheetFromPivot(params = {}) {
         webClient,
         env,
         model,
-        transportService,
+        transportService: spreadsheetAction.transportService,
         pivotData: data,
         get spreadsheetAction() {
             return spreadsheetAction;
         },
     };
+}
+
+export function makeFakeSpreadsheetService() {
+    return {
+        ...spreadsheetCollaborativeService,
+        start() {
+            const fakeSpreadsheetService = spreadsheetCollaborativeService.start(...arguments);
+            fakeSpreadsheetService.getCollaborativeChannel = () => new MockSpreadsheetCollaborativeChannel();
+            return fakeSpreadsheetService;
+        }
+    }
 }
 
 /**

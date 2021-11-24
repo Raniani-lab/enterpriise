@@ -9,6 +9,7 @@ import {
     getCells,
     getCellValue,
     getMerges,
+    makeFakeSpreadsheetService,
     setCellContent,
 } from "./spreadsheet_test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
@@ -665,6 +666,7 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
             "partner,false,search": `<search/>`,
         },
     };
+    registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
     const webClient = await createWebClient({
         serverData,
         legacyParams: {
@@ -720,6 +722,7 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
             "partner,false,search": `<search/>`,
         },
     };
+    registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
     const webClient = await createWebClient({
         serverData,
         legacyParams: {

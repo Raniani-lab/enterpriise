@@ -22,6 +22,7 @@ import {
     getCellFormula,
     createSpreadsheetTemplate,
     createSpreadsheet,
+    makeFakeSpreadsheetService,
 } from "./spreadsheet_test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -287,6 +288,7 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -355,6 +357,7 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -398,6 +401,7 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -467,6 +471,7 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -523,6 +528,7 @@ module(
             </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -599,6 +605,7 @@ module(
                     </pivot>`;
             const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
             Object.assign(serverData, { views });
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1314,6 +1321,7 @@ module(
                 },
             });
 
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1506,6 +1514,7 @@ module(
 
         test("open template client action without collaborative indicators", async function (assert) {
             assert.expect(2);
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1521,6 +1530,7 @@ module(
 
         test("collaboration communication is disabled", async function (assert) {
             assert.expect(1);
+            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },

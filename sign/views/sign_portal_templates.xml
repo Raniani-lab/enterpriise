@@ -105,22 +105,30 @@
                                     <span t-field="my_sign_item.create_date" t-options="{'widget': 'date'}"/>
                                 </div>
                                 <div>
-                                    <t t-if="my_sign_item.sign_request_id.state != 'signed'">
-                                        <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
-                                            <div t-if="sign.state != 'completed'" class="_status clearfix" t-att-data-id="sign.id">
-                                                <b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b>
-                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Waiting Signature</em>
-                                                <em t-if="sign.state != 'sent'"><br/>(the email access has not been sent)</em>
-                                            </div>
-                                        </t>
+                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
+                                        <div t-if="sign.state == 'sent'" class="_status clearfix" t-att-data-id="sign.id">
+                                            <b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b>
+                                            <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Waiting Signature</em>
+                                            <em t-if="not sign.is_mail_sent"><br/>(the email access has not been sent)</em>
+                                        </div>
                                     </t>
-                                    <t t-if="my_sign_item.sign_request_id.nb_closed > 0">
-                                        <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
-                                            <div t-if="sign.state == 'completed'" class="_status clearfix"><b>
-                                                <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
-                                                <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Signed on <span t-field="sign.signing_date"></span></em>
-                                            </div>
-                                        </t>
+                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
+                                        <div t-if="sign.state == 'canceled'" class="_status clearfix" t-att-data-id="sign.id">
+                                           <b> <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
+                                            <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Canceled</em>
+                                        </div>
+                                    </t>
+                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
+                                        <div t-if="sign.state == 'refused'" class="_status clearfix" t-att-data-id="sign.id">
+                                           <b> <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
+                                            <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Refused on <span t-field="sign.signing_date"></span></em>
+                                        </div>
+                                    </t>
+                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
+                                        <div t-if="sign.state == 'completed'" class="_status clearfix"><b>
+                                            <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
+                                            <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Signed on <span t-field="sign.signing_date"></span></em>
+                                        </div>
                                     </t>
                                 </div>
                             </div>

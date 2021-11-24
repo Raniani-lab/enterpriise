@@ -67,6 +67,6 @@ class TestSignRequest(TestSignCommon):
         request_item_1.refuse("not good")
         self.assertEqual(request_item_1.state, 'refused', 'The state of a refused sign_request_item should be "refused"')
         self.assertEqual(sign_request.state, 'refused', 'The state of a refused sign_request should be "refused"')
-        self.assertEqual(request_item_2.state, 'sent', 'Other sign_request_items of a refused sign_request should be "sent"')
+        self.assertEqual(request_item_2.state, 'canceled', 'Other sign_request_items of a refused sign_request should be "canceled"')
         with self.assertRaises(UserError):
             request_item_2.refuse("not good")

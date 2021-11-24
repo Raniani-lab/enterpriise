@@ -120,7 +120,7 @@ class SignRequest(models.Model):
             for s in rec.request_item_ids:
                 if s.state == "sent":
                     wait += 1
-                if s.state in ["completed", "refused"]:
+                if s.state in ["completed", "refused", "canceled"]:
                     closed += 1
             rec.nb_wait = wait
             rec.nb_closed = closed
@@ -146,6 +146,10 @@ class SignRequest(models.Model):
                 'signing_date': item.signing_date or ''
             } for item in request.request_item_ids]
 
+    def toggle_active(self):
+        self.filtered(lambda sr: sr.active and sr.state == 'sent').cancel()
+        super(SignRequest, self).toggle_active()
+
     def _check_after_compute(self):
         for rec in self:
             if rec.state == 'sent' and rec.nb_closed == len(rec.request_item_ids) and len(rec.request_item_ids) > 0: # All signed
@@ -158,9 +162,6 @@ class SignRequest(models.Model):
         # Remove False from all_recipients to avoid crashing later
         all_recipients.discard(False)
         return all_recipients
-
-    def button_send(self):
-        self.action_sent()
 
     def go_to_document(self):
         self.ensure_one()
@@ -248,26 +249,15 @@ class SignRequest(models.Model):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self.favorited_ids else 4, self.env.user.id)]})
 
-    def action_resend(self):
-        self.action_draft()
-        self.action_sent()
-
-    def action_draft(self):
-        for sign_request in self:
-            sign_request.write({'completed_document': None, 'access_token': self._default_access_token()})
-
     def _refuse(self, refuser, refusal_reason):
         self.ensure_one()
         if self.state != 'sent' or not self.refusal_allowed:
             raise UserError(_("This sign request cannot be refused"))
         self.write({'state': 'refused'})
+        self.request_item_ids._cancel(no_access=False)
 
-        # cancel activities for other unsigned users
-        unsigned_partners = self.request_item_ids.filtered(lambda sri: sri.state == 'sent').partner_id
-        unsigned_users = self.env['res.users'].sudo().search(
-            [('partner_id', 'in', unsigned_partners.ids)]
-        ).filtered(lambda u: u.has_group('sign.group_sign_employee'))
-        for user in unsigned_users:
+        # cancel request and activities for other unsigned users
+        for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
         # send emails to signers and followers
@@ -310,47 +300,18 @@ class SignRequest(models.Model):
             lang=partner_lang,
         )
 
-    def action_sent_without_mail(self):
-        self.write({'state': 'sent'})
+    def send_signature_accesses(self):
+        # Send/Resend accesses for 'sent' sign.request.items by email
         for sign_request in self:
-            for sign_request_item in sign_request.request_item_ids:
-                sign_request_item.write({'state':'sent'})
-            self.env['sign.log']._create_log(sign_request, "create", is_request=True)
-
-    def action_sent(self):
-        # Send accesses by email
-        self.write({'state': 'sent'})
-        for sign_request in self:
-            ignored_partners = []
-            for request_item in sign_request.request_item_ids:
-                if request_item.state not in ['draft', 'refused']:
-                    ignored_partners.append(request_item.partner_id.id)
-            included_request_items = sign_request.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners)
-
-            if sign_request.send_signature_accesses(ignored_partners=ignored_partners):
-                self.env['sign.log']._create_log(sign_request, "create", is_request=True)
-                included_request_items.action_sent()
-                body = _("The signature mail has been sent to: ")
-                for signer, role in included_request_items.mapped(lambda sri: (sri.partner_id, sri.role_id)):
-                    body += " %s(%s)," % (signer.name, role.name)
-                body = body.strip(',')
+            request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
+            if request_items:
+                request_items.send_signature_accesses()
+                body = _("The signature mail is sent to: ")
+                receiver_names = ["%s(%s)" % (sri.partner_id.name, sri.role_id.name) for sri in request_items]
+                body += ', '.join(receiver_names)
                 if not is_html_empty(sign_request.message):
                     body += sign_request.message
                 sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
-            else:
-                sign_request.action_draft()
-
-    def action_send(self):
-        for sign_request in self.filtered(lambda sr: sr.state == 'sent'):
-            request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
-            request_items.send_signature_accesses()
-            body = _("The signature mail has been sent to: ")
-            for signer, role in request_items.mapped(lambda sri: (sri.partner_id, sri.role_id)):
-                body += " %s(%s)," % (signer.name, role.name)
-            body = body.strip(',')
-            if not is_html_empty(sign_request.message):
-                body += sign_request.message
-            sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
 
     def action_signed(self):
         self.write({'state': 'signed'})
@@ -367,10 +328,17 @@ class SignRequest(models.Model):
         old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
         return old_pdf.isEncrypted
 
-    def action_canceled(self):
+    def cancel(self):
         for sign_request in self:
-            sign_request.write({'completed_document': None, 'access_token': self._default_access_token(), 'state': 'canceled'})
-        self.mapped('request_item_ids').action_draft()
+            sign_request.write({'access_token': self._default_access_token(), 'state': 'canceled'})
+        self.request_item_ids._cancel()
+
+        # cancel activities for signers
+        for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
+            self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
+
+        for sign_request in self:
+            self.env['sign.log']._create_log(sign_request, 'cancel', is_request=True)
 
     def set_signers(self, signers):
         SignRequestItem = self.env['sign.request.item']
@@ -398,17 +366,6 @@ class SignRequest(models.Model):
     def check_request_edit_during_sign(self, request_id):
         request_sudo = self.sudo().browse(request_id)
         return request_sudo.exists() and request_sudo.nb_closed == 0 and self.env.user.has_group('base.group_user')
-
-    def send_signature_accesses(self, ignored_partners=None):
-        self.ensure_one()
-        roles_and_responsible_dont_match = not self.request_item_ids.ids or (set(self.request_item_ids.mapped('role_id')) != set(self.template_id.sign_item_ids.mapped('responsible_id')))
-        # if sign request has default role and 0 items, it should be sent
-        request_is_not_default_without_items = not(len(self.request_item_ids) == 1 and self.request_item_ids.role_id == self.env.ref('sign.sign_item_role_default') and not(self.template_id.sign_item_ids))
-        if roles_and_responsible_dont_match and request_is_not_default_without_items:
-            return False
-
-        self.request_item_ids.filtered(lambda r: not r.partner_id or not ignored_partners or r.partner_id.id not in ignored_partners).send_signature_accesses()
-        return True
 
     def send_completed_document(self):
         self.ensure_one()
@@ -670,7 +627,7 @@ class SignRequest(models.Model):
         return mail
 
     @api.model
-    def initialize_new(self, template_id, signers, followers, reference, subject, message, message_cc=None, attachment_ids=None, send=True, without_mail=False, refusal_allowed=False):
+    def initialize_new(self, template_id, signers, followers, reference, subject, message, message_cc=None, attachment_ids=None, without_mail=False, refusal_allowed=False):
         sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_employee'))
         sign_request = self.create({'template_id': template_id,
                                     'reference': reference,
@@ -685,10 +642,9 @@ class SignRequest(models.Model):
         # All CCers and signers are followers of the sign request.
         sign_request.message_subscribe(partner_ids=followers + sign_request.request_item_ids.partner_id.ids)
         sign_request.activity_update(sign_users)
-        if send:
-            sign_request.action_sent()
-        if without_mail:
-            sign_request.action_sent_without_mail()
+        self.env['sign.log']._create_log(sign_request, "create", is_request=True)
+        if not without_mail:
+            sign_request.send_signature_accesses()
         return {
             'id': sign_request.id,
             'token': sign_request.access_token,
@@ -739,11 +695,11 @@ class SignRequestItem(models.Model):
     signature = fields.Binary(attachment=True)
     signing_date = fields.Date('Signed on', readonly=True)
     state = fields.Selection([
-        ("draft", "Draft"),
         ("sent", "To Sign"),
         ("refused", "Refused"),
-        ("completed", "Completed")
-    ], readonly=True, default="draft")
+        ("completed", "Completed"),
+        ("canceled", "Canceled"),
+    ], readonly=True, default="sent")
     color = fields.Integer(compute='_compute_color')
 
     signer_email = fields.Char(compute="_compute_email", store=True)
@@ -759,8 +715,8 @@ class SignRequestItem(models.Model):
         request_items_reassigned = self.env['sign.request.item']
         if vals.get('partner_id'):
             request_items_reassigned |= self.filtered(lambda sri: self.partner_id.id != vals['partner_id'])
-            if any(sri.state not in ['sent', 'draft']
-                   or sri.sign_request_id.state not in ['sent', 'canceled']
+            if any(sri.state != 'sent'
+                   or sri.sign_request_id.state != 'sent'
                    or (sri.partner_id and not sri.role_id.change_authorized)
                    for sri in request_items_reassigned):
                 raise UserError(_("You cannot reassign this signatory"))
@@ -797,22 +753,14 @@ class SignRequestItem(models.Model):
             request_item.is_mail_sent = False
         return res
 
-    def action_draft(self):
+    def _cancel(self, no_access=True):
         for request_item in self:
             request_item.write({
-                'signature': None,
-                'signing_date': None,
-                'access_token': self._default_access_token(),
-                'state': 'draft',
-                'is_mail_sent': False,
+                'access_token': self._default_access_token() if no_access else request_item.access_token,
+                'state': 'canceled' if request_item.state == 'sent' else request_item.state,
+                'signing_date': fields.Date.context_today(self) if request_item.state == 'sent' else request_item.signing_date,
+                'is_mail_sent': False if no_access else request_item.is_mail_sent,
             })
-            itemsToClean = request_item.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id == request_item.role_id or not r.responsible_id)
-            self.env['sign.request.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
-        self.mapped('sign_request_id')._check_after_compute()
-
-    def action_sent(self):
-        self.write({'state': 'sent', 'is_mail_sent': True})
-        self.mapped('sign_request_id')._check_after_compute()
 
     def action_completed(self):
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
@@ -866,6 +814,7 @@ class SignRequestItem(models.Model):
                 force_send=True,
                 lang=signer_lang,
             )
+            signer.is_mail_sent = True
 
     def sign(self, signature, new_sign_items=None):
         """ Stores the sign request item values.
@@ -1001,7 +950,7 @@ class SignRequestItem(models.Model):
 
     @api.depends('state')
     def _compute_color(self):
-        color_map = {"draft": 0,
+        color_map = {"canceled": 0,
                      "sent": 0,
                      "refused": 1,
                      "completed": 10}
@@ -1010,7 +959,7 @@ class SignRequestItem(models.Model):
 
     @api.depends('partner_id.email')
     def _compute_email(self):
-        for sign_request_item in self.filtered(lambda sri: sri.state in ["draft", "sent"]):
+        for sign_request_item in self.filtered(lambda sri: sri.state == "sent"):
             sign_request_item.signer_email = sign_request_item.partner_id.email_normalized
 
 

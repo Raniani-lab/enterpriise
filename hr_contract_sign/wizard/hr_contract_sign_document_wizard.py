@@ -151,9 +151,6 @@ class HrContractSignDocumentWizard(models.TransientModel):
 
         for sign_request in sign_requests:
             sign_request.toggle_favorited()
-        sign_requests.action_sent()
-        sign_requests.write({'state': 'sent'})
-        sign_requests.request_item_ids.write({'state': 'sent'})
 
         (self.contract_id or self.employee_id).sign_request_ids += sign_requests
 

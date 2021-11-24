@@ -45,6 +45,7 @@ class SignLog(models.Model):
             ('save', 'Save'),
             ('sign', 'Signature'),
             ('refuse', 'Refuse'),
+            ('cancel', 'Cancel'),
             ('update_mail', 'Mail Update'),
             ('update', 'Update')
         ], required=True,
@@ -128,8 +129,8 @@ class SignLog(models.Model):
         # NOTE: We update request_item.latitude/longitude when the request_item is opened and not 'completed'/'refused'
         # And If the signer accepted the browser geolocation request, the coordinates will be more precise.
         # We should forcely use the GeoIP ones only if the the request_item is 'completed'/'refused'
-        latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state in ['completed', 'refused'] else request_item.latitude
-        longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state in ['completed', 'refused'] else request_item.longitude
+        latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state != 'sent' else request_item.latitude
+        longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state != 'sent' else request_item.longitude
         return dict(
             sign_request_item_id=request_item.id,
             sign_request_id=sign_request.id,

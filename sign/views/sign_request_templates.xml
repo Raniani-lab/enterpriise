@@ -31,32 +31,38 @@
                 </div>
 
                 <div class="o_sign_signer_status_wrapper col-lg-4 d-flex justify-content-end flex-wrap mobile-hide">
-                    <t t-foreach="sign_request.request_item_ids" t-as="sign">
-                        <div t-if="sign.state in ['sent', 'draft'] and sign.access_token == token" class="o_sign_signer_status clearfix pl-4 d-flex" t-att-data-id="sign.id">
+                    <div t-if="current_request_item and current_request_item.state == 'sent'" class="o_sign_signer_status clearfix pl-4 d-flex" t-att-data-id="current_request_item.id">
+                        <div class="o_sign_signer_status_info d-flex flex-column">
+                            <div class="text-left"><b><t t-esc="current_request_item.partner_id.name if current_request_item.partner_id else 'Public user'"/></b></div>
+                            <div class="text-left"><small><i> Is Signing </i></small></div>
+                        </div>
+                    </div>
+                    <t t-foreach="state_to_sign_request_items_map.get('sent')" t-as="sign">
+                        <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_waiting clearfix pl-4 d-flex" t-att-data-id="sign.id">
                             <div class="o_sign_signer_status_info d-flex flex-column">
                                 <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                                <div class="text-left"><small><i> Is Signing</i></small></div>
+                                <div class="text-left"><small><i> Waiting Signature </i></small></div>
                             </div>
                         </div>
                     </t>
-                    <t t-foreach="sign_request.request_item_ids" t-as="sign">
-                        <div t-if="sign.state in ['sent', 'draft'] and sign.access_token != token" class="o_sign_signer_status o_sign_signer_waiting clearfix pl-4 d-flex" t-att-data-id="sign.id">
+                    <t t-foreach="state_to_sign_request_items_map.get('canceled')" t-as="sign">
+                        <div class="o_sign_signer_status o_sign_signer_waiting clearfix pl-4 d-flex" t-att-data-id="sign.id">
                             <div class="o_sign_signer_status_info d-flex flex-column">
                                 <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                                <div class="text-left"><small><i> Waiting Signature</i></small><em t-if="sign.state != 'sent'"><br/>(the email access has not been sent)</em></div>
+                                <div class="text-left"><small><i> Canceled </i></small></div>
                             </div>
                         </div>
                     </t>
-                    <t t-foreach="sign_request.request_item_ids" t-as="sign">
-                        <div t-if="sign.state == 'refused'" class="o_sign_signer_status o_sign_signer_refused clearfix pl-4 d-flex">
+                    <t t-foreach="state_to_sign_request_items_map.get('refused')" t-as="sign">
+                        <div class="o_sign_signer_status o_sign_signer_refused clearfix pl-4 d-flex">
                             <div class="o_sign_signer_status_info d-flex flex-column">
                                 <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
                                 <div class="text-left"><small><i> Refused on <t t-esc="sign.signing_date"/></i></small></div>
                             </div>
                         </div>
                     </t>
-                    <t t-foreach="sign_request.request_item_ids" t-as="sign">
-                        <div t-if="sign.state == 'completed'" class="o_sign_signer_status o_sign_signer_signed clearfix pl-4 d-flex">
+                    <t t-foreach="state_to_sign_request_items_map.get('completed')" t-as="sign">
+                        <div class="o_sign_signer_status o_sign_signer_signed clearfix pl-4 d-flex">
                             <div class="o_sign_signer_status_info d-flex flex-column">
                                 <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
                                 <div class="text-left"><small><i> Signed on <t t-esc="sign.signing_date"/></i></small></div>

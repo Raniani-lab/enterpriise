@@ -109,16 +109,14 @@ class SignContract(Sign):
                     reference=_('Signature Request - %s', advantage.name or contract.name),
                     subject=_('Signature Request - %s', advantage.name or contract.name),
                     message='',
-                    send=False)
+                    without_mail=True)
 
                 sign_request = request.env['sign.request'].browse(res['id']).sudo()
                 sign_request.toggle_favorited()
-                sign_request.action_sent()
+                sign_request.send_signature_accesses()
                 # Add the external person after action_sent to avoid sending him the
                 # accesses before the signature is done.
                 sign_request.message_subscribe(partner_ids=advantage.sign_copy_partner_id.ids)
-                sign_request.write({'state': 'sent'})
-                sign_request.request_item_ids.write({'state': 'sent'})
 
                 contract.sign_request_ids += sign_request
 
@@ -806,7 +804,7 @@ class HrContractSalary(http.Controller):
             reference=_('Signature Request - %s', new_contract.name),
             subject=_('Signature Request - %s', new_contract.name),
             message='',
-            send=False
+            without_mail=True,
         )
 
         # Prefill the sign boxes
@@ -847,9 +845,7 @@ class HrContractSalary(http.Controller):
 
         sign_request = request.env['sign.request'].browse(res['id']).sudo()
         sign_request.toggle_favorited()
-        sign_request.action_sent()
-        sign_request.write({'state': 'sent'})
-        sign_request.request_item_ids.write({'state': 'sent'})
+        sign_request.send_signature_accesses()
 
         access_token = request.env['sign.request.item'].sudo().search([
             ('sign_request_id', '=', res['id']),

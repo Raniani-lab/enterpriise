@@ -88,7 +88,7 @@ class SignSendRequest(models.TransientModel):
         feedback = _('Signature requested for template: %s\nSignatories: %s') % (self.template_id.name, signatories)
         self.activity_id._action_done(feedback=feedback)
 
-    def create_request(self, send=True, without_mail=False):
+    def create_request(self, without_mail=False):
         template_id = self.template_id.id
         if self.signers_count:
             signers = [{'partner_id': signer.partner_id.id, 'role': signer.role_id.id} for signer in self.signer_ids]
@@ -110,7 +110,6 @@ class SignSendRequest(models.TransientModel):
             message=message,
             message_cc=message_cc,
             attachment_ids=attachment_ids,
-            send=send,
             without_mail=without_mail,
             refusal_allowed=refusal_allowed,
         )
@@ -144,7 +143,7 @@ class SignSendRequest(models.TransientModel):
         }
 
     def sign_directly_without_mail(self):
-        res = self.create_request(False, True)
+        res = self.create_request(True)
         request = self.env['sign.request'].browse(res['id'])
 
         user_item = request.request_item_ids[0]

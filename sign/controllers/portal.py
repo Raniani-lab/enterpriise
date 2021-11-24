@@ -23,7 +23,7 @@ class CustomerPortal(portal.CustomerPortal):
         if 'sign_count' in counters:
             partner_id = request.env.user.partner_id
             values['sign_count'] = request.env['sign.request.item'].sudo().search_count([
-                ('partner_id', '=', partner_id.id), ('state', '!=', 'draft')
+                ('partner_id', '=', partner_id.id), ('sign_request_id.state', '!=', 'canceled')
             ])
         return values
 
@@ -34,7 +34,7 @@ class CustomerPortal(portal.CustomerPortal):
         values = self._prepare_portal_layout_values()
         partner_id = request.env.user.partner_id
         SignRequestItem = request.env['sign.request.item'].sudo()
-        default_domain = [('partner_id', '=', partner_id.id), ('state', '!=', 'draft')]
+        default_domain = [('partner_id', '=', partner_id.id), ('sign_request_id.state', '!=', 'canceled')]
 
         searchbar_sortings = {
             'new': {'label': _('Newest'), 'order': 'sign_request_id desc'},
@@ -112,21 +112,18 @@ class CustomerPortal(portal.CustomerPortal):
         })
         return request.render('sign.sign_portal_my_requests', values)
 
-    @http.route(['/my/signature/<int:item_id>'], type='http', auth='public', website=True)
-    def portal_my_signature(self, item_id, access_token=None, **kwargs):
+    @http.route(['/my/signature/<int:item_id>'], type='http', auth='user', website=True)
+    def portal_my_signature(self, item_id, **kwargs):
         partner_id = request.env.user.partner_id
         sign_item_sudo = request.env['sign.request.item'].sudo().browse(item_id)
-        try:
-            if sign_item_sudo.state != 'draft' and not sign_item_sudo.partner_id == partner_id:
-                return request.redirect('/my/')
-            url = f'/sign/document/{sign_item_sudo.sign_request_id.id}/{sign_item_sudo.access_token}?portal=1'
-            values = {
-                'page_name': 'signature',
-                'my_sign_item': sign_item_sudo,
-                'url': url
-            }
-            values = self._get_page_view_values(sign_item_sudo, sign_item_sudo.access_token, values,
-                                                'my_signatures_history', False, **kwargs)
-            return request.render('sign.sign_portal_my_request', values)
-        except MissingError:
-            return request.redirect('/my')
+        if not sign_item_sudo.exists() or sign_item_sudo.partner_id != partner_id or sign_item_sudo.sign_request_id.state == 'canceled':
+            return request.redirect('/my/')
+        url = f'/sign/document/{sign_item_sudo.sign_request_id.id}/{sign_item_sudo.access_token}?portal=1'
+        values = {
+            'page_name': 'signature',
+            'my_sign_item': sign_item_sudo,
+            'url': url
+        }
+        values = self._get_page_view_values(sign_item_sudo, sign_item_sudo.access_token, values,
+                                            'my_signatures_history', False, **kwargs)
+        return request.render('sign.sign_portal_my_request', values)

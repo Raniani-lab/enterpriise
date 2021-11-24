@@ -9,7 +9,7 @@ import re
 
 from PyPDF2 import PdfFileReader
 
-from odoo import http, models, _
+from odoo import http, models, tools, _
 from odoo.http import request
 from odoo.addons.web.controllers.main import content_disposition
 from odoo.addons.iap.tools import iap_tools
@@ -45,7 +45,7 @@ class Sign(http.Controller):
                     except Exception:
                         item_type['auto_field'] = ''
 
-            if current_request_item.state not in ['completed', 'refused']:
+            if current_request_item.state == 'sent':
                 """ When signer attempts to sign the request again,
                 its localisation should be reset.
                 We prefer having no/approximative (from geoip) information
@@ -68,6 +68,7 @@ class Sign(http.Controller):
         return {
             'sign_request': sign_request,
             'current_request_item': current_request_item,
+            'state_to_sign_request_items_map': dict(tools.groupby(sign_request.request_item_ids, lambda sri: sri.state)),
             'token': token,
             'nbComments': len(sign_request.message_ids.filtered(lambda m: m.message_type == 'comment')),
             'isPDF': (sign_request.template_id.attachment_id.mimetype.find('pdf') > -1),
@@ -155,20 +156,21 @@ class Sign(http.Controller):
 
     @http.route(['/sign/<link>'], type='http', auth='public')
     def share_link(self, link, **post):
-        template = http.request.env['sign.template'].sudo().search([('share_link', '=', link)], limit=1)
+        template = request.env['sign.template'].sudo().search([('share_link', '=', link)], limit=1)
         if not template:
-            return http.request.not_found()
+            return request.not_found()
 
-        sign_request = http.request.env['sign.request'].with_user(template.create_uid).create({
-            'template_id': template.id,
-            'reference': "%(template_name)s-public" % {'template_name': template.attachment_id.name},
-            'favorited_ids': [(4, template.create_uid.id)],
-        })
-
-        request_item = http.request.env['sign.request.item'].sudo().create({'sign_request_id': sign_request.id, 'role_id': template.sign_item_ids.mapped('responsible_id').id})
-        sign_request.action_sent_without_mail()
-
-        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': request_item.access_token})
+        request_id = request.env['sign.request'].with_user(template.create_uid).initialize_new(
+            template_id=template.id,
+            signers=[{'partner_id': False, 'role': template.sign_item_ids.responsible_id.id}],
+            followers=[],
+            reference="%(template_name)s-public" % {'template_name': template.attachment_id.name},
+            subject="",
+            message="",
+            without_mail=True,
+        )['id']
+        access_token = request.env['sign.request'].sudo().browse(request_id).request_item_ids[0].access_token
+        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': request_id, 'access_token': access_token})
 
     @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
     def check_password_page(self, sign_request_id, token, **post):
@@ -312,7 +314,6 @@ class Sign(http.Controller):
                 ("access_token", "=", token),
                 ("state", "=", "sent"),
                 ("sign_request_id.refusal_allowed", "=", True),
-                ("sign_request_id.state", "=", "sent")
             ],
             limit=1,
         )

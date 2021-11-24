@@ -5,6 +5,7 @@ import {
     getAutofillValue,
     setCellContent,
     getCellFormula,
+    selectCell,
 } from "./spreadsheet_test_utils";
 
 const { module, test } = QUnit;
@@ -361,7 +362,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             },
         });
         await model.waitForIdle();
-        model.dispatch("SELECT_CELL", { col: 0, row: 2 });
+        selectCell(model, "A3");
         model.dispatch("AUTOFILL_SELECT", { col: 10, row: 10 });
         assert.equal(model.getters.getAutofillTooltip(), undefined);
     });

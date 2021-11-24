@@ -14,6 +14,7 @@ import {
     removeGlobalFilter,
     editGlobalFilter,
     setGlobalFilterValue,
+    selectCell,
 } from "./spreadsheet_test_utils";
 
 import { getBasicPivotArch, getBasicData } from "./spreadsheet_test_data";
@@ -803,7 +804,7 @@ module(
                 },
             });
             await model.waitForIdle();
-            model.dispatch("SELECT_CELL", { col: 0, row: 5 });
+            selectCell(model, "A6");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot.action(env);

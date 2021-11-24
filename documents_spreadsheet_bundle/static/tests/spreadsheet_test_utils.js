@@ -36,6 +36,14 @@ export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId
 }
 
 /**
+ * Select a cell
+ */
+export function selectCell(model, xc) {
+    const [col, row] = toCartesian(xc);
+    return model.dispatch("SELECT_CELL", { col, row });
+}
+
+/**
  * Add a global filter and ensure the data sources are completely reloaded
  */
 export async function addGlobalFilter(model, filter) {

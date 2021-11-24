@@ -22,6 +22,7 @@ import {
     joinSession,
     leaveSession,
     makeFakeSpreadsheetService,
+    selectCell,
     setCellContent,
     setGlobalFilterValue,
     setSelection,
@@ -641,7 +642,7 @@ module(
                     arch: this.arch,
                 },
             });
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
@@ -668,7 +669,7 @@ module(
                 sheetIdFrom: sheetId,
                 sheetIdTo: "111",
             });
-            model.dispatch("SELECT_CELL", { col: 0, row: 0 });
+            selectCell(model, "A1");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
@@ -702,7 +703,7 @@ module(
                     display_name: "name",
                 },
             ];
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
@@ -802,7 +803,7 @@ module(
                 },
             });
             const sheetId = model.getters.getActiveSheetId();
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
@@ -838,7 +839,7 @@ module(
                 sheetId,
                 target: [{ top: 0, bottom: 1, left: 0, right: 0 }],
             });
-            model.dispatch("SELECT_CELL", { col: 0, row: 1 }); // A1 and A2 are merged; select A2
+            selectCell(model, "A2"); // A1 and A2 are merged; select A2
             assert.ok(model.getters.isInMerge(sheetId, ...toCartesian("A2")));
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
@@ -1028,7 +1029,7 @@ module(
             let { webClient, env, model } = await createSpreadsheetFromPivot({ webClient: webClient1, pivotView, resId: spreadsheetAction.resId })
 
 
-            env.dispatch("SELECT_CELL", { col: 11, row: 0 }); //target empty cell
+            selectCell(env, "L1"); //target empty cell
             const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_properties");
             root.action(env);
             assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");
@@ -1182,7 +1183,7 @@ module(
                     archs,
                 },
             });
-            env.dispatch("SELECT_CELL", { col: 2, row: 2 });
+            selectCell(env, "C3");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
@@ -1213,7 +1214,7 @@ module(
                     archs,
                 },
             });
-            env.dispatch("SELECT_CELL", { col: 1, row: 3 });
+            selectCell(env, "B4");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
@@ -1244,7 +1245,7 @@ module(
                     archs,
                 },
             });
-            env.dispatch("SELECT_CELL", { col: 3, row: 2 });
+            selectCell(env, "D3");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
@@ -1278,7 +1279,7 @@ module(
                     archs,
                 },
             });
-            env.dispatch("SELECT_CELL", { col: 3, row: 3 });
+            selectCell(env, "D4");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
@@ -1766,7 +1767,7 @@ module(
                     arch: this.arch,
                 },
             });
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const sheetId = model.getters.getActiveSheetId();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
@@ -1792,12 +1793,12 @@ module(
                 },
             });
             const missingValue = getCellFormula(model, "B3");
-            model.dispatch("SELECT_CELL", { col: 1, row: 2 });
+            selectCell(model, "B3");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
             });
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1827,12 +1828,12 @@ module(
                 </pivot>`,
                 },
             });
-            model.dispatch("SELECT_CELL", { col: 1, row: 4 });
+            selectCell(model, "B5");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
             });
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1897,12 +1898,12 @@ module(
                 },
             });
             const missingValue = getCellFormula(model, "C4");
-            model.dispatch("SELECT_CELL", { col: 2, row: 3 });
+            selectCell(model, "C4");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
             });
-            model.dispatch("SELECT_CELL", { col: 9, row: 9 });
+            selectCell(model, "J10");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1932,7 +1933,7 @@ module(
                 </pivot>`,
                 },
             });
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1958,7 +1959,7 @@ module(
                 </pivot>`,
                 },
             });
-            model.dispatch("SELECT_CELL", { col: 1, row: 0 });
+            selectCell(model, "B1");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
@@ -1988,7 +1989,7 @@ module(
                 </pivot>`,
                 },
             });
-            model.dispatch("SELECT_CELL", { col: 0, row: 2 });
+            selectCell(model, "A3");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
@@ -2020,7 +2021,7 @@ module(
             });
             await nextTick();
             await nextTick();
-            model.dispatch("SELECT_CELL", { col: 5, row: 3 });
+            selectCell(model, "F4");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
@@ -2049,7 +2050,7 @@ module(
                     <field name="foo" type="measure"/>
                 </pivot>`,
             });
-            model.dispatch("SELECT_CELL", { col: 5, row: 3 });
+            selectCell(model, "F4");
             model.config.notifyUser("Notification");
             await nextTick();
             await dom.click(document.body.querySelector(".modal-footer .btn-primary"));

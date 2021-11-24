@@ -486,8 +486,9 @@ class AmazonAccount(models.Model):
         
         def _get_order_line_vals(**kwargs):
             """ Convert and complete a dict of values to comply with fields of sale_order_line. """
+            _display_type = kwargs.get('display_type', False)
             _subtotal = kwargs.get('subtotal', 0)
-            _quantity = kwargs.get('quantity', 1)
+            _quantity = kwargs.get('quantity', 0 if _display_type else 1)
             return {
                 'name': kwargs.get('description', ''),
                 'product_id': kwargs.get('product_id'),
@@ -495,7 +496,7 @@ class AmazonAccount(models.Model):
                 'tax_id': [(6, 0, kwargs.get('tax_ids', []))],
                 'product_uom_qty': _quantity,
                 'discount': (kwargs.get('discount', 0) / _subtotal) * 100 if _subtotal else 0,
-                'display_type': kwargs.get('display_type', False),
+                'display_type': _display_type,
                 'amazon_item_ref': kwargs.get('amazon_item_ref'),
                 'amazon_offer_id': kwargs.get('amazon_offer_id'),
             }

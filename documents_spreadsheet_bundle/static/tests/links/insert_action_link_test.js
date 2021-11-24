@@ -18,14 +18,14 @@ import {
     toggleMenuItem,
 } from "@web/../tests/search/helpers";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { getBasicData } from "../spreadsheet_test_data";
+import { getBasicData } from "../utils/spreadsheet_test_data";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_owl"
+import { InsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_owl";
 import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/insert_action_link_menu/insert_action_link_menu_legacy";
 import { browser } from "@web/core/browser/browser";
-import { makeFakeSpreadsheetService } from "../spreadsheet_test_utils";
+import { makeFakeSpreadsheetService } from "../utils/webclient_helpers";
 
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -47,7 +47,7 @@ async function openView(viewType, options = {}) {
             Component: InsertViewSpreadsheet,
             groupNumber: 4,
             isDisplayed: ({ isSmall, config }) =>
-                !isSmall && config.actionType === "ir.actions.act_window"
+                !isSmall && config.actionType === "ir.actions.act_window",
         },
         { sequence: 1 }
     );

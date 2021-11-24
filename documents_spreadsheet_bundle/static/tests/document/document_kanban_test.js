@@ -4,7 +4,7 @@ import { nextTick, dom } from "web.test_utils";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
 import { createDocumentsView } from "documents.test_utils";
 import { afterEach, beforeEach } from "@mail/utils/test_utils";
-import { getBasicData } from "./spreadsheet_test_data";
+import { getBasicData } from "../utils/spreadsheet_test_data";
 const { module, test } = QUnit;
 
 module("documents_spreadsheet kanban", {
@@ -47,13 +47,13 @@ test("download spreadsheet from the document inspector", async function (assert)
                     },
                 });
             },
-        }
+        },
     });
     await dom.click(".o_kanban_record:nth(0) .o_record_selector");
     await nextTick();
     await dom.click("button.o_inspector_download");
     await nextTick();
-    assert.verifySteps(["redirect_to_spreadsheet"])
+    assert.verifySteps(["redirect_to_spreadsheet"]);
     kanban.destroy();
 });
 

@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents_spreadsheet.MockSpreadsheetCollaborativeChannel **/
+/** @odoo-module **/
 
 export default class MockSpreadsheetCollaborativeChannel {
     constructor() {

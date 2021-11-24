@@ -1,257 +1,57 @@
 /** @odoo-module alias=documents_spreadsheet.TestUtils default=0 */
-import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { jsonToBase64 } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
-import { createView } from "web.test_utils";
-import ListView from "web.ListView";
-import MockServer from "web.MockServer";
-import makeTestEnvironment from "web.test_env";
-import LegacyRegistry from "web.Registry";
-import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
-import { getBasicPivotArch, getBasicData, getBasicListArch } from "./spreadsheet_test_data";
+import { getBasicServerData } from "./utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
 import { UNTITLED_SPREADSHEET_NAME } from "@documents_spreadsheet_bundle/o_spreadsheet/constants";
-import { PivotView } from "@web/views/pivot/pivot_view";
-import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
-import { registry } from "@web/core/registry";
-import { spreadsheetCollaborativeService } from "@documents_spreadsheet_bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
-
-const { Model } = spreadsheet;
-const { toCartesian, toZone } = spreadsheet.helpers;
-const { loadJS } = owl.utils;
-
-const serviceRegistry = registry.category("services");
+import { click, nextTick } from "@web/../tests/helpers/utils";
+import {
+    getSpreadsheetActionEnv,
+    getSpreadsheetActionModel,
+    prepareWebClientForSpreadsheet,
+} from "./utils/webclient_helpers";
 
 /**
- * Get the value of the given cell
+ * Open a spreadsheet action
+ *
+ * @param {string} actionTag Action tag ("action_open_spreadsheet" or "action_open_template")
+ * @param {Object} params
+ * @param {Object|undefined} params.webClient Webclient already configured
+ * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {number} params.spreadsheetId Id of the spreadsheet
+ * @param {Function|undefined} params.mockRPC Mock rpc function
+ * @param {Object|undefined} params.legacyServicesRegistry
  */
-export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const cell = model.getters.getCell(sheetId, ...toCartesian(xc));
-    if (!cell) {
-        return undefined;
-    }
-    return cell.evaluated.value;
-}
-
-/**
- * Select a cell
- */
-export function selectCell(model, xc) {
-    const [col, row] = toCartesian(xc);
-    return model.dispatch("SELECT_CELL", { col, row });
-}
-
-/**
- * Add a global filter and ensure the data sources are completely reloaded
- */
-export async function addGlobalFilter(model, filter) {
-    const result = model.dispatch("ADD_GLOBAL_FILTER", filter);
-    await model.waitForIdle();
-    return result;
-}
-
-/**
- * Remove a global filter and ensure the data sources are completely reloaded
- */
-export async function removeGlobalFilter(model, id) {
-    const result = model.dispatch("REMOVE_GLOBAL_FILTER", { id });
-    await model.waitForIdle();
-    return result;
-}
-
-/**
- * Edit a global filter and ensure the data sources are completely reloaded
- */
-export async function editGlobalFilter(model, filter) {
-    const result = model.dispatch("EDIT_GLOBAL_FILTER", filter);
-    await model.waitForIdle();
-    return result;
-}
-
-/**
- * Set the value of a global filter and ensure the data sources are completely
- * reloaded
- */
-export async function setGlobalFilterValue(model, payload) {
-    const result = model.dispatch("SET_GLOBAL_FILTER_VALUE", payload);
-    await model.waitForIdle();
-    return result;
-}
-
-/**
- * Get the computed value that would be autofilled starting from the given xc
- */
-export function getAutofillValue(model, xc, { direction, steps }) {
-    const content = getCellFormula(model, xc);
-    const column = ["left", "right"].includes(direction);
-    const increment = ["left", "top"].includes(direction) ? -steps : steps;
-    return model.getters.getPivotNextAutofillValue(content, column, increment);
-}
-
-/**
- * Get the computed value that would be autofilled starting from the given xc
- */
-export function getListAutofillValue(model, xc, { direction, steps }) {
-    const content = getCellFormula(model, xc);
-    const column = ["left", "right"].includes(direction);
-    const increment = ["left", "top"].includes(direction) ? -steps : steps;
-    return model.getters.getNextListValue(content, column, increment);
-}
-
-/**
- * Autofill from a zone to a cell
- */
-export function autofill(model, from, to) {
-    setSelection(model, from);
-    const [col, row] = toCartesian(to);
-    model.dispatch("AUTOFILL_SELECT", { col, row });
-    model.dispatch("AUTOFILL");
-}
-
-/**
- * Set the selection
- */
-export function setSelection(model, xc) {
-    const zone = toZone(xc);
-    const anchor = [zone.left, zone.top];
-    model.dispatch("SET_SELECTION", {
-        anchorZone: zone,
-        anchor,
-        zones: [zone],
-    });
-}
-
-/**
- * Get the cell of the given xc
- */
-export function getCell(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    return model.getters.getCell(sheetId, ...toCartesian(xc));
-}
-
-/**
- * Get the cells of the given sheet (or active sheet if not provided)
- */
-export function getCells(model, sheetId = model.getters.getActiveSheetId()) {
-    return model.getters.getCells(sheetId);
-}
-
-/**
- * Get the formula of the given xc
- */
-export function getCellFormula(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const cell = getCell(model, xc, sheetId);
-    return cell && cell.isFormula() ? model.getters.getFormulaCellContent(sheetId, cell) : "";
-}
-
-/**
- * Get the content of the given xc
- */
-export function getCellContent(model, xc, sheetId = undefined) {
-    if (sheetId === undefined) {
-        sheetId =
-            model.config.mode === "headless"
-                ? model.getters.getVisibleSheets()[0]
-                : model.getters.getActiveSheetId();
-    }
-    const cell = getCell(model, xc, sheetId);
-    return cell ? model.getters.getCellText(cell, sheetId, true) : "";
-}
-
-/**
- * Get the list of the merges (["A1:A2"]) of the sheet
- */
-export function getMerges(model, sheetId = model.getters.getActiveSheetId()) {
-    return model.exportData().sheets.find((sheet) => sheet.id === sheetId).merges;
-}
-
-/**
- * Set the content of a cell
- */
-export function setCellContent(model, xc, content, sheetId = undefined) {
-    if (sheetId === undefined) {
-        sheetId =
-            model.config.mode === "headless"
-                ? model.getters.getVisibleSheets()[0]
-                : model.getters.getActiveSheetId();
-    }
-    const [col, row] = toCartesian(xc);
-    model.dispatch("UPDATE_CELL", { col, row, sheetId, content });
-}
-
-/**
- * Return the odoo spreadsheet component
- * @param {*} actionManager
- * @returns {Component}
- */
-function getSpreadsheetComponent(actionManager) {
-    return actionManager.spreadsheetRef.comp;
-}
-
-/**
- * Return the o-spreadsheet component
- * @param {*} actionManager
- * @returns {Component}
- */
-function getOSpreadsheetComponent(actionManager) {
-    return getSpreadsheetComponent(actionManager).spreadsheet.comp;
-}
-
-/**
- * Return the o-spreadsheet Model
- */
-function getSpreadsheetActionModel(actionManager) {
-    return getOSpreadsheetComponent(actionManager).model;
-}
-
-function getSpreadsheetActionEnv(actionManager) {
-    const model = getSpreadsheetActionModel(actionManager);
-    const component = getSpreadsheetComponent(actionManager);
-    const oComponent = getOSpreadsheetComponent(actionManager);
-    return {
-        ...component.env,
-        getters: model.getters,
-        dispatch: model.dispatch,
-        services: model.config.evalContext.env.services,
-        openSidePanel: oComponent.openSidePanel.bind(oComponent),
-        openLinkEditor: oComponent.openLinkEditor.bind(oComponent),
-    };
-}
-
-export async function createSpreadsheetAction(actionTag, params = {}) {
-    await loadJS("/web/static/lib/Chart/Chart.js");
-    let { spreadsheetId, data, arch, mockRPC, legacyServicesRegistry, webClient } = params;
-    let spreadsheetAction;
+async function createSpreadsheetAction(actionTag, params) {
     const SpreadsheetActionComponent =
         actionTag === "action_open_spreadsheet" ? SpreadsheetAction : SpreadsheetTemplateAction;
+    let { webClient } = params;
+    let spreadsheetAction;
     patchWithCleanup(SpreadsheetActionComponent.prototype, {
         setup() {
             this._super();
             spreadsheetAction = this;
         },
     });
-    // TODO convert tests to use "serverData"
-    const serverData = params.serverData || { models: data, views: arch };
     if (!webClient) {
-        serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
+        await prepareWebClientForSpreadsheet();
         webClient = await createWebClient({
-            serverData,
-            mockRPC,
+            serverData: params.serverData || getBasicServerData(),
+            mockRPC: params.mockRPC,
             legacyParams: {
                 withLegacyMockServer: true,
-                serviceRegistry: legacyServicesRegistry,
+                serviceRegistry: params.legacyServicesRegistry,
             },
         });
-        const legacyEnv = owl.Component.env;
-        legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
     }
 
     await doAction(webClient, {
         type: "ir.actions.client",
         tag: actionTag,
         params: {
-            spreadsheet_id: spreadsheetId,
+            spreadsheet_id: params.spreadsheetId,
         },
     });
     return {
@@ -262,13 +62,22 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
     };
 }
 
+/**
+ * Create an empty spreadsheet
+ *
+ * @param {Object} params
+ * @param {Object|undefined} params.webClient Webclient already configured
+ * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {number} params.spreadsheetId Id of the spreadsheet
+ * @param {Function|undefined} params.mockRPC Mock rpc function
+ * @param {Object|undefined} params.legacyServicesRegistry
+ */
 export async function createSpreadsheet(params = {}) {
-    if (!params.data) {
-        params.data = getBasicData();
+    if (!params.serverData) {
+        params.serverData = getBasicServerData();
     }
     if (!params.spreadsheetId) {
-        const models = params.serverData ? params.serverData.models : params.data;
-        const documents = models["documents.document"].records;
+        const documents = params.serverData.models["documents.document"].records;
         const spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
         documents.push({
             id: spreadsheetId,
@@ -280,9 +89,22 @@ export async function createSpreadsheet(params = {}) {
     return createSpreadsheetAction("action_open_spreadsheet", params);
 }
 
+/**
+ * Create a spreadsheet template
+ *
+ * @param {Object} params
+ * @param {Object|undefined} params.webClient Webclient already configured
+ * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {number} params.spreadsheetId Id of the spreadsheet
+ * @param {Function|undefined} params.mockRPC Mock rpc function
+ * @param {Object|undefined} params.legacyServicesRegistry
+ */
 export async function createSpreadsheetTemplate(params = {}) {
+    if (!params.serverData) {
+        params.serverData = getBasicServerData();
+    }
     if (!params.spreadsheetId) {
-        const templates = params.data["spreadsheet.template"].records;
+        const templates = params.serverData.models["spreadsheet.template"].records;
         const spreadsheetId = Math.max(...templates.map((d) => d.id)) + 1;
         templates.push({
             id: spreadsheetId,
@@ -295,131 +117,13 @@ export async function createSpreadsheetTemplate(params = {}) {
 }
 
 /**
- * Create a spreadsheet model from a List controller
- */
-export async function createSpreadsheetFromList(params = {}) {
-    await loadJS("/web/static/lib/Chart/Chart.js");
-    let { actions, listView, webClient, linesNumber } = params;
-    if (linesNumber === undefined) {
-        linesNumber = 10;
-    }
-    if (!listView) {
-        listView = {};
-    }
-    let spreadsheetAction = {};
-    patchWithCleanup(SpreadsheetAction.prototype, {
-        mounted() {
-            this._super();
-            spreadsheetAction = this;
-        },
-    });
-    listView = {
-        arch: getBasicListArch(),
-        data: getBasicData(),
-        model: listView.model || "partner",
-        ...listView,
-    };
-    const { data } = listView;
-    if (!webClient) {
-        serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
-        const serverData = { models: data, views: listView.archs };
-        webClient = await createWebClient({
-            serverData,
-            legacyParams: { withLegacyMockServer: true },
-            mockRPC: listView.mockRPC,
-        });
-        const legacyEnv = owl.Component.env;
-        legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
-    }
-    const controller = await createView({
-        View: ListView,
-        ...listView,
-    });
-
-    if (listView.services) {
-        const serviceRegistry = new LegacyRegistry();
-        for (const sname in listView.services) {
-            serviceRegistry.add(sname, listView.services[sname]);
-        }
-    }
-    if (actions) {
-        await actions(controller);
-    }
-
-    const list = controller._getListForSpreadsheet();
-    await doAction(webClient, {
-        type: "ir.actions.client",
-        tag: "action_open_spreadsheet",
-        params: {
-            alwaysCreate: true,
-            preProcessingAction: "insertList",
-            preProcessingActionData: { list: list.list, threshold: linesNumber, fields: list.fields }
-        },
-    });
-    const spreadSheetComponent = spreadsheetAction.spreadsheetRef.comp;
-    const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp;
-    const model = oSpreadsheetComponent.model;
-    const env = Object.assign(spreadSheetComponent.env, {
-        getters: model.getters,
-        dispatch: model.dispatch,
-        services: model.config.evalContext.env.services,
-        openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
-    });
-    await model.waitForIdle();
-    return {
-        webClient,
-        env,
-        model,
-        transportService: spreadSheetComponent.transportService,
-        get spreadsheetAction() {
-            return spreadsheetAction;
-        },
-    };
-}
-
-/**
  * Create a spreadsheet with both a pivot and a list view.
- * The pivot is on the first sheet, the list is on the second.
  */
 export async function createSpreadsheetWithPivotAndList() {
-    // In createSpreadsheetFromPivot, we will reuse the webclient created in
-    // createSpreadsheetFromList. We must be sure that it is configured in a
-    // as similarly in createSpreadsheetFromPivot.
-    const listView = {
-        archs: {
-            "partner,false,pivot": getBasicPivotArch(),
-            "partner,false,search": `<search/>`
-        },
-    };
-    if (!serviceRegistry.contains("user")) {
-        serviceRegistry.add("user", makeFakeUserService(() => true));
-    }
-
-    const { webClient: listWebClient, spreadsheetAction } = await createSpreadsheetFromList({ listView });
-    const { model, webClient, env } = await createSpreadsheetFromPivot({
-        webClient: listWebClient,
-        resId: spreadsheetAction.resId
+    await prepareWebClientForSpreadsheet();
+    const webClient = await createWebClient({
+        serverData: getBasicServerData(),
     });
-
-    return { model, webClient, env };
-}
-
-/**
- * Create a spreadsheet model from a Pivot controller
- * @param {*} params
- * the pivot data
- */
-export async function createSpreadsheetFromPivot(params = {}) {
-    await loadJS("/web/static/lib/Chart/Chart.js");
-    let { actions, pivotView, webClient, legacyServicesRegistry } = params;
-
-    if (!pivotView) {
-        pivotView = {};
-    }
-
-    if (!pivotView.model) {
-        pivotView.model = "partner";
-    }
 
     let spreadsheetAction = {};
     patchWithCleanup(SpreadsheetAction.prototype, {
@@ -429,174 +133,40 @@ export async function createSpreadsheetFromPivot(params = {}) {
         },
     });
 
-    let pivot = null;
-    patchWithCleanup(PivotView.prototype, {
-        setup() {
-            this._super();
-            pivot = this;
-        },
+    /** Open the list view */
+    await doAction(webClient, {
+        name: "list view",
+        res_model: "partner",
+        type: "ir.actions.act_window",
+        views: [[false, "list"]],
     });
 
-    let views = null;
-    if (pivotView.archs) {
-        views = pivotView.archs;
-    } else if (pivotView.arch) {
-        views = {};
-        views[`${pivotView.model},false,pivot`] = pivotView.arch;
-        views[`${pivotView.model},false,search`] = `<search/>`;
-    } else {
-        views = { "partner,false,pivot": getBasicPivotArch(), "partner,false,search": `<search/>` };
-    }
-    const serverData = {
-        models: pivotView.data || getBasicData(),
-        views: views,
-    };
-    if (!webClient) {
-        if (!serviceRegistry.contains("user")) {
-            serviceRegistry.add("user", makeFakeUserService(() => true));
-        }
-        serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
-        webClient = await createWebClient({
-            serverData,
-            legacyParams: {
-                withLegacyMockServer: true,
-                serviceRegistry: legacyServicesRegistry,
-            },
-            mockRPC: function (route, args) {
-                if (pivotView.mockRPC) {
-                    return pivotView.mockRPC(route, args);
-                }
-            },
-        });
-        const legacyEnv = owl.Component.env;
-        legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
-    }
+    /** Put the current list in a new spreadsheet */
+    await click(webClient.el.querySelector(".o_favorite_menu button"));
+    await click(webClient.el.querySelector(".o_insert_list_spreadsheet_menu"));
+    await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+    await nextTick();
+
+    /** Open the pivot view */
     await doAction(webClient, {
         name: "pivot view",
-        res_model: pivotView.model,
+        res_model: "partner",
         type: "ir.actions.act_window",
         views: [[false, "pivot"]],
-        domain: pivotView.domain,
     });
 
-    if (actions) {
-        await actions(pivot);
-    }
+    /** Put the pivot in the newly created spreadsheet */
+    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    await click(document.querySelector(".modal-content select"));
+    document.body
+        .querySelector(`.modal-content option[value='${spreadsheetAction.resId}']`)
+        .setAttribute("selected", "selected");
+    await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+    await nextTick();
 
-    const data = {
-        data: pivot.model.data,
-        metaData: pivot.model.metaData,
-        searchParams: pivot.model.searchParams
-    };
-    const actionParams = {
-        preProcessingAction: "insertPivot",
-        preProcessingActionData: data,
-    };
-    if (params.resId) {
-        actionParams.spreadsheet_id = params.resId;
-    }
-    else {
-        actionParams.alwaysCreate = true;
-    }
-    await doAction(webClient, {
-        type: "ir.actions.client",
-        tag: "action_open_spreadsheet",
-        params: actionParams,
-    });
-    const spreadSheetComponent = spreadsheetAction.spreadsheetRef.comp;
-    const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp;
-    const model = oSpreadsheetComponent.model;
-    const env = Object.assign(spreadSheetComponent.env, {
-        getters: model.getters,
-        dispatch: model.dispatch,
-        services: model.config.evalContext.env.services,
-        openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
-    });
+    const env = getSpreadsheetActionEnv(spreadsheetAction);
+    const model = getSpreadsheetActionModel(spreadsheetAction);
     await model.waitForIdle();
-    return {
-        webClient,
-        env,
-        model,
-        transportService: spreadsheetAction.transportService,
-        pivotData: data,
-        get spreadsheetAction() {
-            return spreadsheetAction;
-        },
-    };
-}
 
-export function makeFakeSpreadsheetService() {
-    return {
-        ...spreadsheetCollaborativeService,
-        start() {
-            const fakeSpreadsheetService = spreadsheetCollaborativeService.start(...arguments);
-            fakeSpreadsheetService.getCollaborativeChannel = () => new MockSpreadsheetCollaborativeChannel();
-            return fakeSpreadsheetService;
-        }
-    }
+    return { env, model };
 }
-
-/**
- * Setup a realtime collaborative test environment, with the given data
- */
-export function setupCollaborativeEnv(data) {
-    const mockServer = new MockServer(data, {});
-    const env = makeTestEnvironment({}, mockServer.performRpc.bind(mockServer));
-    env.delayedRPC = env.services.rpc;
-    const network = new MockSpreadsheetCollaborativeChannel();
-    const model = new Model();
-    const alice = new Model(model.exportData(), {
-        evalContext: { env },
-        transportService: network,
-        client: { id: "alice", name: "Alice" },
-    });
-    const bob = new Model(model.exportData(), {
-        evalContext: { env },
-        transportService: network,
-        client: { id: "bob", name: "Bob" },
-    });
-    const charlie = new Model(model.exportData(), {
-        evalContext: { env },
-        transportService: network,
-        client: { id: "charlie", name: "Charlie" },
-    });
-    return { network, alice, bob, charlie, rpc: env.services.rpc };
-}
-
-export function joinSession(spreadsheetChannel, client) {
-    spreadsheetChannel.broadcast({
-        type: "CLIENT_JOINED",
-        client: {
-            position: {
-                sheetId: "1",
-                col: 1,
-                row: 1,
-            },
-            name: "Raoul Grosbedon",
-            ...client,
-        },
-    });
-}
-
-export function leaveSession(spreadsheetChannel, clientId) {
-    spreadsheetChannel.broadcast({
-        type: "CLIENT_LEFT",
-        clientId,
-    });
-}
-
-QUnit.assert.spreadsheetIsSynchronized = function (users, callback, expected) {
-    for (const user of users) {
-        const actual = callback(user);
-        if (!QUnit.equiv(actual, expected)) {
-            const userName = user.getters.getClient().name;
-            return this.pushResult({
-                result: false,
-                actual,
-                expected,
-                message: `${userName} does not have the expected value`,
-            });
-        }
-    }
-    this.pushResult({ result: true });
-};

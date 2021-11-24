@@ -1,18 +1,13 @@
 /** @odoo-module */
 
-import {
-    getListAutofillValue,
-    getCellFormula,
-    createSpreadsheetFromList,
-    autofill,
-    getCellValue,
-} from "./spreadsheet_test_utils";
 import { nextTick } from "web.test_utils";
+import { getCellFormula, getCellValue, getListAutofillValue } from "../utils/getters_helpers";
+import { autofill } from "../utils/commands_helpers";
+import { createSpreadsheetFromList } from "../utils/list_helpers";
 
 QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
     QUnit.test("Autofill list values", async function (assert) {
         assert.expect(25);
-
         const { model } = await createSpreadsheetFromList();
         // From value to value
         assert.strictEqual(

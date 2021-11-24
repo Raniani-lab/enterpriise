@@ -2,18 +2,16 @@
 
 import { nextTick } from "web.test_utils";
 
+import { getBasicData } from "../utils/spreadsheet_test_data";
+import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
+import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
 import {
-    setupCollaborativeEnv,
-    getCellContent,
-    getCellFormula,
-    getCellValue,
-    setCellContent,
     addGlobalFilter,
     editGlobalFilter,
+    setCellContent,
     setGlobalFilterValue,
-} from "./spreadsheet_test_utils";
-import { getBasicData } from "./spreadsheet_test_data";
-import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
+} from "../utils/commands_helpers";
+import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
 
 async function getPivot(rpc, id) {
     const pivot = {
@@ -98,7 +96,7 @@ QUnit.test("Add a pivot", async (assert) => {
         B3: `=PIVOT("1","probability","bar","false","foo","1")`, // value
         F1: `=PIVOT.HEADER("1")`, // total header rows
         A5: `=PIVOT.HEADER("1")`, // total header cols
-    }
+    };
     for (const [cellXc, formula] of Object.entries(cellFormulas)) {
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
@@ -145,11 +143,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
     await bob.waitForIdle();
     await charlie.waitForIdle();
 
-    assert.spreadsheetIsSynchronized(
-        [alice, bob, charlie],
-        (user) => getCellValue(user, "B4"),
-        11
-    );
+    assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "B29"),
@@ -182,11 +176,7 @@ QUnit.test("Add a filter with a default value", async (assert) => {
         rangeType: undefined,
     };
     await nextTick();
-    assert.spreadsheetIsSynchronized(
-        [alice, bob, charlie],
-        (user) => getCellValue(user, "D4"),
-        10
-    );
+    assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "D4"), 10);
     await addGlobalFilter(alice, { filter });
     await nextTick();
     assert.spreadsheetIsSynchronized(
@@ -245,18 +235,10 @@ QUnit.test("Edit a filter", async (assert) => {
         rangeType: undefined,
     };
     await nextTick();
-    assert.spreadsheetIsSynchronized(
-        [alice, bob, charlie],
-        (user) => getCellValue(user, "B4"),
-        11
-    );
+    assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     await addGlobalFilter(alice, { filter });
     await nextTick();
-    assert.spreadsheetIsSynchronized(
-        [alice, bob, charlie],
-        (user) => getCellValue(user, "B4"),
-        11
-    );
+    assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     await editGlobalFilter(alice, {
         id: "41",
         filter: { ...filter, defaultValue: [37] },
@@ -425,11 +407,7 @@ QUnit.test("Add two lists concurrently", async (assert) => {
     await bob.waitForIdle();
     await charlie.waitForIdle();
 
-    assert.spreadsheetIsSynchronized(
-        [alice, bob, charlie],
-        (user) => getCellValue(user, "A4"),
-        17
-    );
+    assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "A4"), 17);
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellValue(user, "A29"),

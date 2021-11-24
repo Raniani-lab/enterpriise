@@ -973,7 +973,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: 'scan 10b1-b005',
     },
     {
-        trigger: '.o_barcode_line:nth-child(5)',
+        trigger: '.o_barcode_line:contains("b1-b005")',
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(5);

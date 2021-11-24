@@ -149,6 +149,22 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             })],
         })
 
+        cls.credit_note = cls.env['account.move'].create({
+            'move_type': 'out_refund',
+            'partner_id': cls.partner_a.id,
+            'invoice_date': '2017-01-01',
+            'date': '2017-01-01',
+            'currency_id': cls.currency_data['currency'].id,
+            'invoice_incoterm_id': cls.env.ref('account.incoterm_FCA').id,
+            'invoice_line_ids': [(0, 0, {
+                'product_id': cls.product.id,
+                'price_unit': 2000.0,
+                'quantity': 5,
+                'discount': 20.0,
+                'tax_ids': [(6, 0, (cls.tax_16 + cls.tax_10_negative).ids)],
+            })],
+        })
+
         cls.expected_invoice_cfdi_values = '''
             <Comprobante
                 Certificado="___ignore___"

@@ -30,6 +30,29 @@ class TestEdiResults(TestMxEdiCommon):
             expected_etree = self.get_xml_tree_from_string(self.expected_invoice_cfdi_values)
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
+    def test_credit_note_cfdi(self):
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
+            self.credit_note.action_post()
+
+            generated_files = self._process_documents_web_services(self.credit_note, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                      <attribute name="Serie">RINV/2017/</attribute>
+                      <attribute name="TipoDeComprobante">E</attribute>
+                    </xpath>
+                ''')
+
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
     def test_invoice_cfdi_group_of_taxes(self):
         with freeze_time(self.frozen_today), \
              mute_logger('py.warnings'), \

@@ -5,7 +5,7 @@
     'name': 'Helpdesk Timesheet',
     'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Timesheet',
-    'depends': ['hr_timesheet', 'timesheet_grid', 'helpdesk'],
+    'depends': ['timesheet_grid', 'project_helpdesk'],
     'description': """
         - Allow to set project for Helpdesk team
         - Track timesheet for a task from a ticket

@@ -7,7 +7,7 @@
         Convert helpdesk tickets to field service tasks.
     """,
     'category': 'Services/Helpdesk',
-    'depends': ['helpdesk', 'industry_fsm'],
+    'depends': ['project_helpdesk', 'industry_fsm'],
     'data': [
         'security/ir.model.access.csv',
         'data/mail_data.xml',

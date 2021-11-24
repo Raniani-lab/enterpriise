@@ -30,8 +30,8 @@ export function getBasicPivotArch() {
  * 1  Foo     bar    Date       Product
  * 2  12      True   2016-04-14 xphone
  * 3  1       True   2016-10-26 xpad
- * 4 17       True   2016-12-15 xpad
- * 5 2        False  2016-12-11 xpad
+ * 4  17      True   2016-12-15 xpad
+ * 5  2       False  2016-12-11 xpad
  */
 export function getBasicListArch() {
     return `
@@ -152,7 +152,7 @@ export function getBasicData() {
                     searchable: true,
                     group_operator: "sum",
                 },
-                bar: { string: "bar", type: "boolean", store: true, sortable: true },
+                bar: { string: "Bar", type: "boolean", store: true, sortable: true },
                 name: { string: "name", type: "char", store: true, sortable: true },
                 date: { string: "Date", type: "date", store: true, sortable: true },
                 active: { string: "Active", type: "bool", default: true },

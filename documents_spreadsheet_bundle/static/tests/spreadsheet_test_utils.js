@@ -263,8 +263,11 @@ export async function createSpreadsheetAction(actionTag, params = {}) {
 }
 
 export async function createSpreadsheet(params = {}) {
+    if (!params.data) {
+        params.data = getBasicData();
+    }
     if (!params.spreadsheetId) {
-        const models = params.serverData ? params.serverData.models : params.data
+        const models = params.serverData ? params.serverData.models : params.data;
         const documents = models["documents.document"].records;
         const spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
         documents.push({

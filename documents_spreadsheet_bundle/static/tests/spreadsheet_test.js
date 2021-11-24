@@ -28,10 +28,7 @@ import {
     setSelection,
 } from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
-import { getBasicPivotArch } from "./spreadsheet_test_data";
-import { getPivotCache } from "@documents_spreadsheet_bundle/pivot/pivot_init_callback";
-import CachedRPC from "../src/o_spreadsheet/cached_rpc";
-import { legacyRPC } from "../src/o_spreadsheet/helpers";
+import { getBasicData } from "./spreadsheet_test_data";
 
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
@@ -54,116 +51,13 @@ function displayedConnectedUsers(webClient) {
 
 module(
     "documents_spreadsheet > Spreadsheet Client Action",
-    {
-        beforeEach: function () {
-            this.arch = getBasicPivotArch();
-            this.data = {
-                "documents.document": {
-                    fields: {
-                        name: { string: "Name", type: "char" },
-                        raw: { string: "Data", type: "text" },
-                        thumbnail: { string: "Thumbnail", type: "text" },
-                        mimetype: { string: "Mimetype", type: "char" },
-                        favorited_ids: { string: "Name", type: "many2many" },
-                        is_favorited: { string: "Name", type: "boolean" },
-                        handler: {
-                            string: "Handler",
-                            type: "selection",
-                            selection: [["spreadsheet", "Spreadsheet"]],
-                        },
-                    },
-                    records: [
-                        { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false },
-                        { id: 2, name: "", raw: "{}", is_favorited: true },
-                    ],
-                },
-                "ir.model": {
-                    fields: {
-                        name: { string: "Model Name", type: "char" },
-                        model: { string: "Model", type: "char" },
-                    },
-                    records: [
-                        {
-                            id: 37,
-                            name: "Product",
-                            model: "product",
-                        },
-                        {
-                            id: 544,
-                            name: "partner",
-                            model: "partner",
-                        },
-                    ],
-                },
-                partner: {
-                    fields: {
-                        foo: {
-                            string: "Foo",
-                            type: "integer",
-                            searchable: true,
-                            group_operator: "sum",
-                        },
-                        bar: {
-                            string: "Bar",
-                            type: "integer",
-                            searchable: true,
-                            group_operator: "sum",
-                        },
-                        product: {
-                            relation: "product",
-                            string: "Product",
-                            type: "many2one",
-                        },
-                        probability: {
-                            string: "Probability",
-                            type: "integer",
-                            searchable: true,
-                            group_operator: "avg",
-                        },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            foo: 12,
-                            bar: 110,
-                            product: 37,
-                            probability: 10,
-                        },
-                        {
-                            id: 2,
-                            foo: 1,
-                            bar: 110,
-                            product: 41,
-                            probability: 11,
-                        },
-                    ],
-                },
-                product: {
-                    fields: {
-                        name: { string: "Product Name", type: "char" },
-                    },
-                    records: [
-                        {
-                            id: 37,
-                            display_name: "xphone",
-                        },
-                        {
-                            id: 41,
-                            display_name: "xpad",
-                        },
-                    ],
-                },
-            };
-        },
-    },
+    { },
     function () {
         module("Spreadsheet control panel");
 
         test("Number of connected users is correctly rendered", async function (assert) {
             assert.expect(7);
-            const { webClient, transportService } = await createSpreadsheet({
-                data: this.data,
-            });
+            const { webClient, transportService } = await createSpreadsheet();
             assert.equal(
                 displayedConnectedUsers(webClient),
                 1,
@@ -215,7 +109,7 @@ module(
 
         test("spreadsheet with generic untitled name is styled", async function (assert) {
             assert.expect(4);
-            const { webClient } = await createSpreadsheet({ data: this.data });
+            const { webClient } = await createSpreadsheet();
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
             await fields.editInput(input, "My");
@@ -234,7 +128,7 @@ module(
             assert.expect(4);
             registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
-                serverData: { models: this.data },
+                serverData: { models: getBasicData() },
                 mockRPC: async function (route, args) {
                     if (args.method === "join_spreadsheet_session") {
                         assert.step("spreadsheet-loaded");
@@ -247,7 +141,6 @@ module(
                 tag: "action_open_spreadsheet",
                 params: {
                     active_id: 1,
-                    transportService: new MockSpreadsheetCollaborativeChannel(),
                 },
             });
             assert.containsOnce(
@@ -258,38 +151,14 @@ module(
             assert.verifySteps(["spreadsheet-loaded"]);
         });
 
-        test("download spreadsheet with the action param `download`", async function (assert) {
+        test("Can download xlsx file", async function (assert) {
             assert.expect(4);
-            registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
-            mockDownload(async (options) => {
+            mockDownload((options) => {
                 assert.step(options.url);
                 assert.ok(options.data.zip_name);
                 assert.ok(options.data.files);
             });
-            const webClient = await createWebClient({
-                serverData: { models: this.data },
-            });
-            await doAction(webClient, {
-                type: "ir.actions.client",
-                tag: "action_open_spreadsheet",
-                params: {
-                    spreadsheet_id: 1,
-                    download: true,
-                    transportService: new MockSpreadsheetCollaborativeChannel(),
-                },
-            });
-            await nextTick();
-            assert.verifySteps(["/documents/xlsx"]);
-        });
-
-        test("Can download xlsx file from top bar menu", async function (assert) {
-            assert.expect(4);
-            mockDownload(async (options) => {
-                assert.step(options.url);
-                assert.ok(options.data.zip_name);
-                assert.ok(options.data.files);
-            });
-            const { env } = await createSpreadsheet({ data: this.data });
+            const { env } = await createSpreadsheet();
             const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
             const download = file.children.find((item) => item.id === "download");
             await download.action(env);
@@ -326,7 +195,7 @@ module(
                 "documents.document,false,list": '<tree><field name="name"/></tree>',
                 "documents.document,false,search": "<search></search>",
             };
-            const serverData = { actions, models: this.data, views };
+            const serverData = { actions, models: getBasicData(), views };
 
             registry.category("services").add("spreadsheet_collaborative", makeFakeSpreadsheetService());
             const webClient = await createWebClient({
@@ -361,7 +230,7 @@ module(
 
         test("untitled spreadsheet", async function (assert) {
             assert.expect(3);
-            const { webClient } = await createSpreadsheet({ data: this.data, spreadsheetId: 2 });
+            const { webClient } = await createSpreadsheet({ spreadsheetId: 2 });
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
             assert.equal(input.value, "", "It should be empty");
@@ -375,7 +244,7 @@ module(
 
         test("input width changes when content changes", async function (assert) {
             assert.expect(2);
-            const { webClient } = await createSpreadsheet({ data: this.data });
+            const { webClient } = await createSpreadsheet();
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             await fields.editInput(input, "My");
             let width = input.offsetWidth;
@@ -388,11 +257,12 @@ module(
 
         test("changing the input saves the name", async function (assert) {
             assert.expect(1);
-            const { webClient } = await createSpreadsheet({ data: this.data, spreadsheetId: 2 });
+            const data = getBasicData();
+            const { webClient } = await createSpreadsheet({ spreadsheetId: 2, data });
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             await fields.editAndTrigger(input, "My spreadsheet", ["change"]);
             assert.equal(
-                this.data["documents.document"].records[1].name,
+                data["documents.document"].records[1].name,
                 "My spreadsheet",
                 "It should have updated the name"
             );
@@ -400,7 +270,7 @@ module(
 
         test("trailing white spaces are trimmed", async function (assert) {
             assert.expect(2);
-            const { webClient } = await createSpreadsheet({ data: this.data });
+            const { webClient } = await createSpreadsheet();
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             await fields.editInput(input, "My spreadsheet  ");
             const width = input.offsetWidth;
@@ -411,7 +281,7 @@ module(
 
         test("focus sets the placeholder as value and select it", async function (assert) {
             assert.expect(4);
-            const { webClient } = await createSpreadsheet({ data: this.data, spreadsheetId: 2 });
+            const { webClient } = await createSpreadsheet({ spreadsheetId: 2 });
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             assert.equal(input.value, "", "It should be empty");
             await dom.triggerEvent(input, "focus");
@@ -447,9 +317,7 @@ module(
                 },
             };
             serviceRegistry.add("action", fakeActionService, { force: true });
-            const { transportService } = await createSpreadsheet({
-                data: this.data,
-            });
+            const { transportService } = await createSpreadsheet();
             transportService.broadcast({
                 type: "REMOTE_REVISION",
                 serverRevisionId: "an invalid revision id",
@@ -461,7 +329,7 @@ module(
 
         test("only white spaces show the placeholder", async function (assert) {
             assert.expect(2);
-            const { webClient } = await createSpreadsheet({ data: this.data });
+            const { webClient } = await createSpreadsheet();
             const input = $(webClient.el).find(".breadcrumb-item input")[0];
             await fields.editInput(input, "  ");
             const width = input.offsetWidth;
@@ -474,7 +342,6 @@ module(
             assert.expect(5);
             const { webClient } = await createSpreadsheet({
                 spreadsheetId: 1,
-                data: this.data,
                 mockRPC: async function (route, args) {
                     if (args.method === "toggle_favorited" && args.model === "documents.document") {
                         assert.step("favorite_toggled");
@@ -495,10 +362,7 @@ module(
 
         test("already favorited", async function (assert) {
             assert.expect(1);
-            const { webClient } = await createSpreadsheet({
-                spreadsheetId: 2,
-                data: this.data,
-            });
+            const { webClient } = await createSpreadsheet({ spreadsheetId: 2 });
             assert.containsOnce(
                 webClient,
                 ".favorite_button_enabled",
@@ -508,23 +372,7 @@ module(
 
         test("Spreadsheet action is named in breadcrumb", async function (assert) {
             assert.expect(3);
-            const arch = `
-            <pivot string="Partners">
-                <field name="bar" type="col"/>
-                <field name="foo" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`;
-            const { webClient } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch,
-                    archs: {
-                        "partner,false,pivot": arch,
-                        "partner,false,search": `<search/>`,
-                    },
-                },
-            });
+            const { webClient } = await createSpreadsheetFromPivot();
             await doAction(webClient, {
                 name: "Partner",
                 res_model: "partner",
@@ -585,21 +433,19 @@ module(
 
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
-                <pivot string="Partners">
-                    <field name="product" type="col"/>
-                    <field name="bar" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
+                        <pivot string="Partners">
+                            <field name="product_id" type="col"/>
+                            <field name="bar" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
                 },
             });
             const sheetId = model.getters.getActiveSheetId();
             model.dispatch("UPDATE_CELL", {
                 col: 4,
                 row: 9,
-                content: `=PIVOT.HEADER("1", "product", "1111111")`,
+                content: `=PIVOT.HEADER("1", "product_id", "1111111")`,
                 sheetId,
             });
 
@@ -616,17 +462,15 @@ module(
 
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                     <pivot string="Partners">
                         <field name="foo" type="col"/>
-                        <field name="product" type="row"/>
+                        <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`,
                 },
             });
-            setCellContent(model, "F10", `=PIVOT.HEADER("1", "product", A25)`);
+            setCellContent(model, "F10", `=PIVOT.HEADER("1", "product_id", A25)`);
             assert.equal(getCell(model, "A25"), null, "the cell should be empty");
             await nextTick();
             assert.equal(getCellValue(model, "F10"), "(Undefined)");
@@ -635,20 +479,14 @@ module(
         test("Reinsert a pivot", async function (assert) {
             assert.expect(1);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model, env } = await createSpreadsheetFromPivot();
             selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(
                 getCellFormula(model, "E10"),
-                `=PIVOT("1","probability","bar","110","foo","1")`,
+                `=PIVOT("1","probability","bar","false","foo","1")`,
                 "It should contain a pivot formula"
             );
         });
@@ -656,13 +494,7 @@ module(
         test("Reinsert a pivot in a too small sheet", async function (assert) {
             assert.expect(3);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model, env } = await createSpreadsheetFromPivot();
             const sheetId = model.getters.getActiveSheetId();
             model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, sheetId: "111" });
             model.dispatch("ACTIVATE_SHEET", {
@@ -673,11 +505,11 @@ module(
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getActiveSheet().cols.length, 5);
-            assert.equal(model.getters.getActiveSheet().rows.length, 5);
+            assert.equal(model.getters.getActiveSheet().cols.length, 7);
+            assert.equal(model.getters.getActiveSheet().rows.length, 6);
             assert.equal(
                 getCellFormula(model, "B3"),
-                `=PIVOT("1","probability","bar","110","foo","1")`,
+                `=PIVOT("1","probability","bar","false","foo","1")`,
                 "It should contain a pivot formula"
             );
         });
@@ -685,79 +517,63 @@ module(
         test("Reinsert a pivot with new data", async function (assert) {
             assert.expect(2);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
+            const data = getBasicData();
+
+            const { model, env } = await createSpreadsheetFromPivot({ pivotView: { data } });
+            data.partner.records.push({
+                active: true,
+                id: 5,
+                foo: 25, // <- New value inserted
+                bar: false,
+                date: "2016-12-11",
+                product_id: 41,
+                probability: 15,
+                field_with_array_agg: 4,
             });
-            this.data.partner.records = [
-                ...this.data.partner.records,
-                {
-                    id: 3,
-                    foo: 1,
-                    bar: 7, // <- new row value in the pivot
-                    probability: 15,
-                    name: "name",
-                    display_name: "name",
-                },
-            ];
-            selectCell(model, "D8");
+            selectCell(model, "D8")
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(
-                getCellFormula(model, "E10"),
-                `=PIVOT("1","probability","bar","7","foo","1")`,
-                "It should contain a pivot formula"
-            );
+                getCellFormula(model, "I8"),
+                `=PIVOT.HEADER("1","foo","25")`
+            )
             assert.equal(
-                getCellFormula(model, "E11"),
-                `=PIVOT("1","probability","bar","110","foo","1")`,
-                "It should contain a new row"
+                getCellFormula(model, "I10"),
+                `=PIVOT("1","probability","bar","false","foo","25")`,
             );
         });
 
         test("Reinsert a pivot with an updated record", async function (assert) {
-            assert.expect(6);
+            assert.expect(5);
+            const data = getBasicData();
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model, env } = await createSpreadsheetFromPivot({ pivotView: { data }});
             const sheetId = model.getters.getActiveSheetId();
-            assert.equal(getCellValue(model, "A3"), 110);
-            assert.equal(getCellValue(model, "B3"), 11);
-            assert.equal(getCellValue(model, "C3"), 10);
-            // previously in group bar=110, now it's in a new group bar=99
-            this.data.partner.records[0].bar = 99;
-            this.data.partner.records[1].bar = 99;
+            assert.equal(getCellValue(model, "B1"), 1);
+            assert.equal(getCellValue(model, "C1"), 2);
+            assert.equal(getCellValue(model, "D1"), 12);
+            data.partner.records[0].foo = 99;
+            data.partner.records[1].foo = 99;
             // updated measures
-            this.data.partner.records[0].probability = 88;
-            this.data.partner.records[1].probability = 77;
+            data.partner.records[0].probability = 88;
+            data.partner.records[1].probability = 77;
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             await nextTick();
-            assert.equal(getCellValue(model, "A3"), 99, "The header should have been updated");
-            assert.equal(getCellValue(model, "B3"), 77, "The value should have been updated");
-            assert.equal(getCellValue(model, "C3"), 88, "The value should have been updated");
+            assert.equal(getCellValue(model, "D1"), 99, "The header should have been updated");
+            assert.equal(getCellValue(model, "D4"), 77+88, "The value should have been updated");
         });
 
         test("Keep applying filter when pivot is re-inserted", async function (assert) {
             assert.expect(4);
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                     <pivot>
                         <field name="bar" type="col"/>
-                        <field name="product" type="row"/>
+                        <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
                 `,
@@ -770,7 +586,7 @@ module(
                     label: "Filter",
                     pivotFields: {
                         1: {
-                            field: "product",
+                            field: "product_id",
                             type: "many2one",
                         },
                     },
@@ -795,21 +611,15 @@ module(
         test("undo pivot reinsert", async function (assert) {
             assert.expect(2);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model, env } = await createSpreadsheetFromPivot();
             const sheetId = model.getters.getActiveSheetId();
-            selectCell(model, "D8");
+            selectCell(model, "D8")
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(
                 getCellFormula(model, "E10"),
-                `=PIVOT("1","probability","bar","110","foo","1")`,
+                `=PIVOT("1","probability","bar","false","foo","1")`,
                 "It should contain a pivot formula"
             );
             model.dispatch("REQUEST_UNDO");
@@ -822,13 +632,7 @@ module(
         test("reinsert pivot with anchor on merge but not top left", async function (assert) {
             assert.expect(3);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model, env } = await createSpreadsheetFromPivot();
             const sheetId = model.getters.getActiveSheetId();
             assert.equal(
                 getCellFormula(model, "B2"),
@@ -854,17 +658,11 @@ module(
         test("Verify pivot measures are correctly computed :)", async function (assert) {
             assert.expect(4);
 
-            const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
-            assert.equal(getCellValue(model, "B3"), 11);
-            assert.equal(getCellValue(model, "C3"), 10);
+            const { model } = await createSpreadsheetFromPivot();
             assert.equal(getCellValue(model, "B4"), 11);
-            assert.equal(getCellValue(model, "C3"), 10);
+            assert.equal(getCellValue(model, "C3"), 15);
+            assert.equal(getCellValue(model, "D4"), 10);
+            assert.equal(getCellValue(model, "E4"), 95);
         });
 
         test("Open pivot properties properties", async function (assert) {
@@ -872,8 +670,6 @@ module(
 
             const { webClient, model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                     <pivot display_quantity="true">
                         <field name="foo" type="col"/>
@@ -938,7 +734,7 @@ module(
 
         test("verify absence of pivots in top menu bar in a spreadsheet without a pivot", async function (assert) {
             assert.expect(1);
-            const { webClient } = await createSpreadsheet({ data: this.data });
+            const { webClient } = await createSpreadsheet();
             assert.containsNone(webClient, "div[data-id='pivots']");
         });
 
@@ -950,7 +746,7 @@ module(
                 data: this.data,
                 arch: `
             <pivot string="Partners">
-                <field name="product" type="col"/>
+                <field name="product_id" type="col"/>
                 <field name="bar" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
@@ -978,13 +774,12 @@ module(
         test("Pivot focus changes on top bar menu click", async function (assert) {
             assert.expect(3);
 
-
             const pivotView = {
                 model: "partner",
                 data: this.data,
                 arch: `
             <pivot string="Partners">
-                <field name="product" type="col"/>
+                <field name="product_id" type="col"/>
                 <field name="bar" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
@@ -1020,7 +815,7 @@ module(
                 data: this.data,
                 arch: `
             <pivot string="Partners">
-                <field name="product" type="col"/>
+                <field name="product_id" type="col"/>
                 <field name="bar" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
@@ -1029,7 +824,7 @@ module(
             let { webClient, env, model } = await createSpreadsheetFromPivot({ webClient: webClient1, pivotView, resId: spreadsheetAction.resId })
 
 
-            selectCell(env, "L1"); //target empty cell
+            env.dispatch("SELECT_CELL", { col: 11, row: 0 }); //target empty cell
             const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_properties");
             root.action(env);
             assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");
@@ -1056,33 +851,25 @@ module(
         test("Can refresh the pivot from the pivot properties panel", async function (assert) {
             assert.expect(1);
 
-            const { webClient, model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                    <pivot display_quantity="true">
-                        <field name="foo" type="col"/>
-                        <field name="bar" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
-                },
+            const data = getBasicData();
+
+            const { webClient, model, env } = await createSpreadsheetFromPivot({ pivotView: { data } });
+            data.partner.records.push({
+                active: true,
+                id: 5,
+                foo: 12,
+                bar: true,
+                product: 37,
+                probability: 10,
             });
             const sheetId = model.getters.getActiveSheetId();
             const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
-            this.data.partner.records.push({
-                id: 1,
-                foo: 12,
-                bar: 110,
-                product: 37,
-                probability: 10,
-            });
             await nextTick();
             await dom.click($(webClient.el).find(".o_refresh_measures")[0]);
             await nextTick();
-            assert.equal(getCellValue(model, "D3"), 2);
+            assert.equal(getCellValue(model, "D4"), 10+10);
         });
 
         test("Can make a copy", async function (assert) {
@@ -1094,14 +881,15 @@ module(
             legacyServicesRegistry.add(
                 "bus_service",
                 BusService.extend({
-                    _poll() { },
+                    _poll() {},
                 })
             );
             legacyServicesRegistry.add("local_storage", LocalStorageService);
-            const spreadsheet = this.data["documents.document"].records[1];
+            const data = getBasicData();
+            const spreadsheet = data["documents.document"].records[1];
             const { env, model } = await createSpreadsheet({
                 spreadsheetId: spreadsheet.id,
-                data: this.data,
+                data,
                 legacyServicesRegistry,
                 mockRPC: async function (route, args) {
                     if (args.method === "copy" && args.model === "documents.document") {
@@ -1128,38 +916,38 @@ module(
 
         test("Check pivot measures with m2o field", async function (assert) {
             assert.expect(3);
-            this.data.partner.records.push(
-                { id: 3, foo: 12, bar: 110, product: 37, probability: 50 },
-                { id: 4, foo: 18, bar: 110, product: 41, probability: 12 },
-                { id: 5, foo: 18, bar: 110, product: 37, probability: 13 },
-                { id: 6, foo: 18, bar: 110, product: 37, probability: 14 }
+            const data = getBasicData();
+            data.partner.records.push(
+                { active: true, id: 5, foo: 12, bar: true, product_id: 37, probability: 50 },
+                { active: true, id: 6, foo: 17, bar: true, product_id: 41, probability: 12 },
+                { active: true, id: 7, foo: 17, bar: true, product_id: 37, probability: 13 },
+                { active: true, id: 8, foo: 17, bar: true, product_id: 37, probability: 14 }
             );
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
+                    data,
                     arch: `
               <pivot string="Partners">
                 <field name="foo" type="col"/>
                 <field name="bar" type="row"/>
-                <field name="product" type="measure"/>
+                <field name="product_id" type="measure"/>
               </pivot>`,
                 },
             });
             assert.equal(
-                getCellValue(model, "B3"),
+                getCellValue(model, "B4"),
                 1,
-                "[Cell B3] There is one distinct product for 'foo - 1' and 'bar - 110'"
+                "[Cell B3] There is one distinct product for 'foo - 1' and 'bar - true'"
             );
             assert.equal(
-                getCellValue(model, "C3"),
+                getCellValue(model, "D4"),
                 1,
-                "[Cell C3] There is one distinct product for 'foo - 12' and 'bar - 110'"
+                "[Cell C3] There is one distinct product for 'foo - 12' and 'bar - true'"
             );
             assert.equal(
-                getCellValue(model, "D3"),
+                getCellValue(model, "E4"),
                 2,
-                "[Cell D3] There are two distinct products for 'foo - 18' and 'bar - 110'"
+                "[Cell D3] There are two distinct products for 'foo - 17' and 'bar - true'"
             );
         });
 
@@ -1168,7 +956,7 @@ module(
             const archs = {
                 "partner,false,pivot": `
                     <pivot string="Partners">
-                        <field name="product" type="col"/>
+                        <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
@@ -1176,21 +964,20 @@ module(
                 "partner,false,list": `<List/>`,
                 "partner,false,search": `<Search/>`,
             };
-            const { env } = await createSpreadsheetFromPivot({
+            //TODOPRO
+            const { env, model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     archs,
                 },
             });
-            selectCell(env, "C3");
+            selectCell(model, "C3");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
             const currentAction = env.services.action.currentController.action;
             assert.equal(
                 JSON.stringify(currentAction.domain),
-                `["&",["product","=",41],["bar","=",110]]`
+                `["&",["product_id","=",41],["bar","=",false]]`
             );
         });
 
@@ -1199,7 +986,7 @@ module(
             const archs = {
                 "partner,false,pivot": `
                     <pivot string="Partners">
-                        <field name="product" type="col"/>
+                        <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
@@ -1207,21 +994,20 @@ module(
                 "partner,false,list": `<List/>`,
                 "partner,false,search": `<Search/>`,
             };
-            const { env } = await createSpreadsheetFromPivot({
+            //TODOPRO
+            const { env, model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     archs,
                 },
             });
-            selectCell(env, "B4");
+            selectCell(model, "B4");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
             const currentAction = env.services.action.currentController.action;
             assert.equal(
                 JSON.stringify(currentAction.domain),
-                `["&",["product","=",37],["bar","=",110]]`
+                `["&",["product_id","=",37],["bar","=",true]]`
             );
         });
 
@@ -1230,7 +1016,7 @@ module(
             const archs = {
                 "partner,false,pivot": `
                     <pivot string="Partners">
-                        <field name="product" type="col"/>
+                        <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
@@ -1238,21 +1024,20 @@ module(
                 "partner,false,list": `<List/>`,
                 "partner,false,search": `<Search/>`,
             };
-            const { env } = await createSpreadsheetFromPivot({
+            //TODOPRO
+            const { env, model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     archs,
                 },
             });
-            selectCell(env, "D3");
+            selectCell(model, "D4");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
             const currentAction = env.services.action.currentController.action;
             assert.equal(
                 JSON.stringify(currentAction.domain),
-                `["|","&",["product","=",37],["bar","=",110],"&",["product","=",41],["bar","=",110]]`
+                `["|","&",["product_id","=",37],["bar","=",true],"&",["product_id","=",41],["bar","=",true]]`
             );
             assert.strictEqual(currentAction.res_model, "partner");
             assert.strictEqual(currentAction.view_mode, "list");
@@ -1264,7 +1049,7 @@ module(
             const archs = {
                 "partner,false,pivot": `
                     <pivot string="Partners">
-                        <field name="product" type="col"/>
+                        <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
@@ -1272,21 +1057,20 @@ module(
                 "partner,false,list": `<List/>`,
                 "partner,false,search": `<Search/>`,
             };
-            const { env } = await createSpreadsheetFromPivot({
+            //TODOPRO
+            const { env, model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     archs,
                 },
             });
-            selectCell(env, "D4");
+            selectCell(model, "D5");
             await nextTick();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
             await root.action(env);
             const currentAction = env.services.action.currentController.action;
             assert.equal(
                 JSON.stringify(currentAction.domain),
-                `["|","&",["product","=",37],["bar","=",110],"&",["product","=",41],["bar","=",110]]`
+                `["|","|","&",["product_id","=",37],["bar","=",true],"&",["product_id","=",41],["bar","=",true],"&",["product_id","=",41],["bar","=",false]]`
             );
         });
 
@@ -1295,13 +1079,7 @@ module(
         test("Simple display", async function (assert) {
             assert.expect(6);
 
-            const { webClient } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { webClient } = await createSpreadsheetFromPivot();
             assert.notOk($(webClient.el).find(".o_spreadsheet_global_filters_side_panel")[0]);
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
             await dom.click(searchIcon);
@@ -1318,13 +1096,7 @@ module(
         test("Display with an existing 'Date' global filter", async function (assert) {
             assert.expect(4);
 
-            const { webClient, model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { webClient, model } = await createSpreadsheetFromPivot();
             const label = "This year";
             await addGlobalFilter(model, {
                 filter: { id: "42", type: "date", label, pivotFields: {}, defaultValue: {} },
@@ -1345,19 +1117,7 @@ module(
         test("Create a new global filter", async function (assert) {
             assert.expect(4);
 
-            const { webClient, model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                    <pivot string="Partners">
-                        <field name="foo" type="col"/>
-                        <field name="bar" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>
-                `,
-                },
-            });
+            const { webClient, model } = await createSpreadsheetFromPivot();
             const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
             await dom.click(searchIcon);
             const newText = $(webClient.el).find(".o_global_filter_new_text")[0];
@@ -1389,12 +1149,10 @@ module(
 
             const { webClient, model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
                     <field name="foo" type="col"/>
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
@@ -1420,7 +1178,7 @@ module(
             let globalFilter = model.getters.getGlobalFilters()[0];
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
-            assert.deepEqual(globalFilter.pivotFields[1], { field: "product", type: "many2one" });
+            assert.deepEqual(globalFilter.pivotFields[1], { field: "product_id", type: "many2one" });
         });
 
         QUnit.test(
@@ -1429,12 +1187,10 @@ module(
                 assert.expect(2);
                 const { webClient } = await createSpreadsheetFromPivot({
                     pivotView: {
-                        model: "partner",
-                        data: this.data,
                         arch: `
                       <pivot string="Partners">
                           <field name="foo" type="col"/>
-                          <field name="product" type="row"/>
+                          <field name="product_id" type="row"/>
                           <field name="probability" type="measure"/>
                       </pivot>`,
                     },
@@ -1461,18 +1217,7 @@ module(
         QUnit.test("Display with an existing 'Relation' global filter", async function (assert) {
             assert.expect(8);
 
-            const { webClient, model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-              <pivot string="Partners">
-                  <field name="foo" type="col"/>
-                  <field name="bar" type="row"/>
-                  <field name="probability" type="measure"/>
-              </pivot>`,
-                },
-            });
+            const { webClient, model } = await createSpreadsheetFromPivot();
             const label = "MyFoo";
             const pivot = model.getters.getPivotForRPC("1");
             model.dispatch("ADD_PIVOT", {
@@ -1485,8 +1230,8 @@ module(
                 modelName: "product",
                 label,
                 pivotFields: {
-                    1: { type: "many2one", field: "product" }, // first pivotId
-                    2: { type: "many2one", field: "product" }, // second pivotId
+                    1: { type: "many2one", field: "product_id" }, // first pivotId
+                    2: { type: "many2one", field: "product_id" }, // second pivotId
                 },
                 defaultValue: [],
             };
@@ -1516,7 +1261,8 @@ module(
 
         test("Only related models can be selected", async function (assert) {
             assert.expect(2);
-            this.data["ir.model"].records.push(
+            const data = getBasicData();
+            data["ir.model"].records.push(
                 {
                     id: 36,
                     name: "Apple",
@@ -1528,19 +1274,18 @@ module(
                     model: "documents.document",
                 }
             );
-            this.data["partner"].fields.document = {
+            data["partner"].fields.document = {
                 relation: "documents.document",
                 string: "Document",
                 type: "many2one",
             };
             const { webClient } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
+                    data,
                     arch: `
                 <pivot string="Partners">
                     <field name="foo" type="col"/>
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
@@ -1560,13 +1305,7 @@ module(
         test("Edit an existing global filter", async function (assert) {
             assert.expect(4);
 
-            const { webClient, model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { webClient, model } = await createSpreadsheetFromPivot();
             const label = "This year";
             const defaultValue = "value";
             await addGlobalFilter(model, {
@@ -1595,13 +1334,7 @@ module(
         test("Default value defines value", async function (assert) {
             assert.expect(1);
 
-            const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model } = await createSpreadsheetFromPivot();
             const label = "This year";
             const defaultValue = "value";
             await addGlobalFilter(model, {
@@ -1624,32 +1357,33 @@ module(
 
         test("Name is only fetched once", async function (assert) {
             assert.expect(6);
-            this.data.partner.records = [
-                ...this.data.partner.records,
+            const data = getBasicData();
+            data.partner.records.push(
                 {
-                    id: 3,
+                    active: true,
+                    id: 5,
                     foo: 12,
                     bar: 110,
-                    product: 41,
+                    product_id: 41,
                     probability: 15,
                 },
                 {
-                    id: 4,
+                    active: true,
+                    id: 6,
                     foo: 1,
                     bar: 110,
-                    product: 37,
+                    product_id: 37,
                     probability: 16,
                 },
-            ];
+            );
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
+                    data,
                     arch: `
                     <pivot>
                         <field name="bar" type="col"/>
                         <field name="foo" type="row"/>
-                        <field name="product" type="row"/>
+                        <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
                 `,
@@ -1667,7 +1401,7 @@ module(
                     label: "Filter",
                     pivotFields: {
                         1: {
-                            field: "product",
+                            field: "product_id",
                             type: "many2one",
                         },
                     },
@@ -1677,19 +1411,19 @@ module(
             // It contains product twice
             assert.equal(
                 getCellFormula(model, "A4"),
-                `=PIVOT.HEADER("1","foo","1","product","37")`
+                `=PIVOT.HEADER("1","foo","1","product_id","37")`
             );
             assert.equal(
                 getCellFormula(model, "A5"),
-                `=PIVOT.HEADER("1","foo","1","product","41")`
+                `=PIVOT.HEADER("1","foo","1","product_id","41")`
             );
             assert.equal(
                 getCellFormula(model, "A7"),
-                `=PIVOT.HEADER("1","foo","12","product","37")`
+                `=PIVOT.HEADER("1","foo","2","product_id","41")`
             );
             assert.equal(
-                getCellFormula(model, "A8"),
-                `=PIVOT.HEADER("1","foo","12","product","41")`
+                getCellFormula(model, "A9"),
+                `=PIVOT.HEADER("1","foo","12","product_id","37")`
             );
             await setGlobalFilterValue(model, {
                 id: "42",
@@ -1704,16 +1438,16 @@ module(
 
         test("Name is not fetched if related record is not assigned", async function (assert) {
             assert.expect(4);
-            this.data.partner.records[0].product = false;
+            const data = getBasicData();
+            data.partner.records[0].product_id = false;
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
+                    data,
                     arch: `
                     <pivot>
                         <field name="bar" type="col"/>
                         <field name="foo" type="row"/>
-                        <field name="product" type="row"/>
+                        <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
                 `,
@@ -1731,7 +1465,7 @@ module(
                     label: "Filter",
                     pivotFields: {
                         1: {
-                            field: "product",
+                            field: "product_id",
                             type: "many2one",
                         },
                     },
@@ -1741,11 +1475,11 @@ module(
             // It contains undefined headers
             assert.equal(
                 getCellFormula(model, "A4"),
-                `=PIVOT.HEADER("1","foo","1","product","41")`
+                `=PIVOT.HEADER("1","foo","1","product_id","41")`
             );
             assert.equal(
-                getCellFormula(model, "A6"),
-                `=PIVOT.HEADER("1","foo","12","product","false")`
+                getCellFormula(model, "A8"),
+                `=PIVOT.HEADER("1","foo","12","product_id","false")`
             );
             await setGlobalFilterValue(model, {
                 id: "42",
@@ -1760,14 +1494,8 @@ module(
         test("Open pivot dialog and insert a value, with UNDO/REDO", async function (assert) {
             assert.expect(4);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
-            selectCell(model, "D8");
+            const { model, env } = await createSpreadsheetFromPivot();
+            selectCell(model, "D8")
             const sheetId = model.getters.getActiveSheetId();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
@@ -1785,20 +1513,14 @@ module(
         test("Insert missing value modal can show only the values not used in the current sheet", async function (assert) {
             assert.expect(4);
 
-            const { model, env } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: this.arch,
-                },
-            });
+            const { model, env } = await createSpreadsheetFromPivot();
             const missingValue = getCellFormula(model, "B3");
             selectCell(model, "B3");
             model.dispatch("DELETE_CONTENT", {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
             });
-            selectCell(model, "D8");
+            selectCell(model, "D8")
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1817,13 +1539,11 @@ module(
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
                     <field name="foo" type="col"/>
                     <field name="bar" type="row"/>
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
@@ -1833,7 +1553,7 @@ module(
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
             });
-            selectCell(model, "D8");
+            selectCell(model, "D8")
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1842,20 +1562,18 @@ module(
             await dom.click(document.body.querySelector("input#missing_values"));
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
-            assert.containsN(document.body, ".o_pivot_table_dialog td", 2);
-            assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
+            assert.containsN(document.body, ".o_pivot_table_dialog td", 1);
+            assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
         });
 
         test("Styling on row headers", async function (assert) {
-            assert.expect(9);
+            assert.expect(12);
 
             const { model } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="bar" type="row"/>
                     <field name="foo" type="row"/>
                     <field name="probability" type="measure"/>
@@ -1878,7 +1596,10 @@ module(
             assert.deepEqual(getCell(model, "A6").style, styleMainheader);
             assert.deepEqual(getCell(model, "A7").style, styleSubHeader);
             assert.deepEqual(getCell(model, "A8").style, styleSubSubHeader);
-            assert.deepEqual(getCell(model, "A9").style, styleMainheader);
+            assert.deepEqual(getCell(model, "A9").style, styleSubHeader);
+            assert.deepEqual(getCell(model, "A10").style, styleSubSubHeader);
+            assert.deepEqual(getCell(model, "A11").style, styleSubSubHeader);
+            assert.deepEqual(getCell(model, "A12").style, styleMainheader);
         });
 
         test("Insert missing value modal can show only the values not used in the current sheet with multiple levels", async function (assert) {
@@ -1886,12 +1607,10 @@ module(
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                     <pivot string="Partners">
                         <field name="foo" type="col"/>
-                        <field name="product" type="col"/>
+                        <field name="product_id" type="col"/>
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`,
@@ -1922,18 +1641,16 @@ module(
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
                     <field name="foo" type="col"/>
                     <field name="bar" type="row"/>
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
             });
-            selectCell(model, "D8");
+            selectCell(model, "D8")
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1948,13 +1665,11 @@ module(
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
                     <field name="foo" type="col"/>
                     <field name="bar" type="row"/>
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
@@ -1978,13 +1693,11 @@ module(
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
                     <field name="foo" type="col"/>
                     <field name="bar" type="row"/>
-                    <field name="product" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
                 },
@@ -2008,12 +1721,10 @@ module(
 
             const { model, env } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                 <pivot string="Partners">
                     <field name="bar" type="col"/>
-                    <field name="product" type="col"/>
+                    <field name="product_id" type="col"/>
                     <field name="probability" type="measure"/>
                     <field name="foo" type="measure"/>
                 </pivot>`,
@@ -2033,19 +1744,17 @@ module(
             await dom.click(document.body.querySelector("input#missing_values"));
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
-            assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
+            assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
         });
 
         QUnit.test("Grid has still the focus after a dialog", async function (assert) {
             assert.expect(1);
 
             const { model } = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
                 arch: `
                 <pivot string="Partners">
                     <field name="bar" type="col"/>
-                    <field name="product" type="col"/>
+                    <field name="product_id" type="col"/>
                     <field name="probability" type="measure"/>
                     <field name="foo" type="measure"/>
                 </pivot>`,
@@ -2081,7 +1790,7 @@ module(
             assert.expect(3);
             const mock = (message) => {
                 assert.step(`create (${message})`);
-                return () => { };
+                return () => {};
             };
             registry.category("services").add("notification", makeFakeNotificationService(mock), {
                 force: true,
@@ -2089,12 +1798,10 @@ module(
             const uniqueFilterName = "UNIQUE_FILTER";
             const { model, webClient } = await createSpreadsheetFromPivot({
                 pivotView: {
-                    model: "partner",
-                    data: this.data,
                     arch: `
                     <pivot>
                         <field name="bar" type="col"/>
-                        <field name="product" type="row"/>
+                        <field name="product_id" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>
                 `,

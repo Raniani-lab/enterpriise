@@ -3,7 +3,7 @@
 
 import base64
 from odoo.tests.common import tagged, TransactionCase, new_test_user
-from dateutil.relativedelta import relativedelta
+from datetime import date
 
 TEXT = base64.b64encode(bytes("documents_hr", 'utf-8'))
 
@@ -31,6 +31,10 @@ class TestCaseDocumentsBridgeHR(TransactionCase):
             'employee_id': employee.id,
             'holiday_status_id': leave_type.id,
             'number_of_days': 1,
+            'date_from': date(2021, 11, 24),
+            'date_to': date(2021, 11, 24),
+            'request_date_from': date(2021, 11, 24),
+            'request_date_to': date(2021, 11, 24),
         })
         attachment = self.env['ir.attachment'].create({
             'datas': TEXT,

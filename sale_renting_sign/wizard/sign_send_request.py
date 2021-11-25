@@ -8,10 +8,8 @@ class SignSendRequest(models.TransientModel):
 
     sale_order_id = fields.Many2one("sale.order", string="Sales Order")
 
-    def create_request(self, without_mail=False):
-        request_info = super(SignSendRequest, self).create_request(without_mail)
-        request_id = request_info["id"]
+    def create_request(self):
+        sign_request = super(SignSendRequest, self).create_request()
         if self.sale_order_id:
-            request = self.env["sign.request"].browse(request_id)
-            request.sale_order_id = self.sale_order_id
-        return request_info
+            sign_request.sale_order_id = self.sale_order_id
+        return sign_request

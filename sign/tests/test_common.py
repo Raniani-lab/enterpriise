@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from unittest.mock import patch
 
 from odoo import _
 from odoo.tools import file_open
 from odoo.tests.common import TransactionCase, new_test_user
-from odoo.addons.sign.models.sign_log import SignLog
 
 class TestSignCommon(TransactionCase):
     @classmethod
@@ -122,8 +120,7 @@ class TestSignCommon(TransactionCase):
         cls.multi_role_sign_request = cls.create_sign_request(cls, cls.template_multi_role, [cls.partner_id.id, cls.partner_2_id.id])
         cls.default_role_sign_request = cls.create_sign_request(cls, cls.template_without_sign_items, [cls.partner_id.id])
 
-    @patch.object(SignLog, "_create_log")
-    def create_sign_request(self, template, partners, _create_log=None):
+    def create_sign_request(self, template, partners):
         data = {
             'template_id': template.id,
             'signer_id': partners[0],

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import UserError
 
 
@@ -88,12 +88,12 @@ class SignSendRequest(models.TransientModel):
         feedback = _('Signature requested for template: %s\nSignatories: %s') % (self.template_id.name, signatories)
         self.activity_id._action_done(feedback=feedback)
 
-    def create_request(self, without_mail=False):
+    def create_request(self):
         template_id = self.template_id.id
         if self.signers_count:
-            signers = [{'partner_id': signer.partner_id.id, 'role': signer.role_id.id} for signer in self.signer_ids]
+            signers = [{'partner_id': signer.partner_id.id, 'role_id': signer.role_id.id} for signer in self.signer_ids]
         else:
-            signers = [{'partner_id': self.signer_id.id, 'role': self.env.ref('sign.sign_item_role_default').id}]
+            signers = [{'partner_id': self.signer_id.id, 'role_id': self.env.ref('sign.sign_item_role_default').id}]
         cc_partner_ids = self.cc_partner_ids.ids
         reference = self.filename
         subject = self.subject
@@ -101,32 +101,32 @@ class SignSendRequest(models.TransientModel):
         message_cc = self.message_cc
         attachment_ids = self.attachment_ids
         refusal_allowed = self.refusal_allowed
-        return self.env['sign.request'].initialize_new(
-            template_id=template_id,
-            signers=signers,
-            cc_partner_ids=cc_partner_ids,
-            reference=reference,
-            subject=subject,
-            message=message,
-            message_cc=message_cc,
-            attachment_ids=attachment_ids,
-            without_mail=without_mail,
-            refusal_allowed=refusal_allowed,
-        )
+        return self.env['sign.request'].create({
+            'template_id': template_id,
+            'request_item_ids': [Command.create({
+                'partner_id': signer['partner_id'],
+                'role_id': signer['role_id'],
+            }) for signer in signers],
+            'cc_partner_ids': [Command.set(cc_partner_ids)],
+            'reference': reference,
+            'subject': subject,
+            'message': message,
+            'message_cc': message_cc,
+            'attachment_ids': [Command.set(attachment_ids.ids)],
+            'refusal_allowed': refusal_allowed,
+        })
 
     def send_request(self):
-        res = self.create_request()
-        request = self.env['sign.request'].browse(res['id'])
+        request = self.create_request()
         if self.activity_id:
             self._activity_done()
             return {'type': 'ir.actions.act_window_close'}
         return request.go_to_document()
 
     def sign_directly(self):
-        res = self.create_request()
+        request = self.create_request()
         if self.activity_id:
             self._activity_done()
-        request = self.env['sign.request'].browse(res['id'])
         user_item = request.request_item_ids.filtered(
             lambda item: item.partner_id == item.env.user.partner_id)[:1]
         return {
@@ -143,8 +143,7 @@ class SignSendRequest(models.TransientModel):
         }
 
     def sign_directly_without_mail(self):
-        res = self.create_request(True)
-        request = self.env['sign.request'].browse(res['id'])
+        request = self.with_context(no_sign_mail=True).create_request()
 
         user_item = request.request_item_ids[0]
 

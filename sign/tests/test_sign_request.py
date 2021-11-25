@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from .test_common import TestSignCommon
-from unittest.mock import patch
-from odoo.addons.sign.models.sign_log import SignLog
 from odoo.exceptions import UserError
 
 
 class TestSignRequest(TestSignCommon):
-    @patch.object(SignLog, "_create_log")
-    def test_sign_request_item_auto_resend(self, _create_log):
+    def test_sign_request_item_auto_resend(self):
         sign_request = self.single_role_sign_request
         request_item_ids = sign_request.request_item_ids
         request_item = request_item_ids[0]
@@ -32,8 +29,7 @@ class TestSignRequest(TestSignCommon):
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
         self.assertEqual(token_c, token_b, "sign request item's access token should be not changed after the document is signed by the signer")
 
-    @patch.object(SignLog, "_create_log")
-    def test_sign_request_item_reassign_signatory(self, _create_log):
+    def test_sign_request_item_reassign_signatory(self):
         sign_request = self.single_role_sign_request
         request_item_ids = sign_request.request_item_ids
         request_item = request_item_ids[0]
@@ -55,8 +51,7 @@ class TestSignRequest(TestSignCommon):
         for sign_request in [self.default_role_sign_request, self.multi_role_sign_request, self.single_role_sign_request]:
             self.assertTrue(all(sign_request.request_item_ids.mapped('is_mail_sent')))
 
-    @patch.object(SignLog, "_create_log")
-    def test_sign_request_item_refuse(self, _create_log):
+    def test_sign_request_item_refuse(self):
         sign_request = self.multi_role_sign_request
         request_item_ids = sign_request.request_item_ids
         request_item_1 = request_item_ids[0]

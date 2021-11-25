@@ -9,7 +9,7 @@ import re
 
 from PyPDF2 import PdfFileReader
 
-from odoo import http, models, tools, _
+from odoo import http, models, tools, Command, _
 from odoo.http import request
 from odoo.addons.web.controllers.main import content_disposition
 from odoo.addons.iap.tools import iap_tools
@@ -160,17 +160,16 @@ class Sign(http.Controller):
         if not template:
             return request.not_found()
 
-        request_id = request.env['sign.request'].with_user(template.create_uid).initialize_new(
-            template_id=template.id,
-            signers=[{'partner_id': False, 'role': template.sign_item_ids.responsible_id.id}],
-            cc_partner_ids=[],
-            reference="%(template_name)s-public" % {'template_name': template.attachment_id.name},
-            subject="",
-            message="",
-            without_mail=True,
-        )['id']
-        access_token = request.env['sign.request'].sudo().browse(request_id).request_item_ids[0].access_token
-        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': request_id, 'access_token': access_token})
+        sign_request = request.env['sign.request'].with_user(template.create_uid).with_context(no_sign_mail=True).create({
+            'template_id': template.id,
+            'request_item_ids': [Command.create({
+                'partner_id': False,
+                'role_id': template.sign_item_ids.responsible_id.id if template.sign_item_ids else request.env.ref('sign.sign_item_role_default').id},
+            )],
+            'reference': "%(template_name)s-public" % {'template_name': template.attachment_id.name},
+        })
+        access_token = sign_request.request_item_ids[0].access_token
+        return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': access_token})
 
     @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
     def check_password_page(self, sign_request_id, token, **post):
@@ -258,7 +257,7 @@ class Sign(http.Controller):
         request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
         if not request_item:
             return False
-        if request_item.role_id and request_item.role_id.sms_authentification:
+        if request_item.role_id.sms_authentification:
             request_item.sms_number = phone_number
             try:
                 request_item._send_sms()
@@ -280,7 +279,7 @@ class Sign(http.Controller):
         request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
         if not request_item:
             return False
-        if request_item.role_id and request_item.role_id.sms_authentification:
+        if request_item.role_id.sms_authentification:
             if not sms_token:
                 return {
                     'sms': True

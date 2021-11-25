@@ -129,8 +129,11 @@ class SignLog(models.Model):
         # NOTE: We update request_item.latitude/longitude when the request_item is opened and not 'completed'/'refused'
         # And If the signer accepted the browser geolocation request, the coordinates will be more precise.
         # We should forcely use the GeoIP ones only if the the request_item is 'completed'/'refused'
-        latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state != 'sent' else request_item.latitude
-        longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state != 'sent' else request_item.longitude
+        latitude = 0.0
+        longitude = 0.0
+        if request:
+            latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state != 'sent' else request_item.latitude
+            longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state != 'sent' else request_item.longitude
         return dict(
             sign_request_item_id=request_item.id,
             sign_request_id=sign_request.id,
@@ -143,14 +146,14 @@ class SignLog(models.Model):
         return dict(
             sign_request_id=sign_request.id,
             request_state=sign_request.state,
-            latitude=request.session['geoip'].get('latitude', 0.0),
-            longitude=request.session['geoip'].get('latitude', 0.0),
+            latitude=request.session['geoip'].get('latitude', 0.0) if request else 0.0,
+            longitude=request.session['geoip'].get('latitude', 0.0) if request else 0.0,
         )
 
     def _update_vals_with_http_request(self, vals):
         vals.update({
             'user_id': self.env.user.id if not self.env.user._is_public() else None,
-            'ip': request.httprequest.remote_addr,
+            'ip': request.httprequest.remote_addr if request else '0.0.0.0',
         })
         if not vals.get('partner_id', False):
             vals.update({

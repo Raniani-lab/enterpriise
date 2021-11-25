@@ -39,6 +39,7 @@ class ResPartner(models.Model):
                 ('partner_id', 'in', partners_email_changed.ids),
                 ('state', '=', 'sent'),
                 ('is_mail_sent', '=', True)])
+            request_items.sign_request_id.check_senders_validity()
             for request_item in request_items:
                 request_item.sign_request_id.message_post(
                     body=_('The mail address of %(partner)s has been updated. The request will be automatically resent.',

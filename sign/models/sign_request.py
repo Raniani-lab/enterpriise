@@ -147,9 +147,31 @@ class SignRequest(models.Model):
                 'signing_date': item.signing_date or ''
             } for item in request.request_item_ids]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        sign_requests = super().create(vals_list)
+        sign_requests.template_id.check_send_ready()
+        sign_requests.cc_partner_ids = [Command.link(self.env.user.partner_id.id)]
+        for sign_request in sign_requests:
+            if not sign_request.request_item_ids:
+                raise ValidationError(_("A valid sign request needs at least one sign request item"))
+            sign_request.attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
+            sign_request.message_subscribe(partner_ids=sign_request.cc_partner_ids.ids + sign_request.request_item_ids.partner_id.ids)
+            sign_users = sign_request.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee'))
+            sign_request.activity_update(sign_users)
+            self.env['sign.log']._create_log(sign_request, "create", is_request=True)
+        if not self._context.get('no_sign_mail'):
+            sign_requests.send_signature_accesses()
+        return sign_requests
+
     def toggle_active(self):
         self.filtered(lambda sr: sr.active and sr.state == 'sent').cancel()
         super(SignRequest, self).toggle_active()
+
+    def _check_senders_validity(self):
+        invalid_senders = self.create_uid.filtered(lambda u: not u.email_formatted)
+        if invalid_senders:
+            raise ValidationError(_("Please configure senders'(%s) email addresses", ', '.join(invalid_senders.mapped('name'))))
 
     def _check_after_compute(self):
         for rec in self:
@@ -251,6 +273,7 @@ class SignRequest(models.Model):
         self.ensure_one()
         if self.state != 'sent' or not self.refusal_allowed:
             raise UserError(_("This sign request cannot be refused"))
+        self._check_senders_validity()
         self.write({'state': 'refused'})
         self.request_item_ids._cancel(no_access=False)
 
@@ -259,10 +282,6 @@ class SignRequest(models.Model):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
         # send emails to signers and cc_partners
-        if not self.create_uid.email_formatted:
-            raise UserError(_("Please configure sender's email address"))
-        if any(not signer.email_formatted for signer in self.request_item_ids.partner_id):
-            raise UserError(_("Please complete the signer's email address"))
         for sign_request_item in self.request_item_ids:
             self._send_refused_mail(refuser, refusal_reason, sign_request_item.partner_id, access_token=sign_request_item.access_token, force_send=True)
         for partner in self.cc_partner_ids.filtered(lambda p: p.email_formatted) - self.request_item_ids.partner_id:
@@ -299,6 +318,7 @@ class SignRequest(models.Model):
 
     def send_signature_accesses(self):
         # Send/Resend accesses for 'sent' sign.request.items by email
+        self._check_senders_validity()
         for sign_request in self:
             request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
             if request_items:
@@ -337,28 +357,6 @@ class SignRequest(models.Model):
         for sign_request in self:
             self.env['sign.log']._create_log(sign_request, 'cancel', is_request=True)
 
-    def set_signers(self, signers):
-        SignRequestItem = self.env['sign.request.item']
-
-        for rec in self:
-            rec.request_item_ids.filtered(lambda r: not r.partner_id or not r.role_id).unlink()
-            ids_to_remove = []
-            for request_item in rec.request_item_ids:
-                for i in range(0, len(signers)):
-                    if signers[i]['partner_id'] == request_item.partner_id.id and signers[i]['role'] == request_item.role_id.id:
-                        signers.pop(i)
-                        break
-                else:
-                    ids_to_remove.append(request_item.id)
-
-            SignRequestItem.browse(ids_to_remove).unlink()
-            for signer in signers:
-                SignRequestItem.create({
-                    'partner_id': signer['partner_id'],
-                    'sign_request_id': rec.id,
-                    'role_id': signer['role'],
-                })
-
     @api.model
     def check_request_edit_during_sign(self, request_id):
         request_sudo = self.sudo().browse(request_id)
@@ -368,6 +366,7 @@ class SignRequest(models.Model):
         self.ensure_one()
         if len(self.request_item_ids) <= 0 or self.state != 'signed':
             return False
+        self._check_senders_validity()
 
         if not self.completed_document:
             self.generate_completed_document()
@@ -403,8 +402,6 @@ class SignRequest(models.Model):
         self.attachment_ids = [Command.link(attachment.id), Command.link(attachment_log.id)]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
         for signer in self.request_item_ids:
-            if not signer.signer_email:
-                continue
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             tpl = tpl.with_context(lang=signer_lang)
             body = tpl._render({
@@ -417,11 +414,6 @@ class SignRequest(models.Model):
                 'signers': signers,
                 'request_edited': request_edited,
             }, engine='ir.qweb', minimal_qcontext=True)
-
-            if not self.create_uid.email:
-                raise UserError(_("Please configure the sender's email address"))
-            if not signer.signer_email:
-                raise UserError(_("Please configure the signer's email address"))
 
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
@@ -437,11 +429,8 @@ class SignRequest(models.Model):
             )
 
         tpl = self.env.ref('sign.sign_template_mail_completed')
-        cc_partners_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
+        cc_partner_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
         for cc_partner in cc_partners_valid:
-            if not self.create_uid.email:
-                raise UserError(_("Please configure the sender's email address"))
-
             tpl_cc_partner = tpl.with_context(lang=get_lang(self.env, lang_code=cc_partner.lang).code)
             body = tpl_cc_partner._render({
                 'record': self,
@@ -622,33 +611,6 @@ class SignRequest(models.Model):
         return mail
 
     @api.model
-    def initialize_new(self, template_id, signers, cc_partner_ids, reference, subject, message, message_cc=None, attachment_ids=None, without_mail=False, refusal_allowed=False):
-        sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_employee'))
-        cc_partner_ids = self.env.user.partner_id.ids + cc_partner_ids
-        sign_request = self.create({'template_id': template_id,
-                                    'reference': reference,
-                                    'subject': subject,
-                                    'cc_partner_ids': [Command.set(cc_partner_ids)],
-                                    'message': message,
-                                    'message_cc': message_cc,
-                                    'refusal_allowed': refusal_allowed})
-        if attachment_ids:
-            attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
-            sign_request.write({'attachment_ids': [Command.set(attachment_ids.ids)]})
-        sign_request.set_signers(signers)
-        # All cc_partners and signers are followers of the sign request.
-        sign_request.message_subscribe(partner_ids=cc_partner_ids + sign_request.request_item_ids.partner_id.ids)
-        sign_request.activity_update(sign_users)
-        self.env['sign.log']._create_log(sign_request, "create", is_request=True)
-        if not without_mail:
-            sign_request.send_signature_accesses()
-        return {
-            'id': sign_request.id,
-            'token': sign_request.access_token,
-            'sign_token': sign_request.request_item_ids.filtered(lambda r: r.partner_id == self.env.user.partner_id)[:1].access_token,
-        }
-
-    @api.model
     def add_followers(self, id, followers):
         sign_request = self.browse(id)
         old_followers = set(sign_request.message_follower_ids.mapped('partner_id.id'))
@@ -685,7 +647,7 @@ class SignRequestItem(models.Model):
 
     access_token = fields.Char(required=True, default=_default_access_token, readonly=True)
     access_via_link = fields.Boolean('Accessed Through Token')
-    role_id = fields.Many2one('sign.item.role', string="Role", readonly=True)
+    role_id = fields.Many2one('sign.item.role', string="Role", required=True, readonly=True)
     sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True)
     sms_token = fields.Char('SMS Token', readonly=True)
 
@@ -705,6 +667,22 @@ class SignRequestItem(models.Model):
 
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))
+
+    @api.constrains('signer_email')
+    def _check_signer_email_validity(self):
+        if any(sri.partner_id and not sri.signer_email for sri in self):
+            raise ValidationError(_("All signers must have valid email addresses"))
+
+    @api.constrains('partner_id', 'role_id')
+    def _check_signers_validity(self):
+        # this check allows one signer to be False, which is used to "share" a sign template
+        for sign_request in self.sign_request_id:
+            template_roles = sign_request.template_id.sign_item_ids.responsible_id
+            sign_request_items = sign_request.request_item_ids
+            if len(sign_request_items) != max(len(template_roles), 1) or \
+                    set(sign_request_items.role_id.ids) != (set(template_roles.ids) if template_roles else set([self.env.ref('sign.sign_item_role_default').id])) or \
+                    (len(sign_request_items) != len(sign_request_items.partner_id.ids) and len(sign_request_items) != 1):
+                raise ValidationError(_("You must specify different signers for each role of your sign template"))
 
     def write(self, vals):
         if vals.get('partner_id') is False:
@@ -782,12 +760,9 @@ class SignRequestItem(models.Model):
         self.sign_request_id._refuse(self.partner_id, refusal_reason)
 
     def send_signature_accesses(self):
+        self.sign_request_id.check_senders_valid()
         tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
-            if not signer.partner_id or not signer.signer_email:
-                raise UserError(_("Please complete the partner email address"))
-            if not signer.create_uid.email_formatted:
-                raise UserError(_("Please configure your email address"))
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             tpl = tpl.with_context(lang=signer_lang)
             body = tpl._render({
@@ -825,7 +800,7 @@ class SignRequestItem(models.Model):
             SignItemValue = self.env['sign.request.item.value']
             request = self.sign_request_id
 
-            signer_items = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
+            signer_items = request.template_id.sign_item_ids.filtered(lambda r: r.responsible_id.id == self.role_id.id)
             authorised_ids = set(signer_items.mapped('id'))
             required_ids = set(signer_items.filtered('required').mapped('id'))
 

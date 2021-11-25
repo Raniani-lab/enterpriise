@@ -190,7 +190,7 @@ class AccountMove(models.Model):
             'bank_account': cfdi_node.get('NumCtaPago'),
             'sello': cfdi_node.get('sello', cfdi_node.get('Sello', 'No identificado')),
             'sello_sat': tfd_node is not None and tfd_node.get('selloSAT', tfd_node.get('SelloSAT', 'No identificado')),
-            'cadena': get_cadena(cfdi_node, CFDI_XSLT_CADENA),
+            'cadena': tfd_node is not None and get_cadena(tfd_node, CFDI_XSLT_CADENA_TFD) or get_cadena(cfdi_node, CFDI_XSLT_CADENA),
             'certificate_number': cfdi_node.get('noCertificado', cfdi_node.get('NoCertificado')),
             'certificate_sat_number': tfd_node is not None and tfd_node.get('NoCertificadoSAT'),
             'expedition': cfdi_node.get('LugarExpedicion'),

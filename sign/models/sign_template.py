@@ -9,7 +9,7 @@ from PyPDF2 import PdfFileReader
 from collections import defaultdict
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.tools import pdf
 
 
@@ -303,6 +303,17 @@ class SignItemType(models.Model):
     default_height = fields.Float(string="Default Height", digits=(4, 3), required=True, default=0.015)
     auto_field = fields.Char(string="Auto-fill Partner Field",
         help="Technical name of the field on the partner model to auto-complete this signature field at the time of signature.")
+
+    @api.constrains('auto_field')
+    def _check_auto_field_exists(self):
+        Partner = self.env['res.partner']
+        for sign_type in self:
+            if sign_type.auto_field:
+                try:
+                    if isinstance(Partner.sudo().mapped(sign_type.auto_field), models.BaseModel):
+                        raise AttributeError
+                except (KeyError, AttributeError):
+                    raise ValidationError(_("Malformed expression: %(exp)s", exp=sign_type.auto_field))
 
 
 class SignItemParty(models.Model):

@@ -123,7 +123,7 @@ class Appointment(http.Controller):
             'appointment_type': appointment_type,
             'suggested_staff_users': suggested_staff_users,
             'main_object': appointment_type,
-            'timezone': request.session['timezone'],
+            'timezone': request.session['timezone'],  # bw compatibility
             'slots': slots,
             'state': state,
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
@@ -175,6 +175,7 @@ class Appointment(http.Controller):
             'datetime_str': date_time,
             'duration_str': duration,
             'staff_user_id': staff_user_id,
+            'timezone': request.session['timezone'] or appointment_type.timezone,  # bw compatibility
         })
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'],

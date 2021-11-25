@@ -377,14 +377,7 @@ class FetchmailServer(models.Model):
             return 'incoming_sii_dte_result'
         return 'not_classified'
 
-    def _get_partner(self, partner_rut, company_id=False):
-        if not company_id:
-            # The company_id parameter was added to fix a bug where partners that were
-            # inaccessible to the company could be returned, resulting in access errors
-            # later. If the company is not specified, use the old logic that still has
-            # the bug to keep the function signature stable. To be removed in master.
-            return self.env['res.partner'].search([('vat', '=', partner_rut)], limit=1)
-
+    def _get_partner(self, partner_rut, company_id):
         return self.env["res.partner"].search(
             [
                 ("vat", "=", partner_rut),

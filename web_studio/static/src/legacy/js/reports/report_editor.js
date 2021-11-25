@@ -729,7 +729,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 resolve();
             };
             if (reportHTML.error) {
-                this.displayNotification({
+                self.displayNotification({
                     message: _.str.sprintf(
                         _t('This report could not be previewed or edited because it could not be rendered with this message: %s. This could be happening because this is a custom report type that needs custom data to be rendered and so is not editable by studio.'),
                         reportHTML.message

@@ -69,8 +69,6 @@ odoo.define('hr_payroll.WorkEntryPayrollControllerMixin', function (require) {
         },
 
         _onGeneratePayslips: function (e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
             this._generatePayslips();
         },
     };

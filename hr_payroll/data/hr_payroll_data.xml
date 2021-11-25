@@ -44,6 +44,26 @@
             <field name="code">COMP</field>
         </record>
 
+        <!-- Salary Structure -->
+        <record id="structure_002" model="hr.payroll.structure">
+            <field name="name">Regular Pay</field>
+            <field name="type_id" ref="hr_contract.structure_type_employee"/>
+            <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
+            <field name="country_id" eval="False"/>
+        </record>
+        <record id="hr_contract.structure_type_employee" model="hr.payroll.structure.type">
+            <field name="default_struct_id" ref="structure_002"/>
+        </record>
+
+        <record id="structure_worker_001" model="hr.payroll.structure">
+            <field name="name">Worker Pay</field>
+            <field name="type_id" ref="hr_contract.structure_type_worker"/>
+            <field name="country_id" eval="False"/>
+        </record>
+        <record id="hr_contract.structure_type_worker" model="hr.payroll.structure.type">
+            <field name="default_struct_id" ref="structure_worker_001"/>
+        </record>
+
         <!-- Decimal Precision -->
         <record forcecreate="True" id="decimal_payroll" model="decimal.precision">
             <field name="name">Payroll</field>

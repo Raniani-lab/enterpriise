@@ -49,15 +49,6 @@
     margin-top: 5px;
 }
 
-.o_sign_request_follower_name {
-    &:before {
-        content: ', ';
-    }
-    &:first-child:before {
-        content: none;
-    }
-}
-
 /* Document view */
 .o_sign_document {
     display: flex;

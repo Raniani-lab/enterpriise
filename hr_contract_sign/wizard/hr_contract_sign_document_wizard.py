@@ -67,7 +67,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
 
     subject = fields.Char(string="Subject", required=True, default='Signature Request')
     message = fields.Html("Message")
-    follower_ids = fields.Many2many('res.partner', string="Copy to")
+    cc_partner_ids = fields.Many2many('res.partner', string="Copy to")
 
     @api.depends('sign_template_responsible_ids')
     def _compute_employee_role_id(self):
@@ -134,11 +134,12 @@ class HrContractSignDocumentWizard(models.TransientModel):
             ))
 
         res_ids = []
+        cc_partner_ids = self.cc_partner_ids.ids + self.responsible_id.partner_id.ids
         for sign_request_values in sign_values:
             res = sign_request.initialize_new(
                 template_id=sign_request_values[0].id,
                 signers=sign_request_values[1],
-                followers=self.follower_ids.ids + [self.responsible_id.partner_id.id],
+                cc_partner_ids=cc_partner_ids,
                 reference=_('Signature Request - %s', sign_request_values[0].name),
                 subject=self.subject,
                 message=self.message

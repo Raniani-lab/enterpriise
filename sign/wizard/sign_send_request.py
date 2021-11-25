@@ -46,13 +46,13 @@ class SignSendRequest(models.TransientModel):
     signer_ids = fields.One2many('sign.send.request.signer', 'sign_send_request_id', string="Signers")
     signer_id = fields.Many2one('res.partner', string="Send To")
     signers_count = fields.Integer()
-    follower_ids = fields.Many2many('res.partner', string="Copy to")
+    cc_partner_ids = fields.Many2many('res.partner', string="Copy to", help="Contacts in copy will be notified by email once the document is either fully signed or refused.")
     is_user_signer = fields.Boolean(compute='_compute_is_user_signer')
     refusal_allowed = fields.Boolean(default=False, string="Can be refused", help="Allow the contacts to refuse the document for a specific reason.")
 
     subject = fields.Char(string="Subject", required=True)
     message = fields.Html("Message", help="Message to be sent to signers of the specified document")
-    message_cc = fields.Html("CC Message", help="Message to be sent to followers of the signed document")
+    message_cc = fields.Html("CC Message", help="Message to be sent to contacts in copy of the signed document")
     attachment_ids = fields.Many2many('ir.attachment', string='Attachments')
     filename = fields.Char("Filename", required=True)
 
@@ -94,7 +94,7 @@ class SignSendRequest(models.TransientModel):
             signers = [{'partner_id': signer.partner_id.id, 'role': signer.role_id.id} for signer in self.signer_ids]
         else:
             signers = [{'partner_id': self.signer_id.id, 'role': self.env.ref('sign.sign_item_role_default').id}]
-        followers = self.follower_ids.ids
+        cc_partner_ids = self.cc_partner_ids.ids
         reference = self.filename
         subject = self.subject
         message = self.message
@@ -104,7 +104,7 @@ class SignSendRequest(models.TransientModel):
         return self.env['sign.request'].initialize_new(
             template_id=template_id,
             signers=signers,
-            followers=followers,
+            cc_partner_ids=cc_partner_ids,
             reference=reference,
             subject=subject,
             message=message,

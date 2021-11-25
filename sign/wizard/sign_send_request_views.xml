@@ -18,14 +18,14 @@
                     <field name="signers_count" invisible="1"/>
                     <field name="has_default_template" invisible="1"/>
                     <field name="is_user_signer" invisible="1"/>
-                    <field name="follower_ids" widget="many2many_tags" invisible="not context.get('sign_directly_without_mail',False)" string="CC Signed Document to" placeholder="Write email or search contact..." context="{'show_email': True}"/>
+                    <field name="cc_partner_ids" widget="many2many_tags" invisible="not context.get('sign_directly_without_mail',False)" string="Contacts in copy" placeholder="Write email or search contact..." context="{'show_email': True}"/>
                     <field name="subject" placeholder="Signature Request"/>
                     <field name="filename" placeholder="Name for the file"  colspan="2"/>
                     <field name="refusal_allowed"/>
                 </group>
 
                 <div invisible="not context.get('sign_directly_without_mail',False)">
-                    <div attrs="{'invisible' :[('follower_ids', '=', [])]}">
+                    <div attrs="{'invisible' :[('cc_partner_ids', '=', [])]}">
                         <field name="message_cc" placeholder="Optional Message..."/>
                         <group>
                                 <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" class="o_sign_attachments"/>
@@ -39,9 +39,9 @@
                             <field name="message" class="oe-bordered-editor" placeholder="Optional Message..."/>
                         </div>
                     </page>
-                    <page name="cc_signed_document" string="CC Signed Document">
+                    <page name="cc_signed_document" string="Contacts in copy">
                         <group>
-                            <field name="follower_ids" string="CC Signed Document to" widget="many2many_tags" placeholder="Write email or search contact..." context="{'show_email': True}"/>
+                            <field name="cc_partner_ids" string="Contacts" widget="many2many_tags" placeholder="Write email or search contact..." context="{'show_email': True}"/>
                         </group>
                         <field name="message_cc" placeholder="Optional Message..."/>
                     </page>

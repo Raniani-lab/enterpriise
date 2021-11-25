@@ -93,6 +93,7 @@ class SignRequest(models.Model):
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
     template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
+    cc_partner_ids = fields.Many2many('res.partner', string='Copy to')
     message = fields.Html('sign.message')
     message_cc = fields.Html('sign.message_cc')
     attachment_ids = fields.Many2many('ir.attachment', string='Attachments', readonly=True, ondelete="restrict")
@@ -156,11 +157,8 @@ class SignRequest(models.Model):
                 rec.action_signed()
 
     def _get_final_recipients(self):
-        self.ensure_one()
-        all_recipients = set(self.request_item_ids.mapped('signer_email'))
-        all_recipients |= set(self.mapped('message_follower_ids.partner_id.email'))
-        # Remove False from all_recipients to avoid crashing later
-        all_recipients.discard(False)
+        all_recipients = set(self.request_item_ids.mapped('signer_email')) | \
+                         set(self.cc_partner_ids.filtered(lambda p: p.email_formatted).mapped('email'))
         return all_recipients
 
     def go_to_document(self):
@@ -260,15 +258,14 @@ class SignRequest(models.Model):
         for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
-        # send emails to signers and followers
+        # send emails to signers and cc_partners
         if not self.create_uid.email_formatted:
             raise UserError(_("Please configure sender's email address"))
         if any(not signer.email_formatted for signer in self.request_item_ids.partner_id):
             raise UserError(_("Please complete the signer's email address"))
-        followers_valid = self.message_follower_ids.partner_id.filtered(lambda p: p.email_formatted)
         for sign_request_item in self.request_item_ids:
             self._send_refused_mail(refuser, refusal_reason, sign_request_item.partner_id, access_token=sign_request_item.access_token, force_send=True)
-        for partner in followers_valid - self.request_item_ids.partner_id:
+        for partner in self.cc_partner_ids.filtered(lambda p: p.email_formatted) - self.request_item_ids.partner_id:
             self._send_refused_mail(refuser, refusal_reason, partner)
 
     def _send_refused_mail(self, refuser, refusal_reason, partner, access_token=None, force_send=False):
@@ -440,20 +437,18 @@ class SignRequest(models.Model):
             )
 
         tpl = self.env.ref('sign.sign_template_mail_completed')
-        followers = self.mapped('message_follower_ids.partner_id') - self.request_item_ids.mapped('partner_id')
-        for follower in followers:
-            if not follower.email:
-                continue
+        cc_partners_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
+        for cc_partner in cc_partners_valid:
             if not self.create_uid.email:
                 raise UserError(_("Please configure the sender's email address"))
 
-            tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
-            body = tpl._render({
+            tpl_cc_partner = tpl.with_context(lang=get_lang(self.env, lang_code=cc_partner.lang).code)
+            body = tpl_cc_partner._render({
                 'record': self,
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
                 'subject': '%s signed' % self.reference,
                 'body': self.message_cc if not is_html_empty(self.message_cc) else False,
-                'recipient_name': follower.name,
+                'recipient_name': cc_partner.name,
                 'signers': signers,
                 'request_edited': request_edited,
             }, engine='ir.qweb', minimal_qcontext=True)
@@ -463,14 +458,14 @@ class SignRequest(models.Model):
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
-                 'email_to': follower.email_formatted,
+                 'email_to': cc_partner.email_formatted,
                  'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
                  'attachment_ids': self.attachment_ids.ids},
-                lang=follower.lang,
+                lang=cc_partner.lang,
             )
 
-        if followers:
-            body = _("The CC mail is sent to: ") + ', '.join(followers.mapped('name'))
+        if cc_partners_valid:
+            body = _("The CC mail is sent to: ") + ', '.join(cc_partners_valid.mapped('name'))
             if not is_html_empty(self.message_cc):
                 body += self.message_cc
             self.message_post(body=body, attachment_ids=self.attachment_ids.ids)
@@ -627,11 +622,13 @@ class SignRequest(models.Model):
         return mail
 
     @api.model
-    def initialize_new(self, template_id, signers, followers, reference, subject, message, message_cc=None, attachment_ids=None, without_mail=False, refusal_allowed=False):
+    def initialize_new(self, template_id, signers, cc_partner_ids, reference, subject, message, message_cc=None, attachment_ids=None, without_mail=False, refusal_allowed=False):
         sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_employee'))
+        cc_partner_ids = self.env.user.partner_id.ids + cc_partner_ids
         sign_request = self.create({'template_id': template_id,
                                     'reference': reference,
                                     'subject': subject,
+                                    'cc_partner_ids': [Command.set(cc_partner_ids)],
                                     'message': message,
                                     'message_cc': message_cc,
                                     'refusal_allowed': refusal_allowed})
@@ -639,8 +636,8 @@ class SignRequest(models.Model):
             attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
             sign_request.write({'attachment_ids': [Command.set(attachment_ids.ids)]})
         sign_request.set_signers(signers)
-        # All CCers and signers are followers of the sign request.
-        sign_request.message_subscribe(partner_ids=followers + sign_request.request_item_ids.partner_id.ids)
+        # All cc_partners and signers are followers of the sign request.
+        sign_request.message_subscribe(partner_ids=cc_partner_ids + sign_request.request_item_ids.partner_id.ids)
         sign_request.activity_update(sign_users)
         self.env['sign.log']._create_log(sign_request, "create", is_request=True)
         if not without_mail:
@@ -681,7 +678,7 @@ class SignRequestItem(models.Model):
     def _get_mail_link(self, email, subject):
         return "mailto:%s?subject=%s" % (url_quote(email), url_quote(subject))
 
-    partner_id = fields.Many2one('res.partner', string="Contact", ondelete='restrict')
+    partner_id = fields.Many2one('res.partner', string="Signer", ondelete='restrict')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
     reference = fields.Char(related='sign_request_id.reference', string="Document Name")
@@ -702,7 +699,7 @@ class SignRequestItem(models.Model):
     ], readonly=True, default="sent")
     color = fields.Integer(compute='_compute_color')
 
-    signer_email = fields.Char(compute="_compute_email", store=True)
+    signer_email = fields.Char(string='Email', compute="_compute_email", store=True)
     is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
     change_authorized = fields.Boolean(related='role_id.change_authorized')
 

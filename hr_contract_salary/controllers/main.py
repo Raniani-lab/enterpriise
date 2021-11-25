@@ -105,7 +105,7 @@ class SignContract(Sign):
                         'role': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
                         'partner_id': contract.hr_responsible_id.partner_id.id
                     }],
-                    followers=[contract.hr_responsible_id.partner_id.id],
+                    cc_partner_ids=[contract.hr_responsible_id.partner_id.id] + advantage.sign_copy_partner_id.ids,
                     reference=_('Signature Request - %s', advantage.name or contract.name),
                     subject=_('Signature Request - %s', advantage.name or contract.name),
                     message='',
@@ -114,9 +114,6 @@ class SignContract(Sign):
                 sign_request = request.env['sign.request'].browse(res['id']).sudo()
                 sign_request.toggle_favorited()
                 sign_request.send_signature_accesses()
-                # Add the external person after action_sent to avoid sending him the
-                # accesses before the signature is done.
-                sign_request.message_subscribe(partner_ids=advantage.sign_copy_partner_id.ids)
 
                 contract.sign_request_ids += sign_request
 
@@ -800,7 +797,7 @@ class HrContractSalary(http.Controller):
                 {'role': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id},
                 {'role': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id, 'partner_id': new_contract.hr_responsible_id.partner_id.id}
             ],
-            followers=[new_contract.hr_responsible_id.partner_id.id],
+            cc_partner_ids=[new_contract.hr_responsible_id.partner_id.id],
             reference=_('Signature Request - %s', new_contract.name),
             subject=_('Signature Request - %s', new_contract.name),
             message='',

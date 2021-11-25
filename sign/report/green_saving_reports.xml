@@ -22,7 +22,7 @@
                     <div class="modal-body">
                         <section class="p-3">
                             <p>The computation is based on the website <a href="https://c.environmentalpaper.org/" target="_blank">https://c.environmentalpaper.org/</a></p>
-                            <p>The total of sheets you saved is based on: the number of sent sign requests x number of sheets in the document x (number of contacts who need to sign + number of followers if the sign request is signed) = total of pages. We assume that one page weights 0.005 kilograms.</p>
+                            <p>The total of sheets you saved is based on: the number of sent sign requests x number of sheets in the document x (number of contacts who need to sign + number of contacts in copy if the sign request is signed) = total of pages. We assume that one page weights 0.005 kilograms.</p>
                         </section>
                         <section class="px-3">
                             <h3>I've got a total weight, and now?</h3>

@@ -1894,7 +1894,7 @@ const SignableDocument = Document.extend({
       (new (this.get_thankyoudialog_class())(this, this.RedirectURL, this.RedirectURLText, this.requestID, {
         'nextSign': 0,
         'subtitle': _t("The document has been refused"),
-        'message': _t("We'll send an email to warn other followers & signers with the reason you provided."),
+        'message': _t("We'll send an email to warn other contacts in copy & signers with the reason you provided."),
       })).open();
     });
   },

@@ -50,6 +50,5 @@ class GreenSavingsReport(models.AbstractModel):
         if sign_request.state == 'sent':
             # if sign request is sent, followers didn't receive the request yet. So we only account for signers
             return sign_request.template_id.num_pages * len(signers)
-        # else we count followers and signers
-        followers = sign_request.message_follower_ids.partner_id - signers
-        return sign_request.template_id.num_pages * (len(followers) + len(signers))
+        # else we count cc_partners and signers
+        return sign_request.template_id.num_pages * (len(sign_request.cc_partner_ids) + len(signers))

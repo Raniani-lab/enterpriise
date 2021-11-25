@@ -163,7 +163,7 @@ class Sign(http.Controller):
         request_id = request.env['sign.request'].with_user(template.create_uid).initialize_new(
             template_id=template.id,
             signers=[{'partner_id': False, 'role': template.sign_item_ids.responsible_id.id}],
-            followers=[],
+            cc_partner_ids=[],
             reference="%(template_name)s-public" % {'template_name': template.attachment_id.name},
             subject="",
             message="",

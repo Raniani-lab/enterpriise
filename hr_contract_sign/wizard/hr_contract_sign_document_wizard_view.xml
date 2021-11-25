@@ -28,7 +28,7 @@
                     </group>
                 </group>
                 <group class="o_label_nowrap">
-                    <field name="follower_ids" widget="many2many_tags" placeholder="Write email or search contact..."/>
+                    <field name="cc_partner_ids" widget="many2many_tags" placeholder="Write email or search contact..."/>
                     <field name="subject" placeholder="Signature Request"/>
                     <field name="message" placeholder="Optional Message..."/>
                 </group>

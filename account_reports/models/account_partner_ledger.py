@@ -53,7 +53,7 @@ class ReportPartnerLedger(models.AbstractModel):
         # Handle filter_unreconciled + filter_account_type
         domain = super(ReportPartnerLedger, self)._get_options_domain(options)
         if options.get('unreconciled'):
-            domain.append(('full_reconcile_id', '=', False))
+            domain += ['&', ('full_reconcile_id', '=', False), ('balance', '!=', '0')]
         exch_code = self.env['res.company'].browse(self.env.context.get('company_ids')).mapped('currency_exchange_journal_id')
         if exch_code:
             domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id.id', 'in', exch_code.ids)]

@@ -118,6 +118,7 @@ var PaymentIOT = PaymentInterface.extend({
      * @param {Object} data.owner
      * @param {Object} data.session_id
      * @param {Object} data.value
+     * @param {Object} data.Card
      */
     _onValueChange: function (resolve, order, data) {
         var line = order.get_paymentline(data.cid);
@@ -126,6 +127,9 @@ var PaymentIOT = PaymentInterface.extend({
             this._waitingResponse(resolve, data, line);
             if (data.Ticket) {
                 line.set_receipt_info(data.Ticket.replace(/\n/g, "<br />"));
+            }
+            if (data.Card) {
+                line.card_type = data.Card;
             }
         }
     },

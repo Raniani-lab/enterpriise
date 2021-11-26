@@ -109,7 +109,7 @@ class PosSession(models.Model):
         cash_register_resp = self.company_id._l10n_de_fiskaly_dsfinvk_rpc('GET', '/cash_registers/%s' % self.config_id.l10n_de_fiskaly_client_id)
         if cash_register_resp.status_code == 404:  # register the cash register
             self._l10n_de_create_fiskaly_cash_register()
-        cash_point_closing_resp = self.company_id._l10n_de_fiskaly_dsfinvk_rpc('PUT', '/cash_point_closings/%s' % cash_point_closing_uuid, json, timeout=60)
+        cash_point_closing_resp = self.company_id._l10n_de_fiskaly_dsfinvk_rpc('PUT', '/cash_point_closings/%s' % cash_point_closing_uuid, json)
         cash_point_closing_resp.raise_for_status()
         self.write({'l10n_de_fiskaly_cash_point_closing_uuid': cash_point_closing_uuid})
 

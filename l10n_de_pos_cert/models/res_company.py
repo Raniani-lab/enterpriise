@@ -56,7 +56,7 @@ class ResCompany(models.Model):
             auth_response = requests.post(url + '/auth', json={
                 'api_secret': self.sudo().l10n_de_fiskaly_api_secret,
                 'api_key': self.sudo().l10n_de_fiskaly_api_key
-            }, timeout=5)
+            }, timeout=300)
             if auth_response.status_code == 401:
                 raise ValidationError(_("The combination of your Fiskaly API key and secret is incorrect. " \
                                         "Please update them in your company settings"))
@@ -66,7 +66,7 @@ class ResCompany(models.Model):
 
     def _l10n_de_fiskaly_kassensichv_rpc(self, method, path, json=None, version=2, recursive=False):
         try:
-            timeout = 5
+            timeout = 300
             url, headers = self._l10n_de_fiskaly_kassensichv_auth(version)
             if method == 'GET':
                 res = requests.get(url + path, headers=headers, timeout=timeout)
@@ -97,7 +97,7 @@ class ResCompany(models.Model):
             auth_response = requests.post(url + '/auth', json={
                 'api_secret': self.sudo().l10n_de_fiskaly_api_secret,
                 'api_key': self.sudo().l10n_de_fiskaly_api_key
-            }, timeout=5)
+            }, timeout=300)
             if auth_response.status_code == 401:
                 raise ValidationError(_("The combination of your Fiskaly API key and secret is incorrect. " \
                                         "Please update them in your company settings"))
@@ -105,8 +105,9 @@ class ResCompany(models.Model):
         headers = {'Authorization': 'Bearer ' + self.sudo().l10n_de_fiskaly_dsfinvk_token}
         return url, headers
 
-    def _l10n_de_fiskaly_dsfinvk_rpc(self, method, path, json=None, timeout=5, version=0, recursive=False):
+    def _l10n_de_fiskaly_dsfinvk_rpc(self, method, path, json=None, version=0, recursive=False):
         try:
+            timeout = 300
             url, headers = self._l10n_de_fiskaly_dsfinvk_auth(version)
             if method == 'GET':
                 res = requests.get(url + path, headers=headers, timeout=timeout)
@@ -116,7 +117,7 @@ class ResCompany(models.Model):
                 raise UserError(_('Invalid method'))
             if res.status_code == 401 and not recursive:
                 self.sudo().l10n_de_fiskaly_dsfinvk_token = None
-                res = self._l10n_de_fiskaly_dsfinvk_rpc(method, path, json, timeout, version, True)
+                res = self._l10n_de_fiskaly_dsfinvk_rpc(method, path, json, version, True)
             return res
         except ConnectionError:
             raise UserError(_("Connection lost between Odoo and Fiskaly."))

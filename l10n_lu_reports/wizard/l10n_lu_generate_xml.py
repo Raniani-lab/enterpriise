@@ -8,7 +8,6 @@ from datetime import datetime
 from odoo import models, fields, tools, _
 from odoo.exceptions import RedirectWarning
 
-
 class L10nLuGenerateXML(models.TransientModel):
     """
     This wizard is used to generate xml reports for Luxembourg
@@ -29,9 +28,10 @@ class L10nLuGenerateXML(models.TransientModel):
                 tools.xml_utils._check_with_xsd(content, xsd)
         return True
 
-    def get_xml(self):
+    def get_xml(self, lu_annual_report=False):
         """
         Generates the XML report.
+        lu_annual_report contains the report id of the manual annual report.
         """
         company = self.env.company
         agent = company.account_representative_id
@@ -76,9 +76,6 @@ class L10nLuGenerateXML(models.TransientModel):
             'agent_rcs_number': agent.l10n_lu_agent_rcs_number or company.company_registry or "NE",
             'declarations': []
         }
-        vat = self._get_export_vat()
-        if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
-            vat = vat[2:]
         # The Matr. Number is required
         if not company.matr_number:
             raise RedirectWarning(
@@ -104,22 +101,26 @@ class L10nLuGenerateXML(models.TransientModel):
             'matr_number': company.matr_number or "NE",
             'rcs_number': company.company_registry or "NE",
         }
-
-        declarations_data = self._lu_get_declarations(declaration_template_values)
-        self._save_xml_report(declarations_data, lu_template_values, filename)
-
+        if lu_annual_report:
+            declarations_data = lu_annual_report._lu_get_declarations(declaration_template_values)
+            self._save_xml_report(declarations_data, lu_template_values, filename, lu_annual_report)
+            url = "web/content/?model=" + lu_annual_report._name + "&id=" + str(lu_annual_report.id) + "&filename_field=filename&field=report_data&download=true&filename=" + lu_annual_report.filename
+        else:
+            declarations_data = self._lu_get_declarations(declaration_template_values)
+            self._save_xml_report(declarations_data, lu_template_values, filename)
+            url = "web/content/?model=" + self._name + "&id=" + str(self.id) + "&filename_field=filename&field=report_data&download=true&filename=" + self.filename
         return {
             'name': 'XML Report',
             'type': 'ir.actions.act_url',
-            'url': "web/content/?model=" + self._name + "&id=" + str(self.id) + "&filename_field=filename&field=report_data&download=true&filename=" + self.filename,
-            'target': 'self',
+            'url': url,
+            'target': 'new',
         }
 
     def _get_export_vat(self):
         # To be overridden for reports that need to allow foreign VAT fiscal positions
         return self.env.company.vat
 
-    def _save_xml_report(self, declarations_data, lu_template_values, filename):
+    def _save_xml_report(self, declarations_data, lu_template_values, filename, lu_annual_report=False):
         lu_template_values['declarations'] = declarations_data['declarations']
 
         # Add function to format floats
@@ -129,11 +130,14 @@ class L10nLuGenerateXML(models.TransientModel):
         content = "\n".join(re.split(r'\n\s*\n', rendered_content))
         self._lu_validate_xml_content(content)
         self.env['account.report']._lu_validate_ecdf_prefix()
-
-        self.write({
+        vals = {
             'report_data': base64.b64encode(bytes(content, 'utf-8')),
-            'filename': filename + '.xml',
-        })
+            'filename': filename + '.xml'
+        }
+        if lu_annual_report:
+            lu_annual_report.write(vals)
+        else:
+            self.write(vals)
 
     def _lu_get_declarations(self, declaration_template_values):
         values = self.env[self.env.context['model']]._get_lu_xml_2_0_report_values(self.env.context['account_report_generation_options'])

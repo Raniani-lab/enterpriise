@@ -4435,7 +4435,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_social_balance_sheet.py:0
 #, python-format
-msgid "Please configure the employees gender using the values male or female."
+msgid "Please configure a gender (either male or female) for the following employees:\n\n%s"
 msgstr ""
 
 #. module: l10n_be_hr_payroll

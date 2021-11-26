@@ -41,8 +41,9 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         report_data = {}
 
         contracts = self.env['hr.employee']._get_all_contracts(self.date_from, self.date_to, states=['open', 'close'])
-        if any(c.employee_id.gender not in ['male', 'female'] for c in contracts):
-            raise UserError(_('Please configure the employees gender using the values male or female.'))
+        invalid_employees = contracts.employee_id.filtered(lambda e: e.gender not in ['male', 'female'])
+        if invalid_employees:
+            raise UserError(_('Please configure a gender (either male or female) for the following employees:\n\n%s', '\n'.join(invalid_employees.mapped('name'))))
 
         date_from = self.date_from + relativedelta(day=1)
         date_to = self.date_to + relativedelta(day=31)

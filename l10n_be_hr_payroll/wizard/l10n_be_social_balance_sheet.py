@@ -176,6 +176,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
 
         cdi = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi')
         cdd = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdd')
+        cip = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cip', raise_if_not_found=False)
         replacement = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdd')
         defined_work = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_clearly_defined_work')
         mapped_types = {
@@ -183,6 +184,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             cdd: '111',
             defined_work: '112',
             replacement: '113',
+            cip: '-1',
         }
 
         mapped_certificates = {
@@ -230,9 +232,14 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             workers_data[gender_certificate_code][contract_time] += 1
             workers_data[gender_certificate_code]['fte'] += 1 * calendar.work_time_rate / 100.0
 
-            if contract.structure_type_id not in mapped_categories:
+            structure_type = contract.structure_type_id
+            if cip and contract.contract_type_id == cip:
+                # CIP Contracts are considered as trainees
+                structure_type = cp200_students
+
+            if structure_type not in mapped_categories:
                 raise UserError(_("The contract %s for %s is not of one the following types: CP200 Employees or Student", contract.name, contract.employee_id.name))
-            category_code = mapped_categories[contract.structure_type_id]
+            category_code = mapped_categories[structure_type]
             workers_data[category_code][contract_time] += 1
             workers_data[category_code]['fte'] += 1 * calendar.work_time_rate / 100.0
 

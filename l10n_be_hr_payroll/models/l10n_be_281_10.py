@@ -23,7 +23,7 @@ class L10nBe28110(models.Model):
     _order = 'reference_year'
 
     def _get_years(self):
-        return [(str(i), i) for i in range(fields.Date.today().year - 1, 2009, -1)]
+        return [(str(i), i) for i in range(fields.Date.today().year, 2009, -1)]
 
     @api.model
     def default_get(self, field_list):

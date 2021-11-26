@@ -364,14 +364,13 @@ class SignRequest(models.Model):
 
     def send_completed_document(self):
         self.ensure_one()
-        if len(self.request_item_ids) <= 0 or self.state != 'signed':
-            return False
+        if self.state != 'signed':
+            raise UserError(_('The sign request has not been fully signed'))
         self._check_senders_validity()
 
         if not self.completed_document:
             self.generate_completed_document()
 
-        base_url = self.get_base_url()
         attachment = self.env['ir.attachment'].create({
             'name': "%s.pdf" % self.reference if self.reference.split('.')[-1] != 'pdf' else self.reference,
             'datas': self.completed_document,
@@ -398,68 +397,51 @@ class SignRequest(models.Model):
             'res_id': self.id,
         })
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
-        tpl = self.env.ref('sign.sign_template_mail_completed')
         self.attachment_ids = [Command.link(attachment.id), Command.link(attachment_log.id)]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
-        for signer in self.request_item_ids:
-            signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
-            tpl = tpl.with_context(lang=signer_lang)
-            body = tpl._render({
-                'record': self,
-                'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, signer.access_token)),
-                'subject': '%s signed' % self.reference,
-                'body': False,
-                'recipient_name': signer.partner_id.name,
-                'recipient_id': signer.partner_id.id,
-                'signers': signers,
-                'request_edited': request_edited,
-            }, engine='ir.qweb', minimal_qcontext=True)
+        for sign_request_item in self.request_item_ids:
+            self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.access_token, with_message_cc=sign_request_item.partner_id in self.cc_partner_ids, force_send=True)
 
-            self.env['sign.request']._message_send_mail(
-                body, 'mail.mail_notification_light',
-                {'record_name': self.reference},
-                {'model_description': 'signature', 'company': self.create_uid.company_id},
-                {'email_from': self.create_uid.email_formatted,
-                 'author_id': self.create_uid.partner_id.id,
-                 'email_to': signer.partner_id.email_formatted,
-                 'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
-                 'attachment_ids': self.attachment_ids.ids},
-                force_send=True,
-                lang=signer_lang,
-            )
-
-        tpl = self.env.ref('sign.sign_template_mail_completed')
-        cc_partner_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
-        for cc_partner in cc_partners_valid:
-            tpl_cc_partner = tpl.with_context(lang=get_lang(self.env, lang_code=cc_partner.lang).code)
-            body = tpl_cc_partner._render({
-                'record': self,
-                'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
-                'subject': '%s signed' % self.reference,
-                'body': self.message_cc if not is_html_empty(self.message_cc) else False,
-                'recipient_name': cc_partner.name,
-                'signers': signers,
-                'request_edited': request_edited,
-            }, engine='ir.qweb', minimal_qcontext=True)
-            self.env['sign.request']._message_send_mail(
-                body, 'mail.mail_notification_light',
-                {'record_name': self.reference},
-                {'model_description': 'signature', 'company': self.create_uid.company_id},
-                {'email_from': self.create_uid.email_formatted,
-                 'author_id': self.create_uid.partner_id.id,
-                 'email_to': cc_partner.email_formatted,
-                 'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
-                 'attachment_ids': self.attachment_ids.ids},
-                lang=cc_partner.lang,
-            )
-
+        cc_partners_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
+        for cc_partner in cc_partners_valid - self.request_item_ids.partner_id:
+            self._send_completed_document_mail(signers, request_edited, cc_partner)
         if cc_partners_valid:
             body = _("The CC mail is sent to: ") + ', '.join(cc_partners_valid.mapped('name'))
             if not is_html_empty(self.message_cc):
                 body += self.message_cc
             self.message_post(body=body, attachment_ids=self.attachment_ids.ids)
 
-        return True
+    def _send_completed_document_mail(self, signers, request_edited, partner, access_token=None, with_message_cc=True, force_send=False):
+        self.ensure_one()
+        if access_token is None:
+            access_token = self.access_token
+        tpl = self.env.ref('sign.sign_template_mail_completed')
+        partner_lang = get_lang(self.env, lang_code=partner.lang).code
+        tpl = tpl.with_context(lang=partner_lang)
+        base_url = self.get_base_url()
+        body = tpl._render({
+            'record': self,
+            'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, access_token)),
+            'subject': '%s signed' % self.reference,
+            'body': self.message_cc if with_message_cc and not is_html_empty(self.message_cc) else False,
+            'recipient_name': partner.name,
+            'recipient_id': partner.id,
+            'signers': signers,
+            'request_edited': request_edited,
+        }, engine='ir.qweb', minimal_qcontext=True)
+
+        self.env['sign.request']._message_send_mail(
+            body, 'mail.mail_notification_light',
+            {'record_name': self.reference},
+            {'model_description': 'signature', 'company': self.create_uid.company_id},
+            {'email_from': self.create_uid.email_formatted,
+             'author_id': self.create_uid.partner_id.id,
+             'email_to': partner.email_formatted,
+             'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
+             'attachment_ids': self.attachment_ids.ids},
+            force_send=force_send,
+            lang=partner_lang,
+        )
 
     def _get_font(self):
         custom_font = self.env["ir.config_parameter"].sudo().get_param("sign.use_custom_font")

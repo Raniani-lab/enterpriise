@@ -196,6 +196,11 @@ class AccountBankStatementImport(models.TransientModel):
             # No journal passed to the wizard : try to find one using the account number of the statement
             elif not journal:
                 journal = journal_obj.search([('bank_account_id.sanitized_acc_number', '=', sanitized_account_number)])
+                if not journal:
+                    # Sometimes the bank returns only part of the full account number (e.g. local account number instead of full IBAN)
+                    partial_match = journal_obj.search([('bank_account_id.sanitized_acc_number', 'ilike', sanitized_account_number)])
+                    if len(partial_match) == 1:
+                        journal = partial_match
             # Already a bank account on the journal : check it's the same as on the statement
             else:
                 if not self._check_journal_bank_account(journal, sanitized_account_number):

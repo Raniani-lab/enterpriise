@@ -109,8 +109,6 @@
                     <field name="sum_worked_hours" invisible="1"/>
                     <field name="normal_wage" invisible="1"/>
                     <field name="credit_note" invisible="1"/>
-                    <field name="has_negative_net_to_report" invisible="1"/>
-                    <field name="negative_net_to_report_display" invisible="1"/>
                     <field name="is_superuser" invisible="1"/>
                     <field name="has_refund_slip" invisible="1"/>
                 </group>
@@ -212,6 +210,8 @@
                                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                             </group>
                             <group name="accounting">
+                                <field name="has_negative_net_to_report"/>
+                                <field name="negative_net_to_report_display" invisible="1"/>
                                 <field name="paid"/>
                             </group>
                         </group>

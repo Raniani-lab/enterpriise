@@ -286,7 +286,7 @@ class WorksheetTemplate(models.Model):
         }
 
     def action_view_worksheets(self):
-        action = self.action_id.read()[0]
+        action = self.action_id.sudo().read()[0]
         # modify context to force no create/import button
         context = literal_eval(action.get('context', '{}'))
         context['create'] = 0

@@ -122,6 +122,10 @@ class SignTemplate(models.Model):
             },
         }
 
+    def check_send_ready(self):
+        if any(item.type_id.item_type == 'selection' and not item.option_ids for item in self.sign_item_ids):
+            raise UserError(_("One or more selection items have no associated options"))
+
     def toggle_favorited(self):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})

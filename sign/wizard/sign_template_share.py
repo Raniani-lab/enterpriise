@@ -16,9 +16,7 @@ class SignTemplateShare(models.TransientModel):
         res = super(SignTemplateShare, self).default_get(fields)
         if 'url' in fields:
             template = self.env['sign.template'].browse(res.get('template_id'))
-            invalid_selections = template.sign_item_ids.filtered(lambda item: item.type_id.item_type == 'selection' and not item.option_ids)
-            if invalid_selections:
-                raise UserError(_("One or more selection items have no associated options"))
+            template.check_send_ready()
             if template.responsible_count > 1:
                 res['url'] = False
             else:

@@ -818,7 +818,7 @@ class AnalyticLine(models.Model):
 
             2. Manager (Administrator): with this access right, the user can validate all timesheets.
         """
-        domain = [('validated', '=', validated)]
+        domain = [('is_timesheet', '=', True), ('validated', '=', validated)]
 
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
             return expression.AND([domain, ['|', ('employee_id.timesheet_manager_id', '=', self.env.user.id),

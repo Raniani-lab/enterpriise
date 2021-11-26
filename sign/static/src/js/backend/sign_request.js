@@ -16,7 +16,7 @@ const EditableDocumentBackend = DocumentBackend.extend({
       const $envelope = $(e.target);
       await this._rpc({
         model: "sign.request.item",
-        method: "resend_access",
+        method: "send_signature_accesses",
         args: [parseInt($envelope.parent(".o_sign_signer_status").data("id"))],
         context: session.user_context,
       });

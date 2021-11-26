@@ -13,7 +13,7 @@ class TestSignRequest(TestSignCommon):
         self.assertEqual(request_item.signer_email, "laurie.poiret.a@example.com", 'email address should be laurie.poiret.a@example.com')
         self.assertEqual(request_item.is_mail_sent, True, 'email should be sent')
         # resends the document
-        request_item.resend_sign_access()
+        request_item.send_signature_accesses()
         self.assertEqual(request_item.access_token, token_a, "sign request item's access token should not be changed")
         # change the email address of the signer (laurie.poiret.b@example.com)
         self.partner_id.write({'email': 'laurie.poiret.b@example.com'})

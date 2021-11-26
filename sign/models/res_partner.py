@@ -39,12 +39,11 @@ class ResPartner(models.Model):
                 ('partner_id', 'in', partners_email_changed.ids),
                 ('state', '=', 'sent'),
                 ('is_mail_sent', '=', True)])
-            request_items.sign_request_id.check_senders_validity()
             for request_item in request_items:
                 request_item.sign_request_id.message_post(
                     body=_('The mail address of %(partner)s has been updated. The request will be automatically resent.',
                            partner=request_item.partner_id.name))
                 self.env['sign.log']._create_log(request_item, 'update_mail', is_request=False)
-                request_item.access_token = self.env['sign.request']._default_access_token()
-                request_item.resend_sign_access()
+                request_item.access_token = self.env['sign.request.item']._default_access_token()
+            request_items.send_signature_accesses()
         return res

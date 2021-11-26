@@ -322,7 +322,7 @@ class SignRequest(models.Model):
         for sign_request in self:
             request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
             if request_items:
-                request_items.send_signature_accesses()
+                request_items._send_signature_access_mail()
                 body = _("The signature mail is sent to: ")
                 receiver_names = ["%s(%s)" % (sri.partner_id.name, sri.role_id.name) for sri in request_items]
                 body += ', '.join(receiver_names)
@@ -750,8 +750,7 @@ class SignRequestItem(models.Model):
         self.sign_request_id.message_post(body=message_post)
         self.sign_request_id._refuse(self.partner_id, refusal_reason)
 
-    def send_signature_accesses(self):
-        self.sign_request_id.check_senders_valid()
+    def _send_signature_access_mail(self):
         tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
@@ -883,19 +882,14 @@ class SignRequestItem(models.Model):
             new_signature[str(created_id)] = signature[new_sign_item_id]
         return new_signature
 
-    def resend_sign_access(self):
-        self.ensure_one()
-        self.resend_access(self.id)
-
-    @api.model
-    def resend_access(self, id):
-        sign_request_item = self.browse(id)
-        sign_request_item.write({'is_mail_sent': True})
-        sign_request_item.send_signature_accesses()
-        body = _("The signature mail has been sent to: %s(%s)", sign_request_item.partner_id.name, sign_request_item.role_id.name)
-        if not is_html_empty(sign_request_item.sign_request_id.message):
-            body += sign_request_item.sign_request_id.message
-        sign_request_item.sign_request_id.message_post(body=body, attachment_ids=sign_request_item.sign_request_id.attachment_ids.ids)
+    def send_signature_accesses(self):
+        self.sign_request_id._check_senders_validity()
+        self._send_signature_access_mail()
+        for sign_request_item in self:
+            body = _("The signature mail has been sent to: %s(%s)", sign_request_item.partner_id.name, sign_request_item.role_id.name)
+            if not is_html_empty(sign_request_item.sign_request_id.message):
+                body += sign_request_item.sign_request_id.message
+            sign_request_item.sign_request_id.message_post(body=body, attachment_ids=sign_request_item.sign_request_id.attachment_ids.ids)
 
     def _reset_sms_token(self):
         for record in self:

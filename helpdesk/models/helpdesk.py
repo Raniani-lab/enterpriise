@@ -277,6 +277,7 @@ class HelpdeskTeam(models.Model):
     def create(self, vals_list):
         teams = super(HelpdeskTeam, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
         teams.sudo()._check_sla_group()
+        teams.sudo()._check_rating_group()
         teams.sudo()._check_modules_to_install()
         if teams.filtered(lambda x: x.auto_close_ticket):
             teams._update_cron()
@@ -291,6 +292,8 @@ class HelpdeskTeam(models.Model):
             self._change_privacy_visibility()
         if 'use_sla' in vals:
             self.sudo()._check_sla_group()
+        if 'use_rating' in vals:
+            self.sudo()._check_rating_group()
         self.sudo()._check_modules_to_install()
         if 'auto_close_ticket' in vals:
             self._update_cron()
@@ -325,6 +328,12 @@ class HelpdeskTeam(models.Model):
             ('auto_close_day', '>', 0),
         ])
 
+    def _get_helpdesk_user_group(self):
+        return self.env.ref('helpdesk.group_helpdesk_user')
+
+    def _get_helpdesk_use_rating_group(self):
+        return self.env.ref('helpdesk.group_use_rating')
+
     def _check_sla_group(self):
         sla_teams = self.filtered_domain([('use_sla', '=', True)])
         non_sla_teams = self - sla_teams
@@ -338,11 +347,18 @@ class HelpdeskTeam(models.Model):
             ]).write({'active': True})
         if non_sla_teams:
             self.env['helpdesk.sla'].search([('team_id', 'in', non_sla_teams.ids)]).write({'active': False})
-            if not self.search([('use_sla', '=', True)], limit=1):
-                self.env.ref('helpdesk.group_helpdesk_user').write({
-                    'implied_ids': [(3, self.env.ref('helpdesk.group_use_sla').id)]
-                })
-                self.env.ref('helpdesk.group_use_sla').write({'users': [(5, 0, 0)]})
+    def _check_rating_group(self):
+        rating_teams = self.filtered('use_rating')
+        user_has_use_rating_group = self.user_has_groups('helpdesk.group_use_rating')
+
+        if rating_teams and not user_has_use_rating_group:
+            self._get_helpdesk_user_group()\
+                .write({'implied_ids': [Command.link(self._get_helpdesk_use_rating_group().id)]})
+        elif self - rating_teams and user_has_use_rating_group and not self.env['helpdesk.team'].search([('use_rating', '=', True)], limit=1):
+            use_rating_group = self._get_helpdesk_use_rating_group()
+            self._get_helpdesk_user_group()\
+                .write({'implied_ids': [Command.unlink(use_rating_group.id)]})
+            use_rating_group.write({'users': [Command.clear()]})
 
     @api.model
     def _get_field_modules(self):

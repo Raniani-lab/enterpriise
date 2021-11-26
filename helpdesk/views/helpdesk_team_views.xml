@@ -53,7 +53,7 @@
                         <button name="action_view_open_ticket_view" type="object" icon="fa-life-ring" class="oe_stat_button">
                             <field name="open_ticket_count" string="Tickets" widget="statinfo"/>
                         </button>
-                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_percentage_satisfaction', '=', -1)]}">
+                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_percentage_satisfaction', '=', -1)]}" groups="helpdesk.group_use_rating">
                             <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_percentage_satisfaction', '&lt;', 66)]}" title="Satisfied"/>
                             <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_percentage_satisfaction', '&lt;', 33), ('rating_percentage_satisfaction', '&gt;=', 65)]}" title="Okay"/>
                             <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_percentage_satisfaction', '&gt;', 32)]}" title="Dissatisfied"/>
@@ -485,7 +485,7 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <div class="mb4" t-if="record.use_rating.raw_value">
+                                        <div class="mb4" t-if="record.use_rating.raw_value" groups="helpdesk.group_use_rating">
                                             <a name="action_view_customer_satisfaction" type="object" title="Customer satisfaction percentage for the tickets closed in the past 7 days." class="w-100">
                                                 <span>Customer Satisfaction</span>
                                                 <span class="pull-right">

@@ -35,7 +35,8 @@ class TaxReport(models.AbstractModel):
         return _('Taxable Payments Annual Reports (TPAR)')
 
     def _get_data(self, options, raise_warning=False):
-        self._prepare_lines_for_cash_basis(options)
+        ctx = self._set_context(options)
+        self.with_context(ctx)._prepare_lines_for_cash_basis()
         params = {
             'company_id': self.env.company.id,
             'date_from': options['date']['date_from'],

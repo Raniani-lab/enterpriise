@@ -21,7 +21,7 @@ class AccountReport(models.AbstractModel):
         self.env.cr.execute("SELECT column_name FROM information_schema.columns WHERE table_name='account_move_line'")
         changed_fields = ['date', 'amount_currency', 'amount_residual', 'balance', 'debit', 'credit']
         unchanged_fields = list(set(f[0] for f in self.env.cr.fetchall()) - set(changed_fields))
-        selected_journals = tuple(self.env.context.get('journal_ids'))
+        selected_journals = tuple(self.env.context.get('journal_ids', []))
         sql = """   -- Create a temporary table
             CREATE TEMPORARY TABLE IF NOT EXISTS temp_account_move_line () INHERITS (account_move_line) ON COMMIT DROP;
 

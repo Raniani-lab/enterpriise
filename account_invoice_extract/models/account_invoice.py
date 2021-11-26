@@ -791,7 +791,7 @@ class AccountMove(models.Model):
                 with mute_logger('odoo.tests.common.onchange'):
                     move_form.name = invoice_id_ocr
 
-            if self.user_has_groups('base.group_multi_currency') and (not move_form.currency_id or move_form.currency_id == self._get_default_currency()):
+            if not move_form.currency_id or move_form.currency_id == self._get_default_currency():
                 currency = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)

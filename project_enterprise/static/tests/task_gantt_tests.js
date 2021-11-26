@@ -83,8 +83,8 @@ QUnit.module("Views > GanttView > TaskGantt", {
     },
 });
 
-QUnit.test("not user_ids grouped: empty groups are displayed first", async (assert) => {
-    assert.expect(1);
+QUnit.test("not user_ids grouped: empty groups are displayed first and user avatar is not displayed", async (assert) => {
+    assert.expect(2);
     const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id"] });
     registerCleanup(gantt.destroy);
 
@@ -95,6 +95,7 @@ QUnit.test("not user_ids grouped: empty groups are displayed first", async (asse
         ["Undefined Stuff", "Bruce Willis"],
         "'Undefined Stuff' should be the first group"
     );
+    assert.containsNone(gantt, '.o_standalone_avatar_user','should not have user avatars');
 });
 
 QUnit.test("not user_ids grouped: no empty group if no records", async (assert) => {
@@ -114,7 +115,7 @@ QUnit.test("not user_ids grouped: no empty group if no records", async (assert) 
 });
 
 QUnit.test("user_ids grouped: specific empty group added, even if no records", async (assert) => {
-    assert.expect(1);
+    assert.expect(2);
     const gantt = await createView({ ...ganttViewParams, groupBy: ["user_ids"] });
     registerCleanup(gantt.destroy);
 
@@ -122,9 +123,10 @@ QUnit.test("user_ids grouped: specific empty group added, even if no records", a
         [...gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row_sidebar")].map(
             (el) => el.innerText
         ),
-        ["Unassigned Tasks", "Jane Doe", "John Doe"],
+        ["Unassigned Tasks", " Jane Doe", " John Doe"],
         "'Unassigned Tasks' should be the first group, even if no record exist without user_ids"
     );
+    assert.containsN(gantt, '.o_standalone_avatar_user', 2, 'should have 2 user avatars');
 });
 
 QUnit.test("[user_ids, ...] grouped", async (assert) => {

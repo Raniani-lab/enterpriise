@@ -29,6 +29,13 @@
         <t t-jquery="*[t-esc='widget.progressBar.max_value_formatted']" t-operation="after">
             h
         </t>
+        <t t-jquery="*[t-esc='widget.name']" t-operation="replace">
+            <div t-if="widget.showUserAvatar" t-attf-class="o_gantt_row_user_avatar d-inline-flex #{widget.isGroup ? 'ml-1' : ''}" />
+            <t t-else="" t-esc="widget.name"/>
+        </t>
+        <t t-jquery="*[t-attf-class~='o_gantt_row_title']" t-operation="attributes">
+            <attribute name="t-att-style" value="widget.showUserAvatar &amp;&amp; 'text-overflow: clip'"/>
+        </t>
     </t>
     <t t-name="gantt-milestone-popover">
         <ul class="mb-0 list-unstyled">

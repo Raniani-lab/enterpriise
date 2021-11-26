@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+import json
 
 from odoo import fields
 
@@ -429,40 +430,117 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
                 'total': il.price_total,
             })
 
-    def test_automatic_sending(self):
-        # test that a vendor bill or a customer invoice is automatically sent to the OCR server when the option is enabled
+    def test_automatic_sending_vendor_bill_message_post(self):
+        # test that a vendor bill is automatically sent to the OCR server when a message with attachment is posted and the option is enabled
+        self.env.company.extract_show_ocr_option_selection = 'auto_send'
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
+        test_attachment = self.env['ir.attachment'].create({
+            'name': "an attachment",
+            'datas': base64.b64encode(b'My attachment'),
+        })
+
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            invoice.message_post(attachment_ids=[test_attachment.id])
+
+        self.assertEqual(invoice.extract_state, 'waiting_extraction')
+
+    def test_automatic_sending_vendor_bill_main_attachment(self):
+        # test that a vendor bill is automatically sent to the OCR server when a main attachment is registered and the option is enabled
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
+        test_attachment = self.env['ir.attachment'].create({
+            'name': "an attachment",
+            'datas': base64.b64encode(b'My attachment'),
+            'res_model': 'account.move',
+            'res_id': invoice.id,
+        })
+
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            test_attachment.register_as_main_attachment()
+
+        self.assertEqual(invoice.extract_state, 'waiting_extraction')
+
+    def test_automatic_sending_customer_invoice_upload(self):
+        # test that a customer invoice is automatically sent to the OCR server when uploaded and the option is enabled
+        self.env.company.extract_show_ocr_option_selection = 'auto_send'
+        test_attachment = self.env['ir.attachment'].create({
+            'name': "an attachment",
+            'datas': base64.b64encode(b'My attachment'),
+        })
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            action = self.env['account.journal'].with_context(default_move_type='out_invoice').create_invoice_from_attachment(test_attachment.id)
+
+        self.assertEqual(self.env['account.move'].browse(action['res_id']).extract_state, 'waiting_extraction')
+
+    def test_automatic_sending_customer_invoice_email_alias(self):
+        # test that a customer invoice is automatically sent to the OCR server when sent via email alias and the option is enabled
+        journal = self.env['account.journal'].search([('company_id', '=', self.env.user.company_id.id), ('type', '=', 'sale')], limit=1)
+        journal_alias = self.env['mail.alias'].create({
+            'alias_name': 'test-bill',
+            'alias_model_id': self.env.ref('account.model_account_move').id,
+            'alias_defaults': json.dumps({
+                'move_type': 'out_invoice',
+                'company_id': self.env.user.company_id.id,
+                'journal_id': journal.id,
+            }),
+        })
+        journal.write({'alias_id': journal_alias.id})
+
+        mail = 'MIME-Version: 1.0\n'\
+               'Date: Fri, 26 Nov 2021 16:27:45 +0100\n'\
+               'Message-ID: blablabla\n'\
+               'Subject: Incoming bill\n'\
+               'From:  Someone <someone@some.company.com>\n'\
+               'To: {alias_name}@{alias_domain}\n'\
+               'Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"\n'\
+               '\n'\
+               '--000000000000a47519057e029630\n'\
+               'Content-Type: text/plain; charset=\"UTF-8\"\n'\
+               '\n'\
+               '\n'\
+               '--000000000000a47519057e029630\n'\
+               'Content-type: application/octet-stream\n'\
+               'Content-transfer-encoding: base64\n'\
+               '\n'\
+               '{attachment}\n'\
+               '\n'\
+               '--000000000000a47519057e029630--\n'.format(alias_name=journal.alias_id.alias_name, alias_domain=journal.alias_id.alias_domain, attachment=base64.b64encode(b'My attachment'))
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
+        self.assertEqual(invoice.extract_state, 'waiting_extraction')
+
+    def test_no_automatic_sending_customer_invoice_message_post(self):
+        # test that a customer invoice isn't automatically sent to the OCR server when a message with attachment is posted and the option is enabled
+        invoice = self.env['account.move'].create({'move_type': 'out_invoice', 'extract_state': 'no_extract_requested'})
+        test_attachment = self.env['ir.attachment'].create({
+            'name': "an attachment",
+            'datas': base64.b64encode(b'My attachment'),
+        })
+
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            invoice.message_post(attachment_ids=[test_attachment.id])
+
+        self.assertEqual(invoice.extract_state, 'no_extract_requested')
+
+    def test_no_automatic_sending_customer_invoice_main_attachment(self):
+        # test that a customer invoice isn't automatically sent to the OCR server when a main attachment is registered and the option is enabled
+        invoice = self.env['account.move'].create({'move_type': 'out_invoice', 'extract_state': 'no_extract_requested'})
+        test_attachment = self.env['ir.attachment'].create({
+            'name': "an attachment",
+            'datas': base64.b64encode(b'My attachment'),
+            'res_model': 'account.move',
+            'res_id': invoice.id,
+        })
+
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            test_attachment.register_as_main_attachment()
+
+        self.assertEqual(invoice.extract_state, 'no_extract_requested')
+
+    def test_no_automatic_sending_option_disabled(self):
+        # test that an invoice isn't automatically sent to the OCR server when the option is disabled
+        self.env.company.extract_show_ocr_option_selection = 'manual_send'
         for move_type in ('in_invoice', 'out_invoice'):
             # test with message_post()
-            self.env.company.extract_show_ocr_option_selection = 'auto_send'
-            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
-            test_attachment = self.env['ir.attachment'].create({
-                'name': "an attachment",
-                'datas': base64.b64encode(b'My attachment'),
-            })
-
-            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-                invoice.message_post(attachment_ids=[test_attachment.id])
-
-            self.assertEqual(invoice.extract_state, 'waiting_extraction')
-
-            # test with register_as_main_attachment()
-            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
-            test_attachment = self.env['ir.attachment'].create({
-                'name': "an attachment",
-                'datas': base64.b64encode(b'My attachment'),
-                'res_model': 'account.move',
-                'res_id': invoice.id,
-            })
-
-            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-                test_attachment.register_as_main_attachment()
-
-            self.assertEqual(invoice.extract_state, 'waiting_extraction')
-
-            # test that the invoice is not automatically sent to the OCR server when the option is disabled
-
-            # test with message_post()
-            self.env.company.extract_show_ocr_option_selection = 'manual_send'
             invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
             test_attachment = self.env['ir.attachment'].create({
                 'name': "an attachment",

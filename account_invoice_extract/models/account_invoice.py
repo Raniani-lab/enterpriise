@@ -153,6 +153,21 @@ class AccountMove(models.Model):
     def _contact_iap_partner_autocomplete(self, local_endpoint, params):
         return iap_tools.iap_jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
 
+    @api.model
+    def message_new(self, msg_dict, custom_values=None):
+        return super(AccountMove, self.with_context(from_alias=True)).message_new(msg_dict, custom_values=custom_values)
+
+    def _needs_auto_extract(self):
+        """ Returns `True` if the document should be automatically sent to the extraction server"""
+        return (
+            self.extract_state == "no_extract_requested"
+            and self.company_id.extract_show_ocr_option_selection == 'auto_send'
+            and (
+                self.is_purchase_document()
+                or (self.is_sale_document() and self._context.get('from_alias'))
+            )
+        )
+
     def _ocr_create_invoice_from_attachment(self, attachment):
         invoice = self.env['account.move'].create({})
         invoice.message_main_attachment_id = attachment
@@ -173,9 +188,7 @@ class AccountMove(models.Model):
     def _get_update_invoice_from_attachment_decoders(self, invoice):
         # OVERRIDE
         res = super()._get_update_invoice_from_attachment_decoders(invoice)
-        if invoice.company_id.extract_show_ocr_option_selection == 'auto_send' and \
-           invoice.is_invoice() and \
-           invoice.extract_state == "no_extract_requested":
+        if invoice._needs_auto_extract():
             res.append((20, self._ocr_update_invoice_from_attachment))
         return res
 

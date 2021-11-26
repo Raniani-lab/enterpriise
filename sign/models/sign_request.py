@@ -611,15 +611,6 @@ class SignRequest(models.Model):
         return mail
 
     @api.model
-    def add_followers(self, id, followers):
-        sign_request = self.browse(id)
-        old_followers = set(sign_request.message_follower_ids.mapped('partner_id.id'))
-        followers = list(set(followers) - old_followers)
-        if followers:
-            sign_request.message_subscribe(partner_ids=followers)
-        return sign_request.id
-
-    @api.model
     def activity_update(self, sign_users):
         for user in sign_users:
             self.with_context(mail_activity_quick_update=True).activity_schedule(

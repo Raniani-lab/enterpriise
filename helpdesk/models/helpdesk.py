@@ -331,22 +331,35 @@ class HelpdeskTeam(models.Model):
     def _get_helpdesk_user_group(self):
         return self.env.ref('helpdesk.group_helpdesk_user')
 
+    def _get_helpdesk_use_sla_group(self):
+        return self.env.ref('helpdesk.group_use_sla')
+
     def _get_helpdesk_use_rating_group(self):
         return self.env.ref('helpdesk.group_use_rating')
 
     def _check_sla_group(self):
-        sla_teams = self.filtered_domain([('use_sla', '=', True)])
+        sla_teams = self.filtered('use_sla')
         non_sla_teams = self - sla_teams
-        if sla_teams and not self.user_has_groups('helpdesk.group_use_sla'):
-            self.env.ref('helpdesk.group_helpdesk_user').write({
-                'implied_ids': [(4, self.env.ref('helpdesk.group_use_sla').id)]
-            })
+        use_sla_group = helpdesk_user_group = None
+        user_has_use_sla_group = self.user_has_groups('helpdesk.group_use_sla')
+
         if sla_teams:
+            if not user_has_use_sla_group:
+                use_sla_group = self._get_helpdesk_use_sla_group()
+                helpdesk_user_group = self._get_helpdesk_user_group()
+                helpdesk_user_group.write({'implied_ids': [Command.link(use_sla_group.id)]})
             self.env['helpdesk.sla'].with_context(active_test=False).search([
                 ('team_id', 'in', sla_teams.ids), ('active', '=', False),
             ]).write({'active': True})
+
         if non_sla_teams:
             self.env['helpdesk.sla'].search([('team_id', 'in', non_sla_teams.ids)]).write({'active': False})
+            if user_has_use_sla_group and not self.env['helpdesk.team'].search([('use_sla', '=', True)], limit=1):
+                use_sla_group = use_sla_group or self._get_helpdesk_use_sla_group()
+                helpdesk_user_group = helpdesk_user_group or self._get_helpdesk_user_group()
+                helpdesk_user_group.write({'implied_ids': [Command.unlink(use_sla_group.id)]})
+                use_sla_group.write({'users': [Command.clear()]})
+
     def _check_rating_group(self):
         rating_teams = self.filtered('use_rating')
         user_has_use_rating_group = self.user_has_groups('helpdesk.group_use_rating')

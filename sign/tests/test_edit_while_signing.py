@@ -81,27 +81,6 @@ class TestEditModeWhileSigning(HttpCase, TestSignCommon):
         self.assertEqual(len(sign_request.template_id.sign_item_ids), 2)
         self.assertEqual(sign_request.state, 'signed')
 
-    def test_sign_with_new_items_with_wrong_type_fails(self):
-        sign_request = self.single_role_sign_request
-        sign_request_id = sign_request.id
-
-        # sign it
-        sign_request_item = sign_request.request_item_ids[0]
-        sign_values = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
-        sign_values['-1'] = 'aaaaa'
-        new_sign_items = self.create_new_sign_items_object(sign_request_item.role_id.id)
-        new_sign_items['-1']['type_id'] = self.env.ref('sign.sign_item_type_email').id
-
-        sign_request.request_item_ids.invalidate_cache()
-        url = "/sign/sign/%s/%s" % (sign_request_id, sign_request_item.access_token)
-        data = {'signature': sign_values, 'new_sign_items': new_sign_items}
-        sign_result = self.opener.post(self._build_url(url), json=self._build_jsonrpc_payload(data))
-
-        self.assertFalse(sign_result.json()['result'])
-        self.assertEqual(sign_request.template_id.id, self.template.id)
-        self.assertEqual(len(sign_request.template_id.sign_item_ids), 1)
-        self.assertEqual(sign_request.state, 'sent')
-
     def test_add_new_items_as_first_signer_in_multi_role_document(self):
         sign_request = self.multi_role_sign_request
         sign_request_id = sign_request.id

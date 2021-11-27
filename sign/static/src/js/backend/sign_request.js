@@ -37,18 +37,14 @@ const EditableDocumentBackend = DocumentBackend.extend({
         class: "btn btn-primary mr-2",
       });
       $signButton.on("click", () => {
-        this.do_action(
-          {
-            type: "ir.actions.client",
-            tag: "sign.SignableDocument",
-            name: _t("Sign"),
-          },
-          {
-            additional_context: Object.assign({}, action.context, {
-              token: action.context.sign_token,
-            }),
-          }
-        );
+        this._rpc({
+          model: 'sign.request',
+          method: 'go_to_signable_document',
+          args: [[this.documentID]],
+        }).then((action) => {
+          action['name'] = _t('Sign'),
+          this.do_action(action);
+        });
       });
       if (this.cp_content) {
         this.cp_content.$buttons = $signButton.add(this.cp_content.$buttons);

@@ -294,16 +294,7 @@ class Sign(http.Controller):
             # sign as a known user
             request_item = request_item.with_user(sign_user).sudo()
 
-        if not request_item.sign(signature, new_sign_items):
-            return False
-
-        # mark signature as done in next activity
-        if sign_user.has_group('sign.group_sign_employee'):
-            request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
-
-        request.env['sign.log']._create_log(request_item, "sign", is_request=False, token=token)
-        request_item.action_completed()
-        return True
+        return request_item.edit_and_sign(signature, new_sign_items)
 
     @http.route(['/sign/refuse/<int:sign_request_id>/<token>'], type='json', auth='public')
     def refuse(self, sign_request_id, token, refusal_reason=""):

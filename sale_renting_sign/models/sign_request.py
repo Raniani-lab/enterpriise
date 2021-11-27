@@ -8,8 +8,8 @@ class SignRequest(models.Model):
 
     sale_order_id = fields.Many2one("sale.order", string="Sales Order")
 
-    def action_signed(self):
-        super(SignRequest, self).action_signed()
+    def _sign(self):
+        super(SignRequest, self)._sign()
         for request in self:
             if request.sale_order_id:
                 request.sale_order_id.message_post_with_view(

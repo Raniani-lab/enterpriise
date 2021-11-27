@@ -23,23 +23,14 @@ import { multiFileUpload } from "@sign/js/common/multi_file_upload";
 const { _t } = core;
 
 PDFIframe.include({
-  enableSignTemplateEdition: async function () {
-    this._rpc({
-      model: "sign.request",
-      method: "check_request_edit_during_sign",
-      args: [this.getParent().requestID],
-    }).then((allowEdit) => {
-      if (!allowEdit) {
-        return;
-      }
-      this.$(".page")
-        .off("click")
-        .on("click", (e) => {
-          if (e.ctrlKey) {
-            this.handleControlClick(e);
-          }
-        });
-    });
+  enableSignTemplateEdition: function () {
+    this.$(".page")
+      .off("click")
+      .on("click", (e) => {
+        if (e.ctrlKey) {
+          this.handleControlClick(e);
+        }
+      });
   },
   handleControlClick: function (e) {
     const self = this;

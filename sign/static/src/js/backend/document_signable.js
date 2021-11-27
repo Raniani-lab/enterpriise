@@ -43,15 +43,8 @@ const SignableDocumentBackend = DocumentBackend.extend({
     return SignableDocument2;
   },
   async start() {
-    const [_, allowEdit] = await Promise.all([
-      this._super(),
-      this._rpc({
-        model: "sign.request",
-        method: "check_request_edit_during_sign",
-        args: [this.documentID],
-      }),
-    ]);
-    if (allowEdit && !config.device.isMobile) {
+    await this._super();
+    if (this.template_editable && !config.device.isMobile) {
       this.$buttons.push($(qweb.render("sign.edit_mode_info"))[0]);
       this.updateControlPanel({ cp_content: { $buttons: this.$buttons } });
     }

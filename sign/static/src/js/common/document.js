@@ -17,6 +17,7 @@ export const Document = Widget.extend({
     this.requestToken = this.$("#o_sign_input_sign_request_token").val();
     this.requestState = this.$("#o_sign_input_sign_request_state").val();
     this.accessToken = this.$("#o_sign_input_access_token").val();
+    this.templateEditable = this.$("#o_sign_input_template_editable").val();
     this.signerName = this.$("#o_sign_signer_name_input_info").val();
     this.signerPhone = this.$("#o_sign_signer_phone_input_info").val();
     this.RedirectURL = this.$("#o_sign_input_optional_redirect_url").val();

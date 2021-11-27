@@ -12,7 +12,12 @@ class TestSignCommon(TransactionCase):
         with file_open('sign/static/demo/sample_contract.pdf', "rb") as f:
             pdf_content = f.read()
 
-        cls.test_user = new_test_user(cls.env, "test_user_1", email="test_user_1@nowhere.com", password="test_user_1", tz="UTC")
+        cls.test_user = new_test_user(cls.env,
+                                      "test_user_1",
+                                      email="test_user_1@nowhere.com",
+                                      password="test_user_1",
+                                      tz="UTC",
+                                      groups='sign.group_sign_user')
 
         cls.attachment = cls.env['ir.attachment'].create({
             'type': 'binary',

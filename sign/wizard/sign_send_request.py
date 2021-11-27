@@ -139,6 +139,7 @@ class SignSendRequest(models.TransientModel):
                 'sign_token': user_item.access_token,
                 'create_uid': request.create_uid.id,
                 'state': request.state,
+                'template_editable': True,
             },
         }
 
@@ -161,6 +162,7 @@ class SignSendRequest(models.TransientModel):
                 'token_list': [item.access_token for item in request.request_item_ids[1:]],
                 'current_signor_name': user_item.partner_id.name,
                 'name_list': [item.partner_id.name for item in request.request_item_ids[1:]],
+                'template_editable': True,
             },
         }
 

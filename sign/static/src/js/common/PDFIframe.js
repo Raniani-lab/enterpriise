@@ -92,6 +92,7 @@ export const PDFIframe = Widget.extend(
       this.templateID = parent.templateID;
       this.templateItemsInProgress = parent.templateItemsInProgress;
       this.templateName = parent.templateName;
+      this.templateEditable = parent.templateEditable;
       // sets datas values to this
       Object.keys(datas).forEach((dataName) => {
         this._set_data(dataName, datas[dataName]);
@@ -325,6 +326,7 @@ export const PDFIframe = Widget.extend(
 
         if (
           !self.readonlyFields &&
+          self.templateEditable &&
           typeof self.enableSignTemplateEdition === "function" &&
           !config.device.isMobile
         ) {

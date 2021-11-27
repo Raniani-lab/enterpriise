@@ -247,6 +247,17 @@ class SignTemplate(models.Model):
             "context": {'search_default_signed': True}
         }
 
+    def copy_sign_items_to(self, new_template):
+        self.ensure_one()
+        if len(new_template.sign_request_ids) > 0:
+            raise UserError(_("Somebody is already filling a document which uses this template"))
+        item_id_map = {}
+        for sign_item in self.sign_item_ids:
+            new_sign_item = sign_item.copy({'template_id': new_template.id})
+            item_id_map[str(sign_item.id)] = str(new_sign_item.id)
+        return item_id_map
+
+
 class SignTemplateTag(models.Model):
 
     _name = "sign.template.tag"

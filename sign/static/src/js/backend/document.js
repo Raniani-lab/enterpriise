@@ -38,6 +38,7 @@ export const DocumentBackend = AbstractAction.extend({
     this.token_list = context.token_list;
     this.name_list = context.name_list;
     this.cp_content = {};
+    this.template_editable = context.template_editable;
   },
   /**
    * Callback to react to DOM_updated events. Loads the iframe and its contents

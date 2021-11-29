@@ -12,7 +12,7 @@
                 <t t-set="originalPost" t-value="widget.originalPost" />
             </t>
             <t t-call="social.StreamPostReply">
-                <t t-set="classes" t-value="'bg-white p-3 pl-5 border-bottom'"/>
+                <t t-set="classes" t-value="'bg-white p-3 border-top'"/>
             </t>
             <div t-attf-class="o_social_comments_messages px-3 pt-4 #{bubble_design? '' : 'bg-100'}">
                 <t t-call="social.StreamPostCommentsWrapper">
@@ -79,7 +79,7 @@
                                 t-att-data-original-message="originalMessage"
                                 t-out="widget._formatCommentStreamPost(comment.message)"/>
                                 <div t-attf-class="o_social_icon_dropdown o_social_manage_comment dropdown #{widget.isCommentManageable(comment) ? '' : 'd-none'}">
-                                    <button t-attf-class="btn btn-light dropdown-toggle #{bubble_design? 'bg-200 px-3 rounded-pill border-0' : ''}"
+                                    <button t-attf-class="btn dropdown-toggle #{bubble_design? 'bg-200 px-3 rounded-pill border-0' : ''}"
                                         type="button" t-attf-id="post_actions_#{comment.id}"
                                         data-toggle="dropdown"
                                         aria-haspopup="true"
@@ -286,7 +286,11 @@
     <div t-name="social.AddStreamModal">
         <div class="o_social_add_stream_form bg-200">
             <t t-if="widget.socialAccounts.length !== 0">
-                <h4>Add a Stream from an existing account</h4>
+                <t t-if="widget.isSocialManager">
+                    <h4>Link a new account <t t-call="social.AddStreamCompany"/></h4>
+                    <div class="mb-5"><t t-call="social.AddStreamMedia" /></div>
+                </t>
+                <h4><t t-if="widget.isSocialManager">Or add</t><t t-else="">Add</t> a Stream from an existing account</h4>
                 <div class="o_social_add_stream_accounts list-group">
                     <button t-foreach="widget.socialAccounts" t-as="socialAccount" class="list-group-item list-group-item-action">
                         <div class="o_social_account_card d-flex align-items-center" t-att-data-media-id="socialAccount.media_id[0]" t-att-data-account-id="socialAccount.id">
@@ -296,10 +300,6 @@
                         </div>
                     </button>
                 </div>
-                <t t-if="widget.isSocialManager">
-                    <h4 class="mt-5">Or link a new account <t t-call="social.AddStreamCompany"/></h4>
-                    <t t-call="social.AddStreamMedia" />
-                </t>
             </t>
             <t t-else="">
                 <h5 class="mb-4">To add a stream<t t-call="social.AddStreamCompany"/>, you must first link a social media.</h5>
@@ -416,10 +416,11 @@
             <i t-attf-class="text-600 mr-1 fa {{icon}}" style="line-height: 1"/>
             <b class="social_account_stat_value" t-esc="value" style="line-height: 1"/>
             <t t-if="socialAccount.has_trends">
-                <t t-set="isUp" t-value="trend >= 0"/>
-                <small t-attf-class="ml-2 font-weight-bold text-#{isUp ? 'success' : 'danger'}" style="line-height: 1">
-                    <i t-attf-class="fa fa-caret-#{isUp ? 'up' : 'down'}" style="line-height: 1"/>
+                <t t-set="isNeutral" t-value="trend == 0"/>
+                <t t-set="isUp" t-value="trend > 0"/>
+                <small t-attf-class="ml-2 font-weight-bold #{isNeutral? '' : isUp ? 'text-success' : 'text-danger'}" style="line-height: 1">
                     <t t-esc="trend"/>%
+                    <t t-if="!isNeutral"><i t-attf-class="fa fa-caret-#{isUp ? 'up' : 'down'}" style="line-height: 1"/></t>
                 </small>
             </t>
         </div>

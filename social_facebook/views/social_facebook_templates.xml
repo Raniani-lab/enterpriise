@@ -11,7 +11,9 @@
                 <div class="o_social_preview_author">
                     <b class="d-block mb-2">Facebook Page</b>
                     <div class="text-muted o_social_preview_description">
-                        Published by Facebook Page • <time t-esc="published_date"/> • <i class="fa fa-globe"/>
+                        Published by Facebook Page •
+                        <a t-if="live_post_link" t-attf-href="#{live_post_link}" target="blank"><time t-esc="published_date"/></a>
+                        <t t-else=""><time t-esc="published_date"/></t> • <i class="fa fa-globe"/>
                     </div>
                 </div>
             </div>

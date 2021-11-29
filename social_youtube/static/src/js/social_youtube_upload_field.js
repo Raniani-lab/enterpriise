@@ -1,4 +1,4 @@
-odoo.define('youtube_upload_field', function (require) {
+odoo.define('social_youtube.youtube_upload_field', function (require) {
 'use strict';
 
 var basicFields = require('web.basic_fields');

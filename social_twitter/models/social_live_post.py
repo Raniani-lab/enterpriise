@@ -14,6 +14,17 @@ class SocialLivePostTwitter(models.Model):
 
     twitter_tweet_id = fields.Char('Twitter tweet id')
 
+    def _compute_live_post_link(self):
+        twitter_live_posts = self._filter_by_media_types(['twitter']).filtered(
+            lambda post: post.state == 'posted' and post.account_id.twitter_user_id
+        )
+        super(SocialLivePostTwitter, (self - twitter_live_posts))._compute_live_post_link()
+
+        for post in twitter_live_posts:
+            post.live_post_link = 'https://www.twitter.com/%s/statuses/%s' % (
+                post.account_id.twitter_user_id, post.twitter_tweet_id
+            )
+
     def _refresh_statistics(self):
         super(SocialLivePostTwitter, self)._refresh_statistics()
         accounts = self.env['social.account'].search([('media_type', '=', 'twitter')])
@@ -61,7 +72,7 @@ class SocialLivePostTwitter(models.Model):
                     })
 
     def _post(self):
-        twitter_live_posts = self.filtered(lambda post: post.account_id.media_type == 'twitter')
+        twitter_live_posts = self._filter_by_media_types(['twitter'])
         super(SocialLivePostTwitter, (self - twitter_live_posts))._post()
 
         twitter_live_posts._post_twitter()

@@ -9,7 +9,10 @@
                 <div>
                     <div class="o_social_preview_header">
                         <b class="text-900">Twitter Account</b>
-                        <span class="text-600">@twitteraccount &#183; 11m</span>
+                        <span class="text-600">@twitteraccount &#183;
+                            <a t-if="live_post_link" t-attf-href="#{live_post_link}" target="blank">11m</a>
+                            <t t-else="">11m</t>
+                        </span>
                     </div>
                     <div class="o_social_preview_message" t-esc="message"/>
                     <div class="o_social_stream_post_image d-flex rounded overflow-hidden">

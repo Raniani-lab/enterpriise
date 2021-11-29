@@ -176,11 +176,12 @@ var StreamPostKanbanController = KanbanController.extend({
     _onNewSteamAccountClicked: function (event) {
         // Do NOT replace with do_action as we need the modal to close after save.
         new dialogs.FormViewDialog(this, {
-            title: _t('Add a stream'),
+            title: _t('Add a Stream'),
             res_model: 'social.stream',
             context: {
                 default_media_id: event.data.mediaId,
-                default_account_id: event.data.accountId
+                default_account_id: event.data.accountId,
+                form_view_ref: 'social.social_stream_view_form_wizard'
             },
             disable_multiple_selection: true,
             on_saved: this._notifyEmptyStream.bind(this),

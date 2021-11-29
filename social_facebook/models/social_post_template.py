@@ -19,13 +19,13 @@ class SocialPostTemplate(models.Model):
     def _compute_facebook_preview(self):
         for post in self:
             post.facebook_preview = self.env.ref('social_facebook.facebook_preview')._render({
+                **post._prepare_preview_values("facebook"),
                 'message': post._prepare_post_content(
                     post.message,
                     'facebook',
                     **{field: post[field] for field in post._get_post_message_modifying_fields()}),
-                'published_date': fields.Datetime.now(),
                 'images': [
                     image.with_context(bin_size=False).datas
                     for image in post.image_ids.sorted(lambda image: image._origin.id or image.id, reverse=True)
-                ]
+                ],
             })

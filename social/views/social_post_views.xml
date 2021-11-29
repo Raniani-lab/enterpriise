@@ -59,7 +59,8 @@
 
                             <t t-set="has_attachments" t-value="record.image_ids.raw_value.length !== 0"/>
                             <div t-attf-class="o_social_stream_post_message_body flex-grow-1 py-2 px-3 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'border-bottom'}">
-                                <div name="o_social_stream_post_message_text" t-attf-class="o_social_stream_post_message_text overflow-hidden #{has_attachments ? 'mb-2' : ''}">
+                                <div name="o_social_stream_post_message_text"
+                                     t-attf-class="o_social_stream_post_message_text overflow-hidden #{has_attachments ? 'mb-2' : ''}">
                                     <field name="message"/>
                                 </div>
 
@@ -179,29 +180,32 @@
                 <header>
                     <button name="action_post" string="Post" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'scheduled')]}"
-                        groups="social.group_social_manager" />
+                        groups="social.group_social_user" />
                     <button name="action_post" string="Post Now" type="object"
                         attrs="{'invisible': [('state', '!=', 'scheduled')]}"
-                        groups="social.group_social_manager" data-hotkey="v" />
+                        groups="social.group_social_user" data-hotkey="v" />
+                    <button name="action_set_draft" string="Cancel" type="object"
+                        attrs="{'invisible': [('state', '!=', 'scheduled')]}"
+                        groups="social.group_social_user" data-hotkey="z" />
                     <button name="action_schedule" string="Schedule" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'now')]}"
-                        groups="social.group_social_manager" data-hotkey="q" />
+                        groups="social.group_social_user" data-hotkey="q" />
                     <field name="state" widget="statusbar"/>
                 </header>
             </xpath>
 
             <xpath expr="//sheet/group[1]" position="before">
                 <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'draft')]}">
-                    <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"
-                        attrs="{'invisible': [('stream_posts_count', '=', 0)]}">
-                        <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
+                    <button class="oe_stat_button" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">
+                        <field name="click_count" string="Clicks" widget="statinfo"/>
                     </button>
-                    <button class="oe_stat_button" icon="fa-thumbs-up"
+                    <button class="oe_stat_button" icon="fa-thumbs-up" name="engagement"
                         attrs="{'invisible': [('engagement', '=', 0)]}" disabled="disabled">
                         <field string="Engagement" name="engagement" widget="statinfo" />
                     </button>
-                    <button class="oe_stat_button order-4" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">
-                        <field name="click_count" string="Clicks" widget="statinfo"/>
+                    <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"
+                        attrs="{'invisible': [('stream_posts_count', '=', 0)]}">
+                        <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
                     </button>
                 </div>
             </xpath>
@@ -242,14 +246,16 @@
                             <field name="account_id"/>
                             <field name="state"/>
                             <field name="failure_reason" />
+                            <field name="live_post_link" />
                             <templates>
                                 <t t-name="kanban-box">
                                     <div class="o_social_live_post_kanban ml-0 mr-3">
                                         <div class="row">
-                                            <div class="col-md-9 o_social_live_post_kanban_account">
+                                            <div class="col-md-8 o_social_live_post_kanban_account">
                                                 <field name="account_id" />
+                                                <t t-if="record.live_post_link.raw_value"><a t-att-href="record.live_post_link.raw_value" target="blank"><i class="fa fa-globe" title="See the post"/></a></t>
                                             </div>
-                                            <div class="col-md-3 text-right">
+                                            <div class="col-md-4 text-right">
                                                 <field name="state" widget="label_selection" options="{'classes': {'ready': 'info', 'posting': 'warning', 'posted': 'success', 'failed': 'danger'}}"/>
                                             </div>
                                         </div>

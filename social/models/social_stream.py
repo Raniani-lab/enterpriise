@@ -28,9 +28,11 @@ class SocialStream(models.Model):
     @api.onchange('media_id', 'account_id')
     def _onchange_media_id(self):
         for stream in self:
-            stream.stream_type_id = False
             if stream.account_id and stream.account_id.media_id != stream.media_id:
                 stream.account_id = False
+            # Set stream_type_ids by default if only one type for the media.
+            stream_type_ids = self.env['social.stream.type'].search([('media_id', '=', stream.media_id.id)], limit=2)
+            stream.stream_type_id = stream_type_ids.id if len(stream_type_ids) == 1 else False
 
     @api.model_create_multi
     def create(self, vals_list):

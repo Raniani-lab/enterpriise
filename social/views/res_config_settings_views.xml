@@ -19,7 +19,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('settings')]" position="inside">
-                <div class="app_settings_block social_settings_block" data-string="Social Media" string="Social Media" data-key="social" groups="base.group_no_one">
+                <div class="app_settings_block" data-string="Social Media" string="Social Media" data-key="social" groups="base.group_no_one">
                     <h2>Demo Mode</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="col-md-6 o_setting_box">
@@ -35,6 +35,10 @@
                             </div>
                         </div>
                     </div>
+                    <h2>Developper Accounts</h2>
+                    <h3 class="text-muted">Use your own Developer Accounts on our Social app.
+                        Those credentials are provided in the developper section of your professional social media account.</h3>
+                    <div class="row mt16 o_settings_container o_social_developper_settings"></div>
                 </div>
             </xpath>
         </field>

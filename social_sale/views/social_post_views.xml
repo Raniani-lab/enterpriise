@@ -6,14 +6,14 @@
         <field name="model">social.post</field>
         <field name="inherit_id" ref="social.social_post_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_redirect_to_clicks']" position="before">
-                <button class="oe_stat_button order-1" name="action_redirect_to_invoiced"  type="object"
-                    icon="fa-usd" groups="sales_team.group_sale_salesman">
-                    <field name="sale_invoiced_amount" string="Revenues" widget="statinfo"/>
-                </button>
-                <button class="oe_stat_button order-2" name="action_redirect_to_quotations"  type="object"
+            <xpath expr="//button[@name='engagement']" position="before">
+                <button class="oe_stat_button" name="action_redirect_to_quotations"  type="object"
                     icon="fa-pencil-square-o" groups="sales_team.group_sale_salesman">
                     <field name="sale_quotation_count" string="Quotations" widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button" name="action_redirect_to_invoiced"  type="object"
+                    icon="fa-usd" groups="sales_team.group_sale_salesman">
+                    <field name="sale_invoiced_amount" string="Revenues" widget="statinfo"/>
                 </button>
             </xpath>
         </field>

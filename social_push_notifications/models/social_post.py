@@ -41,9 +41,7 @@ class SocialPostPushNotifications(models.Model):
         ready_live_posts = self.env['social.live.post'].search([
             ('state', 'in', ['ready', 'posting'])
         ])
-        push_notifications_live_posts = ready_live_posts.filtered(
-            lambda post: post.account_id.media_type == 'push_notifications'
-        )
+        push_notifications_live_posts = ready_live_posts._filter_by_media_types(['push_notifications'])
         push_notifications_live_posts.write({
             'state': 'posting'
         })

@@ -14,6 +14,13 @@ class SocialLivePostLinkedin(models.Model):
 
     linkedin_post_id = fields.Char('Actual LinkedIn ID of the post')
 
+    def _compute_live_post_link(self):
+        linkedin_live_posts = self._filter_by_media_types(['linkedin']).filtered(lambda post: post.state == 'posted')
+        super(SocialLivePostLinkedin, (self - linkedin_live_posts))._compute_live_post_link()
+
+        for post in linkedin_live_posts:
+            post.live_post_link = 'https://www.linkedin.com/feed/update/%s' % post.linkedin_post_id
+
     def _refresh_statistics(self):
         super(SocialLivePostLinkedin, self)._refresh_statistics()
         accounts = self.env['social.account'].search([('media_type', '=', 'linkedin')])
@@ -58,7 +65,7 @@ class SocialLivePostLinkedin(models.Model):
                     })
 
     def _post(self):
-        linkedin_live_posts = self.filtered(lambda post: post.account_id.media_type == 'linkedin')
+        linkedin_live_posts = self._filter_by_media_types(['linkedin'])
         super(SocialLivePostLinkedin, (self - linkedin_live_posts))._post()
 
         linkedin_live_posts._post_linkedin()

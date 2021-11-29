@@ -24,6 +24,8 @@ class SocialPostYoutube(models.Model):
         compute='_compute_youtube_accounts_count')
     youtube_accounts_other_count = fields.Integer('Selected Other Accounts',
         compute='_compute_youtube_accounts_count')
+    youtube_video_url = fields.Char('Youtube Video Url', compute="_compute_youtube_video_url")
+    youtube_thumbnail_url = fields.Char('Youtube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
 
     @api.constrains('message')
     def _check_message_not_empty(self):
@@ -56,6 +58,7 @@ class SocialPostYoutube(models.Model):
                 'youtube_description': post.youtube_description,
                 'youtube_video_id': post.youtube_video_id,
                 'published_date': post.scheduled_date if post.scheduled_date else fields.Datetime.now(),
+                'post_link': "https://www.youtube.com/watch?v=%s" % post.youtube_video_id,
             })
 
     @api.depends('account_ids.media_type')
@@ -64,6 +67,16 @@ class SocialPostYoutube(models.Model):
             post.youtube_accounts_count = len(post.account_ids.filtered(
                 lambda account: account.media_type == 'youtube'))
             post.youtube_accounts_other_count = len(post.account_ids) - post.youtube_accounts_count
+
+    @api.depends('youtube_video_id')
+    def _compute_youtube_thumbnail_url(self):
+        for post in self:
+            post.youtube_thumbnail_url = "http://i3.ytimg.com/vi/%s/hqdefault.jpg" % post.youtube_video_id
+
+    @api.depends('youtube_video_id')
+    def _compute_youtube_video_url(self):
+        for post in self:
+            post.youtube_video_url = "https://www.youtube.com/watch?v=%s" % post.youtube_video_id
 
     def _check_post_access(self):
         super(SocialPostYoutube, self)._check_post_access()

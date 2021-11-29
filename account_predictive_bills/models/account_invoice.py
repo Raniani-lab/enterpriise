@@ -22,8 +22,10 @@ class AccountMove(models.Model):
                 if not line.product_id:
                     predicted_product_id = line._predict_product()
                     if predicted_product_id and predicted_product_id != line.product_id.id:
+                        name = line.name
                         line.product_id = predicted_product_id
                         line._onchange_product_id()
+                        line.name = name
                         line._onchange_price_subtotal()
                         line.recompute_tax_line = True
 

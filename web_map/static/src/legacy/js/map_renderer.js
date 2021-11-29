@@ -177,6 +177,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                     const group = Object.entries(this.props.recordGroups)
                         .find(([, value]) => value.records.includes(markerInfo.record));
                     params.color = this._getGroupColor(group[0]);
+                    params.number = group[1].records.indexOf(markerInfo.record) + 1;
                 }
 
                 // Icon creation

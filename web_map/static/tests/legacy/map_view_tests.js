@@ -2133,6 +2133,41 @@ QUnit.module('mapView', {
             'The link\'s URL after domain is applied should only contain coordinates for filtered records');
         map.destroy();
     });
+
+    QUnit.test('Check number on markers are correct when group by', async function (assert) {
+        assert.expect(3);
+
+        const records = this.data['project.task'].threeRecords;
+        const partners = this.data['res.partner'].twoRecordsAddressCoordinates;
+        partners[0].partner_latitude = 20.0;
+
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id" routing="true"></map>',
+            mockRPC: function (route) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        return Promise.resolve(records);
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return Promise.resolve(partners);
+                }
+                return Promise.resolve();
+            },
+            session: {
+                map_box_token: 'token'
+            },
+            groupBy: ['partner_id'],
+        });
+
+        const [first, second] = $('div.leaflet-marker-icon .o_number_icon');
+        assert.strictEqual($(first.childNodes[0]).text(), '2', 'The number of the last record for this partner is 2, so the displayed number_icon should be 2.');
+        assert.strictEqual($(first.childNodes[1]).text(), '2', 'There are two records for this partner, so the marker badge should be 2.');
+        assert.strictEqual($(second.childNodes[0]).text(), '1', 'The number of the only record for this partner is 1, so the displayed number_icon should be 1.');
+
+        map.destroy();
+    });
 });
 
 });

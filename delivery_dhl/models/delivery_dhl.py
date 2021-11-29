@@ -200,7 +200,6 @@ class Providerdhl(models.Model):
             account_number = self.sudo().dhl_account_number
             shipment_request['Request'] = srm._set_request(site_id, password)
             shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
-            shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
             shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
             shipment_request['Billing'] = srm._set_billing(account_number, "S", self.dhl_duty_payment, self.dhl_dutiable)
             shipment_request['Consignee'] = srm._set_consignee(picking.partner_id)
@@ -212,7 +211,7 @@ class Providerdhl(models.Model):
             shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
             shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
             shipment_request['Label'] = srm._set_label(self.dhl_label_template)
-            shipment_request['schemaVersion'] = 6.2
+            shipment_request['schemaVersion'] = 10.0
             shipment_request['LanguageCode'] = 'en'
             dhl_response = srm._process_shipment(shipment_request)
             traking_number = dhl_response.AirwayBillNumber
@@ -243,7 +242,6 @@ class Providerdhl(models.Model):
         account_number = self.sudo().dhl_account_number
         shipment_request['Request'] = srm._set_request(site_id, password)
         shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
-        shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
         shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
         shipment_request['Billing'] = srm._set_billing(account_number, "S", "S", self.dhl_dutiable)
         shipment_request['Consignee'] = srm._set_consignee(picking.picking_type_id.warehouse_id.partner_id)
@@ -257,7 +255,7 @@ class Providerdhl(models.Model):
         shipment_request['Label'] = srm._set_label(self.dhl_label_template)
         shipment_request['SpecialService'] = []
         shipment_request['SpecialService'].append(srm._set_return())
-        shipment_request['schemaVersion'] = 6.2
+        shipment_request['schemaVersion'] = 10.0
         shipment_request['LanguageCode'] = 'en'
         dhl_response = srm._process_shipment(shipment_request)
         traking_number = dhl_response.AirwayBillNumber

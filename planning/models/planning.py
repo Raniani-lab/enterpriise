@@ -476,8 +476,14 @@ class Planning(models.Model):
         def convert_datetime_timezone(dt, tz):
             return dt and pytz.utc.localize(dt).astimezone(tz)
 
-        user_tz = pytz.timezone(self._get_tz())
         resource = resource_id or self.env.user.employee_id.resource_id
+        employee = resource_id.employee_id if resource_id.resource_type == 'user' else False
+        user_tz = pytz.timezone(self.env.user.tz
+                                or employee and employee.tz
+                                or resource_id.tz
+                                or self._context.get('tz')
+                                or self.env.user.company_id.resource_calendar_id.tz
+                                or 'UTC')
 
         # start_datetime and end_datetime are from 00:00 to 23:59 in user timezone
         # Converted in UTC, it gives an offset for any other timezone, _convert_datetime_timezone removes the offset

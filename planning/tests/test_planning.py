@@ -102,17 +102,17 @@ class TestPlanning(TestCommonPlanning):
 
         # simulate public user (no tz)
         self.env.user.tz = False
-        self.slot.employee_id = self.employee_janice.id
+        self.slot.resource_id = self.employee_janice.resource_id
         self.assertEqual(self.slot.template_id, self.template, 'It should keep the template')
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should adjust for employee timezone: 11am EDT -> 3pm UTC')
 
     def test_change_employee(self):
         """ Ensures that changing the employee does not have an impact to the shift. """
         self.env.user.tz = 'UTC'
-        self.slot.employee_id = self.employee_joseph.id
+        self.slot.resource_id = self.employee_joseph.resource_id
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 8, 0), 'It should not adjust to employee calendar')
         self.assertEqual(self.slot.end_datetime, datetime(2019, 6, 27, 18, 0), 'It should not adjust to employee calendar')
-        self.slot.employee_id = self.employee_bert.id
+        self.slot.resource_id = self.employee_bert.resource_id
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 8, 0), 'It should not adjust to employee calendar')
         self.assertEqual(self.slot.end_datetime, datetime(2019, 6, 27, 18, 0), 'It should not adjust to employee calendar')
 
@@ -232,7 +232,7 @@ class TestPlanning(TestCommonPlanning):
 
     def test_planning_state(self):
         """ The purpose of this test case is to check the planning state """
-        self.slot.employee_id = self.employee_bert
+        self.slot.resource_id = self.employee_bert.resource_id
         self.assertEqual(self.slot.state, 'draft', 'Planning is draft mode.')
         self.slot.action_publish()
         self.assertEqual(self.slot.state, 'published', 'Planning is published.')

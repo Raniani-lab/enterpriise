@@ -119,7 +119,6 @@ var ClientAction = AbstractAction.extend({
         $replenishButton.on('mouseover', this._onMouseOverReplenish.bind(this));
         $replenishButton.on('mouseout', this._onMouseOutReplenish.bind(this));
         this.$buttons.find('.o_mrp_mps_create').on('click', this._onClickCreate.bind(this));
-        this.$buttons.find('.o_mps_mps_show_line').on('click', this._onChangeCompany.bind(this));
         const res = await this.updateControlPanel({
             title: _t('Master Production Schedule'),
             cp_content: {
@@ -129,6 +128,7 @@ var ClientAction = AbstractAction.extend({
         this._controlPanelWrapper.$el.find('.o_filter_menu').before(
             $(QWeb.render('mrp_mps_control_panel_option_buttons', {groups: this.groups}))
         );
+        this._controlPanelWrapper.$el.find('.o_mps_mps_show_line').on('click', this._onChangeCompany.bind(this));
         return res;
     },
 

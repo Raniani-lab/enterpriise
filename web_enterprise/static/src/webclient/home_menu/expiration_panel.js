@@ -70,6 +70,7 @@ export class ExpirationPanel extends Component {
 
     mounted() {
         if (this.state.diffDays <= 0) {
+            this.isUIBlocked = true;
             this.ui.block({
                 message: this.el,
                 css: { cursor: "auto" },
@@ -178,7 +179,9 @@ export class ExpirationPanel extends Component {
             "database.expiration_date",
         ]);
 
-        this.ui.unblock();
+        if (this.isUIBlocked) {
+            this.ui.unblock();
+        }
 
         this._clearState();
         if (expirationDate !== oldDate && !linkedSubscriptionUrl) {
@@ -222,7 +225,9 @@ export class ExpirationPanel extends Component {
         const expirationDate = this._parseExpirationDate(expirationDateStr);
 
         if (expirationDateStr !== oldDateStr && expirationDate > new DateTime.local()) {
-            this.ui.unblock();
+            if (this.isUIBlocked) {
+                this.ui.unblock();
+            }
             this._clearState();
             this.state.message = "update";
             this.state.alertType = "success";
@@ -269,7 +274,9 @@ export class ExpirationPanel extends Component {
         const expirationDate = this._parseExpirationDate(expirationDateStr);
 
         if (expirationDateStr !== oldDate && expirationDate > new DateTime.local()) {
-            this.ui.unblock();
+            if (this.isUIBlocked) {
+                this.ui.unblock();
+            }
             this._clearState();
             this.state.message = "success";
             this.state.alertType = "success";

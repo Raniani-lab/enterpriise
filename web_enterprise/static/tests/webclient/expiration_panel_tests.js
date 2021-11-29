@@ -142,7 +142,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test(
         "Expiration Panel one app installed, try several times to register subscription",
         async function (assert) {
-            assert.expect(49);
+            assert.expect(47);
 
             const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
 
@@ -161,6 +161,9 @@ QUnit.module("web_enterprise", {}, function () {
                     },
                 },
                 ui: {
+                    block() {
+                        assert.step("blockUI");
+                    },
                     unblock() {
                         assert.step("unblockUI");
                     },
@@ -317,7 +320,6 @@ QUnit.module("web_enterprise", {}, function () {
                 "setCookie",
                 "update_notification",
                 "get_param",
-                "unblockUI",
                 // third try
                 "get_param",
                 "set_param",
@@ -326,7 +328,6 @@ QUnit.module("web_enterprise", {}, function () {
                 "setCookie",
                 "update_notification",
                 "get_param",
-                "unblockUI",
             ]);
 
             panel.destroy();
@@ -337,7 +338,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test(
         "Expiration Panel one app installed, subscription already linked",
         async function (assert) {
-            assert.expect(14);
+            assert.expect(13);
 
             const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
             // There are some line breaks mismatches between local and runbot test instances.
@@ -364,6 +365,9 @@ QUnit.module("web_enterprise", {}, function () {
                     },
                 },
                 ui: {
+                    block() {
+                        assert.step("blockUI");
+                    },
                     unblock() {
                         assert.step("unblockUI");
                     },
@@ -450,7 +454,6 @@ QUnit.module("web_enterprise", {}, function () {
                 "setCookie",
                 "update_notification",
                 "get_param",
-                "unblockUI",
                 "get_param",
             ]);
 
@@ -540,7 +543,7 @@ QUnit.module("web_enterprise", {}, function () {
     });
 
     QUnit.test("One app installed, renew with success", async function (assert) {
-        assert.expect(15);
+        assert.expect(14);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
 
@@ -559,6 +562,9 @@ QUnit.module("web_enterprise", {}, function () {
                 },
             },
             ui: {
+                block() {
+                    assert.step("blockUI");
+                },
                 unblock() {
                     assert.step("unblockUI");
                 },
@@ -613,7 +619,6 @@ QUnit.module("web_enterprise", {}, function () {
             "update_notification",
             "get_param",
             "get_param",
-            "unblockUI",
         ]);
 
         panel.destroy();
@@ -621,7 +626,7 @@ QUnit.module("web_enterprise", {}, function () {
     });
 
     QUnit.test("One app installed, check status and get success", async function (assert) {
-        assert.expect(9);
+        assert.expect(8);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
 
@@ -635,6 +640,9 @@ QUnit.module("web_enterprise", {}, function () {
                 warning: "admin",
             },
             ui: {
+                block() {
+                    assert.step("blockUI");
+                },
                 unblock() {
                     assert.step("unblockUI");
                 },
@@ -667,7 +675,7 @@ QUnit.module("web_enterprise", {}, function () {
             "Your subscription was updated and is valid until October 24, 2019."
         );
 
-        assert.verifySteps(["get_param", "update_notification", "get_param", "unblockUI"]);
+        assert.verifySteps(["get_param", "update_notification", "get_param"]);
 
         panel.destroy();
         unpatchDate();
@@ -688,6 +696,14 @@ QUnit.module("web_enterprise", {}, function () {
             browser: {
                 location: {
                     reload: () => assert.step("reloadPage"),
+                },
+            },
+            ui: {
+                block() {
+                    assert.step("blockUI");
+                },
+                unblock() {
+                    assert.step("unblockUI");
                 },
             },
             mockRPC(route, args) {
@@ -726,6 +742,14 @@ QUnit.module("web_enterprise", {}, function () {
             browser: {
                 location: {
                     reload: () => assert.step("reloadPage"),
+                },
+            },
+            ui: {
+                block() {
+                    assert.step("blockUI");
+                },
+                unblock() {
+                    assert.step("unblockUI");
                 },
             },
             mockRPC(route, args) {

@@ -40,7 +40,7 @@ QUnit.test('activity: rendering - only with mobile number', async function (asse
     assert.expect(5);
 
     await this.start();
-    const activity = this.messaging.models['mail.activity'].create({
+    const activity = this.messaging.models['Activity'].create({
         id: 100,
         mobile: '+3212345678',
     });
@@ -77,7 +77,7 @@ QUnit.test('activity: rendering - only with phone number', async function (asser
     assert.expect(5);
 
     await this.start();
-    const activity = this.messaging.models['mail.activity'].create({
+    const activity = this.messaging.models['Activity'].create({
         id: 100,
         phone: '+3287654321',
     });
@@ -112,7 +112,7 @@ QUnit.test('activity: rendering - with both mobile and phone number', async func
     assert.expect(6);
 
     await this.start();
-    const activity = this.messaging.models['mail.activity'].create({
+    const activity = this.messaging.models['Activity'].create({
         id: 100,
         mobile: '+3212345678',
         phone: '+3287654321',
@@ -170,7 +170,7 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
         );
     };
     document.addEventListener('voip_activity_call', onVoipActivityCallMobile);
-    const activity = this.messaging.models['mail.activity'].create({
+    const activity = this.messaging.models['Activity'].create({
         id: 100,
         mobile: '+3212345678',
     });
@@ -202,7 +202,7 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
         );
     };
     document.addEventListener('voip_activity_call', onVoipActivityCallPhone);
-    const activity = this.messaging.models['mail.activity'].create({
+    const activity = this.messaging.models['Activity'].create({
         id: 100,
         phone: '+3287654321',
     });

@@ -38,7 +38,7 @@ QUnit.test('activity with approval to be made by logged user', async function (a
     assert.expect(14);
 
     await this.start();
-    const activityData = this.messaging.models['mail.activity'].convertData({
+    const activityData = this.messaging.models['Activity'].convertData({
         activity_type_id: [1, 'Approval'],
         approver_id: 12,
         approver_status: 'pending',
@@ -46,7 +46,7 @@ QUnit.test('activity with approval to be made by logged user', async function (a
         id: 10,
         user_id: [this.messaging.currentUser.id, "Eden Hazard"],
     });
-    const activity = this.messaging.models['mail.activity'].create(activityData);
+    const activity = this.messaging.models['Activity'].create(activityData);
     await this.createActivityComponent(activity);
 
     assert.containsOnce(
@@ -125,7 +125,7 @@ QUnit.test('activity with approval to be made by another user', async function (
     assert.expect(16);
 
     await this.start();
-    const activityData = this.messaging.models['mail.activity'].convertData({
+    const activityData = this.messaging.models['Activity'].convertData({
         activity_type_id: [1, 'Approval'],
         approver_id: 12,
         approver_status: 'pending',
@@ -133,7 +133,7 @@ QUnit.test('activity with approval to be made by another user', async function (
         id: 10,
         user_id: [42, "Simon Mignolet"],
     });
-    const activity = this.messaging.models['mail.activity'].create(activityData);
+    const activity = this.messaging.models['Activity'].create(activityData);
     await this.createActivityComponent(activity);
 
     assert.containsOnce(
@@ -232,7 +232,7 @@ QUnit.test('approve approval', async function (assert) {
             return this._super(...arguments);
         },
     });
-    const activityData = this.messaging.models['mail.activity'].convertData({
+    const activityData = this.messaging.models['Activity'].convertData({
         activity_type_id: [1, 'Approval'],
         approver_id: 12,
         approver_status: 'pending',
@@ -240,7 +240,7 @@ QUnit.test('approve approval', async function (assert) {
         id: 10,
         user_id: [this.messaging.currentUser.id, "Eden Hazard"],
     });
-    const activity = this.messaging.models['mail.activity'].create(activityData);
+    const activity = this.messaging.models['Activity'].create(activityData);
     await this.createActivityComponent(activity);
 
     assert.containsOnce(
@@ -272,7 +272,7 @@ QUnit.test('refuse approval', async function (assert) {
             return this._super(...arguments);
         },
     });
-    const activityData = this.messaging.models['mail.activity'].convertData({
+    const activityData = this.messaging.models['Activity'].convertData({
         activity_type_id: [1, 'Approval'],
         approver_id: 12,
         approver_status: 'pending',
@@ -280,7 +280,7 @@ QUnit.test('refuse approval', async function (assert) {
         id: 10,
         user_id: [this.messaging.currentUser.id, "Eden Hazard"],
     });
-    const activity = this.messaging.models['mail.activity'].create(activityData);
+    const activity = this.messaging.models['Activity'].create(activityData);
     await this.createActivityComponent(activity);
 
     assert.containsOnce(

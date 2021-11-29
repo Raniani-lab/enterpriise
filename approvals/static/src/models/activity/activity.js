@@ -6,7 +6,7 @@ import { insert, unlinkAll } from '@mail/model/model_field_command';
 // ensure that the model definition is loaded before the patch
 import '@mail/models/activity/activity';
 
-patchModelMethods('mail.activity', {
+patchModelMethods('Activity', {
     /**
      * @override
      */
@@ -25,7 +25,7 @@ patchModelMethods('mail.activity', {
     },
 });
 
-addFields('mail.activity', {
+addFields('Activity', {
     approval: one2one('approvals.approval', {
         inverse: 'activity',
     }),

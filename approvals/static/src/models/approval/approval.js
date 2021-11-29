@@ -37,7 +37,7 @@ registerModel({
         },
     },
     fields: {
-        activity: one2one('mail.activity', {
+        activity: one2one('Activity', {
             inverse: 'approval',
         }),
         id: attr({

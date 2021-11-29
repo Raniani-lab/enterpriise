@@ -5,7 +5,7 @@ import { attr } from '@mail/model/model_field';
 // ensure that the model definition is loaded before the patch
 import '@mail/models/activity/activity';
 
-patchModelMethods('mail.activity', {
+patchModelMethods('Activity', {
     /**
      * @override
      */
@@ -21,7 +21,7 @@ patchModelMethods('mail.activity', {
     },
 });
 
-addFields('mail.activity', {
+addFields('Activity', {
     /**
      * String to store the mobile number in a call activity.
      */
@@ -32,7 +32,7 @@ addFields('mail.activity', {
     phone: attr(),
 });
 
-addLifecycleHooks('mail.activity', {
+addLifecycleHooks('Activity', {
     _created() {
         this._onReloadChatter = this._onReloadChatter.bind(this);
         this.env.bus.on('voip_reload_chatter', undefined, this._onReloadChatter);
@@ -42,7 +42,7 @@ addLifecycleHooks('mail.activity', {
     },
 });
 
-addRecordMethods('mail.activity', {
+addRecordMethods('Activity', {
     /**
      * @private
      */

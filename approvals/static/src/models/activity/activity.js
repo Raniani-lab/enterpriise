@@ -26,7 +26,7 @@ patchModelMethods('Activity', {
 });
 
 addFields('Activity', {
-    approval: one2one('approvals.approval', {
+    approval: one2one('Approval', {
         inverse: 'activity',
     }),
 });

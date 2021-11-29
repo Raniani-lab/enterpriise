@@ -11,10 +11,10 @@ class Approval extends Component {
     //--------------------------------------------------------------------------
 
     /**
-     * @returns {approvals.approval}
+     * @returns {Approval}
      */
     get approval() {
-        return this.messaging && this.messaging.models['approvals.approval'].get(this.props.approvalLocalId);
+        return this.messaging && this.messaging.models['Approval'].get(this.props.approvalLocalId);
     }
 
     //--------------------------------------------------------------------------

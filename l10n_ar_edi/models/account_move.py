@@ -698,9 +698,10 @@ class AccountMove(models.Model):
         partner_id_code = self._get_partner_code_id(self.commercial_partner_id)
         amounts = self._l10n_ar_get_amounts()
         ArrayOfItem = client.get_type('ns0:ArrayOfItem')
+        vat = partner_id_code and self.commercial_partner_id.vat and re.sub(r'\D+', '', self.commercial_partner_id.vat)
         res = {'Id': last_id,
                'Tipo_doc': int(partner_id_code) or 0,
-               'Nro_doc': int(partner_id_code) and int(self.commercial_partner_id.vat) or 0,
+               'Nro_doc': vat and int(vat) or 0,
                'Zona': 1,  # National (the only one returned by AFIP)
                'Tipo_cbte': int(self.l10n_latam_document_type_id.code),
                'Punto_vta': int(self.journal_id.l10n_ar_afip_pos_number),

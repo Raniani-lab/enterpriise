@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.3+e\n"
+"Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-08 09:08+0000\n"
+"POT-Creation-Date: 2021-11-30 08:26+0000\n"
 "PO-Revision-Date: 2021-06-08 09:24+0000\n"
 "Last-Translator: Chris Egal <sodaswed@web.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/121515/de/)\n"
@@ -31,6 +31,14 @@ msgid "<span>€</span>"
 msgstr ""
 
 #. module: l10n_be_hr_payroll_holiday_pay_recovery
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll_holiday_pay_recovery.hr_employee_view_form
+msgid ""
+"<strong class=\"o_horizontal_separator\" colspan=\"2\" "
+"id=\"previous_employer_title\" "
+"groups=\"hr_payroll.group_hr_payroll_user\">Previous Employer</strong>"
+msgstr ""
+
+#. module: l10n_be_hr_payroll_holiday_pay_recovery
 #: model:ir.model.fields,help:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_recovered_n
 #: model:ir.model.fields,help:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_recovered_n1
 msgid ""
@@ -42,12 +50,6 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_to_recover_n1
 msgid "Amount of the holiday pay paid by the previous employer to recover."
 msgstr ""
-
-#. module: l10n_be_hr_payroll_holiday_pay_recovery
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__display_name
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_payslip__display_name
-msgid "Display Name"
-msgstr "Anzeigename"
 
 #. module: l10n_be_hr_payroll_holiday_pay_recovery
 #: model:ir.model,name:l10n_be_hr_payroll_holiday_pay_recovery.model_hr_employee
@@ -63,28 +65,6 @@ msgstr ""
 #: model:hr.salary.rule,name:l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n1
 msgid "Holiday Pay Recovery (Year N-1)"
 msgstr ""
-
-#. module: l10n_be_hr_payroll_holiday_pay_recovery
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_to_recover_n
-msgid "Holiday Pay to Recover (N)"
-msgstr ""
-
-#. module: l10n_be_hr_payroll_holiday_pay_recovery
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_to_recover_n1
-msgid "Holiday Pay to Recover (N-1)"
-msgstr ""
-
-#. module: l10n_be_hr_payroll_holiday_pay_recovery
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__id
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_payslip__id
-msgid "ID"
-msgstr "ID"
-
-#. module: l10n_be_hr_payroll_holiday_pay_recovery
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee____last_update
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_payslip____last_update
-msgid "Last Modified on"
-msgstr "Zuletzt geändert am"
 
 #. module: l10n_be_hr_payroll_holiday_pay_recovery
 #: model:ir.model.fields,help:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_number_of_days_n
@@ -108,16 +88,21 @@ msgid "Pay Slip"
 msgstr "Vergütungsabrechnung"
 
 #. module: l10n_be_hr_payroll_holiday_pay_recovery
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll_holiday_pay_recovery.hr_employee_view_form
-msgid "Previous Employer"
-msgstr ""
-
-#. module: l10n_be_hr_payroll_holiday_pay_recovery
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_recovered_n
-msgid "Recovered Holiday Pay (N)"
+msgid "Recovered Simple Holiday Pay (N)"
 msgstr ""
 
 #. module: l10n_be_hr_payroll_holiday_pay_recovery
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_recovered_n1
-msgid "Recovered Holiday Pay (N-1)"
+msgid "Recovered Simple Holiday Pay (N-1)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll_holiday_pay_recovery
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_to_recover_n
+msgid "Simple Holiday Pay to Recover (N)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll_holiday_pay_recovery
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll_holiday_pay_recovery.field_hr_employee__l10n_be_holiday_pay_to_recover_n1
+msgid "Simple Holiday Pay to Recover (N-1)"
 msgstr ""

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import _, models
 
 from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
 
@@ -28,3 +28,28 @@ class ProjectTask(models.Model):
                 for record_read in result:
                     record_read['timesheet_ids'] = timesheets_dict.get(record_read['id'], [])
         return result
+
+    def _gantt_progress_bar_sale_line_id(self, res_ids):
+        uom_hour = self.env.ref('uom.product_uom_hour')
+        allocated_hours_per_sol = self.env['project.task'].read_group([
+            ('sale_line_id', 'in', res_ids),
+        ], ['sale_line_id', 'allocated_hours'], ['sale_line_id'])
+        allocated_hours_per_sol_mapped = {
+            sol['sale_line_id'][0]: sol['allocated_hours']
+            for sol in allocated_hours_per_sol
+        }
+        return {
+            sol.id: {
+                'value': allocated_hours_per_sol_mapped.get(sol.id, 0.0),
+                'max_value': sol.product_uom._compute_quantity(sol.product_uom_qty, uom_hour),
+            }
+            for sol in self.env['sale.order.line'].browse(res_ids)
+        }
+
+    def _gantt_progress_bar(self, field, res_ids, start, stop):
+        if field == 'sale_line_id':
+            return dict(
+                self._gantt_progress_bar_sale_line_id(res_ids),
+                warning=_("This Sale Order Item doesn't have a target value of planned hours. Planned hours :")
+            )
+        return super()._gantt_progress_bar(field, res_ids, start, stop)

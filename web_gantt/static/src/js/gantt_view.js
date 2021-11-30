@@ -148,6 +148,7 @@ var GanttView = AbstractView.extend({
         this.loadParams.scale = scale;
         this.loadParams.SCALES = this.SCALES;
         this.loadParams.consolidationParams = consolidationParams;
+        this.loadParams.progressBarFields = arch.attrs.progress_bar;
 
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
         this.rendererParams.canCellCreate = canCellCreate;
@@ -166,6 +167,7 @@ var GanttView = AbstractView.extend({
         this.rendererParams.collapseFirstLevel = collapseFirstLevel;
         this.rendererParams.consolidationParams = consolidationParams;
         this.rendererParams.thumbnails = thumbnails;
+        this.rendererParams.progressBarFields = arch.attrs.progress_bar;
     },
 });
 

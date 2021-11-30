@@ -4613,5 +4613,149 @@ document.createElement("a").classList.contains
             unpatchDate();
         }
     );
+
+    QUnit.test('No progress bar when no option set.', async function (assert) {
+        assert.expect(1);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"/>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_progress_bar') {
+                    // Should never assert this - will be reported in assert.expect count.
+                    assert.strictEqual(args.method, "gantt_progress_bar");
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const progressbar = gantt.el.querySelectorAll('.o_gantt_row_sidebar .o_gantt_progressbar');
+        assert.strictEqual(progressbar.length, 0, "Gantt should not include any progressbar");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('Progress bar rpc is triggered when option set.', async function (assert) {
+        assert.expect(8);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"
+                        default_group_by="user_id"
+                        progress_bar="user_id">
+                        <field name="user_id"/>
+                   </gantt>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_progress_bar') {
+                    assert.strictEqual(args.model, "tasks");
+                    assert.deepEqual(args.args[0], ['user_id']);
+                    assert.deepEqual(args.args[1], {user_id: [1, 2]});
+                    return Promise.resolve({
+                        user_id: {
+                            1: {value: 50, max_value: 100},
+                            2: {value: 25, max_value: 200},
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const progressbar = gantt.el.querySelectorAll('.o_gantt_row_sidebar .o_gantt_progressbar');
+        assert.strictEqual(progressbar.length, 2, "Gantt should include two progressbars");
+        assert.strictEqual(progressbar[0].style.width, "50%");
+        assert.strictEqual(progressbar[1].style.width, "12.5%");
+        assert.hasClass(progressbar[0], "o_gantt_group_success", "Progress bar should have the success class");
+        assert.hasClass(progressbar[1], "o_gantt_group_success", "Progress bar should have the success class");
+        gantt.destroy();
+    });
+
+    QUnit.test('Progress bar warning when max_value is zero', async function (assert) {
+        assert.expect(5);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"
+                        default_group_by="user_id"
+                        progress_bar="user_id">
+                        <field name="user_id"/>
+                   </gantt>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_progress_bar') {
+                    assert.strictEqual(args.model, "tasks");
+                    assert.deepEqual(args.args[0], ['user_id']);
+                    assert.deepEqual(args.args[1], {user_id: [1, 2]});
+                    return Promise.resolve({
+                        user_id: {
+                            1: {value: 50, max_value: 0},
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const progressbar = gantt.el.querySelectorAll('.o_gantt_row_sidebar .o_gantt_progressbar');
+        assert.strictEqual(progressbar.length, 0, "Gantt should not include progressbar");
+        const warning = gantt.el.querySelectorAll('.o_gantt_row_sidebar .fa-exclamation-triangle');
+        assert.strictEqual(warning.length, 1, "Gantt should include a warning");
+        gantt.destroy();
+    });
+
+    QUnit.test('Progress bar danger when ratio > 100', async function (assert) {
+        assert.expect(6);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"
+                        default_group_by="user_id"
+                        progress_bar="user_id">
+                        <field name="user_id"/>
+                   </gantt>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_progress_bar') {
+                    assert.strictEqual(args.model, "tasks");
+                    assert.deepEqual(args.args[0], ['user_id']);
+                    assert.deepEqual(args.args[1], {user_id: [1, 2]});
+                    return Promise.resolve({
+                        user_id: {
+                            1: {value: 150, max_value: 100},
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const progressbar = gantt.el.querySelectorAll('.o_gantt_row_sidebar .o_gantt_progressbar');
+        assert.strictEqual(progressbar.length, 1, "Gantt should include one progressbar");
+        assert.strictEqual(progressbar[0].style.width, "100%", "Progress bar should have the maximal width");
+        assert.hasClass(progressbar[0], "o_gantt_group_danger", "Progress bar should have the danger class");
+        gantt.destroy();
+    });
 });
 });

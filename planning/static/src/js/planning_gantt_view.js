@@ -34,7 +34,6 @@ odoo.define('planning.PlanningGanttView', function (require) {
                     }
                 }
             }
-
         }
     });
 

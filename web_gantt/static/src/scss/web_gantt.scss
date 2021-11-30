@@ -150,6 +150,14 @@ $gantt-unavailability-bg: $gray-200;
         }
     }
 
+    .o_gantt_row {
+        &:hover{
+            .o_gantt_group_hours {
+                display: initial;
+            }
+        }
+    }
+
     // === All sidebar headers (Regular, Groups and Total) ====
     // ========================================================
     .o_gantt_row_sidebar {
@@ -158,6 +166,35 @@ $gantt-unavailability-bg: $gray-200;
 
         .o_gantt_row_title {
             line-height: $gantt-pill-height + 4px;
+            position: relative;
+        }
+
+        .o_gantt_progressbar, .o_gantt_text_hoverable {
+            right: 0;
+            height: 100%
+        }
+        .o_gantt_progressbar {
+            &.o_gantt_group_success {
+                background-color: rgba($green, 0.3);
+            }
+            &.o_gantt_group_danger {
+                background-color: rgba($red, 0.3);
+            }
+        }
+        .o_gantt_text_hoverable {
+            z-index: 1;
+            &.o_gantt_group_success {
+                background-color: #bfe5c7;
+            }
+            &.o_gantt_group_danger {
+                background-color: #f5c2c7;
+            }
+            &.o_gantt_group_none {
+                background-color: $white;
+            }
+        }
+        .o_gantt_group_hours {
+            display: none;
         }
     }
 
@@ -406,6 +443,9 @@ $gantt-unavailability-bg: $gray-200;
                 }
             }
         }
+        .o_gantt_row_sidebar .o_gantt_group_hours {
+            line-height: $gantt-pill-height + 4px;
+        }
     }
 
     // ==== "Group Header" rows (closed) =====
@@ -414,13 +454,13 @@ $gantt-unavailability-bg: $gray-200;
         cursor: pointer;
 
         &, &.open:hover {
-            .o_gantt_row_sidebar, .o_gantt_slots_container {
+            .o_gantt_row_sidebar, .o_gantt_slots_container, .o_gantt_text_hoverable.o_gantt_group_none {
                 background-image: linear-gradient(darken($gantt-row-open-bg, 5%), $gantt-row-open-bg);
             }
         }
 
         &:hover, &.open {
-            .o_gantt_row_sidebar, .o_gantt_slots_container {
+            .o_gantt_row_sidebar, .o_gantt_slots_container, .o_gantt_text_hoverable.o_gantt_group_none {
                 background-image: linear-gradient($gantt-row-open-bg, darken($gantt-row-open-bg, 5%));
             }
         }
@@ -428,6 +468,15 @@ $gantt-unavailability-bg: $gray-200;
         .o_gantt_row_sidebar, .o_gantt_row_title, .o_gantt_cell {
             min-height: $gantt-pill-consolidated-height;
             line-height: $gantt-pill-consolidated-height;
+        }
+
+        .o_gantt_row_sidebar .o_gantt_text_hoverable {
+            &.o_gantt_group_success {
+                background-image: linear-gradient(#add4bd, #b8dec3);
+            }
+            &.o_gantt_group_danger {
+                background-image: linear-gradient(#e3b2bd, #eebcc3);
+            }
         }
 
         .o_gantt_row_thumbnail_wrapper .o_gantt_row_thumbnail {

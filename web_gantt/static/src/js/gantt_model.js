@@ -140,6 +140,7 @@ var GanttModel = AbstractModel.extend({
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.displayUnavailability = params.displayUnavailability;
         this.SCALES = params.SCALES;
+        this.progressBarFields = params.progressBarFields ? params.progressBarFields.split(",") : false;
 
         this.defaultGroupBy = params.defaultGroupBy ? [params.defaultGroupBy] : [];
         let groupedBy = params.groupedBy;
@@ -320,11 +321,14 @@ var GanttModel = AbstractModel.extend({
                 parentPath: [],
                 records: self.ganttData.records,
             });
-            var unavailabilityProm;
+            const proms = [];
             if (self.displayUnavailability && !self.isSampleModel) {
-                unavailabilityProm = self._fetchUnavailability();
+                proms.push(self._fetchUnavailability());
             }
-            return unavailabilityProm;
+            if (self.progressBarFields && !self.isSampleModel) {
+                proms.push(self._fetchProgressBarData());
+            }
+            return Promise.all(proms);
         });
     },
     /**
@@ -645,6 +649,82 @@ var GanttModel = AbstractModel.extend({
                 return fieldName in this.fields && this.fields[fieldName].type.indexOf('date') === -1;
             }
         );
+    },
+
+    //----------------------
+    // Gantt Progress Bars
+    //----------------------
+    /**
+     * Get progress bars info in order to display progress bar in gantt title column
+     *
+     * @private
+     */
+    _fetchProgressBarData() {
+        const progressBarFields = this.progressBarFields.filter(field => this.ganttData.groupedBy.includes(field));
+        if (this.isSampleModel || !progressBarFields.length) {
+            return;
+        }
+        const resIds = {};
+        let hasResIds = false;
+        for (const field of progressBarFields) {
+            resIds[field] = this._getProgressBarResIds(field, this.ganttData.rows);
+            hasResIds = hasResIds || resIds[field].length;
+        }
+        if (!hasResIds) {
+            return;
+        }
+        return this._rpc({
+            model: this.modelName,
+            method: 'gantt_progress_bar',
+            args: [
+                progressBarFields,
+                resIds,
+                this.convertToServerTime(this.ganttData.startDate),
+                this.convertToServerTime(this.ganttData.endDate || this.ganttData.startDate.clone().add(1, this.ganttData.scale)),
+            ],
+        }).then((progressBarInfo) => {
+            for (const field of progressBarFields) {
+                this._addProgressBarInfo(field, this.ganttData.rows, progressBarInfo[field]);
+            }
+        });
+    },
+    /**
+     * Recursive function to get resIds of groups where the progress bar will be added.
+     *
+     * @private
+     */
+    _getProgressBarResIds(field, rows) {
+        const resIds = [];
+        for (const row of rows) {
+            if (row.groupedByField === field) {
+                if (row.resId !== false) {
+                    resIds.push(row.resId);
+                }
+            } else {
+                resIds.push(...this._getProgressBarResIds(field, row.rows));
+            }
+        }
+        return [...new Set(resIds)];
+    },
+    /**
+     * Recursive function to add progressBar info to rows grouped by the field.
+     *
+     * @private
+     */
+    _addProgressBarInfo(field, rows, progressBarInfo) {
+        for (const row of rows) {
+            if (row.groupedByField === field) {
+                row.progressBar = progressBarInfo[row.resId];
+                if (row.progressBar) {
+                    row.progressBar.value_formatted = fieldUtils.format.float(row.progressBar.value, {'digits': [false, 0]});
+                    row.progressBar.max_value_formatted = fieldUtils.format.float(row.progressBar.max_value, {'digits': [false, 0]});
+                    row.progressBar.ratio = row.progressBar.max_value ? row.progressBar.value / row.progressBar.max_value * 100 : 0;
+                    row.progressBar.warning = progressBarInfo.warning;
+                }
+            } else {
+                this._addProgressBarInfo(field, row.rows, progressBarInfo);
+            }
+        }
     },
 });
 

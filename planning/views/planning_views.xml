@@ -320,7 +320,8 @@
                 decoration-warning="publication_warning and state == 'published'"
                 decoration-danger="overlap_slot_count > 0"
                 display_unavailability="1"
-                sample="1">
+                sample="1"
+                progress_bar="resource_id">
 
                 <field name="allocated_hours"/>
                 <field name="recurrency_id" />

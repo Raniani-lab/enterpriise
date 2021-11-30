@@ -81,12 +81,6 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 model: "task",
                 View: PlanningGanttView,
                 viewOptions: { initialDate },
-                mockRPC: function (route, args) {
-                    if (args.method === 'get_planning_hours_info') {
-                        return Promise.resolve({});
-                    }
-                    return this._super.apply(this, arguments);
-                },
             });
 
             testUtils.mock.intercept(gantt, 'call_service', (ev) => {
@@ -131,12 +125,6 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     initialDate: new Date(),
                 },
                 groupBy: ['resource_id'],
-                mockRPC: function (route, args) {
-                    if (args.method === 'get_planning_hours_info') {
-                        return Promise.resolve({});
-                    }
-                    return this._super.apply(this, arguments);
-                },
             });
 
             assert.hasClass(gantt, 'o_view_sample_data');
@@ -183,12 +171,6 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     initialDate: new Date(),
                 },
                 groupBy: ['department_id', 'role_id', 'resource_id'],
-                mockRPC: function (route, args) {
-                    if (args.method === 'get_planning_hours_info') {
-                        return Promise.resolve({});
-                    }
-                    return this._super.apply(this, arguments);
-                },
             });
 
             function getRow(index) {

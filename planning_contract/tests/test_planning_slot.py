@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 from datetime import datetime
-import pytz
+from pytz import UTC, timezone
 
 from odoo.addons.resource.models.resource import Intervals
 from odoo.tests import tagged
@@ -67,19 +67,20 @@ class TestPlanningContract(TransactionCase):
         })
 
     def test_employee_contract_validity_per_period(self):
-        start = datetime(2015, 11, 8, 00, 00, 00, tzinfo=pytz.UTC)
-        end = datetime(2015, 11, 21, 23, 59, 59, tzinfo=pytz.UTC)
+        start = datetime(2015, 11, 8, 00, 00, 00, tzinfo=UTC)
+        end = datetime(2015, 11, 21, 23, 59, 59, tzinfo=UTC)
         jules_resource = self.jules_emp.resource_id
         calendars_validity_within_period = jules_resource._get_calendars_validity_within_period(start, end, default_company=self.jules_emp.company_id)
+        tz = timezone(self.jules_emp.tz)
 
         self.assertEqual(len(calendars_validity_within_period[jules_resource.id]), 2, "There should exist 2 calendars within the period")
         interval_calendar_40h = Intervals([(
             start,
-            pytz.utc.localize(datetime.combine(self.contract_cdd.date_end, datetime.max.time())),
+            tz.localize(datetime.combine(self.contract_cdd.date_end, datetime.max.time())),
             self.env['resource.calendar.attendance']
         )])
         interval_calendar_35h = Intervals([(
-            pytz.utc.localize(datetime.combine(self.contract_cdi.date_start, datetime.min.time())),
+            tz.localize(datetime.combine(self.contract_cdi.date_start, datetime.min.time())),
             end,
             self.env['resource.calendar.attendance']
         )])
@@ -91,9 +92,9 @@ class TestPlanningContract(TransactionCase):
         self.assertFalse(interval_calendar_35h - computed_interval_35h, "The interval of validity for the 35h calendar must be from 2015-11-08 to 2015-11-15, not less")
 
     def test_employee_work_intervals(self):
-        start = datetime(2015, 11, 8, 00, 00, 00, tzinfo=pytz.UTC)
-        end = datetime(2015, 11, 21, 23, 59, 59, tzinfo=pytz.UTC)
-        work_intervals = self.jules_emp.resource_id._get_work_intervals_batch(start, end)
+        start = datetime(2015, 11, 8, 00, 00, 00, tzinfo=UTC)
+        end = datetime(2015, 11, 21, 23, 59, 59, tzinfo=UTC)
+        work_intervals, _ = self.jules_emp.resource_id._get_valid_work_intervals(start, end)
         sum_work_intervals = sum(
             (stop - start).total_seconds() / 3600
             for start, stop, _resource in work_intervals[self.jules_emp.resource_id.id]
@@ -101,5 +102,7 @@ class TestPlanningContract(TransactionCase):
         self.assertEqual(75, sum_work_intervals, "Sum of the work intervals for the employee Jules should be 40h+35h = 75h")
 
     def test_employee_work_planning_hours_info(self):
-        planning_hours_info = self.jules_emp.resource_id.get_planning_hours_info('2015-11-08 00:00:00', '2015-11-21 23:59:59')
-        self.assertEqual(75, planning_hours_info[self.jules_emp.resource_id.id]['work_hours'], "Work hours for the employee Jules should be 40h+35h = 75h")
+        planning_hours_info = self.env['planning.slot'].gantt_progress_bar(
+            ['resource_id'], {'resource_id': self.jules_emp.resource_id.ids}, '2015-11-08 00:00:00', '2015-11-21 23:59:59'
+        )['resource_id']
+        self.assertEqual(75, planning_hours_info[self.jules_emp.resource_id.id]['max_value'], "Work hours for the employee Jules should be 40h+35h = 75h")

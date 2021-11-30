@@ -152,3 +152,38 @@ class Base(models.AbstractModel):
         :returns: dict of unavailability
         """
         return rows
+
+    @api.model
+    def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):
+        """
+            Get progress bar value per record.
+
+            This method is meant to be overriden by each related model that want to
+            implement this feature on Gantt groups. The progressbar is composed
+            of a value and a max_value given for each groupedby field.
+
+            Example:
+                fields = ['foo', 'bar'],
+                res_ids = {'foo': [1, 2], 'bar':[2, 3]}
+                start_date = 01/01/2000, end_date = 01/07/2000,
+                self = base()
+
+            Result:
+                {
+                    'foo': {
+                        1: {'value': 50, 'max_value': 100},
+                        2: {'value': 25, 'max_value': 200},
+                    },
+                    'bar': {
+                        2: {'value': 65, 'max_value': 85},
+                        3: {'value': 30, 'max_value': 95},
+                    }
+                }
+
+            :param list fields: fields on which there are progressbars
+            :param dict res_ids: res_ids of related records for which we need to compute progress bar
+            :param string date_start_str: start date
+            :param string date_stop_str: stop date
+            :returns: dict of value and max_value per record
+        """
+        return {}

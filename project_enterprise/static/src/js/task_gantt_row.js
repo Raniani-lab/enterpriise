@@ -3,7 +3,6 @@
 import GanttRow from 'web_gantt.GanttRow';
 import { getDateFormatForScale } from "./task_gantt_utils";
 
-
 const TaskGanttRow = GanttRow.extend({
     template: 'TaskGanttMilestonesView.Row',
 

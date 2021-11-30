@@ -5,7 +5,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 import pytz
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.osv import expression
 from odoo.tools import float_utils, DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -349,14 +349,14 @@ class PlanningSlot(models.Model):
         attendance_intervals = Intervals()
         unavailability_intervals = Intervals()
         # retrieves attendances and unavailabilities of the resource
-        for calendar in resource_calendar_validity_intervals.keys():
+        for calendar, validity_intervals in resource_calendar_validity_intervals.items():
             attendance = calendar._attendance_intervals_batch(
                 start_dt, end_dt, resources=resource)[resource.id]
             leaves = calendar._leave_intervals_batch(
                 start_dt, end_dt, resources=resource)[resource.id]
             # The calendar is valid only during its validity interval (see resource_resource:_get_calendars_validity_within_period)
-            attendance_intervals |= attendance & resource_calendar_validity_intervals[calendar]
-            unavailability_intervals |= leaves & resource_calendar_validity_intervals[calendar]
+            attendance_intervals |= attendance & validity_intervals
+            unavailability_intervals |= leaves & validity_intervals
         partial_slots = {}
         partial_interval_slots = defaultdict(list)
         if resource:
@@ -608,3 +608,23 @@ class PlanningSlot(models.Model):
             'end_datetime': False,
             'employee_id': False,
         })
+
+    # -----------------------------------
+    # Gantt Progress Bar
+    # -----------------------------------
+    def _gantt_progress_bar_sale_line_id(self, res_ids):
+        return {
+            sol.id: {
+                'value': sol.planning_hours_planned,
+                'max_value': sol.planning_hours_to_plan,
+            }
+            for sol in self.env['sale.order.line'].browse(res_ids)
+        }
+
+    def _gantt_progress_bar(self, field, res_ids, start, stop):
+        if field == 'sale_line_id':
+            return dict(
+                self._gantt_progress_bar_sale_line_id(res_ids),
+                warning=_("This Sale Order Item doesn't have a target value of planned hours. Planned hours :")
+            )
+        return super()._gantt_progress_bar(field, res_ids, start, stop)

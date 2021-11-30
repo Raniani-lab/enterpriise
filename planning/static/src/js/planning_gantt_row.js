@@ -1,8 +1,8 @@
 /** @odoo-module alias=planning.PlanningGanttRow **/
 
 import HrGanttRow from 'hr_gantt.GanttRow';
+import EmployeeWithJobTitle from '@planning/js/widgets/employee_m2o_with_job_title';
 import fieldUtils from 'web.field_utils';
-import EmployeeWithPlannedHours from '@planning/js/widgets/employee_m2o_with_planned_hours';
 
 const PlanningGanttRow = HrGanttRow.extend({
     template: 'PlanningGanttView.Row',
@@ -11,9 +11,8 @@ const PlanningGanttRow = HrGanttRow.extend({
         this._super(...arguments);
         const isGroupedByResource = pillsInfo.groupedByField === 'resource_id';
         const isEmptyGroup = pillsInfo.groupId === 'empty';
-        this.employeeID = (pillsInfo.planningHoursInfo && pillsInfo.planningHoursInfo.employee_id) || false;
+        this.employeeID = (this.progressBar && this.progressBar.employee_id) || false;
         this.showEmployeeAvatar = (isGroupedByResource && !isEmptyGroup && !!this.employeeID);
-        this.planningHoursInfo = pillsInfo.planningHoursInfo;
     },
 
     _getEmployeeID() {
@@ -46,7 +45,7 @@ const PlanningGanttRow = HrGanttRow.extend({
      */
     async _preloadAvatarWidget() {
         const employee = [this._getEmployeeID(), this.name];
-        this.avatarWidget = new EmployeeWithPlannedHours(this, employee, this.planningHoursInfo);
+        this.avatarWidget = new EmployeeWithJobTitle(this, employee, this.planningHoursInfo);
         return this.avatarWidget.appendTo(document.createDocumentFragment());
     },
 });

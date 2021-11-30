@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+
 import copy
+import logging as logger
 import re
 import urllib.parse
 
-from odoo import models, api
+from odoo import models, api, tools
 from odoo.addons.iap.tools import iap_tools
-from odoo.tools import html2plaintext
 
-import logging as logger
 _logger = logger.getLogger(__name__)
 
 MOBILE_APP_IDENTIFIER = 'com.odoo.mobile'
@@ -16,6 +16,7 @@ BLACK_LIST_PARAM = {
     'access_token',
     'auth_signup_token',
 }
+
 
 class MailThread(models.AbstractModel):
     _inherit = 'mail.thread'
@@ -141,7 +142,7 @@ class MailThread(models.AbstractModel):
         if isinstance(body, bytes):
             body = body.decode("utf-8")
         if payload_length < 4000:
-            payload_body = html2plaintext(body)
+            payload_body = tools.html2plaintext(body)
             payload_body += self._generate_tracking_message(message)
             payload['body'] = payload_body[:4000 - payload_length]
 

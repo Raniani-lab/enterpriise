@@ -147,6 +147,20 @@ class SignRequest(models.Model):
                 'signing_date': item.signing_date or ''
             } for item in request.request_item_ids]
 
+    def write(self, vals):
+        if 'cc_partner_ids' in vals:
+            sign_requests = self.filtered(lambda sr: sr.state == 'signed')
+            sign_request2cc_partner_ids = zip(sign_requests, [set(sign_request.cc_partner_ids.ids) for sign_request in sign_requests])
+        res = super(SignRequest, self).write(vals)
+        if 'cc_partner_ids' in vals:
+            for sign_request in self:
+                sign_request.message_subscribe(partner_ids=sign_request.cc_partner_ids.ids)
+            for sign_request, old_cc_partner_ids in sign_request2cc_partner_ids:
+                new_cc_partner_ids = set(sign_request.cc_partner_ids.ids) - old_cc_partner_ids
+                if new_cc_partner_ids:
+                    sign_request.send_completed_document(partner_ids=new_cc_partner_ids)
+        return res
+
     @api.model_create_multi
     def create(self, vals_list):
         sign_requests = super().create(vals_list)
@@ -362,7 +376,7 @@ class SignRequest(models.Model):
         request_sudo = self.sudo().browse(request_id)
         return request_sudo.exists() and request_sudo.nb_closed == 0 and self.env.user.has_group('base.group_user')
 
-    def send_completed_document(self):
+    def send_completed_document(self, partner_ids=None):
         self.ensure_one()
         if self.state != 'signed':
             raise UserError(_('The sign request has not been fully signed'))
@@ -373,10 +387,11 @@ class SignRequest(models.Model):
 
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
-        for sign_request_item in self.request_item_ids:
+        for sign_request_item in self.request_item_ids if partner_ids is None else self.request_item_ids.filtered(lambda sri: sri.id in partner_ids):
             self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.access_token, with_message_cc=sign_request_item.partner_id in self.cc_partner_ids, force_send=True)
 
         cc_partners_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
+        cc_partners_valid = cc_partners_valid if partner_ids is None else cc_partners_valid.filtered(lambda p: p.id in partner_ids)
         for cc_partner in cc_partners_valid - self.request_item_ids.partner_id:
             self._send_completed_document_mail(signers, request_edited, cc_partner)
         if cc_partners_valid:

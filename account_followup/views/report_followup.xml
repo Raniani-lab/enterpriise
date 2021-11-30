@@ -43,7 +43,7 @@
         <t t-if="context.get('snailmail_layout')" t-set="contact_widget_fields" t-value="['address', 'name']"/>
         <t t-else="" t-set="contact_widget_fields" t-value="['address', 'name', 'phone']"/>
                 <div class="row fallback_header">
-                    <div class="col-5 offset-7" style='margin-top: 15px;'>
+                    <div class="col-5 offset-7">
                         <div t-field="partner_addr.self"
                             t-options='{"widget": "contact", "fields": contact_widget_fields, "no_marker": True}'/>
                         <span t-field="partner_addr.vat"/>
@@ -126,7 +126,10 @@
             <xpath expr="//table[hasclass('o_account_reports_table')]" position="attributes">
               <attribute name="width">100%</attribute>
             </xpath>
-            <xpath expr="//t[@t-call='account_reports.filter_info_template']" position="replace"><t t-call="account_followup.followup_filter_info_template"/></xpath>
+            <xpath expr="//t[@t-call='account_reports.filter_info_template']" position="replace"></xpath>
+            <xpath expr="//div[hasclass('o_account_reports_header')]" position="before">
+                <t t-call="account_followup.followup_filter_info_template"/>
+            </xpath>
             <xpath expr="//div[hasclass('o_account_reports_header')]" position="inside">
                 <div class="row">
                     <div class="col-xl-6">

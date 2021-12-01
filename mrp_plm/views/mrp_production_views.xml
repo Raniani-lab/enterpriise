@@ -5,15 +5,10 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
-            <field name="bom_id" position='replace'>
+            <field name="bom_id" position='after'>
                 <field name='latest_bom_id' invisible='1'/>
-                <label for="bom_id"/>
-                <div class='o_row d-flex'>
-                    <field name="bom_id"
-                        context="{'default_product_tmpl_id': product_tmpl_id}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                    <button name="action_update_bom" string="Update BoM" type="object" attrs="{'invisible': ['|', ('latest_bom_id', '=', False), ('state', '!=', 'draft')]}" class="text-danger"/>
-                    <widget name='plm_toaster_button' attrs="{'invisible': ['|', ('latest_bom_id', '=', False), ('state', '!=', 'confirmed')]}"/>
-                </div>
+                <button name="action_update_bom" string="Update BoM" type="object" attrs="{'invisible': ['|', ('latest_bom_id', '=', False), ('state', '!=', 'draft')]}" class="text-danger"/>
+                <widget name='plm_toaster_button' attrs="{'invisible': ['|', ('latest_bom_id', '=', False), ('state', '!=', 'confirmed')]}"/>
             </field>
         </field>
     </record>

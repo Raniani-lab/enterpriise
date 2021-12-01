@@ -33,7 +33,7 @@ class HelpdeskTicket(models.Model):
     sale_order_id = fields.Many2one('sale.order', compute="_compute_helpdesk_sale_order", compute_sudo=True, store=True, readonly=False)
     sale_line_id = fields.Many2one(
         'sale.order.line', string="Sales Order Item",
-        compute="_compute_sale_line_id", store=True, readonly=False, precompute=True,
+        compute="_compute_sale_line_id", store=True, readonly=False,
         domain="[('company_id', '=', company_id), ('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]")
     project_sale_order_id = fields.Many2one('sale.order', string="Project's sale order", related='project_id.sale_order_id')
     remaining_hours_available = fields.Boolean(related="sale_line_id.remaining_hours_available")

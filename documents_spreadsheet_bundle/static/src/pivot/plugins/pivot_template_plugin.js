@@ -300,8 +300,8 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             for (let sheet of this.getters.getSheets()) {
                 const invalidRows = [];
                 for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
-                    const { cells } = this.getters.getRow(sheet.id, rowIndex);
-                    const [valid, invalid] = Object.values(cells)
+                    const cellIds = Object.values(this.getters.getRow(sheet.id, rowIndex).cells);
+                    const [valid, invalid] = cellIds.map(id => this.getters.getCellById(id))
                         .filter((cell) => cell.isFormula() && /^\s*=.*PIVOT/.test(cell.content))
                         .reduce(
                             ([valid, invalid], cell) => {

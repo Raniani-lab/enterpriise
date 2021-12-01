@@ -14,9 +14,53 @@
                 <field name="twitter_user_likes"/>
                 <field name="twitter_retweet_count"/>
                 <field name="twitter_comments_count"/>
+                <field name="twitter_quoted_tweet_id_str"/>
+                <field name="twitter_quoted_tweet_message"/>
+                <field name="twitter_quoted_tweet_author_name"/>
+                <field name="twitter_quoted_tweet_author_link"/>
+                <field name="twitter_quoted_tweet_profile_image_url"/>
+                <field name="twitter_can_retweet"/>
             </xpath>
             <xpath expr="//span[hasclass('o_social_stream_post_author_image')]" position="inside">
                 <img t-if="record.twitter_profile_image_url.raw_value" t-att-src="record.twitter_profile_image_url.raw_value" alt="Author Image"/>
+            </xpath>
+            <xpath expr="//div[@name='o_social_stream_post_message_body']" position="inside">
+                <div class="border rounded p-2" t-if="record.twitter_quoted_tweet_id_str.raw_value">
+                    <t t-set="author_info">
+                        <t t-if="record.twitter_profile_image_url.raw_value">
+                            <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden">
+                                <t t-if="record.twitter_quoted_tweet_profile_image_url.raw_value">
+                                    <img t-att-src="record.twitter_quoted_tweet_profile_image_url.raw_value" alt="Author Image"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/base/static/img/avatar_grey.png" alt="Author Image"/>
+                                </t>
+                            </span>
+                        </t>
+                        <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden"/>
+                        <span class="o_social_stream_post_author_name text-truncate ml-2"
+                            t-esc="record.twitter_quoted_tweet_author_name.value or 'Unknown'"
+                            t-att-title="record.twitter_quoted_tweet_author_name.value or 'Unknown'"/>
+                    </t>
+                    <a t-if="record.twitter_quoted_tweet_author_link.value"
+                        class="o_social_stream_post_author d-inline-flex align-items-center"
+                        t-att-href="record.twitter_quoted_tweet_author_link.value"
+                        t-att-title="record.twitter_quoted_tweet_author_name.value or 'Unknown'"
+                        t-out="author_info"
+                        target="_blank"/>
+                    <div t-else=""
+                        class="o_social_stream_post_author d-inline-flex align-items-center"
+                        t-out="author_info"/>
+                    <div name="o_social_stream_post_message_text" class="o_social_stream_post_message_text overflow-hidden">
+                        <t t-if="record.twitter_quoted_tweet_message.raw_value">
+                            <field t-if="record.twitter_quoted_tweet_message.raw_value"
+                                name="twitter_quoted_tweet_message"
+                                widget="social_kanban_field_stream_post"
+                                media_type="twitter"/>
+                        </t>
+                        <t t-else=""><span class="font-italic">Empty tweet</span></t>
+                    </div>
+                </div>
             </xpath>
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_twitter_stats px-2 d-flex justify-content-around" t-if="record.media_type.raw_value === 'twitter'">
@@ -60,8 +104,55 @@
                     </div>
 
                     <div class="flex-grow-1 text-right text-muted">
-                        <t t-esc="record.twitter_retweet_count.value"/>
-                        Retweets
+                        <div class="d-inline-block dropdown show">
+                            <a href="#" class="o_social_twitter_retweet_icon o_social_subtle_btn"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i t-attf-class="fa fa-retweet #{record.twitter_can_retweet.raw_value ? '' : 'active'}"
+                                    role="img" aria-label="Retweet" title="Retweet or Quote"/>
+                                <t t-if="record.twitter_retweet_count.value > 0">
+                                    <div class="d-inline-block">
+                                        <t t-esc="record.twitter_retweet_count.value"/>
+                                        RT
+                                    </div>
+                                </t>
+                            </a>
+                            <div class="dropdown-menu" role="menu">
+                                <a class="dropdown-item o_social_twitter_retweet" href="#" role="button"
+                                    t-att-data-stream-id="record.stream_id.raw_value"
+                                    t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value"
+                                    t-att-data-user-retweet="record.twitter_can_retweet.raw_value">
+                                    <i class="fa fa-retweet" title="Retweet a tweet"/>
+                                    <span t-if="record.twitter_can_retweet.raw_value">Retweet</span>
+                                    <span t-else="">Undo Retweet</span>
+                                </a>
+                                <a class="dropdown-item o_social_twitter_quote" href="#" role="button"
+                                    t-att-data-post-id="record.id.raw_value"
+                                    t-att-data-stream-id="record.stream_id.raw_value"
+                                    t-att-data-account-id="record.account_id.raw_value"
+                                    t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value"
+                                    data-media-type="twitter"
+                                    t-att-data-post-message="record.message.raw_value"
+                                    t-att-data-post-images="record.stream_post_image_urls.raw_value"
+                                    t-att-data-post-link="record.post_link.raw_value"
+                                    t-att-data-twitter-author-id="record.twitter_author_id.raw_value"
+                                    t-att-data-twitter-profile-image-url="record.twitter_profile_image_url.raw_value"
+                                    t-att-data-author-name="record.author_name.raw_value"
+                                    t-att-data-author-link="record.author_link.raw_value"
+                                    t-att-data-published-date="record.published_date.value"
+                                    t-att-data-formatted-published-date="record.formatted_published_date.value"
+                                    t-att-data-link-url="record.link_url.raw_value"
+                                    t-att-data-link-image="record.link_image_url.raw_value"
+                                    t-att-data-link-title="record.link_title.raw_value"
+                                    t-att-data-link-description="record.link_description.raw_value"
+                                    t-att-data-twitter-user-likes="record.twitter_user_likes.raw_value"
+                                    t-att-data-twitter-likes-count="record.twitter_likes_count.raw_value"
+                                    t-att-data-twitter-retweet-count="record.twitter_retweet_count.raw_value"
+                                    t-att-data-twitter-comments-count="record.twitter_comments_count.raw_value">
+                                    <i class="fa fa-pencil" title="Quote a tweet"/>
+                                    <span>Quote Tweet</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </xpath>

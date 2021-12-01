@@ -143,6 +143,7 @@ https://www.youtube.com/watch?v=kmt-oVAB6hU</field>
 
     <record id="social_stream_post_twitter_search_1" model="social.stream.post">
         <field name="stream_id" ref="social_stream_twitter_search" />
+        <field name="twitter_tweet_id">5</field>
         <field name="twitter_retweet_count">53</field>
         <field name="twitter_likes_count">246</field>
         <field name="author_name">The Jackson Group</field>
@@ -153,6 +154,7 @@ https://www.youtube.com/watch?v=kmt-oVAB6hU</field>
 
     <record id="social_stream_post_twitter_search_2" model="social.stream.post">
         <field name="stream_id" ref="social_stream_twitter_search" />
+        <field name="twitter_tweet_id">6</field>
         <field name="twitter_retweet_count">45</field>
         <field name="twitter_likes_count">159</field>
         <field name="author_name">Ready Mat</field>
@@ -163,6 +165,7 @@ https://www.youtube.com/watch?v=kmt-oVAB6hU</field>
 
     <record id="social_stream_post_twitter_search_3" model="social.stream.post">
         <field name="stream_id" ref="social_stream_twitter_search" />
+        <field name="twitter_tweet_id">7</field>
         <field name="twitter_retweet_count">27</field>
         <field name="twitter_likes_count">294</field>
         <field name="author_name">Gemini Furniture</field>
@@ -173,16 +176,22 @@ https://www.youtube.com/watch?v=kmt-oVAB6hU</field>
 
     <record id="social_stream_post_twitter_search_4" model="social.stream.post">
         <field name="stream_id" ref="social_stream_twitter_search" />
+        <field name="twitter_tweet_id">8</field>
         <field name="twitter_retweet_count">35</field>
         <field name="twitter_likes_count">188</field>
         <field name="author_name">Deco Addict</field>
         <field name="twitter_profile_image_url" eval="'/web/image/res.partner/%s/image_128' % ref('social_demo.res_partner_2')" />
+        <field name="twitter_quoted_tweet_id_str">4</field>
+        <field name="twitter_quoted_tweet_message">We are glad to announce a new product for this year! 🍾</field>
+        <field name="twitter_quoted_tweet_author_name">My Company Account</field>
+        <field name="twitter_quoted_tweet_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
         <field name="message">Hello @MyCompany! Started using your software a few days ago. It's been a great experience so far 👍 Can't wait to see what comes up next! #mycompany</field>
         <field name="published_date" eval="time.strftime('%Y-05-08 11:39:00')"/>
     </record>
 
     <record id="social_stream_post_twitter_search_competitor_1" model="social.stream.post">
         <field name="stream_id" ref="social_stream_twitter_search_competitor" />
+        <field name="twitter_tweet_id">9</field>
         <field name="twitter_retweet_count">1</field>
         <field name="twitter_likes_count">43</field>
         <field name="twitter_user_likes" eval="True" />

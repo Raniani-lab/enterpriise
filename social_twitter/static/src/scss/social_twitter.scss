@@ -2,6 +2,9 @@
     .o_social_twitter_likes.o_social_twitter_user_likes {
         @include o-hover-text-color($o-enterprise-color, darken($o-enterprise-color, 10%));
     }
+    .o_social_twitter_retweet_icon i.active {
+        @include o-hover-text-color($primary, darken($primary, 10%));
+    }
 }
 
 .o_social_twitter_users_autocomplete {

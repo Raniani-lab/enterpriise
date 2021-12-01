@@ -4,25 +4,68 @@
 import json
 import requests
 
+from psycopg2 import IntegrityError
 from unittest.mock import patch
 
 from odoo.addons.social_twitter.models.social_account import SocialAccountTwitter
+from odoo.addons.social_twitter.models.social_stream import SocialStreamTwitter
 from odoo.addons.social.tests.common import SocialCase
+from odoo.tests import tagged
+from odoo.tools import mute_logger
 
 
+@tagged('social_post_twitter')
 class SocialTwitterCase(SocialCase):
     @classmethod
     def setUpClass(cls):
         with patch.object(SocialAccountTwitter, '_compute_statistics', lambda x: None), \
-             patch.object(SocialAccountTwitter, '_create_default_stream_twitter', lambda *args, **kwargs: None):
+                patch.object(SocialAccountTwitter, '_create_default_stream_twitter', lambda *args, **kwargs: None), \
+                patch.object(SocialStreamTwitter, '_fetch_stream_data', lambda *args, **kwargs: None):
             super(SocialTwitterCase, cls).setUpClass()
 
             cls.social_accounts.write({
                 'twitter_oauth_token_secret': 'ABCD'
             })
+            cls.social_accounts[0].write({
+                'twitter_user_id': '1234'
+            })
+            cls.social_accounts[1].write({
+                'twitter_user_id': '5678'
+            })
 
-            cls.env['ir.config_parameter'].sudo().set_param('social.twitter_consumer_key', 'key')
-            cls.env['ir.config_parameter'].sudo().set_param('social.twitter_consumer_secret_key', 'secret_key')
+            cls.env['ir.config_parameter'].sudo().set_param(
+                'social.twitter_consumer_key', 'key')
+            cls.env['ir.config_parameter'].sudo().set_param(
+                'social.twitter_consumer_secret_key', 'secret_key')
+
+            cls.social_stream_type_1 = cls.env.ref(
+                'social_twitter.stream_type_twitter_follow')
+            cls.social_stream_type_2 = cls.env.ref(
+                'social_twitter.stream_type_twitter_user_mentions')
+
+            cls.social_twitter_account_1 = cls.env['social.twitter.account'].create({
+                'name': 'Social Twitter Account 1',
+                'twitter_id': '1234'
+            })
+            cls.social_twitter_account_2 = cls.env['social.twitter.account'].create({
+                'name': 'Social Twitter Account 2',
+                'twitter_id': '5678'
+            })
+
+            cls.social_stream_1 = cls.env['social.stream'].create({
+                'name': 'Social Stream 1',
+                'media_id': cls._get_social_media().id,
+                'account_id': cls.social_accounts[0].id,
+                'stream_type_id': cls.social_stream_type_1.id,
+                'twitter_followed_account_id': cls.social_twitter_account_1.id
+            })
+            cls.social_stream_2 = cls.env['social.stream'].create({
+                'name': 'Social Stream 2',
+                'media_id': cls._get_social_media().id,
+                'account_id': cls.social_accounts[1].id,
+                'stream_type_id': cls.social_stream_type_2.id,
+                'twitter_followed_account_id': cls.social_twitter_account_2.id
+            })
 
     def test_post_success(self):
         self._test_post()
@@ -51,6 +94,83 @@ class SocialTwitterCase(SocialCase):
     @classmethod
     def _get_social_media(cls):
         return cls.env.ref('social_twitter.social_media_twitter')
+
+    def test_can_retweet(self):
+        account = self.social_stream_1.account_id
+        tweet_1 = self.env['social.stream.post'].create({
+            'message': 'Hello world',
+            'media_type': 'twitter',
+            'stream_id': self.social_stream_1.id,
+            'twitter_author_id': account.twitter_user_id,
+            'twitter_tweet_id': '1'
+        })
+        self.assertTrue(tweet_1.twitter_can_retweet)
+
+        # When we retweet the tweet with the same account:
+        retweet = self.env['social.stream.post'].create({
+            'message': 'RT Hello world',
+            'media_type': 'twitter',
+            'stream_id': self.social_stream_1.id,
+            'twitter_author_id': account.twitter_user_id,
+            'twitter_tweet_id': '2',
+            'twitter_retweeted_tweet_id_str': tweet_1.twitter_tweet_id
+        })
+
+        # We should not be able to retweet the tweet or the retweet with the same account:
+        tweet_1.invalidate_cache()
+        self.assertFalse(tweet_1.twitter_can_retweet)
+        self.assertFalse(retweet.twitter_can_retweet)
+
+        # But if the same tweet appears in another stream:
+        tweet_2 = self.env['social.stream.post'].create({
+            'message': tweet_1.message,
+            'media_type': tweet_1.media_type,
+            'stream_id': self.social_stream_2.id,
+            'twitter_author_id': tweet_1.twitter_author_id,
+            'twitter_tweet_id': '1'
+        })
+
+        # We should be able to retweet it with the other account:
+        tweet_1.invalidate_cache()
+        retweet.invalidate_cache()
+        self.assertFalse(tweet_1.twitter_can_retweet)
+        self.assertFalse(retweet.twitter_can_retweet)
+        self.assertTrue(tweet_2.twitter_can_retweet)
+
+    def test_no_duplicated_tweets_in_stream(self):
+        # There should not be duplicated tweets within a stream:
+        account = self.social_stream_1.account_id
+        tweet = self.env['social.stream.post'].create({
+            'message': 'Hi there',
+            'media_type': 'twitter',
+            'stream_id': self.social_stream_1.id,
+            'twitter_author_id': account.twitter_user_id,
+            'twitter_tweet_id': '4'
+        })
+
+        with mute_logger('odoo.sql_db'):
+            with self.assertRaises(IntegrityError):
+                self.env['social.stream.post'].create({
+                    'message': tweet.message,
+                    'media_type': tweet.media_type,
+                    'stream_id': tweet.stream_id.id,
+                    'twitter_author_id': tweet.twitter_author_id,
+                    'twitter_tweet_id': tweet.twitter_tweet_id
+                })
+
+        # But, we can store the same tweet in another stream
+        self.env['social.stream.post'].create({
+            'message': tweet.message,
+            'media_type': tweet.media_type,
+            'stream_id': self.social_stream_2.id,
+            'twitter_author_id': tweet.twitter_author_id,
+            'twitter_tweet_id': tweet.twitter_tweet_id
+        })
+
+        tweets = self.env['social.stream.post'].search([
+            ('twitter_tweet_id', '=', tweet.twitter_tweet_id)
+        ])
+        self.assertEqual(len(tweets), 2)
 
     def test_remove_mentions(self):
         # without `ignore_mention` parameter

@@ -151,7 +151,7 @@
                 <t t-set="authorPicture" t-value="widget.getAuthorPictureSrc()"/>
                 <img t-if="authorPicture" t-att-src="authorPicture" t-att-title="isCommentReply ? ('Write a reply as ' + widget.accountName) : ('Write comment as ' + widget.accountName)" />
             </div>
-            <div class="position-relative flex-grow-1">
+            <div class="o_social_reply_container position-relative flex-grow-1">
                 <div class="f-flex align-items-stretch">
                     <t t-set="write_reply_text">Write a reply...</t>
                     <t t-set="write_comment_text">Write a comment...</t>
@@ -173,12 +173,12 @@
                 <div t-attf-class="o_social_comment_image_preview py-4 #{existingAttachmentId &amp;&amp; existingAttachmentSrc ? '' : 'd-none'}">
                     <div class="d-inline-block position-relative">
                         <img class="border shadow" style="max-height: 150px" t-att-src="existingAttachmentSrc"/>
-                        <span class="position-absolute btn btn-dark rounded-circle mt-2 mr-2" style="right: 0">
+                        <span class="o_social_comment_remove_image position-absolute btn btn-dark rounded-circle mt-2 mr-2" style="right: 0">
                             <i class="fa fa-times"/>
                         </span>
                     </div>
                 </div>
-                <div t-attf-class="d-flex align-items-center #{isCommentEdit? 'mt-3 mb-5' : 'mt-2'}">
+                <div t-attf-class="o_social_textarea_helper d-flex align-items-center #{isCommentEdit? 'mt-3 mb-5' : 'mt-2'}">
                     <small class="o_social_textarea_message text-600">
                         Press Enter to post. Press Shift+Enter to insert a Line Break.
                     </small>

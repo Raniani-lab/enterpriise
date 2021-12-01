@@ -29,7 +29,7 @@
                     </t>
                 </div>
                 <div class="flex-grow-1 d-flex text-muted justify-content-end">
-                    <div>
+                    <div t-if="originalPost.twitterRetweetCount > 0">
                         <t t-esc="originalPost.twitterRetweetCount"/>
                         Retweets
                     </div>
@@ -44,4 +44,20 @@
                 t-att-value="isCommentReply ? comment.from.screen_name : ''"/>
         </t>
     </t>
+    <div t-name="social_twitter.quote_modal" class="o_social_quote_modal">
+        <t t-call="social_twitter.quote_modal_content" />
+    </div>
+    <div t-name="social_twitter.quote_modal_content" t-extend="social.StreamPostReply">
+        <t t-jquery=".o_social_reply_container" t-operation="append">
+            <t t-call="social.StreamPostQuotedTweet">
+                <t t-set="originalPost" t-value="widget.originalPost"/>
+            </t>
+        </t>
+        <t t-jquery="[t-attf-class*='o_social_textarea_helper']" t-operation="replace" />
+    </div>
+    <div t-name="social.StreamPostQuotedTweet" t-extend="social.StreamPostCommentsOriginalPost">
+        <t t-jquery=".o_social_comments_modal_original_post" t-operation="attributes">
+            <attribute name="class" value="d-flex bg-white p-3 mt-3 border rounded" />
+        </t>
+    </div>
 </odoo>

@@ -400,19 +400,6 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         resize: none;
     }
 
-    .o_social_comment_controls {
-        @include o-position-absolute(0, 0);
-        height: 75%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-
-        .o_mail_add_emoji {
-            bottom: auto;
-            margin-top: 0;
-        }
-    }
-
     .o_social_comment_published_date, .o_social_post_published_date {
         color: lighten($o-main-text-color, 10%);
         &:hover {
@@ -481,6 +468,22 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     }
     a {
         text-decoration: none!important;
+    }
+}
+
+.o_social_comments_modal,
+.o_social_quote_modal {
+    .o_social_comment_controls {
+        @include o-position-absolute(0, 0);
+        height: 75%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        .o_mail_add_emoji {
+            bottom: auto;
+            margin-top: 0;
+        }
     }
 }
 

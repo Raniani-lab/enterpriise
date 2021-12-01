@@ -92,6 +92,26 @@ class DemoSocialStreamPost(models.Model):
     def _twitter_tweet_like(self, stream, tweet_id, like):
         return True
 
+    def _twitter_do_retweet(self):
+        """ In the demo module, we simply increment the retweet counter. """
+        self.write({
+            'twitter_retweet_count': self.twitter_retweet_count + 1
+        })
+        return True
+
+    def _twitter_undo_retweet(self):
+        """ In the demo module, we simple return `True` to remove a retweet. """
+        return True
+
+    def _twitter_tweet_quote(self, message, attachment=None):
+        """
+        In the demo module, we return `True` if the user wrote a message.
+        If no message is provided, a new retweet will be created.
+        """
+        if not message:
+            return self._twitter_do_retweet()
+        return True
+
     # YOUTUBE
 
     def _youtube_comment_add(self, comment_id, message, is_edit=False):

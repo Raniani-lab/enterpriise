@@ -134,6 +134,27 @@ class SocialStreamTwitter(models.Model):
                 'twitter_profile_image_url': tweet.get('user').get('profile_image_url_https')
             }
 
+            if 'quoted_status' in tweet:
+                quoted_status = tweet['quoted_status']
+                if 'id_str' in quoted_status:
+                    user = quoted_status.get('user', {})
+                    values.update({
+                        'twitter_quoted_tweet_id_str': quoted_status['id_str'],
+                        'twitter_quoted_tweet_message': quoted_status.get('full_text', ''),
+                        'twitter_quoted_tweet_author_name': user.get('name', ''),
+                        'twitter_quoted_tweet_profile_image_url': user.get('profile_image_url_https', '')
+                    })
+                    if 'id_str' in user:
+                        values.update({
+                            'twitter_quoted_tweet_author_link': 'https://twitter.com/intent/user?user_id=%s' % user['id_str'],
+                        })
+            if 'retweeted_status' in tweet:
+                retweet = tweet['retweeted_status']
+                if 'id_str' in retweet:
+                    values.update({
+                        'twitter_retweeted_tweet_id_str': retweet['id_str']
+                    })
+
             existing_tweet = existing_tweets_by_tweet_id.get(tweet.get('id_str'))
             if existing_tweet:
                 existing_tweet.sudo().write(values)

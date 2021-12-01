@@ -23,6 +23,7 @@
             'social_twitter/static/src/scss/social_twitter.scss',
             'social_twitter/static/src/js/twitter_users_autocomplete.js',
             'social_twitter/static/src/js/stream_post_twitter_comments.js',
+            'social_twitter/static/src/js/stream_post_twitter_quote.js',
             'social_twitter/static/src/js/stream_post_kanban_controller.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_twitter/static/src/js/social_post_formatter_mixin.js'),
         ],

@@ -210,8 +210,9 @@ var StreamPostKanbanController = KanbanController.extend({
      * Will refresh all streams content as well as social.accounts statistics.
      *
      * @private
+     * @param {boolean} forceStreamRenderRefresh - Forces the view to be refreshed
      */
-    _onRefreshNow: function () {
+    _onRefreshNow: function (forceStreamRenderRefresh=false) {
         var self = this;
 
         this.$buttons.find('.o_stream_post_kanban_refresh_now').addClass('disabled');
@@ -222,7 +223,7 @@ var StreamPostKanbanController = KanbanController.extend({
         ]).then(function (results) {
             var streamsNeedRefresh = results[0];
             var socialAccountsStats = results[1];
-            if (streamsNeedRefresh) {
+            if (streamsNeedRefresh || forceStreamRenderRefresh) {
                 self.renderer._refreshStreamsRequired();
             }
 

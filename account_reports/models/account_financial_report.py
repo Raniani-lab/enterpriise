@@ -774,12 +774,15 @@ class ReportAccountFinancialReport(models.Model):
     # LOW-LEVEL METHODS
     # -------------------------------------------------------------------------
 
-    @api.model
-    def create(self, vals):
-        parent_id = vals.pop('parent_id', False)
-        res = super(ReportAccountFinancialReport, self).create(vals)
-        res._create_action_and_menu(parent_id)
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        parent_ids = []
+        for vals in vals_list:
+            parent_ids.append(vals.pop('parent_id', False))
+        reports = super().create(vals_list)
+        for report, parent_id in zip(reports, parent_ids):
+            report._create_action_and_menu(parent_id)
+        return reports
 
     def write(self, vals):
         parent_id = vals.pop('parent_id', False)

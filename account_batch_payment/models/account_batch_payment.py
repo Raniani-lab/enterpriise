@@ -142,11 +142,15 @@ class AccountBatchPayment(models.Model):
                 msg = _('You cannot add payments that are not posted.\nPayments:\n%s', names)
                 raise ValidationError(msg)
 
-    @api.model
-    def create(self, vals):
-        vals['name'] = self._get_batch_name(vals.get('batch_type'), vals.get('date', fields.Date.context_today(self)), vals)
-        rec = super(AccountBatchPayment, self).create(vals)
-        return rec
+    @api.model_create_multi
+    def create(self, vals_list):
+        today = fields.Date.context_today(self)
+        for vals in vals_list:
+            vals['name'] = self._get_batch_name(
+                vals.get('batch_type'),
+                vals.get('date', today),
+                vals)
+        return super().create(vals_list)
 
     def write(self, vals):
         if 'batch_type' in vals:

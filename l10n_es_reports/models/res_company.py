@@ -6,11 +6,11 @@ from odoo import models, api, fields, _
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    @api.model
-    def create(self, vals):
-        rslt = super(ResCompany, self).create(vals)
-        rslt._create_mod_boe_sequences()
-        return rslt
+    @api.model_create_multi
+    def create(self, vals_list):
+        companies = super().create(vals_list)
+        companies._create_mod_boe_sequences()
+        return companies
 
     @api.model
     def balance_sheet_menu_item_clicked(self):

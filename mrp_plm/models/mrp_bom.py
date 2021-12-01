@@ -157,11 +157,12 @@ class MrpBomLine(models.Model):
                 line._create_or_update_rebase_line(ecos, operation, product_id, uom_id, operation_id, product_qty)
         return True
 
-    @api.model
-    def create(self, vals):
-        res = super(MrpBomLine, self).create(vals)
-        res.bom_line_change(vals, operation='add')
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        for line, vals in zip(lines, vals_list):
+            line.bom_line_change(vals, operation='add')
+        return lines
 
     def write(self, vals):
         operation = 'update'

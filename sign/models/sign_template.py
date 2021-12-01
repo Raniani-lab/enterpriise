@@ -54,12 +54,13 @@ class SignTemplate(models.Model):
 
     group_ids = fields.Many2many("res.groups", string="Template Access Group")
 
-    @api.model
-    def create(self, vals):
-        if 'active' in vals and vals['active'] and not self.env.user.has_group('sign.group_sign_user'):
-            raise AccessError(_("Do not have access to create templates"))
-
-        return super(SignTemplate, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        is_sign_user = self.env.user.has_group('sign.group_sign_user')
+        for vals in vals_list:
+            if 'active' in vals and vals['active'] and not is_sign_user:
+                raise AccessError(_("Do not have access to create templates"))
+        return super().create(vals_list)
 
     @api.depends('attachment_id')
     def _compute_num_pages(self):

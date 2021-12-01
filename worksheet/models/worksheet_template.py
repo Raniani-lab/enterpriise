@@ -46,12 +46,13 @@ class WorksheetTemplate(models.Model):
         if any(model_name not in ir_model_names for model_name in res_models):
             raise ValidationError(_('The host model name should be an existing model.'))
 
-    @api.model
-    def create(self, vals):
-        template = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        templates = super().create(vals_list)
         if not self.env.context.get('worksheet_no_generation'):
-            template._generate_worksheet_model()
-        return template
+            for template in templates:
+                template._generate_worksheet_model()
+        return templates
 
     def write(self, vals):
         res = super().write(vals)

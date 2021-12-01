@@ -468,17 +468,17 @@ class StudioApprovalEntry(models.Model):
             if not entry.id:
                 entry.name = _('New Approval Entry')
             entry.name = '%s - %s(%s)' % (entry.user_id.name, entry.model, entry.res_id)
-    
+
     @api.depends('model', 'res_id')
     def _compute_reference(self):
         for entry in self:
             entry.reference = "%s,%s" % (entry.model, entry.res_id)
 
-    @api.model
-    def create(self, vals):
-        entry = super().create(vals)
-        entry._notify_approval()
-        return entry
+    @api.model_create_multi
+    def create(self, vals_list):
+        entries = super().create(vals_list)
+        entries._notify_approval()
+        return entries
 
     def write(self, vals):
         res = super().write(vals)

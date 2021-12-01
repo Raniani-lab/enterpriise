@@ -42,10 +42,3 @@ class ProjectProductEmployeeMap(models.Model):
         for mapping in fsm_project_mappings:
             mapping.currency_id = mapping.timesheet_product_id.currency_id if mapping.timesheet_product_id else False
         super(ProjectProductEmployeeMap, self - fsm_project_mappings)._compute_currency_id()
-
-    @api.model
-    def create(self, vals):
-        res = super().create(vals)
-        if res.project_id.is_fsm and res.project_id.pricing_type == 'task_rate':
-            res.project_id.write({'pricing_type': 'employee_rate'})
-        return res

@@ -106,15 +106,16 @@ class ResCompany(models.Model):
         ('cbuae', 'UAE Central Bank'),
     ], default='ecb', string='Service Provider')
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         ''' Change the default provider depending on the company data.'''
-        if vals.get('country_id') and 'currency_provider' not in vals:
-            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador', 'PE': 'bcrp', 'AE': 'cbuae'}
-            cc = self.env['res.country'].browse(vals['country_id']).code.upper()
-            if cc in code_providers:
-                vals['currency_provider'] = code_providers[cc]
-        return super(ResCompany, self).create(vals)
+        for vals in vals_list:
+            if vals.get('country_id') and 'currency_provider' not in vals:
+                code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador', 'PE': 'bcrp', 'AE': 'cbuae'}
+                cc = self.env['res.country'].browse(vals['country_id']).code.upper()
+                if cc in code_providers:
+                    vals['currency_provider'] = code_providers[cc]
+        return super().create(vals_list)
 
     @api.model
     def set_special_defaults_on_install(self):

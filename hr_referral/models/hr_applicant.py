@@ -84,14 +84,15 @@ class Applicant(models.Model):
                         applicant.referral_state = 'progress'
         return res
 
-    @api.model
-    def create(self, vals):
-        res = super(Applicant, self).create(vals)
-        if res.ref_user_id and res.stage_id:
-            res.sudo()._update_points(res.stage_id.id, False)
-            if res.stage_id.use_in_referral:
-                res.last_valuable_stage_id = res.stage_id
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        applicants = super().create(vals_list)
+        for applicant in applicants:
+            if applicant.ref_user_id and applicant.stage_id:
+                applicant.sudo()._update_points(applicant.stage_id.id, False)
+                if applicant.stage_id.use_in_referral:
+                    applicant.last_valuable_stage_id = applicant.stage_id
+        return applicants
 
     def archive_applicant(self):
         self.write({'referral_state': 'closed'})

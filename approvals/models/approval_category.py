@@ -113,19 +113,18 @@ class ApprovalCategory(models.Model):
         if any(a.approver_sequence and not a.approval_minimum for a in self):
             raise ValidationError(_('Approver Sequence can only be activated with at least 1 minimum approver.'))
 
-    @api.model
-    def create(self, vals):
-        if vals.get('automated_sequence'):
-            sequence = self.env['ir.sequence'].create({
-                'name': _('Sequence') + ' ' + vals['sequence_code'],
-                'padding': 5,
-                'prefix': vals['sequence_code'],
-                'company_id': vals.get('company_id'),
-            })
-            vals['sequence_id'] = sequence.id
-
-        approval_category = super().create(vals)
-        return approval_category
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('automated_sequence'):
+                sequence = self.env['ir.sequence'].create({
+                    'name': _('Sequence') + ' ' + vals['sequence_code'],
+                    'padding': 5,
+                    'prefix': vals['sequence_code'],
+                    'company_id': vals.get('company_id'),
+                })
+                vals['sequence_id'] = sequence.id
+        return super().create(vals_list)
 
     def write(self, vals):
         if 'sequence_code' in vals:

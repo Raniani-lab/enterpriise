@@ -82,13 +82,18 @@ class HrReferralReward(models.Model):
             'domain': [('id', 'in', points_ids)]
         }
 
-    @api.model
-    def create(self, values):
-        if 'gift_manager_id' in values:
-            reward_responsible_group = self.env.ref('hr_referral.group_hr_referral_reward_responsible_user', raise_if_not_found=False)
-            if reward_responsible_group and values['gift_manager_id']:
-                reward_responsible_group.sudo().write({'users': [(4, values['gift_manager_id'])]})
-        return super(HrReferralReward, self).create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        reward_responsible_group = self.env.ref('hr_referral.group_hr_referral_reward_responsible_user', raise_if_not_found=False)
+        if not reward_responsible_group:
+            return super().create(vals_list)
+        users_to_write = []
+        for vals in vals_list:
+            if vals.get('gift_manager_id', False):
+                users_to_write.append((4, vals['gift_manager_id']))
+        if users_to_write:
+            reward_responsible_group.sudo().write({'users': users_to_write})
+        return super().create(vals_list)
 
     def write(self, values):
         old_responsibles = self.env['res.users']

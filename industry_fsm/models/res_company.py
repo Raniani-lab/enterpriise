@@ -1,4 +1,7 @@
-from odoo import fields, models, api,  _
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import models, api, _
 
 
 class ResCompany(models.Model):
@@ -18,8 +21,8 @@ class ResCompany(models.Model):
             'company_id': company.id
         } for company in self]
 
-    @api.model
-    def create(self, vals):
-        new_company = super(ResCompany, self).create(vals)
-        self.env['project.project'].sudo().create(new_company._get_field_service_project_values())
-        return new_company
+    @api.model_create_multi
+    def create(self, vals_list):
+        companies = super().create(vals_list)
+        self.env['project.project'].sudo().create(companies._get_field_service_project_values())
+        return companies

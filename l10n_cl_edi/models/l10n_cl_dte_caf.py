@@ -78,8 +78,9 @@ class L10nClDteCaf(models.Model):
     def action_spend(self):
         self.status = 'spent'
 
-    @api.model
-    def create(self, values):
-        res = super().create(values)
-        res.action_enable()
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        files = super().create(vals_list)
+        for file in files:
+            file.action_enable()
+        return files

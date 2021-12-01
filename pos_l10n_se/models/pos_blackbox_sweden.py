@@ -78,16 +78,17 @@ class PosConfig(models.Model):
         domain="[('type', '=', 'fiscal_data_module'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
     )
 
-    @api.model
-    def create(self, values):
-        proforma_sequence = self.env['ir.sequence'].create({
-            'name': _('POS Profo Order %s', self.name),
+    @api.model_create_multi
+    def create(self, vals_list):
+        proforma_sequences = self.env['ir.sequence'].create([{
+            'name': _('POS Profo Order %s', vals['name']),
             'padding': 4,
-            'prefix': "Profo %s/" % self.name,
+            'prefix': "Profo %s/" % vals['name'],
             'code': "pos.order_pro_forma",
-        })
-        values["proformat_sequence"] = proforma_sequence.id
-        return super(PosConfig, self).create(values)
+        } for vals in vals_list])
+        for proforma_sequence, vals in zip(proforma_sequences, vals_list):
+            vals["proformat_sequence"] = proforma_sequence.id
+        return super().create(vals_list)
 
     def _compute_iot_device_ids(self):
         super(PosConfig, self)._compute_iot_device_ids()
@@ -250,14 +251,15 @@ class PosOrderLineProforma(models.Model):
 
     order_id = fields.Many2one('pos.order_pro_forma')
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         # the pos.order.line create method consider 'order_id' is a pos.order
         # override to bypass it and generate a name
-        if values.get('order_id') and not values.get('name'):
-            name = self.env['pos.order_pro_forma'].browse(values['order_id']).name
-            values['name'] = "%s-%s" % (name, values.get('id'))
-        return super(PosOrderLineProforma, self).create(values)
+        for vals in vals_list:
+            if vals.get('order_id') and not vals.get('name'):
+                name = self.env['pos.order_pro_forma'].browse(vals['order_id']).name
+                vals['name'] = "%s-%s" % (name, vals.get('id'))
+        return super().create(vals_list)
 
 
 class AccountTax(models.Model):

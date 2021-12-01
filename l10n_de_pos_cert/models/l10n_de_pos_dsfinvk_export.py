@@ -31,11 +31,12 @@ class PosDsfinvkExport(models.Model):
             if export.config_id and (not export.config_id.l10n_de_fiskaly_client_id or not export.config_id.l10n_de_fiskaly_tss_id):
                 raise ValidationError(_('You can only export the data of a point of sale linked to a TSS.'))
 
-    @api.model
-    def create(self, values):
-        res = super().create(values)
-        res._l10n_de_trigger_fiskaly_export()
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        exports = super().create(vals_list)
+        for export in exports:
+            export._l10n_de_trigger_fiskaly_export()
+        return exports
 
     def _l10n_de_trigger_fiskaly_export(self):
         json = {

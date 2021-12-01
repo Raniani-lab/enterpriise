@@ -92,9 +92,11 @@ class AccountMove(models.Model):
                 raise UserError(_("Please select a Spanish invoice type for this invoice."))
         return posted
 
-    @api.model
-    def create(self, vals):
-        res = super(AccountMove, self).create(vals)
-        if not res.l10n_es_reports_mod349_invoice_type:
-            res.l10n_es_reports_mod349_invoice_type = res.with_context(move_type=res.move_type)._default_mod_349_invoice_type()
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        moves = super().create(vals_list)
+        for move in moves:
+            if not move.l10n_es_reports_mod349_invoice_type:
+                move.l10n_es_reports_mod349_invoice_type = move.with_context(
+                    move_type=move.move_type)._default_mod_349_invoice_type()
+        return moves

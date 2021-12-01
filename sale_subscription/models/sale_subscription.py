@@ -330,28 +330,30 @@ class SaleSubscription(models.Model):
         for subscription in self.filtered('template_id'):
             subscription.description = subscription.template_id.with_context(lang=subscription.partner_id.lang or self.env.lang).description
 
-    @api.model
-    def create(self, vals):
-        vals['code'] = (
-            vals.get('code') or
-            self.env.context.get('default_code') or
-            self.env['ir.sequence'].with_company(vals.get('company_id')).next_by_code('sale.subscription') or
-            'New'
-        )
-        if vals.get('name', 'New') == 'New':
-            vals['name'] = vals['code']
-        if not vals.get('recurring_invoice_day'):
-            sub_date = vals.get('recurring_next_date') or vals.get('date_start') or fields.Date.context_today(self)
-            if isinstance(sub_date, datetime.date):
-                vals['recurring_invoice_day'] = sub_date.day
-            else:
-                vals['recurring_invoice_day'] = fields.Date.from_string(sub_date).day
-        subscription = super(SaleSubscription, self).create(vals)
-        if vals.get('stage_id'):
-            subscription._send_subscription_rating_mail(force_send=True)
-        if subscription.partner_id and subscription.stage_category == "progress":
-            subscription.message_subscribe(subscription.partner_id.ids)
-        return subscription
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals['code'] = (
+                vals.get('code') or
+                self.env.context.get('default_code') or
+                self.env['ir.sequence'].with_company(vals.get('company_id')).next_by_code('sale.subscription') or
+                'New'
+            )
+            if vals.get('name', 'New') == 'New':
+                vals['name'] = vals['code']
+            if not vals.get('recurring_invoice_day'):
+                sub_date = vals.get('recurring_next_date') or vals.get('date_start') or fields.Date.context_today(self)
+                if isinstance(sub_date, datetime.date):
+                    vals['recurring_invoice_day'] = sub_date.day
+                else:
+                    vals['recurring_invoice_day'] = fields.Date.from_string(sub_date).day
+        subscriptions = super().create(vals_list)
+        for subscription, vals in zip(subscriptions, vals_list):
+            if vals.get('stage_id'):
+                subscription._send_subscription_rating_mail(force_send=True)
+            if subscription.partner_id and subscription.stage_category == "progress":
+                subscription.message_subscribe(subscription.partner_id.ids)
+        return subscriptions
 
     def write(self, vals):
         recurring_next_date = vals.get('recurring_next_date')
@@ -1264,13 +1266,15 @@ class SaleSubscriptionLine(models.Model):
             partner)['taxes']
         return sum(tax.get('amount', 0.0) for tax in tax_values)
 
-    @api.model
-    def create(self, values):
-        if values.get('product_id') and not values.get('name'):
-            line = self.new(values)
-            line.onchange_product_id()
-            values['name'] = line._fields['name'].convert_to_write(line['name'], line)
-        return super(SaleSubscriptionLine, self).create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('product_id') and not vals.get('name'):
+                line = self.new(vals)
+                # YTI TODO: We could use the precompute attribute to get rid of this
+                line.onchange_product_id()
+                vals['name'] = line._fields['name'].convert_to_write(line['name'], line)
+        return super().create(vals_list)
 
 
 class SaleSubscriptionCloseReason(models.Model):
@@ -1572,15 +1576,17 @@ class SaleSubscriptionAlert(models.Model):
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
                 alert.set_activity_action()
 
-    @api.model
-    def create(self, vals):
-        if vals.get('trigger_condition'):
-            vals['trigger'] = vals['trigger_condition']
-        res = super(SaleSubscriptionAlert, self).create(vals)
-        res._configure_filter_domain()
-        res._configure_filter_pre_domain()
-        res._configure_alert_from_action(vals)
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('trigger_condition'):
+                vals['trigger'] = vals['trigger_condition']
+        alerts = super().create(vals_list)
+        alerts._configure_filter_domain()
+        alerts._configure_filter_pre_domain()
+        for alert, vals in zip(alerts, vals_list):
+            alert._configure_alert_from_action(vals)
+        return alerts
 
     def write(self, vals):
         if vals.get('trigger_condition'):

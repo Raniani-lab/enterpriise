@@ -25,11 +25,11 @@ class StockMoveLine(models.Model):
             else:
                 line.check_state = "pass"
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        mls = super(StockMoveLine, self).create(vals_list)
-        mls._filter_move_lines_applicable_for_quality_check()._create_check()
-        return mls
+        lines = super().create(vals_list)
+        lines._filter_move_lines_applicable_for_quality_check()._create_check()
+        return lines
 
     def write(self, vals):
         if self._create_quality_check_at_write(vals):

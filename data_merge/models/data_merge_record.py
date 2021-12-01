@@ -387,14 +387,17 @@ class DataMergeRecord(models.Model):
     #############
     ### Override
     #############
-    @api.model
-    def create(self, vals):
-        group = self.env['data_merge.group'].browse(vals.get('group_id', 0))
-        record = self.env[group.res_model_name].browse(vals.get('res_id', 0))
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            group = self.env['data_merge.group'].browse(vals['group_id'])
+            if 'res_id' not in vals:
+                raise ValidationError(_('There is not referenced record'))
+            record = self.env[group.res_model_name].browse(vals['res_id'])
 
-        if not record.exists():
-            raise ValidationError('The referenced record does not exist')
-        return super(DataMergeRecord, self).create(vals)
+            if not record.exists():
+                raise ValidationError('The referenced record does not exist')
+        return super().create(vals_list)
 
 
     def write(self, vals):

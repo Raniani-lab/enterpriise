@@ -21,25 +21,24 @@ class ReportExportWizard(models.TransientModel):
     report_id = fields.Integer(string="Parent Report Id", required=True)
     doc_name = fields.Char(string="Documents Name", help="Name to give to the generated documents.")
 
-    @api.model
-    def create(self, vals):
-        rslt = super(ReportExportWizard, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        wizards = super().create(vals_list)
+        for wizard in wizards:
+            report = wizard._get_report_obj()
+            wizard.doc_name = hasattr(report, 'name') and report.name or report._description # account.financial.html.report objects have a name field, not account.report ones
 
-        report = rslt._get_report_obj()
-        rslt.doc_name = hasattr(report, 'name') and report.name or report._description # account.financial.html.report objects have a name field, not account.report ones
-
-        # We create one export format object per available export type of the report,
-        # with the right generation function associated to it.
-        # This is done so to allow selecting them as Many2many tags in the wizard.
-        for button_dict in report._get_reports_buttons_in_sequence(self._context.get('account_report_generation_options', {})):
-            if button_dict.get('file_export_type'):
-                self.env['account_reports.export.wizard.format'].create({
-                    'name': button_dict['file_export_type'],
-                    'fun_to_call': button_dict['action'],
-                    'export_wizard_id': rslt.id,
-                })
-
-        return rslt
+            # We create one export format object per available export type of the report,
+            # with the right generation function associated to it.
+            # This is done so to allow selecting them as Many2many tags in the wizard.
+            for button_dict in report._get_reports_buttons_in_sequence(self._context.get('account_report_generation_options', {})):
+                if button_dict.get('file_export_type'):
+                    self.env['account_reports.export.wizard.format'].create({
+                        'name': button_dict['file_export_type'],
+                        'fun_to_call': button_dict['action'],
+                        'export_wizard_id': wizard.id,
+                    })
+        return wizards
 
     def export_report(self):
         self.ensure_one()

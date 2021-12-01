@@ -495,13 +495,14 @@ class MrpEco(models.Model):
     def onchange_type_id(self):
         self.stage_id = self.env['mrp.eco.stage'].search([('type_ids', 'in', self.type_id.id)], limit=1).id
 
-    @api.model
-    def create(self, vals):
-        prefix = self.env['ir.sequence'].next_by_code('mrp.eco') or ''
-        vals['name'] = '%s%s' % (prefix and '%s: ' % prefix or '', vals.get('name', ''))
-        eco = super(MrpEco, self).create(vals)
-        eco._create_approvals()
-        return eco
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            prefix = self.env['ir.sequence'].next_by_code('mrp.eco') or ''
+            vals['name'] = '%s%s' % (prefix and '%s: ' % prefix or '', vals.get('name', ''))
+        ecos = super().create(vals_list)
+        ecos._create_approvals()
+        return ecos
 
     def write(self, vals):
         if vals.get('stage_id'):

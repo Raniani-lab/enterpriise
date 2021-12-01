@@ -38,13 +38,14 @@ class QualityCheck(models.Model):
         for rec in self:
             rec.worksheet_count = rec.worksheet_template_id and rec.env[rec.worksheet_template_id.model_id.sudo().model].search_count([('x_quality_check_id', '=', rec.id)]) or 0
 
-    @api.model
-    def create(self, vals):
-        if 'point_id' in vals and not vals.get('worksheet_template_id'):
-            point = self.env['quality.point'].browse(vals['point_id'])
-            if point.test_type == 'worksheet':
-                vals['worksheet_template_id'] = point.worksheet_template_id.id
-        return super(QualityCheck, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'point_id' in vals and not vals.get('worksheet_template_id'):
+                point = self.env['quality.point'].browse(vals['point_id'])
+                if point.test_type == 'worksheet':
+                    vals['worksheet_template_id'] = point.worksheet_template_id.id
+        return super().create(vals_list)
 
     def action_quality_worksheet(self):
         action = self.worksheet_template_id.action_id.sudo().read()[0]

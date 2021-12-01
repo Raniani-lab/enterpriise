@@ -128,14 +128,14 @@ class res_users(models.Model):
             if rec.insz_or_bis_number and (len(rec.insz_or_bis_number) != 11 or not rec.insz_or_bis_number.isdigit()):
                 raise ValidationError(_("The INSZ or BIS number has to consist of 11 numerical digits."))
 
-    @api.model
-    def create(self, values):
-
-        filtered_values = {field: ('********' if field in ru.USER_PRIVATE_FIELDS else value)
-                               for field, value in values.items()}
-        self.env['pos_blackbox_be.log'].sudo().create(filtered_values, "create", self._name, values.get('login'))
-
-        return super(res_users, self).create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            filtered_values = {
+                field: ('********' if field in ru.USER_PRIVATE_FIELDS else value) for field, value in vals.items()
+            }
+        self.env['pos_blackbox_be.log'].sudo().create(filtered_values, "create", self._name, vals.get('login'))
+        return super().create(vals_list)
 
     def write(self, values):
 
@@ -410,19 +410,18 @@ class pos_order(models.Model):
         )
         return description
 
-    @api.model
-    def create(self, values):
-        pos_session = self.env["pos.session"].browse(values.get("session_id"))
-
-        if pos_session.config_id.blackbox_pos_production_id and not values.get("blackbox_signature"):
-            raise UserError(_("Manually creating registered orders is not allowed."))
-
-        order = super(pos_order, self).create(values)
-        if order.blackbox_signature:
-            description = self._set_log_description(order)
-            self.env["pos_blackbox_be.log"].sudo().create(description, "create", self._name, order.pos_reference)
-
-        return order
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            session = self.env["pos.session"].browse(vals.get("session_id"))
+            if session.config_id.blackbox_pos_production_id and not vals.get("blackbox_signature"):
+                raise UserError(_("Manually creating registered orders is not allowed."))
+        orders = super().create(vals_list)
+        for order in orders:
+            if order.blackbox_signature:
+                description = self._set_log_description(order)
+                self.env["pos_blackbox_be.log"].sudo().create(description, "create", self._name, order.pos_reference)
+        return orders
 
     @api.ondelete(at_uninstall=True)
     def _unlink_except_registered_order(self):
@@ -517,14 +516,15 @@ class pos_order_line_pro_forma(models.Model):
 
     order_id = fields.Many2one('pos.order_pro_forma')
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         # the pos.order.line create method consider 'order_id' is a pos.order
         # override to bypass it and generate a name
-        if values.get('order_id') and not values.get('name'):
-            name = self.env['pos.order_pro_forma'].browse(values['order_id']).name
-            values['name'] = "%s-%s" % (name, values.get('id'))
-        return super(pos_order_line_pro_forma, self).create(values)
+        for vals in vals_list:
+            if vals.get('order_id') and not vals.get('name'):
+                name = self.env['pos.order_pro_forma'].browse(vals['order_id']).name
+                vals['name'] = "%s-%s" % (name, vals.get('id'))
+        return super().create(vals_list)
 
 
 class pos_order_pro_forma(models.Model):
@@ -690,11 +690,11 @@ class pos_blackbox_be_log(models.Model):
 class product_template(models.Model):
     _inherit = 'product.template'
 
-    @api.model
-    def create(self, values):
-        self.env['pos_blackbox_be.log'].sudo().create(values, "create", self._name, values.get('name'))
-
-        return super(product_template, self).create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            self.env['pos_blackbox_be.log'].sudo().create(vals, "create", self._name, vals.get('name'))
+        return super().create(vals_list)
 
     def write(self, values):
         work_in = self.env.ref('pos_blackbox_be.product_product_work_in')

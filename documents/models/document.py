@@ -359,25 +359,32 @@ class Document(models.Model):
                     self.user_has_groups('documents.group_document_manager'))
 
 
-    @api.model
-    def create(self, vals):
-        keys = [key for key in vals if
-                self._fields[key].related and self._fields[key].related.split('.')[0] == 'attachment_id']
-        attachment_dict = {key: vals.pop(key) for key in keys if key in vals}
-        attachment = self.env['ir.attachment'].browse(vals.get('attachment_id'))
+    @api.model_create_multi
+    def create(self, vals_list):
+        attachments = []
+        for vals in vals_list:
+            keys = [key for key in vals if
+                    self._fields[key].related and self._fields[key].related.split('.')[0] == 'attachment_id']
+            attachment_dict = {key: vals.pop(key) for key in keys if key in vals}
+            attachment = self.env['ir.attachment'].browse(vals.get('attachment_id'))
 
-        if attachment and attachment_dict:
-            attachment.write(attachment_dict)
-        elif attachment_dict:
-            attachment_dict.setdefault('name', vals.get('name', 'unnamed'))
-            attachment = self.env['ir.attachment'].create(attachment_dict)
-            vals['attachment_id'] = attachment.id
-        new_record = super(Document, self).create(vals)
+            if attachment and attachment_dict:
+                attachment.write(attachment_dict)
+            elif attachment_dict:
+                attachment_dict.setdefault('name', vals.get('name', 'unnamed'))
+                attachment = self.env['ir.attachment'].create(attachment_dict)
+                vals['attachment_id'] = attachment.id
+            attachments.append(attachment)
+
+        documents = super().create(vals_list)
 
         # this condition takes precedence during forward-port.
-        if (attachment and not attachment.res_id and (not attachment.res_model or attachment.res_model == 'documents.document')):
-            attachment.with_context(no_document=True).write({'res_model': 'documents.document', 'res_id': new_record.id})
-        return new_record
+        for document, attachment in zip(documents, attachments):
+            if (attachment and not attachment.res_id and (not attachment.res_model or attachment.res_model == 'documents.document')):
+                attachment.with_context(no_document=True).write({
+                    'res_model': 'documents.document',
+                    'res_id': document.id})
+        return documents
 
     def write(self, vals):
         attachment_id = vals.get('attachment_id')

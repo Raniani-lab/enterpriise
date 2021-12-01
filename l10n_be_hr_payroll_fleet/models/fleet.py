@@ -111,17 +111,20 @@ class FleetVehicle(models.Model):
         else:
             return name
 
-    @api.model
-    def create(self, vals):
-        res = super(FleetVehicle, self).create(vals)
-        if not res.log_contracts:
-            self.env['fleet.vehicle.log.contract'].create({
-                'vehicle_id': res.id,
-                'recurring_cost_amount_depreciated': res.model_id.default_recurring_cost_amount_depreciated,
-                'purchaser_id': res.driver_id.id,
-                'company_id': res.company_id.id,
-            })
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        vehicles = super().create(vals_list)
+        contracts_vals_list = []
+        for vehicle in vehicles:
+            if not vehicle.log_contracts:
+                contracts_vals_list.append({
+                    'vehicle_id': vehicle.id,
+                    'recurring_cost_amount_depreciated': vehicle.model_id.default_recurring_cost_amount_depreciated,
+                    'purchaser_id': vehicle.driver_id.id,
+                    'company_id': vehicle.company_id.id,
+                })
+        self.env['fleet.vehicle.log.contract'].create(contracts_vals_list)
+        return vehicles
 
     def _get_acquisition_date(self):
         self.ensure_one()
@@ -181,12 +184,13 @@ class FleetVehicleLogContract(models.Model):
 
     recurring_cost_amount_depreciated = fields.Float("Depreciated Cost Amount", tracking=True)
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('recurring_cost_amount_depreciated', 0) and vals.get('vehicle_id'):
-            vehicle_id = self.env['fleet.vehicle'].browse(vals['vehicle_id'])
-            vals['recurring_cost_amount_depreciated'] = vehicle_id.model_id.default_recurring_cost_amount_depreciated
-        return super(FleetVehicleLogContract, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('recurring_cost_amount_depreciated', 0) and vals.get('vehicle_id'):
+                vehicle_id = self.env['fleet.vehicle'].browse(vals['vehicle_id'])
+                vals['recurring_cost_amount_depreciated'] = vehicle_id.model_id.default_recurring_cost_amount_depreciated
+        return super().create(vals_list)
 
 
 class FleetVehicleModel(models.Model):

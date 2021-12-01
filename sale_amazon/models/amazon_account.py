@@ -119,49 +119,48 @@ class AmazonAccount(models.Model):
             if account.active_marketplace_ids.filtered(
                     lambda m: m.id not in account.available_marketplace_ids.ids):
                 raise exceptions.ValidationError(_("Only available marketplaces can be selected"))
-    
-    @api.model
-    def create(self, vals):
-        # Fetch available marketplaces and set them all as active marketplaces
-        # In the process, check the credentials and raise if they are incorrect
-        base_marketplace = self.env['amazon.marketplace'].browse([vals['base_marketplace_id']])
-        available_marketplaces, _rate_limit_reached = self._get_available_marketplaces(
-            vals['seller_key'], vals['auth_token'], base_marketplace, True)
-        vals.update(dict.fromkeys(
-            ['available_marketplace_ids', 'active_marketplace_ids'],
-            [(6, 0, available_marketplaces.ids)])
-        )
-        
-        # Find or create the location of the Amazon warehouse to be associated with this account
-        location = self.env['stock.location'].search(
-            [('amazon_location', '=', True), '|', ('company_id', '=', False),
-             ('company_id', '=', vals.get('company_id'))], limit=1)
-        if not location:
-            parent_location_data = self.env['stock.warehouse'].search_read(
-                [('company_id', '=', vals.get('company_id'))], ['view_location_id'], limit=1)
-            location = self.env['stock.location'].create({
-                'name': 'Amazon',
-                'usage': 'internal',
-                'location_id': parent_location_data[0]['view_location_id'][0],
-                'company_id': vals.get('company_id'),
-                'amazon_location': True,
-            })
-        vals.update({'location_id': location.id})
-        
-        # Find or create the sales team to be associated with this account
-        team = self.env['crm.team'].search(
-            [('amazon_team', '=', True), '|', ('company_id', '=', False),
-             ('company_id', '=', vals.get('company_id'))], limit=1)
-        if not team:
-            team = self.env['crm.team'].create({
-                'name': 'Amazon',
-                'company_id': vals.get('company_id'),
-                'amazon_team': True,
-            })
-        vals.update({'team_id': team.id})
-        
-        return super(AmazonAccount, self).create(vals)
-    
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Fetch available marketplaces and set them all as active marketplaces
+            # In the process, check the credentials and raise if they are incorrect
+            base_marketplace = self.env['amazon.marketplace'].browse([vals['base_marketplace_id']])
+            available_marketplaces, _rate_limit_reached = self._get_available_marketplaces(
+                vals['seller_key'], vals['auth_token'], base_marketplace, True)
+            vals.update(dict.fromkeys(
+                ['available_marketplace_ids', 'active_marketplace_ids'],
+                [(6, 0, available_marketplaces.ids)]))
+            # Find or create the location of the Amazon warehouse to be associated with this account
+            location = self.env['stock.location'].search(
+                [('amazon_location', '=', True), '|', ('company_id', '=', False),
+                 ('company_id', '=', vals.get('company_id'))], limit=1)
+            if not location:
+                parent_location_data = self.env['stock.warehouse'].search_read(
+                    [('company_id', '=', vals.get('company_id'))], ['view_location_id'], limit=1)
+                location = self.env['stock.location'].create({
+                    'name': 'Amazon',
+                    'usage': 'internal',
+                    'location_id': parent_location_data[0]['view_location_id'][0],
+                    'company_id': vals.get('company_id'),
+                    'amazon_location': True,
+                })
+            vals.update({'location_id': location.id})
+
+            # Find or create the sales team to be associated with this account
+            team = self.env['crm.team'].search(
+                [('amazon_team', '=', True), '|', ('company_id', '=', False),
+                 ('company_id', '=', vals.get('company_id'))], limit=1)
+            if not team:
+                team = self.env['crm.team'].create({
+                    'name': 'Amazon',
+                    'company_id': vals.get('company_id'),
+                    'amazon_team': True,
+                })
+            vals.update({'team_id': team.id})
+
+        return super().create(vals_list)
+
     def write(self, vals):
         if any(key in vals for key in ('seller_key', 'auth_token')):
             self.action_check_credentials(

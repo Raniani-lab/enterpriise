@@ -59,31 +59,32 @@ class Certificate(models.Model):
     # LOW-LEVEL METHODS
     # -------------------------------------------------------------------------
 
-    @api.model
-    def create(self, vals):
-        record = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        certificates = super().create(vals_list)
 
         peruvian_tz = timezone('America/Lima')
         peruvian_dt = self._get_pe_current_datetime()
         date_format = '%Y%m%d%H%M%SZ'
-        try:
-            dummy, dummy, certificate = record._decode_certificate()
-            cert_date_start = peruvian_tz.localize(datetime.strptime(certificate.get_notBefore().decode(), date_format))
-            cert_date_end = peruvian_tz.localize(datetime.strptime(certificate.get_notAfter().decode(), date_format))
-            serial_number = certificate.get_serial_number()
-        except crypto.Error:
-            raise ValidationError(_('There has been a problem with the certificate, some usual problems can be:\n'
-                                    '- The password given or the certificate are not valid.\n'
-                                    '- The certificate content is invalid.'))
-        # Assign extracted values from the certificate
-        record.write({
-            'serial_number': ('%x' % serial_number)[1::2],
-            'date_start': fields.Datetime.to_string(cert_date_start),
-            'date_end': fields.Datetime.to_string(cert_date_end),
-        })
-        if peruvian_dt > cert_date_end:
-            raise ValidationError(_('The certificate is expired since %s') % record.date_end)
-        return record
+        for certificate in certificates:
+            try:
+                dummy, dummy, certif = certificate._decode_certificate()
+                cert_date_start = peruvian_tz.localize(datetime.strptime(certif.get_notBefore().decode(), date_format))
+                cert_date_end = peruvian_tz.localize(datetime.strptime(certif.get_notAfter().decode(), date_format))
+                serial_number = certif.get_serial_number()
+            except crypto.Error:
+                raise ValidationError(_('There has been a problem with the certificate, some usual problems can be:\n'
+                                        '- The password given or the certificate are not valid.\n'
+                                        '- The certificate content is invalid.'))
+            # Assign extracted values from the certificate
+            certificate.write({
+                'serial_number': ('%x' % serial_number)[1::2],
+                'date_start': fields.Datetime.to_string(cert_date_start),
+                'date_end': fields.Datetime.to_string(cert_date_end),
+            })
+            if peruvian_dt > cert_date_end:
+                raise ValidationError(_('The certificate is expired since %s') % certificate.date_end)
+        return certificates
 
     # -------------------------------------------------------------------------
     # BUSINESS METHODS

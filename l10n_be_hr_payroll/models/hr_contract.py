@@ -635,12 +635,11 @@ class HrContract(models.Model):
             self._trigger_l10n_be_next_activities()
         return res
 
-    @api.model
-    def create(self, vals):
-        contract = super(HrContract, self).create(vals)
-        if contract.state == 'open':
-            contract._trigger_l10n_be_next_activities()
-        return contract
+    @api.model_create_multi
+    def create(self, vals_list):
+        contracts = super().create(vals_list)
+        contracts.filtered(lambda c: c.state == 'open')._trigger_l10n_be_next_activities()
+        return contracts
 
     def _get_fields_that_recompute_we(self):
         return super()._get_fields_that_recompute_we() + [

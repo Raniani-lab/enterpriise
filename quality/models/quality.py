@@ -73,11 +73,12 @@ class QualityPoint(models.Model):
         for point in self:
             point.check_count = result.get(point.id, 0)
 
-    @api.model
-    def create(self, vals):
-        if 'name' not in vals or vals['name'] == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('quality.point') or _('New')
-        return super(QualityPoint, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'name' not in vals or vals['name'] == _('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('quality.point') or _('New')
+        return super().create(vals_list)
 
     def check_execute_now(self):
         # TDE FIXME: make true multi
@@ -282,13 +283,14 @@ class QualityCheck(models.Model):
         """ Return true if do_fail and do_pass can be applied."""
         return False
 
-    @api.model
-    def create(self, vals):
-        if 'name' not in vals or vals['name'] == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('quality.check') or _('New')
-        if 'point_id' in vals and not vals.get('test_type_id'):
-            vals['test_type_id'] = self.env['quality.point'].browse(vals['point_id']).test_type_id.id
-        return super(QualityCheck, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'name' not in vals or vals['name'] == _('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('quality.check') or _('New')
+            if 'point_id' in vals and not vals.get('test_type_id'):
+                vals['test_type_id'] = self.env['quality.point'].browse(vals['point_id']).test_type_id.id
+        return super().create(vals_list)
 
     def do_fail(self):
         self.write({
@@ -363,11 +365,12 @@ class QualityAlert(models.Model):
         ('3', 'Very High')], string='Priority',
         index=True)
 
-    @api.model
-    def create(self, vals):
-        if 'name' not in vals or vals['name'] == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('quality.alert') or _('New')
-        return super(QualityAlert, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'name' not in vals or vals['name'] == _('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('quality.alert') or _('New')
+        return super().create(vals_list)
 
     def write(self, vals):
         res = super(QualityAlert, self).write(vals)

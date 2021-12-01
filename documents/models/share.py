@@ -43,7 +43,7 @@ class DocumentShare(models.Model):
     ], default='download', string="Allows to")
     tag_ids = fields.Many2many('documents.tag', string="Shared Tags")
     partner_id = fields.Many2one('res.partner', string="Contact")
-    owner_id = fields.Many2one('res.users', string="Document Owner")
+    owner_id = fields.Many2one('res.users', string="Document Owner", default=lambda self: self.env.uid)
     email_drop = fields.Boolean(string='Upload by Email')
 
     # Activity
@@ -203,13 +203,6 @@ class DocumentShare(models.Model):
         request_template = self.env.ref(template_xmlid, raise_if_not_found=False)
         if request_template:
             request_template.send_mail(self.id)
-
-    @api.model
-    def create(self, vals):
-        if not vals.get('owner_id'):
-            vals['owner_id'] = self.env.uid
-        share = super(DocumentShare, self).create(vals)
-        return share
 
     @api.model
     def open_share_popup(self, vals):

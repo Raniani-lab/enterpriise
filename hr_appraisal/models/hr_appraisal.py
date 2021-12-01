@@ -262,14 +262,17 @@ class HrAppraisal(models.Model):
                 else:
                     appraisal.previous_appraisal_id = False
 
-    @api.model
-    def create(self, vals):
-        result = super(HrAppraisal, self).create(vals)
-        result.sudo()._update_previous_appraisal()
-        if vals.get('state') and vals['state'] == 'pending':
-            self.send_appraisal()
-        result.subscribe_employees()
-        return result
+    @api.model_create_multi
+    def create(self, vals_list):
+        appraisals = super().create(vals_list)
+        appraisals.sudo()._update_previous_appraisal()
+        appraisals_to_send = self.env['hr.appraisal']
+        for appraisal, vals in zip(appraisals, vals_list):
+            if vals.get('state') and vals['state'] == 'pending':
+                appraisals_to_send |= appraisal
+        appraisals_to_send.send_appraisal()
+        appraisals.subscribe_employees()
+        return appraisals
 
     def write(self, vals):
         if 'state' in vals and vals['state'] == 'pending':

@@ -47,12 +47,13 @@ class PosConfig(models.Model):
             'api_secret': company.l10n_de_fiskaly_api_secret
         }
 
-    @api.model
-    def create(self, values):
-        res = super().create(values)
-        if values.get('l10n_de_create_tss_flag') is True:
-            res._l10n_de_create_tss_process()
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        pos_configs = super().create(vals_list)
+        for pos_config in pos_configs:
+            if pos_config.l10n_de_create_tss_flag:
+                pos_config._l10n_de_create_tss_process()
+        return pos_configs
 
     def write(self, values):
         res = super().write(values)

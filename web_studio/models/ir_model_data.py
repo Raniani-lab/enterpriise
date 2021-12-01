@@ -9,11 +9,12 @@ class IrModelData(models.Model):
 
     studio = fields.Boolean(help='Checked if it has been edited with Studio.')
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         if self._context.get('studio'):
-            vals['studio'] = True
-        return super(IrModelData, self).create(vals)
+            for vals in vals_list:
+                vals['studio'] = True
+        return super().create(vals_list)
 
     def write(self, vals):
         """ When editing an ir.model.data with Studio, we put it in noupdate to

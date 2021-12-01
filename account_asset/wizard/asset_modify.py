@@ -24,27 +24,28 @@ class AssetModify(models.TransientModel):
     account_depreciation_id = fields.Many2one('account.account')
     account_depreciation_expense_id = fields.Many2one('account.account')
 
-    @api.model
-    def create(self, vals):
-        if 'asset_id' in vals:
-            asset = self.env['account.asset'].browse(vals['asset_id'])
-            if asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted' and not m.reversal_move_id and m.date > fields.Date.today()):
-                raise UserError(_('Reverse the depreciation entries posted in the future in order to modify the depreciation'))
-            if 'method_number' not in vals:
-                vals.update({'method_number': len(asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')) or 1})
-            if 'method_period' not in vals:
-                vals.update({'method_period': asset.method_period})
-            if 'salvage_value' not in vals:
-                vals.update({'salvage_value': asset.salvage_value})
-            if 'value_residual' not in vals:
-                vals.update({'value_residual': asset.value_residual})
-            if 'account_asset_id' not in vals:
-                vals.update({'account_asset_id': asset.account_asset_id.id})
-            if 'account_depreciation_id' not in vals:
-                vals.update({'account_depreciation_id': asset.account_depreciation_id.id})
-            if 'account_depreciation_expense_id' not in vals:
-                vals.update({'account_depreciation_expense_id': asset.account_depreciation_expense_id.id})
-        return super(AssetModify, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'asset_id' in vals:
+                asset = self.env['account.asset'].browse(vals['asset_id'])
+                if asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted' and not m.reversal_move_id and m.date > fields.Date.today()):
+                    raise UserError(_('Reverse the depreciation entries posted in the future in order to modify the depreciation'))
+                if 'method_number' not in vals:
+                    vals.update({'method_number': len(asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')) or 1})
+                if 'method_period' not in vals:
+                    vals.update({'method_period': asset.method_period})
+                if 'salvage_value' not in vals:
+                    vals.update({'salvage_value': asset.salvage_value})
+                if 'value_residual' not in vals:
+                    vals.update({'value_residual': asset.value_residual})
+                if 'account_asset_id' not in vals:
+                    vals.update({'account_asset_id': asset.account_asset_id.id})
+                if 'account_depreciation_id' not in vals:
+                    vals.update({'account_depreciation_id': asset.account_depreciation_id.id})
+                if 'account_depreciation_expense_id' not in vals:
+                    vals.update({'account_depreciation_expense_id': asset.account_depreciation_expense_id.id})
+        return super().create(vals_list)
 
     def modify(self):
         """ Modifies the duration of asset for calculating depreciation

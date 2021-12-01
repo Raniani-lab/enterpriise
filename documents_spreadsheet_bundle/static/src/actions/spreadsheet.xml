@@ -5,7 +5,7 @@
         <Spreadsheet client="client"
                      data="data"
                      stateUpdateMessages="stateUpdateMessages"
-                     transportService="transportService"
+                     transportService="props.transportService"
                      snapshotRequested="props.snapshotRequested"
                      isReadonly="isReadonly"
                      t-on-ask-confirmation="askConfirmation"

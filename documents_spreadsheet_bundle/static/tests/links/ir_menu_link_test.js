@@ -1,4 +1,6 @@
 /** @odoo-module */
+/* global $ */
+
 import { registry } from "@web/core/registry";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { session } from "@web/session";
@@ -6,9 +8,11 @@ import { actionService } from "@web/webclient/actions/action_service";
 import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { createSpreadsheet, getCell, setCellContent } from "../spreadsheet_test_utils";
+import { createSpreadsheet } from "../spreadsheet_test_utils";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { getBasicData } from "../spreadsheet_test_data";
+import { getBasicData } from "../utils/spreadsheet_test_data";
+import { getCell } from "../utils/getters_helpers";
+import { setCellContent } from "../utils/commands_helpers";
 
 const { registries, Model } = spreadsheet;
 const { cellMenuRegistry } = registries;

@@ -1,33 +1,28 @@
-/** @odoo-module alias=documents_spreadsheet.PivotTemplateTests */
+/** @odoo-module */
+/* global $ */
 
 import { nextTick, dom, fields, createView } from "web.test_utils";
 import { registry } from "@web/core/registry";
 import { afterEach, beforeEach } from "@mail/utils/test_utils";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
 
 import { jsonToBase64, base64ToJson } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
 import DocumentsListView from "documents_spreadsheet.ListView";
-import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason"
+import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason";
 import TemplateListView from "documents_spreadsheet.TemplateListView";
 import { createDocumentsView } from "documents.test_utils";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
 
-import {
-    createSpreadsheetFromPivot,
-    setCellContent,
-    getCellContent,
-    getCellValue,
-    getCellFormula,
-    createSpreadsheetTemplate,
-    createSpreadsheet,
-} from "./spreadsheet_test_utils";
+import { createSpreadsheetTemplate, createSpreadsheet } from "../spreadsheet_test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { ClientActionAdapter } from "@web/legacy/action_adapters";
 import { actionService } from "@web/webclient/actions/action_service";
-
+import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
+import { setCellContent } from "../utils/commands_helpers";
+import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
+import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
+import { getBasicServerData } from "../utils/spreadsheet_test_data";
 
 const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
@@ -38,11 +33,7 @@ let serverData;
 
 async function convertFormula(config) {
     const { env, model: m1 } = await createSpreadsheetFromPivot({
-        pivotView: {
-            model: "partner",
-            data: config.data,
-            arch: config.arch,
-        },
+        serverData: config.serverData || getBasicServerData(),
         webClient: config.webClient,
     });
 
@@ -264,29 +255,26 @@ module(
             assert.expect(1);
             const formula = `PIVOT("1","probability","foo","12","bar","110")`;
             const result = await convertFormula({
-                data: this.data,
                 formula,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                arch: `
-                <pivot string="Partners">
-                    <field name="foo" type="col"/>
-                    <field name="bar" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
             });
             assert.equal(result, formula);
         });
 
         test("Adapt formula from absolute to relative with many2one in col", async function (assert) {
             assert.expect(4);
-            const arch = `
-                    <pivot string="Partners">
-                        <field name="product_id" type="col"/>
-                        <field name="bar" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`;
-            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
-            Object.assign(serverData, { views });
+            Object.assign(serverData, {
+                views: {
+                    "partner,false,pivot": `
+                        <pivot string="Partners">
+                            <field name="product_id" type="col"/>
+                            <field name="bar" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    "partner,false,search": `<search/>`,
+                },
+            });
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -298,8 +286,7 @@ module(
             });
             let result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id","37","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -310,8 +297,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT.HEADER("1","product_id","37","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -322,8 +308,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id","41","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -334,8 +319,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -347,14 +331,18 @@ module(
 
         test("Adapt formula from absolute to relative with integer ids", async function (assert) {
             assert.expect(2);
-            const arch = `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`;
-            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
-            Object.assign(serverData, { views });
+            Object.assign(serverData, {
+                views: {
+                    "partner,false,pivot": `
+                         <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    "partner,false,search": `<search/>`,
+                },
+            });
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -366,8 +354,7 @@ module(
             });
             let result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id",37,"bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -377,8 +364,7 @@ module(
             );
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT.HEADER("1","product_id",41,"bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -390,14 +376,18 @@ module(
 
         test("Adapt formula from absolute to relative with many2one in row", async function (assert) {
             assert.expect(4);
-            const arch = `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`;
-            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
-            Object.assign(serverData, { views });
+            Object.assign(serverData, {
+                views: {
+                    "partner,false,pivot": `
+                         <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    "partner,false,search": `<search/>`,
+                },
+            });
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -410,8 +400,7 @@ module(
 
             let result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id","37","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -422,8 +411,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id","41","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -434,8 +422,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id","41","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -446,8 +433,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
             });
@@ -459,14 +445,18 @@ module(
 
         test("Adapt formula from relative to absolute with many2one in col", async function (assert) {
             assert.expect(4);
-            const arch = `
-                    <pivot string="Partners">
-                        <field name="product_id" type="col"/>
-                        <field name="bar" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`;
-            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
-            Object.assign(serverData, { views });
+            Object.assign(serverData, {
+                views: {
+                    "partner,false,pivot": `
+                         <pivot string="Partners">
+                            <field name="product_id" type="col"/>
+                            <field name="bar" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    "partner,false,search": `<search/>`,
+                },
+            });
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -478,8 +468,7 @@ module(
             });
             let result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 1),"bar","110")`,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
             });
@@ -487,8 +476,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
             });
@@ -496,8 +484,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
             });
@@ -505,8 +492,7 @@ module(
 
             result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
             });
@@ -515,14 +501,18 @@ module(
 
         test("Will ignore overflowing template position", async function (assert) {
             assert.expect(1);
-            const arch = `
-                <pivot string="Partners">
-                <field name="bar" type="col"/>
-                <field name="product_id" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`;
-            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
-            Object.assign(serverData, { views });
+            Object.assign(serverData, {
+                views: {
+                    "partner,false,pivot": `
+                         <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    "partner,false,search": `<search/>`,
+                },
+            });
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -534,8 +524,7 @@ module(
             });
             const result = await convertFormula({
                 webClient,
-                data: this.data,
-                arch,
+                serverData,
                 formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar","110")`,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
             });
@@ -563,16 +552,16 @@ module(
                 },
             };
             serviceRegistry.add("action", fakeActionService, { force: true });
-            const serverData = this.data;
+            const models = this.data;
             const { env } = await createSpreadsheetTemplate({
-                data: serverData,
+                serverData: { models },
                 mockRPC: function (route, args) {
                     if (args.model == "spreadsheet.template" && args.method === "copy") {
                         assert.step("template_copied");
                         const { data, thumbnail } = args.kwargs.default;
                         assert.ok(data);
                         assert.ok(thumbnail);
-                        serverData["spreadsheet.template"].records.push({
+                        models["spreadsheet.template"].records.push({
                             id: 111,
                             name: "template",
                             data,
@@ -591,14 +580,18 @@ module(
 
         test("Adapt formula from relative to absolute with many2one in row", async function (assert) {
             assert.expect(4);
-            const arch = `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`;
-            const views = { "partner,false,pivot": arch, "partner,false,search": `<search/>` };
-            Object.assign(serverData, { views });
+            Object.assign(serverData, {
+                views: {
+                    "partner,false,pivot": `
+                         <pivot string="Partners">
+                            <field name="bar" type="col"/>
+                            <field name="product_id" type="row"/>
+                            <field name="probability" type="measure"/>
+                        </pivot>`,
+                    "partner,false,search": `<search/>`,
+                },
+            });
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -611,36 +604,32 @@ module(
             let result = await convertFormula({
                 webClient,
                 formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
-                data: this.data,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch,
+                serverData,
             });
             assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
 
             result = await convertFormula({
                 webClient,
                 formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
-                data: this.data,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch,
+                serverData,
             });
             assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
 
             result = await convertFormula({
                 webClient,
                 formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
-                data: this.data,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch,
+                serverData,
             });
             assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
 
             result = await convertFormula({
                 webClient,
                 formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
-                data: this.data,
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch,
+                serverData,
             });
             assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
         });
@@ -652,14 +641,19 @@ module(
                     PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110"),
                     PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")
                 )`,
-                data: this.data,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch: `
-                <pivot string="Partners">
-                    <field name="bar" type="col"/>
-                    <field name="product_id" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
             });
             assert.equal(
                 result,
@@ -675,14 +669,19 @@ module(
                     +
                     PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")
                 `,
-                data: this.data,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch: `
-                <pivot string="Partners">
-                    <field name="bar" type="col"/>
-                    <field name="product_id" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
             });
             assert.equal(
                 result,
@@ -696,14 +695,19 @@ module(
                 formula: `
                         -PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")
                     `,
-                data: this.data,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
                 convert: "CONVERT_PIVOT_FROM_TEMPLATE",
-                arch: `
-                <pivot string="Partners">
-                    <field name="bar" type="col"/>
-                    <field name="product_id" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
             });
             assert.equal(result, `-PIVOT("1","probability","product_id","37","bar","110")`);
         });
@@ -716,14 +720,19 @@ module(
                     +
                     PIVOT("1","probability","product_id","41","bar","110")
                 `,
-                data: this.data,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                arch: `
-                    <pivot string="Partners">
-                        <field name="bar" type="col"/>
-                        <field name="product_id" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>`,
             });
             assert.equal(
                 result,
@@ -737,14 +746,19 @@ module(
                 formula: `
                     -PIVOT("1","probability","product_id","37","bar","110")
                 `,
-                data: this.data,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
             });
             assert.equal(
                 result,
@@ -756,19 +770,24 @@ module(
             assert.expect(1);
             const result = await convertFormula({
                 formula: `
-                SUM(
-                    PIVOT("1","probability","product_id","37","bar","110"),
-                    PIVOT("1","probability","product_id","41","bar","110")
-                )
-            `,
-                data: this.data,
+                    SUM(
+                        PIVOT("1","probability","product_id","37","bar","110"),
+                        PIVOT("1","probability","product_id","41","bar","110")
+                    )
+                `,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                arch: `
-                    <pivot string="Partners">
-                    <field name="bar" type="col"/>
-                    <field name="product_id" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
             });
             assert.equal(
                 result,
@@ -780,14 +799,19 @@ module(
             assert.expect(1);
             const result = await convertFormula({
                 formula: `PIVOT("1","probability","product_id",A2,"bar","110")`,
-                data: this.data,
                 convert: "CONVERT_PIVOT_TO_TEMPLATE",
-                arch: `
-                    <pivot string="Partners">
-                    <field name="bar" type="col"/>
-                    <field name="product_id" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
+                },
             });
             assert.equal(result, `PIVOT("1","probability","product_id",A2,"bar","110")`);
         });
@@ -836,15 +860,17 @@ module(
             serviceRegistry.add("action", fakeActionService);
 
             const { env, model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(model, "A11", "😃");
@@ -876,16 +902,16 @@ module(
                 },
             };
             serviceRegistry.add("action", fakeActionService, { force: true });
-            const serverData = this.data;
+            const models = this.data;
             const { env } = await createSpreadsheetTemplate({
-                data: serverData,
+                serverData: { models },
                 mockRPC: function (route, args) {
                     if (args.model == "spreadsheet.template" && args.method === "copy") {
                         assert.step("template_copied");
                         const { data, thumbnail } = args.kwargs.default;
                         assert.ok(data);
                         assert.ok(thumbnail);
-                        serverData["spreadsheet.template"].records.push({
+                        models["spreadsheet.template"].records.push({
                             id: 111,
                             name: "template",
                             data,
@@ -905,15 +931,17 @@ module(
         test("Autofill template position", async function (assert) {
             assert.expect(4);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(
@@ -970,15 +998,17 @@ module(
         test("Autofill template position: =-PIVOT(...)", async function (assert) {
             assert.expect(1);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(
@@ -1004,15 +1034,17 @@ module(
         test("Autofill template position: 2 PIVOT in one formula", async function (assert) {
             assert.expect(1);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(
@@ -1044,15 +1076,17 @@ module(
         test("Autofill template position: PIVOT.POSITION not in PIVOT", async function (assert) {
             assert.expect(1);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(model, "B2", `=PIVOT.POSITION("1","foo", 3333)`);
@@ -1078,15 +1112,17 @@ module(
         test("Autofill template position: with invalid pivot id", async function (assert) {
             assert.expect(1);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(
@@ -1116,16 +1152,18 @@ module(
         test("Autofill template position: increment last group", async function (assert) {
             assert.expect(1);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="foo" type="row"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="foo" type="row"/>
+                                <field name="product_id" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             setCellContent(
@@ -1155,16 +1193,18 @@ module(
         test("Autofill template position: does not increment last field if not many2one", async function (assert) {
             assert.expect(1);
             const { model } = await createSpreadsheetFromPivot({
-                pivotView: {
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="foo" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
+                serverData: {
+                    models: this.data,
+                    views: {
+                        "partner,false,pivot": `
+                            <pivot string="Partners">
+                                <field name="bar" type="col"/>
+                                <field name="product_id" type="row"/>
+                                <field name="foo" type="row"/>
+                                <field name="probability" type="measure"/>
+                            </pivot>`,
+                        "partner,false,search": `<search/>`,
+                    },
                 },
             });
             // last row field (foo) is not a position
@@ -1306,14 +1346,7 @@ module(
             };
             serviceRegistry.add("action", fakeActionService, { force: true });
 
-            let spreadSheetComponent;
-            patchWithCleanup(ClientActionAdapter.prototype, {
-                mounted() {
-                    this._super();
-                    spreadSheetComponent = this.widget.spreadsheetComponent.componentRef.comp;
-                },
-            });
-
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1506,6 +1539,7 @@ module(
 
         test("open template client action without collaborative indicators", async function (assert) {
             assert.expect(2);
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
@@ -1521,10 +1555,11 @@ module(
 
         test("collaboration communication is disabled", async function (assert) {
             assert.expect(1);
+            await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
                 legacyParams: { withLegacyMockServer: true },
-                mockRPC: async function (route, args) {
+                mockRPC: async function (route) {
                     if (route.includes("join_spreadsheet_session")) {
                         assert.ok(false, "it should not join a collaborative session");
                     }
@@ -1553,7 +1588,7 @@ module(
                 },
             ];
             const { model: template } = await createSpreadsheetTemplate({
-                data: this.data,
+                serverData: { models: this.data },
                 spreadsheetId: 99,
             });
             assert.equal(
@@ -1583,7 +1618,7 @@ module(
                 },
             });
             const { model, webClient } = await createSpreadsheetTemplate({
-                data: this.data,
+                serverData: { models: this.data },
                 spreadsheetId: id,
                 mockRPC: function (route, args) {
                     if (args.model == "spreadsheet.template") {

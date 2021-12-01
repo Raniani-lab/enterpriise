@@ -3,19 +3,18 @@
 
 import ListView from "web.ListView";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+import { nextTick, createView } from "web.test_utils";
+import { getBasicData, getBasicListArch } from "../utils/spreadsheet_test_data";
+import { insertList } from "../../src/list/list_init_callback";
 import {
-    createSpreadsheetFromList,
     getCell,
     getCellContent,
     getCellFormula,
     getCells,
     getCellValue,
-    setCellContent,
-    setSelection
-} from "./spreadsheet_test_utils";
-import { nextTick, createView } from "web.test_utils";
-import { getBasicData, getBasicListArch } from "./spreadsheet_test_data";
-import { insertList } from "../src/list/list_init_callback";
+} from "../utils/getters_helpers";
+import { selectCell, setCellContent } from "../utils/commands_helpers";
+import { createSpreadsheetFromList } from "../utils/list_helpers";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
@@ -41,13 +40,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     QUnit.test("List export with a invisible field", async (assert) => {
         assert.expect(1);
         const { model } = await createSpreadsheetFromList({
-            listView: {
-                arch: `
-                    <tree string="Partners">
-                        <field name="foo" invisible="1"/>
-                        <field name="bar"/>
-                    </tree>
-                `,
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "partner,false,list": `
+                        <tree string="Partners">
+                            <field name="foo" invisible="1"/>
+                            <field name="bar"/>
+                        </tree>`,
+                    "partner,false,search": "<search/>",
+                },
             },
         });
         assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER("1","bar")`);
@@ -56,13 +58,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     QUnit.test("List export with a widget handle", async (assert) => {
         assert.expect(1);
         const { model } = await createSpreadsheetFromList({
-            listView: {
-                arch: `
-                    <tree string="Partners">
-                        <field name="foo" widget="handle"/>
-                        <field name="bar"/>
-                    </tree>
-                `,
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "partner,false,list": `
+                            <tree string="Partners">
+                                <field name="foo" widget="handle"/>
+                                <field name="bar"/>
+                            </tree>`,
+                    "partner,false,search": "<search/>",
+                },
             },
         });
         assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER("1","bar")`);
@@ -71,14 +76,17 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     QUnit.test("Return display name of selection field", async (assert) => {
         assert.expect(1);
         const { model } = await createSpreadsheetFromList({
-            listView: {
-                model: "documents.document",
-                arch: `
-                    <tree string="Documents">
-                        <field name="name"/>
-                        <field name="handler"/>
-                    </tree>
-                `,
+            model: "documents.document",
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "documents.document,false,list": `
+                        <tree string="Documents">
+                            <field name="name"/>
+                            <field name="handler"/>
+                        </tree>`,
+                    "documents.document,false,search": "<search/>",
+                },
             },
         });
         assert.strictEqual(getCellValue(model, "B2", "Spreadsheet"));
@@ -147,7 +155,11 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const list = listView._getListForSpreadsheet();
         listView.destroy();
         const { model } = await createSpreadsheetFromList();
-        const callback = await insertList.bind({isEmptySpreadsheet: false})({list:list.list, threshold:10,fields: list.fields});
+        const callback = await insertList.bind({ isEmptySpreadsheet: false })({
+            list: list.list,
+            threshold: 10,
+            fields: list.fields,
+        });
         model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
         const activeSheetId = model.getters.getActiveSheetId();
         assert.deepEqual(model.getters.getVisibleSheets(), [activeSheetId, "42"]);
@@ -197,27 +209,33 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.strictEqual(selectedListId, "1");
     });
 
-    QUnit.test("can select a List from cell formula with '-' before the formula", async function (assert) {
-        assert.expect(1);
-        const { model } = await createSpreadsheetFromList();
-        setCellContent(model, "A1", `=-LIST("1","1","foo")`);
-        const sheetId = model.getters.getActiveSheetId();
-        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
-        model.dispatch("SELECT_ODOO_LIST", { listId });
-        const selectedListId = model.getters.getSelectedListId();
-        assert.strictEqual(selectedListId, "1");
-    });
+    QUnit.test(
+        "can select a List from cell formula with '-' before the formula",
+        async function (assert) {
+            assert.expect(1);
+            const { model } = await createSpreadsheetFromList();
+            setCellContent(model, "A1", `=-LIST("1","1","foo")`);
+            const sheetId = model.getters.getActiveSheetId();
+            const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+            model.dispatch("SELECT_ODOO_LIST", { listId });
+            const selectedListId = model.getters.getSelectedListId();
+            assert.strictEqual(selectedListId, "1");
+        }
+    );
 
-    QUnit.test("can select a List from cell formula with other numerical values", async function (assert) {
-        assert.expect(1);
-        const { model } = await createSpreadsheetFromList();
-        setCellContent(model, "A1", `=3*LIST("1","1","foo")`);
-        const sheetId = model.getters.getActiveSheetId();
-        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
-        model.dispatch("SELECT_ODOO_LIST", { listId });
-        const selectedListId = model.getters.getSelectedListId();
-        assert.strictEqual(selectedListId, "1");
-    });
+    QUnit.test(
+        "can select a List from cell formula with other numerical values",
+        async function (assert) {
+            assert.expect(1);
+            const { model } = await createSpreadsheetFromList();
+            setCellContent(model, "A1", `=3*LIST("1","1","foo")`);
+            const sheetId = model.getters.getActiveSheetId();
+            const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+            model.dispatch("SELECT_ODOO_LIST", { listId });
+            const selectedListId = model.getters.getSelectedListId();
+            assert.strictEqual(selectedListId, "1");
+        }
+    );
 
     QUnit.test("can select a List from cell formula within a formula", async function (assert) {
         assert.expect(1);
@@ -230,63 +248,66 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.strictEqual(selectedListId, "1");
     });
 
-    QUnit.test("can select a List from cell formula where the id is a reference", async function (assert) {
-        assert.expect(1);
-        const { model } = await createSpreadsheetFromList();
-        setCellContent(model, "A1", `=LIST(G10,"1","foo")`);
-        setCellContent(model, "G10", "1");
-        const sheetId = model.getters.getActiveSheetId();
-        const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
-        model.dispatch("SELECT_ODOO_LIST", { listId });
-        const selectedListId = model.getters.getSelectedListId();
-        assert.strictEqual(selectedListId, "1");
-    });
+    QUnit.test(
+        "can select a List from cell formula where the id is a reference",
+        async function (assert) {
+            assert.expect(1);
+            const { model } = await createSpreadsheetFromList();
+            setCellContent(model, "A1", `=LIST(G10,"1","foo")`);
+            setCellContent(model, "G10", "1");
+            const sheetId = model.getters.getActiveSheetId();
+            const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
+            model.dispatch("SELECT_ODOO_LIST", { listId });
+            const selectedListId = model.getters.getSelectedListId();
+            assert.strictEqual(selectedListId, "1");
+        }
+    );
 
     QUnit.test("Verify absence of pivot properties on non-pivot cell", async function (assert) {
         assert.expect(1);
         const { model, env } = await createSpreadsheetFromList();
-        setSelection(model, "Z26");
+        selectCell(model, "Z26");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "listing_properties");
         assert.notOk(root.isVisible(env));
     });
 
     QUnit.test("Referencing non-existing fields does not crash", async function (assert) {
         assert.expect(4);
-        const forbiddenFieldName = "product_id"
+        const forbiddenFieldName = "product_id";
         let spreadsheetLoaded = false;
         const { model } = await createSpreadsheetFromList({
-            listView: {
-                arch: `
-                    <tree string="Partners">
-                        <field name="bar"/>
-                        <field name="product_id"/>
-                    </tree>
-                `,
-                mockRPC: async function (route, args, performRPC) {
-                    if (args.method === "fields_get" && args.model === "partner"){
-                            // simulate that user cannot read the forbidden field
-                            const result = await performRPC(route, args);
-                            delete result[forbiddenFieldName];
-                            return result;
-                        }
-                    else if (args.method === "join_spreadsheet_session")
-                    {
-                        spreadsheetLoaded = true;
-                    }
-                    else if (
-                        spreadsheetLoaded
-                        && args.method === "search_read"
-                        && args.model === "partner"
-                        && args.kwargs.fields
-                        && args.kwargs.fields.includes(forbiddenFieldName)
-                    ) {
-                        // We should not go through this condition if the forbidden fields is properly filtered
-                        assert.ok(false, `${forbiddenFieldName} should have been ignored`);
-                    }
-                    if (this) {
-                        return this._super.apply(this, arguments);
-                    }
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "partner,false,list": `
+                            <tree string="Partners">
+                                <field name="bar"/>
+                                <field name="product_id"/>
+                            </tree>`,
+                    "partner,false,search": "<search/>",
                 },
+            },
+            mockRPC: async function (route, args, performRPC) {
+                if (args.method === "fields_get" && args.model === "partner") {
+                    // simulate that user cannot read the forbidden field
+                    const result = await performRPC(route, args);
+                    delete result[forbiddenFieldName];
+                    return result;
+                } else if (args.method === "join_spreadsheet_session") {
+                    spreadsheetLoaded = true;
+                } else if (
+                    spreadsheetLoaded &&
+                    args.method === "search_read" &&
+                    args.model === "partner" &&
+                    args.kwargs.fields &&
+                    args.kwargs.fields.includes(forbiddenFieldName)
+                ) {
+                    // We should not go through this condition if the forbidden fields is properly filtered
+                    assert.ok(false, `${forbiddenFieldName} should have been ignored`);
+                }
+                if (this) {
+                    return this._super.apply(this, arguments);
+                }
             },
         });
         setCellContent(model, "A1", `=LIST.HEADER("1", "${forbiddenFieldName}")`);
@@ -295,8 +316,11 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const listId = model.getters.getListIds()[0];
         assert.equal(model.getters.getListFields(listId)[forbiddenFieldName], undefined);
         assert.strictEqual(getCellValue(model, "A1"), forbiddenFieldName);
-        const A2 = getCell(model,"A2");
+        const A2 = getCell(model, "A2");
         assert.equal(A2.evaluated.type, "error");
-        assert.equal(A2.evaluated.error, `The field ${forbiddenFieldName} does not exist or you do not have access to that field`);
+        assert.equal(
+            A2.evaluated.error,
+            `The field ${forbiddenFieldName} does not exist or you do not have access to that field`
+        );
     });
 });

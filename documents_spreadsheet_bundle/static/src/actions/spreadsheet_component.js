@@ -57,7 +57,6 @@ export default class SpreadsheetComponent extends owl.Component {
       userId: user.uid,
     };
     this.isReadonly = this.props.isReadonly;
-    this.transportService = this.props.transportService;
     useExternalListener(window, "beforeunload", this._onLeave.bind(this));
   }
 

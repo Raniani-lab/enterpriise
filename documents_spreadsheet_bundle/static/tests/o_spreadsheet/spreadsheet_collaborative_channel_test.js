@@ -3,8 +3,7 @@
 import SpreadsheetCollaborativeChannel from "@documents_spreadsheet_bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_channel";
 import makeTestEnvironment from "web.test_env";
 
-
-const { EventBus } = owl.core
+const { EventBus } = owl.core;
 
 class MockBusService {
     constructor() {
@@ -27,16 +26,16 @@ class MockBusService {
 
 QUnit.module("documents_spreadsheet > SpreadsheetCollaborativeChannel", {
     beforeEach: function () {
-        const bus = new MockBusService()
-        const rpc = function(route, params, options) {
+        const bus = new MockBusService();
+        const rpc = function (route, params) {
             // Mock the server behavior: new revisions are pushed in the bus
             if (params.method === "dispatch_spreadsheet_message") {
                 const [documentId, message] = params.args;
-                bus.notify({ type: 'spreadsheet', payload: { id: documentId, message } });
+                bus.notify({ type: "spreadsheet", payload: { id: documentId, message } });
             }
-        }
-        this.env = makeTestEnvironment({ services: { bus_service: bus }}, rpc);
-    }
+        };
+        this.env = makeTestEnvironment({ services: { bus_service: bus } }, rpc);
+    },
 });
 
 QUnit.test("sending a message forward it to the registered listener", function (assert) {
@@ -64,7 +63,7 @@ QUnit.test("previous messages are forwarded when registering a listener", functi
 QUnit.test("the channel does not care about other bus messages", function (assert) {
     assert.expect(1);
     const channel = new SpreadsheetCollaborativeChannel(this.env, 5);
-    channel.onNewMessage("anId", (message) =>  assert.step("message"));
-    this.env.services.bus_service.notify("a-random-channel", "a-random-message")
+    channel.onNewMessage("anId", () => assert.step("message"));
+    this.env.services.bus_service.notify("a-random-channel", "a-random-message");
     assert.verifySteps([], "The message should not have been received");
 });

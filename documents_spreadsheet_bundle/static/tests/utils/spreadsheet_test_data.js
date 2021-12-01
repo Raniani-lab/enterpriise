@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents_spreadsheet.TestData default=0 */
+/** @odoo-module */
 
 /**
  * Get a basic arch for a pivot, which is compatible with the data given by
@@ -13,7 +13,7 @@
  * 5  Total   11     15     10     95     131
  */
 export function getBasicPivotArch() {
-    return `
+    return /* xml */ `
         <pivot string="Partners">
             <field name="foo" type="col"/>
             <field name="bar" type="row"/>
@@ -30,11 +30,11 @@ export function getBasicPivotArch() {
  * 1  Foo     bar    Date       Product
  * 2  12      True   2016-04-14 xphone
  * 3  1       True   2016-10-26 xpad
- * 4 17       True   2016-12-15 xpad
- * 5 2        False  2016-12-11 xpad
+ * 4  17      True   2016-12-15 xpad
+ * 5  2       False  2016-12-11 xpad
  */
 export function getBasicListArch() {
-    return `
+    return /* xml */ `
         <tree string="Partners">
             <field name="foo"/>
             <field name="bar"/>
@@ -42,6 +42,24 @@ export function getBasicListArch() {
             <field name="product_id"/>
         </tree>
     `;
+}
+
+export function getBasicServerData() {
+    return {
+        models: getBasicData(),
+        views: {
+            "partner,false,list": getBasicListArch(),
+            "partner,false,pivot": getBasicPivotArch(),
+            "partner,false,search": /* xml */ `<search/>`,
+        },
+    };
+}
+
+export function getBasicListArchs() {
+    return {
+        "partner,false,list": getBasicListArch(),
+        "partner,false,search": /* xml */ `<search/>`,
+    };
 }
 
 export function getBasicData() {
@@ -152,7 +170,7 @@ export function getBasicData() {
                     searchable: true,
                     group_operator: "sum",
                 },
-                bar: { string: "bar", type: "boolean", store: true, sortable: true },
+                bar: { string: "Bar", type: "boolean", store: true, sortable: true },
                 name: { string: "name", type: "char", store: true, sortable: true },
                 date: { string: "Date", type: "date", store: true, sortable: true },
                 active: { string: "Active", type: "bool", default: true },

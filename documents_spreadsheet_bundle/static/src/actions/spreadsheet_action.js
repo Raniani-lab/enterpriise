@@ -6,7 +6,6 @@ import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "./abstract_spreadsheet_action";
 
 import SpreadsheetComponent from "./spreadsheet_component";
-import SpreadsheetCollaborativeChannel from "../o_spreadsheet/collaborative/spreadsheet_collaborative_channel";
 import { SpreadsheetControlPanel } from "./control_panel/spreadsheet_control_panel";
 import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
@@ -34,15 +33,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
   async willStart() {
     await super.willStart();
-
-    if (this.params.transportService) {
-      this.transportService = this.params.transportService;
-    } else if (owl.Component.env.services.bus_service) {
-      this.transportService = new SpreadsheetCollaborativeChannel(
-        owl.Component.env,
-        this.resId
-      );
-    }
+    this.transportService = useService("spreadsheet_collaborative").getCollaborativeChannel(owl.Component.env, this.resId);
   }
 
   async _fetchData() {

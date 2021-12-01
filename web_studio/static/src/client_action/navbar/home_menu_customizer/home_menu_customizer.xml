@@ -7,7 +7,7 @@
         <t t-set-slot="toggler">
           Customizations
         </t>
-        <DropdownItem class="o_web_studio_change_background" t-on-dropdown-item-selected.stop="">
+        <DropdownItem class="o_web_studio_change_background">
           <FileInput
             action="'/web/binary/upload_attachment'"
             t-on-uploaded="bgImageUploaded"

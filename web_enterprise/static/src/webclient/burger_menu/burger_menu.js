@@ -4,7 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { BurgerUserMenu } from "./user_menu/user_menu";
 import { MobileSwitchCompanyMenu } from "./mobile_switch_company_menu/mobile_switch_company_menu";
-import { MenuItem } from "@web/webclient/navbar/navbar";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
 /**
  * This file includes the widget Menu in mobile to render the BurgerMenu which
@@ -74,7 +74,7 @@ export class BurgerMenu extends owl.Component {
 BurgerMenu.template = "web_enterprise.BurgerMenu";
 BurgerMenu.components = {
     Portal: owl.misc.Portal,
-    MenuItem,
+    DropdownItem,
     BurgerUserMenu,
     MobileSwitchCompanyMenu,
 };

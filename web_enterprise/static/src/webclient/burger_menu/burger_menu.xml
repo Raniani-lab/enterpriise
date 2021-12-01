@@ -61,9 +61,9 @@
             </t>
         </div>
     </div>
-    <MenuItem t-else="" t-key="section.id" t-on-click.stop="_onMenuClicked(section)" payload="{ xmlid: section.xmlid }">
+    <DropdownItem t-else="" t-key="section.id" t-on-click.stop="_onMenuClicked(section)" dataset="{ menuXmlid: section.xmlid }">
         <span t-esc="section.name" />
-    </MenuItem>
+    </DropdownItem>
 </t>
 
 </templates>

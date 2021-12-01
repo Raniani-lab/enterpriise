@@ -11,7 +11,7 @@
       </xpath>
 
       <xpath expr='//nav' position="inside">
-        <HomeMenuCustomizer t-if="studio.mode === studio.MODES.HOME_MENU" t-on-dropdown-item-selected.stop=""/>
+        <HomeMenuCustomizer t-if="studio.mode === studio.MODES.HOME_MENU"/>
         <t t-call="web_studio.menuButtons" />
         <t t-call="web_studio.masterButtons" />
       </xpath>

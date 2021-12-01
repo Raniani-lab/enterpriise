@@ -124,10 +124,18 @@ class CohortView extends owl.Component {
     }
 
     /**
-     * @param {CustomEvent} ev
+     * @param {Object} payload
      */
-    onDropDownSelected(ev) {
-        this.model.updateMetaData(ev.detail.payload);
+    onDropDownSelected(payload) {
+        this.model.updateMetaData(payload);
+    }
+
+    /**
+     * @param {Object} param0
+     * @param {string} param0.measure
+     */
+    onMeasureSelected({ measure }) {
+        this.model.updateMetaData({ measure });
     }
 }
 CohortView.type = "cohort";

@@ -2,22 +2,22 @@
 <templates xml:space="preserve">
 
     <t t-name="web_cohort.CohortView.Buttons" owl="1">
-        <div class="btn-group" role="toolbar" aria-label="Main actions" t-on-dropdown-item-selected="onDropDownSelected">
+        <div class="btn-group" role="toolbar" aria-label="Main actions">
             <t t-call="web.ReportViewMeasures">
                 <t t-set="measures" t-value="model.metaData.measures"/>
                 <t t-set="activeMeasures" t-value="[model.metaData.measure]"/>
             </t>
         </div>
         <div class="btn-group" t-if="env.isSmall">
-            <Dropdown t-on-dropdown-item-selected="onDropDownSelected" togglerClass="'btn btn-link dropdown-toggle'" menuClass="'dropdown-menu'">
+            <Dropdown togglerClass="'btn btn-link dropdown-toggle'" menuClass="'dropdown-menu'">
                 <t t-set-slot="toggler">
                     <t t-esc="model.intervals[model.metaData.interval]"/>
                 </t>
                 <t t-foreach="model.intervals" t-as="interval" t-key="interval">
                     <DropdownItem class="o_menu_item dropdown-item"
                         t-att-class="{ selected: interval === model.metaData.interval }"
-                        payload="{ interval: interval }"
                         parentClosingMode="'none'"
+                        onSelected="() => this.onDropDownSelected({ interval })"
                         >
                         <t t-esc="interval_value"/>
                     </DropdownItem>

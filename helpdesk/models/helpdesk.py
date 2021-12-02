@@ -109,7 +109,6 @@ class HelpdeskTeam(models.Model):
     sla_policy_count = fields.Integer("# SLA Policy", compute='_compute_sla_policy_count')
     ticket_closed = fields.Integer(string='Ticket Closed', compute='_compute_ticket_closed')
     success_rate = fields.Float(string='Success Rate', compute='_compute_success_rate', groups="helpdesk.group_use_sla")
-    customer_satisfaction = fields.Float(string='Customer Satisfaction', compute='_compute_customer_satisfaction')
     urgent_ticket = fields.Integer(string='# Urgent Ticket', compute='_compute_urgent_ticket')
     sla_failed = fields.Integer(string='Failed SLA Ticket', compute='_compute_sla_failed')
     # auto close ticket
@@ -194,24 +193,6 @@ class HelpdeskTeam(models.Model):
             success_count = len([ticket for ticket in is_failed_tickets if not ticket])
             total_count = len(is_failed_tickets)
             team.success_rate = float_round(success_count * 100 / total_count, 2) if total_count else 0.0
-
-    def _compute_customer_satisfaction(self):
-        dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.max)
-        tickets_read_group = self.env['helpdesk.ticket'].read_group(
-            [('team_id.use_rating', '=', True), '|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True), ('close_date', '>=', dt)],
-            ['team_id', 'ids:array_agg(id)'],
-            ['team_id'],
-        )
-        tickets_per_team = {
-            res['team_id'][0]: self.env['helpdesk.ticket'].browse(res['ids'])
-            for res in tickets_read_group
-        }
-        for team in self:
-            tickets = tickets_per_team.get(team.id, self.env['helpdesk.ticket'])
-            activity = tickets.rating_get_grades()
-            total_rating = self._compute_activity_avg(activity)
-            total_activity_values = sum(activity.values())
-            team.customer_satisfaction = float_round((total_rating / total_activity_values if total_activity_values else 0), 2) * 20
 
     def _compute_urgent_ticket(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
@@ -502,32 +483,39 @@ class HelpdeskTeam(models.Model):
             result['rating_enable'] = True
             # rating of today
             domain = [('user_id', '=', self.env.uid)]
-            dt = fields.Date.today()
-            tickets = self.env['helpdesk.ticket'].search(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)])
-            activity = tickets.rating_get_grades()
-            total_rating = self._compute_activity_avg(activity)
-            total_activity_values = sum(activity.values())
-            # In the 2 formula's below, we need to multiply at the end by (100 / MAX_SCORING)
-            # where MAX_SCORING is defined in _compute_activity_avg as the value for a "great" rating.
-            team_satisfaction = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 20
-            if team_satisfaction:
-                result['today']['rating'] = team_satisfaction
+            today = fields.Date.today()
+            one_week_before = today - relativedelta.relativedelta(weeks=1)
+            helpdesk_ratings = self.env['rating.rating'].search([
+                ('res_model', '=', 'helpdesk.ticket'),
+                ('res_id', '!=', False),
+                ('write_date', '>', fields.Datetime.to_string(one_week_before)),
+                ('write_date', '<=', today),
+                ('rating', '>=', RATING_LIMIT_MIN),
+                ('consumed', '=', True),
+            ])
+            tickets = HelpdeskTicket.search([('id', 'in', helpdesk_ratings.mapped('res_id')), ('user_id', '=', self._uid)])
+            today_rating_stat = {'count': 0.0, 'score': 0.0}
+            rating_stat = {**today_rating_stat}
+            for rating in helpdesk_ratings:
+                if rating.res_id not in tickets.ids:
+                    continue
+                if rating.write_date.date() == today:
+                    today_rating_stat['count'] += 1
+                    today_rating_stat['score'] += rating.rating
+                rating_stat['score'] += rating.rating
+                rating_stat['count'] += 1
 
-            # rating of last 7 days (6 days + today)
-            dt = fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6)))
-            tickets = self.env['helpdesk.ticket'].search(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)])
-            activity = tickets.rating_get_grades()
-            total_rating = self._compute_activity_avg(activity)
-            total_activity_values = sum(activity.values())
-            team_satisfaction_7days = fields.Float.round((total_rating / total_activity_values if total_activity_values else 0), 2) * 20
-            if team_satisfaction_7days:
-                result['7days']['rating'] = team_satisfaction_7days
+            avg = lambda d: fields.Float.round(d['score'] / d['count'] if d['count'] > 0 else 0.0, 2) * 20
+
+            result['today']['rating'] = avg(today_rating_stat)
+            result['7days']['rating'] = avg(rating_stat)
         return result
 
-    def _action_view_rating(self, period=False, only_my_closed=False):
-        """ return the action to see all the rating about the tickets of the Team
-            :param period: either 'today' or 'seven_days' to include (or not) the tickets closed in this period
-            :param only_my_closed: True will include only the ticket of the current user in a closed stage
+    def _action_view_rating(self, period=False, only_closed_tickets=False, user_id=None):
+        """ return the action to see the rating about the tickets of the Team on the period wished.
+            :param period: either 'seven_days' or 'today' is defined to add a default filter for the ratings.
+            :param only_my_closed: True will include only the tickets in a closed stage.
+            :param user_id: id of the user to get the ratings only in the tickets belongs to the user.
         """
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.rating_rating_action_helpdesk")
         action = clean_action(action, self.env)
@@ -539,16 +527,18 @@ class HelpdeskTeam(models.Model):
             update_views[self.env.ref("helpdesk.rating_rating_view_seven_days_pivot_inherit_helpdesk").id] = 'pivot'
             update_views[self.env.ref('helpdesk.rating_rating_view_seven_days_graph_inherit_helpdesk').id] = 'graph'
             context['search_default_last_7days'] = True
-
         elif period == 'today':
+            context['search_default_today'] = True
             if '__count__' in context.get('pivot_measures', {}):
                 context.get('pivot_measures').remove('__count__')
             domain += [('close_date', '>=', fields.Datetime.to_string(datetime.date.today()))]
             update_views[self.env.ref("helpdesk.rating_rating_view_today_pivot_inherit_helpdesk").id] = 'pivot'
             update_views[self.env.ref('helpdesk.rating_rating_view_today_graph_inherit_helpdesk').id] = 'graph'
         action['views'] = [(state, view) for state, view in action['views'] if view not in update_views.values()] + list(update_views.items())
-        if only_my_closed:
-            domain += [('user_id', '=', self._uid), ('stage_id.is_close', '=', True)]
+        if only_closed_tickets:
+            domain += [('stage_id.is_close', '=', True)]
+        if user_id:
+            domain += [('user_id', '=', user_id)]
 
         ticket_ids = self.env['helpdesk.ticket'].search(domain).ids
         action.update({
@@ -614,9 +604,7 @@ class HelpdeskTeam(models.Model):
 
     def action_view_customer_satisfaction(self):
         action = self._action_view_rating(period='seven_days')
-        action.update({
-            'context': dict(self.env.context, search_default_my_ratings=True, search_default_last_7days=True),
-        })
+        action['context'] = {**self.env.context, **action['context'], 'search_default_my_ratings': True}
         return action
 
     def action_view_open_ticket(self):
@@ -652,12 +640,12 @@ class HelpdeskTeam(models.Model):
     @api.model
     def action_view_rating_today(self):
         #  call this method of on click "Customer Rating" button on dashbord for today rating of teams tickets
-        return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='today', only_my_closed=True)
+        return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='today', user_id=self._uid)
 
     @api.model
     def action_view_rating_7days(self):
         #  call this method of on click "Customer Rating" button on dashbord for last 7days rating of teams tickets
-        return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='seven_days', only_my_closed=True)
+        return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='seven_days', user_id=self._uid)
 
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
@@ -666,11 +654,12 @@ class HelpdeskTeam(models.Model):
     def action_view_team_rating(self):
         self.ensure_one()
         action = self._action_view_rating()
-        rating_ids = self.rating_ids.filtered(lambda x: x.rating >= 1 and x.consumed).ids
-        if len(rating_ids) == 1:
+        # Before this changes if some tickets are archived in the helpdesk team, we count the ratings of them + the active tickets.
+        # Do we really want to count the ratings of the archived tickets?
+        rating_count = self.env['rating.rating'].search_count(action['domain'])
+        if rating_count == 1:
             action.update({
                 'view_mode': 'form',
-                'res_id': rating_ids[0],
                 'views': [(False, 'form')],
             })
         return action
@@ -697,17 +686,6 @@ class HelpdeskTeam(models.Model):
             'domain': [('team_id', '=', self.id)],
         })
         return action
-
-    @api.model
-    def _compute_activity_avg(self, activity):
-        # compute average base on all rating value
-        # like: 5 great, 3 okey, 1 bad
-        # great = 5, okey = 3, bad = 0
-        # (5*5) + (2*3) + (1*0) = 60 / 8 (nuber of activity for rating)
-        great = activity['great'] * 5.00
-        okey = activity['okay'] * 3.00
-        bad = activity['bad'] * 0.00
-        return great + okey + bad
 
     def _determine_user_to_assign(self):
         """ Get a dict with the user (per team) that should be assign to the nearly created ticket according to the team policy

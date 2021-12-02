@@ -23,8 +23,8 @@
         <field name="context">{'default_team_id': active_id, 'search_default_team_id': active_id}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No SLA policies found. Let's create one! 
-            </p><p> 
+                No SLA policies found. Let's create one!
+            </p><p>
                 Make sure tickets are handled in a timely manner by using SLA Policies.<br/>
             </p>
         </field>
@@ -53,13 +53,15 @@
                         <button name="action_view_open_ticket_view" type="object" icon="fa-life-ring" class="oe_stat_button">
                             <field name="open_ticket_count" string="Tickets" widget="statinfo"/>
                         </button>
-                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_percentage_satisfaction', '=', -1)]}" groups="helpdesk.group_use_rating">
-                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_percentage_satisfaction', '&lt;', 66)]}" title="Satisfied"/>
-                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_percentage_satisfaction', '&lt;', 33), ('rating_percentage_satisfaction', '&gt;=', 65)]}" title="Okay"/>
-                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_percentage_satisfaction', '&gt;', 32)]}" title="Dissatisfied"/>
+                        <field name="rating_count" invisible="1"/>
+                        <field name="rating_avg" invisible="1"/>
+                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating">
+                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>
+                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_avg', '&lt;', 2.33), ('rating_avg', '&gt;=', 3.66)]}" title="Okay"/>
+                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_avg', '&gt;=', 2.33)]}" title="Dissatisfied"/>
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
-                                    <field name="rating_percentage_satisfaction" nolabel="1"/>%
+                                    <field name="rating_avg_percentage" nolabel="1" widget="percentage"/>
                                 </span>
                                 <span class="o_stat_text">
                                     Satisfaction
@@ -449,7 +451,8 @@
                 <field name="urgent_ticket"/>
                 <field name="open_ticket_count"/>
                 <field name="sla_failed"/>
-                <field name="customer_satisfaction"/>
+                <field name="rating_count"/>
+                <field name="rating_avg" />
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
@@ -485,11 +488,16 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <div class="mb4" t-if="record.use_rating.raw_value" groups="helpdesk.group_use_rating">
-                                            <a name="action_view_customer_satisfaction" type="object" title="Customer satisfaction percentage for the tickets closed in the past 7 days." class="w-100">
-                                                <span>Customer Satisfaction</span>
+                                        <div class="mb4" t-if="record.use_rating.raw_value and record.rating_count.raw_value &gt; 0" groups="helpdesk.group_use_rating">
+                                            <a name="action_view_customer_satisfaction" type="object" title="Average rating for the last 7 days" class="w-100">
+                                                <span>Average Rating</span>
                                                 <span class="pull-right">
-                                                    <field name="customer_satisfaction"/> %
+                                                    <b>
+                                                        <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
+                                                        <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
+                                                        <span style="font-weight:bold;" class="fa fa-fw mt4 fa-frown-o text-danger" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
+                                                    </b>
+                                                    <field name="rating_avg_percentage" nolabel="1" widget="percentage"/>
                                                 </span>
                                             </a>
                                         </div>

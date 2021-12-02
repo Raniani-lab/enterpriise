@@ -10,8 +10,10 @@ class Project(models.Model):
     allow_material = fields.Boolean("Products on Tasks", compute="_compute_allow_material", store=True, readonly=False)
     allow_quotations = fields.Boolean(
         "Extra Quotations", compute="_compute_allow_quotations", store=True, readonly=False)
-    allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
-    sale_line_id = fields.Many2one(compute="_compute_sale_line_id", store=True, readonly=False)
+    allow_billable = fields.Boolean(
+         compute='_compute_allow_billable', store=True, readonly=False)
+    sale_line_id = fields.Many2one(
+        compute="_compute_sale_line_id", store=True, readonly=False)
 
     _sql_constraints = [
         ('material_imply_billable', "CHECK((allow_material = 't' AND allow_billable = 't') OR (allow_material = 'f'))", 'The material can be allowed only when the task can be billed.'),

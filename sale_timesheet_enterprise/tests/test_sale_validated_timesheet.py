@@ -30,17 +30,13 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheet):
             'pricelist_id': cls.company_data['default_pricelist'].id,
         })
         cls.ordered_so_line = cls.env['sale.order.line'].with_context(tracking_disable=True).create({
-            'name': cls.product_order_timesheet3.name,
             'product_id': cls.product_order_timesheet3.id,
             'product_uom_qty': 10,
-            'product_uom': cls.product_order_timesheet3.uom_id.id,
             'order_id': cls.sale_order.id,
         })
         cls.delivered_so_line = cls.env['sale.order.line'].with_context(tracking_disable=True).create({
-            'name': cls.product_delivery_timesheet3.name,
             'product_id': cls.product_delivery_timesheet3.id,
             'product_uom_qty': 10,
-            'product_uom': cls.product_delivery_timesheet3.uom_id.id,
             'order_id': cls.sale_order.id,
         })
 

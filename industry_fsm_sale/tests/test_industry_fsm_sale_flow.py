@@ -91,7 +91,6 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
             'order_id': so.id,
             'product_id': product.id,
             'product_uom_qty': 3,
-            'product_uom': product.uom_id.id,
             'task_id': self.task.id
         })
         product.sudo()._compute_fsm_quantity()

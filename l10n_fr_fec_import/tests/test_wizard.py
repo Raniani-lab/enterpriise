@@ -55,7 +55,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         cls._attach_file_to_wizard(cls, cls.test_content, cls.wizard)
 
         # Export records for import test --------------
-        cls.moves = cls.env['account.move'].create([{
+        cls.moves = cls.env['account.move'].with_company(cls.company_export).create([{
             'company_id': cls.company_export.id,
             'name': 'INV/001/123456',
             'date': datetime.date(2010, 1, 1),

@@ -11,8 +11,8 @@ class TestEasypostRequest(EasypostTestCommon):
 
     def test_prepare_order_shipments(self):
         SaleOrder = self.env["sale.order"]
-        sol_1_vals = {"product_id": self.server.id}
-        sol_2_vals = {"product_id": self.miniServer.id}
+        sol_1_vals = {"product_id": self.server.id, 'product_uom_qty': 1}
+        sol_2_vals = {"product_id": self.miniServer.id, 'product_uom_qty': 1}
         so_vals_fedex = {"partner_id": self.jackson.id, "order_line": [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
@@ -24,8 +24,8 @@ class TestEasypostRequest(EasypostTestCommon):
     def test_prepare_order_shipments_multiple(self):
         self.fedex_default_package_type.max_weight = 3
         SaleOrder = self.env["sale.order"]
-        sol_1_vals = {"product_id": self.server.id}
-        sol_2_vals = {"product_id": self.miniServer.id}
+        sol_1_vals = {"product_id": self.server.id, 'product_uom_qty': 1}
+        sol_2_vals = {"product_id": self.miniServer.id, 'product_uom_qty': 1}
         so_vals_fedex = {"partner_id": self.jackson.id, "order_line": [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
@@ -39,8 +39,8 @@ class TestEasypostRequest(EasypostTestCommon):
     def test_prepare_order_shipments_no_max_weight(self):
         self.fedex_default_package_type.max_weight = 0
         SaleOrder = self.env["sale.order"]
-        sol_1_vals = {"product_id": self.server.id}
-        sol_2_vals = {"product_id": self.miniServer.id}
+        sol_1_vals = {"product_id": self.server.id, 'product_uom_qty': 1}
+        sol_2_vals = {"product_id": self.miniServer.id, 'product_uom_qty': 1}
         so_vals_fedex = {"partner_id": self.jackson.id, "order_line": [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)

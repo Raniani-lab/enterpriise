@@ -236,18 +236,21 @@ class SaleOrderLine(models.Model):
                 res['analytic_account_id'] = self.subscription_id.analytic_account_id.id
         return res
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Set the correct subscription on lines at creation for upsell/renewal quotes."""
-        if vals.get('order_id'):
-            order = self.env['sale.order'].browse(vals['order_id'])
-            Product = self.env['product.product']
-            if order.origin and order.subscription_management in ('upsell', 'renew') and Product.browse(vals['product_id']).recurring_invoice:
-                vals['subscription_id'] = (
-                    self.env['sale.subscription'].search(['&', ('code', '=', order.origin), ('partner_id', '=', order.partner_id.id)], limit=1).id
-                    or self.env['sale.subscription'].search([('code', '=', order.origin)], limit=1).id
-                )
-        return super(SaleOrderLine, self).create(vals)
+        for vals in vals_list:
+            if vals.get('order_id'):
+                order = self.env['sale.order'].browse(vals['order_id'])
+                Product = self.env['product.product']
+                if order.origin and order.subscription_management in ('upsell', 'renew') and Product.browse(vals['product_id']).recurring_invoice:
+                    vals['subscription_id'] = (
+                        self.env['sale.subscription'].search([
+                            '&', ('code', '=', order.origin), ('partner_id', '=', order.partner_id.id)], limit=1).id
+                        or self.env['sale.subscription'].search([
+                            ('code', '=', order.origin)], limit=1).id
+                    )
+        return super(SaleOrderLine, self).create(vals_list)
 
     def _prepare_subscription_line_data(self):
         """Prepare a dictionnary of values to add lines to a subscription."""

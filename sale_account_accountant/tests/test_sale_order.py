@@ -18,11 +18,8 @@ class TestSaleOrder(TestSaleCommon):
             'pricelist_id': self.company_data['default_pricelist'].id,
         })
         self.env['sale.order.line'].create({
-            'name': self.company_data['product_order_no'].name,
             'product_id': self.company_data['product_order_no'].id,
             'product_uom_qty': 2,
-            'product_uom': self.company_data['product_order_no'].uom_id.id,
-            'price_unit': self.company_data['product_order_no'].list_price,
             'order_id': so.id,
             'tax_id': False,
         })

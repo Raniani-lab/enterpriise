@@ -18,8 +18,8 @@ class SaleSubscriptionWizard(models.TransientModel):
 
     def create_sale_order(self):
         self = self.with_company(self.subscription_id.company_id)
-        fpos = self.env['account.fiscal.position'].get_fiscal_position(
-            self.subscription_id.partner_id.id)
+        fpos = self.env['account.fiscal.position']._get_fiscal_position(
+            self.subscription_id.partner_id)
         sale_order_obj = self.env['sale.order']
         team = self.env['crm.team']._get_default_team_id(user_id=self.subscription_id.user_id.id)
         new_order_vals = {
@@ -40,7 +40,6 @@ class SaleSubscriptionWizard(models.TransientModel):
         order.message_post(body=(_("This upsell order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.subscription_id.id, self.subscription_id.display_name)))
         for line in self.option_lines:
             self.subscription_id.partial_invoice_line(order, line, date_from=self.date_from)
-        order.order_line._compute_tax_id()
         return {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",

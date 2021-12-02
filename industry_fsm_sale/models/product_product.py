@@ -68,11 +68,9 @@ class ProductProduct(models.Model):
                     if product.service_type == 'manual':
                         vals['qty_delivered'] = diff_qty
 
-                    if task.sale_order_id.pricelist_id.discount_policy == 'without_discount':
-                        sol = self.env['sale.order.line'].new(vals)
-                        sol._onchange_discount()
-                        vals.update({'discount': sol.discount or 0.0})
-                    sale_line = self.env['sale.order.line'].create(vals)
+                    sol = self.env['sale.order.line'].create(vals)
+                    if task.sale_order_id.pricelist_id.discount_policy != 'without_discount':
+                        sol.discount = 0.0
 
     @api.model
     def _search_fsm_quantity(self, operator, value):

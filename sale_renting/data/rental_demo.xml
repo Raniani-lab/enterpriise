@@ -167,13 +167,6 @@
       <field name="user_id" ref="base.user_admin"/>
   </record>
 
-  <!-- Trigger so_line name recomputation -->
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_order_line_1')]]"/>
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_order_line_2')]]"/>
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_order_line_3')]]"/>
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_order_line_4')]]"/>
-  <function model="sale.order.line" name="product_id_change" eval="[[ref('rental_order_line_5')]]"/>
-
   <!-- Confirm rental order -->
   <function model="sale.order" name="action_confirm" eval="[[ref('rental_order_2')]]"/>
 

@@ -43,7 +43,6 @@ class FsmStockTracking(models.TransientModel):
                     'order_id': self.task_id.sale_order_id.id,
                     'product_id': self.product_id.id,
                     'product_uom_qty': qty,
-                    'product_uom': self.product_id.uom_id.id,
                     'task_id': self.task_id.id,
                     'fsm_lot_id': line.lot_id.id,
                 }

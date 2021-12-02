@@ -218,12 +218,10 @@ class TestSubscription(TestSubscriptionCommon):
         renewal_so_id = res['res_id']
         renewal_so = self.env['sale.order'].browse(renewal_so_id)
         so_line_vals = {
-            'name': self.product.name,
             'order_id': renewal_so_id,
             'product_id': self.product.id,
             'product_uom_qty': 2,
-            'product_uom': self.product.uom_id.id,
-            'price_unit': self.product.list_price}
+        }
         new_line = self.env['sale.order.line'].create(so_line_vals)
         self.assertEqual(new_line.subscription_id, self.subscription, 'sale_subscription: SO lines added to renewal orders manually should have the correct subscription set on them')
         self.assertEqual(renewal_so.origin, self.subscription.code, 'sale_subscription: renewal order must have the "source document" set to the subscription code')
@@ -245,12 +243,10 @@ class TestSubscription(TestSubscriptionCommon):
         upsell_so = self.env['sale.order'].browse(upsell_so_id)
         # add line to quote manually, it must be taken into account in the subscription after validation
         so_line_vals = {
-            'name': self.product2.name,
             'order_id': upsell_so_id,
             'product_id': self.product2.id,
             'product_uom_qty': 2,
-            'product_uom': self.product2.uom_id.id,
-            'price_unit': self.product2.list_price}
+        }
         new_line = self.env['sale.order.line'].create(so_line_vals)
         self.assertEqual(self.subscription, new_line.subscription_id,
                          '''sale_subscription: upsell line added to quote after '''

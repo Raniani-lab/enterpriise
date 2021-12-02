@@ -238,10 +238,6 @@ class RentalOrderLine(models.Model):
             if moves and moves.mapped('product_id') != line.product_id:
                 raise ValidationError("You cannot change the product of lines linked to stock moves.")
 
-    def _onchange_product_uom_qty(self):
-        if not self.is_rental:
-            return super(RentalOrderLine, self)._onchange_product_uom_qty()
-
     def _action_launch_stock_rule(self, previous_product_uom_qty=False):
         """Disable stock moves for rental order lines.
 

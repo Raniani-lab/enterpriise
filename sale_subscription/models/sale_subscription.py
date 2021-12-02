@@ -601,9 +601,10 @@ class SaleSubscription(models.Model):
         addr = self.partner_id.address_get(['delivery', 'invoice'])
         sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
         use_sale_order = sale_order and sale_order.partner_id == self.partner_id
-        partner_id = sale_order.partner_invoice_id.id if use_sale_order else self.partner_invoice_id.id or addr['invoice']
-        partner_shipping_id = sale_order.partner_shipping_id.id if use_sale_order else self.partner_shipping_id.id or addr['delivery']
-        fpos = self.env['account.fiscal.position'].with_company(company).get_fiscal_position(self.partner_id.id, partner_shipping_id)
+        partner = sale_order.partner_invoice_id if use_sale_order else self.partner_invoice_id or self.env['res.partner'].browse(addr['invoice'])
+        partner_shipping = sale_order.partner_shipping_id if use_sale_order else self.partner_shipping_id or self.env['res.partner'].browse(addr['delivery'])
+        fpos = self.env['account.fiscal.position'].with_company(company)._get_fiscal_position(
+            self.partner_id, partner_shipping)
         narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))
         if not is_html_empty(self.description):
             narration += Markup('<br/>') + self.description
@@ -611,8 +612,8 @@ class SaleSubscription(models.Model):
             narration += Markup('<br/>') + self.company_id.invoice_terms
         res = {
             'move_type': 'out_invoice',
-            'partner_id': partner_id,
-            'partner_shipping_id': partner_shipping_id,
+            'partner_id': partner.id,
+            'partner_shipping_id': partner_shipping.id,
             'currency_id': self.pricelist_id.currency_id.id,
             'journal_id': journal.id,
             'invoice_origin': self.code,
@@ -703,7 +704,7 @@ class SaleSubscription(models.Model):
         for subscription in self:
             subscription = subscription.with_company(subscription.company_id)
             order_lines = []
-            fpos = subscription.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
+            fpos = subscription.env['account.fiscal.position']._get_fiscal_position(subscription.partner_id)
             partner_lang = subscription.partner_id.lang
             if discard_product_ids:
                 # Prevent to add products discarded during the renewal
@@ -771,7 +772,6 @@ class SaleSubscription(models.Model):
         values = self._prepare_renewal_order_values(discard_product_ids, new_lines_ids)
         order = self.env['sale.order'].create(values[self.id])
         order.message_post(body=(_("This renewal order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.id, self.display_name)))
-        order.order_line._compute_tax_id()
         return {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",
@@ -1274,7 +1274,7 @@ class SaleSubscriptionLine(models.Model):
         product_taxes = self.product_id.sudo().taxes_id.filtered(
             lambda t: t.company_id == self.analytic_account_id.company_id)
         fpos = self.env['account.fiscal.position'].with_company(
-            self.analytic_account_id.company_id).get_fiscal_position(partner.id)
+            self.analytic_account_id.company_id)._get_fiscal_position(partner)
         taxes = fpos.map_tax(product_taxes)
         tax_values = taxes.compute_all(
             self.price_unit * (1 - (self.discount or 0.0) / 100.0),

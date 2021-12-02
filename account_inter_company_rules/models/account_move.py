@@ -79,8 +79,9 @@ class AccountMove(models.Model):
         # We need the fiscal position in the company (already in context) we are creating the
         # invoice, not the fiscal position of the current invoice (self.company)
         delivery_partner_id = self.company_id.partner_id.address_get(['delivery'])['delivery']
-        fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(
-            self.company_id.partner_id.id, delivery_id=delivery_partner_id
+        delivery_partner = self.env['res.partner'].browse(delivery_partner_id)
+        fiscal_position_id = self.env['account.fiscal.position']._get_fiscal_position(
+            self.company_id.partner_id, delivery=delivery_partner
         )
         return {
             'move_type': invoice_type,

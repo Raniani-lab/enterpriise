@@ -53,25 +53,25 @@ class TestRentalCommon(common.SingleTransactionCase):
         quants = cls.env['stock.quant'].create({
             'product_id': cls.product_id.id,
             'inventory_quantity': 4.0,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
             'inventory_quantity': 1.0,
             'lot_id': cls.lot_id1.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
             'inventory_quantity': 1.0,
             'lot_id': cls.lot_id2.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
             'inventory_quantity': 1.0,
             'lot_id': cls.lot_id3.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
+            'location_id': cls.env.user._get_default_warehouse_id().lot_stock_id.id
         })
         quants.action_apply_inventory()
 
@@ -100,7 +100,6 @@ class TestRentalCommon(common.SingleTransactionCase):
             'order_id': cls.sale_order_id.id,
             'product_id': cls.product_id.id,
             'product_uom_qty': 0.0,
-            'product_uom': cls.product_id.uom_id.id,
             'is_rental': True,
             'pickup_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
@@ -120,7 +119,6 @@ class TestRentalCommon(common.SingleTransactionCase):
             'order_id': cls.lots_rental_order.id,
             'product_id': cls.tracked_product_id.id,
             'product_uom_qty': 0.0,
-            'product_uom': cls.tracked_product_id.uom_id.id,
             'is_rental': True,
             'pickup_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
@@ -131,7 +129,6 @@ class TestRentalCommon(common.SingleTransactionCase):
             'order_id': cls.lots_rental_order.id,
             'product_id': cls.tracked_product_id.id,
             'product_uom_qty': 0.0,
-            'product_uom': cls.tracked_product_id.uom_id.id,
             'is_rental': True,
             'pickup_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),

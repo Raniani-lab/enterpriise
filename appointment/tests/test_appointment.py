@@ -217,18 +217,45 @@ class AppointmentTest(common.HttpCase):
         self.assertTrue(all(slot.slot_type == 'unique' for slot in appointment_type.slot_ids), "All slots are 'unique'")
 
     @users('admin')
-    def test_create_custom_appointment_without_employee(self):
-        # No Validation Error, the actual employee should be set by default
+    def test_create_custom_appointment_without_user(self):
+        # No Validation Error, the actual user should be set by default
         self.env['calendar.appointment.type'].create({
-            'name': 'Custom without employee',
+            'name': 'Custom without user',
             'category': 'custom',
         })
 
     @users('admin')
-    def test_create_custom_appointment_multiple_employees(self):
+    def test_create_custom_appointment_multiple_users(self):
         with self.assertRaises(ValidationError):
             self.env['calendar.appointment.type'].create({
-                'name': 'Custom without employee',
+                'name': 'Custom without user',
                 'category': 'custom',
                 'staff_user_ids': [self.first_staff_user_in_brussel.id, self.second_staff_user_in_australia.id]
             })
+
+    @users('admin')
+    def test_slot_restrict_to_user(self):
+        appointment = self.env['calendar.appointment.type'].create({
+            'name': 'Test Restrict To User',
+            'staff_user_ids': [self.first_staff_user_in_brussel.id, self.second_staff_user_in_australia.id],
+            'appointment_tz': 'UTC',
+            'slot_ids': [
+                (0, 0, {
+                    'weekday': '1',
+                    'start_hour': 9,
+                    'end_hour': 10,
+                    'restrict_to_user_ids': [self.second_staff_user_in_australia.id],
+            }), (0, 0, {
+                    'weekday': '1',
+                    'start_hour': 11,
+                    'end_hour': 12,
+                    'restrict_to_user_ids': [self.first_staff_user_in_brussel.id],
+            })],
+        })
+        slots = appointment._get_appointment_slots('UTC')
+        for week in slots[0]['weeks']:
+            for day in week:
+                slots = day['slots']
+                if len(slots) == 2:
+                    self.assertEqual(slots[0].get('staff_user_id'), self.second_staff_user_in_australia.id)
+                    self.assertEqual(slots[1].get('staff_user_id'), self.first_staff_user_in_brussel.id)

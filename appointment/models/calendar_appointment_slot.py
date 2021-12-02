@@ -20,6 +20,10 @@ class CalendarAppointmentSlot(models.Model):
         defining non-recurring time slot (e.g. 10th of April 2021 from 10 to 11 am) from its calendar.""")
     allday = fields.Boolean('All day',
         help="Determine if the slot englobe the whole day, mainly used for unique slot type")
+    restrict_to_user_ids = fields.Many2many(
+        'res.users', string='Restrict to Users',
+        help="If empty, all users are considered to be available.\n"
+            "If set, only the selected users will be taken into account for this slot.")
     # Recurring slot
     weekday = fields.Selection([
         ('1', 'Monday'),
@@ -60,11 +64,11 @@ class CalendarAppointmentSlot(models.Model):
     def _check_delta_hours(self):
         if any(self.filtered(lambda slot: slot.start_hour >= slot.end_hour and slot.slot_type != 'unique')):
             raise ValidationError(_(
-                "Atleast one slot duration from start to end is invalid: a slot should end after start"
+                "At least one slot duration from start to end is invalid: a slot should end after start"
             ))
         if any(self.filtered(lambda slot: slot.start_hour + slot.appointment_type_id.appointment_duration > slot.end_hour and slot.slot_type != 'unique')):
             raise ValidationError(_(
-                "Atleast one slot duration is not enough to create a slot with the duration set in the appointment type"
+                "At least one slot duration is not enough to create a slot with the duration set in the appointment type"
             ))
 
     @api.constrains('slot_type', 'start_datetime', 'end_datetime')

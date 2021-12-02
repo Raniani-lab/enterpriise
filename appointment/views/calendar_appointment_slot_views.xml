@@ -9,6 +9,7 @@
                 <group attrs="{'invisible': [('slot_type', '=', 'unique')]}">
                     <group>
                         <field name="appointment_type_id"/>
+                        <field name="restrict_to_user_ids" widget="many2many_avatar_user" options="{'no_create': True}"/>
                         <field name="weekday"/>
                     </group>
                     <group>

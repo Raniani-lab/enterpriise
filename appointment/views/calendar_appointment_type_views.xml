@@ -171,6 +171,9 @@
                                         attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
                                     <field name="start_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
                                     <field name="end_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
+                                    <field name="restrict_to_user_ids" widget="many2many_avatar_user" domain="[('id', 'in', parent.staff_user_ids)]"
+                                        attrs="{'column_invisible': [('parent.category', 'in', ['custom', 'work_hours'])]}"
+                                        options="{'no_create': True}" optional="hide"/>
                                 </tree>
                             </field>
                         </page>

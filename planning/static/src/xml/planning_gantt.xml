@@ -22,5 +22,10 @@
         <t t-jquery="*[t-esc='widget.progressBar.max_value_formatted']" t-operation="after">
             h
         </t>
+        <t t-jquery="div[t-if='widget.showEmployeeAvatar']" t-operation="before">
+            <div t-if="widget.isResourceMaterial" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource">
+                <i class="fa fa-wrench"/>
+            </div>
+        </t>
     </t>
 </templates>

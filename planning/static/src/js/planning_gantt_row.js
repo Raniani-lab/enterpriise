@@ -13,6 +13,7 @@ const PlanningGanttRow = HrGanttRow.extend({
         const isEmptyGroup = pillsInfo.groupId === 'empty';
         this.employeeID = (this.progressBar && this.progressBar.employee_id) || false;
         this.showEmployeeAvatar = (isGroupedByResource && !isEmptyGroup && !!this.employeeID);
+        this.isResourceMaterial = !!(this.progressBar && this.progressBar.is_material_resource);
     },
 
     _getEmployeeID() {

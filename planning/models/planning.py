@@ -1554,6 +1554,7 @@ class Planning(models.Model):
         }
         return {
             resource.id: {
+                'is_material_resource': resource.resource_type == 'material',
                 'value': planned_hours_mapped[resource.id],
                 'max_value': work_hours.get(resource.id, 0.0),
                 'employee_id': resource.employee_id.id,

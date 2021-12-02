@@ -371,33 +371,7 @@ class SignRequest(models.Model):
         if not self.completed_document:
             self.generate_completed_document()
 
-        attachment = self.env['ir.attachment'].create({
-            'name': "%s.pdf" % self.reference if self.reference.split('.')[-1] != 'pdf' else self.reference,
-            'datas': self.completed_document,
-            'type': 'binary',
-            'res_model': self._name,
-            'res_id': self.id,
-        })
-        report_action = self.env.ref('sign.action_sign_request_print_logs')
-        # print the report with the public user in a sudoed env
-        # public user because we don't want groups to pollute the result
-        # (e.g. if the current user has the group Sign Manager,
-        # some private information will be sent to *all* signers)
-        # sudoed env because we have checked access higher up the stack
-        public_user = self.env.ref('base.public_user', raise_if_not_found=False)
-        if not public_user:
-            # public user was deleted, fallback to avoid crash (info may leak)
-            public_user = self.env.user
-        pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.id)
-        attachment_log = self.env['ir.attachment'].create({
-            'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
-            'raw': pdf_content,
-            'type': 'binary',
-            'res_model': self._name,
-            'res_id': self.id,
-        })
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
-        self.attachment_ids = [Command.link(attachment.id), Command.link(attachment_log.id)]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
         for sign_request_item in self.request_item_ids:
             self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.access_token, with_message_cc=sign_request_item.partner_id in self.cc_partner_ids, force_send=True)
@@ -458,119 +432,145 @@ class SignRequest(models.Model):
         self.ensure_one()
         if not self.template_id.sign_item_ids:
             self.completed_document = self.template_id.attachment_id.datas
-            return
+        else:
+            try:
+                old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+                old_pdf.getNumPages()
+            except:
+                raise ValidationError(_("ERROR: Invalid PDF file!"))
 
-        try:
-            old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
-            old_pdf.getNumPages()
-        except:
-            raise ValidationError(_("ERROR: Invalid PDF file!"))
+            isEncrypted = old_pdf.isEncrypted
+            if isEncrypted and not old_pdf.decrypt(password):
+                # password is not correct
+                return
 
-        isEncrypted = old_pdf.isEncrypted
-        if isEncrypted and not old_pdf.decrypt(password):
-            # password is not correct
-            return
+            font = self._get_font()
+            normalFontSize = self._get_normal_font_size()
 
-        font = self._get_font()
-        normalFontSize = self._get_normal_font_size()
+            packet = io.BytesIO()
+            can = canvas.Canvas(packet)
+            itemsByPage = self.template_id.sign_item_ids.getByPage()
+            SignItemValue = self.env['sign.request.item.value']
+            for p in range(0, old_pdf.getNumPages()):
+                page = old_pdf.getPage(p)
+                # Absolute values are taken as it depends on the MediaBox template PDF metadata, they may be negative
+                width = float(abs(page.mediaBox.getWidth()))
+                height = float(abs(page.mediaBox.getHeight()))
 
-        packet = io.BytesIO()
-        can = canvas.Canvas(packet)
-        itemsByPage = self.template_id.sign_item_ids.getByPage()
-        SignItemValue = self.env['sign.request.item.value']
-        for p in range(0, old_pdf.getNumPages()):
-            page = old_pdf.getPage(p)
-            # Absolute values are taken as it depends on the MediaBox template PDF metadata, they may be negative
-            width = float(abs(page.mediaBox.getWidth()))
-            height = float(abs(page.mediaBox.getHeight()))
+                # Set page orientation (either 0, 90, 180 or 270)
+                rotation = page['/Rotate'] if '/Rotate' in page else 0
+                if rotation and isinstance(rotation, int):
+                    can.rotate(rotation)
+                    # Translate system so that elements are placed correctly
+                    # despite of the orientation
+                    if rotation == 90:
+                        width, height = height, width
+                        can.translate(0, -height)
+                    elif rotation == 180:
+                        can.translate(-width, -height)
+                    elif rotation == 270:
+                        width, height = height, width
+                        can.translate(-width, 0)
 
-            # Set page orientation (either 0, 90, 180 or 270)
-            rotation = page['/Rotate'] if '/Rotate' in page else 0
-            if rotation and isinstance(rotation, int):
-                can.rotate(rotation)
-                # Translate system so that elements are placed correctly
-                # despite of the orientation
-                if rotation == 90:
-                    width, height = height, width
-                    can.translate(0, -height)
-                elif rotation == 180:
-                    can.translate(-width, -height)
-                elif rotation == 270:
-                    width, height = height, width
-                    can.translate(-width, 0)
+                items = itemsByPage[p + 1] if p + 1 in itemsByPage else []
+                for item in items:
+                    value = SignItemValue.search([('sign_item_id', '=', item.id), ('sign_request_id', '=', self.id)], limit=1)
+                    if not value or not value.value:
+                        continue
 
-            items = itemsByPage[p + 1] if p + 1 in itemsByPage else []
-            for item in items:
-                value = SignItemValue.search([('sign_item_id', '=', item.id), ('sign_request_id', '=', self.id)], limit=1)
-                if not value or not value.value:
-                    continue
+                    value = value.value
 
-                value = value.value
-
-                if item.type_id.item_type == "text":
-                    can.setFont(font, height*item.height*0.8)
-                    if item.alignment == "left":
-                        can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
-                    elif item.alignment == "right":
-                        can.drawRightString(width*(item.posX+item.width), height*(1-item.posY-item.height*0.9), value)
-                    else:
-                        can.drawCentredString(width*(item.posX+item.width/2), height*(1-item.posY-item.height*0.9), value)
-
-                elif item.type_id.item_type == "selection":
-                    content = []
-                    for option in item.option_ids:
-                        if option.id != int(value):
-                            content.append("<strike>%s</strike>" % (option.value))
+                    if item.type_id.item_type == "text":
+                        can.setFont(font, height*item.height*0.8)
+                        if item.alignment == "left":
+                            can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+                        elif item.alignment == "right":
+                            can.drawRightString(width*(item.posX+item.width), height*(1-item.posY-item.height*0.9), value)
                         else:
-                            content.append(option.value)
-                    font_size = height * normalFontSize * 0.8
-                    can.setFont(font, font_size)
-                    text = " / ".join(content)
-                    string_width = stringWidth(text.replace("<strike>", "").replace("</strike>", ""), font, font_size)
-                    p = Paragraph(text, getSampleStyleSheet()["Normal"])
-                    w, h = p.wrap(width, height)
-                    posX = width * (item.posX + item.width * 0.5) - string_width // 2
-                    posY = height * (1 - item.posY - item.height * 0.5) - h // 2
-                    p.drawOn(can, posX, posY)
+                            can.drawCentredString(width*(item.posX+item.width/2), height*(1-item.posY-item.height*0.9), value)
 
-                elif item.type_id.item_type == "textarea":
-                    can.setFont(font, height*normalFontSize*0.8)
-                    lines = value.split('\n')
-                    y = (1-item.posY)
-                    for line in lines:
-                        y -= normalFontSize*0.9
-                        can.drawString(width*item.posX, height*y, line)
-                        y -= normalFontSize*0.1
+                    elif item.type_id.item_type == "selection":
+                        content = []
+                        for option in item.option_ids:
+                            if option.id != int(value):
+                                content.append("<strike>%s</strike>" % (option.value))
+                            else:
+                                content.append(option.value)
+                        font_size = height * normalFontSize * 0.8
+                        can.setFont(font, font_size)
+                        text = " / ".join(content)
+                        string_width = stringWidth(text.replace("<strike>", "").replace("</strike>", ""), font, font_size)
+                        p = Paragraph(text, getSampleStyleSheet()["Normal"])
+                        posX = width * (item.posX + item.width * 0.5) - string_width // 2
+                        posY = height * (1 - item.posY - item.height * 0.5) - p.wrap(width, height)[1] // 2
+                        p.drawOn(can, posX, posY)
 
-                elif item.type_id.item_type == "checkbox":
-                    can.setFont(font, height*item.height*0.8)
-                    value = 'X' if value == 'on' else ''
-                    can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+                    elif item.type_id.item_type == "textarea":
+                        can.setFont(font, height*normalFontSize*0.8)
+                        lines = value.split('\n')
+                        y = (1-item.posY)
+                        for line in lines:
+                            y -= normalFontSize*0.9
+                            can.drawString(width*item.posX, height*y, line)
+                            y -= normalFontSize*0.1
 
-                elif item.type_id.item_type == "signature" or item.type_id.item_type == "initial":
-                    image_reader = ImageReader(io.BytesIO(base64.b64decode(value[value.find(',')+1:])))
-                    _fix_image_transparency(image_reader._image)
-                    can.drawImage(image_reader, width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
+                    elif item.type_id.item_type == "checkbox":
+                        can.setFont(font, height*item.height*0.8)
+                        value = 'X' if value == 'on' else ''
+                        can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
 
-            can.showPage()
+                    elif item.type_id.item_type == "signature" or item.type_id.item_type == "initial":
+                        image_reader = ImageReader(io.BytesIO(base64.b64decode(value[value.find(',')+1:])))
+                        _fix_image_transparency(image_reader._image)
+                        can.drawImage(image_reader, width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
 
-        can.save()
+                can.showPage()
 
-        item_pdf = PdfFileReader(packet, overwriteWarnings=False)
-        new_pdf = PdfFileWriter()
+            can.save()
 
-        for p in range(0, old_pdf.getNumPages()):
-            page = old_pdf.getPage(p)
-            page.mergePage(item_pdf.getPage(p))
-            new_pdf.addPage(page)
+            item_pdf = PdfFileReader(packet, overwriteWarnings=False)
+            new_pdf = PdfFileWriter()
 
-        if isEncrypted:
-            new_pdf.encrypt(password)
+            for p in range(0, old_pdf.getNumPages()):
+                page = old_pdf.getPage(p)
+                page.mergePage(item_pdf.getPage(p))
+                new_pdf.addPage(page)
 
-        output = io.BytesIO()
-        new_pdf.write(output)
-        self.completed_document = base64.b64encode(output.getvalue())
-        output.close()
+            if isEncrypted:
+                new_pdf.encrypt(password)
+
+            output = io.BytesIO()
+            new_pdf.write(output)
+            self.completed_document = base64.b64encode(output.getvalue())
+            output.close()
+
+        attachment = self.env['ir.attachment'].create({
+            'name': "%s.pdf" % self.reference if self.reference.split('.')[-1] != 'pdf' else self.reference,
+            'datas': self.completed_document,
+            'type': 'binary',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
+
+        report_action = self.env.ref('sign.action_sign_request_print_logs')
+        # print the report with the public user in a sudoed env
+        # public user because we don't want groups to pollute the result
+        # (e.g. if the current user has the group Sign Manager,
+        # some private information will be sent to *all* signers)
+        # sudoed env because we have checked access higher up the stack
+        public_user = self.env.ref('base.public_user', raise_if_not_found=False)
+        if not public_user:
+            # public user was deleted, fallback to avoid crash (info may leak)
+            public_user = self.env.user
+        pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.id)
+        attachment_log = self.env['ir.attachment'].create({
+            'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
+            'raw': pdf_content,
+            'type': 'binary',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
+        self.attachment_ids = [Command.link(attachment.id), Command.link(attachment_log.id)]
 
     @api.model
     def _message_send_mail(self, body, email_layout_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):

@@ -310,7 +310,7 @@ class RentalOrderLine(models.Model):
         return "%s\n%s: %s\n%s: %s" % (
             self.product_id.name,
             _("Expected"),
-            format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format=False),
+            format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format=False),
             _("Returned"),
             format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=self.env.user.tz, dt_format=False)
         )

@@ -404,7 +404,7 @@ class HelpdeskTeam(models.Model):
         list_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
         #TODO: remove SLA calculations if user_uses_sla is false.
         user_uses_sla = self.user_has_groups('helpdesk.group_use_sla') and\
-            bool(self.env['helpdesk.team'].search([('use_sla', '=', True), ('member_ids', 'in', self._uid)]))
+            bool(self.env['helpdesk.team'].search([('use_sla', '=', True)], limit=1))
 
         if user_uses_sla:
             group_fields.insert(1, 'sla_deadline:year')
@@ -468,7 +468,7 @@ class HelpdeskTeam(models.Model):
         result['my_high']['hours'] = fields.Float.round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
         result['my_urgent']['hours'] = fields.Float.round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)
 
-        if self.env['helpdesk.team'].search([('use_rating', '=', True), ('member_ids', 'in', self._uid)]):
+        if self.env['helpdesk.team'].search([('use_rating', '=', True)], limit=1):
             result['rating_enable'] = True
             # rating of today
             domain = [('user_id', '=', self.env.uid)]

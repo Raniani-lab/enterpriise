@@ -11,6 +11,7 @@ import requests
 import random
 import string
 
+from collections import defaultdict
 from lxml import etree
 from lxml.objectify import fromstring
 from math import copysign
@@ -419,68 +420,102 @@ class AccountEdiFormat(models.Model):
         * error:        An error if the cfdi was not successfully generated.
         '''
         if move.payment_id:
-            currency = move.payment_id.currency_id
-            total_amount = move.payment_id.amount
+            _liquidity_line, counterpart_lines, _writeoff_lines = move.payment_id._seek_for_lines()
+            currency = counterpart_lines.currency_id
+            total_amount_currency = abs(sum(counterpart_lines.mapped('amount_currency')))
+            total_amount = abs(sum(counterpart_lines.mapped('balance')))
         else:
-            if move.statement_line_id.foreign_currency_id:
-                total_amount = move.statement_line_id.amount_currency
-                currency = move.statement_line_id.foreign_currency_id
-            else:
-                total_amount = move.statement_line_id.amount
-                currency = move.statement_line_id.currency_id
+            counterpart_vals = move.statement_line_id._prepare_move_line_default_vals()[1]
+            currency = self.env['res.currency'].browse(counterpart_vals['currency_id'])
+            total_amount_currency = abs(counterpart_vals['amount_currency'])
+            total_amount = abs(counterpart_vals['debit'] - counterpart_vals['credit'])
 
-        # Process reconciled invoices.
-        invoice_vals_list = []
+        # === Decode the reconciliation to extract invoice data ===
         pay_rec_lines = move.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
-        paid_amount = abs(sum(pay_rec_lines.mapped('amount_currency')))
+        exchange_move_x_invoice = {}
+        reconciliation_vals = defaultdict(lambda: {
+            'amount_currency': 0.0,
+            'balance': 0.0,
+            'exchange_balance': 0.0,
+        })
+        for match_field in ('credit', 'debit'):
 
-        mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
-        if move.currency_id == mxn_currency:
-            rate_payment_curr_mxn = None
-            paid_amount_comp_curr = paid_amount
+            # Peek the partials linked to exchange difference first in order to separate them from the partials
+            # linked to invoices.
+            for partial in pay_rec_lines[f'matched_{match_field}_ids'].sorted(lambda x: not x.exchange_move_id):
+                counterpart_move = partial[f'{match_field}_move_id'].move_id
+                if counterpart_move.l10n_mx_edi_cfdi_request:
+                    # Invoice.
+
+                    # Gather all exchange moves.
+                    if partial.exchange_move_id:
+                        exchange_move_x_invoice[partial.exchange_move_id] = counterpart_move
+
+                    invoice_vals = reconciliation_vals[counterpart_move]
+                    invoice_vals['amount_currency'] += partial[f'{match_field}_amount_currency']
+                    invoice_vals['balance'] += partial.amount
+                elif counterpart_move in exchange_move_x_invoice:
+                    # Exchange difference.
+                    invoice_vals = reconciliation_vals[exchange_move_x_invoice[counterpart_move]]
+                    invoice_vals['exchange_balance'] += partial.amount
+
+        # === Create the list of invoice data ===
+        invoice_vals_list = []
+        for invoice, invoice_vals in reconciliation_vals.items():
+
+            # Compute 'number_of_payments' & add amounts from exchange difference.
+            payment_ids = set()
+            inv_pay_rec_lines = invoice.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
+            for field in ('debit', 'credit'):
+                for partial in inv_pay_rec_lines[f'matched_{field}_ids']:
+                    counterpart_move = partial[f'{field}_move_id'].move_id
+
+                    if counterpart_move.payment_id or counterpart_move.statement_line_id:
+                        payment_ids.add(counterpart_move.id)
+            number_of_payments = len(payment_ids)
+
+            if invoice.currency_id == currency:
+                # Same currency
+                invoice_exchange_rate = None
+            elif currency == move.company_currency_id:
+                # Payment expressed in MXN but the invoice is expressed in another currency.
+                # The payment has been reconciled using the currency of the invoice, not the MXN.
+                # Then, we retrieve the rate from amounts gathered from the reconciliation using the balance of the
+                # exchange difference line allowing to switch from the "invoice rate" to the "payment rate".
+                invoice_exchange_rate = float_round(
+                    invoice_vals['amount_currency'] / (invoice_vals['balance'] + invoice_vals['exchange_balance']),
+                    precision_digits=6,
+                    rounding_method='UP',
+                )
+            else:
+                # Multi-currency
+                invoice_exchange_rate = float_round(
+                    invoice_vals['amount_currency'] / invoice_vals['balance'],
+                    precision_digits=6,
+                    rounding_method='UP',
+                )
+
+            invoice_vals_list.append({
+                'invoice': invoice,
+                'exchange_rate': invoice_exchange_rate,
+                'payment_policy': invoice.l10n_mx_edi_payment_policy,
+                'number_of_payments': number_of_payments,
+                'amount_paid': invoice_vals['amount_currency'],
+                'amount_before_paid': invoice.amount_residual + invoice_vals['amount_currency'],
+                **self._l10n_mx_edi_get_serie_and_folio(invoice),
+            })
+
+        # === Create remaining values to create the CFDI ===
+        if currency == move.company_currency_id:
+            # Same currency
+            payment_exchange_rate = None
         else:
-            rate_payment_curr_mxn = move.currency_id._convert(1.0, mxn_currency, move.company_id, move.date, round=False)
-            paid_amount_comp_curr = move.company_currency_id.round(paid_amount * rate_payment_curr_mxn)
-
-        for field1, field2 in (('debit', 'credit'), ('credit', 'debit')):
-            for partial in pay_rec_lines[f'matched_{field1}_ids']:
-                payment_line = partial[f'{field2}_move_id']
-                invoice_line = partial[f'{field1}_move_id']
-                invoice_amount = partial[f'{field1}_amount_currency']
-                exchange_move = invoice_line.full_reconcile_id.exchange_move_id
-                invoice = invoice_line.move_id
-
-                if not invoice.l10n_mx_edi_cfdi_request:
-                    continue
-
-                if exchange_move:
-                    exchange_partial = invoice_line[f'matched_{field2}_ids']\
-                        .filtered(lambda x: x[f'{field2}_move_id'].move_id == exchange_move)
-                    if exchange_partial:
-                        invoice_amount += exchange_partial[f'{field2}_amount_currency']
-
-                if invoice_line.currency_id == payment_line.currency_id:
-                    # Same currency
-                    amount_paid_invoice_curr = invoice_amount
-                    exchange_rate = None
-                else:
-                    # It needs to be how much invoice currency you pay for one payment currency
-                    amount_paid_invoice_comp_curr = payment_line.company_currency_id.round(
-                        total_amount * (partial.amount / paid_amount_comp_curr))
-                    invoice_rate = abs(invoice_line.amount_currency) / abs(invoice_line.balance)
-                    amount_paid_invoice_curr = invoice_line.currency_id.round(partial.amount * invoice_rate)
-                    exchange_rate = amount_paid_invoice_curr / amount_paid_invoice_comp_curr
-                    exchange_rate = float_round(exchange_rate, precision_digits=6, rounding_method='UP')
-
-                invoice_vals_list.append({
-                    'invoice': invoice,
-                    'exchange_rate': exchange_rate,
-                    'payment_policy': invoice.l10n_mx_edi_payment_policy,
-                    'number_of_payments': len(invoice._get_reconciled_payments()) + len(invoice._get_reconciled_statement_lines()),
-                    'amount_paid': amount_paid_invoice_curr,
-                    'amount_before_paid': min(invoice.amount_residual + amount_paid_invoice_curr, invoice.amount_total),
-                    **self._l10n_mx_edi_get_serie_and_folio(invoice),
-                })
+            # Multi-currency
+            payment_exchange_rate = float_round(
+                total_amount / total_amount_currency,
+                precision_digits=6,
+                rounding_method='UP',
+            )
 
         payment_method_code = move.l10n_mx_edi_payment_method_id.code
         is_payment_code_emitter_ok = payment_method_code in ('02', '03', '04', '05', '06', '28', '29', '99')
@@ -502,8 +537,8 @@ class AccountEdiFormat(models.Model):
             **self._l10n_mx_edi_get_common_cfdi_values(move),
             'invoice_vals_list': invoice_vals_list,
             'currency': currency,
-            'amount': total_amount,
-            'rate_payment_curr_mxn': rate_payment_curr_mxn,
+            'amount': total_amount_currency,
+            'rate_payment_curr_mxn': payment_exchange_rate,
             'emitter_vat_ord': is_payment_code_emitter_ok and partner_bank_vat,
             'bank_vat_ord': is_payment_code_bank_ok and partner_bank.name,
             'payment_account_ord': is_payment_code_emitter_ok and payment_account_ord,

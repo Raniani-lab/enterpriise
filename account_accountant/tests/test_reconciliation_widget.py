@@ -227,68 +227,6 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         writeoff_line = self.env['account.move.line'].search([('name', '=', 'writeoff'), ('company_id', '=', self.company.id)])
         self.assertEqual(writeoff_line.credit, 15.0)
 
-    def test_inv_refund_foreign_payment_writeoff_domestic(self):
-        company = self.company
-        self.env['res.currency.rate'].search([]).unlink()
-        self.env['res.currency.rate'].create({
-            'name': time.strftime('%Y') + '-07-01',
-            'rate': 1.0,
-            'currency_id': self.currency_euro_id,
-            'company_id': company.id
-        })
-        self.env['res.currency.rate'].create({
-            'name': time.strftime('%Y') + '-07-01',
-            'rate': 1.113900,  # Don't change this !
-            'currency_id': self.currency_usd_id,
-            'company_id': self.company.id
-        })
-        inv1 = self.create_invoice(invoice_amount=480, currency_id=self.currency_usd_id)
-        inv2 = self.create_invoice(move_type="out_refund", invoice_amount=140, currency_id=self.currency_usd_id)
-
-        payment = self.env['account.payment'].create({
-            'payment_method_line_id': self.inbound_payment_method_line.id,
-            'payment_type': 'inbound',
-            'partner_type': 'customer',
-            'partner_id': inv1.partner_id.id,
-            'amount': 287.20,
-            'journal_id': self.bank_journal_euro.id,
-            'company_id': company.id,
-        })
-        payment.action_post()
-
-        inv1_receivable = inv1.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
-        inv2_receivable = inv2.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
-        pay_receivable = payment.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
-
-        data_for_reconciliation = [
-            {
-                'type': 'partner',
-                'id': inv1.partner_id.id,
-                'mv_line_ids': (inv1_receivable + inv2_receivable + pay_receivable).ids,
-                'new_mv_line_dicts': [
-                    {
-                        'credit': 18.04,
-                        'debit': 0.00,
-                        'journal_id': self.bank_journal_euro.id,
-                        'name': 'Total WriteOff (Fees)',
-                        'account_id': self.diff_expense_account.id
-                    }
-                ]
-            }
-        ]
-
-        self.env["account.reconciliation.widget"].process_move_lines(data_for_reconciliation)
-
-        self.assertTrue(inv1_receivable.full_reconcile_id.exists())
-        self.assertEqual(inv1_receivable.full_reconcile_id, inv2_receivable.full_reconcile_id)
-        self.assertEqual(inv1_receivable.full_reconcile_id, pay_receivable.full_reconcile_id)
-
-        self.assertTrue(all(l.reconciled for l in inv1_receivable))
-        self.assertTrue(all(l.reconciled for l in inv2_receivable))
-
-        self.assertEqual(inv1.payment_state, 'in_payment')
-        self.assertEqual(inv2.payment_state, 'paid')
-
     def test_get_reconciliation_dict_with_tag_ids(self):
         bank_stmt = self.env['account.bank.statement'].create({
             'company_id': self.company.id,

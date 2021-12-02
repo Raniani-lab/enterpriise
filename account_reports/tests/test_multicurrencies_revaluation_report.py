@@ -91,9 +91,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [   0,                                           1,          2,          3,          4],
             [
                 ('Accounts to adjust',                      '',         '',         '',         ''),
-                ('Gol (1 USD = 3.0 Gol)',               1200.0,      600.0,     400.00,    -200.00),
-                ('121000 Account Receivable',            700.0,      400.0,     233.33,    -166.67),
-                ('INV/2016/00001-receivable_line_1',     700.0,      400.0,     233.33,    -166.67),
+                ('Gol (1 USD = 3.0 Gol)',               1200.0,      480.0,     400.00,     -80.00),
+                ('121000 Account Receivable',            700.0,      280.0,     233.33,     -46.67),
+                ('INV/2016/00001-receivable_line_1',     700.0,      280.0,     233.33,     -46.67),
                 ('121000 (1) Account Receivable',        500.0,      200.0,     166.67,     -33.33),
                 ('INV/2016/00001-receivable_line_2',     500.0,      200.0,     166.67,     -33.33),
             ],
@@ -110,9 +110,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [   0,                                           1,          2,          3,          4],
             [
                 ('Accounts to adjust',                      '',         '',         '',         ''),
-                ('Gol (1 USD = 2.0 Gol)',               1200.0,      600.0,      600.0,         ''),
-                ('121000 Account Receivable',            700.0,      400.0,      350.0,      -50.0),
-                ('INV/2016/00001-receivable_line_1',     700.0,      400.0,      350.0,      -50.0),
+                ('Gol (1 USD = 2.0 Gol)',               1200.0,      480.0,      600.0,      120.0),
+                ('121000 Account Receivable',            700.0,      280.0,      350.0,       70.0),
+                ('INV/2016/00001-receivable_line_1',     700.0,      280.0,      350.0,       70.0),
                 ('121000 (1) Account Receivable',        500.0,      200.0,      250.0,       50.0),
                 ('INV/2016/00001-receivable_line_2',     500.0,      200.0,      250.0,       50.0),
             ],
@@ -128,8 +128,8 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         wizard.income_provision_account_id = self.company_data['default_account_revenue']
         provision_move_id = wizard.create_entries()['res_id']
         self.assertRecordValues(self.env['account.move'].browse(provision_move_id).line_ids, [
-            {'account_id': self.receivable_account_1.id, 'debit': 0, 'credit': 50},
-            {'account_id': wizard.expense_provision_account_id.id, 'debit': 50, 'credit': 0},
+            {'account_id': self.receivable_account_1.id, 'debit': 70, 'credit': 0},
+            {'account_id': wizard.income_provision_account_id.id, 'debit': 0, 'credit': 70},
             {'account_id': self.receivable_account_2.id, 'debit': 50, 'credit': 0},
             {'account_id': wizard.income_provision_account_id.id, 'debit': 0, 'credit': 50},
         ])
@@ -184,32 +184,16 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         lines = report._get_lines(options)
 
         # Check the gold currency.
-        self.assertLinesValues(lines[:6],
+        self.assertLinesValues(lines,
             # pylint: disable=C0326
             [   0,                                            1,          2,          3,          4],
             [
                 ('Accounts to adjust',                       '',         '',         '',         ''),
-                ('Gol (1 USD = 2.0 Gol)',                 600.0,      600.0,      300.0,     -300.0),
-                ('121000 Account Receivable',             100.0,      400.0,       50.0,     -350.0),
-                ('INV/2016/00001-receivable_line_1',      100.0,      400.0,       50.0,     -350.0),
+                ('Gol (1 USD = 2.0 Gol)',                 500.0,      200.0,      250.0,       50.0),
                 ('121000 (1) Account Receivable',         500.0,      200.0,      250.0,       50.0),
                 ('INV/2016/00001-receivable_line_2',      500.0,      200.0,      250.0,       50.0),
             ],
             currency_map={
                 1: {'currency': self.currency_data['currency']},
-            },
-        )
-
-        # Check the dark chocolate currency.
-        self.assertLinesValues(lines[6:],
-        # pylint: disable=C0326
-            [   0,                                            1,          2,          3,          4],
-            [
-                ('Dar (1 USD = 20.0 Dar)',              -2750.0,         '',    -137.50,    -137.50),
-                ('121000 Account Receivable',           -2750.0,         '',    -137.50,    -137.50),
-                ('BNK1/2017/01/0001-receivable_line',   -2750.0,         '',    -137.50,    -137.50),
-            ],
-            currency_map={
-                1: {'currency': self.currency_data_2['currency']},
             },
         )

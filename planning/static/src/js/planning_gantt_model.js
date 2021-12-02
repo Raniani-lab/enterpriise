@@ -52,7 +52,7 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
      * @override
      */
     _fetchData: function () {
-        this.context.planning_gantt_view = true;
+        this.context.show_job_title = true;
         return this._super.apply(this, arguments);
     },
     /**

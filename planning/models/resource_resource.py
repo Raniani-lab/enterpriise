@@ -35,7 +35,7 @@ class ResourceResource(models.Model):
 
     def name_get(self):
         result = []
-        if self.env.context.get('planning_gantt_view'):
+        if self.env.context.get('show_job_title'):
             for resource in self:
                 employee = resource.employee_id
                 if employee.job_title:

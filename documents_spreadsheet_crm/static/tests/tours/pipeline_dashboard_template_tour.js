@@ -1,12 +1,12 @@
-odoo.define('documents_spreadsheet_crm.pipeline_report', function (require) {
+odoo.define('documents_spreadsheet_crm.pipeline_dashboard', function (require) {
 'use strict';
 
 require('web.dom_ready');
 const tour = require('web_tour.tour');
 
-const TEMPLATE_NAME = "Pipeline Revenue Report (Monthly)";
+const TEMPLATE_NAME = "Pipeline dashboard";
 
-tour.register('spreadsheet_template_pipeline_report', {
+tour.register('spreadsheet_template_pipeline_dashboard', {
     test: true,
     url: '/web',
 }, [

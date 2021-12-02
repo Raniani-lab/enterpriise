@@ -14,3 +14,6 @@ class TestSpreadsheetTemplate(HttpCase):
 
     def test_pipeline_template(self):
         self.start_tour('/web', 'spreadsheet_template_pipeline_report', login='admin')
+
+    def test_pipeline_dashboard_template(self):
+        self.start_tour('/web', 'spreadsheet_template_pipeline_dashboard', login='admin')

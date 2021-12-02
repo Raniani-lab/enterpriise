@@ -152,7 +152,7 @@
                             </group>
                             <separator string="Available Employees"/>
                             <field name="employee_ids" attrs="{'readonly': [('category', '!=', 'website')]}">
-                                <tree string="Employees" delete="1">
+                                <tree string="Employees" delete="1" create="0">
                                     <field name="name"/>
                                     <field name="resource_calendar_id"/>
                                 </tree>

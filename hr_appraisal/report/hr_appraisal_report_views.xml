@@ -105,7 +105,12 @@
     </record>
 
     <menuitem id="menu_hr_appraisal_report" parent="menu_hr_appraisal_root" sequence="20"
-        name="Reporting" action="action_appraisal_report_all" groups="hr_appraisal.group_hr_appraisal_manager"/>
+        name="Reporting" groups="hr_appraisal.group_hr_appraisal_manager"/>
 
+    <menuitem id="menu_appraisal_analysis_report"
+        name="Appraisal Analysis"
+        action="action_appraisal_report_all"
+        parent="menu_hr_appraisal_report"
+        sequence="1"/>
 
 </odoo>

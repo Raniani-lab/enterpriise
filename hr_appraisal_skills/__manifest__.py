@@ -17,6 +17,7 @@
         'security/hr_appraisal_skills_security.xml',
         'views/hr_skills_views.xml',
         'views/hr_appraisal_skills_templates.xml',
+        'report/hr_appraisal_skill_report_views.xml'
     ],
     'demo': [
         'demo/hr_appraisal_skills_demo.xml',

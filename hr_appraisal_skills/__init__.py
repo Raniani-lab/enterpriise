@@ -4,6 +4,7 @@
 from odoo import api, SUPERUSER_ID
 
 from . import models
+from . import report
 
 
 def _populate_skills_for_confirmed(cr, registry):

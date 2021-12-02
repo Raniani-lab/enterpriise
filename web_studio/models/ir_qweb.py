@@ -5,12 +5,11 @@ import ast
 from lxml import etree
 from textwrap import dedent
 
-from odoo.addons.base.models.qweb import QWeb
 from odoo import models
 from odoo.tools.json import scriptsafe
 
 
-class IrQWeb(models.AbstractModel, QWeb):
+class IrQWeb(models.AbstractModel):
     """
     allows to render reports with full branding on every node, including the context available
     to evaluate every node. The context is composed of all the variables available at this point

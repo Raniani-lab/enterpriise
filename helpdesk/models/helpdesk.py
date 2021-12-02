@@ -413,7 +413,6 @@ class HelpdeskTeam(models.Model):
         domain = [('user_id', '=', self.env.uid)]
         group_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
         list_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
-        #TODO: remove SLA calculations if user_uses_sla is false.
         user_uses_sla = self.user_has_groups('helpdesk.group_use_sla') and\
             bool(self.env['helpdesk.team'].search([('use_sla', '=', True)], limit=1))
 

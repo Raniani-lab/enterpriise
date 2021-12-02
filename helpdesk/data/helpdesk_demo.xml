@@ -453,11 +453,52 @@ Chester Reed</p>
         <value eval="{'deadline': DateTime.now() - relativedelta(days=4)}"/>
     </function>
 
-    <function model="helpdesk.ticket" name="rating_apply" eval="([ref('helpdesk_ticket_18')], 3, None,'Good Service')"/>
-    <function model="helpdesk.ticket" name="rating_apply" eval="([ref('helpdesk_ticket_19')], 5, None,'Awesome Service.\nLove to use your product')"/>
-    <function model="helpdesk.ticket" name="rating_apply" eval="([ref('helpdesk_ticket_5')], 5, None, 'Quick response with detailed information.')"/>
-    <function model="helpdesk.ticket" name="rating_apply" eval="([ref('helpdesk_ticket_10')], 3, None, 'Quick replacement. \n Love that you did the quick replacement and refund.')"/>
-    <function model="helpdesk.ticket" name="rating_apply" eval="([ref('helpdesk_ticket_4')], 1, None, 'Too late. \n dissatisfied answer.')"/>
+    <record id="rating_ticket_1" model="rating.rating">
+        <field name="access_token">HELPDESK_1</field>
+        <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="rated_partner_id" ref="base.partner_demo"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="res_id" ref="helpdesk.helpdesk_ticket_18"/>
+    </record>
+    <record id="rating_ticket_2" model="rating.rating">
+        <field name="access_token">HELPDESK_2</field>
+        <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="rated_partner_id" ref="base.partner_admin"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="res_id" ref="helpdesk.helpdesk_ticket_19"/>
+    </record>
+    <record id="rating_ticket_3" model="rating.rating">
+        <field name="access_token">HELPDESK_3</field>
+        <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="rated_partner_id" ref="base.partner_admin"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="res_id" ref="helpdesk.helpdesk_ticket_5"/>
+    </record>
+    <record id="rating_ticket_4" model="rating.rating">
+        <field name="access_token">HELPDESK_4</field>
+        <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="rated_partner_id" ref="base.partner_admin"/>
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="res_id" ref="helpdesk.helpdesk_ticket_10"/>
+    </record>
+    <record id="rating_ticket_5" model="rating.rating">
+        <field name="access_token">HELPDESK_5</field>
+        <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="rated_partner_id" ref="base.partner_demo"/>
+        <field name="partner_id" ref="base.res_partner_4"/>
+        <field name="res_id" ref="helpdesk.helpdesk_ticket_4"/>
+    </record>
+
+    <function model="helpdesk.ticket" name="rating_apply"
+        eval="([ref('helpdesk_ticket_18')], 3, 'HELPDESK_1', None, 'Good Service')"/>
+    <function model="helpdesk.ticket" name="rating_apply"
+        eval="([ref('helpdesk_ticket_19')], 5, 'HELPDESK_2', None, 'Awesome Service.\nLove to use your product')"/>
+    <function model="helpdesk.ticket" name="rating_apply"
+        eval="([ref('helpdesk_ticket_5')], 5, 'HELPDESK_3', None, 'Quick response with detailed information.')"/>
+    <function model="helpdesk.ticket" name="rating_apply"
+        eval="([ref('helpdesk_ticket_10')], 3, 'HELPDESK_4', None, 'Quick replacement. \n Love that you did the quick replacement and refund.')"/>
+    <function model="helpdesk.ticket" name="rating_apply"
+        eval="([ref('helpdesk_ticket_4')], 1, 'HELPDESK_5', None, 'Too late. \n dissatisfied answer.')"/>
 
     <!-- Activities -->
     <record id="helpdesk_activity_1" model="mail.activity">

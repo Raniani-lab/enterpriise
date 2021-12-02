@@ -936,8 +936,8 @@ class HelpdeskTicket(models.Model):
     # Rating Mixin
     # ------------------------------------------------------------
 
-    def rating_apply(self, rate, token=None, feedback=None, subtype_xmlid=None):
-        return super(HelpdeskTicket, self).rating_apply(rate, token=token, feedback=feedback, subtype_xmlid="helpdesk.mt_ticket_rated")
+    def _rating_apply_get_default_subtype_id(self):
+        return self.env['ir.model.data']._xmlid_to_res_id("helpdesk.mt_ticket_rated")
 
     def _rating_get_parent_field_name(self):
         return 'team_id'

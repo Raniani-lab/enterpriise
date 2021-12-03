@@ -723,10 +723,11 @@ class AccountMove(models.Model):
                'Items': ArrayOfItem(self._get_line_details())}
         if self.l10n_latam_document_type_id.code in ['201', '206']:  # WS4900
             res.update({'Fecha_vto_pago': self._due_payment_date().strftime(WS_DATE_FORMAT['wsbfe'])})
-            optionals = self._get_optionals_data()
-            if optionals:
-                ArrayOfOpcional = client.get_type('ns0:ArrayOfOpcional')
-                res.update({'Opcionales': ArrayOfOpcional(optionals)})
+
+        optionals = self._get_optionals_data()
+        if optionals:
+            ArrayOfOpcional = client.get_type('ns0:ArrayOfOpcional')
+            res.update({'Opcionales': ArrayOfOpcional(optionals)})
         return res
 
     def _is_argentina_electronic_invoice(self):

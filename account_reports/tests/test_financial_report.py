@@ -10,6 +10,7 @@ from odoo.tools import ustr
 
 import ast
 
+from freezegun import freeze_time
 
 
 @tagged('post_install', '-at_install')
@@ -183,6 +184,60 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Invisible Partner B line', 0.0),
                 ('Total of Invisible lines', 0.0),
             ])
+
+    @freeze_time("2016-06-06")
+    def test_balance_sheet_today_current_year_earnings(self):
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'date': '2016-02-02',
+            'invoice_line_ids': [(0, 0, {'product_id': self.product_a.id, 'price_unit': 110})]
+        })
+        invoice.action_post()
+
+        options = self._init_options(self.report, fields.Date.from_string('2016-06-01'), fields.Date.from_string('2016-06-06'))
+        options['date']['filter'] = 'today'
+        options.pop('multi_company', None)
+
+        lines = self.report._get_table(options)[1]
+        self.assertLinesValues(
+            lines,
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('ASSETS',                                      110.0),
+                ('Current Assets',                              110.0),
+                ('Bank and Cash Accounts',                      0.0),
+                ('Receivables',                                 110.0),
+                ('Current Assets',                              0.0),
+                ('Prepayments',                                 0.0),
+                ('Total Current Assets',                        110.0),
+                ('Plus Fixed Assets',                           0.0),
+                ('Plus Non-current Assets',                     0.0),
+                ('Total ASSETS',                                110.0),
+
+                ('LIABILITIES',                                 0.0),
+                ('Current Liabilities',                         0.0),
+                ('Current Liabilities',                         0.0),
+                ('Payables',                                    0.0),
+                ('Total Current Liabilities',                   0.0),
+                ('Plus Non-current Liabilities',                0.0),
+                ('Total LIABILITIES',                           0.0),
+
+                ('EQUITY',                                      110.0),
+                ('Unallocated Earnings',                        110.0),
+                ('Current Year Unallocated Earnings',           110.0),
+                ('Current Year Earnings',                       110.0),
+                ('Current Year Allocated Earnings',             0.0),
+                ('Total Current Year Unallocated Earnings',     110.0),
+                ('Previous Years Unallocated Earnings',         0.0),
+                ('Total Unallocated Earnings',                  110.0),
+                ('Retained Earnings',                           0.0),
+                ('Total EQUITY',                                110.0),
+
+                ('LIABILITIES + EQUITY',                        110.0),
+            ],
+        )
 
     def test_financial_report_single_company(self):
         line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')

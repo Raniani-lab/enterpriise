@@ -238,12 +238,12 @@ class AccountReport(models.AbstractModel):
         date_from = fields.Date.from_string(period_vals['date_from'])
         date_to = date_from - datetime.timedelta(days=1)
 
-        if period_type == 'fiscalyear':
+        if period_type in ('fiscalyear', 'today'):
             # Don't pass the period_type to _get_dates_period to be able to retrieve the account.fiscal.year record if
             # necessary.
             company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(date_to)
             return self._get_dates_period(options, company_fiscalyear_dates['date_from'], company_fiscalyear_dates['date_to'], mode, strict_range=strict_range)
-        if period_type in ('month', 'today', 'custom'):
+        if period_type in ('month', 'custom'):
             return self._get_dates_period(options, *date_utils.get_month(date_to), mode, period_type='month', strict_range=strict_range)
         if period_type == 'quarter':
             return self._get_dates_period(options, *date_utils.get_quarter(date_to), mode, period_type='quarter', strict_range=strict_range)
@@ -300,7 +300,7 @@ class AccountReport(models.AbstractModel):
                 options_filter = 'custom'
             elif previous_filter == 'today':
                 date_to = fields.Date.context_today(self)
-                date_from = date_utils.get_month(date_to)[0]
+                date_from = self.env.company.compute_fiscalyear_dates(date_to)['date_from']
                 options_filter = 'custom'
             elif previous_filter:
                 options_filter = previous_filter
@@ -341,7 +341,8 @@ class AccountReport(models.AbstractModel):
         if not date_from or not date_to:
             if options_filter == 'today':
                 date_to = fields.Date.context_today(self)
-                date_from = date_utils.get_month(date_to)[0]
+                date_from = self.env.company.compute_fiscalyear_dates(date_to)['date_from']
+                period_type = 'today'
             elif 'month' in options_filter:
                 date_from, date_to = date_utils.get_month(fields.Date.context_today(self))
                 period_type = 'month'

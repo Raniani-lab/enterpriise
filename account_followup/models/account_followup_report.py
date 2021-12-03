@@ -330,15 +330,16 @@ class AccountFollowupReport(models.AbstractModel):
         email = invoice_partner.email
         options['keep_summary'] = True
         if email and email.strip():
+            self = self.with_context(lang=partner.lang or self.env.user.lang)
             # When printing we need te replace the \n of the summary by <br /> tags
-            body_html = self.with_context(print_mode=True, mail=True, lang=partner.lang or self.env.user.lang).get_html(options)
+            body_html = self.with_context(print_mode=True, mail=True).get_html(options)
             body_html = body_html.replace('o_account_reports_edit_summary_pencil', 'o_account_reports_edit_summary_pencil d-none')
             start_index = body_html.find('<span>', body_html.find('<div class="o_account_reports_summary">'))
             end_index = start_index > -1 and body_html.find('</span>', start_index) or -1
             if end_index > -1:
                 replaced_msg = body_html[start_index:end_index].replace('\n', '')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
-            partner.with_context(mail_post_autofollow=True).message_post(
+            partner.with_context(mail_post_autofollow=True, lang=partner.lang or self.env.user.lang).message_post(
                 partner_ids=[invoice_partner.id],
                 body=body_html,
                 subject=self._get_report_manager(options).email_subject,

@@ -202,7 +202,7 @@ class PlanningSlot(models.Model):
         to_allocate = self.sale_line_id.planning_hours_to_plan - self.sale_line_id.planning_hours_planned
         if to_allocate < 0.0:
             return [], [], None
-        work_intervals, unforecastable_intervals, resource, partial_interval_slots = self._get_resource_work_info(vals, slot_vals_list_per_resource)
+        work_intervals, unforecastable_intervals, resource, partial_interval_slots = self.sudo()._get_resource_work_info(vals, slot_vals_list_per_resource)
         following_slots_vals_list = []
         if work_intervals:
             following_slots_vals_list = self._get_slots_values(
@@ -613,12 +613,14 @@ class PlanningSlot(models.Model):
     # Gantt Progress Bar
     # -----------------------------------
     def _gantt_progress_bar_sale_line_id(self, res_ids):
+        if not self.env['sale.order.line'].check_access_rights('read', raise_exception=False):
+            return {}
         return {
             sol.id: {
                 'value': sol.planning_hours_planned,
                 'max_value': sol.planning_hours_to_plan,
             }
-            for sol in self.env['sale.order.line'].browse(res_ids)
+            for sol in self.env['sale.order.line'].search([('id', 'in', res_ids)])
         }
 
     def _gantt_progress_bar(self, field, res_ids, start, stop):

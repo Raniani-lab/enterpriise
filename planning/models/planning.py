@@ -1106,7 +1106,7 @@ class Planning(models.Model):
                 pytz.utc.localize(slot.end_datetime),
                 self.env['resource.calendar.leaves'])])
         # 2)
-        resource_calendar_validity_intervals = self.resource_id._get_calendars_validity_within_period(
+        resource_calendar_validity_intervals = self.resource_id.sudo()._get_calendars_validity_within_period(
             start_dt_delta_utc, end_dt_delta_utc)
         for slot in self:
             if slot.resource_id:
@@ -1545,14 +1545,14 @@ class Planning(models.Model):
     def _gantt_progress_bar_resource_id(self, res_ids, start, stop):
         start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
 
-        resources = self.env['resource.resource'].browse(res_ids)
+        resources = self.env['resource.resource'].search([('id', 'in', res_ids)])
         planning_slots = self.env['planning.slot'].search([
             ('resource_id', 'in', res_ids),
             ('start_datetime', '<=', stop_naive),
             ('end_datetime', '>=', start_naive),
         ])
         planned_hours_mapped = defaultdict(float)
-        resource_work_intervals, calendar_work_intervals = resources._get_valid_work_intervals(start, stop)
+        resource_work_intervals, calendar_work_intervals = resources.sudo()._get_valid_work_intervals(start, stop)
         for slot in planning_slots:
             planned_hours_mapped[slot.resource_id.id] += slot._get_duration_over_period(
                 start, stop, resource_work_intervals, calendar_work_intervals
@@ -1581,6 +1581,9 @@ class Planning(models.Model):
 
     @api.model
     def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):
+        if not self.user_has_groups("base.group_user"):
+            return {field: {} for field in fields}
+
         start_utc, stop_utc = string_to_datetime(date_start_str), string_to_datetime(date_stop_str)
 
         progress_bars = {}

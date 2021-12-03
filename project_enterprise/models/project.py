@@ -546,7 +546,7 @@ class Task(models.Model):
             :returns a notification dict if the shift could not be applied, False otherwise
         """
         self.ensure_one()
-        new_planned_date_begin, new_planned_date_end = self._get_planned_dates_auto_shift(
+        new_planned_date_begin, new_planned_date_end = self.sudo()._get_planned_dates_auto_shift(
             mapped_dependent, mapped_depend_on, intervals_cache, resource_validity
         )
         if not self._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end):
@@ -806,15 +806,17 @@ class Task(models.Model):
 
     def _gantt_progress_bar_user_ids(self, res_ids, start, stop):
         start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
-        users = self.env['res.users'].browse(res_ids)
-        project_tasks = self.env['project.task'].search([
+        users = self.env['res.users'].search([('id', 'in', res_ids)])
+        self.env['project.task'].check_access_rights('read')
+
+        project_tasks = self.env['project.task'].sudo().search([
             ('user_ids', 'in', res_ids),
             ('planned_date_begin', '<=', stop_naive),
             ('planned_date_end', '>=', start_naive),
         ])
 
         planned_hours_mapped = defaultdict(float)
-        user_work_intervals, _dummy = users._get_valid_work_intervals(start, stop)
+        user_work_intervals, _dummy = users.sudo()._get_valid_work_intervals(start, stop)
         for task in project_tasks:
             # if the task goes over the gantt period, compute the duration only within
             # the gantt period
@@ -854,6 +856,8 @@ class Task(models.Model):
 
     @api.model
     def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):
+        if not self.user_has_groups("project.group_project_user"):
+            return {field: {} for field in fields}
         start_utc, stop_utc = string_to_datetime(date_start_str), string_to_datetime(date_stop_str)
 
         progress_bars = {}

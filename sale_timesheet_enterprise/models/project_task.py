@@ -30,6 +30,8 @@ class ProjectTask(models.Model):
         return result
 
     def _gantt_progress_bar_sale_line_id(self, res_ids):
+        if not self.env['sale.order.line'].check_access_rights('read', raise_exception=False):
+            return {}
         uom_hour = self.env.ref('uom.product_uom_hour')
         allocated_hours_per_sol = self.env['project.task'].read_group([
             ('sale_line_id', 'in', res_ids),
@@ -43,7 +45,7 @@ class ProjectTask(models.Model):
                 'value': allocated_hours_per_sol_mapped.get(sol.id, 0.0),
                 'max_value': sol.product_uom._compute_quantity(sol.product_uom_qty, uom_hour),
             }
-            for sol in self.env['sale.order.line'].browse(res_ids)
+            for sol in self.env['sale.order.line'].search([('id', 'in', res_ids)])
         }
 
     def _gantt_progress_bar(self, field, res_ids, start, stop):

@@ -32,6 +32,13 @@ class TestTaskFlow(common.TransactionCase):
             'name': 'Project Test',
         })
 
+        cls.portal_user = mail_new_test_user(
+            cls.env, login='portal_project',
+            name='Portal_user', email='portal_project_user@example.com',
+            notification_type='email',
+            groups='base.group_portal',
+        )
+
     def create_tasks(self, nb=40):
         now = datetime.combine(datetime.now(), datetime.min.time())
         hour_start = [6, 11]
@@ -140,6 +147,35 @@ class TestTaskFlow(common.TransactionCase):
         self.assertEqual(39, progress_bar[self.project_user.id]['value'], "User should have 39 hours planned on this period")
         self.assertEqual(40, progress_bar[self.project_user.id]['max_value'], "User is expected to work 40 hours on this period")
 
+    def test_project_user_can_see_progress_bar(self):
+        self.env['project.task'].create([{
+            'name': 'Task 1',
+            'user_ids': self.project_user,
+            'project_id': self.project_test.id,
+            'planned_date_begin': '2021-09-27 06:00:00',
+            'planned_date_end': '2021-09-28 15:00:00',
+        }])
+
+        progress_bar = self.env['project.task'].with_user(self.project_test_user).gantt_progress_bar(
+            ['user_ids'], {'user_ids': self.project_user.ids}, '2021-09-26 00:00:00', '2021-10-02 23:59:59'
+        )['user_ids']
+        self.assertEqual(16, progress_bar[self.project_user.id]['value'], "User should have 22 hours planned on this period")
+        self.assertEqual(40, progress_bar[self.project_user.id]['max_value'], "User is expected to work 40 hours on this period")
+
+    def test_portal_user_cannot_see_progress_bar(self):
+        self.env['project.task'].create([{
+            'name': 'Task 1',
+            'user_ids': self.project_user,
+            'project_id': self.project_test.id,
+            'planned_date_begin': '2021-09-27 06:00:00',
+            'planned_date_end': '2021-09-28 15:00:00',
+        }])
+
+        progress_bar = self.env['project.task'].with_user(self.portal_user).gantt_progress_bar(
+            ['user_ids'], {'user_ids': self.project_user.ids}, '2021-09-26 00:00:00', '2021-10-02 23:59:59'
+        )['user_ids']
+        self.assertFalse(progress_bar, "Progress bar should be empty for non-project users")
+
     def test_performance(self):
         nb = 40
         self.create_tasks(nb=nb)
@@ -147,7 +183,7 @@ class TestTaskFlow(common.TransactionCase):
         end = start + relativedelta(days=nb / 2 + 1)
         users = self.project_user | self.project_test_user
 
-        with self.assertQueryCount(__system__=5):
+        with self.assertQueryCount(__system__=7):
             # Query count should be stable even if the number of tasks or users increase (progress bar query count is O(1))
             progress_bar = self.env['project.task'].gantt_progress_bar(
                 ['user_ids'], {'user_ids': users.ids}, start.strftime(DEFAULT_SERVER_DATETIME_FORMAT), end.strftime(DEFAULT_SERVER_DATETIME_FORMAT)

@@ -56,7 +56,7 @@
                 <t t-else="" t-call="web.NoContentHelper"/>
             </t>
             <t t-if="model.hasData()">
-                <Renderer class="o_renderer" model="model" onRowClicked="(row) => onRowClicked(row)"/>
+                <Renderer class="o_renderer" model="model" onRowClicked="(row) => this.onRowClicked(row)"/>
             </t>
         </Layout>
     </t>

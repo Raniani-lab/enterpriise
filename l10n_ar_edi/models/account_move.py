@@ -455,10 +455,16 @@ class AccountMove(models.Model):
         related_inv = self._found_related_invoice()
         afip_ws = self.journal_id.l10n_ar_afip_ws
 
-        if not related_inv or self.journal_id.l10n_ar_afip_ws == 'wsbfe':
+        if not related_inv:
+            return res
+
+        # WSBFE_1035 We should only send CbtesAsoc if the invoice to validate has any of the next doc type codes
+        if afip_ws == 'wsbfe' and \
+           int(self.l10n_latam_document_type_id.code) not in [1, 2, 3, 6, 7, 8, 91, 201, 202, 203, 206, 207, 208]:
             return res
 
         wskey = {'wsfe': {'type': 'Tipo', 'pos_number': 'PtoVta', 'number': 'Nro', 'cuit': 'Cuit', 'date': 'CbteFch'},
+                 'wsbfe': {'type': 'Tipo_cbte', 'pos_number': 'Punto_vta', 'number': 'Cbte_nro', 'cuit': 'Cuit', 'date': 'Fecha_cbte'},
                  'wsfex': {'type': 'Cbte_tipo', 'pos_number': 'Cbte_punto_vta', 'number': 'Cbte_nro', 'cuit': 'Cbte_cuit'}}
 
         res.update({wskey[afip_ws]['type']: related_inv.l10n_latam_document_type_id.code,
@@ -697,7 +703,9 @@ class AccountMove(models.Model):
     def wsbfe_get_cae_request(self, last_id, client=None):
         partner_id_code = self._get_partner_code_id(self.commercial_partner_id)
         amounts = self._l10n_ar_get_amounts()
+        related_invoices = self._get_related_invoice_data()
         ArrayOfItem = client.get_type('ns0:ArrayOfItem')
+        ArrayOfCbteAsoc = client.get_type('ns0:ArrayOfCbteAsoc')
         vat = partner_id_code and self.commercial_partner_id._get_id_number_sanitize()
         res = {'Id': last_id,
                'Tipo_doc': int(partner_id_code) or 0,
@@ -720,6 +728,7 @@ class AccountMove(models.Model):
                'Imp_moneda_Id': self.currency_id.l10n_ar_afip_code,
                'Imp_moneda_ctz': float_repr(self.l10n_ar_currency_rate, precision_digits=6),
                'Fecha_cbte': self.invoice_date.strftime(WS_DATE_FORMAT['wsbfe']),
+               'CbtesAsoc': ArrayOfCbteAsoc([related_invoices]) if related_invoices else None,
                'Items': ArrayOfItem(self._get_line_details())}
         if self.l10n_latam_document_type_id.code in ['201', '206']:  # WS4900
             res.update({'Fecha_vto_pago': self._due_payment_date().strftime(WS_DATE_FORMAT['wsbfe'])})

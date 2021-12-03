@@ -35,7 +35,7 @@ module("documents_spreadsheet > cached_rpc", {}, () => {
     });
 
     test("Name_get are collected before executing", async function (assert) {
-        assert.expect(7);
+        assert.expect(3);
 
         const rpc = async (params) => {
             assert.step(`rpc-${params.model}-${params.args[0].join("-")}`);
@@ -47,42 +47,30 @@ module("documents_spreadsheet > cached_rpc", {}, () => {
         };
 
         const cache = new CachedRPC(rpc);
-        cache
-            .delayedRPC({
-                model: "A",
-                method: "name_get",
-                args: [1],
-            })
-            .then((result) => {
-                assert.strictEqual(result, 1);
-            });
-        cache
-            .delayedRPC({
-                model: "A",
-                method: "name_get",
-                args: [2],
-            })
-            .then((result) => {
-                assert.strictEqual(result, 2);
-            });
-        cache
-            .delayedRPC({
-                model: "A",
-                method: "name_get",
-                args: [3],
-            })
-            .then((result) => {
-                assert.strictEqual(result, 3);
-            });
-        cache
-            .delayedRPC({
-                model: "B",
-                method: "name_get",
-                args: [4],
-            })
-            .then((result) => {
-                assert.strictEqual(result, 4);
-            });
+        const rpc1 = cache.delayedRPC({
+            model: "A",
+            method: "name_get",
+            args: [1],
+        });
+        const rpc2 = cache.delayedRPC({
+            model: "A",
+            method: "name_get",
+            args: [2],
+        });
+        const rpc3 = cache.delayedRPC({
+            model: "A",
+            method: "name_get",
+            args: [3],
+        });
+        const rpc4 = cache.delayedRPC({
+            model: "B",
+            method: "name_get",
+            args: [4],
+        });
+        await rpc1;
+        await rpc2;
+        await rpc3;
+        await rpc4;
         await nextTick();
         assert.verifySteps(["rpc-A-1-2-3", "rpc-B-4"]);
     });

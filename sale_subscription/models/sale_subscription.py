@@ -661,7 +661,9 @@ class SaleSubscription(models.Model):
         self.ensure_one()
         revenue_date_start = self.recurring_next_date
         revenue_date_stop = revenue_date_start + relativedelta(**{PERIODS[self.recurring_rule_type]: self.recurring_interval}) - relativedelta(days=1)
-        return [(0, 0, self._prepare_invoice_line(line, fiscal_position, revenue_date_start, revenue_date_stop)) for line in self.recurring_invoice_line_ids]
+        return [(0, 0, self._prepare_invoice_line(line, fiscal_position, revenue_date_start, revenue_date_stop)) for line in self.recurring_invoice_line_ids.filtered(
+            lambda l: not float_is_zero(l.quantity, precision_rounding=l.product_id.uom_id.rounding)
+        )]
 
     def _prepare_invoice(self):
         """

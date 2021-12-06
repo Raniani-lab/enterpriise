@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Codes expiring on 2022/01/01 -->
+
+    <record id="account_intrastat.account_intrastat_transaction_1" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_2" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_3" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_4" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_5" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_6" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_7" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_8" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_9" model="account.intrastat.code">
+        <field name="expiry_date">2022-01-01</field>
+    </record>
+
+    <!-- Codes starting on 2022/01/01 -->
+
+    <record id="account_intrastat.account_intrastat_transaction_11" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_12" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_21" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_22" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_23" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_31" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_32" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_33" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_34" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_41" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_42" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_51" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_52" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_60" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_71" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_72" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_80" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_91" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+    <record id="account_intrastat.account_intrastat_transaction_99" model="account.intrastat.code">
+        <field name="start_date">2022-01-01</field>
+    </record>
+
+</odoo>

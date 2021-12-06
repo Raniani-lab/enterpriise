@@ -317,9 +317,9 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             'Cookie': 'TOKEN={}'.format(token),
         }
         params = collections.OrderedDict({
-            'rutSender': digital_signature.subject_serial_number[:8],
+            'rutSender': digital_signature.subject_serial_number[:-2],
             'dvSender': digital_signature.subject_serial_number[-1],
-            'rutCompany': self._l10n_cl_format_vat(company_vat)[:8],
+            'rutCompany': self._l10n_cl_format_vat(company_vat)[:-2],
             'dvCompany': self._l10n_cl_format_vat(company_vat)[-1],
             'archivo': (file_name, xml_message, 'text/xml'),
         })
@@ -375,7 +375,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
     @l10n_cl_edi_retry(logger=_logger)
     def _get_send_status_ws(self, mode, company_vat, track_id, token):
         transport = Transport(operation_timeout=TIMEOUT)
-        return Client(SERVER_URL[mode] + 'QueryEstUp.jws?WSDL', transport=transport).service.getEstUp(company_vat[:8], company_vat[-1], track_id, token)
+        return Client(SERVER_URL[mode] + 'QueryEstUp.jws?WSDL', transport=transport).service.getEstUp(company_vat[:-2], company_vat[-1], track_id, token)
 
     def _get_send_status(self, mode, track_id, company_vat, digital_signature):
         """
@@ -391,7 +391,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
     def _get_dte_claim_ws(self, mode, settings, company_vat, document_type_code, document_number):
         transport = Transport(operation_timeout=TIMEOUT)
         return Client(CLAIM_URL[mode] + '?wsdl', settings=settings, transport=transport).service.listarEventosHistDoc(
-            self._l10n_cl_format_vat(company_vat)[:8],
+            self._l10n_cl_format_vat(company_vat)[:-2],
             self._l10n_cl_format_vat(company_vat)[-1],
             str(document_type_code),
             str(document_number),
@@ -409,7 +409,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
     def _send_sii_claim_response_ws(self, mode, settings, company_vat, document_type_code, document_number, claim_type):
         transport = Transport(operation_timeout=TIMEOUT)
         return Client(CLAIM_URL[mode] + '?wsdl', settings=settings, transport=transport).service.ingresarAceptacionReclamoDoc(
-            self._l10n_cl_format_vat(company_vat)[:8],
+            self._l10n_cl_format_vat(company_vat)[:-2],
             self._l10n_cl_format_vat(company_vat)[-1],
             str(document_type_code),
             str(document_number),

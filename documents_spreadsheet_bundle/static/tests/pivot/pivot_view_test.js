@@ -2,7 +2,7 @@
 
 import { getBasicData, getBasicServerData } from "../utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, nextTick } from "@web/../tests/helpers/utils";
+import { click, nextTick, legacyExtraNextTick } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
@@ -24,9 +24,12 @@ import {
     getCellValue,
     getMerges,
 } from "../utils/getters_helpers";
-import { setCellContent } from "../utils/commands_helpers";
+import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
+
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+const { cellMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
 
@@ -1717,4 +1720,29 @@ test("Add pivot with grouping on a many2many", async function (assert) {
     assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
     assert.equal(getCellContent(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
     assert.equal(getCellContent(model, "D1"), `=PIVOT.HEADER("1")`);
+});
+
+test("Can reopen a sheet after see records", async function (assert) {
+    assert.expect(1);
+
+    const { webClient, spreadsheetAction } = await createSpreadsheetFromPivot();
+    const { model } = await createSpreadsheetFromPivot({
+        documentId: spreadsheetAction.resId,
+        webClient,
+    });
+    // Go the the list view and go back, a third pivot should not be opened
+    selectCell(model, "B3");
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    const env = {
+        ...webClient.env,
+        getters: model.getters,
+        dispatch: model.dispatch,
+        services: model.config.evalContext.env.services,
+    };
+    await root.action(env);
+    await nextTick();
+    await click(document.body.querySelector(".o_back_button"));
+    await nextTick();
+    await legacyExtraNextTick();
+    assert.strictEqual(model.getters.getPivotIds().length, 2);
 });

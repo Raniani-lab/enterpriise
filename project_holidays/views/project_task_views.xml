@@ -40,8 +40,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_search_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='message_needaction']" position="after">
-                <separator/>
+            <xpath expr="//filter[@name='conflict_task']" position="after">
                 <filter name="is_absent" string="Employees on Time Off" domain="[('is_absent', '=', True)]" groups="project.group_project_manager"/>
             </xpath>
         </field>

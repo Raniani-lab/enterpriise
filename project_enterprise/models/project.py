@@ -33,7 +33,7 @@ def order_boundaries_auto_shift(baseline, boundary, search_forward):
 class Task(models.Model):
     _inherit = "project.task"
 
-    planned_date_begin = fields.Datetime("Start date", tracking=True, task_dependency_tracking=True)
+    planned_date_begin = fields.Datetime("Start date", tracking=True, task_dependency_tracking=True, help="Scheduled date of the task, which will appear in the Gantt view.")
     planned_date_end = fields.Datetime("End date", tracking=True, task_dependency_tracking=True)
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)

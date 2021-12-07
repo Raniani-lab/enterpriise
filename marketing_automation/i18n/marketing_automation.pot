@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2021-12-07 10:56+0000\n"
+"PO-Revision-Date: 2021-12-07 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -131,13 +131,6 @@ msgid "<span class=\"col-2 px-0 pt-1\">after</span>"
 msgstr ""
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
-msgid ""
-"<span class=\"o_form_label\">Choose an existing record or create a new one "
-"to test</span>"
-msgstr ""
-
-#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<span class=\"o_form_label\">Record</span>"
 msgstr ""
@@ -231,18 +224,6 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Add new activity"
-msgstr ""
-
-#. module: marketing_automation
-#: model:mailing.mailing,name:marketing_automation.mass_mailing_after_7_days
-#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
-msgid "After 7 days"
-msgstr ""
-
-#. module: marketing_automation
-#: model:marketing.activity,name:marketing_automation.marketing_activity_2
-#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
-msgid "After 7 days (if not yet customers)"
 msgstr ""
 
 #. module: marketing_automation
@@ -376,6 +357,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 msgid "Clicks"
 msgstr ""
 
@@ -392,16 +374,15 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
-#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
-msgid "Commercial prospection"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__completed
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Completed"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu_configuration
+msgid "Configuration"
 msgstr ""
 
 #. module: marketing_automation
@@ -590,7 +571,23 @@ msgid "Expiry Duration"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_id
+msgid "Favorite Filter"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.mailing_filter_menu_action_marketing_automaion
+msgid "Favorite Filters"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_domain
+msgid "Favorite filter domain"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Filter"
 msgstr ""
 
@@ -622,13 +619,13 @@ msgid "ID"
 msgstr ""
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
-msgid "It will be generated automatically once you save this record."
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_mailing_campaign_activated
+msgid "Is Mailing Campaign Activated"
 msgstr ""
 
 #. module: marketing_automation
-#: model:mailing.mailing,sms_subject:marketing_automation.mass_mailing_after_7_days
-msgid "Join partnership!"
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "It will be generated automatically once you save this record."
 msgstr ""
 
 #. module: marketing_automation
@@ -766,6 +763,11 @@ msgid "Mailing Type"
 msgstr ""
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
+msgid "Mailings"
+msgstr ""
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Mails sent and not bounced"
 msgstr ""
@@ -874,13 +876,6 @@ msgid "Mass mailing statistics"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
-#: model:marketing.activity,name:marketing_automation.marketing_activity_3
-#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
-msgid "Message for sales person"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_id
@@ -981,14 +976,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:mailing.mailing,name:marketing_automation.mass_mailing_offer_free_trial
-#: model:marketing.activity,name:marketing_automation.marketing_activity_1
-#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
-#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
-msgid "Offer free catalog"
-msgstr ""
-
-#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Opened"
 msgstr ""
@@ -1066,6 +1053,7 @@ msgstr ""
 #: model:ir.ui.menu,name:marketing_automation.marketing_participants_menu
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 msgid "Participants"
 msgstr ""
 
@@ -1073,6 +1061,11 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Participants of %s (%s)"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
+msgid "Pick or create a/an"
 msgstr ""
 
 #. module: marketing_automation
@@ -1128,6 +1121,11 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Reload a favorite filter"
 msgstr ""
 
 #. module: marketing_automation
@@ -1348,11 +1346,6 @@ msgid "Sync of participants is required"
 msgstr ""
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
-msgid "TEST"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__tag_ids
 msgid "Tags"
 msgstr ""
@@ -1380,6 +1373,11 @@ msgid "Templates"
 msgstr ""
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "Test"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__is_test
 msgid "Test Record"
 msgstr ""
@@ -1392,6 +1390,14 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Tests"
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
+#, python-format
+msgid ""
+"The saved filter targets different model and is incompatible with this "
+"campaign."
 msgstr ""
 
 #. module: marketing_automation
@@ -1466,9 +1472,15 @@ msgid "Trigger Type"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model,name:marketing_automation.model_utm_campaign
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__utm_campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__utm_campaign_id
 msgid "UTM Campaign"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model,name:marketing_automation.model_utm_source
+msgid "UTM Source"
 msgstr ""
 
 #. module: marketing_automation
@@ -1533,11 +1545,6 @@ msgid "Weeks"
 msgstr ""
 
 #. module: marketing_automation
-#: model:mailing.mailing,sms_subject:marketing_automation.mass_mailing_offer_free_trial
-msgid "Welcome!"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection
 msgid "Winner Selection"
 msgstr ""
@@ -1562,6 +1569,22 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#: code:addons/marketing_automation/models/utm_campaign.py:0
+#, python-format
+msgid ""
+"You cannot delete these UTM Campaigns as they are linked to the following marketing campaigns in Marketing Automation:\n"
+"%(campaign_names)s"
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/utm_source.py:0
+#, python-format
+msgid ""
+"You cannot delete these UTM Sources as they are linked to the following marketing activities in Marketing Automation:\n"
+"%(activities_names)s"
+msgstr ""
+
+#. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
@@ -1579,6 +1602,15 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "e.g. eCommerce Offers Plan"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
+msgid "to generate a Test Participant"
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2021-12-07 10:56+0000\n"
+"PO-Revision-Date: 2021-12-07 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -181,6 +181,11 @@ msgid "Approve"
 msgstr ""
 
 #. module: approvals
+#: model:res.groups,name:approvals.group_approval_user
+msgid "Approve All Requests"
+msgstr ""
+
+#. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__approved
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__approved
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__approved
@@ -189,9 +194,15 @@ msgstr ""
 
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_approver
-#: model:res.groups,name:approvals.group_approval_user
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Approver"
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_category.py:0
+#, python-format
+msgid ""
+"Approver Sequence can only be activated with at least 1 minimum approver."
 msgstr ""
 
 #. module: approvals
@@ -209,6 +220,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_ids
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Approvers"
+msgstr ""
+
+#. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_category__approver_sequence
+#: model:ir.model.fields,field_description:approvals.field_approval_request__approver_sequence
+msgid "Approvers Sequence?"
 msgstr ""
 
 #. module: approvals
@@ -249,6 +266,11 @@ msgid "Business Trip"
 msgstr ""
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__change_request_owner
+msgid "Can Change Request Owner"
+msgstr ""
+
+#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__can_edit
 msgid "Can Edit"
 msgstr ""
@@ -270,6 +292,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__product_uom_category_id
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_id
 msgid "Category"
+msgstr ""
+
+#. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
+msgid "Category Approver"
 msgstr ""
 
 #. module: approvals
@@ -562,6 +589,13 @@ msgstr ""
 msgid ""
 "If checked, the Approval Requests will have an automated generated name "
 "based on the given code."
+msgstr ""
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_category__approver_sequence
+#: model:ir.model.fields,help:approvals.field_approval_request__approver_sequence
+msgid ""
+"If checked, the approvers have to approve in sequence (one after the other)."
 msgstr ""
 
 #. module: approvals
@@ -954,7 +988,9 @@ msgstr ""
 #. module: approvals
 #: code:addons/approvals/models/approval_category.py:0
 #: code:addons/approvals/models/approval_category.py:0
+#: model:ir.model.fields,field_description:approvals.field_approval_approver__sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
+#: model:ir.model.fields,field_description:approvals.field_approval_category_approver__sequence
 #, python-format
 msgid "Sequence"
 msgstr ""
@@ -985,7 +1021,7 @@ msgstr ""
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
-msgid "The user will be able to see approvals created by himself."
+msgid "The user will be able to access all requests and approve/refuse them."
 msgstr ""
 
 #. module: approvals
@@ -1073,9 +1109,21 @@ msgid "User Status"
 msgstr ""
 
 #. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__waiting
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__waiting
+msgid "Waiting"
+msgstr ""
+
+#. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You cannot approve before the previous approver."
 msgstr ""
 
 #. module: approvals

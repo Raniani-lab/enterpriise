@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:01+0000\n"
-"PO-Revision-Date: 2021-09-14 11:01+0000\n"
+"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"PO-Revision-Date: 2021-12-07 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -372,11 +372,6 @@ msgid "Use your own YouTube Account"
 msgstr ""
 
 #. module: social_youtube
-#: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
-msgid "Use your own YouTube Developer Account on our Social app"
-msgstr ""
-
-#. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_media__media_type
 msgid ""
 "Used to make comparisons when we need to restrict some features to a "
@@ -450,11 +445,6 @@ msgid "YouTube Access Token"
 msgstr ""
 
 #. module: social_youtube
-#: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
-msgid "YouTube Account Configuration"
-msgstr ""
-
-#. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_category_id
 msgid "YouTube Category Id"
 msgstr ""
@@ -519,6 +509,7 @@ msgid "YouTube Terms of Service (ToS)"
 msgstr ""
 
 #. module: social_youtube
+#: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_kanban
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 msgid "YouTube Thumbnail"
 msgstr ""
@@ -597,6 +588,22 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_channel_id
 msgid "Youtube Channel ID"
+msgstr ""
+
+#. module: social_youtube
+#: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
+msgid "Youtube Developper Account"
+msgstr ""
+
+#. module: social_youtube
+#: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_thumbnail_url
+#: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_thumbnail_url
+msgid "Youtube Thumbnail Url"
+msgstr ""
+
+#. module: social_youtube
+#: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_url
+msgid "Youtube Video Url"
 msgstr ""
 
 #. module: social_youtube

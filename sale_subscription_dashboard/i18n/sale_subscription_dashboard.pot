@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"PO-Revision-Date: 2021-12-07 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -54,6 +54,16 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "30 Days Ago"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid "<i>There is no invoice during this period.</i>"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid "<i>There is no subscription modification during this period.</i>"
 msgstr ""
 
 #. module: sale_subscription_dashboard
@@ -108,6 +118,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Company"
 msgstr ""
@@ -124,6 +135,11 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current MRR"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid "Current MRR ("
 msgstr ""
 
 #. module: sale_subscription_dashboard
@@ -151,6 +167,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Date"
 msgstr ""
@@ -173,6 +190,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Delta"
 msgstr ""
@@ -192,6 +210,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Document"
 msgstr ""
@@ -341,6 +360,13 @@ msgid "Linear"
 msgstr ""
 
 #. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid ""
+"List all invoices containing non-recurring sales and the amount of\n"
+"                        non-recurring revenues in these invoices for this particular salesperson."
+msgstr ""
+
+#. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -387,6 +413,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
 msgstr ""
@@ -412,6 +439,11 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "NRR"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid "NRR ("
 msgstr ""
 
 #. module: sale_subscription_dashboard
@@ -445,6 +477,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non Recurring invoices"
 msgstr ""
@@ -458,6 +491,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non-Recurring Revenue :"
 msgstr ""
@@ -503,6 +537,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Partner"
 msgstr ""
@@ -526,6 +561,11 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Previous MRR"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid "Previous MRR ("
 msgstr ""
 
 #. module: sale_subscription_dashboard
@@ -633,6 +673,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model:ir.model,name:sale_subscription_dashboard.model_sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription"
 msgstr ""
@@ -640,8 +681,18 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription Modifications"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid ""
+"Subscription modifications aggregate all modifications that happened in\n"
+"                        selected period. Note that modifications happening on the same day can be grouped together\n"
+"                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
+"                        on the same day)."
 msgstr ""
 
 #. module: sale_subscription_dashboard
@@ -681,6 +732,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Template"
 msgstr ""
@@ -803,6 +855,11 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "churn, your subscription base will be"
+msgstr ""
+
+#. module: sale_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
+msgid "graphic"
 msgstr ""
 
 #. module: sale_subscription_dashboard

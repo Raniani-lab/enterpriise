@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2021-12-07 10:56+0000\n"
+"PO-Revision-Date: 2021-12-07 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1396,6 +1396,16 @@ msgid "URL"
 msgstr ""
 
 #. module: hr_referral
+#: model:ir.model,name:hr_referral.model_utm_campaign
+msgid "UTM Campaign"
+msgstr ""
+
+#. module: hr_referral
+#: model:ir.model,name:hr_referral.model_utm_source
+msgid "UTM Source"
+msgstr ""
+
+#. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_unread
 msgid "Unread Messages"
 msgstr ""
@@ -1465,6 +1475,22 @@ msgstr ""
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "You are not allowed to access applicant records."
+msgstr ""
+
+#. module: hr_referral
+#: code:addons/hr_referral/models/utm_campaign.py:0
+#, python-format
+msgid ""
+"You cannot delete these UTM Campaigns as they are linked to the following jobs in Referral:\n"
+"%(job_names)s"
+msgstr ""
+
+#. module: hr_referral
+#: code:addons/hr_referral/models/utm_source.py:0
+#, python-format
+msgid ""
+"You cannot delete these UTM Sources as they are linked to the following users in Referral:\n"
+"%(employee_names)s"
 msgstr ""
 
 #. module: hr_referral

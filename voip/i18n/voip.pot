@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2021-12-07 10:56+0000\n"
+"PO-Revision-Date: 2021-12-07 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -205,6 +205,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
 msgid "Contact"
+msgstr ""
+
+#. module: voip
+#: code:addons/voip/models/voip_queue_mixin.py:0
+#, python-format
+msgid ""
+"Could not add \"%s\" to the call queue. Are you sure it has a phone number "
+"set ?"
 msgstr ""
 
 #. module: voip
@@ -626,13 +634,6 @@ msgstr ""
 #: model:ir.model.fields.selection,name:voip.selection__res_users__mobile_call_method__phone
 #, python-format
 msgid "Phone"
-msgstr ""
-
-#. module: voip
-#: code:addons/voip/models/voip_queue_mixin.py:0
-#, python-format
-msgid ""
-"Phone call cannot be created. Is it any phone number linked to record %s?"
 msgstr ""
 
 #. module: voip

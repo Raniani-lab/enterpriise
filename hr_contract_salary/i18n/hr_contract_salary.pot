@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 11:17+0000\n"
-"PO-Revision-Date: 2021-10-05 11:17+0000\n"
+"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"PO-Revision-Date: 2021-12-07 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -278,6 +278,11 @@ msgid "Color"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__company_id
+msgid "Company"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_res_config_settings
 msgid "Config Settings"
 msgstr ""
@@ -490,6 +495,11 @@ msgid ""
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__department_id
+msgid "Department"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__description
 msgid "Description"
 msgstr ""
@@ -608,7 +618,6 @@ msgid ""
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:hr.contract.salary.advantage,name:hr_contract_salary.advantage_extra_time_off
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__holidays
 msgid "Extra Time Off"
 msgstr ""
@@ -789,6 +798,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #: model:ir.model,name:hr_contract_salary.model_hr_job
+#: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_job_id
 #, python-format
 msgid "Job Position"
 msgstr ""
@@ -1045,11 +1055,6 @@ msgstr ""
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Oops"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:sign.template,redirect_url_text:hr_contract_salary.sign_template_cdi_developer
-msgid "Open Link"
 msgstr ""
 
 #. module: hr_contract_salary

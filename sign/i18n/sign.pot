@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:42+0000\n"
-"PO-Revision-Date: 2021-11-16 13:42+0000\n"
+"POT-Creation-Date: 2021-12-07 10:56+0000\n"
+"PO-Revision-Date: 2021-12-07 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -50,6 +50,13 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "(UTC)"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
+msgid ""
+")\n"
+"            has refused the document"
 msgstr ""
 
 #. module: sign
@@ -129,6 +136,16 @@ msgid ""
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<i class=\"fa fa-bolt\" aria-hidden=\"true\"/> Energy"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<i class=\"fa fa-car\" aria-hidden=\"true\"/> Carbon"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<i class=\"fa fa-check\"/> The document's integrity is valid."
 msgstr ""
@@ -146,8 +163,33 @@ msgid "<i class=\"fa fa-globe\"/> View"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<i class=\"fa fa-recycle\" aria-hidden=\"true\"/> Paper Savings"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<i class=\"fa fa-tint\" aria-hidden=\"true\"/> Water"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<i class=\"fa fa-trash\" aria-hidden=\"true\"/> Waste"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<i class=\"fa fa-tree\" aria-hidden=\"true\"/> Wood"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
-msgid "<i> Waiting Signature</i>"
+msgid "<small><i> Is Signing</i></small>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
+msgid "<small><i> Waiting Signature</i></small>"
 msgstr ""
 
 #. module: sign
@@ -239,6 +281,12 @@ msgid "<strong>Message and communication history</strong>"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
+msgid ""
+"<strong>Warning</strong> do not forward this email to other people!<br/>"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>\n"
@@ -256,9 +304,8 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:0
-#, python-format
-msgid "Access History"
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "A shower uses approximately 65 L of water"
 msgstr ""
 
 #. module: sign
@@ -279,6 +326,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_mail_activity_type__category
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Action"
 msgstr ""
 
@@ -316,7 +364,9 @@ msgid "Activity Exception Decoration"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/models/sign_request.py:0
 #: model:ir.actions.report,name:sign.action_sign_request_print_logs
+#, python-format
 msgid "Activity Logs"
 msgstr ""
 
@@ -369,16 +419,16 @@ msgstr ""
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
-msgid "Adopt Your Signature"
+msgid "Adopt & Sign"
 msgstr ""
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
-msgid "Adopt and Sign"
+msgid "Adopt Your Signature"
 msgstr ""
 
 #. module: sign
@@ -406,6 +456,17 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_template__privacy__employee
 #, python-format
 msgid "All Users"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_sign_request__refusal_allowed
+#: model:ir.model.fields,help:sign.field_sign_send_request__refusal_allowed
+msgid "Allow the contacts to refuse the document for a specific reason."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "An average computer will consume 750 Wh"
 msgstr ""
 
 #. module: sign
@@ -462,13 +523,18 @@ msgid "Auto-fill Partner Field"
 msgstr ""
 
 #. module: sign
-#: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__sent
-msgid "Before Signature"
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Based on"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_form
-msgid "Buy SMS credit"
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Based on various websites, here are our comparisons"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__sent
+msgid "Before Signature"
 msgstr ""
 
 #. module: sign
@@ -481,9 +547,9 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid ""
-"By clicking Adopt and Sign, I agree that the chosen signature/initials will "
-"be a valid electronic representation of my hand-written signature/initials "
-"for all purposes when it is used on documents, including legally binding "
+"By clicking Adopt & Sign, I agree that the chosen signature/initials will be"
+" a valid electronic representation of my hand-written signature/initials for"
+" all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
 
@@ -503,7 +569,14 @@ msgid "CC Signed Document to"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__refusal_allowed
+#: model:ir.model.fields,field_description:sign.field_sign_send_request__refusal_allowed
+msgid "Can be refused"
+msgstr ""
+
+#. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
@@ -541,6 +614,12 @@ msgid "Certificate of Completion<br/>"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_item_role__change_authorized
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__change_authorized
+msgid "Change Authorized"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 msgid "Checkbox"
@@ -554,6 +633,7 @@ msgid "Click to start"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
 msgid "Close"
@@ -562,6 +642,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__color
 #: model:ir.model.fields,field_description:sign.field_sign_request__color
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__color
 #: model:ir.model.fields,field_description:sign.field_sign_template__color
 msgid "Color"
 msgstr ""
@@ -872,6 +953,11 @@ msgid "Document/Signer"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
+msgid "Documentation"
+msgstr ""
+
+#. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
 #: model:ir.ui.menu,name:sign.sign_request_menu
 msgid "Documents"
@@ -949,6 +1035,11 @@ msgid "ERROR: Invalid PDF file!"
 msgstr ""
 
 #. module: sign
+#: model:ir.actions.report,name:sign.sign_report_green_savings_action
+msgid "Ecological Savings by using Electronical Signatures"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Edit fields"
 msgstr ""
@@ -996,6 +1087,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
@@ -1087,6 +1179,13 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid ""
+"For 1000kg of paper usage, with 10% of recycled paper, environmental savings"
+" are based on"
+msgstr ""
+
+#. module: sign
 #: code:addons/sign/controllers/portal.py:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__signed
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -1098,6 +1197,11 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Future Activities"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Gas: 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
 msgstr ""
 
 #. module: sign
@@ -1129,6 +1233,26 @@ msgid "Great, the document is signed!<br>Let’s validate it."
 msgstr ""
 
 #. module: sign
+#: model:ir.ui.menu,name:sign.sign_report_green_savings
+msgid "Green Savings"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Green Savings Report"
+msgstr ""
+
+#. module: sign
+#: model:ir.model,name:sign.model_report_sign_green_savings_report
+msgid "Green Savings Report model"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Green Savings Summary"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
 msgstr ""
@@ -1155,8 +1279,24 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Hello"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "How are these results calculated?"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "How do we calculate?"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "I've got a total weight, and now?"
 msgstr ""
 
 #. module: sign
@@ -1278,6 +1418,11 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__is_user_signer
 msgid "Is User Signer"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "L of water saved"
 msgstr ""
 
 #. module: sign
@@ -1654,6 +1799,12 @@ msgid "No documents to sign"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "No specified reason"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "No template yet"
 msgstr ""
@@ -1706,6 +1857,11 @@ msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_template__num_pages
+msgid "Number of pages"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread_counter
 msgid "Number of unread messages"
 msgstr ""
@@ -1734,6 +1890,16 @@ msgid "On Invitation"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "One can weights 15 g"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "One liter of gas fuel will produce 8.9 kg of CO²"
+msgstr ""
+
+#. module: sign
 #: code:addons/sign/wizard/sign_send_request.py:0
 #: code:addons/sign/wizard/sign_template_share.py:0
 #, python-format
@@ -1747,11 +1913,6 @@ msgid "Oops"
 msgstr ""
 
 #. module: sign
-#: model:sign.template,redirect_url_text:sign.template_sign_1
-#: model:sign.template,redirect_url_text:sign.template_sign_2
-#: model:sign.template,redirect_url_text:sign.template_sign_3
-#: model:sign.template,redirect_url_text:sign.template_sign_4
-#: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
 msgstr ""
@@ -1854,6 +2015,18 @@ msgstr ""
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "Please complete the signer's email address"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "Please configure sender's email address"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Please configure the sender's email address"
@@ -1932,8 +2105,53 @@ msgid "Re-send SMS"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "Reason"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
 msgid "Redirect Link"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#: model:ir.model.fields.selection,name:sign.selection__sign_log__action__refuse
+#, python-format
+msgid "Refuse"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
+#, python-format
+msgid "Refuse Document"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields.selection,name:sign.selection__sign_request__state__refused
+#: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__refused
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+msgid "Refused"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__refused
+msgid "Refused Signature"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
+msgid "Refused on"
+msgstr ""
+
+#. module: sign
+#: model:ir.ui.menu,name:sign.sign_reports
+msgid "Reports"
 msgstr ""
 
 #. module: sign
@@ -2160,6 +2378,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_tree
 #, python-format
 msgid "Send"
 msgstr ""
@@ -2167,6 +2386,7 @@ msgstr ""
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
+#: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 #, python-format
 msgid "Send SMS"
 msgstr ""
@@ -2184,6 +2404,11 @@ msgstr ""
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_request_send_copy
 msgid "Send a copy"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
+msgid "Send texts to your contacts"
 msgstr ""
 
 #. module: sign
@@ -2224,6 +2449,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_tree
 #, python-format
 msgid "Share"
 msgstr ""
@@ -2310,6 +2536,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_tree
 #, python-format
 msgid "Sign Now"
 msgstr ""
@@ -2609,6 +2836,11 @@ msgid "Signing as "
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Solid Waste: 1290 Pounds = 1290*0.4536 = 585.14 kg"
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
@@ -2629,6 +2861,13 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "Sorry, an error occurred, please try to fill the document again."
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid "Sorry, you cannot refuse this document"
 msgstr ""
 
 #. module: sign
@@ -2809,8 +3048,39 @@ msgid "The PDF's password is required to generate the final document."
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "The computation is based on the website"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid ""
+"The contact of %(role)s has been changed from %(old_partner)s to "
+"%(new_partner)s."
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "The document"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "The document (%s) has been rejected by one of the signers"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid "The document has been refused"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.doc_sign
+msgid "The document has been rejected"
 msgstr ""
 
 #. module: sign
@@ -2836,11 +3106,11 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/res_partner.py:0
 #, python-format
 msgid ""
-"The mail address of %s has been updated. The request will be automatically "
-"resent."
+"The mail address of %(partner)s has been updated. The request will be "
+"automatically resent."
 msgstr ""
 
 #. module: sign
@@ -2854,6 +3124,12 @@ msgstr ""
 msgid ""
 "The signature access you are trying to reach does not exist. Maybe the signature request has been deleted or modified. <br/>\n"
 "                    If there still exists a signature request for this document, check your inbox to get your access!"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "The signature has been refused by %s(%s)"
 msgstr ""
 
 #. module: sign
@@ -2888,6 +3164,15 @@ msgid "The template doesn't exist anymore."
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid ""
+"The total of sheets you saved is based on: the number of sent sign requests "
+"x number of sheets in the document x (number of contacts who need to sign + "
+"number of followers if the sign request is signed) = total of pages. We "
+"assume that one page weights 0.005 kilograms."
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr ""
@@ -2899,9 +3184,27 @@ msgid "This file cannot be read. Is it a valid PDF?"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "This function can only be called with sudo."
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__reference
 #: model:ir.model.fields,help:sign.field_sign_request_item__reference
 msgid "This is how the document will be named in the mail"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "This sign request cannot be refused"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "This sign request item cannot be refused"
 msgstr ""
 
 #. module: sign
@@ -2922,6 +3225,11 @@ msgid "To Sign"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "To produce 1000 kg of wood, we have to cut 12 trees"
+msgstr ""
+
+#. module: sign
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "To sign"
@@ -2930,6 +3238,11 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Today Activities"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Total Energy: 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
 msgstr ""
 
 #. module: sign
@@ -3088,6 +3401,11 @@ msgid "View Document"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
+msgid "View document"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__open
 msgid "View/Download"
 msgstr ""
@@ -3116,10 +3434,31 @@ msgid "Warning"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Water: 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid ""
+"We display to you a ratio based on the saved weight versus 1000 kg of paper "
+"usage."
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "We will send you this document by email once everyone has signed."
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid ""
+"We'll send an email to warn other followers & signers with the reason you "
+"provided."
 msgstr ""
 
 #. module: sign
@@ -3141,6 +3480,11 @@ msgid "Well done, your document is ready!<br>Let's sign it directly."
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "What about those conversions I see?"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__privacy
 msgid "Who can Sign"
 msgstr ""
@@ -3153,8 +3497,20 @@ msgid "Who can Sign:"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "Why do you refuse to sign this document?"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__width
 msgid "Width"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "Wood Use: 4 US Short Tons = 4*907.18474 = 3628.73 kg"
 msgstr ""
 
 #. module: sign
@@ -3177,15 +3533,32 @@ msgid ""
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "You cannot reassign this signatory"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "You have completed the document"
 msgstr ""
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:0
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
+msgid "You have refused the document"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
 #, python-format
-msgid "You will receive a copy of the signed document by mail."
+msgid "You need to define a signatory"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid "You will receive a copy of the signed document by mail"
 msgstr ""
 
 #. module: sign
@@ -3250,6 +3623,21 @@ msgid "and"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "and:"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "can"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "cans"
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
@@ -3296,8 +3684,58 @@ msgid "has been edited, completed and signed by"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "hour using the computer"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "hours using the computer"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "https://c.environmentalpaper.org/"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "ip"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "kWh of energy sparred"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "kg of carbon sparred"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "kg of waste sparred"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "kg of wood saved"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "like"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "liter of car fuel"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "liters of car fuel"
 msgstr ""
 
 #. module: sign
@@ -3312,6 +3750,21 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "next"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "sheets of paper saved"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "shower"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "showers"
 msgstr ""
 
 #. module: sign
@@ -3358,6 +3811,21 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "to:"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "tree"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "trees"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "we've got a list of consumption for 1000 kg of paper usage."
 msgstr ""
 
 #. module: sign

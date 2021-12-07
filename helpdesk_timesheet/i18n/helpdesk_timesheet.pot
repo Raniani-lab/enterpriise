@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 11:17+0000\n"
-"PO-Revision-Date: 2021-10-05 11:17+0000\n"
+"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"PO-Revision-Date: 2021-12-07 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,12 +39,6 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
 #, python-format
-msgid "Closed"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: code:addons/helpdesk_timesheet/models/helpdesk.py:0
-#, python-format
 msgid "Confirm Time Spent"
 msgstr ""
 
@@ -71,6 +65,11 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Delete"
+msgstr ""
+
+#. module: helpdesk_timesheet
+#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_report_analysis__department_id
+msgid "Department"
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -174,12 +173,6 @@ msgid "ID"
 msgstr ""
 
 #. module: helpdesk_timesheet
-#: code:addons/helpdesk_timesheet/models/helpdesk.py:0
-#, python-format
-msgid "In Progress"
-msgstr ""
-
-#. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__is_timer_running
 msgid "Is Timer Running"
 msgstr ""
@@ -200,6 +193,11 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: helpdesk_timesheet
+#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_report_analysis__employee_parent_id
+msgid "Manager"
+msgstr ""
+
+#. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.rating_rating_view_search_inherit_helpdesk_timesheet
 msgid "My Team's Ratings"
 msgstr ""
@@ -209,6 +207,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_report_analysis_view_search_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_timesheet
 msgid "My Team's Tickets"
+msgstr ""
+
+#. module: helpdesk_timesheet
+#: code:addons/helpdesk_timesheet/models/helpdesk.py:0
+#, python-format
+msgid "New"
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -226,11 +230,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_team__project_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__project_id
 msgid "Project"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.actions.act_window,name:helpdesk_timesheet.project_project_action_view_helpdesk_tickets
-msgid "Project Tickets"
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -328,6 +327,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/project.py:0
 #: code:addons/helpdesk_timesheet/models/project.py:0
+#: model:ir.actions.act_window,name:helpdesk_timesheet.project_project_action_view_helpdesk_tickets
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__ticket_ids
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.project_project_view_form_inherit_helpdesk_timesheet
 #, python-format

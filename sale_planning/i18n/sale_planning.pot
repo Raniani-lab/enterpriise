@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:44+0000\n"
-"PO-Revision-Date: 2021-11-16 13:44+0000\n"
+"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"PO-Revision-Date: 2021-12-07 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -54,33 +54,8 @@ msgid "By Sales Order"
 msgstr ""
 
 #. module: sale_planning
-#: model:product.product,name:sale_planning.developer_product
-#: model:product.template,name:sale_planning.developer_product_product_template
-msgid "Developer (Plan services)"
-msgstr ""
-
-#. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__end_datetime
 msgid "End Date"
-msgstr ""
-
-#. module: sale_planning
-#: model:product.product,uom_name:sale_planning.developer_product
-#: model:product.product,uom_name:sale_planning.technical_maintainance_product
-#: model:product.template,uom_name:sale_planning.developer_product_product_template
-#: model:product.template,uom_name:sale_planning.technical_maintainance_product_product_template
-msgid "Hours"
-msgstr ""
-
-#. module: sale_planning
-#: model:product.product,name:sale_planning.technical_maintainance_product
-#: model:product.template,name:sale_planning.technical_maintainance_product_product_template
-msgid "IT Technical Maintenance (Plan services)"
-msgstr ""
-
-#. module: sale_planning
-#: model:planning.role,name:sale_planning.planning_role_technician
-msgid "IT Technician"
 msgstr ""
 
 #. module: sale_planning
@@ -107,12 +82,6 @@ msgstr ""
 msgid ""
 "Only slots linked to a sale order with a plannable service can be "
 "unscheduled."
-msgstr ""
-
-#. module: sale_planning
-#: model_terms:product.product,description:sale_planning.developer_product
-#: model_terms:product.template,description:sale_planning.developer_product_product_template
-msgid "Our developer will help you to add new features to your Software."
 msgstr ""
 
 #. module: sale_planning
@@ -200,6 +169,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__sale_line_id
 #: model_terms:ir.ui.view,arch_db:sale_planning.period_report_template
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
+#: model_terms:ir.ui.view,arch_db:sale_planning.resource_sale_planning
 msgid "Sales Order Item"
 msgstr ""
 
@@ -231,12 +201,6 @@ msgid "Start Date"
 msgstr ""
 
 #. module: sale_planning
-#: model_terms:product.product,description:sale_planning.technical_maintainance_product
-#: model_terms:product.template,description:sale_planning.technical_maintainance_product_product_template
-msgid "Take a rest. We'll do our best."
-msgstr ""
-
-#. module: sale_planning
 #. openerp-web
 #: code:addons/sale_planning/static/src/js/backend/planning_gantt_controller.js:0
 #, python-format
@@ -248,6 +212,14 @@ msgstr ""
 #: code:addons/sale_planning/static/src/js/backend/planning_gantt_controller.js:0
 #, python-format
 msgid "There are no sales orders to assign or no employees are available."
+msgstr ""
+
+#. module: sale_planning
+#: code:addons/sale_planning/models/planning_slot.py:0
+#, python-format
+msgid ""
+"This Sale Order Item doesn't have a target value of planned hours. Planned "
+"hours :"
 msgstr ""
 
 #. module: sale_planning

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:42+0000\n"
-"PO-Revision-Date: 2021-11-16 13:42+0000\n"
+"POT-Creation-Date: 2021-12-07 10:56+0000\n"
+"PO-Revision-Date: 2021-12-07 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -212,12 +212,6 @@ msgid "Barcode scan is ambiguous with several model: %s. Use the most likely."
 msgstr ""
 
 #. module: stock_barcode
-#: model:product.product,name:stock_barcode.product_cable_management_box_2
-#: model:product.template,name:stock_barcode.product_cable_management_box_2_product_template
-msgid "Cable Management Box"
-msgstr ""
-
-#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/components/main.xml:0
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
@@ -299,20 +293,15 @@ msgid "Created on"
 msgstr ""
 
 #. module: stock_barcode
-#: model:product.product,name:stock_barcode.product_custom_cabinet_metric
-#: model:product.template,name:stock_barcode.product_custom_cabinet_metric_product_template
-msgid "Customized Cabinet (Metric)"
-msgstr ""
-
-#. module: stock_barcode
-#: model:product.product,name:stock_barcode.product_custom_cabinet_usa
-#: model:product.template,name:stock_barcode.product_custom_cabinet_usa_product_template
-msgid "Customized Cabinet (USA)"
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__default_move_id
 msgid "Default Move"
+msgstr ""
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/widgets/views_widget.xml:0
+#, python-format
+msgid "Delete"
 msgstr ""
 
 #. module: stock_barcode
@@ -588,6 +577,16 @@ msgid "Packages"
 msgstr ""
 
 #. module: stock_barcode
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_id
+msgid "Packaging"
+msgstr ""
+
+#. module: stock_barcode
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_uom_qty
+msgid "Packaging Quantity"
+msgstr ""
+
+#. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__picking_id
 msgid "Picking"
@@ -712,6 +711,11 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_reserved
 msgid "Quantity Reserved"
+msgstr ""
+
+#. module: stock_barcode
+#: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
+msgid "Quantity of the Packaging in the UoM of the Stock Move Line."
 msgstr ""
 
 #. module: stock_barcode
@@ -983,12 +987,6 @@ msgid "Unit of Measure"
 msgstr ""
 
 #. module: stock_barcode
-#: model:product.product,uom_name:stock_barcode.product_cable_management_box_2
-#: model:product.template,uom_name:stock_barcode.product_cable_management_box_2_product_template
-msgid "Units"
-msgstr ""
-
-#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_stock_quant_tree
 msgid "UoM"
 msgstr ""
@@ -1086,22 +1084,10 @@ msgid "document"
 msgstr ""
 
 #. module: stock_barcode
-#: model:product.product,uom_name:stock_barcode.product_custom_cabinet_usa
-#: model:product.template,uom_name:stock_barcode.product_custom_cabinet_usa_product_template
-msgid "ft³"
-msgstr ""
-
-#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/stock_barcode_menu.xml:0
 #, python-format
 msgid "location"
-msgstr ""
-
-#. module: stock_barcode
-#: model:product.product,uom_name:stock_barcode.product_custom_cabinet_metric
-#: model:product.template,uom_name:stock_barcode.product_custom_cabinet_metric_product_template
-msgid "m³"
 msgstr ""
 
 #. module: stock_barcode

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:01+0000\n"
-"PO-Revision-Date: 2021-09-14 11:01+0000\n"
+"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"PO-Revision-Date: 2021-12-07 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,12 @@ msgstr ""
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
-msgid ""
-"<b class=\"text-900\">Twitter Account</b>\n"
-"                        <span class=\"text-600\">@twitteraccount · 11m</span>"
+msgid "11m"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
+msgid "<b class=\"text-900\">Twitter Account</b>"
 msgstr ""
 
 #. module: social_twitter
@@ -33,6 +36,40 @@ msgid "<i class=\"fa fa-heart\" title=\"Likes\"/>"
 msgstr ""
 
 #. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid ""
+"<i class=\"fa fa-pencil\" title=\"Quote a tweet\"/>\n"
+"                                    <span>Quote Tweet</span>"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "<i class=\"fa fa-retweet\" title=\"Retweet a tweet\"/>"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "<span class=\"font-italic\">Empty tweet</span>"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
+msgid "@twitteraccount ·"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "A retweet already exists"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "An error occurred (%s)"
+msgstr ""
+
+#. module: social_twitter
 #. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -41,10 +78,25 @@ msgid "Author Image"
 msgstr ""
 
 #. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Cancel"
+msgstr ""
+
+#. module: social_twitter
 #: model:ir.model.fields,help:social_twitter.field_res_config_settings__twitter_use_own_account
 msgid ""
 "Check this if you want to use your personal Twitter Developer Account "
 "instead of the provided one."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Code %i"
 msgstr ""
 
 #. module: social_twitter
@@ -86,6 +138,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__display_twitter_preview
 #: model:ir.model.fields,field_description:social_twitter.field_social_post_template__display_twitter_preview
 msgid "Display Twitter Preview"
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_kanban_controller.js:0
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Error"
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Error while sending the data to the server."
 msgstr ""
 
 #. module: social_twitter
@@ -131,6 +198,14 @@ msgid "Likes"
 msgstr ""
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Looks like this Tweet is a duplicate. Edit its content and try posting "
+"again."
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -160,8 +235,47 @@ msgid "Please select a Twitter account for this stream type."
 msgstr ""
 
 #. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Post"
+msgstr ""
+
+#. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
 msgid "Post Image"
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Quote a Tweet"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_author_link
+msgid "Quoted tweet author Link"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_author_name
+msgid "Quoted tweet author Name"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_message
+msgid "Quoted tweet message"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_profile_image_url
+msgid "Quoted tweet profile image URL"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "RT"
 msgstr ""
 
 #. module: social_twitter
@@ -170,9 +284,18 @@ msgid "Re-tweets"
 msgstr ""
 
 #. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "Retweet"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "Retweet or Quote"
+msgstr ""
+
+#. module: social_twitter
 #. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
-#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
 msgid "Retweets"
 msgstr ""
@@ -241,6 +364,12 @@ msgid ""
 msgstr ""
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "The tweet is empty. Add a message and try posting again."
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid ""
@@ -260,13 +389,13 @@ msgid "Twitter"
 msgstr ""
 
 #. module: social_twitter
-#: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
-msgid "Twitter Account Configuration"
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_author_id
+msgid "Twitter Author ID"
 msgstr ""
 
 #. module: social_twitter
-#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_author_id
-msgid "Twitter Author ID"
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_can_retweet
+msgid "Twitter Can Retweet"
 msgstr ""
 
 #. module: social_twitter
@@ -285,6 +414,11 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_consumer_secret_key
 msgid "Twitter Consumer Secret Key"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
+msgid "Twitter Developper Account"
 msgstr ""
 
 #. module: social_twitter
@@ -328,6 +462,16 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_profile_image_url
 msgid "Twitter Profile Image URL"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_id_str
+msgid "Twitter Quoted Tweet ID"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_retweeted_tweet_id_str
+msgid "Twitter Retweet ID"
 msgstr ""
 
 #. module: social_twitter
@@ -379,13 +523,26 @@ msgid "Unauthorized. Please contact your administrator."
 msgstr ""
 
 #. module: social_twitter
-#: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_use_own_account
-msgid "Use your own Twitter Account"
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "Undo Retweet"
 msgstr ""
 
 #. module: social_twitter
-#: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
-msgid "Use your own Twitter Developer Account on our Social app"
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Unknown error"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Unkown error"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_use_own_account
+msgid "Use your own Twitter Account"
 msgstr ""
 
 #. module: social_twitter
@@ -401,6 +558,28 @@ msgstr ""
 msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: %s)."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "You are not authenticated"
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_comments.js:0
+#, python-format
+msgid ""
+"You can comment only three times a tweet as it may be considered as spamming"
+" by Twitter"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
+msgid "You can not store two times the same tweet on the same stream!"
 msgstr ""
 
 #. module: social_twitter

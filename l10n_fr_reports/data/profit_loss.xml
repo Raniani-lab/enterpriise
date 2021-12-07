@@ -313,7 +313,7 @@
                         <field name="sequence" eval="2"/>
                         <field name="code">vi_2</field>
                         <field name="formulas">sum</field>
-                        <field name="domain" eval="[ '|', ('account_id.code', '=like', '654%'), '|', ('account_id.code', '=like', '658%'), '|', ('account_id.code', '=like', '668%'), ('account_id.code', '=like', '672%')]"/>
+                        <field name="domain" eval="[ '|', ('account_id.code', '=like', '650%'), '|', ('account_id.code', '=like', '652%'), '|', ('account_id.code', '=like', '654%'), '|', ('account_id.code', '=like', '656%'), '|', ('account_id.code', '=like', '657%'), '|', ('account_id.code', '=like', '658%'), '|', ('account_id.code', '=like', '659%'), '|', ('account_id.code', '=like', '668%'), ('account_id.code', '=like', '672%')]"/>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="account_financial_report_line_fr_cdrc18" model="account.financial.html.report.line">

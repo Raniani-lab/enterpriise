@@ -53,6 +53,13 @@ table > tbody.o_grid_section > tr {
         flex-grow: 2;
     }
 }
+
+@include media-breakpoint-down(sm) {
+    .timesheet-timer .o_timer_discard {
+        @include o-position-absolute($top: 0.5rem, $right: 2rem);
+    }
+}
+
 .o_grid_view {
     .o_standalone_avatar_employee {
         display: inline-flex;

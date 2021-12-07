@@ -31,7 +31,7 @@
         </xpath>
     </t>
 
-    <div t-name="timesheet_grid.timer_header" class="d-flex align-items-center timesheet-timer py-2" owl="1">
+    <div t-name="timesheet_grid.timer_header" class="row px-5 align-items-center timesheet-timer py-2" owl="1">
         <t t-if="_timerIsRunning">
             <button class="my-2 mr-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer()" t-ref="stopButton" data-hotkey="z">
                 Stop
@@ -44,7 +44,7 @@
                     <t t-esc="_timerString"/>
                 </span>
             </div>
-            <div class="p-2 input_description">
+            <div class="p-2 col-sm-12 col-md-5 input_description">
                 <span t-if="_timerReadOnly" t-esc="props.description" class="input_description_timer"/>
                 <input t-else="" class="o_field_float o_field_number o_field_widget o_input input_description_timer" type="text" t-att-value="props.description" t-ref="inputDescription"
                     placeholder="Describe your activity..." t-on-change="_onInputDescription" t-on-keydown="_onKeydown"/>
@@ -57,21 +57,23 @@
                     <span t-esc="props.taskName"/>
                 </div>
             </div>
-            <div t-else="" class="p-md-2 input_m2o">
+            <div t-else="" class="p-md-2 px-0 input_m2o">
                 <TimerHeaderM2OAdapter Component="TimerHeaderM2O" widgetArgs="[props.projectId, props.taskId, props.projectWarning]"/>
             </div>
-            <div class="pl-md-2 py-2">
+            <div class="pl-md-2 py-2 o_timer_discard">
                 <button class="btn btn-muted px-0 stop-timer fa fa-times" t-on-click="_onUnlinkTimer" title="Press Esc to discard"/>
             </div>
         </t>
         <t t-else="">
-            <div class="my-2 pr-2" id="start">
-                <button class="btn btn_start_timer" t-on-click="_onClickStartTimer()" t-ref="startButton" data-hotkey="z"><i class="fa fa-play"></i> Start</button>
-            </div>
-            <div class="p-2">
-                <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>
-                <t t-elif="isMobile"><span class="text-muted"> or use a </span><span>hot key</span></t>
-                <t t-else=""><span class="text-muted">press </span><span>Enter</span><span class="text-muted"> or use a </span><span>hot key</span></t>
+            <div class="d-flex col-sm-12 align-items-center">
+                <div class="my-2 pr-2" id="start">
+                    <button class="btn btn_start_timer" t-on-click="_onClickStartTimer()" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
+                </div>
+                <div class="p-2">
+                    <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>
+                    <t t-elif="isMobile"><span class="text-muted"> or use a </span><span>hot key</span></t>
+                    <t t-else=""><span class="text-muted">press </span><span>Enter</span><span class="text-muted"> or use a </span><span>hot key</span></t>
+                </div>
             </div>
         </t>
     </div>

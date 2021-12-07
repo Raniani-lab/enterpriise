@@ -789,7 +789,7 @@ class AnalyticLine(models.Model):
         self.user_timer_id.res_id = new_timesheet
         return new_timesheet.id
 
-    def _action_open_to_validate_timesheet_view(self, type_view='week'):
+    def _action_open_to_validate_timesheet_view(self, type_view=None):
         context = {
             'search_default_nonvalidated': True,
             'search_default_my_team_timesheet': True,
@@ -798,9 +798,13 @@ class AnalyticLine(models.Model):
         if (type_view == 'week'):
             context['grid_range'] = 'week'
             context['grid_anchor'] = fields.Date.today() - relativedelta(weeks=1)
-        elif type_view == 'month':
+        else:
             context['grid_range'] = 'month'
-            context['grid_anchor'] = fields.Date.today() - relativedelta(months=1)
+            if type_view == 'month':
+                context['grid_anchor'] = fields.Date.today() - relativedelta(months=1)
+            else:
+                context['grid_anchor'] = fields.Date.today()
+                context.pop('search_default_my_team_timesheet', None)
 
         name = _('Timesheets to Validate')
         action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.act_hr_timesheet_report")
@@ -818,7 +822,10 @@ class AnalyticLine(models.Model):
         else:
             pivot_view_id = self.env.ref('hr_timesheet.view_hr_timesheet_line_pivot').id
         # 'views' contain an array of (id, view_name) in the order they will be displayed on screen.
-        view_order = [view[1] for view in action_validate.get('views', [])]
+        if type_view:
+            view_order = [view[1] for view in action_validate.get('views', [])]
+        else:
+            view_order = ['pivot', 'grid', 'tree', 'kanban', 'graph']
         views = [
             [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
             [self.env.ref('timesheet_grid.view_kanban_account_analytic_line_inherit_timesheet_grid_validation').id, 'kanban'],

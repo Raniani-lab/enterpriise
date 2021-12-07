@@ -11,8 +11,11 @@ class ResConfigSettings(models.TransientModel):
 
     invoiced_timesheet = fields.Selection([
         ('all', "All recorded timesheets"),
-        ('approved', "Approved timesheets only"),
-    ], default=DEFAULT_INVOICED_TIMESHEET, string="Timesheets Invoicing", config_parameter='sale.invoiced_timesheet')
+        ('approved', "Validated timesheets only"),
+    ], default=DEFAULT_INVOICED_TIMESHEET, string="Timesheets Invoicing", config_parameter='sale.invoiced_timesheet',
+        help="With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated."
+        " Additionally, all timesheets will be accessible in your customers' portal. \n"
+        "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal.")
 
     def set_values(self):
         """ Override set_values to recompute the qty_delivered for each sale.order.line

@@ -372,6 +372,10 @@ class AccountEdiFormat(models.Model):
         xsd_attachment = self.env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
         xsd_datas = base64.b64decode(xsd_attachment.datas) if xsd_attachment else None
 
+        res = {
+            'cfdi_str': etree.tostring(decoded_cfdi_values['cfdi_node'], pretty_print=True, xml_declaration=True, encoding='UTF-8'),
+        }
+
         if xsd_datas:
             try:
                 with BytesIO(xsd_datas) as xsd:
@@ -379,11 +383,9 @@ class AccountEdiFormat(models.Model):
             except (IOError, ValueError):
                 _logger.info(_('The xsd file to validate the XML structure was not found'))
             except Exception as e:
-                return {'errors': str(e).split('\\n')}
+                res['errors'] = str(e).split('\\n')
 
-        return {
-            'cfdi_str': etree.tostring(decoded_cfdi_values['cfdi_node'], pretty_print=True, xml_declaration=True, encoding='UTF-8'),
-        }
+        return res
 
     # -------------------------------------------------------------------------
     # CFDI Generation: Payments

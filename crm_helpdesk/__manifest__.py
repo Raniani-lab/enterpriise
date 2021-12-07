@@ -7,7 +7,6 @@
     'version': '1.1',
     'sequence': '19',
     'category': 'Services/Helpdesk',
-    'complexity': 'easy',
     'description': """
 Convert business inquiries that have ended up in the Helpdesk pipeline by mistake,
 or generate a ticket from a business inquiry

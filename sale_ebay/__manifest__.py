@@ -53,8 +53,6 @@ Key Features
   # only loaded in demonstration mode
   'demo': [
   ],
-  'js': ['static/src/js/*.js'],
-  'css': ['static/src/css/*.css'],
   'license': 'OEEL-1',
   'uninstall_hook': 'uninstall_hook',
 }

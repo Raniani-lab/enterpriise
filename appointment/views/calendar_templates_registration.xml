@@ -49,7 +49,7 @@
                                 <div class="col-md-8">
                                     <input type="tel" class="form-control" name="phone" required="1" id="phone_field" t-att-value="'mobile' in partner_data and partner_data['mobile']"/>
                                     <small t-if="appointment_type.reminder_ids.filtered(lambda r:r.alarm_type == 'sms')" class="text-muted">
-                                        A text message reminder is sent to you before your appointment
+                                        We will use it to remind you of this appointment.
                                     </small>
                                 </div>
                             </div>

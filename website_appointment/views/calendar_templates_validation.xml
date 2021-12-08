@@ -10,7 +10,7 @@
         <xpath expr="//div[hasclass('oe_structure')][1]" position="before">
             <nav t-if="appointment_type and appointment_type.category == 'website'" class="navbar navbar-light border-top shadow-sm d-print-none">
                 <div class="container">
-                    <a t-attf-href="/calendar?#{keep_query('filter_appointment_type_ids')}" class="navbar-brand h4 my-0 mr-auto">
+                    <a t-attf-href="/calendar?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids')}" class="navbar-brand h4 my-0 mr-auto">
                         <i class="fa fa-long-arrow-left text-primary mr-2"/>All Appointments
                     </a>
                 </div>

@@ -51,7 +51,10 @@ class CalendarAppointmentShare(models.TransientModel):
         """
         calendar_url = url_join(self.get_base_url(), '/calendar')
         for appointment_link in self:
-            url_param = dict()
+            # If there are multiple appointment types selected, we share the link that will filter the appointments to the user
+            url_param = {
+                'filter_appointment_type_ids': str(appointment_link.appointment_type_ids.ids)
+            }
             if len(appointment_link.appointment_type_ids) == 1:
                 # If only one appointment type is selected, we share the appointment link with the possible users selected
                 if appointment_link.staff_user_ids:
@@ -61,10 +64,6 @@ class CalendarAppointmentShare(models.TransientModel):
                 appt_link = url_join('%s/' % calendar_url, slug(appointment_link.appointment_type_ids._origin))
                 share_link = '%s?%s' % (appt_link, url_encode(url_param))
             elif appointment_link.appointment_type_ids:
-                # If there are multiple appointment types selected, we share the link that will filter the appointments to the user
-                url_param.update({
-                    'filter_appointment_type_ids': str(appointment_link.appointment_type_ids.ids)
-                })
                 share_link = '%s?%s' % (calendar_url, url_encode(url_param))
             else:
                 share_link = calendar_url

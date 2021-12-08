@@ -61,7 +61,7 @@ class AccountMoveLine(models.Model):
 
     def _build_query(self, additional_domain=None):
         query = self.env['account.move.line']._where_calc([
-            ('move_id.move_type', '=', 'in_invoice'),
+            ('move_id.move_type', '=', self.move_id.move_type),
             ('move_id.state', '=', 'posted'),
             ('display_type', '=', False),
             ('exclude_from_invoice_tab', '=', False),
@@ -183,5 +183,8 @@ class AccountMoveLine(models.Model):
 
     @api.onchange('name')
     def _onchange_enable_predictive(self):
-        if self.move_id.move_type == 'in_invoice' and self.name and not self.display_type:
+        enabled_types = ['in_invoice']
+        if self.env['ir.config_parameter'].sudo().get_param('account_predictive_bills.activate_out_invoice'):
+            enabled_types += ['out_invoice']
+        if self.move_id.move_type in enabled_types and self.name and not self.display_type:
             self.predict_from_name = True

@@ -1,67 +1,398 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from .test_common import TestSignCommon
-from odoo.exceptions import UserError
+
+from .sign_request_common import SignRequestCommon
+from odoo import Command
+from odoo.exceptions import UserError, ValidationError
 
 
-class TestSignRequest(TestSignCommon):
+class TestSignRequest(SignRequestCommon):
+    def test_sign_request_create(self):
+        sign_request_no_item = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
+
+        sign_request_3_roles = self.create_sign_request_3_roles(customer=self.partner_1, employee=self.partner_2, company=self.partner_5, cc_partners=self.partner_4)
+
+        for sign_request in [sign_request_no_item, sign_request_3_roles]:
+            self.assertTrue(sign_request.exists(), 'A sign request with no sign item should be created')
+            self.assertEqual(sign_request.state, 'sent', 'The default state for a new created sign request should be "sent"')
+            self.assertTrue(all(sign_request.request_item_ids.mapped('is_mail_sent')), 'The mail should be sent for the new created sign request by default')
+            self.assertEqual(sign_request.with_context(active_test=False).cc_partner_ids, self.partner_4 + self.env.user.partner_id, 'The cc_partners should be the specified one and the creator')
+            self.assertEqual(sign_request.with_context(active_test=False).message_partner_ids, sign_request.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id, 'Signers, CC partners and the sender should be the followers')
+            self.assertEqual(len(sign_request.sign_log_ids.filtered(lambda log: log.action == 'create')), 1, 'A log with action="create" should be created')
+            for sign_request_item in sign_request:
+                self.assertEqual(sign_request_item.state, 'sent', 'The default state for a new created sign request item should be "sent"')
+        self.assertEqual(len(sign_request_no_item.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'An activity should be scheduled for signers with Sign Access')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'An activity should be scheduled for signers with Sign Access')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 1, 'An activity should be scheduled for signers with Sign Access')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_5.id)), 0, 'An activity should not be scheduled for signers without Sign Access')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_4.id)), 0, 'An activity should not be scheduled for CC partners')
+
+        SignRequest = self.env['sign.request']
+        with self.assertRaises(ValidationError, msg='A sign request with no sign item needs a signer'):
+            SignRequest.create({
+                'template_id': self.template_no_item.id,
+                'reference': self.template_no_item.display_name,
+            })
+
+        with self.assertRaises(ValidationError, msg='A sign request with no sign item can only have the default role'):
+            SignRequest.create({
+                'template_id': self.template_no_item.id,
+                'request_item_ids': [Command.create({
+                    'partner_id': self.partner_1.id,
+                    'role_id': self.env.ref('sign.sign_item_role_company').id,
+                })],
+                'reference': self.template_no_item.display_name,
+            })
+
+        with self.assertRaises(ValidationError, msg='Three roles need three singers'):
+            SignRequest.create({
+                'template_id': self.template_3_roles.id,
+                'request_item_ids': [Command.create({
+                    'partner_id': self.partner_1.id,
+                    'role_id': self.env.ref('sign.sign_item_role_customer').id,
+                }), Command.create({
+                    'partner_id': self.partner_2.id,
+                    'role_id': self.env.ref('sign.sign_item_role_employee').id,
+                })],
+                'reference': self.template_3_roles.display_name,
+            })
+
+        with self.assertRaises(ValidationError, msg='A role cannot be shared with two signers'):
+            SignRequest.create({
+                'template_id': self.template_3_roles.id,
+                'request_item_ids': [Command.create({
+                    'partner_id': self.partner_1.id,
+                    'role_id': self.env.ref('sign.sign_item_role_customer').id,
+                }), Command.create({
+                    'partner_id': self.partner_2.id,
+                    'role_id': self.env.ref('sign.sign_item_role_employee').id,
+                }), Command.create({
+                    'partner_id': self.partner_3.id,
+                    'role_id': self.env.ref('sign.sign_item_role_company').id,
+                }), Command.create({
+                    'partner_id': self.partner_4.id,
+                    'role_id': self.env.ref('sign.sign_item_role_company').id,
+                })],
+                'reference': self.template_3_roles.display_name,
+            })
+
+        with self.assertRaises(ValidationError, msg='one signer cannot sign as two roles'):
+            SignRequest.create({
+                'template_id': self.template_3_roles.id,
+                'request_item_ids': [Command.create({
+                    'partner_id': self.partner_1.id,
+                    'role_id': self.env.ref('sign.sign_item_role_customer').id,
+                }), Command.create({
+                    'partner_id': self.partner_1.id,
+                    'role_id': self.env.ref('sign.sign_item_role_employee').id,
+                }), Command.create({
+                    'partner_id': self.partner_3.id,
+                    'role_id': self.env.ref('sign.sign_item_role_company').id,
+                })],
+                'reference': self.template_3_roles.display_name,
+            })
+
+    def test_sign_request_no_item_create_sign_cancel(self):
+        # create
+        sign_request_no_item = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
+        sign_request_item = sign_request_no_item.request_item_ids[0]
+
+        # sign
+        with self.assertRaises(UserError, msg='A sign.request.item can only sign its sign.items'):
+            sign_request_item.edit_and_sign(self.customer_sign_values)
+        sign_request_item.edit_and_sign(self.signature_fake)
+        self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
+        self.assertEqual(len(sign_request_no_item.sign_log_ids.filtered(
+            lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item)),
+            1, 'A log with action="sign" should be created')
+        self.assertEqual(len(sign_request_no_item.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 0, 'The activity should be removed after signing')
+        with self.assertRaises(UserError, msg='A document cannot be signed twice'):
+            sign_request_item.edit_and_sign(self.signature_fake)
+
+        # cancel
+        sign_request_item_token = sign_request_item.access_token
+        sign_request_no_item_token = sign_request_no_item.access_token
+        sign_request_no_item.cancel()
+        self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_no_item.state, 'canceled', 'The sign request should be canceled')
+        self.assertNotEqual(sign_request_item.access_token, sign_request_item_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_no_item.access_token, sign_request_no_item_token, 'The access token should be changed')
+        self.assertEqual(len(sign_request_no_item.sign_log_ids.filtered(lambda log: log.action == 'cancel')), 1, 'A log with action="cancel" should be created')
+
+    def test_sign_request_3_roles_create_sign_cancel(self):
+        # create
+        sign_request_3_roles = self.create_sign_request_3_roles(customer=self.partner_1, employee=self.partner_2, company=self.partner_3, cc_partners=self.partner_4)
+        role2sign_request_item = dict([(sign_request_item.role_id, sign_request_item) for sign_request_item in sign_request_3_roles.request_item_ids])
+        sign_request_item_customer = role2sign_request_item[self.role_customer]
+        sign_request_item_employee = role2sign_request_item[self.role_employee]
+        sign_request_item_company = role2sign_request_item[self.role_company]
+
+        # sign
+        with self.assertRaises(UserError, msg='A sign.request.item can only sign its sign.items'):
+            sign_request_item_employee.edit_and_sign(self.customer_sign_values)
+        sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_employee.state, 'sent', 'The sign.request.item should be sent')
+        self.assertEqual(sign_request_item_company.state, 'sent', 'The sign.request.item should be sent')
+        self.assertEqual(sign_request_3_roles.state, 'sent', 'The sign request should be signed')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(
+            lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item_customer)),
+            1, 'A log with action="sign" should be created')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 0, 'The activity should be removed after signing')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 1, 'The activity should not be removed for unsigned signer')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 1, 'The activity should not be removed for unsigned signer')
+        with self.assertRaises(UserError, msg='A document cannot be signed twice'):
+            sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+
+        # cancel
+        sign_request_item_customer_token = sign_request_item_customer.access_token
+        sign_request_item_employee_token = sign_request_item_employee.access_token
+        sign_request_item_company_token = sign_request_item_company.access_token
+        sign_request_3_roles_token = sign_request_3_roles.access_token
+        sign_request_3_roles.cancel()
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_employee.state, 'canceled', 'The sign.request.item should be canceled')
+        self.assertEqual(sign_request_item_company.state, 'canceled', 'The sign.request.item should be canceled')
+        self.assertEqual(sign_request_3_roles.state, 'canceled', 'The sign request should be canceled')
+        self.assertNotEqual(sign_request_item_customer.access_token, sign_request_item_customer_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_item_employee.access_token, sign_request_item_employee_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_item_company.access_token, sign_request_item_company_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_3_roles.access_token, sign_request_3_roles_token, 'The access token should be changed')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(lambda log: log.action == 'cancel')), 1, 'A log with action="cancel" should be created')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 0, 'The activity should be removed after cancellation')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 0, 'The activity should be removed after cancellation')
+
+    def test_sign_request_3_roles_create_sign_refuse_cancel(self):
+        # create
+        sign_request_3_roles = self.create_sign_request_3_roles(customer=self.partner_1, employee=self.partner_2, company=self.partner_3, cc_partners=self.partner_4)
+        role2sign_request_item = dict([(sign_request_item.role_id, sign_request_item) for sign_request_item in sign_request_3_roles.request_item_ids])
+        sign_request_item_customer = role2sign_request_item[self.role_customer]
+        sign_request_item_employee = role2sign_request_item[self.role_employee]
+        sign_request_item_company = role2sign_request_item[self.role_company]
+
+        # sign (test has been done in test_sign_request_3_roles_create_sign_cancel)
+        sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+
+        # refuse
+        self.assertFalse(sign_request_3_roles.refusal_allowed, 'The default value for refusal_allowed should be False')
+        with self.assertRaises(UserError, msg='Refuse should not be allowed'):
+            sign_request_item_employee.refuse("bad document")
+        sign_request_3_roles.refusal_allowed = True
+        with self.assertRaises(UserError, msg='A signed sign.request.item cannot be refused'):
+            sign_request_item_customer.refuse("bad document")
+        sign_request_item_customer_token = sign_request_item_customer.access_token
+        sign_request_item_employee_token = sign_request_item_employee.access_token
+        sign_request_item_company_token = sign_request_item_company.access_token
+        sign_request_3_roles_token = sign_request_3_roles.access_token
+        sign_request_item_employee.refuse('bad document')
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_employee.state, 'refused', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_company.state, 'canceled', 'The sign.request.item should be canceled')
+        self.assertEqual(sign_request_3_roles.state, 'refused', 'The sign request should be refused')
+        self.assertEqual(sign_request_item_customer.access_token, sign_request_item_customer_token, 'The access token should not be changed')
+        self.assertEqual(sign_request_item_employee.access_token, sign_request_item_employee_token, 'The access token should not be changed')
+        self.assertEqual(sign_request_item_company.access_token, sign_request_item_company_token, 'The access token should not be changed')
+        self.assertEqual(sign_request_3_roles.access_token, sign_request_3_roles_token, 'The access token should not be changed')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(
+            lambda log: log.action == 'refuse' and log.sign_request_item_id == sign_request_item_employee)),
+            1, 'A log with action="refuse" should be created')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 0, 'The activity should be removed for refused signer')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 0, 'The activity should be removed for remaining signers')
+
+        with self.assertRaises(UserError, msg='A canceled sign.request.item cannot be signed'):
+            sign_request_item_company.edit_and_sign(self.company_sign_values)
+
+        # cancel
+        sign_request_3_roles.cancel()
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_employee.state, 'refused', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_company.state, 'canceled', 'The sign.request.item should be canceled')
+        self.assertEqual(sign_request_3_roles.state, 'canceled', 'The sign request should be canceled')
+        self.assertNotEqual(sign_request_item_customer.access_token, sign_request_item_customer_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_item_employee.access_token, sign_request_item_employee_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_item_company.access_token, sign_request_item_company_token, 'The access token should be changed')
+        self.assertNotEqual(sign_request_3_roles.access_token, sign_request_3_roles_token, 'The access token should be changed')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(lambda log: log.action == 'cancel')), 1, 'A log with action="cancel" should be created')
+
     def test_sign_request_item_auto_resend(self):
-        sign_request = self.single_role_sign_request
+        # create
+        sign_request = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
         request_item_ids = sign_request.request_item_ids
         request_item = request_item_ids[0]
         token_a = request_item.access_token
         self.assertEqual(request_item.signer_email, "laurie.poiret.a@example.com", 'email address should be laurie.poiret.a@example.com')
         self.assertEqual(request_item.is_mail_sent, True, 'email should be sent')
-        # resends the document
+
+        # resend the document
         request_item.send_signature_accesses()
         self.assertEqual(request_item.access_token, token_a, "sign request item's access token should not be changed")
+
+        # change the email address of the signer (laurie.poiret.b)
+        with self.assertRaises(ValidationError, msg='All signers must have valid email addresses'):
+            self.partner_1.write({'email': 'laurie.poiret.b'})
+
         # change the email address of the signer (laurie.poiret.b@example.com)
-        self.partner_id.write({'email': 'laurie.poiret.b@example.com'})
+        self.partner_1.write({'email': 'laurie.poiret.b@example.com'})
         token_b = request_item.access_token
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
         self.assertNotEqual(token_b, token_a, "sign request item's access token should be changed")
+        self.assertEqual(len(sign_request.sign_log_ids.filtered(
+            lambda log: log.action == 'update_mail' and log.sign_request_item_id == request_item)),
+            1, 'A log with action="update_mail" should be created')
+        self.assertEqual(len(sign_request.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'The number of activities should still be 1')
+
         # sign the document
-        request_item.write({'state': 'completed'})
+        request_item.edit_and_sign(self.signature_fake)
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
+
         # change the email address of the signer (laurie.poiret.c@example.com)
-        self.partner_id.write({'email': 'laurie.poiret.c@example.com'})
+        self.partner_1.write({'email': 'laurie.poiret.c@example.com'})
         token_c = request_item.access_token
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
         self.assertEqual(token_c, token_b, "sign request item's access token should be not changed after the document is signed by the signer")
+        self.assertEqual(len(sign_request.sign_log_ids.filtered(
+            lambda log: log.action == 'update_mail' and log.sign_request_item_id == request_item)),
+            1, 'No new log with action="update_mail" should be created')
 
-    def test_sign_request_item_reassign_signatory(self):
-        sign_request = self.single_role_sign_request
-        request_item_ids = sign_request.request_item_ids
-        request_item = request_item_ids[0]
-        token_a = request_item.access_token
-        self.assertEqual(request_item.signer_email, "laurie.poiret.a@example.com", 'email address should be laurie.poiret.a@example.com')
-        self.assertEqual(request_item.is_mail_sent, True, 'email should be sent')
-        self.assertEqual(request_item.role_id.change_authorized, False, 'Role employee is not allowed to be changed')
-        with self.assertRaises(UserError):
-            request_item.write({'partner_id': self.partner_3_id.id})
-        with self.assertRaises(UserError):
-            request_item.write({'partner_id': False})
-        request_item.role_id.change_authorized = True
-        request_item.write({'partner_id': self.partner_3_id.id})
-        self.assertEqual(request_item.signer_email, "martine.poulichette.a@example.com", 'email address should be martine.poulichette.a@example.com')
-        self.assertNotEqual(token_a, request_item.access_token, "sign request item's access token should be changed")
-        self.assertEqual(request_item.is_mail_sent, False, 'email should not be sent')
+    def test_sign_request_item_reassign_sign_reassign_refuse_reassign(self):
+        # create
+        sign_request_3_roles = self.create_sign_request_3_roles(customer=self.partner_1, employee=self.partner_2,
+                                                                company=self.partner_3, cc_partners=self.partner_4)
+        role2sign_request_item = dict([(sign_request_item.role_id, sign_request_item) for sign_request_item in sign_request_3_roles.request_item_ids])
+        sign_request_item_customer = role2sign_request_item[self.role_customer]
+        sign_request_item_employee = role2sign_request_item[self.role_employee]
+        sign_request_item_company = role2sign_request_item[self.role_company]
 
-    def test_templates_send_accesses(self):
-        for sign_request in [self.default_role_sign_request, self.multi_role_sign_request, self.single_role_sign_request]:
-            self.assertTrue(all(sign_request.request_item_ids.mapped('is_mail_sent')))
+        # reassign
+        self.assertEqual(sign_request_item_customer.signer_email, "laurie.poiret.a@example.com", 'email address should be laurie.poiret.a@example.com')
+        self.assertEqual(sign_request_item_customer.is_mail_sent, True, 'email should be sent')
+        token_customer = sign_request_item_customer.access_token
+        with self.assertRaises(UserError, msg='Reassigning a role without change_authorized is not allowed'):
+            sign_request_item_customer.write({'partner_id': self.partner_5.id})
+        sign_request_item_customer.role_id.change_authorized = True
+        with self.assertRaises(UserError, msg='Reassigning the partner_id to False is not allowed'):
+            sign_request_item_customer.write({'partner_id': False})
+        with self.assertRaises(ValidationError, msg='Reassigning the partner_id to another signer is not allowed'):
+            sign_request_item_customer.write({'partner_id': self.partner_3.id})
+        logs_num = len(sign_request_3_roles.sign_log_ids)
+        sign_request_item_customer.write({'partner_id': self.partner_5.id})
+        self.assertEqual(sign_request_item_customer.signer_email, "char.aznable.a@example.com", 'email address should be char.aznable.a@example.com')
+        self.assertNotEqual(sign_request_item_customer.access_token, token_customer, "sign request item's access token should be changed")
+        self.assertEqual(sign_request_item_customer.is_mail_sent, False, 'email should not be sent')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids), logs_num, 'No new log should be created')
+        self.assertEqual(sign_request_3_roles.with_context(active_test=False).message_partner_ids, sign_request_3_roles.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id + self.partner_1, 'Old Signers, CC partners, the sender and the new signer should be the followers')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 0, 'The activity for the old signer should be removed')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_5.id)), 0, 'No activity should be created for user without permission to access Sign')
 
-    def test_sign_request_item_refuse(self):
-        sign_request = self.multi_role_sign_request
-        request_item_ids = sign_request.request_item_ids
-        request_item_1 = request_item_ids[0]
-        request_item_2 = request_item_ids[1]
-        with self.assertRaises(UserError):
-            request_item_1.refuse("not good")
-        sign_request.refusal_allowed = True
-        request_item_1.refuse("not good")
-        self.assertEqual(request_item_1.state, 'refused', 'The state of a refused sign_request_item should be "refused"')
-        self.assertEqual(sign_request.state, 'refused', 'The state of a refused sign_request should be "refused"')
-        self.assertEqual(request_item_2.state, 'canceled', 'Other sign_request_items of a refused sign_request should be "canceled"')
-        with self.assertRaises(UserError):
-            request_item_2.refuse("not good")
+        # sign
+        sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+
+        # reassign
+        token_employee = sign_request_item_customer.access_token
+        with self.assertRaises(UserError, msg='A signed sign request item cannot be reassigned'):
+            sign_request_item_customer.write({'partner_id': self.partner_1.id})
+        sign_request_item_employee.role_id.change_authorized = True
+        logs_num = len(sign_request_3_roles.sign_log_ids)
+        sign_request_item_employee.write({'partner_id': self.partner_1.id})
+        self.assertEqual(sign_request_item_employee.signer_email, "laurie.poiret.a@example.com", 'email address should be laurie.poiret.a@example.com')
+        self.assertNotEqual(sign_request_item_employee.access_token, token_employee, "sign request item's access token should be changed")
+        self.assertEqual(sign_request_item_employee.is_mail_sent, False, 'email should not be sent')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids), logs_num, 'No new log should be created')
+        self.assertEqual(sign_request_3_roles.with_context(active_test=False).message_partner_ids, sign_request_3_roles.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id + self.partner_2, 'Old Signers, CC partners, the sender and the new signer should be the followers')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 0, 'The activity for the old signer should be removed')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'An activity for the new signer should be created')
+
+        # refuse
+        sign_request_3_roles.refusal_allowed = True
+        sign_request_item_employee.refuse('bad request')
+
+        # reassign
+        with self.assertRaises(UserError, msg='A refused sign request item cannot be reassigned'):
+            sign_request_item_employee.write({'partner_id': self.partner_2.id})
+        with self.assertRaises(UserError, msg='A canceled sign request item cannot be reassigned'):
+            sign_request_item_company.write({'partner_id': self.partner_2.id})
+
+    def test_sign_request_no_item_create_editsign(self):
+        # create
+        sign_request_no_item = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
+        sign_request_item = sign_request_no_item.request_item_ids[0]
+        template = sign_request_no_item.template_id
+        sign_item_ids = template.sign_item_ids.ids
+
+        # edit and sign
+        value = 'edit and sign'
+        new_sign_item_config = self.get_sign_item_config(sign_request_item.role_id.id)
+        with self.assertRaises(UserError, msg='The key for new sign item should always < 0'):
+            sign_request_item.edit_and_sign({'1': value}, {'1': new_sign_item_config})
+        sign_request_item.edit_and_sign({'-1': value}, {'-1': new_sign_item_config})
+        self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
+        self.assertNotEqual(sign_request_no_item.template_id, template, 'An edited sign request should use a different template')
+        self.assertEqual(template.sign_item_ids.ids, sign_item_ids, 'The original template should not be changed')
+        self.assertEqual(len(sign_request_no_item.template_id.sign_item_ids.ids), len(sign_item_ids) + 1, 'The new template should have one more sign item')
+        self.assertEqual(len(sign_request_no_item.sign_log_ids.filtered(lambda log: log.action == 'update')), 1, 'A log with action="update" should be created')
+        self.assertEqual(len(sign_request_no_item.sign_log_ids.filtered(
+            lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item)),
+            1, 'A log with action="sign" should be created')
+
+    def test_sign_reqeuest_3_roles_editsign_sign_sign_unlink(self):
+        # create
+        sign_request_3_roles = self.create_sign_request_3_roles(customer=self.partner_1, employee=self.partner_2, company=self.partner_3, cc_partners=self.partner_4)
+        role2sign_request_item = dict([(sign_request_item.role_id, sign_request_item) for sign_request_item in sign_request_3_roles.request_item_ids])
+        sign_request_item_customer = role2sign_request_item[self.role_customer]
+        sign_request_item_employee = role2sign_request_item[self.role_employee]
+        sign_request_item_company = role2sign_request_item[self.role_company]
+        template = sign_request_3_roles.template_id
+        sign_item_ids = template.sign_item_ids.ids
+
+        # edit and sign
+        value = 'edit and sign'
+        new_sign_item_config = self.get_sign_item_config(sign_request_item_customer.role_id.id)
+        with self.assertRaises(UserError, msg='The key for new sign item should always < 0'):
+            sign_request_item_customer.edit_and_sign(dict(self.customer_sign_values, **{'1': value}), {'1': new_sign_item_config})
+        sign_request_item_customer.edit_and_sign(dict(self.customer_sign_values, **{'-1': value}), {'-1': new_sign_item_config})
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_3_roles.state, 'sent', 'The sign request should be signed')
+        self.assertNotEqual(sign_request_3_roles.template_id, template, 'An edited sign request should use a different template')
+        self.assertEqual(template.sign_item_ids.ids, sign_item_ids, 'The original template should not be changed')
+        self.assertEqual(len(sign_request_3_roles.template_id.sign_item_ids.ids), len(sign_item_ids) + 1, 'The new template should have one more sign item')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(lambda log: log.action == 'update')), 1, 'A log with action="update" should be created')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(
+            lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item_customer)),
+            1, 'A log with action="sign" should be created')
+
+        # sign
+        with self.assertRaises(UserError, msg='Only the first signer can edit while signing'):
+            sign_request_item_employee.edit_and_sign(
+                dict(self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_employee.role_id.id), **{'1': value}),
+                {'-1': new_sign_item_config})
+        sign_request_item_employee.edit_and_sign(
+            self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_employee.role_id.id))
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_employee.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_company.state, 'sent', 'The sign.request.item should be sent')
+        self.assertEqual(sign_request_3_roles.state, 'sent', 'The sign request should be sent')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(
+            lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item_employee)),
+            1, 'A log with action="sign" should be created')
+
+        # sign
+        sign_request_item_company.edit_and_sign(
+            self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_company.role_id.id))
+        self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_employee.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_item_company.state, 'completed', 'The sign.request.item should be completed')
+        self.assertEqual(sign_request_3_roles.state, 'signed', 'The sign request should be signed')
+        self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(
+            lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item_company)),
+            1, 'A log with action="sign" should be created')
+
+        # unlink
+        sign_request_items = sign_request_3_roles.request_item_ids
+        sign_item_values = sign_request_items.sign_item_value_ids
+        sign_logs = sign_request_3_roles.sign_log_ids
+        sign_request_3_roles.unlink()
+        self.assertFalse(sign_request_items.exists(), 'All sign request items should be unlinked')
+        self.assertFalse(sign_item_values.exists(), 'All sign item values should be unlinked')
+        self.assertFalse(sign_logs.exists(), 'All sign logs should be unlinked')

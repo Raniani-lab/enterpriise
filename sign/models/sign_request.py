@@ -336,7 +336,8 @@ class SignRequest(models.Model):
         if self.state != 'sent' or any(sri.state != 'completed' for sri in self.request_item_ids):
             raise UserError(_("This sign request cannot be signed"))
         self.write({'state': 'signed'})
-        self.env.cr.commit()
+        if not bool(config['test_enable'] or config['test_file']):
+            self.env.cr.commit()
         if not self.check_is_encrypted():
             # if the file is encrypted, we must wait that the document is decrypted
             self.send_completed_document()

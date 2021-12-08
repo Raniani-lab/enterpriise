@@ -711,3 +711,96 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ("%s (10.0%%)" % affected_tax.name,    242,              24.2),
             ],
         )
+
+    def test_tax_multiple_repartition_lines(self):
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
+
+        tax = self.env['account.tax'].create({
+            'name': "tax",
+            'amount_type': 'percent',
+            'amount': 10.0,
+            'invoice_repartition_line_ids': [
+                Command.create({
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                Command.create({
+                    'factor_percent': 40,
+                    'repartition_type': 'tax',
+                }),
+                Command.create({
+                    'factor_percent': 60,
+                    'repartition_type': 'tax',
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                Command.create({
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                Command.create({
+                    'factor_percent': 40,
+                    'repartition_type': 'tax',
+                }),
+                Command.create({
+                    'factor_percent': 60,
+                    'repartition_type': 'tax',
+                }),
+            ],
+        })
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2019-01-01',
+            'date': '2019-01-01',
+            'invoice_line_ids': [
+                Command.create({
+                    'name': 'base line',
+                    'account_id': self.revenue_1.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(tax.ids)],
+                }),
+            ],
+        })
+        invoice.action_post()
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET         TAX
+            [   0,                                      1,          2],
+            [
+                ('Sales',                               '',         100.0),
+                ('tax (10.0%)',                         1000.0,     100.0),
+            ],
+        )
+
+        options['tax_report'] = 'generic_grouped_account_tax'
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET         TAX
+            [   0,                                      1,          2],
+            [
+                ('Sales',                               '',         100.0),
+                ('400000 Product Sales',                '',         100.0),
+                ('tax (10.0%)',                         1000.0,     100.0),
+            ],
+        )
+
+        options['tax_report'] = 'generic_grouped_tax_account'
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET         TAX
+            [   0,                                      1,          2],
+            [
+                ('Sales',                               '',         100.0),
+                ('tax (10.0%)',                         '',         100.0),
+                ('400000 Product Sales',                1000.0,     100.0),
+            ],
+        )
+
+        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
+        self.checkAmlsRedirection(report, options, tax, expected_amls)

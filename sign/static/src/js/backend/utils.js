@@ -116,19 +116,19 @@ function getResponsibleSelectConfiguration(parties) {
         return false;
       }
 
-      const partyId = await ajax
+      const partyValues = await ajax
         .rpc("/web/dataset/call_kw/sign.item.role/get_or_create", {
           model: "sign.item.role",
           method: "get_or_create",
           args: [name],
           kwargs: {},
         });
-      process_party(partyId);
+      process_party(partyValues);
 
-      function process_party(partyID) {
-        parties[partyID] = { id: partyID, name: name };
+      function process_party(partyValues) {
+        parties[partyValues['id']] = { id: partyValues['id'], name: partyValues['name'], color: partyValues['color'] };
         getResponsibleSelectConfiguration.configuration = undefined;
-        setAsResponsibleSelect($select, partyID, parties);
+        setAsResponsibleSelect($select, partyValues['id'], parties);
       }
     };
 

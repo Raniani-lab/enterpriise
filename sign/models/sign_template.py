@@ -358,4 +358,5 @@ class SignItemParty(models.Model):
     @api.model
     def get_or_create(self, name):
         party = self.search([('name', '=', name)], limit=1)
-        return party.id if party else self.create({'name': name}).id
+        party = party if party else self.create({'name': name})
+        return {'id': party.id, 'name': party.name, 'color': party.color}

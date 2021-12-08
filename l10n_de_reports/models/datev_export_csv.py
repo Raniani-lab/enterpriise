@@ -230,7 +230,8 @@ class DatevExportCSV(models.AbstractModel):
         fname, full_path = ir_attachment._get_path(False, 'ww' + sha[2:])
         with zipfile.ZipFile(full_path, 'w', False) as zf:
             zf.writestr('EXTF_accounting_entries.csv', self.get_csv(options))
-            zf.writestr('EXTF_customer_accounts.csv', self._get_partner_list(options))
+            zf.writestr('EXTF_customer_accounts.csv', self._get_partner_list(options, customer=True))
+            zf.writestr('EXTF_vendor_accounts.csv', self._get_partner_list(options, customer=False))
         ir_attachment._file_delete(fname)
         return open(full_path, 'rb')
 
@@ -243,7 +244,7 @@ class DatevExportCSV(models.AbstractModel):
             client_number = 999
         return [consultant_number, client_number]
 
-    def _get_partner_list(self, options):
+    def _get_partner_list(self, options, customer=True):
         date_from = fields.Date.from_string(options.get('date').get('date_from'))
         date_to = fields.Date.from_string(options.get('date').get('date_to'))
         fy = self.env.company.compute_fiscalyear_dates(date_to)
@@ -255,7 +256,6 @@ class DatevExportCSV(models.AbstractModel):
 
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
-
         preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8,
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
@@ -263,18 +263,26 @@ class DatevExportCSV(models.AbstractModel):
         lines = [preheader, header]
 
         if len(move_line_ids):
-            self.env.cr.execute("""
-                SELECT distinct(aml.partner_id)
-                FROM account_move_line aml
-                LEFT JOIN account_move m
-                    ON aml.move_id = m.id
-                WHERE aml.id IN %s
-                    AND aml.tax_line_id IS NULL
-                    AND aml.debit != aml.credit
-                    AND aml.account_id != m.l10n_de_datev_main_account_id""", (tuple(move_line_ids),))
+            if customer:
+                move_types = ('out_refund', 'out_invoice', 'out_receipt')
+            else:
+                move_types = ('in_refund', 'in_invoice', 'in_receipt')
+            select = """SELECT distinct(aml.partner_id)
+                        FROM account_move_line aml
+                        LEFT JOIN account_move m
+                        ON aml.move_id = m.id
+                        WHERE aml.id IN %s
+                            AND aml.tax_line_id IS NULL
+                            AND aml.debit != aml.credit
+                            AND m.move_type IN %s
+                            AND aml.account_id != m.l10n_de_datev_main_account_id"""
+            self.env.cr.execute(select, (tuple(move_line_ids), move_types))
         partners = self.env['res.partner'].browse([p.get('partner_id') for p in self.env.cr.dictfetchall()])
         for partner in partners:
-            code = self._find_partner_account(partner.property_account_receivable_id, partner)
+            if customer:
+                code = self._find_partner_account(partner.property_account_receivable_id, partner)
+            else:
+                code = self._find_partner_account(partner.property_account_payable_id, partner)
             line_value = {
                 'code': code,
                 'company_name': partner.name if partner.is_company else '',
@@ -289,11 +297,6 @@ class DatevExportCSV(models.AbstractModel):
             array[2] = line_value.get('person_name')
             array[6] = line_value.get('natural')
             lines.append(array)
-            code_payable = self._find_partner_account(partner.property_account_payable_id, partner)
-            if code_payable != code:
-                line_value['code'] = code_payable
-                array[0] = line_value.get('code')
-                lines.append(array)
         writer.writerows(lines)
         return output.getvalue()
 
@@ -311,8 +314,12 @@ class DatevExportCSV(models.AbstractModel):
             prop = self.env['ir.property']._get(fname, "res.partner", partner.id)
             if prop == account:
                 return str(account.code).ljust(8, '0')
-            param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count')
-            start_count = param_start and param_start.isdigit() and int(param_start) or 100000000
+            if account.internal_type == 'receivable':
+                param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count')
+                start_count = param_start and param_start.isdigit() and int(param_start) or 100000000
+            else:
+                param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors')
+                start_count = param_start and param_start.isdigit() and int(param_start) or 700000000
             return partner.l10n_de_datev_identifier or start_count + partner.id
         return str(account.code).ljust(8, '0')
 
@@ -419,7 +426,7 @@ class DatevExportCSV(models.AbstractModel):
                             letter = 's'
 
                 # account and counterpart account
-                to_account_code = self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id)
+                to_account_code = str(self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id))
                 account_code = u'{code}'.format(code=self._find_partner_account(aml.account_id, aml.partner_id))
 
                 # group lines by account, to_account & partner

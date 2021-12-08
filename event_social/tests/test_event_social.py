@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.event.tests.common import TestEventCommon
+from odoo.addons.event.tests.common import EventCase
 from odoo.exceptions import UserError
 from odoo.tests import Form, users
 
 
-class EventSocialCase(TestEventCommon):
+class EventSocialCase(EventCase):
+
     @users('user_eventmanager')
     def test_event_mail_after_sub(self):
         """Check that we can not set "after each registration" with social event mail."""

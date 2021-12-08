@@ -4,17 +4,11 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
-from odoo.addons.event.tests.common import TestEventCommon
+from odoo.addons.website_event.tests.common import TestEventOnlineCommon
 from odoo.tests.common import users
 
 
-class TestTrackPushSecurity(TestEventCommon):
-
-    @classmethod
-    def setUpClass(cls):
-        super(TestTrackPushSecurity, cls).setUpClass()
-        cls.website = cls.env['website'].create({'name': 'Website'})
-        cls.event_0.write({'website_id': cls.website.id})
+class TestTrackPushSecurity(TestEventOnlineCommon):
 
     @users('user_eventmanager')
     def test_track_social_security(self):

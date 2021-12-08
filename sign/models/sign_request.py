@@ -173,7 +173,7 @@ class SignRequest(models.Model):
             sign_request.message_subscribe(partner_ids=sign_request.cc_partner_ids.ids + sign_request.request_item_ids.partner_id.ids)
             sign_users = sign_request.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee'))
             sign_request.activity_update(sign_users)
-            self.env['sign.log']._create_log(sign_request, "create", is_request=True)
+            self.env['sign.log'].sudo().create({'sign_request_id': sign_request.id, 'action': 'create'})
         if not self._context.get('no_sign_mail'):
             sign_requests.send_signature_accesses()
         return sign_requests
@@ -358,8 +358,7 @@ class SignRequest(models.Model):
         for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
-        for sign_request in self:
-            self.env['sign.log']._create_log(sign_request, 'cancel', is_request=True)
+        self.env['sign.log'].sudo().create([{'sign_request_id': sign_request.id, 'action': 'cancel'} for sign_request in self])
 
     def send_completed_document(self, partner_ids=None):
         self.ensure_one()
@@ -718,7 +717,7 @@ class SignRequestItem(models.Model):
             raise UserError(_("This function can only be called with sudo."))
         if self.state != 'sent':
             raise UserError(_("This sign request item cannot be refused"))
-        self.env['sign.log']._create_log(self, "refuse", is_request=False, token=self.access_token)
+        self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'refuse'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'refused'})
         refuse_user = self.partner_id.user_ids[:1]
         # mark the activity as done for the refuser
@@ -801,7 +800,7 @@ class SignRequestItem(models.Model):
                 new_signature[new_item_id] = item_value
             signature = new_signature
 
-            self.env['sign.log']._create_log(sign_request, "update", True, partner_id=self.partner_id.id)
+            self.env['sign.log'].create({'sign_request_id': sign_request.id, 'action': 'update'})
             body = _("The signature request was edited by: %s.", self.partner_id.name)
             sign_request.message_post(body=body)
 
@@ -825,7 +824,7 @@ class SignRequestItem(models.Model):
 
         self.fill(signature)
 
-        self.env['sign.log']._create_log(self, "sign", is_request=False, token=self.access_token)
+        self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'sign'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
         # mark signature as done in next activity
         sign_user = self.partner_id.user_ids[:1]

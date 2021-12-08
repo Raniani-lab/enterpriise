@@ -43,7 +43,7 @@ class ResPartner(models.Model):
                 request_item.sign_request_id.message_post(
                     body=_('The mail address of %(partner)s has been updated. The request will be automatically resent.',
                            partner=request_item.partner_id.name))
-                self.env['sign.log']._create_log(request_item, 'update_mail', is_request=False)
+                self.env['sign.log'].sudo().create({'sign_request_item_id': request_item.id, 'action': 'update_mail'})
                 request_item.access_token = self.env['sign.request.item']._default_access_token()
             request_items.send_signature_accesses()
         return res

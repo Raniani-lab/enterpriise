@@ -62,8 +62,11 @@ class Sign(http.Controller):
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
 
-        is_request, record = (False, current_request_item) if current_request_item else (True, sign_request)
-        request.env['sign.log']._create_log(record, "open", is_request)
+        request.env['sign.log'].sudo().create({
+            'sign_request_id': sign_request.id,
+            'sign_request_item_id': current_request_item.id if current_request_item else False,
+            'action': 'open',
+        })
 
         return {
             'sign_request': sign_request,

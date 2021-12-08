@@ -70,19 +70,13 @@ class SignTemplate(models.Model):
         templates = templates.sorted(key=lambda t: self.env.user in t.favorited_ids, reverse=True)
         return templates[:limit].ids
 
-    @api.depends('attachment_id')
+    @api.depends('attachment_id.datas')
     def _compute_num_pages(self):
         for record in self:
-            record.num_pages = record._get_number_of_pages(record.attachment_id.id)
-
-    @api.model
-    def _get_number_of_pages(self, attachment_id):
-        try:
-            attachment = self.env['ir.attachment'].browse(attachment_id)
-            file_pdf = PdfFileReader(io.BytesIO(base64.b64decode(attachment.datas)), strict=False, overwriteWarnings=False)
-            return file_pdf.getNumPages()
-        except Exception:
-            return 0
+            try:
+                record.num_pages = self.get_pdf_number_of_pages(base64.b64decode(record.attachment_id.datas))
+            except Exception:
+                record.num_pages = 0
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):
@@ -117,6 +111,11 @@ class SignTemplate(models.Model):
             new_attachment = self.attachment_id.copy({"name": self._get_copy_name(self.name)})
             default["attachment_id"] = new_attachment.id
         return super().copy(default)
+
+    @api.model
+    def get_pdf_number_of_pages(self, pdf_data):
+        file_pdf = PdfFileReader(io.BytesIO(pdf_data), strict=False, overwriteWarnings=False)
+        return file_pdf.getNumPages()
 
     def go_to_custom_template(self, sign_directly_without_mail=False):
         self.ensure_one()

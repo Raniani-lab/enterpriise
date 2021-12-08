@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { qweb, _t } from 'web.core';
+import { qweb } from 'web.core';
 import { AttendeeCalendarRenderer } from 'calendar.CalendarRenderer';
 
 AttendeeCalendarRenderer.include({
@@ -57,16 +57,6 @@ AttendeeCalendarRenderer.include({
         const oldEventMouseEnter = options.eventMouseEnter;
         const oldEventMouseLeave = options.eventMouseLeave;
 
-        // Display a message to the user letting him know he can't create a slot in the past
-        options.dateClick = (ev) => {
-            if (this.state.calendarMode === 'slots-creation' && moment(ev.date) < moment()) {
-                this.displayNotification({
-                    message: _t("You can not create a slot in the past."),
-                    type: 'warning',
-                });
-            }
-        };
-
         // Stop the propagation when we click on an event and if it's a slot we remove it
         options.eventClick = (eventClickInfo) => {
             if (this.state.calendarMode === 'default') {
@@ -119,11 +109,6 @@ AttendeeCalendarRenderer.include({
                             color: 'green',
                             slot: true,
                             classNames: ['o_calendar_slot'],
-                        });
-                    } else {
-                        this.displayNotification({
-                            message: _t("You can not create a slot in the past."),
-                            type: 'warning',
                         });
                     }
                 } else if (hasSlot && info.selectable) {
@@ -313,6 +298,34 @@ AttendeeCalendarRenderer.include({
         this.$sidebar.find('.o_appointment_discard_slots').toggleClass('o_hidden');
         this.$sidebar.find('#message_text').toggleClass('o_hidden');
         this.$sidebar.find('#scheduling_box').toggleClass('o_appointment_scheduling_message_box');
+        if (this.state.calendarMode === 'slots-creation') {
+            this._renderSelectionOverlay();
+        } else {
+            this.$el.find('.fc-past, .fc-today').removeClass('o_calendar_slot_selection');
+            $(this.$el.find('.fc-today')[2]).empty();
+        }
+    },
+    /**
+     * Apply an overlay when rendering the calendar in slots selection mode
+     */
+    _renderCalendar() {
+        this._super(...arguments);
+        if (this.state.calendarMode === 'slots-creation') {
+            this._renderSelectionOverlay();
+        }
+    },
+    /**
+     * Display an overlay when using the slots selection mode that
+     * encompasses the past time.
+     */
+     _renderSelectionOverlay() {
+        this.$el.find('.fc-past, .fc-today').addClass('o_calendar_slot_selection');
+        let $todayColumn = $(this.$el.find('.fc-today')[2])
+        // Create a block for today to have the overlay size based on the current hour
+        if ($todayColumn.children().length === 0 && ['timeGridWeek', 'timeGridDay'].includes(this.calendar.state.viewType)) {
+            const deltaTodayNow = this.calendar.view.timeGrid.computeDateTop(this.calendar.getInitialDate());
+            $todayColumn.append($('<div class="o_calendar_slot_selection_now"/>').height(deltaTodayNow - 13));
+        }
     },
     /**
      * Execute this only when in default mode. Allow to disable

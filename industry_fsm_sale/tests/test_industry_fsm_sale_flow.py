@@ -102,3 +102,34 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         self.assertEqual(product.fsm_quantity, 2)
         self.assertEqual(sol01.product_uom_qty, 0)
         self.assertEqual(sol02.product_uom_qty, 2)
+
+    def test_fsm_sale_pricelist(self):
+        product = self.product_a.with_context({"fsm_task_id": self.task.id})
+        self.task.write({'partner_id': self.partner_1.id})
+        pricelist = self.env['product.pricelist'].create({
+            'name': 'Sale pricelist',
+            'discount_policy': 'with_discount',
+            'item_ids': [(0, 0, {
+                'compute_price': 'formula',
+                'base': 'list_price',  # based on public price
+                'price_discount': 10,
+                'min_quantity': 2,
+                'product_id': product.id,
+                'applied_on': '0_product_variant',
+            })]
+        })
+        self.task._fsm_ensure_sale_order()
+        self.task.sale_order_id.pricelist_id = pricelist
+
+        self.assertEqual(product.fsm_quantity, 0)
+        product.fsm_add_quantity()
+        self.assertEqual(product.fsm_quantity, 1)
+
+        order_line = self.task.sale_order_id.order_line.filtered(lambda l: l.name == "product_a")
+        self.assertEqual(order_line.product_uom_qty, 1)
+        self.assertEqual(order_line.price_unit, product.list_price)
+
+        product.fsm_add_quantity()
+        self.assertEqual(product.fsm_quantity, 2)
+        self.assertEqual(order_line.product_uom_qty, 2)
+        self.assertEqual(order_line.price_unit, product.list_price*0.9)

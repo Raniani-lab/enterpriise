@@ -184,6 +184,7 @@
                                     <field name="name"/>
                                     <field name="question_type"/>
                                     <field name="question_required"/>
+                                    <button name="action_view_question_answer_inputs" type="object" class="fa fa-bar-chart p-0" title="Answer Breakdown" />
                                 </tree>
                                 <form string="Questions" name="question_form">
                                     <group>

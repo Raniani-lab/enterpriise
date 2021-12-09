@@ -17,6 +17,7 @@
         'data/mail_data.xml',
         'data/mail_template_data.xml',
         'views/calendar_event_views.xml',
+        'views/calendar_appointment_answer_input_views.xml',
         'views/calendar_appointment_question_views.xml',
         'views/calendar_appointment_type_views.xml',
         'views/calendar_appointment_slot_views.xml',

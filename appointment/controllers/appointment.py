@@ -220,6 +220,26 @@ class Appointment(http.Controller):
                 'lang': request.lang.code,
             })
 
+        # Reporting Data : recover user inputs to questions, if any, asked on the appointment.
+        # The question answer inputs are created in _prepare_calendar_values
+        question_answer_inputs = []
+        for question in appointment_type.question_ids:
+            question_key = f'question_{question.id}'
+            if question.question_type == 'checkbox':
+                question_answer_inputs += [{
+                    'question_id': question.id,
+                    'value_answer_id': answer.id
+                } for answer in question.answer_ids.filtered(lambda answer: (f'{question_key}_answer_{answer.id}') in kwargs)]
+            elif kwargs.get(question_key) and question.question_type in ['char', 'text']:
+                question_answer_inputs.append({'question_id': question.id, 'value_text_box': kwargs.get(question_key).strip()})
+            elif kwargs.get(question_key) and question.question_type in ['select', 'radio']:
+                selected_answer = next((answer for answer in question.answer_ids if answer.name == kwargs.get(question_key)))
+                if selected_answer:
+                    question_answer_inputs.append({'question_id': question.id, 'value_answer_id': selected_answer.id})
+
+        for question_answer_input in question_answer_inputs:
+            question_answer_input.update({'appointment_type_id': appointment_type.id, 'partner_id': Partner.id})
+
         description_bits = []
         description = ''
 
@@ -250,7 +270,7 @@ class Appointment(http.Controller):
             mail_notify_author=True,
             allowed_company_ids=staff_user.company_ids.ids,
         ).sudo().create(
-            self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, name, staff_user, Partner)
+            self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, staff_user, Partner)
         )
         event.attendee_ids.write({'state': 'accepted'})
         return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
@@ -285,7 +305,7 @@ class Appointment(http.Controller):
             timezone = appointment_type.appointment_tz
         return timezone
 
-    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, name, staff_user, partner):
+    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, staff_user, partner):
         """
         prepares all values needed to create a new calendar.event
         """
@@ -310,7 +330,7 @@ class Appointment(http.Controller):
             'partner_ids': [(4, pid, False) for pid in partner_ids],
             'categ_ids': [(4, categ_id.id, False)],
             'appointment_type_id': appointment_type.id,
-            'user_id': staff_user.id,
+            'appointment_answer_input_ids': [(0, 0, answer_input_values) for answer_input_values in question_answer_inputs],
         }
 
     # ------------------------------------------------------------

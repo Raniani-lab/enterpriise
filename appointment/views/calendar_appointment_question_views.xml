@@ -5,9 +5,11 @@
         <field name="model">calendar.appointment.answer</field>
         <field name="arch" type="xml">
             <form string="Answer">
-                <group>
-                    <field name="name"/>
-                </group>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>

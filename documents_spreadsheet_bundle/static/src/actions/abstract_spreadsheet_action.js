@@ -76,7 +76,7 @@ export class AbstractSpreadsheetAction extends owl.Component {
 
     mounted() {
         this.router.pushState({ spreadsheet_id: this.resId });
-        this.trigger("controller-title-updated", this.state.spreadsheetName);
+        this.env.config.setDisplayName(this.state.spreadsheetName)
     }
 
     async _onMakeCopy(ev) {

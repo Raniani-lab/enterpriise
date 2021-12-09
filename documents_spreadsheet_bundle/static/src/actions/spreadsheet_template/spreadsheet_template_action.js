@@ -69,7 +69,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
   async _onSpreadSheetNameChanged(ev) {
     const { name } = ev.detail;
     this.state.spreadsheetName = name;
-    this.trigger("controller-title-updated", this.state.spreadsheetName);
+    this.env.config.setDisplayName(this.state.spreadsheetName);
     await this.orm.write("spreadsheet.template", [this.resId], {
       name,
     });

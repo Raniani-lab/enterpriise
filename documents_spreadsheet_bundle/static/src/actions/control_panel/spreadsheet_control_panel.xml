@@ -28,7 +28,7 @@
 </t>
 
 <div t-name="documents_spreadsheet.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="primary" owl="1">
-    <xpath expr="//ol[hasclass('breadcrumb')]/li[hasclass('active')]" position="replace">
+    <xpath expr="//ol[hasclass('breadcrumb')]//li[hasclass('active')]" position="replace">
         <li class="breadcrumb-item active">
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly"/>
             <a

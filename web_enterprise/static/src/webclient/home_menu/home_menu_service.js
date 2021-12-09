@@ -23,7 +23,7 @@ export const homeMenuService = {
                 this.homeMenuProps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root"));
             }
             async mounted() {
-                const { breadcrumbs = [] } = this.env.config;
+                const { breadcrumbs } = this.env.config;
                 hasHomeMenu = true;
                 hasBackgroundAction = breadcrumbs.length > 0;
                 this.router.pushState({ menu_id: undefined }, { lock: false, replace: true });

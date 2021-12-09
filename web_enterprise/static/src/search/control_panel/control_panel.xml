@@ -84,7 +84,7 @@
                         <div t-if="display['bottom-right']" class="o_cp_bottom_right">
                             <div class="o_cp_pager"/>
 
-                            <t t-if="env.config.viewSwitcherEntries and env.config.viewSwitcherEntries.length > 1">
+                            <t t-if="env.config.viewSwitcherEntries.length > 1">
                                 <nav class="btn-group o_cp_switch_buttons">
                                     <t t-set="view" t-value="env.config.viewSwitcherEntries.find((v) => v.active)" />
 
@@ -118,15 +118,16 @@
 
     <t t-name="web_enterprise.Breadcrumbs" owl="1">
         <ol class="breadcrumb">
-            <t t-set="breadcrumbs" t-value="env.config.breadcrumbs or []" />
-            <t t-if="breadcrumbs.length">
-                <t t-set="breadcrumb" t-value="breadcrumbs[breadcrumbs.length - 1]" />
+            <t t-set="breadcrumbs" t-value="env.config.breadcrumbs" />
+            <t t-if="breadcrumbs.length > 1">
+                <t t-set="breadcrumb" t-value="breadcrumbs[breadcrumbs.length - 2]" />
                 <li class="breadcrumb-item o_back_button btn btn-secondary"
                     t-on-click.prevent="onBreadcrumbClicked(breadcrumb.jsId)"
                 />
             </t>
-            <li class="breadcrumb-item active">
-                <t t-if="env.config.displayName" t-esc="env.config.displayName"/>
+            <li t-if="breadcrumbs.length > 0" class="breadcrumb-item active">
+                <t t-set="breadcrumb" t-value="breadcrumbs[breadcrumbs.length - 1]" />
+                <t t-if="breadcrumb.name" t-esc="breadcrumb.name"/>
                 <em t-else="" class="text-warning">Unnamed</em>
             </li>
         </ol>

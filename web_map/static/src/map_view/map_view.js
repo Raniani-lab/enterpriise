@@ -41,7 +41,7 @@ export class MapView extends Component {
                 numbering: archInfo.routing || false,
                 offset: 0,
                 panelTitle:
-                    archInfo.panelTitle || this.env.config.displayName || this.env._t("Items"),
+                    archInfo.panelTitle || this.env.config.getDisplayName() || this.env._t("Items"),
                 resModel: this.props.resModel,
                 resPartnerField: archInfo.resPartnerField,
                 routing: archInfo.routing || false,
@@ -123,7 +123,7 @@ export class MapView extends Component {
         if (ids.length > 1) {
             this.action.doAction({
                 type: "ir.actions.act_window",
-                name: this.env.config.displayName || this.env._t("Untitled"),
+                name: this.env.config.getDisplayName() || this.env._t("Untitled"),
                 views: [
                     [false, "list"],
                     [false, "form"],

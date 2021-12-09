@@ -71,7 +71,7 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
                 'ref': 'TESTBANK/NL/20151129/01206408',
                 'partner_name': 'China Export',
                 'amount': -564.05,
-                'partner_id': False,
+                'partner_id': self.env.ref('base.res_partner_3').id,
             },
         ])
 

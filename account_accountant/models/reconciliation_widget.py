@@ -90,52 +90,36 @@ class AccountReconciliation(models.AbstractModel):
 
     @api.model
     def _get_bank_statement_line_partners(self, st_lines):
-        params = []
-
-        # Add the res.partner.bank's IR rules. In case partners are not shared between companies,
-        # identical bank accounts may exist in a company we don't have access to.
-        ir_rules_query = self.env['res.partner.bank']._where_calc([])
-        self.env['res.partner.bank']._apply_ir_rules(ir_rules_query, 'read')
-        from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
-        if where_clause:
-            where_bank = ('AND %s' % where_clause).replace('res_partner_bank', 'bank')
-            params += where_clause_params
-        else:
-            where_bank = ''
-
-        # Add the res.partner's IR rules. In case partners are not shared between companies,
-        # identical partners may exist in a company we don't have access to.
-        ir_rules_query = self.env['res.partner']._where_calc([])
-        self.env['res.partner']._apply_ir_rules(ir_rules_query, 'read')
-        from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
-        if where_clause:
-            where_partner = re.sub(r"(?<! FROM \")\bres_partner\b", "p3", ('AND %s' % where_clause))
-            params += where_clause_params
-        else:
-            where_partner = ''
-
         query = '''
             SELECT
-                st_line.id                          AS id,
-                COALESCE(p1.id,p2.id,p3.id)         AS partner_id
+                st_line.id                              AS id,
+                ARRAY_AGG(COALESCE(p1.id,p2.id,p3.id))  AS partner_ids
             FROM account_bank_statement_line st_line
             JOIN account_move move ON move.id = st_line.move_id
             LEFT JOIN res_partner_bank bank ON
                 bank.id = move.partner_bank_id
                 OR
-                bank.sanitized_acc_number ILIKE regexp_replace(st_line.account_number, '\W+', '', 'g') ''' + where_bank + '''
+                bank.sanitized_acc_number ILIKE regexp_replace(st_line.account_number, '\W+', '', 'g')
+                AND
+                (bank.company_id is NULL OR bank.company_id = move.company_id)
             LEFT JOIN res_partner p1 ON st_line.partner_id = p1.id
             LEFT JOIN res_partner p2 ON bank.partner_id = p2.id
-            LEFT JOIN res_partner p3 ON p3.name ILIKE st_line.partner_name ''' + where_partner + ''' AND p3.parent_id is NULL
+            LEFT JOIN res_partner p3 ON 
+                p3.name ILIKE st_line.partner_name 
+                AND 
+                p3.parent_id is NULL
+                AND
+                (p3.company_id is NULL OR p3.company_id = move.company_id)
             WHERE st_line.id IN %s
+            GROUP BY st_line.id
+            HAVING count(*) = 1
         '''
-        params += [tuple(st_lines.ids)]
 
-        self._cr.execute(query, params)
+        self._cr.execute(query, [tuple(st_lines.ids)])
 
         result = {}
         for res in self._cr.dictfetchall():
-            result[res['id']] = res['partner_id']
+            result[res['id']] = res['partner_ids'][0]
         return result
 
     @api.model

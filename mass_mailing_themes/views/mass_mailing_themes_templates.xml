@@ -26,7 +26,7 @@
 
     <!-- Theme "Newsletter" default template -->
     <template id="theme_newsletter_template">
-        <div class="o_mail_snippet_general o_mail_block_header_social s_header_social pb16 pt16" style="background-color: rgb(26, 36, 54) !important;" data-snippet="o_mail_block_header_social" data-name="Header Social">
+        <div class="o_mail_snippet_general o_mail_block_header_social s_header_social pb16 pt16" style="background-color: rgb(26, 36, 54) !important;" data-snippet="s_mail_block_header_social" data-name="Header Social">
             <div class="o_mail_table_styles container">
                 <div class="row">
                     <div class="col-lg-8 pt16 pb16">
@@ -133,7 +133,7 @@
 
     <!-- Theme "Tech" default template -->
     <template id="theme_tech_template">
-        <div class="o_mail_snippet_general o_mail_block_header_social s_header_social" data-snippet="o_mail_block_header_social" data-name="Header Social">
+        <div class="o_mail_snippet_general o_mail_block_header_social s_header_social" data-snippet="s_mail_block_header_social" data-name="Header Social">
             <div class="o_mail_table_styles container">
                 <div class="row">
                     <div class="col-8 o_mail_logo_container pt40 pb32">

@@ -826,14 +826,13 @@ class SignRequestItem(models.Model):
         if self.state != 'sent':
             raise UserError(_("This sign request item cannot be signed"))
 
-        signer_items = self.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id.id == self.role_id.id)
-        authorised_ids = set(signer_items.ids)
-        required_ids = set(signer_items.filtered('required').ids)
+        required_ids = set(self.sign_request_id.template_id.sign_item_ids.filtered(
+            lambda r: r.responsible_id.id == self.role_id.id and r.required).ids)
         signature_ids = {int(k) for k in signature} if isinstance(signature, dict) else set()
-        if not (signature_ids <= authorised_ids and required_ids <= signature_ids):  # Security check
+        if not (required_ids <= signature_ids):  # Security check
             return False
 
-        self._sign(signature)
+        self.fill(signature)
 
         self.env['sign.log']._create_log(self, "sign", is_request=False, token=self.access_token)
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
@@ -846,9 +845,19 @@ class SignRequestItem(models.Model):
             sign_request._sign()
         return True
 
-    def _sign(self, signature):
+    def fill(self, signature):
         """ Stores the sign request item values. (Can be used to pre-fill the document as a hack) """
         self.ensure_one()
+        if not self.env.su:
+            raise UserError(_("This function can only be called with sudo."))
+        if self.state != 'sent':
+            raise UserError(_("This sign request item cannot be filled"))
+
+        authorised_ids = set(self.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id.id == self.role_id.id).ids)
+        signature_ids = {int(k) for k in signature} if isinstance(signature, dict) else set()
+        if not (signature_ids <= authorised_ids):
+            raise UserError(_("Some unauthorised items are filled"))
+
         if not isinstance(signature, dict):
             self.signature = signature
         else:

@@ -7,9 +7,11 @@ from odoo import fields, models
 class CalendarAppointmentAnswer(models.Model):
     _name = "calendar.appointment.answer"
     _description = "Appointment Question Answers"
+    _order = "sequence,id"
 
     question_id = fields.Many2one('calendar.appointment.question', 'Question', required=True, ondelete="cascade")
     name = fields.Char('Answer', translate=True, required=True)
+    sequence = fields.Integer(default=10)
 
 class CalendarAppointmentAnswerInput(models.Model):
     _name = "calendar.appointment.answer.input"

@@ -322,7 +322,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(8);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -379,7 +378,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(5);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -422,7 +420,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(3);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -463,7 +460,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(5);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -511,7 +507,6 @@ QUnit.module("Views", (hooks) => {
         async function (assert) {
             assert.expect(3);
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -550,7 +545,6 @@ QUnit.module("Views", (hooks) => {
         async function (assert) {
             assert.expect(7);
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -604,7 +598,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(7);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -656,7 +649,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -689,7 +681,6 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Create view with no located record OSM", async function (assert) {
         assert.expect(3);
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -722,7 +713,6 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Create view with no badly located record OSM", async function (assert) {
         assert.expect(3);
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -757,7 +747,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -792,7 +781,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -838,7 +826,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(5);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -906,7 +893,6 @@ QUnit.module("Views", (hooks) => {
             length: 2,
         };
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "res.partner",
@@ -951,7 +937,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -979,7 +964,6 @@ QUnit.module("Views", (hooks) => {
         serverData.models["res.partner"].records =
             serverData.models["res.partner"].twoRecordsAddressCoordinates;
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1003,7 +987,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1036,7 +1019,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1069,7 +1051,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1099,7 +1080,6 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("test the position of pin", async function (assert) {
         assert.expect(4);
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1142,7 +1122,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(6);
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "res.partner",
@@ -1189,7 +1168,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(6);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1244,7 +1222,6 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Create a view with default_order", async function (assert) {
         assert.expect(7);
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1296,7 +1273,6 @@ QUnit.module("Views", (hooks) => {
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1359,7 +1335,6 @@ QUnit.module("Views", (hooks) => {
         });
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1389,7 +1364,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1415,7 +1389,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1445,7 +1418,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: "vrve" });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1472,7 +1444,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(2);
             patchWithCleanup(session, { map_box_token: "frezfre" });
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -1503,7 +1474,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1534,7 +1504,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(3);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -1580,7 +1549,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1697,7 +1665,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1728,7 +1695,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1766,7 +1732,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1804,7 +1769,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1843,7 +1807,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1900,7 +1863,6 @@ QUnit.module("Views", (hooks) => {
             { id: 2, name: "BarProject", sequence: 2, partner_id: 2 },
         ];
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1987,7 +1949,6 @@ QUnit.module("Views", (hooks) => {
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2065,7 +2026,6 @@ QUnit.module("Views", (hooks) => {
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2224,7 +2184,6 @@ QUnit.module("Views", (hooks) => {
         assert.expect(1);
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2254,7 +2213,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(1);
 
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -2283,7 +2241,6 @@ QUnit.module("Views", (hooks) => {
             assert.expect(1);
 
             const map = await makeView({
-                config: { views: [] },
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -2317,7 +2274,6 @@ QUnit.module("Views", (hooks) => {
         ];
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2353,7 +2309,6 @@ QUnit.module("Views", (hooks) => {
         ];
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2380,7 +2335,6 @@ QUnit.module("Views", (hooks) => {
         });
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2415,7 +2369,6 @@ QUnit.module("Views", (hooks) => {
         });
 
         const map = await makeView({
-            config: { views: [] },
             serverData,
             type: "map",
             resModel: "project.task",

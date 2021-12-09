@@ -26,13 +26,14 @@ export class MapView extends Component {
             const ArchParser = this.constructor.ArchParser;
             const parser = new ArchParser();
             const archInfo = parser.parse(this.props.arch);
+            const views = this.env.config.views || [];
             modelParams = {
                 context: this.props.context,
                 defaultOrder: archInfo.defaultOrder,
                 fieldNames: archInfo.fieldNames,
                 fieldNamesMarkerPopup: archInfo.fieldNamesMarkerPopup,
                 fields: this.props.fields,
-                hasFormView: this.env.config.views.some((view) => view[1] === "form"),
+                hasFormView: views.some((view) => view[1] === "form"),
                 hideAddress: archInfo.hideAddress || false,
                 hideName: archInfo.hideName || false,
                 hideTitle: archInfo.hideTitle || false,

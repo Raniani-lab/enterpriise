@@ -31,14 +31,14 @@ class Repair(models.Model):
         message = _('Repair Created')
         subtype_id = self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note')
         for order in orders.filtered('ticket_id'):
-            order.message_post_with_view(
+            order.message_post_with_source(
                 'helpdesk.ticket_creation',
-                values={'self': order, 'ticket': order.ticket_id},
+                render_values={'self': order, 'ticket': order.ticket_id},
                 subtype_id=subtype_id
             )
-            order.ticket_id.message_post_with_view(
+            order.ticket_id.message_post_with_source(
                 'helpdesk.ticket_conversion_link',
-                values={'created_record': order, 'message': message},
+                render_values={'created_record': order, 'message': message},
                 subtype_id=subtype_id,
             )
         return orders

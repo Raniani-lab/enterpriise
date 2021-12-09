@@ -63,9 +63,9 @@ class ReturnPicking(models.TransientModel):
         ticket_id = self.ticket_id or self.env['helpdesk.ticket'].sudo().search([('picking_ids', 'in', self.picking_id.id)], limit=1)
         if ticket_id:
             ticket_id.picking_ids |= picking_id
-            picking_id.message_post_with_view(
+            picking_id.message_post_with_source(
                 'helpdesk.ticket_creation',
-                values={'self': picking_id, 'ticket': ticket_id},
-                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note')
+                render_values={'self': picking_id, 'ticket': ticket_id},
+                subtype_xmlid='mail.mt_note',
             )
         return res

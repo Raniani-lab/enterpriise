@@ -576,7 +576,7 @@ class HelpdeskTicket(models.Model):
                 'user_id': team._determine_user_to_assign()[team.id].id
             }
 
-        # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
+        # Manually create a partner now since '_generate_template_recipients' doesn't keep the name. This is
         # to avoid intrusive changes in the 'mail' module
         # TDE TODO: to extract and clean in mail thread
         for vals in list_value:

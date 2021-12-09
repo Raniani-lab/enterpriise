@@ -55,9 +55,9 @@ class Task(models.Model):
     def create(self, vals_list):
         tasks = super().create(vals_list)
         for task in tasks.filtered('helpdesk_ticket_id'):
-            task.message_post_with_view(
+            task.message_post_with_source(
                 'helpdesk.ticket_creation',
-                values={'self': task, 'ticket': task.helpdesk_ticket_id},
-                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
+                render_values={'self': task, 'ticket': task.helpdesk_ticket_id},
+                subtype_xmlid='mail.mt_note',
             )
         return tasks

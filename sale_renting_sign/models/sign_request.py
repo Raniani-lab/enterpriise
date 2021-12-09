@@ -12,9 +12,9 @@ class SignRequest(models.Model):
         super(SignRequest, self)._sign()
         for request in self:
             if request.sale_order_id:
-                request.sale_order_id.message_post_with_view(
+                request.sale_order_id.message_post_with_source(
                     "sale_renting_sign.message_signature_link",
-                    values={"request": request, "salesman": self.env.user.partner_id},
+                    render_values={"request": request, "salesman": self.env.user.partner_id},
                     subtype_xmlid='mail.mt_note',
                 )
                 # attach a copy of the signed document to the SO for easy retrieval

@@ -21,6 +21,7 @@
         'views/hr_timesheet_views.xml',
         'views/res_config_settings_views.xml',
         'wizard/timesheet_merge_wizard_views.xml',
+        'wizard/project_task_create_timesheet_views.xml',
     ],
     'demo': [
         'data/timesheet_grid_demo.xml',

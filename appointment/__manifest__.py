@@ -3,7 +3,7 @@
 
 {
     'name': 'Appointments',
-    'version': '1.1',
+    'version': '1.2',
     'category': 'Marketing/Online Appointment',
     'sequence': 215,
     'summary': 'Allow people to book meetings in your agenda',

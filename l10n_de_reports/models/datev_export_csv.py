@@ -356,6 +356,8 @@ class DatevExportCSV(models.AbstractModel):
             total_aml_balance_per_key_per_tax_line = defaultdict(lambda: defaultdict(float))
             line_values = {}  # key: BalanceKey
 
+            payment_account = 0  # Used for non-reconciled payments
+
             for aml in m.line_ids:
                 if aml.debit == aml.credit:
                     # Ignore debit = credit = 0
@@ -428,6 +430,17 @@ class DatevExportCSV(models.AbstractModel):
                 # account and counterpart account
                 to_account_code = str(self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id))
                 account_code = u'{code}'.format(code=self._find_partner_account(aml.account_id, aml.partner_id))
+
+                # We don't want to have lines with our outstanding payment/receipt as they don't represent real moves
+                # So if payment skip one move line to write, while keeping the account
+                # and replace bank account for outstanding payment/receipt for the other line
+
+                if aml.payment_id:
+                    if payment_account == 0:
+                        payment_account = account_code
+                        continue
+                    else:
+                        to_account_code = payment_account
 
                 # group lines by account, to_account & partner
                 match_key = BalanceKey(from_code=account_code, to_code=to_account_code, partner_id=aml.partner_id)

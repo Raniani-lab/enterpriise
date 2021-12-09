@@ -40,7 +40,6 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_date': fields.Date.to_date('2020-12-01'),
-            'name': 'BILL/2020/12/0001',
             'invoice_line_ids': [
                 (0, None, {
                     'price_unit': 100,
@@ -65,9 +64,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(2, len(data), "csv should have 2 lines")
         self.assertIn(['238,00', 's', 'EUR', '34000000', str(move.partner_id.id + 700000000), '19', '112',
-                       'BILL/2020/12/0001', 'BILL/2020/12/0001'], data)
+                       move.name, move.name], data)
         self.assertIn(['119,00', 's', 'EUR', '49800000', str(move.partner_id.id + 700000000), '19', '112',
-                       'BILL/2020/12/0001', 'BILL/2020/12/0001'], data)
+                       move.name, move.name], data)
 
     def test_datev_out_invoice(self):
         report = self.env['account.general.ledger']
@@ -81,7 +80,6 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'out_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_date': fields.Date.to_date('2020-12-01'),
-            'name': 'INV/2020/12/0001',
             'invoice_line_ids': [
                 (0, None, {
                     'price_unit': 100,
@@ -96,7 +94,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(1, len(data), "csv should have 1 line")
         self.assertIn(['119,00', 'h', 'EUR', '49800000', str(move.partner_id.id + 100000000), '19', '112',
-                       'INV/2020/12/0001', 'INV/2020/12/0001'], data)
+                       move.name, move.name], data)
 
     def test_datev_miscellaneous(self):
         report = self.env['account.general.ledger']
@@ -110,7 +108,6 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'entry',
             'date': '2020-12-01',
             'journal_id': self.company_data['default_journal_misc'].id,
-            'name': 'MISC/2020/12/0001',
             'line_ids': [
                 (0, 0, {
                     'debit': 100,
@@ -131,7 +128,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(1, len(data), "csv should have 1 lines")
-        self.assertIn(['100,00', 'h', 'EUR', '34000000', '49800000', '112', 'MISC/2020/12/0001', 'MISC/2020/12/0001'], data)
+        self.assertIn(['100,00', 'h', 'EUR', '34000000', '49800000', '112', move.name, move.name], data)
 
     def test_datev_out_invoice_payment(self):
         report = self.env['account.general.ledger']
@@ -145,7 +142,6 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'out_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_date': fields.Date.to_date('2020-12-01'),
-            'name': 'INV/2020/12/0001',
             'invoice_line_ids': [
                 (0, None, {
                     'price_unit': 100,
@@ -160,9 +156,14 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'payment_date': fields.Date.to_date('2020-12-03'),
         })._create_payments()
 
+        debit_account_code = str(self.company_data['company'].account_journal_payment_debit_account_id.code).ljust(8, '0')
+
         reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
-        data = [[x[0], x[1], x[2], x[6], x[9], x[10], x[13]] for x in reader][2:]
-        self.assertIn(['119,00', 'h', 'EUR', str(move.partner_id.id + 100000000), '312', pay.name,
+        data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
+        self.assertEqual(2, len(data), "csv should have 2 lines")
+        self.assertIn(['119,00', 'h', 'EUR', '49800000', str(move.partner_id.id + 100000000), '112',
+                       move.name, move.name], data)
+        self.assertIn(['119,00', 'h', 'EUR', str(move.partner_id.id + 100000000), debit_account_code, '312', pay.name,
                        pay.name], data)
 
     def test_datev_in_invoice_payment(self):
@@ -177,7 +178,6 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_date': fields.Date.to_date('2020-12-01'),
-            'name': 'BILL/2020/12/0001',
             'invoice_line_ids': [
                 (0, None, {
                     'price_unit': 100,
@@ -192,7 +192,93 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'payment_date': fields.Date.to_date('2020-12-03'),
         })._create_payments()
 
+        credit_account_code = str(self.company_data['company'].account_journal_payment_credit_account_id.code).ljust(8, '0')
+
         reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
-        data = [[x[0], x[1], x[2], x[6], x[9], x[10], x[13]] for x in reader][2:]
-        self.assertIn(['119,00', 's', 'EUR', str(move.partner_id.id + 700000000), '312', pay.name,
+        data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
+        self.assertEqual(2, len(data), "csv should have 2 lines")
+        self.assertIn(['119,00', 's', 'EUR', '49800000', str(move.partner_id.id + 700000000), '112',
+                       move.name, move.name], data)
+        self.assertIn(['119,00', 's', 'EUR', str(move.partner_id.id + 700000000), credit_account_code, '312', pay.name,
                        pay.name], data)
+
+    def test_datev_bank_statement(self):
+        report = self.env['account.general.ledger']
+        options = report._get_options()
+        options['date'].update({
+            'date_from': '2020-01-01',
+            'date_to': '2020-12-31',
+        })
+
+        statement = self.env['account.bank.statement'].create({
+            'date': '2020-01-01',
+            'balance_end_real': 100.0,
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'line_ids': [
+                (0, 0, {
+                    'payment_ref': 'line1',
+                    'amount': 100.0,
+                    'date': '2020-01-01',
+                }),
+            ],
+        })
+        statement.button_post()
+
+        suspense_account_code = str(self.company_data['company'].account_journal_suspense_account_id.code).ljust(8, '0')
+        bank_account_code = str(self.company_data['default_journal_bank'].default_account_id.code).ljust(8, '0')
+
+        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
+        self.assertIn(['100,00', 'h', 'EUR', suspense_account_code, bank_account_code, '101',
+                       statement.line_ids[0].name, statement.line_ids[0].name], data)
+
+    def test_datev_out_invoice_paid(self):
+        report = self.env['account.general.ledger']
+        options = report._get_options()
+        options['date'].update({
+            'date_from': '2020-01-01',
+            'date_to': '2020-12-31',
+        })
+
+        move = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': fields.Date.to_date('2020-12-01'),
+            'invoice_line_ids': [(0, 0, {
+                'price_unit': 100.0,
+                'quantity': 1,
+                'account_id': self.company_data['default_account_revenue'].id,
+            })],
+        })
+        move.action_post()
+
+        statement = self.env['account.bank.statement'].create({
+            'date': '2020-01-01',
+            'balance_end_real': 100.0,
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'line_ids': [
+                (0, 0, {
+                    'payment_ref': 'line_1',
+                    'amount': 100.0,
+                    'partner_id': self.partner_a.id,
+                    'date': '2020-01-01',
+                }),
+            ],
+        })
+
+        receivable_line = move.line_ids.filtered(
+            lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+        statement.button_post()
+        statement.line_ids[0].reconcile([
+            {'id': receivable_line.id},
+        ])
+
+        bank_account_code = str(self.company_data['default_journal_bank'].default_account_id.code).ljust(8, '0')
+
+        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
+        self.assertEqual(2, len(data), "csv should have 2 lines")
+        self.assertIn(['100,00', 'h', 'EUR', str(self.company_data['default_account_revenue'].code).ljust(8, '0'),
+                       str(100000000 + move.partner_id.id), '112', move.name, move.name], data)
+        self.assertIn(['100,00', 'h', 'EUR', str(100000000 + move.partner_id.id), bank_account_code, '101',
+                       statement.line_ids[0].name, statement.line_ids[0].name], data)

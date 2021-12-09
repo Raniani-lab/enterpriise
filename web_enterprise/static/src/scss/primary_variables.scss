@@ -4,6 +4,9 @@
 ///
 
 // Colors
+$o-white: #FFF !default;
+$o-black: #000 !default;
+
 $o-gray-100: #f6f7fa !default;
 $o-gray-200: #E0E2E6 !default;
 $o-gray-300: #C9CCD2 !default;
@@ -25,7 +28,7 @@ $o-brand-lightsecondary: $o-gray-100 !default;
 
 $o-list-group-header-color: $o-gray-900 !default;
 $o-list-footer-color: $o-gray-900 !default;
-$o-list-footer-bg-color: white !default;
+$o-list-footer-bg-color: $o-white !default;
 $o-list-footer-font-weight: 500 !default;
 
 $o-dropdown-box-shadow: 0 12px 14px -10px rgba(black, 0.25) !default;

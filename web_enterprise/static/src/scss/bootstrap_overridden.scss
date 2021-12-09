@@ -78,6 +78,10 @@ $dropdown-divider-bg: $o-gray-200 !default;
 // Forms
 //
 
+$input-bg: transparent !default;
+
+$form-switch-checked-color: $o-white !default;
+
 // Will affect bootstrap default forms only (eg. popover textarea)
 $input-focus-box-shadow: none !default;
 $form-select-focus-box-shadow: none !default;
@@ -101,11 +105,9 @@ $custom-checkbox-indicator-border-radius: 1px !default; // Just a slight smoothi
 // $zindex-modal-backdrop: $zindex-modal;
 
 // Navs
-$nav-link-color: $o-gray-700 !default;
-$nav-link-border-color: $o-gray-300 !default;
-$nav-tabs-border-color: $o-gray-300 !default;
-$nav-tabs-link-hover-color: $o-brand-primary !default;
-$nav-tabs-link-active-color: $o-gray-900 !default;
+$nav-link-color: $o-main-text-color !default;
+$nav-tabs-link-active-color: $o-main-headings-color !default;
+$nav-tabs-link-active-bg: transparent !default;
 
 
 // Badges

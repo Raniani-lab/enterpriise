@@ -14,13 +14,13 @@
                 <t t-esc="expirationMessage"/>
                 <t t-if="subscription.warningType === 'admin'">
                     <t t-if="subscription.unregistered">
-                        <a class="oe_instance_register_show" href="#" t-on-click.prevent="showRegistrationForm">Register your subscription</a>
+                        <a class="oe_instance_register_show alert-link text-decoration-underline" href="#" t-on-click.prevent="showRegistrationForm">Register your subscription</a>
                         or
-                        <a class="oe_instance_buy" href="#" t-on-click.prevent="() => subscription.buy()">buy a subscription</a>.
+                        <a class="oe_instance_buy alert-link text-decoration-underline" href="#" t-on-click.prevent="() => subscription.buy()">buy a subscription</a>.
                     </t>
                     <t t-if="subscription.expirationReason === 'renewal'">
                         <a class="oe_instance_renew" href="#" t-on-click.prevent="() => subscription.renew()">Renew your subscription </a>
-                        <a class="check_enterprise_status" href="#"
+                        <a class="check_enterprise_status alert-link text-decoration-underline" href="#"
                             title="Refresh subscription status"
                             aria-label="Refresh subscription status"
                             t-on-click.prevent="() => subscription.checkStatus()"
@@ -29,8 +29,8 @@
                         </a>
                     </t>
                     <t t-elif="subscription.expirationReason === 'upsell'">You have more users or more apps installed than your subscription allows.<br/>
-                        <a class="oe_instance_upsell" href="#" t-on-click.prevent="() => subscription.upsell()">Upgrade your subscription </a>
-                        <a class="check_enterprise_status" href="#"
+                        <a class="oe_instance_upsell alert-link text-decoration-underline" href="#" t-on-click.prevent="() => subscription.upsell()">Upgrade your subscription </a>
+                        <a class="check_enterprise_status alert-link text-decoration-underline" href="#"
                             title="Refresh subscription status"
                             aria-label="Refresh subscription status"
                             t-on-click.prevent="() => subscription.checkStatus()"
@@ -44,14 +44,14 @@
         </span>
         <span t-if="subscription.lastRequestStatus === 'success'" class="oe_instance_register oe_instance_success">Thank you, your registration was successful! Your database is valid until <span><t t-esc="subscription.formattedExpirationDate"/></span>.</span>
         <span t-elif="subscription.lastRequestStatus === 'update'" class="oe_instance_register oe_subscription_updated">Your subscription was updated and is valid until <span><t t-esc="subscription.formattedExpirationDate"/></span>.</span>
-        <span t-elif="subscription.lastRequestStatus === 'error'" class="oe_instance_register oe_instance_error">Something went wrong while registering your database. You can try again or contact <a href="https://www.odoo.com/help" target="_blank">Odoo Support</a>.</span>
+        <span t-elif="subscription.lastRequestStatus === 'error'" class="oe_instance_register oe_instance_error">Something went wrong while registering your database. You can try again or contact <a class="alert-link text-decoration-underline" href="https://www.odoo.com/help" target="_blank">Odoo Support</a>.</span>
         <span t-elif="subscription.lastRequestStatus === 'link'" class="oe_instance_register oe_database_already_linked">
             Your subscription is already linked to a database.<br/>
             To unlink it you can either:<br/>
             <ul class="text-start d-inline-block">
                 <li>Login to your Odoo.com dashboard then unlink your previous database: <a t-att-href="subscription.linkedSubscriptionUrl"> <t t-esc="subscription.linkedSubscriptionUrl"/></a></li>
                 <li t-if="subscription.linkedEmail" class="oe_contract_email_block">
-                    <a href="#" class="oe_contract_send_mail" t-on-click.prevent="() => subscription.sendUnlinkEmail()">Click here to send an email</a> to the subscription owner (email: <strong t-esc="subscription.linkedEmail"/>) with the instructions to follow
+                    <a href="#" class="oe_contract_send_mail alert-link text-decoration-underline" t-on-click.prevent="() => subscription.sendUnlinkEmail()">Click here to send an email</a> to the subscription owner (email: <strong t-esc="subscription.linkedEmail"/>) with the instructions to follow
                     <p t-if="subscription.mailDeliveryStatus === 'ongoing'">Sending the instructions by email ...</p>
                     <p t-elif="subscription.mailDeliveryStatus === 'success'">The instructions to unlink your subscription from the previous database(s) have been sent</p>
                     <p t-elif="subscription.mailDeliveryStatus === 'fail'">Unable to send the instructions by email, please contact the <a href="https://www.odoo.com/help" target="_blank">Odoo Support</a><br/>

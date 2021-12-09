@@ -309,7 +309,7 @@ class ResPartner(models.Model):
             return
         return self.env['account.followup.report'].print_followups(to_print)
 
-    def _cron_execute_followup(self):
+    def _cron_execute_followup_company(self):
         followup_data = self._query_followup_level(all_partners=True)
         in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if d['followup_status'] == 'in_need_of_action'])
         in_need_of_action_auto = in_need_of_action.filtered(lambda p: p.followup_level.auto_execute)
@@ -320,3 +320,7 @@ class ResPartner(models.Model):
                 # followup may raise exception due to configuration issues
                 # i.e. partner missing email
                 _logger.exception(e)
+
+    def _cron_execute_followup(self):
+        for company in self.env.user.company_ids:
+            self.with_context(allowed_company_ids=company.ids)._cron_execute_followup_company()

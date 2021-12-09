@@ -207,7 +207,7 @@ class IntrastatReport(models.AbstractModel):
                 '''
         where = '''
                 inv.state = 'posted'
-                AND inv_line.display_type IS NULL
+                AND inv_line.display_type = 'product'
                 AND (NOT inv_line.price_subtotal = 0 OR inv_line.price_unit * inv_line.quantity != 0)
                 AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
@@ -217,7 +217,6 @@ class IntrastatReport(models.AbstractModel):
                 AND prodt.type != 'service'
                 AND inv.journal_id IN %(journal_ids)s
                 AND inv.move_type IN %(invoice_types)s
-                AND NOT inv_line.exclude_from_invoice_tab
                 '''
         order = 'inv.invoice_date DESC, inv_line.id'
         params = {

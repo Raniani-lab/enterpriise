@@ -152,7 +152,7 @@ class AccountMove(models.Model):
         else:
             return True
 
-    def action_invoice_paid(self):
+    def _invoice_paid_hook(self):
         for invoice in self:
             company = invoice.company_id
             if invoice.fiscal_position_id.is_taxcloud:
@@ -182,7 +182,7 @@ class AccountMove(models.Model):
                             invoice.id,
                         )
 
-        return super(AccountMove, self).action_invoice_paid()
+        return super(AccountMove, self)._invoice_paid_hook()
 
 
 class AccountMoveLine(models.Model):

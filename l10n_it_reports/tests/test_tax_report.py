@@ -170,7 +170,7 @@ class TestItalianTaxReport(AccountTestInvoicingCommon):
 
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
-            'partner_id': self.l10n_it_tax_report_partner,
+            'partner_id': self.l10n_it_tax_report_partner.id,
             'date': invoice_date,
             'invoice_date': invoice_date,
             'invoice_line_ids': [

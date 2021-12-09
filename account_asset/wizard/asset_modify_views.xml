@@ -48,7 +48,7 @@
                                options="{'no_create': True}"
                                attrs="{'invisible': [('select_invoice_line_id', '=', False)],
                                        'required': [('select_invoice_line_id', '=', True)]}"
-                               domain="[('move_id', '=', invoice_id), ('exclude_from_invoice_tab', '=', False)]"/>
+                               domain="[('move_id', '=', invoice_id), ('display_type', '=', 'product')]"/>
                     </group>
                     <group attrs="{'invisible': [('modify_action', 'not in', ('sell', 'dispose'))]}">
                         <field name="gain_account_id"

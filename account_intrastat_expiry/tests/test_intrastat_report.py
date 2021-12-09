@@ -3,7 +3,7 @@
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
-from odoo import fields
+from odoo import fields, Command
 from freezegun import freeze_time
 
 
@@ -43,46 +43,49 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             'standard_price': 800.0,
             'property_account_income_id': cls.company_data['default_account_revenue'].id,
             'property_account_expense_id': cls.company_data['default_account_expense'].id,
-            'taxes_id': [(6, 0, cls.tax_sale_a.ids)],
-            'supplier_taxes_id': [(6, 0, cls.tax_purchase_a.ids)],
+            'taxes_id': [Command.set(cls.tax_sale_a.ids)],
+            'supplier_taxes_id': [Command.set(cls.tax_purchase_a.ids)],
         })
 
     @classmethod
     def _create_invoices(cls, code_type=None):
         moves = cls.env['account.move'].create({
             'move_type': 'out_invoice',
-            'partner_id': cls.partner_a,
+            'partner_id': cls.partner_a.id,
             'invoice_date': fields.Date.from_string('2022-02-01'),
-            'intrastat_country_id': cls.env.ref('base.de'),
+            'intrastat_country_id': cls.env.ref('base.de').id,
             'invoice_line_ids': [
-                (0, 0, {
+                Command.create({
                     'name': 'line_1',
                     'product_id': cls.product_a.id,
                     'price_unit': 5.0,
                     'intrastat_transaction_id': cls.intrastat_codes['%s-no_date' % code_type].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
+                    'tax_ids': [],
                 }),
-                (0, 0, {
+                Command.create({
                     'name': 'line_2',
                     'product_id': cls.product_b.id,
                     'price_unit': 5.0,
                     'intrastat_transaction_id': cls.intrastat_codes['%s-expired' % code_type].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
+                    'tax_ids': [],
                 }),
-                (0, 0, {
+                Command.create({
                     'name': 'line_3',
                     'product_id': cls.product_c.id,
                     'price_unit': 5.0,
                     'intrastat_transaction_id': cls.intrastat_codes['%s-premature' % code_type].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
+                    'tax_ids': [],
                 }),
             ],
         })
         moves.action_post()
-        cls.cr.flush()  # must flush else SQL request in report is not accurate
+        cls.env.flush_all()  # must flush else SQL request in report is not accurate
         return moves
 
     @freeze_time('2022-02-01')

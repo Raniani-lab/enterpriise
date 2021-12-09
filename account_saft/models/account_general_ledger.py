@@ -49,6 +49,7 @@ class AccountGeneralLedger(models.AbstractModel):
         query = '''
             SELECT
                 account_move_line.id,
+                account_move_line.display_type,
                 account_move_line.date,
                 account_move_line.name,
                 account_move_line.account_id,
@@ -58,7 +59,6 @@ class AccountGeneralLedger(models.AbstractModel):
                 account_move_line.debit,
                 account_move_line.credit,
                 account_move_line.balance,
-                account_move_line.exclude_from_invoice_tab,
                 account_move_line.tax_line_id,
                 account_move_line.quantity,
                 account_move_line.price_unit,

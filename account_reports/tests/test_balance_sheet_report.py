@@ -47,6 +47,7 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
             ],
         })
         move.action_post()
+        move.line_ids.flush_recordset()
 
         # Create the report hierachy with the Bank and Cash Accounts lines unfolded
         line_id = self.report._get_generic_line_id(

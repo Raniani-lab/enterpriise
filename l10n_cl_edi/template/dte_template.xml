@@ -90,7 +90,7 @@
                 </OtraMoneda>
             </Encabezado>
         <t t-set="line_number" t-value="1"/>
-        <t t-foreach="move.invoice_line_ids.filtered(lambda r: not r.display_type and r.price_subtotal &gt;= 0)" t-as="line">
+        <t t-foreach="move.invoice_line_ids.filtered(lambda r: r.display_type not in ('line_note', 'line_section') and r.price_subtotal &gt;= 0)" t-as="line">
             <t t-set="line_amounts" t-value="line._l10n_cl_get_line_amounts()"/>
             <Detalle>
                 <NroLinDet t-esc="line_number"/>
@@ -136,7 +136,7 @@
         <t t-set="line_number" t-value="line_number + 1"/>
         </t>
     <t t-set="discount_line_number" t-value="1"/>
-    <t t-foreach="move.invoice_line_ids.filtered(lambda r: not r.display_type and r.price_subtotal &lt; 0)" t-as="discount_line">
+    <t t-foreach="move.invoice_line_ids.filtered(lambda r: r.display_type not in ('line_note', 'line_section') and r.price_subtotal &lt; 0)" t-as="discount_line">
         <DscRcgGlobal>
             <NroLinDR t-esc="discount_line_number"/>
             <TpoMov>D</TpoMov>

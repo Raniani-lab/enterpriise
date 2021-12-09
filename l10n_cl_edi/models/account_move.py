@@ -172,7 +172,7 @@ class AccountMove(models.Model):
         # for example, for a bad address or a bad activity description in the originating document.
         if self._context.get('default_l10n_cl_edi_reference_doc_code') == '2':
             for move in reverse_moves:
-                move.line_ids = [[5, 0], [0, 0, {
+                move.invoice_line_ids = [[5, 0], [0, 0, {
                     'account_id': move.journal_id.default_account_id.id,
                     'name': _('Where it says: %s should say: %s') % (
                         self._context.get('default_l10n_cl_original_text'),
@@ -642,7 +642,7 @@ class AccountMove(models.Model):
         lines_with_taxes = self.invoice_line_ids.filtered(lambda x: x.tax_ids)
         lines_without_taxes = self.invoice_line_ids.filtered(lambda x: not x.tax_ids)
         values = {
-            'vat_amount': self.currency_id.round(sum(vat_taxes.mapped('price_subtotal'))),
+            'vat_amount': self.direction_sign * self.currency_id.round(sum(vat_taxes.mapped('amount_currency'))),
             # Sum of the subtotal amount affected by tax
             'subtotal_amount_taxable': sum(lines_with_taxes.mapped('price_subtotal')) if (
                     lines_with_taxes and (self.l10n_latam_document_type_id.code == '39' or
@@ -685,7 +685,7 @@ class AccountMove(models.Model):
         self.ensure_one()
         return [{'tax_code': line.tax_line_id.l10n_cl_sii_code,
                  'tax_percent': abs(line.tax_line_id.amount),
-                 'tax_amount': self.currency_id.round(abs(line.price_subtotal))} for line in self.line_ids.filtered(
+                 'tax_amount': self.currency_id.round(abs(line.amount_currency))} for line in self.line_ids.filtered(
             lambda x: x.tax_group_id.id in [
                 self.env.ref('l10n_cl.tax_group_ila').id, self.env.ref('l10n_cl.tax_group_retenciones').id])]
 

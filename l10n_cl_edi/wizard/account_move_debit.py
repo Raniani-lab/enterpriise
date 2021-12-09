@@ -74,7 +74,7 @@ class AccountDebitNote(models.TransientModel):
             # if we make this with traditional "with_context(internal_type='debit_note').copy(default=default_values)
             # the values will appear negative in the debit note
             default_values['line_ids'] = [[5, 0]]
-            for line in move.line_ids.filtered(lambda x: not x.display_type):
+            for line in move.line_ids.filtered(lambda x: x.display_type not in ('line_note', 'line_section')):
                 default_values['line_ids'].append([0, 0, {
                     'product_id': line.product_id.id,
                     'account_id': line.account_id.id,
@@ -83,8 +83,6 @@ class AccountDebitNote(models.TransientModel):
                     'name': line.name,
                     'quantity': line.quantity,
                     'price_unit': line.price_unit,
-                    'exclude_from_invoice_tab': line.move_id.is_invoice() and (line.account_id.account_type in [
-                        'asset_receivable', 'liability_payable'] or line.tax_line_id),
                     'tax_repartition_line_id': self._get_repartition_line(line).id,
                     'tax_ids': [[6, 0, line.tax_ids.ids]],
                     'tax_tag_ids': self._get_opposite_tax_tag(line),

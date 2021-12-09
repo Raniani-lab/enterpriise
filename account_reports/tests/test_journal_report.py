@@ -57,6 +57,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 'quantity': 1,
                 'price_unit': 3000.0,
                 'account_id': cls.company_data['default_account_revenue'].id,
+                'tax_ids': [],
             })],
         })
         cls.move_2017_2.action_post()
@@ -79,6 +80,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 'quantity': 1,
                 'price_unit': 3000.0,
                 'account_id': cls.company_data['default_account_revenue'].id,
+                'tax_ids': [],
             })],
         })
         cls.move_2017_3.action_post()
@@ -94,6 +96,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 'quantity': 1,
                 'price_unit': 2000.0,
                 'account_id': cls.company_data['default_account_revenue'].id,
+                'tax_ids': [],
             })],
         })
         cls.move_2017_4.action_post()

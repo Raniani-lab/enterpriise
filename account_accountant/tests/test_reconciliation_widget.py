@@ -187,6 +187,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
                 'invoice_line_ids': [(0, 0, {
                     'product_id': self.product_a.id,
                     'price_unit': 1000.0,
+                    'tax_ids': [],
                 })]
             })
             invoice.action_post()
@@ -257,6 +258,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product_a.id,
                 'price_unit': 1000.0,
+                'tax_ids': [],
             })],
         })
         invoice.action_post()

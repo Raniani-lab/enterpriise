@@ -85,7 +85,6 @@ class TestL10nClEdiCommon(AccountEdiTestCommon):
             'code': 'INV2',
             'l10n_cl_point_of_sale_type': 'online',
             'l10n_latam_use_documents': True,
-            'currency_id': cls.env.ref('base.CLP').id,
             'default_account_id': cls.env['account.account'].search([
                 ('company_id', '=', cls.company_data['company'].id), ('code', '=', '310115')]).id
         })

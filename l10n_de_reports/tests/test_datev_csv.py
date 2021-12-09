@@ -48,6 +48,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_date': fields.Date.to_date('2020-12-01'),
+            'date': fields.Date.to_date('2020-12-01'),
             'invoice_line_ids': [
                 (0, None, {
                     'price_unit': 100,
@@ -67,6 +68,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             ]
         }])
         move.action_post()
+        move.line_ids.flush_recordset()
 
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
@@ -99,6 +101,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             ]
         }])
         move.action_post()
+        move.line_ids.flush_recordset()
 
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
@@ -132,10 +135,12 @@ class TestDatevCSV(AccountTestInvoicingCommon):
                     'credit': 100,
                     'partner_id': self.partner_a.id,
                     'account_id': self.account_3400.id,
+                    'tax_ids': [],
                 }),
             ]
         })
         move.action_post()
+        move.line_ids.flush_recordset()
 
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
@@ -170,6 +175,8 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'payment_date': fields.Date.to_date('2020-12-03'),
         })._create_payments()
 
+        self.env.flush_all()
+
         debit_account_code = str(self.env.company.account_journal_payment_debit_account_id.code).ljust(8, '0')
 
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
@@ -194,6 +201,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_date': fields.Date.to_date('2020-12-01'),
+            'date': fields.Date.to_date('2020-12-01'),
             'invoice_line_ids': [
                 (0, None, {
                     'price_unit': 100,
@@ -207,6 +215,8 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         pay = self.env['account.payment.register'].with_context(active_model='account.move', active_ids=move.ids).create({
             'payment_date': fields.Date.to_date('2020-12-03'),
         })._create_payments()
+
+        self.env.flush_all()
 
         credit_account_code = str(self.env.company.account_journal_payment_credit_account_id.code).ljust(8, '0')
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
@@ -240,6 +250,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             ],
         })
         statement.button_post()
+        statement.move_line_ids.flush_recordset()
 
         suspense_account_code = str(self.env.company.account_journal_suspense_account_id.code).ljust(8, '0')
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
@@ -267,6 +278,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
                 'price_unit': 100.0,
                 'quantity': 1,
                 'account_id': self.company_data['default_account_revenue'].id,
+                'tax_ids': [],
             })],
         })
         move.action_post()
@@ -293,6 +305,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 
+        self.env.flush_all()
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
@@ -345,6 +358,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             ]
         }])
         move.action_post()
+        move.line_ids.flush_recordset()
 
         with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
@@ -379,6 +393,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             ]
         }])
         move.action_post()
+        move.line_ids.flush_recordset()
 
         self.env['ir.config_parameter'].sudo().set_param('l10n_de.datev_start_count', 2)
         self.env['ir.config_parameter'].sudo().set_param('l10n_de.datev_start_count_vendors', 800000)

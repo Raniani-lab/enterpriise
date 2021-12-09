@@ -3,11 +3,14 @@
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
 from odoo.tests import tagged
-from odoo import fields
+from odoo import fields, Command
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
 class TestBilanComptable(TestAccountReportsCommon):
+    @classmethod
+    def setUpClass(cls, chart_template_ref='l10n_fr.l10n_fr_pcg_chart_template'):
+        super().setUpClass(chart_template_ref)
 
     def _build_generic_id_from_financial_line(self, financial_rep_ln_xmlid):
         report_line = self.env.ref(financial_rep_ln_xmlid)
@@ -28,11 +31,22 @@ class TestBilanComptable(TestAccountReportsCommon):
             'date': '2019-01-01',
             'journal_id': bank_journal.id,
             'line_ids': [
-                (0, 0, {'debit': 100.0,     'credit': 0.0,      'name': '2019_1_1',     'account_id': bank_account.id}),
-                (0, 0, {'debit': 0.0,       'credit': 100.0,    'name': '2019_1_2',     'account_id': self.company_data['default_account_revenue'].id}),
+                Command.create({
+                    'debit': 100.0,
+                    'credit': 0.0,
+                    'name': '2019_1_1',
+                    'account_id': bank_account.id,
+                }),
+                Command.create({
+                    'debit': 0.0,
+                    'credit': 100.0,
+                    'name': '2019_1_2',
+                    'account_id': self.company_data['default_account_revenue'].id,
+                }),
             ],
         })
         move_2019_1.action_post()
+        move_2019_1.line_ids.flush_recordset()
 
         # Check that it appears in the "Actif" section of the report.
         line_id = self._build_generic_id_from_financial_line('l10n_fr_reports.account_financial_report_line_03_5_4_fr_bilan_actif')
@@ -53,11 +67,22 @@ class TestBilanComptable(TestAccountReportsCommon):
             'date': '2019-01-01',
             'journal_id': bank_journal.id,
             'line_ids': [
-                (0, 0, {'debit': 300.0,     'credit': 0.0,      'name': '2019_1_1',     'account_id': self.company_data['default_account_expense'].id}),
-                (0, 0, {'debit': 0.0,       'credit': 300.0,    'name': '2019_1_2',     'account_id': bank_account.id}),
+                Command.create({
+                    'debit': 300.0,
+                    'credit': 0.0,
+                    'name': '2019_1_1',
+                    'account_id': self.company_data['default_account_expense'].id,
+                }),
+                Command.create({
+                    'debit': 0.0,
+                    'credit': 300.0,
+                    'name': '2019_1_2',
+                    'account_id': bank_account.id,
+                }),
             ],
         })
         move_2019_2.action_post()
+        move_2019_2.line_ids.flush_recordset()
 
         # Check to make sure that it now appears in the "Passif" section of the report.
         line_id = self._build_generic_id_from_financial_line('l10n_fr_reports.account_financial_report_line_03_3_3_fr_bilan_passif')

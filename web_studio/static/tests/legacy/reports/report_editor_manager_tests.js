@@ -1773,7 +1773,7 @@ QUnit.module('ReportEditorManager', {
                             '<div class="row">' +
                                 '<div class="col-5">' +
                                     '<table class="table table-sm">' +
-                                        '<t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>' +
+                                        '<t t-set="tax_totals" t-value="o.tax_totals"/>' +
                                         '<t t-call="account.document_tax_totals"/>' +
                                     '</table>' +
                                 '</div>' +

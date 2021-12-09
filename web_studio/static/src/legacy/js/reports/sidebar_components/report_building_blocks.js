@@ -893,14 +893,14 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
         return this._createContent({
             contentInStructure:
                 '<table class="table table-sm">' +
-                    `<t t-set="tax_totals" t-value="json.loads(${data.tax_totals_json})"/>` +
+                    `<t t-set="tax_totals" t-value="${data.tax_totals}"/>` +
                     '<t t-call="account.document_tax_totals"/>' +
                 '</table>'
         });
     },
     _dataInheritanceValues: function (values) {
-        const tax_totals_json = `${values.related}.tax_totals_json`;
-        return { tax_totals_json };
+        const tax_totals = `${values.related}.tax_totals`;
+        return { tax_totals };
     },
 });
 

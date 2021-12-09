@@ -404,8 +404,7 @@ class AccountReconciliation(models.AbstractModel):
                     total_amount_currency = line.currency_id and line.amount_currency or (line.debit - line.credit)
 
             ret_line['recs_count'] = recs_count
-            ret_line['debit'] = amount > 0 and amount or 0
-            ret_line['credit'] = amount < 0 and -amount or 0
+            ret_line['balance'] = amount
             ret_line['amount_currency'] = amount_currency
             ret_line['amount_str'] = formatLang(self.env, abs(amount), currency_obj=target_currency)
             ret_line['total_amount_str'] = formatLang(self.env, abs(total_amount), currency_obj=target_currency)
@@ -496,8 +495,7 @@ class AccountReconciliation(models.AbstractModel):
             balance = -vals.get('balance', 0.0) or sum(move_lines.mapped('amount_residual'))
         else:
             balance = vals.get('credit', 0.0) - vals.get('debit', 0.0)
-        line_vals['debit'] = balance if balance > 0.0 else 0.0
-        line_vals['credit'] = -balance if balance < 0.0 else 0.0
+        line_vals['balance'] = balance
 
         if currency == company_currency:
             line_vals['amount_currency'] = balance
@@ -513,8 +511,7 @@ class AccountReconciliation(models.AbstractModel):
             (0, 0, line_vals),
             (0, 0, {
                 'name': _('Write-Off'),
-                'debit': line_vals['credit'],
-                'credit': line_vals['debit'],
+                'balance': -line_vals['balance'],
                 'amount_currency': -line_vals['amount_currency'],
                 'currency_id': currency.id,
                 'account_id': move_lines[0].account_id.id,

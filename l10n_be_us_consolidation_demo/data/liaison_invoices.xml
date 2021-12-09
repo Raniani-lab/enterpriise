@@ -23,7 +23,7 @@
                     'account_id': ref('be_specific_receivable_account'),
                     'debit': 12500.0,
                     'quantity': 1,
-                    'exclude_from_invoice_tab': True,
+                    'display_type': 'payment_term',
                 })
             ]"/>
         </record>
@@ -50,7 +50,7 @@
                     'account_id': ref('main_specific_payable_account'),
                     'credit': 12500.0,
                     'quantity': 1,
-                    'exclude_from_invoice_tab': True,
+                    'display_type': 'payment_term',
                 })
             ]"/>
         </record>

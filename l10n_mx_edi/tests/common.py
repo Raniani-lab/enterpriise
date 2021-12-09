@@ -136,6 +136,8 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'partner_id': cls.partner_a.id,
             'invoice_date': '2017-01-01',
             'date': '2017-01-01',
+            'invoice_date_due': '2017-01-01',
+            'invoice_payment_term_id': False,
             'currency_id': cls.currency_data['currency'].id,
             'invoice_incoterm_id': cls.env.ref('account.incoterm_FCA').id,
             'invoice_line_ids': [(0, 0, {
@@ -151,6 +153,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'move_type': 'out_refund',
             'partner_id': cls.partner_a.id,
             'invoice_date': '2017-01-01',
+            'invoice_payment_term_id': False,
             'date': '2017-01-01',
             'currency_id': cls.currency_data['currency'].id,
             'invoice_incoterm_id': cls.env.ref('account.incoterm_FCA').id,
@@ -196,6 +199,8 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                         Descripcion="product_mx"
                         Importe="10000.000"
                         Descuento="2000.000"
+                        ClaveUnidad="KGM"
+                        Unidad="kg"
                         ValorUnitario="2000.000">
                         <Impuestos>
                             <Traslados>

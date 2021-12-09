@@ -60,7 +60,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
             'name': 'INV/001/123456',
             'date': datetime.date(2010, 1, 1),
             'invoice_date': datetime.date(2010, 1, 1),
-            'move_type': 'out_invoice',
+            'move_type': 'entry',
             'partner_id': cls.partner_a.id,
             'journal_id': cls.company_data_2['default_journal_sale'].id,
             'line_ids': [(0, 0, {
@@ -81,7 +81,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         }, {
             'company_id': cls.company_export.id,
             'name': 'INV/001/123457',
-            'move_type': 'in_invoice',
+            'move_type': 'entry',
             'date': datetime.date(2010, 1, 1),
             'invoice_date': datetime.date(2010, 1, 1),
             'partner_id': cls.partner_b.id,

@@ -118,9 +118,6 @@ class AccountMoveLine(models.Model):
             'analytic_account_id': not self.analytic_account_id.company_id and self.analytic_account_id.id,
             'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.filtered(lambda r: not r.company_id).ids)],
         }
-        # Ensure no account will be set at creation
-        if self.display_type:
-            vals['account_id'] = False
 
         # Set company of analytic account to false to avoid inconsistencies in company record rules
         company = self.env['res.company']._find_company_from_partner(self.move_id.partner_id.id)

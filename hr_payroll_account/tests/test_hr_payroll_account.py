@@ -7,7 +7,7 @@ import odoo.tests
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, tools
+from odoo import fields, Command
 from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
 
 
@@ -411,11 +411,24 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
         """Checking if taxes are added on a payslip accounting entry when there is a default tax on the journal"""
 
         # Create a default tax for the account on the salary rule.
+        tax_account = self.env['account.account'].create({
+            'name': 'Rental Tax',
+            'code': '777777',
+            'account_type': 'asset_current',
+        })
         hra_tax = self.env['account.tax'].create({
             'name': "hra_tax",
             'amount_type': 'percent',
             'amount': 10.0,
             'type_tax_use': 'sale',
+            'invoice_repartition_line_ids': [
+                Command.create({'factor_percent': 100, 'repartition_type': 'base'}),
+                Command.create({'factor_percent': 100, 'account_id': tax_account.id}),
+            ],
+            'refund_repartition_line_ids': [
+                Command.create({'factor_percent': 100, 'repartition_type': 'base'}),
+                Command.create({'factor_percent': 100, 'account_id': tax_account.id}),
+            ],
         })
 
         # Create a account for the HRA salary rule.

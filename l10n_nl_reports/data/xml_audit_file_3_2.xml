@@ -112,7 +112,7 @@
                             <periodNumber t-esc="m[1].get('move_period_number')"/>
                             <trDt t-esc="m[1].get('move_date')"/>
                             <amnt t-esc="m[1].get('move_amount')"/>
-                            <trLine t-foreach="m[1].get('move_line_data').items()" t-as="l" t-if="not l[1].get('line_display_type')">
+                            <trLine t-foreach="m[1].get('move_line_data').items()" t-as="l" t-if="l[1].get('line_display_type') not in ('line_note', 'line_section')">
                                 <nr t-esc="l[1].get('line_id')"/>
                                 <accID t-esc="l[1].get('line_account_code')"/>
                                 <docRef t-esc="l[1].get('line_ref')"/>

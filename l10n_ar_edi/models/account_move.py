@@ -506,8 +506,10 @@ class AccountMove(models.Model):
                     raise UserError(_('No AFIP code in %s UOM', line.product_id.uom_id.name))
 
                 vat_tax = line.tax_ids.filtered(lambda x: x.tax_group_id.l10n_ar_vat_afip_code)
-                vat_taxes_amounts = vat_tax.with_context(force_sign=line.move_id._get_tax_force_sign()).compute_all(
-                    line.price_unit, self.currency_id, line.quantity, product=line.product_id, partner=self.partner_id)
+                vat_taxes_amounts = vat_tax.compute_all(
+                    line.price_unit, self.currency_id, line.quantity, product=line.product_id, partner=self.partner_id,
+                    fixed_multiplicator=line.move_id.direction_sign,
+                )
 
                 line.product_id.product_tmpl_id._check_l10n_ar_ncm_code()
                 values.update({'Pro_codigo_ncm': line.product_id.l10n_ar_ncm_code or '',

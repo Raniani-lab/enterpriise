@@ -27,7 +27,7 @@ class AssetModify(models.TransientModel):
     company_id = fields.Many2one('res.company', related='asset_id.company_id')
 
     invoice_id = fields.Many2one('account.move', string="Customer Invoice", help="The disposal invoice is needed in order to generate the closing journal entry.", domain="[('move_type', '=', 'out_invoice'), ('state', '=', 'posted')]")
-    invoice_line_id = fields.Many2one('account.move.line', help="There are multiple lines that could be the related to this asset", domain="[('move_id', '=', invoice_id), ('exclude_from_invoice_tab', '=', False)]")
+    invoice_line_id = fields.Many2one('account.move.line', help="There are multiple lines that could be the related to this asset", domain="[('move_id', '=', invoice_id), ('display_type', '=', 'product')]")
     select_invoice_line_id = fields.Boolean(compute="_compute_select_invoice_line_id")
     gain_account_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", compute="_compute_accounts", inverse="_inverse_gain_account", compute_sudo=True, help="Account used to write the journal item in case of gain", readonly=False)
     loss_account_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", compute="_compute_accounts", inverse="_inverse_loss_account", compute_sudo=True, help="Account used to write the journal item in case of loss", readonly=False)

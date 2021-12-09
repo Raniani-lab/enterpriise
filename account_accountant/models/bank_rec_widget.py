@@ -1439,8 +1439,7 @@ class BankRecWidget(models.Model):
                 'partner_id': partner_id_to_set if line.flag in ('liquidity', 'auto_balance') else line.partner_id.id,
                 'currency_id': line.currency_id.id,
                 'amount_currency': line.amount_currency,
-                'debit': line.debit,
-                'credit': line.credit,
+                'balance': line.debit - line.credit,
                 'reconcile_model_id': line.reconcile_model_id.id,
                 'analytic_account_id': line.analytic_account_id.id,
                 'analytic_tag_ids': [Command.set(line.analytic_tag_ids.ids)],
@@ -1588,7 +1587,11 @@ class BankRecWidget(models.Model):
         move = st_line.move_id
 
         # Update the move.
-        move.with_context(skip_account_move_synchronization=True, force_delete=True).write({
+        move.with_context(
+            skip_invoice_sync=True,
+            skip_account_move_synchronization=True,
+            force_delete=True,
+        ).write({
             'line_ids': [Command.clear()] + params['command_list'],
         })
 

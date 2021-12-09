@@ -494,7 +494,6 @@ class AccountMove(models.Model):
                 # Assign time and date coming from a certificate.
                 if not move.invoice_date:
                     move.invoice_date = certificate_date.date()
-                    move.with_context(check_move_validity=False)._onchange_invoice_date()
 
         return super()._post(soft=soft)
 

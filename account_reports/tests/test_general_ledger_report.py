@@ -262,6 +262,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             ],
         })
         move_2017.action_post()
+        move_2017.line_ids.flush_recordset()
 
         # Init options.
         report = self.env['account.general.ledger']

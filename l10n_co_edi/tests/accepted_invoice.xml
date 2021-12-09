@@ -217,7 +217,7 @@
             </NOT><NOT>
                 <NOT_1>10.- | | | |N/A</NOT_1>
             </NOT><NOT>
-                <NOT_1>11.- |0| |0|0</NOT_1>
+                <NOT_1>11.- |150| |0|0</NOT_1>
             </NOT>
 
             <ORC>
@@ -300,7 +300,7 @@
                     <ITE_1>1</ITE_1>
                     <ITE_2></ITE_2>
                     <ITE_3>150.0</ITE_3>
-                    <ITE_4>94</ITE_4>
+                    <ITE_4>S7</ITE_4>
                     <ITE_5>33750.00</ITE_5>
                     <ITE_6>COP</ITE_6>
                     <ITE_7>250.00</ITE_7>
@@ -313,7 +313,7 @@
                     <ITE_21>33750.00</ITE_21>
                     <ITE_22>COP</ITE_22>
                     <ITE_27>150.0</ITE_27>
-                    <ITE_28>94</ITE_28>
+                    <ITE_28>S7</ITE_28>
 
                     <IRF>
                         <IRF_1>IV</IRF_1>

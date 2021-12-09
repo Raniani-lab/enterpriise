@@ -197,6 +197,12 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 </TaxCodeDetails>
                             </TaxTableEntry>
                         </TaxTable>
+                        <UOMTable>
+                            <UOMTableEntry>
+                                <UnitOfMeasure>Units</UnitOfMeasure>
+                                <Description>Unit</Description>
+                            </UOMTableEntry>
+                        </UOMTable>
                         <Products>
                             <Product>
                                 <ProductCode>PA</ProductCode>
@@ -371,6 +377,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                     <ProductCode>PA</ProductCode>
                                     <ProductDescription>[PA] product_a</ProductDescription>
                                     <Quantity>5.0</Quantity>
+                                    <InvoiceUOM>Units</InvoiceUOM>
                                     <UnitPrice>1000.00</UnitPrice>
                                     <TaxPointDate>2019-01-01</TaxPointDate>
                                     <Description>[PA] product_a</Description>
@@ -427,6 +434,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                     <ProductCode>PA</ProductCode>
                                     <ProductDescription>[PA] product_a</ProductDescription>
                                     <Quantity>3.0</Quantity>
+                                    <InvoiceUOM>Units</InvoiceUOM>
                                     <UnitPrice>1000.00</UnitPrice>
                                     <TaxPointDate>2019-03-01</TaxPointDate>
                                     <Description>[PA] product_a</Description>

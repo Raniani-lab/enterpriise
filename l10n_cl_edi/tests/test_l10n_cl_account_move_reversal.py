@@ -24,11 +24,13 @@ class TestL10AccountMoveReversal(TestL10nClEdiCommon):
                 'product_id': cls.product_a.id,
                 'quantity': 2,
                 'price_unit': 100000.0,
+                'tax_ids': [],
             }), (0, 0, {
                 'name': 'Desk Combination',
                 'product_id': cls.product_a.id,
                 'quantity': 2,
                 'price_unit': 2400000.0,
+                'tax_ids': [],
             })],
         })
         cls.invoice.action_post()

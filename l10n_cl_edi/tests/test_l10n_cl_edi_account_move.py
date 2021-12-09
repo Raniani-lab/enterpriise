@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
+from freezegun import freeze_time
 from unittest.mock import patch
 
 from odoo.tools import misc
@@ -26,16 +27,15 @@ class TestL10nClDte(TestL10nClEdiCommon):
             - A invoice
     """
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_33(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
-
+    @freeze_time('2019-10-24T20:00:00', tz_offset=3)
+    def test_l10n_cl_dte_33(self):
         self.tax_19 = self.env['account.tax'].search([
             ('name', '=', 'IVA 19% Venta'),
             ('company_id', '=', self.company_data['company'].id)])
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner_sii.id,
             'move_type': 'out_invoice',
+            'invoice_date_due': '2019-10-23',
             'invoice_date': '2019-10-23',
             'currency_id': self.env.ref('base.CLP').id,
             'journal_id': self.sale_journal.id,
@@ -71,10 +71,8 @@ class TestL10nClDte(TestL10nClEdiCommon):
             self.get_xml_tree_from_string(xml_expected_dte.encode())
         )
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_33_with_reference_ids(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
-
+    @freeze_time('2019-10-24T20:00:00', tz_offset=3)
+    def test_l10n_cl_dte_33_with_reference_ids(self):
         self.tax_19 = self.env['account.tax'].search([
             ('name', '=', 'IVA 19% Venta'),
             ('company_id', '=', self.company_data['company'].id)])
@@ -82,6 +80,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'partner_id': self.partner_sii.id,
             'move_type': 'out_invoice',
             'invoice_date': '2019-10-23',
+            'invoice_date_due': '2019-10-23',
             'currency_id': self.env.ref('base.CLP').id,
             'journal_id': self.sale_journal.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_cl.dc_a_f_dte').id,
@@ -131,10 +130,8 @@ class TestL10nClDte(TestL10nClEdiCommon):
             self.get_xml_tree_from_string(xml_expected_dte.encode()),
         )
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_33_withholding_taxes(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
-
+    @freeze_time('2019-10-24T20:00:00', tz_offset=3)
+    def test_l10n_cl_dte_33_withholding_taxes(self):
         self.tax_19 = self.env['account.tax'].search([
             ('name', '=', 'IVA 19% Venta'),
             ('company_id', '=', self.company_data['company'].id)])
@@ -149,6 +146,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'partner_id': self.partner_sii.id,
             'move_type': 'out_invoice',
             'invoice_date': '2019-10-23',
+            'invoice_date_due': '2019-10-23',
             'currency_id': self.env.ref('base.CLP').id,
             'journal_id': self.sale_journal.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_cl.dc_a_f_dte').id,
@@ -218,10 +216,8 @@ class TestL10nClDte(TestL10nClEdiCommon):
             self.get_xml_tree_from_string(xml_expected_dte.encode()),
         )
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_33_with_discounts(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
-
+    @freeze_time('2019-10-24T20:00:00', tz_offset=3)
+    def test_l10n_cl_dte_33_with_discounts(self):
         self.tax_19 = self.env['account.tax'].search([
             ('name', '=', 'IVA 19% Venta'),
             ('company_id', '=', self.company_data['company'].id)])
@@ -229,6 +225,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'partner_id': self.partner_sii.id,
             'move_type': 'out_invoice',
             'invoice_date': '2019-10-23',
+            'invoice_date_due': '2019-10-23',
             'currency_id': self.env.ref('base.CLP').id,
             'journal_id': self.sale_journal.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_cl.dc_a_f_dte').id,
@@ -272,10 +269,8 @@ class TestL10nClDte(TestL10nClEdiCommon):
             self.get_xml_tree_from_string(xml_expected_dte.encode()),
         )
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_34(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-22T20:23:27'
-
+    @freeze_time('2019-10-22T20:23:27', tz_offset=3)
+    def test_l10n_cl_dte_34(self):
         self.product_a.write({
             'name': 'Desk Combination',
             'default_code': 'FURN_7800'
@@ -285,6 +280,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'partner_id': self.partner_sii.id,
             'move_type': 'out_invoice',
             'invoice_date': '2019-10-22',
+            'invoice_date_due': '2019-10-22',
             'currency_id': self.env.ref('base.CLP').id,
             'journal_id': self.sale_journal.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_cl.dc_y_f_dte').id,
@@ -295,12 +291,14 @@ class TestL10nClDte(TestL10nClEdiCommon):
                 'product_uom_id': self.product_a.uom_id.id,
                 'quantity': 1,
                 'price_unit': 1200000.0,
+                'tax_ids': [],
             }), (0, 0, {
                 'name': 'Desk Combination',
                 'product_id': self.product_a.id,
                 'product_uom_id': self.product_a.uom_id.id,
                 'quantity': 1,
                 'price_unit': 2400000.0,
+                'tax_ids': [],
             })],
         })
 
@@ -317,10 +315,8 @@ class TestL10nClDte(TestL10nClEdiCommon):
             self.get_xml_tree_from_string(xml_expected_dte.encode()),
         )
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_56(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
-
+    @freeze_time('2019-10-24T20:00:00', tz_offset=3)
+    def test_l10n_cl_dte_56(self):
         self.tax_19 = self.env['account.tax'].search([
             ('name', '=', 'IVA 19% Venta'),
             ('company_id', '=', self.company_data['company'].id)])
@@ -329,6 +325,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'partner_id': self.partner_sii.id,
             'move_type': 'out_invoice',
             'invoice_date': '2019-10-23',
+            'invoice_date_due': '2019-10-23',
             'currency_id': self.env.ref('base.CLP').id,
             'journal_id': self.sale_journal.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_cl.dc_nd_f_dte').id,
@@ -414,10 +411,8 @@ class TestL10nClDte(TestL10nClEdiCommon):
             self.get_xml_tree_from_string(xml_expected_dte.encode()),
         )
 
-    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
-    def test_l10n_cl_dte_110(self, get_cl_current_strftime):
-        get_cl_current_strftime.return_value = '2019-10-22T20:23:27'
-
+    @freeze_time('2019-10-22T20:23:27', tz_offset=3)
+    def test_l10n_cl_dte_110(self):
         foreign_partner = self.env['res.partner'].create({
             'name': 'Mitchell Admin',
             'country_id': self.env.ref('base.us').id,
@@ -439,9 +434,10 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'currency_id': currency_usd.id,
             'rate': 0.0013})
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
-            'partner_id': foreign_partner,
+            'partner_id': foreign_partner.id,
             'move_type': 'out_invoice',
             'invoice_date': '2019-10-22',
+            'invoice_date_due': '2019-10-22',
             'currency_id': currency_usd.id,
             'journal_id': self.sale_journal.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_cl.dc_fe_dte').id,
@@ -451,6 +447,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
                 'product_uom_id': self.product_a.uom_id.id,
                 'quantity': 2,
                 'price_unit': 5018.75,
+                'tax_ids': [],
             })],
         })
 

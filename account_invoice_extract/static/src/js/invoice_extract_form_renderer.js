@@ -3,7 +3,7 @@
 import InvoiceExtractBoxLayer from '@account_invoice_extract/js/invoice_extract_box_layer';
 import InvoiceExtractFields from '@account_invoice_extract/js/invoice_extract_fields';
 
-import FormRenderer from 'web.FormRenderer';
+import {AccountMoveFormRenderer} from '@account/js/account_move_form';
 
 /**
  * This is the renderer of the subview that adds OCR features on the attachment
@@ -12,8 +12,8 @@ import FormRenderer from 'web.FormRenderer';
  * the user can manually selects another box. Boxes are only visible in 'edit'
  * mode.
  */
-var InvoiceExtractFormRenderer = FormRenderer.extend({
-    custom_events: _.extend({}, FormRenderer.prototype.custom_events, {
+var InvoiceExtractFormRenderer = AccountMoveFormRenderer.extend({
+    custom_events: _.extend({}, AccountMoveFormRenderer.custom_events, {
         active_invoice_extract_field: '_onActiveInvoiceExtractField',
         preview_attachment_validation: '_onAttachmentPreviewValidation',
         choice_ocr_invoice_extract_box: '_onChoiceOcrInvoiceExtractBox',

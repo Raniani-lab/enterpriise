@@ -59,7 +59,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
+                '<form string="Account Invoice" js_class="account_move_form">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
@@ -200,7 +200,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
+                '<form string="Account Invoice" js_class="account_move_form">' +
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
@@ -289,7 +289,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
+                '<form string="Account Invoice" js_class="account_move_form">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
@@ -387,7 +387,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
+                '<form string="Account Invoice" js_class="account_move_form">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +

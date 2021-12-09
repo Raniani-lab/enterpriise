@@ -1499,27 +1499,27 @@ class TestTaxReport(TestAccountReportsCommon):
         })
 
         # Create a misc operation using various combinations of our taxes
-        move_form = Form(self.env['account.move'] \
-                    .with_company(self.company_data['company']) \
-                    .with_context(default_move_type='entry', account_predictive_bills_disable_prediction=True))
-        move_form.date = '2021-08-01'
-        move_form.journal_id = self.company_data['default_journal_misc']
-        for taxes in (caba_tax, regular_tax, caba_tax + regular_tax):
-            with move_form.line_ids.new() as line_form:
-                line_form.name = "Test with %s" % ', '.join(taxes.mapped('name'))
-                line_form.account_id = self.company_data['default_account_revenue']
-                line_form.credit = 100
-                line_form.tax_ids.clear()
-                for tax in taxes:
-                    line_form.tax_ids.add(tax)
+        move = self.env['account.move'].create({
+            'date': '2021-08-01',
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                Command.create({
+                    'name': "Test with %s" % ', '.join(taxes.mapped('name')),
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'credit': 100,
+                    'tax_ids': [Command.set(taxes.ids)],
+                })
+                for taxes in (caba_tax, regular_tax, caba_tax + regular_tax)
+            ] + [
+                Command.create({
+                    'name': "Balancing line",
+                    'account_id': self.company_data['default_account_assets'].id,
+                    'debit': 408.2,
+                    'tax_ids': [],
+                })
+            ]
+        })
 
-        with move_form.line_ids.new() as balancing_line:
-            balancing_line.name = "Balancing line"
-            balancing_line.account_id = self.company_data['default_account_assets']
-            # Rely on automatic value to balance the entry
-            balancing_line.tax_ids.clear()
-
-        move = move_form.save()
         move.action_post()
 
         self.assertTrue(move.always_tax_exigible, "A move without payable/receivable line should always be exigible, whatever its taxes.")
@@ -1587,6 +1587,7 @@ class TestTaxReport(TestAccountReportsCommon):
                         'quantity': 1,
                         'account_id': account.id,
                         'price_unit': 200,
+                        'tax_ids': [],
                     }),
                 ],
             })
@@ -2010,7 +2011,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 line.tax_ids.clear()
                 line.tax_ids.add(tax)
 
-                self.assertTrue(line.recompute_tax_line)
             # Create a third account.move.line for balance.
             with move_form.line_ids.new() as line:
                 if tax.type_tax_use == 'sale':

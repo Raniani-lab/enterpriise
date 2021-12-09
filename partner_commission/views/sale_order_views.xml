@@ -14,7 +14,7 @@
                                                          'invisible': [('referrer_id', '=', False)]}"
                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
             </field>
-            <field name="tax_totals_json" position="after">
+            <field name="tax_totals" position="after">
                 <field name="commission" widget='monetary' options="{'currency_field': 'currency_id'}" attrs="{'invisible': ['|', ('referrer_id', '=', False), ('commission_plan_id', '=', False)]}"/>
             </field>
         </field>

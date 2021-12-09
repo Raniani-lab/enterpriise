@@ -7,10 +7,9 @@ import os
 
 from lxml import etree
 
-from odoo.tests import Form
 from xmlrpc import client as xmlrpclib
 
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -252,9 +251,9 @@ class FetchmailServer(models.Model):
 
             except Exception as error:
                 _logger.info(error)
-                with Form(self.env['account.move'].with_context(
+                with self.env['account.move'].with_context(
                         default_move_type=default_move_type, allowed_company_ids=[company_id],
-                        account_predictive_bills_disable_prediction=True)) as invoice_form:
+                        account_predictive_bills_disable_prediction=True)._get_edi_creation() as invoice_form:
                     msgs.append(error)
                     invoice_form.partner_id = partner
                     invoice_form.l10n_latam_document_type_id = document_type
@@ -262,7 +261,7 @@ class FetchmailServer(models.Model):
 
             if not partner:
                 invoice_form.narration = issuer_vat or ''
-            move = invoice_form.save()
+            move = invoice_form
 
             dte_attachment = self.env['ir.attachment'].create({
                 'name': 'DTE_{}.xml'.format(document_number),
@@ -296,12 +295,14 @@ class FetchmailServer(models.Model):
         """
         This method creates a draft vendor bill from the attached xml in the incoming email.
         """
-        with Form(self.env['account.move'].with_context(
-                # `invoice_source_email` is not visible if `False`, which is the case for a new move
-                # {'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('invoice_source_email', '=', False)]}
+        with self.env['account.move'].with_context(
                 default_invoice_source_email=from_address,
                 default_move_type=default_move_type, allowed_company_ids=[company_id],
-                account_predictive_bills_disable_prediction=True)) as invoice_form:
+                account_predictive_bills_disable_prediction=True)._get_edi_creation() as invoice_form:
+            journal = self._get_dte_purchase_journal(company_id)
+            if journal:
+                invoice_form.journal_id = journal
+
             invoice_form.partner_id = partner
             invoice_date = dte_xml.findtext('.//ns0:FchEmis', namespaces=XML_NAMESPACES)
             if invoice_date is not None:
@@ -314,35 +315,41 @@ class FetchmailServer(models.Model):
             if invoice_date_due is not None:
                 invoice_form.invoice_date_due = fields.Date.from_string(invoice_date_due)
 
-            journal = self._get_dte_purchase_journal(company_id)
-            if journal:
-                invoice_form.journal_id = journal
             currency = self._get_dte_currency(dte_xml)
             if currency:
                 invoice_form.currency_id = currency
 
             invoice_form.l10n_latam_document_type_id = document_type
             invoice_form.l10n_latam_document_number = document_number
-            for invoice_line in self._get_dte_lines(dte_xml, company_id, partner.id):
-                price_unit = invoice_line.get('price_unit')
-                with invoice_form.invoice_line_ids.new() as invoice_line_form:
-                    invoice_line_form.product_id = invoice_line.get('product', self.env['product.product'])
-                    invoice_line_form.name = invoice_line.get('name')
-                    invoice_line_form.quantity = invoice_line.get('quantity')
-                    invoice_line_form.price_unit = price_unit
-                    invoice_line_form.discount = invoice_line.get('discount', 0)
-
-                    if not invoice_line.get('default_tax'):
-                        invoice_line_form.tax_ids.clear()
-                    for tax in invoice_line.get('taxes', []):
-                        invoice_line_form.tax_ids.add(tax)
-            for reference_line in self._get_invoice_references(dte_xml):
-                with invoice_form.l10n_cl_reference_ids.new() as reference_line_form:
-                    reference_line_form.origin_doc_number = reference_line['origin_doc_number']
-                    reference_line_form.reference_doc_code = reference_line['reference_doc_code']
-                    reference_line_form.l10n_cl_reference_doc_type_id = reference_line['l10n_cl_reference_doc_type_id']
-                    reference_line_form.reason = reference_line['reason']
-                    reference_line_form.date = reference_line['date']
+            dte_lines = self._get_dte_lines(dte_xml, company_id, partner.id)
+            invoice_form.write({
+                'invoice_line_ids': [
+                    Command.create({
+                        'product_id': dte_line.get('product', self.env['product.product']).id,
+                        'name': dte_line.get('name'),
+                        'quantity': dte_line.get('quantity'),
+                        'price_unit': dte_line.get('price_unit'),
+                        'discount': dte_line.get('discount', 0),
+                        'tax_ids': [Command.set([tax.id for tax in dte_line.get('taxes', [])])],
+                    })
+                    for dte_line in dte_lines
+                ],
+                'l10n_cl_reference_ids': [
+                    Command.create({
+                        'origin_doc_number': reference_line['origin_doc_number'],
+                        'reference_doc_code': reference_line['reference_doc_code'],
+                        'l10n_cl_reference_doc_type_id': reference_line['l10n_cl_reference_doc_type_id'].id,
+                        'reason': reference_line['reason'],
+                        'date': reference_line['date'],
+                    })
+                    for reference_line in self._get_invoice_references(dte_xml)
+                ],
+            })
+            for line, dte_line in zip(invoice_form.invoice_line_ids, dte_lines):
+                if dte_line.get('default_tax'):
+                    default_tax = line._get_computed_taxes()
+                    if default_tax not in line.tax_ids:
+                        line.tax_ids += default_tax
         return invoice_form, msgs
 
     def _is_dte_email(self, attachment_content):

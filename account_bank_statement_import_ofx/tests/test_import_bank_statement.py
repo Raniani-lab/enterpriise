@@ -50,24 +50,24 @@ class TestAccountBankStatementImportOFX(AccountTestInvoicingCommon):
                 'payment_ref': 'Axelor Scuba',
                 'amount': -100.0,
                 'partner_id': False,
-                'partner_bank_id': False,
+                'account_number': False,
             },
             {
                 'payment_ref': 'China Export',
                 'amount': -90.0,
                 'partner_id': False,
-                'partner_bank_id': False,
+                'account_number': False,
             },
             {
                 'payment_ref': 'China Scuba',
                 'amount': -90.0,
                 'partner_id': False,
-                'partner_bank_id': False,
+                'account_number': False,
             },
             {
                 'payment_ref': partner_norbert.name,
                 'amount': -80.0,
                 'partner_id': partner_norbert.id,
-                'partner_bank_id': partner_bank_norbert.id,
+                'account_number': partner_bank_norbert.acc_number,
             },
         ])

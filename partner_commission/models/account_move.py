@@ -157,8 +157,8 @@ class AccountMove(models.Model):
             })
         return super(AccountMove, self)._reverse_moves(default_values_list=default_values_list, cancel=cancel)
 
-    def action_invoice_paid(self):
-        res = super().action_invoice_paid()
+    def _invoice_paid_hook(self):
+        res = super()._invoice_paid_hook()
         self.filtered(lambda move: move.move_type == 'out_refund')._make_commission()
         self.filtered(lambda move: move.move_type == 'out_invoice')._make_commission()
         return res

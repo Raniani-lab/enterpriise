@@ -3,11 +3,10 @@
 from contextlib import contextmanager
 from unittest.mock import patch
 
-from odoo import api, fields, models, tools, _, _lt
+from odoo import api, fields, models, _lt, Command
 from odoo.addons.iap.tools import iap_tools
-from odoo.exceptions import AccessError, ValidationError , UserError
-from odoo.tests.common import Form
-from odoo.tools import float_compare, mute_logger
+from odoo.exceptions import AccessError, ValidationError
+from odoo.tools import mute_logger
 from odoo.tools.misc import clean_context
 import logging
 import math
@@ -663,8 +662,12 @@ class AccountMove(models.Model):
                     'name': description,
                     'price_unit': il['subtotal'],
                     'quantity': 1.0,
-                    'tax_ids': il['taxes_records']
+                    'tax_ids': [Command.link(i) for i in il['taxes_records'].ids],
                 }
+                if not vals['tax_ids'] and self.company_id.account_purchase_tax_id.price_include:
+                    # If the total amount doesn't change, we can actually put the default taxes.
+                    # This is intended as a way to keep intra-community taxes
+                    del vals['tax_ids']
 
                 invoice_lines_to_create.append(vals)
         else:
@@ -778,9 +781,7 @@ class AccountMove(models.Model):
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         qr_bill_ocr = ocr_results['qr-bill']['selected_value']['content'] if 'qr-bill' in ocr_results else None
 
-        with self.get_form_context_manager() as move_form:
-            if not move_form._get_modifier('date', 'invisible'):
-                move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
+        with self._get_edi_creation() as move_form:
             if not move_form.partner_id:
                 if vat_number_ocr:
                     partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
@@ -870,13 +871,13 @@ class AccountMove(models.Model):
                     })
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
-            context_create_date = str(fields.Date.context_today(self, self.create_date))
+            context_create_date = fields.Date.context_today(self, self.create_date)
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date):
                 move_form.invoice_date = date_ocr
                 if self.company_id.tax_lock_date and move_form.date and move_form.date <= self.company_id.tax_lock_date:
                     move_form.date = self.company_id.tax_lock_date + timedelta(days=1)
                     self.add_warning(WARNING_DATE_PRIOR_OF_LOCK_DATE)
-            if due_date_ocr and (not due_date_move_form or due_date_move_form == context_create_date):
+            if due_date_ocr and (due_date_move_form == context_create_date):
                 if date_ocr == due_date_ocr and move_form.partner_id and move_form.partner_id.property_supplier_payment_term_id:
                     # if the invoice date and the due date found by the OCR are the same, we use the payment terms of the detected supplier instead, if there is one
                     move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
@@ -889,7 +890,7 @@ class AccountMove(models.Model):
                 with mute_logger('odoo.tests.common.onchange'):
                     move_form.name = invoice_id_ocr
 
-            if not move_form.currency_id or move_form.currency_id == self._get_default_currency():
+            if currency_ocr and move_form.currency_id == move_form.company_currency_id:
                 currency = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
@@ -899,76 +900,19 @@ class AccountMove(models.Model):
             if payment_ref_ocr and not move_form.payment_reference:
                 move_form.payment_reference = payment_ref_ocr
 
-            if not move_form.invoice_line_ids:
+            add_lines = not move_form.invoice_line_ids
+            if add_lines:
                 # we save here as _get_invoice_lines() uses the record values in self to determine the tax records to use
-                move_form.save()
 
                 vals_invoice_lines = self._get_invoice_lines(ocr_results)
-                self._set_invoice_lines(move_form, vals_invoice_lines)
+                move_form.invoice_line_ids = [
+                    Command.create(line_vals)
+                    for line_vals in vals_invoice_lines
+                ]
 
-                # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
-
-                # if the user has not the `account.group_account_readonly`,
-                # `line_ids` is supposed to be invisible in the form view and therefore you shouldn't be able to edit it
-                # <page id="aml_tab" string="Journal Items" groups="account.group_account_readonly">
-                #     <field name="line_ids"
-                # Here as it's not a test checking how the interface behaves, we bypass this invisible mecanism.
-                move_form._view['modifiers']['line_ids']['invisible'] = False
-
-                for i in range(len(move_form.line_ids)):
-                    with move_form.line_ids.edit(i) as line:
-                        if line.tax_repartition_line_id and total_ocr:
-                            rounding_error = move_form.amount_total - total_ocr
-                            threshold = len(vals_invoice_lines) * move_form.currency_id.rounding
-                            if not move_form.currency_id.is_zero(rounding_error) and float_compare(abs(rounding_error), threshold, precision_digits=2) <= 0:
-                                if self.is_purchase_document():
-                                    line.debit -= rounding_error
-                                else:
-                                    line.credit -= rounding_error
-                            break
-
-    def _set_invoice_lines(self, move_form, vals_invoice_lines):
-        for i, line_val in enumerate(vals_invoice_lines, start=len(move_form.invoice_line_ids)):
-            with move_form.invoice_line_ids.new() as line:
-                line.name = line_val['name']
-                if not line.account_id:
-                    raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
-
-            # We close and re-open the line to let account_predictive_bills do the predictions based on the label
-            with move_form.invoice_line_ids.edit(i) as line:
-                line.price_unit = line_val['price_unit']
-                line.quantity = line_val['quantity']
-                taxes_dict = {}
-                for tax in line.tax_ids:
-                    taxes_dict[(tax.amount, tax.amount_type, tax.price_include)] = {
-                        'found_by_OCR': False,
-                        'tax_record': tax,
-                    }
-                for taxes_record in line_val['tax_ids']:
-                    tax_tuple = (taxes_record.amount, taxes_record.amount_type, taxes_record.price_include)
-                    if tax_tuple not in taxes_dict:
-                        line.tax_ids.add(taxes_record)
-                    else:
-                        taxes_dict[tax_tuple]['found_by_OCR'] = True
-                    if taxes_record.price_include:
-                        line.price_unit *= 1 + taxes_record.amount / 100
-                for tax_info in taxes_dict.values():
-                    if not tax_info['found_by_OCR']:
-                        amount_before = line.price_total
-                        line.tax_ids.remove(tax_info['tax_record'].id)
-                        # If the total amount didn't change after removing it, we can actually leave it.
-                        # This is intended as a way to keep intra-community taxes
-                        if line.price_total == amount_before:
-                            line.tax_ids.add(tax_info['tax_record'])
-
-    @contextmanager
-    def get_form_context_manager(self):
-        self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
-        self_ctx = self_ctx.with_company(self.company_id.id)
-        if 'default_journal_id' not in self_ctx._context:
-            self_ctx = self_ctx.with_context(default_journal_id=self_ctx.journal_id.id)
-        with patch.object(Form, '_process_fvg', side_effect=_process_fvg, autospec=True), Form(self_ctx) as move_form:
-            yield move_form
+        # check the tax roundings after the tax lines have been synced
+        if add_lines:
+            move_form._check_total_amount(total_ocr)
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')
@@ -995,13 +939,3 @@ class AccountMove(models.Model):
                 if codes[int(math.log2(warning_code))] == '1':
                     warnings.add(warning_code)
         return warnings
-
-
-old_process_fvg = Form._process_fvg
-
-
-def _process_fvg(self, model, fvg, level=2):
-    old_process_fvg(self, model, fvg, level=level)
-    for modifiers in fvg['modifiers'].values():
-        if 'required' in modifiers:
-            modifiers['required'] = False

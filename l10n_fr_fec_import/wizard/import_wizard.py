@@ -465,7 +465,6 @@ class FecImportWizard(models.TransientModel):
                 "name": move_line_name,
                 "ref": piece_ref,
                 "account_id": account.id,
-                "exclude_from_invoice_tab": account.account_type in ('asset_receivable', 'liability_payable') and journal.type in ('sale', 'purchase'),
                 "fec_matching_number": matching or False,
             }
 

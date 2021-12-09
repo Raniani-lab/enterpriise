@@ -400,7 +400,6 @@ class WinbooksImportWizard(models.TransientModel):
                     'amount_currency': rec.get('CURRAMOUNT') if currency and rec.get('CURRAMOUNT') else 0.0,
                     'amount_residual_currency': rec.get('CURRAMOUNT') if currency and rec.get('CURRAMOUNT') else 0.0,
                     'winbooks_matching_number': matching_number,
-                    'exclude_from_invoice_tab': rec.get('DOCORDER') == 'VAT' or (account_id.account_type in ('asset_receivable', 'liability_payable') and journal_id.type in ('sale', 'purchase')),
                 }
                 if matching_number:
                     reconcile_number_set.add(matching_number)

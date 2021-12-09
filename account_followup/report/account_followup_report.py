@@ -16,7 +16,7 @@ class AccountFollowUpReport(models.AbstractModel):
         for partner in partners:
             for invoice in partner.unpaid_invoices:
                 if invoice.display_qr_code:
-                    new_code_url = invoice.generate_qr_code()
+                    new_code_url = invoice._generate_qr_code()
                     if new_code_url:
                         qr_code_urls[invoice.id] = new_code_url
 

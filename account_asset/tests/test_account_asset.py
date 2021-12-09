@@ -1051,17 +1051,14 @@ class TestAccountAsset(TestAccountReportsCommon):
             "ref": "line1",
             "move_type": "in_invoice",
             "invoice_date": "2020-12-31",
-            "line_ids": [
+            "invoice_line_ids": [
                 (0, 0, {
                     "account_id": account.id,
-                    "debit": 800.0,
+                    "price_unit": 400.0,
                     "name": "stuff",
                     "quantity": 2,
                     "product_uom_id": self.env.ref('uom.product_uom_unit').id,
-                }),
-                (0, 0, {
-                    'account_id': self.company_data['default_account_assets'].id,
-                    'credit': 800.0,
+                    "tax_ids": [],
                 }),
             ]
         })
@@ -1202,35 +1199,35 @@ class TestAccountAsset(TestAccountReportsCommon):
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [
                 (0, 0, {
-                    'product_id': product_b,
+                    'product_id': product_b.id,
                     'name': 'Product B',
                     'account_id': account_assets_multiple.id,
                     'price_unit': 200.0,
                     'quantity': 4,
                 }),
                 (0, 0, {
-                    'product_id': product_a,
+                    'product_id': product_a.id,
                     'name': 'Product A',
                     'account_id': self.company_data['default_account_assets'].id,
                     'price_unit': 100.0,
                     'quantity': 7,
                 }),
                 (0, 0, {
-                    'product_id': product_a,
+                    'product_id': product_a.id,
                     'name': 'Product A',
                     'account_id': account_assets_multiple.id,
                     'price_unit': 100.0,
                     'quantity': 5,
                 }),
                 (0, 0, {
-                    'product_id': product_a,
+                    'product_id': product_a.id,
                     'name': 'Product A',
                     'account_id': account_assets_multiple.id,
                     'price_unit': 150.0,
                     'quantity': 6,
                 }),
                 (0, 0, {
-                    'product_id': product_a,
+                    'product_id': product_a.id,
                     'name': 'Product A',
                     'account_id': self.company_data['default_account_assets'].id,
                     'price_unit': 100.0,

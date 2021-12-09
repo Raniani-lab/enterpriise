@@ -336,6 +336,8 @@ class TestEdiResults(TestMxEdiCommon):
                     <xpath expr="//Concepto" position="before">
                         <Concepto
                             Cantidad="5.000000"
+                            ClaveUnidad="KGM"
+                            Unidad="kg"
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="10000.000"
@@ -379,6 +381,8 @@ class TestEdiResults(TestMxEdiCommon):
                 'partner_id': self.partner_a.id,
                 'invoice_date': '2017-01-01',
                 'date': '2017-01-01',
+                'invoice_date_due': '2017-01-01',
+                'invoice_payment_term_id': False,
                 'currency_id': self.company_data['currency'].id,
                 'invoice_incoterm_id': self.env.ref('account.incoterm_FCA').id,
                 'invoice_line_ids': [
@@ -429,6 +433,8 @@ class TestEdiResults(TestMxEdiCommon):
                     <xpath expr="//Concepto" position="replace">
                         <Concepto
                             Cantidad="1.000000"
+                            ClaveUnidad="KGM"
+                            Unidad="kg"
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="398.28"
@@ -445,6 +451,8 @@ class TestEdiResults(TestMxEdiCommon):
                         </Concepto>
                         <Concepto
                             Cantidad="1.000000"
+                            ClaveUnidad="KGM"
+                            Unidad="kg"
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="108.62"
@@ -461,6 +469,8 @@ class TestEdiResults(TestMxEdiCommon):
                         </Concepto>
                         <Concepto
                             Cantidad="1.000000"
+                            ClaveUnidad="KGM"
+                            Unidad="kg"
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="362.07"
@@ -477,6 +487,8 @@ class TestEdiResults(TestMxEdiCommon):
                         </Concepto>
                         ''' + '''<Concepto
                             Cantidad="1.000000"
+                            ClaveUnidad="KGM"
+                            Unidad="kg"
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="31.90"
@@ -631,7 +643,13 @@ class TestEdiResults(TestMxEdiCommon):
                 'currency_id': self.currency_data['currency'].id,
                 'invoice_date': '2016-12-31',
                 'date': '2016-12-31',
-                'invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'price_unit': 750.0})],
+                'invoice_line_ids': [
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 750.0,
+                        'tax_ids': [],
+                    },
+                )],
             })
             invoice.action_post()
 

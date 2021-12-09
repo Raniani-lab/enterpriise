@@ -9,7 +9,7 @@ from datetime import datetime
 # This test class has to be tested at install since the flow is modified in industry_fsm_stock
 # where the SO gets confirmed as soon as a product is added in an FSM task which causes the
 # tests of this class to fail
-class TestMultiCompanyCommon(TestSaleCommonBase):
+class TestMultiCompany(TestSaleCommonBase):
 
     @classmethod
     def setUpClass(cls):

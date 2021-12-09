@@ -3,6 +3,7 @@ from freezegun import freeze_time
 
 from odoo.tests import tagged
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
+from odoo import Command
 
 
 @tagged('post_install', '-at_install')
@@ -55,7 +56,11 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'move_type': 'out_invoice',
             'invoice_date': '2016-01-01',
             'partner_id': self.partner_a.id,
-            'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 500})]
+            'invoice_line_ids': [Command.create({
+                'quantity': 1,
+                'price_unit': 500,
+                'tax_ids': [],
+            })]
         })
         invoice_1.action_post()
 
@@ -94,7 +99,12 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'invoice_date': '2016-01-05',
             'invoice_date_due': '2016-01-10',
             'partner_id': self.partner_a.id,
-            'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 200})]
+            'invoice_payment_term_id': False,
+            'invoice_line_ids': [Command.create({
+                'quantity': 1,
+                'price_unit': 200,
+                'tax_ids': [],
+            })]
         })
         invoice_2.action_post()
 
@@ -120,7 +130,11 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'move_type': 'out_refund',
             'invoice_date': '2016-01-15',
             'partner_id': self.partner_a.id,
-            'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 1000})]
+            'invoice_line_ids': [Command.create({
+                'quantity': 1,
+                'price_unit': 1000,
+                'tax_ids': [],
+            })]
         })
 
         with freeze_time('2016-01-15'):
@@ -145,7 +159,11 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'invoice_date': '2016-01-20',
             'partner_id': self.partner_a.id,
             'currency_id': self.currency_data['currency'].id,
-            'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 300})]
+            'invoice_line_ids': [Command.create({
+                'quantity': 1,
+                'price_unit': 300,
+                'tax_ids': [],
+            })]
         })
         invoice_4.action_post()
 

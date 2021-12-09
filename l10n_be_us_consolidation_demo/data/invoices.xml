@@ -13,13 +13,13 @@
             <field name="invoice_line_ids" model="account.account" eval="[
                 (0,0,{
                     'product_id': ref('product.consu_delivery_02'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]).id,
                     'price_unit': 642.0,
                     'quantity': 5
                 }),
                 (0,0,{
                     'product_id': ref('product.consu_delivery_03'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]).id,
                     'price_unit': 280.0,
                     'quantity': 5
                 }),
@@ -36,13 +36,13 @@
             <field name="invoice_line_ids" model="account.account" eval="[
                 (0,0,{
                     'product_id': ref('product.consu_delivery_03'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]).id,
                     'price_unit': 50.0,
                     'quantity': 5
                 }),
                 (0,0,{
                     'product_id': ref('product.consu_delivery_01'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]).id,
                     'price_unit': 25.0,
                     'quantity': 20
                 }),
@@ -58,13 +58,13 @@
             <field name="invoice_line_ids" model="account.account" eval="[
                 (0,0,{
                     'product_id': ref('product.consu_delivery_01'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]).id,
                     'price_unit': 90.0,
                     'quantity': 5
                 }),
                 (0,0,{
                     'product_id': ref('product.consu_delivery_03'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '700000')]).id,
                     'price_unit': 15.0,
                     'quantity': 5
                 }),
@@ -83,13 +83,13 @@
             <field name="invoice_line_ids" model="account.account" eval="[
                 (0,0,{
                     'product_id': ref('product.product_delivery_01'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '300000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '300000')]).id,
                     'price_unit': 10.0,
                     'quantity': 1
                 }),
                 (0,0,{
                     'product_id': ref('product.product_order_01'),
-                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '300000')]),
+                    'account_id': obj().search([('company_id', '=', ref('l10n_be.demo_company_be')), ('code', '=', '300000')]).id,
                     'price_unit': 4.0,
                     'quantity': 5
                 }),

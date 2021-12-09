@@ -34,6 +34,7 @@ class TestDiot(TestAccountReportsCommon):
                     {
                         'move_type': 'in_invoice',
                         'partner_id': partner.id,
+                        'invoice_payment_term_id': False,
                         'invoice_date': date_invoice,
                         'date': date_invoice,
                         'invoice_line_ids': [(0, 0, {
@@ -46,6 +47,7 @@ class TestDiot(TestAccountReportsCommon):
                     {
                         'move_type': 'in_refund',
                         'partner_id': partner.id,
+                        'invoice_payment_term_id': False,
                         'invoice_date': date_invoice,
                         'date': date_invoice,
                         'invoice_line_ids': [(0, 0, {

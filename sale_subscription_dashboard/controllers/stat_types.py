@@ -94,7 +94,7 @@ def compute_net_revenue(start_date, end_date, filters):
         "account_move_line.move_id = account_move.id",
         "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
-        "account_move_line.exclude_from_invoice_tab = False",
+        "account_move_line.display_type = 'product'",
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {
@@ -150,7 +150,7 @@ def compute_nrr(start_date, end_date, filters):
         "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_start_date IS NULL",
-        "account_move_line.exclude_from_invoice_tab = false",
+        "account_move_line.display_type = 'product'",
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {

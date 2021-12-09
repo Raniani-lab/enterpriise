@@ -80,6 +80,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             'payment_method_id': payment_method_line.payment_method_id.id,
         })
 
+        self.env.flush_all()
+
         # Mount the batch inside the bank reconciliation widget.
         st_line = self._create_st_line(1000.0)
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})

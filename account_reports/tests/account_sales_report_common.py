@@ -29,7 +29,7 @@ class AccountSalesReportCommon(TestAccountReportsCommon):
         for partner, tax, price_unit in data:
             move_vals_list.append({
                 'move_type': 'out_invoice',
-                'partner_id': partner,
+                'partner_id': partner.id,
                 'invoice_date': fields.Date.from_string('2019-12-01'),
                 'invoice_line_ids': [
                     (0, 0, {

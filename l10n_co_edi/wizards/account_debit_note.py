@@ -46,8 +46,6 @@ class AccountDebitNote(models.TransientModel):
                 'name': line.name,
                 'quantity': line.quantity,
                 'price_unit': line.price_unit,
-                'exclude_from_invoice_tab': line.account_id.account_type in [
-                    'asset_receivable', 'liability_payable'] or line.tax_line_id,
                 'tax_repartition_line_id': self._get_repartition_line(line).id,
                 'tax_ids': [[6, 0, line.tax_ids.ids]],
                 'tax_tag_ids': self._get_opposite_tax_tag(line),

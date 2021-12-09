@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0326
 
-from .common import TestAccountReportsCommon
-
-from odoo import fields
-from odoo.tests import tagged
-from odoo.osv.expression import OR
-from odoo.tools import ustr
 
 import ast
-
 from freezegun import freeze_time
+
+from odoo import fields, Command
+from odoo.osv.expression import OR
+from odoo.tools import ustr
+from odoo.tests import tagged
+
+from .common import TestAccountReportsCommon
+
 
 
 @tagged('post_install', '-at_install')
@@ -191,7 +192,11 @@ class TestFinancialReport(TestAccountReportsCommon):
             'move_type': 'out_invoice',
             'partner_id': self.partner_a.id,
             'date': '2016-02-02',
-            'invoice_line_ids': [(0, 0, {'product_id': self.product_a.id, 'price_unit': 110})]
+            'invoice_line_ids': [Command.create({
+                'product_id': self.product_a.id,
+                'price_unit': 110,
+                'tax_ids': [],
+            })]
         })
         invoice.action_post()
 
@@ -251,7 +256,11 @@ class TestFinancialReport(TestAccountReportsCommon):
                 'move_type': 'out_invoice',
                 'partner_id': self.partner_a.id,
                 'invoice_date': f'20{year}-{month}-01',
-                'invoice_line_ids': [(0, 0, {'product_id': self.product_a.id, 'price_unit': 1000})]
+                'invoice_line_ids': [Command.create({
+                    'product_id': self.product_a.id,
+                    'price_unit': 1000,
+                    'tax_ids': [],
+                })]
             })
             invoice.action_post()
         expected_result =[
@@ -640,6 +649,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             ],
         })
         move.action_post()
+        move.line_ids.flush_recordset()
 
         report = self.env["account.financial.html.report"].create({
             'name': "test_financial_report_sum_if_x_groupby",
@@ -744,6 +754,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             },
         ])
         moves.action_post()
+        moves.line_ids.flush_recordset()
 
         report = self.env["account.financial.html.report"].create({
             'name': "test_financial_report_sum",
@@ -800,5 +811,6 @@ class TestFinancialReport(TestAccountReportsCommon):
         })
 
         move.action_post()
+        move.line_ids.flush_recordset()
 
         self.assertLinesValues(report._get_table(options)[1], [0, 1, 2, 3], [])

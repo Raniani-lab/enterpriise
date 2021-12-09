@@ -276,7 +276,7 @@ class SaleOrder(models.Model):
             ('move_id.invoice_user_id', '=', user_id),
             ('move_id.invoice_date', '>=', start_date),
             ('move_id.invoice_date', '<=', end_date),
-            ('subscription_mrr', '=', 0), ('exclude_from_invoice_tab', '=', False)
+            ('subscription_mrr', '=', 0), ('display_type', '=', 'product')
         ], fields=searched_fields, order='move_id')
         company_ids = self.env['res.company']
         for k, invoice_lines_it in groupby(invoice_line_ids, key=lambda x: x['move_id']):

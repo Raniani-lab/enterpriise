@@ -2,6 +2,7 @@
 from .common import TestMxEdiCommon, mocked_l10n_mx_edi_pac
 from odoo.tests import tagged
 from odoo.tools import mute_logger
+from odoo import Command
 
 from freezegun import freeze_time
 from unittest.mock import patch
@@ -25,7 +26,11 @@ class TestCfdiPaymentMultiCurrencies(TestMxEdiCommon):
             'currency_id': currency.id,
             'invoice_date': invoice_date,
             'date': invoice_date,
-            'invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'price_unit': amount})],
+            'invoice_line_ids': [Command.create({
+                'product_id': self.product.id,
+                'price_unit': amount,
+                'tax_ids': [],
+            })],
         })
         invoice.action_post()
         return invoice

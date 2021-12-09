@@ -20,10 +20,6 @@
         "l10n_mx",
         "l10n_mx_edi",
     ],
-    "demo": [
-        "demo/res_company_demo.xml",
-        "demo/res_partner_demo.xml",
-    ],
     "data": [
         "data/account_financial_report_data.xml",
         "data/country_data.xml",

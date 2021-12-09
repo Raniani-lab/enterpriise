@@ -18,6 +18,9 @@ class TestIntrastatReport(TestAccountReportsCommon):
             'intrastat': True,
         })
         cls.company_data['company'].country_id = country
+        cls.env['account.tax'].search([
+            ('company_id', '=', cls.company_data['company'].id),
+        ]).country_id = country
         cls.report = cls.env['account.intrastat.report'].with_context(allowed_company_ids=cls.company_data['company'].ids)
         cls.partner_a = cls.env['res.partner'].create({
             'name': 'Yoyodyne BE',
@@ -65,6 +68,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                 'quantity': 1,
                 'product_uom_id': self.env.ref('uom.product_uom_unit').id,
                 'price_unit': 10,
+                'tax_ids': [],
             })]
         })
         no_supplementary_units_invoice.action_post()
@@ -98,6 +102,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                     'quantity': 123,
                     'product_uom_id': self.env.ref('uom.product_uom_unit').id,
                     'price_unit': 10,
+                    'tax_ids': [],
                 }),
                 # 20 (dozen) -> 240 (units) -> 240 (p/st)
                 (0, 0, {
@@ -105,6 +110,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                     'quantity': 20,
                     'product_uom_id': self.env.ref('uom.product_uom_dozen').id,
                     'price_unit': 10,
+                    'tax_ids': [],
                 }),
                 # 123 (units) -> 1.23 (100 p/st)
                 (0, 0, {
@@ -112,6 +118,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                     'quantity': 123,
                     'product_uom_id': self.env.ref('uom.product_uom_unit').id,
                     'price_unit': 10,
+                    'tax_ids': [],
                 }),
                 # 20 (dozen) -> 240 (units) -> 2.4 (100 p/st)
                 (0, 0, {
@@ -119,6 +126,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                     'quantity': 20,
                     'product_uom_id': self.env.ref('uom.product_uom_dozen').id,
                     'price_unit': 10,
+                    'tax_ids': [],
                 }),
             ]
         })
@@ -157,6 +165,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                     'quantity': 1.23,
                     'product_uom_id': self.env.ref('uom.product_uom_km').id,
                     'price_unit': 10,
+                    'tax_ids': [],
                 }),
             ]
         })

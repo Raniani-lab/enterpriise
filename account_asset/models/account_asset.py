@@ -638,12 +638,16 @@ class AccountAsset(models.Model):
             return (0, 0, {
                 'name': asset.name,
                 'account_id': account.id,
-                'debit': 0.0 if float_compare(amount, 0.0, precision_digits=prec) > 0 else -amount,
-                'credit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
+                'balance': -amount,
                 'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
                 'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
-                'currency_id': current_currency.id,
-                'amount_currency': -asset.value_residual,
+                'currency_id': asset.currency_id.id,
+                'amount_currency': -asset.company_id.currency_id._convert(
+                    from_amount=amount,
+                    to_currency=asset.currency_id,
+                    company=asset.company_id,
+                    date=disposal_date,
+                )
             })
 
         move_ids = []
@@ -660,9 +664,6 @@ class AccountAsset(models.Model):
                     raise UserError('There are depreciation posted in the future, please revert them.')
             account_analytic_id = asset.account_analytic_id
             analytic_tag_ids = asset.analytic_tag_ids
-            company_currency = asset.company_id.currency_id
-            current_currency = asset.currency_id
-            prec = company_currency.decimal_places
             unposted_depreciation_move_ids = asset.depreciation_move_ids.filtered(lambda x: x.state == 'draft')
 
             old_values = {

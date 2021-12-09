@@ -183,7 +183,7 @@ class AccountEdiFormat(models.Model):
             units = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_unit')) for line in lines)
             total_units = int(units)
 
-            withholding_amount = invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda line: line.tax_line_id and not line.tax_line_id.l10n_co_edi_type.retention).mapped('price_total'))
+            withholding_amount = invoice.amount_untaxed + abs(sum(invoice.line_ids.filtered(lambda line: line.tax_line_id and not line.tax_line_id.l10n_co_edi_type.retention).mapped('amount_currency')))
             amount_in_words = invoice.currency_id.with_context(lang=invoice.partner_id.lang or 'es_ES').amount_to_text(withholding_amount)
 
             reg_a_tag = re.compile('<a.*?>')
@@ -255,7 +255,7 @@ class AccountEdiFormat(models.Model):
         # The rate should indicate how many pesos is one foreign currency
         currency_rate = "%.2f" % (tax_details['base_amount'] / tax_details['base_amount_currency'])
 
-        withholding_amount = '%.2f' % (invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('price_total')))
+        withholding_amount = '%.2f' % (invoice.amount_untaxed + abs(sum(invoice.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('amount_currency'))))
 
         # edi_type
         if invoice.move_type == 'out_refund':

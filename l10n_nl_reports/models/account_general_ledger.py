@@ -325,7 +325,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             'opening_credit': sum_credit,
             'opening_lines': opening_lines,
             'company': company,
-            'account_data': list(vals_dict['account_data'].values()),
+            'account_data': sorted(vals_dict['account_data'].values(), key=(lambda d: d['account_code'])),
             'partner_data': list(vals_dict['partner_data'].values()),
             'journal_data': list(vals_dict['journal_data'].values()),
             'tax_data': list(vals_dict['tax_data'].values()),

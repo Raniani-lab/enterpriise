@@ -14,6 +14,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         (self.company_a + self.company_b).write({
             'rule_type': 'invoice_and_refund'
         })
+        self.env.ref('base.EUR').active = True
 
         # Create customer invoice for company A. (No need to call onchange as all the needed values are specified)
         self.res_users_company_a.company_ids = [(4, self.company_b.id)]

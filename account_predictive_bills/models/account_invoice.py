@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from contextlib import contextmanager
 from odoo import api, fields, models
 import re
 
@@ -11,49 +12,17 @@ _logger = logging.getLogger(__name__)
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    @api.onchange('line_ids', 'invoice_payment_term_id', 'invoice_date_due', 'invoice_cash_rounding_id', 'invoice_vendor_bill_id')
-    def _onchange_recompute_dynamic_lines(self):
-        # OVERRIDE
-        if not self._context.get('account_predictive_bills_disable_prediction'): # This context key is used in tests
-            to_predict_lines = self.invoice_line_ids.filtered(lambda line: line.predict_from_name)
-            to_predict_lines.predict_from_name = False
-            for line in to_predict_lines:
-                # Predict product.
-                if not line.product_id:
-                    predicted_product_id = line._predict_product()
-                    if predicted_product_id and predicted_product_id != line.product_id.id:
-                        name = line.name
-                        line.product_id = predicted_product_id
-                        line._onchange_product_id()
-                        line.name = name
-                        line._onchange_price_subtotal()
-                        line.recompute_tax_line = True
-
-                # Product may or may not have been set above, if it has been set, account and taxes are set too
-                if not line.product_id:
-                    # Predict account.
-                    predicted_account_id = line._predict_account()
-                    if predicted_account_id and predicted_account_id != line.account_id.id:
-                        line.account_id = predicted_account_id
-                        line._onchange_account_id()
-                        line.recompute_tax_line = True
-
-                    # Predict taxes
-                    predicted_tax_ids = line._predict_taxes()
-                    if predicted_tax_ids == [None]:
-                        predicted_tax_ids = []
-                    if predicted_tax_ids is not False and set(predicted_tax_ids) != set(line.tax_ids.ids):
-                        line.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
-                        line.recompute_tax_line = True
-
-        return super(AccountMove, self)._onchange_recompute_dynamic_lines()
+    @contextmanager
+    def _get_edi_creation(self):
+        with super()._get_edi_creation() as move:
+            previous_lines = move.invoice_line_ids
+            yield move
+            for line in move.invoice_line_ids - previous_lines:
+                line._onchange_name_predictive()
 
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
-
-    predict_from_name = fields.Boolean(store=False,
-        help="Technical field used to know on which lines the prediction must be done.")
 
     def _get_predict_postgres_dictionary(self):
         lang = self._context.get('lang') and self._context.get('lang')[:2]
@@ -63,8 +32,7 @@ class AccountMoveLine(models.Model):
         query = self.env['account.move.line']._where_calc([
             ('move_id.move_type', '=', self.move_id.move_type),
             ('move_id.state', '=', 'posted'),
-            ('display_type', '=', False),
-            ('exclude_from_invoice_tab', '=', False),
+            ('display_type', '=', 'product'),
             ('company_id', '=', self.move_id.journal_id.company_id.id or self.env.company.id),
         ] + (additional_domain or []))
         query.order = 'account_move_line__move_id.invoice_date DESC'
@@ -178,9 +146,32 @@ class AccountMoveLine(models.Model):
         return self._predicted_field(field, query, additional_queries)
 
     @api.onchange('name')
-    def _onchange_enable_predictive(self):
+    def _onchange_name_predictive(self):
+        if self._context.get('account_predictive_bills_disable_prediction'):
+            return
+
         enabled_types = ['in_invoice']
         if self.env['ir.config_parameter'].sudo().get_param('account_predictive_bills.activate_out_invoice'):
             enabled_types += ['out_invoice']
-        if self.move_id.move_type in enabled_types and self.name and not self.display_type:
-            self.predict_from_name = True
+
+        if self.move_id.move_type in enabled_types and self.name and self.display_type == 'product':
+            if not self.product_id:
+                predicted_product_id = self._predict_product()
+                if predicted_product_id and predicted_product_id != self.product_id.id:
+                    name = self.name
+                    self.product_id = predicted_product_id
+                    self.name = name
+
+            # Product may or may not have been set above, if it has been set, account and taxes are set too
+            if not self.product_id:
+                # Predict account.
+                predicted_account_id = self._predict_account()
+                if predicted_account_id and predicted_account_id != self.account_id.id:
+                    self.account_id = predicted_account_id
+
+                # Predict taxes
+                predicted_tax_ids = self._predict_taxes()
+                if predicted_tax_ids == [None]:
+                    predicted_tax_ids = []
+                if predicted_tax_ids is not False and set(predicted_tax_ids) != set(self.tax_ids.ids):
+                    self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)

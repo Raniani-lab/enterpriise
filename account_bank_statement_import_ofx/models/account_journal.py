@@ -134,19 +134,15 @@ class AccountJournal(models.Model):
             for transaction in account.statement.transactions:
                 # Since ofxparse doesn't provide account numbers, we'll have to find res.partner and res.partner.bank here
                 # (normal behaviour is to provide 'account_number', which the generic module uses to find partner/bank)
-                bank_account_id = partner_id = False
                 partner_bank = self.env['res.partner.bank'].search([('partner_id.name', '=', transaction.payee)], limit=1)
-                if partner_bank:
-                    bank_account_id = partner_bank.id
-                    partner_id = partner_bank.partner_id.id
                 vals_line = {
                     'date': transaction.date,
                     'payment_ref': transaction.payee + (transaction.memo and ': ' + transaction.memo or ''),
                     'ref': transaction.id,
                     'amount': float(transaction.amount),
                     'unique_import_id': transaction.id,
-                    'partner_bank_id': bank_account_id,
-                    'partner_id': partner_id,
+                    'account_number': partner_bank.acc_number,
+                    'partner_id': partner_bank.partner_id.id,
                     'sequence': len(transactions) + 1,
                 }
                 total_amt += float(transaction.amount)

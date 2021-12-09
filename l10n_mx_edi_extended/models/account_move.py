@@ -152,7 +152,7 @@ class AccountMoveLine(models.Model):
             if line.l10n_mx_edi_qty_umt:
                 line.l10n_mx_edi_price_unit_umt = round(line.quantity * line.price_unit / line.l10n_mx_edi_qty_umt, 2)
             else:
-                line.l10n_mx_edi_price_unit_umt = line.l10n_mx_edi_price_unit_umt
+                line.l10n_mx_edi_price_unit_umt = line.price_unit
 
     # -------------------------------------------------------------------------
     # CONSTRAINT METHODS

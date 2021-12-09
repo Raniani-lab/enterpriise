@@ -75,6 +75,7 @@ class TestResPartner(AccountTestInvoicingCommon):
         invoice = cls.env['account.move'].create({
             'move_type': 'in_invoice',
             'partner_id': partner_id.id,
+            'invoice_payment_term_id': False,
             'invoice_date': fields.Date.from_string(date),
             'currency_id': cls.currency_data['currency'].id,
             'invoice_line_ids': [
@@ -86,9 +87,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                     'quantity': 1.0,
                     'discount': 0.0,
                     'price_unit': amount,
-                    'amount_currency': 0.0,
-                    'debit': amount,
-                    'credit': 0.0,
+                    'tax_ids': [],
                 }),
             ]
         })
@@ -859,8 +858,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                     'partner_id': self.partner_b.id,
                     'quantity': 1.0,
                     'price_unit': 1000.0,
-                    'debit': 1000.0,
-                    'credit': 0.0,
+                    'tax_ids': [],
                 })
                 for account_id in self.create_tagged_accounts()
             ],
@@ -897,8 +895,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                     'partner_id': self.partner_b.id,
                     'quantity': 1.0,
                     'price_unit': 1500.0,
-                    'debit': 1500.0,
-                    'credit': 0.0,
+                    'tax_ids': [],
                 })
                 for account_id in self.create_tagged_accounts()
             ],

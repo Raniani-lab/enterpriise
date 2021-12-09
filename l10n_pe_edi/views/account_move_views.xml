@@ -52,9 +52,6 @@
                 <xpath expr="//field[@name='line_ids']//tree/field[@name='tax_ids']" position="after">
                     <field name="l10n_pe_edi_affectation_reason" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='line_ids']//tree/field[@name='discount']" position="after">
-                    <field name="l10n_pe_edi_allowance_charge_reason_code" invisible="1"/>
-                </xpath>
             </field>
         </record>
     </data>

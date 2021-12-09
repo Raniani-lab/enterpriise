@@ -149,7 +149,7 @@
                 <!-- Reorganize the prices and notes to display recurring summary -->
                 <group name="note_group" col="6" class="mt-2 mt-md-0">
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
-                        <field name="tax_totals_json" widget="account-tax-totals-field" nolabel="1" colspan="2"/>
+                        <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
                         <field name="recurring_pricing_details" nolabel="1" colspan="2"/>
                     </group>
                      <group colspan="4">

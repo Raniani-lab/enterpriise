@@ -53,9 +53,14 @@ class AppraisalAskFeedback(models.TransientModel):
 
     @api.depends('employee_id')
     def _compute_subject(self):
-        for wizard in self.filtered('employee_id'):
-            if wizard.template_id:
-                wizard.subject = self.sudo()._render_template(wizard.template_id.subject, 'hr.appraisal', wizard.appraisal_id.ids, post_process=True)[wizard.appraisal_id.id]
+        for wizard_su in self.filtered(lambda w: w.employee_id and w.template_id).sudo():
+            wizard_su.subject = wizard_su._render_template(
+                wizard_su.template_id.subject,
+                'hr.appraisal',
+                wizard_su.appraisal_id.ids,
+                engine='inline_template',
+                options={'post_process': True}
+            )[wizard_su.appraisal_id.id]
 
     @api.depends('appraisal_id.date_close')
     def _compute_deadline(self):
@@ -123,7 +128,7 @@ class AppraisalAskFeedback(models.TransientModel):
         ctx = {
             'user_body': user_body
         }
-        body = self.with_context(**ctx)._render_field('body', answer.ids, post_process=True)[answer.id]
+        body = self.with_context(**ctx)._render_field('body', answer.ids)[answer.id]
         mail_values = {
             'email_from': self.email_from,
             'author_id': self.author_id.id,

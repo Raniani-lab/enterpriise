@@ -234,7 +234,7 @@ class AccountFollowupReport(models.AbstractModel):
         responsible_signature = html2plaintext(partner_followup_responsible_id.signature or partner_followup_responsible_id.name)
         default_body = _("Dear client, we kindly remind you that you still have unpaid invoices. Please check them and take appropriate action. %s", responsible_signature)
 
-        return self._get_rendered_body(partner.id, template_src, default_body, post_process=True)
+        return self._get_rendered_body(partner.id, template_src, default_body, options={'post_process': True})
 
     @api.model
     def _get_main_body(self, options):
@@ -263,7 +263,7 @@ Best Regards,
 """, partner.name)
 
         default_body_html = plaintext2html(default_body) + responsible_signature  # responsible_signature is an html field
-        return self._get_rendered_body(partner.id, template_src, default_body_html, engine='qweb', post_process=True)
+        return self._get_rendered_body(partner.id, template_src, default_body_html, engine='qweb', options={'post_process': True})
 
     @api.model
     def _get_email_subject(self, options):
@@ -282,7 +282,7 @@ Best Regards,
         company_name = self.env.company.name
         default_body = _("%s Payment Reminder - %s", company_name, partner_name)
 
-        return self._get_rendered_body(partner.id, template_src, default_body, post_process=True)
+        return self._get_rendered_body(partner.id, template_src, default_body, options={'post_process': True})
 
     ####################################################
     # REPORT DATA

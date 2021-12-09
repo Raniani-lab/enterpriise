@@ -211,8 +211,8 @@ class HrAppraisal(models.Model):
                     'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id),
                 }
                 mail_template = mail_template.with_context(**ctx)
-                subject = mail_template._render_field('subject', appraisal.ids, post_process=False)[appraisal.id]
-                body = mail_template._render_field('body_html', appraisal.ids, post_process=True)[appraisal.id]
+                subject = mail_template._render_field('subject', appraisal.ids)[appraisal.id]
+                body = mail_template._render_field('body_html', appraisal.ids)[appraisal.id]
                 # post the message
                 mail_values = {
                     'email_from': self.env.user.email_formatted,

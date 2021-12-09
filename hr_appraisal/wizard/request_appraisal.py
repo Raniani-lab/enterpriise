@@ -73,9 +73,14 @@ class RequestAppraisal(models.TransientModel):
 
     @api.depends('employee_id')
     def _compute_subject(self):
-        for wizard in self.filtered('employee_id'):
-            if wizard.template_id:
-                wizard.subject = self.sudo()._render_template(wizard.template_id.subject, 'res.users', self.env.user.ids, post_process=True)[self.env.user.id]
+        for wizard_su in self.filtered(lambda w: w.employee_id and w.template_id).sudo():
+            wizard_su.subject = wizard_su.template_id._render_template(
+                wizard_su.template_id.subject,
+                'res.users',
+                self.env.user.ids,
+                engine='inline_template',
+                options={'post_process': True}
+            )[self.env.user.id]
 
     @api.depends('template_id', 'recipient_ids')
     def _compute_body(self):
@@ -91,7 +96,13 @@ class RequestAppraisal(models.TransientModel):
                     'url': "ctx['url']",
                     'user_body': user_body
                 }
-                wizard.body = self.with_context(ctx).sudo()._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False, engine='qweb')[self.env.user.id]
+                wizard.body = self.with_context(ctx).sudo()._render_template(
+                    wizard.template_id.body_html,
+                    'res.users',
+                    self.env.user.ids,
+                    engine='qweb',
+                    options={'post_process': False}
+                )[self.env.user.id]
             elif not wizard.body:
                 wizard.body = ''
 
@@ -116,8 +127,8 @@ class RequestAppraisal(models.TransientModel):
             'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id),
         }
         context_self = self.with_context(ctx)
-        subject = context_self._render_field('subject', appraisal.ids, post_process=False)[appraisal.id]
-        body = context_self._render_field('body', appraisal.ids, engine='qweb', post_process=True)[appraisal.id]
+        subject = context_self._render_field('subject', appraisal.ids)[appraisal.id]
+        body = context_self._render_field('body', appraisal.ids)[appraisal.id]
 
         appraisal.message_post(
             subject=subject,

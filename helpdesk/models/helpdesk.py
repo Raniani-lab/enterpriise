@@ -318,6 +318,30 @@ class HelpdeskTeam(models.Model):
     def _get_helpdesk_use_rating_group(self):
         return self.env.ref('helpdesk.group_use_rating')
 
+    def _check_sla_feature_enabled(self, check_user_has_group=False):
+        """ Check if the SLA feature is enabled
+
+            Check if the user can see at least one helpdesk team with `use_sla=True`
+            and if the user has the `group_use_sla` group (only done if the `check_user_has_group` parameter is True)
+
+            :param check_user_has_group: If True, then check if the user has the `group_use_sla`
+            :return True if the feature is enabled otherwise False.
+        """
+        user_has_group = self.user_has_groups('helpdesk.group_use_sla') if check_user_has_group else True
+        return user_has_group and self.env['helpdesk.team'].search([('use_sla', '=', True)], limit=1)
+
+    def _check_rating_feature_enabled(self, check_user_has_group=False):
+        """ Check if the Customer Rating feature is enabled
+
+            Check if the user can see at least one helpdesk team with `use_rating=True`
+            and if the user has the `group_use_rating` group (only done if the `check_user_has_group` parameter is True)
+
+            :param check_user_has_group: If True, then check if the user has the `group_use_rating`
+            :return True if the feature is enabled otherwise False.
+        """
+        user_has_group = self.user_has_groups('helpdesk.group_use_rating') if check_user_has_group else True
+        return user_has_group and self.env['helpdesk.team'].search([('use_rating', '=', True)], limit=1)
+
     def _check_sla_group(self):
         sla_teams = self.filtered('use_sla')
         non_sla_teams = self - sla_teams
@@ -335,7 +359,7 @@ class HelpdeskTeam(models.Model):
 
         if non_sla_teams:
             self.env['helpdesk.sla'].search([('team_id', 'in', non_sla_teams.ids)]).write({'active': False})
-            if user_has_use_sla_group and not self.env['helpdesk.team'].search([('use_sla', '=', True)], limit=1):
+            if user_has_use_sla_group and not self._check_sla_feature_enabled():
                 use_sla_group = use_sla_group or self._get_helpdesk_use_sla_group()
                 helpdesk_user_group = helpdesk_user_group or self._get_helpdesk_user_group()
                 helpdesk_user_group.write({'implied_ids': [Command.unlink(use_sla_group.id)]})
@@ -348,7 +372,7 @@ class HelpdeskTeam(models.Model):
         if rating_teams and not user_has_use_rating_group:
             self._get_helpdesk_user_group()\
                 .write({'implied_ids': [Command.link(self._get_helpdesk_use_rating_group().id)]})
-        elif self - rating_teams and user_has_use_rating_group and not self.env['helpdesk.team'].search([('use_rating', '=', True)], limit=1):
+        elif self - rating_teams and user_has_use_rating_group and not self._check_rating_feature_enabled():
             use_rating_group = self._get_helpdesk_use_rating_group()
             self._get_helpdesk_user_group()\
                 .write({'implied_ids': [Command.unlink(use_rating_group.id)]})
@@ -413,8 +437,7 @@ class HelpdeskTeam(models.Model):
         domain = [('user_id', '=', self.env.uid)]
         group_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
         list_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
-        user_uses_sla = self.user_has_groups('helpdesk.group_use_sla') and\
-            bool(self.env['helpdesk.team'].search([('use_sla', '=', True)], limit=1))
+        user_uses_sla = self._check_sla_feature_enabled(check_user_has_group=True)
 
         if user_uses_sla:
             group_fields.insert(1, 'sla_deadline:year')
@@ -478,7 +501,7 @@ class HelpdeskTeam(models.Model):
         result['my_high']['hours'] = fields.Float.round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
         result['my_urgent']['hours'] = fields.Float.round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)
 
-        if self.env['helpdesk.team'].search([('use_rating', '=', True)], limit=1):
+        if self._check_rating_feature_enabled(check_user_has_group=True):
             result['rating_enable'] = True
             # rating of today
             domain = [('user_id', '=', self.env.uid)]

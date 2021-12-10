@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.2alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-25 14:29+0000\n"
-"PO-Revision-Date: 2023-01-25 14:29+0000\n"
+"POT-Creation-Date: 2023-02-22 12:12+0000\n"
+"PO-Revision-Date: 2023-02-22 12:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -262,6 +262,32 @@ msgid "Net profit/Loss for the Year"
 msgstr "Årets resultat/underskudd"
 
 #. module: l10n_no_reports
+#. odoo-python
+#: code:addons/l10n_no_reports/models/tax_report.py:0
+#, python-format
+msgid "No KID number, please set one up for company %s"
+msgstr "Ingen KID-nummer, vennligst sett opp et for selskap %s"
+
+#. module: l10n_no_reports
+#. odoo-python
+#: code:addons/l10n_no_reports/models/tax_report.py:0
+#, python-format
+msgid ""
+"No number for the Register of Legal Entities, please set one up for company "
+"%s"
+msgstr "Ikke noe nummer for Enhetsregisteret, vennligst sett opp ett for selskap %s"
+
+#. module: l10n_no_reports
+#: model:ir.model,name:l10n_no_reports.model_l10n_no_tax_report_handler
+msgid "Norvegian Tax Report Custom Handler"
+msgstr ""
+
+#. module: l10n_no_reports
+#: model_terms:ir.ui.view,arch_db:l10n_no_reports.no_evat_template
+msgid "Odoo SA"
+msgstr ""
+
+#. module: l10n_no_reports
 #: model:account.report.line,name:l10n_no_reports.account_financial_report_NO_operating_costs
 msgid "Operating Costs"
 msgstr "Driftskostnader"
@@ -448,6 +474,25 @@ msgid "Tax on Ordinary Result"
 msgstr "Skatt på ordinært resultat"
 
 #. module: l10n_no_reports
+#. odoo-python
+#: code:addons/l10n_no_reports/models/tax_report.py:0
+#, python-format
+msgid ""
+"The chosen date interval is invalid, it should be from the start of one "
+"month to the end of the other month"
+msgstr "Det valgte datointervallet er ugyldig, det skal være fra begynnelsen "
+"av en måned til slutten av den andre måneden."
+
+#. module: l10n_no_reports
+#. odoo-python
+#: code:addons/l10n_no_reports/models/tax_report.py:0
+#, python-format
+msgid ""
+"The chosen dates do not correspond to a valid time interval for the tax "
+"return XML"
+msgstr "De valgte datoene samsvarer ikke med et gyldig tidsintervall for selvangivelsen XML"
+
+#. module: l10n_no_reports
 #: model:account.report.line,name:l10n_no_reports.account_financial_report_NO_trade_creditors
 msgid "Trade Creditors"
 msgstr "Handelskreditorer"
@@ -466,3 +511,11 @@ msgstr "Nedskrivninger"
 #: model:account.report.line,name:l10n_no_reports.account_financial_report_NO_write_downs_of_short_terms_investments
 msgid "Write-Downs of Short-Terms Investments"
 msgstr "Nedskrivninger av kortsiktige investeringer"
+
+#. module: l10n_no_reports
+#. odoo-python
+#: code:addons/l10n_no_reports/models/tax_report.py:0
+#: code:addons/l10n_no_reports/models/tax_report.py:0
+#, python-format
+msgid "XML"
+msgstr ""

@@ -222,7 +222,7 @@ class SaleSubscription(models.Model):
         recurring_last_invoice = recurring_next_invoice - invoicing_period
         time_to_invoice = recurring_next_invoice - date
         ratio = float(time_to_invoice.days) / float((recurring_next_invoice - recurring_last_invoice).days)
-        period_msg = _("Invoicing period") + ": %s - %s" % (format_date(self.env, date), format_date(self.env, recurring_next_invoice))
+        period_msg = _("Invoicing period") + ": %s - %s" % (format_date(self.env, date), format_date(self.env, recurring_next_invoice - relativedelta(days=1))) # The period does not include the next renewal date
         if (ratio < 0 or ratio > 1):
             message = _(
                 "Discount computation failed because the upsell date is not between the next "

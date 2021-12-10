@@ -449,6 +449,7 @@
                 <separator/>
                 <filter string="Open" domain="[('stage_id.is_close', '=', False), ('stage_id.fold', '=', False)]" name="is_open"/>
                 <filter string="Closed" domain="['|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True)]" name="is_close"/>
+                <filter string="Closed in Last 7 days" name="closed_last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
                 <separator />
                 <filter name="rating_satisfied" string="Satisfied" domain="[('rating_avg', '&gt;', 3.66)]" groups="helpdesk.group_use_rating"/>
                 <filter name="rating_okay" string="Okay" domain="[('rating_avg', '&lt;', 3.66), ('rating_avg', '&gt;=', 2.33)]" groups="helpdesk.group_use_rating"/>
@@ -456,8 +457,6 @@
                 <filter name="no_rating" string="No Rating" domain="[('rating_last_value', '=', 0)]" groups="helpdesk.group_use_rating"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
-                <separator/>
-                <filter string="Closed in Last 7 days" name="closed_last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
                 <separator/>
                 <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"

@@ -233,7 +233,7 @@ class Appointment(http.Controller):
             elif kwargs.get(question_key) and question.question_type in ['char', 'text']:
                 question_answer_inputs.append({'question_id': question.id, 'value_text_box': kwargs.get(question_key).strip()})
             elif kwargs.get(question_key) and question.question_type in ['select', 'radio']:
-                selected_answer = next((answer for answer in question.answer_ids if answer.name == kwargs.get(question_key)))
+                selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(kwargs.get(question_key)))
                 if selected_answer:
                     question_answer_inputs.append({'question_id': question.id, 'value_answer_id': selected_answer.id})
 
@@ -257,6 +257,9 @@ class Appointment(http.Controller):
             elif question.question_type == 'text' and kwargs.get(key):
                 answers = [line for line in kwargs[key].split('\n') if line.strip()]
                 description_bits.append('%s:<br/>%s' % (question.name, plaintext2html(kwargs.get(key).strip())))
+            elif question.question_type in ['select', 'radio'] and kwargs.get(key):
+                selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(kwargs.get(key)))
+                description_bits.append('%s: %s' % (question.name, selected_answer.name))
             elif kwargs.get(key):
                 description_bits.append('%s: %s' % (question.name, kwargs.get(key).strip()))
         if description_bits:

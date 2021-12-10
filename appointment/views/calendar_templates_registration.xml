@@ -67,7 +67,7 @@
                                                 t-att-required="question.question_required or None"
                                                 t-att-placeholder="question.placeholder">
                                                 <t t-foreach="question.answer_ids or []" t-as="answer">
-                                                    <option t-att-value="answer.name"><t t-out="answer.name"/></option>
+                                                    <option t-att-value="answer.id"><t t-out="answer.name"/></option>
                                                 </t>
                                             </select>
                                         </t>
@@ -76,7 +76,7 @@
                                                 <label>
                                                     <input type="radio" t-attf-name="question_#{question.id}"
                                                         t-att-required="question.question_required or None"
-                                                        t-att-value="answer.name" class="mr-1"/> <t t-out="answer.name"/>
+                                                        t-att-value="answer.id" class="mr-1"/> <t t-out="answer.name"/>
                                                 </label>
                                             </div>
                                         </t>

@@ -205,7 +205,7 @@ class BpostRequest():
                   'boxes': boxes,
                   }
         xml = carrier.env['ir.qweb']._render('delivery_bpost.bpost_shipping_request', values)
-        code, response = self._send_request('send', xml, carrier)
+        code, response = self._send_request('send', xml.encode(), carrier)
         if code != 201 and response:
             try:
                 root = etree.fromstring(response)

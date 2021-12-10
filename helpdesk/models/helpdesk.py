@@ -19,7 +19,7 @@ class HelpdeskTeam(models.Model):
     _inherit = ['mail.alias.mixin', 'mail.thread', 'rating.parent.mixin']
     _description = "Helpdesk Team"
     _order = 'sequence,name'
-    _rating_satisfaction_days = 30  # include only last 30 days to compute satisfaction
+    _rating_satisfaction_days = 7  # include only last 7 days to compute satisfaction and average
 
     _sql_constraints = [('not_portal_show_rating_if_not_use_rating',
                          'check (portal_show_rating = FALSE OR use_rating = TRUE)',

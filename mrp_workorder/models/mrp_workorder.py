@@ -154,11 +154,12 @@ class MrpProductionWorkcenterLine(models.Model):
         report_type = quality_point_id.test_report_type
 
         if self.product_id.tracking == 'none':
+            xml_id = 'product.action_open_label_layout'
+            wizard_action = self.env['ir.actions.act_window']._for_xml_id(xml_id)
+            wizard_action['context'] = {'default_product_ids': self.product_id.ids}
             if report_type == 'zpl':
-                xml_id = 'stock.label_barcode_product_product'
-            else:
-                xml_id = 'product.report_product_product_barcode'
-            res = self.env.ref(xml_id).report_action([self.product_id.id] * qty)
+                wizard_action['context'].update({'default_print_format': 'zpl'})
+            res = wizard_action
         else:
             if self.finished_lot_id:
                 if report_type == 'zpl':

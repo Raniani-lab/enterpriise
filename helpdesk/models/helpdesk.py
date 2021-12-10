@@ -603,7 +603,7 @@ class HelpdeskTeam(models.Model):
                 **action_params['context'],
                 'search_default_sla_failed': True,
             },
-            'domain': expression.AND(action_params['domain'], [('sla_fail', '=', True)]),
+            'domain': expression.AND([action_params['domain'], [('sla_fail', '=', True)]]),
         })
         return action
 

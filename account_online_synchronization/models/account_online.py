@@ -126,7 +126,7 @@ class AccountOnlineLink(models.Model):
     name = fields.Char(help="Institution Name", readonly=True)
     client_id = fields.Char(help="Represent a link for a given user towards a banking institution", readonly=True)
     refresh_token = fields.Char(help="Token used to sign API request, Never disclose it", readonly=True, groups="base.group_system")
-    access_token = fields.Char(help="Token used to access API.", readonly=True, groups="account.group_account_manager")
+    access_token = fields.Char(help="Token used to access API.", readonly=True, groups="account.group_account_user")
     provider_data = fields.Char(help="Information needed to interract with third party provider", readonly=True)
 
     ##########################

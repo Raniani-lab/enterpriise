@@ -289,7 +289,7 @@ class assets_report(models.AbstractModel):
                        asset.acquisition_date as asset_acquisition_date,
                        asset.method as asset_method,
                        (
-                           account_move_count.count
+                           COALESCE(account_move_count.count, 0)
                            + COALESCE(asset.depreciation_number_import, 0)
                            - CASE WHEN asset.prorata THEN 1 ELSE 0 END
                        ) as asset_method_number,

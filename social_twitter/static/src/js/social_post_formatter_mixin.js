@@ -14,7 +14,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
     var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
     if (mediaType === 'twitter') {
         formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
-                `<a href='https://twitter.com/hashtag/$1?src=hash' target='_blank'>#$1</a>`);
+                `$1<a href='https://twitter.com/hashtag/$2?src=hash' target='_blank'>#$2</a>`);
         formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_AT,
                 `<a href='https://twitter.com/$1' target='_blank'>@$1</a>`);
     }

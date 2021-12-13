@@ -15,7 +15,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
 
     if (mediaType === 'facebook' || mediaType === 'facebook_preview') {
         formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
-                `<a href='https://www.facebook.com/hashtag/$1' target='_blank'>#$1</a>`);
+                `$1<a href='https://www.facebook.com/hashtag/$2' target='_blank'>#$2</a>`);
 
         if (mediaType !== 'facebook_preview') {
             // Facebook uses a special regex for "@person" support.

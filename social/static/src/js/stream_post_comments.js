@@ -5,6 +5,7 @@ import { qweb as QWeb, _t } from 'web.core';
 import Dialog from 'web.Dialog';
 import dom from 'web.dom';
 import emojis from '@mail/js/emojis';
+import { escape } from '@web/core/utils/strings';
 import PostKanbanImagesCarousel from 'social.social_post_kanban_images_carousel';
 import MailEmojisMixin from '@mail/js/emojis_mixin';
 import { Markup } from 'web.utils';
@@ -510,17 +511,8 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         return $.ajax(endpoint, params);
     },
 
-    /**
-     * Adapted from qweb2.js#html_escape to avoid formatting '&'
-     *
-     * @param {String} s
-     * @private
-     */
     _htmlEscape: function (s) {
-        if (s == null) {
-            return '';
-        }
-        return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return escape(s);
     },
 
     /**

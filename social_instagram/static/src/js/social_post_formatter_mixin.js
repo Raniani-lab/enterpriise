@@ -16,7 +16,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
         formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_AT,
             `<a href='https://www.instagram.com/$1' target='_blank'>@$1</a>`);
         formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
-            `<a href='https://www.instagram.com/explore/tags/$1' target='_blank'>#$1</a>`);
+            `$1<a href='https://www.instagram.com/explore/tags/$2' target='_blank'>#$2</a>`);
     }
     return formattedValue;
 };

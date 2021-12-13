@@ -14,7 +14,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
     var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
     if (mediaType === 'linkedin') {
        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
-                `<a href='https://www.linkedin.com/feed/hashtag/$1' target='_blank'>#$1</a>`);
+                `$1<a href='https://www.linkedin.com/feed/hashtag/$2' target='_blank'>#$2</a>`);
     }
     return formattedValue;
 };

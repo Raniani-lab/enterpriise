@@ -15,7 +15,7 @@ SocialPostFormatterMixin._formatPost = function (formattedValue) {
 
     if (mediaType === 'youtube' || mediaType === 'youtube_preview') {
         formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
-                `<a href='https://www.youtube.com/results?search_query=%23$1' target='_blank'>#$1</a>`);
+                `$1<a href='https://www.youtube.com/results?search_query=%23$2' target='_blank'>#$2</a>`);
     }
     return formattedValue;
 };

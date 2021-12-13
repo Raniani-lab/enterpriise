@@ -10,14 +10,14 @@ QUnit.module('Social Formatter Regex', {}, () => {
         SocialPostFormatterMixin._getMediaType = () => 'facebook';
         SocialPostFormatterMixin.accountId = 42;
 
-        const testMessage = 'Hello @[542132] Odoo-Social, check this out: https://www.odoo.com #crazydeals #odoo';
+        const testMessage = 'Hello @[542132] Odoo-Social, check this out: https://www.odoo.com?utm=mail&param=1 #crazydeals #odoo';
         const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
 
         assert.equal(finalMessage, [
             "Hello",
             "<a href='/social_facebook/redirect_to_profile/42/542132?name=Odoo-Social' target='_blank'>Odoo-Social</a>,",
             "check this out:",
-            "<a href='https://www.odoo.com' target='_blank' rel='noreferrer noopener'>https://www.odoo.com</a>",
+            "<a href='https://www.odoo.com?utm=mail&amp;param=1' target='_blank' rel='noreferrer noopener'>https://www.odoo.com?utm=mail&amp;param=1</a>",
             "<a href='https://www.facebook.com/hashtag/crazydeals' target='_blank'>#crazydeals</a>",
             "<a href='https://www.facebook.com/hashtag/odoo' target='_blank'>#odoo</a>",
         ].join(' '));

@@ -182,7 +182,6 @@ class TestPushNotification(MailCommon):
 
     @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')
     def test_push_notifications_mail_replay(self, jsonrpc):
-        self._init_mail_gateway()
         test_record = self.env['mail.test.gateway'].with_context(self._test_context).create({
             'name': 'Test',
             'email_from': 'ignasse@example.com',

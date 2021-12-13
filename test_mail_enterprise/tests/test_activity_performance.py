@@ -12,30 +12,20 @@ class TestActivityPerformance(BaseMailPerformance):
     @classmethod
     def setUpClass(cls):
         super(TestActivityPerformance, cls).setUpClass()
-        cls.user_admin = cls.env.ref('base.user_admin')
-        cls.user_admin.write({
-            'country_id': cls.env.ref('base.be').id,
-            'email': 'test.admin@test.example.com',
-            'notification_type': 'inbox',
-        })
-        cls.user_employee.write({
-            'country_id': cls.env.ref('base.be').id,
-            'login': 'employee',
-        })
 
-        cls.customer = cls.env['res.partner'].with_context(cls._quick_create_ctx).create({
+        cls.customer = cls.env['res.partner'].with_context(cls._test_context).create({
             'country_id': cls.env.ref('base.be').id,
             'email': '"Super Customer" <customer.test@example.com>',
             'mobile': '0456123456',
             'name': 'Super Customer',
         })
-        cls.test_record = cls.env['mail.test.sms.bl.activity'].with_context(cls._quick_create_ctx).create({
+        cls.test_record = cls.env['mail.test.sms.bl.activity'].with_context(cls._test_context).create({
             'name': 'Test Record',
             'customer_id': cls.customer.id,
             'email_from': cls.customer.email,
             'phone_nbr': '0456999999',
         })
-        cls.test_record_voip = cls.env['mail.test.activity.bl.sms.voip'].with_context(cls._quick_create_ctx).create({
+        cls.test_record_voip = cls.env['mail.test.activity.bl.sms.voip'].with_context(cls._test_context).create({
             'name': 'Test Record',
             'customer_id': cls.customer.id,
             'email_from': cls.customer.email,
@@ -70,11 +60,6 @@ class TestActivityPerformance(BaseMailPerformance):
             ('category', '=', 'phonecall'),
             ('id', '!=', cls.phonecall_activity.id),
         ]).unlink()
-
-    def setUp(self):
-        super(TestActivityPerformance, self).setUp()
-
-        self._init_mail_gateway()
 
     @users('__system__', 'employee')
     @warmup
@@ -115,7 +100,7 @@ class TestActivityPerformance(BaseMailPerformance):
         enabled. No computed fields are involved. """
         record = self.env['mail.test.activity.bl.sms.voip'].browse(self.test_record_voip.ids)
 
-        with self.assertQueryCount(employee=42):
+        with self.assertQueryCount(employee=42):  # TME only: 41
             activity = record.activity_schedule(
                 'mail.mail_activity_data_upload_document',
                 summary='Upload Activity')

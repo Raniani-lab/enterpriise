@@ -494,7 +494,12 @@ class MrpProductionWorkcenterLine(models.Model):
         backorder = False
         # Trigger the backorder process if we produce less than expected
         if float_compare(self.qty_producing, self.qty_remaining, precision_rounding=self.product_uom_id.rounding) == -1 and self.is_first_started_wo:
-            backorder = self.production_id._generate_backorder_productions(close_mo=False)
+            backorder = self.production_id._split_productions()[1:]
+            for workorder in backorder.workorder_ids:
+                if workorder.product_tracking == 'serial':
+                    workorder.qty_producing = 1
+                else:
+                    workorder.qty_producing = workorder.qty_remaining
             self.production_id.product_qty = self.qty_producing
         else:
             if self.operation_id:

@@ -569,62 +569,6 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(move_cylinder.quantity_done, 3, 'Consumed quantity should be 4')
         self.assertEqual(move_cylinder.move_line_ids.mapped('lot_id'), self.mc1 | self.mc2, 'Wrong serial numbers used')
 
-    def test_workorder_reservation_4(self):
-        # Test final product tracked by sn, component tracket by lot
-        # switching lot while producing
-
-        self.bom_submarine.bom_line_ids.write({
-            'operation_id': False,
-        })
-        self.bom_submarine.operation_ids = False
-        self.bom_submarine.write({
-            'operation_ids': [(0, 0, {
-                'workcenter_id': self.mrp_workcenter_3.id,
-                'name': 'Manual Assembly',
-                'time_cycle': 60,
-            })]
-        })
-
-        self.bom_submarine.bom_line_ids[:2].unlink()
-
-        mrp_order_form = Form(self.env['mrp.production'])
-        mrp_order_form.product_id = self.submarine_pod
-        mrp_order_form.product_qty = 2
-        production = mrp_order_form.save()
-
-        production.action_confirm()
-        production.button_plan()
-        production.action_assign()
-        production.workorder_ids.button_start()
-        wo_form = Form(production.workorder_ids, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.finished_lot_id = self.sp1
-        self.assertEqual(wo_form.lot_id, self.mc1, "workorder should consume the second product")
-        self.assertEqual(wo_form.qty_done, 2, "Quantity to consume should prefilled with 2")
-        self.assertEqual(wo_form.component_id, self.metal_cylinder, "workorder should be consume the second product")
-        mc2 = self.env['stock.lot'].create({
-            'product_id': self.metal_cylinder.id,
-            'name': 'mc2',
-            'company_id': self.env.company.id,
-        })
-        wo_form.lot_id = mc2
-        wo = wo_form.save()
-        wo._next()
-        action = wo.record_production()
-        wo_form = Form(self.env['mrp.workorder'].browse(action['res_id']), view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.finished_lot_id = self.sp2
-        self.assertEqual(wo_form.lot_id, self.mc1, "workorder should consume the second product")
-        self.assertEqual(wo_form.qty_done, 2, "Quantity to consume should prefilled with 2")
-        self.assertEqual(wo_form.component_id, self.metal_cylinder, "workorder should be consume the second product")
-        wo = wo_form.save()
-        wo._next()
-        wo.do_finish()
-        productions = production.procurement_group_id.mrp_production_ids
-        productions.button_mark_done()
-
-        move_cylinder = productions.move_raw_ids.filtered(lambda move: move.product_id == self.metal_cylinder)
-        self.assertEqual(move_cylinder.mapped('state'), ['done'] * 2, 'Move should be done')
-        self.assertEqual(sum(move_cylinder.mapped('quantity_done')), 4, 'Consumed quantity should be 4')
-
     def test_workorder_1(self):
         # get the computer sc234 demo data
         prod = self.submarine_pod
@@ -1144,7 +1088,6 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(len(production.move_raw_ids), 3, "wrong number of raw moves")
 
         sorted_workorder_ids = production.workorder_ids.sorted()
-
         sorted_workorder_ids[0].button_start()
         wo_form = Form(sorted_workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.finished_lot_id = self.sp1
@@ -1162,7 +1105,6 @@ class TestWorkOrder(common.TestMrpCommon):
         wo_form = Form(sorted_workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo = wo_form.save()
         wo.record_production()
-
         production._post_inventory()
         self.assertEqual(len(production.move_raw_ids), 3, "wrong number of raw moves")
 

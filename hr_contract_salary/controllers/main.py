@@ -26,18 +26,19 @@ class SignContract(Sign):
         ], type='json', auth='public')
     def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
         result = super(SignContract, self).sign(sign_request_id, token, sms_token=sms_token, signature=signature, new_sign_items=new_sign_items)
-        request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
-        contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
-            ('sign_request_ids', 'in', request_item.sign_request_id.ids)])
-        request_template_id = request_item.sign_request_id.template_id.id
-        # Only if the signed document is the document to sign from the salary package
-        contract_documents = [
-            contract.sign_template_id.id,
-            contract.contract_update_template_id.id,
-        ]
-        if contract and request_template_id in contract_documents:
-            self._update_contract_on_signature(request_item, contract)
-            return {'url': '/salary_package/thank_you/' + str(contract.id)}
+        if result.get('success'):
+            request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
+            contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
+                ('sign_request_ids', 'in', request_item.sign_request_id.ids)])
+            request_template_id = request_item.sign_request_id.template_id.id
+            # Only if the signed document is the document to sign from the salary package
+            contract_documents = [
+                contract.sign_template_id.id,
+                contract.contract_update_template_id.id,
+            ]
+            if contract and request_template_id in contract_documents:
+                self._update_contract_on_signature(request_item, contract)
+                return dict(result, **{'url': '/salary_package/thank_you/' + str(contract.id)})
         return result
 
     def _update_contract_on_signature(self, request_item, contract):

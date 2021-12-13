@@ -640,13 +640,12 @@ const SMSSignerDialog = Dialog.extend({
     };
     validateButton.disabled = true;
     session.rpc(route, params).then((response) => {
-      if (!response) {
+      if (!response.success) {
         const errorMessage = _t(
           "Your signature was not submitted. Ensure that all required field of the documents are completed and that the SMS validation code is correct."
         );
         this.handleSMSError(validateButton, errorMessage);
-      }
-      if (response === true) {
+      } else {
         new (this.get_thankyoudialog_class())(
           this,
           this.RedirectURL,
@@ -1634,27 +1633,24 @@ const SignableDocument = Document.extend({
     }
     const callback = (response) => {
       $btn.text(init_btn_text);
-      if (!response) {
-        this.openErrorDialog(
-          _t("Sorry, an error occurred, please try to fill the document again."),
-          () => { window.location.reload(); }
-        );
-      }
-      if (response === true) {
-        $btn.removeAttr("disabled", true);
-        this.iframeWidget.disableItems();
-        if (this.name_list && this.name_list.length > 0) {
-          new (this.get_nextdirectsigndialog_class())(
-            this,
-            this.RedirectURL,
-            this.requestID,
-            { nextSign: this.name_list.length }
-          ).open();
+      $btn.removeAttr("disabled", true);
+      if (response.success) {
+        if (response.url) {
+          document.location.pathname = response.url;
         } else {
-          this.openThankYouDialog(0);
+          this.iframeWidget.disableItems();
+          if (this.name_list && this.name_list.length > 0) {
+            new (this.get_nextdirectsigndialog_class())(
+                this,
+                this.RedirectURL,
+                this.requestID,
+                {nextSign: this.name_list.length}
+            ).open();
+          } else {
+            this.openThankYouDialog(0);
+          }
         }
-      }
-      if (typeof response === "object") {
+      } else {
         if (response.sms) {
           new SMSSignerDialog(
             this,
@@ -1664,19 +1660,15 @@ const SignableDocument = Document.extend({
             newSignItems,
             this.signerPhone,
             this.RedirectURL,
-            { nextSign: this.name_list.length }
+            {nextSign: this.name_list.length}
           ).open();
-        }
-        if (response.credit_error) {
+        } else {
           this.openErrorDialog(
             _t(
               "Unable to send the SMS, please contact the sender of the document."
             ),
             () => { window.location.reload(); }
           );
-        }
-        if (response.url) {
-          document.location.pathname = response.url;
         }
       }
     };
@@ -1787,16 +1779,16 @@ const SignableDocument = Document.extend({
       signDialog.$(".modal-footer .btn-primary").prop("disabled", true);
       signDialog.close();
 
-      const callback = (success) => {
-        if (!success) {
+      const callback = (response) => {
+        if (response.success) {
+          this.openThankYouDialog(this.name_list.length);
+        } else {
           this.openErrorDialog(
             _t(
               "Sorry, an error occurred, please try to fill the document again."
             ),
             () => { window.location.reload(); }
           );
-        } else {
-          this.openThankYouDialog(this.name_list.length);
         }
       };
 

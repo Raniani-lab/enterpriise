@@ -269,23 +269,22 @@ class Sign(http.Controller):
     def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
         request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
         if not request_item:
-            return False
+            return {'success': False}
         if request_item.role_id.sms_authentification:
-            if not sms_token:
+            if not sms_token or sms_token != request_item.sms_token:
                 return {
+                    'success': False,
                     'sms': True
                 }
-            if sms_token != request_item.sms_token:
-                return False
-            if sms_token == request_item.sms_token:
-                request_item.sign_request_id._message_log(body=_('%s validated the signature by SMS with the phone number %s.') % (request_item.partner_id.display_name, request_item.sms_number))
+            request_item.sign_request_id._message_log(body=_('%s validated the signature by SMS with the phone number %s.') % (request_item.partner_id.display_name, request_item.sms_number))
 
         sign_user = request.env['res.users'].sudo().search([('partner_id', '=', request_item.partner_id.id)], limit=1)
         if sign_user:
             # sign as a known user
             request_item = request_item.with_user(sign_user).sudo()
 
-        return request_item.edit_and_sign(signature, new_sign_items)
+        request_item.edit_and_sign(signature, new_sign_items)
+        return {'success': True}
 
     @http.route(['/sign/refuse/<int:sign_request_id>/<token>'], type='json', auth='public')
     def refuse(self, sign_request_id, token, refusal_reason=""):

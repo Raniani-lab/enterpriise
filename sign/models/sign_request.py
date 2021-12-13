@@ -777,7 +777,7 @@ class SignRequestItem(models.Model):
                 raise UserError(_("You can only add new items for the current role"))
             sign_request = self.sign_request_id
             if sign_request.nb_closed != 0:
-                return False
+                raise UserError(_("The document has been signed by a signer and cannot be edited"))
             # copy the old template
             old_template = sign_request.template_id
             new_template = old_template.copy({
@@ -803,7 +803,7 @@ class SignRequestItem(models.Model):
             body = _("The signature request was edited by: %s.", self.partner_id.name)
             sign_request.message_post(body=body)
 
-        return self.sign(signature)
+        self.sign(signature)
 
     def sign(self, signature):
         """ Stores the sign request item values.
@@ -819,7 +819,7 @@ class SignRequestItem(models.Model):
             lambda r: r.responsible_id.id == self.role_id.id and r.required).ids)
         signature_ids = {int(k) for k in signature} if isinstance(signature, dict) else set()
         if not (required_ids <= signature_ids):  # Security check
-            return False
+            raise UserError(_("Some required items are not filled"))
 
         self.fill(signature)
 
@@ -832,7 +832,6 @@ class SignRequestItem(models.Model):
         sign_request = self.sign_request_id
         if all(sri.state == 'completed' for sri in sign_request.request_item_ids):
             sign_request._sign()
-        return True
 
     def fill(self, signature):
         """ Stores the sign request item values. (Can be used to pre-fill the document as a hack) """

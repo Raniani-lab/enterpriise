@@ -2,7 +2,7 @@
 from odoo import fields
 from odoo.tests import tagged
 from odoo.tools import pycompat
-import io
+import zipfile
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
@@ -68,7 +68,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         }])
         move.action_post()
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(2, len(data), "csv should have 2 lines")
         self.assertIn(['238,00', 's', 'EUR', '34000000', str(move.partner_id.id + 700000000),
@@ -98,7 +100,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         }])
         move.action_post()
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(1, len(data), "csv should have 1 line")
         self.assertIn(['119,00', 'h', 'EUR', '49800000', str(move.partner_id.id + 100000000),
@@ -133,7 +137,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         })
         move.action_post()
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(1, len(data), "csv should have 1 lines")
         self.assertIn(['100,00', 'h', 'EUR', '34000000', '49800000', '112', move.name, move.name], data)
@@ -166,7 +172,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
         debit_account_code = str(self.env.company.account_journal_payment_debit_account_id.code).ljust(8, '0')
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(2, len(data), "csv should have 2 lines")
         self.assertIn(['119,00', 'h', 'EUR', '49800000', str(move.partner_id.id + 100000000),
@@ -201,8 +209,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         })._create_payments()
 
         credit_account_code = str(self.env.company.account_journal_payment_credit_account_id.code).ljust(8, '0')
-
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(2, len(data), "csv should have 2 lines")
         self.assertIn(['119,00', 's', 'EUR', '49800000', str(move.partner_id.id + 700000000),
@@ -235,7 +244,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         suspense_account_code = str(self.env.company.account_journal_suspense_account_id.code).ljust(8, '0')
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
         self.assertIn(['100,00', 'h', 'EUR', suspense_account_code, bank_account_code, '101',
                        statement.line_ids[0].name, statement.line_ids[0].name], data)
@@ -283,7 +294,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(2, len(data), "csv should have 2 lines")
         self.assertIn(['100,00', 'h', 'EUR', str(self.company_data['default_account_revenue'].code).ljust(8, '0'),
@@ -334,7 +347,9 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         }])
         move.action_post()
 
-        reader = pycompat.csv_reader(io.BytesIO(report.get_csv(options)), delimiter=';', quotechar='"', quoting=2)
+        with zipfile.ZipFile(report._get_zip(options), 'r') as zf:
+            csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
         self.assertEqual(3, len(data), "csv should have 3 line")
         self.assertIn(['1190,00', 's', 'EUR', '49800000', str(move.partner_id.id + 100000000),

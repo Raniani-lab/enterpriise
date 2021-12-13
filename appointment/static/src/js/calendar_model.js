@@ -29,7 +29,7 @@ CalendarModel.include({
         return result;
     },
     /**
-     * Fetch the staff user and the assiociated appointment types.
+     * Fetch the user and the associated appointment types.
      * These appointment types will be rendered in a dropdown button on the calendar
      * view for the user to copy its url in order to be share with a client.
      * @override

@@ -12,13 +12,13 @@ class AppointmentHrController(AppointmentController):
     @route('/appointment/calendar_appointment_type/search_create_work_hours', type='json', auth='user')
     def appointment_search_create_work_hours_appointment_type(self):
         """
-        Return the info (id and url) of the work hours appointment type of the actual staff member.
+        Return the info (id and url) of the work hours appointment type of the actual user.
 
-        Search and return the work_hours appointment type for the staff member.
+        Search and return the work_hours appointment type for the user.
         In case it doesn't exist yet, it creates a work_hours appointment type that
         uses a slot of 1 hour every 30 minutes during it's working hour.
         We emcopass the whole week to avoid computation in case the working hours
-        of the staff member are modified at a later date.
+        of the user are modified at a later date.
         """
         appointment_type = request.env['calendar.appointment.type'].search([
             ('category', '=', 'work_hours'),

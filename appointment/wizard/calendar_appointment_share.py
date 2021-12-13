@@ -16,12 +16,12 @@ class CalendarAppointmentShare(models.TransientModel):
     appointment_type_ids = fields.Many2many('calendar.appointment.type', domain=_domain_appointment_type_ids, string='Appointments')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count')
     suggested_staff_user_ids = fields.Many2many(
-        'res.users', related='appointment_type_ids.staff_user_ids', string='Possible staff members',
-        help="Get the staff members linked to the appointment type selected to apply a domain on the staff members that can be selected")
+        'res.users', related='appointment_type_ids.staff_user_ids', string='Possible users',
+        help="Get the users linked to the appointment type selected to apply a domain on the users that can be selected")
     staff_user_ids = fields.Many2many(
-        'res.users', string='Staff',
+        'res.users', string='Users',
         compute='_compute_staff_user_id', store=True, readonly=False,
-        help="The staff members that will be displayed/filtered for the user to make its appointment")
+        help="The users that will be displayed/filtered for the user to make its appointment")
     share_link = fields.Char('Link', compute='_compute_share_link')
 
     @api.depends('appointment_type_ids')
@@ -41,11 +41,11 @@ class CalendarAppointmentShare(models.TransientModel):
     @api.depends('appointment_type_ids', 'staff_user_ids')
     def _compute_share_link(self):
         """
-        Compute a link that will be share for the user depending on the appointment types and staff members
-        selected. We allow to preselect a group of staff members if there is only one appointment type selected.
-        Indeed, it would be too complex to manage staff members with multiple appointment types.
+        Compute a link that will be share for the user depending on the appointment types and users
+        selected. We allow to preselect a group of them if there is only one appointment type selected.
+        Indeed, it would be too complex to manage ones with multiple appointment types.
         Two possible params can be generated with the link:
-            - filter_staff_user_ids: which allows the user to select an staff member between the ones selected
+            - filter_staff_user_ids: which allows the user to select an user between the ones selected
             - filter_appointment_type_ids: which display a selection of appointment types to user from which
             he can choose
         """
@@ -53,7 +53,7 @@ class CalendarAppointmentShare(models.TransientModel):
         for appointment_link in self:
             url_param = dict()
             if len(appointment_link.appointment_type_ids) == 1:
-                # If only one appointment type is selected, we share the appointment link with the possible staff members selected
+                # If only one appointment type is selected, we share the appointment link with the possible users selected
                 if appointment_link.staff_user_ids:
                     url_param.update({
                         'filter_staff_user_ids': str(appointment_link.staff_user_ids.ids)

@@ -17,7 +17,7 @@ MockServer.include({
                 return false;
             }
             const customAppointmentTypeID = this._mockCreate('calendar.appointment.type', {
-                name: "Appointment with Actual Staff Member",
+                name: "Appointment with Actual User",
                 staff_user_ids: [session.uid],
                 category: 'custom',
                 website_published: true,

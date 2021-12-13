@@ -26,13 +26,13 @@ tour.register('website_appointment_tour', {
         run: 'text 45',
     }, {
         trigger: 'div[name="staff_user_ids"] a',
-        content: 'add staff members',
+        content: 'add users to the appointment_type',
     }, {
         trigger: '.o_list_record_selector',
-        content: 'select staff members',
+        content: 'select users',
     }, {
         trigger: '.o_select_button',
-        content: 'save new staff members for the appointment type',
+        content: 'save new users for the appointment type',
     }, {
         trigger: 'a:contains("Availability")',
         content: 'go to slots tab',

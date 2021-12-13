@@ -50,8 +50,8 @@ class Appointment(http.Controller):
         Render the appointment information alongside the calendar for the slot selection
 
         :param appointment_type: the appointment type we are currently on
-        :param filter_staff_user_ids: the staff members that will be displayed for the appointment registration, if not given
-            all staff members set for the appointment type are used
+        :param filter_staff_user_ids: the users that will be displayed for the appointment registration, if not given
+            all users set for the appointment type are used
         :param timezone: the timezone used to display the available slots
         :param state: the type of message that will be displayed in case of an error/info. Possible values:
             - cancel: Info message to confirm that an appointment has been canceled
@@ -86,7 +86,7 @@ class Appointment(http.Controller):
         })
 
     def _get_filtered_staff_user_ids(self, appointment_type, filter_staff_user_ids=None, **kwargs):
-        """ This method returns the ids of the suggested staff users, extracting relevant data from link.
+        """ This method returns the ids of the suggested users, extracting relevant data from link.
             It is overriden in submodule to ensure retrocompatibility."""
         try:
             return json.loads(filter_staff_user_ids) if filter_staff_user_ids else []
@@ -105,7 +105,7 @@ class Appointment(http.Controller):
         Render the form to get information about the user for the appointment
 
         :param appointment_type: the appointment type related
-        :param staff_user_id: the staff member selected for the appointment
+        :param staff_user_id: the user selected for the appointment
         :param date_time: the slot datetime selected for the appointment
         :param fitler_appointment_type_ids: see ``Appointment.calendar_appointments()`` route
         """
@@ -131,7 +131,7 @@ class Appointment(http.Controller):
 
         :param appointment_type: the appointment type related
         :param datetime_str: the string representing the datetime
-        :param staff_user_id: the staff member selected for the appointment
+        :param staff_user_id: the user selected for the appointment
         :param name: the name of the user sets in the form
         :param phone: the phone of the user sets in the form
         :param email: the email of the user sets in the form
@@ -142,7 +142,7 @@ class Appointment(http.Controller):
         duration = float(duration_str)
         date_end = date_start + relativedelta(hours=duration)
 
-        # check availability of the staff user again (in case someone else booked while the client was entering the form)
+        # check availability of the selected user again (in case someone else booked while the client was entering the form)
         staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)).exists()
         if staff_user not in appointment_type.sudo().staff_user_ids:
             raise NotFound()
@@ -332,7 +332,7 @@ class Appointment(http.Controller):
     @http.route(['/calendar/<int:appointment_type_id>/update_available_slots'], type="json", auth="public", website=True)
     def calendar_appointment_update_available_slots(self, appointment_type_id, staff_user_id=None, timezone=None, **kwargs):
         """
-            Route called when the staff member or the timezone is modified to adapt the possible slots accordingly
+            Route called when the selected user or the timezone is modified to adapt the possible slots accordingly
         """
         appointment_type = request.env['calendar.appointment.type'].browse(int(appointment_type_id))
 

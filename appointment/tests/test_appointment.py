@@ -17,7 +17,7 @@ class AppointmentTest(common.HttpCase):
 
     def setUp(self):
         super(AppointmentTest, self).setUp()
-        # calendar events can mess up the availability of our staff member later on.
+        # calendar events can mess up the availability of our staff users later on.
         self.env['calendar.event'].search([]).unlink()
 
         self.first_staff_user_in_brussel = self.env['res.users'].create({
@@ -76,7 +76,7 @@ class AppointmentTest(common.HttpCase):
                         already_checked.add(day['day'])
                         self.assertEqual(len(day['slots']), 1, 'Each monday should have only one slot')
                         slot = day['slots'][0]
-                        self.assertEqual(slot['staff_user_id'], self.first_staff_user_in_brussel.id, 'The right staff member should be available on each slot')
+                        self.assertEqual(slot['staff_user_id'], self.first_staff_user_in_brussel.id, 'The right user should be available on each slot')
                         self.assertEqual(slot['hours'], '09:00', 'Slots hours has to be 09:00')  # We asked to display the slots as Europe/Brussels
 
         # Ensuring that we've gone through the *crucial* asserts at least once

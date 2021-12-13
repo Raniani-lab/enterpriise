@@ -48,7 +48,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     },
 
     /**
-     * Refresh the slots info when the user modify the timezone or the staff member
+     * Refresh the slots info when the user modifies the timezone or the assigned user.
      */
     _onRefresh: function (ev) {
         if (this.$("#slots_availabilities")[0]) {

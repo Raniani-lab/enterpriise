@@ -11,7 +11,7 @@ class AppointmentHrTest(common.HttpCase):
 
     def setUp(self):
         super(AppointmentHrTest, self).setUp()
-        # Calendar events can mess up the availability of our staff member later on.
+        # Calendar events can mess up the availability of our staff user later on.
         self.env['calendar.event'].search([]).unlink()
 
         self.first_staff_user_in_brussel = self.env['res.users'].create({

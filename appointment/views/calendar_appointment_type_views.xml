@@ -150,9 +150,9 @@
                                     <field name="country_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                 </group>
                             </group>
-                            <separator string="Available Staff"/>
+                            <separator string="Available Users"/>
                             <field name="staff_user_ids" attrs="{'readonly': [('category', '!=', 'website')]}">
-                                <tree string="Staff members" delete="1">
+                                <tree string="Users" delete="1">
                                     <field name="name"/>
                                 </tree>
                             </field>

@@ -9,7 +9,7 @@ from odoo.http import request
 class AppointmentHr(Appointment):
 
     def _get_filtered_staff_user_ids(self, appointment_type, filter_staff_user_ids=None, **kwargs):
-        """ This method returns the ids of suggested staff users, ensuring retrocompatibility with previous routes.
+        """ This method returns the ids of suggested users, ensuring retrocompatibility with previous routes.
             These may be cleaned in the future. If several parameters exist, the priority is given to the newest
             route format filter first."""
 

@@ -25,10 +25,10 @@ class CalendarAppointmentType(models.Model):
         selection_add=[('work_hours', 'Work Hours')],
         help="""Used to define this appointment type's category.
         Can be one of:
-            - Website: the default category, the people can access and shedule the appointment with staff members from the website
-            - Custom: the staff member will create and share to an user a custom appointment type with hand-picked time slots
-            - Work Hours: a special type of appointment type that is used by one staff member and which takes the working hours of this
-                staff member as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots
+            - Website: the default category, the people can access and shedule the appointment with users from the website
+            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots
+            - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this
+                user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots
                 based on its working hours and availabilities """)
 
     @api.constrains('category', 'staff_user_ids')
@@ -43,7 +43,7 @@ class CalendarAppointmentType(models.Model):
 
     def _is_staff_user_available(self, staff_user, slot, availability_additional_values):
         """ This method verifies if the staff_user is available on the given slot, or has calendar events clashing.
-            In addition, it checks conflicts with the working schedule of the employee linked to the staff members,
+            In addition, it checks conflicts with the working schedule of the employee linked to the user,
             if such an employee exists in the current company. An employee will not be considered available if the
             slot is not entirely comprised in its working schedule. (using a certain tolerance)"""
 
@@ -85,7 +85,7 @@ class CalendarAppointmentType(models.Model):
 
         is_calendar_free = super(CalendarAppointmentType, self)._is_staff_user_available(staff_user, slot, availability_additional_values)
         if is_calendar_free and staff_user.sudo().employee_id:
-            # Staff user is free but he has a configured employee, let's check if the slot fits into his working schedule
+            # The user is free but he has a configured employee, let's check if the slot fits into his working schedule
             return is_work_available(slot['UTC'][0], slot['UTC'][1], availability_additional_values['work_schedules'].get(staff_user.id, False))
         else:
             return is_calendar_free

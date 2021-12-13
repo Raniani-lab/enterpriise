@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+import datetime
+
+from odoo import api, fields, models
 
 
 class SpreadsheetRevision(models.Model):
@@ -16,3 +18,13 @@ class SpreadsheetRevision(models.Model):
     _sql_constraints = [
         ('parent_revision_unique', 'unique(parent_revision_id, document_id)', 'o-spreadsheet revision refused due to concurrency')
     ]
+
+    @api.autovacuum
+    def _gc_revisions(self):
+        days = int(self.env["ir.config_parameter"].sudo().get_param(
+            "documents_spreadsheets.revisions_limit_days",
+            '60',
+        ))
+        timeout_ago = datetime.datetime.utcnow()-datetime.timedelta(days=days)
+        domain = [("create_date", "<", timeout_ago), ("active", "=", False)]
+        return self.search(domain).unlink()

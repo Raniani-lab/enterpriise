@@ -75,7 +75,7 @@
                         <div class="d-flex">
                             <t t-set="originalMessage" t-value="widget._htmlEscape(comment.message)"/>
                             <div t-attf-class="d-flex flex-grow-1 #{bubble_design? 'bg-200 py-1 pl-3 pr-1 mr-2 o_social_bubble_radius' : ''}">
-                                <div class="o_social_comment_text"
+                                <div class="o_social_comment_text text-break"
                                 t-att-data-original-message="originalMessage"
                                 t-out="widget._formatCommentStreamPost(comment.message)"/>
                                 <div t-attf-class="o_social_icon_dropdown o_social_manage_comment dropdown #{widget.isCommentManageable(comment) ? '' : 'd-none'}">

@@ -25,7 +25,7 @@ const SocialPostKanbanRenderer = KanbanRenderer.extend({
             for (const message of messages) {
                 // Replace text links with anchor tags and add emojis support
                 // https://odoo.com => <a href="https://odoo.com">https://odoo.com</a>
-                const body = SocialStreamPostFormatterMixin._formatPost(message.innerText);
+                const body = SocialStreamPostFormatterMixin._formatPost(message.innerText.trim());
                 message.innerHTML = body;
             }
         });

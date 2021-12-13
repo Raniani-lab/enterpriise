@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, time
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
 from babel.dates import format_datetime, format_time
-from werkzeug.urls import url_join
+from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
@@ -491,22 +491,31 @@ class CalendarAppointmentType(models.Model):
                         # slots are ordered, so check all unprocessed slots from until > day
                         while slots and (slots[0][timezone][0].date() <= day):
                             if (slots[0][timezone][0].date() == day) and ('staff_user_id' in slots[0]):
+                                slot_staff_user_id = slots[0]['staff_user_id'].id
+                                slot_start_dt_tz = slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S')
                                 slot = {
-                                    'staff_user_id': slots[0]['staff_user_id'].id,
-                                    'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                    'datetime': slot_start_dt_tz,
+                                    'staff_user_id': slot_staff_user_id,
                                 }
                                 if slots[0]['slot'].allday:
+                                    slot_duration = 24
                                     slot.update({
                                         'hours': _("All day"),
-                                        'duration': 24,
+                                        'slot_duration': slot_duration,
                                     })
                                 else:
                                     start_hour = format_time(slots[0][timezone][0].time(), format='short', locale=locale)
                                     end_hour = format_time(slots[0][timezone][1].time(), format='short', locale=locale)
+                                    slot_duration = str((slots[0][timezone][1] - slots[0][timezone][0]).total_seconds() / 3600)
                                     slot.update({
                                         'hours': "%s - %s" % (start_hour, end_hour) if self.category == 'custom' else start_hour,
-                                        'duration': str((slots[0][timezone][1] - slots[0][timezone][0]).total_seconds() / 3600),
+                                        'slot_duration': slot_duration,
                                     })
+                                slot['url_parameters'] = url_encode({
+                                    'staff_user_id': slot_staff_user_id,
+                                    'date_time': slot_start_dt_tz,
+                                    'duration': slot_duration,
+                                })
                                 today_slots.append(slot)
                             slots.pop(0)
                             nb_slots_next_months -= 1

@@ -511,6 +511,75 @@ class TestAccountAsset(TestAccountReportsCommon):
             'salvage_value': 0,
         }])
 
+    def test_account_asset_cancel(self):
+        """Test the cancellation of an asset"""
+        today = fields.Date.today()
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 2000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': self.account_asset_model_fixedassets.id,
+            'acquisition_date': today + relativedelta(years=-3, month=1, day=1),
+        })
+        CEO_car._onchange_model_id()
+        CEO_car.method_number = 5
+        CEO_car.validate()
+
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 6000,
+            'value_residual': 4000,
+            'salvage_value': 2000,
+        }])
+        CEO_car.set_to_cancelled()
+
+        self.assertEqual(CEO_car.state, 'cancelled')
+        self.assertFalse(CEO_car.depreciation_move_ids)
+
+        # Hashed journals should reverse entries instead of deleting
+        Hashed_car = CEO_car.copy()
+        Hashed_car.write({
+            'original_value': 12000.0,
+            'method_number': 5,
+            'name': "Hashed Car",
+        })
+        Hashed_car.journal_id.restrict_mode_hash_table = True
+        Hashed_car.validate()
+
+        for i in range(0, 4):
+            self.assertFalse(Hashed_car.depreciation_move_ids[i].reversal_move_id)
+
+        Hashed_car.set_to_cancelled()
+
+        self.assertEqual(Hashed_car.state, 'cancelled')
+        for i in range(0, 2):
+            self.assertTrue(Hashed_car.depreciation_move_ids[i].reversal_move_id.id > 0)
+
+        # The depreciation schedule report should not contain cancelled assets
+        report = self.env['account.assets.report']
+        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        assets_in_report = [x['name'] for x in lines[:-1]]
+
+        self.assertNotIn(CEO_car.name, assets_in_report)
+        self.assertNotIn(Hashed_car.name, assets_in_report)
+
+        # When a lock date is applied, the asset can not be cancelled.
+        Locked_car = CEO_car.copy()
+        Locked_car.write({
+            'original_value': 12000.0,
+            'method_number': 5,
+            'name': "Locked Car",
+        })
+        Locked_car.validate()
+        Locked_car.company_id.fiscalyear_lock_date = today + relativedelta(years=-1)
+
+        with self.assertRaises(UserError):
+            Locked_car.set_to_cancelled()
+
     def test_asset_form(self):
         """Test the form view of assets"""
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))

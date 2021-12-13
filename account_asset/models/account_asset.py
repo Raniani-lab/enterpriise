@@ -24,11 +24,21 @@ class AccountAsset(models.Model):
                                   default=lambda self: self.env.company.currency_id.id)
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)]},
                                  default=lambda self: self.env.company)
-    state = fields.Selection([('model', 'Model'), ('draft', 'Draft'), ('open', 'Running'), ('paused', 'On Hold'), ('close', 'Closed')], 'Status', copy=False, default='draft',
+    state = fields.Selection(
+        selection=[('model', 'Model'),
+            ('draft', 'Draft'),
+            ('open', 'Running'),
+            ('paused', 'On Hold'),
+            ('close', 'Closed'),
+            ('cancelled', 'Cancelled')],
+        string='Status',
+        copy=False,
+        default='draft',
         help="When an asset is created, the status is 'Draft'.\n"
             "If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted in the accounting.\n"
             "The 'On Hold' status can be set manually when you want to pause the depreciation of an asset for some time.\n"
-            "You can manually close an asset when the depreciation is over. If the last line of depreciation is posted, the asset automatically goes in that status.")
+            "You can manually close an asset when the depreciation is over.\n"
+            "By cancelling an asset, all depreciation entries will be reversed")
     active = fields.Boolean(default=True)
     asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True)
 
@@ -715,6 +725,53 @@ class AccountAsset(models.Model):
         full_asset.write({'state': 'close'})
         if move_ids:
             return self._return_disposal_view(move_ids)
+
+    def set_to_cancelled(self):
+        for asset in self:
+            posted_moves = asset.depreciation_move_ids.filtered(lambda m: (
+                not m.reversal_move_id
+                and m.state == 'posted'
+            ))
+            lock_date = asset.company_id._get_user_fiscal_lock_date()
+            if any(move.date <= lock_date for move in posted_moves):
+                raise UserError(_('You cannot cancel an asset having depreciation entries prior to the lock date. '
+                                  'As the asset is published in the Depreciation Schedule, you might need to dispose of it.'))
+            elif posted_moves:
+                depreciation_change = sum(posted_moves.line_ids.mapped(
+                    lambda l: l.debit if l.account_id == asset.account_depreciation_expense_id else 0.0
+                ))
+                acc_depreciation_change = sum(posted_moves.line_ids.mapped(
+                    lambda l: l.credit if l.account_id == asset.account_depreciation_id else 0.0
+                ))
+                entries = '<br>'.join(posted_moves.sorted('date').mapped(lambda m:
+                    f'{m.ref} - {m.date} - '
+                    f'{formatLang(self.env, m.amount_total, currency_obj=m.currency_id)} - '
+                    f'{m.name}'
+                ))
+                if any(move.inalterable_hash for move in posted_moves):
+                    method = _('reversed')
+                    posted_moves._reverse_moves(cancel=True)
+                else:
+                    method = _('deleted')
+                    posted_moves.button_draft()
+                msg = _('Asset Cancelled <br>'
+                        'The account %(exp_acc)s has been credited by %(exp_delta)s, '
+                        'while the account %(dep_acc)s has been debited by %(dep_delta)s. '
+                        'This corresponds to %(move_count)s %(mthd)s %(word)s:<br>%(entries)s',
+                        exp_acc=asset.account_depreciation_expense_id.display_name,
+                        exp_delta=formatLang(self.env, depreciation_change, currency_obj=asset.currency_id),
+                        dep_acc=asset.account_depreciation_id.display_name,
+                        dep_delta=formatLang(self.env, acc_depreciation_change, currency_obj=asset.currency_id),
+                        move_count=len(posted_moves),
+                        mthd=method,
+                        word=_('entries') if len(posted_moves) > 1 else _('entry'),
+                        entries=entries,
+                    )
+                asset._message_log(body=msg)
+            else:
+                asset._message_log(body=_('Asset Cancelled'))
+            asset.depreciation_move_ids.filtered(lambda m: m.state == 'draft').unlink()
+            asset.write({'state': 'cancelled'})
 
     def set_to_draft(self):
         self.write({'state': 'draft'})

@@ -357,7 +357,7 @@ class assets_report(models.AbstractModel):
                 WHERE asset.company_id in %(company_ids)s
                 AND asset.acquisition_date <= %(date_to)s
                 AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
-                AND asset.state not in ('model', 'draft')
+                AND asset.state not in ('model', 'draft', 'cancelled')
                 AND asset.asset_type = 'purchase'
                 AND asset.active = 't'
 

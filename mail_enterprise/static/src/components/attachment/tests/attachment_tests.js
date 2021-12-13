@@ -57,7 +57,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         mimetype: 'image/png',
         name: "test.png",
     });
-    const message = this.messaging.models['mail.message'].create({
+    const message = this.messaging.models['Message'].create({
         attachments: link(attachment),
         author: link(this.messaging.currentPartner),
         body: "<p>Test</p>",
@@ -106,7 +106,7 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         mimetype: 'image/png',
         name: "test.png",
     });
-    const message = this.messaging.models['mail.message'].create({
+    const message = this.messaging.models['Message'].create({
         attachments: link(attachment),
         author: link(this.messaging.currentPartner),
         body: "<p>Test</p>",

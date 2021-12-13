@@ -104,6 +104,7 @@ class RentalOrder(models.Model):
                     date=date.today(),
                 )
             sol.price_unit = price
+            sol.discount = 0
 
     def _open_rental_wizard(self, status, order_line_ids):
         context = {

@@ -150,6 +150,72 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
             102.5
         )
 
+    def test_discount(self):
+        partner = self.env['res.partner'].create({'name': 'A partner'})
+        pricelist_A = self.env['product.pricelist'].create({
+            'name': 'Pricelist A',
+            'discount_policy': 'without_discount',
+            'company_id': self.env.company.id,
+            'item_ids': [(0, 0, {
+                'applied_on': '3_global',
+                'compute_price': 'percentage',
+                'percent_price': 10,
+            })],
+        })
+        pricelist_B = self.env['product.pricelist'].create({
+            'name': 'Pricelist B',
+            'discount_policy': 'without_discount',
+            'company_id': self.env.company.id,
+            'item_ids': [(0, 0, {
+                'applied_on': '3_global',
+                'compute_price': 'percentage',
+                'percent_price': 20,
+            })],
+        })
+
+        PRICINGS = [
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+                'pricelist_id': pricelist_A.id,
+            }, {
+                'duration': 5.0,
+                'unit': 'hour',
+                'price': 15.0,
+                'pricelist_id': pricelist_B.id,
+            }
+        ]
+        self.product_template_id.rental_pricing_ids.unlink()
+        for pricing in PRICINGS:
+            pricing.update(product_template_id=self.product_template_id.id)
+            pricing = self.env['rental.pricing'].create(pricing)
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner.id,
+        })
+
+        reservation_begin = fields.Datetime.now()
+        pickup_date = reservation_begin + relativedelta(days=1)
+        return_date = pickup_date + relativedelta(hours=1)
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'product_uom_qty': 1,
+            'order_id': sale_order.id,
+            'reservation_begin': reservation_begin,
+            'pickup_date': pickup_date,
+            'return_date': return_date,
+            'is_rental': True,
+            'price_unit': 1
+        })
+        sale_order.write({'pricelist_id': pricelist_A.id})
+        sale_order.update_prices()
+        self.assertEqual(sol.discount, 0, "Discount should always been 0 on pricelist change")
+        sale_order.write({'pricelist_id': pricelist_B.id})
+        sale_order.update_prices()
+        self.assertEqual(sol.discount, 0, "Discount should always been 0 on pricelist change")
+
     # TODO availability testing with sale_rental functions? (no stock)
 
 @odoo.tests.tagged('post_install', '-at_install')

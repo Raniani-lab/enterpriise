@@ -20,17 +20,15 @@ class SaleOrder(models.Model):
                 sale_order.task_id.message_post(body=message)
         return orders
 
+    @api.returns('mail.message', lambda value: value.id)
+    def message_post(self, **kwargs):
+        if self.env.context.get('fsm_no_message_post'):
+            return False
+        return super().message_post(**kwargs)
+
 
 class SaleOrderLine(models.Model):
     _inherit = ['sale.order.line']
-
-    def _update_line_quantity(self, values):
-        # YTI TODO: This method should only be used to post
-        # a message on qty update, or to raise a ValidationError
-        # Should be split in master 
-        if self.env.context.get('fsm_no_message_post'):
-            return
-        super(SaleOrderLine, self)._update_line_quantity(values)
 
     def _timesheet_create_task_prepare_values(self, project):
         res = super(SaleOrderLine, self)._timesheet_create_task_prepare_values(project)

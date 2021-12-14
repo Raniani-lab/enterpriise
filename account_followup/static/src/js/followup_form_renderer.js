@@ -46,7 +46,7 @@ var FollowupFormRenderer = FormRenderer.extend({
      */
     removeMailAlert: function () {
         owl.Component.env.services.messaging.get().then(messaging => {
-            const thread = messaging.models['mail.thread'].findFromIdentifyingData({
+            const thread = messaging.models['Thread'].findFromIdentifyingData({
                 id: this.state.res_id,
                 model: this.state.model,
             });

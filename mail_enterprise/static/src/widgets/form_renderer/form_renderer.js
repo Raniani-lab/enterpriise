@@ -219,7 +219,7 @@ FormRenderer.include({
      * @param {OdooEvent} ev
      * @param {Object} ev.data
      * @param {mail.attachment[]} ev.data.attachments
-     * @param {mail.thread} ev.data.thread
+     * @param {Thread} ev.data.thread
      */
     _onChatterRendered(ev) {
         if (config.device.size_class < config.device.SIZES.XXL) {

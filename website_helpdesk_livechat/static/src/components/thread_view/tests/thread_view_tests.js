@@ -50,7 +50,7 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
             return this._super(...arguments);
         }
     });
-    const thread = this.messaging.models['mail.thread'].findFromIdentifyingData({
+    const thread = this.messaging.models['Thread'].findFromIdentifyingData({
         id: 20,
         model: 'mail.channel'
     });

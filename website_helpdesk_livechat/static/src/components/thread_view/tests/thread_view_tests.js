@@ -54,7 +54,7 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
         id: 20,
         model: 'mail.channel'
     });
-    const threadViewer = this.messaging.models['mail.thread_viewer'].create({
+    const threadViewer = this.messaging.models['ThreadViewer'].create({
         hasThreadView: true,
         qunitTest: insertAndReplace(),
         thread: link(thread),

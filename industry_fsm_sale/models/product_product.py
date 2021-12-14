@@ -76,12 +76,9 @@ class ProductProduct(models.Model):
                     for line in all_editable_lines:
                         new_line_qty = max(0, line.product_uom_qty + diff_qty)
                         diff_qty += line.product_uom_qty - new_line_qty
-                        vals = {
-                            'product_uom_qty': new_line_qty
-                        }
                         if product.service_type == 'manual':
-                            vals['qty_delivered'] = new_line_qty
-                        line.with_context(fsm_no_message_post=True).write(vals)
+                            line.with_context(fsm_no_message_post=True).qty_delivered = new_line_qty
+                        line.with_context(fsm_no_message_post=True).product_uom_qty = new_line_qty
                         if diff_qty == 0:
                             break
                 elif diff_qty > 0:  # create new SOL

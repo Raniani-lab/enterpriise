@@ -12,12 +12,23 @@ tour.register('planning_test_tour', {
 }, {
     trigger: ".o_gantt_button_add",
     content: "Let's create your first <b>shift</b> by clicking on Add. <i>Tip: use the (+) shortcut available on each cell of the Gantt view to save time.</i>",
+    id: 'project_planning_start',
 }, {
-    trigger: ".o_field_widget[name='resource_id']",
+    trigger: ".o_field_widget[name='resource_id'] input",
     content: "Assign this shift to your <b>resource</b>, or leave it open for the moment.",
+    run: 'text Marc Demo',
 }, {
-    trigger: ".o_field_widget[name='role_id']",
+    trigger: "ul.ui-menu.ui-widget a:contains(Marc Demo)",
+    auto: true,
+    in_modal: false,
+}, {
+    trigger: ".o_field_widget[name='role_id'] input",
     content: "Select the <b>role</b> your employee will have (<i>e.g. Chef, Bartender, Waiter, etc.</i>).",
+    run: 'text Developer',
+}, {
+    trigger: "ul.ui-menu.ui-widget a:contains(Developer)",
+    auto: true,
+    in_modal: false,
 }, {
     trigger: ".o_field_widget[name='start_datetime']",
     content: "Set start datetime",
@@ -33,11 +44,20 @@ tour.register('planning_test_tour', {
         this.$anchor.trigger("change");
     }
 }, {
+    trigger: "div[name='template_creation'] > input",
+    content: "Save this shift as a template",
+    run: function (actions) {
+        if (!this.$anchor.prop('checked')) {
+            actions.click(this.$anchor);
+        }
+    },
+}, {
     trigger: "button[special='save']",
     content: "Save this shift once it is ready.",
 }, {
     trigger: ".o_gantt_pill :contains('11:59 AM')",
     content: "<b>Drag & drop</b> your shift to reschedule it. <i>Tip: hit CTRL (or Cmd) to duplicate it instead.</i> <b>Adjust the size</b> of the shift to modify its period.",
+    auto: true,
     run: function () {
         if (this.$anchor.length) {
             const expected = "8:00 AM - 11:59 AM (4h)";
@@ -58,6 +78,7 @@ tour.register('planning_test_tour', {
 }, {
     trigger: ".o_gantt_progressbar",
     content: "See employee progress bar",
+    auto: true,
     run: function () {
         const $progressbar = $(".o_gantt_progressbar:eq(0)");
         if ($progressbar.length) {
@@ -71,4 +92,14 @@ tour.register('planning_test_tour', {
             console.error("Not able to select progressbar");
         }
     }
+}, {
+    trigger: ".o_gantt_button_copy_previous_week",
+    content: "Copy previous week if you want to follow previous week planning schedule",
+    run: 'click',
+}, {
+    id: "planning_check_format_step",
+    trigger: ".o_gantt_pill p:contains(Developer)",
+    content: "Check naming format of resource and role when grouped",
+    auto: true,
+    run: function () {}
 }]);

@@ -90,6 +90,11 @@ if records:
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
                 </form>
             </field>
         </record>
@@ -126,9 +131,9 @@ if records:
         </record>
 
         <record id="action_batch_payment_in" model="ir.actions.act_window">
-            <field name="name">Batch Payments</field>
+            <field name="name">Customer Batch Payments</field>
             <field name="res_model">account.batch.payment</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,kanban</field>
             <field name="view_id" ref="view_batch_payment_tree"/>
             <field name="search_view_id" ref="view_batch_payment_search"/>
             <field name="domain" eval="[('batch_type', '=', 'inbound')]"/>
@@ -145,7 +150,7 @@ if records:
         </record>
 
         <record id="action_batch_payment_out" model="ir.actions.act_window">
-            <field name="name">Batch Payments</field>
+            <field name="name">Vendor Batch Payments</field>
             <field name="res_model">account.batch.payment</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_batch_payment_tree"/>
@@ -163,7 +168,48 @@ if records:
             </field>
         </record>
 
-        <menuitem action="action_batch_payment_in" id="menu_batch_payment_sales" parent="account.menu_finance_receivables" sequence="18" groups="account.group_account_readonly"/>
-        <menuitem action="action_batch_payment_out" id="menu_batch_payment_purchases" parent="account.menu_finance_payables" sequence="21" groups="account.group_account_readonly"/>
+         <record id="view_account_move_kanban" model="ir.ui.view">
+            <field name="name">account.batch.payment.move.kanban</field>
+            <field name="model">account.batch.payment</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1" js_class="account_bills_kanban">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row mb4">
+                                    <div class="col-6 o_kanban_record_headings">
+                                        <strong>
+                                            <span>
+                                                <field name="name"/>
+                                            </span>
+                                        </strong>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <strong><i class="fa fa-clock-o" aria-label="Date" role="img" title="Date"/> <t t-esc="record.date.value"/></strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span><field name="amount" widget='monetary'/></span>
+                                        <span><field name="currency_id" invisible="1"/></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="float-right">
+                                            <field name="state" widget="label_selection" options="{'classes': {'new': 'default', 'sent': 'default', 'reconciled': 'success'}}"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <menuitem action="action_batch_payment_in" name="Batch Payments" id="menu_batch_payment_sales" parent="account.menu_finance_receivables" sequence="18" groups="account.group_account_readonly"/>
+        <menuitem action="action_batch_payment_out" name="Batch Payments" id="menu_batch_payment_purchases" parent="account.menu_finance_payables" sequence="21" groups="account.group_account_readonly"/>
 
 </odoo>

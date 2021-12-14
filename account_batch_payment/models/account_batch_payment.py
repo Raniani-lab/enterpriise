@@ -9,29 +9,30 @@ class AccountBatchPayment(models.Model):
     _name = "account.batch.payment"
     _description = "Batch Payment"
     _order = "date desc, id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True, copy=False, string='Reference', readonly=True, states={'draft': [('readonly', False)]})
-    date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True, states={'draft': [('readonly', False)]})
+    date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
     state = fields.Selection([
         ('draft', 'New'),
         ('sent', 'Sent'),
         ('reconciled', 'Reconciled'),
-    ], store=True, compute='_compute_state', default='draft')
-    journal_id = fields.Many2one('account.journal', string='Bank', domain=[('type', '=', 'bank')], required=True, readonly=True, states={'draft': [('readonly', False)]})
+    ], store=True, compute='_compute_state', default='draft', tracking=True)
+    journal_id = fields.Many2one('account.journal', string='Bank', domain=[('type', '=', 'bank')], required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
     payment_ids = fields.One2many('account.payment', 'batch_payment_id', string="Payments", required=True, readonly=True, states={'draft': [('readonly', False)]})
     amount = fields.Monetary(compute='_compute_amount', store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', compute='_compute_currency', store=True, readonly=True)
-    batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, readonly=True, states={'draft': [('readonly', False)]}, default='inbound')
+    batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, readonly=True, states={'draft': [('readonly', False)]}, default='inbound', tracking=True)
     payment_method_id = fields.Many2one(
         comodel_name='account.payment.method',
         string='Payment Method', store=True, readonly=False,
         compute='_compute_payment_method_id',
         domain="[('id', 'in', available_payment_method_ids)]",
-        help="The payment method used by the payments in this batch.")
+        help="The payment method used by the payments in this batch.", tracking=True)
     available_payment_method_ids = fields.Many2many(
         comodel_name='account.payment.method',
         compute='_compute_available_payment_method_ids')
-    payment_method_code = fields.Char(related='payment_method_id.code', readonly=False)
+    payment_method_code = fields.Char(related='payment_method_id.code', readonly=False, tracking=True)
     export_file_create_date = fields.Date(string='Generation Date', default=fields.Date.today, readonly=True, help="Creation date of the related export file.", copy=False)
     export_file = fields.Binary(string='File', readonly=True, help="Export file related to this batch", copy=False)
     export_filename = fields.Char(string='File Name', help="Name of the export file generated for this batch", store=True, copy=False)

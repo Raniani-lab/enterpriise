@@ -977,22 +977,6 @@ Tour.register('hr_contract_salary_tour_2', {
             auto: true,
         },
         {
-            content: "Add Private Address",
-            trigger: ".nav-link:contains('Private Information')",
-            run: 'click',
-        },
-        {
-            content: "Address",
-            trigger: '.o_field_widget.o_field_many2one[name=address_home_id]',
-            run: function (actions) {
-                actions.text("Mitchell Admin 3", this.$anchor.find("input"));
-            },
-        },
-        {
-            trigger: ".ui-autocomplete > li > a:contains(Mitchell)",
-            auto: true,
-        },
-        {
             content: "Save",
             trigger: '.o_form_buttons_edit .o_form_button_save',
             extra_trigger: '.o_form_statusbar .o_statusbar_buttons:contains("Launch Plan")',

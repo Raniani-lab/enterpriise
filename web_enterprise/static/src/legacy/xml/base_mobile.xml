@@ -39,17 +39,6 @@
     </t>
 </t>
 
-<t t-name="SnackBar" >
-    <div class="o_snackbar">
-        <p class="o_snackbar_message">
-            <t t-esc="widget.message"/>
-        </p>
-        <button type="button" class="o_snackbar_button">
-            <t t-esc="widget.actionText"/>
-        </button>
-    </div>
-</t>
-
 <t t-extend="ListView.selection">
     <t t-jquery=".o_list_selection_box" t-operation="prepend">
         <button class="btn btn-link py-0 o_discard_selection" t-if="isMobile">

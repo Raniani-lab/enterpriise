@@ -31,5 +31,8 @@
         'web.assets_frontend': [
             'project_forecast/static/src/js/forecast_calendar_front.js',
         ],
+        'web.assets_tests': [
+            'project_forecast/static/tests/tours/*',
+        ],
     }
 }

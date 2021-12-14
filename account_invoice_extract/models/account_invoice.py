@@ -302,7 +302,10 @@ class AccountMove(models.Model):
         elif field == "due_date":
             text_to_send["content"] = str(self.invoice_date_due)
         elif field == "invoice_id":
-            text_to_send["content"] = self.ref
+            if self.move_type in {'in_invoice', 'in_refund'}:
+                text_to_send["content"] = self.ref
+            else:
+                text_to_send["content"] = self.name
         elif field == "partner":
             text_to_send["content"] = self.partner_id.name
         elif field == "VAT_Number":

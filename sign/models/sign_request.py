@@ -445,6 +445,8 @@ class SignRequest(models.Model):
 
     def generate_completed_document(self, password=""):
         self.ensure_one()
+        if self.state != 'signed':
+            raise UserError(_("The completed document cannot be created because the sign request is not fully signed"))
         if not self.template_id.sign_item_ids:
             self.completed_document = self.template_id.attachment_id.datas
         else:

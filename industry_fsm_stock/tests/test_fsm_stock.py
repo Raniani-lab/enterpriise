@@ -144,16 +144,8 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         '''
         warehouse_A = self.env['stock.warehouse'].create({'name': 'WH A', 'code': 'WHA', 'company_id': self.env.company.id, 'partner_id': self.env.company.partner_id.id})
         self.partner_1.write({'user_id': self.uid})
-
         self.project_user.write({'property_warehouse_id': warehouse_A.id})
-
-        self.task.write({'partner_id': self.partner_1.id})
-        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
-
-        self.assertEqual(self.project_user.property_warehouse_id.id, self.task.sale_order_id.warehouse_id.id)
-        self.assertEqual(self.project_user.id, self.task.sale_order_id.user_id.id)
-
-
+        self.assertEqual(self.project_user._get_default_warehouse_id().id, warehouse_A.id)
     def test_fsm_stock_already_validated_picking(self):
         '''
             1 delivery step

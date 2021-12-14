@@ -96,12 +96,3 @@ class Task(models.Model):
                     rounding_method='HALF-UP')
                 move._set_quantity_done(qty_to_do)
         pickings_to_do.with_context(skip_sms=True, cancel_backorder=True).button_validate()
-
-    def write(self, vals):
-        result = super().write(vals)
-        if 'user_ids' in vals:
-            for sale_order in self.filtered("is_fsm").sale_order_id.sudo().filtered(lambda order: order.state in ['draft', 'sent']):
-                user = self.user_ids[:1]
-                if user != sale_order.user_id:
-                    sale_order.write({'user_id': user.id})
-        return result

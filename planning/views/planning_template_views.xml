@@ -16,7 +16,7 @@
                             </group>
                             <group>
                                 <field name="start_time" widget="float_time"/>
-                                <field name="duration" widget="float_time" decoration-danger="not duration"/>
+                                <field name="duration" widget="float_time" decoration-danger="duration &lt;= 0"/>
                             </group>
                         </group>
                     </sheet>

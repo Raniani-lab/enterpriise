@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='task_id']" position="attributes">
                 <attribute name="widget">task_with_hours</attribute>
             </xpath>
-            <xpath expr="//field[@name='allocated_hours']" position="after">
+            <xpath expr="//group[@name='slot_info_right']" position="inside">
                 <field name="company_id" position="move"/>
                 <field name="allow_timesheets" invisible="1"/>
                 <field name="allocation_type" invisible="1"/>

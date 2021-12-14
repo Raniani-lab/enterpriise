@@ -12,6 +12,12 @@
                 <field name="sale_order_id" string="Sales Order"/>
                 <field name="role_product_ids"/>
             </xpath>
+            <xpath expr="//filter[@name='material']" position="after">
+                <separator/>
+                <filter name="billable" string="Billable" domain="[('sale_line_id', '!=', False)]"/>
+                <filter name="non_billable" string="Non Billable" domain="[('sale_line_id', '=', False)]"/>
+                <separator/>
+            </xpath>
             <xpath expr="//filter[@name='conflict_shifts']" position="after">
                 <filter name="to_schedule" string="To Schedule" domain="[('start_datetime', '=', False)]" groups="planning.group_planning_manager"/>
             </xpath>

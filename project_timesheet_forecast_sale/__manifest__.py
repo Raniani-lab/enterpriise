@@ -15,6 +15,7 @@ In your project plan, you can compare your timesheets and your forecast to bette
     'depends': ['project_timesheet_forecast', 'sale_timesheet', 'sale_project_forecast'],
     'data': [
         'report/timesheet_forecast_report_views.xml',
+        'views/project_forecast_views.xml',
         'views/project_project_views.xml',
         'views/project_update_templates.xml',
     ],

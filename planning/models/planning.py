@@ -84,8 +84,8 @@ class Planning(models.Model):
         ('planning', 'Planning'),
         ('forecast', 'Forecast')
     ], compute='_compute_allocation_type')
-    allocated_hours = fields.Float("Allocated Hours", compute='_compute_allocated_hours', store=True, readonly=False)
-    allocated_percentage = fields.Float("Allocated Time (%)", default=100,
+    allocated_hours = fields.Float("Allocated Time", compute='_compute_allocated_hours', store=True, readonly=False)
+    allocated_percentage = fields.Float("Allocated Time %", default=100,
         compute='_compute_allocated_percentage', store=True, readonly=False,
         help="Percentage of time the employee is supposed to work during the shift.",
         group_operator="avg")

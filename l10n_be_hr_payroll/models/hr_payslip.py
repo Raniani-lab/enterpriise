@@ -340,7 +340,7 @@ class Payslip(models.Model):
         for contract in contracts:
             # In case the 1rst/2nd days are saturday/sunday, be kinder on the
             # notion of complete months
-            if contract.date_start.day <= 3:
+            if contract.date_start.day <= 7:
                 contract_start = contract.date_start + relativedelta(day=1)
             else:
                 contract_start = contract.date_start

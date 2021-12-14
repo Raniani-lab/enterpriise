@@ -319,3 +319,12 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         usd_currency = self.env.ref('base.USD')
         self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
         self._test_minimal_camt_file_import('camt_053_minimal_charges.xml', usd_currency)
+
+    def test_charges_camt_file_import_02(self):
+        """
+        This test aims to import a statement having transactions including charges in their
+        total amount. In that case, we need to check that the retrieved amount is correct.
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal_charges_02.xml', usd_currency)

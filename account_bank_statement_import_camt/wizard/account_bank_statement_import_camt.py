@@ -505,6 +505,7 @@ _amount_getters = [
 
 _charges_getters = [
     (partial(_generic_get, xpath='ns:Chrgs/ns:Rcrd/ns:Amt/text()'), partial(_generic_get, xpath='ns:Chrgs/ns:Rcrd/ns:Amt/@Ccy')),
+    (partial(_generic_get, xpath='ns:Chrgs/ns:Amt/text()'), partial(_generic_get, xpath='ns:Chrgs/ns:Amt/@Ccy')),
 ]
 
 _amount_charges_getters = [

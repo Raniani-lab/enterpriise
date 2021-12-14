@@ -184,7 +184,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     });
 
     test("breadcrumb is rendered in control panel", async function (assert) {
-        assert.expect(3);
+        assert.expect(4);
 
         const actions = {
             1: {
@@ -229,6 +229,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             breadcrumbItems[1].querySelector(".o_spreadsheet_favorite"),
             "It should display the favorite toggle button"
         );
+        assert.equal(breadcrumbItems.length, 2, 'The breadcrumb should only contain two list items');
     });
 
     test("untitled spreadsheet", async function (assert) {

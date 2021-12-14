@@ -29,7 +29,7 @@
 
 <div t-name="documents_spreadsheet.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="primary" owl="1">
     <xpath expr="//ol[hasclass('breadcrumb')]//li[hasclass('active')]" position="replace">
-        <li class="breadcrumb-item active">
+        <li t-else="" class="breadcrumb-item active"> <!-- copying the condition present on web.Breadcrumbs -->
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly"/>
             <a
                 title="Toggle favorite"

@@ -515,7 +515,9 @@
         <field name="arch" type="xml">
             <tree string="Tickets" multi_edit="1" sample="1">
                 <field name="use_sla" invisible="1"/>
-                <field name="display_name" string="Name" readonly="1"/>
+                <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
+                <field name="priority" optional="show" widget="priority"/>
+                <field name="name" string="Name" readonly="1"/>
                 <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user" options="{'no_quick_create': True}"/>
@@ -523,9 +525,10 @@
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
-                <field name="priority" optional="show" widget="priority"/>
                 <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
                 <field name="sla_deadline" attrs="{'invisible': [('use_sla', '=', False)]}" optional="show" widget="remaining_days"/>
+                <field name="create_date" optional="hide" readonly="1" string="Creation Date"/>
+                <field name="write_date" optional="hide" readonly="1"/>
                 <field name="ticket_type_id" options="{'no_create_edit': True}" optional="hide"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="rating_last_text" string="Rating" decoration-danger="rating_last_text == 'ko'"
@@ -657,7 +660,19 @@
                     <field name="legend_blocked" invisible="1"/>
                     <field name="legend_normal" invisible="1"/>
                     <field name="legend_done" invisible="1"/>
+                    <field name="rating_count" invisible="1"/>
+                    <field name="use_rating" invisible="1"/>
+                    <field name="rating_avg" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_open_ratings" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating">
+                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>
+                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_avg', '&lt;', 2.33), ('rating_avg', '&gt;=', 3.66)]}" title="Okay"/>
+                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_avg', '&gt;=', 2.33)]}" title="Dissatisfied"/>
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="rating_avg_text" nolabel="1"/></span>
+                                <span class="o_stat_text">Rating</span>
+                            </div>
+                        </button>
                         <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': ['|', ('partner_id', '=', False), ('partner_ticket_count', '=', 0)]}">
                             <field name="partner_ticket_count" widget="statinfo" string="Tickets"/>
                         </button>

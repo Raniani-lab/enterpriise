@@ -8,15 +8,17 @@ class HelpdeskTicketReport(models.Model):
     _inherit = 'helpdesk.ticket.report.analysis'
 
     total_hours_spent = fields.Float("Hours Spent", group_operator="avg", readonly=True)
-    employee_parent_id = fields.Many2one('hr.employee', string='Manager', readonly=True, )
+    employee_parent_id = fields.Many2one('hr.employee', string='Manager', readonly=True)
     department_id = fields.Many2one('hr.department', string='Department', readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Employee', readonly=True)
 
     def _select(self):
         select_str = super()._select()
         select_str += """,
             NULLIF(T.total_hours_spent, 0) AS total_hours_spent,
             EMP.parent_id AS employee_parent_id,
-            DEP.id AS department_id
+            DEP.id AS department_id,
+            EMP.id AS employee_id
         """
         return select_str
 

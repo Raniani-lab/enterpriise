@@ -5,12 +5,12 @@
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
-            <div class="oe_button_box" position="inside">
+            <button name="action_open_helpdesk_ticket" position="before">
                 <button class="oe_stat_button" name="action_view_pickings" icon="fa-truck"
                     type="object" attrs="{'invisible': [('pickings_count', '=', 0)]}">
                     <field name="pickings_count" string="Returns" widget="statinfo" />
                 </button>
-            </div>
+            </button>
             <field name='sale_order_id' position="after">
                 <field name="use_credit_notes" invisible="1"/>
                 <field name="use_product_returns" invisible="1"/>

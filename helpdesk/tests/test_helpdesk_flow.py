@@ -139,7 +139,7 @@ class TestHelpdeskFlow(HelpdeskCommon):
         # we put the helpdesk user and manager in the test_team's members
         self.test_team.member_ids = [(6, 0, [self.helpdesk_user.id, self.helpdesk_manager.id])]
         # we set the assignation method to randomly (=uniformly distributed)
-        self.test_team.assign_method = 'randomly'
+        self.test_team.update({'assign_method': 'randomly', 'auto_assignment': True})
         # we create a bunch of tickets
         for i in range(10):
             self.env['helpdesk.ticket'].create({
@@ -154,7 +154,7 @@ class TestHelpdeskFlow(HelpdeskCommon):
         # we put the helpdesk user and manager in the test_team's members
         self.test_team.member_ids = [(6, 0, [self.helpdesk_user.id, self.helpdesk_manager.id])]
         # we set the assignation method to randomly (=uniformly distributed)
-        self.test_team.assign_method = 'balanced'
+        self.test_team.update({'assign_method': 'balanced', 'auto_assignment': True})
         # we create a bunch of tickets
         for i in range(4):
             self.env['helpdesk.ticket'].create({
@@ -320,6 +320,6 @@ Content-Transfer-Encoding: quoted-printable
         #We confirm that the sla policy has been applied successfully on the ticket.
         #sla policy must not be applied
         self.assertTrue(sla not in ticket_1.sla_status_ids.mapped('sla_id'))
+        self.assertTrue(sla not in ticket_3.sla_status_ids.mapped('sla_id'))
         #sla policy must be applied
         self.assertTrue(sla in ticket_2.sla_status_ids.mapped('sla_id'))
-        self.assertTrue(sla in ticket_3.sla_status_ids.mapped('sla_id'))

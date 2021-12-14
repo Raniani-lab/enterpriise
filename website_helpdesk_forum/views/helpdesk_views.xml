@@ -13,7 +13,7 @@
             <xpath expr="//header" position="inside">
                 <button name="action_share_ticket_on_forum" attrs="{'invisible': [('can_share_forum', '=', False)]}" type="object" string="Share on Forum" data-hotkey="f"/>
             </xpath>
-            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+            <xpath expr="//button[@name='action_open_helpdesk_ticket']" position="before">
                 <button name="action_open_forum_posts" type="object" class="oe_stat_button" icon="fa-comments" attrs="{'invisible': ['|', ('use_website_helpdesk_forum', '=', False), ('forum_post_count', '=', 0)]}">
                     <field name="forum_post_count" string="Forum Posts" widget="statinfo" />
                 </button>

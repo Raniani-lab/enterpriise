@@ -25,3 +25,11 @@
         }
     }
 }
+
+#about_team {
+    span[data-oe-model="helpdesk.team"][data-oe-field="description"] {
+        *:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

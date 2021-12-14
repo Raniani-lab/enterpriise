@@ -748,7 +748,7 @@ class HelpdeskTicket(models.Model):
                 # group the SLA to apply, by key
                 if key not in sla_domain_map:
                     sla_domain_map[key] = expression.AND([[
-                        ('team_id', '=', ticket.team_id.id), ('priority', '<=', ticket.priority),
+                        ('team_id', '=', ticket.team_id.id), ('priority', '=', ticket.priority),
                         ('stage_id.sequence', '>=', ticket.stage_id.sequence),
                         '|', ('ticket_type_ids', 'in', ticket.ticket_type_id.ids), ('ticket_type_ids', '=', False)], ticket._sla_find_extra_domain()])
 
@@ -806,6 +806,17 @@ class HelpdeskTicket(models.Model):
             'domain': [('id', '!=', self.id), ('id', 'in', self.partner_ticket_ids.ids)],
             'context': {'create': False},
         })
+        return action
+
+    def action_open_ratings(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('helpdesk.rating_rating_action_helpdesk')
+        if self.rating_count == 1:
+            action.update({
+                'view_mode': 'form',
+                'res_id': self.rating_ids[0].id,
+                'views': [(view_id, view_type) for view_id, view_type in action['views'] if view_type == 'form'],
+            })
         return action
 
     # ------------------------------------------------------------

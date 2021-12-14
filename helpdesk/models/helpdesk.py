@@ -55,14 +55,12 @@ class HelpdeskTeam(models.Model):
         'helpdesk.stage', relation='team_stage_rel', string='Stages',
         default=_default_stage_ids,
         help="Stages the team will use. This team's tickets will only be able to be in these stages.")
+    auto_assignment = fields.Boolean("Automatic Assignment")
     assign_method = fields.Selection([
-        ('manual', 'Manual'),
-        ('randomly', 'Random'),
-        ('balanced', 'Balanced')], string='Assignment Method', default='manual',
-        required=True, help='Automatic assignment method for new tickets:\n'
-             '\tManually: manual\n'
-             '\tRandomly: randomly but everyone gets the same amount\n'
-             '\tBalanced: to the person with the least amount of open tickets')
+        ('randomly', 'Each user is assigned an equal number of tickets'),
+        ('balanced', 'Each user has an equal number of open tickets')],
+        string='Assignment Method', default='randomly',
+        required=True)
     member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(), default=lambda self: self.env.user, required=True)
     privacy_visibility = fields.Selection([
         ('invited_internal', 'Invited internal users'),
@@ -636,6 +634,7 @@ class HelpdeskTeam(models.Model):
                 'search_default_sla_success': True,
             },
             view_mode=action_params['view_mode'],
+            views=[(False, view) for view in action_params['view_mode'].split(",")],
         )
         return action
 
@@ -737,7 +736,7 @@ class HelpdeskTeam(models.Model):
         )
 
     def _get_working_users_per_first_working_day(self):
-        tz = timezone(self._context.get('tz', 'UTC'))
+        tz = timezone(self._context.get('tz') or 'UTC')
         start_dt = fields.Datetime.now().astimezone(tz)
         end_dt = start_dt + relativedelta.relativedelta(days=7, hour=23, minute=59, second=59)
         workers_per_first_working_date = defaultdict(list)
@@ -767,7 +766,7 @@ class HelpdeskTeam(models.Model):
             :returns a mapping of team identifier with the "to assign" user (maybe an empty record).
             :rtype : dict (key=team_id, value=record of res.users)
         """
-        team_without_manually = self.filtered(lambda x: x.assign_method in ['randomly', 'balanced'])
+        team_without_manually = self.filtered(lambda x: x.assign_method in ['randomly', 'balanced'] and x.auto_assignment)
         users_per_working_days = team_without_manually._get_working_users_per_first_working_day()
         result = dict.fromkeys(self.ids, self.env['res.users'])
         for team in team_without_manually:
@@ -964,7 +963,7 @@ class HelpdeskSLA(models.Model):
         domain="[('id', '!=', stage_id.id)]",
         help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
     priority = fields.Selection(
-        TICKET_PRIORITY, string='Minimum Priority',
+        TICKET_PRIORITY, string='Priority',
         default='1', required=True,
         help='Tickets under this priority will not be taken into account.')
     partner_ids = fields.Many2many(

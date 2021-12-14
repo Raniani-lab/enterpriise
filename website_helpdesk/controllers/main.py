@@ -34,6 +34,8 @@ class WebsiteHelpdesk(http.Controller):
 
         result = self.get_helpdesk_team_data(team or teams[0], search=search)
         result['multiple_teams'] = len(teams) > 1
+        if not request.env.user._is_public():
+            result['partner'] = request.env.user.partner_id
         return request.render("website_helpdesk.team", result)
 
     @http.route(['/helpdesk/<model("helpdesk.team"):team>/knowledgebase'], type='http', auth="public", website=True, sitemap=True)

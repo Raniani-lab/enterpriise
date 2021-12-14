@@ -29,7 +29,7 @@
                         </div>
 
                         <t t-if="not is_html_empty(team.description)">
-                            <div class="card bg-secondary mt-2" id="about_team">
+                            <div class="card bg-secondary mt-2 w-75 pull-right" id="about_team">
                                 <h6 class="card-header"><b>About our team</b></h6>
                             <div class="card-body">
                                 <span t-field="team.description"/>
@@ -93,7 +93,7 @@
                                             <span class="s_website_form_mark"> *</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input type="text" class="form-control s_website_form_input" name="partner_name" required="1" data-fill-with="name" id="helpdesk1"/>
+                                            <input type="text" class="form-control s_website_form_input" name="partner_name" required="1" data-fill-with="name" id="helpdesk1" t-att-value="partner and partner.name"/>
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                                             <span class="s_website_form_mark"> *</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input type="email" class="form-control s_website_form_input" name="partner_email" required="1" data-fill-with="email" id="helpdesk2"/>
+                                            <input type="email" class="form-control s_website_form_input" name="partner_email" required="1" data-fill-with="email" id="helpdesk2" t-att-value="partner and partner.email"/>
                                         </div>
                                     </div>
                                 </div>

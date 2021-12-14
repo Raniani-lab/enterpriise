@@ -13,11 +13,11 @@
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
-            <div class="oe_button_box" position="inside">
+            <button name="action_open_helpdesk_ticket" position="before">
                 <button class="oe_stat_button" name="action_view_repairs" icon="fa-wrench" type="object" attrs="{'invisible': [('repairs_count', '=', 0)]}">
                     <field name="repairs_count" string="Repairs" widget="statinfo"/>
                 </button>
-            </div>
+            </button>
         </field>
     </record>
 

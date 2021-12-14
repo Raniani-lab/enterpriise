@@ -86,18 +86,21 @@
                     </group>
                     <h2>Assignment &amp; Visibility</h2>
                     <div class="row mt16 o_settings_container" id="productivity">
-                        <div class="col-lg-6 o_setting_box" title="With random assignation, every user gets the same number of tickets. With balanced assignation, tickets are assigned to the user with the least amount of open tickets.">
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="auto_assignment"/>
+                            </div>
                             <div class="o_setting_right_pane">
-                                <label for="assign_method"/>
+                                <label for="auto_assignment"/>
                                 <div class="text-muted">
-                                    Assign new tickets to the right persons
+                                    Automate the assignment of new tickets to the right people, and make sure all tickets are being handled
                                 </div>
-                                <div>
-                                    <field name="assign_method" class="mt16 o_light_label" widget="radio"/>
-                                </div>
-                                <div attrs="{'invisible': [('assign_method', '=', 'manual')]}">
-                                    <field name="member_ids" widget="many2many_avatar_user"
-                                    class="mt16" placeholder="Add team members..." options="{'no_quick_create': True'}"/>
+                                <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
+                                    <field name="assign_method" class="o_light_label" widget="radio"/>
+                                    <div>
+                                        <field name="member_ids" widget="many2many_avatar_user"
+                                        class="mt16" placeholder="Add team members..." options="{'no_quick_create': True'}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

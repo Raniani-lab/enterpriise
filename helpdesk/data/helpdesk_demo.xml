@@ -28,7 +28,7 @@
     <!-- helpdesk stages -->
     <record id="stage_done" model="helpdesk.stage">
         <field name="name">Done</field>
-        <field name="sequence">2</field>
+        <field name="sequence">3</field>
         <field name="template_id" ref="helpdesk.rating_ticket_request_email_template"/>
         <field name="is_close" eval="True"/>
         <field name="fold" eval="True"/>
@@ -73,6 +73,7 @@
         <field name="team_id" ref="helpdesk_team1"/>
         <field name="stage_id" ref="stage_solved"/>
         <field name="time">56</field>
+        <field name="exclude_stage_ids" eval="[Command.link(ref('helpdesk.stage_on_hold'))]"/>
     </record>
     <record id="helpdesk_sla_3" model="helpdesk.sla">
         <field name="name">8 hours to finish</field>
@@ -485,6 +486,11 @@ Chester Reed</p>
         <field name="summary">Give gesture of goodwill</field>
         <field name="create_uid" ref="base.user_admin"/>
         <field name="user_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- Mail template Auto delete false for demo data -->
+    <record id="helpdesk.rating_ticket_request_email_template" model="mail.template">
+        <field name="auto_delete" eval="False"/>
     </record>
 
 </odoo>

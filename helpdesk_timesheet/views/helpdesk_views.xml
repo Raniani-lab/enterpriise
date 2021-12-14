@@ -51,20 +51,17 @@
                         attrs="{'invisible': ['|', ('display_timer_start_primary', '=', False), ('display_timer', '=', False)]}" icon="fa-clock-o"/>
                     <button class="btn-secondary" name="action_timer_start" type="object" string="Start" data-hotkey="z" title="Start timer"
                         attrs="{'invisible': ['|', ('display_timer_start_secondary', '=', False), ('display_timer', '=', False)]}" icon="fa-clock-o"/>
-                    <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop" data-hotkey="z" title="Stop timer"
+                    <button class="btn-primary o_fsm_stop" name="action_timer_stop" type="object" string="Stop" data-hotkey="z" title="Stop timer"
                         attrs="{'invisible': ['|', ('display_timer_stop', '=', False), ('display_timer', '=', False)]}" icon="fa-clock-o"/>
-                    <button class="btn-primary" name="action_timer_pause" type="object" string="Pause" data-hotkey="w" title="Pause timer"
+                    <button class="btn-secondary" name="action_timer_pause" type="object" string="Pause" data-hotkey="w" title="Pause timer"
                         attrs="{'invisible': ['|', ('display_timer_pause', '=', False), ('display_timer', '=', False)]}"/>
-                    <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume" data-hotkey="w" title="Resume timer"
+                    <button class="btn-secondary" name="action_timer_resume" type="object" string="Resume" data-hotkey="w" title="Resume timer"
                         attrs="{'invisible': ['|', ('display_timer_resume', '=', False), ('display_timer', '=', False)]}"/>
+                    <field name="timer_start" widget="timer_timer" class="text-secondary mr-auto h2 ml-2 ml-sm-0 font-weight-bold"
+                        attrs="{'invisible': [('display_timer', '=', False)]}"/>
                 </button>
                 <xpath expr="//field[@name='stage_id']" position="attributes">
                     <attribute name="class">ml-2</attribute>
-                </xpath>
-                <xpath expr="//field[@name='stage_id']" position="before">
-                    <field name="display_timer" invisible="1"/>
-                    <field name="timer_start" widget="timer_timer" class="text-danger ml-auto h2 ml-4 font-weight-bold"
-                        attrs="{'invisible': [('display_timer', '=', False)]}"/>
                 </xpath>
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="use_helpdesk_timesheet" invisible="1"/>
@@ -159,6 +156,7 @@
         <field name="arch" type="xml">
             <filter name="my_ticket" position="after">
                 <filter string="My Team's Tickets" name="my_team_ticket" domain="[('user_id.employee_parent_id.user_id', '=', uid)]"/>
+                <filter string="My Department" name="department" domain="[('user_id.employee_id.member_of_department', '=', True)]" help="My Department"/>
             </filter>
         </field>
     </record>

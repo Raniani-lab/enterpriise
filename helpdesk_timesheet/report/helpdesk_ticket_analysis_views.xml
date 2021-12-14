@@ -18,6 +18,7 @@
         <field name="arch" type="xml">
             <filter name="my_ticket" position="after">
                 <filter string="My Team's Tickets" name="my_team_ticket" domain="[('user_id.employee_parent_id.user_id', '=', uid)]"/>
+                <filter string="My Department" name="department" domain="[('employee_id.member_of_department', '=', True)]" help="My Department"/>
             </filter>
         </field>
     </record>

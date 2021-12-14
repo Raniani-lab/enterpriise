@@ -88,7 +88,7 @@ class MailChannel(models.Model):
                 tickets = self.env['helpdesk.ticket'].search([('tag_ids', 'in', HelpdeskTag.ids)], limit=10)
                 if not tickets:
                     for Keyword in Keywords:
-                        tickets |= self.env['helpdesk.ticket'].search([('name', 'ilike', Keyword)], order="id desc", limit=10)
+                        tickets |= self.env['helpdesk.ticket'].search(['|', ('name', 'ilike', Keyword), ('ticket_ref', 'ilike', Keyword)], order="id desc", limit=10)
                         if len(tickets) > 10:
                             break
                 if tickets:

@@ -37,6 +37,9 @@
         'web.assets_qweb': [
             'sale_planning/static/src/xml/**/*',
         ],
+        'web.assets_tests': [
+            'sale_planning/static/tests/tours/*',
+        ],
     },
     'auto_install': True,
     'license': 'OEEL-1',

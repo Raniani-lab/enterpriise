@@ -184,8 +184,8 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                     'employee_id': alloc.employee_id.id,
                     'number_of_days': number_of_days,
                     'max_leaves_allocated': max_leaves_allocated,
-                    'date_from': '%d-01-01' % (self.year + 1),
-                    'date_to': '%d-12-31' % (self.year + 1),
+                    'date_from': '%d-01-01' % (int(self.year) + 1),
+                    'date_to': '%d-12-31' % (int(self.year) + 1),
                 })
         allocations = self.env['hr.leave.allocation'].create(allocation_values)
 

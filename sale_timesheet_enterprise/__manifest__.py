@@ -18,6 +18,7 @@
         'views/account_invoice_views.xml',
         'views/hr_timesheet_views.xml',
         'views/project_task_views.xml',
+        'views/project_sharing_views.xml',
         'views/res_config_settings_views.xml',
     ],
     'demo': [

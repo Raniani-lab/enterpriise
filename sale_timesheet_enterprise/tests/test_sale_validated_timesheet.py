@@ -2,8 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import date
 from dateutil.relativedelta import relativedelta
+
+from odoo import Command
 from odoo.tests import tagged
 
+from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
 
 
@@ -148,3 +151,90 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheet):
         self.assertEqual(self.delivered_so_line.qty_invoiced, delivered_invoice_line.quantity + delivered_invoice_line2.quantity, "The invoiced quantity should be same on sales order line and invoice line")
         # order should be fully invoiced
         self.assertEqual(self.sale_order.invoice_status, 'invoiced', "The SO invoice status should be fully invoiced")
+
+    def test_project_sharing_with_validated_timesheet_invoicing(self):
+        """ This test check if the portal user in project sharing see only the totals based on the timesheets
+            are computed on the validated timesheets only and not all the timesheets related to a task.
+            Because the portal user will only see the validated timesheets and not all ones.
+
+            Test Case:
+            =========
+
+        """
+        # set invoiced_timesheet as "Approved timesheet only"
+        self.env['ir.config_parameter'].sudo().set_param('sale.invoiced_timesheet', 'approved')
+        #  confirm SO
+        self.sale_order.action_confirm()
+
+        project_1 = self.env['project.project'].search([('sale_order_id', '=', self.sale_order.id)])
+        ordered_task = self.env['project.task'].search([('sale_line_id', '=', self.ordered_so_line.id)])
+        portal_user = mail_new_test_user(self.env, 'Portal user', groups='base.group_portal')
+
+        self.env['project.share.wizard'].create({
+            'access_mode': 'edit',
+            'res_model': 'project.project',
+            'res_id': project_1.id,
+            'partner_ids': [
+                Command.link(portal_user.partner_id.id),
+            ],
+        }).action_send_mail()
+
+        fields_to_fetch = ['portal_remaining_hours', 'portal_effective_hours', 'portal_total_hours_spent', 'portal_subtask_effective_hours', 'portal_progress']
+        basic_task_read = ordered_task.read(fields_to_fetch)[0]
+        portal_task_read = ordered_task.with_user(portal_user).read(fields_to_fetch)[0]
+
+        self.assertDictEqual(basic_task_read, portal_task_read)
+
+        today = date.today()
+        self.env['account.analytic.line'].create({
+            'name': 'Timesheet ordered 1',
+            'project_id': ordered_task.project_id.id,
+            'task_id': ordered_task.id,
+            'unit_amount': 8,
+            'employee_id': self.employee_user.id,
+            'date': today,
+        })
+
+        ordered_task.invalidate_cache(fields_to_fetch)
+        basic_task_read = ordered_task.read(fields_to_fetch)[0]
+        ordered_task.invalidate_cache(fields_to_fetch)
+        portal_task_read = ordered_task.with_user(portal_user).read(fields_to_fetch)[0]
+
+        self.assertEqual(basic_task_read['portal_remaining_hours'], 2)
+        self.assertEqual(basic_task_read['portal_effective_hours'], 8)
+        self.assertEqual(basic_task_read['portal_subtask_effective_hours'], 0)
+        self.assertEqual(basic_task_read['portal_total_hours_spent'], 8)
+        self.assertEqual(basic_task_read['portal_progress'], 80)
+
+        self.assertEqual(portal_task_read['portal_remaining_hours'], 0)
+        self.assertEqual(portal_task_read['portal_effective_hours'], 0)
+        self.assertEqual(portal_task_read['portal_subtask_effective_hours'], 0)
+        self.assertEqual(portal_task_read['portal_total_hours_spent'], 0)
+        self.assertEqual(portal_task_read['portal_progress'], 0)
+
+        self.env['account.analytic.line'].create({
+            'name': 'Timesheet ordered 2',
+            'project_id': ordered_task.project_id.id,
+            'task_id': ordered_task.id,
+            'unit_amount': 2,
+            'employee_id': self.employee_user.id,
+            'date': today,
+            'validated': True
+        })
+
+        ordered_task.invalidate_cache(fields_to_fetch)
+        basic_task_read = ordered_task.read(fields_to_fetch)[0]
+        ordered_task.invalidate_cache(fields_to_fetch)
+        portal_task_read = ordered_task.with_user(portal_user).read(fields_to_fetch)[0]
+
+        self.assertEqual(basic_task_read['portal_remaining_hours'], 0)
+        self.assertEqual(basic_task_read['portal_effective_hours'], 10)
+        self.assertEqual(basic_task_read['portal_subtask_effective_hours'], 0)
+        self.assertEqual(basic_task_read['portal_total_hours_spent'], 10)
+        self.assertEqual(basic_task_read['portal_progress'], 100)
+
+        self.assertEqual(portal_task_read['portal_remaining_hours'], 8)
+        self.assertEqual(portal_task_read['portal_effective_hours'], 2)
+        self.assertEqual(portal_task_read['portal_subtask_effective_hours'], 0)
+        self.assertEqual(portal_task_read['portal_total_hours_spent'], 2)
+        self.assertEqual(portal_task_read['portal_progress'], 20)

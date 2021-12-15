@@ -9,10 +9,11 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     def _get_field_service_project_values(self):
+        project_name = _("Field Service")
         stage_ids = self.env['ir.model.data'].sudo().search_read([('module', '=', 'industry_fsm'), ('name', 'like', 'planning_project_stage_')], ['res_id'])
         type_ids = [Command.link(stage_id['res_id']) for stage_id in stage_ids]
         return [{
-            'name': _("Field Service - %s", company.name),
+            'name': project_name,
             'is_fsm': True,
             'allow_timesheets': True,
             'allow_worksheets': True,

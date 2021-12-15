@@ -20,6 +20,17 @@ class Project(models.Model):
         "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False,
         help="Enables customizable worksheets on tasks.")
 
+    def name_get(self):
+        res = super().name_get()
+        if len(self.env.context.get('allowed_company_ids', [])) <= 1:
+            return res
+        name_mapping = dict(res)
+        fsm_project_default_name = _("Field Service")
+        for project in self:
+            if project.is_fsm and project.name == fsm_project_default_name and not project.is_internal_project:
+                name_mapping[project.id] = f'{name_mapping[project.id]} - {project.company_id.name}'
+        return list(name_mapping.items())
+
     @api.depends("is_fsm")
     def _compute_allow_subtasks(self):
         has_group = self.env.user.has_group("project.group_subtask_project")

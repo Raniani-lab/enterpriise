@@ -33,23 +33,15 @@ class ResConfigSettings(models.TransientModel):
         if old_value and self.invoiced_timesheet != old_value:
             # recompute the qty_delivered in sale.order.line for sale.order
             # where his state is set to 'sale'.
-            # TODO this code must be cleaned, at least for performance
-            # sale_order_lines = self.env['sale.order.line'].search([
-            #     ('state', 'in', ['sale', 'done']),
-            #     ('invoice_status', 'in', ['no', 'to invoice']),
-            #     ('product_id', 'in', self.env['product.product']._search([...])),
-            # ])
-            sale_orders = self.env['sale.order'].search([
-                ('state', 'in', ['sale', 'done'])
+            sale_order_lines = self.env['sale.order.line'].search([
+                ('state', 'in', ['sale', 'done']),
+                ('invoice_status', 'in', ['no', 'to invoice']),
+                ('product_id.type', '=', 'service'),
+                ('product_id.service_type', '=', 'timesheet'),
             ])
 
-            for so in sale_orders:
-                sale_order_lines = so.order_line.filtered(
-                    lambda sol: sol.invoice_status in ['no', 'to invoice'] and sol.product_id.type == 'service' and sol.product_id.service_type == 'timesheet'
-                )
-
-                if sale_order_lines:
-                    sale_order_lines._compute_qty_delivered()
-                    sale_order_lines._compute_qty_to_invoice()
-                    sale_order_lines._compute_invoice_status()
+            if sale_order_lines:
+                sale_order_lines._compute_qty_delivered()
+                sale_order_lines._compute_qty_to_invoice()
+                sale_order_lines._compute_invoice_status()
         return super().set_values()

@@ -450,7 +450,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         for i, comodel in enumerate(comodels):
             if comodel:
                 # Relational records.
-                records = self.env[comodel].search([('id', 'in', tuple(record_ids_gb[i]))])
+                records = self.env[comodel].with_context(active_test=False).search([('id', 'in', tuple(record_ids_gb[i]))])
                 sorting_map = {r.id: (r, j) for j, r in enumerate(records)}
                 sorting_map_list.append(sorting_map)
             else:

@@ -54,7 +54,7 @@ class ProductProduct(models.Model):
                         }
                         if product.service_type == 'manual':
                             vals['qty_delivered'] = new_line_qty
-                        line.write(vals)
+                        line.with_context(fsm_no_message_post=True).write(vals)
                         if diff_qty == 0:
                             break
                 elif diff_qty > 0:  # create new SOL

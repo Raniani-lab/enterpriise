@@ -1464,6 +1464,7 @@
                                     '!', '|', ('account_id.code', '=like', '4287%'),
                                     '|', ('account_id.code', '=like', '4452%'),
                                     '|', ('account_id.code', '=like', '4455%'),
+                                    '|', ('account_id.code', '=like', '4456%'),
                                     '|', ('account_id.code', '=like', '44584%'),
                                     '|', ('account_id.code', '=like', '44587%'),
                                     '|', ('account_id.code', '=like', '4562%'),

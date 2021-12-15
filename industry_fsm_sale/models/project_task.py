@@ -350,7 +350,6 @@ class Task(models.Model):
         sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
-            'task_id': self.id,
             'analytic_account_id': self._get_task_analytic_account_id().id,
             'team_id': team.id if team else False,
             'origin': _('%s - %s') % (self.project_id.name, self.name),

@@ -59,8 +59,12 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         self.assertFalse(self.task.task_to_invoice, "Task should not be invoiceable")
 
         # quotation
-        self.assertEqual(self.task.quotation_count, 1, "1 quotation should be linked to the task")
-        quotation = self.env['sale.order'].search([('state', '!=', 'cancel'), ('task_id', '=', self.task.id)])
+        self.assertEqual(self.task.quotation_count, 0, "0 quotation should be linked to the task since we don't create a quotation via the Create Quotation button.")
+        quotation_context = self.task.action_fsm_create_quotation()['context']
+        quotation = self.env['sale.order'].with_context(quotation_context).create({})
+        self.assertEqual(quotation.task_id, self.task)
+        self.task._compute_quotation_count()  # it means we return to the form view of the task, So the compute will be trigger again.
+        self.assertEqual(self.task.quotation_count, 1, '1 quotation should be linked to the task since we create a quotation via the Create Quotation button.')
         self.assertEqual(self.task.action_fsm_view_quotations()['res_id'], quotation.id, "Created quotation id should be in the action")
 
     def test_change_product_selection(self):

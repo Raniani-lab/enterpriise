@@ -3,28 +3,14 @@
 from datetime import datetime
 from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
 from odoo.exceptions import UserError
-from odoo.tests import tagged
 
 
-@tagged('-at_install', 'post_install')
+# This test class has to be tested at install since the flow is modified in industry_fsm_stock
+# where the SO gets confirmed as soon as a product is added in an FSM task which causes the
+# tests of this class to fail
 class TestFsmFlowSale(TestFsmFlowSaleCommon):
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-
-        cls.product_delivered = cls.env['product.product'].create({
-            'name': 'Acoustic Bloc Screens',
-            'list_price': 2950.0,
-            'type': 'service',
-            'invoice_policy': 'delivery',
-            'taxes_id': False,
-        })
-
-
-    # Overriden in industry_fsm_stock, to add another test, create another class
     def test_fsm_flow(self):
-
         # material
         self.assertFalse(self.task.material_line_product_count, "No product should be linked to a new task")
         with self.assertRaises(UserError, msg='Should not be able to get to material without customer set'):

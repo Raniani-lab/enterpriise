@@ -3,10 +3,11 @@
 
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
 from datetime import datetime
-from odoo.tests import tagged
 
 
-@tagged('-at_install', 'post_install')
+# This test class has to be tested at install since the flow is modified in industry_fsm_stock
+# where the SO gets confirmed as soon as a product is added in an FSM task which causes the
+# tests of this class to fail
 class TestMultiCompanyCommon(TestCommonSaleTimesheet):
 
     @classmethod

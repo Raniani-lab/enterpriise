@@ -71,3 +71,11 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
             'invoice_policy': 'order',
             'taxes_id': False,
         })
+
+        cls.product_delivered = cls.env['product.product'].create({
+            'name': 'Acoustic Bloc Screens',
+            'list_price': 2950.0,
+            'type': 'service',
+            'invoice_policy': 'delivery',
+            'taxes_id': False,
+        })

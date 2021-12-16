@@ -249,6 +249,7 @@ class StockBarcodeController(http.Controller):
             'group_tracking_lot': request.env.user.has_group('stock.group_tracking_lot'),
             'group_production_lot': request.env.user.has_group('stock.group_production_lot'),
             'group_uom': request.env.user.has_group('uom.group_uom'),
+            'group_stock_packaging': request.env.user.has_group('product.group_stock_packaging'),
         }
 
     def _get_barcode_nomenclature(self):

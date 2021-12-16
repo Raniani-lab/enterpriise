@@ -1048,6 +1048,13 @@ export default class BarcodeModel extends owl.core.EventBus {
             result.product = product;
             result.match = true;
         }
+        if (this.groups.group_stock_packaging) {
+            const packaging = recordByData.get('product.packaging');
+            if (packaging) {
+                result.match = true;
+                result.packaging = packaging;
+            }
+        }
         if (this.useExistingLots) {
             const lot = recordByData.get('stock.lot');
             if (lot) {
@@ -1101,6 +1108,12 @@ export default class BarcodeModel extends owl.core.EventBus {
         // Process each data in order, starting with non-ambiguous data type.
         if (barcodeData.action) { // As action is always a single data, call it and do nothing else.
             return await barcodeData.action();
+        }
+
+        if (barcodeData.packaging) {
+            barcodeData.product = this.cache.getRecord('product.product', barcodeData.packaging.product_id);
+            barcodeData.quantity = barcodeData.packaging.qty;
+            barcodeData.uom = this.cache.getRecord('uom.uom', barcodeData.product.uom_id);
         }
 
         if (barcodeData.lot && !barcode.product) {

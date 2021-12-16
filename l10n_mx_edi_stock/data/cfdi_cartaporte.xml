@@ -30,7 +30,7 @@
                 t-att-Rfc="supplier.vat"
                 UsoCFDI="P01"/>
             <cfdi:Conceptos>
-                <t t-foreach="moves" t-as="move" t-key="move_index">
+                <t t-foreach="moves" t-as="move">
                     <cfdi:Concepto
                         t-att-Cantidad="format_float(move.quantity_done, 6)"
                         t-att-ClaveProdServ="move.product_id.unspsc_code_id.code"
@@ -81,7 +81,7 @@
                         t-att-NumTotalMercancias="len(moves)"
                         t-att-PesoBrutoTotal="format_float(sum(moves.mapped('weight')), 3)"
                         t-att-UnidadPeso="weight_uom.unspsc_code_id.code">
-                        <t t-foreach="moves" t-as="move" t-key="move_index">
+                        <t t-foreach="moves" t-as="move">
                             <cartaporte20:Mercancia
                                 t-att-BienesTransp="move.product_id.unspsc_code_id.code"
                                 t-att-Cantidad="format_float(move.quantity_done, 6)"

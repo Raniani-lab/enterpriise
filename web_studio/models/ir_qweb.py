@@ -7,6 +7,7 @@ from textwrap import dedent
 
 from odoo import models
 from odoo.tools.json import scriptsafe
+from odoo.addons.base.models.ir_qweb import indent_code
 
 
 class IrQWeb(models.AbstractModel):
@@ -43,15 +44,13 @@ class IrQWeb(models.AbstractModel):
         return super(IrQWeb, self)._render(template, values=values, **options)
 
     def _is_static_node(self, el, options):
-        return not options.get('full_branding') and super(IrQWeb, self)._is_static_node(el, options)
+        return not options.get('full_branding') and super()._is_static_node(el, options)
 
-    def _compile_all_attributes(self, el, options, indent, attr_already_created=False):
-        code = []
+    def _compile_directive_att(self, el, options, level):
+        code = super()._compile_directive_att(el, options, level)
+
         if options.get('full_branding'):
-            attr_already_created = True
-
-            code = [self._indent(dedent("""
-                attrs = {}
+            code.append(indent_code("""
                 attrs['data-oe-context'] = values['json'].dumps({
                     key: values[key].__class__.__name__
                     for key in values.keys()
@@ -62,6 +61,6 @@ class IrQWeb(models.AbstractModel):
                         and ('_' not in key or key.rsplit('_', 1)[0] not in values or key.rsplit('_', 1)[1] not in ['even', 'first', 'index', 'last', 'odd', 'parity', 'size', 'value'])
                         and (values[key].__class__.__name__ not in ['LocalProxy', 'function', 'method', 'Environment', 'module', 'type'])
                 })
-                """).strip(), indent)]
+                """, level))
 
-        return code + super(IrQWeb, self)._compile_all_attributes(el, options, indent, attr_already_created=attr_already_created)
+        return code

@@ -162,7 +162,7 @@
                         Resolución Nº:
                         <span t-field="o.company_id.l10n_cl_dte_resolution_number"/>
                         de Fecha:
-                        <span t-field="o.company_id.l10n_cl_dte_resolution_date" t-field-options='{"widget": "date"}'/>
+                        <span t-field="o.company_id.l10n_cl_dte_resolution_date" t-options='{"widget": "date"}'/>
                         <br/>
                         Verifique documento en www.sii.cl
                     </p>

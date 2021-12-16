@@ -366,10 +366,10 @@ class WorksheetTemplate(models.Model):
             if widget:
                 if widget == 'signature':
                     is_signature = True
-                # no signature or image widgets in qweb
-                if is_signature or widget == "image":
-                    field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
                     field_node.attrib.pop('widget')
+                elif widget == "image":
+                    # image widgets in qweb (only with t-out)
+                    field_node.attrib['t-options-widget'] = "'image'"
             # basic form view -> qweb node transformation
             if field_info['type'] != 'binary' or widget in ['image', 'signature']:
                 # adapt the field node itself

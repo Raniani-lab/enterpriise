@@ -51,7 +51,7 @@
                     <p t-att-style="'color: %s;' % o.company_id.primary_color" class="text-center small">
                         Timbre Electrónico SII<br />
                         Resolución Nº: <span t-field="o.company_id.l10n_cl_dte_resolution_number"/>
-                        de Fecha: <span t-field="o.company_id.l10n_cl_dte_resolution_date" t-field-options='{"widget": "date"}'/>
+                        de Fecha: <span t-field="o.company_id.l10n_cl_dte_resolution_date" t-options='{"widget": "date"}'/>
                         <span name="verification_url">Verifique documento en www.sii.cl</span>
                     </p>
                 </t>

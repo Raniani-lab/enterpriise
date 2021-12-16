@@ -192,7 +192,7 @@
                         <cbc:PaymentMeansID t-esc="PaymentMeansID"/>
                         <cbc:Amount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(tax_details['total_included'])"/>
+                            t-esc="format_float(record.amount_total)"/>
                     </cac:PaymentTerms>
 
                     <t t-set="id_value" t-value="0"/>

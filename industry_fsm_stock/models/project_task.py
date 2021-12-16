@@ -96,3 +96,28 @@ class Task(models.Model):
                     rounding_method='HALF-UP')
                 move._set_quantity_done(qty_to_do)
         pickings_to_do.with_context(skip_sms=True, cancel_backorder=True).button_validate()
+
+    def _fsm_ensure_sale_order(self):
+        """Since we want to use the current user warehouse when using the FSM product kanban view, the SO must
+           be confirmed before adding any product trough the product kanban view.
+           We cannot indeed wait that the user actually adds a product trough the FSM product kanban view
+           to do so as there would be a risk that all the existing SOL (possibly added in a (pre)sale phase)
+           would get that user's default warehouse when the SO gets confirmed and the picking generated."""
+        sale_order = super()._fsm_ensure_sale_order()
+        if self.user_has_groups('project.group_project_user'):
+            sale_order = self.sale_order_id.sudo()
+        if sale_order.state == 'draft':
+            sale_order.action_confirm()
+        return sale_order
+
+    def _fsm_create_sale_order(self):
+        """Since we want to use the current user warehouse when using the FSM product kanban view, the SO must
+           be confirmed before adding any product trough the product kanban view.
+           We cannot indeed wait that the user actually adds a product trough the FSM product kanban view
+           to do so as there would be a risk that all the existing SOL (possibly added in a (pre)sale phase)
+           would get that user's default warehouse when the SO gets confirmed and the picking generated."""
+        super()._fsm_create_sale_order()
+        sale_order = self.sale_order_id
+        if self.user_has_groups('project.group_project_user'):
+            sale_order = self.sale_order_id.sudo()
+        sale_order.action_confirm()

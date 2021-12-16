@@ -351,12 +351,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.task.sale_order_id.action_confirm()
 
         order_line_ids = self.task.sale_order_id.order_line.filtered(lambda l: l.product_id == self.product_lot)
-        ml_vals = order_line_ids[0].move_ids[0]._prepare_move_line_vals(quantity=0)
-        # We chose the quantity to deliver manually
-        ml_vals['qty_done'] = 3
-        # And we chose the lot
-        ml_vals['lot_id'] = self.lot_id2.id
-        self.env['stock.move.line'].create(ml_vals)
+        order_line_ids[0].move_ids[0].move_line_ids[0].write({'qty_done': 3, 'lot_id': self.lot_id2.id})
 
         # When we validate the picking manually, a backorder is created.
         self.task.sale_order_id.picking_ids.button_validate()

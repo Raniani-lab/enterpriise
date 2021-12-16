@@ -1061,6 +1061,20 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
             helper.assertLinesCount(0);
         }
     },
+    // Scans 5 kg for the "Product by Units" => Wrong UoM category, should display an error (instead of creating a new line)
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 01000000152643293100000005',
+    },
+    {
+        trigger: '.o_notification.bg-danger',
+        run: function () {
+            helper.assertLinesCount(0);
+            const errorMessageTitle = document.querySelector('.o_notification_title');
+            helper.assert(errorMessageTitle.innerText, 'Wrong Unit of Measure');
+        }
+    },
+    { trigger: '.o_notification_close' },
     // Scans 4 units for the "Product by Units".
     {
         trigger: '.o_barcode_client_action',
@@ -1076,7 +1090,7 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
             helper.assert($lineQty.text().trim(), '4Units');
         }
     },
-    // Scans 5 kg for the "Product by Units" => Wrong UoM category, shoud display an error.
+    // Scans 5 kg for the "Product by Units" => Wrong UoM category, should display an error (instead of updating the existing line)
     {
         trigger: '.o_barcode_client_action',
         run: 'scan 01000000152643293100000005',

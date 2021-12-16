@@ -692,6 +692,19 @@ export default class BarcodeModel extends owl.core.EventBus {
      * @returns {Object} the newly created line
      */
     async _createNewLine(params) {
+        if (params.fieldsParams && params.fieldsParams.uom && params.fieldsParams.product_id) {
+            let productUOM = this.cache.getRecord('uom.uom', params.fieldsParams.product_id.uom_id);
+            let paramsUOM = params.fieldsParams.uom;
+            if (paramsUOM.category_id !== productUOM.category_id) {
+                // Not the same UoM's category -> Can't be converted.
+                const message = sprintf(
+                    _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
+                    paramsUOM.name, productUOM.name
+                );
+                this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'danger'});
+                return false;
+            }
+        }
         const newLine = Object.assign(
             {},
             params.copyOf,
@@ -1141,6 +1154,9 @@ export default class BarcodeModel extends owl.core.EventBus {
             }
             return this.notification.add(barcodeData.error, { type: 'danger' });
         }
+        if (barcodeData.weight) { // the encoded weight is based on the product's UoM
+            barcodeData.uom = this.cache.getRecord('uom.uom', product.uom_id);
+        }
 
         // Default quantity set to 1 by default if the product is untracked or
         // if there is a scanned tracking number.
@@ -1198,6 +1214,11 @@ export default class BarcodeModel extends owl.core.EventBus {
         // Updates or creates a line based on barcode data.
         if (currentLine) { // If line found, can it be incremented ?
             let exceedingQuantity = 0;
+            if (product.tracking !== 'serial' && barcodeData.uom && barcodeData.uom.category_id == currentLine.product_uom_id.category_id) {
+                // convert to current line's uom
+                barcodeData.quantity = (barcodeData.quantity / barcodeData.uom.factor) * currentLine.product_uom_id.factor;
+                barcodeData.uom = currentLine.product_uom_id;
+            }
             if (this.canCreateNewLine) {
                 // Checks the quantity doesn't exceed the line's remaining quantity.
                 if (currentLine.reserved_uom_qty && product.tracking === 'none') {

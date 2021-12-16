@@ -1346,7 +1346,7 @@ QUnit.module('Views', {
     QUnit.module('GridViewComponents');
 
     QUnit.test('float_toggle component', async function (assert) {
-        assert.expect(17);
+        assert.expect(25);
         var grid = await createView({
             View: GridView,
             model: 'analytic.line',
@@ -1422,6 +1422,32 @@ QUnit.module('Views', {
         await testUtils.dom.click($button);
         assert.strictEqual(grid.$('.o_grid_section:eq(0) .o_grid_cell_container:eq(0) button').text(), '0.00',
             "1.25 is starting value, the closest in the range is 1.00, so the next will be 0.00");
+
+        assert.strictEqual(grid.$('tfoot tr td:eq(6) div').text(), '0.00',
+            "The sixth cell of the footer should contain 0.00");
+        assert.strictEqual(grid.$('tbody tr:eq(1) td.o_grid_total').text(), '0.00',
+            "The total of the BS task should be 0.00");
+        var $button = grid.$('.o_grid_section:eq(0) .o_grid_cell_container:eq(5) button');
+        $button.focus();
+        await testUtils.dom.click($button);
+        $button.blur();
+        assert.strictEqual(grid.$('tfoot tr td:eq(6) div').text(), '0.50',
+            "The fourth cell of the footer should contain 0.50");
+        assert.strictEqual(grid.$('tbody tr:eq(1) td.o_grid_total').text(), '0.50',
+            "The total of the BS task should be 0.50");
+
+        assert.strictEqual(grid.$('tfoot tr td:eq(4) div').text(), '0.00',
+            "The fifth cell of the footer should contain 0.00");
+        assert.strictEqual(grid.$('tbody tr:eq(1) td.o_grid_total').text(), '0.50',
+            "The total of the BS task should be 0.50");
+        var $button = grid.$('.o_grid_section:eq(0) .o_grid_cell_container:eq(4) button');
+        $button.focus();
+        await testUtils.dom.click($button);
+        $button.blur();
+        assert.strictEqual(grid.$('tfoot tr td:eq(5) div').text(), '0.50',
+            "The fifth cell of the footer should contain 0.50");
+        assert.strictEqual(grid.$('tbody tr:eq(1) td.o_grid_total').text(), '1.00',
+            "The total of the BS task should be 0.00");
         await testUtils.nextTick();
         grid.destroy();
     });

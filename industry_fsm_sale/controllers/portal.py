@@ -5,11 +5,12 @@ from werkzeug.exceptions import NotFound
 
 from odoo.http import request, route
 
-from odoo.addons.sale.controllers import portal
+from odoo.addons.sale.controllers.portal import CustomerPortal as SaleCustomerPortal
+from odoo.addons.account.controllers.portal import CustomerPortal as AccountCustomerPortal
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 
-class CustomerPortal(portal.CustomerPortal):
+class CustomerPortal(SaleCustomerPortal, AccountCustomerPortal):
 
     @route([
         '/my/projects/<int:project_id>/task/<int:task_id>/quotes',
@@ -50,3 +51,21 @@ class CustomerPortal(portal.CustomerPortal):
             'sortby': sortby,
         })
         return request.render('sale.portal_my_quotations', values)
+
+    @route([
+        '/my/projects/<int:project_id>/task/<int:task_id>/invoices',
+    ], type='http', auth='user', website=True)
+    def portal_my_task_invoices(self, project_id=None, task_id=None, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
+        task = request.env['project.task'].search([('id', '=', task_id), ('project_id', '=', project_id)])
+        if not task.exists() or not task.project_id._check_project_sharing_access():
+            return NotFound()
+        url = f'/my/projects/{project_id}/task/{task_id}/invoices'
+        values = self._prepare_my_invoices_values(page, date_begin, date_end, sortby, filterby, [('id', 'in', task.sale_order_id.sudo().invoice_ids.ids)], url)
+        pager = portal_pager(**values['pager'])
+        invoices = values['invoices'](pager['offset'])
+        values.update(
+            pager=pager,
+            invoices=invoices.sudo(),
+            page_name='Task invoices',
+        )
+        return request.render('account.portal_my_invoices', values)

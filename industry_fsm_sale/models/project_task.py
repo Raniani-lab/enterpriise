@@ -26,6 +26,7 @@ class Task(models.Model):
 
     # Project Sharing fields
     portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
+    portal_invoice_count = fields.Integer('Invoice Count', compute='_compute_portal_invoice_count')
 
     @property
     def SELF_READABLE_FIELDS(self):
@@ -35,7 +36,7 @@ class Task(models.Model):
                                               'material_line_product_count',
                                               'material_line_total_price',
                                               'currency_id',
-                                              'invoice_count',
+                                              'portal_invoice_count',
                                               'warning_message'}
 
     @api.depends('allow_material', 'material_line_product_count')
@@ -130,6 +131,20 @@ class Task(models.Model):
                 task.warning_message = False
         (self - employee_rate_fsm_tasks).update({'warning_message': False})
 
+    @api.depends_context('uid')
+    @api.depends('sale_order_id.invoice_ids')
+    def _compute_portal_invoice_count(self):
+        """ The goal of portal_invoice_count field is to show the Invoices stat button in Project sharing feature. """
+        is_portal_user = self.user_has_groups('base.group_portal')
+        invoices_by_so = {}
+        available_invoices = False
+        if is_portal_user:
+            sale_orders_sudo = self.sale_order_id.sudo()
+            invoices_by_so = {so.id: set(so.invoice_ids.ids) for so in sale_orders_sudo}
+            available_invoices = set(self.env['account.move'].search([('id', 'in', sale_orders_sudo.invoice_ids.ids)]).ids)
+        for task in self:
+            task.portal_invoice_count = len(invoices_by_so.get(task.sale_order_id.id, set()).intersection(available_invoices)) if is_portal_user else task.invoice_count
+
     def action_create_invoice(self):
         # ensure the SO exists before invoicing, then confirm it
         so_to_confirm = self.filtered(
@@ -189,6 +204,19 @@ class Task(models.Model):
                 'create': False,
             }
         }
+
+    def action_project_sharing_view_invoices(self):
+        """ Action used only in project sharing feature """
+        if self.user_has_groups('base.group_portal'):
+            return {
+                "name": "Portal Invoices",
+                "type": "ir.actions.act_url",
+                "url":
+                    self.env['account.move'].search([('id', 'in', self.sale_order_id.sudo().invoice_ids.ids)], limit=1).get_portal_url()
+                    if self.portal_invoice_count == 1
+                    else f"/my/projects/{self.project_id.id}/task/{self.id}/invoices",
+            }
+        return self.action_project_sharing_view_invoices()
 
     def action_fsm_create_quotation(self):
         view_form_id = self.env.ref('sale.view_order_form').id

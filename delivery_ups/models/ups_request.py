@@ -103,6 +103,15 @@ class Package():
         self.packaging_type = quant_pack and quant_pack.shipper_package_code or False
 
 
+class Commodity():
+    def __init__(self, description, amount, monetary_value, country_of_origin):
+        self.description = description
+        self.amount = amount
+        self.unit_code = 'PC' if amount == 1 else 'PCS'
+        self.monetary_value = monetary_value
+        self.country_of_origin = country_of_origin
+
+
 class LogPlugin(Plugin):
     """ Small plugin for zeep that catches out/ingoing XML requests and logs them"""
     def __init__(self, debug_logger):
@@ -162,6 +171,8 @@ class UPSRequest():
         client = Client('file:///%s' % wsdl_path.lstrip('/'), plugins=[FixRequestNamespacePlug(root), LogPlugin(self.debug_logger)])
         self.factory_ns2 = client.type_factory('ns2')
         self.factory_ns3 = client.type_factory('ns3')
+        # ns4 only exists for Ship API - we only use it for the invoice
+        self.factory_ns4 = client.type_factory('ns4') if api == 'Ship' else self.factory_ns3
         self._add_security_header(client, api)
         return client
 
@@ -296,6 +307,50 @@ class UPSRequest():
             Packages.append(package)
         return Packages
 
+    def set_invoice(self, shipment_info, commodities, ship_to):
+
+        invoice_products = []
+        for commodity in commodities:
+            uom_type = self.factory_ns4.UnitOfMeasurementType()
+            uom_type.Code = commodity.unit_code
+
+            unit_type = self.factory_ns4.UnitType()
+            unit_type.Number = commodity.amount
+            unit_type.Value = commodity.monetary_value
+            unit_type.UnitOfMeasurement = uom_type
+
+            product = self.factory_ns4.ProductType()
+            product.Description = commodity.description
+            product.Unit = unit_type
+            product.OriginCountryCode = commodity.country_of_origin
+
+            invoice_products.append(product)
+
+        address_sold_to = self.factory_ns4.AddressType()
+        address_sold_to.AddressLine = [line for line in (ship_to.street, ship_to.street2) if line]
+        address_sold_to.City = ship_to.city or ''
+        address_sold_to.PostalCode = ship_to.zip or ''
+        address_sold_to.CountryCode = ship_to.country_id.code or ''
+        if ship_to.country_id.code in ('US', 'CA', 'IE'):
+            address_sold_to.StateProvinceCode = ship_to.state_id.code or ''
+
+        sold_to = self.factory_ns4.SoldToType()
+        sold_to.Name = ship_to.commercial_company_name
+        sold_to.AttentionName = ship_to.name
+        sold_to.Address = address_sold_to
+
+        contact = self.factory_ns4.ContactType()
+        contact.SoldTo = sold_to
+
+        invoice = self.factory_ns4.InternationalFormType()
+        invoice.FormType = '01'  # Invoice
+        invoice.Product = invoice_products
+        invoice.CurrencyCode = shipment_info.get('itl_currency_code')
+        invoice.InvoiceDate = shipment_info.get('invoice_date')
+        invoice.ReasonForExport = 'RETURN' if shipment_info.get('is_return', False) else 'SALE'
+        invoice.Contacts = contact
+        return invoice
+
     def get_shipping_price(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, cod_info):
         client = self._set_client(self.rate_wsdl, 'Rate', 'RateRequest')
         service = self._set_service(client, 'Rate')
@@ -390,7 +445,7 @@ class UPSRequest():
         except IOError as e:
             return self.get_error_message('0', 'UPS Server Not Found:\n%s' % e)
 
-    def send_shipping(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, duty_payment, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
+    def send_shipping(self, shipment_info, packages, commodities, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, duty_payment, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
         client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')
         request = self.factory_ns3.RequestType()
         request.RequestOption = 'nonvalidate'
@@ -493,11 +548,13 @@ class UPSRequest():
 
         shipment.PaymentInformation = payment_info
 
+        sso = self.factory_ns2.ShipmentServiceOptionsType()
+        if shipment_info.get('require_invoice'):
+            sso.InternationalForms = self.set_invoice(shipment_info, commodities, ship_to)
         if saturday_delivery:
-            shipment.ShipmentServiceOptions = self.factory_ns2.ShipmentServiceOptionsType()
-            shipment.ShipmentServiceOptions.SaturdayDeliveryIndicator = saturday_delivery
-        else:
-            shipment.ShipmentServiceOptions = ''
+            sso.SaturdayDeliveryIndicator = saturday_delivery
+        shipment.ShipmentServiceOptions = sso
+
         self.shipment = shipment
         self.label = label
         self.request = request
@@ -527,6 +584,8 @@ class UPSRequest():
             result['label_binary_data'] = {}
             for package in response.ShipmentResults.PackageResults:
                 result['label_binary_data'][package.TrackingNumber] = self.save_label(package.ShippingLabel.GraphicImage, label_file_type=self.label_file_type)
+            if response.ShipmentResults.Form:
+                result['invoice_binary_data'] = self.save_label(response.ShipmentResults.Form.Image.GraphicImage, label_file_type='pdf')  # only pdf supported currently
             result['tracking_ref'] = response.ShipmentResults.ShipmentIdentificationNumber
             result['currency_code'] = response.ShipmentResults.ShipmentCharges.TotalCharges.CurrencyCode
 

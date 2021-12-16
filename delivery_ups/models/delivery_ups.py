@@ -2,9 +2,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
-from odoo.tools import pdf
+from odoo.tools import pdf, float_round
 
-from .ups_request import UPSRequest, Package
+from .ups_request import UPSRequest, Package, Commodity
 
 
 class ProviderUPS(models.Model):
@@ -155,7 +155,10 @@ class ProviderUPS(models.Model):
             if picking.weight_bulk:
                 packages.append(Package(self, picking.weight_bulk))
 
+            commodities = self._get_commodities(picking.move_line_ids)
             shipment_info = {
+                'require_invoice': picking._should_generate_commercial_invoice(),
+                'invoice_date': fields.Date.today().strftime('%Y%m%d'),
                 'description': picking.origin,
                 'total_qty': sum(sml.qty_done for sml in picking.move_line_ids),
                 'ilt_monetary_value': '%d' % sum(sml.sale_price for sml in picking.move_line_ids),
@@ -185,7 +188,7 @@ class ProviderUPS(models.Model):
 
             package_type = picking.package_ids and picking.package_ids[0].package_type_id.shipper_package_code or self.ups_default_package_type_id.shipper_package_code
             srm.send_shipping(
-                shipment_info=shipment_info, packages=packages, shipper=picking.company_id.partner_id, ship_from=picking.picking_type_id.warehouse_id.partner_id,
+                shipment_info=shipment_info, packages=packages, commodities=commodities, shipper=picking.company_id.partner_id, ship_from=picking.picking_type_id.warehouse_id.partner_id,
                 ship_to=picking.partner_id, packaging_type=package_type, service_type=ups_service_type, duty_payment=picking.carrier_id.ups_duty_payment,
                 label_file_type=self.ups_label_file_type, ups_carrier_account=ups_carrier_account, saturday_delivery=picking.carrier_id.ups_saturday_delivery,
                 cod_info=cod_info)
@@ -218,6 +221,8 @@ class ProviderUPS(models.Model):
                 attachments = [('LabelUPS-%s.%s' % (pl[0], self.ups_label_file_type), pl[1]) for pl in package_labels]
             if self.ups_label_file_type == 'GIF':
                 attachments = [('LabelUPS.pdf', pdf.merge_pdf([pl[1] for pl in package_labels]))]
+            if 'invoice_binary_data' in result:
+                attachments.append(('UPSCommercialInvoice.pdf', result['invoice_binary_data']))
             if picking.sale_id:
                 for pick in picking.sale_id.picking_ids:
                     pick.message_post(body=logmessage, attachments=attachments)
@@ -255,7 +260,10 @@ class ProviderUPS(models.Model):
         for move in picking.move_ids:
             invoice_line_total += picking.company_id.currency_id.round(move.product_id.lst_price * move.product_qty)
 
+        commodities = self._get_commodities(picking.move_line_ids)
         shipment_info = {
+            'is_return': True,
+            'invoice_date': fields.Date.today().strftime('%Y%m%d'),
             'description': picking.origin,
             'total_qty': sum(sml.qty_done for sml in picking.move_line_ids),
             'ilt_monetary_value': '%d' % invoice_line_total,
@@ -285,7 +293,7 @@ class ProviderUPS(models.Model):
 
         package_type = picking.package_ids and picking.package_ids[0].package_type_id.shipper_package_code or self.ups_default_package_type_id.shipper_package_code
         srm.send_shipping(
-            shipment_info=shipment_info, packages=packages, shipper=picking.partner_id, ship_from=picking.partner_id,
+            shipment_info=shipment_info, packages=packages, commodities=commodities, shipper=picking.partner_id, ship_from=picking.partner_id,
             ship_to=picking.picking_type_id.warehouse_id.partner_id, packaging_type=package_type, service_type=ups_service_type, duty_payment='RECIPIENT', label_file_type=self.ups_label_file_type, ups_carrier_account=ups_carrier_account,
             saturday_delivery=picking.carrier_id.ups_saturday_delivery, cod_info=cod_info)
         srm.return_label()
@@ -356,3 +364,14 @@ class ProviderUPS(models.Model):
             return weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_lb'), round=False)
         else:
             raise ValueError
+
+    def _get_commodities(self, move_lines):
+        commodities = []
+        for line in move_lines:
+            if line.product_id.type not in ['product', 'consu']:
+                continue
+            unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
+            rounded_qty = max(1, float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'))
+            country_of_origin = line.product_id.country_of_origin or line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code
+            commodities.append(Commodity(description=line.product_id.name, amount=rounded_qty, monetary_value=line.sale_price, country_of_origin=country_of_origin))
+        return commodities

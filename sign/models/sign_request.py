@@ -172,7 +172,7 @@ class SignRequest(models.Model):
             sign_request.attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
             sign_request.message_subscribe(partner_ids=sign_request.cc_partner_ids.ids + sign_request.request_item_ids.partner_id.ids)
             sign_users = sign_request.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee'))
-            sign_request.activity_update(sign_users)
+            sign_request._schedule_activity(sign_users)
             self.env['sign.log'].sudo().create({'sign_request_id': sign_request.id, 'action': 'create'})
         if not self._context.get('no_sign_mail'):
             sign_requests.send_signature_accesses()
@@ -593,8 +593,7 @@ class SignRequest(models.Model):
             mail.send()
         return mail
 
-    @api.model
-    def activity_update(self, sign_users):
+    def _schedule_activity(self, sign_users):
         for user in sign_users:
             self.with_context(mail_activity_quick_update=True).activity_schedule(
                 'mail.mail_activity_data_todo',
@@ -692,7 +691,7 @@ class SignRequestItem(models.Model):
                 ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
             ], limit=1)
             if new_sign_user:
-                self.sign_request_id.activity_update(new_sign_user)
+                self.sign_request_id._schedule_activity(new_sign_user)
 
         res = super(SignRequestItem, self).write(vals)
 

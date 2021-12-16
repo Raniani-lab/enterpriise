@@ -24,7 +24,7 @@ from odoo import api, fields, models, http, _, Command
 from odoo.tools import config, get_lang, is_html_empty, formataddr
 from odoo.exceptions import UserError, ValidationError
 
-TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
+TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "fonts", "sign"))
 
 
 def _fix_image_transparency(image):

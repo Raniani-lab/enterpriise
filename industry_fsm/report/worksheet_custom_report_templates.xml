@@ -28,7 +28,7 @@
                         <t t-set='is_uom_day' t-value='doc.timesheet_ids._is_timesheet_encode_uom_day()'/>
                         <t t-if="doc.allow_timesheets and doc.timesheet_ids">
                             <h2>Timesheets</h2>
-                            <div class="table-responsive-sm">
+                            <div t-attf-class="#{'table-responsive-sm' if report_type != 'pdf' else ''}">
                             <table class="table table-sm o_main_table">
                                 <thead>
                                     <tr>

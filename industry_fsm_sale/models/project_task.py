@@ -240,7 +240,7 @@ class Task(models.Model):
                 'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id,
-                'hide_qty_buttons': self.sale_order_id.state == 'done',
+                'hide_qty_buttons': self.sale_order_id.sudo().state == 'done',
                 'default_invoice_policy': 'delivery',
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">

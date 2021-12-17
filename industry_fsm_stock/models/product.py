@@ -44,7 +44,7 @@ class ProductProduct(models.Model):
         if not task or task.fsm_done:
             self.quantity_decreasable = False
             return
-        elif task.sale_order_id.state in ['draft', 'sent']:
+        elif task.sale_order_id.sudo().state in ['draft', 'sent']:
             self.quantity_decreasable = True
             return
 

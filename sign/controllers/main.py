@@ -21,19 +21,11 @@ class Sign(http.Controller):
 
     def get_document_qweb_context(self, id, token):
         sign_request = http.request.env['sign.request'].sudo().browse(id).exists()
-        if http.request.is_frontend and (not sign_request or not sign_request.active):
-            if token:
-                return http.request.render('sign.deleted_sign_request')
-            else:
-                return http.request.not_found()
-
-        current_request_item = None
-        if token:
-            current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
-            if not current_request_item and sign_request.access_token != token and http.request.env.user.id != sign_request.create_uid.id:
-                return http.request.render('sign.deleted_sign_request')
-        elif sign_request.create_uid.id != http.request.env.user.id:
-            return http.request.not_found()
+        if not sign_request:
+            return request.render('sign.deleted_sign_request')
+        current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
+        if not current_request_item and sign_request.access_token != token:
+            return request.not_found()
 
         sign_item_types = http.request.env['sign.item.type'].sudo().search_read([])
         if current_request_item:
@@ -64,7 +56,7 @@ class Sign(http.Controller):
 
         request.env['sign.log'].sudo().create({
             'sign_request_id': sign_request.id,
-            'sign_request_item_id': current_request_item.id if current_request_item else False,
+            'sign_request_item_id': current_request_item.id,
             'action': 'open',
         })
 
@@ -89,10 +81,6 @@ class Sign(http.Controller):
     # -------------
     #  HTTP Routes
     # -------------
-    @http.route(["/sign/document/<int:id>"], type='http', auth='user')
-    def sign_document_user(self, id, **post):
-        return self.sign_document_public(id, None)
-
     @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public')
     def sign_document_from_mail(self, id, token):
         sign_request = request.env['sign.request'].sudo().browse(id)

@@ -266,7 +266,7 @@ class EasypostRequest():
                 'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): line.sale_price,
                 'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, customs_item_id): line.picking_id.company_id.currency_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, customs_item_id): line.env['delivery.carrier']._easypost_convert_weight(line.product_id.weight * unit_quantity),
-                'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, customs_item_id): line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code,
+                'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, customs_item_id): line.product_id.country_of_origin.code or line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code,
                 'order[shipments][%d][customs_info][customs_items][%d][hs_tariff_number]' % (shipment_id, customs_item_id): hs_code,
             })
             customs_item_id += 1
@@ -412,6 +412,9 @@ class EasypostRequest():
         # get tracking code and lable file url
         result['track_shipments_url'] = {res['tracking_code']: res['tracker']['public_url'] for res in response['shipments']}
         result['track_label_data'] = {res['tracking_code']: res['postage_label']['label_url'] for res in response['shipments']}
+
+        # get commercial invoice + other forms
+        result['forms'] = {form['form_type']: form['form_url'] for res in response['shipments'] for form in res.get('forms', [])}
         return result
 
     def get_tracking_link(self, order_id):

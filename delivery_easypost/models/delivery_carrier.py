@@ -106,18 +106,41 @@ class DeliverCarrier(models.Model):
 
             carrier_tracking_ref = ' + '.join(result.get('track_shipments_url').keys())
 
-            labels = []
-            for track_number, label_url in result.get('track_label_data').items():
-                label = requests.get(label_url)
-                labels.append(('LabelEasypost-%s.%s' % (track_number, self.easypost_label_file_type), label.content))
+            # pickings where we should leave a lognote
+            lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
+            requests_session = requests.Session()
 
             logmessage = _("Shipment created into Easypost<br/>"
                            "<b>Tracking Numbers:</b> %s<br/>") % (carrier_tracking_link)
-            if picking.sale_id:
-                for pick in picking.sale_id.picking_ids:
-                    pick.message_post(body=logmessage, attachments=labels)
-            else:
-                picking.message_post(body=logmessage, attachments=labels)
+
+            labels = []
+            for track_number, label_url in result.get('track_label_data').items():
+                try:
+                    response = requests_session.get(label_url, timeout=30)
+                    if response.status_code // 100 > 3:
+                        raise UserError(_('An error has occured while retrieving the labels.'))
+                    labels.append(('LabelEasypost-%s.%s' % (track_number, self.easypost_label_file_type), response.content))
+                except Exception:
+                    logmessage += '<li><a href="%s">%s</a></li>' % (label_url, label_url)
+
+            for pick in lognote_pickings:
+                pick.message_post(body=logmessage, attachments=labels)
+
+            logmessage = _('Easypost Documents:<br/>')
+
+            forms = []
+            for form_type, form_url in result.get('forms', {}).items():
+                try:
+                    response = requests_session.get(form_url, timeout=30)
+                    if response.status_code // 100 > 3:
+                        raise UserError(_('An error has occured while retrieving the documents.'))
+                    forms.append(('%s-%s' % (form_type, form_url.split('/')[-1]), response.content))
+                except Exception:
+                    logmessage += '<li><a href="%s">%s</a></li>' % (form_url, form_url)
+
+            if result.get('forms'):
+                for pick in lognote_pickings:
+                    pick.message_post(body=logmessage, attachments=forms)
 
             shipping_data = {'exact_price': price,
                              'tracking_number': carrier_tracking_ref}
@@ -147,11 +170,19 @@ class DeliverCarrier(models.Model):
 
         carrier_tracking_ref = ' + '.join(result.get('track_shipments_url').keys())
 
+        logmessage = _('Return Label<br/>')
         labels = []
         for track_number, label_url in result.get('track_label_data').items():
-            label = requests.get(label_url)
-            labels.append(('%s-%s-%s.%s' % (self.get_return_label_prefix(), 'blablabla', track_number, self.easypost_label_file_type), label.content))
-        pickings.message_post(body='Return Label', attachments=labels)
+            try:
+                requests_session = requests.Session()
+                response = requests_session.get(label_url, timeout=30)
+                if response.status_code // 100 > 3:
+                    raise UserError(_('An error has occured while retrieving the return labels.'))
+                labels.append(('%s-%s-%s.%s' % (self.get_return_label_prefix(), 'blablabla', track_number, self.easypost_label_file_type), response.content))
+            except Exception:
+                logmessage += '<li><a href="%s">%s</a></li>' % (label_url, label_url)
+
+        pickings.message_post(body=logmessage, attachments=labels)
 
 
     def easypost_get_tracking_link(self, picking):

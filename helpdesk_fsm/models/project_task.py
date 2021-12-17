@@ -25,14 +25,6 @@ class Task(models.Model):
         for task in self:
             task.display_helpdesk_ticket_button = task.helpdesk_ticket_id in tickets if is_portal else bool(task.helpdesk_ticket_id)
 
-    def action_view_ticket(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'helpdesk.ticket',
-            'view_mode': 'form',
-            'res_id': self.helpdesk_ticket_id.id,
-        }
-
     def action_project_sharing_view_ticket(self):
         self.ensure_one()
         if self.env.user.share:

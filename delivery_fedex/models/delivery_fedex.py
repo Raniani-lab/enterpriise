@@ -196,12 +196,12 @@ class ProviderFedex(models.Model):
         # Commodities for customs declaration (international shipping)
         if self.fedex_service_type in ['INTERNATIONAL_ECONOMY', 'INTERNATIONAL_PRIORITY'] or is_india:
             total_commodities_amount = 0.0
-            commodity_country_of_manufacture = order.warehouse_id.partner_id.country_id.code
 
             for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu'] and not l.display_type):
                 commodity_amount = line.price_reduce_taxinc
                 total_commodities_amount += (commodity_amount * line.product_uom_qty)
                 commodity_description = line.product_id.name
+                commodity_country_of_manufacture = line.product_id.country_of_origin.code or order.warehouse_id.partner_id.country_id.code
                 commodity_number_of_piece = '1'
                 commodity_weight_units = self.fedex_weight_unit
                 commodity_weight_value = self._fedex_convert_weight(line.product_id.weight * line.product_uom_qty, self.fedex_weight_unit)
@@ -264,11 +264,11 @@ class ProviderFedex(models.Model):
 
                 commodity_currency = order_currency
                 total_commodities_amount = 0.0
-                commodity_country_of_manufacture = picking.picking_type_id.warehouse_id.partner_id.country_id.code
 
                 for operation in picking.move_line_ids:
                     total_commodities_amount += operation.sale_price
                     commodity_description = operation.product_id.name
+                    commodity_country_of_manufacture = operation.product_id.country_of_origin.code or picking.picking_type_id.warehouse_id.partner_id.country_id.code
                     commodity_number_of_piece = '1'
                     commodity_weight_units = self.fedex_weight_unit
                     commodity_weight_value = self._fedex_convert_weight(operation.product_id.weight * operation.qty_done, self.fedex_weight_unit)
@@ -489,11 +489,11 @@ class ProviderFedex(models.Model):
             order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
             commodity_currency = order_currency
             total_commodities_amount = 0.0
-            commodity_country_of_manufacture = picking.picking_type_id.warehouse_id.partner_id.country_id.code
 
             for operation in picking.move_line_ids:
                 total_commodities_amount += operation.sale_price
                 commodity_description = operation.product_id.name
+                commodity_country_of_manufacture = operation.product_id.country_of_origin.code or picking.picking_type_id.warehouse_id.partner_id.country_id.code
                 commodity_number_of_piece = '1'
                 commodity_weight_units = self.fedex_weight_unit
                 if operation.state == 'done':

@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 from datetime import datetime
 
-from odoo.fields import Command
+from odoo import Command
+from odoo.exceptions import UserError
 from odoo.tests import Form, common
 from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
 
@@ -77,6 +78,10 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             'taxes_id': False,
         })
 
+        cls.warehouse_A = cls.env['stock.warehouse'].create({'name': 'WH A', 'code': 'WHA', 'company_id': cls.env.company.id, 'partner_id': cls.env.company.partner_id.id})
+        cls.warehouse_B = cls.env['stock.warehouse'].create({'name': 'WH B', 'code': 'WHB', 'company_id': cls.env.company.id, 'partner_id': cls.env.company.partner_id.id})
+
+
     def test_fsm_flow(self):
         '''
             3 delivery step
@@ -142,10 +147,9 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             If the customer has a salesperson assigned to him, the creation of a SO
             from a task overrides this to set the user assigned on the task.
         '''
-        warehouse_A = self.env['stock.warehouse'].create({'name': 'WH A', 'code': 'WHA', 'company_id': self.env.company.id, 'partner_id': self.env.company.partner_id.id})
         self.partner_1.write({'user_id': self.uid})
-        self.project_user.write({'property_warehouse_id': warehouse_A.id})
-        self.assertEqual(self.project_user._get_default_warehouse_id().id, warehouse_A.id)
+        self.project_user.write({'property_warehouse_id': self.warehouse_A.id})
+        self.assertEqual(self.project_user._get_default_warehouse_id().id, self.warehouse_A.id)
     def test_fsm_stock_already_validated_picking(self):
         '''
             1 delivery step
@@ -530,9 +534,8 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.consu_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
         self.assertEqual(self.task.material_line_product_count, 1)
 
-        self.assertFalse(self.task.sale_order_id.delivery_count)
-        self.task.with_user(self.project_user).action_fsm_validate()
         self.assertEqual(self.task.sale_order_id.delivery_count, 3)
+        self.task.with_user(self.project_user).action_fsm_validate()
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done', 'done'], "Pickings should be set as done")
 
     def test_fsm_delivered_timesheet(self):
@@ -759,6 +762,204 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             ]
         })
         wizard_id.generate_lot()
+    def test_lot_picking(self):
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.write({
+            'tracking_line_ids': [
+                Command.create({
+                    'product_id': self.product_lot.id,
+                    'quantity': 3,
+                    'lot_id': self.lot_id3.id,
+                })
+            ]
+        })
+        wizard_id.generate_lot()
+        # picking is done
+        self.assertEqual(len(self.task.sale_order_id.order_line), 1, 'There is 1 order line')
+        line = self.task.sale_order_id.order_line
+        self.assertEqual(len(line.move_ids), 1, 'There is 1 move')
+        self.assertEqual(len(line.move_ids.move_line_ids), 1, 'There is 1 move line')
+        move = line.move_ids
+        move_line = move.move_line_ids
+        self.assertEqual(move.product_uom_qty, 3, 'The move quantity is 3')
+        self.assertEqual(move_line.lot_id, self.lot_id3, 'Lot stay the same.')
+        self.assertEqual(move_line.qty_done, 3, 'We deliver 3')
+        # changes in the picking is correctly applied
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        new_tracking_line = self.env['fsm.stock.tracking.line'].create({
+            'product_id': self.product_lot.id,
+            'quantity': 2,
+            'lot_id': self.lot_id2.id,
+        })
+        wizard_id.write({
+            'tracking_line_ids': [
+                Command.set([new_tracking_line.id])
+            ]
+        })
+        wizard_id.generate_lot()
+        # previous picking is canceled and related sol set to 0 (as confirmed)
+        self.assertEqual(len(self.task.sale_order_id.order_line), 2, 'There are 2 order lines')
+        previous_line = self.task.sale_order_id.order_line[0]
+        self.assertEqual(previous_line.product_uom_qty, 0, 'The product qty is set to 0 on previous line')
+        self.assertEqual(len(previous_line.move_ids), 1, 'There is 1 move')
+        self.assertEqual(previous_line.move_ids[0].state, 'cancel', 'The move is cancelled')
+        self.assertEqual(previous_line.move_ids[0].product_uom_qty, 0, 'The move quantity is 0')
+        self.assertEqual(len(previous_line.move_ids.move_line_ids), 1, 'There is 1 move line')
+        self.assertEqual(previous_line.move_ids.move_line_ids[0].state, 'cancel', 'The move line is cancelled')
+        # new line is created with correct information
+        new_line = self.task.sale_order_id.order_line[1]
+        self.assertEqual(len(new_line.move_ids), 1, 'There is 1 move')
+        self.assertEqual(len(new_line.move_ids.move_line_ids), 1, 'There is 1 move line')
+        new_move = new_line.move_ids
+        new_move_line = new_move.move_line_ids
+        self.assertEqual(new_move.product_uom_qty, 2, 'The move quantity is 2')
+        self.assertEqual(new_move_line.lot_id, self.lot_id2, 'Lot stay the same.')
+        self.assertEqual(new_move_line.qty_done, 2, 'We deliver 2')
+        self.assertTrue(new_move.state == 'assigned', 'Move state set to assigned prior to FSM task validation')
+        self.task.with_user(self.project_user).action_fsm_validate()
+        # moves are validated
+        self.assertTrue(new_move.state == 'done', 'Move from SOL2 state set to done')
+
+    def test_warehouse(self):
+        warehouse_C = self.env['stock.warehouse'].create({'name': 'WH C', 'code': 'WHC', 'company_id': self.env.company.id, 'partner_id': self.env.company.partner_id.id})
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        default_warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+        self.task.sale_order_id.write({
+            'order_line': [
+                Command.create({
+                    'product_id': self.product_a.id,
+                    'product_uom_qty': 1,
+                })
+            ]
+        })
+        self.env.user.write({'property_warehouse_id': self.warehouse_A.id})
+        product = self.storable_product_ordered.with_context({'fsm_task_id': self.task.id})
+        product.set_fsm_quantity(1)
+        self.env.user.write({'property_warehouse_id': self.warehouse_B.id})
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.write({
+            'tracking_line_ids': [
+                Command.create({
+                    'product_id': self.product_lot.id,
+                    'quantity': 3,
+                    'lot_id': self.lot_id3.id,
+                })
+            ]
+        })
+        wizard_id.generate_lot()
+        self.env.user.write({'property_warehouse_id': warehouse_C.id})
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.write({
+            'tracking_line_ids': [
+                Command.create({
+                    'product_id': self.product_lot.id,
+                    'quantity': 3,
+                    'lot_id': self.lot_id3.id,
+                })
+            ]
+        })
+        wizard_id.generate_lot()
+        self.assertEqual(len(self.task.sale_order_id.order_line), 4, 'Four lines are added')
+        first_line = self.task.sale_order_id.order_line[0]
+        second_line = self.task.sale_order_id.order_line[1]
+        third_line = self.task.sale_order_id.order_line[2]
+        fourth_line = self.task.sale_order_id.order_line[3]
+        self.assertTrue(all(len(sol.move_ids.move_line_ids) == 1 for sol in self.task.sale_order_id.order_line),
+                        'There is 1 move line on each SOL')
+        self.assertEqual(first_line.move_ids.warehouse_id, default_warehouse,
+                         'First SOL move warehouse is the company default one')
+        self.assertEqual(second_line.move_ids.warehouse_id, self.warehouse_A,
+                         'Second SOL move warehouse is self.warehouse_B (as set as default)')
+        self.assertEqual(third_line.move_ids.warehouse_id, self.warehouse_B,
+                         'Third SOL move warehouse is self.warehouse_B (as set as default)')
+        self.assertEqual(fourth_line.move_ids.warehouse_id, warehouse_C,
+                         'Fourth SOL move warehouse is warehouse_C (as set as default)')
+
+    def test_serial_missing_on_empty_sol(self):
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.write({
+            'tracking_line_ids': [
+                Command.create({
+                    'product_id': self.product_lot.id,
+                    'quantity': 3,
+                    'lot_id': self.lot_id3.id,
+                })
+            ]
+        })
+        wizard_id.generate_lot()
+        self.assertEqual(self.product_lot.serial_missing, False, 'serial_missing is Falsy')
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.tracking_line_ids.unlink()
+        wizard_id.generate_lot()
+        self.assertEqual(len(self.task.sale_order_id.order_line), 1, 'There is one SOL')
+        sol = self.task.sale_order_id.order_line[0]
+        self.assertEqual(sol.product_uom_qty, 0, 'The quantity on the SOL is set to 0')
+        self.assertEqual(sol.qty_delivered, 0, 'The quantity on the SOL is set to 0')
+        self.assertEqual(self.product_lot.serial_missing, False, 'serial_missing is Falsy')
+
+    def test_quantity_decreasable_on_different_warehouses(self):
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        self.env.user.write({'property_warehouse_id': self.warehouse_A.id})
+        product = self.storable_product_ordered.with_context({'fsm_task_id': self.task.id})
+        product.set_fsm_quantity(2)
+        # We have 2 from warehouse A
+        self.assertTrue(product.quantity_decreasable)
+        self.env.user.write({'property_warehouse_id': self.warehouse_B.id})
+        # Need to trigger the compute manually as it does not depend on the default warehouse but on the user which is
+        # not an issue as it would anyway need a view reload in order to be changed.
+        product._compute_quantity_decreasable()
+        self.assertFalse(product.quantity_decreasable)
+        product.fsm_add_quantity()
+        # We have 3: 2 from warehouse A and 1 from warehouse B
+        self.assertTrue(product.quantity_decreasable)
+        # No UserError is raised
+        product.fsm_remove_quantity()
+        # Check a UserError is raised when trying to reduce qty from other stock
+        product.fsm_add_quantity()
+        with self.assertRaises(UserError):
+            product.set_fsm_quantity(1)
+        # Let's validate the picking an check that quantity decreasable gets Falsy
+        self.assertEqual(len(self.task.sale_order_id.order_line), 1, 'There is 1 order line')
+        self.task.sale_order_id.order_line.move_ids._action_done()
+        self.assertFalse(product.quantity_decreasable)
+
+    def test_is_same_warehouse(self):
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        self.env.user.write({'property_warehouse_id': self.warehouse_A.id})
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.write({
+            'tracking_line_ids': [
+                Command.create({
+                    'product_id': self.product_lot.id,
+                    'quantity': 3,
+                    'lot_id': self.lot_id3.id,
+                })
+            ]
+        })
+        self.assertEqual(wizard_id.tracking_line_ids[0].warehouse_id, self.warehouse_A,
+                         '`fsm.stock.tracking.line` warehouse is the default one on new tracking lines')
+        self.assertTrue(wizard_id.tracking_line_ids[0].is_same_warehouse)
+        self.assertTrue(wizard_id.is_same_warehouse)
+        wizard_id.generate_lot()
+        self.env.user.write({'property_warehouse_id': self.warehouse_B.id})
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        self.assertFalse(wizard_id.tracking_line_ids[0].is_same_warehouse)
+        self.assertFalse(wizard_id.is_same_warehouse)
 
     def test_fsm_update_salesperson(self):
         '''Check that the edit of the person assigned to a task of the field service project updates the salesperson on the sale order.'''

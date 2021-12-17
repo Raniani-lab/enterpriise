@@ -1,11 +1,6 @@
 /** @odoo-module **/
 
-import { getMessagingComponent } from '@mail/utils/messaging_component';
-import {
-    afterEach,
-    beforeEach,
-    start,
-} from '@mail/utils/test_utils';
+import { afterEach, beforeEach, start } from '@mail/utils/test_utils';
 
 QUnit.module('voip', {}, function () {
 QUnit.module('components', {}, function () {
@@ -14,21 +9,13 @@ QUnit.module('activity_tests.js', {
     beforeEach() {
         beforeEach(this);
 
-        this.createActivityComponent = async activity => {
-            const ActivityComponent = getMessagingComponent('Activity');
-            ActivityComponent.env = this.env;
-            this.component = new ActivityComponent(null, {
-                activityLocalId: activity.localId,
-            });
-            await this.component.mount(this.widget.el);
-        };
-
         this.start = async params => {
-            const { env, widget } = await start(Object.assign({}, params, {
-                data: this.data,
-            }));
+            const res = await start({ ...params, data: this.data });
+            const { components, env, widget } = res;
+            this.components = components;
             this.env = env;
             this.widget = widget;
+            return res;
         };
     },
     afterEach() {
@@ -39,13 +26,21 @@ QUnit.module('activity_tests.js', {
 QUnit.test('activity: rendering - only with mobile number', async function (assert) {
     assert.expect(5);
 
-    await this.start();
-    const activity = this.messaging.models['Activity'].create({
+    this.data['res.partner'].records.push({
+        activity_ids: [12],
         id: 100,
-        mobile: '+3212345678',
     });
-    await this.createActivityComponent(activity);
-
+    this.data['mail.activity'].records.push({
+        id: 12,
+        mobile: '+3212345678',
+        res_id: 100,
+        res_model: 'res.partner',
+    });
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'res.partner',
+    });
     assert.containsOnce(
         document.body,
         '.o_Activity_voipNumberMobile',
@@ -76,13 +71,21 @@ QUnit.test('activity: rendering - only with mobile number', async function (asse
 QUnit.test('activity: rendering - only with phone number', async function (assert) {
     assert.expect(5);
 
-    await this.start();
-    const activity = this.messaging.models['Activity'].create({
+    this.data['res.partner'].records.push({
         id: 100,
-        phone: '+3287654321',
+        activity_ids: [12],
     });
-    await this.createActivityComponent(activity);
-
+    this.data['mail.activity'].records.push({
+        id: 12,
+        phone: '+3287654321',
+        res_id: 100,
+        res_model: 'res.partner',
+    });
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'res.partner',
+    });
     assert.containsOnce(
         document.body,
         '.o_Activity_voipNumberPhone'
@@ -111,14 +114,22 @@ QUnit.test('activity: rendering - only with phone number', async function (asser
 QUnit.test('activity: rendering - with both mobile and phone number', async function (assert) {
     assert.expect(6);
 
-    await this.start();
-    const activity = this.messaging.models['Activity'].create({
+    this.data['res.partner'].records.push({
+        activity_ids: [12],
         id: 100,
+    });
+    this.data['mail.activity'].records.push({
+        id: 12,
         mobile: '+3212345678',
         phone: '+3287654321',
+        res_id: 100,
+        res_model: 'res.partner',
     });
-    await this.createActivityComponent(activity);
-
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'res.partner',
+    });
     assert.containsOnce(
         document.body,
         '.o_Activity_voipNumberMobile',
@@ -155,7 +166,21 @@ QUnit.test('activity: rendering - with both mobile and phone number', async func
 QUnit.test('activity: calling - only with mobile', async function (assert) {
     assert.expect(4);
 
-    await this.start();
+    this.data['res.partner'].records.push({
+        activity_ids: [100],
+        id: 100,
+    });
+    this.data['mail.activity'].records.push({
+        id: 100,
+        mobile: '+3212345678',
+        res_id: 100,
+        res_model: 'res.partner',
+    });
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'res.partner',
+    });
     const onVoipActivityCallMobile = (ev) => {
         assert.step('voip_call_mobile_triggered');
         assert.strictEqual(
@@ -170,11 +195,6 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
         );
     };
     document.addEventListener('voip_activity_call', onVoipActivityCallMobile);
-    const activity = this.messaging.models['Activity'].create({
-        id: 100,
-        mobile: '+3212345678',
-    });
-    await this.createActivityComponent(activity);
 
     document.querySelector('.o_Activity_voipCallMobile').click();
     assert.verifySteps(
@@ -187,7 +207,21 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
 QUnit.test('activity: calling - only with phone', async function (assert) {
     assert.expect(4);
 
-    await this.start();
+    this.data['res.partner'].records.push({
+        activity_ids: [100],
+        id: 100,
+    });
+    this.data['mail.activity'].records.push({
+        id: 100,
+        phone: '+3287654321',
+        res_id: 100,
+        res_model: 'res.partner',
+    });
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'res.partner',
+    });
     const onVoipActivityCallPhone = (ev) => {
         assert.step('voip_call_phone_triggered');
         assert.strictEqual(
@@ -202,11 +236,6 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
         );
     };
     document.addEventListener('voip_activity_call', onVoipActivityCallPhone);
-    const activity = this.messaging.models['Activity'].create({
-        id: 100,
-        phone: '+3287654321',
-    });
-    await this.createActivityComponent(activity);
 
     document.querySelector('.o_Activity_voipCallPhone').click();
     assert.verifySteps(

@@ -1,11 +1,6 @@
 /** @odoo-module **/
 
-import {
-    afterEach,
-    beforeEach,
-    createRootMessagingComponent,
-    start,
-} from '@mail/utils/test_utils';
+import { afterEach, beforeEach, start } from '@mail/utils/test_utils';
 
 QUnit.module('approvals', {}, function () {
 QUnit.module('components', {}, function () {
@@ -14,19 +9,13 @@ QUnit.module('activity_tests.js', {
     beforeEach() {
         beforeEach(this);
 
-        this.createActivityComponent = async activity => {
-            await createRootMessagingComponent(this, 'Activity', {
-                props: { activityLocalId: activity.localId },
-                target: this.widget.el,
-            });
-        };
-
         this.start = async params => {
-            const { env, widget } = await start(Object.assign({}, params, {
-                data: this.data,
-            }));
+            const res = await start({ ...params, data: this.data });
+            const { components, env, widget } = res;
+            this.components = components;
             this.env = env;
             this.widget = widget;
+            return res;
         };
     },
     afterEach() {
@@ -37,18 +26,27 @@ QUnit.module('activity_tests.js', {
 QUnit.test('activity with approval to be made by logged user', async function (assert) {
     assert.expect(14);
 
-    await this.start();
-    const activityData = this.messaging.models['Activity'].convertData({
-        activity_type_id: [1, 'Approval'],
-        approver_id: 12,
-        approver_status: 'pending',
-        can_write: true,
-        id: 10,
-        user_id: [this.messaging.currentUser.id, "Eden Hazard"],
+    this.data['approval.request'].records.push({
+        activity_ids: [12],
+        id: 100,
     });
-    const activity = this.messaging.models['Activity'].create(activityData);
-    await this.createActivityComponent(activity);
-
+    this.data['approval.approver'].records.push({
+        request_id: 100,
+        status: 'pending',
+        user_id: this.data.currentUserId,
+    });
+    this.data['mail.activity'].records.push({
+        can_write: true,
+        id: 12,
+        res_id: 100,
+        res_model: 'approval.request',
+        user_id: this.data.currentUserId,
+    });
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'approval.request',
+    });
     assert.containsOnce(
         document.body,
         '.o_Activity',
@@ -124,18 +122,28 @@ QUnit.test('activity with approval to be made by logged user', async function (a
 QUnit.test('activity with approval to be made by another user', async function (assert) {
     assert.expect(16);
 
-    await this.start();
-    const activityData = this.messaging.models['Activity'].convertData({
-        activity_type_id: [1, 'Approval'],
-        approver_id: 12,
-        approver_status: 'pending',
-        can_write: true,
-        id: 10,
-        user_id: [42, "Simon Mignolet"],
+    this.data['approval.request'].records.push({
+        activity_ids: [12],
+        id: 100,
     });
-    const activity = this.messaging.models['Activity'].create(activityData);
-    await this.createActivityComponent(activity);
-
+    this.data['res.users'].records.push({ id: 11 });
+    this.data['approval.approver'].records.push({
+        request_id: 100,
+        status: 'pending',
+        user_id: 11,
+    });
+    this.data['mail.activity'].records.push({
+        can_write: true,
+        id: 12,
+        res_id: 100,
+        res_model: 'approval.request',
+        user_id: 11,
+    });
+    const { createChatterContainerComponent } = await this.start();
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'approval.request',
+    });
     assert.containsOnce(
         document.body,
         '.o_Activity',
@@ -221,7 +229,24 @@ QUnit.test('activity with approval to be made by another user', async function (
 QUnit.test('approve approval', async function (assert) {
     assert.expect(7);
 
-    await this.start({
+    this.data['approval.request'].records.push({
+        activity_ids: [12],
+        id: 100,
+    });
+    this.data['approval.approver'].records.push({
+        id: 12,
+        request_id: 100,
+        status: 'pending',
+        user_id: this.data.currentUserId,
+    });
+    this.data['mail.activity'].records.push({
+        can_write: true,
+        id: 12,
+        res_id: 100,
+        res_model: 'approval.request',
+        user_id: this.data.currentUserId,
+    });
+    const { createChatterContainerComponent } = await this.start({
         async mockRPC(route, args) {
             if (args.method === 'action_approve') {
                 assert.strictEqual(args.args.length, 1);
@@ -232,17 +257,10 @@ QUnit.test('approve approval', async function (assert) {
             return this._super(...arguments);
         },
     });
-    const activityData = this.messaging.models['Activity'].convertData({
-        activity_type_id: [1, 'Approval'],
-        approver_id: 12,
-        approver_status: 'pending',
-        can_write: true,
-        id: 10,
-        user_id: [this.messaging.currentUser.id, "Eden Hazard"],
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'approval.request',
     });
-    const activity = this.messaging.models['Activity'].create(activityData);
-    await this.createActivityComponent(activity);
-
     assert.containsOnce(
         document.body,
         '.o_Activity',
@@ -261,7 +279,24 @@ QUnit.test('approve approval', async function (assert) {
 QUnit.test('refuse approval', async function (assert) {
     assert.expect(7);
 
-    await this.start({
+    this.data['approval.request'].records.push({
+        activity_ids: [12],
+        id: 100,
+    });
+    this.data['approval.approver'].records.push({
+        id: 12,
+        request_id: 100,
+        status: 'pending',
+        user_id: this.data.currentUserId,
+    });
+    this.data['mail.activity'].records.push({
+        can_write: true,
+        id: 12,
+        res_id: 100,
+        res_model: 'approval.request',
+        user_id: this.data.currentUserId,
+    });
+    const { createChatterContainerComponent } = await this.start({
         async mockRPC(route, args) {
             if (args.method === 'action_refuse') {
                 assert.strictEqual(args.args.length, 1);
@@ -272,17 +307,10 @@ QUnit.test('refuse approval', async function (assert) {
             return this._super(...arguments);
         },
     });
-    const activityData = this.messaging.models['Activity'].convertData({
-        activity_type_id: [1, 'Approval'],
-        approver_id: 12,
-        approver_status: 'pending',
-        can_write: true,
-        id: 10,
-        user_id: [this.messaging.currentUser.id, "Eden Hazard"],
+    await createChatterContainerComponent({
+        threadId: 100,
+        threadModel: 'approval.request',
     });
-    const activity = this.messaging.models['Activity'].create(activityData);
-    await this.createActivityComponent(activity);
-
     assert.containsOnce(
         document.body,
         '.o_Activity',

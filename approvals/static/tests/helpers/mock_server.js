@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import '@mail/../tests/helpers/mock_server'; // ensure mail overrides are applied first
 import MockServer from 'web.MockServer';
 
 MockServer.include({
@@ -43,5 +44,25 @@ MockServer.include({
      */
     _mockApprovalApproverActionRefuse(ids) {
         // TODO implement this mock and improve related tests (task-2300537)
+    },
+    /**
+     * @override
+     */
+    _mockMailActivityActivityFormat(args) {
+        const activities = this._super(...arguments);
+        for (const activity of activities) {
+            if (activity.res_model === 'approval.request') {
+                // check on activity type being approval not done here for simplicity
+                const approver = this._getRecords('approval.approver', [
+                    ['request_id', '=', activity.res_id],
+                    ['user_id', '=', activity.user_id[0]],
+                ])[0];
+                if (approver) {
+                    activity.approver_id = approver.id;
+                    activity.approver_status = approver.status;
+                }
+            }
+        }
+        return activities;
     },
 });

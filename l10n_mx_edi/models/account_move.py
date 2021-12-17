@@ -388,34 +388,13 @@ class AccountMove(models.Model):
     def l10n_mx_edi_update_sat_status(self):
         '''Synchronize both systems: Odoo & SAT to make sure the invoice is valid.
         '''
-        url = 'https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc?wsdl'
-        headers = {'SOAPAction': 'http://tempuri.org/IConsultaCFDIService/Consulta', 'Content-Type': 'text/xml; charset=utf-8'}
-        template = """<?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope xmlns:ns0="http://tempuri.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-   <SOAP-ENV:Header/>
-   <ns1:Body>
-      <ns0:Consulta>
-         <ns0:expresionImpresa>${data}</ns0:expresionImpresa>
-      </ns0:Consulta>
-   </ns1:Body>
-</SOAP-ENV:Envelope>"""
-        namespace = {'a': 'http://schemas.datacontract.org/2004/07/Sat.Cfdi.Negocio.ConsultaCfdi.Servicio'}
         for move in self:
             supplier_rfc = move.l10n_mx_edi_cfdi_supplier_rfc
             customer_rfc = move.l10n_mx_edi_cfdi_customer_rfc
             total = float_repr(move.l10n_mx_edi_cfdi_amount, precision_digits=move.currency_id.decimal_places)
             uuid = move.l10n_mx_edi_cfdi_uuid
-            params = '?re=%s&amp;rr=%s&amp;tt=%s&amp;id=%s' % (
-                tools.html_escape(tools.html_escape(supplier_rfc or '')),
-                tools.html_escape(tools.html_escape(customer_rfc or '')),
-                total or 0.0, uuid or '')
-            soap_env = template.format(data=params)
             try:
-                soap_xml = requests.post(url, data=soap_env, headers=headers, timeout=20)
-                response = fromstring(soap_xml.text)
-                fetched_status = response.xpath('//a:Estado', namespaces=namespace)
-                status = fetched_status[0] if fetched_status else ''
+                status = self.env['account.edi.format']._l10n_mx_edi_get_sat_status(supplier_rfc, customer_rfc, total, uuid)
             except Exception as e:
                 move.message_post(body=_("Failure during update of the SAT status: %(msg)s", msg=str(e)))
                 continue

@@ -180,32 +180,33 @@
 
                 <!--PAYMENT TERMS-->
                 <t t-if="not is_refund">
-                <t t-if="PaymentMeansID == 'Contado'">
-                    <cac:PaymentTerms>
-                        <cbc:ID>FormaPago</cbc:ID>
-                        <cbc:PaymentMeansID t-esc="PaymentMeansID"/>
-                    </cac:PaymentTerms>
-                </t>
-                <t t-else="">
-                    <cac:PaymentTerms>
-                        <cbc:ID>FormaPago</cbc:ID>
-                        <cbc:PaymentMeansID t-esc="PaymentMeansID"/>
-                        <cbc:Amount
-                            t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(record.amount_total)"/>
-                    </cac:PaymentTerms>
+                    <t t-if="PaymentMeansID == 'Contado'">
+                        <cac:PaymentTerms>
+                            <cbc:ID>FormaPago</cbc:ID>
+                            <cbc:PaymentMeansID t-esc="PaymentMeansID"/>
+                        </cac:PaymentTerms>
+                    </t>
+                    <t t-else="">
+                        <cac:PaymentTerms>
+                            <cbc:ID>FormaPago</cbc:ID>
+                            <cbc:PaymentMeansID t-esc="PaymentMeansID"/>
+                            <cbc:Amount
+                                t-att-currencyID="record.currency_id.name"
+                                t-esc="format_float(total_after_spot)"/>
+                        </cac:PaymentTerms>
 
-                    <t t-set="id_value" t-value="0"/>
-                    <cac:PaymentTerms t-foreach="invoice_date_due_vals" t-as="invoice">
-                        <t t-set="id_value" t-value="id_value + 1"/>
-                        <cbc:ID>FormaPago</cbc:ID>
-                        <cbc:PaymentMeansID>Cuota<t t-esc="'{0:03d}'.format(id_value)"/></cbc:PaymentMeansID>
-                        <cbc:Amount
-                            t-att-currencyID="invoice.currency_id.name"
-                            t-esc="invoice.amount_currency"/>
-                        <cbc:PaymentDueDate t-esc="invoice.date_maturity"/>
-                    </cac:PaymentTerms>
-                </t>
+                        <!-- Repeated with due dates-->
+                        <t t-set="id_value" t-value="0"/>
+                        <cac:PaymentTerms t-foreach="invoice_date_due_vals_list" t-as="due_vals">
+                            <t t-set="id_value" t-value="id_value + 1"/>
+                            <cbc:ID>FormaPago</cbc:ID>
+                            <cbc:PaymentMeansID>Cuota<t t-esc="'{0:03d}'.format(id_value)"/></cbc:PaymentMeansID>
+                            <cbc:Amount
+                                t-att-currencyID="due_vals['currency_name']"
+                                t-esc="format_float(due_vals['amount'])"/>
+                            <cbc:PaymentDueDate t-esc="due_vals['date_maturity']"/>
+                        </cac:PaymentTerms>
+                    </t>
                 </t>
                 <!--END PAYMENT TERMS-->
 

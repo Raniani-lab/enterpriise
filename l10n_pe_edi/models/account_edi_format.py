@@ -238,13 +238,31 @@ class AccountEdiFormat(models.Model):
                 return None
             return '%.*f' % (precision, amount)
 
+        spot = invoice._l10n_pe_edi_get_spot()
+        invoice_date_due_vals_list = []
+        first_time = True
+        for rec_line in invoice.line_ids.filtered(lambda l: l.account_internal_type == 'receivable'):
+            amount = rec_line.amount_currency
+            if spot and first_time:
+                amount -= spot['spot_amount']
+            first_time = False
+            invoice_date_due_vals_list.append({'amount': rec_line.move_id.currency_id.round(amount),
+                                               'currency_name': rec_line.move_id.currency_id.name,
+                                               'date_maturity': rec_line.date_maturity})
+        spot = invoice._l10n_pe_edi_get_spot()
+        if not spot:
+            total_after_spot = abs(invoice.amount_total)
+        else:
+            total_after_spot = abs(invoice.amount_total) - spot['spot_amount']
         values = {
             **invoice._prepare_edi_vals_to_export(),
-            'spot': invoice._l10n_pe_edi_get_spot(),
+            'spot': spot,
+            'total_after_spot': total_after_spot,
             'PaymentMeansID': invoice._l10n_pe_edi_get_payment_means(),
             'is_refund': invoice.move_type in ('out_refund', 'in_refund'),
             'certificate_date': invoice.invoice_date,
             'format_float': format_float,
+            'invoice_date_due_vals_list': invoice_date_due_vals_list,
         }
 
         # Invoice lines.

@@ -56,8 +56,18 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'country_id': cls.env.ref('base.pe').id,
             'l10n_pe_edi_provider': 'digiflow',
             'l10n_pe_edi_certificate_id': cls.certificate.id,
-            'vat': "20557912879",
             'l10n_pe_edi_test_env': True,
+        })
+
+        cls.national_bank = cls.env.ref("l10n_pe_edi.peruvian_national_bank")
+        cls.national_bank_account = cls.env['res.partner.bank'].create({
+            'acc_number': 'CUENTAPRUEBA',
+            'bank_id': cls.national_bank.id,
+            'partner_id': cls.company_data['company'].partner_id.id
+        })
+        cls.company_data['company'].partner_id.write({
+            'vat': "20557912879",
+            'l10n_latam_identification_type_id': cls.env.ref('l10n_pe.it_RUC').id,
         })
 
         cls.company_data['default_journal_sale'].l10n_latam_use_documents = True
@@ -107,6 +117,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
 
         cls.partner_a.write({
             'vat': '20462509236',
+            'l10n_latam_identification_type_id': cls.env.ref('l10n_pe.it_RUC').id,
             'country_id': cls.env.ref('base.pe').id,
         })
 
@@ -157,7 +168,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     <CustomerAssignedAccountID>20557912879</CustomerAssignedAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="0">20557912879</ID>
+                            <ID schemeID="6">20557912879</ID>
                         </PartyIdentification>
                         <PartyName>
                             <Name>company_1_data</Name>
@@ -171,10 +182,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     </Party>
                 </AccountingSupplierParty>
                 <AccountingCustomerParty>
-                    <AdditionalAccountID>0</AdditionalAccountID>
+                    <AdditionalAccountID>6</AdditionalAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="0">20462509236</ID>
+                            <ID schemeID="6">20462509236</ID>
                         </PartyIdentification>
                         <PartyLegalEntity>
                             <RegistrationName>partner_a</RegistrationName>
@@ -289,7 +300,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     <CustomerAssignedAccountID>20557912879</CustomerAssignedAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="0">20557912879</ID>
+                            <ID schemeID="6">20557912879</ID>
                         </PartyIdentification>
                         <PartyName>
                             <Name>company_1_data</Name>
@@ -303,10 +314,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     </Party>
                 </AccountingSupplierParty>
                 <AccountingCustomerParty>
-                    <AdditionalAccountID>0</AdditionalAccountID>
+                    <AdditionalAccountID>6</AdditionalAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="0">20462509236</ID>
+                            <ID schemeID="6">20462509236</ID>
                         </PartyIdentification>
                         <PartyLegalEntity>
                             <RegistrationName>partner_a</RegistrationName>
@@ -417,7 +428,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     <CustomerAssignedAccountID>20557912879</CustomerAssignedAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="0">20557912879</ID>
+                            <ID schemeID="6">20557912879</ID>
                         </PartyIdentification>
                         <PartyName>
                             <Name>company_1_data</Name>
@@ -431,10 +442,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     </Party>
                 </AccountingSupplierParty>
                 <AccountingCustomerParty>
-                    <AdditionalAccountID>0</AdditionalAccountID>
+                    <AdditionalAccountID>6</AdditionalAccountID>
                     <Party>
                         <PartyIdentification>
-                            <ID schemeID="0">20462509236</ID>
+                            <ID schemeID="6">20462509236</ID>
                         </PartyIdentification>
                         <PartyLegalEntity>
                             <RegistrationName>partner_a</RegistrationName>
@@ -503,9 +514,9 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             </DebitNote>
         '''
 
-    def _create_invoice(self, name=None):
-        return self.env['account.move'].create({
-            'name': name or 'FFFI-%s1' % self.time_name,
+    def _create_invoice(self, **kwargs):
+        vals = {
+            'name': 'FFFI-%s1' % self.time_name,
             'move_type': 'out_invoice',
             'partner_id': self.partner_a.id,
             'invoice_date': '2017-01-01',
@@ -521,7 +532,9 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 'discount': 20.0,
                 'tax_ids': [(6, 0, self.tax_18.ids)],
             })],
-        })
+        }
+        vals.update(kwargs)
+        return self.env['account.move'].create(vals)
 
     def _create_refund(self):
         invoice = self._create_invoice(name='FFFI-%s2' % self.time_name)

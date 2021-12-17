@@ -6,7 +6,7 @@ class GreenSavingsReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        sent_or_signed_sign_requests = self.env['sign.request'].sudo().search([('state', 'in', ['sent', 'signed'])])
+        sent_or_signed_sign_requests = self.env['sign.request'].sudo().with_context(active_test=False).search([('state', 'in', ['sent', 'signed'])])
         sheets_sum = sum([self._sheets_from_sign_request(sign_request) for sign_request in sent_or_signed_sign_requests])
 
         # reference https://c.environmentalpaper.org/

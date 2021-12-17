@@ -16,8 +16,8 @@ patch(Activity.prototype, 'voip/static/src/components/activity/activity.js', {
      _onClickVoipCallMobile(ev) {
         ev.preventDefault();
         this.trigger('voip_activity_call', {
-            activityId: this.activity.id,
-            number: this.activity.mobile,
+            activityId: this.activityView.activity.id,
+            number: this.activityView.activity.mobile,
         });
     },
 
@@ -28,8 +28,8 @@ patch(Activity.prototype, 'voip/static/src/components/activity/activity.js', {
     _onClickVoipCallPhone(ev) {
         ev.preventDefault();
         this.trigger('voip_activity_call', {
-            activityId: this.activity.id,
-            number: this.activity.phone,
+            activityId: this.activityView.activity.id,
+            number: this.activityView.activity.phone,
         });
     },
 });

@@ -34,6 +34,7 @@ class AppointmentHRCalendarView(AppointmentCalendarView):
             appointment_type = request.env['calendar.appointment.type'].sudo().create({
                 'max_schedule_days': 30,
                 'category': 'work_hours',
+                'work_hours_activated': True,
                 'slot_ids': [(0, 0, {
                     'weekday': str(day + 1),
                     'start_hour': hour * 0.5,

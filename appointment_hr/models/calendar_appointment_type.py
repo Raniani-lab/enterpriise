@@ -30,6 +30,8 @@ class CalendarAppointmentType(models.Model):
             - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this
                 user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots
                 based on its working hours and availabilities """)
+    work_hours_activated = fields.Boolean('Limit to Work Hours',
+        help="When this option is activated the slots computation takes into account the working hours of the users.")
 
     @api.constrains('category', 'staff_user_ids')
     def _check_staff_user_configuration_work_hours(self):
@@ -46,6 +48,9 @@ class CalendarAppointmentType(models.Model):
             In addition, it checks conflicts with the working schedule of the employee linked to the user,
             if such an employee exists in the current company. An employee will not be considered available if the
             slot is not entirely comprised in its working schedule. (using a certain tolerance)"""
+        is_calendar_free = super()._is_staff_user_available(staff_user, slot, availability_additional_values)
+        if not self.work_hours_activated:
+            return is_calendar_free
 
         def is_work_available(start_dt, end_dt, intervals):
             """ check if the slot is contained in the employee's work hours (defined by intervals)
@@ -83,7 +88,6 @@ class CalendarAppointmentType(models.Model):
                         return False
             return False
 
-        is_calendar_free = super(CalendarAppointmentType, self)._is_staff_user_available(staff_user, slot, availability_additional_values)
         if is_calendar_free and staff_user.sudo().employee_id:
             # The user is free but he has a configured employee, let's check if the slot fits into his working schedule
             return is_work_available(slot['UTC'][0], slot['UTC'][1], availability_additional_values['work_schedules'].get(staff_user.id, False))

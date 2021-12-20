@@ -212,6 +212,7 @@ var ClientAction = AbstractAction.extend({
                 orderBy: [{name: 'id', asc: false}]
             }).then(function (result) {
                 if (result.length) {
+                    self.active_ids.push(result[0].id);
                     return self._renderProductionSchedule(result[0].id);
                 }
             });

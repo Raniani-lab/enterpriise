@@ -4,11 +4,10 @@
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields
+from odoo import fields, Command
 
-from odoo.addons.web_grid.models.models import END_OF
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError
 
 try:
     from unittest.mock import patch
@@ -203,3 +202,13 @@ class TestTimesheetValidation(TestCommonTimesheet):
             })
         self.assertEqual(wizard_min.save_timesheet().unit_amount, 1, "The timesheet's duration should be 1h (Minimum Duration = 60').")
         self.assertEqual(wizard_round.save_timesheet().unit_amount, 1.25, "The timesheet's duration should be 1h15 (Rounding = 15').")
+
+    def test_action_add_time_to_timer_multi_company(self):
+        company = self.env['res.company'].create({'name': 'My_Company'})
+        self.env['hr.employee'].with_company(company).create({
+            'name': 'coucou',
+            'user_id': self.user_manager.id,
+        })
+        self.user_manager.write({'company_ids': [Command.link(company.id)]})
+        timesheet = self.env['account.analytic.line'].with_user(self.user_manager).create({'name': 'coucou', 'project_id': self.project_customer.id})
+        timesheet.with_user(self.user_manager).action_add_time_to_timer(1)

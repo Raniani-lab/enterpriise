@@ -27,7 +27,7 @@ Would your payment have been carried out after this mail was sent, please ignore
 
 Best Regards,
             """))
-    email_subject = fields.Char(default=lambda s: _('%(company_name)s Payment Reminder - %(partner_name)s'))
+    email_subject = fields.Char(translate=True, default=lambda s: _('%(company_name)s Payment Reminder - %(partner_name)s'))
     send_email = fields.Boolean('Send an Email', help="When processing, it will send an email", default=True)
     print_letter = fields.Boolean('Print a Letter', help="When processing, it will print a PDF", default=True)
     send_sms = fields.Boolean('Send an SMS Message', help="When processing, it will send an sms text message", default=False)

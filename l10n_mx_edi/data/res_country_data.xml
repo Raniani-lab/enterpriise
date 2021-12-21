@@ -467,7 +467,6 @@
     </record>
     <record id="base.mx" model="res.country">
         <field name="l10n_mx_edi_code">MEX</field>
-        <field name="address_view_id" ref="l10n_mx_edi.mx_partner_address_form"/>
     </record>
     <record id="base.my" model="res.country">
         <field name="l10n_mx_edi_code">MYS</field>

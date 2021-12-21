@@ -15,6 +15,13 @@ class ResPartner(models.Model):
         comodel_name='l10n_mx_edi.res.locality',
         string="Locality",
         help="Optional attribute used in the XML that serves to define the locality where the domicile is located.")
+    l10n_mx_edi_colony = fields.Char(
+        string="Colony Name")
+    l10n_mx_edi_colony_code = fields.Char(
+        string="Colony Code",
+        help="Note: Only use this field if this partner is the company address or if it is a branch office.\n"
+             "Colony code that will be used in the CFDI with the external trade as Emitter colony. It must be a code "
+             "from the SAT catalog.")
 
     # == External Trade ==
     l10n_mx_edi_curp = fields.Char(

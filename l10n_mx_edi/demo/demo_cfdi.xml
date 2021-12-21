@@ -8,6 +8,7 @@
         </record>
 
         <record id="l10n_mx.partner_demo_company_mx" model="res.partner">
+            <field name="street">Campobasso Norte 3206 - 9000</field>
             <field name="street2">Fraccionamiento Montecarlo</field>
         </record>
 

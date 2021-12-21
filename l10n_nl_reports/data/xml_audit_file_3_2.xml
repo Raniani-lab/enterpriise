@@ -17,8 +17,9 @@
                 <taxRegistrationCountry t-esc="company_id.country_id.code"/>
                 <taxRegIdent t-esc="company_id.vat"/>
                 <streetAddress>
-                    <streetname t-if="company_id.street" t-esc="company_id.street"/>
-                    <number t-if="company_id.street_number" t-esc="company_id.street_number"/>
+                    <t t-set="company_street_detail" t-value="company_id.partner_id._get_street_split()"/>
+                    <streetname t-if="company_street_detail['street_name']" t-esc="company_street_detail['street_name']"/>
+                    <number t-if="company_street_detail['street_number']" t-esc="company_street_detail['street_number']"/>
                     <city t-if="company_id.city" t-esc="company_id.city"/>
                     <postalCode t-if="company_id.zip" t-esc="company_id.zip"/>
                     <region t-if="company_id.state_id" t-esc="company_id.state_id.name"/>
@@ -40,9 +41,10 @@
                         <custCreditLimit t-if="p.credit_limit" t-esc="p.credit_limit"/>
                         <supplierLimit t-if="p.credit_limit" t-esc="p.credit_limit"/>
                         <streetAddress>
-                            <streetname t-if="p.street_name" t-esc="p.street_name"/>
-                            <number t-if="p.street_number" t-est="p.street_number"/>
-                            <numberExtension t-if="p.street_number2" t-est="p.street_number2"/>
+                            <t t-set="partner_street_detail" t-value="p._get_street_split()"/>
+                            <streetname t-if="partner_street_detail['street_name']" t-esc="partner_street_detail['street_name']"/>
+                            <number t-if="partner_street_detail['street_number']" t-est="partner_street_detail['street_number']"/>
+                            <numberExtension t-if="partner_street_detail['street_number2']" t-est="partner_street_detail['street_number2']"/>
                             <city t-if="p.city" t-esc="p.city"/>
                             <postalCode t-if="p.zip" t-esc="p.zip"/>
                             <region t-if="p.state_id" t-esc="p.state_id.name"/>

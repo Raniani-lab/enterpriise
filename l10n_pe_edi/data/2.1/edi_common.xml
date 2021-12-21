@@ -140,8 +140,8 @@
                                         t-if="record.company_id.partner_id.street"
                                         t-esc="record.partner_id.street"/>
                                 <cbc:CityName
-                                        t-if="record.company_id.partner_id.city_id.name"
-                                        t-esc="record.partner_id.city_id.name"/>
+                                        t-if="record.company_id.partner_id.city"
+                                        t-esc="record.partner_id.city"/>
                             </cac:RegistrationAddress>
                         </cac:PartyLegalEntity>
                     </cac:Party>

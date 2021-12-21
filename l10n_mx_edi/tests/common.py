@@ -42,7 +42,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
 
         cls.company_values = {
             'vat': 'EKU9003173C9',
-            'street': 'Campobasso Norte 3206/9000',
+            'street': 'Campobasso Norte 3206 - 9000',
             'street2': 'Fraccionamiento Montecarlo',
             'zip': '85134',
             'city': 'Ciudad Obregón',

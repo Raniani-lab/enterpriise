@@ -35,7 +35,7 @@ class TestGenerateMXDeliveryGuide(TestMXDeliveryGuideCommon):
                 <cartaporte20:CartaPorte Version="2.0" TranspInternac="No" TotalDistRec="120">
                   <cartaporte20:Ubicaciones>
                     <cartaporte20:Ubicacion TipoUbicacion="Origen" IDUbicacion="___ignore___" FechaHoraSalidaLlegada="___ignore___" RFCRemitenteDestinatario="EKU9003173C9">
-                      <cartaporte20:Domicilio Calle="Campobasso Norte 3206/9000" CodigoPostal="85134" Estado="SON" Pais="MEX"/>
+                      <cartaporte20:Domicilio Calle="Campobasso Norte 3206 - 9000" CodigoPostal="85134" Estado="SON" Pais="MEX"/>
                     </cartaporte20:Ubicacion>
                     <cartaporte20:Ubicacion TipoUbicacion="Destino" IDUbicacion="___ignore___" DistanciaRecorrida="120" FechaHoraSalidaLlegada="___ignore___" RFCRemitenteDestinatario="EME020824U4A">
                       <cartaporte20:Domicilio Calle="Street Calle" CodigoPostal="25350" Estado="COA" Pais="MEX"/>

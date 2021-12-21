@@ -9,7 +9,6 @@
     'depends': [
         'l10n_mx_edi',
         'base_address_extended',
-        'base_address_city',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -17,7 +16,6 @@
         'data/3.3/cfdi.xml',
         'data/product_data.xml',
         'data/uom_uom_data.xml',
-        'data/country.xml',
 
         'views/l10n_mx_edi_tariff_fraction_view.xml',
         'views/account_journal_view.xml',
@@ -28,6 +26,8 @@
         'views/res_config_settings_view.xml',
         'views/res_partner_views.xml',
         'views/report_invoice.xml',
+
+        'data/country.xml',
     ],
     'demo': [
         'demo/demo_cfdi.xml',

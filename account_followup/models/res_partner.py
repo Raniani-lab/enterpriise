@@ -57,7 +57,6 @@ class ResPartner(models.Model):
         for record in self:
             total_due = 0
             total_overdue = 0
-            followup_status = "no_action_needed"
             for aml in record.unreconciled_aml_ids:
                 if aml.company_id == self.env.company:
                     amount = aml.amount_residual

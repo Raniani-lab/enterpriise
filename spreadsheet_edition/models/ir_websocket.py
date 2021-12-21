@@ -1,26 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
 
-from odoo.http import request
-from odoo.addons.bus.controllers.main import BusController
+from odoo import models
 
-from typing import List
+class IrWebsocket(models.AbstractModel):
+    _inherit = 'ir.websocket'
 
+    def _build_websocket_channel_list(self, channels):
+        if self.env.uid:
+            channels = self._add_spreadsheet_collaborative_bus_channels(channels)
+        return super()._build_websocket_channel_list(channels)
 
-class SpreadsheetCollaborationController(BusController):
-
-    # ---------------------------
-    # Extends BUS Controller Poll
-    # ---------------------------
-    def _poll(self, dbname, channels, last, options):
-        if request.session.uid:
-            channels = self._add_spreadsheet_collaborative_bus_channels(request.env, channels)
-        return super()._poll(dbname, channels, last, options)
-
-    @staticmethod
-    def _add_spreadsheet_collaborative_bus_channels(env, channels):
+    def _add_spreadsheet_collaborative_bus_channels(self, channels):
         """Add collaborative bus channels for active spreadsheets.
 
         Listening to channel "spreadsheet_collaborative_session:{res_model}:{res_id}"
@@ -40,9 +32,9 @@ class SpreadsheetCollaborationController(BusController):
             if match:
                 model_name = match[1]
                 res_id = int(match[2])
-                if model_name not in env:
+                if model_name not in self.env:
                     continue
                 # The following search ensures that the user has the correct access rights
-                record = env[model_name].with_context(active_test=False).search([("id", "=", res_id)])
+                record = self.env[model_name].with_context(active_test=False).search([("id", "=", res_id)])
                 channels.append(record)
         return channels

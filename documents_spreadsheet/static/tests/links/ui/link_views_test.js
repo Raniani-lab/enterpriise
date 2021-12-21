@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { busService } from "@bus/services/bus_service";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
     click,
@@ -153,6 +154,7 @@ QUnit.module(
                     return true;
                 },
             };
+            registry.category('services').add('bus_service', busService);
         },
     },
     () => {

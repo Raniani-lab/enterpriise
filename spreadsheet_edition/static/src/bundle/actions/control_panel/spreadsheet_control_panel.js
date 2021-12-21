@@ -3,7 +3,6 @@
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetName } from "./spreadsheet_name";
-import { useAutoSavingWarning } from "./collaborative_cross_tab_bus_warning";
 
 const { Component } = owl;
 
@@ -13,8 +12,7 @@ export class SpreadsheetControlPanel extends Component {
         this.controlPanelDisplay = {
             "bottom-left": false,
             "bottom-right": false,
-        };
-        useAutoSavingWarning(() => !this.props.isSpreadsheetSynced);
+        }
         this.actionService = useService("action");
     }
 

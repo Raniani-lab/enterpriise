@@ -11,10 +11,7 @@ class SpreadsheetCollaborativeService {
      * @param {number} resId id of the spreadsheet
      */
     getCollaborativeChannel(env, resModel, resId) {
-        if (env.services.bus_service) {
-            return new SpreadsheetCollaborativeChannel(env, resModel, resId);
-        }
-        return undefined;
+        return new SpreadsheetCollaborativeChannel(env, resModel, resId);
     }
 }
 
@@ -22,7 +19,7 @@ class SpreadsheetCollaborativeService {
  * This service exposes a single instance of the above class.
  */
 export const spreadsheetCollaborativeService = {
-    dependencies: [],
+    dependencies: ['bus_service'],
     start(env, dependencies) {
         return new SpreadsheetCollaborativeService(env, dependencies);
     },

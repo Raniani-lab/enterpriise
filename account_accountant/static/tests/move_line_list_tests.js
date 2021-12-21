@@ -13,7 +13,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
     const { ROUTES_TO_IGNORE: MAIL_ROUTES_TO_IGNORE } = require('@mail/../tests/helpers/webclient_setup');
 
     const ROUTES_TO_IGNORE = [
-        '/longpolling/im_status',
+        '/bus/im_status',
         '/mail/init_messaging',
         '/mail/load_message_failures',
         '/web/dataset/call_kw/account.move.line/get_views',

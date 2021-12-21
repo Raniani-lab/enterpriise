@@ -26,15 +26,15 @@ class MockBusService {
 
 QUnit.module("spreadsheet_edition > SpreadsheetCollaborativeChannel", {
     beforeEach: function () {
-        const bus = new MockBusService();
+        const busService = new MockBusService();
         const rpc = function (route, params) {
             // Mock the server behavior: new revisions are pushed in the bus
             if (params.method === "dispatch_spreadsheet_message") {
                 const [documentId, message] = params.args;
-                bus.notify({ type: "spreadsheet", payload: { id: documentId, message } });
+                busService.notify({ type: "spreadsheet", payload: { id: documentId, message } });
             }
         };
-        this.env = makeTestEnvironment({ services: { bus_service: bus } }, rpc);
+        this.env = makeTestEnvironment({ services: { bus_service: busService } }, rpc);
     },
 });
 

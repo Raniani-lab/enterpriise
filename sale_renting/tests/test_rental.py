@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import odoo.tests
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
-from odoo import fields
 
-class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
+from odoo import fields
+from odoo.tests import HttpCase, tagged
+from odoo.tests.common import SingleTransactionCase
+
+
+class TestRentalCommon(SingleTransactionCase):
 
     def setUp(self):
         super(TestRentalCommon, self).setUp()
@@ -218,8 +221,8 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
 
     # TODO availability testing with sale_rental functions? (no stock)
 
-@odoo.tests.tagged('post_install', '-at_install')
-class TestUi(odoo.tests.HttpCase):
+@tagged('post_install', '-at_install')
+class TestUi(HttpCase):
 
     def test_rental_flow(self):
         # somehow, the name_create and onchange of the partner_id

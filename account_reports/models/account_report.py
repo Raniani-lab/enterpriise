@@ -705,15 +705,20 @@ class AccountReport(models.AbstractModel):
                 'columns': [{'name': self.format_value(c) if isinstance(c, (int, float)) else c, 'no_format_name': c} for c in val_dict['totals']],
             })
             if not self._context.get('print_mode') or unfolded:
-                # add every direct child group recursively
+                for i in val_dict['children_codes']:
+                    hierarchy[i]['parent_code'] = i
+                all_lines = [hierarchy[id] for id in val_dict["children_codes"]] + val_dict["lines"]
                 children = []
-                for child in sorted(val_dict['children_codes']):
-                    add_to_hierarchy(children, child, level + 1, val_dict['id'], hierarchy)
-                # add all the lines that are in this group but not in one of this group's children groups
-                for l in val_dict['lines']:
-                    l['level'] = level + 1
-                    l['parent_id'] = val_dict['id']
-                lines.extend(sorted(val_dict['lines'] + children, key=lambda k: k.get('account_code', '') + k['name']))
+                for line in sorted(all_lines, key=lambda k: k.get('account_code', '') + k['name']):
+                    if 'children_codes' in line:
+                        # if the line is a child group, add it recursively
+                        add_to_hierarchy(children, line['parent_code'], level + 1, val_dict['id'], hierarchy)
+                        lines.extend(children)
+                    else:
+                        # add lines that are in this group but not in one of this group's children groups
+                        line['level'] = level + 1
+                        line['parent_id'] = val_dict['id']
+                        lines.append(line)
 
         def compute_hierarchy(lines, level, parent_id):
             # put every line in each of its parents (from less global to more global) and compute the totals

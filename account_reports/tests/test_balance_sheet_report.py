@@ -3,7 +3,7 @@
 # pylint: disable=bad-whitespace
 from .common import TestAccountReportsCommon
 
-from odoo import fields
+from odoo import fields, Command
 from odoo.tests import tagged
 
 
@@ -14,6 +14,70 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
+
+    def test_report_lines_ordering(self):
+        """ Check that the report lines are correctly ordered with nested account groups """
+        self.env['account.group'].create([{
+            'name': 'A',
+            'code_prefix_start': '101402',
+            'code_prefix_end': '101601',
+        }, {
+            'name': 'A1',
+            'code_prefix_start': '1014040',
+            'code_prefix_end': '1015010',
+        }])
+        bank_and_cash_type = self.env.ref('account.data_account_type_liquidity')
+
+        def find_account(code):
+            return self.env['account.account'].search([('code', '=', code), ('company_id', '=', self.env.company.id)])
+
+        account_bank = find_account('101404')
+        account_cash = find_account('101501')
+        account_a = self.env['account.account'].create([{'code': '1014040', 'name': 'A', 'user_type_id': bank_and_cash_type.id}])
+        account_c = self.env['account.account'].create([{'code': '101600', 'name': 'C', 'user_type_id': bank_and_cash_type.id}])
+
+        # Create a journal lines for each account
+        move = self.env['account.move'].create({
+            'date': '2020-02-02',
+            'line_ids': [
+                Command.create({
+                    'account_id': account.id,
+                    'name': 'name',
+                })
+                for account in [account_a, account_c, account_bank, account_cash]
+            ],
+        })
+        move.action_post()
+
+        # Create the report hierachy with the Bank and Cash Accounts lines unfolded
+        line_id = self.report._get_generic_line_id(
+            'account.financial.html.report.line',
+            self.env.ref('account_reports.account_financial_report_bank_view0').id,
+        )
+        options = self._init_options(
+            self.report,
+            fields.Date.from_string('2020-02-01'),
+            fields.Date.from_string('2020-02-28')
+        )
+        options['unfolded_lines'] = [line_id]
+        lines = self.report._get_lines(options, line_id)
+        lines = self.report._create_hierarchy(lines, options)
+
+        # The Bank and Cash Accounts section start at index 2
+        # Since we created 4 lines + 2 groups, we keep the 6 following lines
+        lines = [{'name': line['name'], 'level': line['level']} for line in lines]
+
+        expected_lines = [
+            {'level': 2, 'name': 'Bank and Cash Accounts'},
+            {'level': 3, 'name': '101402-101601 A'},
+            {'level': 4, 'name': '101404 Bank'},
+            {'level': 4, 'name': '1014040-1015010 A1'},
+            {'level': 5, 'name': '1014040 A'},
+            {'level': 5, 'name': '101501 Cash'},
+            {'level': 4, 'name': '101600 C'},
+            {'level': 3, 'name': 'Total Bank and Cash Accounts'},
+        ]
+        self.assertEqual(lines, expected_lines)
 
     def test_balance_sheet_custom_date(self):
         line_id = self.env.ref('account_reports.account_financial_report_bank_view0').id

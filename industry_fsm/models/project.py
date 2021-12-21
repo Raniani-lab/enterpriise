@@ -357,27 +357,47 @@ class Task(models.Model):
     def _stop_all_timers_and_create_timesheets(self):
         ConfigParameter = self.env['ir.config_parameter'].sudo()
         Timesheet = self.env['account.analytic.line']
+        Timer = self.env['timer.timer']
 
-        running_timer_ids = self.env['timer.timer'].sudo().search([('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)])
-        if not running_timer_ids:
+        tasks_running_timer_ids = Timer.search([('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)])
+        timesheets = Timesheet.sudo().search([('task_id', 'in', self.ids)])
+        timesheets_running_timer_ids = None
+        if timesheets:
+            timesheets_running_timer_ids = Timer.search([
+                ('res_model', '=', 'account.analytic.line'),
+                ('res_id', 'in', timesheets.ids)])
+        if not tasks_running_timer_ids and not timesheets_running_timer_ids:
             return Timesheet
 
-        task_dict = {task.id: task for task in self}
-        minimum_duration = int(ConfigParameter.get_param('hr_timesheet.timesheet_min_duration', 0))
-        rounding = int(ConfigParameter.get_param('hr_timesheet.timesheet_rounding', 0))
-        timesheets = []
-        for timer in running_timer_ids:
-            minutes_spent = timer._get_minutes_spent()
-            time_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding) / 60
-            task = task_dict[timer.res_id]
-            timesheets.append({
-                'task_id': task.id,
-                'project_id': task.project_id.id,
-                'user_id': timer.user_id.id,
-                'unit_amount': time_spent,
-            })
-        running_timer_ids.unlink()
-        return Timesheet.create(timesheets)
+        result = Timesheet
+        minimum_duration = int(ConfigParameter.get_param('timesheet_grid.timesheet_min_duration', 0))
+        rounding = int(ConfigParameter.get_param('timesheet_grid.timesheet_rounding', 0))
+        if tasks_running_timer_ids:
+            task_dict = {task.id: task for task in self}
+            timesheets_vals = []
+            for timer in tasks_running_timer_ids:
+                minutes_spent = timer._get_minutes_spent()
+                time_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding) / 60
+                task = task_dict[timer.res_id]
+                timesheets_vals.append({
+                    'task_id': task.id,
+                    'project_id': task.project_id.id,
+                    'user_id': timer.user_id.id,
+                    'unit_amount': time_spent,
+                })
+            tasks_running_timer_ids.sudo().unlink()
+            result += Timesheet.sudo().create(timesheets_vals)
+
+        if timesheets_running_timer_ids:
+            timesheets_dict = {timesheet.id: timesheet for timesheet in timesheets}
+            for timer in timesheets_running_timer_ids:
+                timesheet = timesheets_dict[timer.res_id]
+                minutes_spent = timer._get_minutes_spent()
+                timesheet._add_timesheet_time(minutes_spent)
+                result += timesheet
+            timesheets_running_timer_ids.sudo().unlink()
+
+        return result
 
     def action_fsm_navigate(self):
         if not self.partner_id.partner_latitude and not self.partner_id.partner_longitude:

@@ -58,11 +58,11 @@ class ResPartner(models.Model):
             total_due = 0
             total_overdue = 0
             for aml in record.unreconciled_aml_ids:
-                if aml.company_id == self.env.company:
+                if aml.company_id == self.env.company and not aml.blocked:
                     amount = aml.amount_residual
                     total_due += amount
                     is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
-                    if is_overdue and not aml.blocked:
+                    if is_overdue:
                         total_overdue += amount
             record.total_due = total_due
             record.total_overdue = total_overdue

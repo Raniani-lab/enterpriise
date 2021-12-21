@@ -79,6 +79,10 @@ Best Regards,
                 except KeyError:
                     raise Warning(_('Your email subject is invalid, use the right legend or %% if you want to use the percent character.'))
 
+    def _amount_due_in_description(self):
+        self.ensure_one()
+        return self.description and '%(amount_due)s' in self.description
+
     @api.constrains('sms_description')
     def _check_sms_description(self):
         for line in self:

@@ -251,23 +251,25 @@ class Task(models.Model):
                         </p>""")
         }
 
-    def action_fsm_validate(self):
+    def action_fsm_validate(self, stop_running_timers=False):
         """ If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.
         """
-        super().action_fsm_validate()
-        billable_tasks = self.filtered(lambda task: task.allow_billable and (task.allow_timesheets or task.allow_material))
-        timesheets_read_group = self.env['account.analytic.line'].sudo().read_group([('task_id', 'in', billable_tasks.ids), ('project_id', '!=', False)], ['task_id', 'id'], ['task_id'])
-        timesheet_count_by_task_dict = {timesheet['task_id'][0]: timesheet['task_id_count'] for timesheet in timesheets_read_group}
-        for task in billable_tasks:
-            timesheet_count = timesheet_count_by_task_dict.get(task.id)
-            if not task.sale_order_id and not timesheet_count:  # Prevent creating/confirming a SO if there are no products and timesheets
-                continue
-            task._fsm_ensure_sale_order()
-            task._fsm_create_sale_order_line()
-            if task.sudo().sale_order_id.state in ['draft', 'sent']:
-                task.sudo().sale_order_id.action_confirm()
-        billable_tasks._prepare_materials_delivery()
+        res = super().action_fsm_validate(stop_running_timers)
+        if res is True:
+            billable_tasks = self.filtered(lambda task: task.allow_billable and (task.allow_timesheets or task.allow_material))
+            timesheets_read_group = self.env['account.analytic.line'].sudo().read_group([('task_id', 'in', billable_tasks.ids), ('project_id', '!=', False)], ['task_id', 'id'], ['task_id'])
+            timesheet_count_by_task_dict = {timesheet['task_id'][0]: timesheet['task_id_count'] for timesheet in timesheets_read_group}
+            for task in billable_tasks:
+                timesheet_count = timesheet_count_by_task_dict.get(task.id)
+                if not task.sale_order_id and not timesheet_count:  # Prevent creating/confirming a SO if there are no products and timesheets
+                    continue
+                task._fsm_ensure_sale_order()
+                task._fsm_create_sale_order_line()
+                if task.sudo().sale_order_id.state in ['draft', 'sent']:
+                    task.sudo().sale_order_id.action_confirm()
+            billable_tasks._prepare_materials_delivery()
+        return res
 
     def _fsm_ensure_sale_order(self):
         """ get the SO of the task. If no one, create it and return it """

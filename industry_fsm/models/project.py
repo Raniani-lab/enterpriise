@@ -334,12 +334,36 @@ class Task(models.Model):
             }
         }
 
-    def action_fsm_validate(self):
+    def action_fsm_validate(self, stop_running_timers=False):
         """ Moves Task to next stage.
             If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.
         """
-        self._stop_all_timers_and_create_timesheets()
+        Timer = self.env['timer.timer']
+        tasks_running_timer_ids = Timer.search([('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)])
+        timesheets = self.env['account.analytic.line'].sudo().search([('task_id', 'in', self.ids)])
+        timesheets_running_timer_ids = None
+        if timesheets:
+            timesheets_running_timer_ids = Timer.search([
+                ('res_model', '=', 'account.analytic.line'),
+                ('res_id', 'in', timesheets.ids)])
+        if tasks_running_timer_ids or timesheets_running_timer_ids:
+            if stop_running_timers:
+                self._stop_all_timers_and_create_timesheets(tasks_running_timer_ids, timesheets_running_timer_ids, timesheets)
+            else:
+                wizard = self.env['project.task.stop.timers.wizard'].create({
+                    'line_ids': [Command.create({'task_id': task.id}) for task in self],
+                })
+                return {
+                    'name': _('Do you want to stop the running timers?'),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'view_id': self.env.ref('industry_fsm.view_task_stop_timer_wizard_form').id,
+                    'target': 'new',
+                    'res_model': 'project.task.stop.timers.wizard',
+                    'res_id': wizard.id,
+                }
+
         closed_stage_by_project = {
             project.id:
                 project.type_ids.filtered(lambda stage: stage.fold)[:1] or project.type_ids[-1:]
@@ -354,18 +378,13 @@ class Task(models.Model):
 
             task.write(values)
 
-    def _stop_all_timers_and_create_timesheets(self):
+        return True
+
+    @api.model
+    def _stop_all_timers_and_create_timesheets(self, tasks_running_timer_ids, timesheets_running_timer_ids, timesheets):
         ConfigParameter = self.env['ir.config_parameter'].sudo()
         Timesheet = self.env['account.analytic.line']
-        Timer = self.env['timer.timer']
 
-        tasks_running_timer_ids = Timer.search([('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)])
-        timesheets = Timesheet.sudo().search([('task_id', 'in', self.ids)])
-        timesheets_running_timer_ids = None
-        if timesheets:
-            timesheets_running_timer_ids = Timer.search([
-                ('res_model', '=', 'account.analytic.line'),
-                ('res_id', 'in', timesheets.ids)])
         if not tasks_running_timer_ids and not timesheets_running_timer_ids:
             return Timesheet
 

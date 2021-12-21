@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
+from odoo import Command
 from odoo.tests import new_test_user, tagged, TransactionCase
 
 
@@ -14,7 +15,6 @@ class TestFsmFlow(TransactionCase):
             'name': 'Field Service',
             'is_fsm': True,
             'allow_timesheets': True,
-            'allow_timesheet_timer': True,
         })
 
     def test_stop_timers_on_mark_as_done(self):
@@ -36,7 +36,7 @@ class TestFsmFlow(TransactionCase):
         self.partner_1 = self.env['res.partner'].create({'name': 'A Test Partner 1'})
         self.task = self.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',
-            'user_id': self.user_employee_mark_as_done.id,
+            'user_ids': [Command.set([self.user_employee_mark_as_done.id])],
             'project_id': self.fsm_project.id,
             'partner_id': self.partner_1.id,
         })
@@ -51,8 +51,16 @@ class TestFsmFlow(TransactionCase):
         self.assertTrue(task_with_user_employee_timer_task.user_timer_id, 'A timer is linked to the task')
         self.assertTrue(task_with_user_employee_timer_task.user_timer_id.is_timer_running, 'The timer linked to the task is running')
         task_with_user_employee_mark_as_done = self.task.with_user(self.user_employee_mark_as_done)
-        task_with_user_employee_mark_as_done.action_fsm_validate()
+        result = task_with_user_employee_mark_as_done.action_fsm_validate()
+        self.assertEqual(result['type'], 'ir.actions.act_window', 'As there are still timers to stop, an action is returned')
         Timer = self.env['timer.timer']
+        tasks_running_timer_ids = Timer.search([('res_model', '=', 'project.task'), ('res_id', '=', self.task.id)])
+        timesheets_running_timer_ids = Timer.search([('res_model', '=', 'account.analytic.line'), ('res_id', '=', timesheet.id)])
+        self.assertEqual(len(timesheets_running_timer_ids), 1, 'There is still a timer linked to the timesheet')
+        self.task.invalidate_cache(fnames=['timesheet_ids'])
+        self.assertEqual(len(tasks_running_timer_ids), 1, 'There is still a timer linked to the task')
+        wizard = self.env['project.task.stop.timers.wizard'].create({'line_ids': [Command.create({'task_id': self.task.id})]})
+        wizard.action_confirm()
         tasks_running_timer_ids = Timer.search([('res_model', '=', 'project.task'), ('res_id', '=', self.task.id)])
         timesheets_running_timer_ids = Timer.search([('res_model', '=', 'account.analytic.line'), ('res_id', '=', timesheet.id)])
         self.assertFalse(timesheets_running_timer_ids, 'There is no more timer linked to the timesheet')

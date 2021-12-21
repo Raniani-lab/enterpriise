@@ -35,6 +35,7 @@ Adds the following options:
         'views/project_task_views.xml',
         'views/project_sharing_views.xml',
         'views/project_portal_templates.xml',
+        'wizard/task_stop_timer_wizard_views.xml'
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],

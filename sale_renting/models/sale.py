@@ -230,12 +230,12 @@ class RentalOrderLine(models.Model):
         else:
             return ""
 
-    def _get_display_price(self, product):
+    def _get_display_price(self):
         """Ensure unit price isn't recomputed."""
         if self.is_rental:
             return self.price_unit
         else:
-            return super(RentalOrderLine, self)._get_display_price(product)
+            return super(RentalOrderLine, self)._get_display_price()
 
     def _compute_discount(self):
         """Ensure no discount computation is applied on rental order lines."""

@@ -204,7 +204,8 @@ class SaleSubscription(models.Model):
             'product_uom_qty': option_line.quantity,
             'product_uom': option_line.uom_id.id,
             'discount': _discount,
-            'price_unit': self.pricelist_id.with_context(uom=option_line.uom_id.id).get_product_price(option_line.product_id, 1, False),
+            'price_unit': self.pricelist_id._get_product_price(
+                option_line.product_id, 1, option_line.uom_id),
             'name': option_line.name + '\n' + period_msg,
         }
         return order_line_obj.create(values)
@@ -728,8 +729,8 @@ class SaleSubscription(models.Model):
                             'subscription_id': subscription.id,
                             'product_uom': line.uom_id.id,
                             'product_uom_qty': line.quantity,
-                            'price_unit': subscription.pricelist_id.with_context(uom=line.uom_id.id).get_product_price(
-                                line.product_id, line.quantity, subscription.partner_id),
+                            'price_unit': subscription.pricelist_id._get_product_price(
+                                line.product_id, line.quantity, line.uom_id),
                             'discount': 0,
                         }))
             addr = subscription.partner_id.address_get(['delivery', 'invoice'])
@@ -1223,19 +1224,16 @@ class SaleSubscriptionLine(models.Model):
         if not self.product_id:
             self.price_unit = 0.0
         else:
+            if not self.uom_id or self.product_id.uom_id.category_id.id != self.uom_id.category_id.id:
+                self.uom_id = self.product_id.uom_id.id
+
             subscription = self.analytic_account_id
 
             self = self.with_company(subscription.company_id)
-            product = self.product_id.with_context(
-                pricelist=subscription.pricelist_id.id,
-                quantity=self.quantity,
-            )
-            self.price_unit = product.price
-
-            if not self.uom_id or product.uom_id.category_id.id != self.uom_id.category_id.id:
-                self.uom_id = product.uom_id.id
-            if self.uom_id.id != product.uom_id.id:
-                self.price_unit = product.uom_id._compute_price(self.price_unit, self.uom_id)
+            self.price_unit = self.analytic_account_id.pricelist_id._get_product_price(
+                self.product_id,
+                self.quantity,
+                self.uom_id)
 
     @api.onchange('uom_id')
     def onchange_uom_id(self):

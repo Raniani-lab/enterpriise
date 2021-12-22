@@ -97,7 +97,7 @@
                 <t t-set="close_model" t-valuef="res.company"/>
                 <t t-set="text_completed">The configuration is done. Happy selling!</t>
                 <t t-call="base.onboarding_company_step" name="company_step" />
-                <t t-call="payment.onboarding_payment_acquirer_step" name="payment_acquirer_step" />
+                <t t-call="website_sale.website_sale_onboarding_payment_acquirer_step" name="payment_acquirer_step" />
                 <t t-call="account.onboarding_sale_tax_step" name="sale_tax_step" />
             </t>
         </template>

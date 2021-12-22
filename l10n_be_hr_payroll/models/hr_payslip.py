@@ -333,9 +333,9 @@ class Payslip(models.Model):
         return res
 
     def _compute_number_complete_months_of_work(self, date_from, date_to, contracts):
-        invalid_days_by_months = defaultdict(dict)
+        invalid_days_by_year = defaultdict(lambda: defaultdict(dict))
         for day in rrule.rrule(rrule.DAILY, dtstart=date_from, until=date_to):
-            invalid_days_by_months[day.month][day.date()] = True
+            invalid_days_by_year[day.year][day.month][day.date()] = True
 
         for contract in contracts:
             # In case the 1rst/2nd days are saturday/sunday, be kinder on the
@@ -356,10 +356,11 @@ class Payslip(models.Model):
                     out_of_schedule = False
                 elif day.weekday() not in work_days:
                     out_of_schedule = False
-                invalid_days_by_months[day.month][day] &= out_of_schedule
+                invalid_days_by_year[day.year][day.month][day] &= out_of_schedule
 
         complete_months = [
             month
+            for year, invalid_days_by_months in invalid_days_by_year.items()
             for month, days in invalid_days_by_months.items()
             if not any(days.values())
         ]

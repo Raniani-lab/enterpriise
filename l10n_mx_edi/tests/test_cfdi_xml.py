@@ -243,7 +243,7 @@ class TestEdiResults(TestMxEdiCommon):
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
                    new=mocked_l10n_mx_edi_pac):
 
-            # Should give the same result: 2000 * 5 * 0.8 == (2000 * 6 * 0.8) - 1600
+            # Should give the same result: 2000 * 5 * 0.8 == (2000 * 6 * 0.8) - (2000 * 0.8)
             self.invoice.write({
                 'invoice_line_ids': [
                     Command.update(self.invoice.invoice_line_ids.id, {
@@ -251,7 +251,8 @@ class TestEdiResults(TestMxEdiCommon):
                     }),
                     Command.create({
                         'product_id': discount_product.id,
-                        'price_unit': -1600.0,
+                        'price_unit': -2000.0,
+                        'discount': 20,
                         'tax_ids': [Command.set((self.tax_16 + self.tax_10_negative).ids)],
                     }),
                 ],

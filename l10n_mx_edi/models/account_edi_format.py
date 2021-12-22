@@ -280,7 +280,7 @@ class AccountEdiFormat(models.Model):
 
             # Update price_discount.
 
-            remaining_discount = discount_vals['price_discount'] - discount_line.price_subtotal
+            remaining_discount = discount_vals['price_discount'] - discount_vals['price_subtotal_before_discount']
             remaining_price_subtotal = other_line_vals['price_subtotal_before_discount'] - other_line_vals['price_discount']
             discount_to_allow = min(remaining_discount, remaining_price_subtotal)
 

@@ -826,8 +826,8 @@ class HrPayslip(models.Model):
             payslip_id = row['id']
             for vals in vals_list:
                 if compute_sum:
-                    result[code]['sum'][vals] += row[vals]
-                result[code][payslip_id][vals] += row[vals]
+                    result[code]['sum'][vals] += row[vals] or 0
+                result[code][payslip_id][vals] += row[vals] or 0
         return result
 
     def _get_worked_days_line_amount(self, code):

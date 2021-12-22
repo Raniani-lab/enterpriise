@@ -4,3 +4,4 @@
 from . import common
 from . import test_date
 from . import test_datetime
+from . import test_web_grid

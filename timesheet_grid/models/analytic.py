@@ -62,14 +62,20 @@ class AnalyticLine(models.Model):
                                           self.env.company.timesheet_encode_uom_id == uom_hour
 
     @api.model
-    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
-        """
-            Override method to manage the group_expand in project_id and employee_id fields
-        """
+    def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
+                          current_range=None, readonly_field=None, orderby=None):
         if not orderby and row_fields:
-            orderby = ','.join([r for r in row_fields])
+            orderby = ','.join(row_fields)
+        return super().read_grid_grouped(
+            row_fields, col_field, cell_field, section_field, domain,
+            current_range=current_range, readonly_field=readonly_field, orderby=orderby,
+        )
 
-        result = super(AnalyticLine, self).read_grid(row_fields, col_field, cell_field, domain, range, readonly_field, orderby)
+    @api.model
+    def _build_grid(self, row_fields, col_field, cell_field, column_info,
+                    groups=None, domain=None, readonly_field=None):
+        result = super()._build_grid(row_fields, col_field, cell_field, column_info,
+                                     groups=groups, domain=domain, readonly_field=readonly_field)
 
         if not self.env.context.get('group_expand', False):
             return result
@@ -96,7 +102,7 @@ class AnalyticLine(models.Model):
         #       '&',
         #           ['date', '>=', '2020-06-01'],
         #           ['date', '<=', '2020-06-07']
-
+        #
         #      Becomes:
         #      [('project_id', '!=', False),
         #       ('date', '>=', datetime.date(2020, 5, 28)),

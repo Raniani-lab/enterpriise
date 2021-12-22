@@ -53,7 +53,98 @@ class Base(models.AbstractModel):
             lazy=False, orderby=orderby
         )
 
-        row_key = lambda it, fs=row_fields: tuple(it[f] for f in fs)
+        return self._build_grid(row_fields, col_field, cell_field, column_info,
+                                groups=groups, domain=domain, readonly_field=readonly_field)
+
+    @api.model
+    def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
+                          current_range=None, readonly_field=None, orderby=None):
+        """
+        Fetches grouped grid data.
+
+        :param list[str] row_fields: group row header fields
+        :param str col_field: column field
+        :param str cell_field: cell field, summed
+        :param str section_field: section field
+        :param list domain: default domain to apply
+        :param current_range: displayed range for the current page
+        :param readonly_field: make cell readonly based on value of readonly_field given
+        :type current_range: None | {'step': object, 'span': object}
+        :type domain: None | list
+        :returns: list of dict with prev context, next context, matrix data, row values
+                  and column values
+        """
+        grid_domain = self.read_grid_domain(col_field, current_range)
+        grid_domain = grid_domain + (domain or [])
+
+        column_info = self._grid_column_info(col_field, current_range)
+
+        grid_select = set([col_field, cell_field])
+
+        # readonly field should be in select clause with group_operator, or in group by clause too
+        if readonly_field:
+            grid_select.add(readonly_field)
+            if readonly_field != column_info.grouping and not self._fields[readonly_field].group_operator:
+                raise UserError(_("The field used as readonly type must have a group_operator attribute."))
+
+        # [{ __count, __domain, grouping, **row_fields, cell_field }]
+        groups = self._read_group_raw(
+            expression.AND([grid_domain, column_info.domain]),
+            list(grid_select) + [f.partition(':')[0] for f in row_fields] + [section_field],
+            [column_info.grouping] + row_fields + [section_field],
+            lazy=False, orderby=orderby
+        )
+
+        section_all_groups = {}
+        field = self._fields[section_field]
+        if field.group_expand:
+            section_read_group = self.read_group(grid_domain, [section_field], [section_field])
+            section_all_groups = {group[section_field]: group['__domain'] for group in section_read_group}
+
+        section_groups = collections.defaultdict(lambda: {'__domain': [], 'groups': []})
+        for group in groups:
+            section_group = section_groups[group[section_field]]
+            section_all_groups.pop(group[section_field], None)
+            if self._fields[section_field].type == 'many2one':
+                section_field_value = group[section_field][0]
+            else:
+                section_field_value = group[section_field]
+            if not section_group['__domain']:
+                section_group['__domain'] = expression.AND([
+                    grid_domain,
+                    [(section_field, '=', section_field_value)],
+                ])
+            section_group['groups'].append(group)
+
+        for key, value in section_all_groups.items():
+            section_groups[key]['__domain'] = value
+
+        if not section_groups:
+            # if there are no groups in the output we still need to fetch an empty grid
+            # so we can render the table's decoration (pagination and columns &etc)
+            # otherwise we get a completely empty grid
+            results = [{
+                **self._build_grid(row_fields, col_field, cell_field, column_info,
+                                   domain=domain, readonly_field=readonly_field),
+                '__label': False,
+            }]
+        else:
+            results = [{
+                **self._build_grid(row_fields, col_field, cell_field, column_info,
+                                   groups=section_group['groups'], domain=section_group['__domain'],
+                                   readonly_field=readonly_field),
+                '__label': section_group_label,
+            } for section_group_label, section_group in section_groups.items()]
+        return results
+
+    @api.model
+    def _build_grid(self, row_fields, col_field, cell_field, column_info,
+                    groups=None, domain=None, readonly_field=None):
+        if groups is None:
+            groups = []
+
+        def row_key(it, fs=row_fields):
+            return tuple(it[f] for f in fs)
 
         # [{ values: { field1: value1, field2: value2 } }]
         rows = self._grid_get_row_headers(row_fields, groups, key=row_key)

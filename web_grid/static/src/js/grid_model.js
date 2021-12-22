@@ -286,42 +286,20 @@ const GridModel = AbstractModel.extend({
      * @returns {Promise}
      */
     _fetchGroupedData: async function (groupBy) {
-        const d = await this.dp.add(this._rpc({
+        const results = await this.dp.add(this._rpc({
             model: this.modelName,
-            method: 'read_grid_domain',
+            method: 'read_grid_grouped',
             kwargs: {
-                field: this.colField,
-                range: this.currentRange,
+                row_fields: groupBy.slice(1),
+                col_field: this.colField,
+                cell_field: this.cellField,
+                section_field: this.sectionField,
+                domain: (this.domain || []),
+                current_range: this.currentRange,
+                readonly_field: this.readonlyField,
             },
             context: this.getContext(),
         }));
-
-        const groups = await this.dp.add(this._rpc({
-            model: this.modelName,
-            method: 'read_group',
-            kwargs: {
-                domain: d.concat(this.domain || []),
-                fields: [this.sectionField],
-                groupby: [this.sectionField],
-            },
-            context: this.getContext()
-        }));
-
-        let prom;
-        if (!groups.length) {
-            // if there are no groups in the output we still need
-            // to fetch an empty grid so we can render the table's
-            // decoration (pagination and columns &etc) otherwise
-            // we get a completely empty grid
-            prom = Promise.all([this._fetchSectionGrid(groupBy, {
-                __domain: this.domain || [],
-            })]);
-        } else {
-            prom = Promise.all((groups || []).map(group => {
-                return this._fetchSectionGrid(groupBy, group);
-            }));
-        }
-        const results = await this.dp.add(prom);
 
         if (!(_.isEmpty(results) || _.reduce(results, function (m, it) {
                 return _.isEqual(m.cols, it.cols) && m;
@@ -348,33 +326,7 @@ const GridModel = AbstractModel.extend({
             context: this.context,
         };
     },
-    /**
-     * @private
-     * @param {string[]} groupBy
-     * @param {Object} sectionGroup
-     * @param {Object} [additionalContext]
-     * @returns {Promise}
-     */
-    _fetchSectionGrid: function (groupBy, sectionGroup, additionalContext) {
-        var self = this;
-        var rpcProm = this._rpc({
-            model: this.modelName,
-            method: 'read_grid',
-            kwargs: {
-                row_fields: groupBy.slice(1),
-                col_field: this.colField,
-                cell_field: this.cellField,
-                range: this.currentRange,
-                domain: sectionGroup.__domain,
-                readonly_field: this.readonlyField,
-            },
-            context: this.getContext(additionalContext),
-        })
-        rpcProm.then(function (grid) {
-            grid.__label = sectionGroup[self.sectionField];
-        });
-        return rpcProm;
-    },
+
     /**
      * @private
      * @param {string[]} groupBy

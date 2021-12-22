@@ -21,6 +21,16 @@ class ReportStockQuantity(models.Model):
         return read_grid
 
     @api.model
+    def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
+                          current_range=None, readonly_field=None, orderby=None):
+        if not orderby:
+            orderby = 'product_id, state'
+        return super().read_grid_grouped(
+            row_fields, col_field, cell_field, section_field, domain,
+            current_range=current_range, readonly_field=readonly_field, orderby=orderby,
+        )
+
+    @api.model
     def action_open_moves(self, product_id, state, date):
         date = datetime.strptime(date, '%Y-%m-%d')
         product = self.env['product.product'].browse(product_id)

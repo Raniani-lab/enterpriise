@@ -10,8 +10,8 @@ MockServer.include({
     _performRpc: function (route, args) {
         if (args.method === 'read_grid') {
             return this._mockReadGrid(args.model, args.kwargs);
-        } else if (args.method === 'read_grid_domain') {
-            return this._mockReadGridDomain(args.model, args.kwargs);
+        } else if (args.method === 'read_grid_grouped') {
+            return this._mockReadGridGrouped(args.model, args.kwargs);
         } else if (args.method === 'adjust_grid') {
             var domain = args.args[1];
             var columnField = args.args[2];
@@ -152,15 +152,52 @@ MockServer.include({
             },
         });
     },
+    _mockReadGridGrouped(model, kwargs) {
+        const self = this;
+        return this._mockReadGridDomain(model, kwargs).then(function (gridDomain) {
+            gridDomain = gridDomain.concat(kwargs.domain || []);
+            const groups = self._mockReadGroup(model, {
+                domain: gridDomain,
+                fields: [kwargs.section_field],
+                groupby: [kwargs.section_field],
+            });
+            if (!groups.length) {
+                return Promise.all([self._mockReadGrid(model, {
+                    row_fields: kwargs.row_fields,
+                    col_field: kwargs.col_field,
+                    cell_field: kwargs.cell_field,
+                    domain: kwargs.domain,
+                    range: kwargs.current_range,
+                    readonly_field: kwargs.readonly_field,
+                    context: kwargs.context,
+                })]);
+            } else {
+                return Promise.all((groups || []).map((group) => {
+                    return self._mockReadGrid(model, {
+                        row_fields: kwargs.row_fields,
+                        col_field: kwargs.col_field,
+                        cell_field: kwargs.cell_field,
+                        domain: group.__domain,
+                        range: kwargs.current_range,
+                        readonly_field: kwargs.readonly_field,
+                        context: kwargs.context,
+                    }).then(function (result) {
+                        result.__label = group[kwargs.section_field];
+                        return result;
+                    });
+                }));
+            }
+        });
+    },
     /**
      * @TODO: this is not very generic but it works for the tests
      * @private
      * @returns {Promise}
      */
     _mockReadGridDomain: function (model, kwargs) {
-        if (kwargs.context && kwargs.context.grid_anchor && kwargs.range && kwargs.range.span) {
+        if (kwargs.context && kwargs.context.grid_anchor && kwargs.current_range && kwargs.current_range.span) {
             var gridAnchor = moment(kwargs.context.grid_anchor || this.currentDate);
-            var span = kwargs.range.span;
+            var span = kwargs.current_range.span;
             var start = gridAnchor.clone().startOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
             var end = gridAnchor.clone().endOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
 

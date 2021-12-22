@@ -142,26 +142,24 @@ QUnit.module('Views', {
     });
 
     QUnit.test('basic grouped grid view', async function (assert) {
-        assert.expect(33);
-        var nbReadGridDomain = 0;
-        var nbReadGroup = 0;
-        var nbReadGrid = 0;
+        assert.expect(27);
+        let nbReadGrid = 0;
 
         this.data['analytic.line'].records.push(
             {id: 6, project_id: 142, task_id: 12, date: "2017-01-31", unit_amount: 3.5},
         );
 
-        this.arch = '<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">' +
-                '<field name="project_id" type="row" section="1"/>' +
-                '<field name="task_id" type="row"/>' +
-                '<field name="date" type="col">' +
-                    '<range name="week" string="Week" span="week" step="day"/>' +
-                    '<range name="month" string="Month" span="month" step="day"/>' +
-                '</field>'+
-                '<field name="unit_amount" type="measure" widget="float_time"/>' +
-            '</grid>';
+        this.arch = `<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">
+                <field name="project_id" type="row" section="1"/>
+                <field name="task_id" type="row"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                    <range name="month" string="Month" span="month" step="day"/>
+                </field>
+                <field name="unit_amount" type="measure" widget="float_time"/>
+            </grid>`;
 
-        var grid = await createView({
+        const grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -170,24 +168,25 @@ QUnit.module('Views', {
             mockRPC: function (route, args) {
                 if (route === 'some-image') {
                     return Promise.resolve();
-                } else if (args.method === 'read_grid_domain') {
-                    nbReadGridDomain++;
-                } else if (args.method === 'read_group') {
-                    assert.strictEqual(args.kwargs.groupby.length, 1,
-                        "should read group on the section (project_id)");
-                    assert.strictEqual(args.kwargs.groupby[0], 'project_id',
-                        "should read group on the section (project_id)");
-                    nbReadGroup++;
-                } else if (args.method === 'read_grid') {
+                }
+                else if (args.method === 'read_grid_grouped') {
+                    if (nbReadGrid === 0) {
+                        assert.deepEqual(args.kwargs.row_fields, ["task_id"],
+                            "should have right row_fields");
+                        assert.strictEqual(args.kwargs.col_field, "date",
+                            "should have right col_field");
+                        assert.strictEqual(args.kwargs.cell_field, "unit_amount",
+                            "should have right cell_field");
+                        assert.strictEqual(args.kwargs.section_field, "project_id",
+                            "should have right section_field");
+                    }
                     nbReadGrid++;
                 }
                 return this._super.apply(this, arguments);
             },
         });
         assert.ok(grid.$('table').length, "should have rendered a table");
-        assert.strictEqual(nbReadGridDomain, 1, "should have read the grid domain");
-        assert.strictEqual(nbReadGridDomain, 1, "should have read group");
-        assert.strictEqual(nbReadGrid, 2, "should have read one grid by group");
+        assert.strictEqual(nbReadGrid, 1, "should have read_grid_grouped called once");
         assert.containsN(grid, '.o_grid_section', 2, "should have one section by project");
 
         // first section
@@ -223,9 +222,7 @@ QUnit.module('Views', {
 
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
 
-        assert.strictEqual(nbReadGridDomain, 2, "should have read the grid domain again");
-        assert.strictEqual(nbReadGridDomain, 2, "should have read group again");
-        assert.strictEqual(nbReadGrid, 4, "should have read one grid by group again");
+        assert.strictEqual(nbReadGrid, 2, "should have read_grid_grouped called again");
 
         assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
         assert.ok(grid.$('th:contains(P1)').length,
@@ -573,8 +570,8 @@ QUnit.module('Views', {
             domain: [['date', '>', '2014-09-09']],
             archs: this.archs,
             mockRPC: function (route, args) {
-                if (args.method === 'read_group') {
-                    assert.deepEqual(args.kwargs.domain[3], ['date', '>', '2014-09-09'],
+                if (args.method === 'read_grid_grouped') {
+                    assert.deepEqual(args.kwargs.domain, [['date', '>', '2014-09-09']],
                         "the action domain should always be given");
                 }
                 if (args.method === 'create') {
@@ -1568,7 +1565,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('basic grouped grid view in day range', async function (assert) {
-        assert.expect(19);
+        assert.expect(16);
         var nbReadGroup = 0;
 
         this.arch = `
@@ -1589,11 +1586,9 @@ QUnit.module('Views', {
             arch: this.arch,
             currentDate: "2017-01-25",
             mockRPC: function (route, args) {
-                if (args.method === 'read_group') {
-                    assert.strictEqual(args.kwargs.groupby.length, 1,
-                        "should read group on the section (project_id)");
-                    assert.strictEqual(args.kwargs.groupby[0], 'project_id',
-                        "should read group on the section (project_id)");
+                if (args.method === 'read_grid_grouped') {
+                    assert.strictEqual(args.kwargs.section_field, 'project_id',
+                        "should have project_id as section_field on which view will be grouped");
                     nbReadGroup++;
                 }
                 return this._super.apply(this, arguments);
@@ -1838,7 +1833,7 @@ QUnit.module('Views', {
             currentDate: "2017-01-30",
             mockRPC: async function (_, args) {
                 const _super = this._super.bind(this);
-                if (args.method === 'read_grid' && !args.kwargs.row_fields.length) {
+                if (args.method === 'read_grid_grouped' && !args.kwargs.row_fields.length) {
                     await prom;
                     // _mockReadGrid does not work when row_fields has zero length.
                     // Here we will use the results from a call to read_grid

@@ -702,7 +702,7 @@ var GanttModel = AbstractModel.extend({
                     resIds.push(row.resId);
                 }
             } else {
-                resIds.push(...this._getProgressBarResIds(field, row.rows));
+                resIds.push(...this._getProgressBarResIds(field, row.rows || []));
             }
         }
         return [...new Set(resIds)];

@@ -4789,5 +4789,70 @@ document.createElement("a").classList.contains
         assert.hasClass(progressbar[0], "o_gantt_group_danger", "Progress bar should have the danger class");
         gantt.destroy();
     });
+
+    QUnit.test('Falsy search field will return an empty rows', async function (assert) {
+        assert.expect(2);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"
+                        progress_bar="user_id">
+                        <field name="user_id"/>
+                   </gantt>`,
+            groupBy: ['project_id', 'user_id'],
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [["id", "=", 5]],
+        });
+
+        const progressbar = gantt.el.querySelectorAll('.o_gantt_row_sidebar .o_gantt_progressbar');
+        assert.containsOnce(gantt, '.o_gantt_row_sidebar_empty', 'should have empty rows');
+        assert.strictEqual(progressbar.length, 0, "Gantt should not have any progressbars");
+        gantt.destroy();
+    });
+
+    QUnit.test('Search field return rows with progressbar', async function (assert) {
+        assert.expect(6);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"
+                        progress_bar="user_id">
+                        <field name="user_id"/>
+                   </gantt>`,
+            groupBy: ['project_id', 'user_id'],
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [["id", "=", 2]],
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_progress_bar') {
+                    assert.strictEqual(args.model, "tasks");
+                    assert.deepEqual(args.args[0], ['user_id']);
+                    assert.deepEqual(args.args[1], {user_id: [2]});
+                    return Promise.resolve({
+                        user_id: {
+                            2: {value: 25, max_value: 200},
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const progressbar = gantt.el.querySelectorAll('.o_gantt_row_sidebar .o_gantt_progressbar');
+        assert.containsNone(gantt, '.o_gantt_row_sidebar_empty', 'should have rows');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth(1) .o_gantt_row_title').text().trim(), 'User 2',
+            '2nd row title should be "User 2"');
+        assert.strictEqual(progressbar.length, 1, "Gantt should have one progressbar");
+        gantt.destroy();
+    });
 });
 });

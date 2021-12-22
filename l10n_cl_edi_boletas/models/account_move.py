@@ -16,6 +16,9 @@ class AccountMove(models.Model):
             if self.line_ids.filtered(lambda x: x.tax_group_id.id in [
                     self.env.ref('l10n_cl.tax_group_ila').id, self.env.ref('l10n_cl.tax_group_retenciones').id]):
                 raise UserError(_('Receipts with withholding taxes are not allowed'))
+            if any(self.invoice_line_ids.mapped('tax_ids.price_include')):
+                raise UserError(_('Tax included in price is not supported for boletas. '
+                                  'Please change the tax to not included in price.'))
 
             daily_sales_book = self.env['l10n_cl.daily.sales.book'].search([
                 ('l10n_cl_dte_status', '!=', 'rejected'), ('date', '=', self.invoice_date)])

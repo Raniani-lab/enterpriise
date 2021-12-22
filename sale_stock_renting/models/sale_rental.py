@@ -46,7 +46,6 @@ class RentalOrderLine(models.Model):
             line.qty_available_today = False
             line.warehouse_id = False
 
-    @api.model
     def write(self, vals):
         """Move product quantities on pickup/return in case of rental orders.
 

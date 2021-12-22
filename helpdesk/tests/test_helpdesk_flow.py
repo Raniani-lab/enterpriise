@@ -102,11 +102,11 @@ class TestHelpdeskFlow(HelpdeskCommon):
 
     def test_assign_close_dates(self):
         # helpdesk user create a ticket
-        ticket1 = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
-            'name': 'test ticket 1',
-            'team_id': self.test_team.id,
-        })
-        self._utils_set_create_date(ticket1, '2019-01-08 12:00:00')
+        with self._ticket_patch_now('2019-01-08 12:00:00'):
+            ticket1 = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
+                'name': 'test ticket 1',
+                'team_id': self.test_team.id,
+            })
 
         with self._ticket_patch_now('2019-01-10 13:00:00'):
             # the helpdesk user takes the ticket
@@ -114,6 +114,7 @@ class TestHelpdeskFlow(HelpdeskCommon):
             # we verify the ticket is correctly assigned
             self.assertEqual(ticket1.user_id.id, ticket1._uid, "Assignation for ticket not correct")
             self.assertEqual(ticket1.assign_hours, 17, "Assignation time for ticket not correct")
+
         with self._ticket_patch_now('2019-01-10 15:00:00'):
             # we close the ticket and verify its closing time
             ticket1.write({'stage_id': self.stage_done.id})

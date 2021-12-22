@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from contextlib import contextmanager
+from freezegun import freeze_time
+from unittest.mock import patch
 
 from odoo import fields
 from odoo.tests.common import TransactionCase
@@ -75,44 +77,8 @@ class HelpdeskCommon(TransactionCase):
             'name': 'Issue_test',
         }).sudo()
 
-    def _utils_set_create_date(self, records, date_str):
-        """ This method is a hack in order to be able to define/redefine the create_date
-            of the any recordset. This is done in SQL because ORM does not allow to write
-            onto the create_date field.
-            :param records: recordset of any odoo models
-        """
-        records.flush_recordset(['create_date'])
-
-        query = """
-            UPDATE %s
-            SET create_date = %%s
-            WHERE id IN %%s
-        """ % (records._table,)
-        self.env.cr.execute(query, (date_str, tuple(records.ids)))
-
-        records.invalidate_recordset(['create_date'])
-
-        if records._name == 'helpdesk.ticket':
-            field = self.env['helpdesk.sla.status']._fields['deadline']
-            self.env.add_to_compute(field, records.sla_status_ids)
-
     @contextmanager
-    def _ticket_patch_now(self, datetime_str):
-        datetime_now_old = getattr(fields.Datetime, 'now')
-        datetime_today_old = getattr(fields.Datetime, 'today')
-
-        def new_now():
-            return fields.Datetime.from_string(datetime_str)
-
-        def new_today():
-            return fields.Datetime.from_string(datetime_str).replace(hour=0, minute=0, second=0)
-
-        try:
-            setattr(fields.Datetime, 'now', new_now)
-            setattr(fields.Datetime, 'today', new_today)
-
+    def _ticket_patch_now(self, datetime):
+        with freeze_time(datetime), patch.object(self.env.cr, 'now', lambda: datetime):
             yield
-        finally:
-            # back
-            setattr(fields.Datetime, 'now', datetime_now_old)
-            setattr(fields.Datetime, 'today', datetime_today_old)
+            self.env.flush_all()

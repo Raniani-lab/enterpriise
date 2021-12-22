@@ -100,7 +100,7 @@ class TestHR(common.TransactionCase):
             name='Leave Type (allocation by HR, no validation, half day)',
             requires_allocation='yes',
             employee_requests='no',
-            allocation_validation='set',
+            allocation_validation='officer',
             request_unit='half_day',
             validation='no_validation',
         )

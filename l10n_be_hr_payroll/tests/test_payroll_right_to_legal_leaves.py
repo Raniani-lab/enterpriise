@@ -19,7 +19,7 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'name': 'Paid Time Off',
             'requires_allocation': 'yes',
             'employee_requests': 'no',
-            'allocation_validation_type': 'set',
+            'allocation_validation_type': 'officer',
             'leave_validation_type': 'both',
             'responsible_id': cls.env.ref('base.user_admin').id,
             'request_unit': 'day'

@@ -92,7 +92,7 @@ class TestSignRequest(SignRequestCommon):
                 'reference': self.template_3_roles.display_name,
             })
 
-    def test_sign_request_no_item_create_sign_cancel(self):
+    def test_sign_request_no_item_create_sign_cancel_copy(self):
         # create
         sign_request_no_item = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
         sign_request_item = sign_request_no_item.request_item_ids[0]
@@ -103,6 +103,7 @@ class TestSignRequest(SignRequestCommon):
         sign_request_item.edit_and_sign(self.signature_fake)
         self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
+        self.assertEqual(len(sign_request_no_item.completed_document_attachment_ids), 2, 'The completed document and the certificate should be created')
         self.assertEqual(len(sign_request_no_item.sign_log_ids.filtered(
             lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item)),
             1, 'A log with action="sign" should be created')
@@ -119,6 +120,19 @@ class TestSignRequest(SignRequestCommon):
         self.assertNotEqual(sign_request_item.access_token, sign_request_item_token, 'The access token should be changed')
         self.assertNotEqual(sign_request_no_item.access_token, sign_request_no_item_token, 'The access token should be changed')
         self.assertEqual(len(sign_request_no_item.sign_log_ids.filtered(lambda log: log.action == 'cancel')), 1, 'A log with action="cancel" should be created')
+
+        # copy
+        new_sign_request_no_item = sign_request_no_item.copy()
+        self.assertTrue(new_sign_request_no_item.exists(), 'A sign request with no sign item should be created')
+        self.assertEqual(new_sign_request_no_item.state, 'sent', 'The default state for a new created sign request should be "sent"')
+        self.assertTrue(all(new_sign_request_no_item.request_item_ids.mapped('is_mail_sent')), 'The mail should be sent for the new created sign request by default')
+        self.assertEqual(new_sign_request_no_item.with_context(active_test=False).cc_partner_ids, self.partner_4 + self.env.user.partner_id, 'The cc_partners should be the specified one and the creator')
+        self.assertEqual(new_sign_request_no_item.with_context(active_test=False).message_partner_ids, new_sign_request_no_item.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id, 'Signers, CC partners and the sender should be the followers')
+        self.assertEqual(len(new_sign_request_no_item.sign_log_ids.filtered(lambda log: log.action == 'create')), 1, 'A log with action="create" should be created')
+        for sign_request_item in new_sign_request_no_item:
+            self.assertEqual(sign_request_item.state, 'sent', 'The default state for a new created sign request item should be "sent"')
+        self.assertNotEqual(new_sign_request_no_item.access_token, sign_request_no_item.access_token, 'The access_token should be changed')
+        self.assertNotEqual(new_sign_request_no_item.request_item_ids[0].access_token, sign_request_no_item.request_item_ids[0].access_token, 'The access_token should be changed')
 
     def test_sign_request_3_roles_create_sign_cancel(self):
         # create
@@ -328,6 +342,7 @@ class TestSignRequest(SignRequestCommon):
         sign_request_item.edit_and_sign({'-1': value}, {'-1': new_sign_item_config})
         self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
+        self.assertEqual(len(sign_request_no_item.completed_document_attachment_ids), 2, 'The completed document and the certificate should be created')
         self.assertNotEqual(sign_request_no_item.template_id, template, 'An edited sign request should use a different template')
         self.assertEqual(template.sign_item_ids.ids, sign_item_ids, 'The original template should not be changed')
         self.assertEqual(len(sign_request_no_item.template_id.sign_item_ids.ids), len(sign_item_ids) + 1, 'The new template should have one more sign item')
@@ -384,6 +399,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(sign_request_item_employee.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_item_company.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_3_roles.state, 'signed', 'The sign request should be signed')
+        self.assertEqual(len(sign_request_3_roles.completed_document_attachment_ids), 2, 'The completed document and the certificate should be created')
         self.assertEqual(len(sign_request_3_roles.sign_log_ids.filtered(
             lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item_company)),
             1, 'A log with action="sign" should be created')

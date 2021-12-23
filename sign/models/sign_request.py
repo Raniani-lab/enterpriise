@@ -63,18 +63,18 @@ class SignRequest(models.Model):
     subject = fields.Char(string="Email Subject")
     reference = fields.Char(required=True, string="Document Name", help="This is how the document will be named in the mail")
 
-    access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
+    access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True, copy=False)
 
-    request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers")
+    request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers", copy=True)
     refusal_allowed = fields.Boolean(default=False, string="Can be refused", help="Allow the contacts to refuse the document for a specific reason.")
     state = fields.Selection([
         ("sent", "Sent"),
         ("signed", "Fully Signed"),
         ("refused", "Refused"),
         ("canceled", "Canceled")
-    ], default='sent', tracking=True, group_expand='_expand_states')
+    ], default='sent', tracking=True, group_expand='_expand_states', copy=False)
 
-    completed_document = fields.Binary(readonly=True, string="Completed Document", attachment=True)
+    completed_document = fields.Binary(readonly=True, string="Completed Document", attachment=True, copy=False)
 
     nb_wait = fields.Integer(string="Sent Requests", compute="_compute_count", store=True)
     nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
@@ -83,7 +83,7 @@ class SignRequest(models.Model):
     start_sign = fields.Boolean(string="Signature Started", help="At least one signer has signed the document.", compute="_compute_count", compute_sudo=True)
     integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes', compute_sudo=True)
 
-    active = fields.Boolean(default=True, string="Active")
+    active = fields.Boolean(default=True, string="Active", copy=False)
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
 
     color = fields.Integer()
@@ -96,7 +96,8 @@ class SignRequest(models.Model):
     cc_partner_ids = fields.Many2many('res.partner', string='Copy to')
     message = fields.Html('sign.message')
     message_cc = fields.Html('sign.message_cc')
-    attachment_ids = fields.Many2many('ir.attachment', string='Attachments', readonly=True, ondelete="restrict")
+    attachment_ids = fields.Many2many('ir.attachment', string='Attachments', readonly=True, copy=False, ondelete="restrict")
+    completed_document_attachment_ids = fields.Many2many('ir.attachment', 'sign_request_completed_document_rel', string='Completed Documents', readonly=True, copy=False, ondelete="restrict")
 
     need_my_signature = fields.Boolean(compute='_compute_need_my_signature', search='_search_need_my_signature')
 
@@ -177,6 +178,13 @@ class SignRequest(models.Model):
         if not self._context.get('no_sign_mail'):
             sign_requests.send_signature_accesses()
         return sign_requests
+
+    def copy(self, default=None):
+        self.ensure_one()
+        default = default or {}
+        if 'attachment_ids' not in default:
+            default['attachment_ids'] = [attachment.copy().id for attachment in self.attachment_ids]
+        return super().copy(default)
 
     def toggle_active(self):
         self.filtered(lambda sr: sr.active and sr.state == 'sent').cancel()
@@ -383,7 +391,7 @@ class SignRequest(models.Model):
             body = _("The CC mail is sent to: ") + ', '.join(cc_partners_valid.mapped('name'))
             if not is_html_empty(self.message_cc):
                 body += self.message_cc
-            self.message_post(body=body, attachment_ids=self.attachment_ids.ids)
+            self.message_post(body=body, attachment_ids=self.attachment_ids.ids + self.completed_document_attachment_ids.ids)
 
     def _send_completed_document_mail(self, signers, request_edited, partner, access_token=None, with_message_cc=True, force_send=False):
         self.ensure_one()
@@ -412,7 +420,7 @@ class SignRequest(models.Model):
              'author_id': self.create_uid.partner_id.id,
              'email_to': partner.email_formatted,
              'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
-             'attachment_ids': self.attachment_ids.ids},
+             'attachment_ids': self.attachment_ids.ids + self.completed_document_attachment_ids.ids},
             force_send=force_send,
             lang=partner_lang,
         )
@@ -572,7 +580,7 @@ class SignRequest(models.Model):
             'res_model': self._name,
             'res_id': self.id,
         })
-        self.attachment_ids = [Command.link(attachment.id), Command.link(attachment_log.id)]
+        self.completed_document_attachment_ids = [Command.set([attachment.id, attachment_log.id])]
 
     @api.model
     def _message_send_mail(self, body, email_layout_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):
@@ -615,32 +623,32 @@ class SignRequestItem(models.Model):
         return "mailto:%s?subject=%s" % (url_quote(email), url_quote(subject))
 
     partner_id = fields.Many2one('res.partner', string="Signer", ondelete='restrict')
-    sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
+    sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True, copy=False)
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
     reference = fields.Char(related='sign_request_id.reference', string="Document Name")
 
-    access_token = fields.Char(required=True, default=_default_access_token, readonly=True)
-    access_via_link = fields.Boolean('Accessed Through Token')
+    access_token = fields.Char(required=True, default=_default_access_token, readonly=True, copy=False)
+    access_via_link = fields.Boolean('Accessed Through Token', copy=False)
     role_id = fields.Many2one('sign.item.role', string="Role", required=True, readonly=True)
-    sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True)
-    sms_token = fields.Char('SMS Token', readonly=True)
+    sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True, copy=False)
+    sms_token = fields.Char('SMS Token', readonly=True, copy=False)
 
-    signature = fields.Binary(attachment=True)
-    signing_date = fields.Date('Signed on', readonly=True)
+    signature = fields.Binary(attachment=True, copy=False)
+    signing_date = fields.Date('Signed on', readonly=True, copy=False)
     state = fields.Selection([
         ("sent", "To Sign"),
         ("refused", "Refused"),
         ("completed", "Completed"),
         ("canceled", "Canceled"),
-    ], readonly=True, default="sent")
+    ], readonly=True, default="sent", copy=False)
     color = fields.Integer(compute='_compute_color')
 
     signer_email = fields.Char(string='Email', compute="_compute_email", store=True)
     is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
     change_authorized = fields.Boolean(related='role_id.change_authorized')
 
-    latitude = fields.Float(digits=(10, 7))
-    longitude = fields.Float(digits=(10, 7))
+    latitude = fields.Float(digits=(10, 7), copy=False)
+    longitude = fields.Float(digits=(10, 7), copy=False)
 
     @api.constrains('signer_email')
     def _check_signer_email_validity(self):

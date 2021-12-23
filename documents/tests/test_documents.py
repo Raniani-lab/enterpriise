@@ -176,7 +176,23 @@ class TestCaseDocuments(TransactionCase):
             'create_model': 'link.to.record',
         })
         user_admin_doc = new_test_user(self.env, login='Test admin documents', groups='documents.group_documents_manager,base.group_partner_manager')
-        documents_to_link = [self.document_gif, self.document_txt]
+
+        # prepare documents that the user owns
+        Document = self.env['documents.document'].with_user(user_admin_doc)
+        document_gif = Document.create({
+            'datas': GIF,
+            'name': 'file.gif',
+            'mimetype': 'image/gif',
+            'folder_id': self.folder_b.id,
+        })
+        document_txt = Document.create({
+            'datas': TEXT,
+            'name': 'file.txt',
+            'mimetype': 'text/plain',
+            'folder_id': self.folder_b.id,
+        })
+        documents_to_link = [document_gif, document_txt]
+
         res_model = 'res.partner'
         record = {
             'res_model': res_model,

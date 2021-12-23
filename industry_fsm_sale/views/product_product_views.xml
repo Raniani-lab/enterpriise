@@ -36,7 +36,7 @@
                                         <field name="product_template_attribute_value_ids" groups="product.group_product_variant" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     </div>
                                     <ul>
-                                        <li><strong>Price: <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></strong></li>
+                                        <li><strong>Price: <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></strong></li>
                                         <field name="currency_id" invisible="True"/>
                                     </ul>
                                 </div>

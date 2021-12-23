@@ -42,7 +42,7 @@ class TestSubscriptionDashboard(HttpCase):
         container.product = container.product_tmpl.product_variant_id
         container.product.write(
             {
-                "price": 50.0,
+                "list_price": 50.0,
             }
         )
 

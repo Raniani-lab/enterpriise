@@ -64,7 +64,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
         cls.product = cls.product_tmpl.product_variant_id
         cls.product.write({
-            'price': 50.0,
+            'list_price': 50.0,
             'taxes_id': [(6, 0, [cls.tax_10.id])],
             'property_account_income_id': cls.account_income.id,
         })
@@ -78,7 +78,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
         cls.product2 = cls.product_tmpl_2.product_variant_id
         cls.product2.write({
-            'price': 20.0,
+            'list_price': 20.0,
             'taxes_id': [(6, 0, [cls.tax_10.id])],
             'property_account_income_id': cls.account_income.id,
         })
@@ -92,7 +92,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
         cls.product3 = cls.product_tmpl_3.product_variant_id
         cls.product3.write({
-            'price': 15.0,
+            'list_price': 15.0,
             'taxes_id': [(6, 0, [cls.tax_10.id])],
             'property_account_income_id': cls.account_income.id,
         })
@@ -106,7 +106,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
         cls.product4 = cls.product_tmpl_4.product_variant_id
         cls.product4.write({
-            'price': 15.0,
+            'list_price': 15.0,
             'taxes_id': [(6, 0, [cls.tax_20.id])],
             'property_account_income_id': cls.account_income.id,
         })

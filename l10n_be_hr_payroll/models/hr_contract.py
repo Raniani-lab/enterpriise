@@ -255,8 +255,12 @@ class HrContract(models.Model):
 
     @api.depends('meal_voucher_amount')
     def _compute_meal_voucher_info(self):
+        # The amount of the meal voucher is computed on the basis of the contribution
+        # of the employer and the employee. Indeed, the first can contribute up to a
+        # maximum of € 6.91 per check and per day provided, while the participation
+        # of the second must amount to a minimum of € 1.09.
         for contract in self:
-            contract.meal_voucher_paid_by_employer = contract.meal_voucher_amount * (1 - 0.1463)
+            contract.meal_voucher_paid_by_employer = contract.meal_voucher_amount - 1.09
             monthly_nb_meal_voucher = 220.0 / 12
             contract.meal_voucher_paid_monthly_by_employer = contract.meal_voucher_paid_by_employer * monthly_nb_meal_voucher
             contract.meal_voucher_average_monthly_amount = contract.meal_voucher_amount * monthly_nb_meal_voucher

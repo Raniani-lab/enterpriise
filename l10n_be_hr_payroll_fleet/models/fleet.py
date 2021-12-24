@@ -171,6 +171,7 @@ class FleetVehicle(models.Model):
                 else:
                     atn = car_value * min(0.18, (0.055 + 0.001 * (co2 - reference))) * magic_coeff
             return max(self.env['hr.rule.parameter']._get_parameter_from_code('min_car_atn', date), atn) / 12.0
+        return 0.0
 
     @api.onchange('model_id')
     def _onchange_model_id(self):

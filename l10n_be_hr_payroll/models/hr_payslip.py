@@ -403,9 +403,12 @@ class Payslip(models.Model):
         if force_avg_variable_revenues:
             avg_variable_revenues = force_avg_variable_revenues[0].amount
         else:
-            avg_variable_revenues = self.with_context(
-                variable_revenue_date_from=self.date_from + relativedelta(months=-1)
-            )._get_last_year_average_variable_revenues()
+            if not n_months:
+                avg_variable_revenues = 0
+            else:
+                avg_variable_revenues = self.with_context(
+                    variable_revenue_date_from=self.date_from + relativedelta(months=-1)
+                )._get_last_year_average_variable_revenues()
         return fixed_salary + avg_variable_revenues
 
     def _get_paid_amount_warrant(self):
@@ -436,15 +439,19 @@ class Payslip(models.Model):
                 presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
             fixed_salary = basic * n_months / 12 * presence_prorata
         else:
+            n_months = 12
             fixed_salary = basic
 
         force_avg_variable_revenues = self.input_line_ids.filtered(lambda l: l.code == 'VARIABLE')
         if force_avg_variable_revenues:
             avg_variable_revenues = force_avg_variable_revenues[0].amount
         else:
-            avg_variable_revenues = self.with_context(
-                variable_revenue_date_from=self.date_from + relativedelta(months=-1)
-            )._get_last_year_average_variable_revenues()
+            if not n_months:
+                avg_variable_revenues = 0
+            else:
+                avg_variable_revenues = self.with_context(
+                    variable_revenue_date_from=self.date_from + relativedelta(months=-1)
+                )._get_last_year_average_variable_revenues()
         return fixed_salary + avg_variable_revenues
 
     def _get_paid_amount(self):

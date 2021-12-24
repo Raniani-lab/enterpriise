@@ -1016,6 +1016,9 @@ class HrDMFAReport(models.Model):
             ('state', 'in', ['done', 'paid']),
             ('company_id', '=', self.company_id.id),
         ])
+        # Exclude CIP contracts from DmfA, as they only have a DIMONA
+        contract_type_cip = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cip')
+        payslips.filtered(lambda p: p.contract_id.contract_type_id != contract_type_cip)
         employees = payslips.mapped('employee_id')
         worker_count = len(employees)
 

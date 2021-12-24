@@ -166,9 +166,10 @@ class TestLeadConvertToTicket(crm_common.TestCrmCommon):
         # ensure partner updated lead information
         self.assertEqual(lead.partner_id, self.contact_1)
         self.assertEqual(lead.email_from, self.contact_1.email)
-        self.assertEqual(lead.phone, self.contact_1.phone)
         self.assertEqual(lead.partner_name, self.contact_company_1.name)
         self.assertEqual(lead.contact_name, self.contact_1.name)
+        # ensure partner did not void existing information
+        self.assertEqual(lead.phone, '+1 202 555 9999')
 
         # invoke wizard and apply it
         convert = self.env['crm.lead.convert2ticket'].with_context({

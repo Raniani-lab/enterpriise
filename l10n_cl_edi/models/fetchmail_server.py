@@ -82,7 +82,7 @@ class FetchmailServer(models.Model):
                         message = message.encode('utf-8')
                     msg_txt = email.message_from_bytes(message, policy=email.policy.SMTP)
                     try:
-                        self._process_incoming_email(msg_txt)
+                        server._process_incoming_email(msg_txt)
                         new_max_uid = max(new_max_uid, int(uid))
                         self._cr.commit()
                     except Exception:

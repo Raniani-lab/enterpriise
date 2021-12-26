@@ -671,7 +671,7 @@ class SignRequestItem(models.Model):
             raise UserError(_("You need to define a signatory"))
         request_items_reassigned = self.env['sign.request.item']
         if vals.get('partner_id'):
-            request_items_reassigned |= self.filtered(lambda sri: self.partner_id.id != vals['partner_id'])
+            request_items_reassigned |= self.filtered(lambda sri: sri.partner_id.id != vals['partner_id'])
             if any(sri.state != 'sent'
                    or sri.sign_request_id.state != 'sent'
                    or (sri.partner_id and not sri.role_id.change_authorized)
@@ -700,7 +700,7 @@ class SignRequestItem(models.Model):
                 ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
             ], limit=1)
             if new_sign_user:
-                self.sign_request_id._schedule_activity(new_sign_user)
+                request_items_reassigned.sign_request_id._schedule_activity(new_sign_user)
 
         res = super(SignRequestItem, self).write(vals)
 

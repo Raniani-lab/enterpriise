@@ -170,6 +170,7 @@
                 <filter string="Rated Tickets" domain="[('rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
                 <separator/>
                 <filter string="Last 7 days" name="last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 30 days" name="last_30days" domain="[('close_date', '&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>

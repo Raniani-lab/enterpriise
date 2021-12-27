@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+from odoo import models, fields, _
 
 class HelpdeskSaleCouponGenerate(models.TransientModel):
     _name = "helpdesk.sale.coupon.generate"
@@ -28,6 +28,10 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
         coupon = self.env['loyalty.card'].sudo().create(vals)
         self.ticket_id.coupon_ids |= coupon
         view = self.env.ref('helpdesk_sale_loyalty.loyalty_card_view_form_helpdesk_sale_loyalty', raise_if_not_found=False)
+        self.ticket_id.message_post_with_view(
+            'helpdesk.ticket_conversion_link', values={'created_record': coupon, 'message': _('Coupon created')},
+            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+        )
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'loyalty.card',

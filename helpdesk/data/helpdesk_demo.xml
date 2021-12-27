@@ -131,6 +131,7 @@ Chester Reed</p>
         <field name="ticket_type_id" ref="helpdesk.type_question"/>
         <field name="partner_id" ref="base.res_partner_4" />
         <field name="stage_id" ref="helpdesk.stage_solved"/>
+        <field name="close_date" eval="DateTime.now()"/>
         <field name="description" type="html">
 <p>Hello,<br/><br/>
 Is the wood from your furniture treated with a particular product? What would you recommend to maintain the quality of a dining table?<br/>

@@ -40,19 +40,20 @@ class CustomerPortal(portal.CustomerPortal):
         values = {
             'page_name': 'ticket',
             'ticket': ticket,
+            'ticket_link_section': [],
         }
         return self._get_page_view_values(ticket, access_token, values, 'my_tickets_history', False, **kwargs)
 
-    @http.route(['/my/tickets', '/my/tickets/page/<int:page>'], type='http', auth="user", website=True)
-    def my_helpdesk_tickets(self, page=1, date_begin=None, date_end=None, sortby=None, filterby='all', search=None, groupby='none', search_in='content', **kw):
+    def _prepare_my_tickets_values(self, page=1, date_begin=None, date_end=None, sortby=None, filterby='all', search=None, groupby='none', search_in='content'):
         values = self._prepare_portal_layout_values()
         domain = self._prepare_helpdesk_tickets_domain()
 
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc'},
-            'name': {'label': _('Subject'), 'order': 'name'},
-            'stage': {'label': _('Stage'), 'order': 'stage_id'},
             'reference': {'label': _('Reference'), 'order': 'id'},
+            'name': {'label': _('Subject'), 'order': 'name'},
+            'user': {'label': _('Assigned to'), 'order': 'user_id'},
+            'stage': {'label': _('Stage'), 'order': 'stage_id'},
             'update': {'label': _('Last Stage Update'), 'order': 'date_last_stage_update desc'},
         }
         searchbar_filters = {
@@ -61,20 +62,18 @@ class CustomerPortal(portal.CustomerPortal):
             'unassigned': {'label': _('Unassigned'), 'domain': [('user_id', '=', False)]},
             'open': {'label': _('Open'), 'domain': [('close_date', '=', False)]},
             'closed': {'label': _('Closed'), 'domain': [('close_date', '!=', False)]},
-            'last_message_sup': {'label': _('Last message is from support')},
-            'last_message_cust': {'label': _('Last message is from customer')},
         }
         searchbar_inputs = {
             'content': {'input': 'content', 'label': Markup(_('Search <span class="nolabel"> (in Content)</span>'))},
-            'message': {'input': 'message', 'label': _('Search in Messages')},
-            'customer': {'input': 'customer', 'label': _('Search in Customer')},
             'id': {'input': 'id', 'label': _('Search in Reference')},
+            'message': {'input': 'message', 'label': _('Search in Messages')},
+            'user': {'input': 'user', 'label': _('Search in Assigned to')},
             'status': {'input': 'status', 'label': _('Search in Stage')},
-            'all': {'input': 'all', 'label': _('Search in All')},
         }
         searchbar_groupby = {
             'none': {'input': 'none', 'label': _('None')},
             'stage': {'input': 'stage_id', 'label': _('Stage')},
+            'user': {'input': 'user_id', 'label': _('Assigned to')},
         }
 
         # default sort by value
@@ -116,16 +115,16 @@ class CustomerPortal(portal.CustomerPortal):
         # search
         if search and search_in:
             search_domain = []
-            if search_in in ('id', 'all'):
+            if search_in == 'id':
                 search_domain = OR([search_domain, [('id', 'ilike', search)]])
-            if search_in in ('content', 'all'):
+            if search_in == 'content':
                 search_domain = OR([search_domain, ['|', ('name', 'ilike', search), ('description', 'ilike', search)]])
-            if search_in in ('customer', 'all'):
-                search_domain = OR([search_domain, [('partner_id', 'ilike', search)]])
-            if search_in in ('message', 'all'):
+            if search_in == 'user':
+                search_domain = OR([search_domain, [('user_id', 'ilike', search)]])
+            if search_in == 'message':
                 discussion_subtype_id = request.env.ref('mail.mt_comment').id
                 search_domain = OR([search_domain, [('message_ids.body', 'ilike', search), ('message_ids.subtype_id', '=', discussion_subtype_id)]])
-            if search_in in ('status', 'all'):
+            if search_in == 'status':
                 search_domain = OR([search_domain, [('stage_id', 'ilike', search)]])
             domain = AND([domain, search_domain])
 
@@ -142,8 +141,8 @@ class CustomerPortal(portal.CustomerPortal):
         tickets = request.env['helpdesk.ticket'].search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_tickets_history'] = tickets.ids[:100]
 
-        if groupby == 'stage':
-            grouped_tickets = [request.env['helpdesk.ticket'].concat(*g) for k, g in groupbyelem(tickets, itemgetter('stage_id'))]
+        if groupby != 'none':
+            grouped_tickets = [request.env['helpdesk.ticket'].concat(*g) for k, g in groupbyelem(tickets, itemgetter(searchbar_groupby[groupby]['input']))]
         else:
             grouped_tickets = [tickets]
 
@@ -163,6 +162,11 @@ class CustomerPortal(portal.CustomerPortal):
             'search': search,
             'filterby': filterby,
         })
+        return values
+
+    @http.route(['/my/tickets', '/my/tickets/page/<int:page>'], type='http', auth="user", website=True)
+    def my_helpdesk_tickets(self, page=1, date_begin=None, date_end=None, sortby=None, filterby='all', search=None, groupby='none', search_in='content', **kw):
+        values = self._prepare_my_tickets_values(page, date_begin, date_end, sortby, filterby, search, groupby, search_in)
         return request.render("helpdesk.portal_helpdesk_ticket", values)
 
     @http.route([

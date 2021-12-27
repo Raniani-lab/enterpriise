@@ -55,6 +55,8 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
             'ticket_id': self.ticket_id.id,
             'tag_ids': [(6, 0, self.tag_ids.ids)]
         })
+        body = f"<a href='/forum/{self.forum_id.id}/question/{forum_post.id}'>{forum_post.name}</a> {_('Forum Post created')}"
+        self.ticket_id.message_post(body=body)
         self.ticket_id.write({
             'forum_post_ids': [(4, forum_post.id, 0)]
         })
@@ -62,7 +64,6 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
         for post in forum_post:
             post.message_post_with_view('helpdesk.ticket_creation', values={'self': post, 'ticket': self.ticket_id}, subtype_id=self.env.ref('mail.mt_note').id)
 
-        self.ticket_id.message_post(body=_('Ticket has been shared on the %s forum.', self.forum_id.name))
         return forum_post
 
     def action_create_post(self):

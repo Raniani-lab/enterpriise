@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class HelpdeskTicketConvert2Lead(models.TransientModel):
@@ -14,7 +15,10 @@ class HelpdeskTicketConvert2Lead(models.TransientModel):
 
         if not res.get('ticket_id') and self.env.context.get('active_id'):
             res['ticket_id'] = self.env.context['active_id']
-
+        if res.get('ticket_id'):
+            ticket = self.env['helpdesk.ticket'].browse(res.get('ticket_id'))
+            if not ticket.active:
+                raise ValidationError(_('The archived ticket can not converted as lead.'))
         return res
 
     ticket_id = fields.Many2one('helpdesk.ticket', required=True, readonly=False)
@@ -96,6 +100,12 @@ class HelpdeskTicketConvert2Lead(models.TransientModel):
         attachments = self.env['ir.attachment'].search([('res_model', '=', 'helpdesk.ticket'), ('res_id', '=', self.ticket_id.id)])
         attachments.sudo().write({'res_model': 'crm.lead', 'res_id': lead_sudo.id})
         self.ticket_id.action_archive()
+
+        # After mail thread move, add linked lead message to ticket
+        self.ticket_id.message_post_with_view(
+            'helpdesk.ticket_conversion_link', values={'created_record': lead_sudo, 'message': _('Lead created')},
+            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+        )
 
         # return to lead (if can see) or ticket (if cannot)
         try:

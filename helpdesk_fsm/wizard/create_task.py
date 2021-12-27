@@ -39,7 +39,12 @@ class CreateTask(models.TransientModel):
 
     def action_generate_task(self):
         self.ensure_one()
-        return self.env['project.task'].create(self._generate_task_values())
+        new_task = self.env['project.task'].create(self._generate_task_values())
+        self.helpdesk_ticket_id.message_post_with_view(
+            'helpdesk.ticket_conversion_link', values={'created_record': new_task, 'message': _('Task created')},
+            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+        )
+        return new_task
 
     def action_generate_and_view_task(self):
         self.ensure_one()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class Repair(models.Model):
@@ -28,8 +28,16 @@ class Repair(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         orders = super().create(vals_list)
+        message = _('Repair Created')
+        subtype_id = self.env.ref('mail.mt_note').id
         for order in orders.filtered('ticket_id'):
-            order.message_post_with_view('helpdesk.ticket_creation', values={'self': order, 'ticket': order.ticket_id}, subtype_id=self.env.ref('mail.mt_note').id)
+            order.message_post_with_view('helpdesk.ticket_creation', values={'self': order, 'ticket': order.ticket_id}, subtype_id=subtype_id)
+            order.ticket_id.message_post_with_view(
+                'helpdesk.ticket_conversion_link',
+                values={'created_record': order, 'message': message},
+                subtype_id=subtype_id,
+                author_id=self.env.user.partner_id.id
+            )
         return orders
 
     def action_repair_done(self):

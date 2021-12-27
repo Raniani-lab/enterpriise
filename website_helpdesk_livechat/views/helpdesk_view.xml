@@ -56,6 +56,6 @@
 
     <menuitem id="helpdesk_team_canned_response_menu"
         action="helpdesk_im_livechat_canned_response_action"
-        sequence="25" parent="helpdesk.helpdesk_menu_config"/>
+        sequence="17" parent="helpdesk.helpdesk_menu_config"/>
 
 </odoo>

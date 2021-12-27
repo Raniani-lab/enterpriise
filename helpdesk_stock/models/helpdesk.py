@@ -8,13 +8,13 @@ from odoo import api, fields, models, _
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
-    product_id = fields.Many2one('product.product', string='Product',
+    product_id = fields.Many2one('product.product', string='Product', tracking=True,
         domain="[('sale_ok', '=', True), ('id', 'in', suitable_product_ids), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="Product concerned by the ticket")
     suitable_product_ids = fields.Many2many('product.product', compute='_compute_suitable_product_ids')
     has_partner_picking = fields.Boolean(compute='_compute_suitable_product_ids')
     tracking = fields.Selection(related='product_id.tracking')
-    lot_id = fields.Many2one('stock.lot', string='Lot/Serial Number', help="Lot/Serial number concerned by the ticket", domain="[('product_id', '=', product_id)]")
+    lot_id = fields.Many2one('stock.lot', string='Lot/Serial Number', help="Lot/Serial number concerned by the ticket", domain="[('product_id', '=', product_id)]", tracking=True)
 
     pickings_count = fields.Integer('Return Orders Count', compute="_compute_pickings_count")
     picking_ids = fields.Many2many('stock.picking', string="Return Orders", copy=False)

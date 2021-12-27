@@ -219,13 +219,13 @@ class HelpdeskTicket(models.Model):
 
         return stages.search(search_domain, order=order)
 
-    name = fields.Char(string='Subject', required=True, index=True)
-    team_id = fields.Many2one('helpdesk.team', string='Team', default=_default_team_id, index=True)
+    name = fields.Char(string='Subject', required=True, index=True, tracking=True)
+    team_id = fields.Many2one('helpdesk.team', string='Team', default=_default_team_id, index=True, tracking=True)
     use_sla = fields.Boolean(related='team_id.use_sla')
     team_privacy_visibility = fields.Selection(related='team_id.privacy_visibility', string="Team Visibility")
     description = fields.Html()
     active = fields.Boolean(default=True)
-    ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Type")
+    ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Type", tracking=True)
     tag_ids = fields.Many2many('helpdesk.tag', string='Tags')
     company_id = fields.Many2one(related='team_id.company_id', string='Company', store=True, readonly=True)
     color = fields.Integer(string='Color Index')
@@ -234,7 +234,7 @@ class HelpdeskTicket(models.Model):
         ('done', 'Green'),
         ('blocked', 'Red')], string='Kanban State',
         copy=False, default='normal', required=True)
-    kanban_state_label = fields.Char(compute='_compute_kanban_state_label', string='Column Status', tracking=True)
+    kanban_state_label = fields.Char(compute='_compute_kanban_state_label', string='Kanban State Label', tracking=True)
     legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked Explanation', readonly=True, related_sudo=False)
     legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', readonly=True, related_sudo=False)
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True, related_sudo=False)
@@ -243,7 +243,7 @@ class HelpdeskTicket(models.Model):
         'res.users', string='Assigned to', compute='_compute_user_and_stage_ids', store=True,
         readonly=False, tracking=True,
         domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
-    partner_id = fields.Many2one('res.partner', string='Customer')
+    partner_id = fields.Many2one('res.partner', string='Customer', tracking=True)
     partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
     # Used to submit tickets from a contact form
@@ -254,10 +254,10 @@ class HelpdeskTicket(models.Model):
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
-    priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0')
+    priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0', tracking=True)
     stage_id = fields.Many2one(
         'helpdesk.stage', string='Stage', compute='_compute_user_and_stage_ids', store=True,
-        readonly=False, ondelete='restrict', tracking=True, group_expand='_read_group_stage_ids',
+        readonly=False, ondelete='restrict', tracking=1, group_expand='_read_group_stage_ids',
         copy=False, index=True, domain="[('team_ids', '=', team_id)]")
     date_last_stage_update = fields.Datetime("Last Stage Update", copy=False, readonly=True)
     ticket_ref = fields.Char(string='Ticket IDs Sequence', copy=False, readonly=True)
@@ -667,6 +667,12 @@ class HelpdeskTicket(models.Model):
             self.sudo()._sla_reach(vals['stage_id'])
 
         return res
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        if not default.get('name'):
+            default['name'] = _("%s (copy)") % (self.name)
+        return super().copy(default)
 
     def message_subscribe(self, partner_ids=None, subtype_ids=None):
         res = super(HelpdeskTicket, self).message_subscribe(partner_ids=partner_ids, subtype_ids=subtype_ids)

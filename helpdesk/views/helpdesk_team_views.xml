@@ -10,7 +10,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name" string="Name"/>
                 <field name="use_alias" invisible="1"/>
-                <field name="display_alias_name" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}" readonly="1"/>
+                <field name="display_alias_name" string="Email Alias" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}" readonly="1"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1" context="{'create': False}"/>
             </tree>
         </field>

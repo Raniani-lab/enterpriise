@@ -53,7 +53,7 @@
     </record>
 
     <menuitem id="helpdesk_tag_menu" action="helpdesk_tag_action"
-        sequence="1" parent="helpdesk.helpdesk_menu_config"
+        sequence="15" parent="helpdesk.helpdesk_menu_config"
         groups="base.group_no_one"/>
 
     <!-- HELPDESK.TICKET.TYPE -->
@@ -95,7 +95,7 @@
     </record>
 
     <menuitem id="helpdesk_ticket_type_menu" action="helpdesk_ticket_type_action"
-        sequence="1" parent="helpdesk.helpdesk_menu_config"/>
+        sequence="10" parent="helpdesk.helpdesk_menu_config"/>
 
     <!-- HELPDESK.STAGE -->
     <record id="helpdesk_stage_view_tree" model="ir.ui.view">
@@ -371,7 +371,7 @@
     </record>
 
     <menuitem id="helpdesk_sla_menu_main" action="helpdesk_sla_action_main"
-        sequence="4" parent="helpdesk.helpdesk_menu_config"
+        sequence="7" parent="helpdesk.helpdesk_menu_config"
         groups="helpdesk.group_use_sla"/>
 
     <!-- HELPDESK.TICKET -->
@@ -466,6 +466,7 @@
                 <filter string="Open" domain="[('stage_id.is_close', '=', False), ('stage_id.fold', '=', False)]" name="is_open"/>
                 <filter string="Closed" domain="['|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True)]" name="is_close"/>
                 <filter string="Closed in Last 7 days" name="closed_last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                <filter string="Closed in Last 30 days" name="closed_last_30days" domain="[('close_date', '&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
                 <separator />
                 <filter name="rating_satisfied" string="Satisfied" domain="[('rating_avg', '&gt;', 3.66)]" groups="helpdesk.group_use_rating"/>
                 <filter name="rating_okay" string="Okay" domain="[('rating_avg', '&lt;', 3.66), ('rating_avg', '&gt;=', 2.33)]" groups="helpdesk.group_use_rating"/>

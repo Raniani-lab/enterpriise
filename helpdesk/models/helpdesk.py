@@ -315,6 +315,12 @@ class HelpdeskTeam(models.Model):
         stages.unlink()
         return super(HelpdeskTeam, self).unlink()
 
+    def copy(self, default=None):
+        default = dict(default or {})
+        if not default.get('name'):
+            default['name'] = _("%s (copy)") % (self.name)
+        return super().copy(default)
+
     def _change_privacy_visibility(self):
         """
         Unsubscribe non-internal users from the team and tickets if the project privacy visibility
@@ -1024,6 +1030,12 @@ class HelpdeskSLA(models.Model):
         sla_data = {r['sla_ids']: r['sla_ids_count'] for r in res}
         for sla in self:
             sla.ticket_count = sla_data.get(sla.id, 0)
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        if not default.get('name'):
+            default['name'] = _("%s (copy)") % (self.name)
+        return super().copy(default)
 
     def action_open_helpdesk_ticket(self):
         self.ensure_one()

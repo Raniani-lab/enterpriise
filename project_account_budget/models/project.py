@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _lt
-from odoo.tools import format_amount
+from odoo import fields, models
 
 
 class Project(models.Model):
@@ -20,20 +19,3 @@ class Project(models.Model):
             "name": "Budget Items",
             'view_mode': 'tree,form',
         }
-
-    # ----------------------------
-    #  Project Updates
-    # ----------------------------
-
-    def _get_stat_buttons(self):
-        buttons = super(Project, self)._get_stat_buttons()
-        buttons.append({
-            'icon': 'usd',
-            'text': _lt('Budget'),
-            'number': format_amount(self.env, self.total_planned_amount, self.company_id.currency_id),
-            'action_type': 'object',
-            'action': 'action_view_budget_lines',
-            'show': bool(self.analytic_account_id),
-            'sequence': 21,
-        })
-        return buttons

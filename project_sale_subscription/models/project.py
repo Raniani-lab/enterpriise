@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _lt
+from odoo import api, fields, models
 
 class Project(models.Model):
     _inherit = 'project.project'
@@ -41,21 +41,3 @@ class Project(models.Model):
             action["views"] = [[False, 'form']]
             action["res_id"] = subscriptions.id
         return action
-
-    # ----------------------------
-    #  Project Updates
-    # ----------------------------
-
-    def _get_stat_buttons(self):
-        buttons = super(Project, self)._get_stat_buttons()
-        if self.user_has_groups('sale_subscription.group_sale_subscription_view'):
-            buttons.append({
-                'icon': 'refresh',
-                'text': _lt('Subscriptions'),
-                'number': self.subscriptions_count,
-                'action_type': 'object',
-                'action': 'action_open_project_subscriptions',
-                'show': self.subscriptions_count > 0,
-                'sequence': 27,
-            })
-        return buttons

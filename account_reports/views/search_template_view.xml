@@ -122,6 +122,41 @@
         </div>
     </template>
 
+    <template id="search_template_journals">
+        <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-book"/>
+            Journals:
+            <t t-set="selected_journals" t-value="options.get('name_journal_group') or ', '.join(journal.get('code') for journal in options['journals'] if journal.get('selected'))"/>
+            <t t-if="selected_journals">
+                <t t-esc="selected_journals"/>
+            </t>
+            <t t-else="">
+                All
+            </t>
+        </button>
+        <div class="dropdown-menu o_filter_menu" role="menu">
+            <t t-foreach="options['journals']" t-as="j">
+                <t t-if="j.get('id') == 'divider'">
+                    <div role="separator" class="dropdown-divider"/>
+                    <b role="menuitem" class="ml4 dropdown-item-text"><t t-esc="j.get('name')"/></b>
+                    <div role="separator" class="dropdown-divider"/>
+                </t>
+                <t t-if="j.get('id') != 'divider'">
+                    <t t-if="j.get('id') == 'group'">
+                        <a role="menuitem" class="dropdown-item js_account_report_group_choice_filter" data-filter="journals" t-att-data-id="j.get('id')" t-att-data-member-ids="j.get('ids')">
+                            <t t-esc="j.get('name')"/>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="j.get('name')+ '-' + j.get('code')" t-att-data-id="j.get('id')" data-filter="journals">
+                            <t t-esc="j.get('name')"/>
+                        </a>
+                    </t>
+                </t>
+            </t>
+        </div>
+    </template>
+
     <!--Allows the user to filter according to the account types (trade/nontrade receivable/payable). See filter_account_type and account_display_name.-->
     <template id="search_template_account_type">
         <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
@@ -276,6 +311,9 @@
         </div>
         <div class="btn-group dropdown o_account_reports_filter_date_cmp" t-if="options.get('comparison') != None">
             <t t-call="account_reports.search_template_comparison"/>
+        </div>
+        <div class="btn-group dropdown o_account_reports_filter_journals" t-if="options.get('journals') != None">
+            <t t-call="account_reports.search_template_journals"/>
         </div>
         <div class="btn-group dropdown o_account_reports_filter_account_type" t-if="options.get('account_type') != None">
             <t t-call="account_reports.search_template_account_type"/>

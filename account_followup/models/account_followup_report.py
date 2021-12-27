@@ -331,7 +331,6 @@ class AccountFollowupReport(models.AbstractModel):
             raise UserError(_('You are trying to send a followup report to a partner for which you didn\'t print all the invoices ({})').format(" ".join(non_printed_invoices.mapped('name'))))
         invoice_partner = self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice'])
         email = invoice_partner.email
-        options['keep_summary'] = True
         if email and email.strip():
             self = self.with_context(lang=partner.lang or self.env.user.lang)
             # When printing we need te replace the \n of the summary by <br /> tags

@@ -40,28 +40,6 @@ class Project(models.Model):
     #  Project Updates
     # ----------------------------
 
-    def _get_sold_items(self):
-        sols = self._get_sale_order_lines()
-        sold_items = super()._get_sold_items()
-        sold_items['allow_forecast'] = self.allow_forecast
-        planned_hours = self.env['planning.slot']._read_group([
-            ('start_datetime', '>=', fields.Date.today()),
-            '|',
-            ('project_id', '=', self.id),
-            ('order_line_id', 'in', sols.ids),
-        ], ['allocated_hours'], [])
-        uom_hour = self.env.ref('uom.product_uom_hour')
-        if planned_hours and planned_hours[0]['allocated_hours']:
-            sold_items['planned_sold'] = uom_hour._compute_quantity(planned_hours[0]['allocated_hours'], self.env.company.timesheet_encode_uom_id, raise_if_failure=False)
-        else:
-            sold_items['planned_sold'] = 0.0
-        remaining = sold_items['remaining']['value'] - sold_items['planned_sold']
-        sold_items['remaining'] = {
-            'value': remaining,
-            'color': 'red' if remaining < 0 else 'black',
-        }
-        return sold_items
-
     def _get_stat_buttons(self):
         buttons = super(Project, self)._get_stat_buttons()
         buttons.append({

@@ -92,6 +92,14 @@ class ApprovalRequest(models.Model):
         for request in self:
             request.attachment_number = attachment.get(request.id, 0)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            category = 'category_id' in vals and self.env['approval.category'].browse(vals['category_id'])
+            if category and category.automated_sequence:
+                vals['name'] = category.sequence_id.next_by_id()
+        return super().create(vals_list)
+
     def action_get_attachment_view(self):
         self.ensure_one()
         res = self.env['ir.actions.act_window']._for_xml_id('base.action_attachment')

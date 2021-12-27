@@ -748,6 +748,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__new
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
+#: code:addons/approvals/models/approval_category.py:0
 msgid "New"
 msgstr ""
 

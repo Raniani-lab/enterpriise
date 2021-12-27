@@ -1150,6 +1150,82 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.assertAlmostEqual(workorder.date_planned_start, date_start, delta=timedelta(seconds=1), msg="Workorder should be planned tomorrow.")
         self.assertAlmostEqual(workorder.date_planned_finished, date_start + timedelta(hours=1), delta=timedelta(seconds=1), msg="Workorder should be done one hour later.")
 
+    def test_unlink_workorder(self):
+        drawer = self.env['product.product'].create({
+            'name': 'Drawer',
+            'type': 'product',
+            'tracking': 'lot',
+        })
+        drawer_drawer = self.env['product.product'].create({
+            'name': 'Drawer Black',
+            'type': 'product',
+            'tracking': 'lot',
+        })
+        drawer_case = self.env['product.product'].create({
+            'name': 'Drawer Case Black',
+            'type': 'product',
+            'tracking': 'lot',
+        })
+        bom = self.env['mrp.bom'].create({
+            'product_tmpl_id': drawer.product_tmpl_id.id,
+            'product_uom_id': self.env.ref('uom.product_uom_unit').id,
+            'consumption': 'flexible',
+            'sequence': 2,
+            'operation_ids': [
+                (0, 0, {
+                    'workcenter_id': self.mrp_workcenter_1.id,
+                    'name': 'Packing',
+                    'time_cycle': 30,
+                    'sequence': 5}),
+                (0, 0, {
+                    'workcenter_id': self.mrp_workcenter_3.id,
+                    'name': 'Testing',
+                    'time_cycle': 60,
+                    'sequence': 10}),
+                (0, 0, {
+                    'workcenter_id': self.mrp_workcenter_3.id,
+                    'name': 'Long time assembly',
+                    'time_cycle': 180,
+                    'sequence': 15}),
+            ],
+            'bom_line_ids': [(0, 0, {
+                'product_id': drawer_drawer.id,
+                'product_qty': 1,
+                'product_uom_id': self.env.ref('uom.product_uom_unit').id,
+                'sequence': 1,
+            }), (0, 0, {
+                'product_id': drawer_case.id,
+                'product_qty': 1,
+                'product_uom_id': self.env.ref('uom.product_uom_unit').id,
+                'sequence': 2,
+            })]
+        })
+
+        production_table_form = Form(self.env['mrp.production'])
+        production_table_form.product_id = drawer
+        production_table_form.bom_id = bom
+        production_table_form.product_qty = 2.0
+        production_table_form.product_uom_id = drawer.uom_id
+        production_table = production_table_form.save()
+        production_table.action_confirm()
+
+        production_table.button_plan()
+
+        self.assertEqual(len(production_table.workorder_ids), 3)
+
+        workorders = production_table.workorder_ids
+
+        for i in range(len(workorders)-1):
+            self.assertEqual(workorders[i].next_work_order_id, workorders[i+1])
+
+        production_table.workorder_ids[1].unlink()
+
+        self.assertEqual(len(production_table.workorder_ids), 2)
+
+        workorders = production_table.workorder_ids
+        for i in range(len(workorders)-1):
+            self.assertEqual(workorders[i].next_work_order_id, workorders[i+1])
+
     def test_planning_overlaps_wo(self):
         """ Test that workorder doesn't overlaps between then when plan the MO """
         self.full_availability()

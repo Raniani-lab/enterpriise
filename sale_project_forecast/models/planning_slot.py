@@ -20,11 +20,6 @@ class PlanningSlot(models.Model):
 
     @api.depends('project_id', 'task_id')
     def _compute_sale_line_id(self):
-        project_field = self._fields['project_id']
-        task_field = self._fields['task_id']
-        fields_to_recompute = self.env.fields_to_compute()
-        if task_field in fields_to_recompute or project_field in fields_to_recompute:
-            return
         for slot in self:
             if not slot.sale_line_id and slot.project_id:
                 slot.sale_line_id = slot.task_id.sale_line_id or slot.project_id.sale_line_id

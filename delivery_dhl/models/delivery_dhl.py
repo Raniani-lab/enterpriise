@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from .dhl_request import DHLProvider
 
-from odoo import models, fields, _
+from odoo import api, models, fields, _
+from odoo.exceptions import UserError
 from odoo.tools import float_repr
 
 class Providerdhl(models.Model):
@@ -88,6 +89,11 @@ class Providerdhl(models.Model):
         ('6X4_PDF', '6X4_PDF'),
         ('8X4_PDF', '8X4_PDF')
     ], string="Label Template", default='8X4_A4_PDF')
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_commercial_invoice_sequence(self):
+        if self.env.ref('delivery_dhl.dhl_commercial_invoice_seq').id in self.ids:
+            raise UserError(_('You cannot delete the commercial invoice sequence.'))
 
     def _compute_can_generate_return(self):
         super(Providerdhl, self)._compute_can_generate_return()
@@ -209,6 +215,10 @@ class Providerdhl(models.Model):
             if self.dhl_dutiable:
                 incoterm = picking.sale_id.incoterm or self.env.company.incoterm_id
                 shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name, incoterm)
+            if picking._should_generate_commercial_invoice():
+                shipment_request['UseDHLInvoice'] = 'Y'
+                shipment_request['DHLInvoiceType'] = 'CMI'
+                shipment_request['ExportDeclaration'] = srm._set_export_declaration(self, picking)
             shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
             shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
             shipment_request['Label'] = srm._set_label(self.dhl_label_template)
@@ -218,11 +228,12 @@ class Providerdhl(models.Model):
             traking_number = dhl_response.AirwayBillNumber
             logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
             dhl_labels = [('LabelDHL-%s.%s' % (traking_number, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)]
-            if picking.sale_id:
-                for pick in picking.sale_id.picking_ids:
-                    pick.message_post(body=logmessage, attachments=dhl_labels)
-            else:
-                picking.message_post(body=logmessage, attachments=dhl_labels)
+            dhl_cmi = [('DocumentDHL-%s.%s' % (mlabel.DocName, mlabel.DocFormat), mlabel.DocImageVal) for mlabel in dhl_response.LabelImage[0].MultiLabels.MultiLabel] if dhl_response.LabelImage[0].MultiLabels else None
+            lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
+            for pick in lognote_pickings:
+                pick.message_post(body=logmessage, attachments=dhl_labels)
+                if dhl_cmi:
+                    pick.message_post(body=_("DHL Documents"), attachments=dhl_cmi)
             shipping_data = {
                 'exact_price': 0,
                 'tracking_number': traking_number,
@@ -247,11 +258,15 @@ class Providerdhl(models.Model):
         shipment_request['Billing'] = srm._set_billing(account_number, "S", "S", self.dhl_dutiable)
         shipment_request['Consignee'] = srm._set_consignee(picking.picking_type_id.warehouse_id.partner_id)
         shipment_request['Shipper'] = srm._set_shipper(account_number, picking.partner_id, picking.partner_id)
-        total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
+        total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_ids])
         currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
         if self.dhl_dutiable:
             incoterm = picking.sale_id.incoterm or self.env.company.incoterm_id
             shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name, incoterm)
+        if picking._should_generate_commercial_invoice():
+            shipment_request['UseDHLInvoice'] = 'Y'
+            shipment_request['DHLInvoiceType'] = 'CMI'
+            shipment_request['ExportDeclaration'] = srm._set_export_declaration(self, picking, is_return=True)
         shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
         shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
         shipment_request['Label'] = srm._set_label(self.dhl_label_template)
@@ -262,7 +277,13 @@ class Providerdhl(models.Model):
         dhl_response = srm._process_shipment(shipment_request)
         traking_number = dhl_response.AirwayBillNumber
         logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
-        picking.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), traking_number, 1, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)])
+        dhl_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), traking_number, 1, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)]
+        dhl_cmi = [('ReturnDocumentDHL-%s.%s' % (mlabel.DocName, mlabel.DocFormat), mlabel.DocImageVal) for mlabel in dhl_response.LabelImage[0].MultiLabels.MultiLabel] if dhl_response.LabelImage[0].MultiLabels else None
+        lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
+        for pick in lognote_pickings:
+            pick.message_post(body=logmessage, attachments=dhl_labels)
+            if dhl_cmi:
+                pick.message_post(body=_("DHL Documents"), attachments=dhl_cmi)
         shipping_data = {
             'exact_price': 0,
             'tracking_number': traking_number,

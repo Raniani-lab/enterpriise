@@ -10,7 +10,7 @@ from odoo import _
 from odoo import release
 from odoo.exceptions import UserError
 from odoo.modules.module import get_resource_path
-from odoo.tools import float_repr
+from odoo.tools import float_repr, float_round
 
 class DHLProvider():
 
@@ -339,3 +339,33 @@ class DHLProvider():
             if error_lines:
                 return _("The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n %s") % ", ".join(error_lines.product_id.mapped('name'))
         return False
+
+    def _set_export_declaration(self, carrier, picking, is_return=False):
+        export_lines = []
+        move_lines = picking.move_line_ids.filtered(lambda line: line.product_id.type in ['product', 'consu'])
+        for sequence, line in enumerate(move_lines, start=1):
+            unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
+            rounded_qty = max(1, float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'))
+            item = self.factory.ExportLineItem()
+            item.LineNumber = sequence
+            item.Quantity = int(rounded_qty)
+            item.QuantityUnit = 'PCS'  # Pieces - very generic
+            if len(line.product_id.name) > 75:
+                raise UserError(_("DHL doens't support products with name greater than 75 characters."))
+            item.Description = line.product_id.name
+            item.Value = line.sale_price
+            item.Weight = item.GrossWeight = {
+                "Weight": carrier._dhl_convert_weight(line.product_id.weight, carrier.dhl_package_weight_unit),
+                "WeightUnit": carrier.dhl_package_weight_unit,
+            }
+            item.ManufactureCountryCode = line.product_id.country_of_origin or line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code
+            export_lines.append(item)
+
+        export_declaration = self.factory.ExportDeclaration()
+        export_declaration.InvoiceDate = datetime.today()
+        export_declaration.InvoiceNumber = carrier.env['ir.sequence'].sudo().next_by_code('delivery_dhl.commercial_invoice')
+        if is_return:
+            export_declaration.ExportReason = 'RETURN'
+
+        export_declaration.ExportLineItem = export_lines
+        return export_declaration

@@ -210,7 +210,7 @@ class SignRequest(models.Model):
             'context': {
                 'id': self.id,
                 'token': self.access_token,
-                'sign_token': request_item.access_token if request_item and request_item.state == "sent" else None,
+                'need_to_sign': True if request_item and request_item.state == "sent" else False,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
                 'request_item_states': {str(item.id): item.is_mail_sent for item in self.request_item_ids},
@@ -227,7 +227,6 @@ class SignRequest(models.Model):
             'context': {
                 'id': self.id,
                 'token': request_item.access_token if request_item and request_item.state == "sent" else None,
-                'sign_token': request_item.access_token if request_item and request_item.state == "sent" else None,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
                 'request_item_states': {item.id: item.is_mail_sent for item in self.request_item_ids},

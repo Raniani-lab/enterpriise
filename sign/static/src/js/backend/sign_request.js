@@ -30,7 +30,7 @@ const EditableDocumentBackend = DocumentBackend.extend({
     this.is_author = this.create_uid === session.uid;
     this.is_sent = this.state === "sent";
 
-    if (action && action.context && action.context.sign_token) {
+    if (action.context.need_to_sign) {
       const $signButton = $("<button/>", {
         html: _t("Sign Document"),
         type: "button",

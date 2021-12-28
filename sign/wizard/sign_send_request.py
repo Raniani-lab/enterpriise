@@ -136,7 +136,6 @@ class SignSendRequest(models.TransientModel):
             'context': {
                 'id': request.id,
                 'token': user_item.access_token,
-                'sign_token': user_item.access_token,
                 'create_uid': request.create_uid.id,
                 'state': request.state,
                 'template_editable': True,

@@ -993,7 +993,6 @@ const NextDirectSignDialog = Dialog.extend({
           create_uid: this.create_uid,
           state: this.state,
           token: newCurrentToken,
-          sign_token: newCurrentToken,
           token_list: this.token_list,
           name_list: this.name_list,
           current_signor_name: newCurrentName,

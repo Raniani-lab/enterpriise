@@ -72,14 +72,17 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
             assert.containsOnce(calendar.el, '.fc-view-container > .fc-timeGridWeek-view', "should display the current week");
 
             // switch to day mode
+            await testUtils.dom.click($('.o_control_panel .scale_button_selection'));
             await testUtils.dom.click($('.o_control_panel .o_calendar_button_day'));
             assert.containsOnce(calendar.el, '.fc-view-container > .fc-timeGridDay-view', "should display the current day");
 
             // switch to month mode
+            await testUtils.dom.click($('.o_control_panel .scale_button_selection'));
             await testUtils.dom.click($('.o_control_panel .o_calendar_button_month'));
             assert.containsOnce(calendar.el, '.fc-view-container > .fc-dayGridMonth-view', "should display the current month");
 
             // switch to year mode
+            await testUtils.dom.click($('.o_control_panel .scale_button_selection'));
             await testUtils.dom.click($('.o_control_panel .o_calendar_button_year'));
             assert.containsOnce(calendar.el, '.fc-view-container > .fc-dayGridYear-view', "should display the current year");
 

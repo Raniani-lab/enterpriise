@@ -191,7 +191,7 @@ class Picking(models.Model):
             raise UserError(_(
                 'Your company has not an activity description configured. This is mandatory for electronic '
                 'delivery guide. Please go to your company and set the correct one (www.sii.cl - Mi SII)'))
-        if not self.partner_id.l10n_cl_activity_description:
+        if not (self.partner_id.l10n_cl_activity_description or self.partner_id.commercial_partner_id.l10n_cl_activity_description):
             raise UserError(_(
                 'There is not an activity description configured in the '
                 'customer record. This is mandatory for electronic delivery guide for this type of '

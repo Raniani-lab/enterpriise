@@ -547,7 +547,8 @@ class AccountMove(models.Model):
                 _('It is not possible to validate invoices in %s for %s, please convert it to CLP') % (
                     self.currency_id.name, self.l10n_latam_document_type_id.name))
         if (self.l10n_cl_journal_point_of_sale_type == 'online' and
-                not (self.partner_id.l10n_cl_dte_email and self.company_id.l10n_cl_dte_email) and
+                not ((self.partner_id.l10n_cl_dte_email or self.commercial_partner_id.l10n_cl_dte_email) and
+                     self.company_id.l10n_cl_dte_email) and
                 not self.l10n_latam_document_type_id._is_doc_type_export() and
                 not self.l10n_latam_document_type_id._is_doc_type_ticket()):
             raise UserError(_('The %s %s has not a DTE email defined. This is mandatory for electronic invoicing.') %
@@ -575,7 +576,8 @@ class AccountMove(models.Model):
                 'invoicing. Please go to your company and set the regional office, according to your company '
                 'address (www.sii.cl - Mi SII)'))
         if (self.l10n_latam_document_type_id.code not in ['39', '41', '110', '111', '112'] and
-                not self.partner_id.l10n_cl_activity_description):
+                not (self.partner_id.l10n_cl_activity_description or
+                     self.commercial_partner_id.l10n_cl_activity_description)):
             raise UserError(_(
                 'There is not an activity description configured in the '
                 'customer %s record. This is mandatory for electronic invoicing for this type of '

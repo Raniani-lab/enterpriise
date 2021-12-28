@@ -3,6 +3,7 @@
 import GanttModel from 'web_gantt.GanttModel';
 import { _t } from 'web.core';
 import { PlanningModelMixin } from './planning_mixins';
+import { formatPercentage } from "@web/fields/formatters";
 
 const GROUPBY_COMBINATIONS = [
     "role_id",
@@ -156,6 +157,19 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
         if (emptyIndex) {
             const emptyRow = rows.splice(emptyIndex, 1)[0];
             rows.unshift(emptyRow);
+        }
+    },
+    /**
+     * Recursive function to add progressBar info to rows grouped by the field.
+     *
+     * @private
+     * @override
+     */
+    _addProgressBarInfo(field, rows, progressBarInfo) {
+        this._super(...arguments);
+        const rowsWithProgressBar = rows.filter((row) => row.progressBar && row.progressBar.max_value_formatted);
+        for (const row of rowsWithProgressBar) {
+            row.progressBar.percentage = formatPercentage(row.progressBar.ratio / 100);
         }
     },
 });

@@ -20,7 +20,7 @@
             h
         </t>
         <t t-jquery="*[t-esc='widget.progressBar.max_value_formatted']" t-operation="after">
-            h
+            h (<t t-esc="widget.progressBar.percentage"/>)
         </t>
         <t t-jquery="div[t-if='widget.showEmployeeAvatar']" t-operation="before">
             <div t-if="widget.isResourceMaterial" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource">

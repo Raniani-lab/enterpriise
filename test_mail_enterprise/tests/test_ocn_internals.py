@@ -40,7 +40,7 @@ class TestPushNotification(MailCommon):
             cls.user_inbox.partner_id.id,
         ])
 
-        cls.direct_message_channel = channel.create({
+        cls.direct_message_channel = channel.with_user(cls.user_email).create({
             'channel_partner_ids': [
                 (4, cls.user_email.partner_id.id),
                 (4, cls.user_inbox.partner_id.id),

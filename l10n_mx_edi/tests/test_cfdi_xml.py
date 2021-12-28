@@ -352,6 +352,17 @@ class TestEdiResults(TestMxEdiCommon):
     # -------------------------------------------------------------------------
 
     def test_payment_cfdi(self):
+        self.env['res.partner.bank'].create({
+            'acc_number': "0123456789",
+            'partner_id': self.partner_a.id,
+            'acc_type': 'bank',
+        })
+        self.env['res.partner.bank'].create({
+            'acc_number': "9876543210",
+            'partner_id': self.partner_a.id,
+            'acc_type': 'bank',
+        })
+
         with freeze_time(self.frozen_today), \
              mute_logger('py.warnings'), \
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
@@ -375,7 +386,14 @@ class TestEdiResults(TestMxEdiCommon):
             cfdi = generated_files[0]
 
             current_etree = self.get_xml_tree_from_string(cfdi)
-            expected_etree = self.get_xml_tree_from_string(self.expected_payment_cfdi_values)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_payment_cfdi_values),
+                '''
+                    <xpath expr="//Complemento/Pagos/Pago" position="attributes">
+                        <attribute name="CtaOrdenante">0123456789</attribute>
+                    </xpath>
+                ''',
+            )
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_payment_cfdi_another_currency_invoice(self):

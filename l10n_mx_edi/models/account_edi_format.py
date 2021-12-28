@@ -474,7 +474,8 @@ class AccountEdiFormat(models.Model):
         else:  # if no partner_bank (e.g. cash payment), partner_bank_vat is not set.
             partner_bank_vat = partner_bank.l10n_mx_edi_vat
 
-        payment_account_ord = re.sub(r'\s+', '', move.partner_bank_id.acc_number or '') or None
+        bank_accounts = move.partner_id.commercial_partner_id.bank_ids.filtered(lambda x: x.company_id.id in (False, move.company_id.id))
+        payment_account_ord = re.sub(r'\s+', '', bank_accounts[:1].acc_number or '') or None
         payment_account_receiver = re.sub(r'\s+', '', move.journal_id.bank_account_id.acc_number or '') or None
 
         cfdi_values = {

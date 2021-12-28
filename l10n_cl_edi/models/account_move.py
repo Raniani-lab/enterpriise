@@ -84,20 +84,38 @@ class AccountMove(models.Model):
                                             states={'draft': [('readonly', False)]}, string='Reference Records')
 
     def button_cancel(self):
-        for record in self.filtered(lambda x: x.company_id.account_fiscal_country_id.code == "CL"):
-            # The move cannot be modified once the DTE has been accepted by the SII
-            if record.l10n_cl_dte_status == 'accepted':
-                raise UserError(_('This %s is accepted by SII. It cannot be cancelled. '
-                                  'Instead you should revert it.') % record.l10n_latam_document_type_id.name)
+        for record in self.filtered(lambda x: x.company_id.country_id.code == "CL"):
+            # The move cannot be modified once the DTE has been accepted, objected or sent to the SII
+            if record.l10n_cl_dte_status in ['accepted', 'objected']:
+                l10n_cl_dte_status = dict(record._fields['l10n_cl_dte_status']._description_selection(
+                    self.env)).get(record.l10n_cl_dte_status)
+                raise UserError(_('This %s is in SII status: %s. It cannot be cancelled. '
+                                  'Instead you should revert it.') % (
+                    record.l10n_latam_document_type_id.name, l10n_cl_dte_status))
+            elif record.l10n_cl_dte_status == 'ask_for_status':
+                raise UserError(_('This %s is in the intermediate state: \'Ask for Status in the SII\'. '
+                                  'You will be able to cancel it only when the document has reached the state '
+                                  'of rejection. Otherwise, if it were accepted or objected you should revert it '
+                                  'with a suitable document instead of cancelling it.') %
+                                record.l10n_latam_document_type_id.name)
             record.l10n_cl_dte_status = 'cancelled'
         return super().button_cancel()
 
     def button_draft(self):
-        for record in self.filtered(lambda x: x.company_id.account_fiscal_country_id.code == "CL"):
-            # The move cannot be modified once the DTE has been accepted by the SII
-            if record.l10n_cl_dte_status == 'accepted':
-                raise UserError(_('This %s is accepted by SII. It cannot be set to draft state. '
-                                  'Instead you should revert it.') % record.l10n_latam_document_type_id.name)
+        for record in self.filtered(lambda x: x.company_id.country_id.code == "CL"):
+            # The move cannot be modified once the DTE has been accepted, objected or sent to the SII
+            if record.l10n_cl_dte_status in ['accepted', 'objected']:
+                l10n_cl_dte_status = dict(record._fields['l10n_cl_dte_status']._description_selection(
+                    self.env)).get(record.l10n_cl_dte_status)
+                raise UserError(_('This %s is in SII status %s. It cannot be reset to draft state. '
+                                  'Instead you should revert it.') % (
+                    record.l10n_latam_document_type_id.name, l10n_cl_dte_status))
+            elif record.l10n_cl_dte_status == 'ask_for_status':
+                raise UserError(_('This %s is in the intermediate state: \'Ask for Status in the SII\'. '
+                                  'You will be able to reset it to draft only when the document has reached the state '
+                                  'of rejection. Otherwise, if it were accepted or objected you should revert it '
+                                  'with a suitable document instead of cancelling it.') %
+                                record.l10n_latam_document_type_id.name)
             record.l10n_cl_dte_status = None
         return super().button_draft()
 

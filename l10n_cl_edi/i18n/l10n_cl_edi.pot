@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-28 20:18+0000\n"
-"PO-Revision-Date: 2021-10-28 20:18+0000\n"
+"POT-Creation-Date: 2022-01-19 11:49+0000\n"
+"PO-Revision-Date: 2022-01-19 11:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1942,7 +1942,15 @@ msgstr ""
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid ""
-"This %s is accepted by SII. It cannot be cancelled. Instead you should "
+"This %s is in SII status %s. It cannot be reset to draft state. Instead you "
+"should revert it."
+msgstr ""
+
+#. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"This %s is in SII status: %s. It cannot be cancelled. Instead you should "
 "revert it."
 msgstr ""
 
@@ -1950,8 +1958,20 @@ msgstr ""
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid ""
-"This %s is accepted by SII. It cannot be set to draft state. Instead you "
-"should revert it."
+"This %s is in the intermediate state: 'Ask for Status in the SII'. You will "
+"be able to cancel it only when the document has reached the state of "
+"rejection. Otherwise, if it were accepted or objected you should revert it "
+"with a suitable document instead of cancelling it."
+msgstr ""
+
+#. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"This %s is in the intermediate state: 'Ask for Status in the SII'. You will "
+"be able to reset it to draft only when the document has reached the state of"
+" rejection. Otherwise, if it were accepted or objected you should revert it "
+"with a suitable document instead of cancelling it."
 msgstr ""
 
 #. module: l10n_cl_edi

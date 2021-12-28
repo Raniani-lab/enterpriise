@@ -127,43 +127,9 @@ class SignSendRequest(models.TransientModel):
         request = self.create_request()
         if self.activity_id:
             self._activity_done()
-        user_item = request.request_item_ids.filtered(
-            lambda item: item.partner_id == item.env.user.partner_id)[:1]
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'sign.SignableDocument',
-            'name': _('Sign'),
-            'context': {
-                'id': request.id,
-                'token': user_item.access_token,
-                'create_uid': request.create_uid.id,
-                'state': request.state,
-                'template_editable': True,
-            },
-        }
-
-    def sign_directly_without_mail(self):
-        request = self.with_context(no_sign_mail=True).create_request()
-
-        user_item = request.request_item_ids[0]
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'sign.SignableDocument',
-            'name': _('Sign'),
-            'context': {
-                'id': request.id,
-                'token': user_item.access_token,
-                'sign_token': user_item.access_token,
-                'create_uid': request.create_uid.id,
-                'state': request.state,
-                # Don't use mapped to avoid ignoring duplicated signatories
-                'token_list': [item.access_token for item in request.request_item_ids[1:]],
-                'current_signor_name': user_item.partner_id.name,
-                'name_list': [item.partner_id.name for item in request.request_item_ids[1:]],
-                'template_editable': True,
-            },
-        }
+        if self._context.get('sign_all'):
+            return request.go_to_signable_document(request.request_item_ids)
+        return request.go_to_signable_document()
 
 
 class SignSendRequestSigner(models.TransientModel):

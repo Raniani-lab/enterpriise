@@ -34,7 +34,6 @@ export const DocumentBackend = AbstractAction.extend({
     this.state = context.state;
     this.requestStates = context.request_item_states;
 
-    this.current_name = context.current_signor_name;
     this.token_list = context.token_list;
     this.name_list = context.name_list;
     this.cp_content = {};

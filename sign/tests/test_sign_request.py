@@ -76,22 +76,6 @@ class TestSignRequest(SignRequestCommon):
                 'reference': self.template_3_roles.display_name,
             })
 
-        with self.assertRaises(ValidationError, msg='one signer cannot sign as two roles'):
-            SignRequest.create({
-                'template_id': self.template_3_roles.id,
-                'request_item_ids': [Command.create({
-                    'partner_id': self.partner_1.id,
-                    'role_id': self.env.ref('sign.sign_item_role_customer').id,
-                }), Command.create({
-                    'partner_id': self.partner_1.id,
-                    'role_id': self.env.ref('sign.sign_item_role_employee').id,
-                }), Command.create({
-                    'partner_id': self.partner_3.id,
-                    'role_id': self.env.ref('sign.sign_item_role_company').id,
-                })],
-                'reference': self.template_3_roles.display_name,
-            })
-
     def test_sign_request_no_item_create_sign_cancel_copy(self):
         # create
         sign_request_no_item = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
@@ -287,8 +271,6 @@ class TestSignRequest(SignRequestCommon):
         sign_request_item_customer.role_id.change_authorized = True
         with self.assertRaises(UserError, msg='Reassigning the partner_id to False is not allowed'):
             sign_request_item_customer.write({'partner_id': False})
-        with self.assertRaises(ValidationError, msg='Reassigning the partner_id to another signer is not allowed'):
-            sign_request_item_customer.write({'partner_id': self.partner_3.id})
         logs_num = len(sign_request_3_roles.sign_log_ids)
         sign_request_item_customer.write({'partner_id': self.partner_5.id})
         self.assertEqual(sign_request_item_customer.signer_email, "char.aznable.a@example.com", 'email address should be char.aznable.a@example.com')

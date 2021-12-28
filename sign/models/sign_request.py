@@ -202,7 +202,7 @@ class SignRequest(models.Model):
 
     def go_to_document(self):
         self.ensure_one()
-        request_item = self.request_item_ids.filtered(lambda r: r.partner_id and r.partner_id.id == self.env.user.partner_id.id)[:1]
+        request_items = self.request_item_ids.filtered(lambda r: r.state == 'sent' and r.partner_id and r.partner_id.id == self.env.user.partner_id.id)
         return {
             'name': self.reference,
             'type': 'ir.actions.client',
@@ -210,27 +210,31 @@ class SignRequest(models.Model):
             'context': {
                 'id': self.id,
                 'token': self.access_token,
-                'need_to_sign': True if request_item and request_item.state == "sent" else False,
+                'need_to_sign': bool(request_items),
                 'create_uid': self.create_uid.id,
                 'state': self.state,
                 'request_item_states': {str(item.id): item.is_mail_sent for item in self.request_item_ids},
             },
         }
 
-    def go_to_signable_document(self):
+    def go_to_signable_document(self, request_items=None):
+        """ go to the signable document as the signers for specified request_items or the current user"""
         self.ensure_one()
-        request_item = self.request_item_ids.filtered(lambda r: r.partner_id and r.partner_id.id == self.env.user.partner_id.id)[:1]
+        if not request_items:
+            request_items = self.request_item_ids.filtered(lambda r: r.state == 'sent' and r.partner_id and r.partner_id.id == self.env.user.partner_id.id)
         return {
             'name': self.reference,
             'type': 'ir.actions.client',
             'tag': 'sign.SignableDocument',
             'context': {
                 'id': self.id,
-                'token': request_item.access_token if request_item and request_item.state == "sent" else None,
+                'token': request_items[:1].access_token,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
                 'request_item_states': {item.id: item.is_mail_sent for item in self.request_item_ids},
                 'template_editable': self.nb_closed == 0,
+                'token_list': request_items[1:].mapped('access_token'),
+                'name_list': [item.partner_id.name for item in request_items[1:]],
             },
         }
 
@@ -662,8 +666,8 @@ class SignRequestItem(models.Model):
             sign_request_items = sign_request.request_item_ids
             if len(sign_request_items) != max(len(template_roles), 1) or \
                     set(sign_request_items.role_id.ids) != (set(template_roles.ids) if template_roles else set([self.env.ref('sign.sign_item_role_default').id])) or \
-                    (len(sign_request_items) != len(sign_request_items.partner_id.ids) and len(sign_request_items) != 1):
-                raise ValidationError(_("You must specify different signers for each role of your sign template"))
+                    (any(not sri.partner_id for sri in sign_request_items) and len(sign_request_items) != 1):
+                raise ValidationError(_("You must specify one signer for each role of your sign template"))
 
     def write(self, vals):
         if vals.get('partner_id') is False:
@@ -677,17 +681,16 @@ class SignRequestItem(models.Model):
                    for sri in request_items_reassigned):
                 raise UserError(_("You cannot reassign this signatory"))
             new_sign_partner = self.env['res.partner'].browse(vals.get('partner_id'))
-            old_sign_users = self.env['res.users'].search([
-                ('partner_id.id', 'in', request_items_reassigned.partner_id.ids),
-                ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
-            ], limit=len(request_items_reassigned.partner_id))
             for request_item in request_items_reassigned:
-                # remove old activities for internal users
-                old_sign_user = old_sign_users.filtered(lambda usr: usr.partner_id.id == request_item.partner_id.id)
-                if old_sign_user:
-                    request_item.sign_request_id.activity_unlink(['mail.mail_activity_data_todo'], user_id=old_sign_user.id)
+                sign_request = request_item.sign_request_id
+                old_sign_user = request_item.partner_id.user_ids[:1]
+                # remove old activities for internal users if they are no longer one of the unsigned signers of their sign requests
+                if old_sign_user and old_sign_user.has_group('sign.group_sign_employee') and \
+                        not sign_request.request_item_ids.filtered(
+                            lambda sri: sri.partner_id == request_item.partner_id and sri.state == 'sent' and sri not in request_items_reassigned):
+                    sign_request.activity_unlink(['mail.mail_activity_data_todo'], user_id=old_sign_user.id)
                 # create logs
-                request_item.sign_request_id.message_post(
+                sign_request.message_post(
                     body=_('The contact of %(role)s has been changed from %(old_partner)s to %(new_partner)s.',
                            role=request_item.role_id.name, old_partner=request_item.partner_id.name, new_partner=new_sign_partner.name))
 
@@ -699,7 +702,8 @@ class SignRequestItem(models.Model):
                 ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
             ], limit=1)
             if new_sign_user:
-                request_items_reassigned.sign_request_id._schedule_activity(new_sign_user)
+                activity_ids = set(request_items_reassigned.sign_request_id.activity_search(['mail.mail_activity_data_todo'], user_id=new_sign_user.id).mapped('res_id'))
+                request_items_reassigned.sign_request_id.filtered(lambda sr: sr.id not in activity_ids)._schedule_activity(new_sign_user)
 
         res = super(SignRequestItem, self).write(vals)
 
@@ -834,9 +838,10 @@ class SignRequestItem(models.Model):
         self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'sign'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
         # mark signature as done in next activity
-        sign_user = self.partner_id.user_ids[:1]
-        if sign_user and sign_user.has_group('sign.group_sign_employee'):
-            self.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
+        if not self.sign_request_id.request_item_ids.filtered(lambda sri: sri.partner_id == self.partner_id and sri.state == 'sent'):
+            sign_user = self.partner_id.user_ids[:1]
+            if sign_user and sign_user.has_group('sign.group_sign_employee'):
+                self.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
         sign_request = self.sign_request_id
         if all(sri.state == 'completed' for sri in sign_request.request_item_ids):
             sign_request._sign()

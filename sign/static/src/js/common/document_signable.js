@@ -995,7 +995,6 @@ const NextDirectSignDialog = Dialog.extend({
           token: newCurrentToken,
           token_list: this.token_list,
           name_list: this.name_list,
-          current_signor_name: newCurrentName,
         },
         replace_last_action: true,
       }
@@ -1572,28 +1571,7 @@ const SignableDocument = Document.extend({
       this.name_list = parent.name_list || {};
       this.create_uid = parent.create_uid;
       this.state = parent.state;
-      this.current_name = parent.current_name;
       this.documentID = parent.documentID;
-    }
-
-    if (this.current_name) {
-      $('<div class="col-lg-2">')
-        .append(
-          $('<div class="o_sign_request_signer text-center text-secondary">')
-            .text(_t("Signing as "))
-            .append("<b>", { text: this.current_name })
-        )
-        .appendTo(parent.$("div.container-fluid .col-lg-3").first());
-      parent
-        .$("div.container-fluid .col-lg-3")
-        .first()
-        .removeClass("col-lg-3")
-        .addClass("col-lg-5");
-      parent
-        .$("div.container-fluid .col-lg-9")
-        .first()
-        .removeClass("col-lg-9")
-        .addClass("col-lg-5");
     }
   },
 

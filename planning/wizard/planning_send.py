@@ -101,9 +101,10 @@ class PlanningSend(models.TransientModel):
             }
 
     def action_publish(self):
-        slot_to_publish = self.slot_ids
-        if not self.include_unassigned:
-            slot_to_publish = slot_to_publish.filtered(lambda s: s.employee_id in self.employee_ids)
+        domain = [('employee_id', 'in', self.employee_ids.ids)]
+        if self.include_unassigned:
+            domain = expression.OR([[('resource_id', '=', False)], domain])
+        slot_to_publish = self.slot_ids.filtered_domain(domain)
         if not slot_to_publish:
             return {
                 'type': 'ir.actions.client',

@@ -33,7 +33,7 @@ class Project(models.Model):
             'number': format_amount(self.env, self.total_planned_amount, self.company_id.currency_id),
             'action_type': 'object',
             'action': 'action_view_budget_lines',
-            'show': self.analytic_account_id,
+            'show': bool(self.analytic_account_id),
             'sequence': 21,
         })
         return buttons

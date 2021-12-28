@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-import random
 import requests
 from contextlib import contextmanager
 from unittest.mock import patch
@@ -55,6 +54,9 @@ class TestSocialTwitter(HttpCase):
         with self.mock_twitter_call():
             self.start_tour("/web", 'social_twitter/static/tests/tours/tour_social_twitter_spam.js', login='social_manager')
 
+        for message in self.all_messages:
+            self.assertNotIn('_last__', message, 'Should not have posted the last message on Twitter')
+
     @contextmanager
     def mock_twitter_call(self):
         original_request_get = requests.get
@@ -79,6 +81,10 @@ class TestSocialTwitter(HttpCase):
 
         original_request_post = requests.post
 
+        # Counter to generate Twitter post identifiers
+        self.unique_id_str = 1000
+        self.all_messages = []
+
         def _mock_request_post(url, params=None, data=None, **kwargs):
             params = params or data
             if '/statuses/lookup.json' in url:
@@ -88,10 +94,12 @@ class TestSocialTwitter(HttpCase):
                 return response
 
             if 'statuses/update.json' in url:
+                self.all_messages.append(params.get('status', ''))
+                self.unique_id_str += 1
                 # write a comment
                 response = requests.Response()
                 response._content = json.dumps({
-                    'id_str': random.randint(10 ** 3, 10 ** 5),
+                    'id_str': 'tweet_%i' % self.unique_id_str,
                     'full_text': params.get('status'),
                     'created_at': datetime.now().strftime("%Y-%m-%d %H:00:00"),
                     'user': {
@@ -100,7 +108,7 @@ class TestSocialTwitter(HttpCase):
                         'screen_name': 'social_manager',
                         'profile_image_url_https': '',
                     },
-                    'in_reply_to_status_id_str': 'test_tweet_id',
+                    'in_reply_to_status_id_str': params.get('in_reply_to_status_id'),
                 }).encode()
                 response.status_code = 200
                 return response

@@ -10,15 +10,17 @@ function makeEnterEvent() {
     return enterEvent;
 }
 
+let uniqueSeed = 0;
+
 function createReplies(textareaSelector) {
     const maximumAllowedReplies = 3;
-    const randomSeed = Math.random();
+    uniqueSeed += 1;
 
     let tourSteps = [];
 
     // must be able to post "maximumAllowedReplies" replies
     for (let i = 0; i < maximumAllowedReplies; i++) {
-        const message = `__social_twitter_test_tour_${randomSeed}_${i}__`;
+        const message = `__social_twitter_test_tour_${uniqueSeed}_${i}__`;
 
         tourSteps.push(
             {
@@ -38,7 +40,7 @@ function createReplies(textareaSelector) {
     }
 
     // the next reply must fail
-    const message = `__social_twitter_test_tour_${randomSeed}_last__`;
+    const message = `__social_twitter_test_tour_${uniqueSeed}_last__`;
     tourSteps.push(
         {
             trigger: '.o_social_comments_modal textarea',
@@ -51,11 +53,12 @@ function createReplies(textareaSelector) {
         },
         {
             trigger: '.o_social_comments_modal',
+            extra_trigger: '.o_social_textarea_message.text-danger',
             content: 'Should not be able to spam',
             run: () => {
                 const $fourthComment = $(`.o_social_comment_text[data-original-message*="${message}"]`);
                 if ($fourthComment.length) {
-                    console.error('Should not be able to spam');
+                    console.error('Should not be able to spam (message detected)');
                 }
             },
         },

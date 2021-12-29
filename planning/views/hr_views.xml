@@ -53,31 +53,22 @@
         </field>
     </record>
 
-    <record id="view_employee_tree_inherit_planning" model="ir.ui.view">
-        <field name="name">hr.employee.tree.planning</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <header>
-                    <button name="action_view_planning" string="View Planning" type="object"
-                            invisible="not context.get('chat_icon',0)"/>
-                </header>
-            </xpath>
-        </field>
+    <record id="model_hr_employee_action_planning_view" model="ir.actions.server">
+        <field name="name">View Planning</field>
+        <field name="model_id" ref="planning.model_hr_employee"/>
+        <field name="binding_model_id" ref="planning.model_hr_employee"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_view_planning()</field>
     </record>
 
-    <record id="view_employee_public_tree_inherit_planning" model="ir.ui.view">
-        <field name="name">hr.employee.public.tree.planning</field>
-        <field name="model">hr.employee.public</field>
-        <field name="inherit_id" ref="hr.hr_employee_public_view_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <header>
-                    <button name="action_view_planning" string="View Planning" type="object"/>
-                </header>
-            </xpath>
-        </field>
+    <record id="model_hr_employee_public_action_planning_view" model="ir.actions.server">
+        <field name="name">View Planning</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee_public"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_view_planning()</field>
     </record>
 
 </odoo>

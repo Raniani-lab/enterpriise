@@ -1409,6 +1409,7 @@ QUnit.module('Views', {
             "0.5 is the next value since 0.0 was the closest value in the range");
 
         await testUtils.nextTick();
+        await new Promise(resolve => setTimeout(resolve, 200));
 
         await testUtils.dom.click($button);
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '1.00',
@@ -1484,6 +1485,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '0,50',
             "0,5 is the next value since 0,0 was the closest value in the range");
         await testUtils.nextTick();
+        await new Promise(resolve => setTimeout(resolve, 200));
         await testUtils.dom.click($button);
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '1,00',
             "0,5 becomes 1,0 as it is the next value in the range");

@@ -5,6 +5,7 @@ odoo.define('web_grid.components', function (require) {
     const utils = require('web.utils');
 
     const { useRef, useState } = owl.hooks;
+    const { debounce } = owl.utils;
 
 
     class BaseGridComponent extends owl.Component {
@@ -167,6 +168,7 @@ odoo.define('web_grid.components', function (require) {
                 disabled: false,
                 value: this.initialValue,
             });
+            this._onClickButton = debounce(this._onClickButton, 200, true);
         }
         willUpdateProps(nextProps) {
             if (nextProps.cellValue !== this.initialValue) {

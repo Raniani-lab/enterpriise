@@ -17,16 +17,3 @@ class Project(models.Model):
         budget_items_by_account_analytic = {res['analytic_account_id'][0]: res['planned_amount'] for res in budget_items}
         for project in self:
             project.budget = budget_items_by_account_analytic.get(project.analytic_account_id.id, 0.0)
-
-    # ----------------------------
-    #  Project Updates
-    # ----------------------------
-
-    def _get_profitability_items(self):
-        values = super()._get_profitability_items()
-        #This key should be first to display it on top of the others
-        values["data"].insert(0, {
-            'name': _("Budget"),
-            'value': format_amount(self.env, self.budget, self.company_id.currency_id)
-        })
-        return values

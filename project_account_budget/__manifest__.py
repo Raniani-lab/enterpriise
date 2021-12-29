@@ -7,13 +7,22 @@
     'summary': "Project account budget",
     'description': "",
     'category': 'Services/Project',
-    'depends': ['account_budget', 'project'],
+    'depends': ['account_budget', 'project_enterprise'],
     'data': [
         'views/project_views.xml',
+        'views/account_budget_views.xml',
     ],
     'demo': [
         'data/account_budget_demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'project_account_budget/static/src/right_panel/project_right_panel.js',
+        ],
+        'web.assets_qweb': [
+            'project_account_budget/static/src/right_panel/project_right_panel.xml',
+        ],
+    },
     'application': False,
     'auto_install': True,
     'license': 'OEEL-1',

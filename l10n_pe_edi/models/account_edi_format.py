@@ -353,10 +353,71 @@ class AccountEdiFormat(models.Model):
         cdr_decoded = self._l10n_pe_edi_decode_cdr(cdr_str) if cdr_str else {}
 
         if cdr_decoded.get('error'):
-            return {'error': cdr_decoded['error'], 'blocking_level': 'error'}
+            # Error code 1033 means that the invoice was already registered with the OSE.
+            cdr_tree = etree.fromstring(cdr_str)
+            dummy, response_code = self._l10n_pe_edi_response_code_digiflow(cdr_tree)
+            if response_code == '1033':
+                cdr_status = self._l10n_pe_edi_get_status_cdr_iap(invoice)
+                if cdr_status.get('error'):
+                    error_msg = '%s<br/>%s<br/>%s' % (cdr_decoded['error'], _('Error requesting CDR status:'),
+                                                      cdr_status['error'])
+                    return {'error': error_msg, 'blocking_level': 'error'}
+                # Status code 0004 means the CDR already exists.
+                elif cdr_status.get('code') == '0004':
+                    invoice.message_post(body=_('The invoice already exists on SUNAT. CDR successfully retrieved.'))
+                    cdr_str = cdr_status.get('cdr')
+                else:
+                    error_msg = '%s<br/>%s<br/>%s' % (cdr_decoded['error'], _('CDR status:'), cdr_status['status'])
+                    return {'error': error_msg, 'blocking_level': 'error'}
+            else:
+                return {'error': cdr_decoded['error'], 'blocking_level': 'error'}
 
         xml_document = result.get('signed') and self._l10n_pe_edi_unzip_edi_document(base64.b64decode(result['signed']))
         return {'success': True, 'xml_document': xml_document, 'cdr': cdr_str}
+
+    def _l10n_pe_edi_get_status_cdr_iap(self, invoice):
+        self.ensure_one()
+        serie_folio = invoice._l10n_pe_edi_get_serie_folio()
+
+        dbuuid, iap_server_url, iap_token = self._l10n_pe_edi_get_iap_params(invoice.company_id)
+
+        rpc_params = {
+            'vat': invoice.company_id.vat,
+            'doc_type': invoice.l10n_latam_document_type_id.code,
+            'dbuuid': dbuuid,
+            'serie': serie_folio['serie'],
+            'folio': serie_folio['folio'],
+            'token': iap_token,
+        }
+
+        try:
+            result = iap_jsonrpc(iap_server_url + '/iap/l10n_pe_edi/1/get_status_cdr', params=rpc_params, timeout=1500)
+        except InvalidSchema:
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE16'], 'blocking_level': 'error'}
+        except AccessError:
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE17'], 'blocking_level': 'warning'}
+        except InvalidURL:
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE18'], 'blocking_level': 'error'}
+
+        if result.get('message'):
+            if result['message'] == 'no-credit':
+                error_message = self._l10n_pe_edi_get_iap_buy_credits_message(invoice.company_id)
+            else:
+                error_message = result['message']
+            return {'error': error_message, 'blocking_level': 'error'}
+
+        cdr_str = result.get('cdr') and base64.b64decode(result['cdr'])
+        cdr_decoded = self._l10n_pe_edi_decode_cdr(cdr_str) if cdr_str else {}
+
+        if cdr_decoded.get('error'):
+            return {'error': cdr_decoded['error'], 'blocking_level': 'error'}
+
+        cdr_tree = etree.fromstring(cdr_str)
+        status_code = cdr_tree.find('.//{*}statusCode').text if cdr_tree.find('.//{*}statusCode') is not None else ''
+        status_message = cdr_tree.find('.//{*}statusMessage').text if cdr_tree.find('.//{*}statusMessage') is not None else ''
+        status = '%s|%s' % (html_escape(status_code), html_escape(status_message))
+
+        return {'cdr': cdr_str, 'status': status, 'code': status_code}
 
     def _l10n_pe_edi_cancel_invoices_step_1_iap(self, company, invoices, void_filename, void_str):
         self.ensure_one()

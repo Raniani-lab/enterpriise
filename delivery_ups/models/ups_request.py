@@ -14,6 +14,7 @@ from zeep.exceptions import Fault
 from zeep.wsdl.utils import etree_to_string
 
 from odoo import _, _lt
+from odoo.tools.float_utils import float_repr
 
 
 _logger = logging.getLogger(__name__)
@@ -91,7 +92,7 @@ UPS_ERROR_MAP = {
 
 
 class Package():
-    def __init__(self, carrier, weight, quant_pack=False, name=''):
+    def __init__(self, carrier, weight, quant_pack=False, name='', total_cost=0, currency_code=None):
         self.weight = carrier._ups_convert_weight(weight, carrier.ups_package_weight_unit)
         self.weight_unit = carrier.ups_package_weight_unit
         self.name = name
@@ -101,6 +102,8 @@ class Package():
         else:
             self.dimension = {'length': carrier.ups_default_package_type_id.packaging_length, 'width': carrier.ups_default_package_type_id.width, 'height': carrier.ups_default_package_type_id.height}
         self.packaging_type = quant_pack and quant_pack.shipper_package_code or False
+        self.declared_value = float_repr(total_cost * carrier.shipping_insurance / 100, 2)
+        self.currency_code = currency_code
 
 
 class Commodity():
@@ -282,13 +285,21 @@ class UPSRequest():
                 package.Dimensions.Width = p.dimension['width'] or ''
                 package.Dimensions.Height = p.dimension['height'] or ''
 
+            package.PackageServiceOptions = self.factory_ns2.PackageServiceOptionsType()
             if cod_info:
-                package.PackageServiceOptions = self.factory_ns2.PackageServiceOptionsType()
                 package.PackageServiceOptions.COD = self.factory_ns2.CODType()
                 package.PackageServiceOptions.COD.CODFundsCode = str(cod_info['funds_code'])
                 package.PackageServiceOptions.COD.CODAmount = self.factory_ns2.CODAmountType() if request_type == 'rating' else self.factory_ns2.CurrencyMonetaryType()
                 package.PackageServiceOptions.COD.CODAmount.MonetaryValue = cod_info['monetary_value']
                 package.PackageServiceOptions.COD.CODAmount.CurrencyCode = cod_info['currency']
+
+            if p.currency_code:
+                package.PackageServiceOptions.DeclaredValue = self.factory_ns2.InsuredValueType() if request_type == 'rating' else self.factory_ns2.PackageDeclaredValueType()
+                package.PackageServiceOptions.DeclaredValue.CurrencyCode = p.currency_code
+                package.PackageServiceOptions.DeclaredValue.MonetaryValue = p.declared_value
+                if request_type == "shipping":
+                    package.PackageServiceOptions.DeclaredValue.Type = self.factory_ns2.DeclaredValueType()
+                    package.PackageServiceOptions.DeclaredValue.Type.Code = '01'  # EVS
 
             package.PackageWeight = self.factory_ns2.PackageWeightType()
             package.PackageWeight.UnitOfMeasurement = MeasurementType()

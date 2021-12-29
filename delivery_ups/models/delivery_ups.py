@@ -63,6 +63,12 @@ class ProviderUPS(models.Model):
             if carrier.delivery_type == 'ups':
                 carrier.can_generate_return = True
 
+    def _compute_supports_shipping_insurance(self):
+        super(ProviderUPS, self)._compute_supports_shipping_insurance()
+        for carrier in self:
+            if carrier.delivery_type == 'ups':
+                carrier.supports_shipping_insurance = True
+
     @api.onchange('ups_default_service_type')
     def on_change_service_type(self):
         self.ups_cod = False
@@ -75,20 +81,19 @@ class ProviderUPS(models.Model):
         max_weight = self.ups_default_package_type_id.max_weight
         packages = []
         total_qty = 0
+        total_cost = 0
         total_weight = order._get_estimated_weight()
         for line in order.order_line.filtered(lambda line: not line.is_delivery and not line.display_type):
             total_qty += line.product_uom_qty
+            total_cost += self._product_price_to_company_currency(line.product_qty, line.product_id, order.company_id)
 
-        if max_weight and total_weight > max_weight:
-            total_package = int(total_weight / max_weight)
-            last_package_weight = total_weight % max_weight
-
-            for seq in range(total_package):
-                packages.append(Package(self, max_weight))
-            if last_package_weight:
-                packages.append(Package(self, last_package_weight))
-        else:
-            packages.append(Package(self, total_weight))
+        total_package = int(total_weight / max_weight)
+        last_package_weight = total_weight % max_weight
+        partial_cost = total_cost / (total_package + bool(last_package_weight))  # separate the cost uniformly
+        for seq in range(total_package):
+            packages.append(Package(self, max_weight, total_cost=partial_cost, currency_code=order.company_id.currency_id.name))
+        if last_package_weight:
+            packages.append(Package(self, last_package_weight, total_cost=partial_cost, currency_code=order.company_id.currency_id.name))
 
         shipment_info = {
             'total_qty': total_qty  # required when service type = 'UPS Worldwide Express Freight'
@@ -146,14 +151,20 @@ class ProviderUPS(models.Model):
         for picking in pickings:
             packages = []
             package_names = []
-            if picking.package_ids:
-                # Create all packages
-                for package in picking.package_ids:
-                    packages.append(Package(self, package.shipping_weight, quant_pack=package.package_type_id, name=package.name))
-                    package_names.append(package.name)
+            # Create all packages
+            for package in picking.package_ids:
+                package_total_cost = 0.0
+                for quant in package.quant_ids:
+                    package_total_cost += self._product_price_to_company_currency(quant.quantity, quant.product_id, picking.company_id)
+                packages.append(Package(self, package.shipping_weight, quant_pack=package.package_type_id, name=package.name, total_cost=package_total_cost, currency_code=picking.company_id.currency_id.name))
+                package_names.append(package.name)
             # Create one package with the rest (the content that is not in a package)
-            if picking.weight_bulk:
-                packages.append(Package(self, picking.weight_bulk))
+            move_lines_without_package = picking.move_line_ids.filtered(lambda ml: not ml.package_id)
+            if move_lines_without_package:
+                package_total_cost = 0.0
+                for move_line in move_lines_without_package:
+                    package_total_cost += self._product_price_to_company_currency(move_line.qty_done, move_line.product_id, picking.company_id)
+                packages.append(Package(self, picking.weight_bulk, total_cost=package_total_cost, currency_code=picking.company_id.currency_id.name))
 
             commodities = self._get_commodities(picking.move_line_ids)
             shipment_info = {
@@ -375,3 +386,6 @@ class ProviderUPS(models.Model):
             country_of_origin = line.product_id.country_of_origin or line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code
             commodities.append(Commodity(description=line.product_id.name, amount=rounded_qty, monetary_value=line.sale_price, country_of_origin=country_of_origin))
         return commodities
+
+    def _product_price_to_company_currency(self, quantity, product, company):
+        return company.currency_id._convert(quantity * product.standard_price, product.currency_id, company, fields.Date.today())

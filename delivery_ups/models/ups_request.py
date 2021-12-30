@@ -91,30 +91,6 @@ UPS_ERROR_MAP = {
 }
 
 
-class Package():
-    def __init__(self, carrier, weight, quant_pack=False, name='', total_cost=0, currency_code=None):
-        self.weight = carrier._ups_convert_weight(weight, carrier.ups_package_weight_unit)
-        self.weight_unit = carrier.ups_package_weight_unit
-        self.name = name
-        self.dimension_unit = carrier.ups_package_dimension_unit
-        if quant_pack:
-            self.dimension = {'length': quant_pack.packaging_length, 'width': quant_pack.width, 'height': quant_pack.height}
-        else:
-            self.dimension = {'length': carrier.ups_default_package_type_id.packaging_length, 'width': carrier.ups_default_package_type_id.width, 'height': carrier.ups_default_package_type_id.height}
-        self.packaging_type = quant_pack and quant_pack.shipper_package_code or False
-        self.declared_value = float_repr(total_cost * carrier.shipping_insurance / 100, 2)
-        self.currency_code = currency_code
-
-
-class Commodity():
-    def __init__(self, description, amount, monetary_value, country_of_origin):
-        self.description = description
-        self.amount = amount
-        self.unit_code = 'PC' if amount == 1 else 'PCS'
-        self.monetary_value = monetary_value
-        self.country_of_origin = country_of_origin
-
-
 class LogPlugin(Plugin):
     """ Small plugin for zeep that catches out/ingoing XML requests and logs them"""
     def __init__(self, debug_logger):
@@ -262,7 +238,7 @@ class UPSRequest():
         else:
             return img_decoded
 
-    def set_package_detail(self, client, packages, packaging_type, ship_from, ship_to, cod_info, request_type):
+    def set_package_detail(self, carrier, client, packages, ship_from, ship_to, cod_info, request_type):
         Packages = []
         if request_type == "rating":
             MeasurementType = self.factory_ns2.CodeDescriptionType
@@ -272,18 +248,17 @@ class UPSRequest():
             package = self.factory_ns2.PackageType()
             if hasattr(package, 'Packaging'):
                 package.Packaging = self.factory_ns2.PackagingType()
-                package.Packaging.Code = p.packaging_type or packaging_type or ''
+                package.Packaging.Code = p.packaging_type or ''
             elif hasattr(package, 'PackagingType'):
                 package.PackagingType = self.factory_ns2.CodeDescriptionType()
-                package.PackagingType.Code = p.packaging_type or packaging_type or ''
+                package.PackagingType.Code = p.packaging_type or ''
 
-            if p.dimension_unit and any(p.dimension.values()):
-                package.Dimensions = self.factory_ns2.DimensionsType()
-                package.Dimensions.UnitOfMeasurement = MeasurementType()
-                package.Dimensions.UnitOfMeasurement.Code = p.dimension_unit or ''
-                package.Dimensions.Length = p.dimension['length'] or ''
-                package.Dimensions.Width = p.dimension['width'] or ''
-                package.Dimensions.Height = p.dimension['height'] or ''
+            package.Dimensions = self.factory_ns2.DimensionsType()
+            package.Dimensions.UnitOfMeasurement = MeasurementType()
+            package.Dimensions.UnitOfMeasurement.Code = carrier.ups_package_dimension_unit
+            package.Dimensions.Length = p.dimension['length']
+            package.Dimensions.Width = p.dimension['width']
+            package.Dimensions.Height = p.dimension['height']
 
             package.PackageServiceOptions = self.factory_ns2.PackageServiceOptionsType()
             if cod_info:
@@ -293,18 +268,18 @@ class UPSRequest():
                 package.PackageServiceOptions.COD.CODAmount.MonetaryValue = cod_info['monetary_value']
                 package.PackageServiceOptions.COD.CODAmount.CurrencyCode = cod_info['currency']
 
-            if p.currency_code:
+            if p.currency_id:
                 package.PackageServiceOptions.DeclaredValue = self.factory_ns2.InsuredValueType() if request_type == 'rating' else self.factory_ns2.PackageDeclaredValueType()
-                package.PackageServiceOptions.DeclaredValue.CurrencyCode = p.currency_code
-                package.PackageServiceOptions.DeclaredValue.MonetaryValue = p.declared_value
+                package.PackageServiceOptions.DeclaredValue.CurrencyCode = p.currency_id.name
+                package.PackageServiceOptions.DeclaredValue.MonetaryValue = float_repr(p.total_cost * carrier.shipping_insurance / 100, 2)
                 if request_type == "shipping":
                     package.PackageServiceOptions.DeclaredValue.Type = self.factory_ns2.DeclaredValueType()
                     package.PackageServiceOptions.DeclaredValue.Type.Code = '01'  # EVS
 
             package.PackageWeight = self.factory_ns2.PackageWeightType()
             package.PackageWeight.UnitOfMeasurement = MeasurementType()
-            package.PackageWeight.UnitOfMeasurement.Code = p.weight_unit or ''
-            package.PackageWeight.Weight = p.weight or ''
+            package.PackageWeight.UnitOfMeasurement.Code = carrier.ups_package_weight_unit
+            package.PackageWeight.Weight = carrier._ups_convert_weight(p.weight, carrier.ups_package_weight_unit)
 
             # Package and shipment reference text is only allowed for shipments within
             # the USA and within Puerto Rico. This is a UPS limitation.
@@ -323,15 +298,15 @@ class UPSRequest():
         invoice_products = []
         for commodity in commodities:
             uom_type = self.factory_ns4.UnitOfMeasurementType()
-            uom_type.Code = commodity.unit_code
+            uom_type.Code = 'PC' if commodity.qty == 1 else 'PCS'
 
             unit_type = self.factory_ns4.UnitType()
-            unit_type.Number = commodity.amount
+            unit_type.Number = commodity.qty
             unit_type.Value = commodity.monetary_value
             unit_type.UnitOfMeasurement = uom_type
 
             product = self.factory_ns4.ProductType()
-            product.Description = commodity.description
+            product.Description = commodity.product_id.name
             product.Unit = unit_type
             product.OriginCountryCode = commodity.country_of_origin
 
@@ -362,7 +337,7 @@ class UPSRequest():
         invoice.Contacts = contact
         return invoice
 
-    def get_shipping_price(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, cod_info):
+    def get_shipping_price(self, carrier, shipment_info, packages, shipper, ship_from, ship_to, service_type, saturday_delivery, cod_info):
         client = self._set_client(self.rate_wsdl, 'Rate', 'RateRequest')
         service = self._set_service(client, 'Rate')
         request = self.factory_ns3.RequestType()
@@ -375,7 +350,7 @@ class UPSRequest():
         request_type = "rating"
         shipment = self.factory_ns2.ShipmentType()
 
-        for package in self.set_package_detail(client, packages, packaging_type, ship_from, ship_to, cod_info, request_type):
+        for package in self.set_package_detail(carrier, client, packages, ship_from, ship_to, cod_info, request_type):
             shipment.Package.append(package)
 
         shipment.Shipper = self.factory_ns2.ShipperType()
@@ -456,7 +431,7 @@ class UPSRequest():
         except IOError as e:
             return self.get_error_message('0', 'UPS Server Not Found:\n%s' % e)
 
-    def send_shipping(self, shipment_info, packages, commodities, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, duty_payment, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
+    def send_shipping(self, carrier, shipment_info, packages, shipper, ship_from, ship_to, service_type, saturday_delivery, duty_payment, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
         client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')
         request = self.factory_ns3.RequestType()
         request.RequestOption = 'nonvalidate'
@@ -474,7 +449,7 @@ class UPSRequest():
         shipment = self.factory_ns2.ShipmentType()
         shipment.Description = shipment_info.get('description')
 
-        for package in self.set_package_detail(client, packages, packaging_type, ship_from, ship_to, cod_info, request_type):
+        for package in self.set_package_detail(carrier, client, packages, ship_from, ship_to, cod_info, request_type):
             shipment.Package.append(package)
 
         shipment.Shipper = self.factory_ns2.ShipperType()
@@ -561,7 +536,7 @@ class UPSRequest():
 
         sso = self.factory_ns2.ShipmentServiceOptionsType()
         if shipment_info.get('require_invoice'):
-            sso.InternationalForms = self.set_invoice(shipment_info, commodities, ship_to)
+            sso.InternationalForms = self.set_invoice(shipment_info, packages.commodities, ship_to)
         if saturday_delivery:
             sso.SaturdayDeliveryIndicator = saturday_delivery
         shipment.ShipmentServiceOptions = sso

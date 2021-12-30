@@ -12,6 +12,7 @@ from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
+from odoo.tools import is_html_empty
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.http_routing.models.ir_http import slug
@@ -48,9 +49,19 @@ class CalendarAppointmentType(models.Model):
     max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)
     min_cancellation_hours = fields.Float('Cancel Before (hours)', required=True, default=1.0)
     appointment_duration = fields.Float('Appointment Duration', required=True, default=1.0)
+    appointment_duration_formatted = fields.Char(
+        'Appointment Duration Formatted ', compute='_compute_appointment_duration_formatted', readonly=True,
+        help='Appointment Duration formatted in words')
+    reminder_ids = fields.Many2many(
+        'calendar.alarm', string="Reminders",
+        default=lambda self: self.env['calendar.alarm'].search([('default_for_new_appointment_type', '=', True)]))
+    location_id = fields.Many2one('res.partner', string='Location', help="Location of the appointments")
+    location = fields.Char(
+        'Location formatted', compute='_compute_location', compute_sudo=True,
+        help='Location formatted for one line uses')
 
-    reminder_ids = fields.Many2many('calendar.alarm', string="Reminders")
-    location = fields.Char('Location', help="Location of the appointments")
+    meeting_ids = fields.One2many('calendar.event', 'appointment_type_id', string="Appointment Meetings")
+
     message_confirmation = fields.Html('Confirmation Message', translate=True)
     message_intro = fields.Html('Introduction Message', translate=True)
 
@@ -66,16 +77,49 @@ class CalendarAppointmentType(models.Model):
     staff_user_ids = fields.Many2many('res.users', 'appointment_type_res_users_rel', domain="[('share', '=', False)]", string='Users')
 
     assign_method = fields.Selection([
-        ('random', 'Random'),
-        ('chosen', 'Chosen by the Customer')], string='Assignment Method', default='random',
+        ('chosen', 'Chosen by the Customer'),
+        ('random', 'Random')], string='Assignment Method', default='chosen',
         help="How users will be assigned to meetings customers book on your website.")
     appointment_count = fields.Integer('# Appointments', compute='_compute_appointment_count')
+    appointment_count_report = fields.Integer(
+        '# Appointments in the last 30 days', compute='_compute_appointment_count_report')
 
+    @api.depends('meeting_ids')
     def _compute_appointment_count(self):
         meeting_data = self.env['calendar.event']._read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['appointment_type_id'])
         mapped_data = {m['appointment_type_id'][0]: m['appointment_type_id_count'] for m in meeting_data}
         for appointment_type in self:
             appointment_type.appointment_count = mapped_data.get(appointment_type.id, 0)
+
+    @api.depends('meeting_ids')
+    def _compute_appointment_count_report(self, n_days=30):
+        from_n_days_ago = datetime.combine(datetime.today().date() - timedelta(days=n_days), datetime.min.time())
+        until_yersterday = datetime.combine(datetime.today().date(), datetime.max.time())
+        meeting_data = self.env['calendar.event']._read_group(
+            [('appointment_type_id', 'in', self.ids), ('start', '>=', from_n_days_ago), ('start', '<=', until_yersterday)],
+            ['appointment_type_id'], ['appointment_type_id'])
+        mapped_data = {m['appointment_type_id'][0]: m['appointment_type_id_count'] for m in meeting_data}
+
+        for appointment_type in self:
+            appointment_type.appointment_count_report = mapped_data.get(appointment_type.id, 0)
+
+    @api.depends('appointment_duration')
+    def _compute_appointment_duration_formatted(self):
+        for record in self:
+            record.appointment_duration_formatted = self.env['ir.qweb.field.duration'].value_to_html(
+                record.appointment_duration * 3600, {})
+
+    @api.depends('location_id')
+    def _compute_location(self):
+        """Use location_id if available, otherwise its name, finally ''. """
+        for record in self:
+            if (record.location_id.contact_address or '').strip():
+                record.location = ', '.join(
+                    frag.strip()
+                    for frag in record.location_id.contact_address.split('\n') if frag.strip()
+                )
+            else:
+                record.location = record.location_id.name or ''
 
     @api.constrains('category', 'staff_user_ids', 'slot_ids')
     def _check_staff_user_configuration(self):
@@ -91,20 +135,41 @@ class CalendarAppointmentType(models.Model):
         """ We don't want the current user to be follower of all created types """
         return super(CalendarAppointmentType, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
 
+    def create_and_get_website_url(self, **kwargs):
+        """Override WebsitePublishedMixin method to add default slots. """
+        kwargs['slot_ids'] = self._get_default_slots()
+        return super().create_and_get_website_url(**kwargs)
+
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
         default = default or {}
         default['name'] = self.name + _(' (copy)')
         return super(CalendarAppointmentType, self).copy(default=default)
 
+    def write(self, vals):
+        # If no text outside html tags, replace with False to get back placeholder.
+        if is_html_empty(vals.get('message_intro', '')):
+            vals['message_intro'] = False
+        return super().write(vals)
+
+    def action_calendar_events_reporting(self):
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"]._for_xml_id("appointment.calendar_event_action_reporting")
+        action["domain"] = [('appointment_type_id', '!=', False)]
+        action["context"] = {
+            'search_default_appointment_type_id': self.id,
+            'default_appointment_type_id': self.id,
+        }
+        return action
+
     def action_calendar_meetings(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
-        appointments = self.env['calendar.event'].search([
-            ('appointment_type_id', '=', self.id), ('start', '>=', datetime.today()
-        )], order='start')
-        nbr_appointments_week_later = self.env['calendar.event'].search_count([
-            ('appointment_type_id', '=', self.id), ('start', '>=', datetime.today() + timedelta(weeks=1))
+        appointments = self.meeting_ids.filtered_domain([
+            ('start', '>=', datetime.today())
+        ])
+        nbr_appointments_week_later = appointments.filtered_domain([
+            ('start', '>=', datetime.today() + timedelta(weeks=1))
         ])
 
         action['context'] = {
@@ -117,6 +182,7 @@ class CalendarAppointmentType(models.Model):
 
     def action_share(self):
         self.ensure_one()
+        staff_user_ids = [self.env.user.id] if self.env.user.id in self.staff_user_ids.ids else False
         return {
             'name': _('Share Link'),
             'type': 'ir.actions.act_window',
@@ -125,7 +191,8 @@ class CalendarAppointmentType(models.Model):
             'target': 'new',
             'context': {
                 'default_appointment_type_ids': self.ids,
-                'default_staff_user_ids': self.staff_user_ids.filtered(lambda staff_user: staff_user.id == self.env.user.id).ids,
+                'default_staff_users_choice': 'current_user' if staff_user_ids else 'all_assigned_users',
+                'default_staff_user_ids': staff_user_ids,
             }
         }
 
@@ -137,9 +204,24 @@ class CalendarAppointmentType(models.Model):
             'target': 'self',
         }
 
+    def action_toggle_published(self):
+        for record in self:
+            record.is_published = not record.is_published
+
     # --------------------------------------
     # Slots Generation
     # --------------------------------------
+
+    @api.model
+    def _get_default_slots(self):
+        return [(0, 0, {
+            'weekday': str(weekday),
+            'start_hour': start_hour,
+            'end_hour': end_hour
+        })
+            for weekday in range(1, 6)
+            for (start_hour, end_hour) in ((9, 12), (14, 17))
+        ]
 
     def _slots_generate(self, first_day, last_day, timezone, reference_date=None):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)

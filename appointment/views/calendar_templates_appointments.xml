@@ -61,20 +61,15 @@
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="portal.portal_layout">
             <div id="wrap" class="d-flex bg-o-color-4 px-3 mt-3">
-                <div class="appointment_portal_alert">
-                    <t t-set="o_portal_fullwidth_alert" groups="appointment.group_calendar_manager">
-                        <t t-call="portal.portal_back_in_edit_mode">
-                            <t t-set="backend_url" t-value="'/web#id=%s&amp;view_type=form&amp;model=%s' % (appointment_type.id, appointment_type._name)"/>
-                            <t t-set="custom_html">This is a preview of the customer appointment form.</t>
-                        </t>
-                    </t>
-                </div>
+                <t t-set="o_portal_fullwidth_alert" groups="appointment.group_calendar_manager">
+                    <t t-call="appointment.appointment_edit_in_backend"/>
+                </t>
                 <div class="container mb64 o_appointment">
                     <ul class="wizard mt32 float-right d-none d-md-block">
                         <li class="text-primary">Time<span class="chevron"></span></li>
                         <li class="text-muted">Confirmation<span class="chevron"></span></li>
                     </ul>
-                    <h1 class="o_page_header mt32"><t t-out="appointment_type.name"/></h1>
+                    <h1 class="o_page_header mt32" t-field="appointment_type.name"/>
                     <div t-if="state == 'failed-staff-user'" class="alert alert-danger mt16" role="alert">
                         <p>
                             <strong>Appointment failed!</strong>
@@ -111,18 +106,23 @@
                             <t t-call="appointment.staff_user_select"/>
                         </form>
                     </div>
-                    <div t-if="appointment_type.category != 'custom'" class="d-lg-flex col pl-0 mb-2 o_not_editable">
-                        <div class="col-md-6 pl-0">
+                    <div t-if="appointment_type.category != 'custom'" class="d-lg-flex col pl-0 my-4">
+                        <div class="col-3 pl-0 o_not_editable">
                             <strong class="mr-2">Duration:</strong>
                             <span t-out="appointment_type.appointment_duration" t-options="{'widget': 'float_time'}"/>
                             hour<t t-if="appointment_type.appointment_duration>=2">s</t>
                         </div>
-                        <div t-if="appointment_type.location" class="col-md-6 pl-0">
-                            <strong class="mr-2">Location:</strong>
-                            <span t-field="appointment_type.location"/>
+                        <div class="col-12 col-lg-9 pl-0 pl-lg-2 d-flex">
+                            <strong class="mr-2">Location: </strong>
+                            <span t-if="not appointment_type.location_id" class="o_not_editable">Online</span>
+                            <div t-if="appointment_type.location_id" class="d-flex">
+                                <div t-field="appointment_type.location_id" class="mr-3" t-options="{'widget': 'contact', 'fields': ['name']}"/>
+                                <div class="flex-grow" t-field="appointment_type.location_id" t-options="{'widget': 'contact', 'fields': ['address'], 'separator': ', ', 'no_marker': True}"/>
+                            </div>
                         </div>
                     </div>
-                    <div t-field="appointment_type.message_intro" class="o_calendar_intro mb32"/>
+                    <div t-field="appointment_type.message_intro" class="o_calendar_intro mb32"
+                         placeholder="Add an intro message here..."/>
                     <t t-call="appointment.appointment_calendar"/>
                     <div class="oe_structure"/>
                 </div>
@@ -200,4 +200,10 @@
         </div>
     </template>
 
+    <template id="appointment_edit_in_backend" name="Appointment portal preview alert">
+        <t t-call="portal.portal_back_in_edit_mode">
+            <t t-set="backend_url" t-value="'/web#id=%s&amp;view_type=form&amp;model=%s' % (appointment_type.id, appointment_type._name)"/>
+            <t t-set="custom_html">This is a preview of the customer appointment form.</t>
+        </t>
+    </template>
 </odoo>

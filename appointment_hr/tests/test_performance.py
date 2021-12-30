@@ -102,6 +102,10 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon):
             'staff_user_ids': [(4, user.id) for user in cls.staff_users],
             'work_hours_activated': True,
         })
+        cls.test_appointment_location = cls.env['res.partner'].create({
+            'name': 'Bxls Office',
+            'street': 'Rue Haute 63'
+        })
 
     def setUp(self):
         super(AppointmenHrPerformanceCase, self).setUp()
@@ -128,7 +132,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'appointment_duration': 1,
             'assign_method': 'random',
             'category': 'custom',
-            'location': 'Bxls Office',
+            'location_id': self.test_appointment_location.id,
             'name': 'Bxls Appt Type',
             'min_cancellation_hours': 1,
             'min_schedule_hours': 1,
@@ -194,7 +198,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'appointment_duration': 1,
             'assign_method': 'random',
             'category': 'custom',
-            'location': 'Bxls Office',
+            'location_id':  self.test_appointment_location.id,
             'name': 'Bxls Appt Type',
             'min_cancellation_hours': 1,
             'min_schedule_hours': 1,

@@ -3,7 +3,6 @@
 
     <record id="calendar_appointment_0" model="calendar.appointment.type">
         <field name="name">Schedule a Demo</field>
-        <field name="location">215 Vine St. Scranton Pennsylvania 18503</field>
         <field name="max_schedule_days">45</field>
         <field name="message_intro" type="xml">
             <p>Get a <strong>customized demo</strong> and an <strong>analysis of your needs</strong>.</p>
@@ -46,7 +45,7 @@
 
     <record id="calendar_appointment_1" model="calendar.appointment.type">
         <field name="name">Doctor Appointment</field>
-        <field name="location">42 Doctor Street, Syringue 4242</field>
+        <field name="location_id" ref="res_partner_appointment_1"/>
         <field name="appointment_duration">0.5</field>
         <field name="max_schedule_days">45</field>
         <field name="reminder_ids" eval="[(6, 0, [ref('calendar_alarm_data_1h_sms')])]"/>

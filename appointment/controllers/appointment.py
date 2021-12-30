@@ -282,6 +282,8 @@ class Appointment(http.Controller):
         # When creating a meeting from your own calendar in the backend, there is no need to notify yourself
         event = request.env['calendar.event'].with_context(
             mail_notify_author=True,
+            mail_create_nolog=True,
+            mail_create_nosubscribe=True,
             allowed_company_ids=staff_user.company_ids.ids,
         ).sudo().create(
             self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, staff_user, Partner)
@@ -314,10 +316,9 @@ class Appointment(http.Controller):
         """
             Find the default timezone from the geoip lib or fallback on the user or the visitor
         """
-        timezone = appointment_type.appointment_tz if appointment_type.location else request.httprequest.cookies.get('tz')
-        if not timezone:
-            timezone = appointment_type.appointment_tz
-        return timezone
+        if appointment_type.location_id:
+            return appointment_type.appointment_tz
+        return request.httprequest.cookies.get('tz', appointment_type.appointment_tz)
 
     def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, staff_user, partner):
         """
@@ -326,6 +327,7 @@ class Appointment(http.Controller):
         categ_id = request.env.ref('appointment.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
         partner_ids = list(set([staff_user.partner_id.id] + [partner.id]))
+
         return {
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),

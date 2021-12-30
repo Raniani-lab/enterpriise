@@ -18,6 +18,12 @@ class CalendarAppointmentShare(models.TransientModel):
     suggested_staff_user_ids = fields.Many2many(
         'res.users', related='appointment_type_ids.staff_user_ids', string='Possible users',
         help="Get the users linked to the appointment type selected to apply a domain on the users that can be selected")
+    staff_users_choice = fields.Selection(
+        selection=[
+            ('current_user', 'Personal Link'),
+            ('all_assigned_users', 'All Assigned Users'),
+            ('specific_users', 'Specific users')],
+        string='Link type', compute='_compute_staff_users_choice', readonly=False)
     staff_user_ids = fields.Many2many(
         'res.users', string='Users',
         compute='_compute_staff_user_ids', store=True, readonly=False,
@@ -30,15 +36,25 @@ class CalendarAppointmentShare(models.TransientModel):
             appointment_link.appointment_type_count = len(appointment_link.appointment_type_ids)
 
     @api.depends('appointment_type_ids')
+    def _compute_staff_users_choice(self):
+        for appointment_link in self:
+            if len(appointment_link.appointment_type_ids) != 1:
+                appointment_link.staff_users_choice = False
+            else:
+                # reset to default
+                appointment_link.staff_users_choice = (
+                    'current_user' if self.env.user.id in self.staff_user_ids.ids else 'all_assigned_users')
+
+    @api.depends('appointment_type_ids', 'staff_users_choice')
     def _compute_staff_user_ids(self):
         for appointment_link in self:
-            staff_users = appointment_link.appointment_type_ids.staff_user_ids._origin
-            if len(staff_users) == 1:
-                appointment_link.staff_user_ids = staff_users
+            if appointment_link.staff_users_choice == "current_user" and \
+                    self.env.user.id in appointment_link.appointment_type_ids.staff_user_ids.ids:
+                appointment_link.staff_user_ids = self.env.user
             else:
-                appointment_link.staff_user_ids = self.env.user if self.env.user in staff_users else False
+                appointment_link.staff_user_ids = False
 
-    @api.depends('appointment_type_ids', 'staff_user_ids')
+    @api.depends('appointment_type_ids', 'staff_users_choice', 'staff_user_ids')
     def _compute_share_link(self):
         """
         Compute a link that will be share for the user depending on the appointment types and users
@@ -61,6 +77,11 @@ class CalendarAppointmentShare(models.TransientModel):
                     url_param.update({
                         'filter_staff_user_ids': str(appointment_link.staff_user_ids.ids)
                     })
+                elif appointment_link.staff_users_choice == "current_user":
+                    # * Happens if the user has selected an appointment type where they are not among its staff_user_ids,
+                    # as that option cannot be otherwise disabled
+                    appointment_link.share_link = False
+                    continue
                 appt_link = url_join('%s/' % calendar_url, slug(appointment_link.appointment_type_ids._origin))
                 share_link = '%s?%s' % (appt_link, url_encode(url_param))
             elif appointment_link.appointment_type_ids:

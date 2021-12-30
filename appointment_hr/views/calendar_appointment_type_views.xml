@@ -5,16 +5,8 @@
         <field name="model">calendar.appointment.type</field>
         <field name="inherit_id" ref="appointment.calendar_appointment_type_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_title')]" position="after">
-                <group name="appointment_work_hours_option" class="mb-0">
-                    <group>
-                        <field name="work_hours_activated"/>
-                    </group>
-                </group>
-            </xpath>
-            <xpath expr="//field[@name='staff_user_ids']/tree/field[@name='name']" position="after">
-                <field name="employee_resource_calendar_id" string="Employee Work Hours"
-                    attrs="{'column_invisible': [('parent.work_hours_activated', '=', False)]}"/>
+            <xpath expr="//field[@name='reminder_ids']" position="before">
+                <field name="work_hours_activated"/>
             </xpath>
         </field>
     </record>

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import Counter
+
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.addons.website.tests.test_website_visitor import MockVisitor
 from odoo.exceptions import ValidationError
@@ -49,6 +51,32 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
                     ('name', '=', 'Appointment User Timezone')
                 ]).appointment_tz, test_user.tz
             )
+
+    @users('apt_manager')
+    def test_apt_type_create_from_website_slots(self):
+        """ Test that when creating an appointment type from the website, defaults slots are set."""
+        pre_slots = self.env['calendar.appointment.slot'].search([])
+        # Necessary for appointment type as `create_and_get_website_url` does not return the record.
+        pre_appts = self.env['calendar.appointment.type'].search([])
+
+        self.env['calendar.appointment.type'].create_and_get_website_url(**{
+            'name': 'Test Appointment Type has slots',
+            'staff_user_ids': [self.staff_user_bxls.id]
+        })
+
+        new_appt = self.env['calendar.appointment.type'].search([]) - pre_appts
+        new_slots = self.env['calendar.appointment.slot'].search([]) - pre_slots
+        self.assertEqual(new_slots.appointment_type_id, new_appt)
+
+        expected_slots = {
+            (str(weekday), start_hour, end_hour) : 1
+            for weekday in range(1, 6)
+            for start_hour, end_hour in ((9., 12.), (14., 17.))
+        }
+        created_slots = Counter()
+        for slot in new_slots:
+            created_slots[(slot.weekday, slot.start_hour, slot.end_hour)] += 1
+        self.assertDictEqual(created_slots, expected_slots)
 
     @users('admin')
     def test_apt_type_is_published(self):

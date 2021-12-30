@@ -16,6 +16,7 @@
         'data/calendar_data.xml',
         'data/mail_data.xml',
         'data/mail_template_data.xml',
+        'views/calendar_alarm_views.xml',
         'views/calendar_event_views.xml',
         'views/calendar_appointment_answer_input_views.xml',
         'views/calendar_appointment_question_views.xml',
@@ -31,7 +32,8 @@
         'security/ir.model.access.csv',
     ],
     'demo': [
-        'data/calendar_appointment_demo.xml'
+        'data/res_partner_demo.xml',
+        'data/calendar_appointment_demo.xml',
     ],
     'installable': True,
     'application': True,

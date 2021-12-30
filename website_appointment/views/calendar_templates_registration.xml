@@ -7,6 +7,7 @@
         <xpath expr="//div[@id='wrap']" position="attributes">
             <attribute name="class" value=""/>
         </xpath>
+        <xpath expr="//t[@t-set='o_portal_fullwidth_alert']" position="replace"/>
         <xpath expr="//div[hasclass('o_appointment')]" position="before">
             <nav t-if="appointment_type.category == 'website'" class="navbar navbar-light border-top shadow-sm d-print-none">
                 <div class="container">

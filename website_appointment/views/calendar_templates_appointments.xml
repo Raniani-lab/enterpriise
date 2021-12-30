@@ -15,7 +15,7 @@
         <xpath expr="//div[@id='wrap']" position="attributes">
             <attribute name="class" value=""/>
         </xpath>
-        <xpath expr="//div[hasclass('appointment_portal_alert')]" position="replace"/>
+        <xpath expr="//t[@t-set='o_portal_fullwidth_alert']" position="replace"/>
         <xpath expr="//div[hasclass('o_appointment')]" position="before">
             <nav t-if="appointment_type.category == 'website'" class="navbar navbar-light border-top shadow-sm d-print-none">
                 <div class="container">
@@ -107,7 +107,7 @@
         <div t-foreach="appointment_types" t-as="appointment" class="col-md-6 col-lg-4 mb-4">
             <article class="h-100 card border-0 shadow-sm" itemscope="itemscope" itemtype="http://schema.org/Appointments">
                 <a t-attf-href="/calendar/#{ slug(appointment) }/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids')}"
-                    class="text-reset text-decoration-none h-100">
+                    class="text-reset text-decoration-none h-100" t-att-data-publish="appointment.website_published and 'on' or 'off'">
                     <div class="h-100 no-gutters">
                         <header class="overflow-hidden bg-secondary col-12 rounded-top">
                             <div class="d-block h-100 w-100">
@@ -121,13 +121,13 @@
                         </header>
                         <div class="col-12">
                             <main class="card-body">
-                                <!-- Title -->
                                 <h5 t-attf-class="card-title mt-2 mb-0 text-truncate #{(not appointment.website_published) and 'text-danger'}">
                                     <span t-field="appointment.name" itemprop="name"/>
                                 </h5>
-                                <!-- Location -->
-                                <div t-if="appointment.location" itemprop="location" t-att-title="appointment.location" class="mt-3 text-truncate">
-                                    <i class="fa fa-map-marker mr-2"/><t t-out="appointment.location"/>
+                                <div itemprop="location" class="mt-3 text-truncate d-flex">
+                                    <div><i class="fa fa-map-marker mr-2"/></div>
+                                    <div t-if="appointment.location_id" t-field="appointment.location_id" t-options="{'widget': 'contact', 'fields': ['name']}"></div>
+                                    <div t-else="" class="o_not_editable">Online</div>
                                 </div>
                             </main>
                         </div>

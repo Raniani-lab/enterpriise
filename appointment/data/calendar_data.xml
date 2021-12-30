@@ -14,6 +14,13 @@
             <field name="interval">hours</field>
             <field name="duration">1</field>
             <field name="alarm_type">sms</field>
+            <field name="default_for_new_appointment_type">True</field>
+        </record>
+        <record id="calendar.alarm_notif_1" model="calendar.alarm">
+            <field name="default_for_new_appointment_type">True</field>
+        </record>
+        <record id="calendar.alarm_mail_1" model="calendar.alarm">
+            <field name="default_for_new_appointment_type">True</field>
         </record>
     </data>
 </odoo>

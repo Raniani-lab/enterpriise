@@ -10,11 +10,22 @@
                         <field name="appointment_type_ids" widget="many2many_tags" options="{'no_create': True}"/>
                         <field name="suggested_staff_user_ids" invisible="1"/>
                         <field name="appointment_type_count" invisible="1"/>
-                        <field name="staff_user_ids" widget="many2many_tags" domain="[('id','in',suggested_staff_user_ids)]" attrs="{'invisible': [('appointment_type_count', '&gt;', 1)]}" options="{'no_create': True}"/>
+                        <field name="staff_users_choice" widget="radio" attrs="{'invisible': ['|', ('suggested_staff_user_ids', '=', []), ('appointment_type_count', '!=', 1)]}"/>
+                        <field name="staff_user_ids" widget="many2many_tags_avatar" domain="[('id','in',suggested_staff_user_ids)]" options="{'no_create': True}"
+                               attrs="{'required': 1, 'invisible': [
+                                    '|', ('suggested_staff_user_ids', '=', []), '|', ('appointment_type_count', '!=', 1),
+                                    '|', ('staff_users_choice', '=', 'current_user'), ('staff_users_choice', '=', 'all_assigned_users')]}"/>
+                        <field name="share_link" widget="CopyClipboardChar" readonly="1"
+                               attrs="{'invisible': ['|', ('suggested_staff_user_ids', '=', []), '|', ('share_link', '=', False), ('appointment_type_count', '=', 0)]}"/>
                     </group>
-                    <group>
-                        <field name="share_link" widget="CopyClipboardChar" readonly="1"/>
-                    </group>
+                    <div class="alert alert-warning" role="alert"
+                         attrs="{'invisible': ['|', ('staff_users_choice', '!=', 'current_user'), ('share_link', '!=', False)]}">
+                        You need to be part of an appointment type to be able to share a personal link.
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         attrs="{'invisible': ['|', ('suggested_staff_user_ids', '!=', []), ('appointment_type_count', '!=', 1)]}">
+                        Impossible to share a link for an appointment type that has no user assigned.
+                    </div>
                 </sheet>
                 <footer>
                     <button string="Close" class="btn btn-secondary" special="cancel" data-hotkey="z"/>

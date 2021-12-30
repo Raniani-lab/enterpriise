@@ -77,7 +77,7 @@ class AppointmentCommon(MailCommon):
             'appointment_duration': 1,
             'assign_method': 'random',
             'category': 'website',
-            'location': 'Bxls Office',
+            'location_id': cls.staff_user_bxls.partner_id.id,
             'name': 'Bxls Appt Type',
             'max_schedule_days': 15,
             'min_cancellation_hours': 1,

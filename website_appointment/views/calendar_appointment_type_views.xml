@@ -11,7 +11,12 @@
                 <field name="website_url"/>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_card_header')]" position="before">
-                <div class="ribbon ribbon-top-right" attrs="{'invisible': [('is_published', '=', False)]}">
+                <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
+                    <span>Published</span>
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('o_appointment_kanban_card_ungrouped')]/div" position="before">
+                <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
                     <span>Published</span>
                 </div>
             </xpath>
@@ -21,8 +26,19 @@
                     <field name="is_published" widget='boolean_toggle'/>
                 </span>
             </xpath>
-            <xpath expr="//button[@name='action_share']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_published', '=', False)]}</attribute>
+            <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button" position="after">
+                <button name="open_website_url" string="View availabilities" type="object"
+                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
+                    View availabilities
+                </button>
+                <button name="action_toggle_published" string="Publish" type="object"
+                    class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', True), ('active', '=', False)]}">
+                    Publish
+                </button>
+                <button name="action_toggle_published" string="Unpublish" type="object"
+                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
+                    Unpublish
+                </button>
             </xpath>
         </field>
     </record>
@@ -38,6 +54,17 @@
             <xpath expr="//button[@name='action_customer_preview']" position="replace">
                 <field name="website_url" invisible="1"/>
                 <field name="is_published" widget="website_redirect_button"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="calendar_appointment_type_view_search" model="ir.ui.view">
+        <field name="name">calendar.appointment.type.search.inherit.website</field>
+        <field name="model">calendar.appointment.type</field>
+        <field name="inherit_id" ref="appointment.calendar_appointment_type_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_by_timezone']" position="after">
+                <separator />
+                <filter string="Published" name="group_by_is_published" context="{'group_by': 'is_published'}"/>
             </xpath>
         </field>
     </record>

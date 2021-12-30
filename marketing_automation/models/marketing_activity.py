@@ -13,6 +13,7 @@ from odoo import api, fields, models, _
 from odoo.fields import Datetime
 from odoo.exceptions import ValidationError, AccessError
 from odoo.osv import expression
+from odoo.tools.misc import clean_context
 
 _logger = logging.getLogger(__name__)
 
@@ -415,10 +416,8 @@ class MarketingActivity(models.Model):
     def _execute_email(self, traces):
         res_ids = [r for r in set(traces.mapped('res_id'))]
 
-        mailing = self.mass_mailing_id.with_context(
-            default_marketing_activity_id=self.ids[0],
-            active_ids=res_ids,
-        )
+        ctx = dict(clean_context(self._context), default_marketing_activity_id=self.ids[0], active_ids=res_ids)
+        mailing = self.mass_mailing_id.with_context(ctx)
 
         # we only allow to continue if the user has sufficient rights, as a sudo() follows
         if not self.env.is_superuser() and not self.user_has_groups('marketing_automation.group_marketing_automation_user'):

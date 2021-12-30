@@ -409,7 +409,7 @@ const DocumentsInspector = Widget.extend({
 
     _renderHeader() {
         if (this.shareAliases.length) {
-            this.$('.o_folder_description_alias').html(this.shareAliases[0].aliasName)
+            this.$('.o_folder_description_alias').text(this.shareAliases[0].aliasName)
         }
     },
     /**

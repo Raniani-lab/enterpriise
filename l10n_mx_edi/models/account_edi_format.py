@@ -369,7 +369,7 @@ class AccountEdiFormat(models.Model):
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted
 
         # == Optional check using the XSD ==
-        xsd_attachment = self.env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
+        xsd_attachment = self.sudo().env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
         xsd_datas = base64.b64decode(xsd_attachment.datas) if xsd_attachment else None
 
         res = {

@@ -850,7 +850,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         ImpSaldoInsoluto="0.00"
                                         MetodoDePagoDR="PUE"
                                         MonedaDR="USD"
-                                        TipoCambioDR="0.050498"
+                                        TipoCambioDR="0.050499"
                                         NumParcialidad="1"
                                         Serie="INV/2016/"/>
                                     <DoctoRelacionado
@@ -861,7 +861,7 @@ class TestEdiResults(TestMxEdiCommon):
                                         ImpSaldoInsoluto="0.00"
                                         MetodoDePagoDR="PUE"
                                         MonedaDR="USD"
-                                        TipoCambioDR="0.050498"
+                                        TipoCambioDR="0.050499"
                                         NumParcialidad="1"
                                         Serie="INV/2016/"/>
                                 </Pago>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models, fields, tools, _
 from odoo.tools.xml_utils import _check_with_xsd
+from odoo.tools.float_utils import float_round
 
 import logging
 import re
@@ -452,6 +453,7 @@ class AccountEdiFormat(models.Model):
                     invoice_rate = abs(invoice_line.amount_currency) / abs(invoice_line.balance)
                     amount_paid_invoice_curr = invoice_line.currency_id.round(partial.amount * invoice_rate)
                     exchange_rate = amount_paid_invoice_curr / amount_paid_invoice_comp_curr
+                    exchange_rate = float_round(exchange_rate, precision_digits=6, rounding_method='UP')
 
                 invoice_vals_list.append({
                     'invoice': invoice,

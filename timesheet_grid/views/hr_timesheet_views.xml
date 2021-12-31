@@ -184,12 +184,13 @@
                                 <field name="can_edit" invisible="1"/>
                                 <field name="validated" invisible="1"/>
                                 <field name="timer_start" invisible="1"/>
-                                <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" context="{'form_view_ref': 'project.project_project_view_form_simplified',}" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
+                                <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="task_with_hours"/>
+                                <field name="tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>
                             <group>
-                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
+                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="many2one_avatar_employee"/>
                                 <field name="date" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('id', '!=', False), '|', ('validated', '=', True), ('timer_start', '!=', False)]}" decoration-danger="unit_amount &gt; 24"/>
                             </group>
@@ -388,12 +389,17 @@
                     <filter name="validated" string="Validated" domain="[('validated', '=', True)]"/>
                     <separator/>
                 </xpath>
+                <xpath expr="//filter[@name='month']" position="after">
+                    <separator/>
+                    <filter string="Suspicious Durations" name="suspicious_durations" domain="['|', ('unit_amount', '&gt;', 24), ('unit_amount', '=', 0), ('date', '&lt;', context_today().strftime('%Y-%m-%d')), ('is_timer_running', '=', False)]"/>
+                </xpath>
                 <xpath expr="//filter[@name='mine']" position="after">
                     <filter name="my_team_timesheet" string="My Team" domain="[
                         '|', ('employee_id.timesheet_manager_id', '=', uid),
                             '|', ('employee_id.parent_id.user_id', '=', uid),
                                 '|', ('project_id.user_id', '=', uid), ('user_id', '=', uid)]"/>
                     <filter name="my_project" string="My Projects" domain="[('project_id.user_id', '=', uid)]" context="{'group_expand': False}"/>
+                    <filter name="my_tasks" string="My Tasks" domain="[('task_id.user_ids', 'in', uid)]"/>
                 </xpath>
             </field>
         </record>
@@ -509,12 +515,12 @@
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    No activities found. Let's start a new one!
+                    No timesheets found. Let's create one!
                 </p>
                 <p>
-                Track your working hours by projects every day and invoice this time to your customers.
+                Keep track of your working hours by project every day and bill your customers for that time.
               </p>
-              <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+              <p>Get our web/mobile apps to track your time from anywhere, even offline.</p>
                <div>
                    <a href="http://www.odoo.com/app/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link d-none d-sm-inline-block">
                         <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
@@ -593,12 +599,12 @@
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    No activities found. Let's start a new one!
+                    No timesheets found. Let's create one!
                 </p>
                 <p>
-                Track your working hours by projects every day and invoice this time to your customers.
+                Keep track of your working hours by project every day and bill your customers for that time.
               </p>
-              <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+              <p>Get our web/mobile apps to track your time from anywhere, even offline.</p>
                <div>
                    <a href="http://www.odoo.com/app/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link d-none d-sm-inline-block">
                         <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>

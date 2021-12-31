@@ -17,7 +17,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
                 this.widget._updateRequiredField();
                 const project = this.widget.projectId || false;
                 await this.widget.projectMany2one.reinitialize(project);
-                this.widget.taskMany2one.field.domain = [['project_id', '=?', project]];
+                this.widget.taskMany2one.field.domain = [['project_id', '=?', project], ['project_id', '!=', false]];
                 const task = this.widget.taskId || false;
                 await this.widget.taskMany2one.reinitialize(task);
             } else if (nextProps.widgetArgs[2]) {

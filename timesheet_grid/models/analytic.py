@@ -934,6 +934,7 @@ class AnalyticLine(models.Model):
 
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
             return expression.AND([domain, ['|', ('employee_id.timesheet_manager_id', '=', self.env.user.id),
+                      '|', ('employee_id', 'in', self.env.user.employee_id.subordinate_ids.ids),
                       '|', ('employee_id.parent_id.user_id', '=', self.env.user.id),
                       '|', ('project_id.user_id', '=', self.env.user.id), ('user_id', '=', self.env.user.id)]])
         return domain

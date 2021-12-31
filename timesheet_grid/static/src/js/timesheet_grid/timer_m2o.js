@@ -53,7 +53,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
             relation: 'project.task',
             type: 'many2one',
             value: this.taskId,
-            domain: this.projectId ? [['project_id', '=', this.projectId]] : []
+            domain: this.projectId ? [['project_id', '=', this.projectId]] : [['project_id', '!=', false]]
         }]);
     },
     /**
@@ -73,9 +73,9 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         const projectMany2one = new Many2One(this, 'project_id', projectRecord, {
             attrs: {
                 placeholder: placeholderProject,
+                options: { no_create_edit: true },
             },
             noOpen: true,
-            noCreate: true,
             mode: 'edit',
             required: true,
         });
@@ -88,11 +88,12 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         const taskMany2one = new TaskWithHours(this, 'task_id', taskRecord, {
             attrs: {
                 placeholder: placeholderTask,
+                options: { no_create_edit: true },
             },
             noOpen: true,
-            noCreate: true,
             mode: 'edit',
         });
+        taskMany2one.field['context'] = this.projectId ? { 'default_project_id': this.projectId } : {};
         this._registerWidget(this.task, 'task_id', taskMany2one);
         await taskMany2one.appendTo(this.$('.timer_task_id'));
         this.taskMany2one = taskMany2one;
@@ -130,11 +131,9 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
             if (project !== newId) {
                 this.projectId = newId;
                 this.taskId = false;
-
-                this.taskMany2one.value = [];
-                this.taskMany2one.m2o_value = this.taskMany2one._formatValue([]);
                 this.taskMany2one._render();
                 this.taskMany2one.field.domain = [['project_id', '=?', newId]];
+                this.taskMany2one.field.context = newId ? {'default_project_id': newId} : {};
                 this.trigger_up('timer-edit-project', {'projectId': newId});
                 this._updateRequiredField();
             }

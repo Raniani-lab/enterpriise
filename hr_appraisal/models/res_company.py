@@ -83,8 +83,8 @@ class ResCompany(models.Model):
                     '&',
                     '&',
                     ('appraisal_count', '=', 0),
-                    (start_date_field, '>', current_date - relativedelta(months=self.duration_after_recruitment + 1)),
-                    (start_date_field, '<=', current_date - relativedelta(months=self.duration_after_recruitment)),
+                    (start_date_field, '>', current_date - relativedelta(months=self.duration_after_recruitment + 1, day=1)),
+                    (start_date_field, '<=', current_date - relativedelta(months=self.duration_after_recruitment, day=31)),
                 '|', # First Appraisal
                     '&',
                     ('appraisal_count', '=', 1),

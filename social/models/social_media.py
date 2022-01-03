@@ -34,6 +34,8 @@ class SocialMedia(models.Model):
     can_link_accounts = fields.Boolean('Can link accounts ?', default=True, readonly=True, required=True,
         help="Controls if we can link accounts or not.")
     stream_type_ids = fields.One2many('social.stream.type', 'media_id', string="Stream Types")
+    max_post_length = fields.Integer('Max Post Length',
+        help="Set a maximum number of characters can be posted in post. 0 for no limit.")
 
     def _compute_accounts_count(self):
         for media in self:

@@ -14,7 +14,10 @@
                             <t t-else="">11m</t>
                         </span>
                     </div>
-                    <div class="o_social_preview_message" t-esc="message"/>
+                    <div class="d-table">
+                        <span t-esc="message[:limit]" class="o_social_preview_message"/>
+                        <span t-if="is_twitter_post_limit_exceed" t-esc="message[limit:]" class="o_social_preview_message o_social_twitter_message_exceeding"/>
+                    </div>
                     <div class="o_social_stream_post_image d-flex rounded overflow-hidden">
                         <t t-foreach="images" t-as="image">
                             <a t-if="image_index == 1 and len(images) > 2" class="o_social_stream_post_image_more position-relative d-flex ml-1 mt-2">

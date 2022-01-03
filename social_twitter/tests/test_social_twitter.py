@@ -10,6 +10,7 @@ from unittest.mock import patch
 from odoo.addons.social_twitter.models.social_account import SocialAccountTwitter
 from odoo.addons.social_twitter.models.social_stream import SocialStreamTwitter
 from odoo.addons.social.tests.common import SocialCase
+from odoo.exceptions import ValidationError
 from odoo.tests import tagged
 from odoo.tools import mute_logger
 
@@ -203,3 +204,39 @@ class SocialTwitterCase(SocialCase):
         ]
         for message, ignore, expected in assert_results:
             self.assertEqual(self.env["social.live.post"]._remove_mentions(message, ignore), expected)
+
+    def test_tweet_post_message_counter(self):
+        message_to_post = '''
+            Odoo is a suite of business management software tools including,
+            for example, CRM, e-commerce🛍, billing, accounting, manufacturing,
+            warehouse, project management, and inventory management. The Community
+            version is a libre software, licensed under the GNU LGPLv3. The Enterprise
+            version has proprietary extra features and services. The source code for
+            the framework and core ERP modules is curated by the Belgium-based Odoo S.A.
+            Odoo is available for both on-premise and ready to use SaaS environment.
+        '''
+        social_media = self._get_social_media()
+        social_post = self.env['social.post'].create({
+            'message': message_to_post,
+            'account_ids': self.social_stream_1.account_id,
+        })
+        counter_message = f'{len(message_to_post)} / {social_media.max_post_length} characters to fit in a Tweet'
+
+        # When posting a message exceeding the Twitter limit (280 characters), verify that the
+        # preview properly shows that we exceed the limit (with highlighted exceeding text).
+        self.assertEqual(social_post.twitter_post_limit_message, counter_message)
+        self.assertTrue('o_social_twitter_message_exceeding' in social_post.twitter_preview)
+
+        with self.assertRaises(ValidationError):
+            social_post.action_post()  # Should raise ValidationError when trying to post tweet having content exceeding the limit
+
+        social_media.max_post_length = 0
+        social_post._compute_twitter_post_limit_message()
+        social_post._compute_twitter_preview()
+        counter_message = f'{len(message_to_post)} / {social_media.max_post_length} characters to fit in a Tweet'
+
+        self.assertEqual(social_post.twitter_post_limit_message, counter_message)
+        # Preview should not have Exceed Content when Max content length is satisfied
+        self.assertTrue('o_social_twitter_message_exceeding' not in social_post.twitter_preview)
+
+        social_post.action_post()  # Should not raise ValidationError when trying to post tweet having proper content length

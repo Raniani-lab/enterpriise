@@ -5,6 +5,7 @@
             <field name="name">Twitter</field>
             <field name="media_type">twitter</field>
             <field name="media_description">Manage your Twitter accounts and schedule tweets</field>
+            <field name="max_post_length">280</field>
             <field name="image" type="base64" file="social_twitter/static/src/img/twitter.svg"/>
         </record>
 

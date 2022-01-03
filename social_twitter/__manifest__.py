@@ -5,7 +5,7 @@
     'name': 'Social Twitter',
     'category': 'Marketing/Social Marketing',
     'summary': 'Manage your Twitter accounts and schedule tweets',
-    'version': '1.0',
+    'version': '1.1',
     'description': """Manage your Twitter accounts and schedule tweets""",
     'depends': ['social', 'iap'],
     'data': [

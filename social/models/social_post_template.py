@@ -50,6 +50,7 @@ class SocialPostTemplate(models.Model):
                                    help="The accounts on which this post will be published.",
                                    compute='_compute_account_ids', store=True, readonly=False)
     has_active_accounts = fields.Boolean('Are Accounts Available?', compute='_compute_has_active_accounts')
+    message_length = fields.Integer(compute='_compute_message_length')
 
     @api.constrains('message')
     def _check_message_not_empty(self):
@@ -68,6 +69,12 @@ class SocialPostTemplate(models.Model):
         """See field 'help' for more information."""
         for post in self:
             post.image_urls = json.dumps(['web/image/%s' % image_id.id for image_id in post.image_ids if image_id.id])
+
+    @api.depends('message')
+    def _compute_message_length(self):
+        for post in self:
+            # compute length of message to check it while posting the message
+            post.message_length = len(post.message or "")
 
     def _compute_account_ids(self):
         """If there are less than 3 social accounts available, select them all by default."""

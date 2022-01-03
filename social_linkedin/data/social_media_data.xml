@@ -5,6 +5,7 @@
             <field name="name">LinkedIn</field>
             <field name="media_type">linkedin</field>
             <field name="media_description">Manage your LinkedIn account and schedule posts</field>
+            <field name="max_post_length">3000</field>
             <field name="image" type="base64" file="social_linkedin/static/src/img/linkedin.svg"/>
         </record>
 

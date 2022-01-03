@@ -1596,7 +1596,7 @@ class PlanningRole(models.Model):
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name', required=True, translate=True)
     color = fields.Integer("Color", default=_get_default_color)
-    employee_ids = fields.Many2many('hr.employee', string='Resources')
+    employee_ids = fields.Many2many('hr.employee', string='Human Resources')
     sequence = fields.Integer()
 
     @api.returns('self', lambda value: value.id)

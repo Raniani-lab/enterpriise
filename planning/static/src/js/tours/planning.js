@@ -10,6 +10,7 @@ odoo.define('planning.tour', function (require) {
         sequence: 120,
         'skip_enabled': false,
 	url: '/web',
+        rainbowManMessage: _t("<b>Congratulations!</b>, You are now a master of planning."),
     }, [{
         trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
         content: _t("Let's start managing your employees' schedule!"),
@@ -40,7 +41,7 @@ odoo.define('planning.tour', function (require) {
         position: "bottom",
     },{
         trigger: "button[name='action_send']",
-        content: _t("<b>Publish & send</b> your planning to make it available to your employees."),
+        content: _t("<b>Publish & send</b> your employee's planning."),
         position: "bottom",
     },
     ]);

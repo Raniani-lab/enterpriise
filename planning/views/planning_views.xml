@@ -129,7 +129,7 @@
         <field name="name">planning.slot.kanban</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_dashboard" sample="1">
+            <kanban class="o_kanban_dashboard" group_create="false" sample="1">
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="resource_id"/>
@@ -485,7 +485,14 @@
             <search>
                 <field name="name" />
                 <field name="employee_ids"/>
+                <filter name="my_roles" string="My Roles" domain="[('employee_ids.user_id', '=', uid)]"/>
+                <filter name="my_team" string="My Team" domain="[('employee_ids.parent_id.user_id', '=', uid)]"/>
+                <filter name="my_department" string="My Department" domain="[('employee_ids.member_of_department', '=', True)]"/>
+                <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group string="Group By">
+                    <filter name="group_by_resource" string="Human Resources" context="{'group_by': 'employee_ids'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -519,7 +526,7 @@
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
             </p><p>
-                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
+                Find here your planning. Assign yourself open shifts that match your roles, or indicate your unavailability.
             </p>
         </field>
     </record>
@@ -548,7 +555,7 @@
                 No shifts found. Let's create one!
             </p>
             <p>
-                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
+                Schedule your human and material resources across roles, projects and sales orders.
             </p>
         </field>
     </record>
@@ -570,7 +577,7 @@
                 No shifts found. Let's create one!
             </p>
             <p>
-                Shifts are periods allocated to your employees for a specific role. Together, they constitute your employees' planning.
+                Schedule your human and material resources across roles, projects and sales orders.
             </p>
         </field>
     </record>
@@ -599,7 +606,7 @@
                 No roles found. Let's create one!
             </p>
             <p>
-                Define the different roles filled by your employees.
+                Define the roles that your employees perform so you can assign the right people to the right shifts.
             </p>
         </field>
     </record>
@@ -614,7 +621,7 @@
                 No shift templates found. Let's create one!
             </p>
             <p>
-                Encode your shifts in one click by using templates.
+                Make encoding shifts easy with templates.
             </p>
         </field>
     </record>
@@ -702,7 +709,7 @@
 
         <menuitem
             id="planning_menu_settings_resource"
-            name="Resources"
+            name="Material Resources"
             parent="planning_menu_settings"
             sequence="15"
             action="planning_action_resources"

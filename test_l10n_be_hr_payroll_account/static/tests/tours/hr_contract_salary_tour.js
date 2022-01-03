@@ -145,7 +145,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Unchoose a car",
             trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
-            extra_trigger: 'input[name="Gross"][value="2675.96"]',
+            extra_trigger: 'input[name="Gross"][value="2675.63"]',
             run: function (actions) {
                 actions.click(this.$anchor);
                 this.$anchor.trigger('blur');

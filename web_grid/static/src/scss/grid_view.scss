@@ -183,6 +183,11 @@ $grid-pill-height: 3rem;
                 text-align: left;
             }
             tr:first-child {
+                font-weight: bold;
+                background-color: rgba($o-brand-secondary, 0.15);
+                 &:hover {
+                    background-color: rgba($o-brand-secondary, 0.30);
+                }
                 th {
                     padding-left: $table-cell-padding-sm;
                     white-space: nowrap;

@@ -261,6 +261,7 @@
                 <separator/>
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
                 <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
+                <filter name="publication_warning" string="To Resend" domain="[('publication_warning', '=', True), ('overlap_slot_count', '=', 0)]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
                 <filter name="future" string="Future" domain="[('start_datetime', '>=', time.strftime('%Y-%m-%d 00:00:00'))]" />
                 <filter name="past" string="Past" domain="[('start_datetime', '&lt;=', time.strftime('%Y-%m-%d 23:59:59'))]" />

@@ -538,10 +538,10 @@ class Planning(models.Model):
                                                                                      slot.previous_template_id,
                                                                                      slot.template_reset)
 
-    @api.depends('start_datetime', 'end_datetime', 'resource_id')
+    @api.depends('start_datetime', 'end_datetime', 'resource_id', 'state')
     def _compute_publication_warning(self):
-        with_warning = self.filtered(lambda t: t.resource_id and t.state == 'published')
-        with_warning.update({'publication_warning': True})
+        for slot in self:
+            slot.publication_warning = slot.resource_id and slot.state == 'published'
 
     def _company_working_hours(self, start, end):
         company = self.company_id or self.env.company

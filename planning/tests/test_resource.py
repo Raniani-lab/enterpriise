@@ -54,8 +54,11 @@ class TestPlanningResource(TestCommonPlanning):
         self.assertEqual(slot_a.state, 'draft')
 
         slot_a.action_publish()
-        self.assertFalse(slot_a.publication_warning)
+        self.assertTrue(slot_a.publication_warning)
         self.assertEqual(slot_a.state, 'published')
+
+        slot_a.resource_id = False
+        self.assertFalse(slot_a.publication_warning)
 
         slot_a.resource_id = self.resource_bert
         self.assertTrue(slot_a.publication_warning)

@@ -1599,6 +1599,15 @@ class PlanningRole(models.Model):
     employee_ids = fields.Many2many('hr.employee', string='Resources')
     sequence = fields.Integer()
 
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        self.ensure_one()
+        if default is None:
+            default = {}
+        if not default.get('name'):
+            default['name'] = _('%s (copy)', self.name)
+        return super().copy(default=default)
+
 
 class PlanningPlanning(models.Model):
     _name = 'planning.planning'

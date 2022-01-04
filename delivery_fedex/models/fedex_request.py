@@ -45,7 +45,6 @@ class FedexRequest():
     def __init__(self, debug_logger, request_type="shipping", prod_environment=False, ):
         self.debug_logger = debug_logger
         self.hasCommodities = False
-        self.hasOnePackage = False
 
         wsdl_folder = 'prod' if prod_environment else 'test'
         if request_type == "shipping":
@@ -147,31 +146,27 @@ class FedexRequest():
         # ask Fedex to include our preferred currency in the response
         self.RequestedShipment.RateRequestTypes = 'PREFERRED'
 
-    def set_master_package(self, total_weight, package_count, master_tracking_id=False):
-        self.RequestedShipment.TotalWeight.Value = total_weight
+    def set_master_package(self, weight, package_count, master_tracking_id=False):
+        self.RequestedShipment.TotalWeight.Value = weight
         self.RequestedShipment.PackageCount = package_count
         if master_tracking_id:
             self.RequestedShipment.MasterTrackingId = self.factory.TrackingId()
             self.RequestedShipment.MasterTrackingId.TrackingIdType = 'FEDEX'
             self.RequestedShipment.MasterTrackingId.TrackingNumber = master_tracking_id
 
-    def add_package(self, weight_value, package_code=False, package_height=0, package_width=0, package_length=0, sequence_number=False, mode='shipping'):
-        # TODO remove in master and change the signature of a public method
-        return self._add_package(weight_value=weight_value, package_code=package_code, package_height=package_height, package_width=package_width,
-                                 package_length=package_length, sequence_number=sequence_number, mode=mode, po_number=False, dept_number=False)
-
-    def _add_package(self, weight_value, package_code=False, package_height=0, package_width=0, package_length=0, sequence_number=False, mode='shipping', po_number=False, dept_number=False, reference=False):
+    # weight_value, package_code=False, package_height=0, package_width=0, package_length=0,
+    def add_package(self, carrier, delivery_package, sequence_number=False, mode='shipping', po_number=False, dept_number=False, reference=False):
         package = self.factory.RequestedPackageLineItem()
         package_weight = self.factory.Weight()
-        package_weight.Value = weight_value
+        package_weight.Value = carrier._fedex_convert_weight(delivery_package.weight, carrier.fedex_weight_unit)
         package_weight.Units = self.RequestedShipment.TotalWeight.Units
 
         package.PhysicalPackaging = 'BOX'
-        if package_code == 'YOUR_PACKAGING':
+        if delivery_package.packaging_type == 'YOUR_PACKAGING':
             package.Dimensions = self.factory.Dimensions()
-            package.Dimensions.Height = package_height
-            package.Dimensions.Width = package_width
-            package.Dimensions.Length = package_length
+            package.Dimensions.Height = delivery_package.dimension['height']
+            package.Dimensions.Width = delivery_package.dimension['width']
+            package.Dimensions.Length = delivery_package.dimension['length']
             # TODO in master, add unit in product packaging and perform unit conversion
             package.Dimensions.Units = "IN" if self.RequestedShipment.TotalWeight.Units == 'LB' else 'CM'
         if po_number:
@@ -195,8 +190,6 @@ class FedexRequest():
             package.GroupPackageCount = 1
         if sequence_number:
             package.SequenceNumber = sequence_number
-        else:
-            self.hasOnePackage = True
 
         if mode == 'rating':
             self.RequestedShipment.RequestedPackageLineItems.append(package)
@@ -227,14 +220,15 @@ class FedexRequest():
                                                          TransactionDetail=self.TransactionDetail,
                                                          Version=self.VersionId,
                                                          RequestedShipment=self.RequestedShipment)
+
             if (self.response.HighestSeverity != 'ERROR' and self.response.HighestSeverity != 'FAILURE'):
                 if not getattr(self.response, "RateReplyDetails", False):
                     raise Exception("No rating found")
                 for rating in self.response.RateReplyDetails[0].RatedShipmentDetails:
                     formatted_response['price'][rating.ShipmentRateDetail.TotalNetFedExCharge.Currency] = float(rating.ShipmentRateDetail.TotalNetFedExCharge.Amount)
-                if len(self.response.RateReplyDetails[0].RatedShipmentDetails) == 1:
-                    if 'CurrencyExchangeRate' in self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail and self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail['CurrencyExchangeRate']:
-                        formatted_response['price'][self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail.CurrencyExchangeRate.FromCurrency] = float(self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail.TotalNetFedExCharge.Amount) / float(self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail.CurrencyExchangeRate.Rate)
+                    if len(self.response.RateReplyDetails[0].RatedShipmentDetails) == 1:
+                        if 'CurrencyExchangeRate' in self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail and self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail['CurrencyExchangeRate']:
+                            formatted_response['price'][self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail.CurrencyExchangeRate.FromCurrency] = float(self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail.TotalNetFedExCharge.Amount) / float(self.response.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail.CurrencyExchangeRate.Rate)
             else:
                 errors_message = '\n'.join([("%s: %s" % (n.Code, n.Message)) for n in self.response.Notifications if (n.Severity == 'ERROR' or n.Severity == 'FAILURE')])
                 formatted_response['errors_message'] = errors_message
@@ -323,31 +317,29 @@ class FedexRequest():
 
         self.RequestedShipment.CustomsClearanceDetail.DocumentContent = document_content
 
-    def commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
-                    commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
-                    commodity_quantity_units, commodity_harmonized_code):
+    def commodities(self, carrier, delivery_commodity, commodity_currency):
         self.hasCommodities = True
         commodity = self.factory.Commodity()
         commodity.UnitPrice = self.factory.Money()
         commodity.UnitPrice.Currency = commodity_currency
-        commodity.UnitPrice.Amount = commodity_amount
-        commodity.NumberOfPieces = commodity_number_of_piece
-        commodity.CountryOfManufacture = commodity_country_of_manufacture
+        commodity.UnitPrice.Amount = delivery_commodity.monetary_value
+        commodity.NumberOfPieces = '1'
+        commodity.CountryOfManufacture = delivery_commodity.country_of_origin
 
         commodity_weight = self.factory.Weight()
-        commodity_weight.Value = commodity_weight_value
-        commodity_weight.Units = commodity_weight_units
+        commodity_weight.Value = carrier._fedex_convert_weight(delivery_commodity.product_id.weight * delivery_commodity.qty, carrier.fedex_weight_unit)
+        commodity_weight.Units = carrier.fedex_weight_unit
 
         commodity.Weight = commodity_weight
-        commodity.Description = re.sub(r'[\[\]<>;={}"|]', '', commodity_description)
-        commodity.Quantity = commodity_quantity
-        commodity.QuantityUnits = commodity_quantity_units
+        commodity.Description = re.sub(r'[\[\]<>;={}"|]', '', delivery_commodity.product_id.name)
+        commodity.Quantity = delivery_commodity.qty
+        commodity.QuantityUnits = 'EA'
         customs_value = self.factory.Money()
         customs_value.Currency = commodity_currency
-        customs_value.Amount = commodity_quantity * commodity_amount
+        customs_value.Amount = delivery_commodity.qty * delivery_commodity.monetary_value
         commodity.CustomsValue = customs_value
 
-        commodity.HarmonizedCode = commodity_harmonized_code
+        commodity.HarmonizedCode = delivery_commodity.product_id.hs_code or ''
 
         self.listCommodities.append(commodity)
 
@@ -388,14 +380,13 @@ class FedexRequest():
                 else:
                     formatted_response['date'] = date.today()
 
-                if (self.RequestedShipment.RequestedPackageLineItems.SequenceNumber == self.RequestedShipment.PackageCount) or self.hasOnePackage:
-                    if 'ShipmentRating' in self.response.CompletedShipmentDetail and self.response.CompletedShipmentDetail.ShipmentRating:
-                        for rating in self.response.CompletedShipmentDetail.ShipmentRating.ShipmentRateDetails:
-                            formatted_response['price'][rating.TotalNetFedExCharge.Currency] = float(rating.TotalNetFedExCharge.Amount)
-                            if 'CurrencyExchangeRate' in rating and rating.CurrencyExchangeRate:
-                                formatted_response['price'][rating.CurrencyExchangeRate.FromCurrency] = float(rating.TotalNetFedExCharge.Amount / rating.CurrencyExchangeRate.Rate)
-                    else:
-                        formatted_response['price']['USD'] = 0.0
+                if 'ShipmentRating' in self.response.CompletedShipmentDetail and self.response.CompletedShipmentDetail.ShipmentRating:
+                    for rating in self.response.CompletedShipmentDetail.ShipmentRating.ShipmentRateDetails:
+                        formatted_response['price'][rating.TotalNetFedExCharge.Currency] = float(rating.TotalNetFedExCharge.Amount)
+                        if 'CurrencyExchangeRate' in rating and rating.CurrencyExchangeRate:
+                            formatted_response['price'][rating.CurrencyExchangeRate.FromCurrency] = float(rating.TotalNetFedExCharge.Amount / rating.CurrencyExchangeRate.Rate)
+                else:
+                    formatted_response['price']['USD'] = 0.0
                 if 'MasterTrackingId' in self.response.CompletedShipmentDetail:
                     formatted_response['master_tracking_id'] = self.response.CompletedShipmentDetail.MasterTrackingId.TrackingNumber
 

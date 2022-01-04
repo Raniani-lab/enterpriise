@@ -45,6 +45,8 @@
                 t-att-data-item_type="item_type['item_type']"
                 t-att-data-tip="item_type['tip']"
                 t-att-data-placeholder="item_type['placeholder']"
+                t-att-data-default-height="item_type['default_height']"
+                t-att-data-default-width="item_type['default_width']"
                 t-att-data-auto_field="item_type['auto_field']"/>
         </t>
     </template>

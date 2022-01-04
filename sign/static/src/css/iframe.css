@@ -348,14 +348,14 @@ textarea.o_sign_sign_item {
     position: relative;
     background: inherit;
     border: 0px;
-    font-size: 0.5em;
+    font-size: 1em;
     text-align: center;
     vertical-align: middle;
     width: calc(100% - 54px);
 }
 
 .o_sign_editable_config_area{
-    font-size: 0.2em !important;
+    font-size: 0.4em !important;
 }
 
 .o_sign_drag_helper {

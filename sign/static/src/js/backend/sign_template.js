@@ -58,14 +58,6 @@ PDFIframe.include({
     });
 
     $dropdown.find(".o_edit_mode_dropdown_item").on("click", (e) => {
-      function getSignItemSize(type) {
-        const signatureWidth = 0.15;
-        const defaultWidth = 0.1;
-        const defaultHeight = 0.05;
-        return type === "signature" || type === "text"
-          ? [signatureWidth, defaultHeight]
-          : [defaultWidth, defaultHeight];
-      }
       const posX =
         ($(e.target).offset().left -
           $pageElement.find(".textLayer").offset().left) /
@@ -75,7 +67,7 @@ PDFIframe.include({
           $pageElement.find(".textLayer").offset().top) /
         $pageElement.innerHeight();
       const type = $(e.target).attr("type");
-      const [width, height] = getSignItemSize(self.types[type].item_type);
+      const [width, height] = [self.types[type].defaultWidth, self.types[type].defaultHeight];
       const signItem = self.createSignItem(
         self.types[type],
         true,

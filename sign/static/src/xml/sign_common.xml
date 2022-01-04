@@ -22,7 +22,7 @@
         </t>
     </t>
 
-    <div t-name="sign.sign_item_configuration" t-attf-class="o_sign_config_area {{ isSignItemEditable &amp;&amp; type == 'text' &amp;&amp;'o_sign_editable_config_area' }}">
+    <div t-name="sign.sign_item_configuration" t-attf-class="o_sign_config_area {{ isSignItemEditable &amp;&amp; type == 'text' ? 'o_sign_editable_config_area' : '' }}">
          <div class="o_sign_config_handle" aria-label="Signature configuration" title="Signature configuration">
             <span class="fa fa-arrows" role="img"/>
         </div>

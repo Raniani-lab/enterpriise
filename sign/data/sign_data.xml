@@ -54,6 +54,7 @@
         </t>
     </tr>
 </table>
+        <t t-out="user_signature"/>
     </template>
 
     <template id="sign_template_mail_refused">

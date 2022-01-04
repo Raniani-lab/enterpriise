@@ -1,25 +1,10 @@
-.cursor-pointer {
-    cursor: pointer;
-}
 
 /* So that the displayed amount doesn't show in multiple line */
-.pos .partner-line td.partner-due,
+.pos .partner-line div.partner-due,
 .pos .partner-list thead th.partner-due {
     white-space:nowrap;
 }
 
-.pos .partner-line td.partner-due i.fa {
+.pos .partner-line div.partner-due  i.fa {
     padding-left: 5px;
-}
-
-.pos .partner-line.highlight td.partner-due {
-    text-decoration: underline;
-}
-
-.partner-line-open-link a {
-    padding: 0px 10px;
-}
-
-.partner-line-open-link.highlight a {
-    color: white;
 }

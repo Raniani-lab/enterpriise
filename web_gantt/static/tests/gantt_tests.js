@@ -2349,7 +2349,7 @@ document.createElement("a").classList.contains
     });
 
     QUnit.test('resize pill in year mode', async function (assert) {
-        assert.expect(1);
+        assert.expect(2);
 
         const gantt = await createView({
             View: GanttView,
@@ -2365,6 +2365,17 @@ document.createElement("a").classList.contains
 
         assert.containsOnce(gantt, '.o_gantt_pill.ui-resizable',
             "in the year mode the pill should be resizable after mouse enter");
+
+        var pillWidth = gantt.$('.o_gantt_pill').width();
+        var cellWidth = gantt.$('.o_gantt_cell:first').width() + 4;
+        await testUtils.dom.dragAndDrop(
+            gantt.$('.ui-resizable-e'),
+            gantt.$('.ui-resizable-e'),
+            { position: { left: 2 * cellWidth, top: 0 } }
+        );
+
+        assert.strictEqual(pillWidth , gantt.$('.o_gantt_pill').width(),
+            "the pill should have the same width as before the resize");
 
         gantt.destroy();
     });

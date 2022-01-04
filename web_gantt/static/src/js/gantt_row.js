@@ -425,7 +425,7 @@ var GanttRow = Widget.extend({
                         var widthMonthStop = (diffMonthStop / pill.stopDate.daysInMonth());
 
                         var width = Math.max((widthMonthStart + widthMonthStop), (2 / 30)) * 100;
-                        if (monthsDiff > 2) { // start and end months are already covered
+                        if (monthsDiff > 1) { // start and end months are already covered
                             // If the pill spans more than 2 months, we know
                             // that the middle months are fully covered
                             monthsDiff = Math.floor(monthsDiff)

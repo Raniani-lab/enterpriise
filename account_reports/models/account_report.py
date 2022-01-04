@@ -1457,6 +1457,12 @@ class AccountReport(models.AbstractModel):
             'options': options,
             'context': self.env.context,
             'model': self,
+            'table_end': markupsafe.Markup('''
+                </tbody></table>
+                <div style="page-break-after: always"></div>
+                <table class="o_account_reports_table table-hover">
+            '''),
+            'table_start': markupsafe.Markup('<tbody>')
         }
 
     def _format_lines_for_display(self, lines, options):

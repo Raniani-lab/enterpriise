@@ -139,8 +139,13 @@
                     <t t-set="domainClass" t-value="'o_account_reports_domain_line_'+str(line['level'])"/>
                 </t>
 
+                <t t-if="line.get('page_break') and context.get('print_mode')">
+                    <t t-out="table_end"/>
+                    <t t-call="{{model._get_templates()['main_table_header_template']}}"/>
+                    <t t-out="table_start"/>
+                </t>
+
                 <tr t-attf-class="#{trclass} #{line.get('class', '')} #{'o_js_account_report_parent_row_unfolded' if line.get('unfolded', False) else ''}"
-                    t-att-data-pagebreak="'before' if (line.get('page_break') and context.get('print_mode')) else None"
                     t-att-data-parent-id="line.get('parent_id', False)"
                     t-att-style="line.get('style', '')">
                     <td t-att-data-id="line['id']"

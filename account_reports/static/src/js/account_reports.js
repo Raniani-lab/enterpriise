@@ -1045,7 +1045,8 @@ var accountReportsWidget = AbstractAction.extend({
                 .then(function(result){
                     $(line).parent('tr').replaceWith(result);
                     self._add_line_classes();
-                    self.$('.js_account_report_foldable').each(function() {
+                    var displayed_table = $('.o_account_reports_table:not(#table_header_clone)')
+                    displayed_table.find('.js_account_report_foldable').each(function() {
                         if(!$(this).data('unfolded')) {
                             self.fold($(this));
                         }

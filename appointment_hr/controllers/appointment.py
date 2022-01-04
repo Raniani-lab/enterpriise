@@ -3,10 +3,14 @@
 
 import json
 
-from odoo.addons.appointment.controllers.main import Appointment
+from odoo.addons.appointment.controllers.appointment import Appointment
 from odoo.http import request
 
 class AppointmentHr(Appointment):
+
+    # ------------------------------------------------------------
+    # APPOINTMENT TYPE PAGE VIEW
+    # ------------------------------------------------------------
 
     def _get_filtered_staff_user_ids(self, appointment_type, filter_staff_user_ids=None, **kwargs):
         """ This method returns the ids of suggested users, ensuring retrocompatibility with previous routes.

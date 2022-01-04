@@ -2,12 +2,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _
-from odoo.addons.appointment.controllers.calendar import AppointmentController
+from odoo.addons.appointment.controllers.calendar_view import AppointmentCalendarView
 from odoo.exceptions import AccessError
 from odoo.http import request, route
 
 
-class AppointmentHrController(AppointmentController):
+class AppointmentHRCalendarView(AppointmentCalendarView):
+
+    # ------------------------------------------------------------
+    # APPOINTMENT JSON ROUTES FOR BACKEND
+    # ------------------------------------------------------------
 
     @route('/appointment/calendar_appointment_type/search_create_work_hours', type='json', auth='user')
     def appointment_search_create_work_hours_appointment_type(self):

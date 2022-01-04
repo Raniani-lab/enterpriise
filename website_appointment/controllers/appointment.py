@@ -6,15 +6,15 @@ from odoo import http
 from odoo.http import request
 from odoo.osv import expression
 
-from odoo.addons.appointment.controllers.main import Appointment
+from odoo.addons.appointment.controllers.appointment import Appointment
 from odoo.addons.website.controllers.main import QueryURL
 
 
 class WebsiteAppointment(Appointment):
 
-    #----------------------------------------------------------
-    # Appointment HTTP Routes
-    #----------------------------------------------------------
+    # ------------------------------------------------------------
+    # APPOINTMENT INDEX PAGE
+    # ------------------------------------------------------------
 
     @http.route()
     def calendar_appointments(self, page=1, **kwargs):
@@ -34,9 +34,9 @@ class WebsiteAppointment(Appointment):
         else:
             return super().calendar_appointments(page, **kwargs)
 
-    #----------------------------------------------------------
-    # Utility Methods
-    #----------------------------------------------------------
+
+    # Tools / Data preparation
+    # ------------------------------------------------------------
 
     def _prepare_appointments_cards_data(self, page, **kwargs):
         """

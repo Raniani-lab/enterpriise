@@ -46,10 +46,9 @@ class AppointmentPortal(portal.CustomerPortal):
             'responsible': 'user_id',
         }
 
-    @http.route([
-        '/my/appointments',
-        '/my/appointments/page/<int:page>',
-    ], type='http', auth='user', website=True)
+    @http.route(['/my/appointments',
+                 '/my/appointments/page/<int:page>',
+                ], type='http', auth='user', website=True)
     def portal_my_appointments(self, page=1, sortby=None, filterby=None, search=None, search_in='all', groupby='none', **kwargs):
         values = self._prepare_portal_layout_values()
         Appointment = request.env['calendar.event']

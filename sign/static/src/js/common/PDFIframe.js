@@ -107,7 +107,7 @@ export const PDFIframe = Widget.extend(
         _rej = reject;
       }).then(() => {
         // Init pinch event only after have the pdf loaded
-        PinchItemMixin.init({
+        PinchItemMixin.init.call(this, {
           $target: this.$el.find("#viewerContainer #viewer"),
           decreaseDistanceHandler: () => this.$("button#zoomIn").click(),
           increaseDistanceHandler: () => this.$("button#zoomOut").click(),

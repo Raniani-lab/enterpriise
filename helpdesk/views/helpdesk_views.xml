@@ -449,8 +449,11 @@
                 <separator/>
                 <filter string="Open" domain="[('stage_id.is_close', '=', False), ('stage_id.fold', '=', False)]" name="is_open"/>
                 <filter string="Closed" domain="['|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True)]" name="is_close"/>
-                <separator/>
-                <filter string="Rated Tickets" domain="[('rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
+                <separator />
+                <filter name="rating_satisfied" string="Satisfied" domain="[('rating_avg', '&gt;', 3.66)]"/>
+                <filter name="rating_okay" string="Okay" domain="[('rating_avg', '&lt;', 3.66), ('rating_avg', '&gt;=', 2.33)]"/>
+                <filter name="dissatisfied" string="Dissatisfied" domain="[('rating_avg', '&lt;', 2.33), ('rating_last_value', '!=', 0.0)]"/>
+                <filter name="no_rating" string="No Rating" domain="[('rating_last_value', '=', 0)]"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>
@@ -578,8 +581,8 @@
                 <field name="legend_normal"/>
                 <field name="legend_done"/>
                 <field name="use_rating"/>
-                <field name="rating_last_value"/>
-                <field name="rating_ids"/>
+                <field name="rating_count"/>
+                <field name="rating_avg"/>
                 <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger", "normal": "muted"}'/>
                 <templates>
                     <t t-name="kanban-box">
@@ -620,10 +623,10 @@
                                     <div class="oe_kanban_bottom_left">
                                         <field name="priority" widget="priority"/>
                                         <field name="activity_ids" widget="kanban_activity"/>
-                                        <b t-if="record.use_rating.raw_value and record.rating_ids.raw_value.length">
-                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_last_value.value == 5" title="Latest Rating: Satisfied" role="img" aria-label="Happy face"/>
-                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-if="record.rating_last_value.value == 3" title="Latest Rating: Okay" role="img" aria-label="Neutral face"/>
-                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-frown-o text-danger" t-if="record.rating_last_value.value == 1" title="Latest Rating: Dissatisfied" role="img" aria-label="Sad face"/>
+                                        <b t-if="record.use_rating.raw_value and record.rating_count.raw_value &gt; 0">
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-frown-o text-danger" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
                                         </b>
                                     </div>
                                     <div class="oe_kanban_bottom_right">

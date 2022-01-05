@@ -133,16 +133,16 @@
                             </a>
                         </td>
                         <td t-if="widget.rating_enable"
-                            title="Today Customer Satisfaction"
+                            title="Today Average Rating"
                             t-att-class="'o_dashboard_action ' + demo_class + ((widget.values and widget.values['helpdesk_target_rating'] and widget.values['helpdesk_target_rating'] &lt;= widget.values['today']['rating'])?'o_main':'o_secondary')"
                             name="action_view_rating_today"
                             type="object"
                             t-attr-show_demo="{{widget.show_demo}}">
                             <a href="#">
                                 <span class="o_highlight">
-                                    <t t-esc="widget._format_float(widget.values['today']['rating'])"/>%
+                                    <t t-esc="widget._format_float(widget.values['today']['rating'])"/> %
                                 </span><br/>
-                                Customer Satisfaction
+                                Average Rating
                             </a>
                         </td>
                     </tr>
@@ -188,7 +188,7 @@
                             </span>
                         </td>
                         <td t-att-class="demo_class + 'o_secondary'" t-if="widget.rating_enable">
-                            <span t-att-class="(widget.show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_rating' t-att-value="widget.values['helpdesk_target_rating'] ? widget._format_float(widget.values['helpdesk_target_rating']) : undefined" t-att-title=" widget.show_demo ? 'Customer Satisfaction daily target' : 'Click to set'">
+                            <span t-att-class="(widget.show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_rating' t-att-value="widget.values['helpdesk_target_rating'] ? widget._format_float(widget.values['helpdesk_target_rating']) : undefined" t-att-title=" widget.show_demo ? 'Average rating daily target' : 'Click to set'">
                                 <div t-if="widget.values['helpdesk_target_rating']" class="pl-4">
                                     <t t-esc="widget._format_float(widget.values['helpdesk_target_rating'])"/>%
                                     <i class="fa fa-pencil ml-1"/>

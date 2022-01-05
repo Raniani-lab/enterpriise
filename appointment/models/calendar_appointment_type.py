@@ -209,12 +209,9 @@ class CalendarAppointmentType(models.Model):
         # We use only the recurring slot if it's not a custom appointment type.
         if self.category != 'custom':
             # Regular recurring slots (not a custom appointment), generate necessary slots using configuration rules
-            for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == first_day.isoweekday()):
-                if slot.end_hour > first_day.hour + first_day.minute / 60.0:
-                    append_slot(first_day.date(), slot)
             slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
             for day in rrule.rrule(rrule.DAILY,
-                                dtstart=first_day.date() + timedelta(days=1),
+                                dtstart=first_day.date(),
                                 until=last_day.date(),
                                 byweekday=slot_weekday):
                 for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == day.isoweekday()):
@@ -438,11 +435,19 @@ class CalendarAppointmentType(models.Model):
 
         appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
-        first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
+
         appointment_duration_days = self.max_schedule_days
         unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique')
+
         if self.category == 'custom' and unique_slots:
+            # With custom appointment type, the first day should depend on the first slot datetime
+            start_first_slot = unique_slots[0].start_datetime
+            first_day_utc = start_first_slot if reference_date > start_first_slot else reference_date
+            first_day = requested_tz.fromutc(first_day_utc + relativedelta(hours=self.min_schedule_hours))
             appointment_duration_days = (unique_slots[-1].end_datetime - reference_date).days
+        else:
+            first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
+
         last_day = requested_tz.fromutc(reference_date + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)
@@ -452,6 +457,11 @@ class CalendarAppointmentType(models.Model):
             timezone,
             reference_date=reference_date
         )
+
+        # Return void list if there is no slots
+        if not slots:
+            return slots
+
         if not staff_user or staff_user in self.staff_user_ids:
             self._slots_available(slots, first_day.astimezone(pytz.UTC), last_day.astimezone(pytz.UTC), staff_user)
         total_nb_slots = len(slots)
@@ -459,7 +469,7 @@ class CalendarAppointmentType(models.Model):
 
         # Compute calendar rendering and inject available slots
         today = requested_tz.fromutc(reference_date)
-        start = today
+        start = slots[0][timezone][0] if slots else today
         locale = babel_locale_parse(get_lang(self.env).code)
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []

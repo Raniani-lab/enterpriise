@@ -31,7 +31,7 @@
         }
     }
 
-    &.o_search_hidden .o_home_menu_scrollable > div:first-child {
+    .o_home_menu_scrollable > div:first-child {
         margin-top: 10px;
         @include media-breakpoint-up(md) {
             margin-top: 90px;

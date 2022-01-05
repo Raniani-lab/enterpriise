@@ -22,9 +22,13 @@ export class StudioClientAction extends Component {
 
         this.menus = useService("menu");
         this.actionService = useService("action");
-        this.homeMenuProps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root"));
+        this.homeMenuProps = {
+            apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
+        };
         useBus(this.env.bus, "MENUS:APP-CHANGED", () => {
-            this.homeMenuProps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root"));
+            this.homeMenuProps = {
+                apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
+            };
             this.render();
         });
 

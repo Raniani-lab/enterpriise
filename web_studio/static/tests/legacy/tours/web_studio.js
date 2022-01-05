@@ -76,12 +76,23 @@ tour.register('web_studio_tests_tour', {
     // go back to the home menu
     trigger: '.o_menu_toggle.fa-th',
 }, {
-    // check that the menu exists
-    trigger: 'input.o_menu_search_input',
-    run: 'text ' + createdMenuString,
+    trigger: 'input.o_search_hidden',
+    // Open Command Palette
+    run: 'text ' + createdMenuString[0],
+}, {
+    trigger: '.o_command_palette_search input',
+    run: 'text ' + "/" + createdMenuString,
 }, {
     // search results should have been updated
-    extra_trigger: `.o_menuitem.o_focused:contains(${createdAppString} / ${createdMenuString})`,
+    extra_trigger: `.o_command.focused:contains(${createdAppString} / ${createdMenuString})`,
+    trigger: '.o_command_palette',
+    // Close the Command Palette
+    run: () => {
+        window.dispatchEvent(new KeyboardEvent('keydown', {
+            key: 'Escape',
+        }));
+    },
+}, {
     // enter Studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
 }, {
@@ -273,13 +284,17 @@ tour.register('web_studio_tests_tour', {
     extra_trigger: '.o_web_client:not(.o_in_studio)',
     trigger: '.o_menu_toggle.fa-th',
 }, {
-    trigger: 'input.o_menu_search_input',
-    run: 'text ' + createdMenuString,
+    trigger: 'input.o_search_hidden',
+    // Open Command Palette
+    run: 'text ' + createdMenuString[0],
+}, {
+    trigger: '.o_command_palette_search input',
+    run: 'text ' + "/" + createdMenuString,
 }, {
     // search results should have been updated
-    extra_trigger: `.o_menuitem.o_focused:contains(${createdAppString} / ${createdMenuString})`,
-    // cleans the search bar query
-    trigger: '.o_home_menu',
+    extra_trigger: `.o_command.focused:contains(${createdAppString} / ${createdMenuString})`,
+    trigger: '.o_command_palette',
+    // Close the Command Palette
     run: () => {
         window.dispatchEvent(new KeyboardEvent('keydown', {
             bubbles: true,
@@ -287,8 +302,8 @@ tour.register('web_studio_tests_tour', {
         }));
     },
 }, {
-    // go back again to the app (using keyboard)
     trigger: '.o_home_menu',
+    // go back again to the app (using keyboard)
     run: () => {
         window.dispatchEvent(new KeyboardEvent('keydown', {
             bubbles: true,

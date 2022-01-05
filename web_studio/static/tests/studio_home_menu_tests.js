@@ -157,7 +157,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.module("StudioHomeMenu");
 
     QUnit.test("simple rendering", async function (assert) {
-        assert.expect(21);
+        assert.expect(20);
 
         const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
 
@@ -169,7 +169,6 @@ QUnit.module("Studio", (hooks) => {
             studioHomeMenu.el.querySelector(".database_expiration_panel"),
             "Expiration panel should not be visible"
         );
-        assert.hasClass(studioHomeMenu.el, "o_search_hidden");
 
         // App list
         assert.containsOnce(studioHomeMenu.el, "div.o_apps");

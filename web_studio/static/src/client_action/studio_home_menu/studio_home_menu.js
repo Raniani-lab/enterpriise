@@ -47,12 +47,6 @@ export class StudioHomeMenu extends HomeMenu {
         this.el.classList.add("o_studio_home_menu");
     }
 
-    async willUpdateProps(nextProps) {
-        this.availableApps = this.state.query.length
-            ? this._filter(nextProps.apps)
-            : nextProps.apps;
-    }
-
     //--------------------------------------------------------------------------
     // Getters
     //--------------------------------------------------------------------------

@@ -20,7 +20,9 @@ export const homeMenuService = {
             setup() {
                 this.router = useService("router");
                 this.menus = useService("menu");
-                this.homeMenuProps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root"));
+                this.homeMenuProps = {
+                    apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
+                };
             }
             async mounted() {
                 const { breadcrumbs } = this.env.config;

@@ -253,7 +253,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'year': self.date_from.year,
             'month': str(self.date_from.month),
         })
-        with self.assertQueryCount(admin=10):
+        with self.assertQueryCount(admin=11):
             start_time = time.time()
             declaration_274_XX.action_generate_xml()
             # --- 0.04558062553405762 seconds ---
@@ -264,7 +264,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         declaration_281_10 = self.env['l10n_be.281_10'].with_context(allowed_company_ids=self.company.ids).create({
             'reference_year': str(self.date_from.year),
         })
-        with self.assertQueryCount(admin=9):
+        with self.assertQueryCount(admin=11):
             start_time = time.time()
             declaration_281_10.action_generate_xml()
             # --- 0.0810704231262207 seconds ---
@@ -287,7 +287,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_from': self.date_from + relativedelta(day=1, month=1),
             'date_to': self.date_from + relativedelta(day=31, month=12),
         })
-        with self.assertQueryCount(admin=24):
+        with self.assertQueryCount(admin=26):
             start_time = time.time()
             social_security_certificate.print_report()
             # --- 0.1080021858215332 seconds ---

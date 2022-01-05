@@ -3,6 +3,7 @@
 
 import base64
 import io
+import logging
 import zipfile
 
 from collections import defaultdict
@@ -12,9 +13,26 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.modules.module import get_resource_path
 
+_logger = logging.getLogger(__name__)
+
 # Sources:
 # - Technical Doc https://finances.belgium.be/fr/E-services/Belcotaxonweb/documentation-technique
 # - "Avis aux débiteurs" https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avis_aux_debiteurs#q2
+
+COUNTRY_CODES = {
+    'BE': '00000',
+    'ES': '00109',
+    'FR': '00111',
+    'GR': '00112',
+    'LU': '00113',
+    'DE': '00103',
+    'RO': '00124',
+    'IT': '00128',
+    'NL': '00129',
+    'TR': '00262',
+    'US': '00402',
+    'MA': 'O0354',
+}
 
 
 class L10nBe28110(models.Model):
@@ -64,7 +82,7 @@ class L10nBe28110(models.Model):
         xsd_schema_file_path = get_resource_path(
             'l10n_be_hr_payroll',
             'data',
-            '161-xsd-2020-20201216.xsd',
+            '161-xsd-2021-20211223.xsd',
         )
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
@@ -90,8 +108,9 @@ class L10nBe28110(models.Model):
 
     @api.model
     def _check_employees_configuration(self, employees):
-        if not all(emp.company_id and emp.company_id.street and emp.company_id.zip and emp.company_id.city and emp.company_id.phone and emp.company_id.vat for emp in employees):
-            raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
+        invalid_employees = employees.filtered(lambda e: not (e.company_id and e.company_id.street and e.company_id.zip and e.company_id.city and e.company_id.phone and e.company_id.vat))
+        if invalid_employees:
+            raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat") + '\n' + '\n'.join(invalid_employees.mapped('name')))
 
         invalid_employees = employees.filtered(
             lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city or not e.address_home_id.country_id)
@@ -105,6 +124,10 @@ class L10nBe28110(models.Model):
         if invalid_employees:
             raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(invalid_employees.mapped('name'))))
 
+        invalid_country_codes = employees.address_home_id.country_id.filtered(lambda c: c.code not in COUNTRY_CODES)
+        if invalid_country_codes:
+            raise UserError(_('Unsupported country code %s. Please contact an administrator.', ', '.join(invalid_country_codes.mapped('code'))))
+
     @api.model
     def _get_lang_code(self, lang):
         if lang == 'nl_NL':
@@ -117,51 +140,7 @@ class L10nBe28110(models.Model):
 
     @api.model
     def _get_country_code(self, country):
-        if country.code == 'FR':
-            return '00111'
-        elif country.code == 'LU':
-            return '00113'
-        elif country.code == 'DE':
-            return '00103'
-        elif country.code == 'NL':
-            return '00129'
-        elif country.code == 'US':
-            return '00402'
-        raise UserError(_('Unsupported country code %s. Please contact an administrator.', country.code))
-
-    @api.model
-    def _get_marital_code(self, marital):
-        codes = {
-            'single': '1',
-            'married': '2',
-            'cohabitant': '2',
-            'widower': '3',
-            'divorced': '4',
-        }
-        return codes.get(marital, '0')
-
-    @api.model
-    def _get_fiscal_status(self, employee):
-        if employee.marital in ['married', 'cohabitant']:
-            if employee.spouse_fiscal_status in ['high_income', 'high_pension']:
-                return '1'
-            if employee.spouse_fiscal_status == 'without_income':
-                return '2'
-            if employee.spouse_fiscal_status in ['low_pension', 'low_income']:
-                return '3'
-        return '0'  # single, widow, ...
-
-    @api.model
-    def _get_dependent_people(self, employee):
-        if not employee.other_dependent_people:
-            return 0
-        return employee.other_senior_dependent + employee.other_disabled_senior_dependent + self.other_juniors_dependent + self.other_disabled_juniors_dependent
-
-    @api.model
-    def _get_other_family_charges(self, employee):
-        if employee.dependent_children and employee.marital in ['single', 'widower']:
-            return 'X'
-        return ''
+        return COUNTRY_CODES[country.code]
 
     @api.model
     def _get_atn_nature(self, payslips):
@@ -222,7 +201,11 @@ class L10nBe28110(models.Model):
 
         belgium = self.env.ref('base.be')
         sequence = 0
+
         warrant_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+        holiday_n_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+        holiday_n1_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
+
         for employee in employee_payslips:
             is_belgium = employee.address_home_id.country_id == belgium
             payslips = employee_payslips[employee]
@@ -231,6 +214,11 @@ class L10nBe28110(models.Model):
             mapped_total = {
                 code: sum(all_line_values[code][p.id]['total'] for p in payslips)
                 for code in line_codes}
+
+            total_gross = mapped_total['GROSS']
+            warrant_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == warrant_structure)
+            holiday_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id in holiday_n_structure + holiday_n1_structure)
+            common_gross = total_gross - warrant_gross - holiday_gross
 
             sheet_values = {
                 'employee': employee,
@@ -245,37 +233,32 @@ class L10nBe28110(models.Model):
                 'f2016_postcodebelgisch': employee.address_home_id.zip if is_belgium else '0',
                 'employee_city': employee.address_home_id.city,
                 'f2018_landwoonplaats': '0' if is_belgium else self._get_country_code(employee.address_home_id.country_id),
-                'f2019_burgerlijkstand': self._get_marital_code(employee.marital),
-                'f2020_echtgenote': self._get_fiscal_status(employee),
-                'f2021_aantalkinderen': employee.children + employee.disabled_children_number,
-                'f2022_anderentlaste': self._get_dependent_people(employee),
-                'f2023_diverse': self._get_other_family_charges(employee),
-                'f2024_echtgehandicapt': 'H' if employee.disabled_spouse_bool else '',
-                'f2026_verkrghandicap': 'H' if employee.disabled else '',
                 'f2027_taalcode': self._get_lang_code(employee.address_home_id.lang),
                 'f2028_typetraitement': self.type_treatment,
                 'f2029_enkelopgave325': 0,
                 'f2112_buitenlandspostnummer': employee.address_home_id.zip if not is_belgium else '0',
                 'f2114_voornamen': employee.name,
-                'f10_2031_vermelding': 0,
+                'f10_2031_compensationwithstandards': 0,
+                'f10_2033_compensationwithdocuments': 0,
                 'f10_2034_ex': 0,
                 'f10_2035_verantwoordingsstukken': 0,
                 'f10_2036_inwonersdeenfr': 0,
-                'f10_2037_vergoedingkosten': 1,
-                'f10_2039_optiebuitvennoots': 0,
+                'f10_2037_vergoedingkosten': 0,
+                'f10_2038_seasonalworker': 0,
+                'f10_2039_optiebuitvennoots': '0',
                 'f10_2040_individualconvention': 0,
                 'f10_2041_overheidspersoneel': 0,
                 'f10_2042_sailorcode': 0,
                 'f10_2045_code': 0,
-                'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.reference_year else '',
+                # 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.reference_year else '',
+                'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date else '',
                 'f10_2056_datumvanvertrek': employee.end_notice_period.strftime('%d/%m/%Y') if employee.end_notice_period else '',
-                'f10_2057_volontarysuplmentaryhourscovid': 0,
                 'f10_2058_km': employee.has_bicycle and employee.km_home_work or 0.0,
                 # f10_2059_totaalcontrole
-                'f10_2060_gewonebezoldiginge': round(mapped_total['NET'], 2),
+                'f10_2060_gewonebezoldiginge': round(common_gross, 2),
                 'f10_2061_bedragoveruren300horeca': 0,
                 # f10_2062_totaal
-                'f10_2063_vervroegdvakantieg': round(mapped_total['PAY_SIMPLE'], 2),
+                'f10_2063_vervroegdvakantieg': round(holiday_gross, 2),
                 'f10_2064_afzbelachterstall': 0,
                 'f10_2065_opzeggingsreclasseringsverg': 0,
                 'f10_2066_impulsfund': 0,
@@ -285,15 +268,15 @@ class L10nBe28110(models.Model):
                 'f10_2070_decemberremuneration': 0,
                 'f10_2071_totalevergoeding': 0,
                 'f10_2072_pensioentoezetting':  0,
+                'f10_2073_tipamount': 0,
                 'f10_2074_bedrijfsvoorheffing': round(mapped_total['PPTOTAL'], 2),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
-                'f10_2075_bijzonderbijdrage': round(mapped_total['M.ONSS'], 2),
+                'f10_2075_bijzonderbijdrage': round(-mapped_total['M.ONSS'], 2),
                 'f10_2076_voordelenaardbedrag': round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2),
                 # f10_2077_totaal
-                'f10_2078_eigenkosten': round(mapped_total['REP.FEES'], 2),
-                'f10_2079_tussenkomstintr': 0,
+                'f10_2078_compensationamountwithoutstandards': round(mapped_total['REP.FEES'], 2),
                 'f10_2080_detacheringsvergoed': 0,
                 'f10_2081_gewonebijdragenenpremies': 0,
-                'f10_2082_bedrag': round(sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == warrant_structure), 2),
+                'f10_2082_bedrag': round(warrant_gross, 2),
                 'f10_2083_bedrag': 0,
                 'f10_2084_mobiliteitsvergoedi': 0,
                 'f10_2085_forfbezoldiging': 0,
@@ -308,10 +291,9 @@ class L10nBe28110(models.Model):
                 'f10_2097_aantaluren': 0,
                 'f10_2098_othercode4': 0,
                 'f10_2099_aard': self._get_atn_nature(payslips),
-                'f10_2100_nrparitaircomite': '200-00', # Joint committee number
-                'f10_2101_percentages': '',
                 'f10_2102_kas': 0,
                 'f10_2103_kasvrijaanvullendpensioen': 0,
+                'f10_2106_percentages': '53.5' if round(warrant_gross, 2) else '', # YTI FIXME: Retrieve actual percentage
                 'f10_2109_fiscaalidentificat': employee.identification_id if employee.country_id != belgium else '',
                 'f10_2110_aantaloveruren360': 0,
                 'f10_2111_achterstalloveruren300horeca': 0,
@@ -319,7 +301,7 @@ class L10nBe28110(models.Model):
                 'f10_2115_bonus': round(mapped_total['EmpBonus.1'], 2),
                 'f10_2116_badweatherstamps': 0,
                 'f10_2117_nonrecurrentadvantages': 0,
-                'f10_2118_aantaloveruren': 0,
+                'f10_2118_amountovertime180secondsemester': 0,
                 'f10_2119_sportremuneration': 0,
                 'f10_2120_sportvacancysavings': 0,
                 'f10_2121_sportoutdated': 0,
@@ -330,14 +312,14 @@ class L10nBe28110(models.Model):
                 'f10_2126_managerindemnificationofretraction': 0,
                 'f10_2127_nonrecurrentadvantagesoutdated': 0,
                 'f10_2128_vrijaanvullendpensioenwerknemers': 0,
-                'f10_2129_totaaloverwerktoeslag': 0,
                 'f10_2130_privatepc': 0,
-                'f10_2131_bedrijfsvoorheffingvanwerkgever': round(mapped_total['EmpBonus.1'], 2),
+                'f10_2131_bedrijfsvoorheffingvanwerkgever': round(mapped_total['PPTOTAL'], 2),
+                'f10_2132_amountovertime180firstsemester': 0,
                 'f10_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever': 0,
                 'f10_2134_totaalbedragmobiliteitsbudget': 0,
                 'f10_2135_amountpaidforvolontarysuplementaryhourscovid': 0,
                 'f10_2136_amountcontractofstudent': 0,
-                'f10_2137_otheramountstudent': 0,
+                'f10_2137_amountstudent2020oruntilthirdquarter2021': 0,
                 'f10_2138_chequesofconsumptions': 0,
                 'f10_2141_occasionalworkhoreca': 0,
                 'f10_2142_aantaloveruren180': 0,
@@ -348,9 +330,7 @@ class L10nBe28110(models.Model):
                 'f10_2168_achterstallaantaloveruren300horeca': 0,
                 'f10_2169_aantaloveruren360horeca': 0,
                 'f10_2170_achterstallaantaloveruren360horeca': 0,
-                'f10_2176_cashforcar': 0,
                 'f10_2177_winstpremies': 0,
-                'f10_2178_cashforcartotaal': 0,
                 'f10_2179_startersjob': 0,
                 'f10_2180_onkostenbrandweerenambulanciers': 0,
                 'f10_2181_remunerationetrang': 0,
@@ -361,6 +341,14 @@ class L10nBe28110(models.Model):
                 'f10_2186_amountother2': 0,
                 'f10_2187_amountother3': 0,
                 'f10_2188_amountother4': 0,
+                'f10_2190_covidovertimeremunerationfirstsemester': 0,
+                'f10_2191_covidovertimeremunerationsecondsemester': 0,
+                'f10_2192_covidovertimehoursfirstsemester': 0,
+                'f10_2193_covidovertimehourssecondsemester': 0,
+                'f10_2194_covidovertimehourstotal': 0,
+                'f10_2195_covidovertimehours2020': 0,
+                'f10_2196_covidovertimeremuneration2020': 0,
+                'f10_2198_coronabonus': 0,
             }
             # Somme de 2.060 + 2.076 + 2069 + 2.082 + 2.083
             sheet_values['f10_2062_totaal'] = round(sum(sheet_values[code] for code in [
@@ -370,12 +358,11 @@ class L10nBe28110(models.Model):
                 'f10_2082_bedrag',
                 'f10_2083_bedrag']), 2)
 
-            # Somme de 2.086 + 2.087 + 2.088 +2.176
+            # Somme de 2.086 + 2.087 + 2.088
             sheet_values['f10_2077_totaal'] = round(sum(sheet_values[code] for code in [
                 'f10_2086_openbaargemeenschap',
                 'f10_2087_bedrag',
-                'f10_2088_andervervoermiddel',
-                'f10_2176_cashforcar']), 2)
+                'f10_2088_andervervoermiddel']), 2)
 
             # Somme de 2060 à 2088, f10_2062_totaal et f10_2077_totaal inclus
             sheet_values['f10_2059_totaalcontrole'] = round(sum(sheet_values[code] for code in [
@@ -395,7 +382,6 @@ class L10nBe28110(models.Model):
                 'f10_2075_bijzonderbijdrage',
                 'f10_2076_voordelenaardbedrag',
                 'f10_2077_totaal',
-                'f10_2079_tussenkomstintr',
                 'f10_2080_detacheringsvergoed',
                 'f10_2081_gewonebijdragenenpremies',
                 'f10_2082_bedrag',
@@ -437,15 +423,20 @@ class L10nBe28110(models.Model):
         template_sudo = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10').sudo()
 
         pdf_files = []
+        sheet_count = len(rendering_data['employees_data'])
+        counter = 1
         for sheet in rendering_data['employees_data']:
+            _logger.info('Printing 281.10 sheet (%s/%s)', counter, sheet_count)
+            counter += 1
             sheet_filename = '%s-%s-281_10' % (sheet['f2002_inkomstenjaar'], sheet['f2013_naam'])
             sheet_file, dummy = template_sudo._render_qweb_pdf(sheet['employee_id'], data={**sheet, **rendering_data['data']})
             pdf_files.append((sheet['employee'], sheet_filename, sheet_file))
 
         if pdf_files:
             filename, binary = self._process_files(pdf_files, default_filename='281.10 PDF - %s.zip' % fields.Date.today(), post_process=post_process)
-            self.pdf_filename = filename
-            self.pdf_file = binary
+            if not post_process:
+                self.pdf_filename = filename
+                self.pdf_file = binary
 
         self.state = 'get'
 
@@ -462,6 +453,7 @@ class L10nBe28110(models.Model):
         """
         if post_process:
             self._post_process_files(files)
+            return False, False
 
         if len(files) == 1:
             dummy, filename, data = files[0]

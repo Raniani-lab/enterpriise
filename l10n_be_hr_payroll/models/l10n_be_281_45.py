@@ -17,6 +17,21 @@ from odoo.modules.module import get_resource_path
 # - Technical Doc https://finances.belgium.be/fr/E-services/Belcotaxonweb/documentation-technique
 # - "Avis aux débiteurs" https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avis_aux_debiteurs#q2
 
+COUNTRY_CODES = {
+    'BE': '00000',
+    'ES': '00109',
+    'FR': '00111',
+    'GR': '00112',
+    'LU': '00113',
+    'DE': '00103',
+    'RO': '00124',
+    'IT': '00128',
+    'NL': '00129',
+    'TR': '00262',
+    'US': '00402',
+    'MA': 'O0354',
+}
+
 
 class L10nBe28145(models.Model):
     _name = 'l10n_be.281_45'
@@ -65,7 +80,7 @@ class L10nBe28145(models.Model):
         xsd_schema_file_path = get_resource_path(
             'l10n_be_hr_payroll',
             'data',
-            '161-xsd-2020-20201216.xsd',
+            '161-xsd-2021-20211223.xsd',
         )
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
@@ -90,8 +105,9 @@ class L10nBe28145(models.Model):
         ) for record in self]
 
     def _check_employees_configuration(self, employees):
-        if not all(emp.company_id and emp.company_id.street and emp.company_id.zip and emp.company_id.city and emp.company_id.phone and emp.company_id.vat for emp in employees):
-            raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
+        invalid_employees = employees.filtered(lambda e: not (e.company_id and e.company_id.street and e.company_id.zip and e.company_id.city and e.company_id.phone and e.company_id.vat))
+        if invalid_employees:
+            raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat") + '\n' + '\n'.join(invalid_employees.mapped('name')))
 
         invalid_employees = employees.filtered(
             lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city or not e.address_home_id.country_id)
@@ -105,6 +121,10 @@ class L10nBe28145(models.Model):
         if invalid_employees:
             raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(invalid_employees.mapped('name'))))
 
+        invalid_country_codes = employees.address_home_id.country_id.filtered(lambda c: c.code not in COUNTRY_CODES)
+        if invalid_country_codes:
+            raise UserError(_('Unsupported country code %s. Please contact an administrator.', ', '.join(invalid_country_codes.mapped('code'))))
+
     @api.model
     def _get_lang_code(self, lang):
         if lang == 'nl_NL':
@@ -117,17 +137,7 @@ class L10nBe28145(models.Model):
 
     @api.model
     def _get_country_code(self, country):
-        if country.code == 'FR':
-            return '00111'
-        elif country.code == 'LU':
-            return '00113'
-        elif country.code == 'DE':
-            return '00103'
-        elif country.code == 'NL':
-            return '00129'
-        elif country.code == 'US':
-            return '00402'
-        raise UserError(_('Unsupported country code %s. Please contact an administrator.', country.code))
+        return COUNTRY_CODES[country.code]
 
     @api.model
     def _get_marital_code(self, marital):

@@ -4140,7 +4140,7 @@ msgstr "JUI"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
-msgid "JUNE"
+msgid "JUN"
 msgstr "JUIN"
 
 #. module: l10n_be_hr_payroll
@@ -4340,7 +4340,7 @@ msgstr "Maladie de Longue Durée"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
-msgid "MARS"
+msgid "MAR"
 msgstr "MARS"
 
 #. module: l10n_be_hr_payroll

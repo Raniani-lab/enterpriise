@@ -5134,7 +5134,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 0)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 6)
+        self.assertEqual(len(payslip.line_ids), 7)
 
         payslip_results = {
             'BASIC': 2438.0,
@@ -5142,6 +5142,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -294.4,
             'GROSS': 2143.6,
             'P.P': -843.93,
+            'PPTOTAL': 843.93,
             'NET': 1299.66,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5164,7 +5165,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 0)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 6)
+        self.assertEqual(len(payslip.line_ids), 7)
 
         payslip_results = {
             'BASIC': 0.0,
@@ -5172,6 +5173,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': 0.0,
             'GROSS': 0.0,
             'P.P': 0.0,
+            'PPTOTAL': 0.0,
             'NET': 0.0,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5201,6 +5203,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -220.8,
             'GROSS': 1607.7,
             'P.P': -632.95,
+            'PPTOTAL': 632.95,
             'NET': 974.75,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5236,6 +5239,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -235.52,
             'GROSS': 1714.88,
             'P.P': -623.19,
+            'PPTOTAL': 623.19,
             'NET': 1091.69,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5272,6 +5276,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -176.64,
             'GROSS': 1286.16,
             'P.P': -467.39,
+            'PPTOTAL': 467.39,
             'NET': 818.77,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5303,6 +5308,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -235.52,
             'GROSS': 1714.88,
             'P.P': -623.19,
+            'PPTOTAL': 623.19,
             'NET': 1091.69,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5335,6 +5341,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -176.64,
             'GROSS': 1286.16,
             'P.P': -467.39,
+            'PPTOTAL': 467.39,
             'NET': 818.77,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5368,6 +5375,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -220.8,
             'GROSS': 1607.7,
             'P.P': -632.95,
+            'PPTOTAL': 632.95,
             'NET': 974.75,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5401,6 +5409,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -220.8,
             'GROSS': 1607.7,
             'P.P': -105.51,
+            'PPTOTAL': 105.51,
             'NET': 1502.19,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5446,6 +5455,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -322.18,
             'GROSS': 2345.82,
             'P.P': -923.55,
+            'PPTOTAL': 923.55,
             'NET': 1422.27,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5492,6 +5502,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -248.58,
             'GROSS': 1809.92,
             'P.P': -712.57,
+            'PPTOTAL': 712.57,
             'NET': 1097.36,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5552,6 +5563,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -206.03,
             'GROSS': 1500.16,
             'P.P': -590.61,
+            'PPTOTAL': 590.61,
             'NET': 909.55,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5617,6 +5629,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': 0.0,
             'GROSS': 0.0,
             'P.P': 0.0,
+            'PPTOTAL': 0.0,
             'NET': 0.0,
         }
         self._validate_payslip(payslip_2020, payslip_results)
@@ -5641,6 +5654,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -268.8,
             'GROSS': 1957.2,
             'P.P': -770.55,
+            'PPTOTAL': 770.55,
             'NET': 1186.65,
         }
         self._validate_payslip(payslip_2021, payslip_results)
@@ -5661,7 +5675,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 0)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 6)
+        self.assertEqual(len(payslip.line_ids), 7)
 
         payslip_results = {
             'BASIC': 2438.0,
@@ -5669,6 +5683,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -294.4,
             'GROSS': 2143.6,
             'P.P': -908.67,
+            'PPTOTAL': 908.67,
             'NET': 1234.93,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -5697,7 +5712,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 0)
         self.assertEqual(len(payslip.input_line_ids), 1)
-        self.assertEqual(len(payslip.line_ids), 7)
+        self.assertEqual(len(payslip.line_ids), 8)
 
         payslip_results = {
             'BASIC': 2438.0,
@@ -5706,6 +5721,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -241.51,
             'GROSS': 1758.49,
             'P.P': -692.32,
+            'PPTOTAL': 692.32,
             'NET': 1066.17,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -6458,7 +6474,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(double_pay_payslip.worked_days_line_ids), 0)
         self.assertEqual(len(double_pay_payslip.input_line_ids), 2)
-        self.assertEqual(len(double_pay_payslip.line_ids), 7)
+        self.assertEqual(len(double_pay_payslip.line_ids), 8)
 
         payslip_results = {
             'BASIC': 1650.14,
@@ -6467,6 +6483,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -90.53,
             'GROSS': 659.14,
             'P.P': -239.53,
+            'PPTOTAL': 239.53,
             'NET': 419.61,
         }
         self._validate_payslip(double_pay_payslip, payslip_results)
@@ -6515,7 +6532,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(double_pay_payslip.worked_days_line_ids), 0)
         self.assertEqual(len(double_pay_payslip.input_line_ids), 2)
-        self.assertEqual(len(double_pay_payslip.line_ids), 7)
+        self.assertEqual(len(double_pay_payslip.line_ids), 8)
 
         payslip_results = {
             'BASIC': 1246.26,
@@ -6524,6 +6541,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSS': -107.48,
             'GROSS': 782.55,
             'P.P': -308.09,
+            'PPTOTAL': 308.09,
             'NET': 474.46,
         }
         self._validate_payslip(double_pay_payslip, payslip_results)

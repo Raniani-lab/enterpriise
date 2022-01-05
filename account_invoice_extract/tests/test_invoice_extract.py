@@ -289,31 +289,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         self.assertEqual(invoice.invoice_line_ids[0].price_subtotal, 100)
         self.assertEqual(invoice.invoice_line_ids[0].price_total, 100)
 
-    def test_duplicated_reference(self):
-        # test that if an invoice with the same invoice reference already exists, the invoice is still created and the user is warned
-        partner = self.env['res.partner'].create({'name': 'Test', 'vat': 'BE0000000000'})
-        invoice = self.env['account.move'].create({
-            'move_type': 'in_invoice',
-            'partner_id': partner.id,
-            'extract_state': 'no_extract_requested',
-            'ref': 'INV0001',
-            'invoice_date': '2019-04-12',
-            'date': '2019-04-12',
-        })
-
-        invoice2 = self.env['account.move'].create({
-            'move_type': 'in_invoice',
-            'partner_id': partner.id,
-            'extract_state': 'waiting_extraction',
-        })
-        extract_response = self.get_default_extract_response()
-
-        with self.mock_iap_extract(extract_response, {}):
-            invoice2._check_status()
-
-        self.assertFalse(invoice2.ref)
-        self.assertTrue(WARNING_DUPLICATE_VENDOR_REFERENCE in invoice2.get_warnings())
-
     def test_server_error(self):
         # test that the extract state is set to 'error' if the OCR returned an error
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})

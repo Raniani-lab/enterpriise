@@ -291,3 +291,6 @@ class IntrastatReport(models.AbstractModel):
     @api.model
     def _get_report_name(self):
         return _('Intrastat Report')
+
+    def _get_report_country_code(self, options):
+        return self.env.company.account_fiscal_country_id.code or None

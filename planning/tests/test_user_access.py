@@ -7,6 +7,7 @@ from odoo.exceptions import AccessError
 from odoo.fields import Command
 
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 @tagged('post_install', '-at_install')
@@ -207,6 +208,76 @@ class TestUserAccess(TransactionCase):
                 '2019-07-01 00:00:00',
                 [['start_datetime', '<=', '2019-06-30 21:59:59'], ['end_datetime', '>=', '2019-06-22 23:00:00']]
             )
+
+    def test_planning_user_cannot_create_slots(self):
+        """ Planning user shall not be able to create slots. """
+        my_slot = self.env['planning.slot'].with_user(self.planning_user).search([('user_id', '=', self.planning_user.id)], limit=1)
+
+        self.assertNotEqual(my_slot.id, False, "An Planning user can see the slots")
+
+        with self.assertRaises(AccessError):
+            self.env['planning.slot'].with_user(self.planning_user).create({
+                'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
+                'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
+                'resource_id': self.res_internal_user.id,
+                'state': 'draft',
+            })
+
+    def test_planning_user_read_own_and_other_slots(self):
+        """ Planning user can read its own and other slots. """
+        other_slot = self.env['planning.slot'].with_user(self.planning_user).search(
+                [('user_id', '=', self.internal_user.id)],
+                limit=1)
+
+        planning_user_slot = self.env['planning.slot'].with_user(self.planning_user).search(
+                [('user_id', '=', self.planning_user.id)],
+                limit=1)
+
+        self.assertTrue(
+            other_slot,
+            "An planning user can read other slots")
+
+        self.assertNotEqual(
+            planning_user_slot,
+            False,
+            "A planning user can access to its own slots")
+
+        self.env['planning.slot'].create({
+            'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
+            'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
+            'resource_id': self.res_internal_user.id,
+            'state': 'draft',
+        })
+        unpublished_count = self.env['planning.slot'].with_user(self.planning_user).search_count([('state', '=', 'draft')])
+        self.assertEqual(unpublished_count, 0, "A planning user shouldn't see unpublished slots")
+
+    def test_planning_user_can_take_unassigned_slots(self):
+        """ Planning user can take unassigned slots. """
+        test_slot = self.env['planning.slot'].create({
+            'start_datetime': datetime(2019, 5, 28, 8, 0, 0),
+            'end_datetime': datetime(2019, 5, 28, 17, 0, 0),
+            'state': 'published',
+        })
+        test_slot.with_user(self.planning_user).action_self_assign()
+        self.assertEqual(test_slot.resource_id, self.res_planning_user, "Planning user can take slot")
+
+    def test_planning_user_can_unassign_slots(self):
+        """ Planning user can unassign their own slots. """
+        self.env['res.config.settings'].create({
+            'planning_allow_self_unassign': True,
+            'planning_self_unassign_days_before': 1,
+        }).execute()
+
+        test_slot = self.env['planning.slot'].create({
+            'start_datetime': datetime.now() + relativedelta(days=2),
+            'end_datetime': datetime.now() + relativedelta(days=3),
+            'state': 'published',
+            'employee_id': self.planning_user.employee_id.id,
+            'resource_id': self.res_planning_user.id,
+            'unassign_deadline':  datetime.now() + relativedelta(days=1),
+        })
+        test_slot.with_user(self.planning_user).action_self_unassign()
+        self.assertFalse(test_slot.resource_id, "Planning user can unassign their slot")
 
     def test_planning_user_cannot_copy_previous(self):
         """

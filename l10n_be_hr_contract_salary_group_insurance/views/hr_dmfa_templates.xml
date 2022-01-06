@@ -6,6 +6,7 @@
                 <UnrelatedEmployerClass t-esc="employer_class"/>
                 <UnrelatedWorkerCode>865</UnrelatedWorkerCode>
                 <UnrelatedAmount t-esc="group_insurance_cotisation"/>
+                <UnrelatedCalculationBasis>0000000000886</UnrelatedCalculationBasis>
             </ContributionUnrelatedToNP>
         </xpath>
     </template>

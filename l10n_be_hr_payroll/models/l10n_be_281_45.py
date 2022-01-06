@@ -302,8 +302,9 @@ class L10nBe28145(models.Model):
 
         if pdf_files:
             filename, binary = self._process_files(pdf_files, default_filename='281.45 PDF - %s.zip' % fields.Date.today(), post_process=post_process)
-            self.pdf_filename = filename
-            self.pdf_file = binary
+            if not post_process:
+                self.pdf_filename = filename
+                self.pdf_file = binary
 
         self.state = 'get'
 
@@ -320,6 +321,7 @@ class L10nBe28145(models.Model):
         """
         if post_process:
             self._post_process_files(files)
+            return False, False
 
         if len(files) == 1:
             dummy, filename, data = files[0]

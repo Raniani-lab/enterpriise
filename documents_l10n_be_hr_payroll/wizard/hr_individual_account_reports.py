@@ -30,6 +30,11 @@ class L10nBeIndividualAccountWizard(models.TransientModel):
         if not self._payroll_documents_enabled():
             return super().print_report()
         pdf_files = self._generate_files(self.env.company)
+        template = self.env.ref('documents_l10n_be_hr_payroll.mail_template_individual_account', raise_if_not_found=False)
+        if template:
+            for employee, dummy, dummy in pdf_files:
+                template.send_mail(employee.id, notif_layout='mail.mail_notification_light')
+
         if pdf_files:
             dummy, dummy = self._process_files(pdf_files, default_filename=_('Individual Accounts PDF') + '- %s.zip' % self.year, post_process=True)
             return {

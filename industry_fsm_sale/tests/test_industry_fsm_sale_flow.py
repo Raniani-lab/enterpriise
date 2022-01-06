@@ -70,6 +70,7 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
 
         so = self.task.sale_order_id
         sol01 = so.order_line[-1]
+        sol01.sequence = 10
         self.assertEqual(sol01.product_uom_qty, 5)
 
         # Manually add a line for the same product
@@ -77,6 +78,7 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
             'order_id': so.id,
             'product_id': product.id,
             'product_uom_qty': 3,
+            'sequence': 20,
             'task_id': self.task.id
         })
         product.sudo()._compute_fsm_quantity()

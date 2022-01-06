@@ -6,6 +6,9 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="industry_fsm_sale.view_product_product_kanban_material"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
+                <a class="dropdown-item" role="menuitem" type="object" name="action_product_forecast_report" groups="industry_fsm.group_fsm_user">View Availability</a>
+            </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="tracking"/>
                 <field name="serial_missing"/>
@@ -20,6 +23,9 @@
                         </button>
                     </div>
                 </div>
+            </xpath>
+            <xpath expr="//ul" position="inside">
+                <li>On hand: <field name="qty_available"/> <field name="uom_id"/></li>
             </xpath>
         </field>
     </record>

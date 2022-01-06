@@ -13,7 +13,7 @@
             <field name="parent_id" position="after">
                 <field name="invoice_status"/>
             </field>
-            <xpath expr="//filter[@name='todo']" position='after'>
+            <xpath expr="//filter[@name='in_progress']" position='after'>
                 <filter string="To Invoice" domain="[('invoice_status', '=', 'to invoice')]" name="to_invoice"/>
             </xpath>
             <xpath expr="//filter[@name='late']" position="after">

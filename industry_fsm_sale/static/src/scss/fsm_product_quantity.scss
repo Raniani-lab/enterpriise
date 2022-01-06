@@ -23,3 +23,12 @@
 
     }
 }
+
+.o_fsm_industry_product .oe_kanban_details {
+    div[name="priority"] .fa-star-o {
+        visibility: hidden;
+    }
+    &:hover div[name="priority"] .fa-star-o {
+        visibility: visible;
+    }
+}

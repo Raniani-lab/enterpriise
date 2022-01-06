@@ -66,7 +66,7 @@ class StockPicking(models.Model):
         return action
 
     def action_print_barcode_pdf(self):
-        return self.action_open_label_layout()
+        return self.action_open_label_type()
 
     def action_print_delivery_slip(self):
         return self.env.ref('stock.action_report_delivery').report_action(self)

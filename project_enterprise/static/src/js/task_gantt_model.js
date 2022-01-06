@@ -6,7 +6,7 @@ import GanttModel from 'web_gantt.GanttModel';
 import { _t } from 'web.core';
 
 
-const TaskGanttModel = GanttModel.extend({
+export default GanttModel.extend({
     mapMany2manyFields: [{
         many2many_field: 'personal_stage_type_ids',
         many2one_field: 'personal_stage_type_id',
@@ -141,5 +141,3 @@ const TaskGanttModel = GanttModel.extend({
         return data;
     },
 });
-
-export default TaskGanttModel;

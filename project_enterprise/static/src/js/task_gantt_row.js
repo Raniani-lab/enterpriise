@@ -5,7 +5,7 @@ import GanttRow from 'web_gantt.GanttRow';
 import { getDateFormatForScale } from "./task_gantt_utils";
 import StandaloneM2OAvatarUser from "./standalone_m2o_avatar_user";
 
-const TaskGanttRow = GanttRow.extend({
+export default GanttRow.extend({
     template: 'TaskGanttMilestonesView.Row',
 
     //--------------------------------------------------------------------------
@@ -85,5 +85,3 @@ const TaskGanttRow = GanttRow.extend({
         return data;
     },
 });
-
-export default TaskGanttRow;

@@ -7,13 +7,11 @@ from freezegun import freeze_time
 
 from odoo.fields import Command
 from odoo.addons.project_enterprise_hr.tests.auto_shift_dates_hr_common import AutoShiftDatesHRCommon
-from odoo.addons.project_enterprise.tests.auto_shift_dates_common import fake_now
-from odoo.tests.common import tagged
+from odoo.addons.project_enterprise.tests.gantt_reschedule_dates_common import fake_now
 
 
 @freeze_time(fake_now)
-@tagged('-at_install', 'post_install', 'auto_shift_dates')
-class TestTaskDependencies(AutoShiftDatesHRCommon):
+class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
 
     @classmethod
     def setUpClass(cls):
@@ -62,6 +60,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the employee's calendar into account."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date - relativedelta(days=1, hour=11), failed_message)
@@ -70,6 +69,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the employee's calendar when no contract cover the period."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(day=16, hour=14), failed_message)
@@ -83,6 +83,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the company's calendar when no contract cover the period and no calendar is set on the employee."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(hour=10), failed_message)
@@ -95,6 +96,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_1_begin_date,
             'planned_date_end': new_task_1_begin_date + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
+        self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_begin,
                          new_task_1_begin_date + relativedelta(days=1, hour=13), failed_message)
 
@@ -118,6 +120,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the employee's calendar into account."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date - relativedelta(days=1, hour=11), failed_message)
@@ -126,6 +129,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the company's calendar when no contract covers the period."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(day=21, hour=8), failed_message)

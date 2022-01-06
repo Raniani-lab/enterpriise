@@ -95,6 +95,25 @@
         </div>
     </div>
 
+    <div t-name="GanttView.Connector" t-attf-class="invisible o_connector_creator_wrapper o_connector_creator_wrapper_{{vertical_alignment}} {{!widget.options.isGroup ? pill.decorations.join(' ') : ''}} {{'_color' in pill ? 'o_gantt_color_' + pill._color : ''}}">
+        <div t-attf-class="o_connector_creator o_connector_creator_{{vertical_alignment}} o_connector_creator_{{horizontal_alignment}}">
+            <div t-att-data-id="pill.id" class="o_connector_creator_bullet">
+            </div>
+        </div>
+    </div>
+
+    <t t-name="GanttView.PillsConnectors">
+        <t t-call="GanttView.Connector" t-if="widget.dependencyEnabled">
+            <t t-set="vertical_alignment" t-value="'top'"></t>
+            <t t-set="horizontal_alignment" t-value="'left'"></t>
+        </t>
+        <t t-out="0"/>
+        <t t-call="GanttView.Connector" t-if="widget.dependencyEnabled">
+            <t t-set="vertical_alignment" t-value="'bottom'"></t>
+            <t t-set="horizontal_alignment" t-value="'right'"></t>
+        </t>
+    </t>
+
     <div t-name="GanttView.Row" t-attf-class="row no-gutters o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
         <div t-if="!widget.options.hideSidebar" t-attf-class="col-2 o_gantt_row_sidebar flex-grow-1 flex-shrink-0 position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
             <t t-if="widget.progressBar">
@@ -150,36 +169,42 @@
                         <div t-if="widget.isTotal"
                              class="o_gantt_pill_wrapper position-absolute d-flex justify-content-center"
                              t-attf-style="width: #{pill.width}; #{widget.isRTL ? 'right' : 'left'}: #{pill.leftMargin}%;">
-                            <div t-att-data-id="pill.id"
-                                 t-attf-class="o_gantt_pill o_gantt_consolidated_pill"
-                                 t-att-title="pill.display_name"
-                                 t-att-style="'height:' + pill.totalHeight + '%;'"/>
+                            <t t-call="GanttView.PillsConnectors">
+                                <div t-att-data-id="pill.id"
+                                     t-attf-class="o_gantt_pill o_gantt_consolidated_pill"
+                                     t-att-title="pill.display_name"
+                                     t-att-style="'height:' + pill.totalHeight + '%;'"/>
+                            </t>
                             <span class="o_gantt_consolidated_pill_title position-absolute text-truncate px-1" t-esc="pill.display_name"/>
                         </div>
 
                         <div t-elif="pill.consolidated"
                              t-attf-class="o_gantt_pill_wrapper position-absolute o_gantt_consolidated_wrapper #{widget.options.isGroup ? 'o_gantt_pill_wrapper_group' : ''}"
                              t-attf-style="width: #{pill.width}; #{widget.isRTL ? 'right' : 'left'}: #{pill.leftMargin}%;">
-                            <div t-att-data-id="pill.id"
-                                 t-attf-class="o_gantt_pill o_gantt_consolidated_pill #{pill.status? 'bg-' + pill.status + ' border-' + pill.status : ''}  #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''}"
-                                 t-att-title="pill.display_name"
-                                 >
-                            </div>
+                            <t t-call="GanttView.PillsConnectors">
+                                <div t-att-data-id="pill.id"
+                                     t-attf-class="o_gantt_pill o_gantt_consolidated_pill #{pill.status? 'bg-' + pill.status + ' border-' + pill.status : ''}  #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''}"
+                                     t-att-title="pill.display_name"
+                                     >
+                                </div>
+                            </t>
                             <span class="o_gantt_consolidated_pill_title position-relative text-truncate px-1" t-esc="pill.display_name"/>
                         </div>
 
                         <div t-else=""
                              t-attf-class="o_gantt_pill_wrapper position-absolute #{widget.options.isGroup ? 'o_gantt_pill_wrapper_group' : ''}"
                              t-attf-style="width: #{pill.width}; margin-top: #{pill.topPadding}px; #{widget.isRTL ? 'right' : 'left'}: #{pill.leftMargin}%;">
-                            <div
-                                t-att-data-id="pill.id"
-                                t-attf-class="o_gantt_pill position-relative #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''}"
-                                t-attf-style="#{widget.options.isGroup ? pill.style : ''} #{widget.progressField ? 'background-size:' + pill._progress + '% 100%;': ''}"
-                                t-att-title="pill.display_name"
-                                >
-                                <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->
-                                <p class="text-truncate position-relative mb-0 o_gantt_pill_title" t-esc="pill.display_name"/>
-                            </div>
+                            <t t-call="GanttView.PillsConnectors">
+                                <div
+                                    t-att-data-id="pill.id"
+                                    t-attf-class="o_gantt_pill position-relative #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''}"
+                                    t-attf-style="#{widget.options.isGroup ? pill.style : ''} #{widget.progressField ? 'background-size:' + pill._progress + '% 100%;': ''}"
+                                    t-att-title="pill.display_name"
+                                    >
+                                    <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->
+                                    <p class="text-truncate position-relative mb-0 o_gantt_pill_title" t-esc="pill.display_name"/>
+                                </div>
+                            </t>
                         </div>
                     </t>
                 </div>
@@ -199,7 +224,7 @@
         </span>
     </t>
 
-    <!-- Default popver template used if none is defined in the Gantt view arch -->
+    <!-- Default popover template used if none is defined in the Gantt view arch -->
     <div t-name="gantt-popover">
         <ul class="p-0 mb-0 list-unstyled d-flex flex-row">
             <li class="d-flex flex-column pr-2">

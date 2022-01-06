@@ -10,25 +10,11 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
-# Auto-shift utils
-DATE_AUTO_SHIFT_CONTEXT_KEY = 'date_auto_shift'
-DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY = 'date_auto_shift_direction'
-DATE_AUTO_SHIFT_IDS_TO_EXCLUDE_KEY = 'date_auto_shift_ids_to_exclude'
-DATE_AUTO_SHIFT_FORWARD = 'forward'
-DATE_AUTO_SHIFT_BACKWARD = 'backward'
-
 PROJECT_TASK_WRITABLE_FIELDS = {
     'planned_date_begin',
     'planned_date_end',
 }
 
-def order_boundaries_auto_shift(baseline, boundary, search_forward):
-    """
-        Returns the boundaries in the right order :
-            - Baseline is considered as start in case of forward, stop otherwise
-            - Boundary is considered as stop in case of forward, start otherwise
-    """
-    return (baseline, boundary) if search_forward else (boundary, baseline)
 
 class Task(models.Model):
     _inherit = "project.task"
@@ -58,6 +44,10 @@ class Task(models.Model):
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be before the planned end date."),
     ]
+
+    # action_gantt_reschedule utils
+    _WEB_GANTT_RESCHEDULE_WORK_INTERVALS_CACHE_KEY = 'work_intervals'
+    _WEB_GANTT_RESCHEDULE_RESOURCE_VALIDITY_CACHE_KEY = 'resource_validity'
 
     @property
     def SELF_WRITABLE_FIELDS(self):
@@ -283,66 +273,74 @@ class Task(models.Model):
                     'planned_date_end': date_stop,
                 })
 
-        date_auto_shift = self.env.context.get(DATE_AUTO_SHIFT_CONTEXT_KEY, False)
-        write_planned_date_fields = any(field for field in ['planned_date_begin', 'planned_date_end'] if field in vals)
-        if date_auto_shift and write_planned_date_fields:
-            self._action_auto_shift()
-
         return res
 
     # -------------------------------------
     # Business Methods : Auto-shift
     # -------------------------------------
 
-    def _write_planned_dates_if_in_future(self, new_planned_date_begin, new_planned_date_end):
-        self.ensure_one()
-        if new_planned_date_begin and new_planned_date_end and new_planned_date_begin >= datetime.now(tz=utc):
-            context_update = {
-                DATE_AUTO_SHIFT_IDS_TO_EXCLUDE_KEY: self.env.context.get(DATE_AUTO_SHIFT_IDS_TO_EXCLUDE_KEY, set()) | {self.id}
-            }
-            self.with_context(**context_update).write({
-                'planned_date_begin': new_planned_date_begin.astimezone(utc).replace(tzinfo=None),
-                'planned_date_end': new_planned_date_end.astimezone(utc).replace(tzinfo=None),
-            })
-            return True
+    @api.model
+    def _web_gantt_reschedule_get_empty_cache(self):
+        """ Get an empty object that would be used in order to prevent successive database calls during the
+            rescheduling process.
 
-        return False
+            :return: An object that contains reusable information in the context of gantt record rescheduling.
+                     The elements added to the cache are:
+                     * A dict which caches the work intervals per company or resource. The reason why the key is type
+                       mixed is due to the fact that a company has no resource associated.
+                       The work intervals are resource dependant, and we will "query" this work interval rather than
+                       calling _work_intervals_batch to save some db queries.
+                     * A dict with resource's intervals of validity/invalidity per company or resource. The intervals
+                       where the resource is "valid", i.e. under contract for an employee, and "invalid", i.e.
+                       intervals where the employee was not already there or has been fired. When an interval is in the
+                       invalid interval of a resource, then there is a fallback on its company intervals
+                       (see _update_work_intervals).
+            :rtype: dict
+        """
+        empty_cache = super()._web_gantt_reschedule_get_empty_cache()
+        empty_cache.update({
+            self._WEB_GANTT_RESCHEDULE_WORK_INTERVALS_CACHE_KEY: defaultdict(Intervals),
+            self._WEB_GANTT_RESCHEDULE_RESOURCE_VALIDITY_CACHE_KEY: defaultdict(
+                lambda: {'valid': Intervals(), 'invalid': Intervals()}
+            ),
+        })
+        return empty_cache
 
-    def _get_resource(self):
-        """
-            Gets the resource linked to the task.
-        """
+    def _web_gantt_reschedule_get_resource(self):
+        """ Get the resource linked to the task. """
         self.ensure_one()
         return self.user_ids._get_project_task_resource() if len(self.user_ids) == 1 else self.env['resource.resource']
 
-    def _get_resource_entity(self):
-        """
-            Gets the resource entity linked to the task.
-
-            The resource entity is either a company, either a resource to cope with resource invalidity (i.e. not under contract, not yet created...)
-            This is used as key to keep information in the auto-shift business methods.
+    def _web_gantt_reschedule_get_resource_entity(self):
+        """ Get the resource entity linked to the task.
+            The resource entity is either a company, either a resource to cope with resource invalidity
+            (i.e. not under contract, not yet created...)
+            This is used as key to keep information in the rescheduling business methods.
         """
         self.ensure_one()
-        return self._get_resource() or self.company_id or self.project_id.company_id
+        return self._web_gantt_reschedule_get_resource() or self.company_id or self.project_id.company_id
 
-    def _get_resource_calendars_validity(self, date_start, date_end, intervals_to_search=None, resource=None):
-        """
-        Gets the calendars and resources (for instance to later get the work intervals for the provided date_start
-        and date_end).
-        :param date_start: A start date for the search
-        :param date_end: A end date fot the search
-        :param intervals_to_search: If given, the periods for which the calendars validity must be retrieved.
-        :param resource: If given, it overrides the resource in self._get_resource
-        :return: a dict `resource_calendar_validity` with calendars as keys and their validity as values,
-                 a dict `resource_validity` with 'valid' and 'invalid' keys, with the intervals where the resource has a valid calendar (resp. no calendar)
-        :rtype: tuple(defaultdict(), dict())
+    def _web_gantt_reschedule_get_resource_calendars_validity(
+            self, date_start, date_end, intervals_to_search=None, resource=None
+    ):
+        """ Get the calendars and resources (for instance to later get the work intervals for the provided date_start
+            and date_end).
+
+            :param date_start: A start date for the search
+            :param date_end: A end date fot the search
+            :param intervals_to_search: If given, the periods for which the calendars validity must be retrieved.
+            :param resource: If given, it overrides the resource in self._get_resource
+            :return: a dict `resource_calendar_validity` with calendars as keys and their validity as values,
+                     a dict `resource_validity` with 'valid' and 'invalid' keys, with the intervals where the resource
+                     has a valid calendar (resp. no calendar)
+            :rtype: tuple(defaultdict(), dict())
         """
         self.ensure_one()
         interval = Intervals([(date_start, date_end, self.env['resource.calendar.attendance'])])
         if intervals_to_search:
             interval &= intervals_to_search
         invalid_interval = interval
-        resource = self._get_resource() if resource is None else resource
+        resource = self._web_gantt_reschedule_get_resource() if resource is None else resource
         resource_calendar_validity = resource._get_calendars_validity_within_period(
             date_start, date_end, default_company=self.company_id or self.project_id.company_id
         )[resource.id]
@@ -355,31 +353,31 @@ class Task(models.Model):
         }
         return resource_calendar_validity, resource_validity
 
-    def _update_intervals_cache(self, intervals_cache, interval_to_search, resource_validity, resource=None, resource_entity=None):
-        """
-            Update intervals cache if the interval to search for hasn't already been requested for work intervals.
+    def _web_gantt_reschedule_update_work_intervals(
+            self, interval_to_search, cache, resource=None, resource_entity=None
+    ):
+        """ Update intervals cache if the interval to search for hasn't already been requested for work intervals.
 
-            If the resource_entity has some parts of the interval_to_search which is unknown yet, then the calendar of the
-            resource_entity must be retrieved and queried to have the work intervals.
-            If the resource_entity is invalid (i.e. was not yet created, not under contract or fired)
+            If the resource_entity has some parts of the interval_to_search which is unknown yet, then the calendar
+            of the resource_entity must be retrieved and queried to have the work intervals. If the resource_entity
+            is invalid (i.e. was not yet created, not under contract or fired)
 
-            :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
-            :param interval_to_search: Intervals for which we need to update the intervals_cache if the interval is not already searched
-            :param resource_validity: A dict with resource's intervals of validity/invality
-                                    (during resource validity, the resource has its own work intervals,
-                                    during the invalidity, the intervals of its company are used)
+            :param interval_to_search: Intervals for which we need to update the work_intervals if the interval
+                   is not already searched
+            :param cache: An object that contains reusable information in the context of gantt record rescheduling.
         """
-        resource = self._get_resource() if resource is None else resource
-        resource_entity = self._get_resource_entity() if resource_entity is None else resource_entity
-        intervals_not_searched = (
-            interval_to_search - resource_validity[resource_entity]['valid'] - resource_validity[resource_entity]['invalid']
-        )
+        resource = self._web_gantt_reschedule_get_resource() if resource is None else resource
+        resource_entity = self._web_gantt_reschedule_get_resource_entity() if resource_entity is None else resource_entity
+        work_intervals, resource_validity = self._web_gantt_reschedule_extract_cache_info(cache)
+        intervals_not_searched = interval_to_search - resource_validity[resource_entity]['valid'] \
+            - resource_validity[resource_entity]['invalid']
+
         if not intervals_not_searched:
             return
 
         # For at least a part of the task, we don't have the work information of the resource
         # The interval between the very first date of the interval_to_search to the very last must be explored
-        resource_calendar_validity_delta, resource_validity_tmp = self._get_resource_calendars_validity(
+        resource_calendar_validity_delta, resource_validity_tmp = self._web_gantt_reschedule_get_resource_calendars_validity(
             intervals_not_searched._items[0][0],
             intervals_not_searched._items[-1][1],
             intervals_to_search=intervals_not_searched, resource=resource
@@ -387,7 +385,7 @@ class Task(models.Model):
         for calendar in resource_calendar_validity_delta:
             if not resource_calendar_validity_delta[calendar]:
                 continue
-            intervals_cache[resource_entity] |= calendar._work_intervals_batch(
+            work_intervals[resource_entity] |= calendar._work_intervals_batch(
                 resource_calendar_validity_delta[calendar]._items[0][0],
                 resource_calendar_validity_delta[calendar]._items[-1][1],
                 resources=resource
@@ -398,79 +396,100 @@ class Task(models.Model):
             # There is a fallback on its company calendar.
             resource_validity[resource_entity]['invalid'] |= resource_validity_tmp['invalid']
             company = self.company_id or self.project_id.company_id
-            self._update_intervals_cache(
-                intervals_cache, interval_to_search, resource_validity,
+            self._web_gantt_reschedule_update_work_intervals(
+                interval_to_search, cache,
                 resource=self.env['resource.resource'], resource_entity=company
             )
             # Fill the intervals cache of the resource entity with the intervals of the company.
-            intervals_cache[resource_entity] |= resource_validity_tmp['invalid'] & intervals_cache[company]
+            work_intervals[resource_entity] |= resource_validity_tmp['invalid'] & work_intervals[company]
 
     @api.model
-    def _get_interval_auto_shift(self, curr, delta, search_forward):
-        """
-            :param curr: Baseline of the interval, its start if search_forward is true, its stop otherwise
-            :param delta: Timedelta duration of the interval, expected to be positive if search_forward is true, false otherwise
-            :param search_forward: Interval direction, forward if true, backward otherwise.
+    def _web_gantt_reschedule_get_interval_auto_shift(self, current, delta):
+        """ Get the Intervals from current and current + delta, and in the right order.
 
-            Returns the interval from curr to curr + delta in the right order.
+            :param current: Baseline of the interval, its start if search_forward is true, its stop otherwise
+            :param delta: Timedelta duration of the interval, expected to be positive if search_forward is True,
+                          False otherwise
+            :param search_forward: Interval direction, forward if True, backward otherwise.
         """
-        start, stop = order_boundaries_auto_shift(curr, curr + delta, search_forward)
+        start, stop = sorted([current, current + delta])
         return Intervals([(start, stop, self.env['resource.calendar.attendance'])])
 
-    def _get_first_working_datetime(self, intervals_cache, date_candidate, resource_validity, search_forward=True):
+    @api.model
+    def _web_gantt_reschedule_extract_cache_info(self, cache):
+        """ Extract the work_intervals and resource_validity
+
+            :param cache: An object that contains reusable information in the context of gantt record rescheduling.
+            :return: a tuple (work_intervals, resource_validity) where:
+                     * work_intervals is a dict which caches the work intervals per company or resource. The reason why
+                       the key is type mixed is due to the fact that a company has no resource associated.
+                       The work intervals are resource dependant, and we will "query" this work interval rather than
+                       calling _work_intervals_batch to save some db queries.
+                     * resource_validity is a dict with resource's intervals of validity/invalidity per company or
+                       resource. The intervals where the resource is "valid", i.e. under contract for an employee,
+                       and "invalid", i.e. intervals where the employee was not already there or has been fired.
+                       When an interval is in the invalid interval of a resource, then there is a fallback on its
+                       company intervals (see _update_work_intervals).
+
         """
-        Finds and returns the first work datetime for the provided intervals_cache that matches the date_candidate
-        and search_forward criteria. If there is no match in the intervals_cache, the cache is updated and filled with work intervals
-        for a larger date range.
-        :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
-        :param date_candidate: The date the work interval is searched for. If no exact match can be done, the closest is
-                               returned.
-        :param resource_validity: A dict with resource's intervals of validity/invality
-                                (during resource validity, the resource has its own work intervals,
-                                 during the invalidity, the intervals of its company are used)
-        :param search_forward: The search direction.
-                               Having search_forward truthy causes the search to be made chronologically, looking for
-                               an interval that matches interval_start <= date_time < interval_end.
-                               Having search_forward falsy causes the search to be made reverse chronologically, looking
-                               for an interval that matches interval_start < date_time <= interval_end.
-        :return: datetime. The closest datetime that matches the search criteria and the
-                 intervals_cache updated with the data fetched from the database if any.
+        return cache[self._WEB_GANTT_RESCHEDULE_WORK_INTERVALS_CACHE_KEY], \
+            cache[self._WEB_GANTT_RESCHEDULE_RESOURCE_VALIDITY_CACHE_KEY]
+
+    def _web_gantt_reschedule_get_first_working_datetime(self, date_candidate, cache, search_forward=True):
+        """ Find and return the first work datetime for the provided work_intervals that matches the date_candidate
+            and search_forward criteria. If there is no match in the work_intervals, the cache is updated and filled
+            with work intervals for a larger date range.
+
+            :param date_candidate: The date the work interval is searched for. If no exact match can be done,
+                                   the closest is returned.
+            :param cache: An object that contains reusable information in the context of gantt record rescheduling.
+            :param search_forward: The search direction.
+                                   Having search_forward truthy causes the search to be made chronologically,
+                                   looking for an interval that matches interval_start <= date_time < interval_end.
+                                   Having search_forward falsy causes the search to be made reverse chronologically,
+                                   looking for an interval that matches interval_start < date_time <= interval_end.
+            :return: datetime. The closest datetime that matches the search criteria and the
+                     work_intervals updated with the data fetched from the database if any.
         """
         self.ensure_one()
         assert date_candidate.tzinfo
         delta = (1 if search_forward else -1) * relativedelta(months=1)
         date_to_search = date_candidate
-        resource_entity = self._get_resource_entity()
+        resource_entity = self._web_gantt_reschedule_get_resource_entity()
 
-        interval_to_search = self._get_interval_auto_shift(date_to_search, delta, search_forward)
-        interval = intervals_cache[resource_entity] & interval_to_search
+        interval_to_search = self._web_gantt_reschedule_get_interval_auto_shift(date_to_search, delta)
+
+        work_intervals, dummy = self._web_gantt_reschedule_extract_cache_info(cache)
+        interval = work_intervals[resource_entity] & interval_to_search
         while not interval:
-            interval_to_search = self._get_interval_auto_shift(date_to_search, delta, search_forward)
-            self._update_intervals_cache(intervals_cache, interval_to_search, resource_validity)
-            interval = intervals_cache[resource_entity] & interval_to_search
+            self._web_gantt_reschedule_update_work_intervals(interval_to_search, cache)
+            interval = work_intervals[resource_entity] & interval_to_search
             date_to_search += delta
+            interval_to_search = self._web_gantt_reschedule_get_interval_auto_shift(date_to_search, delta)
 
         return interval._items[0][0] if search_forward else interval._items[-1][1]
 
     @api.model
-    def _plan_hours_auto_shift(self, intervals, hours_to_plan, searched_date, search_forward=True):
-        """
-        Gets datetime after having planned hours from a searched date, in the future (search_forward) or in the past (not search_forward)
-        given the intervals
+    def _web_gantt_reschedule_plan_hours_auto_shift(self, intervals, hours_to_plan, searched_date, search_forward=True):
+        """ Get datetime after having planned hours from a searched date, in the future (search_forward) or in the
+            past (not search_forward) given the intervals.
 
-        :param intervals: The intervals to browse.
-        :param : The remaining hours to plan.
-        :param searched_date: The current value of the search_date.
-        :param search_forward: The search direction. Having search_forward truthy causes the search to be made chronologically.
-                               Having search_forward falsy causes the search to be made reverse chronologically.
-        :return: tuple ``(planned_hours, searched_date)``.
+            :param intervals: The intervals to browse.
+            :param : The remaining hours to plan.
+            :param searched_date: The current value of the search_date.
+            :param search_forward: The search direction. Having search_forward truthy causes the search to be made
+                                   chronologically.
+                                   Having search_forward falsy causes the search to be made reverse chronologically.
+            :return: tuple ``(planned_hours, searched_date)``.
         """
         if not intervals:
             return hours_to_plan, searched_date
         if search_forward:
-            intervals_to_browse = Intervals([(searched_date, intervals._items[-1][1], self.env['resource.calendar.attendance'])]) & intervals
+            interval = (searched_date, intervals._items[-1][1], self.env['resource.calendar.attendance'])
+            intervals_to_browse = Intervals([interval]) & intervals
         else:
-            intervals_to_browse = reversed(Intervals([(intervals._items[0][0], searched_date, self.env['resource.calendar.attendance'])]) & intervals)
+            interval = (intervals._items[0][0], searched_date, self.env['resource.calendar.attendance'])
+            intervals_to_browse = reversed(Intervals([interval]) & intervals)
         new_planned_date = searched_date
         for interval in intervals_to_browse:
             delta = min(hours_to_plan, interval[1] - interval[0])
@@ -480,40 +499,30 @@ class Task(models.Model):
                 break
         return hours_to_plan, new_planned_date
 
-    def _get_planned_dates_auto_shift(self, mapped_dependent, mapped_depend_on, intervals_cache, resource_validity):
-        """ Gets the new planned dates for a given task in self
+    def _web_gantt_reschedule_compute_dates(
+            self, date_candidate, search_forward, start_date_field_name, stop_date_field_name, cache
+    ):
+        """ Compute start_date and end_date according to the provided arguments.
+            This method is meant to be overridden when we need to add constraints that have to be taken into account
+            in the computing of the start_date and end_date.
 
-            :param mapped_dependent: dependent tasks
-            :param mapped_depend_on: depending tasks
-            :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
-            :param resource_validity: A dict with resource's intervals of validity/invality
-                                     (during resource validity, the resource has its own work intervals,
-                                      during the invalidity, the intervals of its company are use
-            :returns: new planned begin and end dates
+            :param date_candidate: The optimal date, which does not take any constraint into account.
+            :param start_date_field_name: The start date field used in the gantt view.
+            :param stop_date_field_name: The stop date field used in the gantt view.
+            :param cache: An object that contains reusable information in the context of gantt record rescheduling.
+            :return: a tuple of (start_date, end_date)
+            :rtype: tuple(datetime, datetime)
         """
-        # If planned_hours are used, we will modify the planned_date fields values in order to
-        # preserve the planned_hours, taking into account the work intervals either of the user
-        # if available or the one of the company if not
-        self.ensure_one()
-        search_forward = bool(mapped_dependent[self])
-        search_factor = (1 if search_forward else -1)
-        if search_forward:
-            # If the related task is mapped_dependent[self] (and thus the master task), then we look for a date after
-            # the value of its stop_date_field_name.
-            date_candidate = mapped_dependent[self].planned_date_end.replace(tzinfo=utc)
-        else:
-            # If the related task is mapped_depend_on[self] (and thus the slave task), then we look for a date prior
-            # to the value of its start_date_field_name.
-            date_candidate = mapped_depend_on[self].planned_date_begin.replace(tzinfo=utc)
 
-        first_datetime = self._get_first_working_datetime(
-            intervals_cache, date_candidate, resource_validity, search_forward=search_forward
+        first_datetime = self._web_gantt_reschedule_get_first_working_datetime(
+            date_candidate, cache, search_forward=search_forward
         )
 
+        search_factor = 1 if search_forward else -1
         if not self.planned_hours:
             # If there are no planned hours, keep the current duration
-            duration = search_factor * (self.planned_date_end - self.planned_date_begin)
-            return order_boundaries_auto_shift(first_datetime, first_datetime + duration, search_forward)
+            duration = search_factor * (self[stop_date_field_name] - self[start_date_field_name])
+            return sorted([first_datetime, first_datetime + duration])
 
         searched_date = current = first_datetime
         planned_hours = timedelta(hours=self.planned_hours)
@@ -522,15 +531,16 @@ class Task(models.Model):
         hours_to_plan = planned_hours
         MIN_NUMB_OF_WEEKS = 1
         MAX_ELAPSED_TIME = timedelta(weeks=53)
-        resource_entity = self._get_resource_entity()
+        resource_entity = self._web_gantt_reschedule_get_resource_entity()
+        work_intervals, dummy = self._web_gantt_reschedule_extract_cache_info(cache)
         while hours_to_plan > timedelta(hours=0.0) and search_factor * (current - first_datetime) < MAX_ELAPSED_TIME:
             # Look for the missing intervals with min search of 1 week
             delta = search_factor * max(hours_to_plan * 3, timedelta(weeks=MIN_NUMB_OF_WEEKS))
-            task_interval = self._get_interval_auto_shift(current, delta, search_forward)
-            self._update_intervals_cache(intervals_cache, task_interval, resource_validity)
-            intervals_cache_entry = intervals_cache[resource_entity] & task_interval
-            hours_to_plan, searched_date = self._plan_hours_auto_shift(
-                intervals_cache_entry, hours_to_plan, searched_date, search_forward
+            task_interval = self._web_gantt_reschedule_get_interval_auto_shift(current, delta)
+            self._web_gantt_reschedule_update_work_intervals(task_interval, cache)
+            work_intervals_entry = work_intervals[resource_entity] & task_interval
+            hours_to_plan, searched_date = self._web_gantt_reschedule_plan_hours_auto_shift(
+                work_intervals_entry, hours_to_plan, searched_date, search_forward
             )
             current += delta
 
@@ -538,125 +548,42 @@ class Task(models.Model):
             # Reached max iterations
             return False, False
 
-        return order_boundaries_auto_shift(first_datetime, searched_date, search_forward)
+        return sorted([first_datetime, searched_date])
 
-    def _auto_shift_task(self, mapped_dependent, mapped_depend_on, intervals_cache, resource_validity):
-        """ Shifts the task in the future or the past regarding the dependent and depending tasks
+    @api.model
+    def _web_gantt_reschedule_is_record_candidate(self, start_date_field_name, stop_date_field_name):
+        """ Get whether the record is a candidate for the rescheduling. This method is meant to be overridden when
+            we need to add a constraint in order to prevent some records to be rescheduled. This method focuses on the
+            record itself (if you need to have information on the relation (master and slave) rather override
+            _web_gantt_reschedule_is_relation_candidate).
 
-            :param mapped_dependent: dependent tasks
-            :param mapped_depend_on: depending tasks
-            :param intervals_cache: A dict which caches the work intervals, with a resource entity as key and work_intervals as values
-            :param resource_validity: A dict with resource's intervals of validity/invality
-                                     (during resource validity, the resource has its own work intervals,
-                                      during the invalidity, the intervals of its company are use
-            :returns a notification dict if the shift could not be applied, False otherwise
+            :param start_date_field_name: The start date field used in the gantt view.
+            :param stop_date_field_name: The stop date field used in the gantt view.
+            :return: True if record can be rescheduled, False if not.
+            :rtype: bool
         """
-        self.ensure_one()
-        new_planned_date_begin, new_planned_date_end = self.sudo()._get_planned_dates_auto_shift(
-            mapped_dependent, mapped_depend_on, intervals_cache, resource_validity
+        is_record_candidate = super()._web_gantt_reschedule_is_record_candidate(start_date_field_name, stop_date_field_name)
+        return is_record_candidate and self.project_id.allow_task_dependencies and not self.is_closed
+
+    @api.model
+    def _web_gantt_reschedule_is_relation_candidate(self, master, slave, start_date_field_name, stop_date_field_name):
+        """ Get whether the relation between master and slave is a candidate for the rescheduling. This method is meant
+            to be overridden when we need to add a constraint in order to prevent some records to be rescheduled.
+            This method focuses on the relation between records (if your logic is rather on one record, rather override
+            _web_gantt_reschedule_is_record_candidate).
+
+            :param master: The master record we need to evaluate whether it is a candidate for rescheduling or not.
+            :param slave: The slave record.
+            :param start_date_field_name: The start date field used in the gantt view.
+            :param stop_date_field_name: The stop date field used in the gantt view.
+            :return: True if record can be rescheduled, False if not.
+            :rtype: bool
+        """
+        is_relative_candidate = super()._web_gantt_reschedule_is_relation_candidate(
+            master, slave,
+            start_date_field_name, stop_date_field_name
         )
-        if not self._write_planned_dates_if_in_future(new_planned_date_begin, new_planned_date_end):
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'type': 'warning',
-                    'message': _('You cannot reschedule tasks in the past. Please, change their dates manually instead.'),
-                }
-            }
-        return False
-
-    def _is_candidate_auto_shift(self):
-        """
-        Informs whether a task is a candidate for the auto shift feature.
-        :return: True if the task is a candidate for the auto shift feature.
-        :rtype: bool
-        """
-        self.ensure_one()
-        return self.project_id and self.project_id.allow_task_dependencies and not self.is_closed and \
-            self.planned_date_begin and self.planned_date_end and self.planned_date_begin > datetime.now()
-
-    def _get_candidates_auto_shift(self):
-        """
-        Gets the tasks that are candidates for the auto shift feature, together with the two dictionaries
-        mapped_depend_on and mapped_dependent that provide access to the task that trigger the auto shift.
-        The priority is put on depend_on task, meaning that if a task is a candidate for the auto shift feature from
-        both a task it depends on and a dependent task, the only move considered will be the one due to its dependent
-        overlapping task (meaning that the task will be planned earlier, which tends to reduce the critical path).
-        :return: tuple ``(tasks_to_auto_shift, mapped_depend_on, mapped_dependent)``.
-        """
-        # Mapping of tasks with the related tasks that are depending on it
-        mapped_depend_on = defaultdict(lambda: self.env['project.task'])
-        # Mapping of tasks with the related tasks dependent tasks
-        mapped_dependent = defaultdict(lambda: self.env['project.task'])
-        tasks_to_auto_shift = self.env['project.task']
-
-        auto_shift_direction = self.env.context.get(DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY, 'none')
-        auto_shift_forward = auto_shift_direction == DATE_AUTO_SHIFT_FORWARD
-        auto_shift_backward = auto_shift_direction == DATE_AUTO_SHIFT_BACKWARD
-
-        auto_shift_candidate_ids = set(self.ids + self.depend_on_ids.ids + self.dependent_ids.ids)
-        # The goal is to automatically exclude ids from the depend_on_ids and dependent_ids but not the self.ids.
-        # But the call on _is_candidate_auto_shift will still ensure that the self.ids are candidates
-        date_auto_shift_ids_to_exclude = self.env.context.get(DATE_AUTO_SHIFT_IDS_TO_EXCLUDE_KEY, set()) - set(self.ids)
-        auto_shift_candidates = self.env['project.task'].browse(auto_shift_candidate_ids - date_auto_shift_ids_to_exclude)
-        auto_shift_candidate_set = {auto_shift_candidate.id for auto_shift_candidate in auto_shift_candidates if auto_shift_candidate._is_candidate_auto_shift()}
-
-        def is_candidate_and_same_project(master, slave):
-            return slave.id in auto_shift_candidate_set and slave.project_id == master.project_id
-
-        def is_in_conflict_or_force(master, slave, force_autoshift):
-            return force_autoshift or master.planned_date_end > slave.planned_date_begin
-
-        for task in self:
-            if task.id not in auto_shift_candidate_set:
-                continue
-            for depend_on_task in task.depend_on_ids:
-                if not is_candidate_and_same_project(task, depend_on_task) or\
-                   not is_in_conflict_or_force(depend_on_task, task, auto_shift_forward):
-                    continue
-                earliest_task = mapped_depend_on[depend_on_task] or task
-                mapped_depend_on[depend_on_task] = task if task.planned_date_begin < earliest_task.planned_date_begin else earliest_task
-                if mapped_depend_on[depend_on_task] == task:
-                    tasks_to_auto_shift |= depend_on_task
-            for dependent_task in task.dependent_ids:
-                if not is_candidate_and_same_project(task, dependent_task) or\
-                   not is_in_conflict_or_force(task, dependent_task, auto_shift_backward):
-                    continue
-                latest_task = mapped_dependent[dependent_task] or task
-                mapped_dependent[dependent_task] = task if task.planned_date_end > latest_task.planned_date_end else latest_task
-                if mapped_dependent[dependent_task] == task:
-                    tasks_to_auto_shift |= dependent_task
-        for task in mapped_depend_on:
-            # We provide priority to depend_on over dependent as we try to shorten the critical path
-            if task in mapped_dependent:
-                del mapped_dependent[task]
-        return tasks_to_auto_shift, mapped_depend_on, mapped_dependent
-
-    def _action_auto_shift(self):
-        # Recordset of all the tasks that are 'linked' to the current task and that would require an update in
-        # their planned_date fields.
-        tasks_to_auto_shift, mapped_depend_on, mapped_dependent = self._get_candidates_auto_shift()
-        if not tasks_to_auto_shift:
-            return
-
-        # Utils variables
-        # 1) work intervals cache will be used to cache the work intervals per company or resource
-        #    Reason why the key is a mixin is due to the fact a company has no resource associated.
-        #    Work intervals are resource dependant, we will "query" this work interval rather than calling
-        #    _work_intervals_batch to save some db queries.
-        # 2) Resource validity is a dict with a mixin(company,resource) as key and a dict representing the
-        #    intervals where the resource is "valid", i.e. under contract for an employee, and "invalid", i.e.
-        #    intervals where the employee was not already there or has been fired. When an interval is in the
-        #    invalid interval of a resource, then there is a fallback on its company intervals. (see _update_intervals_cache)
-        work_intervals_cache = defaultdict(Intervals)  # keys : [mixin(company,resource)]
-        resource_validity = defaultdict(lambda: {'valid': Intervals(), 'invalid': Intervals()})
-        for task in tasks_to_auto_shift:
-            notification = task._auto_shift_task(
-                mapped_dependent, mapped_depend_on, work_intervals_cache, resource_validity
-            )
-            if notification:
-                return notification
+        return is_relative_candidate and master.project_id == slave.project_id
 
     # ----------------------------------------------------
     # Overlapping tasks
@@ -747,39 +674,6 @@ class Task(models.Model):
 
         return [traverse(inject_unavailability, row) for row in rows]
 
-    @api.model
-    def action_reschedule(self, direction, master_task_id, slave_task_id):
-        if direction not in (DATE_AUTO_SHIFT_FORWARD, DATE_AUTO_SHIFT_BACKWARD):
-            return False
-        # Mapping of tasks with the related tasks that are depending on it
-        mapped_depend_on = defaultdict(lambda: self.env['project.task'])
-        # Mapping of tasks with the related tasks dependent tasks
-        mapped_dependent = defaultdict(lambda: self.env['project.task'])
-        master_task, slave_task = self.env['project.task'].browse([master_task_id, slave_task_id])
-        is_master_prior_to_slave = master_task.planned_date_end <= slave_task.planned_date_begin
-
-        auto_shift_task_write_context = {
-            DATE_AUTO_SHIFT_CONTEXT_KEY: True,
-            DATE_AUTO_SHIFT_DIRECTION_CONTEXT_KEY: direction,
-        }
-
-        if (is_master_prior_to_slave and direction == DATE_AUTO_SHIFT_FORWARD) or\
-           (not is_master_prior_to_slave and direction == DATE_AUTO_SHIFT_BACKWARD):
-            # Indeed this condition is a XOR, but it's clearer with the long version
-            trigger_task = master_task
-            mapped_depend_on[trigger_task] = slave_task
-        else:
-            trigger_task = slave_task
-            mapped_dependent[trigger_task] = master_task
-
-        trigger_task = trigger_task.with_context(**auto_shift_task_write_context)
-        work_intervals_cache = defaultdict(Intervals)  # keys resource_entity: [mixin(company,resource)]
-        resource_validity = defaultdict(lambda: {'valid': Intervals(), 'invalid': Intervals()})
-        notification = trigger_task._auto_shift_task(
-            mapped_dependent, mapped_depend_on, work_intervals_cache, resource_validity
-        )
-        return notification or True
-
     def _get_recurrence_start_date(self):
         self.ensure_one()
         return self.planned_date_begin or fields.Date.today()
@@ -798,7 +692,7 @@ class Task(models.Model):
         action['view_mode'] = 'tree,form,kanban,calendar,pivot,graph,gantt,activity,map'
         return action
 
-    def _gantt_progress_bar_user_ids(self, res_ids, start, stop):
+    def _web_gantt_progress_bar_user_ids(self, res_ids, start, stop):
         start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
         users = self.env['res.users'].search([('id', 'in', res_ids)])
         self.env['project.task'].check_access_rights('read')
@@ -840,10 +734,10 @@ class Task(models.Model):
             for user in users
         }
 
-    def _gantt_progress_bar(self, field, res_ids, start, stop):
+    def _web_gantt_progress_bar(self, field, res_ids, start, stop):
         if field == 'user_ids':
             return dict(
-                self._gantt_progress_bar_user_ids(res_ids, start, stop),
+                self._web_gantt_progress_bar_user_ids(res_ids, start, stop),
                 warning=_("This user isn't expected to have task during this period. Planned hours :"),
             )
         raise NotImplementedError("This Progress Bar is not implemented.")
@@ -856,6 +750,6 @@ class Task(models.Model):
 
         progress_bars = {}
         for field in fields:
-            progress_bars[field] = self._gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
+            progress_bars[field] = self._web_gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
 
         return progress_bars

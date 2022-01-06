@@ -22,12 +22,19 @@ var GanttController = AbstractController.extend({
     }),
     custom_events: _.extend({}, AbstractController.prototype.custom_events, {
         add_button_clicked: '_onCellAddClicked',
-        plan_button_clicked: '_onCellPlanClicked',
         collapse_row: '_onCollapseRow',
         expand_row: '_onExpandRow',
+        on_connector_end_drag: '_onConnectorEndDrag',
+        on_connector_highlight: '_onConnectorHighlight',
+        on_connector_start_drag: '_onConnectorStartDrag',
+        on_create_connector: '_onCreateConnector',
+        on_pill_highlight: '_onPillHighlight',
+        on_remove_connector: '_onRemoveConnector',
+        on_reschedule_according_to_dependency: '_onRescheduleAccordingToDependency',
         pill_clicked: '_onPillClicked',
         pill_resized: '_onPillResized',
         pill_dropped: '_onPillDropped',
+        plan_button_clicked: '_onCellPlanClicked',
         updating_pill_started: '_onPillUpdatingStarted',
         updating_pill_stopped: '_onPillUpdatingStopped',
     }),
@@ -54,6 +61,7 @@ var GanttController = AbstractController.extend({
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.createAction = params.createAction;
         this.actionDomain = params.actionDomain;
+        this._draggingConnector = false;
 
         this.isRTL = _t.database.parameters.direction === "rtl";
     },
@@ -348,6 +356,52 @@ var GanttController = AbstractController.extend({
         this.renderer.updateRow(this.model.get(ev.data.rowId));
     },
     /**
+     * Handler for renderer on-connector-end-drag event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    _onConnectorEndDrag(ev) {
+        ev.stopPropagation();
+        this._draggingConnector = false;
+        this.renderer.set_connector_creation_mode(this._draggingConnector);
+    },
+    /**
+     * Handler for renderer on-connector-highlight event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    _onConnectorHighlight(ev) {
+        ev.stopPropagation();
+        if (!this._updating && !this._draggingConnector) {
+            this.renderer.toggleConnectorHighlighting(ev.data.connector, ev.data.highlighted);
+        }
+    },
+    /**
+     * Handler for renderer on-connector-start-drag event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    _onConnectorStartDrag(ev) {
+        ev.stopPropagation();
+        this._draggingConnector = true;
+        this.renderer.set_connector_creation_mode(this._draggingConnector);
+    },
+    /**
+     * Handler for renderer on-create-connector event.
+     *
+     * @param {OdooEvent} ev
+     * @returns {Promise<*>}
+     * @private
+     */
+    async _onCreateConnector(ev) {
+        ev.stopPropagation();
+        await this.model.createDependency(ev.data.masterId, ev.data.slaveId);
+        await this.reload();
+    },
+    /**
      * @private
      * @param {MouseEvent} ev
      */
@@ -455,6 +509,18 @@ var GanttController = AbstractController.extend({
         }
     },
     /**
+     * Handler for renderer on-connector-end-drag event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    async _onPillHighlight(ev) {
+        ev.stopPropagation();
+        if (!this._updating || !ev.data.highlighted) {
+            await this.renderer.togglePillHighlighting(ev.data.element, ev.data.highlighted);
+        }
+    },
+    /**
      * Save pill information when resized
      *
      * @private
@@ -473,6 +539,7 @@ var GanttController = AbstractController.extend({
     _onPillUpdatingStarted: function (ev) {
         ev.stopPropagation();
         this._updating = true;
+        this.renderer.togglePreventConnectorsHoverEffect(true);
     },
     /**
      * @private
@@ -481,6 +548,7 @@ var GanttController = AbstractController.extend({
     _onPillUpdatingStopped: function (ev) {
         ev.stopPropagation();
         this._updating = false;
+        this.renderer.togglePreventConnectorsHoverEffect(false);
     },
     /**
      * Opens a dialog to plan records.
@@ -501,6 +569,38 @@ var GanttController = AbstractController.extend({
         ev.preventDefault();
         var state = this.model.get();
         this.update({ date: state.focusDate.subtract(1, state.scale) });
+    },
+    /**
+     * Handler for renderer on-remove-connector event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    async _onRemoveConnector(ev) {
+        ev.stopPropagation();
+        await this.model.removeDependency(ev.data.masterId, ev.data.slaveId);
+        await this.reload();
+    },
+    /**
+     * Handler for renderer on-reschedule-according-to-dependency event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    async _onRescheduleAccordingToDependency(ev) {
+        ev.stopPropagation();
+        const result = await this.model.rescheduleAccordingToDependency(
+            ev.data.direction,
+            ev.data.masterId,
+            ev.data.slaveId);
+        if (result === false) {
+            return
+        } else {
+            await this.reload();
+            if (result.type == 'ir.actions.client') {
+                this.do_action(result);
+            }
+        }
     },
     /**
      * @private

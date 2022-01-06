@@ -3,7 +3,7 @@
 import GanttController from 'web_gantt.GanttController';
 
 
-const TaskGanttController = GanttController.extend({
+export default GanttController.extend({
     custom_events: Object.assign(
         { },
         GanttController.prototype.custom_events,
@@ -75,5 +75,3 @@ const TaskGanttController = GanttController.extend({
         return context;
     },
 });
-
-export default TaskGanttController;

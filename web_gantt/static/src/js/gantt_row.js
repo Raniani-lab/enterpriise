@@ -73,6 +73,8 @@ var GanttRow = Widget.extend({
         this.consolidate = options.consolidate;
         this.consolidationParams = viewInfo.consolidationParams;
 
+        this.dependencyEnabled = parent.dependencyEnabled;
+
         if(options.thumbnail){
             this.thumbnailUrl = session.url('/web/image', {
                 model: options.thumbnail.model,

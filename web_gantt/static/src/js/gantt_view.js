@@ -127,6 +127,13 @@ var GanttView = AbstractView.extend({
         // cell create option
         const canCellCreate = this.arch.attrs.cell_create ? !!JSON.parse(this.arch.attrs.cell_create) : true;
 
+        // Dependencies
+        const dependencyField = !!this.arch.attrs.dependency_field && this.arch.attrs.dependency_field;
+        const dependencyInvertedField = !!this.arch.attrs.dependency_inverted_field && this.arch.attrs.dependency_inverted_field;
+        if (dependencyField) {
+            decorationFields.push(dependencyField);
+        }
+
         this.controllerParams.context = params.context || {};
         this.controllerParams.dialogViews = dialogViews;
         this.controllerParams.SCALES = this.SCALES;
@@ -150,6 +157,9 @@ var GanttView = AbstractView.extend({
         this.loadParams.consolidationParams = consolidationParams;
         this.loadParams.progressBarFields = arch.attrs.progress_bar;
 
+        this.modelParams.dependencyField = dependencyField;
+        this.modelParams.dependencyInvertedField = dependencyInvertedField;
+
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
         this.rendererParams.canCellCreate = canCellCreate;
         this.rendererParams.canEdit = this.controllerParams.activeActions.edit;
@@ -168,6 +178,8 @@ var GanttView = AbstractView.extend({
         this.rendererParams.consolidationParams = consolidationParams;
         this.rendererParams.thumbnails = thumbnails;
         this.rendererParams.progressBarFields = arch.attrs.progress_bar;
+        this.rendererParams.dependencyEnabled = !!this.modelParams.dependencyField
+        this.rendererParams.dependencyField = this.modelParams.dependencyField
     },
 });
 

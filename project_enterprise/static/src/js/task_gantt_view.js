@@ -14,6 +14,22 @@ export const TaskGanttView = GanttView.extend({
         Model: TaskGanttModel,
         ControlPanel: ProjectControlPanel,
     }),
+
+    //--------------------------------------------------------------------------
+    // Life Cycle
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    init: function (viewInfo, params) {
+        this._super.apply(this, arguments);
+        const fieldsToFetch = ['project_id']
+        if (this.rendererParams.dependencyEnabled) {
+            fieldsToFetch.push('allow_task_dependencies', 'display_warning_dependency_in_gantt');
+        }
+        this.loadParams.decorationFields.push(...fieldsToFetch);
+    }
 });
 
 viewRegistry.add('task_gantt', TaskGanttView);

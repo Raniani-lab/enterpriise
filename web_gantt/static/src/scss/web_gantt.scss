@@ -6,6 +6,10 @@ $gantt-highlight-hover-row: rgba($primary, .1);
 $gantt-row-open-bg: $gray-100;
 $gantt-pill-consolidated-height: 24px;
 $gantt-unavailability-bg: $gray-200;
+$o-connector-creator-bullet-radius: 3px;
+$o-connector-creator-size: 8px;
+$o-connector-creator-bullet-diameter: 2 * $o-connector-creator-bullet-radius;
+$o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bullet-radius;
 
 
 // Define the necessary conditions to provide visual feedback on hover,
@@ -625,4 +629,152 @@ $gantt-unavailability-bg: $gray-200;
     // need to go to their settings in order to print them)
     -webkit-print-color-adjust: exact;  /* Chrome, Safari */
     color-adjust: exact;                /*Firefox*/
+}
+
+.o_gantt_slots_container {
+    .o_gantt_cell {
+        .o_gantt_pill_wrapper {
+            // used for `color` attribute on <gantt>
+            @for $index from 1 through length($o-colors-complete) - 1 {
+                // @for $index from 3 through length($o-colors) {
+                .o_gantt_pill {
+                    &.highlight {
+                        z-index: 2;
+                    }
+                    &.o_gantt_color_#{$index - 1} {
+                        $color: nth($o-colors-complete, $index);
+                        &.highlight {
+                            background-color: $color;
+                            color: color-yiq($color);
+                        }
+                    }
+                }
+                .o_connector_creator_wrapper {
+                    &.o_gantt_color_#{$index - 1} {
+                        $color: nth($o-colors-complete, $index);
+                        .o_connector_creator_bullet {
+                            background-color: $color;
+                            color: color-yiq($color);
+                            @include o-grab-cursor;
+                        }
+                        .o_connector_creator_top {
+                            border-top: solid 1px $color;
+                        }
+                        .o_connector_creator_right {
+                            border-left: solid 1px $color;
+                        }
+                        .o_connector_creator_bottom {
+                            border-bottom: solid 1px $color;
+                        }
+                        .o_connector_creator_left {
+                            border-right: solid 1px $color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.o_connector_container {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.o_connector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    &.o_connector_hovered {
+        z-index: 2;
+    }
+    .o_connector_stroke_button {
+        > rect {
+            cursor: pointer;
+            stroke: #091124;
+            stroke-width: 24px;
+            fill: white;
+        }
+        &.o_connector_stroke_reschedule_button {
+            line {
+                stroke: #00a09d;
+            }
+            &:hover{
+                > rect {
+                    fill: #00a09d;
+                }
+                line {
+                    stroke: white;
+                }
+            }
+        }
+        &.o_connector_stroke_remove_button {
+            g {
+                rect {
+                    fill: #dd3c4f;
+                }
+            }
+            &:hover{
+                > rect {
+                    fill: #dd3c4f;
+                }
+                g {
+                    rect {
+                        fill: white;
+                    }
+                }
+            }
+        }
+    }
+}
+.o_connector_creator_wrapper {
+    z-index: 3;
+    position: absolute;
+    height: $o-connector-wrapper-height;
+    width: 100%
+}
+.o_connector_creator_wrapper_top {
+    top: -1 * $o-connector-wrapper-height;
+}
+.o_connector_creator_wrapper_bottom {
+    bottom: -1 * $o-connector-wrapper-height;
+}
+.o_connector_creator {
+    position: absolute;
+    height: $o-connector-creator-size;
+    width: $o-connector-creator-size;
+}
+.o_connector_creator_bullet {
+    height: $o-connector-creator-bullet-diameter;
+    width: $o-connector-creator-bullet-diameter;
+    position: absolute;
+    border-radius: $o-connector-creator-bullet-diameter / 2;
+}
+.o_connector_creator_top {
+    bottom: 0;
+    .o_connector_creator_bullet {
+        top: -0.5 * $o-connector-creator-bullet-diameter;
+    }
+}
+.o_connector_creator_right {
+    right: $o-connector-creator-size;
+    .o_connector_creator_bullet {
+        right: -0.5 * $o-connector-creator-bullet-diameter;
+    }
+}
+.o_connector_creator_bottom {
+    top: 0;
+    .o_connector_creator_bullet {
+        bottom: -0.5 * $o-connector-creator-bullet-diameter;
+    }
+}
+.o_connector_creator_left {
+    left: $o-connector-creator-size;
+    .o_connector_creator_bullet {
+        left: -0.5 * $o-connector-creator-bullet-diameter;
+    }
 }

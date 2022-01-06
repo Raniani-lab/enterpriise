@@ -15,11 +15,13 @@ var GanttModel = AbstractModel.extend({
     /**
      * @override
      */
-    init: function () {
+    init: function (parent, params = {}) {
         this._super.apply(this, arguments);
 
         this.dp = new concurrency.DropPrevious();
         this.mutex = new concurrency.Mutex();
+        this.dependencyField = params.dependencyField;
+        this.dependencyInvertedField = params.dependencyInvertedField;
     },
 
     //--------------------------------------------------------------------------
@@ -54,6 +56,25 @@ var GanttModel = AbstractModel.extend({
             result.subtract(session.getTZOffset(date), 'minutes');
         }
         return result.locale('en').format('YYYY-MM-DD HH:mm:ss');
+    },
+    /**
+     * Adds a dependency between masterId and slaveId (slaveId depends
+     * on masterId).
+     *
+     * @param masterId
+     * @param slaveId
+     * @returns {Promise<*>}
+     */
+    async createDependency(masterId, slaveId) {
+        return this.mutex.exec(() => {
+            const writeCommand = {};
+            writeCommand[this.dependencyField] = [[4, masterId, false]];
+            return this._rpc({
+                model: this.modelName,
+                method: 'write',
+                args: [[slaveId], writeCommand],
+            });
+        });
     },
     /**
      * Add or subtract value to a moment.
@@ -221,6 +242,25 @@ var GanttModel = AbstractModel.extend({
         });
     },
     /**
+     * Removes the dependency between masterId and slaveId (slaveId is no
+     * more dependent on masterId).
+     *
+     * @param masterId
+     * @param slaveId
+     * @returns {Promise<*>}
+     */
+    async removeDependency(masterId, slaveId) {
+        return this.mutex.exec(() => {
+            const writeCommand = {};
+            writeCommand[this.dependencyField] = [[3, masterId, false]];
+            return this._rpc({
+                model: this.modelName,
+                method: 'write',
+                args: [[slaveId], writeCommand],
+            });
+        });
+    },
+    /**
      * Reschedule a task to the given schedule.
      *
      * @param {integer} id
@@ -244,6 +284,31 @@ var GanttModel = AbstractModel.extend({
                 if (callback) {
                     callback(result);
                 }
+            });
+        });
+    },
+    /**
+     * Reschedule masterId or slaveId according to the direction
+     *
+     * @param direction
+     * @param masterId
+     * @param slaveId
+     * @returns {Promise<*>}
+     */
+    async rescheduleAccordingToDependency(direction, masterId, slaveId) {
+        return this.mutex.exec(() => {
+            return this._rpc({
+                model: this.modelName,
+                method: 'web_gantt_reschedule',
+                args: [
+                    direction,
+                    masterId,
+                    slaveId,
+                    this.dependencyField,
+                    this.dependencyInvertedField,
+                    this.ganttData.dateStartField,
+                    this.ganttData.dateStopField
+                ],
             });
         });
     },

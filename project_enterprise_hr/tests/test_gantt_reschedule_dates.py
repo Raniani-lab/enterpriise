@@ -5,15 +5,13 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from odoo.tests.common import tagged
-from odoo.addons.project_enterprise.tests.auto_shift_dates_common import fake_now
+from odoo.addons.project_enterprise.tests.gantt_reschedule_dates_common import fake_now
 from .auto_shift_dates_hr_common import AutoShiftDatesHRCommon
 from odoo.fields import Command
 
 
 @freeze_time(fake_now)
-@tagged('-at_install', 'post_install', 'auto_shift_dates')
-class TestTaskDependencies(AutoShiftDatesHRCommon):
+class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
 
     def test_auto_shift_employee_integration(self):
         # We have to bypass the calendar validity computation for employees/students,
@@ -27,6 +25,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the employee's calendar into account."
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date - relativedelta(days=1, hour=14), failed_message)
@@ -38,6 +37,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(days=-1, hour=11), failed_message)
         failed_message = "The auto shift date feature should take the company's calendar into account before employee create_date."
@@ -46,6 +46,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date - relativedelta(days=1, hour=15), failed_message)
         new_task_1_begin_date = self.armande_departure_date + relativedelta(days=1, hour=11)
@@ -53,6 +54,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_1_begin_date,
             'planned_date_end': new_task_1_begin_date + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
+        self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_begin,
                          new_task_1_begin_date + relativedelta(hour=14), failed_message)
         failed_message = "The auto shift date feature should work for tasks landing on the edge of employee create_date or on the edge of departure_date."
@@ -64,6 +66,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(hour=9), failed_message)
         new_task_1_begin_date = self.armande_departure_date - relativedelta(days=1, hour=16)
@@ -71,6 +74,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_1_begin_date,
             'planned_date_end': new_task_1_begin_date + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
+        self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_begin,
                          new_task_1_begin_date + relativedelta(days=1, hour=13), failed_message)
         failed_message = "The auto shift date feature should work for tasks landing on the edge of employee create_date or on the edge of departure_date, even when falling in the middle of the planned_hours."
@@ -79,6 +83,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(hour=11), failed_message)
         self.armande_employee.write({
@@ -89,6 +94,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
             'planned_date_begin': new_task_1_begin_date,
             'planned_date_end': new_task_1_begin_date + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
+        self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_end,
                          new_task_1_begin_date + relativedelta(days=1, hour=9), failed_message)
 
@@ -98,6 +104,7 @@ class TestTaskDependencies(AutoShiftDatesHRCommon):
         there are multiple assignees to the task.
         """
         self.task_1.user_ids += self.user_projectmanager
-        self.task_1.write(self.task_1_date_auto_shift_trigger)
+        self.task_1.write(self.task_1_date_gantt_reschedule_trigger)
+        self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should move forward a dependent tasks."
         self.assertTrue(self.task_1.planned_date_end <= self.task_3.planned_date_begin, failed_message)

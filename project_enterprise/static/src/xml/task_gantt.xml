@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates xml:space="preserve">
+    <t t-name="TaskGanttView.PillsConnectors" t-extend="GanttView.PillsConnectors">
+        <t t-jquery="t[t-call='GanttView.Connector']" t-operation="attributes">
+            <attribute name="t-if">widget.dependencyEnabled &amp;&amp; pill.allow_task_dependencies</attribute>
+        </t>
+    </t>
     <t t-name="TaskGanttMilestonesView" t-extend="GanttView">
         <t t-jquery='t[t-foreach="widget.viewInfo.slots"] div' t-operation="append">
             <t t-set="slotMilestonesInfo" t-value="widget.viewInfo.slotMilestonesInfo(slot)"></t>
@@ -36,6 +41,9 @@
         <t t-jquery="*[t-attf-class~='o_gantt_row_title']" t-operation="attributes">
             <attribute name="t-att-style" value="widget.showUserAvatar &amp;&amp; 'text-overflow: clip'"/>
         </t>
+        <t t-jquery="t[t-call='GanttView.PillsConnectors']" t-operation="attributes">
+            <attribute name="t-call">TaskGanttView.PillsConnectors</attribute>
+        </t>
     </t>
     <t t-name="gantt-milestone-popover">
         <ul class="mb-0 list-unstyled">
@@ -55,27 +63,5 @@
                 <t t-set="previous_project_id" t-value="milestone.project_id[0]"></t>
             </li>
         </ul>
-    </t>
-    <t t-name="TaskGanttConnectorView.Row" t-extend="TaskGanttMilestonesView.Row">
-        <t t-jquery='div[t-att-data-id="pill.id"]' t-operation="before">
-            <t t-call="TaskGanttConnectorView.Connector" t-if="pill.allow_task_dependencies">
-                <t t-set="vertical_alignment" t-value="'top'"></t>
-                <t t-set="horizontal_alignment" t-value="'left'"></t>
-            </t>
-        </t>
-        <t t-jquery='div[t-att-data-id="pill.id"]' t-operation="after">
-            <t t-call="TaskGanttConnectorView.Connector" t-if="pill.allow_task_dependencies">
-                <t t-set="vertical_alignment" t-value="'bottom'"></t>
-                <t t-set="horizontal_alignment" t-value="'right'"></t>
-            </t>
-        </t>
-    </t>
-    <t t-name="TaskGanttConnectorView.Connector">
-        <div t-attf-class="invisible o_connector_creator_wrapper o_connector_creator_wrapper_{{vertical_alignment}} {{!widget.options.isGroup ? pill.decorations.join(' ') : ''}} {{'_color' in pill ? 'o_gantt_color_' + pill._color : ''}}">
-            <div t-attf-class="o_connector_creator o_connector_creator_{{vertical_alignment}} o_connector_creator_{{horizontal_alignment}}">
-                <div t-att-data-id="pill.id" class="o_connector_creator_bullet">
-                </div>
-            </div>
-        </div>
     </t>
 </templates>

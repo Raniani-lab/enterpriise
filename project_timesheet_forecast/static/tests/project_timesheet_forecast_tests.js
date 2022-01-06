@@ -31,6 +31,8 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                             relation: "employee",
                         },
                         active: {string: "active", type: "boolean", default: true},
+                        allow_task_dependencies: { string: "Allow Task Dependencies", type: "boolean", default: false},
+                        display_warning_dependency_in_gantt: { string: "Display Warning Dependency", type: "boolean", default: false},
                     },
                     records: [
                         {id: 1, name: 'Do what you gotta do', start: '2020-06-10 08:30:00', stop: '2020-06-10 12:30:00', 

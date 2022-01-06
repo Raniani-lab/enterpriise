@@ -3,9 +3,9 @@
 import testUtils, { createView } from "web.test_utils";
 import { Domain } from "@web/core/domain";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
-import { TaskGanttConnectorView } from "@project_enterprise/js/task_gantt_connector/task_gantt_connector_view";
-import TaskGanttConnectorRenderer from "@project_enterprise/js/task_gantt_connector/task_gantt_connector_renderer";
-import TaskGanttConnectorController from "@project_enterprise/js/task_gantt_connector/task_gantt_connector_controller";
+import GanttView from "@web_gantt/js/gantt_view";
+import GanttRenderer from "@web_gantt/js/gantt_renderer";
+import GanttController from "@web_gantt/js/gantt_controller";
 
 /**
  * As the rendering of the connectors is made after the gantt rendering is injected in the dom and as the connectors
@@ -13,7 +13,7 @@ import TaskGanttConnectorController from "@project_enterprise/js/task_gantt_conn
  * For that reason we had to create the testPromise and extend both TaskGanttConnectorRenderer and TaskGanttConnectorView.
 * */
 let testPromise = testUtils.makeTestPromise();
-const TestTaskGanttConnectorRenderer = TaskGanttConnectorRenderer.extend({
+const TestGanttRenderer = GanttRenderer.extend({
     /**
      * @override
     */
@@ -22,16 +22,16 @@ const TestTaskGanttConnectorRenderer = TaskGanttConnectorRenderer.extend({
         testPromise.resolve();
     }
 });
-const TestTaskGanttConnectorView = TaskGanttConnectorView.extend({
-    config: Object.assign({}, TaskGanttConnectorView.prototype.config, {
-        Renderer: TestTaskGanttConnectorRenderer,
+const TestGanttView = GanttView.extend({
+    config: Object.assign({}, GanttView.prototype.config, {
+        Renderer: TestGanttRenderer,
     })
 });
 
 const actualDate = new Date(2021, 9, 10, 8, 0, 0);
 const initialDate = new Date(actualDate.getTime() - actualDate.getTimezoneOffset() * 60 * 1000);
 const ganttViewParams = {
-    arch: `<gantt date_start="planned_date_begin" date_stop="planned_date_end" default_scale="month"/>`,
+    arch: `<gantt date_start="planned_date_begin" date_stop="planned_date_end" default_scale="month" dependency_field="depend_on_ids"/>`,
     domain: Domain.FALSE,
     model: 'project.task',
     viewOptions: {initialDate},
@@ -51,9 +51,9 @@ function getConnectorsDict(gantt) {
     const connectorsDict = { };
     for (const connector of Object.values(gantt.renderer._connectors)) {
         const connector_data = connector.data;
-        const masterTaskUserId = JSON.parse(connector_data.masterTaskRowId)[0].user_ids[0] || 0;
-        const taskUserId = JSON.parse(connector_data.taskRowId)[0].user_ids[0] || 0;
-        const testKey = `${connector_data.masterTaskId}|${masterTaskUserId}|${connector_data.taskId}|${taskUserId}`;
+        const masterUserId = JSON.parse(connector_data.masterRowId)[0].user_ids[0] || 0;
+        const slaveUserId = JSON.parse(connector_data.slaveRowId)[0].user_ids[0] || 0;
+        const testKey = `${connector_data.masterId}|${masterUserId}|${connector_data.slaveId}|${slaveUserId}`;
         connectorsDict[testKey] = connector;
     }
     return connectorsDict;
@@ -79,7 +79,7 @@ const CSS = {
     },
 };
 
-QUnit.module('Views > GanttView > TaskDependenciesGantt', {
+QUnit.module('Views > GanttView > Gantt Dependency', {
     async beforeEach() {
         testPromise = testUtils.makeTestPromise();
         ganttViewParams.data = {
@@ -139,9 +139,6 @@ QUnit.module('Views > GanttView > TaskDependenciesGantt', {
             return null;
         };
         ganttViewParams.mockRPC = function (route, args) {
-            if (args.method === 'search_milestone_from_task') {
-                return Promise.resolve([]);
-            }
             const prom = ganttViewParams.mockRPCHook(route, args);
             if (prom !== null) {
                 return prom;
@@ -149,7 +146,7 @@ QUnit.module('Views > GanttView > TaskDependenciesGantt', {
                 return this._super.apply(this, arguments);
             }
         };
-        ganttViewParams.View = TestTaskGanttConnectorView;
+        ganttViewParams.View = TestGanttView;
     }
 });
 
@@ -192,209 +189,168 @@ QUnit.test('Connectors are correctly computed and rendered.', async function (as
         '7|3|8|3': 'n',
         '8|1|9|2': 'n',
         '8|3|9|2': 'n',
-        '10|2|11|2': 'n',
-        '12|2|13|2': 'n',
-        '14|2|15|2': 'e',
-        '16|2|17|2': 'w',
+        '10|2|11|2': 'e',
+        '12|2|13|2': 'w',
     };
 
     assert.expect(3 * Object.keys(tests).length + 2);
 
     ganttViewParams.data = {
-                'project.task': {
-                    fields: {
-                        id: { string: 'ID', type: 'integer' },
-                        name: { string: 'Name', type: 'char' },
-                        planned_date_begin: { string: 'Start Date', type: 'datetime' },
-                        planned_date_end: { string: 'Stop Date', type: 'datetime' },
-                        project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
-                        user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
-                        allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
-                        depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
-                        display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            name: 'Task 1',
-                            planned_date_begin: '2021-10-11 18:30:00',
-                            planned_date_end: '2021-10-11 19:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 2,
-                            name: 'Task 2',
-                            planned_date_begin: '2021-10-12 11:30:00',
-                            planned_date_end: '2021-10-12 12:29:59',
-                            project_id: 1,
-                            user_ids: [1, 3],
-                            depend_on_ids: [1],
-                        },
-                        {
-                            id: 3,
-                            name: 'Task 3',
-                            planned_date_begin: '2021-10-13 06:30:00',
-                            planned_date_end: '2021-10-13 07:29:59',
-                            project_id: 1,
-                            user_ids: [],
-                            depend_on_ids: [2],
-                        },
-                        {
-                            id: 4,
-                            name: 'Task 4',
-                            planned_date_begin: '2021-10-14 22:30:00',
-                            planned_date_end: '2021-10-14 23:29:59',
-                            project_id: 1,
-                            user_ids: [2, 3],
-                            depend_on_ids: [2],
-                        },
-                        {
-                            id: 5,
-                            name: 'Task 5',
-                            planned_date_begin: '2021-10-15 01:53:10',
-                            planned_date_end: '2021-10-15 02:34:34',
-                            project_id: 1,
-                            user_ids: [],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 6,
-                            name: 'Task 6',
-                            planned_date_begin: '2021-10-16 23:00:00',
-                            planned_date_end: '2021-10-16 23:21:01',
-                            project_id: 1,
-                            user_ids: [1, 3],
-                            depend_on_ids: [4, 5],
-                        },
-                        {
-                            id: 7,
-                            name: 'Task 7',
-                            planned_date_begin: '2021-10-17 10:30:12',
-                            planned_date_end: '2021-10-17 11:29:59',
-                            project_id: 1,
-                            user_ids: [1, 2, 3],
-                            depend_on_ids: [6],
-                        },
-                        {
-                            id: 8,
-                            name: 'Task 8',
-                            planned_date_begin: '2021-10-18 06:30:12',
-                            planned_date_end: '2021-10-18 07:29:59',
-                            project_id: 1,
-                            user_ids: [1, 3],
-                            depend_on_ids: [7],
-                        },
-                        {
-                            id: 9,
-                            name: 'Task 9',
-                            planned_date_begin: '2021-10-19 06:30:12',
-                            planned_date_end: '2021-10-19 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [8],
-                        },
-                        {
-                            id: 10,
-                            name: 'Task 10',
-                            planned_date_begin: '2021-10-19 06:30:12',
-                            planned_date_end: '2021-10-19 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [],
-                            display_warning_dependency_in_gantt: false,
-                        },
-                        {
-                            id: 11,
-                            name: 'Task 11',
-                            planned_date_begin: '2021-10-18 06:30:12',
-                            planned_date_end: '2021-10-18 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [10],
-                        },
-                        {
-                            id: 12,
-                            name: 'Task 12',
-                            planned_date_begin: '2021-10-19 06:30:12',
-                            planned_date_end: '2021-10-19 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 13,
-                            name: 'Task 13',
-                            planned_date_begin: '2021-10-18 06:30:12',
-                            planned_date_end: '2021-10-18 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [12],
-                            display_warning_dependency_in_gantt: false,
-                        },
-                        {
-                            id: 14,
-                            name: 'Task 14',
-                            planned_date_begin: '2021-10-19 06:30:12',
-                            planned_date_end: '2021-10-19 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 15,
-                            name: 'Task 15',
-                            planned_date_begin: '2021-10-18 06:30:12',
-                            planned_date_end: '2021-10-18 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [14],
-                        },
-                        {
-                            id: 16,
-                            name: 'Task 16',
-                            planned_date_begin: '2021-10-18 06:30:12',
-                            planned_date_end: '2021-10-19 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 17,
-                            name: 'Task 17',
-                            planned_date_begin: '2021-10-18 07:29:59',
-                            planned_date_end: '2021-10-20 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [16],
-                        },
-                    ],
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-11 18:30:00',
+                    planned_date_end: '2021-10-11 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
                 },
-                'project.project': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'Project 1'},
-                    ],
+                {
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-12 11:30:00',
+                    planned_date_end: '2021-10-12 12:29:59',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [1],
                 },
-                'res.users': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'User 1'},
-                        {id: 2, name: 'User 2'},
-                        {id: 3, name: 'User 3'},
-                        {id: 4, name: 'User 4'},
-                    ],
+                {
+                    id: 3,
+                    name: 'Task 3',
+                    planned_date_begin: '2021-10-13 06:30:00',
+                    planned_date_end: '2021-10-13 07:29:59',
+                    project_id: 1,
+                    user_ids: [],
+                    depend_on_ids: [2],
                 },
-            };
+                {
+                    id: 4,
+                    name: 'Task 4',
+                    planned_date_begin: '2021-10-14 22:30:00',
+                    planned_date_end: '2021-10-14 23:29:59',
+                    project_id: 1,
+                    user_ids: [2, 3],
+                    depend_on_ids: [2],
+                },
+                {
+                    id: 5,
+                    name: 'Task 5',
+                    planned_date_begin: '2021-10-15 01:53:10',
+                    planned_date_end: '2021-10-15 02:34:34',
+                    project_id: 1,
+                    user_ids: [],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 6,
+                    name: 'Task 6',
+                    planned_date_begin: '2021-10-16 23:00:00',
+                    planned_date_end: '2021-10-16 23:21:01',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [4, 5],
+                },
+                {
+                    id: 7,
+                    name: 'Task 7',
+                    planned_date_begin: '2021-10-17 10:30:12',
+                    planned_date_end: '2021-10-17 11:29:59',
+                    project_id: 1,
+                    user_ids: [1, 2, 3],
+                    depend_on_ids: [6],
+                },
+                {
+                    id: 8,
+                    name: 'Task 8',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-18 07:29:59',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [7],
+                },
+                {
+                    id: 9,
+                    name: 'Task 9',
+                    planned_date_begin: '2021-10-19 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [8],
+                },
+                {
+                    id: 10,
+                    name: 'Task 10',
+                    planned_date_begin: '2021-10-19 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 11,
+                    name: 'Task 11',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-18 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [10],
+                },
+                {
+                    id: 12,
+                    name: 'Task 12',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 13,
+                    name: 'Task 13',
+                    planned_date_begin: '2021-10-18 07:29:59',
+                    planned_date_end: '2021-10-20 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [12],
+                },
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+                { id: 2, name: 'User 2' },
+                { id: 3, name: 'User 3' },
+                { id: 4, name: 'User 4' },
+            ],
+        },
+    };
 
-    const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids']});
+    const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids'] });
     registerCleanup(gantt.destroy);
     await testPromise;
 
@@ -437,7 +393,6 @@ QUnit.test('Connectors are correctly computed and rendered.', async function (as
 
     assert.notOk(Object.keys(connectorsDictCopy).length, 'There should not be more connectors than expected.');
     assert.equal(gantt.el.querySelectorAll(CSS.SELECTOR.CONNECTOR).length, Object.keys(tests).length, 'All connectors should be rendered.');
-
 });
 
 QUnit.test('Connector hovered state is triggered and color is set accordingly.', async function (assert) {
@@ -466,7 +421,6 @@ QUnit.test('Connector hovered state is triggered and color is set accordingly.',
     connector_stroke = connector.querySelector(CSS.SELECTOR.CONNECTOR_STROKE);
     assert.ok(connector.classList.contains(CSS.CLASS.CONNECTOR_HOVERED), 'Hovered connectors contain the o_connector_hovered class');
     assert.equal(connector_stroke.getAttribute('stroke'), gantt.renderer._connectorsStrokeColors.hoveredStroke);
-
 });
 
 QUnit.test('Buttons are displayed when hovering a connector.', async function (assert) {
@@ -486,25 +440,43 @@ QUnit.test('Buttons are displayed when hovering a connector.', async function (a
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
     assert.ok(connector.querySelector(CSS.SELECTOR.CONNECTOR_STROKE_BUTTON) !== null, "Connectors that are hovered display buttons.");
+});
 
+QUnit.test('Connector container is re-rendered.', async function (assert) {
+
+    assert.expect(1);
+
+    const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids']});
+    registerCleanup(gantt.destroy);
+    await testPromise;
+
+    testPromise = testUtils.makeTestPromise();
+    document.querySelector('button.o_gantt_button_next').click();
+    await testPromise;
+
+    assert.strictEqual(
+        document.querySelectorAll(`${CSS.SELECTOR.CONNECTOR_CONTAINER}`).length,
+        1,
+        "there should be a connector container."
+    );
 });
 
 /**
- * We need to prevent the reload that is triggered after the rpc call to action_reschedule as it was
+ * We need to prevent the reload that is triggered after the rpc call to web_gantt_reschedule as it was
  * causing race conditions.
  */
-const TestConnectorButtonRPCTaskGanttConnectorController = TaskGanttConnectorController.extend({
+const TestConnectorButtonRPCGanttController = GanttController.extend({
     reload() { },
 });
 
-// Connectors buttons RPC calls have been tested one by one as they trigger a reload of the view which
+// Connector's buttons RPC calls have been tested one by one as they trigger a reload of the view which
 // was systematically causing the following test to fail.
 async function testConnectorButtonRPC(assert, createButtonSelector, expectedStep) {
     assert.expect(2);
 
     ganttViewParams.mockRPCHook = (route, args) => {
         if (args.model === 'project.task') {
-            if (args.method === 'action_reschedule' || args.method === 'write') {
+            if (args.method === 'web_gantt_reschedule' || args.method === 'write') {
                 const [rpc_arg1, rpc_arg2, rpc_arg3 = null] = args.args;
                 assert.step(`${args.method}|${rpc_arg1}|${JSON.stringify(rpc_arg2)}${rpc_arg3 ? `|${rpc_arg3}` : ''}`);
                 return Promise.resolve(true);
@@ -515,7 +487,7 @@ async function testConnectorButtonRPC(assert, createButtonSelector, expectedStep
 
     ganttViewParams.View = ganttViewParams.View.extend({
         config: Object.assign({}, ganttViewParams.View.prototype.config, {
-            Controller: TestConnectorButtonRPCTaskGanttConnectorController,
+            Controller: TestConnectorButtonRPCGanttController,
         })
     });
 
@@ -547,7 +519,7 @@ QUnit.test('Correct RPC is called on connector buttons click.', async function (
     await testConnectorButtonRPC(
         assert,
         `${CSS.SELECTOR.CONNECTOR_STROKE_RESCHEDULE_BUTTON}:first-of-type`,
-        'action_reschedule|backward|1|2'
+        'web_gantt_reschedule|backward|1|2'
     );
 });
 
@@ -555,131 +527,131 @@ QUnit.test('Correct RPC is called on connector buttons click.', async function (
     await testConnectorButtonRPC(
         assert,
         `${CSS.SELECTOR.CONNECTOR_STROKE_RESCHEDULE_BUTTON}:last-of-type`,
-        'action_reschedule|forward|1|2'
+        'web_gantt_reschedule|forward|1|2'
     );
 });
 
 QUnit.test('Correct RPC is called on connector buttons click.', async function (assert) {
 
     ganttViewParams.data = {
-                'project.task': {
-                    fields: {
-                        id: { string: 'ID', type: 'integer' },
-                        name: { string: 'Name', type: 'char' },
-                        planned_date_begin: { string: 'Start Date', type: 'datetime' },
-                        planned_date_end: { string: 'Stop Date', type: 'datetime' },
-                        project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
-                        user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
-                        allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
-                        depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
-                        display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            name: 'Task 1',
-                            planned_date_begin: '2021-10-12 11:30:00',
-                            planned_date_end: '2021-10-12 12:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [],
-                        },{
-                            id: 2,
-                            name: 'Task 2',
-                            planned_date_begin: '2021-10-11 18:30:00',
-                            planned_date_end: '2021-10-11 19:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [1],
-                        },
-                    ],
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+                display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-12 11:30:00',
+                    planned_date_end: '2021-10-12 12:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
+                },{
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-11 18:30:00',
+                    planned_date_end: '2021-10-11 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [1],
                 },
-                'project.project': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'Project 1'},
-                    ],
-                },
-                'res.users': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'User 1'},
-                    ],
-                },
-            };
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+            ],
+        },
+    };
 
     await testConnectorButtonRPC(
         assert,
         `${CSS.SELECTOR.CONNECTOR_STROKE_RESCHEDULE_BUTTON}:first-of-type`,
-        'action_reschedule|backward|1|2'
+        'web_gantt_reschedule|backward|1|2'
     );
 });
 
 QUnit.test('Correct RPC is called on connector buttons click.', async function (assert) {
 
     ganttViewParams.data = {
-                'project.task': {
-                    fields: {
-                        id: { string: 'ID', type: 'integer' },
-                        name: { string: 'Name', type: 'char' },
-                        planned_date_begin: { string: 'Start Date', type: 'datetime' },
-                        planned_date_end: { string: 'Stop Date', type: 'datetime' },
-                        project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
-                        user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
-                        allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
-                        depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
-                        display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            name: 'Task 1',
-                            planned_date_begin: '2021-10-12 11:30:00',
-                            planned_date_end: '2021-10-12 12:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [],
-                        },{
-                            id: 2,
-                            name: 'Task 2',
-                            planned_date_begin: '2021-10-11 18:30:00',
-                            planned_date_end: '2021-10-11 19:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [1],
-                        },
-                    ],
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+                display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-12 11:30:00',
+                    planned_date_end: '2021-10-12 12:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
+                },{
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-11 18:30:00',
+                    planned_date_end: '2021-10-11 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [1],
                 },
-                'project.project': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'Project 1'},
-                    ],
-                },
-                'res.users': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'User 1'},
-                    ],
-                },
-            };
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+            ],
+        },
+    };
 
     await testConnectorButtonRPC(
         assert,
         `${CSS.SELECTOR.CONNECTOR_STROKE_RESCHEDULE_BUTTON}:last-of-type`,
-        'action_reschedule|forward|1|2'
+        'web_gantt_reschedule|forward|1|2'
     );
 });
 
@@ -717,97 +689,97 @@ QUnit.test('Hovering a task pill, all the pills of the same task, and their rela
     assert.expect(3 * Object.keys(tests).length + 8);
 
     ganttViewParams.data = {
-                'project.task': {
-                    fields: {
-                        id: { string: 'ID', type: 'integer' },
-                        name: { string: 'Name', type: 'char' },
-                        planned_date_begin: { string: 'Start Date', type: 'datetime' },
-                        planned_date_end: { string: 'Stop Date', type: 'datetime' },
-                        project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
-                        user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
-                        allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
-                        depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
-                        display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            name: 'Task 1',
-                            planned_date_begin: '2021-10-11 18:30:00',
-                            planned_date_end: '2021-10-10 19:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 2,
-                            name: 'Task 2',
-                            planned_date_begin: '2021-10-12 11:30:00',
-                            planned_date_end: '2021-10-12 12:29:59',
-                            project_id: 1,
-                            user_ids: [1, 3],
-                            depend_on_ids: [1],
-                        },
-                        {
-                            id: 3,
-                            name: 'Task 3',
-                            planned_date_begin: '2021-10-13 06:30:00',
-                            planned_date_end: '2021-10-13 07:29:59',
-                            project_id: 1,
-                            user_ids: [],
-                            depend_on_ids: [2],
-                        },
-                        {
-                            id: 4,
-                            name: 'Task 4',
-                            planned_date_begin: '2021-10-14 22:30:00',
-                            planned_date_end: '2021-10-14 23:29:59',
-                            project_id: 1,
-                            user_ids: [2, 3],
-                            depend_on_ids: [2],
-                        },
-                        {
-                            id: 10,
-                            name: 'Task 10',
-                            planned_date_begin: '2021-10-19 06:30:12',
-                            planned_date_end: '2021-10-19 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [],
-                            display_warning_dependency_in_gantt: false,
-                        },
-                        {
-                            id: 11,
-                            name: 'Task 11',
-                            planned_date_begin: '2021-10-18 06:30:12',
-                            planned_date_end: '2021-10-18 07:29:59',
-                            project_id: 1,
-                            user_ids: [2],
-                            depend_on_ids: [10],
-                        },
-                    ],
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+                display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-11 18:30:00',
+                    planned_date_end: '2021-10-10 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
                 },
-                'project.project': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'Project 1'},
-                    ],
+                {
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-12 11:30:00',
+                    planned_date_end: '2021-10-12 12:29:59',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [1],
                 },
-                'res.users': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'User 1'},
-                        {id: 2, name: 'User 2'},
-                        {id: 3, name: 'User 3'},
-                    ],
+                {
+                    id: 3,
+                    name: 'Task 3',
+                    planned_date_begin: '2021-10-13 06:30:00',
+                    planned_date_end: '2021-10-13 07:29:59',
+                    project_id: 1,
+                    user_ids: [],
+                    depend_on_ids: [2],
                 },
-            };
+                {
+                    id: 4,
+                    name: 'Task 4',
+                    planned_date_begin: '2021-10-14 22:30:00',
+                    planned_date_end: '2021-10-14 23:29:59',
+                    project_id: 1,
+                    user_ids: [2, 3],
+                    depend_on_ids: [2],
+                },
+                {
+                    id: 10,
+                    name: 'Task 10',
+                    planned_date_begin: '2021-10-19 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [],
+                    display_warning_dependency_in_gantt: false,
+                },
+                {
+                    id: 11,
+                    name: 'Task 11',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-18 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [10],
+                },
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+                { id: 2, name: 'User 2' },
+                { id: 3, name: 'User 3' },
+            ],
+        },
+    };
 
     const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids']});
     registerCleanup(gantt.destroy);
@@ -881,67 +853,67 @@ QUnit.test('Connectors are displayed behind pills, except on hover.', async func
     assert.expect(2);
 
     ganttViewParams.data = {
-                'project.task': {
-                    fields: {
-                        id: { string: 'ID', type: 'integer' },
-                        name: { string: 'Name', type: 'char' },
-                        planned_date_begin: { string: 'Start Date', type: 'datetime' },
-                        planned_date_end: { string: 'Stop Date', type: 'datetime' },
-                        project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
-                        user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
-                        allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
-                        depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
-                        display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            name: 'Task 1',
-                            planned_date_begin: '2021-10-01 18:30:00',
-                            planned_date_end: '2021-10-02 19:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 2,
-                            name: 'Task 2',
-                            planned_date_begin: '2021-10-04 11:30:00',
-                            planned_date_end: '2021-10-05 12:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [],
-                        },
-                        {
-                            id: 3,
-                            name: 'Task 3',
-                            planned_date_begin: '2021-10-07 06:30:00',
-                            planned_date_end: '2021-10-08 07:29:59',
-                            project_id: 1,
-                            user_ids: [1],
-                            depend_on_ids: [1],
-                        },
-                    ],
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+                display_warning_dependency_in_gantt: { string: 'Display warning dependency in Gantt', type: "boolean", default: true },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-01 18:30:00',
+                    planned_date_end: '2021-10-02 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
                 },
-                'project.project': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'Project 1'},
-                    ],
+                {
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-04 11:30:00',
+                    planned_date_end: '2021-10-05 12:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
                 },
-                'res.users': {
-                    fields: {
-                        id: {string: 'ID', type: 'integer'},
-                        name: {string: 'Name', type: 'char'},
-                    },
-                    records: [
-                        {id: 1, name: 'User 1'},
-                    ],
+                {
+                    id: 3,
+                    name: 'Task 3',
+                    planned_date_begin: '2021-10-15 06:30:00',
+                    planned_date_end: '2021-10-15 07:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [1],
                 },
-            };
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+            ],
+        },
+    };
 
     const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids']});
     registerCleanup(gantt.destroy);
@@ -972,7 +944,7 @@ QUnit.test('Connectors are displayed behind pills, except on hover.', async func
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
 
-    test = document.elementFromPoint(234.5, 234.5);
+    test = document.elementFromPoint(testLocationLeft, testLocationTop);
     assert.deepEqual(test, connector_stroke);
 
 });

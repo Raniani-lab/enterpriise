@@ -8,7 +8,7 @@ import core from 'web.core';
 const QWeb = core.qweb;
 
 
-const TaskGanttRenderer = GanttRenderer.extend({
+export default GanttRenderer.extend({
     config: {
         GanttRow: TaskGanttRow,
     },
@@ -32,6 +32,16 @@ const TaskGanttRenderer = GanttRenderer.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     * @private
+     */
+    _applySpecialColors(connector, masterRecord, slaveRecord) {
+        if (masterRecord.display_warning_dependency_in_gantt && slaveRecord.display_warning_dependency_in_gantt) {
+            this._super(...arguments);
+        }
+    },
 
     /**
      * @override
@@ -133,5 +143,3 @@ const TaskGanttRenderer = GanttRenderer.extend({
     },
 
 });
-
-export default TaskGanttRenderer;

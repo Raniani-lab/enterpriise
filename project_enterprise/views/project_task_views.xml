@@ -103,7 +103,8 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//gantt" position="attributes">
-                <attribute name="js_class">task_gantt_connector</attribute>
+                <attribute name="dependency_field">depend_on_ids</attribute>
+                <attribute name="dependency_inverted_field">dependent_ids</attribute>
             </xpath>
         </field>
     </record>

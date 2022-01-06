@@ -2,27 +2,28 @@ odoo.define('web_gantt.GanttRenderer', function (require) {
 "use strict";
 
 var AbstractRenderer = require('web.AbstractRenderer');
-var config = require('web.config');
 var core = require('web.core');
 var GanttRow = require('web_gantt.GanttRow');
 var qweb = require('web.QWeb');
 var session = require('web.session');
 var utils = require('web.utils');
+var ConnectorContainer = require('web_gantt.ConnectorContainer');
+var { device, isDebug } = require('web.config');
+var { ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
 
 var QWeb = core.qweb;
 var _t = core._t;
 
 
-var GanttRenderer = AbstractRenderer.extend({
+var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     config: {
         GanttRow: GanttRow
     },
-
     custom_events: _.extend({}, AbstractRenderer.prototype.custom_events, {
-        'start_dragging': '_onStartDragging',
-        'start_no_dragging': '_onStartNoDragging',
-        'stop_dragging': '_onStopDragging',
-        'stop_no_dragging': '_onStopNoDragging',
+        start_dragging: '_onStartDragging',
+        start_no_dragging: '_onStartNoDragging',
+        stop_dragging: '_onStopDragging',
+        stop_no_dragging: '_onStopNoDragging',
     }),
 
     DECORATIONS: [
@@ -73,6 +74,9 @@ var GanttRenderer = AbstractRenderer.extend({
         this.totalRow = params.totalRow;
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.thumbnails = params.thumbnails;
+        this.dependencyEnabled = params.dependencyEnabled;
+        this.dependencyField = params.dependencyField
+
         this.rowWidgets = {};
         // Pill decoration colors, By default display primary color for pill
         this.pillDecorations = _.chain(this.arch.attrs)
@@ -82,7 +86,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 return py.parse(py.tokenize(value));
             }).value();
         if (params.popoverTemplate) {
-            this.popoverQWeb = new qweb(config.isDebug(), {_s: session.origin});
+            this.popoverQWeb = new qweb(isDebug(), {_s: session.origin});
             this.popoverQWeb.add_template(utils.json_node_to_xml(params.popoverTemplate));
         } else {
             this.popoverQWeb = QWeb;
@@ -91,6 +95,26 @@ var GanttRenderer = AbstractRenderer.extend({
         this.isRTL = _t.database.parameters.direction === "rtl";
         this.template_to_use = "GanttView";
         this.firstRendering = true;
+
+        if (this.dependencyEnabled) {
+            this._initialize_connectors();
+            this._preventHoverEffect = false;
+            this._connectorsStrokeColors = this._getStrokeColors();
+            this._connectorsStrokeWarningColors = this._getStrokeWarningColors();
+            this._connectorsStrokeErrorColors = this._getStrokeErrorColors();
+            this._connectorsOutlineStrokeColor = this._getOutlineStrokeColors();
+            this._connectorsCssSelectors = {
+                bullet: '.o_connector_creator_bullet',
+                pill: '.o_gantt_pill',
+                pillWrapper: '.o_gantt_pill_wrapper',
+                wrapper: '.o_connector_creator_wrapper',
+                groupByNoGroup: '.o_gantt_row_nogroup',
+            };
+            this.events = Object.assign({ }, this.events, {
+                'mouseenter .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseEnter',
+                'mouseleave .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseLeave',
+            });
+        }
     },
     /**
      * Called each time the renderer is attached into the DOM.
@@ -102,6 +126,13 @@ var GanttRenderer = AbstractRenderer.extend({
         if (!this.disableDragdrop) {
             this._setRowsDroppable();
         }
+        if (this.dependencyEnabled) {
+            WidgetAdapterMixin.on_attach_callback.call(this);
+            // As we need the source and target of the connectors to be part of the dom,
+            // we need to use the on_attach_callback in order to have the first rendering successful.
+            this._mountConnectorContainer();
+            window.addEventListener('resize', this._throttledReRender);
+        }
     },
     /**
      * Called each time the renderer is detached from the DOM.
@@ -111,12 +142,122 @@ var GanttRenderer = AbstractRenderer.extend({
         core.bus.off("keydown", this, this._onKeydown);
         core.bus.off("keyup", this, this._onKeyup);
         _.invoke(this.rowWidgets, 'on_detach_callback');
+        WidgetAdapterMixin.on_detach_callback.call(this);
+        this._connectorContainerComponent.unmount();
+    },
+    /**
+     * @override
+    */
+    destroy() {
+        this._super(...arguments);
+        if (this.dependencyEnabled) {
+            window.removeEventListener('resize', this._throttledReRender);
+        }
+    },
+    /**
+     * @override
+    */
+    async start() {
+        await this._super(...arguments);
+        if (this.dependencyEnabled) {
+            this._connectorContainerComponent = new ComponentWrapper(this, ConnectorContainer, this._getConnectorContainerProps());
+            this._throttledReRender = _.throttle(async () => {
+                await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+            }, 100);
+        }
+    },
+    /**
+      * Make sure the connectorManager Component is updated each time the view is updated.
+      *
+      * @override
+      */
+    async update() {
+        if (this.dependencyEnabled) {
+            await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+        }
+        await this._super(...arguments);
     },
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
+    /**
+     * Sets the class on the gantt_view corresponding to the mode.
+     * This class is used to prevent the magnifier and + buttons during connection creation.
+     *
+     * @param {boolean} in_creation
+     */
+    set_connector_creation_mode(in_creation) {
+        this.el.classList.toggle('o_grabbing', in_creation);
+    },
+    /**
+     * Toggles the highlighting of the connector.
+     *
+     * @param {ConnectorContainer.Connector.props} connector
+     * @param {boolean} highlighted
+     */
+    toggleConnectorHighlighting(connector, highlighted) {
+        const masterPill = this._rowsAndRecordsDict.rows[connector.data.masterRowId].records[connector.data.masterId].pillElement;
+        const slavePill = this._rowsAndRecordsDict.rows[connector.data.slaveRowId].records[connector.data.slaveId].pillElement;
+        const sourceConnectorCreatorInfo = this._getConnectorCreatorInfo(masterPill);
+        const targetConnectorCreatorInfo = this._getConnectorCreatorInfo(slavePill);
+        if (!this._isConnectorCreatorDragged(sourceConnectorCreatorInfo)) {
+            sourceConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
+        }
+        if (!this._isConnectorCreatorDragged(targetConnectorCreatorInfo)) {
+            targetConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
+        }
+    },
+    /**
+     * Toggles the preventConnectorsHover props of the connector container.
+     *
+     * @param {boolean} prevent
+     */
+    togglePreventConnectorsHoverEffect(prevent){
+        this._preventHoverEffect = prevent;
+        if (this.dependencyEnabled && this._shouldRenderConnectors()) {
+            this._connectorContainerComponent.update(this._getConnectorContainerProps());
+        }
+    },
+    /**
+     * Toggles the highlighting of the pill and connector creator of the provided element.
+     *
+     * @param {HTMLElement} element
+     * @param {boolean} highlighted
+     */
+    async togglePillHighlighting(element, highlighted) {
+        const connectorCreatorInfo = this._getConnectorCreatorInfo(element);
+        if (connectorCreatorInfo.pill.dataset.id != 0) {
+            const connectedConnectors = Object.values(this._connectors)
+                                              .filter((connector) => {
+                                                  const ids = [connector.data.slaveId, connector.data.masterId];
+                                                  return ids.includes(
+                                                      parseInt(connectorCreatorInfo.pill.dataset.id)
+                                                  );
+                                              });
+            if (connectedConnectors.length) {
+                connectedConnectors.forEach((connector) => {
+                    connector.hovered = highlighted;
+                    connector.canBeRemoved = !highlighted;
+                });
+                await this._connectorContainerComponent.update(this._getConnectorContainerProps());
+            }
+            if (this._rowsAndRecordsDict) {
+                for (const pill of Object.values(this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo).map((rowInfo) => rowInfo.pillElement)) {
+                    const tempConnectorCreatorInfo = this._getConnectorCreatorInfo(pill);
+                    if (highlighted || !this._isConnectorCreatorDragged(tempConnectorCreatorInfo)) {
+                        tempConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
+                        if (connectorCreatorInfo.pill === tempConnectorCreatorInfo.pill) {
+                            for (const connectorCreator of tempConnectorCreatorInfo.connectorCreators) {
+                                connectorCreator.classList.toggle('invisible', !highlighted);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     /**
      * Re-render a given row and its sub-rows. This typically occurs when a row
      * is collapsed/expanded, to prevent from re-rendering the whole view.
@@ -156,12 +297,313 @@ var GanttRenderer = AbstractRenderer.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Applies the style to the connector depending on the gantt date start and stop values.
+     *
+     * @param {Object} connector
+     * @param {Object} masterRecord the record the slaveRecord depends on.
+     * @param {Object} slaveRecord the record that depends on the masterRecord.
+     * @private
+     */
+    _applySpecialColors(connector, masterRecord, slaveRecord) {
+        let specialColors;
+        if (slaveRecord[this.state.dateStartField].isBefore(masterRecord[this.state.dateStopField])) {
+            specialColors = this._connectorsStrokeWarningColors;
+            if (slaveRecord[this.state.dateStartField].isBefore(masterRecord[this.state.dateStartField])) {
+                specialColors = this._connectorsStrokeErrorColors;
+            }
+        }
+        if (specialColors) {
+            connector['style'] = {
+                stroke: {
+                    color: specialColors.stroke,
+                    hoveredColor: specialColors.hoveredStroke,
+                }
+            };
+        }
+    },
+    /**
+     * Updates the connectors state in regards to the records state and returns the props.
+     *
+     * @return {Object} the props to pass to the ConnectorContainer
+     * @private
+     */
+    _generateAndGetConnectorContainerProps() {
+        this._preventHoverEffect = false;
+        this._initialize_connectors();
+        if (this._shouldRenderConnectors()) {
+            this._generateConnectors();
+        }
+        return this._getConnectorContainerProps();
+    },
+    /**
+     * Updates the connectors state according to the records state.
+     *
+     * @private
+     */
+    _generateConnectors() {
+        /*
+            First we need to build a dictionary in order to be able to manage the cases when a record is present
+            multiple times in the gantt view, in order to draw the connectors accordingly.
+            Structure of dict:
+            {
+                records : {
+                    #ID_RECORD_1: {
+                        record: STATE_RECORD,
+                        rowsInfo: {
+                            #ID_ROW_1: {
+                                pillElement: HTMLElementPill1,
+                            },
+                            ...
+                        }
+                    },
+                    ...
+                },
+                rows: {
+                    #ID_ROW_1: {
+                        records: {
+                            #ID_RECORD_1: {
+                                pillElement: HTMLElementPill1,
+                                record: STATE_RECORD
+                            },
+                            ...
+                        }
+                    },
+                    ...
+                },
+            }
+        */
+        this._rowsAndRecordsDict = {
+            records: { },
+            rows: { },
+        };
+        for (const row of this.state.rows) {
+            // We need to escape '"' & '\' from the row.id before calling the querySelector
+            const rowElementSelector = `${this._connectorsCssSelectors.groupByNoGroup}[data-row-id="${row.id.replace(/["\\]/g, '\\$&')}"]`;
+            const rowElement = this.el.querySelector(rowElementSelector);
+            this._rowsAndRecordsDict.rows[row.id] = {
+                records: { }
+            };
+            for (const record of row.records) {
+                const recordElementSelector = `${this._connectorsCssSelectors.pill}[data-id="${record.id}"]`;
+                const pillElement = rowElement.querySelector(recordElementSelector);
+                this._rowsAndRecordsDict.rows[row.id].records[record.id] = {
+                    pillElement: pillElement,
+                    record: record,
+                };
+                if (!(record.id in this._rowsAndRecordsDict.records)) {
+                    this._rowsAndRecordsDict.records[record.id] = {
+                        record: record,
+                        rowsInfo: { },
+                    };
+                }
+                this._rowsAndRecordsDict.records[record.id].rowsInfo[row.id] = {
+                    pillElement: pillElement,
+                };
+            }
+        }
+
+        // Then we go over the rows and records one by one in order to create the connectors
+        const connector_id_generator = {
+            _value: 1,
+            getNext() {
+                return this._value++;
+            }
+        };
+        for (const record of this.state.records) {
+            const connectors = this._generateConnectorsForRecord(record, connector_id_generator);
+            Object.assign(this._connectors, connectors);
+        }
+    },
+    /**
+     * Generates the connectors using the dependencyField of the provided slave record.
+     *
+     * @param {Object} slaveRecord the slave record.
+     * @param {{ getNext(): Number }} connector_id_generator a connector_id generator.
+     * @private
+     */
+    _generateConnectorsForRecord(slaveRecord, connector_id_generator) {
+        const result = {};
+        for (const masterId of slaveRecord[this.dependencyField]) {
+            if (masterId in this._rowsAndRecordsDict.records) {
+                let connectors = [];
+                for (const slaveRowId in this._rowsAndRecordsDict.records[slaveRecord.id].rowsInfo) {
+                    for (const masterRowId in this._rowsAndRecordsDict.records[masterId].rowsInfo) {
+                        /**
+                         *   Having:
+                         *      * B dependent on A
+                         *      * C dependent on B
+                         *      * D dependent on C
+                         *   Prevent:
+                         *      * Connectors between B & C that are not in the same group if B is in same group than C:
+                         *          G1        B --- C                  B --- C
+                         *                  /   \ /   \              /         \
+                         *          G2    A             D    =>    A             D
+                         *                  \   / \   /              \         /
+                         *          G3        B --- C                  B --- C
+                         *      * Connectors between A & B if A has already a link to B in the same group:
+                         *          G1        --------- B              --------- B
+                         *                  /       /                /
+                         *          G2    A      /           =>    A
+                         *                    /
+                         *          G3    A ----------- B          A ----------- B
+                         *   Allow:
+                         *      * Connectors between C & B when A & B are always present in the same groups
+                         *          G1    A ------ B          A ------ B
+                         *                                           /
+                         *          G2    A               =>  A ====
+                         *                                           \
+                         *          G3    A ------ B          A ------ B
+                         */
+                        if (masterRowId === slaveRowId
+                            || !(
+                                slaveRecord.id in this._rowsAndRecordsDict.rows[masterRowId].records
+                                || masterId in this._rowsAndRecordsDict.rows[slaveRowId].records
+                            )
+                            || Object.keys(this._rowsAndRecordsDict.records[slaveRecord.id].rowsInfo).every(
+                                (rowId) => (masterRowId !== rowId && masterId in this._rowsAndRecordsDict.rows[rowId].records)
+                            )
+                            || Object.keys(this._rowsAndRecordsDict.records[masterId].rowsInfo).every(
+                                (rowId) => (slaveRowId !== rowId && slaveRecord.id in this._rowsAndRecordsDict.rows[rowId].records)
+                            )
+                        ) {
+                            connectors.push(
+                                this._generateConnector(
+                                    masterRowId,
+                                    this._rowsAndRecordsDict.records[masterId].record,
+                                    slaveRowId,
+                                    slaveRecord,
+                                    connector_id_generator)
+                            );
+                        }
+                    }
+                }
+                for (const connector of connectors) {
+                    result[connector.id] = connector;
+                }
+            }
+        }
+        return result;
+    },
+    /**
+     *
+     * @param Number masterRowId the row id of the masterRecord (in order to handle m2m grouping)
+     * @param {Object} masterRecord the record the slaveRecord depends on.
+     * @param Number slaveRowId the row id of the slave record (in order to handle m2m grouping)
+     * @param {Object} slaveRecord the record that depends on the masterRecord.
+     * @param {{ getNext(): Number }} connector_id_generator a connector_id generator.
+     * @return {Object} a connector for the provided parameters.
+     * @private
+     */
+    _generateConnector(masterRowId, masterRecord, slaveRowId, slaveRecord, connector_id_generator) {
+        const masterRecordPill = this._rowsAndRecordsDict.rows[masterRowId].records[masterRecord.id].pillElement;
+        const slaveRecordPill = this._rowsAndRecordsDict.rows[slaveRowId].records[slaveRecord.id].pillElement;
+        let source = this._connectorContainerComponent.componentRef.comp.getAnchorsPositions(masterRecordPill);
+        let target = this._connectorContainerComponent.componentRef.comp.getAnchorsPositions(slaveRecordPill);
+
+        const connector = {
+            id: connector_id_generator.getNext(),
+            source: source.right,
+            canBeRemoved: true,
+            data: {
+                slaveId: slaveRecord.id,
+                slaveRowId: slaveRowId,
+                masterId: masterRecord.id,
+                masterRowId: masterRowId,
+            },
+            target: target.left,
+        };
+
+        this._applySpecialColors(connector, masterRecord, slaveRecord)
+
+        return connector;
+    },
+    /**
      * Determines if a dragged pill aims to be copied or updated
      * @private
      * @param {jQueryEvent} event
      */
     _getAction: function (event) {
         return event.ctrlKey || event.metaKey ? 'copy': 'reschedule';
+    },
+    /**
+     * Gets the connector creator info for the provided element.
+     *
+     * @param {HTMLElement} element HTMLElement with a class of either o_connector_creator_bullet,
+     *                              o_connector_creator_wrapper, o_gantt_pill or o_gantt_pill_wrapper.
+     * @returns {{pillWrapper: HTMLElement, pill: HTMLElement, connectorCreators: Array<HTMLElement>}}
+     * @private
+     */
+    _getConnectorCreatorInfo(element) {
+        let connectorCreators = [];
+        let pill = null;
+        if (element.matches(this._connectorsCssSelectors.pillWrapper)) {
+            element = element.querySelector(this._connectorsCssSelectors.pill);
+        }
+        if (element.matches(this._connectorsCssSelectors.bullet)) {
+            element = element.closest(this._connectorsCssSelectors.wrapper);
+        }
+        if (element.matches(this._connectorsCssSelectors.pill)) {
+            pill = element;
+            connectorCreators = Array.from(element.parentElement.querySelectorAll(this._connectorsCssSelectors.wrapper));
+        } else if (element.matches(this._connectorsCssSelectors.wrapper)) {
+            connectorCreators = [element];
+            pill = element.parentElement.querySelector(this._connectorsCssSelectors.pill);
+        }
+        return {
+            pill: pill,
+            pillWrapper: pill.parentElement,
+            connectorCreators: connectorCreators,
+        };
+    },
+    /**
+     * Returns the props according to the current connectors state
+     *
+     * @returns {Object} the props to pass to the ConnectorContainer.
+     * @private
+     */
+    _getConnectorContainerProps() {
+        return {
+            connectors: this._connectors,
+            defaultStyle: {
+                slackness: 0.9,
+                stroke: {
+                    color: this._connectorsStrokeColors.stroke,
+                    hoveredColor: this._connectorsStrokeColors.hoveredStroke,
+                    width: 2,
+                },
+                outlineStroke: {
+                    color: this._connectorsOutlineStrokeColor.stroke,
+                    hoveredColor: this._connectorsOutlineStrokeColor.hoveredStroke,
+                    width: 1,
+                }
+            },
+            hoverEaseWidth: 10,
+            preventHoverEffect: this._preventHoverEffect,
+            sourceQuerySelector: this._connectorsCssSelectors.bullet,
+            targetQuerySelector: this._connectorsCssSelectors.pillWrapper,
+            onCreationAbort: this._onConnectorCreationAbort.bind(this),
+            onCreationDone: this._onConnectorCreationDone.bind(this),
+            onCreationStart: this._onConnectorCreationStart.bind(this),
+            onMouseOut: this._onConnectorMouseOut.bind(this),
+            onMouseOver: this._onConnectorMouseOver.bind(this),
+            onRemoveButtonClick: this._onConnectorRemoveButtonClick.bind(this),
+            onRescheduleLaterButtonClick: this._onConnectorRescheduleLaterButtonClick.bind(this),
+            onRescheduleSoonerButtonClick: this._onConnectorRescheduleSoonerButtonClick.bind(this),
+        };
+
+    },
+    /**
+     * Gets the rgba css string corresponding to the provided parameters.
+     *
+     * @param {number} r - [0, 255]
+     * @param {number} g - [0, 255]
+     * @param {number} b - [0, 255]
+     * @param {number} [a = 1] - [0, 1]
+     * @return {string} the css color.
+     * @private
+     */
+    _getCssRGBAColor(r, g, b, a) {
+        return `rgba(${ r }, ${ g }, ${ b }, ${ a || 1 })`;
     },
     /**
      * Format focus date which is used to display in gantt header (see XML
@@ -187,6 +629,29 @@ var GanttRenderer = AbstractRenderer.extend({
         }
     },
     /**
+     * Gets the outline stroke's rgba css strings for both the stroke and its hovered state in error state.
+     *
+     * @return {{ stroke: {string}, hoveredStroke: {string} }}
+     * @private
+     */
+    _getOutlineStrokeColors() {
+        return this._getStrokeAndHoveredStrokeColor(255, 255, 255);
+    },
+    /**
+     * Get pills info
+     *
+     * @param {Object} row
+     * @param {*} groupLevel
+     */
+    _getPillsInfo: function (row, groupLevel) {
+        return {
+            resId: row.resId,
+            pills: row.records,
+            groupLevel: groupLevel,
+            progressBar: row.progressBar,
+        };
+    },
+    /**
      * Get dates between gantt start and gantt stop date to render gantt slots
      *
      * @private
@@ -202,6 +667,81 @@ var GanttRenderer = AbstractRenderer.extend({
             day = day.clone().add(1, token);
         }
         return dates;
+    },
+    /**
+     * Gets the stroke's rgba css string corresponding to the provided parameters for both the stroke and its
+     * hovered state.
+     *
+     * @param {number} r - [0, 255]
+     * @param {number} g - [0, 255]
+     * @param {number} b - [0, 255]
+     * @return {{ stroke: {string}, hoveredStroke: {string} }} the css colors.
+     * @private
+     */
+    _getStrokeAndHoveredStrokeColor(r, g, b) {
+        return {
+            stroke: this._getCssRGBAColor(r, g, b, 0.5),
+            hoveredStroke: this._getCssRGBAColor(r, g, b, 1),
+        };
+    },
+    /**
+     * Gets the stroke's rgba css strings for both the stroke and its hovered state.
+     *
+     * @return {{ stroke: {string}, hoveredStroke: {string} }}
+     * @private
+     */
+    _getStrokeColors() {
+        return this._getStrokeAndHoveredStrokeColor(143, 143, 143);
+    },
+    /**
+     * Gets the stroke's rgba css strings for both the stroke and its hovered state in error state.
+     *
+     * @return {{ stroke: {string}, hoveredStroke: {string} }}
+     * @private
+     */
+    _getStrokeErrorColors() {
+        return this._getStrokeAndHoveredStrokeColor(211, 65, 59);
+    },
+    /**
+     * Gets the stroke's rgba css strings for both the stroke and its hovered state in warning state.
+     *
+     * @return {{ stroke: {string}, hoveredStroke: {string} }}
+     * @private
+     */
+    _getStrokeWarningColors() {
+        return this._getStrokeAndHoveredStrokeColor(236, 151, 31);
+    },
+    /**
+     * Initialize the _connectors attribute and delete its associated _rowsAndRecordsDict attribute.
+     * @private
+     */
+    _initialize_connectors() {
+        this._connectors = { };
+        delete this._rowsAndRecordsDict;
+    },
+    /**
+     * Gets whether the provided connector creator is the source element of the currently dragged connector.
+     *
+     * @param {{pill: HTMLElement, connectorCreators: Array<HTMLElement>}} connectorCreatorInfo
+     * @returns {boolean}
+     * @private
+     */
+    _isConnectorCreatorDragged(connectorCreatorInfo) {
+        return this._connectorInCreation && this._connectorInCreation.data.sourceElement.dataset.id === connectorCreatorInfo.pill.dataset.id;
+    },
+    /**
+     * Mounts the ConnectorContainer Component if needed.
+     *
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _mountConnectorContainer() {
+        this.el.classList.toggle('position-relative', true);
+        if (this._connectorContainerComponent.status === 'mounted') {
+            await this._connectorContainerComponent.unmount();
+        }
+        await this._connectorContainerComponent.mount(this.el);
+        await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
     },
     /**
      * Prepare view info which is used by GanttRow widget
@@ -225,6 +765,18 @@ var GanttRenderer = AbstractRenderer.extend({
                 time: this.SCALES[this.state.scale].time,
             },
         };
+    },
+    /**
+     * @override
+     * @private
+     */
+    async _render() {
+        await this._super(...arguments);
+        if (this._isInDom && this.dependencyEnabled) {
+            // If the renderer is not yet part of the dom (during first rendering), then
+            // the call will be performed in the on_attach_callback.
+            await this._mountConnectorContainer();
+        }
     },
     /**
      * Renders gantt view and its rows.
@@ -251,10 +803,10 @@ var GanttRenderer = AbstractRenderer.extend({
         return Promise.all(proms).then(function () {
             _.invoke(oldRowWidgets, 'destroy');
             if (self.firstRendering) {
-                self._replaceElement(QWeb.render(self.template_to_use, {widget: self, isMobile: config.device.isMobile}));
+                self._replaceElement(QWeb.render(self.template_to_use, {widget: self, isMobile: device.isMobile}));
                 self.firstRendering = false;
             } else {
-                const newContent = $(QWeb.render(self.template_to_use, {widget: self, isMobile: config.device.isMobile}));
+                const newContent = $(QWeb.render(self.template_to_use, {widget: self, isMobile: device.isMobile}));
                 self.$el.html(newContent[0].innerHTML);
             }
             const $containment = $('<div id="o_gantt_containment"/>');
@@ -386,24 +938,174 @@ var GanttRenderer = AbstractRenderer.extend({
         _.invoke(this.rowWidgets, 'setDroppable', firstCell);
     },
     /**
-     * Get pills info
+     * Returns whether connectors should be rendered or not.
+     * The connectors won't be rendered on sampleData as we can't be sure that data are coherent.
+     * The connectors won't be rendered on mobile as the usability is not guarantied.
+     * The connectors won't be rendered on multiple groupBy as we would need to manage groups folding which seems
+     *     overkill at this stage.
      *
-     * @param {Object} row
-     * @param {*} groupLevel
+     * @return {boolean}
+     * @private
      */
-    _getPillsInfo: function (row, groupLevel) {
-        return {
-            resId: row.resId,
-            pills: row.records,
-            groupLevel: groupLevel,
-            progressBar: row.progressBar,
-        };
+    _shouldRenderConnectors() {
+        return this._isInDom && !this.state.isSample && !device.isMobile && this.state.groupedBy.length <= 1;
+    },
+    /**
+     * Toggles popover visibility.
+     *
+     * @param visible
+     * @private
+     */
+    _togglePopoverVisibility(visible) {
+        const $pills = this.$(this._connectorsCssSelectors.pill);
+        if (visible) {
+            $pills.popover('enable').popover('dispose');
+        } else {
+            $pills.popover('hide').popover('disable');
+        }
+    },
+    /**
+     * Triggers the on_connector_highlight at the Controller.
+     *
+     * @param {ConnectorContainer.Connector.props} connector
+     * @param {boolean} highlighted
+     * @private
+     */
+    _triggerConnectorHighlighting(connector, highlighted) {
+        this.trigger_up(
+            'on_connector_highlight',
+            {
+                connector: connector,
+                highlighted: highlighted,
+            });
+    },
+    /**
+     * Triggers the on_pill_highlight at the Controller.
+     *
+     * @param {HTMLElement} element
+     * @param {boolean} highlighted
+     * @private
+     */
+    _triggerPillHighlighting(element, highlighted) {
+        this.trigger_up(
+            'on_pill_highlight',
+            {
+                element: element,
+                highlighted: highlighted,
+            });
     },
 
     //--------------------------------------------------------------------------
-    // Private
+    // Handlers
     //--------------------------------------------------------------------------
 
+    /**
+     * Handler for Connector connector-creation-abort event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorCreationAbort(payload) {
+        this._connectorInCreation = null;
+        const connectorCreatorInfo = this._getConnectorCreatorInfo(payload.data.sourceElement);
+        this._triggerPillHighlighting(connectorCreatorInfo.pill, false);
+        this.trigger_up('on_connector_end_drag');
+        this._togglePopoverVisibility(true);
+    },
+    /**
+     * Handler for Connector connector-creation-done event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorCreationDone(payload) {
+        this._connectorInCreation = null;
+        const connectorSourceCreatorInfo = this._getConnectorCreatorInfo(payload.data.sourceElement);
+        const connectorTargetCreatorInfo = this._getConnectorCreatorInfo(payload.data.targetElement);
+        this.trigger_up('on_connector_end_drag');
+        this.trigger_up(
+            'on_create_connector',
+            {
+                masterId: parseInt(connectorSourceCreatorInfo.pill.dataset.id),
+                slaveId: parseInt(connectorTargetCreatorInfo.pill.dataset.id),
+            });
+        this._togglePopoverVisibility(true);
+    },
+    /**
+     * Handler for Connector connector-creation-start event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorCreationStart(payload) {
+        this._connectorInCreation = payload;
+        this._togglePopoverVisibility(false);
+        const connectorCreatorInfo = this._getConnectorCreatorInfo(payload.data.sourceElement);
+        this._triggerPillHighlighting(connectorCreatorInfo.pill, false);
+        this.trigger_up('on_connector_start_drag');
+    },
+    /**
+     * Handler for Connector connector-mouseout event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorMouseOut(payload) {
+        this._triggerConnectorHighlighting(payload, false);
+    },
+    /**
+     * Handler for Connector connector-mouseover event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorMouseOver(payload) {
+        this._triggerConnectorHighlighting(payload, true);
+    },
+    /**
+     * Handler for Connector connector-remove-button-click event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorRemoveButtonClick(payload) {
+        this.trigger_up(
+        'on_remove_connector',
+        {
+            masterId: payload.data.masterId,
+            slaveId: payload.data.slaveId,
+        });
+    },
+    /**
+     * Handler for Connector connector_reschedule_later_button_click event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorRescheduleLaterButtonClick(payload) {
+        this.trigger_up(
+        'on_reschedule_according_to_dependency',
+        {
+            direction: 'forward',
+            masterId: payload.data.masterId,
+            slaveId: payload.data.slaveId,
+        });
+    },
+    /**
+     * Handler for Connector connector_reschedule_sooner_button_click event.
+     *
+     * @param {Object} payload
+     * @private
+     */
+    async _onConnectorRescheduleSoonerButtonClick(payload) {
+        this.trigger_up(
+        'on_reschedule_according_to_dependency',
+        {
+            direction: 'backward',
+            masterId: payload.data.masterId,
+            slaveId: payload.data.slaveId,
+        });
+    },
     /**
      * @param {KeyboardEvent} ev
      */
@@ -425,6 +1127,26 @@ var GanttRenderer = AbstractRenderer.extend({
         }
     },
     /**
+     * Handler for Pill connector-mouseenter event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    async _onPillMouseEnter(ev) {
+        ev.stopPropagation();
+        this._triggerPillHighlighting(ev.currentTarget, true);
+    },
+    /**
+     * Handler for Pill connector-mouseleave event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    async _onPillMouseLeave(ev) {
+        ev.stopPropagation();
+        this._triggerPillHighlighting(ev.currentTarget, false);
+    },
+    /**
      * @private
      * @param {OdooEvent} event
      */
@@ -435,6 +1157,9 @@ var GanttRenderer = AbstractRenderer.extend({
             this.$el.addClass('o_copying');
         } else {
             this.$el.addClass('o_grabbing');
+        }
+        if (this.dependencyEnabled) {
+            this._triggerPillHighlighting(this.$draggedPill.get(0), false);
         }
     },
     /**

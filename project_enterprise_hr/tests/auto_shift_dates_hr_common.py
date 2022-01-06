@@ -3,11 +3,11 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo.addons.project_enterprise.tests.auto_shift_dates_common import AutoShiftDatesCommon
+from odoo.addons.project_enterprise.tests.gantt_reschedule_dates_common import ProjectEnterpriseGanttRescheduleCommon
 from odoo.fields import Command
 
 
-class AutoShiftDatesHRCommon(AutoShiftDatesCommon):
+class AutoShiftDatesHRCommon(ProjectEnterpriseGanttRescheduleCommon):
 
     @classmethod
     def setUpClass(cls):

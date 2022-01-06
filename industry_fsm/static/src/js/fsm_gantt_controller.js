@@ -2,7 +2,7 @@
 
 import TaskGanttController from '@project_enterprise/js/task_gantt_controller';
 
-export const FsmGanttController = TaskGanttController.extend({
+export default TaskGanttController.extend({
 
     //--------------------------------------------------------------------------
     // Private

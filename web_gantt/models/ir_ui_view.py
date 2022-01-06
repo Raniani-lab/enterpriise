@@ -41,6 +41,8 @@ GANTT_VALID_ATTRIBUTES = set([
     'decoration-danger',
     'sample',
     'progress_bar',
+    'dependency_field',
+    'dependency_inverted_field',
 ])
 
 class View(models.Model):
@@ -89,6 +91,10 @@ class View(models.Model):
 
         if 'date_stop' not in attrs:
             msg = _("Gantt must have a 'date_stop' attribute")
+            self._raise_view_error(msg, node)
+
+        if 'dependency_field' in attrs and 'dependency_inverted_field' not in attrs:
+            msg = _("Gantt must have a 'dependency_inverted_field' attribute once the 'dependency_field' is specified")
             self._raise_view_error(msg, node)
 
         remaining = attrs - GANTT_VALID_ATTRIBUTES

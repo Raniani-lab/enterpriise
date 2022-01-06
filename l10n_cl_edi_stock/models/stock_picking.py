@@ -458,7 +458,8 @@ class Picking(models.Model):
             'FchResol': self.company_id.l10n_cl_dte_resolution_date,
             'NroResol': self.company_id.l10n_cl_dte_resolution_number,
             'TmstFirmaEnv': self._get_cl_current_strftime(),
-            'dte': base64.b64decode(self.l10n_cl_dte_file.datas).decode('ISO-8859-1')
+            'dte': base64.b64decode(self.l10n_cl_dte_file.datas).decode('ISO-8859-1'),
+            '__keep_empty_lines': True,
         })
         dte_rendered = unescape(dte_rendered).replace('<?xml version="1.0" encoding="ISO-8859-1" ?>',
                                                                       '')

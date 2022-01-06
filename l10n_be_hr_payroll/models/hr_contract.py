@@ -271,10 +271,10 @@ class HrContract(models.Model):
     @api.constrains('rd_percentage')
     def _check_discount_percentage(self):
         if self.filtered(lambda c: c.rd_percentage < 0 or c.rd_percentage > 100):
-            raise ValidationError(_('The time Percentage in R&D should be between 1-100'))
+            raise ValidationError(_('The time Percentage in R&D should be between 0-100'))
         for contract in self:
             if contract.rd_percentage and contract.employee_id.certificate not in ['civil_engineer', 'doctor', 'master', 'bachelor']:
-                raise ValidationError(_('Only employeers with a Bachelor/Master/Doctor/Civil Engineer degree can benefit from the withholding taxes exemption.'))
+                raise ValidationError(_('Only employees with a Bachelor/Master/Doctor/Civil Engineer degree can benefit from the withholding taxes exemption.'))
 
     @api.depends('wage', 'time_credit', 'work_time_rate')
     def _compute_time_credit_full_time_wage(self):

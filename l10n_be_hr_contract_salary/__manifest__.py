@@ -22,6 +22,8 @@
         'wizard/generate_simulation_link_views.xml',
 
         'views/hr_contract_views.xml',
+        'views/hr_job_views.xml',
+        'views/hr_payroll_menu.xml',
         'views/res_config_settings_views.xml',
         'views/hr_contract_salary_template.xml',
     ],

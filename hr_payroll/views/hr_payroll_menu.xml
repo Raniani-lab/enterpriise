@@ -122,8 +122,7 @@
         name="Salary"
         parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"
         sequence="80"
-        groups="hr_payroll.group_hr_payroll_user"
-    />
+        groups="hr_payroll.group_hr_payroll_user"/>
 
     <menuitem
         id="menu_action_hr_salary_rule_form"
@@ -145,8 +144,7 @@
         name="Rule Categories"
         parent="menu_hr_salary_configuration"
         sequence="35"
-        groups="base.group_no_one"
-    />
+        groups="base.group_no_one"/>
 
     <menuitem
         id="menu_hr_payroll_structure_view"

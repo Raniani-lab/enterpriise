@@ -12,5 +12,5 @@ class StockMoveLine(models.Model):
         """
         aggregated_move_lines = super()._get_aggregated_product_quantities(**kwargs)
         for v in aggregated_move_lines.values():
-            v['weight'] = v['product_uom_rec']._compute_quantity(v['qty_done'], v['product'].uom_id) * v['product'].weight
+            v['weight'] = v['product_uom']._compute_quantity(v['qty_done'], v['product'].uom_id) * v['product'].weight
         return aggregated_move_lines

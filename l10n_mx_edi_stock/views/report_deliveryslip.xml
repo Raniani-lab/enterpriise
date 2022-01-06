@@ -169,7 +169,7 @@
         <xpath expr="//td[last()]" position="after">
             <t t-if="o.l10n_mx_edi_status == 'sent'">
                 <td>
-                    <span t-esc="aggregated_lines[line]['product_uom_rec'].unspsc_code_id.code"/>
+                    <span t-esc="aggregated_lines[line]['product_uom'].unspsc_code_id.code"/>
                 </td>
                 <td>
                     <span t-esc="aggregated_lines[line]['weight']" t-options='{"widget": "float", "decimal_precision": "Stock Weight"}'/>

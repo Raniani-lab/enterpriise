@@ -88,10 +88,11 @@ class AccountMove(models.Model):
              "- 05: Traslados de mercancias facturados previamente\n"
              "- 06: Factura generada por los traslados previos\n"
              "- 07: CFDI por aplicación de anticipo")
-    l10n_mx_edi_cancel_invoice_id = fields.Many2one(comodel_name='account.move',
-                                                    string="Substituted By",
-                                                    compute='_compute_l10n_mx_edi_cancel',
-                                                    readonly=True)
+    l10n_mx_edi_cancel_move_id = fields.Many2one(
+        comodel_name='account.move',
+        string="Substituted By",
+        compute='_compute_l10n_mx_edi_cancel',
+        readonly=True)
     # ==== CFDI certificate fields ====
     l10n_mx_edi_certificate_id = fields.Many2one(
         comodel_name='l10n_mx_edi.certificate',
@@ -365,9 +366,9 @@ class AccountMove(models.Model):
                      ('company_id', '=', move.company_id.id)],
                     limit=1,
                 )
-                move.l10n_mx_edi_cancel_invoice_id = replaced_move
+                move.l10n_mx_edi_cancel_move_id = replaced_move
             else:
-                move.l10n_mx_edi_cancel_invoice_id = None
+                move.l10n_mx_edi_cancel_move_id = None
 
     # -------------------------------------------------------------------------
     # CONSTRAINTS

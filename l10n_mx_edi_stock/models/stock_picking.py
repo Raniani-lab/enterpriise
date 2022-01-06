@@ -116,7 +116,7 @@ class Picking(models.Model):
                 raise UserError(_('You must select a transport type to generate the delivery guide'))
             if record.move_line_ids.mapped('product_id').filtered(lambda product: not product.unspsc_code_id):
                 raise UserError(_('All products require a UNSPSC Code'))
-            if not record.company_id.l10n_mx_edi_certificate_ids.sudo().get_valid_certificate():
+            if not record.company_id.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate():
                 raise UserError(_('A valid certificate was not found'))
             if record.l10n_mx_edi_transport_type == '01' and not record.l10n_mx_edi_distance:
                 raise UserError(_('Distance in KM must be specified when using federal transport'))
@@ -168,7 +168,7 @@ class Picking(models.Model):
                 'weight_uom': self.env['product.template']._get_weight_uom_id_from_ir_config_parameter(),
             }
             xml = self.env.ref('l10n_mx_edi_stock.cfdi_cartaporte')._render(values)
-            certificate = record.company_id.l10n_mx_edi_certificate_ids.sudo().get_valid_certificate()
+            certificate = record.company_id.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
             if certificate:
                 xml = certificate._certify_and_stamp(xml, CFDI_XSLT_CADENA)
             return xml
@@ -194,16 +194,6 @@ class Picking(models.Model):
             xmlschema.assertValid(xml_doc)  #if the document is invalid, raise the error for debugging
         return result
 
-    def _l10n_mx_edi_get_signed_cfdi_data(self):
-        self.ensure_one()
-        if self.l10n_mx_edi_status == 'sent':
-            return base64.decodebytes(self.env['ir.attachment'].search([
-                ('name', '=', ATTACHMENT_NAME.format(self.l10n_mx_edi_cfdi_uuid)),
-                ('res_model', '=', self._name),
-                ('res_id', '=', self.id)
-            ], limit=1).datas)
-        return None
-
     def _l10n_mx_edi_decode_cfdi(self, cfdi_data=None):
         ''' Helper to extract relevant data from the CFDI to be used, for example, when printing the picking.
         TODO replace this function in l10n_mx_edi.account_move with a reusable model method
@@ -221,7 +211,7 @@ class Picking(models.Model):
 
         # Get the signed cfdi data.
         if not cfdi_data:
-            cfdi_data = self._l10n_mx_edi_get_signed_cfdi_data()
+            cfdi_data = self.l10n_mx_edi_cfdi_file_id.raw
 
         # Nothing to decode.
         if not cfdi_data:
@@ -312,13 +302,13 @@ class Picking(models.Model):
     def l10n_mx_edi_action_cancel_delivery_guide(self):
         for record in self:
             pac_name = record.company_id.l10n_mx_edi_pac
-            credentials = getattr(self.env['account.edi.format'], '_l10n_mx_edi_get_%s_credentials_company' % pac_name)(record.company_id)
+            credentials = getattr(self.env['account.edi.format'], '_l10n_mx_edi_get_%s_credentials' % pac_name)(record.company_id)
             if credentials.get('errors'):
                 record.l10n_mx_edi_error = '\n'.join(credentials['errors'])
                 continue
 
             uuid_replace = record.l10n_mx_edi_cancel_picking_id.l10n_mx_edi_cfdi_uuid
-            cancel_method = getattr(self.env['account.edi.format'], '_l10n_mx_edi_%s_cancel_service' % pac_name)
+            cancel_method = getattr(self.env['account.edi.format'], '_l10n_mx_edi_%s_cancel' % pac_name)
             res = cancel_method(record.l10n_mx_edi_cfdi_uuid, record.company_id, credentials, uuid_replace=uuid_replace)
 
             if res.get('errors'):
@@ -337,13 +327,13 @@ class Picking(models.Model):
         for record in self:
             pac_name = record.company_id.l10n_mx_edi_pac
 
-            credentials = getattr(self.env['account.edi.format'], '_l10n_mx_edi_get_%s_credentials_company' % pac_name)(record.company_id)
+            credentials = getattr(self.env['account.edi.format'], '_l10n_mx_edi_get_%s_credentials' % pac_name)(record.company_id)
             if credentials.get('errors'):
                 record.l10n_mx_edi_error = '\n'.join(credentials['errors'])
                 continue
 
             cfdi_str = record._l10n_mx_edi_create_delivery_guide()
-            res = getattr(self.env['account.edi.format'], '_l10n_mx_edi_%s_sign_service' % pac_name)(credentials, cfdi_str)
+            res = getattr(self.env['account.edi.format'], '_l10n_mx_edi_%s_sign' % pac_name)(credentials, cfdi_str)
             if res.get('errors'):
                 record.l10n_mx_edi_error = '\n'.join(res['errors'])
                 continue

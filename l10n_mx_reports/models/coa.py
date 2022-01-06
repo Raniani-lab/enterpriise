@@ -147,8 +147,9 @@ class MXReportAccountCoa(models.AbstractModel):
         cfdicoa = qweb._render(CFDICOA_TEMPLATE, values=values)
         for key, value in MX_NS_REFACTORING.items():
             cfdicoa = cfdicoa.replace(key, value + ':')
-        cfdicoa = self._l10n_mx_edi_add_digital_stamp(
-            CFDICOA_XSLT_CADENA % version, cfdicoa.encode())
+        certificate = self.env.company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
+        if certificate:
+            cfdicoa = certificate._certify_and_stamp(cfdicoa.encode(), CFDICOA_XSLT_CADENA % version, no_cert_attrib_name='noCertificado')
 
         with tools.file_open(CFDICOA_XSD % version, "rb") as xsd:
             _check_with_xsd(cfdicoa, xsd)

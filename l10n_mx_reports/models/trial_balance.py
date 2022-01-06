@@ -243,23 +243,6 @@ class MxReportAccountTrial(models.AbstractModel):
         cols += [initial_balances.get(account, 0.0) + total_periods]
         return cols
 
-    def _l10n_mx_edi_add_digital_stamp(self, path_xslt, cfdi):
-        """Add digital stamp certificate attributes in XML report"""
-        company_id = self.env.company
-        certificate_ids = company_id.l10n_mx_edi_certificate_ids
-        certificate_id = certificate_ids.sudo().get_valid_certificate()
-        if not certificate_id:
-            return cfdi
-        tree = fromstring(cfdi)
-        xslt_root = etree.parse(tools.file_open(path_xslt))
-        cadena = str(etree.XSLT(xslt_root)(tree))
-        sello = certificate_id.sudo().get_encrypted_cadena(cadena)
-        tree.attrib['Sello'] = sello
-        tree.attrib['noCertificado'] = certificate_id.serial_number
-        tree.attrib['Certificado'] = certificate_id.sudo().get_data()[0]
-        return etree.tostring(tree, pretty_print=True,
-                              xml_declaration=True, encoding='UTF-8')
-
     def get_bce_dict(self, options):
         company = self.env.company
         xml_data = self._get_lines(options)
@@ -334,8 +317,9 @@ class MxReportAccountTrial(models.AbstractModel):
         cfdicoa = qweb._render(CFDIBCE_TEMPLATE, values=values)
         for key, value in MX_NS_REFACTORING.items():
             cfdicoa = cfdicoa.replace(key, value + ':')
-        cfdicoa = self._l10n_mx_edi_add_digital_stamp(
-            CFDIBCE_XSLT_CADENA % version, cfdicoa.encode())
+        certificate = self.env.company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
+        if certificate:
+            cfdicoa = certificate._certify_and_stamp(cfdicoa.encode(), CFDIBCE_XSLT_CADENA % version, no_cert_attrib_name='noCertificado')
 
         with tools.file_open(CFDIBCE_XSD % version, "rb") as xsd:
             _check_with_xsd(cfdicoa, xsd)

@@ -74,7 +74,7 @@ class AccountEdiFormat(models.Model):
         errors = []
 
         # == Check the certificate ==
-        certificate = company.l10n_mx_edi_certificate_ids.sudo().get_valid_certificate()
+        certificate = company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
         if not certificate:
             errors.append(_('No valid certificate found'))
 
@@ -147,7 +147,7 @@ class AccountEdiFormat(models.Model):
             return '%.*f' % (precision, amount if not float_is_zero(amount, precision_digits=precision) else 0.0)
 
         company = move.company_id
-        certificate = company.l10n_mx_edi_certificate_ids.sudo().get_valid_certificate()
+        certificate = company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
         currency_precision = move.currency_id.l10n_mx_edi_decimal_places
 
         customer = move.partner_id if move.partner_id.type == 'invoice' else move.partner_id.commercial_partner_id
@@ -174,7 +174,7 @@ class AccountEdiFormat(models.Model):
             **self._l10n_mx_edi_get_serie_and_folio(move),
             'certificate': certificate,
             'certificate_number': certificate.serial_number,
-            'certificate_key': certificate.sudo().get_data()[0].decode('utf-8'),
+            'certificate_key': certificate.sudo()._get_data()[0].decode('utf-8'),
             'record': move,
             'supplier': supplier,
             'customer': customer,
@@ -366,7 +366,7 @@ class AccountEdiFormat(models.Model):
         # == Generate the CFDI ==
         cfdi = self.env.ref('l10n_mx_edi.cfdiv33')._render(cfdi_values)
         decoded_cfdi_values = invoice._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi)
-        cfdi_cadena_crypted = cfdi_values['certificate'].sudo().get_encrypted_cadena(decoded_cfdi_values['cadena'])
+        cfdi_cadena_crypted = cfdi_values['certificate'].sudo()._get_encrypted_cadena(decoded_cfdi_values['cadena'])
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted
 
         # == Optional check using the XSD ==
@@ -505,7 +505,7 @@ class AccountEdiFormat(models.Model):
 
         cfdi = self.env.ref('l10n_mx_edi.payment10')._render(cfdi_values)
         decoded_cfdi_values = move._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi)
-        cfdi_cadena_crypted = cfdi_values['certificate'].sudo().get_encrypted_cadena(decoded_cfdi_values['cadena'])
+        cfdi_cadena_crypted = cfdi_values['certificate'].sudo()._get_encrypted_cadena(decoded_cfdi_values['cadena'])
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted
 
         return {
@@ -519,13 +519,13 @@ class AccountEdiFormat(models.Model):
     def _l10n_mx_edi_post_invoice_pac(self, invoice, exported):
         pac_name = invoice.company_id.l10n_mx_edi_pac
 
-        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice)
+        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice.company_id)
         if credentials.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
             }
 
-        res = getattr(self, '_l10n_mx_edi_%s_sign_invoice' % pac_name)(invoice, credentials, exported['cfdi_str'])
+        res = getattr(self, '_l10n_mx_edi_%s_sign' % pac_name)(credentials, exported['cfdi_str'])
         if res.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
@@ -535,13 +535,13 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_mx_edi_post_payment_pac(self, move, exported):
         pac_name = move.company_id.l10n_mx_edi_pac
-        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move)
+        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move.company_id)
         if credentials.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
             }
 
-        res = getattr(self, '_l10n_mx_edi_%s_sign_payment' % pac_name)(move, credentials, exported['cfdi_str'])
+        res = getattr(self, '_l10n_mx_edi_%s_sign' % pac_name)(credentials, exported['cfdi_str'])
         if res.get('errors'):
             return {
                 'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
@@ -549,10 +549,7 @@ class AccountEdiFormat(models.Model):
 
         return res
 
-    def _l10n_mx_edi_get_finkok_credentials(self, move):
-        return self._l10n_mx_edi_get_finkok_credentials_company(move.company_id)
-
-    def _l10n_mx_edi_get_finkok_credentials_company(self, company):
+    def _l10n_mx_edi_get_finkok_credentials(self, company):
         ''' Return the company credentials for PAC: finkok. Does not depend on a recordset
         '''
         if company.l10n_mx_edi_pac_test_env:
@@ -575,10 +572,7 @@ class AccountEdiFormat(models.Model):
                 'cancel_url': 'http://facturacion.finkok.com/servicios/soap/cancel.wsdl',
             }
 
-    def _l10n_mx_edi_finkok_sign(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_finkok_sign_service(credentials, cfdi)
-
-    def _l10n_mx_edi_finkok_sign_service(self, credentials, cfdi):
+    def _l10n_mx_edi_finkok_sign(self, credentials, cfdi):
         ''' Send the CFDI XML document to Finkok for signature. Does not depend on a recordset
         '''
         try:
@@ -609,18 +603,13 @@ class AccountEdiFormat(models.Model):
             'cfdi_encoding': 'str',
         }
 
-    def _l10n_mx_edi_finkok_cancel(self, move, credentials, cfdi):
-        uuid_replace = move.l10n_mx_edi_cancel_invoice_id.l10n_mx_edi_cfdi_uuid
-        return self._l10n_mx_edi_finkok_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials,
-                                                       uuid_replace=uuid_replace)
-
-    def _l10n_mx_edi_finkok_cancel_service(self, uuid, company, credentials, uuid_replace=None):
+    def _l10n_mx_edi_finkok_cancel(self, uuid, company, credentials, uuid_replace=None):
         ''' Cancel the CFDI document with PAC: finkok. Does not depend on a recordset
         '''
         certificates = company.l10n_mx_edi_certificate_ids
-        certificate = certificates.sudo().get_valid_certificate()
-        cer_pem = certificate.get_pem_cer(certificate.content)
-        key_pem = certificate.get_pem_key(certificate.key, certificate.password)
+        certificate = certificates.sudo()._get_valid_certificate()
+        cer_pem = certificate._get_pem_cer(certificate.content)
+        key_pem = certificate._get_pem_key(certificate.key, certificate.password)
         try:
             transport = Transport(timeout=20)
             client = Client(credentials['cancel_url'], transport=transport)
@@ -663,22 +652,7 @@ class AccountEdiFormat(models.Model):
 
         return {'success': True}
 
-    def _l10n_mx_edi_finkok_sign_invoice(self, invoice, credentials, cfdi):
-        return self._l10n_mx_edi_finkok_sign(invoice, credentials, cfdi)
-
-    def _l10n_mx_edi_finkok_cancel_invoice(self, invoice, credentials, cfdi):
-        return self._l10n_mx_edi_finkok_cancel(invoice, credentials, cfdi)
-
-    def _l10n_mx_edi_finkok_sign_payment(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_finkok_sign(move, credentials, cfdi)
-
-    def _l10n_mx_edi_finkok_cancel_payment(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_finkok_cancel(move, credentials, cfdi)
-
-    def _l10n_mx_edi_get_solfact_credentials(self, move):
-        return self._l10n_mx_edi_get_solfact_credentials_company(move.company_id)
-
-    def _l10n_mx_edi_get_solfact_credentials_company(self, company):
+    def _l10n_mx_edi_get_solfact_credentials(self, company):
         ''' Return the company credentials for PAC: solucion factible. Does not depend on a recordset
         '''
         if company.l10n_mx_edi_pac_test_env:
@@ -699,10 +673,7 @@ class AccountEdiFormat(models.Model):
                 'url': 'https://solucionfactible.com/ws/services/Timbrado?wsdl',
             }
 
-    def _l10n_mx_edi_solfact_sign(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_solfact_sign_service(credentials, cfdi)
-
-    def _l10n_mx_edi_solfact_sign_service(self, credentials, cfdi):
+    def _l10n_mx_edi_solfact_sign(self, credentials, cfdi):
         ''' Send the CFDI XML document to Solucion Factible for signature. Does not depend on a recordset
         '''
         try:
@@ -738,12 +709,7 @@ class AccountEdiFormat(models.Model):
             errors.append(_("Message : %s") % msg)
         return {'errors': errors}
 
-    def _l10n_mx_edi_solfact_cancel(self, move, credentials, cfdi):
-        uuid_replace = move.l10n_mx_edi_cancel_invoice_id.l10n_mx_edi_cfdi_uuid
-        return self._l10n_mx_edi_solfact_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials,
-                                                        uuid_replace=uuid_replace)
-
-    def _l10n_mx_edi_solfact_cancel_service(self, uuid, company, credentials, uuid_replace=None):
+    def _l10n_mx_edi_solfact_cancel(self, uuid, company, credentials, uuid_replace=None):
         ''' calls the Solucion Factible web service to cancel the document based on the UUID.
         Method does not depend on a recordset
         '''
@@ -752,9 +718,9 @@ class AccountEdiFormat(models.Model):
         if uuid_replace:
             uuid = uuid + uuid_replace
         certificates = company.l10n_mx_edi_certificate_ids
-        certificate = certificates.sudo().get_valid_certificate()
-        cer_pem = certificate.get_pem_cer(certificate.content)
-        key_pem = certificate.get_pem_key(certificate.key, certificate.password)
+        certificate = certificates.sudo()._get_valid_certificate()
+        cer_pem = certificate._get_pem_cer(certificate.content)
+        key_pem = certificate._get_pem_key(certificate.key, certificate.password)
         key_password = certificate.password
 
         try:
@@ -791,18 +757,6 @@ class AccountEdiFormat(models.Model):
 
         return {'success': True}
 
-    def _l10n_mx_edi_solfact_sign_invoice(self, invoice, credentials, cfdi):
-        return self._l10n_mx_edi_solfact_sign(invoice, credentials, cfdi)
-
-    def _l10n_mx_edi_solfact_cancel_invoice(self, invoice, credentials, cfdi):
-        return self._l10n_mx_edi_solfact_cancel(invoice, credentials, cfdi)
-
-    def _l10n_mx_edi_solfact_sign_payment(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_solfact_sign(move, credentials, cfdi)
-
-    def _l10n_mx_edi_solfact_cancel_payment(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_solfact_cancel(move, credentials, cfdi)
-
     def _l10n_mx_edi_get_sw_token(self, credentials):
         if credentials['password'] and not credentials['username']:
             # token is configured directly instead of user/password
@@ -827,10 +781,7 @@ class AccountEdiFormat(models.Model):
                 'errors': [str(req_e)],
             }
 
-    def _l10n_mx_edi_get_sw_credentials(self, move):
-        return self._l10n_mx_edi_get_sw_credentials_company(move.company_id)
-
-    def _l10n_mx_edi_get_sw_credentials_company(self, company):
+    def _l10n_mx_edi_get_sw_credentials(self, company):
         '''Get the company credentials for PAC: SW. Does not depend on a recordset
         '''
         if not company.l10n_mx_edi_pac_username or not company.l10n_mx_edi_pac_password:
@@ -894,10 +845,7 @@ class AccountEdiFormat(models.Model):
             })
         return response_json
 
-    def _l10n_mx_edi_sw_sign(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_sw_sign_service(credentials, cfdi)
-
-    def _l10n_mx_edi_sw_sign_service(self, credentials, cfdi):
+    def _l10n_mx_edi_sw_sign(self, credentials, cfdi):
         ''' calls the SW web service to send and sign the CFDI XML.
         Method does not depend on a recordset
         '''
@@ -942,12 +890,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 errors.append(_("Message : %s") % msg)
             return {'errors': errors}
 
-    def _l10n_mx_edi_sw_cancel(self, move, credentials, cfdi):
-        uuid_replace = move.l10n_mx_edi_cancel_invoice_id.l10n_mx_edi_cfdi_uuid
-        return self._l10n_mx_edi_sw_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials,
-                                                   uuid_replace=uuid_replace)
-
-    def _l10n_mx_edi_sw_cancel_service(self, uuid, company, credentials, uuid_replace=None):
+    def _l10n_mx_edi_sw_cancel(self, uuid, company, credentials, uuid_replace=None):
         ''' Calls the SW web service to cancel the document based on the UUID.
         Method does not depend on a recordset
         '''
@@ -956,7 +899,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             'Content-Type': "application/json"
         }
         certificates = company.l10n_mx_edi_certificate_ids
-        certificate = certificates.sudo().get_valid_certificate()
+        certificate = certificates.sudo()._get_valid_certificate()
         payload_dict = {
             'rfc': company.vat,
             'b64Cer': certificate.content.decode('UTF-8'),
@@ -985,18 +928,6 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         if msg:
             errors.append(_("Message : %s") % msg)
         return {'errors': errors}
-
-    def _l10n_mx_edi_sw_sign_invoice(self, invoice, credentials, cfdi):
-        return self._l10n_mx_edi_sw_sign(invoice, credentials, cfdi)
-
-    def _l10n_mx_edi_sw_cancel_invoice(self, invoice, credentials, cfdi):
-        return self._l10n_mx_edi_sw_cancel(invoice, credentials, cfdi)
-
-    def _l10n_mx_edi_sw_sign_payment(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_sw_sign(move, credentials, cfdi)
-
-    def _l10n_mx_edi_sw_cancel_payment(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_sw_cancel(move, credentials, cfdi)
 
     # --------------------------------------------------------------------------
     # SAT
@@ -1169,7 +1100,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             # == Call the web-service ==
             pac_name = invoice.company_id.l10n_mx_edi_pac
 
-            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice)
+            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice.company_id)
             if credentials.get('errors'):
                 edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
                 continue
@@ -1177,7 +1108,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             signed_edi = invoice._get_l10n_mx_edi_signed_edi_document()
             if signed_edi:
                 cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
-            res = getattr(self, '_l10n_mx_edi_%s_cancel_invoice' % pac_name)(invoice, credentials, cfdi_data)
+            uuid_replace = invoice.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
+            res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(invoice.l10n_mx_edi_cfdi_uuid, invoice.company_id,
+                                                                     credentials, uuid_replace=uuid_replace)
             if res.get('errors'):
                 edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
                 continue
@@ -1261,7 +1194,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             # == Call the web-service ==
             pac_name = move.company_id.l10n_mx_edi_pac
 
-            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move)
+            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move.company_id)
             if credentials.get('errors'):
                 edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
                 continue
@@ -1269,7 +1202,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             signed_edi = move._get_l10n_mx_edi_signed_edi_document()
             if signed_edi:
                 cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
-            res = getattr(self, '_l10n_mx_edi_%s_cancel_payment' % pac_name)(move, credentials, cfdi_data)
+            uuid_replace = move.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
+            res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(move.l10n_mx_edi_cfdi_uuid, move.company_id,
+                                                                     credentials, uuid_replace=uuid_replace)
             if res.get('errors'):
                 edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
                 continue

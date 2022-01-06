@@ -77,24 +77,24 @@ class Certificate(models.Model):
         readonly=True)
 
     @tools.ormcache('content')
-    def get_pem_cer(self, content):
+    def _get_pem_cer(self, content):
         '''Get the current content in PEM format
         '''
         self.ensure_one()
         return ssl.DER_cert_to_PEM_cert(base64.decodebytes(content)).encode('UTF-8')
 
     @tools.ormcache('key', 'password')
-    def get_pem_key(self, key, password):
+    def _get_pem_key(self, key, password):
         '''Get the current key in PEM format
         '''
         self.ensure_one()
         return convert_key_cer_to_pem(base64.decodebytes(key), password.encode('UTF-8'))
 
-    def get_data(self):
+    def _get_data(self):
         '''Return the content (b64 encoded) and the certificate decrypted
         '''
         self.ensure_one()
-        cer_pem = self.get_pem_cer(self.content)
+        cer_pem = self._get_pem_cer(self.content)
         certificate = crypto.load_certificate(crypto.FILETYPE_PEM, cer_pem)
         for to_del in ['\n', ssl.PEM_HEADER, ssl.PEM_FOOTER]:
             cer_pem = cer_pem.replace(to_del.encode('UTF-8'), b'')
@@ -106,7 +106,7 @@ class Certificate(models.Model):
         return fields.Datetime.context_timestamp(
             self.with_context(tz='America/Mexico_City'), fields.Datetime.now())
 
-    def get_valid_certificate(self):
+    def _get_valid_certificate(self):
         '''Search for a valid certificate that is available and not expired.
         '''
         mexican_dt = self.get_mx_current_datetime()
@@ -117,11 +117,11 @@ class Certificate(models.Model):
                 return record
         return None
 
-    def get_encrypted_cadena(self, cadena):
+    def _get_encrypted_cadena(self, cadena):
         '''Encrypt the cadena using the private key.
         '''
         self.ensure_one()
-        key_pem = self.get_pem_key(self.key, self.password)
+        key_pem = self._get_pem_key(self.key, self.password)
         private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, bytes(key_pem))
         encrypt = 'sha256WithRSAEncryption'
         cadena_crypted = crypto.sign(private_key, bytes(cadena.encode()), encrypt)
@@ -137,22 +137,22 @@ class Certificate(models.Model):
         cadena_transformer = etree.parse(tools.file_open(xslt_path))
         return str(etree.XSLT(cadena_transformer)(xml_tree))
 
-    def _certify_and_stamp(self, xml_content_str, xslt_path):
+    def _certify_and_stamp(self, xml_content_str, xslt_path, no_cert_attrib_name='NoCertificado'):
         """ Appends the Sello stamp, certificate, and serial number to CFDI documents
         :param xml_content_str: The XML document string to certify and stamp
         :param xslt_path: Path to the XSLT used to generate the cadena chain (pipe delimited string of important values)
+        :param no_cert_attrib_name: string of the NoCertificado (default) attribute which can be replaced with noCertificado
         :return: A string of the XML with appended attributes: NoCertificado, Certificado, Sello
         """
-        # TODO: replace function _l10n_mx_edi_add_digital_stamp in l10n_mx_reports/models/trial_balance.py (fix module dependencies too)
         # TODO: improve functions _l10n_mx_edi_export_payment_cfdi & _l10n_mx_edi_export_invoice_cfdi in l10n_mx_edi/models/account_edi_format.py
         self.ensure_one()
         if not xml_content_str:
             return None
         tree = objectify.fromstring(xml_content_str)
-        tree.attrib['NoCertificado'] = self.serial_number
-        tree.attrib['Certificado'] = self.get_data()[0]
+        tree.attrib[no_cert_attrib_name] = self.serial_number
+        tree.attrib['Certificado'] = self._get_data()[0]
         cadena_chain = self._get_cadena_chain(tree, xslt_path)
-        sello = self.get_encrypted_cadena(cadena_chain)
+        sello = self._get_encrypted_cadena(cadena_chain)
         tree.attrib['Sello'] = sello
         return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
@@ -167,7 +167,7 @@ class Certificate(models.Model):
         for record in self:
             # Try to decrypt the certificate
             try:
-                cer_pem, certificate = record.get_data()
+                certificate = record._get_data()[1]
                 before = mexican_tz.localize(
                     datetime.strptime(certificate.get_notBefore().decode("utf-8"), date_format))
                 after = mexican_tz.localize(
@@ -185,7 +185,7 @@ class Certificate(models.Model):
                 raise ValidationError(_('The certificate is expired since %s', record.date_end))
             # Check the pair key/password
             try:
-                key_pem = self.get_pem_key(self.key, self.password)
+                key_pem = self._get_pem_key(self.key, self.password)
                 crypto.load_privatekey(crypto.FILETYPE_PEM, key_pem)
             except Exception:
                 raise ValidationError(_('The certificate key and/or password is/are invalid.'))

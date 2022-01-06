@@ -17,7 +17,7 @@
     "license": "OEEL-1",
     "depends": [
         "account_reports",
-        "l10n_mx",
+        "l10n_mx_edi",
     ],
     "demo": [
         "demo/res_company_demo.xml",

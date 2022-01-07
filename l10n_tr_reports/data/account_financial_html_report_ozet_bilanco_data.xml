@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_financial_report_l10n_tr_ozet_bilanco" model="account.financial.html.report">
+        <field name="name">Özet Bilanço</field>
+        <field name="date_range" eval="False"/>
+        <field name="parent_id" ref="account_reports_tr_statements_menu"/>
+        <field name="country_id" ref="base.tr"/>
+        <field name="unfold_all_filter" eval="True"/>
+        <field name="line_ids">
+            <record id="account_financial_report_line_tr_br_bs_active" model="account.financial.html.report.line">
+                <field name="name">AKTİF (VARLIKLAR)</field>
+                <field name="level" eval="0"/>
+                <field name="sequence" eval="0"/>
+                <field name="domain" eval=""/>
+                <field name="formulas">TRBS_1 + TRBS_2</field>
+                <field name="children_ids">
+                    <record id="account_financial_report_line_tr_br_bs_1" model="account.financial.html.report.line">
+                        <field name="name">DÖNEN VARLIKLAR</field>
+                        <field name="level" eval="1"/>
+                        <field name="sequence" eval="20"/>
+                        <field name="domain" eval=""/>
+                        <field name="formulas">TRBS_10 + TRBS_11 + TRBS_12 + TRBS_13 + TRBS_15 + TRBS_17 + TRBS_18 - TRBS_19</field>
+                        <field name="children_ids">
+                            <record id="account_financial_report_line_tr_br_bs_10"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Hazır Değerler</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="10"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_100 + TRBS_101 + TRBS_102 - TRBS_103 + TRBS_108</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_11"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Menkul Kıymetler</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="20"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_110 + TRBS_111 + TRBS_112 + TRBS_118 - TRBS_119</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_12"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Ticari Alacaklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="30"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_120 + TRBS_121 - TRBS_122 + TRBS_126 + TRBS_127 + TRBS_128 - TRBS_129</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_13"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Alacaklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="40"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_131 + TRBS_132 + TRBS_133 + TRBS_135 + TRBS_136 - TRBS_137 - TRBS_138 - TRBS_139</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_15"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Stoklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="60"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_150 + TRBS_151 + TRBS_152 + TRBS_153 + TRBS_157 - TRBS_158 + TRBS_159</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_17"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Yıllara Yaygın İnş.ve Onarım Maaliyetleri</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="80"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_170 + TRBS_179</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_18"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Gelecek Aylara Ait Gid.ve Gelir Tah.</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="90"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_180 + TRBS_181</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_19"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Dönen Varlıklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="100"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_190 + TRBS_191 + TRBS_192 + TRBS_193 + TRBS_195 + TRBS_196 + TRBS_197 + TRBS_198 - TRBS_199</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                        </field>
+                    </record>
+
+                    <record id="account_financial_report_line_tr_br_bs_2" model="account.financial.html.report.line">
+                        <field name="name">DURAN VARLIKLAR</field>
+                        <field name="level" eval="1"/>
+                        <field name="sequence" eval="30"/>
+                        <field name="domain" eval=""/>
+                        <field name="formulas">TRBS_22 + TRBS_23 + TRBS_24 + TRBS_25 + TRBS_26 + TRBS_27 + TRBS_28 + TRBS_29</field>
+                        <field name="children_ids">
+                            <record id="account_financial_report_line_tr_br_bs_22"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Ticari Alacaklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="30"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_220 + TRBS_221 - TRBS_222 + TRBS_226 - TRBS_229</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_23"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Alacaklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="40"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_231 + TRBS_232 + TRBS_233 + TRBS_235 + TRBS_236 - TRBS_237 - TRBS_239</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_24"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Mali Duran Varlıklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="50"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_240 - TRBS_241 + TRBS_242 - TRBS_243 - TRBS_244 + TRBS_245 - TRBS_246 - TRBS_247 + TRBS_248 - TRBS_249</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_25"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Maddi Duran Varlıklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="60"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_250 + TRBS_251 + TRBS_252 + TRBS_253 + TRBS_254 + TRBS_255 + TRBS_256 - TRBS_257 + TRBS_258 + TRBS_259</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_26"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Maddi Olmayan Duran Varlıklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="70"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_260 + TRBS_261 + TRBS_262 + TRBS_263 + TRBS_264 + TRBS_267 - TRBS_268 + TRBS_269</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_27"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Özel Tükenmeye Tabi Varlıklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="80"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_271 + TRBS_272 + TRBS_277 - TRBS_278 + TRBS_279</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_28"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Gelecek Yıllara Ait Gid.ve Gelir Tahakukları</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="90"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_280 + TRBS_281</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_29"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Duran Varlıklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="100"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_291 + TRBS_292 + TRBS_293 + TRBS_294 + TRBS_295 + TRBS_297 - TRBS_298 - TRBS_299</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                        </field>
+                    </record>
+
+                </field>
+            </record>
+
+            <record id="account_financial_report_line_tr_br_bs_pasive" model="account.financial.html.report.line">
+                <field name="name">PASİF (KAYNAKLAR)</field>
+                <field name="level" eval="0"/>
+                <field name="sequence" eval="10"/>
+                <field name="domain" eval=""/>
+                <field name="formulas">TRBS_3 + TRBS_4 + TRBS_5</field>
+                <field name="children_ids">
+                    <record id="account_financial_report_line_tr_br_bs_3" model="account.financial.html.report.line">
+                        <field name="name">KISA VADELİ YABANCI KAYNAK</field>
+                        <field name="level" eval="1"/>
+                        <field name="sequence" eval="40"/>
+                        <field name="domain" eval=""/>
+                        <field name="formulas">TRBS_30 + TRBS_32 + TRBS_33 + TRBS_34 + TRBS_35 + TRBS_36 + TRBS_37 + TRBS_38 + TRBS_39</field>
+                        <field name="children_ids">
+                            <record id="account_financial_report_line_tr_br_bs_30"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Mali Borçlar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="10"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_300 + TRBS_303 + TRBS_304 + TRBS_305 + TRBS_306 - TRBS_308 + TRBS_309</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_32"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Ticari Borçlar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="30"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_320 + TRBS_321 - TRBS_322 + TRBS_326 + TRBS_329</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_33"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Borçlar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="40"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_331 + TRBS_332 + TRBS_333 + TRBS_335 + TRBS_336 - TRBS_337</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_34"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Alınan Avanslar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="50"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_340 + TRBS_349</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_35"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Yıllara Yaygın İnş. ve Onarım Hakedişleri</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="60"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_350</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_36"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Ödenecek Vergi ve Diğer Yükümlülükler</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="70"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_360 + TRBS_361 + TRBS_368 + TRBS_369</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_37"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Borç ve Gider Karşılıkları</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="80"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_370 + TRBS_371 + TRBS_372 + TRBS_373 + TRBS_379</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_38"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Gelecek Aylara Ait Gelirler ve Gid. Tahakkuk</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="90"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_380 + TRBS_381</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_39"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Kısa Vadeli Yabancı Kaynaklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="100"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_391 + TRBS_392 + TRBS_393 + TRBS_397 + TRBS_399</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                        </field>
+                    </record>
+
+                    <record id="account_financial_report_line_tr_br_bs_4" model="account.financial.html.report.line">
+                        <field name="name">UZUN VADELİ YABANCI KAYNAKLAR</field>
+                        <field name="level" eval="1"/>
+                        <field name="sequence" eval="50"/>
+                        <field name="domain" eval=""/>
+                        <field name="formulas">TRBS_40 + TRBS_42 + TRBS_43 + TRBS_44 + TRBS_47 + TRBS_48 + TRBS_49</field>
+                        <field name="children_ids">
+                            <record id="account_financial_report_line_tr_br_bs_40"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Mali Borçlar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="10"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_400 + TRBS_405 + TRBS_407 - TRBS_408 + TRBS_409</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_42"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Ticari Borçlar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="30"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_420 + TRBS_421 - TRBS_422 + TRBS_426 + TRBS_429</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_43"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Borçlar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="40"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_431 + TRBS_432 + TRBS_433 + TRBS_436 - TRBS_437 + TRBS_438</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_44"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Alınan Avanslar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="50"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_440 + TRBS_449</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_47"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Borç ve Gider Karşılıkları</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="80"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_472 + TRBS_479</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_48"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Gelecek Yıllara Ait Gel.ve Gid.Karşılıkları</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="90"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_480 + TRBS_481</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_49"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Diğer Uzun Vadeli Yabancı Kaynaklar</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="100"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_492 + TRBS_493 + TRBS_499</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                        </field>
+                    </record>
+
+                    <record id="account_financial_report_line_tr_br_bs_5" model="account.financial.html.report.line">
+                        <field name="name">ÖZKAYNAKLAR</field>
+                        <field name="level" eval="1"/>
+                        <field name="sequence" eval="60"/>
+                        <field name="domain" eval=""/>
+                        <field name="formulas">TRBS_50 + TRBS_52 + TRBS_54 + TRBS_57 - TRBS_58 + TRBS_59</field>
+                        <field name="children_ids">
+                            <record id="account_financial_report_line_tr_br_bs_50"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Ödenmiş Sermaye</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="10"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_500 - TRBS_501</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                            <record id="account_financial_report_line_tr_br_bs_52"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Sermaye Yedekleri</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="30"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_520 + TRBS_521 + TRBS_522 + TRBS_523 + TRBS_529</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_54"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Kar Yedekleri</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="50"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_540 + TRBS_541 + TRBS_542 + TRBS_548 + TRBS_549</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_57"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Geçmiş Yıllar Karları</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="80"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_570</field>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_58"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Geçmiş Yıllar Zararları (-)</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="90"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_580</field>
+                                <field name="green_on_positive" eval="False"/>
+                                <field name="hide_if_empty" eval="True"/>
+                            </record>
+                            <record id="account_financial_report_line_tr_br_bs_59"
+                                    model="account.financial.html.report.line">
+                                <field name="name">Dönem Net Karı (Zararı)</field>
+                                <field name="level" eval="2"/>
+                                <field name="sequence" eval="100"/>
+                                <field name="domain" eval=""/>
+                                <field name="formulas">TRBS_590 - TRBS_591</field>
+                                <field name="hide_if_empty" eval="True"/>
+                           </record>
+                        </field>
+                    </record>
+
+                </field>
+            </record>
+
+
+        </field>
+    </record>
+
+</odoo>

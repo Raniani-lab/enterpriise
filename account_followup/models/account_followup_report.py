@@ -275,7 +275,7 @@ class AccountFollowupReport(models.AbstractModel):
         options['partner_id'] = partner_id
         partner = self.env['res.partner'].browse(partner_id)
         followup_line = partner.followup_level
-        if followup_line._amount_due_in_description() and options.get('total_due', -1) != partner.total_due:
+        if followup_line and followup_line._amount_due_in_description() and options.get('total_due', -1) != partner.total_due:
             options['keep_summary'] = False
         report_manager_id = self._get_report_manager(options).id
         html = self.get_html(options)

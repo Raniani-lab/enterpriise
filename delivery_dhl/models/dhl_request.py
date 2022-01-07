@@ -134,61 +134,22 @@ class DHLProvider():
         dct_dutiable.DeclaredValue = total_value
         return dct_dutiable
 
-    def _set_dct_bkg_details(self, weight, carrier, shipper):
-        package_type = carrier.dhl_default_package_type_id
+    def _set_dct_bkg_details(self, carrier, packages):
         bkg_details = self.factory_dct_request.BkgDetailsType()
-        bkg_details.PaymentCountryCode = shipper.country_id.code
-        bkg_details.Date = date.today()
-        bkg_details.ReadyTime = timedelta(hours=1,minutes=2)
-        bkg_details.DimensionUnit = "CM" if carrier.dhl_package_dimension_unit == "C" else "IN"
-        bkg_details.WeightUnit = "KG" if carrier.dhl_package_weight_unit == "K" else "LB"
-        piece = self.factory_dct_request.PieceType()
-        piece.PieceID = str(1)
-        piece.PackageTypeCode = package_type.shipper_package_code
-        piece.Height = package_type.height
-        piece.Depth = package_type.packaging_length
-        piece.Width = package_type.width
-        piece.Weight = carrier._dhl_convert_weight(weight, carrier.dhl_package_weight_unit)
-        bkg_details.Pieces = {'Piece': [piece]}
-        bkg_details.PaymentAccountNumber = carrier.dhl_account_number
-        if carrier.dhl_dutiable:
-            bkg_details.IsDutiable = "Y"
-        else:
-            bkg_details.IsDutiable = "N"
-        bkg_details.NetworkTypeCode = "AL"
-        return bkg_details
-
-    def _set_dct_bkg_details_from_picking(self, picking):
-        carrier = picking.carrier_id
-        bkg_details = self.factory_dct_request.BkgDetailsType()
-        bkg_details.PaymentCountryCode = picking.company_id.partner_id.country_id.code
+        bkg_details.PaymentCountryCode = packages[0].company_id.partner_id.country_id.code
         bkg_details.Date = date.today()
         bkg_details.ReadyTime = timedelta(hours=1,minutes=2)
         bkg_details.DimensionUnit = "CM" if carrier.dhl_package_dimension_unit == "C" else "IN"
         bkg_details.WeightUnit = "KG" if carrier.dhl_package_weight_unit == "K" else "LB"
         pieces = []
-        index = 0
-        for package in picking.package_ids:
-            index += 1
-            package_type = package.package_type_id or carrier.dhl_default_package_type_id
+        for sequence, package in enumerate(packages):
             piece = self.factory_dct_request.PieceType()
-            piece.PieceID = index
-            piece.PackageTypeCode = package_type.shipper_package_code
-            piece.Height = package_type.height
-            piece.Depth = package_type.packaging_length
-            piece.Width = package_type.width
-            piece.Weight = picking.carrier_id._dhl_convert_weight(package.shipping_weight, picking.carrier_id.dhl_package_weight_unit)
-            pieces.append(piece)
-        if picking.weight_bulk:
-            index += 1
-            package_type = carrier.dhl_default_package_type_id
-            piece = self.factory_dct_request.PieceType()
-            piece.PieceID = index
-            piece.PackageTypeCode = package_type.shipper_package_code
-            piece.Height = package_type.height
-            piece.Depth = package_type.packaging_length
-            piece.Width = package_type.width
-            piece.Weight = picking.carrier_id._dhl_convert_weight(picking.weight_bulk, picking.carrier_id.dhl_package_weight_unit)
+            piece.PieceID = sequence
+            piece.PackageTypeCode = package.packaging_type
+            piece.Height = package.dimension['height']
+            piece.Depth = package.dimension['length']
+            piece.Width = package.dimension['width']
+            piece.Weight = carrier._dhl_convert_weight(package.weight, carrier.dhl_package_weight_unit)
             pieces.append(piece)
         bkg_details.Pieces = {'Piece': pieces}
         bkg_details.PaymentAccountNumber = carrier.dhl_account_number
@@ -201,36 +162,16 @@ class DHLProvider():
 
     def _set_shipment_details(self, picking):
         shipment_details = self.factory.ShipmentDetails()
-        #CHECK IF WEIGHT BULK AND PACKAGES
         pieces = []
-        index = 0
-        for package in picking.package_ids:
-            index += 1
-            package_type = package.package_type_id or picking.carrier_id.dhl_default_package_type_id
+        packages = picking.carrier_id._get_packages_from_picking(picking, picking.carrier_id.dhl_default_package_type_id)
+        for sequence, package in enumerate(packages):
             piece = self.factory.Piece()
-            piece.PieceID = index
-            piece.Width = package_type.width
-            piece.Height = package_type.height
-            piece.Depth = package_type.packaging_length
-            piece.Weight = picking.carrier_id._dhl_convert_weight(
-                package.shipping_weight or package.weight,
-                picking.carrier_id.dhl_package_weight_unit
-            )
+            piece.PieceID = sequence
+            piece.Height = package.dimension['height']
+            piece.Depth = package.dimension['length']
+            piece.Width = package.dimension['width']
+            piece.Weight = picking.carrier_id._dhl_convert_weight(package.weight, picking.carrier_id.dhl_package_weight_unit)
             piece.PieceContents = package.name
-            pieces.append(piece)
-        if picking.weight_bulk or picking.is_return_picking:
-            index += 1
-            package_type = picking.carrier_id.dhl_default_package_type_id
-            piece = self.factory.Piece()
-            piece.PieceID = index
-            piece.Width = package_type.width
-            piece.Height = package_type.height
-            piece.Depth = package_type.packaging_length
-            piece.Weight = picking.carrier_id._dhl_convert_weight(
-                picking.weight_bulk,
-                picking.carrier_id.dhl_package_weight_unit
-            )
-            piece.PieceContents = "Bulk Content"
             pieces.append(piece)
         shipment_details.Pieces = self.factory.Pieces(pieces)
         shipment_details.WeightUnit = picking.carrier_id.dhl_package_weight_unit
@@ -241,7 +182,7 @@ class DHLProvider():
         shipment_details.DimensionUnit = picking.carrier_id.dhl_package_dimension_unit
         if picking.carrier_id.dhl_dutiable:
             shipment_details.IsDutiable = "Y"
-        shipment_details.CurrencyCode = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
+        shipment_details.CurrencyCode = packages[0].currency_id.name
         return shipment_details
 
     def _set_label_image_format(self, label_image_format):

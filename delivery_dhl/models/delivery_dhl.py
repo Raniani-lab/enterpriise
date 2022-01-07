@@ -130,9 +130,10 @@ class Providerdhl(models.Model):
         rating_request['Request'] = srm._set_request(site_id, password)
         rating_request['From'] = srm._set_dct_from(warehouse_partner_id)
         if picking:
-            rating_request['BkgDetails'] = srm._set_dct_bkg_details_from_picking(picking)
+            packages = self._get_packages_from_picking(picking, self.dhl_default_package_type_id)
         else:
-            rating_request['BkgDetails'] = srm._set_dct_bkg_details(order._get_estimated_weight(), self, order.company_id.partner_id)
+            packages = self._get_packages_from_order(order, self.dhl_default_package_type_id)
+        rating_request['BkgDetails'] = srm._set_dct_bkg_details(self, packages)
         rating_request['To'] = srm._set_dct_to(destination_partner_id)
         if self.dhl_dutiable:
             rating_request['Dutiable'] = srm._set_dct_dutiable(total_value, currency_id.name)

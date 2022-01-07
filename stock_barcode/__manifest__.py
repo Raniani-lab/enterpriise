@@ -9,7 +9,7 @@ This module enables the barcode scanning feature for the warehouse management sy
     'category': 'Inventory/Inventory',
     'sequence': 255,
     'version': '1.0',
-    'depends': ['barcodes_gs1_nomenclature', 'stock', 'web_tour', 'web_mobile'],
+    'depends': ['stock', 'web_tour', 'web_mobile'],
     'data': [
         'security/ir.model.access.csv',
         'views/stock_inventory_views.xml',

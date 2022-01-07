@@ -30,7 +30,7 @@ class ResourceResource(models.Model):
                     'name': resource.name,
                     'resource_id': resource.id,
                 })
-            self.env['hr.employee'].sudo().create(create_vals)
+            self.env['hr.employee'].sudo().with_context(from_planning=False).create(create_vals)
         return resources
 
     def name_get(self):

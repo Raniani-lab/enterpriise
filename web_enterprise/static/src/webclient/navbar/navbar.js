@@ -31,7 +31,9 @@ export class EnterpriseNavBar extends NavBar {
         menuAppsEl.classList.toggle("o_hidden", !this.isInApp && !this.hasBackgroundAction);
         menuAppsEl.classList.toggle("fa-th", this.isInApp);
         menuAppsEl.classList.toggle("fa-chevron-left", !this.isInApp && this.hasBackgroundAction);
-        const title = !this.isInApp && this.hasBackgroundAction ? "Previous view" : "Home menu";
+        const { _t } = this.env;
+        const title =
+            !this.isInApp && this.hasBackgroundAction ? _t("Previous view") : _t("Home menu");
         menuAppsEl.title = title;
         menuAppsEl.ariaLabel = title;
 

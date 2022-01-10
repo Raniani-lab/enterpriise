@@ -34,7 +34,6 @@ addFields('Activity', {
 
 addLifecycleHooks('Activity', {
     _created() {
-        this._onReloadChatter = this._onReloadChatter.bind(this);
         this.env.bus.on('voip_reload_chatter', undefined, this._onReloadChatter);
     },
     _willDelete() {

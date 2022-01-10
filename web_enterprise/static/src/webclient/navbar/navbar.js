@@ -1,24 +1,17 @@
 /** @odoo-module **/
 
 import { NavBar } from "@web/webclient/navbar/navbar";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useEffect, useBus } from "@web/core/utils/hooks";
 
-const { hooks } = owl;
-const { useRef } = hooks;
+const { useRef } = owl.hooks;
 
 export class EnterpriseNavBar extends NavBar {
     setup() {
         super.setup();
         this.hm = useService("home_menu");
         this.menuAppsRef = useRef("menuApps");
-        this.menuBrand = useRef("menuBrand");
-        hooks.onMounted(() => {
-            this.env.bus.on("HOME-MENU:TOGGLED", this, () => this._updateMenuAppsIcon());
-            this._updateMenuAppsIcon();
-        });
-        hooks.onPatched(() => {
-            this._updateMenuAppsIcon();
-        });
+        useBus(this.env.bus, "HOME-MENU:TOGGLED", () => this._updateMenuAppsIcon());
+        useEffect(() => this._updateMenuAppsIcon());
     }
     get hasBackgroundAction() {
         return this.hm.hasBackgroundAction;
@@ -37,7 +30,7 @@ export class EnterpriseNavBar extends NavBar {
         menuAppsEl.title = title;
         menuAppsEl.ariaLabel = title;
 
-        const menuBrand = this.menuBrand.el;
+        const menuBrand = this.el.querySelector(".o_menu_brand");
         if (menuBrand) {
             menuBrand.classList.toggle("o_hidden", !this.isInApp);
         }

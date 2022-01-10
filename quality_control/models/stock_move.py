@@ -34,3 +34,9 @@ class StockMove(models.Model):
                 })
             check_vals_list += picking_check_vals_list
         self.env['quality.check'].sudo().create(check_vals_list)
+
+    def _action_cancel(self):
+        res = super()._action_cancel()
+        # self cannot contain moves that are done, so we can safely unlink all associated quality_check
+        self.picking_id.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
+        return res

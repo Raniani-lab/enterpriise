@@ -59,8 +59,6 @@ class IntrastatReport(models.AbstractModel):
 
     @api.model
     def _create_intrastat_report_line(self, options, vals):
-        caret_options = 'account.invoice.%s' % (vals['invoice_type'] in ('in_invoice', 'in_refund') and 'in' or 'out')
-
         columns = [{'name': c} for c in [
             vals['invoice_date'], vals['system'], vals['country_code'], vals['trans_code'],
             vals['region_code'], vals['commodity_code'], vals['type'],
@@ -78,7 +76,7 @@ class IntrastatReport(models.AbstractModel):
 
         return {
             'id': vals['id'],
-            'caret_options': caret_options,
+            'caret_options': 'account.move',
             'model': 'account.move.line',
             'name': vals['invoice_number'],
             'columns': columns,

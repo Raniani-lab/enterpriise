@@ -3534,6 +3534,39 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
+    QUnit.test("basic rendering of a many2one aggregate with empty result set", async function (assert) {
+        assert.expect(3);
+
+        const dashboard = await makeView({
+            type: "dashboard",
+            resModel: "test_time_range",
+            serverData,
+            arch: `
+                <dashboard>
+                    <group>
+                        <aggregate name="category_count" field="categ_id" help="some help" />
+                    </group>
+                </dashboard>
+            `,
+            mockRPC(route, args) {
+                if (args.method === "read_group") {
+                    return [{ category_count: 0, __count: 0 }];
+                }
+            },
+        });
+
+        assert.strictEqual(
+            dashboard.el.querySelector(".o_value").textContent.trim(),
+            "0",
+            "should correctly display the aggregate's value"
+        );
+
+        const agg = dashboard.el.querySelector(".o_aggregate");
+        const tooltipInfo = JSON.parse(agg.dataset.tooltipInfo);
+        assert.strictEqual(serverData.models.test_time_range.fields.categ_id.type, "many2one");
+        assert.strictEqual(tooltipInfo.formatter, "integer");
+    });
+
     QUnit.test(
         "click on a non empty cell in an embedded pivot view redirects to a list view",
         async function (assert) {

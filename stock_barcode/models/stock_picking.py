@@ -71,6 +71,9 @@ class StockPicking(models.Model):
     def action_print_delivery_slip(self):
         return self.env.ref('stock.action_report_delivery').report_action(self)
 
+    def action_print_packges(self):
+        return self.env.ref('stock.action_report_picking_packages').report_action(self)
+
     def _get_stock_barcode_data(self):
         # Avoid to get the products full name because code and name are separate in the barcode app.
         self = self.with_context(display_default_code=False)

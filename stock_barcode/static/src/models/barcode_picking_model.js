@@ -225,7 +225,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     get printButtons() {
-        return [
+        const buttons = [
             {
                 name: _t("Print Picking Operations"),
                 class: 'o_print_picking',
@@ -240,6 +240,14 @@ export default class BarcodePickingModel extends BarcodeModel {
                 method: 'action_print_barcode_pdf',
             },
         ];
+        if (this.groups.group_tracking_lot) {
+            buttons.push({
+                name: _t("Print Packages"),
+                class: 'o_print_packages',
+                method: 'action_print_packges',
+            });
+        }
+        return buttons;
     }
 
     get selectedLine() {

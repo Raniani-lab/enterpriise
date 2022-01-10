@@ -101,7 +101,7 @@
     text-align: center;
 }
 
-.modal.o_sign_thank_you_dialog {
+.modal:is(.o_sign_thank_you_dialog, .o_sign_next_dialog) {
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     text-align: left;

@@ -913,7 +913,7 @@ const NextDirectSignDialog = Dialog.extend({
     this.state = parent.state;
 
     options = options || {};
-    options.title = options.title || _t("Thank You !") + "<br/>";
+    options.title = options.title || _t("Thank You !");
     options.subtitle =
       options.subtitle ||
       _t("Your signature has been saved.") +
@@ -947,6 +947,7 @@ const NextDirectSignDialog = Dialog.extend({
     this._super.apply(this, arguments);
     this.$modal.addClass("o_sign_next_dialog");
     this.$modal.find("button.close").addClass("invisible");
+    this.$modal.find(".modal-header .o_subtitle").before("<br/>");
   },
 
   on_click_next: function () {

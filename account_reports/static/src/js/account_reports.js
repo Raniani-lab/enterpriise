@@ -225,7 +225,7 @@ var accountReportsWidget = AbstractAction.extend({
         if("default_filter_accounts" in (this.odoo_context || {}))
             this.$('.o_account_reports_filter_input').val(this.odoo_context.default_filter_accounts).trigger("input");
     },
-    destroy: function () {
+    on_detach_callback: function () {
         $(window).off('resize', recomputeHeader);
         this._super.apply(this, arguments);
     },
@@ -316,10 +316,13 @@ var accountReportsWidget = AbstractAction.extend({
     render_template: function() {
         this.$('.o_content').html(this.main_html);
         this.$('.o_content').scroll(moveScroll);
-        $(window).resize(recomputeHeader);
         this.$('.o_content').find('.o_account_reports_summary_edit').hide();
         this.$('[data-toggle="tooltip"]').tooltip();
         this._add_line_classes();
+    },
+    on_attach_callback: function() {
+        $(window).resize(recomputeHeader);
+        this._super.apply(this, arguments);
     },
     _init_line_popups: function(){
         /*

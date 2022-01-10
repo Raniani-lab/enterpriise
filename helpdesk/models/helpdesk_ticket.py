@@ -477,7 +477,7 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def _search_open_hours(self, operator, value):
-        dt = fields.Datetime.now() - relativedelta.relativedelta(hours=value)
+        dt = fields.Datetime.now() - relativedelta(hours=value)
 
         d1, d2 = False, False
         if operator in ['<', '<=', '>', '>=']:

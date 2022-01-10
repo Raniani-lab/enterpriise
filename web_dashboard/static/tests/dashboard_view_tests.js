@@ -3506,6 +3506,34 @@ QUnit.module("Views", (hooks) => {
         }
     });
 
+    QUnit.test("basic rendering of a date aggregate and empty result set", async function (assert) {
+        assert.expect(1);
+
+        const dashboard = await makeView({
+            type: "dashboard",
+            resModel: "test_time_range",
+            serverData,
+            arch: `
+                <dashboard>
+                    <group>
+                        <aggregate name="date_max" field="date" group_operator="max" />
+                    </group>
+                </dashboard>
+            `,
+            mockRPC(route, args) {
+                if (args.method === "read_group") {
+                    return [{ date_max: null, __count: 0 }];
+                }
+            },
+        });
+
+        assert.strictEqual(
+            dashboard.el.querySelector(".o_value").textContent.trim(),
+            "-",
+            "should correctly display the aggregate's value"
+        );
+    });
+
     QUnit.test(
         "click on a non empty cell in an embedded pivot view redirects to a list view",
         async function (assert) {

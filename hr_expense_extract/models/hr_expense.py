@@ -47,6 +47,7 @@ class HrExpenseExtractionWords(models.Model):
 
 class HrExpense(models.Model):
     _inherit = ['hr.expense']
+    _order = "state_processed desc, date desc, id desc"
 
     @api.depends('extract_status_code')
     def _compute_error_message(self):
@@ -80,6 +81,11 @@ class HrExpense(models.Model):
             if record.extract_state not in ['no_extract_requested']:
                 record.extract_can_show_send_button = False
 
+    @api.depends('extract_state')
+    def _compute_state_processed(self):
+        for record in self:
+            record.state_processed = record.extract_state == 'waiting_extraction'
+
     extract_state = fields.Selection([('no_extract_requested', 'No extract requested'),
                                       ('not_enough_credit', 'Not enough credit'),
                                       ('error_status', 'An error occurred'),
@@ -94,17 +100,15 @@ class HrExpense(models.Model):
     extract_word_ids = fields.One2many("hr.expense.extract.words", inverse_name="expense_id", copy=False)
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
+    # We want to see the records that are just processed by OCR at the top of the list
+    state_processed = fields.Boolean(string='Status regarding OCR status', compute=_compute_state_processed, store=True)
 
-    @api.returns('mail.message', lambda value: value.id)
-    def message_post(self, **kwargs):
-        """when a message is posted send the attachment to iap-extract if this is the first attachment"""
-        message = super(HrExpense, self).message_post(**kwargs)
-        
+    def attach_document(self, **kwargs):
+        """when an attachment is uploaded, send the attachment to iap-extract if this is the first attachment"""
         if self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
             for record in self:
                 if record.extract_state == "no_extract_requested":
                     record.retry_ocr()
-        return message
 
     def get_validation(self, field):
 
@@ -197,17 +201,18 @@ class HrExpense(models.Model):
             self.date = date_ocr
             self.reference = bill_reference_ocr
             self.predicted_category = description_ocr
+            self.state = 'draft'
 
             predicted_product_id = self._predict_product(description_ocr, category = True)
             self.product_id = predicted_product_id if predicted_product_id else self.product_id
 
             if self.user_has_groups('base.group_multi_currency'):
-                self.currency_id = self.env["res.currency"].search([
+                suggested_currency = self.env["res.currency"].search([
                     '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-                    ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)   
-            
-            self.unit_amount = 0
-            self.total_amount = total_ocr
+                    ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+                self.currency_id = suggested_currency or self.currency_id
+
+            self.total_amount = total_ocr if self.total_amount == 0.0 else self.total_amount
 
         elif result['status_code'] == NOT_READY:
             self.extract_state = 'extract_not_ready'
@@ -238,7 +243,7 @@ class HrExpense(models.Model):
                 'res_model': 'hr.expense',
                 'target': 'current',
                 'domain': [('id', 'in', [expense.id for expense in self])],
-                
+
             }
 
     def retry_ocr(self):
@@ -285,7 +290,7 @@ class HrExpense(models.Model):
 
                     self.env['iap.account']._send_iap_bus_notification(
                         service_name='invoice_ocr',
-                        title=_("Bill is Digitalized successfully"))
+                        title=_("Expense is being Digitalized"))
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.extract_state = 'not_enough_credit'
                     self.env['iap.account']._send_iap_bus_notification(
@@ -318,10 +323,12 @@ class HrExpense(models.Model):
             action_id = self.env.ref('hr_expense_extract.action_expense_sample_receipt').id
             html_to_return = """
 <p class="o_view_nocontent_expense_receipt">
-    Did you try the mobile app?
+    <h2 class="d-none d-md-block">
+        Did you try the mobile app?
+    </h2>
 </p>
 <p>Snap pictures of your receipts and let Odoo<br/> automatically create expenses for you.</p>
-<p>
+<p class="d-none d-md-block">
     <a href="https://apps.apple.com/be/app/odoo/id1272543640" target="_blank">
         <img alt="Apple App Store" class="img img-fluid h-100 o_expense_apple_store" src="/hr_expense/static/img/app_store.png"/>
     </a>

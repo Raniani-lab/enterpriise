@@ -145,6 +145,17 @@ class HelpdeskTicket(models.Model):
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
+    display_sol = fields.Boolean(compute="_compute_display_sol")
+
+    @api.depends('helpdesk_ticket_id', 'helpdesk_ticket_id.use_helpdesk_sale_timesheet')
+    def _compute_display_sol(self):
+        sale_project_ids = list(self.env['project.project']._search([('helpdesk_team.use_helpdesk_sale_timesheet', '=', True)]))
+        for line in self:
+            if line.project_id and not line.project_id.allow_billable and line.project_id.id not in sale_project_ids:
+                line.display_sol = False
+            else:
+                line.display_sol = not line.helpdesk_ticket_id or line.helpdesk_ticket_id.use_helpdesk_sale_timesheet
+
     @api.depends('task_id.sale_line_id', 'project_id.sale_line_id', 'employee_id', 'project_id.allow_billable', 'helpdesk_ticket_id.sale_line_id')
     def _compute_so_line(self):
         non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id and t._is_not_billed())

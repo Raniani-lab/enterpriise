@@ -6,10 +6,10 @@
         <field name="model">timesheets.analysis.report</field>
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_report_search"/>
         <field name="arch" type="xml">
-            <field name="project_id" position="before">
+            <field name="task_id" position="after">
                 <field name="helpdesk_ticket_id" string="Ticket"/>
             </field>
-            <filter name="groupby_project" position="before">
+            <filter name="groupby_task" position="after">
                 <filter string="Ticket" name="groupby_ticket" context="{'group_by': 'helpdesk_ticket_id'}"/>
             </filter>
         </field>

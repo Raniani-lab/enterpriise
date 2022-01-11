@@ -10,6 +10,10 @@
         <field name="domain">[('project_id', '=', active_id)]</field>
     </record>
 
+    <record id="project.open_view_project_all" model="ir.actions.act_window">
+        <field name="domain">[('is_internal_project', '=', False), ('helpdesk_team', '=', False)]</field>
+    </record>
+
    <record id="project_project_view_form_inherit_helpdesk_timesheet" model="ir.ui.view">
         <field name="name">project.form.inherit.helpdesk.timesheet</field>
         <field name="model">project.project</field>

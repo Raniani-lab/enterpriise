@@ -9,7 +9,23 @@ from odoo.exceptions import ValidationError
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
-    helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', 'Helpdesk Ticket')
+    helpdesk_ticket_id = fields.Many2one(
+        'helpdesk.ticket', 'Helpdesk Ticket', index='btree_not_null',
+        compute='_compute_helpdesk_ticket_id', store=True, readonly=False,
+        domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]")
+    has_helpdesk_team = fields.Boolean(related='project_id.has_helpdesk_team')
+    display_task = fields.Boolean(compute="_compute_display_task")
+
+    @api.depends('has_helpdesk_team', 'project_id', 'task_id', 'helpdesk_ticket_id')
+    def _compute_display_task(self):
+        for line in self:
+            line.display_task = line.task_id or not line.has_helpdesk_team
+
+    @api.depends('project_id')
+    def _compute_helpdesk_ticket_id(self):
+        for line in self:
+            if not line.project_id or line.project_id != line.helpdesk_ticket_id.project_id:
+                line.helpdesk_ticket_id = False
 
     @api.constrains('task_id', 'helpdesk_ticket_id')
     def _check_no_link_task_and_ticket(self):

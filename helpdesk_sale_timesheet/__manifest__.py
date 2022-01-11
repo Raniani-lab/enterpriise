@@ -5,13 +5,14 @@
     'name': 'Sell Helpdesk Timesheet',
     'category': 'Hidden',
     'summary': 'Project, Helpdesk, Timesheet and Sale Orders',
-    'depends': ['helpdesk_timesheet', 'sale_timesheet', 'helpdesk_sale'],
+    'depends': ['helpdesk_timesheet', 'sale_timesheet_enterprise', 'helpdesk_sale'],
     'description': """
         Bill timesheets logged on helpdesk tickets.
     """,
     'auto_install': True,
     'data': [
         'security/ir.model.access.csv',
+        'views/hr_timesheet_views.xml',
         'views/helpdesk_views.xml',
         'views/helpdesk_portal_templates.xml',
         'views/project_project_views.xml',

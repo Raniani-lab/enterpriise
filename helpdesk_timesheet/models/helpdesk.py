@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from collections import defaultdict
 
-from odoo import api, fields, models, _
+from odoo import api, Command, fields, models, _
 from odoo.exceptions import ValidationError
 
 
@@ -63,7 +63,9 @@ class HelpdeskTeam(models.Model):
             if vals.get('use_helpdesk_timesheet') and not vals.get('project_id'):
                 allow_billable = vals.get('use_helpdesk_sale_timesheet')
                 vals['project_id'] = self._create_project(vals['name'], allow_billable, {}).id
-        return super().create(vals_list)
+        teams = super().create(vals_list)
+        teams.sudo()._check_timesheet_group()
+        return teams
 
     def write(self, vals):
         if 'use_helpdesk_timesheet' in vals and not vals['use_helpdesk_timesheet']:
@@ -74,9 +76,27 @@ class HelpdeskTeam(models.Model):
                 ('res_id', 'in', self.with_context(active_test=False).ticket_ids.ids)
             ]).unlink()
         result = super(HelpdeskTeam, self).write(vals)
+        if 'use_helpdesk_timesheet' in vals:
+            self.sudo()._check_timesheet_group()
         for team in self.filtered(lambda team: team.use_helpdesk_timesheet and not team.project_id):
             team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {})
         return result
+
+    def _get_timesheet_user_group(self):
+        return self.env.ref('hr_timesheet.group_hr_timesheet_user')
+
+    def _check_timesheet_group(self):
+        timesheet_teams = self.filtered('use_helpdesk_timesheet')
+        use_helpdesk_timesheet_group = self.user_has_groups('helpdesk_timesheet.group_use_helpdesk_timesheet')
+        helpdesk_timesheet_group = self.env.ref('helpdesk_timesheet.group_use_helpdesk_timesheet')
+        enabled_timesheet_team = lambda: self.env['helpdesk.team'].search([('use_helpdesk_timesheet', '=', True)], limit=1)
+        if timesheet_teams and not use_helpdesk_timesheet_group:
+            (self._get_helpdesk_user_group() + self._get_timesheet_user_group())\
+                .write({'implied_ids': [Command.link(helpdesk_timesheet_group.id)]})
+        elif self - timesheet_teams and use_helpdesk_timesheet_group and not enabled_timesheet_team():
+            (self._get_helpdesk_user_group() + self._get_timesheet_user_group())\
+                .write({'implied_ids': [Command.unlink(helpdesk_timesheet_group.id)]})
+            helpdesk_timesheet_group.write({'users': [Command.clear()]})
 
     def action_view_timesheets(self):
         self.ensure_one()

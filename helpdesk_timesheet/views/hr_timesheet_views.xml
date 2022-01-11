@@ -1,71 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+     <record id="hr_timesheet_line_tree_inherit_helpdesk_timesheet" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.inherit.helpdesk.timesheet</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('helpdesk_ticket_id', '!=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="has_helpdesk_team" invisible="1"/>
+                <field name="helpdesk_ticket_id" string="Ticket"
+                    attrs="{'invisible': ['|', ('has_helpdesk_team', '=', False), ('task_id', '!=', False)]}"
+                    optional="hide" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_timesheet_line_kanban_inherit_helpdesk_timesheet" model="ir.ui.view">
+        <field name="name">account.analytic.line.kanban.inherit.helpdesk.timesheet</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.view_kanban_account_analytic_line"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="helpdesk_ticket_id" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+            <xpath expr="//span[@t-esc='record.task_id.value']" position="after">
+                <span t-esc="record.helpdesk_ticket_id.value" t-att-title="record.helpdesk_ticket_id.value"
+                    groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_timesheet_line_search_inherit_helpdesk_timesheet" model="ir.ui.view">
+        <field name="name">account.analytic.line.search.inherit.helpdesk.timesheet</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="field[@name='task_id']" position="after">
+                <field name="helpdesk_ticket_id" string="Ticket" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+            <xpath expr="//filter[@name='groupby_task']" position="after">
+                <filter string="Ticket" name="groupby_ticket" context="{'group_by': 'helpdesk_ticket_id'}"
+                    groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="hr_timesheet_line_tree_helpdesk" model="ir.ui.view">
         <field name="name">account.analytic.line.tree.helpdesk</field>
         <field name="model">account.analytic.line</field>
-        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="inherit_id" ref="hr_timesheet_line_tree_inherit_helpdesk_timesheet"/>
         <field name="mode">primary</field>
         <field name="priority">25</field>
         <field name="arch" type="xml">
-            <field name="project_id" position="attributes">
-                <attribute name="optional">hide</attribute>
+            <field name="helpdesk_ticket_id" position="attributes">
+                <attribute name="optional">show</attribute>
             </field>
             <field name="task_id" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-            <field name="project_id" position="before">
-                <field name="helpdesk_ticket_id" string="Ticket" optional="show" readonly="1"/>
-            </field>
         </field>
     </record>
+
+    <!-- All Timesheet -->
     <record id="timesheet_view_form_helpdesk" model="ir.ui.view">
         <field name="name">account.analytic.line.form.helpdesk</field>
         <field name="model">account.analytic.line</field>
         <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>
         <field name="mode">primary</field>
-        <field name="priority">50</field>
+        <field name="priority">5000</field>
         <field name="arch" type="xml">
-            <field name="task_id" position="replace"/>
-            <field name="project_id" position="after">
-                <field name="helpdesk_ticket_id" string="Ticket"/>
-            </field>
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="display_task" invisible="1"/>
+                <field name="helpdesk_ticket_id" string="Ticket"
+                    attrs="{'invisible': [('display_task', '=', True)]}"
+                    groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('display_task', '!=', True)]}</attribute>
+            </xpath>
         </field>
     </record>
+
+    <record id="hr_timesheet.timesheet_action_view_all_form" model="ir.actions.act_window.view">
+        <field name="view_id" ref="timesheet_view_form_helpdesk"/>
+    </record>
+
+    <!-- MY Timesheet -->
+    <record id="my_timesheet_view_form_helpdesk" model="ir.ui.view">
+        <field name="name">account.analytic.line.form.helpdesk</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="timesheet_grid.my_timesheet_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="display_task" invisible="1"/>
+                <field name="helpdesk_ticket_id" string="Ticket"
+                    attrs="{'invisible': [('display_task', '=', True)]}"
+                    groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('display_task', '!=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_timesheet.act_hr_timesheet_line_view_form" model="ir.actions.act_window.view">
+        <field name="view_id" ref="my_timesheet_view_form_helpdesk"/>
+    </record>
+
     <record id="view_kanban_account_analytic_line_helpdesk" model="ir.ui.view">
         <field name="name">account.analytic.line.kanban.helpdesk</field>
         <field name="model">account.analytic.line</field>
-        <field name="inherit_id" ref="hr_timesheet.view_kanban_account_analytic_line"/>
+        <field name="inherit_id" ref="hr_timesheet_line_kanban_inherit_helpdesk_timesheet"/>
         <field name="mode">primary</field>
         <field name="priority">25</field>
         <field name="arch" type="xml">
-            <field name="task_id" position="after">
-                <field name="helpdesk_ticket_id"/>
-            </field>
-            <xpath expr="//span[@t-esc='record.task_id.value']" position="replace">
-                <span t-esc="record.helpdesk_ticket_id.value" t-att-title="record.helpdesk_ticket_id.value"/>
-            </xpath>
+            <xpath expr="//span[@t-esc='record.task_id.value']" position="replace"/>
         </field>
     </record>
 
     <record id="hr_timesheet_line_search_helpdesk" model="ir.ui.view">
         <field name="name">account.analytic.search</field>
         <field name="model">account.analytic.line</field>
-        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+        <field name="inherit_id" ref="hr_timesheet_line_search_inherit_helpdesk_timesheet"/>
         <field name="mode">primary</field>
         <field name="priority">25</field>
         <field name="arch" type="xml">
-            <field name="project_id" position="before">
-                <field name="helpdesk_ticket_id" string="Ticket"/>
+            <field name="task_id" position="attributes">
+                <attribute name="invisible">1</attribute>
             </field>
-            <field name="task_id" position="replace"/>
             <filter name="my_project" position="attributes">
                 <attribute name="invisible">1</attribute>
             </filter>
             <filter name="groupby_task" position="attributes">
                 <attribute name="invisible">1</attribute>
-            </filter>
-            <filter name="groupby_project" position="before">
-                <filter string="Ticket" name="groupby_ticket" context="{'group_by': 'helpdesk_ticket_id'}"/>
             </filter>
         </field>
     </record>
@@ -119,4 +188,27 @@
         <field name="view_id" ref="hr_timesheet.view_hr_timesheet_line_graph_my"/>
         <field name="act_window_id" ref="act_hr_timesheet_line_helpdesk"/>
     </record>
+
+    <record id="timesheet_view_grid_by_my_timesheet" model="ir.ui.view">
+        <field name="name">account.analytic.line.grid.project</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid"/>
+        <field name="arch" type="xml">
+            <field name="task_id" position="after">
+                <field name="helpdesk_ticket_id" type="row"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="timesheet_view_grid_by_task_readonly" model="ir.ui.view">
+        <field name="name">account.analytic.line.grid.task</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_task_readonly"/>
+        <field name="arch" type="xml">
+            <field name="task_id" position="after">
+                <field name="helpdesk_ticket_id" type="row"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>

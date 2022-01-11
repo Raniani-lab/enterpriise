@@ -12,6 +12,7 @@ class HrPayrollReport(models.Model):
     l10n_be_ip = fields.Float('IP', readonly=True)
     l10n_be_ip_deduction = fields.Float('IP Deduction', readonly=True)
     l10n_be_rep_fees = fields.Float('Representation Fees', readonly=True)
+    # l10n_be_rep_fees_volatile = fields.Float('Representation Fees (Without Serious Standards)', readonly=True)
     l10n_be_car_priv = fields.Float('Private car', readonly=True)
     l10n_be_car_atn = fields.Float('Benefit in Kind (Company Car)', readonly=True)
     l10n_be_mobile_atn = fields.Float('Benefit in Kind (Mobile)', readonly=True)
@@ -47,6 +48,7 @@ class HrPayrollReport(models.Model):
                 CASE WHEN wd.id = min_id.min_line THEN l10n_be_onss_employer.total * %s ELSE 0 END as l10n_be_onss_ffe,
                 l10n_be_274_xx_line.amount as l10n_be_withholding_taxes_exemption
                 """ % (ffe_rate)
+                # CASE WHEN wd.id = min_id.min_line THEN l10n_be_rep_fees_volatile.total ELSE 0 END as l10n_be_rep_fees_volatile,
 
     def _from(self):
         return super()._from() + """
@@ -63,6 +65,7 @@ class HrPayrollReport(models.Model):
                 left join hr_payslip_line l10n_be_internet_atn on (l10n_be_internet_atn.slip_id = p.id and l10n_be_internet_atn.code = 'ATN.INT')
                 left join hr_payslip_line l10n_be_laptop_atn on (l10n_be_laptop_atn.slip_id = p.id and l10n_be_laptop_atn.code = 'ATN.LAP')
                 left join hr_payslip_line l10n_be_onss_employer on (l10n_be_onss_employer.slip_id = p.id and l10n_be_onss_employer.code = 'ONSSEMPLOYER')"""
+                # left join hr_payslip_line l10n_be_rep_fees_volatile on (l10n_be_rep_fees_volatile.slip_id = p.id and l10n_be_rep_fees_volatile.code = 'REP.FEES.VOLATILE')
 
     def _group_by(self):
         return super()._group_by() + """,
@@ -79,3 +82,4 @@ class HrPayrollReport(models.Model):
                 l10n_be_laptop_atn.total,
                 l10n_be_onss_employer.total,
                 l10n_be_274_xx_line.amount"""
+                # l10n_be_rep_fees_volatile.total,

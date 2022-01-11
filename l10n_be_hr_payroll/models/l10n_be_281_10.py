@@ -195,7 +195,7 @@ class L10nBe28110(models.Model):
 
         line_codes = [
             'NET', 'PAY_SIMPLE', 'PPTOTAL', 'M.ONSS', 'ATN.INT', 'ATN.MOB', 'ATN.LAP',
-            'ATN.CAR', 'REP.FEES', 'PUB.TRANS', 'EmpBonus.1', 'GROSS'
+            'ATN.CAR', 'REP.FEES', 'REP.FEES.VOLATILE', 'PUB.TRANS', 'EmpBonus.1', 'GROSS'
         ]
         all_line_values = all_payslips._get_line_values(line_codes)
 
@@ -238,6 +238,8 @@ class L10nBe28110(models.Model):
                 'f2029_enkelopgave325': 0,
                 'f2112_buitenlandspostnummer': employee.address_home_id.zip if not is_belgium else '0',
                 'f2114_voornamen': employee.name,
+                # YTI From 2023, should be distinguished from volatile representation fees
+                # 'f10_2031_compensationwithstandards': round(mapped_total['REP.FEES'], 2),
                 'f10_2031_compensationwithstandards': 0,
                 'f10_2033_compensationwithdocuments': 0,
                 'f10_2034_ex': 0,
@@ -273,6 +275,8 @@ class L10nBe28110(models.Model):
                 'f10_2075_bijzonderbijdrage': round(-mapped_total['M.ONSS'], 2),
                 'f10_2076_voordelenaardbedrag': round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2),
                 # f10_2077_totaal
+                # YTI From 2023, should be distinguished from REP.FEES
+                # 'f10_2078_compensationamountwithoutstandards': round(mapped_total['REP.FEES.VOLATILE'], 2),
                 'f10_2078_compensationamountwithoutstandards': round(mapped_total['REP.FEES'], 2),
                 'f10_2080_detacheringsvergoed': 0,
                 'f10_2081_gewonebijdragenenpremies': 0,

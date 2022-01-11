@@ -328,6 +328,9 @@ class Payslip(models.Model):
             'compute_termination_withholding_rate': compute_termination_withholding_rate,
             'compute_impulsion_plan_amount': compute_impulsion_plan_amount,
             'compute_onss_restructuring': compute_onss_restructuring,
+            'compute_representation_fees': compute_representation_fees,
+            'compute_serious_representation_fees': compute_serious_representation_fees,
+            'compute_volatile_representation_fees': compute_volatile_representation_fees,
             'EMPLOYER_ONSS': EMPLOYER_ONSS,
         })
         return res
@@ -980,3 +983,58 @@ def compute_onss_restructuring(payslip, categories, worked_days, inputs):
     if 0 <= number_of_months <= 6:
         return amount * ratio
     return 0
+
+def compute_representation_fees(payslip, categories, worked_days, inputs):
+    contract = payslip.contract_id
+    if not categories.BASIC:
+        result = 0
+    else:
+        calendar = contract.resource_calendar_id
+        days_per_week = calendar._get_days_per_week()
+        incapacity_attendances = calendar.attendance_ids.filtered(lambda a: a.work_entry_type_id.code == 'LEAVE281')
+        if incapacity_attendances:
+            incapacity_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in incapacity_attendances)
+            incapacity_hours = incapacity_hours / 2 if calendar.two_weeks_calendar else incapacity_hours
+            incapacity_rate = (1 - incapacity_hours / calendar.hours_per_week) if calendar.hours_per_week else 0
+            work_time_rate = contract.resource_calendar_id.work_time_rate * incapacity_rate
+        else:
+            work_time_rate = contract.resource_calendar_id.work_time_rate
+
+        threshold = 0 if (worked_days.OUT and worked_days.OUT.number_of_hours) else 279.31
+        if days_per_week and contract.representation_fees > threshold:
+            # Only part of the representation costs are pro-rated because certain costs are fully
+            # covered for the company (teleworking costs, mobile phone, internet, etc., namely:
+            # - 144.31 € (Tax, since 2021 - coronavirus)
+            # - 30 € (internet)
+            # - 25 € (phone)
+            # - 80 € (car management fees)
+            # = Total € 279.31
+            # Legally, they are not prorated according to the occupancy fraction.
+            # In summary, those who select amounts of for example 150 € and 250 €, have nothing pro-rated
+            # because the amounts are covered in an irreducible way.
+            # For those who have selected the maximum of 399 €, there is therefore only the share of
+            # +-120 € of representation expenses which is then subject to prorating.
+
+            # Credit time, but with only half days (otherwise it's taken into account)
+            if contract.time_credit and work_time_rate and work_time_rate < 100 and days_per_week == 5:
+                total_amount = threshold + (contract.representation_fees - threshold) * work_time_rate / 100
+            # Contractual part time
+            elif not contract.time_credit and work_time_rate < 100:
+                total_amount = threshold + (contract.representation_fees - threshold) * work_time_rate / 100
+            else:
+                total_amount = contract.representation_fees
+
+            if total_amount > threshold:
+                daily_amount = (total_amount - threshold) * 3 / 13 / days_per_week
+                result = max(0, total_amount - daily_amount * payslip.representation_fees_missing_days)
+        elif days_per_week:
+            result = contract.representation_fees
+        else:
+            result = 0
+    return result
+
+def compute_serious_representation_fees(payslip, categories, worked_days, inputs):
+    return min(compute_representation_fees(payslip, categories, worked_days, inputs), 279.31)
+
+def compute_volatile_representation_fees(payslip, categories, worked_days, inputs):
+    return max(compute_representation_fees(payslip, categories, worked_days, inputs) - 279.31, 0)

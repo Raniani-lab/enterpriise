@@ -1,36 +1,8 @@
-.database_expiration_panel {
-    text-align: center;
-    margin: 0 auto;
-    max-width: 768px;
-    width: 100%;
-    @include media-breakpoint-up(md) {
-        margin: 25px auto 0 auto;
-    }
+.database_expiration_panel .oe_instance_register_form {
+    max-height: 0;
+    transition: max-height 0.4s;
 
-    a > i.fa {
-        margin: 0 0.2em;
-    }
-
-    .oe_instance_register_form {
-        @include media-breakpoint-down(sm) {
-            .form-group {
-                margin-right: 25px;
-            }
-        }
-
-        max-height: 0;
-        transition-duration: 0.4s;
-        transition-property: max-height, margin-top;
-        overflow: hidden;
-
-        &.o-vertical-slide-enter, &.o-vertical-slide-leave {
-            margin-top: 0 !important;
-        }
-        &.o-vertical-slide-enter-active {
-            max-height: 32px;
-            @include media-breakpoint-down(sm) {
-                max-height: 72px;
-            }
-        }
+    &.o-vertical-slide-enter-active {
+        max-height: 10rem; // fixed value is required to properly trigger transition
     }
 }

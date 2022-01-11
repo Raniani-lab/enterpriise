@@ -101,7 +101,12 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>
+                <field name="parent_id" groups="project.group_subtask_project"/>
                 <field name="task_id"/>
+            </xpath>
+            <xpath expr="//filter[@name='my_role']" position="after">
+                <filter string="My Projects" name="my_project" domain="[('project_id.user_id','=', uid)]" groups="project.group_project_user"/>
+                <filter string="My Tasks" name="my_task" domain="[('task_id.user_ids', 'in', uid)]" groups="project.group_project_user"/>
             </xpath>
             <xpath expr="//filter[@name='group_by_role']" position="after">
                 <filter name="group_by_project" string="Project" context="{'group_by': 'project_id'}"/>
@@ -115,11 +120,24 @@
     <record id="planning_view_gantt" model="ir.ui.view">
         <field name="name">planning.slot.gantt</field>
         <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning.planning_view_gantt"/>
+        <field name="inherit_id" ref="planning.planning_view_gantt_group_by_role"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="/gantt" position="attributes">
                 <attribute name="js_class">forecast_gantt</attribute>
+                <attribute name="default_group_by">resource_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="planning_view_gantt_group_by_project" model="ir.ui.view">
+        <field name="name">planning.slot.gantt.inherit.project.project.forecast</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning.planning_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="/gantt" position="attributes">
+                <attribute name="default_group_by">project_id</attribute>
             </xpath>
         </field>
     </record>
@@ -130,7 +148,7 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{
-            'search_default_group_by_project': 1, 'planning_groupby_project': True,
+            'planning_groupby_project': True,
             'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1
         }</field>
         <field name="help" type="html">
@@ -145,7 +163,7 @@
         <record id="planning_action_schedule_by_project_view_gantt" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="planning_view_gantt"/>
+            <field name="view_id" ref="planning_view_gantt_group_by_project"/>
             <field name="act_window_id" ref="planning_action_schedule_by_project"/>
         </record>
 
@@ -155,7 +173,7 @@
             <field name="view_mode">gantt,calendar,tree,form,kanban</field>
             <field name="view_id" ref="project_forecast.planning_view_gantt"/>
             <field name="context">{
-                'search_default_group_by_resource': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1,
+                'planning_expand_resource': 1, 'planning_expand_role': 1,
                 'planning_expand_project': 1, 'planning_expand_task': 1
             }</field>
             <field name="help" type="html">
@@ -191,7 +209,7 @@
 
     <record id="planning.planning_action_schedule_by_resource" model="ir.actions.act_window">
         <field name="context">{
-            'search_default_group_by_resource': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1,
+            'planning_expand_resource': 1, 'planning_expand_role': 1,
             'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">
@@ -205,8 +223,8 @@
 
     <record id="planning.planning_action_schedule_by_role" model="ir.actions.act_window">
         <field name="context">{
-            'search_default_group_by_role': 1, 'search_default_group_by_resource': 2, 'planning_groupby_role': True,
-            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+            'planning_groupby_role': True, 'planning_expand_resource': 1,
+            'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

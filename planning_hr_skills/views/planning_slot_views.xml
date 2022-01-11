@@ -5,7 +5,7 @@
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='job_title']" position="after">
+            <xpath expr="//field[@name='name']" position="before">
                 <field name="employee_skill_ids" groups="planning.group_planning_user" filter_domain="[('employee_skill_ids.skill_id', 'ilike', self)]"/>
             </xpath>
         </field>

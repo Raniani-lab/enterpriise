@@ -245,17 +245,20 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <search>
+                <field name="resource_id" groups="planning.group_planning_user"/>
                 <field name="role_id" groups="planning.group_planning_user"/>
                 <field name="tag_ids" groups="planning.group_planning_user"/>
+                <field name="company_id" groups="base.group_multi_company"/>
                 <field name="department_id" groups="planning.group_planning_user"/>
-                <field name="resource_id" groups="planning.group_planning_user"/>
                 <field name="manager_id" groups="planning.group_planning_user"/>
                 <field name="job_title" groups="planning.group_planning_user"/>
+                <field name="name" groups="planning.group_planning_user"/>
                 <filter name="open_shifts" string="Open Shifts" domain="[('resource_id', '=', False)]" />
-                <filter name="open_shifts_my_role" string="Open Shifts for my Roles" domain="[('resource_id', '=', False), ('role_id.employee_ids.user_id', 'in', [uid])]" />
                 <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]" />
                 <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
                 <filter name="my_department_shifts" string="My Department" domain="[('employee_id.member_of_department', '=', True)]" help="Shifts of Your Department Member" groups="planning.group_planning_user"/>
+                <separator/>
+                <filter string="My Roles" name="my_role" domain="[('role_id.employee_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]"/>
                 <separator/>
@@ -266,8 +269,9 @@
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
                 <filter name="publication_warning" string="To Resend" domain="[('publication_warning', '=', True), ('overlap_slot_count', '=', 0)]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
-                <filter name="future" string="Future" domain="[('start_datetime', '>=', time.strftime('%Y-%m-%d 00:00:00'))]" />
-                <filter name="past" string="Past" domain="[('start_datetime', '&lt;=', time.strftime('%Y-%m-%d 23:59:59'))]" />
+                <filter name="future" string="Future" domain="[('start_datetime', '&gt;=', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" />
+                <filter name="today" string="Today" domain="[('start_datetime', '&gt;=', context_today().strftime('%Y-%m-%d')), ('end_datetime', '&lt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" />
+                <filter name="past" string="Past" domain="[('end_datetime', '&lt;', context_today().strftime('%Y-%m-%d'))]" />
                 <group string="Group By">
                     <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}" groups="planning.group_planning_user"/>
                     <filter name="group_by_manager" string="Manager" context="{'group_by': 'manager_id'}" groups="planning.group_planning_user"/>
@@ -358,6 +362,18 @@
                         </p>
                     </div>
                 </templates>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="planning_view_gantt_group_by_role" model="ir.ui.view">
+        <field name="name">planning.slot.gantt</field>
+        <field name="inherit_id" ref="planning_view_gantt"/>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <gantt position="attributes">
+                <attribute name="default_group_by">role_id</attribute>
             </gantt>
         </field>
     </record>
@@ -526,7 +542,7 @@
         <field name="name">Schedule by Resource</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_group_by_resource': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
+        <field name="context">{'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
@@ -548,7 +564,7 @@
         <field name="name">Schedule by Role</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_resource': 2, 'planning_groupby_role': True, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
+        <field name="context">{'planning_groupby_role': True, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No shifts found. Let's create one!
@@ -562,7 +578,7 @@
         <record id="planning_action_schedule_by_role_view_gantt" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="planning_view_gantt"/>
+            <field name="view_id" ref="planning_view_gantt_group_by_role"/>
             <field name="act_window_id" ref="planning_action_schedule_by_role"/>
         </record>
 

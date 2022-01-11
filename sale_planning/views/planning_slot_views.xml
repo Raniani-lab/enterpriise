@@ -7,10 +7,13 @@
         <field name="inherit_id" ref="planning.planning_view_search"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='role_id']" position="after">
+            <xpath expr="//field[@name='tag_ids']" position="before">
                 <!-- TODO TLE : Handle group visibility -->
                 <field name="sale_order_id" string="Sales Order"/>
-                <field name="role_product_ids"/>
+                <field name="role_product_ids" string="Service"/>
+            </xpath>
+            <xpath expr="//filter[@name='my_role']" position="after">
+                <filter string="My Sales Orders" name="my_sale_orders" domain="[('sale_order_id.user_id','=', uid)]" groups="sales_team.group_sale_salesman"/>
             </xpath>
             <xpath expr="//filter[@name='material']" position="after">
                 <separator/>
@@ -93,6 +96,18 @@
         </field>
     </record>
 
+    <record id="planning_view_gantt_group_by_sale_order_item" model="ir.ui.view">
+        <field name="name">planning.slot.gantt</field>
+        <field name="inherit_id" ref="planning_slot_view_gantt_inherit_sale_planning"/>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <gantt position="attributes">
+                <attribute name="default_group_by">sale_line_id</attribute>
+            </gantt>
+        </field>
+    </record>
+
     <record id="planning_slot_view_calendar_inherit_sale_planning" model="ir.ui.view">
         <field name="name">planning.slot.calendar.inherit.sale.planning</field>
         <field name="model">planning.slot</field>
@@ -170,7 +185,7 @@
 
     <record id="planning.planning_action_schedule_by_role" model="ir.actions.act_window">
         <field name="context">{
-            'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
+            'search_default_group_by_employee': 2, 'planning_groupby_role': True,
             'planning_expand_sale_line_id': 1,
         }</field>
     </record>
@@ -194,7 +209,7 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{
-            'search_default_group_by_sale_order_line': 1, 'planning_groupby_sale_order': True,
+            'planning_groupby_sale_order': True,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_sale_line_id': 1,
         }</field>
         <field name="groups_id" eval="[(4, ref('planning.group_planning_manager'))]"/>
@@ -206,6 +221,13 @@
                 Let's start your planning by adding a new shift.
             </p>
         </field>
+    </record>
+
+    <record id="planning_action_schedule_by_sale_order_item_view_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="planning_view_gantt_group_by_sale_order_item"/>
+        <field name="act_window_id" ref="sale_planning_action_schedule_by_sale_order"/>
     </record>
 
     <menuitem

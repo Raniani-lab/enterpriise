@@ -46,6 +46,17 @@
         </field>
     </record>
 
+    <record id="project_forecast_view_search_inherit_project_timesheet_forecast" model="ir.ui.view">
+        <field name="name">planning.slot.search.inherit.timesheet</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="project_forecast.planning_slot_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='conflict_shifts']" position="after">
+                <filter name="no_timesheets" string="No Timesheets" domain="[('effective_hours', '=', 0), ('task_id', '!=', False), ('end_datetime', '&lt;=', datetime.datetime.now())]" groups="hr_timesheet.group_hr_timesheet_user"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_forecast_view_tree_inherit_project_timesheet_forecast" model="ir.ui.view">
         <field name="name">planning.slot.tree.inherit.timesheet</field>
         <field name="model">planning.slot</field>
@@ -70,8 +81,8 @@
     </record>
 
     <record id="planning_view_gantt" model="ir.ui.view">
-       <field name="name">planning.slot.gantt.inherit.timesheet</field>
-        <field name="inherit_id" ref="project_forecast.planning_view_gantt"/>
+        <field name="name">planning.slot.gantt.inherit.timesheet</field>
+        <field name="inherit_id" ref="planning.planning_view_gantt_group_by_role"/>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <gantt position="attributes">
@@ -97,7 +108,7 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{
-            'search_default_group_by_role': 1, 'search_default_group_by_resource': 2, 'planning_groupby_role': True,
+            'planning_groupby_role': True,
             'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
         <field name="help" type="html">

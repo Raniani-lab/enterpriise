@@ -31,7 +31,7 @@ PERIODS = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'y
 class SaleSubscription(models.Model):
     _name = "sale.subscription"
     _description = "Subscription"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin', "portal.mixin"]
+    _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin']
     _check_company_auto = True
     _mail_post_access = 'read'
 

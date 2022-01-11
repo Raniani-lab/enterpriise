@@ -16,7 +16,9 @@ class TestEasypostRequest(EasypostTestCommon):
         so_vals_fedex = {"partner_id": self.jackson.id, "order_line": [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
-        shipment = self.easypost._prepare_order_shipments(self.easypost_fedex_carrier, sale_order_fedex)
+        carrier = self.easypost_fedex_carrier
+        delivery_packages = carrier._get_packages_from_order(sale_order_fedex, carrier.easypost_default_package_type_id)
+        shipment = self.easypost._prepare_shipments(carrier, delivery_packages)
 
         self.assertEqual(shipment["order[shipments][0][parcel][weight]"], 80)
         self.assertFalse("order[shipments][1][parcel][weight]" in shipment, "Should have only 1 shipment")
@@ -29,7 +31,9 @@ class TestEasypostRequest(EasypostTestCommon):
         so_vals_fedex = {"partner_id": self.jackson.id, "order_line": [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
-        shipment = self.easypost._prepare_order_shipments(self.easypost_fedex_carrier, sale_order_fedex)
+        carrier = self.easypost_fedex_carrier
+        delivery_packages = carrier._get_packages_from_order(sale_order_fedex, carrier.easypost_default_package_type_id)
+        shipment = self.easypost._prepare_shipments(carrier, delivery_packages)
 
         self.assertEqual(shipment["order[shipments][0][parcel][weight]"], 3 * 16, "First package weight")
         self.assertTrue("order[shipments][1][parcel][weight]" in shipment, "Should have 2 shipments")
@@ -44,7 +48,9 @@ class TestEasypostRequest(EasypostTestCommon):
         so_vals_fedex = {"partner_id": self.jackson.id, "order_line": [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
-        shipment = self.easypost._prepare_order_shipments(self.easypost_fedex_carrier, sale_order_fedex)
+        carrier = self.easypost_fedex_carrier
+        delivery_packages = carrier._get_packages_from_order(sale_order_fedex, carrier.easypost_default_package_type_id)
+        shipment = self.easypost._prepare_shipments(carrier, delivery_packages)
 
         self.assertEqual(shipment["order[shipments][0][parcel][weight]"], 80)
         self.assertFalse('order[shipments][1][parcel][weight]' in shipment, 'Should have only 1 shipment')

@@ -2,8 +2,8 @@
 <odoo>
     <template id="l10n_mx_edi_cartaporte_report_delivery_document" inherit_id="stock.report_delivery_document">
         <xpath expr="//div[@name='signature']" position="after">
-            <t t-set="cfdi_vals" t-value="o._l10n_mx_edi_decode_cfdi()"/>
             <t t-if="o.l10n_mx_edi_status == 'sent'">
+                <t t-set="cfdi_vals" t-value="o._l10n_mx_edi_decode_cfdi()"/>
                 <div class="row border-top mt-3" t-if="o.l10n_mx_edi_transport_type == '01' and o.l10n_mx_edi_vehicle_id" id="delivery_guide_details">
                     <div class="col-12">
                         <div class="row pt-3" id="mx_edi_row_1">

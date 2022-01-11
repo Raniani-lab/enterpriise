@@ -11,6 +11,7 @@ class StockMoveLine(models.Model):
         returns: dictionary {same_key_as_super: {same_values_as_super, weight: weight}, ...}
         """
         aggregated_move_lines = super()._get_aggregated_product_quantities(**kwargs)
-        for v in aggregated_move_lines.values():
-            v['weight'] = v['product_uom']._compute_quantity(v['qty_done'], v['product'].uom_id) * v['product'].weight
+        if self.picking_id.l10n_mx_edi_status == 'sent':
+            for v in aggregated_move_lines.values():
+                v['weight'] = v['product_uom']._compute_quantity(v['qty_done'], v['product'].uom_id) * v['product'].weight
         return aggregated_move_lines

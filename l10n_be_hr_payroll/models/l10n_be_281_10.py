@@ -297,7 +297,7 @@ class L10nBe28110(models.Model):
                 'f10_2099_aard': self._get_atn_nature(payslips),
                 'f10_2102_kas': 0,
                 'f10_2103_kasvrijaanvullendpensioen': 0,
-                'f10_2106_percentages': '53.5' if round(warrant_gross, 2) else '', # YTI FIXME: Retrieve actual percentage
+                'f10_2106_percentages': '', # Note: No percentages for warrants
                 'f10_2109_fiscaalidentificat': employee.identification_id if employee.country_id != belgium else '',
                 'f10_2110_aantaloveruren360': 0,
                 'f10_2111_achterstalloveruren300horeca': 0,

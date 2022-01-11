@@ -133,7 +133,7 @@
                         </div>
                         <div class="mt-3" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
                             <label for="worksheet_template_id" string="Worksheet Template"/>
-                            <field name="worksheet_template_id" class="oe_inline"/>
+                            <field name="worksheet_template_id" class="oe_inline" context="{'default_res_model': 'project.task'}"/>
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
         <field name="inherit_id" ref="project.view_project"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="before">
-                <field name="worksheet_template_id" optional="hide"/>
+                <field name="worksheet_template_id" string="Worksheet Template" optional="hide"/>
             </xpath>
         </field>
     </record>
@@ -405,7 +405,7 @@
         <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
         <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
-        <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+        <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1, 'default_scale': 'week'}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>
                 No tasks found. Let's create one!
@@ -423,21 +423,21 @@
     </record>
 
     <record id="project_task_action_planning_groupby_worksheet_fsm_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="20"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="industry_fsm.project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
     </record>
 
     <record id="project_task_action_planning_groupby_worksheet_fsm_view_list" model="ir.actions.act_window.view">
-        <field name="sequence" eval="20"/>
+        <field name="sequence" eval="10"/>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="industry_fsm.project_task_view_list_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
     </record>
 
     <record id="project_task_action_planning_groupby_worksheet_fsm_view_calendar" model="ir.actions.act_window.view">
-        <field name="sequence" eval="25"/>
+        <field name="sequence" eval="32"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="industry_fsm.project_task_view_calendar_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>

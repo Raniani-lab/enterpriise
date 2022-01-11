@@ -435,8 +435,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <search string="Tickets Search">
-                <field name="name" string="Ticket"/>
-                <field name="ticket_ref" string="Ticket ID"/>
+                <field name="name" string="Ticket" filter_domain="['|', ('name', 'ilike', self), ('ticket_ref', 'ilike', self)]"/>
                 <field name="tag_ids"/>
                 <field name="user_id"/>
                 <field name="partner_id" filter_domain="['|', '|', '|', ('partner_id', 'ilike', self), ('partner_email', 'ilike', self), ('partner_phone', 'ilike', self), ('partner_name', 'ilike', self)]"/>

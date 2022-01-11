@@ -32,6 +32,14 @@
          </field>
     </record>
 
+    <record id="helpdesk_sla_report_analysis_view_cohort" model="ir.ui.view">
+        <field name="name">helpdesk.sla.report.analysis.cohort</field>
+        <field name="model">helpdesk.sla.report.analysis</field>
+        <field name="arch" type="xml">
+            <cohort string="SLA Status Analysis" date_start="create_date" date_stop="close_date" interval="day" sample="1" measure="sla_status_failed"/>
+        </field>
+    </record>
+
     <record id="helpdesk_sla_report_analysis_view_search" model="ir.ui.view">
         <field name="name">helpdesk.sla.report.analysis.search</field>
         <field name="model">helpdesk.sla.report.analysis</field>
@@ -89,7 +97,7 @@
     <record id="helpdesk_sla_report_analysis_action" model="ir.actions.act_window">
         <field name="name">SLA Status Analysis</field>
         <field name="res_model">helpdesk.sla.report.analysis</field>
-        <field name="view_mode">pivot,graph</field>
+        <field name="view_mode">pivot,graph,cohort</field>
         <field name="search_view_id" ref="helpdesk_sla_report_analysis_view_search"/>
         <field name="context">{'search_default_month': 1}</field>
         <field name="help" type="html">
@@ -112,6 +120,13 @@
         <field name="sequence" eval="5"/>
         <field name="view_mode">graph</field>
         <field name="view_id" ref="helpdesk_sla_report_analysis_view_graph"/>
+        <field name="act_window_id" ref="helpdesk_sla_report_analysis_action"/>
+    </record>
+
+    <record id="action_appraisal_view_report_cohort" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">cohort</field>
+        <field name="view_id" ref="helpdesk_sla_report_analysis_view_cohort"/>
         <field name="act_window_id" ref="helpdesk_sla_report_analysis_action"/>
     </record>
 

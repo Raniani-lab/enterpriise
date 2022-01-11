@@ -14,8 +14,10 @@
                     <field name="invalid_addresses" invisible="1"/>
                     <!-- visible fields -->
                     <div class="text-start d-inline-block" name='cost'>
+                        <span> Customers with unpaid invoices will receive follow-up reports by post. </span>
+                        <br/>
                         <span attrs="{'invisible': [('letters_qty', '>', 1)]}"> Sending this document will cost </span>
-                        <span attrs="{'invisible': [('letters_qty', '=', 1)]}"> Sending these <field name="letters_qty" nolabel="1"/> documents will cost </span>
+                        <span attrs="{'invisible': [('letters_qty', '=', 1)]}"> The cost of sending <field name="letters_qty" nolabel="1"/> documents is </span>
                         <b>
                             <span>
                                 <field name="snailmail_cost" options="{'digits':[0,0]}" class="mr4"/>
@@ -31,10 +33,12 @@
                                 The recipient's address is incomplete.
                             </span>
                             <span attrs="{'invisible': [('letters_qty', '=', 1)]}">
-                                <span class="text-danger">
-                                    Some customer addresses are not complete.
+                                <span>
+                                    <i class="fa fa-exclamation-triangle text-danger"/>
+                                    The addresses of
+                                    <button type="object" name="invalid_addresses_action" class="btn btn-link p-0 align-baseline" role="button"><field name="invalid_addresses" readonly="1" options="{'digits':[0,0]}"/> customers</button>
+                                    are incomplete.
                                 </span>
-                                <button type="object" name="invalid_addresses_action" class="btn btn-link" role="button"><field name="invalid_addresses" readonly="1" options="{'digits':[0,0]}"/> customers</button>
                             </span>
                         </span>
                     </div>

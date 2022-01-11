@@ -297,7 +297,7 @@
     <record id="project_task_action_fsm" model="ir.actions.act_window">
         <field name="name">My Tasks</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">map,kanban,gantt,calendar,tree,form,graph,pivot,activity</field>
+        <field name="view_mode">kanban,tree,map,calendar,gantt,form,graph,pivot,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
@@ -307,6 +307,7 @@
             'search_default_planned_today': True,
             'fsm_task_kanban_whole_date': False,
             'default_user_ids': [(4, uid)],
+            'default_scale': 'day',
         }</field>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>No tasks found. Let's create one!</p>
@@ -335,8 +336,15 @@
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
-     <record id="project_task_action_fsm_view_tree" model="ir.actions.act_window.view">
+    <record id="project_task_action_fsm_view_gantt" model="ir.actions.act_window.view">
         <field name="sequence" eval="25"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_enterprise.project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
+     <record id="project_task_action_fsm_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="7"/>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="project_task_view_list_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
@@ -367,7 +375,7 @@
     <record id="project_task_action_fsm_map" model="ir.actions.act_window">
         <field name="name">Map</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">map,kanban,gantt,calendar,tree,form,graph,pivot,activity</field>
+        <field name="view_mode">map,calendar,gantt,kanban,tree,pivot,graph,activity,form</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
@@ -376,6 +384,7 @@
             'search_default_planned_today': True,
             'fsm_task_kanban_whole_date':False,
             'default_user_ids': [(4, uid)],
+            'default_scale': 'day',
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -394,16 +403,23 @@
     </record>
 
     <record id="project_task_action_fsm_map_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="20"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
     <record id="project_task_action_fsm_map_view_calendar" model="ir.actions.act_window.view">
-        <field name="sequence" eval="20"/>
+        <field name="sequence" eval="10"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="industry_fsm.project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_map"/>
+    </record>
+
+    <record id="project_task_action_fsm_map_view_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="15"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_task_view_gantt_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
@@ -422,7 +438,7 @@
     </record>
 
     <record id="project_task_action_fsm_map_view_pivot" model="ir.actions.act_window.view">
-        <field name="sequence" eval="40"/>
+        <field name="sequence" eval="30"/>
         <field name="view_mode">pivot</field>
         <field name="view_id" ref="project_task_view_pivot_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
@@ -463,11 +479,12 @@
     <record id="project_task_action_all_fsm" model="ir.actions.act_window">
         <field name="name">All Tasks</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
+        <field name="view_mode">tree,kanban,map,calendar,gantt,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
+            'default_scale': 'week',
             'default_user_ids': False,
             'fsm_task_kanban_whole_date': True,
             'graph_measure': '__count__',
@@ -491,8 +508,15 @@
         <field name="act_window_id" ref="project_task_action_all_fsm"/>
     </record>
 
-    <record id="project_task_action_all_fsm_view_calendar" model="ir.actions.act_window.view">
+    <record id="project_task_action_all_fsm_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="act_window_id" ref="project_task_action_all_fsm"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="11"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="project_task_view_calendar_fsm"/>
         <field name="act_window_id" ref="project_task_action_all_fsm"/>
@@ -516,13 +540,14 @@
     <record id="project_task_action_to_schedule_fsm" model="ir.actions.act_window">
         <field name="name">To Schedule</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
+        <field name="view_mode">tree,kanban,map,calendar,gantt,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
             'search_default_schedule': True,
             'default_user_ids': False,
+            'default_scale': 'week',
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -542,6 +567,13 @@
         <field name="sequence" eval="10"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="project_task_view_kanban_fsm"/>
+        <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
+    </record>
+
+    <record id="project_task_action_to_schedule_fsm_view_map" model="ir.actions.act_window.view">
+        <field name="sequence" eval="15"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
         <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
     </record>
 
@@ -613,10 +645,10 @@
     <record id="project_task_action_fsm_planning_groupby_user" model="ir.actions.act_window">
         <field name="name">Planning by User</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">gantt,kanban,tree,calendar,map,pivot,graph,form,activity</field>
+        <field name="view_mode">gantt,calendar,map,tree,kanban,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
-        <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+        <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1, 'default_scale': 'week'}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>
                 No tasks found. Let's create one!
@@ -634,7 +666,7 @@
     </record>
 
     <record id="project_task_action_planning_groupby_user_fsm_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="25"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
@@ -648,14 +680,14 @@
     </record>
 
     <record id="project_task_action_planning_groupby_user_fsm_view_calendar" model="ir.actions.act_window.view">
-        <field name="sequence" eval="25"/>
+        <field name="sequence" eval="10"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="project_task_view_calendar_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
     </record>
 
     <record id="project_task_action_planning_groupby_user_fsm_view_map" model="ir.actions.act_window.view">
-        <field name="sequence" eval="30"/>
+        <field name="sequence" eval="15"/>
         <field name="view_mode">map</field>
         <field name="view_id" ref="project_enterprise.project_task_map_view"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
@@ -679,10 +711,10 @@
     <record id="project_task_action_fsm_planning_groupby_project" model="ir.actions.act_window">
         <field name="name">Planning by Project</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
+        <field name="view_mode">gantt,calendar,map,tree,kanban,pivot,graph,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
-        <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+        <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1, 'default_scale': 'week'}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>
                 No tasks found. Let's create one!
@@ -700,7 +732,7 @@
     </record>
 
     <record id="project_task_action_planning_groupby_project_fsm_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="25"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
@@ -714,14 +746,14 @@
     </record>
 
     <record id="project_task_action_planning_groupby_project_fsm_view_calendar" model="ir.actions.act_window.view">
-        <field name="sequence" eval="25"/>
+        <field name="sequence" eval="10"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="project_task_view_calendar_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
     </record>
 
     <record id="project_task_action_planning_groupby_project_fsm_view_map" model="ir.actions.act_window.view">
-        <field name="sequence" eval="30"/>
+        <field name="sequence" eval="15"/>
         <field name="view_mode">map</field>
         <field name="view_id" ref="project_enterprise.project_task_map_view"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>

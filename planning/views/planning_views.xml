@@ -323,6 +323,30 @@
         </field>
     </record>
 
+    <record id="planning_view_pivot" model="ir.ui.view">
+        <field name="name">planning.slot.pivot</field>
+        <field name="model">planning.slot</field>
+        <field name="arch" type="xml">
+            <pivot string="Planning" sample="1">
+                <field name="start_datetime" interval="week" type="row"/>
+                <field name="resource_id" type="col"/>
+                <field name="allocated_hours" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="planning_view_graph" model="ir.ui.view">
+        <field name="name">planning.slot.graph</field>
+        <field name="model">planning.slot</field>
+        <field name="arch" type="xml">
+            <graph string="Planning" sample="1">
+                <field name="start_datetime" interval="week"/>
+                <field name="resource_id"/>
+                <field name="allocated_hours" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
     <record id="planning_view_my_calendar" model="ir.ui.view">
         <field name="name">planning.slot.my.calendar</field>
         <field name="model">planning.slot</field>
@@ -515,7 +539,7 @@
     <record id="planning_action_my_calendar" model="ir.actions.act_window">
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+        <field name="view_mode">calendar,gantt,tree,form,kanban,pivot,graph</field>
         <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -533,8 +557,37 @@
         </record>
 
         <record id="planning_action_my_calendar_view_calendar" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
             <field name="view_mode">calendar</field>
             <field name="view_id" ref="planning_view_my_calendar"/>
+            <field name="act_window_id" ref="planning_action_my_calendar"/>
+        </record>
+
+        <record id="planning_action_my_calendar_view_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="planning.planning_view_tree"/>
+            <field name="act_window_id" ref="planning_action_my_calendar"/>
+        </record>
+
+        <record id="planning_action_my_calendar_view_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="30"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="planning.planning_view_kanban"/>
+            <field name="act_window_id" ref="planning_action_my_calendar"/>
+        </record>
+
+        <record id="planning_action_my_planning_view_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="40"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="planning_view_pivot"/>
+            <field name="act_window_id" ref="planning_action_my_calendar"/>
+        </record>
+
+        <record id="planning_action_my_planning_view_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="50"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="planning_view_graph"/>
             <field name="act_window_id" ref="planning_action_my_calendar"/>
         </record>
 
@@ -552,10 +605,36 @@
             <field name="act_window_id" ref="planning_action_open_shift"/>
         </record>
 
+    <record id="planning_action_schedule_by_resource_view_pivot_inherit" model="ir.ui.view">
+        <field name="name">planning.action.schedule.resource.view.pivot.inherit</field>
+        <field name="inherit_id" ref="planning.planning_view_pivot"/>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='resource_id']" position="attributes">
+                <attribute name="type">row</attribute>
+            </xpath>
+            <xpath expr="//field[@name='allocated_hours']" position="after">
+                <field name="working_days_count" type="measure"/>
+            </xpath>
+            <field name="start_datetime" position="replace"/>
+        </field>
+    </record>
+
+    <record id="planning_action_schedule_by_resource_view_graph_inherit" model="ir.ui.view">
+        <field name="name">planning.action.schedule.resource.view.graph.inherit</field>
+        <field name="inherit_id" ref="planning.planning_view_graph"/>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="start_datetime" position="replace"/>
+        </field>
+    </record>
+
     <record id="planning_action_schedule_by_resource" model="ir.actions.act_window">
         <field name="name">Schedule by Resource</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+        <field name="view_mode">gantt,calendar,tree,form,kanban,pivot,graph</field>
         <field name="context">{'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -574,10 +653,51 @@
             <field name="act_window_id" ref="planning_action_schedule_by_resource"/>
         </record>
 
+        <record id="planning_action_schedule_by_resource_view_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="planning_action_schedule_by_resource_view_pivot_inherit"/>
+            <field name="act_window_id" ref="planning_action_schedule_by_resource"/>
+        </record>
+
+        <record id="planning_action_schedule_by_resource_view_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="planning_action_schedule_by_resource_view_graph_inherit"/>
+            <field name="act_window_id" ref="planning_action_schedule_by_resource"/>
+        </record>
+
+    <record id="planning_action_schedule_by_role_view_pivot_inherit" model="ir.ui.view">
+        <field name="name">planning.action.schedule.role.view.pivot.inherit</field>
+        <field name="inherit_id" ref="planning.planning_view_pivot"/>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='start_datetime']" position="replace">
+                <field name="role_id" type="row"/>
+            </xpath>
+            <xpath expr="//field[@name='resource_id']" position="attributes">
+                <attribute name="type">row</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="planning_action_schedule_by_role_view_graph_inherit" model="ir.ui.view">
+        <field name="name">planning.action.schedule.role.view.graph.inherit</field>
+        <field name="inherit_id" ref="planning_action_schedule_by_resource_view_graph_inherit"/>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='resource_id']" position="before">
+                <field name="role_id"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="planning_action_schedule_by_role" model="ir.actions.act_window">
         <field name="name">Schedule by Role</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+        <field name="view_mode">gantt,calendar,tree,form,kanban,pivot,graph</field>
         <field name="context">{'planning_groupby_role': True, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -593,6 +713,18 @@
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
             <field name="view_id" ref="planning_view_gantt_group_by_role"/>
+            <field name="act_window_id" ref="planning_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_action_schedule_by_role_view_pivot" model="ir.actions.act_window.view">
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="planning_action_schedule_by_role_view_pivot_inherit"/>
+            <field name="act_window_id" ref="planning_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_action_schedule_by_role_view_graph" model="ir.actions.act_window.view">
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="planning_action_schedule_by_role_view_graph_inherit"/>
             <field name="act_window_id" ref="planning_action_schedule_by_role"/>
         </record>
 

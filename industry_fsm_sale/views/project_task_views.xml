@@ -23,13 +23,14 @@
     <record id="project_task_action_to_invoice_fsm" model="ir.actions.act_window">
         <field name="name">To Invoice</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
+        <field name="view_mode">tree,kanban,map,calendar,gantt,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
             'search_default_to_invoice': True,
             'default_user_id': False,
+            'default_scale': 'week',
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -85,6 +86,13 @@
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
     </record>
 
+    <record id="project_task_action_to_invoice_fsm_view_map" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
+    </record>
+
     <record id="project_task_action_to_invoice_fsm_view_calendar" model="ir.actions.act_window.view">
         <field name="sequence" eval="20"/>
         <field name="view_mode">calendar</field>
@@ -92,8 +100,15 @@
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
     </record>
 
-    <record id="project_task_action_to_invoice_fsm_view_pivot" model="ir.actions.act_window.view">
+    <record id="project_task_action_to_invoice_fsm_view_gantt" model="ir.actions.act_window.view">
         <field name="sequence" eval="25"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_enterprise.project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
         <field name="view_mode">pivot</field>
         <field name="view_id" ref="industry_fsm_sale.view_project_task_pivot_fsm_inherit_sale"/>
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>

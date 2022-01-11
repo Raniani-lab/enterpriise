@@ -11,6 +11,7 @@
 Manage the after sale of the products from helpdesk tickets.
     """,
     'data': [
+        'security/helpdesk_security.xml',
         'views/helpdesk_views.xml',
         'report/helpdesk_ticket_analysis_views.xml',
         'report/helpdesk_sla_report_analysis_views.xml',

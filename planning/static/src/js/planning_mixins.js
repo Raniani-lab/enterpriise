@@ -53,7 +53,7 @@ export const PlanningControllerMixin = {
         } else {
             this.displayNotification({
                 type: 'danger',
-                message: _t('The previous shifts have already been copied, or there are no shifts to copy.'),
+                message: _t('There are no shifts planned for the previous week, or they have already been copied.'),
             });
         }
         this.reload();

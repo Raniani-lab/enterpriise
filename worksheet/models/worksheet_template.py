@@ -356,7 +356,7 @@ class WorksheetTemplate(models.Model):
         field_name = field_node.attrib['name']
         new_container_col = container_col
         if field_name not in self._get_qweb_arch_omitted_fields():
-            field_info = form_view_fields[field_name]
+            field_info = form_view_fields.get('field_name')
             widget = field_node.attrib.get('widget', False)
             is_signature = False
             # adapt the widget syntax
@@ -368,7 +368,7 @@ class WorksheetTemplate(models.Model):
                     # image widgets in qweb (only with t-out)
                     field_node.attrib['t-options-widget'] = "'image'"
             # basic form view -> qweb node transformation
-            if field_info['type'] != 'binary' or widget in ['image', 'signature']:
+            if field_info and field_info.get('type') != 'binary' or widget in ['image', 'signature']:
                 # adapt the field node itself
                 field_name = 'worksheet.' + field_node.attrib['name']
                 field_node.attrib.pop('name')
@@ -377,7 +377,7 @@ class WorksheetTemplate(models.Model):
                     field_node.attrib['style'] = 'width: 250px;'
                     field_node.attrib['t-att-src'] = 'image_data_uri(%s)' % field_name
                     field_node.attrib['t-if'] = field_name
-                elif field_info['type'] == 'boolean':
+                elif field_info.get('type') == 'boolean':
                     field_node.tag = 'i'
                     field_node.attrib[
                         't-att-class'] = "'col-lg-7 col-12 fa ' + ('fa-check-square' if %s else 'fa-square-o')" % field_name
@@ -387,7 +387,7 @@ class WorksheetTemplate(models.Model):
                     field_node.attrib['t-field'] = field_name
                 # generate a description
                 description = etree.Element('div', {'t-att-class': "('col-5' if report_type == 'pdf' else 'col-lg-5 col-12') + ' font-weight-bold'"})
-                description.text = field_info['string']
+                description.text = field_info and field_info.get('string')
                 # insert all that in a container
                 container = etree.Element('div', {'class': 'row mb-3', 'style': 'page-break-inside: avoid'})
                 container.append(description)

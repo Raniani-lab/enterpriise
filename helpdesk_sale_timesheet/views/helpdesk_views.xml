@@ -101,7 +101,18 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
         <field name="arch" type="xml">
             <field name='partner_id' position="after">
-                <field name="sale_line_id" readonly="1" optional="hide"/>
+                <field name="sale_line_id" readonly="1" optional="hide" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search.inherit.sale.timesheet</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_sale.helpdesk_ticket_view_search_inherit_helpdesk_sale"/>
+        <field name="arch" type="xml">
+            <field name="sale_order_id" position="after">
+                <field name="sale_line_id" string="Sales Order Item" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
             </field>
         </field>
     </record>

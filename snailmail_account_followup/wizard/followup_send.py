@@ -9,7 +9,7 @@ class FollowupSend(models.TransientModel):
     _name = 'followup.send'
     _description = 'Send Follow-ups'
 
-    snailmail_cost = fields.Float(string='Stamp(s)', compute='_compute_snailmail_cost', readonly=True)
+    snailmail_cost = fields.Float(string='Stamps', compute='_compute_snailmail_cost', readonly=True)
     letters_qty = fields.Integer(compute='_compute_letters_qty', string='Number of letters')
     partner_ids = fields.Many2many(
         'res.partner', string='Recipients',

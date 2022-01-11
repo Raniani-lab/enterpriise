@@ -118,13 +118,24 @@
         </field>
     </record>
 
+    <record id="planning_view_pivot_inherit_timesheet" model="ir.ui.view">
+        <field name="name">planning.slot.pivot.inherit</field>
+        <field name="inherit_id" ref="planning.planning_view_pivot"/>
+        <field name="model">planning.slot</field>
+        <field name="arch" type="xml">
+            <field name="allocated_hours" position="after">
+                <field name="effective_hours" type="measure" widget="float_time"/>
+            </field>
+        </field>
+    </record>
+
 
     <!--  Update the menu entry to display the gantt view by role  -->
     <!--  Without this, displaying by role does not render the progress bars  -->
     <record id="project_timesheet_action_schedule_by_role" model="ir.actions.act_window">
         <field name="name">Schedule by Role</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+        <field name="view_mode">gantt,calendar,tree,form,kanban,pivot,graph</field>
         <field name="context">{
             'planning_groupby_role': True,
             'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
@@ -142,6 +153,41 @@
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
             <field name="view_id" ref="planning.planning_view_gantt_group_by_role"/>
+            <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_menu_schedule_by_role_calendar" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="planning.planning_view_calendar"/>
+            <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_menu_schedule_by_role_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="planning.planning_view_tree"/>
+            <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_menu_schedule_by_role_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="30"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="planning.planning_view_kanban"/>
+            <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_menu_schedule_by_role_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="40"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="planning.planning_action_schedule_by_role_view_pivot_inherit"/>
+            <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
+        </record>
+
+        <record id="planning_menu_schedule_by_role_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="50"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="planning.planning_action_schedule_by_role_view_graph_inherit"/>
             <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
         </record>
 

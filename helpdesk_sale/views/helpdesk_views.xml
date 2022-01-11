@@ -50,7 +50,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
         <field name="arch" type="xml">
             <field name="stage_id" position="after">
-                <field name="sale_order_id"/>
+                <field name="sale_order_id" string="Sales Order" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
             </field>
         </field>
     </record>

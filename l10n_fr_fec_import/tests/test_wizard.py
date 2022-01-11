@@ -66,7 +66,6 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
             'line_ids': [(0, 0, {
                 'company_id': cls.company_export.id,
                 'name': 'line-1',
-                'ref': 'ref-1',
                 'account_id': cls.company_data_2['default_account_receivable'].id,
                 'fec_matching_number': '1',
                 'credit': 0.0,
@@ -74,7 +73,6 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
             }), (0, 0, {
                 'company_id': cls.company_export.id,
                 'name': 'line-2',
-                'ref': 'ref-2',
                 'account_id': cls.company_data_2['default_account_tax_sale'].id,
                 'fec_matching_number': '2',
                 'credit': 100.30,
@@ -91,7 +89,6 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
             'line_ids': [(0, 0, {
                 'company_id': cls.company_export.id,
                 'name': 'line-3',
-                'ref': 'ref-3',
                 'account_id': cls.company_data_2['default_account_payable'].id,
                 'fec_matching_number': '3',
                 'credit': 65.15,
@@ -99,7 +96,6 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
             }), (0, 0, {
                 'company_id': cls.company_export.id,
                 'name': 'line-4',
-                'ref': 'ref-4',
                 'account_id': cls.company_data_2['default_account_expense'].id,
                 'fec_matching_number': '4',
                 'credit': 0.0,
@@ -310,12 +306,12 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         self.assertRecordValues(new_moves, expected_values)
 
         # Verify moves lines data
-        columns = ['company_id', 'name', 'credit', 'debit', 'fec_matching_number', 'ref', 'account_id']
+        columns = ['company_id', 'name', 'credit', 'debit', 'fec_matching_number', 'account_id']
         lines_data = [
-            (self.company_export.id, 'line-1', 0.00, 100.30, '1', 'ref-1', self.company_data_2['default_account_receivable'].id,),
-            (self.company_export.id, 'line-2', 100.30, 0.00, '2', 'ref-2', self.company_data_2['default_account_tax_sale'].id, ),
-            (self.company_export.id, 'line-3', 65.15, 0.00, '3', 'ref-3', self.company_data_2['default_account_payable'].id, ),
-            (self.company_export.id, 'line-4', 0.00, 65.15, '4', 'ref-4', self.company_data_2['default_account_expense'].id, ),
+            (self.company_export.id, 'line-1', 0.00, 100.30, '1', self.company_data_2['default_account_receivable'].id),
+            (self.company_export.id, 'line-2', 100.30, 0.00, '2', self.company_data_2['default_account_tax_sale'].id),
+            (self.company_export.id, 'line-3', 65.15, 0.00, '3', self.company_data_2['default_account_payable'].id),
+            (self.company_export.id, 'line-4', 0.00, 65.15, '4', self.company_data_2['default_account_expense'].id),
         ]
         expected_values = [dict(zip(columns, line_data)) for line_data in lines_data]
         new_lines = new_moves.mapped("line_ids").sorted(key=lambda x: x.name)

@@ -17,6 +17,7 @@ QUnit.module('mapView', {
                     sequence: { string: "sequence", type: 'integer' },
                     partner_id: { string: "partner", type: "many2one", relation: 'res.partner' },
                     another_partner_id: { string: "another relation", type: "many2one", relation: 'res.partner}' },
+                    user_ids: {string: "assignees", type:"many2many", relation: 'res.users'}
                 },
                 records: [
                     { id: 1, display_name: "project", partner_id: 1 }
@@ -30,8 +31,8 @@ QUnit.module('mapView', {
 
                 twoRecords: {
                     records: [
-                        { id: 1, display_name: "FooProject", sequence: 1, partner_id: [1] },
-                        { id: 2, display_name: 'BarProject', sequence: 2, partner_id: [2] },
+                        { id: 1, display_name: "FooProject", sequence: 1, partner_id: [1], user_ids: [1] },
+                        { id: 2, display_name: 'BarProject', sequence: 2, partner_id: [2], user_ids: [1, 2] },
                     ],
                     length: 2
                 },
@@ -165,7 +166,21 @@ QUnit.module('mapView', {
                             'contact_address_complete': 'Cfezfezfefes'
                         }
                     ],
-            }
+            },
+
+            'res.users': {
+                fields: {
+                    name: { string: 'User', type: 'char' },
+                    sequence: { string: 'sequence', type: 'integer' }
+                },
+                twoRecords: {
+                    records: [
+                        { id: 1, name: 'Au', sequence: 1 },
+                        { id: 2, name: 'On', sequence: 2 },
+                        ],
+                    length: 2
+                },
+            },
         };
         testUtils.mock.patch(MapModel, {
             // set delay to 0 as _fetchCoordinatesFromAddressOSM is mocked
@@ -2165,6 +2180,46 @@ QUnit.module('mapView', {
         assert.strictEqual($(first.childNodes[0]).text(), '2', 'The number of the last record for this partner is 2, so the displayed number_icon should be 2.');
         assert.strictEqual($(first.childNodes[1]).text(), '2', 'There are two records for this partner, so the marker badge should be 2.');
         assert.strictEqual($(second.childNodes[0]).text(), '1', 'The number of the only record for this partner is 1, so the displayed number_icon should be 1.');
+
+        map.destroy();
+    });
+
+    QUnit.test('Test groupby responsible displays correct group names', async function (assert) {
+        assert.expect(2);
+
+        const tasks = this.data['project.task'].twoRecords;
+        const partners = this.data['res.partner'].twoRecordsAddressCoordinates;
+        const users = this.data['res.users'].twoRecords.records;
+        const usersNameGet = users.map(user => [user.id, user.name]);
+
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id" routing="true">' +
+                      '<field name="user_ids" string="User"/>' +
+                  '</map>',
+            mockRPC(route) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        return Promise.resolve(tasks);
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return Promise.resolve(partners);
+                    case '/web/dataset/call_kw/res.users/name_get':
+                        return Promise.resolve(usersNameGet);
+                }
+                return Promise.resolve();
+            },
+            session: {
+                map_box_token: 'token'
+            },
+            groupBy: ['user_ids'],
+        });
+
+        const [header, group1, group2] = $('.o_pin_list_container').children();
+
+        assert.strictEqual(group1.childNodes[0].textContent, users[0].name, 'The first group should be named like the first user.');
+        assert.strictEqual(group2.childNodes[0].textContent, users[1].name, 'The second group should be named like the second user.');
 
         map.destroy();
     });

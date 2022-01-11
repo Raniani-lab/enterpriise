@@ -897,9 +897,6 @@ class HelpdeskTicket(models.Model):
         groups = super(HelpdeskTicket, self)._notify_get_recipients_groups(msg_vals=msg_vals)
 
         self.ensure_one()
-        for group_name, _group_method, group_data in groups:
-            if group_name != 'customer':
-                group_data['has_button_access'] = True
 
         if self.user_id:
             return groups

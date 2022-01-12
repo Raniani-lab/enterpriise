@@ -57,7 +57,7 @@ class MainComponent extends Component {
         this.env.model.on('refresh', this, this._onRefreshState);
         this.env.model.on('update', this, this.render);
         this.env.model.on('do-action', this, args => this.trigger('do-action', args));
-        this.env.model.on('history-back', this, () => this.trigger('history-back'));
+        this.env.model.on('history-back', this, () => this.env.config.historyBack());
     }
 
     mounted() {
@@ -274,7 +274,7 @@ class MainComponent extends Component {
         const onClose = res => {
             if (res && res.cancelled) {
                 this.env.model._cancelNotification();
-                this.trigger('history-back');
+                this.env.config.historyBack();
             }
         };
         this.trigger('do-action', {
@@ -307,7 +307,7 @@ class MainComponent extends Component {
     async exit(ev) {
         if (this.displayBarcodeApplication) {
             await this.env.model.save();
-            this.trigger('history-back');
+            this.env.config.historyBack();
         } else {
             this.toggleBarcodeLines();
         }

@@ -282,6 +282,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             tag_ids: this.searchModel.get('selectedTagIds'),
             owner_id: context && context.default_owner_id,
             partner_id: context && context.default_partner_id,
+            res_id: context && context.default_res_id,
+            res_model: context && context.default_res_model,
         };
     },
     /**

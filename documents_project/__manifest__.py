@@ -11,7 +11,7 @@ Add the ability to create invoices from the document module.
 """,
     'website': ' ',
     'depends': ['documents', 'project'],
-    'data': ['data/data.xml', 'views/documents_views.xml'],
+    'data': ['data/data.xml', 'views/documents_views.xml', 'views/project_views.xml'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

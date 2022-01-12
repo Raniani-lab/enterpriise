@@ -191,6 +191,10 @@ class RentalOrderLine(models.Model):
 
     @api.depends('pickup_date', 'return_date')
     def _compute_name(self):
+        """Override to add the compute dependency.
+
+        The custom name logic can be found below in _get_sale_order_line_multiline_description_sale.
+        """
         super()._compute_name()
 
     @api.onchange('is_rental')
@@ -207,28 +211,28 @@ class RentalOrderLine(models.Model):
             "Please choose a return date that is after the pickup date."),
     ]
 
-    def get_sale_order_line_multiline_description_sale(self, product):
+    def _get_sale_order_line_multiline_description_sale(self):
         """Add Rental information to the SaleOrderLine name."""
-        return super(RentalOrderLine, self).get_sale_order_line_multiline_description_sale(product) + self.get_rental_order_line_description()
+        res = super()._get_sale_order_line_multiline_description_sale()
+        if self.is_rental:
+            res += self._get_rental_order_line_description()
+        return res
 
-    def get_rental_order_line_description(self):
-        if (self.is_rental):
-            if self.pickup_date.date() == self.return_date.date():
-                # If return day is the same as pickup day, don't display return_date Y/M/D in description.
-                return_date = self.return_date
-                if return_date:
-                    return_date = return_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None)
-                return_date_part = format_time(self.with_context(use_babel=True).env, return_date, tz=self.env.user.tz, time_format=False)
-            else:
-                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format=False)
-
-            return "\n%s %s %s" % (
-                format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format=False),
-                _("to"),
-                return_date_part,
-            )
+    def _get_rental_order_line_description(self):
+        if self.pickup_date.date() == self.return_date.date():
+            # If return day is the same as pickup day, don't display return_date Y/M/D in description.
+            return_date = self.return_date
+            if return_date:
+                return_date = return_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None)
+            return_date_part = format_time(self.with_context(use_babel=True).env, return_date, tz=self.env.user.tz, time_format=False)
         else:
-            return ""
+            return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format=False)
+
+        return "\n%s %s %s" % (
+            format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format=False),
+            _("to"),
+            return_date_part,
+        )
 
     def _get_display_price(self):
         """Ensure unit price isn't recomputed."""

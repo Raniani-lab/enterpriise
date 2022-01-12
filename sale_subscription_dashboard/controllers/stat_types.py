@@ -50,9 +50,9 @@ def _build_sql_query(fields, tables, conditions, query_args, filters, groupby=No
     # The conditions should use named arguments and these arguments are in query_args.
 
     if filters.get('template_ids'):
-        tables.append("sale_subscription")
-        conditions.append("account_move_line.subscription_id = sale_subscription.id")
-        conditions.append("sale_subscription.template_id IN %(template_ids)s")
+        tables.append("sale_order")
+        conditions.append("account_move_line.subscription_id = sale_order.id")
+        conditions.append("sale_order.sale_order_template_id IN %(template_ids)s")
         query_args['template_ids'] = tuple(filters.get('template_ids'))
 
     if filters.get('sale_team_ids'):
@@ -62,11 +62,11 @@ def _build_sql_query(fields, tables, conditions, query_args, filters, groupby=No
         query_args['team_ids'] = tuple(filters.get('sale_team_ids'))
 
     if filters.get('tag_ids'):
-        tables.append("sale_subscription")
-        tables.append("account_analytic_tag_sale_subscription_rel")
-        conditions.append("account_move_line.subscription_id = sale_subscription.id")
-        conditions.append("sale_subscription.id = account_analytic_tag_sale_subscription_rel.sale_subscription_id")
-        conditions.append("account_analytic_tag_sale_subscription_rel.account_analytic_tag_id IN %(tag_ids)s")
+        tables.append("sale_order")
+        tables.append("account_analytic_tag_sale_order_rel")
+        conditions.append("account_move_line.subscription_id = sale_order.id")
+        conditions.append("sale_order.id = account_analytic_tag_sale_order_rel.sale_order_id")
+        conditions.append("account_analytic_tag_sale_order_rel.account_analytic_tag_id IN %(tag_ids)s")
         query_args['tag_ids'] = tuple(filters.get('tag_ids'))
 
     if filters.get('company_ids'):
@@ -168,7 +168,7 @@ def compute_nb_contracts(start_date, end_date, filters):
         "account_move.id = account_move_line.move_id",
         "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
-        #"account_move_line.subscription_id IS NOT NULL"
+        "account_move_line.subscription_id IS NOT NULL"
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {
@@ -300,38 +300,38 @@ def compute_mrr_growth_values(start_date, end_date, filters):
 
     # 2. DOWN & EXPANSION
     ##############################
-    # We rely on the sale_subscription_log value because comparing aml evolution is too verbose
+    # We rely on the sale_order_log value because comparing aml evolution is too verbose
     # with currency conversion.
     # The log already have the converted currencies.
 
-    fields = ['sale_subscription_log.amount_company_currency AS diff']
-    tables = ['sale_subscription_log', 'sale_subscription_template', 'sale_subscription']
+    fields = ['sale_order_log.amount_company_currency AS diff']
+    tables = ['sale_order_log', 'sale_order_template', 'sale_order']
     conditions = [
-        "sale_subscription_log.event_type = '1_change'",
-        "sale_subscription_template.id = sale_subscription.template_id",
-        "sale_subscription.id = sale_subscription_log.subscription_id",
-        "sale_subscription_log.event_date >= %(date)s",
-        "sale_subscription_log.event_date >= %(date)s",
+        "sale_order_log.event_type = '1_change'",
+        "sale_order_template.id = sale_order.sale_order_template_id",
+        "sale_order.id = sale_order_log.order_id",
+        "sale_order_log.event_date >= %(date)s",
+        "sale_order_log.event_date >= %(date)s",
     ]
 
     query_args = {'date': end_date}
     if filters.get('template_ids'):
-        conditions.append("sale_subscription.template_id IN %(template_ids)s")
+        conditions.append("sale_order_template.id IN %(template_ids)s")
         query_args['template_ids'] = tuple(filters.get('template_ids'))
 
     if filters.get('sale_team_ids'):
-        conditions.append("sale_subscription_log.team_id IN %(team_ids)s")
-        conditions.append("sale_subscription.team_id IN %(team_ids)s")
+        conditions.append("sale_order_log.team_id IN %(team_ids)s")
+        conditions.append("sale_order_template_id.team_id IN %(team_ids)s")
         query_args['team_ids'] = tuple(filters.get('sale_team_ids'))
 
     if filters.get('tag_ids'):
-        tables.append("sale_subscription")
-        conditions.append("sale_subscription.tag_ids = IN %(tag_ids)s)")
+        tables.append("account_analytic_tag")
+        conditions.append("account_analytic_tag.id IN %(tag_ids)s")
         query_args['tag_ids'] = tuple(filters.get('tag_ids'))
 
     if filters.get('company_ids'):
-        conditions.append("sale_subscription_log.company_id IN %(company_ids)s")
-        conditions.append("sale_subscription.company_id IN %(company_ids)s")
+        conditions.append("sale_order_log.company_id IN %(company_ids)s")
+        conditions.append("sale_order.company_id IN %(company_ids)s")
         query_args['company_ids'] = tuple(filters.get('company_ids'))
 
     # Filters are empty in the following call because we took care above

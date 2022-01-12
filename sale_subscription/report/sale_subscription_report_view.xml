@@ -27,7 +27,7 @@
         <field name="name">sale.subscription.report.cohort</field>
         <field name="model">sale.subscription.report</field>
         <field name="arch" type="xml">
-            <cohort string="Subscription" date_start="date_start" date_stop="date_end" interval="month" sample="1"/>
+            <cohort string="Subscription" date_start="date_order" date_stop="end_date" interval="month" sample="1"/>
         </field>
     </record>
 
@@ -38,8 +38,8 @@
             <tree string="Subscription Analysis">
                 <field name="name"/>
                 <field name="partner_id" optional="show"/>
-                <field name="date_start" optional="hide"/>
-                <field name="date_end" optional="hide"/>
+                <field name="date_order" optional="hide"/>
+                <field name="end_date" optional="hide"/>
                 <field name="product_id" optional="hide"/>
                 <field name="categ_id" optional="show"/>
                 <field name="template_id" optional="show"/>
@@ -86,8 +86,8 @@
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
                 <separator/>
-                <filter name="filter_date_start" date="date_start"/>
-                <filter name="filter_date_end" date="date_end"/>
+                <filter name="filter_date_order" date="date_order"/>
+                <filter name="filter_date_end" date="end_date"/>
                 <group expand="1" string="Group By">
                     <filter string="Stage" name="stage" domain="[]" context="{'group_by': 'stage_id'}"/>
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by': 'user_id'}"/>
@@ -95,8 +95,8 @@
                     <filter string="Country" name="country" domain="[]" context="{'group_by': 'country_id'}"/>
                     <filter string="Industry" name="industry" domain="[]" context="{'group_by': 'industry_id'}"/>
                     <filter string="Template" name="template" domain="[]" context="{'group_by': 'template_id'}"/>
-                    <filter string="Start Date" name="start_month" domain="[]" context="{'group_by': 'date_start'}" />
-                    <filter string="End Date" name="end_month" domain="[]" context="{'group_by': 'date_end'}" />
+                    <filter string="Order Date" name="start_month" domain="[]" context="{'group_by': 'date_order'}" />
+                    <filter string="End Date" name="end_month" domain="[]" context="{'group_by': 'end_date'}" />
                 </group>
             </search>
         </field>

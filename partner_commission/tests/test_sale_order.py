@@ -26,10 +26,10 @@ class TestSaleOrder(TestCommissionsSetup):
         """When the referrer's grade changes, its new commission plan should be set on the sale order."""
         self.referrer.grade_id = self.gold
         self.referrer._onchange_grade_id()
-
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
+        form.commission_plan_frozen = False
         so = form.save()
 
         # Demote the referrer to silver.
@@ -44,28 +44,21 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
+        form.commission_plan_frozen = False
 
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 1
+            line.pricing_id = self.worker_pricing
 
         so = form.save()
         so.action_confirm()
-        sub = so.order_line.mapped('subscription_id')
-
-        self.assertEqual(sub.referrer_id, so.referrer_id)
-        self.assertEqual(sub.commission_plan_id, so.commission_plan_id)
 
         # check that inverse field is working
         so.commission_plan_id = self.silver_plan
-        self.assertEqual(sub.commission_plan_id, self.silver_plan)
-        self.assertEqual(sub.commission_plan_frozen, True)
-
-        # revert to gold commission plan: should stuck to silver
-        so.commission_plan_id = self.gold_plan
-        self.assertEqual(sub.commission_plan_id, self.silver_plan)
-        self.assertEqual(sub.commission_plan_frozen, True)
+        self.assertEqual(so.commission_plan_id, self.silver_plan)
+        self.assertEqual(so.commission_plan_frozen, True)
 
     def test_so_data_forwarded_to_invoice(self):
         """Some data should be forwarded from the sale order to the invoice."""
@@ -74,6 +67,7 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
+        form.commission_plan_frozen = False
 
         with form.order_line.new() as line:
             line.name = self.worker.name
@@ -82,9 +76,8 @@ class TestSaleOrder(TestCommissionsSetup):
 
         so = form.save()
         so.action_confirm()
-        sub = so.order_line.mapped('subscription_id')
 
-        inv = self.env['account.move'].create(sub._prepare_invoice())
+        inv = self.env['account.move'].create(so._prepare_invoice())
 
         self.assertEqual(inv.referrer_id, so.referrer_id)
 
@@ -94,6 +87,7 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
+        form.commission_plan_frozen = False
 
         with form.order_line.new() as line:
             line.name = self.worker.name

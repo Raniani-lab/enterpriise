@@ -48,9 +48,9 @@
           <field name="is_temporal" invisible="1"/>
       </xpath>
       <page name="sales" position="after">
-        <page string="Pricing" name="pricing" attrs="{'invisible': [('is_temporal','=',False)]}">
+        <page string="Recurring Price" name="pricing" attrs="{'invisible': [('is_temporal','=',False)]}">
           <group>
-            <group string="Pricing" name="pricing">
+            <group name="pricing">
                 <field name="product_pricing_ids" nolabel="1">
                   <tree editable="bottom">
                     <control>

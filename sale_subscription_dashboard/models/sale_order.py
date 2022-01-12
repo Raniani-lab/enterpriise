@@ -11,11 +11,11 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
 
-class SaleSubscription(models.Model):
-    _inherit = 'sale.subscription'
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
 
     @api.model
-    def get_dates_ranges(self):
+    def _get_subscription_dates_ranges(self):
         today = fields.Date.context_today(self)
 
         is_account_present = hasattr(self.env.company, 'compute_fiscalyear_dates')
@@ -70,18 +70,17 @@ class SaleSubscription(models.Model):
     def _get_salesperson_mrr(self, user_id, start_date, end_date):
         contract_modifications = []
         domain = [
-            ('subscription_id.user_id.id', '=', user_id), '&',
+            ('order_id.user_id.id', '=', user_id),
             ('event_date', '>=', start_date),
             ('event_date', '<=', end_date),
+            ('event_type', '!=', '3_transfer')
         ]
         searched_fields = ['amount_signed', 'create_date', 'company_id', 'currency_id', 'event_type',
-                           'event_date', 'id', 'recurring_monthly', 'subscription_id']
-        subscription_log_ids = self.env['sale.subscription.log'].search_read(domain, fields=searched_fields,
-                                                                             order='subscription_id')
-
-        subscription_ids = self.env['sale.subscription'].browse(map(lambda s: s['subscription_id'][0], subscription_log_ids))
-        for log in subscription_log_ids:
-            subscription_id = subscription_ids.filtered(lambda s: s.id == log['subscription_id'][0])
+                           'event_date', 'id', 'recurring_monthly', 'order_id']
+        order_log_ids = self.env['sale.order.log'].search_read(domain, fields=searched_fields, order='order_id')
+        order_ids = self.env['sale.order'].browse(map(lambda s: s['order_id'][0], order_log_ids))
+        for log in order_log_ids:
+            order_id = self.env['sale.order'].browse(log['order_id'][0])
             date = log['event_date']
             currency_id = self.env['res.currency'].browse(log['currency_id'][0])
             recurring_monthly = currency_id._convert(
@@ -92,16 +91,16 @@ class SaleSubscription(models.Model):
                 to_currency=self.env.company.currency_id, company=self.env.company)
             previous_mrr = recurring_monthly - amount_signed
             contract_modifications.append({'date': date, 'type': self._get_log_type(log['event_type'], log['amount_signed']),
-                                           'partner': subscription_id.partner_id.name,
-                                           'subscription': log['subscription_id'][1], 'code': subscription_id.code,
-                                           'subscription_template': subscription_id.template_id.name,
+                                           'partner': order_id.partner_id.name,
+                                           'subscription': log['order_id'][1], 'code': order_id.name,
+                                           'subscription_template': order_id.sale_order_template_id.name,
                                            'previous_mrr': previous_mrr,
                                            'current_mrr': recurring_monthly, 'diff': amount_signed,
-                                           'subscription_id': subscription_id.id, 'model': 'sale.subscription',
-                                           'create_date': log['create_date'],
+                                           'order_id': order_id.id, 'model': 'sale.order',
+                                           'event_date': log['event_date'], 'create_date': log['create_date'],
                                            'id': log['id'], 'currency_id': log['currency_id'][0],
                                            'company_id': log['company_id'][0], 'company_name': log['company_id'][1]})
-        contracts_clean, metrics = self.contract_modifications_handling(contract_modifications) # cleaning and metrics calculation
+        contracts_clean, metrics = self._contract_modifications_handling(contract_modifications) # cleaning and metrics calculation
         contracts_clean = sorted(contracts_clean, key=itemgetter('code'))
         return {
             'new': metrics['new_mrr'],
@@ -110,10 +109,10 @@ class SaleSubscription(models.Model):
             'down': -metrics['down_mrr'],
             'net_new': metrics['net_new_mrr'],
             'contract_modifications': contracts_clean,
-            'company_ids': subscription_ids.mapped('company_id').ids,
+            'company_ids': order_ids.mapped('company_id').ids,
         }
 
-    def metrics_calculation(self, contract_log):
+    def _metrics_calculation(self, contract_log):
         metrics_update = {}
         if contract_log.get('type') == 'new':
             metrics_update['new_mrr'] = contract_log['current_mrr']
@@ -126,13 +125,13 @@ class SaleSubscription(models.Model):
             metrics_update['down_mrr'] = - contract_log['diff']
         return [metrics_update]
 
-    def contract_modifications_handling(self, contract_modifications):
+    def _contract_modifications_handling(self, contract_modifications):
         graphs_updates_list = [{'new_mrr': 0, 'churned_mrr': 0, 'expansion_mrr': 0, 'down_mrr': 0, 'net_new_mrr': 0}]
-        uniques_subscriptions = set([d['subscription_id'] for d in contract_modifications])
+        uniques_subscriptions = set([d['order_id'] for d in contract_modifications])
         contract_modifications_clean = []
-        for subscription_id in uniques_subscriptions:
-            contracts_logs = [d for d in contract_modifications if d['subscription_id'] == subscription_id]
-            cleaned_contracts_logs, graphs_update = self.data_cleanup(contracts_logs)
+        for order_id in uniques_subscriptions:
+            contracts_logs = [d for d in contract_modifications if d['order_id'] == order_id]
+            cleaned_contracts_logs, graphs_update = self._data_cleanup(contracts_logs)
             contract_modifications_clean += cleaned_contracts_logs
             graphs_updates_list += graphs_update
         metrics = {}
@@ -142,7 +141,7 @@ class SaleSubscription(models.Model):
         metrics['net_new_mrr'] = metrics['new_mrr'] - metrics['churned_mrr'] + metrics['expansion_mrr'] - metrics['down_mrr']
         return contract_modifications_clean, metrics
 
-    def data_cleanup(self, contract_logs):
+    def _data_cleanup(self, contract_logs):
         """
         This function clean the list of contract modification to make it human readable and clean noisy data.
         Several cases are handled:
@@ -158,9 +157,9 @@ class SaleSubscription(models.Model):
         :return: result, a cleaned list of dict
         """
         graphs_update = []
-        contract_log_by_date = sorted(contract_logs, key=itemgetter('create_date'))
-        scaffold = {'code': None, 'current_mrr': None, 'date': None, 'diff': None, 'model': 'sale.subscription',
-                    'partner': None, 'previous_mrr': None, 'subscription': None, 'subscription_id': None,
+        contract_log_by_date = sorted(contract_logs, key=itemgetter('event_date'))
+        scaffold = {'code': None, 'current_mrr': None, 'date': None, 'diff': None, 'model': 'sale.order',
+                    'partner': None, 'previous_mrr': None, 'subscription': None, 'order_id': None,
                     'subscription_template': None, 'type': None, 'company_id': None,
                     'company_name': None, 'currency_id': None,
                     }
@@ -171,13 +170,13 @@ class SaleSubscription(models.Model):
             date_start = date_interval[0]
             date_stop = date_interval[1]
             selected_logs_interval = [d for d in contract_log_by_date if date_start <= d['date'] <= date_stop and d['id'] not in used_logs]
-            selected_logs_interval = sorted(selected_logs_interval, key=itemgetter('create_date'))
+            selected_logs_interval = sorted(selected_logs_interval, key=itemgetter('event_date'))
             unique_dates = set([d['date'] for d in selected_logs_interval])
             for date in unique_dates:
                 # We identify here the contract log at a precise date
                 selected_logs = [d for d in selected_logs_interval if d['date'] == date]
                 # Selections are not always sorted by create date
-                selected_logs = sorted(selected_logs, key=itemgetter('create_date'))
+                selected_logs = sorted(selected_logs, key=itemgetter('event_date'))
                 n_creation = sum((map(lambda log: log['type'] == 'new', selected_logs)))
                 n_churn = sum((map(lambda log: log['type'] == 'churn', selected_logs)))
                 event_diff = n_creation - n_churn
@@ -205,7 +204,7 @@ class SaleSubscription(models.Model):
                     merged_log['diff'] = diff
                     merged_log['create_date'] = selected_logs[-1]['create_date']
                     merged_log['id'] = None
-                    graphs_update += self.metrics_calculation(merged_log)
+                    graphs_update += self._metrics_calculation(merged_log)
                     result.append(merged_log)
                 else:
                     # same amount of create and churn. We do not display anything.
@@ -214,10 +213,10 @@ class SaleSubscription(models.Model):
             # Merge the up and down occurring in the date_interval.
             selected_logs = [d for d in contract_log_by_date if
                              d['id'] not in used_logs and date_start <= d['date'] <= date_stop]
-            selected_logs = sorted(selected_logs, key=itemgetter('create_date'))
+            selected_logs = sorted(selected_logs, key=itemgetter('event_date'))
             if selected_logs:
                 if len(selected_logs) == 1:
-                    graphs_update += self.metrics_calculation(selected_logs[0])
+                    graphs_update += self._metrics_calculation(selected_logs[0])
                     result.append(selected_logs[0])
                     used_logs = used_logs.union(set([d['id'] for d in selected_logs]))
                 else:
@@ -235,7 +234,7 @@ class SaleSubscription(models.Model):
                     else:
                         merged_log['type'] = 'down'
                     if merged_log['diff'] != 0:
-                        graphs_update += self.metrics_calculation(merged_log)
+                        graphs_update += self._metrics_calculation(merged_log)
                         result.append(merged_log)
                         used_logs = used_logs.union(set([d['id'] for d in selected_logs]))
         result = sorted(result, key=itemgetter('create_date'))
@@ -310,7 +309,7 @@ class SaleSubscription(models.Model):
             'company_ids': company_ids.ids,
         }
 
-    def get_salespersons_statistics(self, salesmen_ids, start_date, end_date):
+    def _get_salespersons_statistics(self, salesmen_ids, start_date, end_date):
         results = {}
         for user_id in salesmen_ids:
             results[user_id['id']] = self._get_salesperson_kpi(user_id['id'], start_date, end_date)
@@ -320,12 +319,12 @@ class SaleSubscription(models.Model):
     def print_pdf(self,):
         return {
             'type': 'ir_actions_sale_subscription_dashboard_download',
-            'data': {'model': "sale.subscription",
+            'data': {'model': "sale.order",
                      'output_format': 'pdf',
                      }
         }
 
-    def get_pdf(self, rendering_values):
+    def _get_pdf(self, rendering_values):
         # As the assets are generated during the same transaction as the rendering of the
         # templates calling them, there is a scenario where the assets are unreachable: when
         # you make a request to read the assets while the transaction creating them is not done.
@@ -384,12 +383,12 @@ class SaleSubscription(models.Model):
         body_html = self.env['ir.qweb']._render('sale_subscription_dashboard.sales_men_pdf_template', pdf_rendering_values)
         return body_html
 
-    def get_report_filename(self,):
+    def _get_report_filename(self,):
         """The name that will be used for the file when downloading pdf,xlsx,..."""
         return _("Salesperson report")
 
     @api.model
-    def get_export_mime_type(self, file_type):
+    def _get_export_mime_type(self, file_type):
         """ Returns the MIME type associated with a report export file type,
         for attachment generation.
         """

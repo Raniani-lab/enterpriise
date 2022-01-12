@@ -105,7 +105,7 @@ class ProductPricing(models.Model):
                 or product in self.product_variant_ids))
 
     def _get_pricing_samples(self):
-        """ Get the pricing matching each type of periodicity. # arj todo: better name?
+        """ Get the pricing matching each type of periodicity.
         :returns: recordset containing one pricing per periodicity type
         """
         available_periodicities = set(self.mapped(lambda p: (p.duration, p.unit)))

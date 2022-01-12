@@ -3,8 +3,8 @@
     <!-- Recurrent payment emails -->
     <record id="email_payment_close" model="mail.template">
         <field name="name">Subscription: Payment Failure</field>
-        <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
-        <field name="subject">Termination of subscription {{ object.code }}</field>
+        <field name="model_id" ref="sale_subscription.model_sale_order"/>
+        <field name="subject">Termination of subscription {{ object.client_order_ref }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
@@ -101,8 +101,8 @@
 
     <record id="email_payment_reminder" model="mail.template">
         <field name="name">Subscription: Payment Reminder</field>
-        <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
-        <field name="subject">Payment reminder for subscription {{ object.code }}</field>
+        <field name="model_id" ref="sale_subscription.model_sale_order"/>
+        <field name="subject">Payment reminder for subscription {{ object.client_order_ref }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
@@ -136,7 +136,7 @@
                     <t t-if="ctx.get('payment_token') and ctx.get('total_amount')">
                         We were unable to process a payment for your subscription using your payment method
                         <t t-out="ctx['payment_token'] or ''">TOKEN</t>
-                        for <t t-out="ctx['total_amount'] or ''">10</t> <t t-out="ctx.get('currency') or ''">$</t>.
+                        for <t t-out="ctx['total_amount'] or ''">10</t> <t t-out="ctx.get('currency_name') or ''">$</t>.
                         <t t-if="ctx.get('error')">
                             Your bank or credit institution gave the following details about the issue: <pre t-out="ctx['error'] or ''"></pre>.
                         </t>
@@ -237,7 +237,7 @@
                     Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,<br/><br/>
                     Your Subscription (<t t-out="ctx.get('code') or ''">CODE</t>) has just been renewed
                     <t t-f="ctx.get('total_amount') and ctx.get('payment_token')">
-                        via a payment of <t t-out="ctx.get('total_amount') or ''">100</t> <t t-out="ctx.get('currency') or ''">$</t> charged on <t t-out="ctx.get('payment_token') or ''">PAYMENT_TOKEN</t>.
+                        via a payment of <t t-out="ctx.get('total_amount') or ''">100</t> <t t-out="ctx.get('currency_name') or ''">$</t> charged on <t t-out="ctx.get('payment_token') or ''">PAYMENT_TOKEN</t>.
                     </t>
                     <br/><br/>
                     You will find your invoice attached.
@@ -302,7 +302,7 @@
     <!-- Mail sent to request a rating for a subscription -->
     <record id="mail_template_subscription_rating" model="mail.template">
         <field name="name">Subscription: Rating Request</field>
-        <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
+        <field name="model_id" ref="sale_subscription.model_sale_order"/>
         <field name="subject">{{ object.company_id.name }}: Service Rating Request</field>
         <field name="email_from">{{ (object._rating_get_operator().email_formatted or user.email_formatted) }}</field>
         <field name="partner_to" >{{ object._rating_get_partner_id().id }}</field>
@@ -379,7 +379,7 @@
     <!-- Mail sent to request a rating for a subscription -->
     <record id="mail_template_subscription_alert" model="mail.template">
         <field name="name">Subscription: Default Email Alert</field>
-        <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
+        <field name="model_id" ref="sale_subscription.model_sale_order"/>
         <field name="subject">{{ object.company_id.name }}: Please check the subscription {{ object.name }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or user.email_formatted) }}</field>
         <field name="partner_to" >{{ object.partner_id.id }}</field>
@@ -391,7 +391,7 @@
                         <tr><td>
                             <a href="/"><img src="/web/binary/company_logo" style="vertical-align:baseline;max-width:100px;" /></a>
                         </td><td style="text-align:right;vertical-align:middle;">
-                                Subscription Feedback
+                                Subscription Renewal
                         </td></tr>
                     </tbody>
                 </table>
@@ -400,7 +400,8 @@
                         <tr><td style="padding:15px 20px 10px 20px;">
                             <p>Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,</p>
                             <p>Your subscription <strong t-out="object.name or ''">Office Cleaning Service"</strong> needs your attention.</p>
-                            <p>If you have some concerns about it, please contact your contact person <t t-out="object.user_id.name or ''">Mitchell Admin</t> or reply to this email.</p>
+                            <p>We invite you to renew it by clicking on the following link.</p>
+                            <a t-attf-href="{{ object.access_url }}/5">PLOP</a>
                             <p>Kind regards.</p>
                         </td></tr>
                         <tr><td style="padding:15px 20px 10px 20px;" t-out="object.user_id.signature or ''">--<br/>Mitchell Admin</td></tr>

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
-
+from odoo import fields, models, _
+from odoo.exceptions import ValidationError
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -10,19 +10,23 @@ class ResPartner(models.Model):
     subscription_count = fields.Integer(string='Subscriptions', compute='_subscription_count')
 
     def write(self, vals):
+        res = super().write(vals)
         if 'active' in vals and not vals.get('active'):
-            Subscription = self.env['sale.subscription']
-            Subscription.search([('partner_invoice_id', 'in', self.ids)]).partner_invoice_id = False
-            Subscription.search([('partner_shipping_id', 'in', self.ids)]).partner_shipping_id = False
-        return super().write(vals)
+            Subscription = self.env['sale.order']
+            order_ids = Subscription.search([('partner_invoice_id', 'in', self.ids)])
+            order_ids |= Subscription.search([('partner_shipping_id', 'in', self.ids)])
+            if order_ids:
+                contract_str = ", ".join(order_ids.mapped('name'))
+                raise ValidationError(_("You can't archive the partner as it is used in the following recurring orders: %s", contract_str))
+        return res
 
     def _subscription_count(self):
         # retrieve all children partners and prefetch 'parent_id' on them
         all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
         all_partners.read(['parent_id'])
 
-        subscription_data = self.env['sale.subscription']._read_group(
-            domain=[('partner_id', 'in', all_partners.ids)],
+        subscription_data = self.env['sale.order']._read_group(
+            domain=[('partner_id', 'in', all_partners.ids), ('is_subscription', '=', 'True')],
             fields=['partner_id'], groupby=['partner_id']
         )
 

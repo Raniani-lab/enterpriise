@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pricing_details" name="Pricing Details">
+        <t t-foreach="rendering_values" t-as="val">
+            <div class="pb-2">
+                <div style="white-space: nowrap;display: inline;">
+                    <span class="font-weight-bold">Untaxed /
+                        <span><t t-out="val['periodicity']"/><t t-out="val['unit']"/></span>:
+                    </span>
+                    <span>
+                        <t t-out="val['untaxed_amount']"/>
+                    </span>
+                </div>
+                <div style="white-space: nowrap;display: inline;">
+                    <span class="font-weight-bold text-left">Total /
+                        <span><t t-out="val['periodicity']"/><t t-out="val['unit']"/></span>:
+                    </span>
+                    <span class="text-right">
+                        <t t-out="val['total_amount']"/>
+                    </span>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="sol_pricing_update">
+        <b>The product periodicity has been updated.</b>
+        <ul>
+            <t t-foreach="line_values" t-as="l">
+                <li><t t-esc="l['name']"/><br/>
+                    Product Periodicity: <t t-esc="l['old_pricing'].duration"/><t t-esc="l['old_pricing'].unit"/>
+                    <span class="fa fa-long-arrow-right"/>
+                    <t t-esc="l['new_pricing'].duration"/><t t-esc="l['new_pricing'].unit"/>
+                </li>
+            </t>
+        </ul>
+    </template>
+
+</odoo>

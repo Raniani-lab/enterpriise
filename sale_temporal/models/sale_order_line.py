@@ -20,8 +20,7 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     start_date = fields.Datetime(string='Start Date', compute='_compute_start_date', readonly=False, store=True, precompute=True)
-    next_invoice_date = fields.Datetime(string='Date of Next Invoice',
-                                        compute='_compute_next_invoice_date', readonly=False, store=True, precompute=True,
+    next_invoice_date = fields.Datetime(compute='_compute_next_invoice_date', readonly=False, store=True, precompute=True,
                                         help="The next invoice will be created on this date then the period will be extended.")
     pricelist_id = fields.Many2one(related='order_id.pricelist_id')
     pricing_id = fields.Many2one('product.pricing',
@@ -50,7 +49,9 @@ class SaleOrderLine(models.Model):
 
     def _update_temporal_prices(self):
         # Apply correct temporal prices with respect to pricelist
-        for sol in self.filtered('temporal_type'):
+        for sol in self:
+            if not sol.temporal_type:
+                continue
             pricing_args = {'pricelist': sol.order_id.pricelist_id, 'company': sol.company_id,
                             'currency': sol.currency_id}
             duration_dict = {}

@@ -76,11 +76,11 @@ class SignRequest(models.Model):
 
     completed_document = fields.Binary(readonly=True, string="Completed Document", attachment=True, copy=False)
 
-    nb_wait = fields.Integer(string="Sent Requests", compute="_compute_count", store=True)
-    nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
-    nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
-    progress = fields.Char(string="Progress", compute="_compute_count", compute_sudo=True)
-    start_sign = fields.Boolean(string="Signature Started", help="At least one signer has signed the document.", compute="_compute_count", compute_sudo=True)
+    nb_wait = fields.Integer(string="Sent Requests", compute="_compute_stats", store=True)
+    nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_stats", store=True)
+    nb_total = fields.Integer(string="Requested Signatures", compute="_compute_stats", store=True)
+    progress = fields.Char(string="Progress", compute="_compute_progress", compute_sudo=True)
+    start_sign = fields.Boolean(string="Signature Started", help="At least one signer has signed the document.", compute="_compute_progress", compute_sudo=True)
     integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes', compute_sudo=True)
 
     active = fields.Boolean(default=True, string="Active", copy=False)
@@ -89,7 +89,7 @@ class SignRequest(models.Model):
     color = fields.Integer()
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
-    completion_date = fields.Date(string="Completion Date", compute="_compute_count", compute_sudo=True)
+    completion_date = fields.Date(string="Completion Date", compute="_compute_progress", compute_sudo=True)
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
     template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
@@ -116,27 +116,18 @@ class SignRequest(models.Model):
         return [('id', domain_operator, documents_ids)]
 
     @api.depends('request_item_ids.state')
-    def _compute_count(self):
+    def _compute_stats(self):
         for rec in self:
-            wait, closed = 0, 0
-            for s in rec.request_item_ids:
-                if s.state == "sent":
-                    wait += 1
-                if s.state in ["completed", "refused", "canceled"]:
-                    closed += 1
-            rec.nb_wait = wait
-            rec.nb_closed = closed
-            rec.nb_total = wait + closed
-            rec.start_sign = bool(closed)
-            rec.progress = "{} / {}".format(closed, wait + closed)
-            if closed:
-                rec.start_sign = True
-            signed_requests = rec.request_item_ids.filtered('signing_date')
-            if wait == 0 and closed and signed_requests:
-                last_completed_request = signed_requests.sorted(key=lambda i: i.signing_date, reverse=True)[0]
-                rec.completion_date = last_completed_request.signing_date
-            else:
-                rec.completion_date = None
+            rec.nb_total = len(rec.request_item_ids)
+            rec.nb_wait = len(rec.request_item_ids.filtered(lambda sri: sri.state == 'sent'))
+            rec.nb_closed = rec.nb_total - rec.nb_wait
+
+    @api.depends('request_item_ids.state')
+    def _compute_progress(self):
+        for rec in self:
+            rec.start_sign = bool(rec.nb_closed)
+            rec.progress = "{} / {}".format(rec.nb_closed, rec.nb_total)
+            rec.completion_date = rec.request_item_ids.sorted(key="signing_date", reverse=True)[:1].signing_date if not rec.nb_wait else None
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):

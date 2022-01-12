@@ -67,12 +67,19 @@ class HrContract(models.Model):
         for contract in self:
             contract.is_origin_contract_template = contract.origin_contract_id and not contract.origin_contract_id.employee_id
 
+    def _get_yearly_cost_sacrifice_ratio(self):
+        return 1.0 - self.holidays / 231.0
+
+    def _get_yearly_cost_sacrifice_fixed(self):
+        return 0.0
+
     def _get_yearly_cost(self, inverse=False):
         self.ensure_one()
-        ratio = (1.0 - self.holidays / 231.0)
+        ratio = self._get_yearly_cost_sacrifice_ratio()
+        fixed = self._get_yearly_cost_sacrifice_fixed()
         if inverse:
-            return (self._get_advantages_costs() + self._get_salary_costs_factor() * self.wage_with_holidays) / ratio
-        return self.final_yearly_costs * ratio
+            return (self._get_advantages_costs() + self._get_salary_costs_factor() * self.wage_with_holidays + fixed) / ratio
+        return self.final_yearly_costs * ratio - fixed
 
     def _is_salary_sacrifice(self):
         self.ensure_one()

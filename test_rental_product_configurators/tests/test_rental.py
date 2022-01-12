@@ -36,7 +36,7 @@ class TestRentalProductConfigUi(TestMatrixCommon, TestProductConfiguratorCommon)
         cls.product_product_custo_desk.update({'rent_ok': True})
 
         # Add rental pricing
-        cls.env['rental.pricing'].create({
+        cls.env['product.pricing'].create({
             'duration': 1.0,
             'unit': 'day',
             'price': 60.0,
@@ -49,7 +49,7 @@ class TestRentalProductConfigUi(TestMatrixCommon, TestProductConfiguratorCommon)
             '|', ('name', '=', 'White'), ('name', '=', 'Aluminium'),
         ])
         variant_desk_alu_white = cls.product_product_custo_desk._get_variant_for_combination(ptav)
-        cls.env['rental.pricing'].create({
+        cls.env['product.pricing'].create({
             'duration': 1.0,
             'unit': 'day',
             # FIXME edm: right now, only work with a variant cheaper than the normal price,
@@ -68,7 +68,7 @@ class TestRentalProductConfigUi(TestMatrixCommon, TestProductConfiguratorCommon)
         })
 
         # Set the rental pricing
-        cls.env['rental.pricing'].create({
+        cls.env['product.pricing'].create({
             'duration': 1.0,
             'unit': 'day',
             'price': 20.0,

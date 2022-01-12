@@ -31,11 +31,11 @@ QtyAtDateWidget.include({
     },
 
     _getContent() {
-        if (!this.data.is_rental) {
+        if (!this.data.is_rental || !this.data.return_date || !this.data.start_date) {
             return this._super();
         }
-        this.data.end_date = this.data.return_date.clone().add(this.getSession().getTZOffset(this.data.return_date), 'minutes').format(time.getLangDateFormat());
-        this.data.start_date = this.data.pickup_date.clone().add(this.getSession().getTZOffset(this.data.pickup_date), 'minutes').format(time.getLangDateFormat());
+        this.data.stock_end_date = this.data.return_date.clone().add(this.getSession().getTZOffset(this.data.return_date), 'minutes').format(time.getLangDateFormat());
+        this.data.stock_start_date = this.data.start_date.clone().add(this.getSession().getTZOffset(this.data.start_date), 'minutes').format(time.getLangDateFormat());
         const $content = $(QWeb.render('sale_stock_renting.QtyDetailPopOver', {
             data: this.data,
         }));

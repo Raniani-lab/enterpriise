@@ -25,7 +25,7 @@ class TestRentalCommon(SingleTransactionCase):
 
         self.product_template_id = self.product_id.product_tmpl_id
 
-        self.product_template_id.rental_pricing_ids.unlink()
+        self.product_template_id.product_pricing_ids.unlink()
         # blank the demo pricings
 
         PRICINGS = [
@@ -50,7 +50,7 @@ class TestRentalCommon(SingleTransactionCase):
 
         for pricing in PRICINGS:
             pricing.update(product_template_id=self.product_template_id.id)
-            pricing = self.env['rental.pricing'].create(pricing)
+            pricing = self.env['product.pricing'].create(pricing)
 
     def test_availability(self):
         # Pickup, return some, check different periods
@@ -109,10 +109,11 @@ class TestRentalCommon(SingleTransactionCase):
                 'pricelist_id': pricelist_B.id,
             }
         ]
-        self.product_template_id.rental_pricing_ids.unlink()
+        self.product_template_id.list_price = 42
+        self.product_template_id.product_pricing_ids.unlink()
         for pricing in PRICINGS:
             pricing.update(product_template_id=self.product_template_id.id)
-            pricing = self.env['rental.pricing'].create(pricing)
+            pricing = self.env['product.pricing'].create(pricing)
 
         sale_order = self.env['sale.order'].create({
             'partner_id': partner.id,
@@ -126,8 +127,9 @@ class TestRentalCommon(SingleTransactionCase):
             'product_id': self.product_id.id,
             'order_id': sale_order.id,
             'reservation_begin': reservation_begin,
-            'pickup_date': pickup_date,
+            'start_date': pickup_date,
             'return_date': return_date,
+            'next_invoice_date': return_date,
             'is_rental': True,
         })
 
@@ -189,10 +191,10 @@ class TestRentalCommon(SingleTransactionCase):
                 'pricelist_id': pricelist_B.id,
             }
         ]
-        self.product_template_id.rental_pricing_ids.unlink()
+        self.product_template_id.product_pricing_ids.unlink()
         for pricing in PRICINGS:
             pricing.update(product_template_id=self.product_template_id.id)
-            pricing = self.env['rental.pricing'].create(pricing)
+            pricing = self.env['product.pricing'].create(pricing)
 
         sale_order = self.env['sale.order'].create({
             'partner_id': partner.id,
@@ -207,8 +209,9 @@ class TestRentalCommon(SingleTransactionCase):
             'product_uom_qty': 1,
             'order_id': sale_order.id,
             'reservation_begin': reservation_begin,
-            'pickup_date': pickup_date,
+            'start_date': pickup_date,
             'return_date': return_date,
+            'next_invoice_date': return_date,
             'is_rental': True,
             'price_unit': 1
         })

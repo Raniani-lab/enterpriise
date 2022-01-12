@@ -29,13 +29,13 @@ tour.register('rental_tour', {
     content: _t("Enter the product name."),
     position: 'bottom',
 }, {
-    trigger: ".nav-item a.nav-link:contains(Rental)",
-    content: _t("The rental configuration is available here."),
-    position: 'top',
-}, {
     trigger: '.o_form_button_save',
     content: _t("Save the product."),
     position: 'bottom',
+}, {
+    trigger: ".nav-item a.nav-link:contains(Recurring Price)",
+    content: _t("The rental configuration is available here."),
+    position: 'top',
 }, {
     trigger: 'button[data-menu-xmlid="sale_renting.rental_order_menu"]',
     extra_trigger: '.o_form_button_edit',

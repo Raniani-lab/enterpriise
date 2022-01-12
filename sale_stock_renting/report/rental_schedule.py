@@ -40,7 +40,7 @@ class RentalSchedule(models.Model):
     def _late(self):
         return """
             CASE when lot_info.lot_id is NULL then
-                CASE WHEN sol.pickup_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN TRUE
+                CASE WHEN sol.start_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN TRUE
                     WHEN sol.return_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_returned < sol.qty_delivered THEN TRUE
                     ELSE FALSE
                 END
@@ -51,7 +51,7 @@ class RentalSchedule(models.Model):
                         ELSE FALSE
                         END
                     ELSE
-                        CASE WHEN sol.pickup_date < NOW() AT TIME ZONE 'UTC' THEN TRUE
+                        CASE WHEN sol.start_date < NOW() AT TIME ZONE 'UTC' THEN TRUE
                         ELSE FALSe
                         END
                 END
@@ -73,7 +73,7 @@ class RentalSchedule(models.Model):
         """2 = orange, 4 = blue, 6 = red, 7 = green"""
         return """
             CASE when lot_info.lot_id is NULL then
-                CASE WHEN sol.pickup_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN 4
+                CASE WHEN sol.start_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN 4
                     WHEN sol.return_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_returned < sol.qty_delivered THEN 6
                     when sol.qty_returned = sol.qty_delivered AND sol.qty_delivered = sol.product_uom_qty THEN 7
                     WHEN sol.qty_delivered = sol.product_uom_qty THEN 2

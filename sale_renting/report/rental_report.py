@@ -40,7 +40,7 @@ class RentalReport(models.Model):
 
     def _price(self):
         return """
-            sol.price_subtotal / (date_part('day',sol.return_date - sol.pickup_date) + 1)
+            sol.price_subtotal / (date_part('day',sol.return_date - sol.start_date) + 1)
         """
 
     def _select(self):
@@ -54,7 +54,7 @@ class RentalReport(models.Model):
             sol.salesman_id AS user_id,
             pt.categ_id,
             p.product_tmpl_id,
-            generate_series(sol.pickup_date::date, sol.return_date::date, '1 day'::interval)::date date,
+            generate_series(sol.start_date::date, sol.return_date::date, '1 day'::interval)::date date,
             %s AS price,
             sol.company_id,
             sol.state,

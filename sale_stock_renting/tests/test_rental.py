@@ -101,8 +101,9 @@ class TestRentalCommon(common.SingleTransactionCase):
             'product_id': cls.product_id.id,
             'product_uom_qty': 0.0,
             'is_rental': True,
-            'pickup_date': fields.Datetime.today(),
+            'start_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
+            'next_invoice_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 150,
         })
 
@@ -120,7 +121,7 @@ class TestRentalCommon(common.SingleTransactionCase):
             'product_id': cls.tracked_product_id.id,
             'product_uom_qty': 0.0,
             'is_rental': True,
-            'pickup_date': fields.Datetime.today(),
+            'start_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
@@ -130,8 +131,9 @@ class TestRentalCommon(common.SingleTransactionCase):
             'product_id': cls.tracked_product_id.id,
             'product_uom_qty': 0.0,
             'is_rental': True,
-            'pickup_date': fields.Datetime.today(),
+            'start_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
+            'next_invoice_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
 
@@ -233,7 +235,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         self.assertEqual(
             self.product_id.with_context(
                 location=self.env.company.rental_loc_id.id,
-                from_date=self.order_line_id1.pickup_date,
+                from_date=self.order_line_id1.start_date,
                 to_date=self.order_line_id1.return_date,
             ).qty_available,
             3
@@ -271,7 +273,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         self.assertEqual(
             self.product_id.with_context(
                 location=self.env.company.rental_loc_id.id,
-                from_date=self.order_line_id1.pickup_date,
+                from_date=self.order_line_id1.start_date,
                 to_date=self.order_line_id1.return_date,
             ).qty_available,
             1

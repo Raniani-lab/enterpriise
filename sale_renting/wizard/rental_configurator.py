@@ -34,7 +34,7 @@ class RentalWizard(models.TransientModel):
     quantity = fields.Float("Quantity", default=1, required=True, digits='Product Unit of Measure')  # Can be changed on SO line later if needed
 
     pricing_id = fields.Many2one(
-        'rental.pricing', compute="_compute_pricing",
+        'product.pricing', compute="_compute_pricing",
         string="Pricing", help="Best Pricing Rule based on duration")
     currency_id = fields.Many2one('res.currency', string="Currency", compute='_compute_displayed_currency')
 
@@ -57,8 +57,8 @@ class RentalWizard(models.TransientModel):
         for wizard in self:
             if wizard.product_id:
                 wizard.pricing_id = wizard.product_id._get_best_pricing_rule(
-                    pickup_date=wizard.pickup_date,
-                    return_date=wizard.return_date,
+                    start_date=wizard.pickup_date,
+                    end_date=wizard.return_date,
                     pricelist=wizard.pricelist_id,
                     company=wizard.company_id)
 
@@ -75,7 +75,7 @@ class RentalWizard(models.TransientModel):
                 'duration': 1.0,
             }
             if wizard.pickup_date and wizard.return_date:
-                duration_dict = self.env['rental.pricing']._compute_duration_vals(wizard.pickup_date, wizard.return_date)
+                duration_dict = self.env['product.pricing']._compute_duration_vals(wizard.pickup_date, wizard.return_date)
                 if wizard.pricing_id:
                     values = {
                         'duration_unit': wizard.pricing_id.unit,
@@ -147,7 +147,7 @@ class RentalWizard(models.TransientModel):
                 wizard.pricing_explanation = pricing_explanation
             else:
                 # if no pricing on product: explain only sales price is applied ?
-                if not wizard.product_id.rental_pricing_ids and wizard.duration:
+                if not wizard.product_id.product_pricing_ids and wizard.duration:
                     wizard.pricing_explanation = _("No rental price is defined on the product.\nThe price used is the sales price.")
                 else:
                     wizard.pricing_explanation = ""

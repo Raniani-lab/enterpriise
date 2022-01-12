@@ -5,8 +5,8 @@
                 <tr>
                     <td>
                         <strong>Available for Rent</strong><br />
-                        <small> <span t-esc="data.start_date"/></small>
-                        <small>to <span t-esc="data.end_date"/></small>
+                        <small> <span t-esc="data.stock_start_date"/></small>
+                        <small>to <span t-esc="data.stock_end_date"/></small>
                     </td>
                     <td>
                         <t t-esc='data.virtual_available_at_date'/>

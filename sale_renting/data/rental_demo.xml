@@ -34,43 +34,48 @@
 
   <!-- Rental pricings -->
 
-  <record id="rental_pricing_1" model="rental.pricing">
+  <record id="rental_pricing_1" model="product.pricing">
       <field name="duration" eval="3"/>
       <field name="unit">hour</field>
       <field name="price" eval="5.00"/>
+      <field name="currency_id" ref="base.USD"/>
   </record>
-  <record id="rental_pricing_2" model="rental.pricing">
+  <record id="rental_pricing_2" model="product.pricing">
       <field name="duration" eval="1"/>
       <field name="unit">day</field>
       <field name="price" eval="25"/>
+      <field name="currency_id" ref="base.USD"/>
   </record>
 
-  <record id="rental_pricing_3" model="rental.pricing">
+  <record id="rental_pricing_3" model="product.pricing">
       <field name="duration" eval="1"/>
       <field name="unit">day</field>
       <field name="price" eval="150.00"/>
+      <field name="currency_id" ref="base.USD"/>
   </record>
 
-  <record id="rental_pricing_4" model="rental.pricing">
+  <record id="rental_pricing_4" model="product.pricing">
       <field name="duration" eval="7"/>
       <field name="unit">day</field>
       <field name="price" eval="900.00"/> <!-- One day of reduction -->
+      <field name="currency_id" ref="base.USD"/>
   </record>
 
-  <record id="rental_pricing_5" model="rental.pricing">
+  <record id="rental_pricing_5" model="product.pricing">
       <field name="duration" eval="14"/>
       <field name="unit">day</field>
       <field name="price" eval="1750"/> <!-- 3 days of reduction -->
+      <field name="currency_id" ref="base.USD"/>
   </record>
 
 
   <!-- Rentable products with pricings -->
   <record id="rental_product_1" model="product.product"> <!-- Projector -->
-    <field name="rental_pricing_ids" eval="[(6,0,[ref('rental_pricing_1'), ref('rental_pricing_2')])]"/>
+    <field name="product_pricing_ids" eval="[(6,0,[ref('rental_pricing_1'), ref('rental_pricing_2')])]"/>
   </record>
 
   <record id="rental_product_2" model="product.product"> <!-- Meeting Room -->
-    <field name="rental_pricing_ids" eval="[(6,0,[ref('rental_pricing_3'), ref('rental_pricing_4'), ref('rental_pricing_5')])]"/>
+    <field name="product_pricing_ids" eval="[(6,0,[ref('rental_pricing_3'), ref('rental_pricing_4'), ref('rental_pricing_5')])]"/>
   </record>
 
   <!-- Rental Sale orders -->
@@ -94,7 +99,8 @@
       <field name="product_uom_qty">3</field>
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="is_rental" eval="True"/>
-      <field name="pickup_date" eval="DateTime.today()"/>
+      <field name="start_date" eval="DateTime.today()"/>
+      <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=3)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=3)"/>
       <field name="price_unit" eval="450.0"/>
   </record>
@@ -130,8 +136,9 @@
       <field name="name" eval="'[RENT001] Projector'"/>
       <field name="is_rental" eval="True"/>
       <field name="qty_delivered">3</field>
-      <field name="pickup_date" eval="DateTime.today() - relativedelta(days=5)"/>
+      <field name="start_date" eval="DateTime.today() - relativedelta(days=5)"/>
       <field name="return_date" eval="DateTime.today() - relativedelta(days=1)"/>
+      <field name="next_invoice_date" eval="DateTime.today() - relativedelta(days=1)"/>
       <field name="price_unit" eval="100.0"/>
   </record>
 
@@ -143,8 +150,9 @@
       <field name="name" eval="'[RENT001] Projector'"/>
       <field name="is_rental" eval="True"/>
       <field name="qty_delivered">2</field>
-      <field name="pickup_date" eval="DateTime.today() - relativedelta(days=1)"/>
+      <field name="start_date" eval="DateTime.today() - relativedelta(days=1)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
+      <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=5)"/>
       <field name="price_unit" eval="150.0"/>
   </record>
 

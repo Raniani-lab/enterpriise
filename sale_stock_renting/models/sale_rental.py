@@ -17,15 +17,15 @@ class RentalOrderLine(models.Model):
 
     unavailable_lot_ids = fields.Many2many('stock.lot', 'unreturned_reserved_serial', compute='_compute_unavailable_lots', store=False)
 
-    @api.depends('pickup_date', 'return_date', 'product_id', 'order_id.warehouse_id')
+    @api.depends('start_date', 'return_date', 'product_id', 'order_id.warehouse_id')
     def _compute_qty_at_date(self):
         non_rental = self.filtered(lambda sol: not sol.is_rental)
         super(RentalOrderLine, non_rental)._compute_qty_at_date()
         for line in (self - non_rental):
             virtual_available_at_date = 0.0
             reservation_begin = False
-            if line.product_id and line.product_id.type == "product" and line.pickup_date and line.return_date:
-                reservation_begin, reservation_end = line.product_id._unavailability_period(line.pickup_date, line.return_date)
+            if line.product_id and line.product_id.type == "product" and line.start_date and line.return_date:
+                reservation_begin, reservation_end = line.product_id._unavailability_period(line.start_date, line.return_date)
                 rentable_qty = line.product_id.with_context(
                     from_date=max(reservation_begin, fields.Datetime.now()),
                     to_date=reservation_end,
@@ -253,10 +253,10 @@ class RentalOrderLine(models.Model):
         for line in self:
             line.unavailable_lot_ids = (line.reserved_lot_ids | line.pickedup_lot_ids) - line.returned_lot_ids
 
-    @api.depends('pickup_date')
+    @api.depends('start_date')
     def _compute_reservation_begin(self):
         lines = self.filtered(lambda line: line.is_rental)
         for line in lines:
             padding_timedelta_before = timedelta(hours=line.product_id.preparation_time)
-            line.reservation_begin = line.pickup_date - padding_timedelta_before
+            line.reservation_begin = line.start_date and line.start_date - padding_timedelta_before
         (self - lines).reservation_begin = None

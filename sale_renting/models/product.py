@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import date
 from odoo import api, fields, models, _
-from odoo.tools import format_amount
 
 
 class ProductTemplate(models.Model):
@@ -12,17 +10,16 @@ class ProductTemplate(models.Model):
         string="Can be Rented",
         help="Allow renting of this product.")
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
-    rental_pricing_ids = fields.One2many(
-        'rental.pricing', 'product_template_id',
-        string="Rental Pricings", auto_join=True, copy=True)
-    display_price = fields.Char(
-        "Rental price", help="First rental pricing of the product",
-        compute="_compute_display_price")
 
     # Delays pricing
 
     extra_hourly = fields.Float("Extra Hour", help="Fine by hour overdue", company_dependent=True)
     extra_daily = fields.Float("Extra Day", help="Fine by day overdue", company_dependent=True)
+
+    @api.depends('rent_ok')
+    def _compute_is_temporal(self):
+        super()._compute_is_temporal()
+        self.filtered('rent_ok').is_temporal = True
 
     def _compute_visible_qty_configurator(self):
         super(ProductTemplate, self)._compute_visible_qty_configurator()
@@ -36,16 +33,6 @@ class ProductTemplate(models.Model):
         not_rentable.update({'qty_in_rent': 0.0})
         for template in rentable:
             template.qty_in_rent = sum(template.mapped('product_variant_ids.qty_in_rent'))
-
-    def _compute_display_price(self):
-        rentable_products = self.filtered('rent_ok')
-        rental_priced_products = rentable_products.filtered('rental_pricing_ids')
-        (self - rentable_products).display_price = ""
-        for product in (rentable_products - rental_priced_products):
-            product.display_price = _("%(amount)s (fixed)", amount=format_amount(self.env, product.list_price, product.currency_id))
-        # No rental pricing defined, fallback on list price
-        for product in rental_priced_products:
-            product.display_price = product.rental_pricing_ids[0].display_name
 
     def action_view_rentals(self):
         """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
@@ -112,58 +99,6 @@ class ProductProduct(models.Model):
         days = duration.days
         hours = duration.seconds // 3600
         return days * self.extra_daily + hours * self.extra_hourly
-
-    def _get_best_pricing_rule(self, **kwargs):
-        """Return the best pricing rule for the given duration.
-
-        :param float duration: duration, in unit uom
-        :param str unit: duration unit (hour, day, week)
-        :param datetime pickup_date:
-        :param datetime return_date:
-        :return: least expensive pricing rule for given duration
-        :rtype: rental.pricing
-        """
-        self.ensure_one()
-        best_pricing_rule = self.env['rental.pricing']
-        if not self.rental_pricing_ids:
-            return best_pricing_rule
-        pickup_date, return_date = kwargs.get('pickup_date', False), kwargs.get('return_date', False)
-        duration, unit = kwargs.get('duration', False), kwargs.get('unit', '')
-        pricelist = kwargs.get('pricelist', self.env['product.pricelist'])
-        currency = kwargs.get('currency', self.env.company.currency_id)
-        company = kwargs.get('company', self.env.company)
-        if pickup_date and return_date:
-            duration_dict = self.env['rental.pricing']._compute_duration_vals(pickup_date, return_date)
-        elif not(duration and unit):
-            return best_pricing_rule  # no valid input to compute duration.
-        min_price = float("inf")  # positive infinity
-        available_pricings = self.rental_pricing_ids.filtered(
-            lambda p: p.pricelist_id == pricelist
-        )
-        if not available_pricings:
-            # If no pricing is defined for given pricelist:
-            # fallback on generic pricings
-            available_pricings = self.rental_pricing_ids.filtered(
-                lambda p: not p.pricelist_id
-            )
-        for pricing in available_pricings:
-            if pricing.applies_to(self):
-                if duration and unit:
-                    price = pricing._compute_price(duration, unit)
-                else:
-                    price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
-
-                if pricing.currency_id != currency:
-                    price = pricing.currency_id._convert(
-                        from_amount=price,
-                        to_currency=currency,
-                        company=company,
-                        date=date.today(),
-                    )
-
-                if price < min_price:
-                    min_price, best_pricing_rule = price, pricing
-        return best_pricing_rule
 
     def action_view_rentals(self):
         """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""

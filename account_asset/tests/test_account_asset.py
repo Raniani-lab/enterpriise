@@ -1263,3 +1263,26 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(len(new_assets_manu), 1)
         self.assertEqual(new_assets_manu.original_value, 3867.5)
         self.assertEqual(new_assets_manu.non_deductible_tax_value, 367.5)
+
+    def test_post_asset_with_passed_recognition_date(self):
+        """
+        Check the state of an asset when the last recognition date
+        is passed at the moment of posting it.
+        """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'test',
+            'acquisition_date': fields.Date.today() - relativedelta(years=1, month=6, day=1),
+            'original_value': 10000,
+            'method_number': 5,
+            'method_period': '1',
+            'method': 'linear',
+        })
+        asset.validate()
+
+        self.assertTrue(all(m.state == 'posted' for m in asset.depreciation_move_ids))
+        self.assertEqual(asset.state, 'close')

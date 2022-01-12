@@ -44,6 +44,10 @@ class AccountMove(models.Model):
         posted._auto_create_asset()
         # check if we are reversing a move and delete assets of original move if it's the case
         posted._delete_reversed_entry_assets()
+
+        # close deferred expense/revenue if all their depreciation moves are posted
+        posted._close_assets()
+
         return posted
 
     def _reverse_moves(self, default_values_list=None, cancel=False):
@@ -348,6 +352,11 @@ class AccountMove(models.Model):
                         asset.state = 'draft'
                         asset.unlink()
                         rp_count[(line.product_id.id, line.price_unit)] -= 1
+
+    def _close_assets(self):
+        for asset in self.asset_id:
+            if asset.asset_type in ('expense', 'sale') and all(m.state == 'posted' for m in asset.depreciation_move_ids):
+                asset.write({'state': 'close'})
 
 
 class AccountMoveLine(models.Model):

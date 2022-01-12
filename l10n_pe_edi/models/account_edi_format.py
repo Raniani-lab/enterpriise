@@ -599,7 +599,7 @@ class AccountEdiFormat(models.Model):
         if cdr_decoded.get('error'):
             return {'error': cdr_decoded['error'], 'blocking_level': 'error'}
 
-        return {'xml_document': edi_str, 'cdr': cdr_str}
+        return {'success': True, 'xml_document': edi_str, 'cdr': cdr_str}
 
     def _l10n_pe_edi_sign_invoices_sunat(self, invoice, edi_filename, edi_str):
         credentials = self._l10n_pe_edi_get_sunat_credentials(invoice.company_id)

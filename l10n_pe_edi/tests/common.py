@@ -145,7 +145,6 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     listAgencyName="PE:SUNAT"
                     listName="Tipo de Documento"
                     listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01">01</InvoiceTypeCode>
-                <Note languageLocaleID="1000">Monto en letras</Note>
                 <Note languageLocaleID="1000">NUEVE MIL CUATROCIENTOS CUARENTA Y 00/100 GOLD</Note>
                 <DocumentCurrencyCode>USD</DocumentCurrencyCode>
                 <Signature>
@@ -523,7 +522,6 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'date': '2017-01-01',
             'currency_id': self.currency_data['currency'].id,
             'l10n_latam_document_type_id': self.env.ref('l10n_pe.document_type01').id,
-            'l10n_pe_edi_legend': '1000',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product.id,
                 'product_uom_id': self.env.ref('uom.product_uom_kgm').id,
@@ -536,9 +534,9 @@ class TestPeEdiCommon(AccountEdiTestCommon):
         vals.update(kwargs)
         return self.env['account.move'].create(vals)
 
-    def _create_refund(self):
-        invoice = self._create_invoice(name='FFFI-%s2' % self.time_name)
-        return self.env['account.move'].create({
+    def _create_refund(self, **kwargs):
+        invoice = self._create_invoice(name='FFFI-%s2' % self.time_name, **kwargs)
+        vals = {
             'name': 'FCNE-%s1' % self.time_name,
             'move_type': 'out_refund',
             'ref': 'abc',
@@ -558,11 +556,13 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 'discount': 20.0,
                 'tax_ids': [(6, 0, self.tax_18.ids)],
             })],
-        })
+        }
+        vals.update(kwargs)
+        return self.env['account.move'].create(vals)
 
-    def _create_debit_note(self):
-        invoice = self._create_invoice(name='FFFI-%s3' % self.time_name)
-        return self.env['account.move'].create({
+    def _create_debit_note(self, **kwargs):
+        invoice = self._create_invoice(name='FFFI-%s3' % self.time_name, **kwargs)
+        vals = {
             'name': 'FNDI-%s1' % self.time_name,
             'move_type': 'out_invoice',
             'ref': 'abc',
@@ -572,7 +572,6 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'currency_id': self.currency_data['currency'].id,
             'debit_origin_id': invoice.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_pe.document_type08').id,
-            'l10n_pe_edi_legend': '1000',
             'l10n_pe_edi_charge_reason': '01',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product.id,
@@ -582,4 +581,6 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 'discount': 20.0,
                 'tax_ids': [(6, 0, self.tax_18.ids)],
             })],
-        })
+        }
+        vals.update(kwargs)
+        return self.env['account.move'].create(vals)

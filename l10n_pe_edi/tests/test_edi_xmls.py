@@ -81,7 +81,7 @@ class TestEdiXmls(TestPeEdiCommon):
                 <xpath expr="//InvoiceTypeCode" position="attributes">
                     <attribute name="listID">1001</attribute>
                 </xpath>
-                <xpath expr="//Note[2]" position="after">
+                <xpath expr="//Note[1]" position="after">
                     <Note languageLocaleID="2006">Leyenda: Operacion sujeta a detraccion</Note>
                 </xpath>
                 <xpath expr="//PaymentTerms" position="replace"/>

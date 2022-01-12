@@ -273,7 +273,6 @@ class AccountAsset(models.Model):
             self.account_depreciation_id = model.account_depreciation_id
             self.account_depreciation_expense_id = model.account_depreciation_expense_id
             self.journal_id = model.journal_id
-            self.account_asset_id = model.account_asset_id
 
     @api.onchange('asset_type')
     def _onchange_type(self):

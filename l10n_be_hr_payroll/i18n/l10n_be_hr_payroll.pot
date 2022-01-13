@@ -742,6 +742,11 @@ msgid "281.45 Sheet"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
+msgid "281.45 Sheet - Year"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "283"
 msgstr ""
@@ -773,7 +778,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "2a. Bénéficiaire des revenus"
+msgid "2a. Income recipient"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -804,7 +809,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "3. Nom et adresse du débiteur des revenus:"
+msgid "3. Name and address of income debtor:"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -954,7 +959,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "4. Montant brut des revenus"
+msgid "4. Gross amount of income"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -969,7 +974,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "5. Frais déduits"
+msgid "5. Deducted fees"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -1114,7 +1119,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "6. Montant du précompte mobilier retenu"
+msgid "6. Amount of retained withholding tax"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -1199,19 +1204,19 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
+msgid "<span class=\"font-weight-bold\">Company number: </span>"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "<span class=\"font-weight-bold\">NISS: </span>"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid ""
-"<span class=\"font-weight-bold\">Nature du bénéficiaire: </span>\n"
-"                                    <span>Personne Physique</span>"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "<span class=\"font-weight-bold\">Numéro d'entreprise: </span>"
+"<span class=\"font-weight-bold\">Nature of beneficiary: </span>\n"
+"                                    <span>Natural Person</span>"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -1897,7 +1902,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "A. Forfaitaires"
+msgid "A. Packages"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -2231,7 +2236,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "B. Réels"
+msgid "B. Real"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -2807,12 +2812,8 @@ msgid "Create 281.45 Form"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
-msgid "Create PDF"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_10_form_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
 msgid "Create PDFs"
 msgstr ""
 
@@ -2840,6 +2841,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__create_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit__create_uid
@@ -2873,6 +2875,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__create_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit__create_date
@@ -3221,6 +3224,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__display_name
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit__display_name
@@ -3399,11 +3403,6 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
-msgid "Download the 281.45 PDF file:"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
 msgid "Download the 281.45 XML file:"
 msgstr ""
 
@@ -3492,6 +3491,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_employee_depature_notice__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_274_xx_line__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__employee_id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_line__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__employee_id
@@ -3767,11 +3767,6 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "Fiche 274.34: Dispense de précompte professionnel pour bacheliers."
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
-msgid "Fiche 281.45 - Année"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -4128,6 +4123,11 @@ msgid "HR Payroll 281.10 Wizard"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_45_line
+msgid "HR Payroll 281.45 Line Wizard"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_45
 msgid "HR Payroll 281.45 Wizard"
 msgstr ""
@@ -4253,6 +4253,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit__id
@@ -4600,6 +4601,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45____last_update
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit____last_update
@@ -4634,6 +4636,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__write_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit__write_uid
@@ -4667,6 +4670,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__write_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa_location_unit__write_date
@@ -4709,6 +4713,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_generate_warrant_payslips__line_ids
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_274_xx__line_ids
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__line_ids
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__line_ids
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__line_ids
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__line_ids
 msgid "Line"
@@ -5114,6 +5119,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_281_10.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_45.py:0
 #, python-format
 msgid "None"
 msgstr ""
@@ -5527,6 +5533,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_273s__pdf_file
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__pdf_file
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__pdf_file
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_file
 msgid "PDF File"
 msgstr ""
 
@@ -5691,7 +5698,14 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__pdf_filename
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__pdf_filename
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_filename
 msgid "Pdf Filename"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__pdf_to_generate
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_to_generate
+msgid "Pdf To Generate"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -6202,6 +6216,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_274_xx_line__sheet_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__sheet_id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__sheet_id
 msgid "Sheet"
 msgstr ""
 

@@ -63,9 +63,7 @@ class L10nBe28145(models.Model):
         ('2', 'Add'),
         ('3', 'Cancel'),
         ], string="Treatment Type", default='0', required=True)
-    pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
     xml_file = fields.Binary('XML File', readonly=True, attachment=False)
-    pdf_filename = fields.Char()
     xml_filename = fields.Char()
     documents_enabled = fields.Boolean(compute='_compute_documents_enabled')
     xml_validation_state = fields.Selection([

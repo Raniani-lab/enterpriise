@@ -7,12 +7,6 @@ import { clear, replace } from '@mail/model/model_field_command';
 registerModel({
     name: 'SwiperView',
     identifyingFields: [['messageViewOwner', 'notificationGroupViewOwner', 'threadNeedactionPreviewViewOwner', 'threadPreviewViewOwner']],
-    lifecycleHooks: {
-        _created() {
-            this.onLeftSwipe = this.onLeftSwipe.bind(this);
-            this.onRightSwipe = this.onRightSwipe.bind(this);
-        },
-    },
     recordMethods: {
         /**
          * Handles left swipe on this swiper view.

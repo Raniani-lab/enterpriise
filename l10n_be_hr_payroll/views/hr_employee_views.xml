@@ -52,6 +52,41 @@
                 <field name="l10n_be_scale_seniority" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </field>
             <group name="payroll_group" position="after">
+                <strong class="o_horizontal_separator" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">Previous Employer</strong>
+                <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
+                    <label for="l10n_be_holiday_pay_to_recover_n"/>
+                    <div class="o_row">
+                        <field name="l10n_be_holiday_pay_to_recover_n" nolabel="1"/>
+                        <span>€</span>
+                    </div>
+                    <label for="l10n_be_holiday_pay_number_of_days_n"/>
+                    <div class="o_row">
+                        <field name="l10n_be_holiday_pay_number_of_days_n" nolabel="1"/>
+                        <span>days</span>
+                    </div>
+                    <label for="l10n_be_holiday_pay_recovered_n"/>
+                    <div class="o_row">
+                        <field name="l10n_be_holiday_pay_recovered_n" nolabel="1"/>
+                        <span>€</span>
+                    </div>
+                </group>
+                <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
+                    <label for="l10n_be_holiday_pay_to_recover_n1"/>
+                    <div class="o_row">
+                        <field name="l10n_be_holiday_pay_to_recover_n1" nolabel="1"/>
+                        <span>€</span>
+                    </div>
+                    <label for="l10n_be_holiday_pay_number_of_days_n1"/>
+                    <div class="o_row">
+                        <field name="l10n_be_holiday_pay_number_of_days_n1" nolabel="1"/>
+                        <span>days</span>
+                    </div>
+                    <label for="l10n_be_holiday_pay_recovered_n1"/>
+                    <div class="o_row">
+                        <field name="l10n_be_holiday_pay_recovered_n1" nolabel="1"/>
+                        <span>€</span>
+                    </div>
+                </group>
                 <group id="recovery_pay_lines" class="mt-3" colspan="2" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
                     <strong class="o_horizontal_separator" colspan="2">Previous Occupations</strong>
                     <field name="double_pay_line_ids" colspan="2" nolabel="1"/>

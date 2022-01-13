@@ -728,8 +728,8 @@ class DMFAOccupation(DMFANode):
         termination_n = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_pay_simple')
         termination_n1 = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n1_pay_simple')
         termination_fees = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_basic')
-        holiday_pay_recovery_n = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n', raise_if_not_found=False)
-        holiday_pay_recovery_n1 = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n1', raise_if_not_found=False)
+        holiday_pay_recovery_n = self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_holiday_pay_recovery_n', raise_if_not_found=False)
+        holiday_pay_recovery_n1 = self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_holiday_pay_recovery_n1', raise_if_not_found=False)
         codes = {
             regular_gross: 1,
             regular_gross_student: 1,

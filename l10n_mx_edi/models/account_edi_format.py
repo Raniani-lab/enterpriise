@@ -610,9 +610,11 @@ class AccountEdiFormat(models.Model):
         }
 
     def _l10n_mx_edi_finkok_cancel(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_finkok_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials)
+        uuid_replace = move.l10n_mx_edi_cancel_invoice_id.l10n_mx_edi_cfdi_uuid
+        return self._l10n_mx_edi_finkok_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials,
+                                                       uuid_replace=uuid_replace)
 
-    def _l10n_mx_edi_finkok_cancel_service(self, uuid, company, credentials):
+    def _l10n_mx_edi_finkok_cancel_service(self, uuid, company, credentials, uuid_replace=None):
         ''' Cancel the CFDI document with PAC: finkok. Does not depend on a recordset
         '''
         certificates = company.l10n_mx_edi_certificate_ids
@@ -622,8 +624,11 @@ class AccountEdiFormat(models.Model):
         try:
             transport = Transport(timeout=20)
             client = Client(credentials['cancel_url'], transport=transport)
-            uuid_type = client.get_type('ns0:stringArray')()
-            uuid_type.string = [uuid]
+            uuid_type = client.get_type('ns1:UUID')()
+            uuid_type.UUID = uuid
+            uuid_type.Motivo = "01" if uuid_replace else "02"
+            if uuid_replace:
+                uuid_type.FolioSustitucion = uuid_replace
             docs_list = client.get_type('ns1:UUIDS')(uuid_type)
             response = client.service.cancel(
                 docs_list,
@@ -734,13 +739,18 @@ class AccountEdiFormat(models.Model):
         return {'errors': errors}
 
     def _l10n_mx_edi_solfact_cancel(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_solfact_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials)
+        uuid_replace = move.l10n_mx_edi_cancel_invoice_id.l10n_mx_edi_cfdi_uuid
+        return self._l10n_mx_edi_solfact_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials,
+                                                        uuid_replace=uuid_replace)
 
-    def _l10n_mx_edi_solfact_cancel_service(self, uuid, company, credentials):
+    def _l10n_mx_edi_solfact_cancel_service(self, uuid, company, credentials, uuid_replace=None):
         ''' calls the Solucion Factible web service to cancel the document based on the UUID.
         Method does not depend on a recordset
         '''
-        uuids = [uuid]
+        motivo = "01" if uuid_replace else "02"
+        uuid = uuid + "|" + motivo + "|"
+        if uuid_replace:
+            uuid = uuid + uuid_replace
         certificates = company.l10n_mx_edi_certificate_ids
         certificate = certificates.sudo().get_valid_certificate()
         cer_pem = certificate.get_pem_cer(certificate.content)
@@ -751,7 +761,7 @@ class AccountEdiFormat(models.Model):
             transport = Transport(timeout=20)
             client = Client(credentials['url'], transport=transport)
             response = client.service.cancelar(
-                credentials['username'], credentials['password'], uuids, cer_pem, key_pem, key_password)
+                credentials['username'], credentials['password'], uuid, cer_pem, key_pem, key_password)
         except Exception as e:
             return {
                 'errors': [_("The Solucion Factible service failed to cancel with the following error: %s", str(e))],
@@ -933,9 +943,11 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             return {'errors': errors}
 
     def _l10n_mx_edi_sw_cancel(self, move, credentials, cfdi):
-        return self._l10n_mx_edi_sw_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials)
+        uuid_replace = move.l10n_mx_edi_cancel_invoice_id.l10n_mx_edi_cfdi_uuid
+        return self._l10n_mx_edi_sw_cancel_service(move.l10n_mx_edi_cfdi_uuid, move.company_id, credentials,
+                                                   uuid_replace=uuid_replace)
 
-    def _l10n_mx_edi_sw_cancel_service(self, uuid, company, credentials):
+    def _l10n_mx_edi_sw_cancel_service(self, uuid, company, credentials, uuid_replace=None):
         ''' Calls the SW web service to cancel the document based on the UUID.
         Method does not depend on a recordset
         '''
@@ -945,13 +957,18 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         }
         certificates = company.l10n_mx_edi_certificate_ids
         certificate = certificates.sudo().get_valid_certificate()
-        payload = json.dumps({
+        payload_dict = {
             'rfc': company.vat,
             'b64Cer': certificate.content.decode('UTF-8'),
             'b64Key': certificate.key.decode('UTF-8'),
             'password': certificate.password,
             'uuid': uuid,
-        })
+            'motivo': "01" if uuid_replace else "02"
+        }
+        if uuid_replace:
+            payload_dict['folioSustitucion'] = uuid_replace
+        payload = json.dumps(payload_dict)
+
         response_json = self._l10n_mx_edi_sw_call(credentials['cancel_url'], headers, payload=payload.encode('UTF-8'))
 
         cancelled = response_json['status'] == 'success'

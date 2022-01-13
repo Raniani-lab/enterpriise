@@ -45,6 +45,11 @@ class Picking(models.Model):
         string='CFDI Origin',
         copy=False,
         help="Specify the existing Fiscal Folios to replace. Prepend with '04|'")
+    l10n_mx_edi_cancel_picking_id = fields.Many2one(
+        comodel_name='stock.picking',
+        string="Substituted By",
+        compute='_compute_l10n_mx_edi_cancel',
+        readonly=True)
 
     l10n_mx_edi_src_lat = fields.Float(
         string='Source Latitude',
@@ -115,6 +120,19 @@ class Picking(models.Model):
                 raise UserError(_('A valid certificate was not found'))
             if record.l10n_mx_edi_transport_type == '01' and not record.l10n_mx_edi_distance:
                 raise UserError(_('Distance in KM must be specified when using federal transport'))
+
+    def _compute_l10n_mx_edi_cancel(self):
+        for pick in self:
+            if pick.l10n_mx_edi_cfdi_uuid:
+                replaced_pick = pick.search(
+                    [('l10n_mx_edi_origin', 'like', '04|%'),
+                     ('l10n_mx_edi_origin', 'like', '%' + pick.l10n_mx_edi_cfdi_uuid + '%'),
+                     ('company_id', '=', pick.company_id.id)],
+                    limit=1,
+                )
+                pick.l10n_mx_edi_cancel_picking_id = replaced_pick
+            else:
+                pick.l10n_mx_edi_cancel_picking_id = None
 
     # -------------------------------------------------------------------------
     # XML
@@ -299,7 +317,10 @@ class Picking(models.Model):
                 record.l10n_mx_edi_error = '\n'.join(credentials['errors'])
                 continue
 
-            res = getattr(self.env['account.edi.format'], '_l10n_mx_edi_%s_cancel_service' % pac_name)(record.l10n_mx_edi_cfdi_uuid, record.company_id, credentials)
+            uuid_replace = record.l10n_mx_edi_cancel_picking_id.l10n_mx_edi_cfdi_uuid
+            cancel_method = getattr(self.env['account.edi.format'], '_l10n_mx_edi_%s_cancel_service' % pac_name)
+            res = cancel_method(record.l10n_mx_edi_cfdi_uuid, record.company_id, credentials, uuid_replace=uuid_replace)
+
             if res.get('errors'):
                 record.l10n_mx_edi_error = '\n'.join(res['errors'])
                 continue

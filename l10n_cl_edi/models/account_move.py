@@ -520,7 +520,7 @@ class AccountMove(models.Model):
                 not self.l10n_latam_document_type_id._is_doc_type_export() and
                 not self.l10n_latam_document_type_id._is_doc_type_ticket()):
             raise UserError(_('The %s has not a DTE email defined. This is mandatory for electronic invoicing.') %
-                            'partner' if not self.partner_id.l10n_cl_dte_email else 'company')
+                            (_('partner') if not self.partner_id.l10n_cl_dte_email else _('company')))
         if datetime.strptime(self._get_cl_current_strftime(), '%Y-%m-%dT%H:%M:%S').date() < self.invoice_date:
             raise UserError(
                 _('The stamp date and time cannot be prior to the invoice issue date and time. TIP: check '

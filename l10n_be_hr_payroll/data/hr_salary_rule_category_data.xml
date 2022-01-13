@@ -172,4 +172,9 @@
         <field name="name">Double December Pay Gross</field>
         <field name="code">DDPG</field>
     </record>
+
+    <record id="hr_salary_rule_category_group_insurance" model="hr.salary.rule.category">
+        <field name="name">Group Insurance (Employer)</field>
+        <field name="code">GROUPINSURANCE</field>
+    </record>
 </odoo>

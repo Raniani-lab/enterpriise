@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
@@ -1053,6 +1054,7 @@ class HrDMFAReport(models.Model):
                 employee_payslips[payslip.employee_id] |= payslip
 
         double_basis, double_onss = self._get_double_holiday_pay_contribution(payslips)  # rounded
+        group_basis, group_onss = self._get_group_insurance_contribution()
 
         result = {
             'employer_class': self.company_id.dmfa_employer_class,
@@ -1073,6 +1075,8 @@ class HrDMFAReport(models.Model):
                 worker_count) for employee in employees]),
             'double_holiday_pay_contribution': format_amount(double_onss),
             'unrelated_calculation_basis': format_amount(double_basis),
+            'group_insurance_basis': format_amount(group_basis),
+            'group_insurance_amount': format_amount(group_onss),
             'pretty_format': lambda a: str(round(int(a) / 100.0, 2)),
         }
         result['global_contribution'] = format_amount(self._get_global_contribution(result['natural_persons'], format_amount(double_onss)))
@@ -1098,7 +1102,29 @@ class HrDMFAReport(models.Model):
                 #             total += int(remuneration.amount) / 100.00 * 0.1307
                 for deduction in worker_record.deductions:
                     total -= int(deduction.amount) / 100.00
-        return round(total, 2)
+        # https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/extralegal_pensions.html#h24
+        # En DMFA, la cotisation sur les avantages extra-légaux se déclare globalement par catégorie
+        # d’employeur dans le bloc 90002 « cotisation non liée à une personne physique» sous les codes
+        # travailleur 864, 865 ou 866 selon le cas.
+
+        # 864 : pour les versements effectués directement au travailleur pensionné ou à ses ayants
+        #       droit
+        # 865 : pour les versements destinés au financement d'une pension complémentaire dans le cadre
+        #       d'un plan d'entreprise
+        # 866 : pour les versements destinés au financement d'une pension complémentaire dans le cadre
+        #       d'un plan sectoriel
+        # ! à partir du 1/2014, cotisation 866 déclarée uniquement par l'organisateur du régime
+        #   sectoriel (catégorie X99)
+        # Jusqu'au 3ème trimestre 2011 inclus, le code travailleur 851 était d'application mais il
+        # n'est plus autorisé pour les trimestres ultérieurs.
+
+        # La base de calcul qui correspond à la somme des avantages octroyés pour l’entreprise par
+        # type de versement doit être mentionnée.
+
+        # Lorsque la DMFA est introduite via le web, la base de calcul de cette cotisation doit être
+        # mentionnée dans les cotisations dues pour l’ensemble de l’entreprise et la cotisation est
+        # calculée automatiquement.
+        return round(total, 2) + self._get_group_insurance_contribution()[1]
 
     def _get_double_holiday_pay_contribution(self, payslips):
         """ Some contribution are not specified at the worker level but globally for the whole company """
@@ -1117,6 +1143,22 @@ class HrDMFAReport(models.Model):
         basis = round(basis_raw, 2)
         onss_amount = round(basis_raw * 0.1307, 2)
         return (basis, onss_amount)
+
+    def _get_group_insurance_contribution(self):
+        regular_payslip = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')
+        payslips_sudo = self.env['hr.payslip'].sudo().search([
+            ('date_to', '>=', self.quarter_start),
+            ('date_to', '<=', self.quarter_end),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', '=', regular_payslip.id),
+            ('company_id', '=', self.company_id.id),
+        ])
+        line_values = payslips_sudo._get_line_values(
+            ['GROUPINSURANCE'], vals_list=['amount', 'total'], compute_sum=True
+        )
+        basis = line_values['GROUPINSURANCE']['sum']['amount']
+        onss_amount = line_values['GROUPINSURANCE']['sum']['total']
+        return (round(basis, 2), round(onss_amount, 2))
 
 
 class HrDMFALocationUnit(models.Model):

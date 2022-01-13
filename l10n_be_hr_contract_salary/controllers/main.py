@@ -84,6 +84,9 @@ class HrContractSalary(main.HrContractSalary):
         insurance_fields = [
             'insured_relative_children', 'insured_relative_adults',
             'fold_insured_relative_spouse', 'has_hospital_insurance']
+        ambulatory_insurance_fields = [
+            'l10n_be_ambulatory_insured_children', 'l10n_be_ambulatory_insured_adults',
+            'fold_l10n_be_ambulatory_insured_spouse', 'l10n_be_has_ambulatory_insurance']
         if advantage_field == 'public_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract']._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':
@@ -121,6 +124,19 @@ class HrContractSalary(main.HrContractSalary):
             adult_count = int(adv['insured_relative_adults_manual'] or False) + int(adv['fold_insured_relative_spouse']) + int(has_hospital_insurance)
             insurance_amount = request.env['hr.contract']._get_insurance_amount(child_amount, child_count, adult_amount, adult_count)
             res['extra_values'] = [('has_hospital_insurance', insurance_amount)]
+        if advantage_field in ambulatory_insurance_fields:
+            child_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_child', default=7.2))
+            adult_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_adult', default=20.5))
+            adv = advantages['contract']
+            child_count = int(adv['l10n_be_ambulatory_insured_children_manual'] or False)
+            l10n_be_has_ambulatory_insurance = float(adv['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in adv else False
+            adult_count = int(adv['l10n_be_ambulatory_insured_adults_manual'] or False) \
+                        + int(adv['fold_l10n_be_ambulatory_insured_spouse']) \
+                        + int(l10n_be_has_ambulatory_insurance)
+            insurance_amount = request.env['hr.contract']._get_insurance_amount(
+                child_amount, child_count,
+                adult_amount, adult_count)
+            res['extra_values'] = [('l10n_be_has_ambulatory_insurance', insurance_amount)]
         return res
 
     def _apply_url_value(self, contract, field_name, value):
@@ -298,6 +314,8 @@ class HrContractSalary(main.HrContractSalary):
             initial_values['select_company_bike_depreciated_cost'] = 'new-%s' % contract.new_bike_model_id.id
 
         initial_values['has_hospital_insurance'] = contract.insurance_amount
+        initial_values['l10n_be_has_ambulatory_insurance'] = contract.l10n_be_ambulatory_insurance_amount
+
         return mapped_advantages, advantage_types, dropdown_options, dropdown_group_options, initial_values
 
     def _get_new_contract_values(self, contract, employee, advantages):
@@ -310,6 +328,7 @@ class HrContractSalary(main.HrContractSalary):
             if field_to_copy in contract:
                 res[field_to_copy] = contract[field_to_copy]
         res['has_hospital_insurance'] = float(advantages['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in advantages else False
+        res['l10n_be_has_ambulatory_insurance'] = float(advantages['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in advantages else False
         res['l10n_be_canteen_cost'] = advantages['l10n_be_canteen_cost']
         return res
 

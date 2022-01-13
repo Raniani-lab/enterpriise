@@ -91,6 +91,28 @@
                     <field name="l10n_be_canteen_cost"/>
                     <span> / month</span>
                 </div>
+                <label for="l10n_be_group_insurance_rate" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                <div class="o_row">
+                    <field name="l10n_be_group_insurance_rate" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                    <span attrs="{'invisible': [('wage_type', '=', 'hourly')]}">%</span>
+                </div>
+                <field name="l10n_be_group_insurance_amount" invisible="1"/>
+                <field name="l10n_be_group_insurance_cost" invisible="1"/>
+            </xpath>
+            <xpath expr="//group[@name='yearly_advantages']" position="before">
+                <group string="Ambulatory Insurance" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
+                    <field name="l10n_be_has_ambulatory_insurance"/>
+                    <field name="l10n_be_ambulatory_insured_spouse" string="Insured Spouse"/>
+                    <field name="l10n_be_ambulatory_insured_adults" string="# Insured Children &gt;= 19"/>
+                    <field name="l10n_be_ambulatory_insured_children" string="# Insured Children &lt; 19"/>
+                    <label for="l10n_be_ambulatory_insurance_amount" attrs="{'invisible': ('l10n_be_has_ambulatory_insurance', '=', False)}">Insurance Amount</label>
+                    <div class="o_row" attrs="{'invisible': ('l10n_be_has_ambulatory_insurance', '=', False)}">
+                        <field name="l10n_be_ambulatory_insurance_amount" nolabel="1"/>
+                        <span>€ / month</span>
+                    </div>
+                    <field name="l10n_be_ambulatory_amount_per_child" string="Amount per Child" invisible="1"/>
+                    <field name="l10n_be_ambulatory_amount_per_adult" string="Amount per Adult" invisible="1"/>
+                </group>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="after">
                 <group string="Hospital Insurance" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">

@@ -8,6 +8,7 @@ hrContractSalary.include({
         "change input[name='has_hospital_insurance_radio']": "onchangeHospital",
         "change input[name='fold_company_car_total_depreciated_cost']": "onchangeCompanyCar",
         "change input[name='fold_private_car_reimbursed_amount']": "onchangePrivateCar",
+        "change input[name='l10n_be_has_ambulatory_insurance_radio']": "onchangeAmbulatory",
     }),
 
     getAdvantages() {
@@ -57,6 +58,19 @@ hrContractSalary.include({
             class: 'mt8',
             text: '# Children >= 19'
         }));
+        this.onchangeAmbulatory();
+        // YTI TODO: There is probably a way to remove this crap
+        $("input[name='l10n_be_ambulatory_insured_children']").parent().addClass('d-none');
+        $("input[name='l10n_be_ambulatory_insured_adults']").parent().addClass('d-none');
+        $("input[name='l10n_be_ambulatory_insured_spouse']").parent().addClass('d-none');
+        $("input[name='l10n_be_ambulatory_insured_children_manual']").before($('<strong>', {
+            class: 'mt8',
+            text: '# Children < 19'
+        }));
+        $("input[name='l10n_be_ambulatory_insured_adults_manual']").before($('<strong>', {
+            class: 'mt8',
+            text: '# Children >= 19'
+        }));
         return res;
     },
 
@@ -76,6 +90,25 @@ hrContractSalary.include({
             $("label[for='insured_relative_children']").parent().addClass('d-none');
             $("label[for='insured_relative_adults']").parent().addClass('d-none');
             $("label[for='insured_relative_spouse']").parent().addClass('d-none');
+        }
+    },
+
+    onchangeAmbulatory: function() {
+        const hasInsurance = $("input[name='l10n_be_has_ambulatory_insurance_radio']:last").prop('checked');
+        if (hasInsurance) {
+            // Show fields
+            $("label[for='l10n_be_ambulatory_insured_children']").parent().removeClass('d-none');
+            $("label[for='l10n_be_ambulatory_insured_adults']").parent().removeClass('d-none');
+            $("label[for='l10n_be_ambulatory_insured_spouse']").parent().removeClass('d-none');
+        } else {
+            // Reset values
+            $("input[name='fold_l10n_be_ambulatory_insured_spouse']").prop('checked', false);
+            $("input[name='l10n_be_ambulatory_insured_children_manual']").val(0);
+            $("input[name='l10n_be_ambulatory_insured_adults_manual']").val(0);
+            // Hide fields
+            $("label[for='l10n_be_ambulatory_insured_children']").parent().addClass('d-none');
+            $("label[for='l10n_be_ambulatory_insured_adults']").parent().addClass('d-none');
+            $("label[for='l10n_be_ambulatory_insured_spouse']").parent().addClass('d-none');
         }
     },
 });

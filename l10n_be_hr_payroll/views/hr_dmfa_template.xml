@@ -260,6 +260,13 @@
                         <t t-call="l10n_be_hr_payroll.NaturalPerson"/>
                     </t>
 
+                    <ContributionUnrelatedToNP>
+                        <UnrelatedEmployerClass t-esc="employer_class"/>
+                        <UnrelatedWorkerCode>865</UnrelatedWorkerCode>
+                        <UnrelatedCalculationBasis t-esc="group_insurance_basis"/>
+                        <UnrelatedAmount t-esc="group_insurance_amount"/>
+                    </ContributionUnrelatedToNP>
+
                     <!-- 90002: Bloc fonctionnel permettant de déclarer les cotisations non liées à une personne physique dues par l'employeur. -->
                     <!--
                         - Cotisation non liée à une personne physique
@@ -1731,6 +1738,10 @@
                                 <tr name="double_pay_global">
                                     <td>Double Holiday Pay Global Contributions:</td>
                                     <td style="text-align: right;"><t t-esc="pretty_format(data['double_holiday_pay_contribution'])"/> €</td>
+                                </tr>
+                                <tr>
+                                    <td>Group Insurance Global Contributions:</td>
+                                    <td style="text-align: right;"><t t-esc="pretty_format(data['group_insurance_basis'])"/> €</td>
                                 </tr>
                                 <tr>
                                     <td>Total of all Contributions:</td>

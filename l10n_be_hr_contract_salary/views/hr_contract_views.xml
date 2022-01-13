@@ -22,6 +22,12 @@
                     <span>/ year</span>
                 </div>
             </xpath>
+            <div name="div_wage_with_holidays" position="attributes">
+                <attribute name="attrs">{'invisible': [('holidays', '=', 0.0), ('l10n_be_group_insurance_rate', '=', 0.0)]}</attribute>
+            </div>
+            <label name="label_wage_with_holidays" position="attributes">
+                <attribute name="attrs">{'invisible': [('holidays', '=', 0.0), ('l10n_be_group_insurance_rate', '=', 0.0)]}</attribute>
+            </label>
         </field>
     </record>
 </odoo>

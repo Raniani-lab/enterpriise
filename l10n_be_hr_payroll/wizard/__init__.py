@@ -15,3 +15,4 @@ from . import l10n_be_double_pay_recovery_wizard
 from . import l10n_be_hr_payroll_employee_lang
 from . import hr_payroll_payslips_by_employees
 from . import l10n_be_december_slip_wizard
+from . import l10n_be_group_insurance_wizard

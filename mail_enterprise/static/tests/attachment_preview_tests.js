@@ -121,8 +121,10 @@ QUnit.module('attachment_preview_tests.js', {
         const files = [
             await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
         ];
+        const messaging = await this.env.services.messaging.get();
+        const chatter = messaging.models['Chatter'].all()[0];
         await afterNextRender(() =>
-            inputFiles(document.querySelector('.o_FileUploader_input'), files)
+            inputFiles(chatter.composerView.fileUploader.fileInput, files)
         );
         await afterNextRender(() =>
             document.querySelector('.o_Composer_buttonSend').click()

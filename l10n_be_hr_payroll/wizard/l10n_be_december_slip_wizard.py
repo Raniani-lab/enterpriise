@@ -102,7 +102,7 @@ class L10nBeDecemberSlipWizard(models.TransientModel):
         self.ensure_one()
         input_line_vals = []
 
-        simple_input = self.env.ref('l10n_be_hr_payroll_december.input_simple_december_pay')
+        simple_input = self.env.ref('l10n_be_hr_payroll.input_simple_december_pay')
         lines_to_remove = self.payslip_id.input_line_ids.filtered(
             lambda x: x.input_type_id == simple_input)
         to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
@@ -112,7 +112,7 @@ class L10nBeDecemberSlipWizard(models.TransientModel):
         })]
         input_line_vals += to_remove_vals + to_add_vals
 
-        double_input = self.env.ref('l10n_be_hr_payroll_december.input_double_december_pay')
+        double_input = self.env.ref('l10n_be_hr_payroll.input_double_december_pay')
         lines_to_remove = self.payslip_id.input_line_ids.filtered(
             lambda x: x.input_type_id == double_input)
         to_remove_vals = [(3, line.id, False) for line in lines_to_remove]

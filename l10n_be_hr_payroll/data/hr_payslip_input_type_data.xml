@@ -22,6 +22,21 @@
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
     </record>
 
+    <!-- December Pay -->
+    <record id="input_simple_december_pay" model="hr.payslip.input.type">
+        <field name="name">Simple December Pay</field>
+        <field name="code">SIMPLEDECEMBER</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
+    </record>
+
+    <record id="input_double_december_pay" model="hr.payslip.input.type">
+        <field name="name">Double December Pay</field>
+        <field name="code">DOUBLEDECEMBER</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
+    </record>
+
     <record id="cp200_employee_eco_vouchers" model="hr.payslip.input.type">
         <field name="name">Eco-Vouchers</field>
         <field name="code">ECOVOUCHERS</field>

@@ -26,6 +26,7 @@ class Payslip(models.Model):
     l10n_be_is_double_pay = fields.Boolean(compute='_compute_l10n_be_is_double_pay')
     l10n_be_max_seizable_amount = fields.Float(compute='_compute_l10n_be_max_seizable_amount')
     l10n_be_max_seizable_warning = fields.Char(compute='_compute_l10n_be_max_seizable_amount')
+    l10n_be_is_december = fields.Boolean(compute='_compute_l10n_be_is_december')
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_input_line_ids(self):
@@ -64,6 +65,11 @@ class Payslip(models.Model):
         super()._compute_worked_hours()
         for payslip in self:
             payslip.sum_worked_hours -= sum([line.number_of_hours for line in payslip.worked_days_line_ids if line.is_credit_time])
+
+    @api.depends('struct_id', 'date_from')
+    def _compute_l10n_be_is_december(self):
+        for payslip in self:
+            payslip.l10n_be_is_december = payslip.struct_id.code == "CP200MONTHLY" and payslip.date_from and payslip.date_from.month == 12
 
     def _compute_work_entry_dependent_benefits(self):
         if self.env.context.get('salary_simulation'):

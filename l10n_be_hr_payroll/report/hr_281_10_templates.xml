@@ -539,7 +539,7 @@
                                         </div>
                                     </div>
                                     <div class="row border-bottom">
-                                        <div class="col-8 font-weight-bold offset-1">Montant</div>
+                                        <div class="col-8 font-weight-bold offset-1">Amount</div>
                                         <div class="col-1 text-right">287</div>
                                         <div class="col-2 text-right"><span t-esc="data['f10_2075_bijzonderbijdrage']"/></div>
                                     </div>

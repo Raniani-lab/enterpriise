@@ -926,4 +926,3 @@ class HrPayslip(models.Model):
         # if necessary, retrigger the cron to generate more pdfs
         if len(payslips) > BATCH_SIZE:
             self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-

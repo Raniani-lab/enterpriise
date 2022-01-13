@@ -2,9 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import io
 import logging
-import zipfile
 
 from collections import defaultdict
 from datetime import date
@@ -65,17 +63,16 @@ class L10nBe28110(models.Model):
         ('2', 'Add'),
         ('3', 'Cancel'),
         ], string="Treatment Type", default='0', required=True)
-    pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
     xml_file = fields.Binary('XML File', readonly=True, attachment=False)
-    pdf_filename = fields.Char()
     xml_filename = fields.Char()
-    documents_enabled = fields.Boolean(compute='_compute_documents_enabled')
     xml_validation_state = fields.Selection([
         ('normal', 'N/A'),
         ('done', 'Valid'),
         ('invalid', 'Invalid'),
     ], default='normal', compute='_compute_validation_state', store=True)
     error_message = fields.Char('Error Message', compute='_compute_validation_state', store=True)
+    line_ids = fields.One2many(
+        'l10n_be.281_10.line', 'sheet_id', compute='_compute_line_ids', store=True, readonly=False)
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
@@ -155,7 +152,23 @@ class L10nBe28110(models.Model):
             result += 'K'
         return result
 
-    def _get_rendering_data(self):
+    @api.depends('reference_year', 'company_id')
+    def _compute_line_ids(self):
+        for sheet in self:
+            all_payslips = self.env['hr.payslip'].search([
+                ('date_to', '<=', date(int(sheet.reference_year), 12, 31)),
+                ('date_from', '>=', date(int(sheet.reference_year), 1, 1)),
+                ('state', 'in', ['done', 'paid']),
+                ('company_id', '=', sheet.company_id.id),
+            ])
+            all_employees = all_payslips.mapped('employee_id')
+            sheet.write({
+                'line_ids': [(5, 0, 0)] + [(0, 0, {
+                    'employee_id': employee.id,
+                }) for employee in all_employees]
+            })
+
+    def _get_rendering_data(self, employees):
         main_data = {
             'v0002_inkomstenjaar': self.reference_year,
             'v0010_bestandtype': 'BELCOTST' if self.is_test else 'BELCOTAX',
@@ -185,6 +198,7 @@ class L10nBe28110(models.Model):
             ('date_to', '<=', date(int(self.reference_year), 12, 31)),
             ('date_from', '>=', date(int(self.reference_year), 1, 1)),
             ('state', 'in', ['done', 'paid']),
+            ('employee_id', 'in', employees.ids)
         ])
         all_employees = all_payslips.mapped('employee_id')
         self._check_employees_configuration(all_employees)
@@ -418,63 +432,23 @@ class L10nBe28110(models.Model):
 
         return {'data': main_data, 'employees_data': employees_data, 'total_data': total_data}
 
-    def _action_generate_pdf(self, post_process=False):
-        rendering_data = self._get_rendering_data()
-        for sheet_values in rendering_data['employees_data']:
-            for key, value in sheet_values.items():
-                if not value:
-                    sheet_values[key] = 'Néant'
-        template_sudo = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10').sudo()
-
-        pdf_files = []
-        sheet_count = len(rendering_data['employees_data'])
-        counter = 1
-        for sheet in rendering_data['employees_data']:
-            _logger.info('Printing 281.10 sheet (%s/%s)', counter, sheet_count)
-            counter += 1
-            sheet_filename = '%s-%s-281_10' % (sheet['f2002_inkomstenjaar'], sheet['f2013_naam'])
-            sheet_file, dummy = template_sudo._render_qweb_pdf(sheet['employee_id'], data={**sheet, **rendering_data['data']})
-            pdf_files.append((sheet['employee'], sheet_filename, sheet_file))
-
-        if pdf_files:
-            filename, binary = self._process_files(pdf_files, default_filename='281.10 PDF - %s.zip' % fields.Date.today(), post_process=post_process)
-            if not post_process:
-                self.pdf_filename = filename
-                self.pdf_file = binary
-
-        self.state = 'get'
-
     def action_generate_pdf(self):
-        return self._action_generate_pdf()
+        self.line_ids.write({'pdf_to_generate': True})
+        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
 
-    def _post_process_files(self, files):
-        return
-
-    def _process_files(self, files, default_filename='281.zip', post_process=False):
-        """Groups files into a single file
-        :param files: list of tuple (employee, filename, data)
-        :return: tuple filename, encoded data
-        """
-        if post_process:
-            self._post_process_files(files)
-            return False, False
-
-        if len(files) == 1:
-            dummy, filename, data = files[0]
-            return filename, base64.encodebytes(data)
-
-        stream = io.BytesIO()
-        with zipfile.ZipFile(stream, 'w') as doc_zip:
-            for dummy, filename, data in files:
-                doc_zip.writestr(filename, data, compress_type=zipfile.ZIP_DEFLATED)
-
-        filename = default_filename
-        return filename, base64.encodebytes(stream.getvalue())
+    def _process_files(self, files):
+        self.ensure_one()
+        for employee, filename, data in files:
+            line = self.line_ids.filtered(lambda l: l.employee_id == employee)
+            line.write({
+                'pdf_file': base64.encodebytes(data),
+                'pdf_filename': filename,
+            })
 
     def action_generate_xml(self):
         self.ensure_one()
         self.xml_filename = '%s-281_10_report.xml' % (self.reference_year)
-        xml_str = self.env.ref('l10n_be_hr_payroll.281_10_xml_report')._render(self._get_rendering_data())
+        xml_str = self.env.ref('l10n_be_hr_payroll.281_10_xml_report')._render(self._get_rendering_data(self.line_ids.employee_id))
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))
@@ -482,3 +456,39 @@ class L10nBe28110(models.Model):
 
         self.xml_file = base64.encodebytes(xml_formatted_str)
         self.state = 'get'
+
+
+class L10nBe28110Line(models.Model):
+    _name = 'l10n_be.281_10.line'
+    _description = 'HR Payroll 281.10 Line Wizard'
+
+    employee_id = fields.Many2one('hr.employee')
+    pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
+    pdf_filename = fields.Char()
+    sheet_id = fields.Many2one('l10n_be.281_10')
+    pdf_to_generate = fields.Boolean()
+
+    def _generate_pdf(self):
+        for sheet in self.sheet_id:
+            lines = self.filtered(lambda l: l.sheet_id == sheet)
+            rendering_data = sheet._get_rendering_data(lines.employee_id)
+            for sheet_values in rendering_data['employees_data']:
+                for key, value in sheet_values.items():
+                    if not value:
+                        sheet_values[key] = _('None')
+            template_sudo = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10').sudo()
+
+            pdf_files = []
+            sheet_count = len(rendering_data['employees_data'])
+            counter = 1
+            for sheet_data in rendering_data['employees_data']:
+                _logger.info('Printing 281.10 sheet (%s/%s)', counter, sheet_count)
+                counter += 1
+                sheet_filename = '%s-%s-281_10' % (sheet_data['f2002_inkomstenjaar'], sheet_data['f2013_naam'])
+                employee_lang = sheet_data['employee'].sudo().address_home_id.lang
+                sheet_file, dummy = template_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
+                    sheet_data['employee_id'], data={**sheet_data, **rendering_data['data']})
+                pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
+
+            if pdf_files:
+                sheet._process_files(pdf_files)

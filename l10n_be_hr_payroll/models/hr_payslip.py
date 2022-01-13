@@ -568,17 +568,29 @@ class Payslip(models.Model):
         is_rescheduled = super()._cron_generate_pdf()
         if is_rescheduled:
             return is_rescheduled
+        # Check 281.10 PDF to generate
         lines = self.env['l10n_be.281_10.line'].search([('pdf_to_generate', '=', True)])
-        if not lines:
-            return
-        BATCH_SIZE = 30
-        lines_batch = lines[:BATCH_SIZE]
-        lines_batch._generate_pdf()
-        lines_batch.write({'pdf_to_generate': False})
-        # if necessary, retrigger the cron to generate more pdfs
-        if len(lines) > BATCH_SIZE:
-            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-            return True
+        if lines:
+            BATCH_SIZE = 30
+            lines_batch = lines[:BATCH_SIZE]
+            lines_batch._generate_pdf()
+            lines_batch.write({'pdf_to_generate': False})
+            # if necessary, retrigger the cron to generate more pdfs
+            if len(lines) > BATCH_SIZE:
+                self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+                return True
+
+        # Check 281.45 PDF to generate
+        lines = self.env['l10n_be.281_45.line'].search([('pdf_to_generate', '=', True)])
+        if lines:
+            BATCH_SIZE = 30
+            lines_batch = lines[:BATCH_SIZE]
+            lines_batch._generate_pdf()
+            lines_batch.write({'pdf_to_generate': False})
+            # if necessary, retrigger the cron to generate more pdfs
+            if len(lines) > BATCH_SIZE:
+                self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+                return True
 
 
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):

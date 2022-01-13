@@ -123,6 +123,16 @@ class HrContractSalary(main.HrContractSalary):
             res['extra_values'] = [('has_hospital_insurance', insurance_amount)]
         return res
 
+    def _apply_url_value(self, contract, field_name, value):
+        if field_name == 'l10n_be_canteen_cost':
+            return {'l10n_be_canteen_cost': value}
+        return super()._apply_url_value(contract, field_name, value)
+
+    def _get_default_template_values(self, contract):
+        values = super()._get_default_template_values(contract)
+        values['l10n_be_canteen_cost'] = False
+        return values
+
     def _get_advantages(self, contract):
         res = super()._get_advantages(contract)
         force_new_car = request.httprequest.args.get('new_car', False)
@@ -300,6 +310,7 @@ class HrContractSalary(main.HrContractSalary):
             if field_to_copy in contract:
                 res[field_to_copy] = contract[field_to_copy]
         res['has_hospital_insurance'] = float(advantages['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in advantages else False
+        res['l10n_be_canteen_cost'] = advantages['l10n_be_canteen_cost']
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):

@@ -21,6 +21,7 @@
         'report/hr_contract_history_report_views.xml',
         'views/hr_contract_views.xml',
         'views/res_config_settings_views.xml',
+        'views/hr_contract_salary_template.xml',
     ],
     'demo': [
         'data/l10n_be_hr_contract_salary_demo.xml',

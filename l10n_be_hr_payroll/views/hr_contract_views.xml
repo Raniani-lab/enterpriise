@@ -86,6 +86,11 @@
                     <field name="eco_checks" nolabel="1"/>
                     <span>/ year</span>
                 </div>
+                <label for="l10n_be_canteen_cost"/>
+                <div class="o_row">
+                    <field name="l10n_be_canteen_cost"/>
+                    <span> / month</span>
+                </div>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="after">
                 <group string="Hospital Insurance" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">

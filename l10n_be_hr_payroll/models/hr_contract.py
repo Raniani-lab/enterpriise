@@ -125,6 +125,7 @@ class HrContract(models.Model):
     l10n_be_is_below_scale = fields.Boolean(
         string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')
     l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale')
+    l10n_be_canteen_cost = fields.Monetary(string="Canteen Cost")
 
     @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
     def _compute_work_time_rate(self):

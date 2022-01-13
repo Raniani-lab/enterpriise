@@ -11,6 +11,7 @@
             <field name="contract_start_date" position="after">
                 <field name="new_car"/>
                 <field name="car_id"/>
+                <field name="l10n_be_canteen_cost"/>
             </field>
         </field>
     </record>

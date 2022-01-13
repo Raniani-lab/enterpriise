@@ -298,23 +298,13 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('team_id')
     def _compute_domain_user_ids(self):
-        helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
-        helpdesk_manager_group_id = self.env.ref('helpdesk.group_helpdesk_manager').id
-        users_data = self.env['res.users'].read_group(
-            [('groups_id', 'in', [helpdesk_user_group_id, helpdesk_manager_group_id])],
-            ['ids:array_agg(id)', 'groups_id'],
-            ['groups_id'],
-        )
-        mapped_data = {data['groups_id'][0]: data['ids'] for data in users_data}
+        user_ids = self.env.ref('helpdesk.group_helpdesk_user').users.ids
         for ticket in self:
+            ticket_user_ids = []
             ticket_sudo = ticket.sudo()
             if ticket_sudo.team_id and ticket_sudo.team_id.privacy_visibility == 'invited_internal':
-                manager_ids = mapped_data.get(helpdesk_manager_group_id, [])
-                follower_users = ticket_sudo.team_id.message_partner_ids.user_ids.filtered(lambda u: self.env.ref('helpdesk.group_helpdesk_user') in u.groups_id)
-                ticket.domain_user_ids = [Command.set(manager_ids + follower_users.ids)]
-            else:
-                user_ids = mapped_data.get(helpdesk_user_group_id, [])
-                ticket.domain_user_ids = [Command.set(user_ids)]
+                ticket_user_ids = ticket_sudo.team_id.message_partner_ids.user_ids.ids
+            ticket.domain_user_ids = [Command.set(user_ids + ticket_user_ids)]
 
     def _compute_access_url(self):
         super(HelpdeskTicket, self)._compute_access_url()

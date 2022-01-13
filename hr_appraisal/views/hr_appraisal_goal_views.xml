@@ -4,7 +4,7 @@
         <field name="name">hr.appraisal.goal.view.form</field>
         <field name="model">hr.appraisal.goal</field>
         <field name="arch" type="xml">
-            <form>
+            <form class="o_appraisal_goal_form">
                 <header>
                     <button name="action_confirm" type="object"
                             string="Mark as Done" class="oe_highlight"
@@ -60,7 +60,7 @@
         </field>
     </record>
 
-   <record id="hr_appraisal_goal_view_kanban" model="ir.ui.view">
+    <record id="hr_appraisal_goal_view_kanban" model="ir.ui.view">
         <field name="name">hr.appraisal.goal.view.kanban</field>
         <field name="model">hr.appraisal.goal</field>
         <field name="arch" type="xml">
@@ -122,8 +122,8 @@
                 <filter string="People I Manage" name="people_i_manage" domain="[('employee_id.parent_id.user_id', '=', uid)]" groups="hr_appraisal.group_hr_appraisal_user"/>
                 <separator/>
                 <filter string="Late" name="filter_late" domain="[('deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter string="Deadline" name="filter_deadline" date="deadline"/> 
-           </search>
+                <filter string="Deadline" name="filter_deadline" date="deadline"/>
+            </search>
         </field>
     </record>
 

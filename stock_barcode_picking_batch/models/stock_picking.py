@@ -18,34 +18,6 @@ class StockPicking(models.Model):
         self.ensure_one()
         return self.batch_id.action_client_action()
 
-    def action_open_picking_client_action(self):
-        self.ensure_one()
-        # If this picking isn't a part of a batch, search for other pickings for
-        # same partner and ask if the user wants to process them as a batch.
-        if not self.env.context.get('pickings_to_batch_ids') and not self.batch_id and self.state == 'assigned' and self.partner_id:
-            late_pickings = self.env['stock.picking'].search([
-                ('partner_id', '=', self.partner_id.id),
-                ('picking_type_id', '=', self.picking_type_id.id),
-                ('state', '=', 'assigned'),
-            ])
-            if len(late_pickings) > 1:
-                view = self.env.ref('stock_barcode_picking_batch.view_batch_picking_confirmation')
-                return {
-                    'name': _('Create New Batch Picking ?'),
-                    'type': 'ir.actions.act_window',
-                    'view_mode': 'form',
-                    'res_model': 'stock_barcode_picking_batch.group.pickings',
-                    'views': [(view.id, 'form')],
-                    'view_id': view.id,
-                    'target': 'new',
-                    'context': dict(
-                        self.env.context,
-                        default_picking_id=self.id,
-                        pickings_to_batch_ids=late_pickings.ids,
-                    ),
-                }
-        return super().action_open_picking_client_action()
-
     def action_unbatch(self):
         self.ensure_one()
         if self.batch_id:

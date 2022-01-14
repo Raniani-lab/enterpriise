@@ -398,7 +398,8 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             this.tssInformation.transaction_number.value = data.number;
             this._updateTimeStart(data.time_start);
             this.tssInformation.time_end.value = convertFromEpoch(data.time_end);
-            this.tssInformation.certificate_serial.value = data.certificate_serial;
+            // certificate_serial is now called tss_serial_number in the v2 api
+            this.tssInformation.certificate_serial.value = data.tss_serial_number ? data.tss_serial_number : data.certificate_serial;
             this.tssInformation.timestamp_format.value = data.log.timestamp_format;
             this.tssInformation.signature_value.value = data.signature.value;
             this.tssInformation.signature_algorithm.value = data.signature.algorithm;

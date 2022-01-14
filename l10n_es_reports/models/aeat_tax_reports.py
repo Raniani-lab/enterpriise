@@ -573,9 +573,11 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(' ' * 8)
         rslt += self._boe_format_string(' ')
         rslt += self._boe_format_number(boe_wizard._get_using_sii_2021_value())
-        rslt += self._boe_format_number(boe_wizard._get_exonerated_from_mod_390_2021_value(period))
 
-        if period in ('12', '4T'):
+        exonerated_from_mod_390 = boe_wizard._get_exonerated_from_mod_390_2021_value(period)
+        rslt += self._boe_format_number(exonerated_from_mod_390)
+
+        if exonerated_from_mod_390 == 1:
             profit_and_loss_report = self.env.ref('l10n_es_reports.financial_report_es_profit_and_loss')
             end_date = fields.Date.from_string(options['date']['date_to'])
             transactions_volume_options = profit_and_loss_report._get_options({
@@ -681,7 +683,8 @@ class AEATAccountFinancialReport(models.Model):
         partner_bank = boe_wizard.partner_bank_id
 
         bic, iban = self.get_bic_and_iban(partner_bank)
-        rslt += self._boe_format_string(bic if gov_giving_back else '', length=11)
+
+        rslt += self._boe_format_string(bic if gov_giving_back and iban and iban[:2] != 'ES' else '', length=11)
         rslt += self._boe_format_string(iban, length=34)
 
         # Reserved by AEAT
@@ -696,7 +699,7 @@ class AEATAccountFinancialReport(models.Model):
             rslt += self._boe_format_string(bank.country.code or '', length=2)
 
             # Marca SEPA
-            if iban:
+            if iban and boe_wizard.declaration_type != 'N':
                 iban_country_code = iban[:2]
                 if iban_country_code == 'ES':
                     marca = '1'

@@ -119,17 +119,19 @@ class DHLProvider():
         dct_from.City = warehouse_partner_id.city
         return dct_from
 
-    def _set_dutiable(self, total_value, currency_name):
+    def _set_dutiable(self, total_value, currency_name, incoterm):
         dutiable = self.factory.Dutiable()
         dutiable.DeclaredValue = float_repr(total_value, 2)
         dutiable.DeclaredCurrency = currency_name
+        if not incoterm:
+            raise UserError(_("Please define an incoterm in the associated sale order or set a default incoterm for the company in the accounting's settings."))
+        dutiable.TermsOfTrade = incoterm.code
         return dutiable
 
     def _set_dct_dutiable(self, total_value, currency_name):
         dct_dutiable = self.factory_dct_request.DCTDutiable()
         dct_dutiable.DeclaredCurrency = currency_name
         dct_dutiable.DeclaredValue = total_value
-        dct_dutiable.TermsOfTrade = "MY TERMS OF TRADE"
         return dct_dutiable
 
     def _set_dct_bkg_details(self, weight, carrier, shipper):

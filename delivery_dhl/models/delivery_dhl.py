@@ -207,7 +207,8 @@ class Providerdhl(models.Model):
             total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_ids])
             currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
             if self.dhl_dutiable:
-                shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name)
+                incoterm = picking.sale_id.incoterm or self.env.company.incoterm_id
+                shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name, incoterm)
             shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
             shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
             shipment_request['Label'] = srm._set_label(self.dhl_label_template)
@@ -249,7 +250,8 @@ class Providerdhl(models.Model):
         total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
         currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
         if self.dhl_dutiable:
-            shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name)
+            incoterm = picking.sale_id.incoterm or self.env.company.incoterm_id
+            shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name, incoterm)
         shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
         shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
         shipment_request['Label'] = srm._set_label(self.dhl_label_template)

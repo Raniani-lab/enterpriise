@@ -477,6 +477,7 @@ class AccountAsset(models.Model):
         self.ensure_one()
         new_wizard = self.env['asset.modify'].create({
             'asset_id': self.id,
+            'modify_action': 'resume' if self.env.context.get('resume_after_pause') else False,
         })
         return {
             'name': _('Modify Asset'),
@@ -486,36 +487,6 @@ class AccountAsset(models.Model):
             'target': 'new',
             'res_id': new_wizard.id,
             'context': self.env.context,
-        }
-
-    def action_asset_pause(self):
-        """ Returns an action opening the asset pause wizard."""
-        self.ensure_one()
-        new_wizard = self.env['account.asset.pause'].create({
-            'asset_id': self.id,
-        })
-        return {
-            'name': _('Pause Asset'),
-            'view_mode': 'form',
-            'res_model': 'account.asset.pause',
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-            'res_id': new_wizard.id,
-        }
-
-    def action_set_to_close(self):
-        """ Returns an action opening the asset pause wizard."""
-        self.ensure_one()
-        new_wizard = self.env['account.asset.sell'].create({
-            'asset_id': self.id,
-        })
-        return {
-            'name': _('Sell Asset'),
-            'view_mode': 'form',
-            'res_model': 'account.asset.sell',
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-            'res_id': new_wizard.id,
         }
 
     def action_save_model(self):

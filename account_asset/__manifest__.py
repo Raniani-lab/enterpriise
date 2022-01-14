@@ -17,8 +17,6 @@ Keeps track of depreciations, and creates corresponding journal entries.
         'security/account_asset_security.xml',
         'security/ir.model.access.csv',
         'wizard/asset_modify_views.xml',
-        'wizard/asset_pause_views.xml',
-        'wizard/asset_sell_views.xml',
         'views/account_account_views.xml',
         'views/account_asset_views.xml',
         'views/account_deferred_revenue.xml',

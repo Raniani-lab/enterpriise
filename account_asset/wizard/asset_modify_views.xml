@@ -9,12 +9,21 @@
                 <field name="asset_id" invisible="1"/>
                 <field name="need_date" invisible="1"/>
                 <field name="gain_value" invisible="1"/>
-                <group>
-                    <group string="Modification">
-                        <field name="name" placeholder="Modification reason" required="1"/>
+                <field name="select_invoice_line_id" invisible="1"/>
+                <field name="gain_or_loss" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+                <group col="2">
+                    <field name="modify_action" required="1" placeholder="How would you like to modify this asset's depreciation?"/>
+                </group>
+                <group attrs="{'invisible': [('modify_action', '=', False)]}">
+                    <group attrs="{'invisible': [('modify_action', 'not in', ('modify', 'resume', 'pause', 'dispose'))]}">
+                        <field name="name"
+                               placeholder="Modification reason"
+                               attrs="{'invisible': [('modify_action', 'not in', ('modify', 'resume'))],
+                                       'required': [('modify_action', '=', 'modify')]}"/>
                         <field name="date" attrs="{'invisible': [('need_date', '=', False)], 'required': [('need_date', '=', True)]}"/>
                     </group>
-                    <group string="New Values">
+                    <group string="New Values" attrs="{'invisible': [('modify_action', 'not in', ('modify', 'resume'))]}">
                         <label for="method_number"/>
                         <div class="o_row">
                             <field name="method_number" required="1"/>
@@ -29,10 +38,62 @@
                         <field name="account_depreciation_id" attrs="{'required': [('gain_value', '!=', False)]}"/>
                         <field name="account_depreciation_expense_id" attrs="{'required': [('gain_value', '!=', False)]}"/>
                     </group>
+                    <group attrs="{'invisible': [('modify_action', 'not in', ('sell'))]}">
+                        <field name="invoice_id"
+                               options="{'no_quick_create': True}"
+                               context="{'default_move_type': 'out_invoice', 'name_groupby':1}"
+                               attrs="{'invisible': [('modify_action', '!=', 'sell')],
+                                       'required': [('modify_action', '=', 'sell')]}"/>
+                        <field name="invoice_line_id"
+                               options="{'no_create': True}"
+                               attrs="{'invisible': [('select_invoice_line_id', '=', False)],
+                                       'required': [('select_invoice_line_id', '=', True)]}"
+                               domain="[('move_id', '=', invoice_id), ('exclude_from_invoice_tab', '=', False)]"/>
+                    </group>
+                    <group attrs="{'invisible': [('modify_action', 'not in', ('sell', 'dispose'))]}">
+                        <field name="gain_account_id"
+                               attrs="{'invisible': [('gain_or_loss', '!=', 'gain')],
+                                       'required': [('gain_or_loss', '=', 'gain')]}"/>
+                        <field name="loss_account_id"
+                               attrs="{'invisible': [('gain_or_loss', '!=', 'loss')],
+                                       'required': [('gain_or_loss', '=', 'loss')]}"/>
+                    </group>
                 </group>
                 <footer>
-                    <button name="modify" string="Modify" type="object" class="btn-primary" data-hotkey="q"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button name="pause"
+                            string="Pause"
+                            type="object"
+                            class="btn-primary"
+                            data-hotkey="p"
+                            attrs="{'invisible': [('modify_action', '!=', 'pause')]}"/>
+                    <button name="modify"
+                            string="Modify"
+                            type="object"
+                            class="btn-primary"
+                            data-hotkey="q"
+                            attrs="{'invisible': [('modify_action', '!=', 'modify')]}"/>
+                    <button name="modify"
+                            string="Resume"
+                            type="object"
+                            class="btn-primary"
+                            data-hotkey="r"
+                            attrs="{'invisible': [('modify_action', '!=', 'resume')]}"/>
+                    <button name="sell_dispose"
+                            string="Sell"
+                            type="object"
+                            class="btn-primary"
+                            data-hotkey="s"
+                            attrs="{'invisible': [('modify_action', '!=', 'sell')]}" />
+                    <button name="sell_dispose"
+                            string="Dispose"
+                            type="object"
+                            class="btn-primary"
+                            data-hotkey="t"
+                            attrs="{'invisible': [('modify_action', '!=', 'dispose')]}" />
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"
+                            data-hotkey="z"/>
                 </footer>
             </form>
         </field>

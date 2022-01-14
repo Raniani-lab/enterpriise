@@ -59,7 +59,7 @@ class AccountAsset(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('type', '=', 'general'), ('company_id', '=', company_id)]")
 
     # Values
-    original_value = fields.Monetary(string="Original Value", compute='_compute_value', store=True, readonly=True, states={'draft': [('readonly', False)]})
+    original_value = fields.Monetary(string="Original Value", compute='_compute_value', store=True, states={'draft': [('readonly', False)]})
     book_value = fields.Monetary(string='Book Value', readonly=True, compute='_compute_book_value', recursive=True, store=True, help="Sum of the depreciable value, the salvage value and the book value of all value increase items")
     value_residual = fields.Monetary(string='Depreciable Value', compute='_compute_value_residual')
     salvage_value = fields.Monetary(string='Not Depreciable Value', readonly=True, states={'draft': [('readonly', False)]},
@@ -157,6 +157,20 @@ class AccountAsset(models.Model):
                 # Only set a default value, do not erase user inputs
                 record._onchange_account_depreciation_id()
                 record._onchange_account_depreciation_expense_id()
+
+    @api.onchange('original_value')
+    def _display_original_value_warning(self):
+        if self.original_move_line_ids:
+            computed_original_value = self._get_related_purchase_value(self) + self.non_deductible_tax_value
+            if self.original_value != computed_original_value:
+                warning = {
+                    'title': _("Warning for the Original Value of %s", self.name),
+                    'message': _("The amount you have entered (%s) does not match the Related Purchase's value (%s). "
+                                 "Please make sure this is what you want.",
+                                 formatLang(self.env, self.original_value, currency_obj=self.currency_id),
+                                 formatLang(self.env, computed_original_value, currency_obj=self.currency_id))
+                }
+                return {'warning': warning}
 
     @api.onchange('account_depreciation_id')
     def _onchange_account_depreciation_id(self):

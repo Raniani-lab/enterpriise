@@ -924,7 +924,7 @@ tour.register('web_studio_approval_tour', {
     trigger: 'button[studio_approval]',
 }, {
     // there should be a warning
-    trigger: '.o_notification.bg-warning'
+    trigger: '.o_notification.border-warning'
 }
 ]);
 

@@ -211,7 +211,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-LHOOQ'
     },
     {
-        trigger: '.o_notification.bg-danger'
+        trigger: '.o_notification.border-danger'
     },
     {
         trigger: '.o_barcode_client_action',
@@ -808,7 +808,7 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
         run: 'scan O-BTN.validate',
     },
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 ]);
 

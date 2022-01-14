@@ -47,7 +47,7 @@ tour.register('test_receipt_classic_subcontracted_product', {test: true}, [
     },
 
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 
 ]);
@@ -106,7 +106,7 @@ tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
     },
 
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 ]);
 
@@ -141,7 +141,7 @@ tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
     },
 
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 ]);
 

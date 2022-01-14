@@ -39,7 +39,7 @@ tour.register('test_gs1_inventory_gtin_8', {test: true}, [
         run: 'scan O-BTN.validate',
     },
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 ]);
 
@@ -71,7 +71,7 @@ tour.register('test_gs1_inventory_product_units', {test: true}, [
         run: 'scan O-BTN.validate',
     },
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 ]);
 
@@ -228,7 +228,7 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: 'scan 011522222222221921Serial3\x1D3020',
     },
     {
-        trigger: '.o_notification.bg-danger',
+        trigger: '.o_notification.border-danger',
     },
     {
         trigger: '.o_barcode_line:contains("Serial3")',
@@ -290,7 +290,7 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         trigger: '.modal-content .btn[name=action_confirm]',
     },
     {
-        trigger: '.o_notification.bg-success',
+        trigger: '.o_notification.border-success',
     },
 ]);
 
@@ -302,7 +302,7 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         run: 'scan 00987654123487568456',
     },
     {
-        trigger: '.o_notification.bg-danger'
+        trigger: '.o_notification.border-danger'
     },
     // Changes location for Section 1 and scans again the package.
     {
@@ -351,7 +351,7 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         run: 'scan 00487325612456785124',
     },
     {
-        trigger: '.o_notification.bg-danger'
+        trigger: '.o_notification.border-danger'
     },
 
     // Scans additionnal products and put them in a new pack by scanning a non-existing package barcode.
@@ -385,7 +385,7 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         trigger: '.o_apply_page'
     },
     {
-        trigger: '.o_notification.bg-success'
+        trigger: '.o_notification.border-success'
     }
 ]);
 
@@ -530,7 +530,7 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         }
     },
     { trigger: '.o_barcode_client_action', run: 'scan O-BTN.validate' },
-    { trigger: '.o_notification.bg-success' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_gs1_package_delivery', {test: true}, [
@@ -568,7 +568,7 @@ tour.register('test_gs1_package_delivery', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.bg-success' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_gs1_reserved_delivery', {test:true}, [
@@ -621,7 +621,7 @@ tour.register('test_gs1_reserved_delivery', {test:true}, [
         trigger: '.o_validate_page.btn-success',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.bg-success' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_gs1_receipt_conflicting_barcodes_1', {test: true}, [
@@ -653,7 +653,7 @@ tour.register('test_gs1_receipt_conflicting_barcodes_1', {test: true}, [
         trigger: '.o_validate_page.btn-success',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.bg-success' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_gs1_receipt_conflicting_barcodes_2', {test: true}, [
@@ -685,7 +685,7 @@ tour.register('test_gs1_receipt_conflicting_barcodes_2', {test: true}, [
         trigger: '.o_validate_page.btn-success',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.bg-success' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
@@ -778,7 +778,7 @@ tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
         trigger: '.o_validate_page.btn-success',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.bg-success' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_gs1_receipt_lot_serial', {test: true}, [
@@ -1051,7 +1051,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_validate_page',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.bg-success' }
+    { trigger: '.o_notification.border-success' }
 ]);
 
 tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
@@ -1067,7 +1067,7 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         run: 'scan 01000000152643293100000005',
     },
     {
-        trigger: '.o_notification.bg-danger',
+        trigger: '.o_notification.border-danger',
         run: function () {
             helper.assertLinesCount(0);
             const errorMessageTitle = document.querySelector('.o_notification_title');
@@ -1096,7 +1096,7 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         run: 'scan 01000000152643293100000005',
     },
     {
-        trigger: '.o_notification.bg-danger',
+        trigger: '.o_notification.border-danger',
         run: function () {
             helper.assertLinesCount(1);
             const $line = helper.getLine({barcode: '15264329'});
@@ -1130,7 +1130,7 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         run: 'scan 01000000152648793700000006',
     },
     {
-        trigger: '.o_notification.bg-danger',
+        trigger: '.o_notification.border-danger',
         run: function () {
             helper.assertLinesCount(2);
             const $line = helper.getLine({barcode: '15264879'});

@@ -100,23 +100,23 @@ class HrContract(models.Model):
     no_onss = fields.Boolean(string="No ONSS")
     no_withholding_taxes = fields.Boolean()
     rd_percentage = fields.Integer("Time Percentage in R&D")
-    employee_age = fields.Integer('Age of Employee', compute='_compute_employee_age')
+    employee_age = fields.Integer('Age of Employee', compute='_compute_employee_age', compute_sudo=True)
     l10n_be_impulsion_plan = fields.Selection([
         ('25yo', '< 25 years old'),
         ('12mo', '12 months +'),
         ('55yo', '55+ years old')], string="Impulsion Plan")
     l10n_be_onss_restructuring = fields.Boolean(string="Allow ONSS Reduction for Restructuring")
 
-    has_hospital_insurance = fields.Boolean(string="Has Hospital Insurance", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    insured_relative_children = fields.Integer(string="# Insured Children < 19 y/o", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    insured_relative_adults = fields.Integer(string="# Insured Children >= 19 y/o", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    insured_relative_spouse = fields.Boolean(string="Insured Spouse", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    hospital_insurance_amount_per_child = fields.Float(string="Amount per Child", groups="hr_contract.group_hr_contract_manager",
+    has_hospital_insurance = fields.Boolean(string="Has Hospital Insurance", groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
+    insured_relative_children = fields.Integer(string="# Insured Children < 19 y/o", groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
+    insured_relative_adults = fields.Integer(string="# Insured Children >= 19 y/o", groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
+    insured_relative_spouse = fields.Boolean(string="Insured Spouse", groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
+    hospital_insurance_amount_per_child = fields.Float(string="Amount per Child", groups="hr_contract.group_hr_contract_employee_manager",
         default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_child', default=7.2)))
-    hospital_insurance_amount_per_adult = fields.Float(string="Amount per Adult", groups="hr_contract.group_hr_contract_manager",
+    hospital_insurance_amount_per_adult = fields.Float(string="Amount per Adult", groups="hr_contract.group_hr_contract_employee_manager",
         default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_adult', default=20.5)))
-    insurance_amount = fields.Float(compute='_compute_insurance_amount', string="Insurance Amount", groups="hr_contract.group_hr_contract_manager", tracking=True)
-    insured_relative_adults_total = fields.Integer(compute='_compute_insured_relative_adults_total', groups="hr_contract.group_hr_contract_manager")
+    insurance_amount = fields.Float(compute='_compute_insurance_amount', string="Insurance Amount", groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
+    insured_relative_adults_total = fields.Integer(compute='_compute_insured_relative_adults_total', groups="hr_contract.group_hr_contract_employee_manager")
     l10n_be_hospital_insurance_notes = fields.Text(string="Hospital Insurance: Additional Info")
 
     wage_with_holidays = fields.Monetary(
@@ -133,34 +133,34 @@ class HrContract(models.Model):
     # Ambulatory Insurance
     l10n_be_has_ambulatory_insurance = fields.Boolean(
         string="Has Ambulatory Insurance",
-        groups="hr_contract.group_hr_contract_manager", tracking=True)
+        groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_insured_children = fields.Integer(
         string="Ambulatory: # Insured Children < 19",
-        groups="hr_contract.group_hr_contract_manager", tracking=True)
+        groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_insured_adults = fields.Integer(
         string="Ambulatory: # Insured Children >= 19",
-        groups="hr_contract.group_hr_contract_manager", tracking=True)
+        groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_insured_spouse = fields.Boolean(
         string="Ambulatory: Insured Spouse",
-        groups="hr_contract.group_hr_contract_manager", tracking=True)
+        groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_amount_per_child = fields.Float(
-        string="Ambulatory: Amount per Child", groups="hr_contract.group_hr_contract_manager",
+        string="Ambulatory: Amount per Child", groups="hr_contract.group_hr_contract_employee_manager",
         default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_child', default=7.2)))
     l10n_be_ambulatory_amount_per_adult = fields.Float(
-        string="Ambulatory: Amount per Adult", groups="hr_contract.group_hr_contract_manager",
+        string="Ambulatory: Amount per Adult", groups="hr_contract.group_hr_contract_employee_manager",
         default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_adult', default=20.5)))
     l10n_be_ambulatory_insurance_amount = fields.Float(
         compute='_compute_ambulatory_insurance_amount', string="Ambulatory: Insurance Amount",
-        groups="hr_contract.group_hr_contract_manager", tracking=True)
+        groups="hr_contract.group_hr_contract_employee_manager", compute_sudo=True, tracking=True)
     l10n_be_ambulatory_insured_adults_total = fields.Integer(
         compute='_compute_ambulatory_insured_adults_total',
-        groups="hr_contract.group_hr_contract_manager")
+        groups="hr_contract.group_hr_contract_employee_manager")
     l10n_be_ambulatory_insurance_notes = fields.Text(string="Ambulatory Insurance: Additional Info")
 
 
     l10n_be_is_below_scale = fields.Boolean(
-        string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')
-    l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale')
+        string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale', compute_sudo=True)
+    l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale', compute_sudo=True)
     l10n_be_canteen_cost = fields.Monetary(string="Canteen Cost")
 
     _sql_constraints = [

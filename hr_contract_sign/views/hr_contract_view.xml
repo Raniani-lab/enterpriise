@@ -14,7 +14,7 @@
                 </button>
             </div>
             <xpath expr="//header" position="inside">
-                <button name="%(sign_contract_wizard_action)d" string="Signature Request" attrs="{'invisible': [('employee_id', '=', False)]}" type="action" groups="sign.group_sign_user"/>
+                <button name="%(sign_contract_wizard_action)d" string="Signature Request" attrs="{'invisible': [('employee_id', '=', False)]}" type="action" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
             <xpath expr="//field[@name='hr_responsible_id']" position="after">
                 <field name="sign_request_ids" invisible="1" groups='sign.group_sign_user'/>

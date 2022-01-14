@@ -15,7 +15,13 @@ odoo.define('hr_payroll.hr_contract_tree', function (require) {
          */
         renderButtons: function() {
             this._super.apply(this, arguments);
-            this.$buttons.append(this._renderIndexContractButton());
+            this.getSession().user_has_group('hr_contract.group_hr_contract_manager').then(
+                has_group => {
+                    if (has_group) {
+                        this.$buttons.append(this._renderIndexContractButton());
+                    }
+                }
+            );
         },
 
         /*

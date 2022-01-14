@@ -2,7 +2,7 @@
 <odoo>
 
      <!-- Root Menus -->
-    <menuitem id="menu_hr_payroll_root" name="Payroll" sequence="195" web_icon="hr_payroll,static/description/icon.svg" groups="hr_payroll.group_hr_payroll_user"/>
+    <menuitem id="menu_hr_payroll_root" name="Payroll" sequence="195" web_icon="hr_payroll,static/description/icon.svg" groups="hr_payroll.group_hr_payroll_employee_manager"/>
 
     <menuitem
         id="menu_hr_payroll_dashboard_root"
@@ -17,7 +17,7 @@
         name="Contracts"
         parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
         sequence="50"
-        groups="hr_payroll.group_hr_payroll_user"/>
+        groups="hr_payroll.group_hr_payroll_employee_manager"/>
 
     <menuitem
         id="menu_hr_payroll_work_entries_root"
@@ -31,7 +31,7 @@
         name="Payslips"
         parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
         sequence="70"
-        groups="hr_payroll.group_hr_payroll_user"/>
+        groups="hr_payroll.group_hr_payroll_manager"/>
 
     <menuitem
         id="menu_hr_payroll_report"
@@ -46,6 +46,7 @@
         name="Employees"
         action="hr_contract.hr_contract_history_view_list_action"
         parent="menu_hr_payroll_employees_root"
+        groups="hr_payroll.group_hr_payroll_manager"
         sequence="20"/>
 
     <menuitem
@@ -60,6 +61,7 @@
         name="Salary Attachments"
         action="hr_payroll.hr_salary_attachment_action"
         parent="menu_hr_payroll_employees_root"
+        groups="hr_payroll.group_hr_payroll_manager"
         sequence="35"/>
 
     <!-- **** Payslips **** -->
@@ -122,7 +124,8 @@
         name="Salary"
         parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"
         sequence="80"
-        groups="hr_payroll.group_hr_payroll_user"/>
+        groups="hr_payroll.group_hr_payroll_manager"
+    />
 
     <menuitem
         id="menu_action_hr_salary_rule_form"

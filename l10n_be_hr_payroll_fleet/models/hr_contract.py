@@ -51,7 +51,7 @@ class HrContract(models.Model):
         'fleet.vehicle.model', string="New Company Car", domain=lambda self: self._get_possible_model_domain(),
         compute='_compute_new_car_model_id', store=True, readonly=False)
     # Useful on sign to use only one box to sign the contract instead of 2
-    car_model_name = fields.Char(compute='_compute_car_model_name')
+    car_model_name = fields.Char(compute='_compute_car_model_name', compute_sudo=True)
     max_unused_cars = fields.Integer(compute='_compute_max_unused_cars')
     acquisition_date = fields.Date(related='car_id.acquisition_date', readonly=False, groups="fleet.fleet_group_manager")
     car_value = fields.Float(related="car_id.car_value", readonly=False, groups="fleet.fleet_group_manager")

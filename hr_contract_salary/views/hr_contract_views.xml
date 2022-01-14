@@ -40,7 +40,7 @@
                 </button>
             </div>
             <xpath expr="//field[@name='state']" position="before">
-                <button name="%(hr_contract_salary.generate_simulation_link_action)d" type="action" string="Generate Simulation Link" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                <button name="%(hr_contract_salary.generate_simulation_link_action)d" type="action" string="Generate Simulation Link" attrs="{'invisible': [('employee_id', '=', False)]}" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
             <field name="job_id" position="after">
                 <label for="wage_on_signature"/>

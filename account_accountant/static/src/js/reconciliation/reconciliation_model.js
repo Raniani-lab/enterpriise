@@ -1304,7 +1304,7 @@ var StatementModel = BasicModel.extend({
         if (prop.base_amount) {
             // Call to format and parse needed to round the value to the currency precision
             var sign = prop.base_amount < 0 ? -1 : 1;
-            var amount = field_utils.format.monetary(Math.abs(prop.base_amount), {}, formatOptions);
+            var amount = _.unescape(field_utils.format.monetary(Math.abs(prop.base_amount), {}, formatOptions));
             prop.base_amount = sign * field_utils.parse.monetary(amount, {}, formatOptions);
         }
 

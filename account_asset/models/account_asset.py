@@ -142,9 +142,12 @@ class AccountAsset(models.Model):
             )
 
     @api.depends('original_move_line_ids')
+    @api.depends_context('default_account_asset_id')
     def _compute_display_account_asset_id(self):
         for record in self:
-            record.display_account_asset_id = not record.original_move_line_ids
+            # Hide the field when creating an asset model from the CoA.
+            from_coa = self.env.context.get('default_account_asset_id')
+            record.display_account_asset_id = not record.original_move_line_ids and not from_coa
 
     @api.depends('account_depreciation_id', 'account_depreciation_expense_id', 'original_move_line_ids')
     def _compute_account_asset_id(self):
@@ -178,7 +181,7 @@ class AccountAsset(models.Model):
             if self.asset_type == 'expense':
                 # Always change the account since it is not visible in the form
                 self.account_asset_id = self.account_depreciation_id
-            if self.asset_type == 'purchase' and not self.account_asset_id:
+            if self.asset_type == 'purchase' and not self.account_asset_id and self.state != 'model':
                 # Only set a default value since it is visible in the form
                 self.account_asset_id = self.account_depreciation_id
 

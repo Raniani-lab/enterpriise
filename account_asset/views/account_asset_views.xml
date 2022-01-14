@@ -80,7 +80,7 @@
                         </group>
                         <group string="Accounting">
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-                            <field name="account_asset_id" attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')], 'required': [('state', '=', 'model')]}"/>
+                            <field name="account_asset_id" attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')], 'required': [('state', '!=', 'model')]}"/>
                             <field name="account_depreciation_id" required="1"/>
                             <field name="account_depreciation_expense_id" required="1"/>
                             <field name="journal_id" required="1"/>

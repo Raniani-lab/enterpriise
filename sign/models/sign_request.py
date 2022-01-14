@@ -134,7 +134,7 @@ class SignRequest(models.Model):
         for request in self:
             request.request_item_infos = [{
                 'id': item.id,
-                'partner_name': item.partner_id.sudo().name or _('Public User'),
+                'partner_name': item.display_name,
                 'state': item.state,
                 'signing_date': item.signing_date or ''
             } for item in request.request_item_ids]
@@ -358,7 +358,7 @@ class SignRequest(models.Model):
         self.request_item_ids._cancel()
 
         # cancel activities for signers
-        for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
+        for user in self.request_item_ids.sudo().partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
         self.env['sign.log'].sudo().create([{'sign_request_id': sign_request.id, 'action': 'cancel'} for sign_request in self])
@@ -616,6 +616,9 @@ class SignRequestItem(models.Model):
     def _get_mail_link(self, email, subject):
         return "mailto:%s?subject=%s" % (url_quote(email), url_quote(subject))
 
+    # this display_name (with sudo) is used for many2many_tags especially the partner_id is private
+    display_name = fields.Char(compute='_compute_display_name', compute_sudo=True)
+
     partner_id = fields.Many2one('res.partner', string="Signer", ondelete='restrict')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True, copy=False)
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
@@ -659,6 +662,11 @@ class SignRequestItem(models.Model):
                     set(sign_request_items.role_id.ids) != (set(template_roles.ids) if template_roles else set([self.env.ref('sign.sign_item_role_default').id])) or \
                     (any(not sri.partner_id for sri in sign_request_items) and len(sign_request_items) != 1):
                 raise ValidationError(_("You must specify one signer for each role of your sign template"))
+
+    @api.depends('partner_id.name')
+    def _compute_display_name(self):
+        for sri in self:
+            sri.display_name = sri.partner_id.display_name if sri.partner_id else _('Public User')
 
     def write(self, vals):
         if vals.get('partner_id') is False:

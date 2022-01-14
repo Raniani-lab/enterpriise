@@ -11,30 +11,17 @@
         </field>
     </record>
 
-    <record id="view_account_disallowed_expenses_rate_form" model="ir.ui.view">
-        <field name="name">account.disallowed.expenses.rate.form</field>
-        <field name="model">account.disallowed.expenses.rate</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="date_from"/>
-                        <field name="rate"/>
-                        <field name="company_id" groups="base.group_multi_company"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
     <record id="view_account_disallowed_expenses_category_tree" model="ir.ui.view">
         <field name="name">account.disallowed.expenses.category.tree</field>
         <field name="model">account.disallowed.expenses.category</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree editable="bottom">
                 <field name="code"/>
                 <field name="name"/>
-                <field name="company_id"/>
+                <field name="account_ids" string="Related Account(s)" widget="many2many_tags" domain="[('internal_group', 'in', ('expense', 'income')), ('disallowed_expenses_category_id', '=', None)]" options="{'no_create': True}"/>
+                <field name="company_id" optional="hide"/>
+                <field name="current_rate" attrs="{'invisible': [('current_rate', '=', False)]}"/>
+                <button name="action_read_category" type="object" string="Set Rates" class="float-right btn-secondary"/>
             </tree>
         </field>
     </record>
@@ -57,23 +44,46 @@
             <form>
                 <field name="account_ids" invisible="1"/>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_account_select" string="Accounts" type="object" icon="fa-bars" attrs="{'invisible': [('account_ids', '=', [])]}"/>
+                    <div>
+                        <h1 style="font-size: 1.9rem;">
+                            <div class="row">
+                                <div class="col col-md-auto">
+                                    <label for="code" string="Code"/>
+                                    <div>
+                                        <field name="code" placeholder="e.g. 1201" class="oe_inline"/>
+                                    </div>
+                                </div>
+                                <div class="col col-md-8">
+                                    <label for="name" string="Category Name"/>
+                                    <div>
+                                        <field name="name"
+                                               placeholder="e.g. Non-Deductible Tax"
+                                               class="oe_inline"
+                                               style="width:80% !important;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </h1>
                     </div>
                     <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                        <field name="company_id" options="{'no_create': True}"/>
+                        <group name="left_column">
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="account_ids" string="Related Account(s)" widget="many2many_tags" domain="[('internal_group', 'in', ('expense', 'income'))]" options="{'no_create': True}"/>
+                        </group>
                     </group>
-                    <group string="Rates">
-                        <field name="rate_ids" nolabel="1" editable="bottom">
-                            <tree order="date_from desc">
-                                <field name="date_from"/>
-                                <field name="rate"/>
-                                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
-                            </tree>
-                        </field>
-                    </group>
+                    <notebook>
+                        <page name="rates" string="Rates">
+                            <group>
+                                <field name="rate_ids" nolabel="1" editable="bottom">
+                                    <tree order="date_from desc" editable="bottom">
+                                        <field name="date_from"/>
+                                        <field name="rate"/>
+                                        <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

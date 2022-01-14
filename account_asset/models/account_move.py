@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import math
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_round
@@ -113,6 +112,7 @@ class AccountMove(models.Model):
                     and not move.reversed_entry_id
                     and not (move_line.currency_id or move.currency_id).is_zero(move_line.price_total)
                     and not move_line.asset_ids
+                    and not move_line.tax_line_id
                     and move_line.price_total > 0
                 ):
                     if not move_line.name:
@@ -138,7 +138,10 @@ class AccountMove(models.Model):
                         })
                     auto_validate.extend([move_line.account_id.create_asset == 'validate'] * units_quantity)
                     invoice_list.extend([move] * units_quantity)
-                    create_list.extend([vals] * units_quantity)
+                    for i in range(1, units_quantity + 1):
+                        if units_quantity > 1:
+                            vals['name'] = move_line.name + _(" (%s of %s)", i, units_quantity)
+                        create_list.extend([vals.copy()])
 
         assets = self.env['account.asset'].create(create_list)
         for asset, vals, invoice, validate in zip(assets, create_list, invoice_list, auto_validate):
@@ -155,6 +158,7 @@ class AccountMove(models.Model):
                 msg = _('%s created from invoice') % (asset_name)
                 msg += ': <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>' % (invoice.id, invoice.name)
                 asset.message_post(body=msg)
+                asset._post_non_deductible_tax_value()
         return assets
 
     @api.model
@@ -348,6 +352,7 @@ class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     asset_ids = fields.Many2many('account.asset', 'asset_move_line_rel', 'line_id', 'asset_id', string='Asset Linked', help="Asset created from this Journal Item", copy=False)
+    non_deductible_tax_value = fields.Monetary(compute='_compute_non_deductible_tax_value', currency_field='company_currency_id')
 
     def _turn_as_asset(self, asset_type, view_name, view):
         ctx = self.env.context.copy()
@@ -378,3 +383,35 @@ class AccountMoveLine(models.Model):
             return self._turn_as_asset('expense', _("Turn as a deferred expense"), self.env.ref('account_asset.view_account_asset_expense_form'))
         else:
             return self._turn_as_asset('sale', _("Turn as a deferred revenue"), self.env.ref('account_asset.view_account_asset_revenue_form'))
+
+    @api.depends('tax_ids.invoice_repartition_line_ids')
+    def _compute_non_deductible_tax_value(self):
+        """ Handle the specific case of non deductible taxes,
+        such as "50% Non Déductible - Frais de voiture (Prix Excl.)" in Belgium.
+        """
+        non_deductible_tax_ids = self.tax_ids.invoice_repartition_line_ids.filtered(
+            lambda line: line.repartition_type == 'tax' and not line.use_in_tax_closing
+        ).tax_id
+
+        res = {}
+        if non_deductible_tax_ids:
+            domain = [('move_id', 'in', self.move_id.ids)]
+            tax_details_query, tax_details_params = self._get_query_tax_details_from_domain(domain)
+
+            self.flush(self._fields)
+            self._cr.execute(f'''
+                SELECT
+                    tdq.base_line_id,
+                    SUM(tdq.tax_amount_currency)
+                FROM ({tax_details_query}) AS tdq
+                JOIN account_move_line aml ON aml.id = tdq.tax_line_id
+                JOIN account_tax_repartition_line trl ON trl.id = tdq.tax_repartition_line_id
+                WHERE tdq.base_line_id IN %s
+                AND trl.use_in_tax_closing IS FALSE
+                GROUP BY tdq.base_line_id
+            ''', tax_details_params + [tuple(self.ids)])
+
+            res = {row['base_line_id']: row['sum'] for row in self._cr.dictfetchall()}
+
+        for record in self:
+            record.non_deductible_tax_value = res.get(record._origin.id, 0.0)

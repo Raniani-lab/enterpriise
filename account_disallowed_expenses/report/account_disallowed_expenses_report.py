@@ -178,7 +178,8 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
         return {
             'id': self._build_line_id(current),
             'columns': [{'name': ''},
-                        {'name': ('%s %%' % values['account_rate']) if not options['multi_rate_in_period'] or (current.get('account_rate') is not None) else ''},
+                        {'name': ('%s %%' % values['account_rate']) if not options['multi_rate_in_period'] or (current.get('account_rate') is not None) else '',
+                         'no_format': values['account_rate']},
                         {'name': ''}],
             'parent_id': self._build_line_id(current, parent=True),
             'unfolded': self._need_to_unfold(current, options),

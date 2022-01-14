@@ -5,8 +5,20 @@
         <field name="model">account.disallowed.expenses.category</field>
         <field name="inherit_id" ref="account_disallowed_expenses.view_account_disallowed_expenses_category_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
-                <field name='car_category'/>
+            <xpath expr="//group[@name='left_column']" position="after">
+                <group name="right_column">
+                    <field name='car_category'/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_disallowed_expenses_category_tree" model="ir.ui.view">
+        <field name="name">account.disallowed.expenses.category.tree</field>
+        <field name="model">account.disallowed.expenses.category</field>
+        <field name="inherit_id" ref="account_disallowed_expenses.view_account_disallowed_expenses_category_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_ids']" position="after">
+                <field name="car_category" optional="hide" widget="boolean_toggle"/>
             </xpath>
         </field>
     </record>

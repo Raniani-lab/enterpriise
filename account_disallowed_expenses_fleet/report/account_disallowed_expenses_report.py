@@ -8,6 +8,8 @@ from itertools import accumulate
 class AccountDisallowedExpensesReport(models.AbstractModel):
     _inherit = 'account.disallowed.expenses.report'
 
+    filter_vehicle_split = False
+
     def _get_options(self, previous_options=None):
         options = super(AccountDisallowedExpensesReport, self)._get_options(previous_options)
         # check if there are multiple rates
@@ -68,6 +70,19 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
                     res += '_rate_' + str(current['fleet_rate'])
         return '_'.join(res.split('_')[:-2]) if parent else res
 
+    @api.model
+    def _get_lines(self, options, line_id=None):
+        # Overridden in order to hide rates that are inconsistent (to avoid confusion).
+        # A rate can be defined on the expense category and/or the vehicle,
+        # which could lead to inconsistencies in the report when aggregating values.
+        lines = super()._get_lines(options, line_id)
+        for line in lines:
+            total, rate, disallowed = line['columns']
+            computed_rate = disallowed['no_format'] / total['no_format'] * 100
+            if computed_rate != rate['no_format']:
+                rate['name'] = ''
+        return lines
+
     def _set_line(self, options, values, lines, current, totals):
         if not values['vehicle_id']:
             if current.get('vehicle'):
@@ -78,11 +93,13 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
                 current['category'] = values['category_id']
                 current['account'] = current['account'] = current['fleet_rate'] = None
                 lines.append(self._get_category_line(options, values, current))
-            if values['vehicle_id'] != current.get('vehicle'):
-                current['vehicle'] = values['vehicle_id']
-                current['account'] = current['fleet_rate'] = None
-                if self._need_to_unfold(current, options, parent=True):
-                    lines.append(self._get_vehicle_line(options, values, current))
+            # Only append vehicle lines to the report if the 'vehicle_split' options is selected
+            if options.get('vehicle_split'):
+                if values['vehicle_id'] != current.get('vehicle'):
+                    current['vehicle'] = values['vehicle_id']
+                    current['account'] = current['fleet_rate'] = None
+                    if self._need_to_unfold(current, options, parent=True):
+                        lines.append(self._get_vehicle_line(options, values, current))
             if values['account_id'] != current.get('account'):
                 current['account'] = values['account_id']
                 current['fleet_rate'] = None
@@ -125,5 +142,8 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
     def _get_base_line(self, options, values, current):
         res = super()._get_base_line(options, values, current)
         if values['vehicle_id']:
-            res['columns'][1] = {'name': ('%s %%' % values['fleet_rate']) if not options['multi_rate_in_period'] or (current.get('fleet_rate') is not None) else ""}
+            res['columns'][1] = {
+                'name': ('%s %%' % values['fleet_rate']) if not options['multi_rate_in_period'] or current.get('fleet_rate') is not None else '',
+                'no_format': values['fleet_rate'],
+            }
         return res

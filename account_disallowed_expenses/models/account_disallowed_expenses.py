@@ -4,6 +4,7 @@
 from odoo import fields, models, api, _
 from odoo.osv import expression
 
+
 class AccountDisallowedExpensesCategory(models.Model):
     _name = 'account.disallowed.expenses.category'
     _description = "Disallowed Expenses Category"
@@ -14,6 +15,7 @@ class AccountDisallowedExpensesCategory(models.Model):
     rate_ids = fields.One2many('account.disallowed.expenses.rate', 'category_id', string='Rate')
     company_id = fields.Many2one('res.company')
     account_ids = fields.One2many('account.account', 'disallowed_expenses_category_id')
+    current_rate = fields.Char(compute='_compute_current_rate', string='Current Rate')
 
     _sql_constraints = [
         (
@@ -21,29 +23,37 @@ class AccountDisallowedExpensesCategory(models.Model):
             'Disallowed expenses category code should be unique in each company.')
     ]
 
+    @api.depends('current_rate')
+    def _compute_display_name(self):
+        return super()._compute_display_name()
+
+    @api.depends('rate_ids')
+    def _compute_current_rate(self):
+        rates = self._get_current_rates()
+        for rec in self:
+            rec.current_rate = ('%g%%' % rates[rec.id]) if rates.get(rec.id) else None
+
     def name_get(self):
         if not self.ids:
             return []
-        sql = """
-            SELECT category.id, rate.rate
-            FROM account_disallowed_expenses_category category
-            LEFT JOIN account_disallowed_expenses_rate rate ON rate.id = (
-                SELECT rate.id
-                FROM account_disallowed_expenses_rate rate
-                WHERE rate.category_id = category.id
-                ORDER BY date_from DESC
-                LIMIT 1
-            )
-            WHERE category.id in %(ids)s
-        """
-        self.env.cr.execute(sql, {'ids': tuple(self.ids)})
-        rates = dict(self.env.cr.fetchall())
         result = []
         for record in self:
-            rate = rates.get(record.id) and ('%g%%' % rates[record.id]) or _('No Rate')
+            rate = self.current_rate or _('No Rate')
             name = '%s - %s (%s)' % (record.code, record.name, rate)
             result.append((record.id, name))
         return result
+
+    def _get_current_rates(self):
+        sql = """
+            SELECT
+                DISTINCT category_id,
+                first_value(rate) OVER (PARTITION BY category_id ORDER BY date_from DESC)
+            FROM account_disallowed_expenses_rate
+            WHERE date_from < CURRENT_DATE
+            AND category_id IN %(ids)s
+        """
+        self.env.cr.execute(sql, {'ids': tuple(self.ids)})
+        return dict(self.env.cr.fetchall())
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
@@ -55,17 +65,16 @@ class AccountDisallowedExpensesCategory(models.Model):
                 domain = ['&', '!'] + domain[1:]
         return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
-    def action_account_select(self):
+    def action_read_category(self):
         self.ensure_one()
         return {
-            'name': _('Accounts'),
-            'view_ids': [(False, 'list'), (False, 'form')],
-            'view_mode': 'list,form',
-            'res_model': 'account.account',
+            'name': self.display_name,
             'type': 'ir.actions.act_window',
-            'context': {'search_default_disallowed_expenses_category_id': self.id},
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.disallowed.expenses.category',
+            'res_id': self.id,
         }
-
 
 class AccountDisallowedExpensesRate(models.Model):
     _name = 'account.disallowed.expenses.rate'

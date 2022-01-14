@@ -7,7 +7,7 @@ from math import copysign
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.tools import float_compare, float_is_zero, float_round
+from odoo.tools import float_compare, float_is_zero, float_round, formatLang
 
 
 class AccountAsset(models.Model):
@@ -65,6 +65,7 @@ class AccountAsset(models.Model):
     salvage_value = fields.Monetary(string='Not Depreciable Value', readonly=True, states={'draft': [('readonly', False)]},
                                     help="It is the amount you plan to have that you cannot depreciate.")
     gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value", compute_sudo=True)
+    non_deductible_tax_value = fields.Monetary(string="Non Deductible Tax Value", compute="_compute_non_deductible_tax_value", store=True, readonly=True)
 
     # Links with entries
     depreciation_move_ids = fields.One2many('account.move', 'asset_id', string='Depreciation Lines', readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)], 'paused': [('readonly', False)]})
@@ -107,7 +108,7 @@ class AccountAsset(models.Model):
             else:
                 asset.disposal_date = False
 
-    @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type')
+    @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type', 'non_deductible_tax_value')
     def _compute_value(self):
         for record in self:
             misc_journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', record.company_id.id)], limit=1)
@@ -120,13 +121,9 @@ class AccountAsset(models.Model):
                 raise UserError(_("All the lines should be from the same move type"))
             if not record.journal_id:
                 record.journal_id = misc_journal_id
-            total_credit = sum(line.credit for line in record.original_move_line_ids)
-            total_debit = sum(line.debit for line in record.original_move_line_ids)
-            record.original_value = total_credit + total_debit
-            if record.account_asset_id.multiple_assets_per_line and len(record.original_move_line_ids) == 1:
-                record.original_value /= max(1, int(record.original_move_line_ids.quantity))
-            if (total_credit and total_debit) or record.original_value == 0:
-                raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
+            record.original_value = self._get_related_purchase_value(record)
+            if record.non_deductible_tax_value:
+                record.original_value += record.non_deductible_tax_value
 
     @api.depends('asset_type', 'user_type_id', 'state')
     def _compute_display_model_choice(self):
@@ -146,8 +143,8 @@ class AccountAsset(models.Model):
     def _compute_display_account_asset_id(self):
         for record in self:
             # Hide the field when creating an asset model from the CoA.
-            from_coa = self.env.context.get('default_account_asset_id')
-            record.display_account_asset_id = not record.original_move_line_ids and not from_coa
+            model_from_coa = self.env.context.get('default_account_asset_id') and record.state == 'model'
+            record.display_account_asset_id = not record.original_move_line_ids and not model_from_coa
 
     @api.depends('account_depreciation_id', 'account_depreciation_expense_id', 'original_move_line_ids')
     def _compute_account_asset_id(self):
@@ -174,6 +171,16 @@ class AccountAsset(models.Model):
                                  formatLang(self.env, computed_original_value, currency_obj=self.currency_id))
                 }
                 return {'warning': warning}
+
+    def _get_related_purchase_value(self, record):
+        total_credit = sum(line.credit for line in record.original_move_line_ids)
+        total_debit = sum(line.debit for line in record.original_move_line_ids)
+        related_purchase_value = total_credit + total_debit
+        if record.account_asset_id.multiple_assets_per_line and len(record.original_move_line_ids) == 1:
+            related_purchase_value /= max(1, int(record.original_move_line_ids.quantity))
+        if (total_credit and total_debit) or related_purchase_value == 0:
+            raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
+        return related_purchase_value
 
     @api.onchange('account_depreciation_id')
     def _onchange_account_depreciation_id(self):
@@ -239,6 +246,18 @@ class AccountAsset(models.Model):
         for record in self:
             record.book_value = record.value_residual + record.salvage_value + sum(record.children_ids.mapped('book_value'))
             record.gross_increase_value = sum(record.children_ids.mapped('original_value'))
+
+    @api.depends('original_move_line_ids')
+    def _compute_non_deductible_tax_value(self):
+        for record in self:
+            record.non_deductible_tax_value = 0.0
+            move_lines = record.original_move_line_ids
+            non_deductible_tax_value = sum(move_lines.mapped('non_deductible_tax_value'))
+            if non_deductible_tax_value:
+                account = move_lines.account_id
+                auto_create_multi = account.create_asset != 'no' and account.multiple_assets_per_line
+                quantity = move_lines.quantity if auto_create_multi else 1
+                record.non_deductible_tax_value = self.currency_id.round(non_deductible_tax_value / quantity)
 
     @api.onchange('prorata')
     def _onchange_prorata(self):
@@ -580,6 +599,18 @@ class AccountAsset(models.Model):
                 asset.compute_depreciation_board()
             asset._check_depreciations()
             asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')._post()
+            asset._post_non_deductible_tax_value()
+
+    def _post_non_deductible_tax_value(self):
+        # If the asset has a non-deductible tax, the value is posted in the chatter to explain why
+        # the original value does not match the related purchase(s).
+        if self.non_deductible_tax_value:
+            currency = self.env.company.currency_id
+            msg = _('A non deductible tax value of %s was added to %s\'s initial value of %s',
+                    formatLang(self.env, self.non_deductible_tax_value, currency_obj=currency),
+                    self.name,
+                    formatLang(self.env, self._get_related_purchase_value(self), currency_obj=currency))
+            self.message_post(body=msg)
 
     def _return_disposal_view(self, move_ids):
         name = _('Disposal Move')

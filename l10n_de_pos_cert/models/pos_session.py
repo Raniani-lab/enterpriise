@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, release
+from odoo import models, fields, _, release
 from odoo.tools.float_utils import float_repr
+from odoo.exceptions import UserError
 import ast
 import uuid
 
@@ -110,7 +111,8 @@ class PosSession(models.Model):
         if cash_register_resp.status_code == 404:  # register the cash register
             self._l10n_de_create_fiskaly_cash_register()
         cash_point_closing_resp = self.company_id._l10n_de_fiskaly_dsfinvk_rpc('PUT', '/cash_point_closings/%s' % cash_point_closing_uuid, json)
-        cash_point_closing_resp.raise_for_status()
+        if cash_point_closing_resp.status_code != 200:
+            raise UserError(_('Cash point closing error with Fiskaly: \n %s', cash_point_closing_resp.json()))
         self.write({'l10n_de_fiskaly_cash_point_closing_uuid': cash_point_closing_uuid})
 
     def _l10n_de_create_fiskaly_cash_register(self):

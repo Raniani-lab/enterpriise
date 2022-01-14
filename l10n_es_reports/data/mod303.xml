@@ -543,16 +543,6 @@
                         <field name="level" eval="3"/>
                         <field name="special_date_changer">strict_range</field>
                     </record>
-                    <record id="mod_303_casilla_61" model="account.financial.html.report.line">
-                        <field name="name">[61] Operaciones no sujetas o con inversión del sujeto pasivo que originan derecho a dedución - Base ventas</field>
-                        <field name="code">aeat_mod_303_61</field>
-                        <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_61'))]"/>
-                        <field name="formulas">-sum</field>
-                        <field name="groupby">account_id</field>
-                        <field name="sequence" eval="62"/>
-                        <field name="level" eval="3"/>
-                        <field name="special_date_changer">strict_range</field>
-                    </record>
                     <record id="mod_303_casilla_120" model="account.financial.html.report.line">
                         <field name="name">[120] Operaciones no sujetas por reglas de localización (excepto las incluidas en la casilla 123)</field>
                         <field name="code">aeat_mod_303_120</field>
@@ -758,6 +748,17 @@
         <field name="groupby">account_id</field>
         <field name="sequence" eval="17"/>
         <field name="level" eval="5"/>
+        <field name="special_date_changer">strict_range</field>
+    </record>
+    <record id="mod_303_casilla_61" model="account.financial.html.report.line">
+        <field name="name">[61] Operaciones no sujetas o con inversión del sujeto pasivo que originan derecho a dedución - Base ventas</field>
+        <field name="code">aeat_mod_303_61</field>
+        <field name="parent_id" eval="False"/>
+        <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_61'))]"/>
+        <field name="formulas">-sum</field>
+        <field name="groupby">account_id</field>
+        <field name="sequence" eval="62"/>
+        <field name="level" eval="3"/>
         <field name="special_date_changer">strict_range</field>
     </record>
 </odoo>

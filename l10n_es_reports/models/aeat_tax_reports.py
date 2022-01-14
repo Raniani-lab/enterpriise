@@ -648,12 +648,33 @@ class AEATAccountFinancialReport(models.Model):
         boe_wizard = self._retrieve_boe_manual_wizard(options)
 
         # Casillas
-        for casilla in range(59, 62):
-            rslt += self._boe_format_number(casilla_lines_map[str(casilla)], length=17, decimal_places=2, signed=True, in_currency=True)
+        to_treat = ['59', '60']
+        if options['date']['date_from'] < '2022-01-01':
+            to_treat.append('61')
+
+            if '61' not in casilla_lines_map:
+                # Casilla 61 isn't used anymore. If it's not in casilla_lines_map, it means the module has been updated, and the line isn't shown
+                # anymore. Though, if we're re-generating data from before it ceased to exist, we still want to report it in the file. As it's
+                # not displayed in the report anymore, it's not in get_lines's result, and we hence can't rely on it as usual.
+                # Therefore, we compute it manually.
+                tag_61 = self.env.ref('l10n_es.mod_303_61')
+                tables, where_clause, where_params = self._query_get(options, [('tax_tag_ids', 'in', tag_61.ids)])
+                query = """
+                    SELECT -COALESCE(sum(account_move_line.balance), 0)
+                    FROM """ + tables + """
+                    WHERE """ + where_clause
+                self._cr.execute(query, where_params)
+                casilla_lines_map['61'] = self._cr.fetchone()[0]
+
+        for casilla in to_treat:
+            rslt += self._boe_format_number(casilla_lines_map[casilla], length=17, decimal_places=2, signed=True, in_currency=True)
 
         # Reserved for AEAT
         rslt += self._boe_format_number(casilla_lines_map['120'], length=17, decimal_places=2, signed=True, in_currency=True)
-        rslt += self._boe_format_number(0, length=17)
+
+        if options['date']['date_from'] < '2022-01-01':
+            rslt += self._boe_format_number(0, length=17)
+
         rslt += self._boe_format_number(casilla_lines_map['122'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['123'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['124'], length=17, decimal_places=2, signed=True, in_currency=True)
@@ -718,7 +739,11 @@ class AEATAccountFinancialReport(models.Model):
             rslt += self._boe_format_string('', length=138)
 
         # Reserved by AEAT
-        rslt += self._boe_format_string(' ' * 445)
+        reserved_empty_chars = 600
+        if options['date']['date_from'] < '2022-01-01':
+            reserved_empty_chars = 445
+
+        rslt += self._boe_format_string(' ' * reserved_empty_chars)
 
         # Footer of page 3
         rslt += self._boe_format_string('</T30303000>')

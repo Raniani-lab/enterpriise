@@ -209,8 +209,7 @@ class FleetVehicleModel(models.Model):
         help="Can be requested on a contract as a new vehicle")
     default_atn = fields.Float(compute='_compute_atn', string="BIK")
     default_total_depreciated_cost = fields.Float(compute='_compute_default_total_depreciated_cost', compute_sudo=True, string="Total Cost (Depreciated)")
-    # YTI TODO Master, store this field
-    default_co2 = fields.Float(compute='_compute_default_co2', readonly=False)
+    default_co2 = fields.Float(compute='_compute_default_co2', readonly=False, store=True)
     co2_fee = fields.Float(compute='_compute_co2_fee', string="CO2 fee")
     tax_deduction = fields.Float(compute='_compute_tax_deduction')
 

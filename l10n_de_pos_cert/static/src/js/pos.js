@@ -68,7 +68,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             return this.config.is_company_country_germany;
         },
         isCountryGermanyAndFiskaly() {
-            return this.isCountryGermany() && this.getTssId();
+            return this.isCountryGermany() && !!this.getTssId();
         },
         format_round_decimals_currency(value) {
             const decimals = this.currency.decimals;

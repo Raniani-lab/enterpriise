@@ -155,7 +155,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                     }
                 } catch (error) {
                     fiskalyError = error;
-                    fiskalyError.source = 'fiskaly';
+                    fiskalyError.code = 'fiskaly';
                     fiskalyFailure.push(orderJson);
                 }
             }

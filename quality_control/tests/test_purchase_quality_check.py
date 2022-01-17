@@ -5,7 +5,7 @@ from .test_common import TestQualityCommon
 from odoo import fields
 from odoo.tests import tagged
 
-@tagged('post_install', '-at_install)')
+@tagged('post_install', '-at_install')
 class TestPurchaseQualityCheck(TestQualityCommon):
 
     def test_purchase_quality_check(self):
@@ -19,9 +19,8 @@ class TestPurchaseQualityCheck(TestQualityCommon):
 
         # Create Quality Point for incoming shipment.
         self.qality_point_test = self.env['quality.point'].create({
-            'product_id': self.product.id,
-            'product_tmpl_id': self.product_tmpl_id,
-            'picking_type_id': self.picking_type_id,
+            'product_ids': [(4, self.product.id)],
+            'picking_type_ids': [(4, self.picking_type_id)],
         })
 
         # Check that the quality point is created.

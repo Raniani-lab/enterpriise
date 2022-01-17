@@ -126,6 +126,7 @@ class HelpdeskTeam(models.Model):
         domain="[('id', 'in', stage_ids)]",
         help="Stage to which inactive tickets will be automatically moved once the period of inactivity is reached.")
     display_alias_name = fields.Char(string='Alias email', compute='_compute_display_alias_name')
+    alias_email_from = fields.Char(compute='_compute_alias_email_from')
 
     @api.constrains('use_website_helpdesk_form', 'privacy_visibility')
     def _check_website_privacy(self):
@@ -148,6 +149,11 @@ class HelpdeskTeam(models.Model):
             if team.alias_name and team.alias_domain:
                 alias_name = "%s@%s" % (team.alias_name, team.alias_domain)
             team.display_alias_name = alias_name
+
+    def _compute_alias_email_from(self):
+        res = self._notify_get_reply_to()
+        for team in self:
+            team.alias_email_from = res.get(team.id, False)
 
     def _compute_has_external_mail_server(self):
         self.has_external_mail_server = self.env['ir.config_parameter'].sudo().get_param('base_setup.default_external_email_server')
@@ -265,6 +271,17 @@ class HelpdeskTeam(models.Model):
     # ------------------------------------------------------------
     # ORM overrides
     # ------------------------------------------------------------
+
+    def name_get(self):
+        res = super().name_get()
+        if len(self.env.context.get('allowed_company_ids', [])) <= 1:
+            return res
+        name_mapping = dict(res)
+        team_default_name = _('Customer Care')
+        for team in self:
+            if team.name == team_default_name:
+                name_mapping[team.id] = f'{name_mapping[team.id]} - {team.company_id.name}'
+        return list(name_mapping.items())
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -917,16 +934,33 @@ class HelpdeskStage(models.Model):
             self.env['helpdesk.ticket'].search([('stage_id', 'in', self.ids)]).write({'active': False})
         return super(HelpdeskStage, self).write(vals)
 
-    def unlink(self):
-        stages = self
-        default_team_id = self.env.context.get('default_team_id')
-        if default_team_id:
-            shared_stages = self.filtered(lambda x: len(x.team_ids) > 1 and default_team_id in x.team_ids.ids)
-            tickets = self.env['helpdesk.ticket'].with_context(active_test=False).search([('team_id', '=', default_team_id), ('stage_id', 'in', self.ids)])
-            if shared_stages and not tickets:
-                shared_stages.write({'team_ids': [(3, default_team_id)]})
-                stages = self.filtered(lambda x: x not in shared_stages)
-        return super(HelpdeskStage, stages).unlink()
+    def action_unlink_wizard(self, stage_view=False):
+        self = self.with_context(active_test=False)
+        # retrieves all the teams with a least 1 ticket in that stage
+        # a ticket can be in a stage even if the team is not assigned to the stage
+        readgroup = self.with_context(active_test=False).env['helpdesk.ticket'].read_group(
+            [('stage_id', 'in', self.ids), ('team_id', '!=', False)],
+            ['team_id'],
+            ['team_id'])
+        team_ids = list(set([team['team_id'][0] for team in readgroup] + self.team_ids.ids))
+
+        wizard = self.env['helpdesk.stage.delete.wizard'].create({
+            'team_ids': team_ids,
+            'stage_ids': self.ids
+        })
+
+        context = dict(self.env.context)
+        context['stage_view'] = stage_view
+        return {
+            'name': _('Delete Stage'),
+            'view_mode': 'form',
+            'res_model': 'helpdesk.stage.delete.wizard',
+            'views': [(self.env.ref('helpdesk.view_helpdesk_stage_delete_wizard').id, 'form')],
+            'type': 'ir.actions.act_window',
+            'res_id': wizard.id,
+            'target': 'new',
+            'context': context,
+        }
 
     def action_open_helpdesk_ticket(self):
         self.ensure_one()
@@ -944,6 +978,16 @@ class HelpdeskSLA(models.Model):
     _name = "helpdesk.sla"
     _order = "name"
     _description = "Helpdesk SLA Policies"
+
+    @api.model
+    def default_get(self, fields_list):
+        defaults = super().default_get(fields_list)
+        if 'team_id' in fields_list or 'stage_id' in fields_list:
+            team = self.env['helpdesk.team'].search([], limit=1)
+            defaults['team_id'] = team.id
+            stages = team.stage_ids.filtered(lambda x: x.is_close or x.fold)
+            defaults['stage_id'] = stages and stages.ids[0] or team.stage_ids and team.stage_ids.ids[-1]
+        return defaults
 
     name = fields.Char(required=True, index=True, translate=True)
     description = fields.Html('SLA Policy Description', translate=True)

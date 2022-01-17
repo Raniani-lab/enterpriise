@@ -459,7 +459,7 @@ class HelpdeskTicket(models.Model):
     def _compute_close_hours(self):
         for ticket in self:
             create_date = fields.Datetime.from_string(ticket.create_date)
-            if create_date and ticket.close_date:
+            if create_date and ticket.close_date and ticket.team_id:
                 duration_data = ticket.team_id.resource_calendar_id.get_work_duration_data(create_date, fields.Datetime.from_string(ticket.close_date), compute_leaves=True)
                 ticket.close_hours = duration_data['hours']
             else:
@@ -518,6 +518,15 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             result.append((ticket.id, "%s (#%s)" % (ticket.name, ticket.ticket_ref)))
         return result
+
+    @api.model
+    def get_empty_list_help(self, help_message):
+        self = self.with_context(
+            empty_list_help_id=self.env.context.get('default_team_id'),
+            empty_list_help_model='helpdesk.team',
+            empty_list_help_document_name=_("ticket"),
+        )
+        return super(HelpdeskTicket, self).get_empty_list_help(help_message)
 
     @api.model
     def create_action(self, action_ref, title, search_view_ref):

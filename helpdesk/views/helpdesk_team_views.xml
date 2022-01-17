@@ -438,7 +438,7 @@
         <field name="model">helpdesk.team</field>
         <field name="priority">200</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban o_helpdesk_view" group_create="0" create="0" js_class="helpdesk_dashboard">
+            <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban o_helpdesk_view" group_create="0" create="0" js_class="helpdesk_dashboard" sample="1">
                 <field name="name"/>
                 <field name="sequence" widget="handle"/>
                 <field name="color"/>
@@ -462,7 +462,7 @@
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
-                                    <div class="o_primary"><field name="name"/></div>
+                                    <div class="o_primary"><field name="display_name"/></div>
                                     <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-out="record.alias_id.value"/></small>
                                 </div>
                                 <div class="o_kanban_manage_button_section" t-if="!selection_mode" groups="helpdesk.group_helpdesk_manager">
@@ -472,7 +472,7 @@
                             <div class="container o_kanban_card_content" t-if="!selection_mode">
                                 <div class="row">
                                     <div class="col o_kanban_primary_left">
-                                        <button class="btn btn-primary o_helpdesk_ticket_btn" name="action_view_ticket" type="object">Tickets</button>
+                                        <button class="btn btn-primary o_helpdesk_ticket_btn" name="action_view_ticket" type="object" context="{'default_team_id': active_id}">Tickets</button>
                                     </div>
                                     <div class="col o_kanban_primary_right">
                                         <div class="mb4">
@@ -579,7 +579,6 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//kanban" position="attributes">
-                <attribute name="class">oe_background_grey o_kanban_dashboard o_helpdesk_view</attribute>
                 <attribute name="js_class"></attribute>
                 <attribute name="create">1</attribute>
              </xpath>
@@ -593,10 +592,10 @@
         <field name="context">{'default_use_sla': True}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-                No teams found
+                No teams found. Let's create one!
             </p>
             <p>
-                Teams regroup tickets for people sharing the same expertise or from the same area.
+                Create teams to organize your tickets by expertise or geographical region, and define a different workflow for each team.
             </p>
         </field>
     </record>
@@ -630,7 +629,7 @@
                 No teams found
             </p>
             <p>
-                Teams regroup tickets for people sharing the same expertise or from the same area.
+                Create teams to organize your tickets by expertise or geographical region, and define a different workflow for each team.
             </p>
         </field>
     </record>

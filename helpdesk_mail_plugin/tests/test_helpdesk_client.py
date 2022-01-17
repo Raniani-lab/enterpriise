@@ -40,10 +40,16 @@ class TestHelpdeskClient(TestMailPluginControllerCommon, MailCase):
             'content': 'The reference of your ticket is',
             'message_type': 'notification',
             'subtype': 'mail.mt_note',
+            'email_values': {
+                'email_from': self.env.company.email_formatted,
+            },
             'notif': [{'partner': customer, 'type': 'email', 'status': 'sent'}],
         }, {
             'content': '',
             'message_type': 'notification',
+            'email_values': {
+                'email_from': self.env.company.email_formatted,
+            },
             'subtype': 'helpdesk.mt_ticket_new',
             'notif': [],
         }]

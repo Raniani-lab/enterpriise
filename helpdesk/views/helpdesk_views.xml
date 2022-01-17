@@ -102,7 +102,7 @@
         <field name="name">helpdesk.stages.tree</field>
         <field name="model">helpdesk.stage</field>
         <field name="arch" type="xml">
-            <tree string="Stage" multi_edit="1" sample="1">
+            <tree string="Stage" multi_edit="1" sample="1" delete="0">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
@@ -152,13 +152,15 @@
         <field name="name">helpdesk.stage.form</field>
         <field name="model">helpdesk.stage</field>
         <field name="arch" type="xml">
-            <form string="Stage Search">
+            <form string="Stage Search" delete="0">
+                <field name="active" invisible="1" />
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">
                             <field name="ticket_count" widget="statinfo" string="Tickets"/>
                         </button>
                     </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
                     <group>
                         <group>
                             <field name="name"/>
@@ -213,6 +215,15 @@
         </field>
     </record>
 
+    <record id="unlink_helpdesk_stage_action" model="ir.actions.server">
+        <field name="name">Delete</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_stage"/>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_stage"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_unlink_wizard(stage_view=True)</field>
+    </record>
+
     <record id="helpdesk_stage_action" model="ir.actions.act_window">
         <field name="name">Stages</field>
         <field name="res_model">helpdesk.stage</field>
@@ -254,7 +265,7 @@
         <field name="name">helpdesk.sla.kanban</field>
         <field name="model">helpdesk.sla</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban sample="1">
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click oe_kanban_content">
@@ -394,9 +405,12 @@
         <field name="name">helpdesk.ticket.graph</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <graph string="Helpdesk Tickets" type="line" sample="1">
-                <field name="create_date" interval="day"/>
+            <graph string="Helpdesk Tickets" type="bar" sample="1">
                 <field name="stage_id"/>
+                <field name="rating_last_value" string="Rating (/5)"/>
+                <field name="close_hours" string="Hours to Close" widget="float_time"/>
+                <field name="assign_hours" string="Hours to Assign" widget="float_time"/>
+                <field name="color" invisible="1"/>
             </graph>
         </field>
     </record>
@@ -406,8 +420,10 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <pivot string="Helpdesk Tickets" sample="1">
-                <field name="create_date" type="row" interval="day"/>
                 <field name="stage_id" type="col"/>
+                <field name="rating_last_value" string="Rating (/5)"/>
+                <field name="close_hours" string="Hours to Close" widget="float_time"/>
+                <field name="assign_hours" string="Hours to Assign" widget="float_time"/>
                 <field name="color" invisible="1"/>
             </pivot>
         </field>
@@ -513,7 +529,7 @@
         <field name="name">helpdesk.ticket.tree</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <tree string="Tickets" multi_edit="1" sample="1">
+            <tree string="Tickets" multi_edit="1" sample="1" default_order="priority desc, sla_deadline, id">
                 <field name="use_sla" invisible="1"/>
                 <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
@@ -553,7 +569,7 @@
                     <field name="legend_normal" invisible="1"/>
                     <field name="legend_blocked" invisible="1"/>
                     <field name="legend_done" invisible="1"/>
-                    <field name="name"/>
+                    <field name="name" placeholder="e.g. Problem with my order"/>
                     <field name="domain_user_ids" invisible="1"/>
                     <field name="team_id" required="1" invisible="context.get('default_team_id')"  options="{'no_open': True}"/>
                     <field name="user_id" domain="[('id', 'in', domain_user_ids)]" options="{'no_open': True}"/>
@@ -568,7 +584,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_helpdesk_ticket" quick_create_view="helpdesk.quick_create_ticket_form" sample="1">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_helpdesk_ticket" quick_create_view="helpdesk.quick_create_ticket_form" sample="1" js_class="ticket_kanban">
                 <field name="stage_id" options='{"group_by_tooltip": {"description": "Stage Description"}}'/>
                 <field name="user_id"/>
                 <field name="color"/>
@@ -681,7 +697,7 @@
                     <field name="kanban_state" widget="state_selection"/>
                     <field name="use_sla" invisible="1"/>
                     <div class="oe_title">
-                        <h1><field name="name" class="field_name" placeholder="Subject..."/></h1>
+                        <h1><field name="name" class="field_name" placeholder="e.g. Problem with my order"/></h1>
                         <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
                         <span attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
                             <i class="fa fa-lg fa-clock-o mr-2" aria-label="Sla Deadline" title="Sla Deadline"/>
@@ -730,48 +746,142 @@
         </field>
     </record>
 
+    <record id="helpdesk_ticket_view_cohort" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.cohort</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <cohort string="Tickets" date_start="create_date" date_stop="close_date" interval="day" sample="1">
+                <field name="rating_last_value" string="Rating (/5)"/>
+                <field name="close_hours" string="Hours to Close"/>
+                <field name="assign_hours" string="Hours to Assign"/>
+                <field name="color" invisible="1"/>
+            </cohort>
+        </field>
+    </record>
+
     <record id="helpdesk_ticket_action_main_my" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">list,kanban,form,activity</field>
+        <field name="view_mode">list,kanban,form,activity,pivot,graph,cohort</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
-        <field name="context">{'search_default_my_ticket': True, 'search_default_is_open': True, 'default_user_id': uid}</field>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_is_open': True,
+            'default_user_id': uid,
+        }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and statuses on tickets. <br/>
-                Chat in real-time or by email to collaborate efficiently.
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
             </p>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_graph_main_inherit_all_ticket" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.graph.inherit.all.ticket</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_graph_main"/>
+        <field name="priority">80</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="stage_id" position="replace">
+                <field name="team_id"/>
+            </field>
         </field>
     </record>
 
     <record id="helpdesk_ticket_action_main_tree" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">list,kanban,form,activity</field>
+        <field name="view_mode">tree,kanban,form,activity,pivot,graph,cohort</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{'search_default_is_open': True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and statuses on tickets. <br/>
-                Chat in real-time or by email to collaborate efficiently.
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
             </p>
         </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_pivot_main_inherit_all_ticket" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.pivot.inherit.all.ticket</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_pivot_main"/>
+        <field name="priority">81</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="stage_id" position="after">
+                <field name="create_date" type="row" interval="day"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_action_main_tree_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="helpdesk_tickets_view_tree"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_main_tree"/>
+    </record>
+    <record id="helpdesk_ticket_action_main_tree_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="18"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="helpdesk_ticket_view_kanban"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_main_tree"/>
+    </record>
+    <record id="helpdesk_ticket_action_main_tree_activity" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">activity</field>
+        <field name="view_id" ref="helpdesk_ticket_view_activity"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_main_tree"/>
+    </record>
+    <record id="helpdesk_ticket_action_main_tree_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk_ticket_view_pivot_main_inherit_all_ticket"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_main_tree"/>
+    </record>
+    <record id="helpdesk_ticket_action_main_tree_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="35"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk_ticket_view_graph_main_inherit_all_ticket"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_main_tree"/>
+    </record>
+    <record id="helpdesk_ticket_action_main_tree_cohort" model="ir.actions.act_window.view">
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">cohort</field>
+        <field name="view_id" ref="helpdesk_ticket_view_cohort"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_main_tree"/>
+    </record>
+
+    <record id="action_helpdesk_ticket_mass_mail" model="ir.actions.act_window">
+        <field name="name">Send Email</field>
+        <field name="res_model">mail.compose.message</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context" eval="{
+            'default_composition_mode': 'mass_mail',
+            'default_partner_to': '{{ object.partner_id.id or \'\' }}',
+            'default_use_template': False,
+        }"/>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="binding_view_types">list</field>
     </record>
 
     <!-- Action for dashboard button -->
     <record id="helpdesk_my_ticket_action_no_create" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">list,kanban,form,activity</field>
+        <field name="view_mode">list,kanban,form,activity,pivot,graph,cohort</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{'create': False, 'search_default_is_open': True, 'search_default_my_ticket': True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found
-                </p><p>To get things done, use activities and statuses on tickets.<br/>
-                Chat in real-time or by email to collaborate efficiently.
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
             </p>
         </field>
     </record>
@@ -779,7 +889,7 @@
     <record id="helpdesk_ticket_action_sla" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">list,kanban,form,activity</field>
+        <field name="view_mode">list,kanban,form,activity,pivot,graph,cohort</field>
         <field name="domain">[]</field>
         <field name="context">{'create': False, 'search_default_is_open': True, 'search_default_my_ticket': True, 'search_default_sla_failed': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -796,27 +906,24 @@
         <field name="name">helpdesk.ticket.close.analysis.pivot.inherit</field>
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk_ticket_view_pivot_main"/>
+        <field name="priority">80</field>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <field name="create_date" position="replace">
+            <field name="stage_id" position="replace">
                 <field name="name" type="row"/>
             </field>
-            <field name="stage_id" position="replace"/>
         </field>
     </record>
     <record id="helpdesk_ticket_action_close_analysis_graph_inherit_dashboard" model="ir.ui.view">
         <field name="name">helpdesk.ticket.close.analysis.graph.inherit</field>
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk_ticket_view_graph_main"/>
+        <field name="priority">80</field>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <xpath expr="//graph" position="attributes">
-                <attribute name="type">bar</attribute>
-            </xpath>
-            <field name="create_date" position="replace">
+            <field name="stage_id" position="replace">
                 <field name="name"/>
             </field>
-            <field name="stage_id" position="replace"/>
         </field>
     </record>
     <record id="helpdesk_ticket_action_close_analysis" model="ir.actions.act_window">
@@ -893,15 +1000,15 @@
     <record id="helpdesk_ticket_action_team" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="view_mode">kanban,list,form,activity,pivot,graph,cohort</field>
         <field name="domain">[('team_id', '=', active_id)]</field>
         <field name="context">{'default_team_id': active_id}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and statuses on tickets. <br/>
-                Chat in real-time or by email to collaborate efficiently.
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
             </p>
         </field>
     </record>
@@ -909,15 +1016,15 @@
     <record id="helpdesk_ticket_action_unassigned" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="view_mode">kanban,list,form,activity,pivot,graph,cohort</field>
         <field name="context">{'search_default_unassigned': True, 'search_default_is_open': True}</field>
         <field name="domain">[('team_id', '=', active_id)]</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and statuses on tickets. <br/>
-                Chat in real-time or by email to collaborate efficiently.
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
             </p>
         </field>
     </record>

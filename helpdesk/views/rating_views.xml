@@ -178,9 +178,9 @@
         <field name="domain">[('consumed', '=', True), ('res_model', '=', 'helpdesk.ticket')]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No rating yet
+                No data yet!
             </p><p>
-                Create tickets to get statistics.
+                Measure your customer satisfaction by sending rating requests when your tickets are solved.
             </p>
         </field>
     </record>

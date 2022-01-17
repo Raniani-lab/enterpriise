@@ -42,8 +42,10 @@ class TestTicketConvertToLead(helpdesk_common.HelpdeskCommon):
             'partner_name': 'My Test Customer',
             'partner_email': '"My Test Customer" <my.customer@example.com>',
             'campaign_id': cls.test_campaign.id,
+            'team_id': False,
             'medium_id': cls.test_medium.id,
-            'source_id': cls.test_source.id
+            'source_id': cls.test_source.id,
+            'company_id': cls.main_company_id
         })
 
     def assertLeadTicketConvertData(self, lead, ticket, partner, crm_team, user_id):

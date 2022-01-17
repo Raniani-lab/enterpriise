@@ -42,6 +42,7 @@
         <field name="model">worksheet.template</field>
         <field name="arch" type="xml">
             <tree multi_edit="1" sample="1">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}" optional="show"/>
                 <field name="worksheet_count" string="Worksheets" optional="show"/>

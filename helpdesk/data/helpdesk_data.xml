@@ -37,7 +37,7 @@
         <field name="fold" eval="True"/>
     </record>
     <record id="stage_cancelled" model="helpdesk.stage">
-        <field name="name">Cancelled</field>
+        <field name="name">Canceled</field>
         <field name="sequence">4</field>
         <field name="team_ids" eval="[(4, ref('helpdesk_team1'))]"/>
         <field name="is_close" eval="True"/>

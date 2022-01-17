@@ -9,6 +9,7 @@ var _t = core._t;
 
 tour.register('helpdesk_tour', {
     url: "/web",
+    rainbowManMessage: Markup(_t('<strong><b>Good job!</b> You walked through all steps of this tour.</strong>')),
     sequence: 220,
 }, [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',
@@ -70,7 +71,7 @@ tour.register('helpdesk_tour', {
 }, {
     trigger: '.o_back_button',
     extra_trigger: '.o_form_view.o_form_readonly',
-    content: _t("Let's go back to the <b>kanban view</b> to have an overview of your next tickets."),
+    content: _t("Let's go back to the <b>kanban view</b> to get an overview of your next tickets."),
     position: 'bottom',
 }, {
     trigger: 'body:not(:has(div.o_view_sample_data)) .o_kanban_helpdesk_ticket .o_kanban_record',

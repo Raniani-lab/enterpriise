@@ -56,10 +56,12 @@ Features:
         'views/res_partner_views.xml',
         'views/mail_activity_views.xml',
         'views/helpdesk_templates.xml',
+        'wizard/helpdesk_stage_delete_views.xml',
     ],
     'demo': ['data/helpdesk_demo.xml'],
     'application': True,
     'license': 'OEEL-1',
+    'post_init_hook': '_create_helpdesk_team',
     'assets': {
         'web.assets_backend': [
             'helpdesk/static/src/scss/helpdesk.scss',
@@ -69,6 +71,10 @@ Features:
             'helpdesk/static/src/js/helpdesk_kanban_renderer.js',
             'helpdesk/static/src/js/helpdesk_kanban_view.js',
             'helpdesk/static/src/js/helpdesk_widget.js',
+            'helpdesk/static/src/js/ticket_kanban_column.js',
+            'helpdesk/static/src/js/ticket_kanban_controller.js',
+            'helpdesk/static/src/js/ticket_kanban_renderer.js',
+            'helpdesk/static/src/js/ticket_kanban_view.js',
             'helpdesk/static/src/js/tours/helpdesk.js',
         ],
         'web.qunit_suite_tests': [

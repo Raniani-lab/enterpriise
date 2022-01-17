@@ -13,6 +13,7 @@ from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 class WorksheetTemplate(models.Model):
     _name = 'worksheet.template'
     _description = 'Worksheet Template'
+    _order = 'sequence, name'
 
     def _get_default_color(self):
         return randint(1, 11)

@@ -292,6 +292,7 @@
                 <field name="name"/>
                 <field name="worksheet_count"/>
                 <field name="color"/>
+                <field name="sequence" widget="handle"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="{{kanban_color(record.color.raw_value)}} oe_kanban_content oe_kanban_global_click">

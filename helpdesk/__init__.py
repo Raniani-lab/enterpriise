@@ -4,3 +4,12 @@
 from . import controllers
 from . import models
 from . import report
+from . import wizard
+
+from odoo import api, SUPERUSER_ID
+
+
+def _create_helpdesk_team(cr, registry):
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    team_1 = env.ref('helpdesk.helpdesk_team1', raise_if_not_found=False)
+    env['res.company'].search([('id', '!=', team_1.company_id.id)])._create_helpdesk_team()

@@ -60,10 +60,19 @@ class AnalyticLine(models.Model):
                                           self.env.company.timesheet_encode_uom_id == uom_hour
 
     @api.model
-    def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
-                          current_range=None, readonly_field=None, orderby=None):
+    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
         if not orderby and row_fields:
             orderby = ','.join(row_fields)
+        return super().read_grid(row_fields,
+            col_field, cell_field, domain=domain, range=range,
+            readonly_field=readonly_field, orderby=orderby)
+
+    @api.model
+    def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
+                          current_range=None, readonly_field=None, orderby=None):
+        if not orderby:
+            orderby_list = [section_field] + row_fields
+            orderby = ','.join(orderby_list)
         return super().read_grid_grouped(
             row_fields, col_field, cell_field, section_field, domain,
             current_range=current_range, readonly_field=readonly_field, orderby=orderby,

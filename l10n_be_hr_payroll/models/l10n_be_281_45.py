@@ -223,7 +223,6 @@ class L10nBe28145(models.Model):
             ('state', 'in', ['done', 'paid']),
             ('employee_id', 'in', employees.ids),
         ])
-        print(employees, all_payslips)
         all_employees = all_payslips.mapped('employee_id')
         self._check_employees_configuration(all_employees)
 
@@ -239,7 +238,6 @@ class L10nBe28145(models.Model):
 
         belgium = self.env.ref('base.be')
         sequence = 0
-        # warrant_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
         for employee in employee_payslips:
             is_belgium = employee.address_home_id.country_id == belgium
             payslips = employee_payslips[employee]
@@ -303,7 +301,6 @@ class L10nBe28145(models.Model):
             'r9013_controletotaal': sum_2063,
             'r9014_controletotaal': sum_2059,
         }
-        print(employees_data)
         return {'data': main_data, 'employees_data': employees_data, 'total_data': total_data}
 
     def action_generate_pdf(self):

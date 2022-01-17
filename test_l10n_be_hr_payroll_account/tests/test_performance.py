@@ -36,6 +36,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.company = cls.env.company
 
+        cls.company.write({
+            'documents_hr_settings': True,
+            'documents_payroll_folder_id': cls.env.ref('documents_hr_payroll.documents_payroll_folder').id,
+        })
+
         cls.env.user.tz = 'Europe/Brussels'
 
         cls.date_from = date(2020, 9, 1)
@@ -264,23 +269,61 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         declaration_281_10 = self.env['l10n_be.281_10'].with_context(allowed_company_ids=self.company.ids).create({
             'reference_year': str(self.date_from.year),
         })
+        self.assertEqual(len(declaration_281_10.line_ids), 100)
         with self.assertQueryCount(admin=11):
             start_time = time.time()
             declaration_281_10.action_generate_xml()
             # --- 0.0810704231262207 seconds ---
-            _logger.info("Declaration 281.10:--- %s seconds ---", time.time() - start_time)
+            _logger.info("Declaration 281.10 XML:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
+
+        with self.assertQueryCount(admin=3341):
+            start_time = time.time()
+            declaration_281_10.line_ids.write({
+                'pdf_to_generate': True,
+                'pdf_to_post': True,
+            })
+            self.env['hr.payslip']._cron_generate_pdf(batch_size=100)
+            # --- X seconds ---
+            _logger.info("Declaration 281.10 PDF:--- %s seconds ---", time.time() - start_time)
 
         # 281.45 Declaration
         declaration_281_45 = self.env['l10n_be.281_45'].with_context(allowed_company_ids=self.company.ids).create({
             'reference_year': str(self.date_from.year),
         })
+        self.assertEqual(len(declaration_281_45.line_ids), 100)
         with self.assertQueryCount(admin=7):
             start_time = time.time()
             declaration_281_45.action_generate_xml()
             # --- 0.027942657470703125 seconds ---
             _logger.info("Declaration 281.45:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
+
+        with self.assertQueryCount(admin=3325):
+            start_time = time.time()
+            declaration_281_45.line_ids.write({
+                'pdf_to_generate': True,
+                'pdf_to_post': True,
+            })
+            self.env['hr.payslip']._cron_generate_pdf(batch_size=100)
+            # --- X seconds ---
+            _logger.info("Declaration 281.45 PDF:--- %s seconds ---", time.time() - start_time)
+
+        # Individual Account Declaration
+        individual_accounts = self.env['l10n_be.individual.account'].with_context(allowed_company_ids=self.company.ids).create({
+            'year': str(self.date_from.year),
+            'name': 'Test',
+        })
+        self.assertEqual(len(individual_accounts.line_ids), 100)
+        with self.assertQueryCount(admin=3321):
+            start_time = time.time()
+            individual_accounts.line_ids.write({
+                'pdf_to_generate': True,
+                'pdf_to_post': True,
+            })
+            self.env['hr.payslip']._cron_generate_pdf(batch_size=100)
+            # --- X seconds ---
+            _logger.info("Individual Accounts PDF:--- %s seconds ---", time.time() - start_time)
 
         # Social Security Certificate
         social_security_certificate = self.env['l10n.be.social.security.certificate'].with_context(allowed_company_ids=self.company.ids).create({

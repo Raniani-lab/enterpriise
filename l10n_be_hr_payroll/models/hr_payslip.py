@@ -564,8 +564,8 @@ class Payslip(models.Model):
             ])]
 
     @api.model
-    def _cron_generate_pdf(self):
-        is_rescheduled = super()._cron_generate_pdf()
+    def _cron_generate_pdf(self, batch_size=False):
+        is_rescheduled = super()._cron_generate_pdf(batch_size=batch_size)
         if is_rescheduled:
             return is_rescheduled
 
@@ -573,7 +573,7 @@ class Payslip(models.Model):
         for model in ['l10n_be.281_10.line', 'l10n_be.281_45.line', 'l10n_be.individual.account.line']:
             lines = self.env[model].search([('pdf_to_generate', '=', True)])
             if lines:
-                BATCH_SIZE = 30
+                BATCH_SIZE = batch_size or 30
                 lines_batch = lines[:BATCH_SIZE]
                 lines_batch._generate_pdf()
                 lines_batch.write({'pdf_to_generate': False})

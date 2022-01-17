@@ -912,14 +912,14 @@ class HrPayslip(models.Model):
         }
 
     @api.model
-    def _cron_generate_pdf(self):
+    def _cron_generate_pdf(self, batch_size=False):
         payslips = self.search([
             ('state', 'in', ['done', 'paid']),
             ('queued_for_pdf', '=', True),
         ])
         if not payslips:
             return False
-        BATCH_SIZE = 50
+        BATCH_SIZE = batch_size or 50
         payslips_batch = payslips[:BATCH_SIZE]
         payslips_batch._generate_pdf()
         payslips_batch.write({'queued_for_pdf': False})

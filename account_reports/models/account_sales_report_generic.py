@@ -19,27 +19,20 @@ class ECSalesReport(models.AbstractModel):
             {'name': _('Amount'), 'class': 'number'},
         ]
 
+    def _get_row_columns(self, options, row, ec_sale_code_options_data):
+        if self._get_report_country_code(options) in self._get_non_generic_country_codes(options):
+            # if the report country has a specific report, do not run generic report code
+            return super(ECSalesReport, self)._get_row_columns(options, row, ec_sale_code_options_data)
+
+        return [row['partner_country_code'], row['vat'], row['amount']]
+
     @api.model
     def _process_query_result(self, options, query_result):
         if self._get_report_country_code(options) in self._get_non_generic_country_codes(options):
             return super(ECSalesReport, self)._process_query_result(options, query_result)
 
         total_value = query_result and query_result[0]['total_value'] or 0
-        lines = []
-        context = self.env.context
-        for res in query_result:
-            if not context.get('no_format', False):
-                res['value'] = self.format_value(res['value'])
-            lines.append({
-                'id': res['partner_id'],
-                'caret_options': 'res.partner',
-                'model': 'res.partner',
-                'name': res['partner_name'],
-                'columns': [{'name': c} for c in [
-                    res['country_code'], res['partner_vat'], res['value']]
-                ],
-                'level': 2,
-            })
+        lines = super(ECSalesReport, self)._process_query_result(options, query_result)
 
         # Create total line
         lines.append({
@@ -52,6 +45,15 @@ class ECSalesReport(models.AbstractModel):
         })
         return lines
 
+    def _get_options(self, previous_options=None):
+        options = super(ECSalesReport, self)._get_options(previous_options)
+        if self._get_report_country_code(options) in self._get_non_generic_country_codes(options):
+            options.pop('journals', None)
+        else:
+            options.pop('ec_sale_code', None)
+            options.pop('country_specific_report_label', None)
+        return options
+
     @api.model
     def _prepare_query(self, options):
         if self._get_report_country_code(options) in self._get_non_generic_country_codes(options):
@@ -63,10 +65,10 @@ class ECSalesReport(models.AbstractModel):
         where_params.append(tuple(self.env['account.sales.report'].get_ec_country_codes(options)))
         query = '''
                 SELECT partner.id AS partner_id,
-                       partner.vat AS partner_vat,
+                       partner.vat AS vat,
                        partner.name AS partner_name,
-                       country.code AS country_code,
-                       sum(account_move_line.balance) AS value,
+                       country.code AS partner_country_code,
+                       sum(account_move_line.balance) AS amount,
                        sum(sum(account_move_line.balance)) OVER () AS total_value
                   FROM ''' + tables + '''
              LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id

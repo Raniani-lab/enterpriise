@@ -9,10 +9,10 @@ from odoo.tools.misc import formatLang
 class ECSalesReport(models.AbstractModel):
     """ This report is meant to be overridden.
     It is overridden by the current company country specific report (should be in l10n_XX_reports),
-    or if no report exist for the current company country, by "account_sales_report_generic.py".
-    The menuitem linking to this report is initialy set to active = False.
-    The menuitem active field is set to True when installing account_intrastat or an country specific report.
-    This means that, when creating a new country speficifc report, the following record must be added
+    or if no report exists for the current company country, by "account_sales_report_generic.py".
+    The menuitem linking to this report is initially set to active = False.
+    The menuitem active field is set to True when installing account_intrastat or a country specific report.
+    This means that, when creating a new country specific report, the following record must be added
     to the report module (l10n_XX_reports) data :
     <record model="ir.ui.menu" id="account_reports.menu_action_account_report_sales">
         <field name="active" eval="True"/>
@@ -34,7 +34,7 @@ class ECSalesReport(models.AbstractModel):
         return templates
 
     def _get_non_generic_country_codes(self, options):
-        # to be overriden by country specific method
+        # to be overridden by country specific method
         return set()
 
     def _get_report_country_code(self, options):
@@ -43,13 +43,7 @@ class ECSalesReport(models.AbstractModel):
 
     def _get_options(self, previous_options=None):
         options = super(ECSalesReport, self)._get_options(previous_options)
-        if self._get_report_country_code(options):
-            options.pop('journals', None)
-            options['country_specific_report_label'] = self.env.company.country_id.display_name
-        else:
-            options.pop('ec_sale_code', None)
-            options['country_specific_report_label'] = None
-
+        options['country_specific_report_label'] = self.env.company.account_fiscal_country_id.display_name
         options['date']['strict_range'] = True
         return options
 
@@ -60,12 +54,12 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _get_columns_name(self, options):
-        # this method must be overriden by country specific method
+        # this method must be overridden by country specific method
         return []
 
     def _get_ec_sale_code_options_data(self, options):
-        # this method must be overriden by country specific method
-        # it defines wich tax report line ids are linked to goods, triangular & services
+        # this method must be overridden by country specific method
+        # it defines which tax report line ids are linked to goods, triangular & services
         # and it defines country specific names
         return {
             'goods': {'name': _('Goods'), 'tax_report_line_ids': ()},
@@ -79,8 +73,7 @@ class ECSalesReport(models.AbstractModel):
         ec_sale_code_options_data = self._get_ec_sale_code_options_data(options)
         options['ec_sale_code'] = []
         for id in ('goods', 'triangular', 'services'):
-            ec_sale_code_options_data[id].update({'id': id, 'selected': False})
-            options['ec_sale_code'].append(ec_sale_code_options_data[id])
+            options['ec_sale_code'].append({**ec_sale_code_options_data[id], 'id': id, 'selected': False})
 
         if previous_options and previous_options.get('ec_sale_code'):
             for i in range(0, 3):
@@ -102,7 +95,7 @@ class ECSalesReport(models.AbstractModel):
     @api.model
     def _get_query_with(self, options):
         params = []
-        for tax_code, tax_report_line_ids in options['selected_tag_ids'].items():
+        for tax_code, tax_report_line_ids in self._get_selected_tags(options).items():
             for tax_report_line_id in tax_report_line_ids:
                 params += [tax_code, tax_report_line_id]
         values = ', '.join(['(%s, %s)'] * int(len(params) / 2))
@@ -118,7 +111,7 @@ class ECSalesReport(models.AbstractModel):
                  SUM(-account_move_line.balance) AS amount,
                  (p.country_id = company_partner.country_id) AS same_country,
                  country.code AS partner_country_code'''
-        if not options or not options.get('get_file_data', False):
+        if not options or not options.get('get_file_data'):
             res += ''',
                  account_move_line.partner_id AS partner_id,
                  p.name As partner_name'''
@@ -127,7 +120,7 @@ class ECSalesReport(models.AbstractModel):
     @api.model
     def _get_query_from(self, options):
         return '''
-                  JOIN res_partner p ON account_move_line.partner_id = p.id
+             LEFT JOIN res_partner p ON account_move_line.partner_id = p.id
                   JOIN account_account_tag_account_move_line_rel aml_tag ON account_move_line.id = aml_tag.account_move_line_id
                   JOIN account_account_tag tag ON tag.id = aml_tag.account_account_tag_id
                   JOIN account_tax_report_line_tags_rel ON account_tax_report_line_tags_rel.account_account_tag_id = tag.id
@@ -145,14 +138,13 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _get_query_order_by(self, options):
-        params = [tax_code for tax_code in options['selected_tag_ids']][::-1]
+        params = [tax_code for tax_code in self._get_selected_tags(options)][::-1]
         order_items = ['tax_report_lines_additional_info.code= %s'] * len(params)
         order_items.append('vat' if options.get('get_file_data') else 'partner_name')
         return self.env.cr.mogrify(", ".join(order_items), params).decode(self.env.cr.connection.encoding)
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        options['selected_tag_ids'] = self._get_selected_tags(options)
         query, params = self._prepare_query(options)
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
@@ -170,10 +162,20 @@ class ECSalesReport(models.AbstractModel):
                     selected_tags[option_code['id']] = tuple(option_code['tax_report_line_ids'])
         return selected_tags
 
+    def _get_row_columns(self, options, row, ec_sale_code_options_data):
+        return [
+            row['vat'][:2],
+            row['vat'][2:],
+            ec_sale_code_options_data[row['tax_code']]['name'],
+            row['amount']
+        ]
+
     @api.model
     def _process_query_result(self, options, query_result):
+        get_file_data = options.get('get_file_data')
         ec_country_to_check = self.get_ec_country_codes(options)
         lines = []
+        ec_sale_code_options_data = self._get_ec_sale_code_options_data(options)
         for row in query_result:
             if not row['vat']:
                 row['vat'] = ''
@@ -181,28 +183,20 @@ class ECSalesReport(models.AbstractModel):
             amt = row['amount'] or 0.0
             if amt:
                 if not row['vat']:
-                    if options.get('get_file_data', False):
+                    if get_file_data:
                         raise UserError(_('One or more partners has no VAT Number.'))
                     else:
                         options['missing_vat_warning'] = True
 
-                if row['same_country'] or row['partner_country_code'] not in ec_country_to_check:
+                if row.get('same_country') or row['partner_country_code'] not in ec_country_to_check:
                     options['unexpected_intrastat_tax_warning'] = True
 
-                ec_sale_code = self._get_ec_sale_code_options_data(options)[row['tax_code']]['name']
-
-                vat = row['vat'].replace(' ', '').upper()
-                columns = [
-                    vat[:2],
-                    vat[2:],
-                    ec_sale_code,
-                    amt
-                ]
-                if not self.env.context.get('no_format', False) and not options.get('get_file_data', False):
+                if not options.get('get_file_data') and not self.env.context.get('no_format'):
                     currency_id = self.env.company.currency_id
-                    columns[3] = formatLang(self.env, columns[3], currency_obj=currency_id)
+                    row['amount'] = formatLang(self.env, row['amount'], currency_obj=currency_id)
 
-                if options.get('get_file_data', False):
+                columns = self._get_row_columns(options, row, ec_sale_code_options_data)
+                if get_file_data:
                     lines.append(columns)
                 else:
                     lines.append({
@@ -211,8 +205,6 @@ class ECSalesReport(models.AbstractModel):
                         'model': 'res.partner',
                         'name': row['partner_name'],
                         'columns': [{'name': v} for v in columns],
-                        'unfoldable': False,
-                        'unfolded': False,
                     })
         return lines
 

@@ -56,59 +56,26 @@ class ECSalesReport(models.AbstractModel):
             {'name': _('Amount'), 'class': 'number'},
         ]
 
-    def _process_query_result(self, options, query_result):
+    def _get_row_columns(self, options, row, ec_sale_code_options_data):
         if self._get_report_country_code(options) != 'BE':
+            return super(ECSalesReport, self)._get_row_columns(options, row, ec_sale_code_options_data)
+
+        if options.get('get_file_data'):
+            code = ec_sale_code_options_data[row['tax_code']]['code']
+            options['be_report_extra_data']['amount_sum'] += row['amount']
+            options['be_report_extra_data']['seq'] += 1
+            return [row['vat'], code, row['amount']]
+        else:
+            name = ec_sale_code_options_data[row['tax_code']]['name']
+            return [row['vat'][:2], row['vat'][2:], name, row['amount']]
+
+    def _process_query_result(self, options, query_result):
+        if self._get_report_country_code(options) != 'BE' or options.get('get_file_data'):
             return super(ECSalesReport, self)._process_query_result(options, query_result)
 
-        get_file_data = options.get('get_file_data', False)
-        seq = amount_sum = p_count = 0
-        ec_country_to_check = self.get_ec_country_codes(options)
-        lines = []
-        for row in query_result:
-            if not row['vat']:
-                row['vat'] = ''
-                p_count += 1
+            res = super(ECSalesReport, self)._process_query_result(options, query_result)
 
-            amt = row['amount'] or 0.0
-            if amt:
-                seq += 1
-                amount_sum += amt
-
-                if not row['vat']:
-                    if options.get('get_file_data', False):
-                        raise UserError(_('One or more partners has no VAT Number.'))
-                    else:
-                        options['missing_vat_warning'] = True
-
-                if row['same_country'] or row['partner_country_code'] not in ec_country_to_check:
-                    options['unexpected_intrastat_tax_warning'] = True
-
-                vat = row['vat'].replace(' ', '').upper()
-
-                if get_file_data:
-                    code = self._get_ec_sale_code_options_data(options)[row['tax_code']]['code']
-                    columns = [vat.replace(' ', '').upper(), code, amt]
-                else:
-                    name = self._get_ec_sale_code_options_data(options)[row['tax_code']]['name']
-                    columns = [vat[:2], vat[2:], name, amt]
-
-                if not self.env.context.get('no_format', False):
-                    currency_id = self.env.company.currency_id
-                    columns[3] = formatLang(self.env, columns[3], currency_obj=currency_id)
-
-                lines.append({
-                    'id': row['partner_id'] if not get_file_data else False,
-                    'caret_options': 'res.partner',
-                    'model': 'res.partner',
-                    'name': row['partner_name'] if not get_file_data else False,
-                    'columns': [{'name': v} for v in columns],
-                    'unfoldable': False,
-                    'unfolded': False,
-                })
-
-        if get_file_data:
-            return {'lines': lines, 'clientnbr': str(seq), 'amountsum': round(amount_sum, 2), 'partner_wo_vat': p_count}
-        return lines
+        return res
 
     @api.model
     def _get_reports_buttons(self, options):
@@ -165,7 +132,14 @@ class ECSalesReport(models.AbstractModel):
         date_to = options['date'].get('date_to')
 
         options['get_file_data'] = True
-        xml_data = self.with_context(no_format=True)._get_lines(options)
+        options['be_report_extra_data'] = {'seq': 0, 'amount_sum': 0.0}
+        lines = self.with_context(no_format=True)._get_lines(options)
+        xml_data = {
+            'lines': lines,
+            'clientnbr': str(options['be_report_extra_data']['seq']),
+            'amountsum': options['be_report_extra_data']['amount_sum'],
+        }
+        options.pop('be_report_extra_data', None)
 
         ctx_date_from = date_from[5:10]
         ctx_date_to = date_to[5:10]

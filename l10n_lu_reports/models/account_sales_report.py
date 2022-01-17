@@ -55,39 +55,31 @@ class ECSalesReport(models.AbstractModel):
             {'name': _('Amount'), 'class': 'number'},
         ]
 
-    @api.model
-    def _process_query_result(self, options, query_result):
-        if self._get_report_country_code(options) != 'LU':
-            return super(ECSalesReport, self)._process_query_result(options, query_result)
-
-        lines = super(ECSalesReport, self)._process_query_result(options, query_result)
-
-        if not options.get('get_file_data', False):
-            return lines
-        else:
-            l_lines = []
-            t_lines = []
-            s_lines = []
-            l_sum = t_sum = s_sum = 0
-            for line in lines:
-                if line[2] == 'L':
-                    l_sum += line[3]
-                    l_lines.append(line)
-                elif line[2] == 'T':
-                    t_sum += line[3]
-                    t_lines.append(line)
-                else:
-                    s_sum += line[3]
-                    s_lines.append(line)
-                line[3] = ('%.2f' % line[3]).replace('.', ',')
-            return {
-                'l_lines': l_lines,
-                't_lines': t_lines,
-                's_lines': s_lines,
-                'l_sum': ('%.2f' % l_sum).replace('.', ','),
-                't_sum': ('%.2f' % t_sum).replace('.', ','),
-                's_sum': ('%.2f' % s_sum).replace('.', ','),
-            }
+    def _get_file_data_lines(self, options):
+        lines = self.with_context(no_format=True)._get_lines(options)
+        l_lines = []
+        t_lines = []
+        s_lines = []
+        l_sum = t_sum = s_sum = 0
+        for line in lines:
+            if line[2] == 'L':
+                l_sum += line[3]
+                l_lines.append(line)
+            elif line[2] == 'T':
+                t_sum += line[3]
+                t_lines.append(line)
+            else:
+                s_sum += line[3]
+                s_lines.append(line)
+            line[3] = ('%.2f' % line[3]).replace('.', ',')
+        return {
+            'l_lines': l_lines,
+            't_lines': t_lines,
+            's_lines': s_lines,
+            'l_sum': ('%.2f' % l_sum).replace('.', ','),
+            't_sum': ('%.2f' % t_sum).replace('.', ','),
+            's_sum': ('%.2f' % s_sum).replace('.', ','),
+        }
 
     @api.model
     def get_report_filename(self, options):
@@ -126,7 +118,7 @@ class ECSalesReport(models.AbstractModel):
         year = date_from[:4]
 
         options['get_file_data'] = True
-        xml_data = self.with_context(no_format=True)._get_lines(options)
+        xml_data = self._get_file_data_lines(options)
 
         return xml_data, month, quarter, year
 
@@ -214,7 +206,7 @@ class ECSalesReport(models.AbstractModel):
         Returns the formatted forms for the LU VAT recapitulative statements (Intracommunity exchange of goods and services).
 
         :param intrastat_codes: the codes of the tables to fill in ('L': goods, 'T': triangular operations, 'S': services)
-        :param xml_data: the data for the report of the selected period (from _get_lines)
+        :param xml_data: the data for the report of the selected period (from _get_file_data_lines())
         :para corrections: corrections for previous declarations to include in the report
         :param s: tuple (year, month/quarter, declaration_type) describing the previous declarations that are to be corrected
         :param month: the month of the declared period (if a monthly period is declared)
@@ -461,8 +453,8 @@ class ECSalesReport(models.AbstractModel):
             options['date'] = {'mode': 'range', 'date_from': decl_date_from, 'date_to': decl_date_to}
             # Get the actualised data for the examined period
             ctx = self._set_context(options)
-            ctx.update({'no_format': True, 'get_xml_data': True})
-            new_lines = self.with_context(ctx)._get_lines(options)
+            ctx.update({'get_xml_data': True})
+            new_lines = self.with_context(ctx)._get_file_data_lines(options)
             new_data = {ln_type: {(k[0], k[1]): k[3] for k in decl} for ln_type, decl in new_lines.items() if ln_type.endswith('lines')}
             for k in new_data:
                 if k[0] in ['l', 't'] and key[0][4] == 'L' or k[0] == 's' and key[0][4] == 'P':

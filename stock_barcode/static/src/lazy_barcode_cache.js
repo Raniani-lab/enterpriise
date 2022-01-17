@@ -19,6 +19,7 @@ export default class LazyBarcodeCache {
         };
         this.gs1LengthsByModel = {
             'product.product': 14,
+            'product.packaging': 14,
             'stock.location': 13,
             'stock.quant.package': 18,
         };

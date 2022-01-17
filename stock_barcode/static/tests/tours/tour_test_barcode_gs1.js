@@ -1169,3 +1169,52 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
     },
     { trigger: '.o_discard' },
 ]);
+
+tour.register('test_gs1_receipt_packaging', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            helper.assertLinesCount(0);
+        }
+    },
+    // Scans a packaging without any quantity
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 0100000000002226',
+    },
+    {
+        trigger: '.o_barcode_line',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: '1113'});
+            const $lineQty = $line.find('.fa-cube').parent();
+            helper.assertLineIsHighlighted($line, true);
+            helper.assert($lineQty.text().trim(), '6');
+        }
+    },
+    // Scans 4 packaging
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 01000000000022263700000004',
+    },
+    {
+        trigger: '.o_barcode_line',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: '1113'});
+            const $lineQty = $line.find('.fa-cube').parent();
+            helper.assertLineIsHighlighted($line, true);
+            helper.assert($lineQty.text().trim(), '30');
+        }
+    },
+    // Clicks on the edit button to trigger a save.
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    {
+        trigger: 'input[name="qty_done"]',
+        run: function () {
+            const fieldQtyDone = document.querySelector('input[name="qty_done"]');
+            helper.assert(fieldQtyDone.value, "30");
+        }
+    },
+    { trigger: '.o_discard' },
+]);

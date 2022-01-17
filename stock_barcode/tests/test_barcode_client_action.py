@@ -1883,6 +1883,38 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         # Checks the package is in the customer's location.
         self.assertEqual(package.location_id.id, self.customer_location.id)
 
+    def test_gs1_and_packaging(self):
+        """
+        This test ensures that a user can scan a packaging when processing a receipt
+        """
+        clean_access_rights(self.env)
+
+        group_packaging = self.env.ref('product.group_stock_packaging')
+        self.env.user.write({'groups_id': [(4, group_packaging.id)]})
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+
+        product = self.env['product.product'].create({
+            'name': 'Bottle',
+            'type': 'product',
+            'barcode': '1113',
+            'packaging_ids': [(0, 0, {
+                'name': '6-bottle pack',
+                'qty': 6,
+                'barcode': '2226',
+            })],
+        })
+
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_in
+        receipt = picking_form.save()
+
+        url = self._get_client_action_url(receipt.id)
+        self.start_tour(url, 'test_gs1_receipt_packaging', login='admin', timeout=180)
+
+        move = receipt.move_ids
+        self.assertEqual(move.product_id, product)
+        self.assertEqual(move.quantity_done, 30)
+
 
 @tagged('post_install', '-at_install')
 class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):

@@ -990,6 +990,12 @@ export default class BarcodeModel extends EventBus {
                         if (product) {
                             result.product = product;
                             result.match = true;
+                        } else if (this.groups.group_stock_packaging) {
+                            const packaging = await this.cache.getRecordByBarcode(value, 'product.packaging');
+                            if (packaging) {
+                                result.packaging = packaging
+                                result.match = true;
+                            }
                         }
                     } else if (rule.type === 'quantity') {
                         result.quantity = value;
@@ -1114,7 +1120,7 @@ export default class BarcodeModel extends EventBus {
 
         if (barcodeData.packaging) {
             barcodeData.product = this.cache.getRecord('product.product', barcodeData.packaging.product_id);
-            barcodeData.quantity = barcodeData.packaging.qty;
+            barcodeData.quantity = ("quantity" in barcodeData ? barcodeData.quantity : 1) * barcodeData.packaging.qty;
             barcodeData.uom = this.cache.getRecord('uom.uom', barcodeData.product.uom_id);
         }
 

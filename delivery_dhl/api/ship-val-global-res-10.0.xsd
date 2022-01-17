@@ -37,7 +37,7 @@
 						<xsd:documentation>The DHLInvoiceType element identifies the type of invoice. It is a optional field</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="BillingCode" type="dhl:BillCode">
+				<xsd:element name="BillingCode" type="dhl:BillCode" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>The BillingCode element identifies how the shipment is billed. It is a optional field</xsd:documentation>
 					</xsd:annotation>

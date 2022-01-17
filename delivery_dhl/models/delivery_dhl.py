@@ -101,6 +101,12 @@ class Providerdhl(models.Model):
             if carrier.delivery_type == 'dhl':
                 carrier.can_generate_return = True
 
+    def _compute_supports_shipping_insurance(self):
+        super(Providerdhl, self)._compute_supports_shipping_insurance()
+        for carrier in self:
+            if carrier.delivery_type == 'dhl':
+                carrier.supports_shipping_insurance = True
+
     def dhl_rate_shipment(self, order):
         res = self._rate_shipment_vals(order=order)
         return res

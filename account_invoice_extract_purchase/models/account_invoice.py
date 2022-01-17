@@ -131,8 +131,8 @@ class AccountMove(models.Model):
                         subset_purchase_order_line_ids = set(line['line'] for line in il_subset)
                         patched_process_fvg, move_form = self.get_form_context_manager()
                         with patched_process_fvg, move_form:
-                            for i in range(len(move_form.line_ids)):
-                                with move_form.line_ids.edit(i) as line:
+                            for i in range(len(move_form.invoice_line_ids)):
+                                with move_form.invoice_line_ids.edit(i) as line:
                                     if line.purchase_line_id and line.purchase_line_id not in subset_purchase_order_line_ids:
                                         line.quantity = 0
                     else:
@@ -156,8 +156,8 @@ class AccountMove(models.Model):
                         })]
                         patched_process_fvg, move_form = self.get_form_context_manager()
                         with patched_process_fvg, move_form:
-                            for i in range(len(move_form.line_ids)):
-                                with move_form.line_ids.edit(i) as line:
+                            for i in range(len(move_form.invoice_line_ids)):
+                                with move_form.invoice_line_ids.edit(i) as line:
                                     line.quantity = 0
                             vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
                             self._set_invoice_lines(move_form, vals_invoice_lines)

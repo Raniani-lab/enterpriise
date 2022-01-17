@@ -11,10 +11,10 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 from uuid import uuid4
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
-from odoo.tools import format_date, is_html_empty
+from odoo.tools import format_date, is_html_empty, config
 from odoo.tools.float_utils import float_is_zero
 
 _logger = logging.getLogger(__name__)
@@ -942,17 +942,34 @@ class SaleSubscription(models.Model):
         invoices = self.env['account.move']
         current_date = datetime.date.today()
 
-        if len(self) > 0:
-            subscriptions = self
-            need_cron_trigger = False
-        else:
-            subscriptions = self.search([
+        domain_search = [
                 ('recurring_next_date', '<=', current_date),
                 ('template_id.payment_mode', '!=', 'manual'),
                 '|',
                 ('stage_category', '=', 'progress'),
                 ('to_renew', '=', True),
-            ], limit=batch_size + 1)
+            ]
+
+        # To avoid triggering the cron infinitely, we will add a temporary tag that will be removed by the last
+        # call of the cron. The domain search will include the subscriptions without the tag.
+        invalid_payment_tag = self.env.ref('sale_subscription.subscription_invalid_payment', raise_if_not_found=False)
+        if automatic:
+            if not invalid_payment_tag:
+                invalid_payment_tag = self.env['account.analytic.tag'].create({'name': 'Subscription Failed Payment', 'color': 1})
+                self.env['ir.model.data'].create({
+                    'name': 'subscription_invalid_payment',
+                    'module': 'sale_subscription',
+                    'res_id': invalid_payment_tag.id,
+                    'model': 'account.analytic.tag',
+                    'noupdate': True
+                })
+            domain_search = expression.AND([[('tag_ids', 'not in', invalid_payment_tag.ids)], domain_search])
+
+        if len(self) > 0:
+            subscriptions = self
+            need_cron_trigger = False
+        else:
+            subscriptions = self.search(domain_search, limit=batch_size + 1)
             need_cron_trigger = len(subscriptions) > batch_size
             if need_cron_trigger:
                 subscriptions = subscriptions[:batch_size]
@@ -1049,6 +1066,8 @@ class SaleSubscription(models.Model):
                                     subscription.message_post(body=msg_body)
                                     subscription.set_close()
                                 else:
+                                    invalid_payment_tag \
+                                        and subscription.write({'tag_ids': [Command.link(invalid_payment_tag.id)]})
                                     template = self.env.ref('sale_subscription.email_payment_reminder')
                                     msg_body = _('Automatic payment failed. Subscription set to "To Renew".')
                                     if (datetime.date.today() - subscription.recurring_next_date).days in [0, 3, 7, 14]:
@@ -1128,7 +1147,17 @@ class SaleSubscription(models.Model):
 
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.
         if need_cron_trigger:
-            self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
+            if config['test_enable'] or config['test_file']:
+                # Test environnement: we launch the next iteration in the same thread
+                self.env['sale.subscription']._recurring_create_invoice(automatic, batch_size)
+            else:
+                self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
+
+        # If this is the last call of the cron and if the invalid_payment_tag is defined, we can remove the tag used
+        # mark the payment failed subscriptions.
+        if not need_cron_trigger and invalid_payment_tag:
+            failing_subscriptions = self.search([('tag_ids', 'in', invalid_payment_tag.ids)])
+            failing_subscriptions.write({'tag_ids': [Command.unlink(invalid_payment_tag.id)]})
 
         return invoices
 

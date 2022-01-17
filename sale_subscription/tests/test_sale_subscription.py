@@ -187,6 +187,24 @@ class TestSubscription(TestSubscriptionCommon):
             all(tax_line.tax_line_id == self.tax_10 for tax_line in invoice.line_ids.filtered('tax_line_id')),
             'The invoice tax lines should be set and should all use the tax set on the subscription products')
 
+        # Test infinite loop fail mail
+        self.mock_send_success_count = 0
+        start_date = fields.Datetime.now() - relativedelta(months=1)
+        recurring_next_date = fields.Datetime.now() - relativedelta(days=1)
+        self.subscription.payment_token_id = False
+        subscription_mail_fail = self.subscription.copy({'to_renew': True, 'date_start': start_date,
+                                                         'recurring_next_date': recurring_next_date,
+                                                         'stage_id': self.subscription.stage_id.id,
+                                                         'payment_token_id': None})
+        for dummy in range(5):
+            subscription_mail_fail.copy({'to_renew': True, 'stage_id': self.subscription.stage_id.id})
+
+        self.env['sale.subscription'].with_context(auto_commit=False)._recurring_create_invoice(automatic=True, batch_size=3)
+        self.assertFalse(self.mock_send_success_count)
+
+        invalid_payment_tag = self.env.ref('sale_subscription.subscription_invalid_payment')
+        self.assertTrue(invalid_payment_tag.id not in subscription_mail_fail.tag_ids.ids)
+
         for patcher in patchers:
             patcher.stop()
 

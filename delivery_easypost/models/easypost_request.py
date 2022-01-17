@@ -58,6 +58,14 @@ class EasypostRequest():
             raise UserError(_("You have no carrier linked to your Easypost Account.\
                 Please connect to Easypost, link your account to carriers and then retry."))
 
+    def fetch_easypost_user(self):
+        """ Import data about the current user
+        https://www.easypost.com/docs/api/curl#retrieve-a-user
+        It returns a dict of info regarding the current user,
+        such as its `id` or his related `insurance_fee_rate`.
+        """
+        return self._make_api_request('users')
+
     def _check_required_value(self, carrier, recipient, shipper, order=False, picking=False):
         """ Check if the required value are present in order
         to process an API call.
@@ -156,7 +164,7 @@ class EasypostRequest():
             'order[shipments][%d][options][label_date]' % shipment_id: datetime.datetime.now().isoformat()
         }
         # If this is not an EasyPost predefined package, then we give the dimensions.
-        packages, services = carrier._easypost_get_services_and_package_types()
+        packages = carrier._easypost_get_services_and_package_types()[0]
         if delivery_package.packaging_type and any(delivery_package.packaging_type in pkg_names for pkg_names in packages.values()):
             shipment.update({
                 'order[shipments][%d][parcel][predefined_package]' % shipment_id: delivery_package.packaging_type
@@ -183,15 +191,15 @@ class EasypostRequest():
         - Original country code(warehouse)
         """
         customs_info = {}
-        for sequence, commodity in enumerate(commodities):
+        for customs_item_id, commodity in enumerate(commodities):
             customs_info.update({
-                'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, sequence): commodity.product_id.name,
-                'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, sequence): commodity.qty,
-                'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, sequence): commodity.monetary_value,
-                'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, sequence): currency.name,
-                'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, sequence): carrier._easypost_convert_weight(commodity.product_id.weight * commodity.qty),
-                'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, sequence): commodity.country_of_origin,
-                'order[shipments][%d][customs_info][customs_items][%d][hs_tariff_number]' % (shipment_id, sequence): commodity.product_id.hs_code,
+                'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): commodity.product_id.name,
+                'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): commodity.qty,
+                'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): commodity.monetary_value,
+                'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, customs_item_id): currency.name,
+                'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, customs_item_id): carrier._easypost_convert_weight(commodity.product_id.weight * commodity.qty),
+                'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, customs_item_id): commodity.country_of_origin,
+                'order[shipments][%d][customs_info][customs_items][%d][hs_tariff_number]' % (shipment_id, customs_item_id): commodity.product_id.hs_code,
             })
         return customs_info
 
@@ -243,10 +251,18 @@ class EasypostRequest():
         # if picking then count total_weight of picking move lines, else count on order
         # easypost always takes weight in ounces(oz)
         if picking:
-            delivery_packages = carrier._get_packages_from_stock_move_lines(picking.move_line_ids, carrier.easypost_default_package_type_id)
+            delivery_packages = carrier._get_packages_from_picking(picking, carrier.easypost_default_package_type_id)
         else:
             delivery_packages = carrier._get_packages_from_order(order, carrier.easypost_default_package_type_id)
         order_payload.update(self._prepare_shipments(carrier, delivery_packages, is_return=is_return))
+
+        insured_amount = 0.0
+        if carrier.shipping_insurance:
+            for pkg in delivery_packages:
+                insured_amount += carrier._easypost_usd_insured_value(pkg.total_cost, pkg.currency_id)
+        insurance_cost = 0
+        if insured_amount:
+            insurance_cost = carrier._easypost_usd_estimated_insurance_cost(insured_amount)
 
         # request for rate
         response = self._make_api_request("orders", "post", data=order_payload)
@@ -293,6 +309,9 @@ class EasypostRequest():
         response.update({
             'error_message': error_message,
             'rate': rate,
+            'insurance_cost': insurance_cost,
+            'insured_amount': insured_amount,
+            'shipment_ids': [shipment['id'] for shipment in response.get('shipments', [])],
         })
 
         return response
@@ -337,6 +356,11 @@ class EasypostRequest():
 
         # get commercial invoice + other forms
         result['forms'] = {form['form_type']: form['form_url'] for res in response['shipments'] for form in res.get('forms', [])}
+
+        # buy insurance after successful order purchase
+        for shp_id in result.get('shipment_ids'):
+            endpoint = "shipments/%s/insure" % shp_id
+            response = self._make_api_request(endpoint, 'post', data={'amount': result.get('insured_amount')})
         return result
 
     def get_tracking_link(self, order_id):

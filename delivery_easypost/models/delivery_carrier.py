@@ -26,12 +26,21 @@ class DeliverCarrier(models.Model):
         ('PNG', 'PNG'), ('PDF', 'PDF'),
         ('ZPL', 'ZPL'), ('EPL2', 'EPL2')],
         string="Easypost Label File Type", default='PDF')
-    
+    easypost_insurance_fee_rate = fields.Float("Insurance fee rate (USD)")
+    easypost_insurance_fee_minimum = fields.Float("Insurance fee minimum (USD)")
+
     def _compute_can_generate_return(self):
         super(DeliverCarrier, self)._compute_can_generate_return()
         for carrier in self:
             if carrier.delivery_type == 'easypost':
                 carrier.can_generate_return = True
+
+    def _compute_supports_shipping_insurance(self):
+        res = super(DeliverCarrier, self)._compute_supports_shipping_insurance()
+        for carrier in self:
+            if carrier.delivery_type == 'easypost':
+                carrier.supports_shipping_insurance = True
+        return res
 
     def action_get_carrier_type(self):
         """ Return the list of carriers configured by the customer
@@ -69,7 +78,12 @@ class DeliverCarrier(models.Model):
             price = float(rate['rate'])
         else:
             quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
-            price = quote_currency._convert(float(rate['rate']), order.currency_id, self.env.company, fields.Date.today())
+            price = quote_currency._convert(float(rate['rate']), order.currency_id, self.env.company, fields.Date.context_today(self))
+
+        # Update price with the insurance cost
+        insurance_cost = response.get('insurance_cost', 0)
+        usd = self.env.ref('base.USD')
+        price += usd._convert(insurance_cost, order.currency_id, self.env.company, fields.Date.context_today(self))
 
         return {
             'success': True,
@@ -97,7 +111,12 @@ class DeliverCarrier(models.Model):
                 price = float(rate['rate'])
             else:
                 quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
-                price = quote_currency._convert(float(rate['rate']), picking.company_id.currency_id, self.env.company, fields.Date.today())
+                price = quote_currency._convert(float(rate['rate']), picking.company_id.currency_id, self.env.company, fields.Date.context_today(self))
+
+            # Update price with the insurance cost
+            insurance_cost = result.get('insurance_cost', 0)
+            usd = self.env.ref('base.USD')
+            price += usd._convert(insurance_cost, picking.company_id.currency_id, self.env.company, fields.Date.context_today(self))
 
             # return tracking information
             carrier_tracking_link = ""
@@ -117,8 +136,7 @@ class DeliverCarrier(models.Model):
             for track_number, label_url in result.get('track_label_data').items():
                 try:
                     response = requests_session.get(label_url, timeout=30)
-                    if response.status_code // 100 > 3:
-                        raise UserError(_('An error has occured while retrieving the labels.'))
+                    response.raise_for_status()
                     labels.append(('LabelEasypost-%s.%s' % (track_number, self.easypost_label_file_type), response.content))
                 except Exception:
                     logmessage += '<li><a href="%s">%s</a></li>' % (label_url, label_url)
@@ -132,8 +150,7 @@ class DeliverCarrier(models.Model):
             for form_type, form_url in result.get('forms', {}).items():
                 try:
                     response = requests_session.get(form_url, timeout=30)
-                    if response.status_code // 100 > 3:
-                        raise UserError(_('An error has occured while retrieving the documents.'))
+                    response.raise_for_status()
                     forms.append(('%s-%s' % (form_type, form_url.split('/')[-1]), response.content))
                 except Exception:
                     logmessage += '<li><a href="%s">%s</a></li>' % (form_url, form_url)
@@ -161,7 +178,7 @@ class DeliverCarrier(models.Model):
             price = rate['rate']
         else:
             quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
-            price = quote_currency._convert(float(rate['rate']), pickings.company_id.currency_id, self.env.company, fields.Date.today())
+            price = quote_currency._convert(float(rate['rate']), pickings.company_id.currency_id, self.env.company, fields.Date.context_today(self))
 
         # return tracking information
         carrier_tracking_link = ""
@@ -170,14 +187,13 @@ class DeliverCarrier(models.Model):
 
         carrier_tracking_ref = ' + '.join(result.get('track_shipments_url').keys())
 
+        requests_session = requests.Session()
         logmessage = _('Return Label<br/>')
         labels = []
         for track_number, label_url in result.get('track_label_data').items():
             try:
-                requests_session = requests.Session()
                 response = requests_session.get(label_url, timeout=30)
-                if response.status_code // 100 > 3:
-                    raise UserError(_('An error has occured while retrieving the return labels.'))
+                response.raise_for_status()
                 labels.append(('%s-%s-%s.%s' % (self.get_return_label_prefix(), 'blablabla', track_number, self.easypost_label_file_type), response.content))
             except Exception:
                 logmessage += '<li><a href="%s">%s</a></li>' % (label_url, label_url)
@@ -229,6 +245,21 @@ class DeliverCarrier(models.Model):
                 if carrier.easypost_production_api_key and not self.easypost_production_api_key:
                     self.easypost_production_api_key = carrier.easypost_production_api_key
 
+    def _easypost_set_insurance_fees(self):
+        """ Sets the `easypost_insurance_fee_rate` and
+        `easypost_insurance_fee_minimum` values.
+        """
+        if self.delivery_type == 'easypost' and self.sudo().easypost_production_api_key:
+            ep = EasypostRequest(self.sudo().easypost_production_api_key, self.log_xml)
+            user = ep.fetch_easypost_user()
+            if user and user.get('insurance_fee_rate') and user.get('insurance_fee_minimum'):
+                self.easypost_insurance_fee_rate = float(user.get('insurance_fee_rate'))
+                self.easypost_insurance_fee_minimum = float(user.get('insurance_fee_minimum'))
+            else:
+                raise UserError(_('Unable to retrieve your default insurance rates.'))
+        else:
+            raise UserError(_('A production key is required in order to load your insurance fees.'))
+
     def _generate_services(self, rates):
         """ When a user do a rate request easypost returns
         a rates for each service available. However some services
@@ -263,3 +294,22 @@ class DeliverCarrier(models.Model):
         if self.delivery_type != 'easypost':
             return res
         return self.easypost_delivery_type
+
+    def _easypost_usd_insured_value(self, package_value, currency):
+        """ With Easypost, To specify an amount to insure, pass the insurance
+        attribute as a string. The currency of all insurance is USD.
+        """
+        if not self.shipping_insurance:
+            return 0
+        usd = self.env.ref('base.USD')
+        current_insured_value = package_value * self.shipping_insurance / 100
+        usd_insured_value = currency._convert(current_insured_value, usd, self.env.company, fields.Date.context_today(self))
+        return usd_insured_value
+
+    def _easypost_usd_estimated_insurance_cost(self, usd_insured_value):
+        """ Returns the calculated insurance cost based on the user's
+        insurance fees. This function should be called only if there is a
+        shipping insurance.
+        """
+        self._easypost_set_insurance_fees()
+        return max(usd_insured_value * self.easypost_insurance_fee_rate, self.easypost_insurance_fee_minimum)

@@ -6,7 +6,6 @@ import datetime
 
 from odoo import fields, models, _
 from odoo.modules import get_module_resource
-from odoo.tools import image_process
 
 
 class ExpenseSampleReceipt(models.Model):

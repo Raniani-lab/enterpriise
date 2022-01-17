@@ -4,6 +4,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools import image_process
+import base64
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 from collections import OrderedDict
@@ -21,7 +22,8 @@ class Document(models.Model):
     attachment_name = fields.Char('Attachment Name', related='attachment_id.name', readonly=False)
     attachment_type = fields.Selection(string='Attachment Type', related='attachment_id.type', readonly=False)
     is_editable_attachment = fields.Boolean(default=False, help='True if we can edit the link attachment.')
-    datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False)
+    datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False, prefetch=False)
+    raw = fields.Binary(related='attachment_id.raw', related_sudo=True, readonly=False, prefetch=False)
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
     checksum = fields.Char(related='attachment_id.checksum')
     mimetype = fields.Char(related='attachment_id.mimetype')
@@ -114,8 +116,8 @@ class Document(models.Model):
     def _compute_thumbnail(self):
         for record in self:
             try:
-                record.thumbnail = image_process(record.datas, size=(80, 80), crop='center')
-            except UserError:
+                record.thumbnail = base64.b64encode(image_process(record.raw, size=(80, 80), crop='center'))
+            except (UserError, TypeError):
                 record.thumbnail = False
 
     @api.depends('attachment_type', 'url')

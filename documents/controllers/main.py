@@ -49,8 +49,8 @@ class ShareRoute(http.Controller):
             status, content, filename, mimetype, filehash = env['ir.http']._binary_record_content(
                 record, field=field, filename=None, filename_field=filename_field,
                 default_mimetype='application/octet-stream')
-        status, headers, content = env['ir.http']._binary_set_headers(
-            status, content, filename, mimetype, unique, filehash=filehash, download=download)
+        status, headers = env['ir.http']._binary_set_headers(
+            status, filename, mimetype, unique, filehash=filehash, download=download)
 
         return status, headers, content
 
@@ -221,20 +221,19 @@ class ShareRoute(http.Controller):
                  ], type='http', auth="public")
     def content_image(self, id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None,
                       unique=False, **kwargs):
-        status, headers, image_base64 = self.binary_content(
+        status, headers, image = self.binary_content(
             id=id, field=field, share_id=share_id, share_token=share_token, unique=unique)
         if status != 200:
-            return request.env['ir.http']._response_by_status(status, headers, image_base64)
+            return request.env['ir.http']._response_by_status(status, headers, image)
 
         try:
-            image_base64 = image_process(image_base64, size=(int(width), int(height)), crop=crop)
+            content = image_process(image, size=(int(width), int(height)), crop=crop)
         except Exception:
             return request.not_found()
 
-        if not image_base64:
+        if not content:
             return request.not_found()
 
-        content = base64.b64decode(image_base64)
         headers = http.set_safe_image_headers(headers, content)
         response = request.make_response(content, headers)
         response.status_code = status

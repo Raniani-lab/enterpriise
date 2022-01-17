@@ -60,7 +60,7 @@ class Document(models.Model):
         if 'thumbnail' in vals:
             return dict(
                 vals,
-                thumbnail=image_process(vals['thumbnail'], size=(750, 750), crop='center'),
+                thumbnail=base64.b64encode(image_process(base64.b64decode(vals['thumbnail'] or ''), size=(750, 750), crop='center')),
             )
         return vals
 

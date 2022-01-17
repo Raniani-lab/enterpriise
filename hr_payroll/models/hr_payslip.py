@@ -918,7 +918,7 @@ class HrPayslip(models.Model):
             ('queued_for_pdf', '=', True),
         ])
         if not payslips:
-            return
+            return False
         BATCH_SIZE = 50
         payslips_batch = payslips[:BATCH_SIZE]
         payslips_batch._generate_pdf()
@@ -927,3 +927,4 @@ class HrPayslip(models.Model):
         if len(payslips) > BATCH_SIZE:
             self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
             return True
+        return False

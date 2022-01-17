@@ -12,26 +12,16 @@ class Payslip(models.Model):
         if is_rescheduled:
             return is_rescheduled
 
-        # Post 281.10 Pdfs
-        lines = self.env['l10n_be.281_10.line'].search([('pdf_to_post', '=', True)])
-        if lines:
-            BATCH_SIZE = 30
-            lines_batch = lines[:BATCH_SIZE]
-            lines_batch._post_pdf()
-            lines_batch.write({'pdf_to_post': False})
-            # if necessary, retrigger the cron to generate more pdfs
-            if len(lines) > BATCH_SIZE:
-                self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-                return True
-
-        # Post 281.45 Pdfs
-        lines = self.env['l10n_be.281_45.line'].search([('pdf_to_post', '=', True)])
-        if lines:
-            BATCH_SIZE = 30
-            lines_batch = lines[:BATCH_SIZE]
-            lines_batch._post_pdf()
-            lines_batch.write({'pdf_to_post': False})
-            # if necessary, retrigger the cron to generate more pdfs
-            if len(lines) > BATCH_SIZE:
-                self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-                return True
+        # Post 281.10, 281.45, individual accounts
+        for model in ['l10n_be.281_10.line', 'l10n_be.281_45.line', 'l10n_be.individual.account.line']:
+            lines = self.env[model].search([('pdf_to_post', '=', True)])
+            if lines:
+                BATCH_SIZE = 30
+                lines_batch = lines[:BATCH_SIZE]
+                lines_batch._post_pdf()
+                lines_batch.write({'pdf_to_post': False})
+                # if necessary, retrigger the cron to generate more pdfs
+                if len(lines) > BATCH_SIZE:
+                    self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+                    return True
+        return False

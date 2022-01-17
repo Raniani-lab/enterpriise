@@ -76,7 +76,7 @@ Belgian Payroll Rules.
         'data/ir_config_parameter_data.xml',
         'data/ir_cron_data.xml',
         'views/res_config_settings_views.xml',
-        'wizard/l10n_be_individual_account_wizard_views.xml',
+        'views/l10n_be_individual_account_views.xml',
         'views/l10n_be_281_10_views.xml',
         'views/l10n_be_281_45_views.xml',
         'report/hr_individual_account_templates.xml',

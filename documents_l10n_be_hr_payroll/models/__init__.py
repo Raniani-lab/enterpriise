@@ -4,3 +4,4 @@
 from . import l10n_be_281_10
 from . import l10n_be_281_45
 from . import hr_payslip
+from . import l10n_be_individual_account

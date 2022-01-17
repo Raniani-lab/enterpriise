@@ -124,12 +124,15 @@ class SocialAccountLinkedin(models.Model):
             headers=self._linkedin_bearer_headers(linkedin_access_token),
             timeout=5).json()
 
-        accounts = []
+        # Avoid duplicates accounts
+        accounts = set()
         if 'elements' in response and isinstance(response.get('elements'), list):
             for organization in response.get('elements'):
+                if organization.get('state') != 'APPROVED':
+                    continue
                 image_url = self._extract_linkedin_picture_url(organization.get('organization~'))
                 image_data = requests.get(image_url, timeout=10).content if image_url else None
-                accounts.append({
+                accounts.add({
                     'name': organization.get('organization~', {}).get('localizedName'),
                     'linkedin_account_urn': organization.get('organization'),
                     'linkedin_access_token': linkedin_access_token,

@@ -405,6 +405,35 @@ module("documents_spreadsheet > global_filters",
         assert.deepEqual(result, DispatchResult.Success);
     });
 
+    test("Can name/rename filters with special characters", async function (assert) {
+        assert.expect(5);
+        const { model } = await createSpreadsheetFromPivot({
+            arch: `
+                <pivot string="Partners">
+                    <field name="name" type="col"/>
+                    <field name="date" interval="month" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>
+            `,
+        });
+        const filter = Object.assign({}, THIS_YEAR_FILTER.filter, { label: "{my} We)ird. |*ab(el []" });
+        let result = model.dispatch("ADD_GLOBAL_FILTER", { filter });
+        assert.deepEqual(result, DispatchResult.Success);
+        assert.equal(model.getters.getGlobalFilters().length, 1);
+
+        const filterId = model.getters.getGlobalFilters()[0].id;
+
+        // Edit to set another name with special characters
+        result = model.dispatch("EDIT_PIVOT_FILTER", {id: filterId, filter: Object.assign({}, filter, { label: "+Othe^ we?rd name+$" }) });
+        assert.deepEqual(result, DispatchResult.Success);
+
+        result = model.dispatch("EDIT_PIVOT_FILTER", {id: filterId, filter: Object.assign({}, filter, { label: "normal name" }) });
+        assert.deepEqual(result, DispatchResult.Success);
+
+        result = model.dispatch("EDIT_PIVOT_FILTER", {id: filterId, filter: Object.assign({}, filter, { label: "?ack +.* to {my} We)ird. |*ab(el []" }) });
+        assert.deepEqual(result, DispatchResult.Success);
+    });
+
     test("Can save a value to an existing global filter", async function (assert) {
         assert.expect(8);
 

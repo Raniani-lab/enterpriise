@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import api, fields, models, _
 
 
 class ResConfigSettings(models.TransientModel):
@@ -13,5 +13,9 @@ class ResConfigSettings(models.TransientModel):
     @api.depends('rule_type', 'company_id')
     def _compute_intercompany_transaction_message(self):
         for record in self:
-            record.company_id.rule_type = record.rule_type
-            record.intercompany_transaction_message = record.company_id.intercompany_transaction_message
+            if record.rule_type == 'invoice_and_refund':
+                record.intercompany_transaction_message = _(
+                    'Generate a bill/invoice when a company confirms an invoice/bill for %s.',
+                    record.company_id.name)
+            else:
+                record.intercompany_transaction_message = ''

@@ -22,7 +22,7 @@
                 <field name="total_hours_spent" widget="timesheet_uom" optional="hide"/>
                 <field name="progress" widget="progressbar" optional="hide" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <field name="activity_ids" widget="list_activity" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
-                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}" context="{'project_id': project_id}"/>
                 <field name="kanban_state" widget="state_selection" optional="hide" readonly="1"/>
                 <field name="stage_id" optional="hide"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>

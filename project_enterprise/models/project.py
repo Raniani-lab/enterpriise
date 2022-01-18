@@ -490,14 +490,12 @@ class Task(models.Model):
         search_forward = bool(mapped_dependent[self])
         search_factor = (1 if search_forward else -1)
         if search_forward:
-            # Case 1: Move forward
-            # Here self is a task that the depends on the written task so we need to schedule it after
-            # to this task planned_date_end
+            # If the related task is mapped_dependent[self] (and thus the master task), then we look for a date after
+            # the value of its stop_date_field_name.
             date_candidate = mapped_dependent[self].planned_date_end.replace(tzinfo=utc)
         else:
-            # Case 2: Move backward
-            # Here self is a task that the written task depends on so we need to schedule it prior to
-            # this task planned_date_begin
+            # If the related task is mapped_depend_on[self] (and thus the slave task), then we look for a date prior
+            # to the value of its start_date_field_name.
             date_candidate = mapped_depend_on[self].planned_date_begin.replace(tzinfo=utc)
 
         first_datetime = self._get_first_working_datetime(
@@ -600,14 +598,14 @@ class Task(models.Model):
             return slave.id in auto_shift_candidate_set and slave.project_id == master.project_id
 
         def is_in_conflict_or_force(master, slave, force_autoshift):
-            return force_autoshift or slave.planned_date_end > master.planned_date_begin
+            return force_autoshift or master.planned_date_end > slave.planned_date_begin
 
         for task in self:
             if task.id not in auto_shift_candidate_set:
                 continue
             for depend_on_task in task.depend_on_ids:
                 if not is_candidate_and_same_project(task, depend_on_task) or\
-                   not is_in_conflict_or_force(task, depend_on_task, auto_shift_forward):
+                   not is_in_conflict_or_force(depend_on_task, task, auto_shift_forward):
                     continue
                 earliest_task = mapped_depend_on[depend_on_task] or task
                 mapped_depend_on[depend_on_task] = task if task.planned_date_begin < earliest_task.planned_date_begin else earliest_task
@@ -615,7 +613,7 @@ class Task(models.Model):
                     tasks_to_auto_shift |= depend_on_task
             for dependent_task in task.dependent_ids:
                 if not is_candidate_and_same_project(task, dependent_task) or\
-                   not is_in_conflict_or_force(dependent_task, task, auto_shift_backward):
+                   not is_in_conflict_or_force(task, dependent_task, auto_shift_backward):
                     continue
                 latest_task = mapped_dependent[dependent_task] or task
                 mapped_dependent[dependent_task] = task if task.planned_date_end > latest_task.planned_date_end else latest_task

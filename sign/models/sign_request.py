@@ -326,7 +326,7 @@ class SignRequest(models.Model):
             request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
             if request_items:
                 request_items._send_signature_access_mail()
-                body = _("The signature mail is sent to: ")
+                body = _("The signature mail has been sent to: ")
                 receiver_names = ["%s(%s)" % (sri.partner_id.name, sri.role_id.name) for sri in request_items]
                 body += ', '.join(receiver_names)
                 if not is_html_empty(sign_request.message):
@@ -382,7 +382,7 @@ class SignRequest(models.Model):
         for cc_partner in cc_partners_valid - self.request_item_ids.partner_id:
             self._send_completed_document_mail(signers, request_edited, cc_partner)
         if cc_partners_valid:
-            body = _("The CC mail is sent to: ") + ', '.join(cc_partners_valid.mapped('name'))
+            body = _("The mail has been sent to contacts in copy: ") + ', '.join(cc_partners_valid.mapped('name'))
             if not is_html_empty(self.message_cc):
                 body += self.message_cc
             self.message_post(body=body, attachment_ids=self.attachment_ids.ids + self.completed_document_attachment_ids.ids)
@@ -811,7 +811,7 @@ class SignRequestItem(models.Model):
             signature = new_signature
 
             self.env['sign.log'].create({'sign_request_id': sign_request.id, 'action': 'update'})
-            body = _("The signature request was edited by: %s.", self.partner_id.name)
+            body = _("The signature request has been edited by: %s.", self.partner_id.name)
             sign_request.message_post(body=body)
 
         self.sign(signature)

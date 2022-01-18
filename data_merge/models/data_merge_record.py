@@ -329,6 +329,8 @@ class DataMergeRecord(models.Model):
                             raise ValidationError('Query Failed.')
 
         self._merge_additional_models(destination, source_ids)
+        fields_to_recompute = [f.name for f in destination._fields.values() if f.compute and f.store]
+        destination.modified(fields_to_recompute)
         destination.recompute()
         self.invalidate_cache()
 

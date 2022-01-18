@@ -65,6 +65,9 @@
             <xpath expr="//field[@name='task_id']" position="attributes">
                 <attribute name="widget">task_with_hours</attribute>
             </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="effective_hours" widget="float_time" optional="hide" attrs="{'invisible': [('effective_hours', '=', 0)]}"/>
+            </xpath>
         </field>
     </record>
 

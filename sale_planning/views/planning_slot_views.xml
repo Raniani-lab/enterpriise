@@ -20,9 +20,6 @@
                 <filter name="non_billable" string="Non Billable" domain="[('sale_line_id', '=', False)]"/>
                 <separator/>
             </xpath>
-            <xpath expr="//filter[@name='conflict_shifts']" position="after">
-                <filter name="to_schedule" string="To Schedule" domain="[('start_datetime', '=', False)]" groups="planning.group_planning_manager"/>
-            </xpath>
             <xpath expr="//filter[@name='group_by_role']" position="after">
                 <filter name="group_by_sale_order" string="Sales Order" context="{'group_by': 'sale_order_id'}"/>
                 <filter name="group_by_sale_order_line" string="Sales Order Item" context="{'group_by': 'sale_line_id'}"/>
@@ -168,6 +165,7 @@
 
     <!-- Override action contexts to allow group_expand to apply for project_id and task_id -->
     <record id="planning.planning_action_my_calendar" model="ir.actions.act_window">
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
             'search_default_my_shifts': 1, 'search_default_open_shifts': 1,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_sale_line_id': 1,
@@ -175,6 +173,7 @@
     </record>
 
     <record id="planning.planning_action_schedule_by_resource" model="ir.actions.act_window">
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
             'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1,
             'planning_expand_sale_line_id': 1,
@@ -182,6 +181,7 @@
     </record>
 
     <record id="planning.planning_action_schedule_by_role" model="ir.actions.act_window">
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
             'search_default_group_by_employee': 2, 'planning_groupby_role': True,
             'planning_expand_sale_line_id': 1,
@@ -206,6 +206,7 @@
         <field name="name">Schedule by Sales Order</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
             'planning_groupby_sale_order': True,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_sale_line_id': 1,

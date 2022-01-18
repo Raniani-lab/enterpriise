@@ -9,7 +9,7 @@
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar_resource" optional="show"
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
                 <field name="role_id" optional="show"/>
-                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
@@ -150,7 +150,9 @@
                                             <field name="start_datetime"/>
                                             -
                                             <field name="end_datetime"/>
-                                            (<field name="allocated_hours" widget="float_time"/>)
+                                            <span class="d-inline-block">
+                                                (<field name="allocated_hours" widget="float_time"/>)
+                                            </span>
                                             (<field name="allocated_percentage"/>%)
                                         </em>
                                     </div>
@@ -493,12 +495,7 @@
     <record id="planning_action_my_calendar" model="ir.actions.act_window">
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">calendar,gantt,tree,form,kanban</field>
-         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'gantt'}),
-            (0, 0, {'view_mode': 'calendar', 'view_id': ref('planning_view_my_calendar')}),
-            (0, 0, {'view_mode': 'tree'}),
-            (0, 0, {'view_mode': 'form'})]"/>
+        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -508,6 +505,18 @@
             </p>
         </field>
     </record>
+
+        <record id="planning_action_my_calendar_view_gantt" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">gantt</field>
+            <field name="act_window_id" ref="planning_action_my_calendar"/>
+        </record>
+
+        <record id="planning_action_my_calendar_view_calendar" model="ir.actions.act_window.view">
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="planning_view_my_calendar"/>
+            <field name="act_window_id" ref="planning_action_my_calendar"/>
+        </record>
 
     <record id="planning_action_open_shift" model="ir.actions.act_window">
         <field name="name">My Planning</field>

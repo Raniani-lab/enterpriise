@@ -35,6 +35,14 @@
         }</field>
     </record>
 
+    <record id="project_forecast.planning_action_schedule_by_project" model="ir.actions.act_window">
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
+    </record>
+
+    <record id="project_forecast.project_forecast_action_schedule_by_employee" model="ir.actions.act_window">
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
+    </record>
+
     <record id="sale_planning.sale_planning_action_schedule_by_sale_order" model="ir.actions.act_window">
         <field name="context">{
             'planning_groupby_sale_order': True,

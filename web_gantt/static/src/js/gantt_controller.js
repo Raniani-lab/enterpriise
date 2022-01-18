@@ -231,6 +231,21 @@ export default AbstractController.extend({
         });
     },
     /**
+     * Get domain of records for plan dialog in the gantt view.
+     *
+     * @private
+     * @param {Object} state
+     * @returns {Array[]}
+     */
+    _getPlanDialogDomain(state) {
+        const domain = [
+            '|',
+            [state.dateStartField, '=', false],
+            [state.dateStopField, '=', false],
+        ];
+        return this.actionDomain.concat(domain);
+    },
+    /**
      * Opens dialog to plan records.
      *
      * @private
@@ -238,15 +253,10 @@ export default AbstractController.extend({
      */
     _openPlanDialog(context) {
         const state = this.model.get();
-        const domain = [
-            '|',
-            [state.dateStartField, '=', false],
-            [state.dateStopField, '=', false],
-        ];
         new dialogs.SelectCreateDialog(this, {
             title: _t("Plan"),
             res_model: this.modelName,
-            domain: this.actionDomain.concat(domain),
+            domain: this._getPlanDialogDomain(state),
             views: this.dialogViews,
             context: Object.assign({}, this.context, context),
             on_selected: (records) => {

@@ -10,14 +10,7 @@
                 <field name="id" invisible="1"/>
                 <field name="planning_first_sale_line_id" invisible="1"/>
                 <field name="planning_initial_date" invisible="1"/>
-                <button name="%(planning.planning_action_schedule_by_resource)d"
-                    type="action"
-                    context="{'default_sale_line_id': planning_first_sale_line_id,
-                              'search_default_group_by_role': 1,
-                              'search_default_group_by_resource': 2,
-                              'initialDate': planning_initial_date,
-                              'planning_gantt_active_sale_order_id': id}"
-                    icon="fa-tasks"
+                <button name="action_view_planning" type="object" icon="fa-tasks"
                     attrs="{'invisible': ['|', ('planning_hours_to_plan', '=', 0), ('state', 'in', ['draft', 'sent', 'cancel', 'done'])]}">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">

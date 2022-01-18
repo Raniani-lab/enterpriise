@@ -7,6 +7,7 @@ from odoo import fields, models
 class PlanningTag(models.Model):
     _name = "planning.tag"
     _description = "Planning Tag"
+    _order = "name"
 
     def _default_color(self):
         return randint(1, 11)

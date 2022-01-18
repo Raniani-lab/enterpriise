@@ -33,7 +33,7 @@ def days_span(start_datetime, end_datetime):
 class Planning(models.Model):
     _name = 'planning.slot'
     _description = 'Planning Shift'
-    _order = 'start_datetime,id desc'
+    _order = 'start_datetime desc, id desc'
     _rec_name = 'name'
     _check_company_auto = True
 

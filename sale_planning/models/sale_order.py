@@ -3,7 +3,7 @@
 
 from collections import defaultdict
 
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -63,3 +63,18 @@ class SaleOrder(models.Model):
         result = super()._action_confirm()
         self.order_line.sudo()._planning_slot_generation()
         return result
+
+    def action_view_planning(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_resource")
+        action.update({
+            'name': _('View Planning'),
+            'domain': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)],
+            'context': {
+                'default_sale_line_id': self.planning_first_sale_line_id,
+                'search_default_group_by_role': 1,
+                'search_default_group_by_resource': 2,
+                'initialDate': self.planning_initial_date,
+                'planning_gantt_active_sale_order_id': self.id}
+        })
+        return action

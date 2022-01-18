@@ -10,4 +10,8 @@
             </field>
         </field>
     </record>
+
+    <record id="project_timesheet_forecast.project_timesheet_action_schedule_by_role" model="ir.actions.act_window">
+        <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
+    </record>
 </odoo>

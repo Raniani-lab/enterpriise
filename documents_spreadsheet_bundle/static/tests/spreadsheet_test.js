@@ -1763,7 +1763,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     QUnit.test("Grid has still the focus after a dialog", async function (assert) {
         assert.expect(1);
 
-        const { model } = await createSpreadsheetFromPivot({
+        const { model, env } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -1779,7 +1779,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             },
         });
         selectCell(model, "F4");
-        model.config.notifyUser("Notification");
+        env.notifyUser("Notification");
         await nextTick();
         await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
         await nextTick();

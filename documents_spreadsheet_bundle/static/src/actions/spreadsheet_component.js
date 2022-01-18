@@ -30,6 +30,9 @@ export default class SpreadsheetComponent extends Component {
       download: this._download.bind(this),
       delayedRPC: this.cacheRPC.delayedRPC.bind(this.cacheRPC),
       getLinesNumber: this._getLinesNumber.bind(this),
+      notifyUser: this.notifyUser.bind(this),
+      editText: this.editText.bind(this),
+      askConfirmation: this.askConfirmation.bind(this),
     });
     useSetupAction({
       beforeLeave: this._onLeave.bind(this),
@@ -100,27 +103,33 @@ export default class SpreadsheetComponent extends Component {
   /**
    * Open a dialog to ask a confirmation to the user.
    *
-   * @param {CustomEvent} ev
-   * @param {string} ev.detail.content Content to display
-   * @param {Function} ev.detail.confirm Callback if the user press 'Confirm'
+   * @param {string} content Content to display
+   * @param {Function} confirm Callback if the user press 'Confirm'
    */
-  askConfirmation(ev) {
-    this.dialogContent = ev.detail.content;
+  askConfirmation(content, confirm) {
+    this.dialogContent = content;
     this.confirmDialog = () => {
-      ev.detail.confirm();
+      confirm();
       this.closeDialog();
     };
     this.state.dialog.isDisplayed = true;
   }
 
-  editText(ev) {
+  /**
+   * Ask the user to edit a text
+   *
+   * @param {string} title Title of the popup
+   * @param {string} placeholder Placeholder of the text input
+   * @param {Function} callback Callback to call with the entered text
+   */
+  editText(title, placeholder, callback) {
     this.dialogContent = undefined;
-    this.state.dialog.title = ev.detail.title && ev.detail.title.toString();
+    this.state.dialog.title = title && title.toString();
     this.state.dialog.isEditText = true;
-    this.state.inputContent = ev.detail.placeholder;
+    this.state.inputContent = placeholder;
     this.confirmDialog = () => {
       this.closeDialog();
-      ev.detail.callback(this.state.inputContent);
+      callback(this.state.inputContent);
     };
     this.state.dialog.isDisplayed = true;
   }
@@ -247,11 +256,10 @@ export default class SpreadsheetComponent extends Component {
   /**
    * Open a dialog to display a message to the user.
    *
-   * @param {CustomEvent} ev
-   * @param {string} ev.detail.content Content to display
+   * @param {string} content Content to display
    */
-  notifyUser(ev) {
-    this.dialogContent = ev.detail.content;
+  notifyUser(content) {
+    this.dialogContent = content;
     this.confirmDialog = this.closeDialog;
     this.state.dialog.isDisplayed = true;
   }

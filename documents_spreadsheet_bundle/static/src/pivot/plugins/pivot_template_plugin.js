@@ -1,10 +1,21 @@
 odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
-    "use strict";
+    ("use strict");
 
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const CommandResult = require("documents_spreadsheet.CommandResult");
     const { pivotFormulaRegex } = require("documents_spreadsheet.pivot_utils");
     const { parse, astToFormula } = spreadsheet;
+
+    /**
+     * @typedef {Object} Range
+     */
+
+    /**
+     * @typedef {Object} CellDependencies
+     * @property {Array<string>} strings
+     * @property {Array<Range>} references
+     * @property {Array<number>} numbers
+     */
 
     class PivotTemplatePlugin extends spreadsheet.UIPlugin {
         constructor(getters, history, dispatch, config) {
@@ -67,11 +78,22 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             cells.forEach((cell) => {
                 if (cell.isFormula()) {
                     const { col, row, sheetId } = this.getters.getCellPosition(cell.id);
-                    const ast = convertFunction(parse(cell.normalizedText), ...args);
+                    const ast = convertFunction(
+                        parse(cell.normalizedText),
+                        cell.dependencies,
+                        ...args
+                    );
                     if (ast) {
+                        const dependencies = {
+                            ...cell.dependencies,
+                            references: cell.dependencies.references.map((range) =>
+                                this.getters.getRangeString(range, range.sheetId)
+                            ),
+                        };
+                        // astToFormula expects references as XCs but buildFormulaContent expects ranges
                         const content = this.getters.buildFormulaContent(
                             sheetId,
-                            `=${astToFormula(ast)}`,
+                            `=${astToFormula(ast, dependencies)}`,
                             cell.dependencies
                         );
                         this.dispatch("UPDATE_CELL", {
@@ -123,27 +145,30 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *      `PIVOT("1","probability","product_id","37","bar","110")`
          *
          * @param {Object} ast
+         * @param {CellDependency} dependencies
          * @returns {Object}
          */
-        _relativeToAbsolute(ast) {
+        _relativeToAbsolute(ast, dependencies) {
             switch (ast.type) {
                 case "FUNCALL":
                     switch (ast.value) {
                         case "PIVOT.POSITION":
-                            return this._pivotPositionToAbsolute(ast);
+                            return this._pivotPositionToAbsolute(ast, dependencies);
                         default:
                             return Object.assign({}, ast, {
-                                args: ast.args.map((child) => this._relativeToAbsolute(child)),
+                                args: ast.args.map((child) =>
+                                    this._relativeToAbsolute(child, dependencies)
+                                ),
                             });
                     }
                 case "UNARY_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._relativeToAbsolute(ast.right),
+                        right: this._relativeToAbsolute(ast.right, dependencies),
                     });
                 case "BIN_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._relativeToAbsolute(ast.right),
-                        left: this._relativeToAbsolute(ast.left),
+                        right: this._relativeToAbsolute(ast.right, dependencies),
+                        left: this._relativeToAbsolute(ast.left, dependencies),
                     });
             }
             return ast;
@@ -162,32 +187,48 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *      `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",0),"bar","110")`
          *
          * @param {Object} ast
+         * @param CellDependencies dependencies
          * @returns {Object}
          */
-        _absoluteToRelative(ast) {
+        _absoluteToRelative(ast, dependencies) {
             switch (ast.type) {
                 case "FUNCALL":
                     switch (ast.value) {
                         case "PIVOT":
-                            return this._pivot_absoluteToRelative(ast);
+                            return this._pivot_absoluteToRelative(ast, dependencies);
                         case "PIVOT.HEADER":
-                            return this._pivotHeader_absoluteToRelative(ast);
+                            return this._pivotHeader_absoluteToRelative(ast, dependencies);
                         default:
                             return Object.assign({}, ast, {
-                                args: ast.args.map((child) => this._absoluteToRelative(child)),
+                                args: ast.args.map((child) =>
+                                    this._absoluteToRelative(child, dependencies)
+                                ),
                             });
                     }
                 case "UNARY_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._absoluteToRelative(ast.right),
+                        right: this._absoluteToRelative(ast.right, dependencies),
                     });
                 case "BIN_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._absoluteToRelative(ast.right),
-                        left: this._absoluteToRelative(ast.left),
+                        right: this._absoluteToRelative(ast.right, dependencies),
+                        left: this._absoluteToRelative(ast.left, dependencies),
                     });
             }
             return ast;
+        }
+
+        fetchValueOfAst(ast, dependencies) {
+            switch (ast.type) {
+                case "NORMALIZED_NUMBER":
+                    return dependencies.numbers[ast.value];
+                case "NORMALIZED_STRING":
+                    return dependencies.strings[ast.value];
+                case "NORMALIZED_REFERENCE":
+                    return dependencies.references[ast.value];
+                default:
+                    return ast.value;
+            }
         }
 
         /**
@@ -195,13 +236,14 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @see _relativeToAbsolute
          * @param {Object} ast
+         * @param {CellDependencies} dependencies
          * @returns {Object}
          */
-        _pivotPositionToAbsolute(ast) {
+        _pivotPositionToAbsolute(ast, dependencies) {
             const [pivotIdAst, fieldAst, positionAst] = ast.args;
-            const pivotId = JSON.parse(pivotIdAst.value);
-            const fieldName = JSON.parse(fieldAst.value);
-            const position = JSON.parse(positionAst.value);
+            const pivotId = this.fetchValueOfAst(pivotIdAst, dependencies);
+            const fieldName = this.fetchValueOfAst(fieldAst, dependencies);
+            const position = this.fetchValueOfAst(positionAst, dependencies);
             const values = this.getters.getPivotFieldValues(pivotId, fieldName);
             const id = values[position - 1];
             return {
@@ -214,13 +256,17 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @see _absoluteToRelative
          * @param {Object} ast
+         * @param {CellDependencies} dependencies
          * @returns {Object}
          */
-        _pivotHeader_absoluteToRelative(ast) {
+        _pivotHeader_absoluteToRelative(ast, dependencies) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "STRING") return ast;
-            ast.args = [pivotIdAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
+            if (pivotIdAst.type !== "NORMALIZED_STRING") return ast;
+            ast.args = [
+                pivotIdAst,
+                ...this._domainToRelative(pivotIdAst, domainAsts, dependencies),
+            ];
             return ast;
         }
         /**
@@ -228,13 +274,18 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @see _absoluteToRelative
          * @param {Object} ast
+         * @param {CellDependencies} dependencies
          * @returns {Object}
          */
-        _pivot_absoluteToRelative(ast) {
+        _pivot_absoluteToRelative(ast, dependencies) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, measureAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "STRING") return ast;
-            ast.args = [pivotIdAst, measureAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
+            if (pivotIdAst.type !== "NORMALIZED_STRING") return ast;
+            ast.args = [
+                pivotIdAst,
+                measureAst,
+                ...this._domainToRelative(pivotIdAst, domainAsts, dependencies),
+            ];
             return ast;
         }
 
@@ -251,21 +302,22 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @param {Object} pivotIdAst
          * @param {Object} domainAsts
+         * @param {CellDependencies} dependencies
          * @returns {Array<Object>}
          */
-        _domainToRelative(pivotIdAst, domainAsts) {
+        _domainToRelative(pivotIdAst, domainAsts, dependencies) {
             let relativeDomain = [];
             for (let i = 0; i <= domainAsts.length - 1; i += 2) {
                 const fieldAst = domainAsts[i];
                 const valueAst = domainAsts[i + 1];
-                const pivotId = JSON.parse(pivotIdAst.value);
-                const fieldName = JSON.parse(fieldAst.value);
+                const pivotId = this.fetchValueOfAst(pivotIdAst, dependencies);
+                const fieldName = this.fetchValueOfAst(fieldAst, dependencies);
                 if (
-                    this._isAbsolute(pivotId, fieldName) &&
-                    fieldAst.type === "STRING" &&
-                    ["STRING", "NUMBER"].includes(valueAst.type)
+                    fieldAst.type === "NORMALIZED_STRING" &&
+                    ["NORMALIZED_STRING", "NORMALIZED_NUMBER"].includes(valueAst.type) &&
+                    this._isAbsolute(pivotId, fieldName)
                 ) {
-                    const id = JSON.parse(valueAst.value);
+                    const id = this.fetchValueOfAst(valueAst, dependencies);
                     const values = this.getters.getPivotFieldValues(pivotId, fieldName);
                     const index = values.indexOf(id.toString());
                     relativeDomain = relativeDomain.concat([
@@ -301,11 +353,14 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 const invalidRows = [];
                 for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
                     const cellIds = Object.values(this.getters.getRow(sheet.id, rowIndex).cells);
-                    const [valid, invalid] = cellIds.map(id => this.getters.getCellById(id))
+                    const [valid, invalid] = cellIds
+                        .map((id) => this.getters.getCellById(id))
                         .filter((cell) => cell.isFormula() && /^\s*=.*PIVOT/.test(cell.content))
                         .reduce(
                             ([valid, invalid], cell) => {
-                                const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.content);
+                                const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(
+                                    cell.content
+                                );
                                 return [
                                     isInvalid ? valid : valid + 1,
                                     isInvalid ? invalid + 1 : invalid,

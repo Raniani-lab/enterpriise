@@ -8,9 +8,6 @@
                      transportService="props.transportService"
                      snapshotRequested="props.snapshotRequested"
                      isReadonly="isReadonly"
-                     t-on-ask-confirmation="askConfirmation"
-                     t-on-edit-text="editText"
-                     t-on-notify-user="notifyUser"
                      t-ref="spreadsheet"
         />
         <Dialog t-if="state.dialog.isDisplayed"

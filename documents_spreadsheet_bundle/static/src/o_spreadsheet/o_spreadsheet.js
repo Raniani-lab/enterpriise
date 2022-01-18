@@ -10,14 +10,12 @@
                     var d = Object.getOwnPropertyDescriptor(e, k);
                     Object.defineProperty(n, k, d.get ? d : {
                         enumerable: true,
-                        get: function () {
-                            return e[k];
-                        }
+                        get: function () { return e[k]; }
                     });
                 }
             });
         }
-        n['default'] = e;
+        n["default"] = e;
         return Object.freeze(n);
     }
 
@@ -29,7 +27,7 @@
      *  sub-env of Spreadsheet components as _t
      * */
     // define a mock translation function, when o-spreadsheet runs in standalone it doesn't translate any string
-    let _t = (s) => s;
+    let _translate = (s) => s;
     function sprintf(s, ...values) {
         if (values.length === 1 && typeof values[0] === "object") {
             const valuesDict = values[0];
@@ -45,12 +43,15 @@
      * @param tfn the function that will do the translation
      */
     function setTranslationMethod(tfn) {
-        _t = tfn;
+        _translate = tfn;
     }
+    const _t = function (s, ...values) {
+        return sprintf(_translate(s), ...values);
+    };
     const _lt = function (s, ...values) {
         return {
             toString: function () {
-                return sprintf(_t(s), ...values);
+                return sprintf(_translate(s), ...values);
             },
             // casts the object to unknown then to string to trick typescript into thinking that the object it receives is actually a string
             // this way it will be typed correctly (behaves like a string) but tests like typeof _lt("whatever") will be object and not string !
@@ -120,6 +121,7 @@
     const FORBIDDEN_IN_EXCEL_REGEX = /'|\*|\?|\/|\\|\[|\]/;
     // Cells
     const NULL_FORMAT = undefined;
+    const FORMULA_REF_IDENTIFIER = "|";
 
     // -----------------------------------------------------------------------------
     // Date Type
@@ -1383,9 +1385,6 @@
         ReturnFormatType["FormatFromArgument"] = "FormatFromArgument";
     })(ReturnFormatType || (ReturnFormatType = {}));
 
-    // -----------------------------------------------------------------------------
-    // MISC
-    // -----------------------------------------------------------------------------
     var DIRECTION;
     (function (DIRECTION) {
         DIRECTION[DIRECTION["UP"] = 0] = "UP";
@@ -2696,6 +2695,42 @@
         return JSON.stringify(obj, Object.keys(obj).sort());
     }
     /**
+     * Deep copy arrays, plain objects and primitive values.
+     * Throws an error for other types such as class instances.
+     * Sparse arrays remain sparse.
+     */
+    function deepCopy(obj) {
+        const result = Array.isArray(obj) ? [] : {};
+        switch (typeof obj) {
+            case "object": {
+                if (obj === null) {
+                    return obj;
+                }
+                else if (!(isPlainObject(obj) || obj instanceof Array)) {
+                    throw new Error("Unsupported type: only objects and arrays are supported");
+                }
+                for (const key in obj) {
+                    result[key] = deepCopy(obj[key]);
+                }
+                return result;
+            }
+            case "number":
+            case "string":
+            case "boolean":
+            case "function":
+            case "undefined":
+                return obj;
+            default:
+                throw new Error(`Unsupported type: ${typeof obj}`);
+        }
+    }
+    /**
+     * Check if the object is a plain old javascript object.
+     */
+    function isPlainObject(obj) {
+        return typeof obj === "object" && (obj === null || obj === void 0 ? void 0 : obj.constructor) === Object;
+    }
+    /**
      * Sanitize the name of a sheet, by eventually removing quotes
      * @param sheetName name of the sheet, potentially quoted with single quotes
      */
@@ -2857,6 +2892,178 @@
         return argument !== undefined;
     }
     const DEBUG = {};
+    /**
+     * Get the id of the given item (its key in the given dictionnary).
+     * If the given item does not exist in the dictionary, it creates one with a new id.
+     */
+    function getItemId(item, itemsDic) {
+        for (let [key, value] of Object.entries(itemsDic)) {
+            if (stringify(value) === stringify(item)) {
+                return parseInt(key, 10);
+            }
+        }
+        // Generate new Id if the item didn't exist in the dictionary
+        const ids = Object.keys(itemsDic);
+        const maxId = ids.length === 0 ? 0 : Math.max(...ids.map((id) => parseInt(id, 10)));
+        itemsDic[maxId + 1] = item;
+        return maxId + 1;
+    }
+
+    function createDefaultCols(colNumber) {
+        const cols = [];
+        let current = 0;
+        for (let i = 0; i < colNumber; i++) {
+            const size = DEFAULT_CELL_WIDTH;
+            const col = {
+                start: current,
+                end: current + size,
+                size: size,
+                name: numberToLetters(i),
+            };
+            cols.push(col);
+            current = col.end;
+        }
+        return cols;
+    }
+    function createDefaultRows(rowNumber) {
+        const rows = [];
+        let current = 0;
+        for (let i = 0; i < rowNumber; i++) {
+            const size = DEFAULT_CELL_HEIGHT;
+            const row = {
+                start: current,
+                end: current + size,
+                size: size,
+                name: String(i + 1),
+                cells: {},
+            };
+            rows.push(row);
+            current = row.end;
+        }
+        return rows;
+    }
+    function createCols(savedCols, colNumber) {
+        var _a;
+        const cols = [];
+        let current = 0;
+        for (let i = 0; i < colNumber; i++) {
+            const size = savedCols[i] ? savedCols[i].size || DEFAULT_CELL_WIDTH : DEFAULT_CELL_WIDTH;
+            const hidden = ((_a = savedCols[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
+            const end = hidden ? current : current + size;
+            const col = {
+                start: current,
+                end: end,
+                size: size,
+                name: numberToLetters(i),
+            };
+            if (hidden) {
+                col.isHidden = hidden;
+            }
+            cols.push(col);
+            current = col.end;
+        }
+        return cols;
+    }
+    function createRows(savedRows, rowNumber) {
+        var _a;
+        const rows = [];
+        let current = 0;
+        for (let i = 0; i < rowNumber; i++) {
+            const size = savedRows[i] ? savedRows[i].size || DEFAULT_CELL_HEIGHT : DEFAULT_CELL_HEIGHT;
+            const hidden = ((_a = savedRows[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
+            const end = hidden ? current : current + size;
+            const row = {
+                start: current,
+                end: end,
+                size: size,
+                name: String(i + 1),
+                cells: {},
+            };
+            if (hidden) {
+                row.isHidden = hidden;
+            }
+            rows.push(row);
+            current = row.end;
+        }
+        return rows;
+    }
+    function exportCols(cols, exportDefaults = false) {
+        const exportedCols = {};
+        for (let i in cols) {
+            const col = cols[i];
+            if (col.size !== DEFAULT_CELL_WIDTH || exportDefaults) {
+                exportedCols[i] = { size: col.size };
+            }
+            if (col.isHidden) {
+                exportedCols[i] = exportedCols[i] || {};
+                exportedCols[i]["isHidden"] = col.isHidden;
+            }
+        }
+        return exportedCols;
+    }
+    function exportRows(rows, exportDefaults = false) {
+        const exportedRows = {};
+        for (let i in rows) {
+            const row = rows[i];
+            if (row.size !== DEFAULT_CELL_HEIGHT || exportDefaults) {
+                exportedRows[i] = { size: row.size };
+            }
+            if (row.isHidden) {
+                exportedRows[i] = exportedRows[i] || {};
+                exportedRows[i]["isHidden"] = row.isHidden;
+            }
+        }
+        return exportedRows;
+    }
+
+    /*
+     * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+     * */
+    class UuidGenerator {
+        constructor() {
+            this.isFastIdStrategy = false;
+            this.fastIdStart = 0;
+        }
+        setIsFastStrategy(isFast) {
+            this.isFastIdStrategy = isFast;
+        }
+        uuidv4() {
+            if (this.isFastIdStrategy) {
+                this.fastIdStart++;
+                return String(this.fastIdStart);
+                //@ts-ignore
+            }
+            else if (window.crypto && window.crypto.getRandomValues) {
+                //@ts-ignore
+                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+            }
+            else {
+                // mainly for jest and other browsers that do not have the crypto functionality
+                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+                    var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
+                    return v.toString(16);
+                });
+            }
+        }
+    }
+
+    function getNextVisibleCellCoords(sheet, col, row) {
+        return [
+            findVisibleHeader(sheet, "cols", range(col, sheet.cols.length)),
+            findVisibleHeader(sheet, "rows", range(row, sheet.rows.length)),
+        ];
+    }
+    function findVisibleHeader(sheet, dimension, indexes) {
+        const headers = sheet[dimension];
+        return indexes.find((index) => !headers[index].isHidden);
+    }
+    function findLastVisibleColRow(sheet, dimension) {
+        let lastIndex = sheet[dimension].length - 1;
+        while (lastIndex >= 0 && sheet[dimension][lastIndex].isHidden === true) {
+            lastIndex--;
+        }
+        return sheet[dimension][lastIndex];
+    }
 
     /**
      * Convert from a cartesian reference to a Zone
@@ -3232,6 +3439,23 @@
             .reverse();
     }
     /**
+     * This function will find all overlapping zones in an array and transform them
+     * into an union of each one.
+     * */
+    function mergeOverlappingZones(zones) {
+        return zones.reduce((dissociatedZones, zone) => {
+            const nextIndex = dissociatedZones.length;
+            for (let i = 0; i < nextIndex; i++) {
+                if (overlap(dissociatedZones[i], zone)) {
+                    dissociatedZones[i] = union(dissociatedZones[i], zone);
+                    return dissociatedZones;
+                }
+            }
+            dissociatedZones[nextIndex] = zone;
+            return dissociatedZones;
+        }, []);
+    }
+    /**
      * This function will compare the modifications of selection to determine
      * a cell that is part of the new zone and not the previous one.
      */
@@ -3266,224 +3490,6 @@
             left: Math.min(zone.left, zone.right),
             right: Math.max(zone.left, zone.right),
         };
-    }
-
-    /*
-     * Contains all method to update ranges with grid_manipulation
-     */
-    function updateRemoveColumns(range, columns) {
-        let { left, right, top, bottom } = toZone(range);
-        columns = columns.slice().sort((a, b) => b - a);
-        for (let column of columns) {
-            if (left > column) {
-                left -= 1;
-            }
-            if (left >= column || right >= column) {
-                right -= 1;
-            }
-        }
-        if (left > right) {
-            return null;
-        }
-        return toXC(left, top) + ":" + toXC(right, bottom);
-    }
-    function updateRemoveRows(range, rows) {
-        let { left, right, top, bottom } = toZone(range);
-        rows = rows.slice().sort((a, b) => b - a);
-        for (let row of rows) {
-            if (top > row) {
-                top -= 1;
-            }
-            if (top >= row || bottom >= row) {
-                bottom -= 1;
-            }
-        }
-        if (top > bottom) {
-            return null;
-        }
-        return toXC(left, top) + ":" + toXC(right, bottom);
-    }
-    function updateAddColumns(range, column, step) {
-        let { left, right, top, bottom } = toZone(range);
-        if (left >= column) {
-            left += step;
-        }
-        if (left >= column || right >= column) {
-            right += step;
-        }
-        if (left > right) {
-            return null;
-        }
-        return toXC(left, top) + ":" + toXC(right, bottom);
-    }
-    function updateAddRows(range, row, step) {
-        let { left, right, top, bottom } = toZone(range);
-        if (top >= row) {
-            top += step;
-        }
-        if (top >= row || bottom >= row) {
-            bottom += step;
-        }
-        if (top > bottom) {
-            return null;
-        }
-        return toXC(left, top) + ":" + toXC(right, bottom);
-    }
-
-    function createDefaultCols(colNumber) {
-        const cols = [];
-        let current = 0;
-        for (let i = 0; i < colNumber; i++) {
-            const size = DEFAULT_CELL_WIDTH;
-            const col = {
-                start: current,
-                end: current + size,
-                size: size,
-                name: numberToLetters(i),
-            };
-            cols.push(col);
-            current = col.end;
-        }
-        return cols;
-    }
-    function createDefaultRows(rowNumber) {
-        const rows = [];
-        let current = 0;
-        for (let i = 0; i < rowNumber; i++) {
-            const size = DEFAULT_CELL_HEIGHT;
-            const row = {
-                start: current,
-                end: current + size,
-                size: size,
-                name: String(i + 1),
-                cells: {},
-            };
-            rows.push(row);
-            current = row.end;
-        }
-        return rows;
-    }
-    function createCols(savedCols, colNumber) {
-        var _a;
-        const cols = [];
-        let current = 0;
-        for (let i = 0; i < colNumber; i++) {
-            const size = savedCols[i] ? savedCols[i].size || DEFAULT_CELL_WIDTH : DEFAULT_CELL_WIDTH;
-            const hidden = ((_a = savedCols[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
-            const end = hidden ? current : current + size;
-            const col = {
-                start: current,
-                end: end,
-                size: size,
-                name: numberToLetters(i),
-            };
-            if (hidden) {
-                col.isHidden = hidden;
-            }
-            cols.push(col);
-            current = col.end;
-        }
-        return cols;
-    }
-    function createRows(savedRows, rowNumber) {
-        var _a;
-        const rows = [];
-        let current = 0;
-        for (let i = 0; i < rowNumber; i++) {
-            const size = savedRows[i] ? savedRows[i].size || DEFAULT_CELL_HEIGHT : DEFAULT_CELL_HEIGHT;
-            const hidden = ((_a = savedRows[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
-            const end = hidden ? current : current + size;
-            const row = {
-                start: current,
-                end: end,
-                size: size,
-                name: String(i + 1),
-                cells: {},
-            };
-            if (hidden) {
-                row.isHidden = hidden;
-            }
-            rows.push(row);
-            current = row.end;
-        }
-        return rows;
-    }
-    function exportCols(cols, exportDefaults = false) {
-        const exportedCols = {};
-        for (let i in cols) {
-            const col = cols[i];
-            if (col.size !== DEFAULT_CELL_WIDTH || exportDefaults) {
-                exportedCols[i] = { size: col.size };
-            }
-            if (col.isHidden) {
-                exportedCols[i] = exportedCols[i] || {};
-                exportedCols[i]["isHidden"] = col.isHidden;
-            }
-        }
-        return exportedCols;
-    }
-    function exportRows(rows, exportDefaults = false) {
-        const exportedRows = {};
-        for (let i in rows) {
-            const row = rows[i];
-            if (row.size !== DEFAULT_CELL_HEIGHT || exportDefaults) {
-                exportedRows[i] = { size: row.size };
-            }
-            if (row.isHidden) {
-                exportedRows[i] = exportedRows[i] || {};
-                exportedRows[i]["isHidden"] = row.isHidden;
-            }
-        }
-        return exportedRows;
-    }
-
-    /*
-     * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-     * */
-    class UuidGenerator {
-        constructor() {
-            this.isFastIdStrategy = false;
-            this.fastIdStart = 0;
-        }
-        setIsFastStrategy(isFast) {
-            this.isFastIdStrategy = isFast;
-        }
-        uuidv4() {
-            if (this.isFastIdStrategy) {
-                this.fastIdStart++;
-                return String(this.fastIdStart);
-                //@ts-ignore
-            }
-            else if (window.crypto && window.crypto.getRandomValues) {
-                //@ts-ignore
-                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
-            }
-            else {
-                // mainly for jest and other browsers that do not have the crypto functionality
-                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-                    var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
-                    return v.toString(16);
-                });
-            }
-        }
-    }
-
-    function getNextVisibleCellCoords(sheet, col, row) {
-        return [
-            findVisibleHeader(sheet, "cols", range(col, sheet.cols.length)),
-            findVisibleHeader(sheet, "rows", range(row, sheet.rows.length)),
-        ];
-    }
-    function findVisibleHeader(sheet, dimension, indexes) {
-        const headers = sheet[dimension];
-        return indexes.find((index) => !headers[index].isHidden);
-    }
-    function findLastVisibleColRow(sheet, dimension) {
-        let lastIndex = sheet[dimension].length - 1;
-        while (lastIndex >= 0 && sheet[dimension][lastIndex].isHidden === true) {
-            lastIndex--;
-        }
-        return sheet[dimension][lastIndex];
     }
 
     // Note: dataY and dataX may not have the same dimension
@@ -5386,6 +5392,30 @@
         YEARFRAC: YEARFRAC
     });
 
+    const DEFAULT_DELTA_ARG = 0;
+    // -----------------------------------------------------------------------------
+    // DELTA
+    // -----------------------------------------------------------------------------
+    const DELTA = {
+        description: _lt("Compare two numeric values, returning 1 if they're equal."),
+        args: args(`
+  number1  (number) ${_lt("The first number to compare.")}
+  number2  (number, default=${DEFAULT_DELTA_ARG}) ${_lt("The second number to compare.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (number1, number2 = DEFAULT_DELTA_ARG) {
+            const _number1 = toNumber(number1);
+            const _number2 = toNumber(number2);
+            return _number1 === _number2 ? 1 : 0;
+        },
+        isExported: true,
+    };
+
+    var engineering = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        DELTA: DELTA
+    });
+
     const DEFAULT_DAY_COUNT_CONVENTION = 0;
     const DEFAULT_END_OR_BEGINNING = 0;
     function newtonMethod(func, derivFunc, startValue, interMax, epsMax = 1e-10) {
@@ -6874,6 +6904,7 @@
         operators,
         statistical,
         text,
+        engineering,
     };
     //------------------------------------------------------------------------------
     // Function registry
@@ -6918,6 +6949,7 @@
      * is useful for the composer, which needs to be able to work with incomplete
      * formulas.
      */
+    const dependencyIdentifierRegex = /^[S|N]?\d+/;
     const functions$3 = functionRegistry.content;
     const OPERATORS = "+,-,*,/,:,=,<>,>=,>,<=,<,%,^,&".split(",");
     function tokenize(str) {
@@ -6932,11 +6964,11 @@
             let token = tokenizeSpace(chars) ||
                 tokenizeMisc(chars) ||
                 tokenizeOperator(chars) ||
-                tokenizeNumber(chars) ||
                 tokenizeString(chars) ||
                 tokenizeDebugger(chars) ||
                 tokenizeNormalizedReferences(chars) ||
                 tokenizeInvalidRange(chars) ||
+                tokenizeNumber(chars) ||
                 tokenizeSymbol(chars);
             if (!token) {
                 token = { type: "UNKNOWN", value: chars.shift() };
@@ -6945,11 +6977,10 @@
         }
         return result;
     }
-    const FORMULA_REF_IDENTIFIER = "|";
     function tokenizeNormalizedReferences(chars) {
         if (chars[0] === FORMULA_REF_IDENTIFIER) {
             chars.shift(); // consume the | even if it is incorrect
-            const match = chars.join("").match(formulaNumberRegexp);
+            const match = chars.join("").match(dependencyIdentifierRegex);
             if (match) {
                 chars.splice(0, match[0].length);
             }
@@ -6959,7 +6990,15 @@
             if (chars[0] === FORMULA_REF_IDENTIFIER) {
                 chars.shift();
             }
-            return { type: "REFERENCE", value: match[0] };
+            const value = match[0];
+            switch (value[0]) {
+                case "S":
+                    return { type: "NORMALIZED_STRING", value: value.substring(1) };
+                case "N":
+                    return { type: "NORMALIZED_NUMBER", value: value.substring(1) };
+                default:
+                    return { type: "REFERENCE", value };
+            }
         }
         return null;
     }
@@ -7097,6 +7136,7 @@
     }
 
     const UNARY_OPERATORS = ["-", "+"];
+    const ASSOCIATIVE_OPERATORS = ["*", "+", "&"];
     const OP_PRIORITY = {
         "^": 30,
         "*": 20,
@@ -7135,9 +7175,13 @@
                 next.debug = true;
                 return next;
             case "NUMBER":
-                return { type: current.type, value: parseNumber(current.value) };
+                return { type: "NUMBER", value: parseNumber(current.value) };
+            case "NORMALIZED_NUMBER":
+                return { type: "NORMALIZED_NUMBER", value: parseInt(current.value, 10) };
             case "STRING":
-                return { type: current.type, value: current.value };
+                return { type: "STRING", value: current.value };
+            case "NORMALIZED_STRING":
+                return { type: "NORMALIZED_STRING", value: parseInt(current.value, 10) };
             case "FUNCTION":
                 if (tokens.shift().type !== "LEFT_PAREN") {
                     throw new Error(_lt("Wrong function call"));
@@ -7172,20 +7216,28 @@
                 }
             case "REFERENCE":
                 return {
-                    type: "REFERENCE",
+                    type: "NORMALIZED_REFERENCE",
                     value: parseInt(current.value, 10),
                 };
             case "INVALID_REFERENCE":
                 throw new Error(_lt("Invalid reference"));
             case "SYMBOL":
-                if (["TRUE", "FALSE"].includes(current.value.toUpperCase())) {
-                    return { type: "BOOLEAN", value: current.value.toUpperCase() === "TRUE" };
+                if (cellReference.test(current.value)) {
+                    return {
+                        type: "REFERENCE",
+                        value: current.value,
+                    };
                 }
                 else {
-                    if (current.value) {
-                        throw new Error(_lt("Invalid formula"));
+                    if (["TRUE", "FALSE"].includes(current.value.toUpperCase())) {
+                        return { type: "BOOLEAN", value: current.value.toUpperCase() === "TRUE" };
                     }
-                    return { type: "UNKNOWN", value: current.value };
+                    else {
+                        if (current.value) {
+                            throw new Error(_lt("Invalid formula"));
+                        }
+                        return { type: "STRING", value: current.value };
+                    }
                 }
             case "LEFT_PAREN":
                 const result = parseExpression(tokens, 5);
@@ -7244,28 +7296,111 @@
         return result;
     }
     /**
-     * Converts an ast formula to the corresponding string
+     * Allows to visit all nodes of an AST and apply a mapping function
+     * to nodes of a specific type.
+     * Useful if you want to convert some part of a formula.
+     *
+     * e.g.
+     * ```ts
+     * convertAstNodes(ast, "FUNCALL", convertFormulaToExcel)
+     *
+     * function convertFormulaToExcel(ast: ASTFuncall) {
+     *   // ...
+     *   return modifiedAst
+     * }
+     * ```
      */
-    function astToFormula(ast) {
+    function convertAstNodes(ast, type, fn) {
+        if (type === ast.type) {
+            ast = fn(ast);
+        }
         switch (ast.type) {
             case "FUNCALL":
-                const args = ast.args.map((arg) => astToFormula(arg));
+                return {
+                    ...ast,
+                    args: ast.args.map((child) => convertAstNodes(child, type, fn)),
+                };
+            case "UNARY_OPERATION":
+                return {
+                    ...ast,
+                    right: convertAstNodes(ast.right, type, fn),
+                };
+            case "BIN_OPERATION":
+                return {
+                    ...ast,
+                    right: convertAstNodes(ast.right, type, fn),
+                    left: convertAstNodes(ast.left, type, fn),
+                };
+            default:
+                return ast;
+        }
+    }
+    /**
+     * Converts an ast formula to the corresponding string
+     */
+    function astToFormula(ast, dependencies = { references: [], numbers: [], strings: [] }) {
+        switch (ast.type) {
+            case "FUNCALL":
+                const args = ast.args.map((arg) => astToFormula(arg, dependencies));
                 return `${ast.value}(${args.join(",")})`;
             case "NUMBER":
                 return ast.value.toString();
+            case "NORMALIZED_STRING":
+                return `"${dependencies.strings[ast.value]}"`;
+            case "NORMALIZED_NUMBER":
+                return dependencies.numbers[ast.value].toString();
+            case "NORMALIZED_REFERENCE":
+                return dependencies.references[ast.value].toString();
+            case "REFERENCE":
             case "STRING":
                 return ast.value;
             case "BOOLEAN":
                 return ast.value ? "TRUE" : "FALSE";
             case "UNARY_OPERATION":
-                return ast.value + astToFormula(ast.right);
+                return ast.value + rightOperandToFormula(ast, dependencies);
             case "BIN_OPERATION":
-                return astToFormula(ast.left) + ast.value + astToFormula(ast.right);
-            case "REFERENCE":
-                return `${FORMULA_REF_IDENTIFIER}${ast.value}${FORMULA_REF_IDENTIFIER}`;
+                return (leftOperandToFormula(ast, dependencies) +
+                    ast.value +
+                    rightOperandToFormula(ast, dependencies));
             default:
                 return ast.value;
         }
+    }
+    /**
+     * Convert the left operand of a binary operation to the corresponding string
+     * and enclose the result inside parenthesis if necessary.
+     */
+    function leftOperandToFormula(binaryOperationAST, dependencies) {
+        const mainOperator = binaryOperationAST.value;
+        const leftOperation = binaryOperationAST.left;
+        const leftOperator = leftOperation.value;
+        const needParenthesis = leftOperation.type === "BIN_OPERATION" && OP_PRIORITY[leftOperator] < OP_PRIORITY[mainOperator];
+        return needParenthesis
+            ? `(${astToFormula(leftOperation, dependencies)})`
+            : astToFormula(leftOperation, dependencies);
+    }
+    /**
+     * Convert the right operand of a binary or unary operation to the corresponding string
+     * and enclose the result inside parenthesis if necessary.
+     */
+    function rightOperandToFormula(binaryOperationAST, dependencies) {
+        const mainOperator = binaryOperationAST.value;
+        const rightOperation = binaryOperationAST.right;
+        const rightPriority = OP_PRIORITY[rightOperation.value];
+        const mainPriority = OP_PRIORITY[mainOperator];
+        let needParenthesis = false;
+        if (rightOperation.type !== "BIN_OPERATION") {
+            needParenthesis = false;
+        }
+        else if (rightPriority < mainPriority) {
+            needParenthesis = true;
+        }
+        else if (rightPriority === mainPriority && !ASSOCIATIVE_OPERATORS.includes(mainOperator)) {
+            needParenthesis = true;
+        }
+        return needParenthesis
+            ? `(${astToFormula(rightOperation, dependencies)})`
+            : astToFormula(rightOperation, dependencies);
     }
 
     const functions$2 = functionRegistry.content;
@@ -7305,9 +7440,9 @@
     // -----------------------------------------------------------------------------
     // COMPILER
     // -----------------------------------------------------------------------------
-    function compile(str) {
-        if (!functionCache[str.text]) {
-            const ast = parse(str.text);
+    function compile(formula) {
+        if (!functionCache[formula.text]) {
+            const ast = parse(formula.text);
             let nextId = 1;
             if (ast.type === "BIN_OPERATION" && ast.value === ":") {
                 throw new Error(_lt("Invalid formula"));
@@ -7317,7 +7452,7 @@
             }
             const compiledAST = compileAST(ast);
             const code = splitCodeLines([
-                `// ${str.text}`,
+                `// ${formula.text}`,
                 compiledAST.code,
                 `return ${compiledAST.id};`,
             ]).join("\n");
@@ -7327,8 +7462,8 @@
             "range", // same as above, but guarantee that the result is in the form of a range
             "ctx", code);
             //@ts-ignore
-            functionCache[str.text] = baseFunction;
-            functionCache[str.text].dependenciesFormat = formatAST(ast);
+            functionCache[formula.text] = baseFunction;
+            functionCache[formula.text].dependenciesFormat = formatAST(ast);
             /**
              * This function compile the function arguments. It is mostly straightforward,
              * except that there is a non trivial transformation in one situation:
@@ -7378,8 +7513,8 @@
                             t === "RANGE<NUMBER>" ||
                             t === "RANGE<STRING>");
                         if (isRangeOnly) {
-                            if (currentArg.type !== "REFERENCE") {
-                                throw new Error(_lt("Function %s expects the parameter %s to be reference to a cell or range, not a %s.", ast.value.toUpperCase(), (i + 1).toString(), currentArg.type.toLowerCase()));
+                            if (currentArg.type !== "NORMALIZED_REFERENCE") {
+                                throw new Error(_lt("Function %s expects the parameter %s to be reference to a cell or range, not a %s.", ast.value.toUpperCase(), (i + 1).toString(), currentArg.type.toLowerCase().replace("normalized_", "")));
                             }
                         }
                         const compiledAST = compileAST(currentArg, isLazy, isMeta, hasRange, {
@@ -7412,7 +7547,8 @@
             function compileAST(ast, isLazy = false, isMeta = false, hasRange = false, referenceVerification = {}) {
                 const codeBlocks = [];
                 let id, fnName, statement;
-                if (ast.type !== "REFERENCE" && !(ast.type === "BIN_OPERATION" && ast.value === ":")) {
+                if (ast.type !== "NORMALIZED_REFERENCE" &&
+                    !(ast.type === "BIN_OPERATION" && ast.value === ":")) {
                     if (isMeta) {
                         throw new Error(_lt(`Argument must be a reference to a cell or range.`));
                     }
@@ -7422,16 +7558,26 @@
                 }
                 switch (ast.type) {
                     case "BOOLEAN":
-                    case "NUMBER":
-                    case "STRING":
+                    case "NUMBER": // probably dead case
+                    case "STRING": // probably dead case
                         if (!isLazy) {
                             return { id: ast.value, code: "" };
                         }
                         id = nextId++;
                         statement = `${ast.value}`;
                         break;
+                    case "NORMALIZED_NUMBER":
+                        id = nextId++;
+                        statement = `deps.numbers[${ast.value}]`;
+                        break;
+                    case "NORMALIZED_STRING":
+                        id = nextId++;
+                        statement = `deps.strings[${ast.value}]`;
+                        break;
                     case "REFERENCE":
-                        const referenceIndex = str.dependencies[ast.value];
+                        throw new Error(`Only normalized references can be compiled: ${ast.value}`);
+                    case "NORMALIZED_REFERENCE":
+                        const referenceIndex = formula.dependencies.references[ast.value];
                         if (!referenceIndex) {
                             id = nextId++;
                             statement = `null`;
@@ -7439,10 +7585,10 @@
                         }
                         id = nextId++;
                         if (hasRange) {
-                            statement = `range(${ast.value}, deps, sheetId)`;
+                            statement = `range(${ast.value}, deps.references, sheetId)`;
                         }
                         else {
-                            statement = `ref(${ast.value}, deps, sheetId, ${isMeta ? "true" : "false"}, "${referenceVerification.functionName || OPERATOR_MAP["="]}",  ${referenceVerification.paramIndex})`;
+                            statement = `ref(${ast.value}, deps.references, sheetId, ${isMeta ? "true" : "false"}, "${referenceVerification.functionName || OPERATOR_MAP["="]}",  ${referenceVerification.paramIndex})`;
                         }
                         break;
                     case "FUNCALL":
@@ -7450,7 +7596,7 @@
                         const args = compileFunctionArgs(ast);
                         codeBlocks.push(splitCodeLines(args.map((arg) => arg.code)).join("\n"));
                         fnName = ast.value.toUpperCase();
-                        codeBlocks.push(`ctx.__lastFnCalled = '${fnName}'`);
+                        codeBlocks.push(`ctx.__lastFnCalled = '${fnName}';`);
                         statement = `ctx['${fnName}'](${args.map((arg) => arg.id)})`;
                         break;
                     case "UNARY_OPERATION": {
@@ -7460,7 +7606,7 @@
                             functionName: fnName,
                         });
                         codeBlocks.push(right.code);
-                        codeBlocks.push(`ctx.__lastFnCalled = '${fnName}'`);
+                        codeBlocks.push(`ctx.__lastFnCalled = '${fnName}';`);
                         statement = `ctx['${fnName}']( ${right.id})`;
                         break;
                     }
@@ -7475,7 +7621,7 @@
                         });
                         codeBlocks.push(left.code);
                         codeBlocks.push(right.code);
-                        codeBlocks.push(`ctx.__lastFnCalled = '${fnName}'`);
+                        codeBlocks.push(`ctx.__lastFnCalled = '${fnName}';`);
                         statement = `ctx['${fnName}'](${left.id}, ${right.id})`;
                         break;
                     }
@@ -7488,15 +7634,14 @@
                         break;
                 }
                 if (isLazy) {
-                    // prettier-ignore
-                    const lazyFunction = `const _${id} = () => {
-	${splitCodeLines(codeBlocks).join("\n\t")}
-	return ${statement};
-}`;
+                    const lazyFunction = `const _${id} = () => {\n` +
+                        `\t${splitCodeLines(codeBlocks).join("\n\t")}\n` +
+                        `\treturn ${statement};\n` +
+                        "}";
                     return { id: `_${id}`, code: lazyFunction };
                 }
                 else {
-                    codeBlocks.push(`let _${id} = ` + statement);
+                    codeBlocks.push(`let _${id} = ${statement};`);
                     return { id: `_${id}`, code: splitCodeLines(codeBlocks).join("\n") };
                 }
             }
@@ -7512,8 +7657,8 @@
             function formatAST(ast) {
                 let fnDef;
                 switch (ast.type) {
-                    case "REFERENCE":
-                        const referenceIndex = str.dependencies[ast.value];
+                    case "NORMALIZED_REFERENCE":
+                        const referenceIndex = formula.dependencies.references[ast.value];
                         if (referenceIndex) {
                             return [ast.value];
                         }
@@ -7562,39 +7707,9 @@
                 return [];
             }
         }
-        return functionCache[str.text];
+        return functionCache[formula.text];
     }
 
-    /**
-     * Add the following information on tokens:
-     * - length
-     * - start
-     * - end
-     */
-    function enrichTokens(tokens) {
-        let current = 0;
-        return tokens.map((x) => {
-            const len = x.value.toString().length;
-            const token = Object.assign({}, x, {
-                start: current,
-                end: current + len,
-                length: len,
-            });
-            current = token.end;
-            return token;
-        });
-    }
-    /**
-     * Remove information added on EnrichedToken to make a Token
-     */
-    function toSimpleTokens(composerTokens) {
-        return composerTokens.map((x) => {
-            return {
-                type: x.type,
-                value: x.value,
-            };
-        });
-    }
     /**
      * finds a sequence of token that represent a range and replace them with a single token
      * The range can be
@@ -7628,9 +7743,6 @@
                         if (startIncludingSpaces && refStart && operator && refEnd) {
                             const newToken = {
                                 type: "SYMBOL",
-                                start: result[startIncludingSpaces].start,
-                                end: result[i - 1].end,
-                                length: result[i - 1].end - result[startIncludingSpaces].start,
                                 value: result
                                     .slice(startIncludingSpaces, i)
                                     .filter((x) => !removeSpace || x.type !== "SPACE")
@@ -7678,9 +7790,6 @@
         if (startIncludingSpaces && refStart && operator && refEnd) {
             const newToken = {
                 type: "SYMBOL",
-                start: result[startIncludingSpaces].start,
-                end: result[i].end,
-                length: result[i].end - result[startIncludingSpaces].start,
                 value: result
                     .slice(startIncludingSpaces, i + 1)
                     .filter((x) => !removeSpace || x.type !== "SPACE")
@@ -7699,17 +7808,27 @@
      */
     function rangeTokenize(formula) {
         const tokens = tokenize(formula);
-        return toSimpleTokens(mergeSymbolsIntoRanges(enrichTokens(tokens), true));
+        return mergeSymbolsIntoRanges(tokens, true);
     }
 
     /**
-     * Take the result of the tokenizer and transform it to be usable in the composer.
-     *
-     * @param formula
+     * Add the following information on tokens:
+     * - length
+     * - start
+     * - end
      */
-    function composerTokenize(formula) {
-        const tokens = tokenize(formula);
-        return mapParentFunction(mergeSymbolsIntoRanges(mapParenthesis(enrichTokens(tokens))));
+    function enrichTokens(tokens) {
+        let current = 0;
+        return tokens.map((x) => {
+            const len = x.value.toString().length;
+            const token = Object.assign({}, x, {
+                start: current,
+                end: current + len,
+                length: len,
+            });
+            current = token.end;
+            return token;
+        });
     }
     /**
      * add on each token the length, start and end
@@ -7774,31 +7893,74 @@
         });
         return res;
     }
+    /**
+     * Take the result of the tokenizer and transform it to be usable in the composer.
+     *
+     * @param formula
+     */
+    function composerTokenize(formula) {
+        const tokens = tokenize(formula);
+        return mapParentFunction(mapParenthesis(enrichTokens(mergeSymbolsIntoRanges(tokens))));
+    }
 
     /**
      * parses a formula (as a string) into the same formula,
-     * but with the references to other cells extracted
+     * but with the references to other cells as well as strings and numbers extracted
      *
      * =sum(a3:b1) + c3 --> =sum(|0|) + |1|
+     *
+     * = sum(a3, 5) --> =sum(|0|, |N1|)
+     *
+     * =CONCAT(CONCAT(1, "beta"), A1) --> =CONCAT(CONCAT(|N0|, |S1|), |2|)
+     *
+     * Strings and Numbers are marked with a prefix of their type (S and N) to be detected
+     * as their normalized form by the parser as they won't be processed like the references by the compiler.
      *
      * @param formula
      */
     function normalize(formula) {
         const tokens = rangeTokenize(formula);
-        let references = [];
+        let dependencies = {
+            numbers: [],
+            strings: [],
+            references: [],
+        };
         let noRefFormula = "".concat(...tokens.map((token) => {
             if (token.type === "SYMBOL" && cellReference.test(token.value)) {
                 const value = token.value.trim();
-                if (!references.includes(value)) {
-                    references.push(value);
+                if (!dependencies.references.includes(value)) {
+                    dependencies.references.push(value);
                 }
-                return `${FORMULA_REF_IDENTIFIER}${references.indexOf(value)}${FORMULA_REF_IDENTIFIER}`;
+                const index = dependencies.references.indexOf(value).toString();
+                return formatIndex(index);
+            }
+            else if ("STRING" === token.type) {
+                const value = token.value.slice(1).slice(0, token.value.length - 2);
+                if (!dependencies.strings.includes(value)) {
+                    dependencies.strings.push(value);
+                }
+                const index = dependencies.strings.indexOf(value);
+                return formatIndex(`${token.type[0]}${index}`);
+            }
+            else if (token.type === "NUMBER") {
+                const value = parseNumber(token.value);
+                if (!dependencies.numbers.includes(value)) {
+                    dependencies.numbers.push(value);
+                }
+                const index = dependencies.numbers.indexOf(value);
+                return formatIndex(`${token.type[0]}${index}`);
             }
             else {
                 return token.value;
             }
         }));
-        return { text: noRefFormula, dependencies: references };
+        return { text: noRefFormula, dependencies };
+    }
+    /**
+     * Enclose an index between normalization identifiers
+     */
+    function formatIndex(index) {
+        return `${FORMULA_REF_IDENTIFIER}${index}${FORMULA_REF_IDENTIFIER}`;
     }
 
     /**
@@ -7823,6 +7985,26 @@
                 return format ? formatNumber(value, format) : formatStandardNumber(value);
             case "object":
                 return "0";
+        }
+    }
+    /**
+     * Parse a string representing a primitive cell value
+     */
+    function parsePrimitiveContent(content) {
+        if (content === "") {
+            return "";
+        }
+        else if (isNumber(content)) {
+            return parseNumber(content);
+        }
+        else if (isBoolean(content)) {
+            return content.toUpperCase() === "TRUE" ? true : false;
+        }
+        else if (isDateTime(content)) {
+            return parseDateTime(content).value;
+        }
+        else {
+            return content;
         }
     }
 
@@ -8084,9 +8266,9 @@
             const formula = normalize(content);
             const normalizedText = formula.text;
             const compiledFormula = compile(formula);
-            const ranges = formula.dependencies.map((xc) => getters.getRangeFromSheetXC(sheetId, xc));
+            const ranges = formula.dependencies.references.map((xc) => getters.getRangeFromSheetXC(sheetId, xc));
             const format = properties.format || getters.inferFormulaFormat(compiledFormula, ranges);
-            return new FormulaCell((normalizedText, dependencies) => getters.buildFormulaContent(sheetId, normalizedText, dependencies), id, normalizedText, compiledFormula, ranges, {
+            return new FormulaCell((normalizedText, dependencies) => getters.buildFormulaContent(sheetId, normalizedText, dependencies), id, normalizedText, compiledFormula, { ...formula.dependencies, references: ranges }, {
                 ...properties,
                 format,
             });
@@ -8305,16 +8487,19 @@
         handle(cmd) {
             switch (cmd.type) {
                 case "ADD_MERGE":
-                    if (!cmd.interactive) {
-                        for (const zone of cmd.target) {
-                            this.addBordersToMerge(cmd.sheetId, zone);
-                        }
+                    for (const zone of cmd.target) {
+                        this.addBordersToMerge(cmd.sheetId, zone);
                     }
                     break;
                 case "DUPLICATE_SHEET":
                     const borders = this.borders[cmd.sheetId];
                     if (borders) {
-                        this.history.update("borders", cmd.sheetIdTo, JSON.parse(JSON.stringify(borders)));
+                        // borders is a sparse 2D array.
+                        // map and slice preserve empty values and do not set `undefined` instead
+                        const bordersCopy = borders
+                            .slice()
+                            .map((col) => col === null || col === void 0 ? void 0 : col.slice().map((border) => ({ ...border })));
+                        this.history.update("borders", cmd.sheetIdTo, bordersCopy);
                     }
                     break;
                 case "DELETE_SHEET":
@@ -8776,11 +8961,11 @@
             for (const sheet of Object.keys(this.cells)) {
                 for (const cell of Object.values(this.cells[sheet] || {})) {
                     if (cell.isFormula()) {
-                        for (const range of cell.dependencies) {
+                        for (const range of cell.dependencies.references) {
                             if (!sheetId || range.sheetId === sheetId) {
                                 const change = applyChange(range);
                                 if (change.changeType !== "NONE") {
-                                    this.history.update("cells", sheet, cell.id, "dependencies", cell.dependencies.indexOf(range), change.range);
+                                    this.history.update("cells", sheet, cell.id, "dependencies", "references", cell.dependencies.references.indexOf(range), change.range);
                                 }
                             }
                         }
@@ -9041,8 +9226,8 @@
                 for (let xc in sheet.cells) {
                     const cellData = sheet.cells[xc];
                     const [col, row] = toCartesian(xc);
-                    if ((cellData === null || cellData === void 0 ? void 0 : cellData.formula) || (cellData === null || cellData === void 0 ? void 0 : cellData.content) || (cellData === null || cellData === void 0 ? void 0 : cellData.format) || (cellData === null || cellData === void 0 ? void 0 : cellData.style)) {
-                        const cell = this.importCell(imported_sheet, cellData, data.styles);
+                    if ((cellData === null || cellData === void 0 ? void 0 : cellData.content) || (cellData === null || cellData === void 0 ? void 0 : cellData.format) || (cellData === null || cellData === void 0 ? void 0 : cellData.style)) {
+                        const cell = this.importCell(imported_sheet, cellData, data.styles, data.formats);
                         this.history.update("cells", sheet.id, cell.id, cell);
                         this.dispatch("UPDATE_CELL_POSITION", {
                             cellId: cell.id,
@@ -9055,61 +9240,42 @@
             }
         }
         export(data) {
-            var _a;
-            let styleId = 0;
             const styles = {};
-            /**
-             * Get the id of the given style. If the style does not exist, it creates
-             * one.
-             */
-            function getStyleId(style) {
-                for (let [key, value] of Object.entries(styles)) {
-                    if (stringify(value) === stringify(style)) {
-                        return parseInt(key, 10);
-                    }
-                }
-                styles[++styleId] = style;
-                return styleId;
-            }
+            const formats = {};
             for (let _sheet of data.sheets) {
                 const cells = {};
                 for (let [cellId, cell] of Object.entries(this.cells[_sheet.id] || {})) {
                     let position = this.getters.getCellPosition(cellId);
                     let xc = toXC(position.col, position.row);
                     cells[xc] = {
-                        style: cell.style && getStyleId(cell.style),
-                        format: cell.format,
+                        style: cell.style ? getItemId(cell.style, styles) : undefined,
+                        format: cell.format ? getItemId(cell.format, formats) : undefined,
+                        content: cell.content,
                     };
-                    if (cell.isFormula()) {
-                        cells[xc].formula = {
-                            text: cell.normalizedText || "",
-                            dependencies: ((_a = cell.dependencies) === null || _a === void 0 ? void 0 : _a.map((d) => this.getters.getRangeString(d, _sheet.id))) || [],
-                            value: cell.evaluated.value,
-                        };
-                    }
-                    else {
-                        cells[xc].content = cell.content;
-                    }
                 }
                 _sheet.cells = cells;
             }
             data.styles = styles;
+            data.formats = formats;
         }
-        importCell(sheet, cellData, normalizedStyles) {
+        importCell(sheet, cellData, normalizedStyles, normalizedFormats) {
             const style = (cellData.style && normalizedStyles[cellData.style]) || undefined;
-            // For perf reasons, formula are already normalized at export/import
+            const format = (cellData.format && normalizedFormats[cellData.format]) || undefined;
             const cellId = this.uuidGenerator.uuidv4();
-            if (cellData.formula) {
-                const ranges = cellData.formula.dependencies.map((xc) => this.getters.getRangeFromSheetXC(sheet.id, xc));
-                return new FormulaCell((normalizedText, dependencies) => this.getters.buildFormulaContent(sheet.id, normalizedText, dependencies), cellId, cellData.formula.text, compile(cellData.formula), ranges, { format: cellData === null || cellData === void 0 ? void 0 : cellData.format, style });
-            }
-            else {
-                const properties = { format: cellData === null || cellData === void 0 ? void 0 : cellData.format, style };
-                return this.createCell(cellId, (cellData === null || cellData === void 0 ? void 0 : cellData.content) || "", properties, sheet.id);
-            }
+            const properties = { format, style };
+            return this.createCell(cellId, (cellData === null || cellData === void 0 ? void 0 : cellData.content) || "", properties, sheet.id);
         }
         exportForExcel(data) {
             this.export(data);
+            for (let sheet of data.sheets) {
+                for (const xc in sheet.cells) {
+                    const [col, row] = toCartesian(xc);
+                    const cell = this.getters.getCell(sheet.id, col, row);
+                    const exportedCellData = sheet.cells[xc];
+                    exportedCellData.value = cell.evaluated.value;
+                    exportedCellData.isFormula = cell.isFormula();
+                }
+            }
         }
         // ---------------------------------------------------------------------------
         // GETTERS
@@ -9159,18 +9325,23 @@
             }
             return NULL_FORMAT;
         }
+        /*
+         * Reconstructs the original formula string based on a normalized form and its dependencies
+         */
         buildFormulaContent(sheetId, formula, dependencies) {
-            let newDependencies = dependencies.map((x, i) => {
-                return {
-                    stringDependency: this.getters.getRangeString(x, sheetId),
-                    stringPosition: `\\${FORMULA_REF_IDENTIFIER}${i}\\${FORMULA_REF_IDENTIFIER}`,
-                };
-            });
             let newContent = formula;
-            if (newDependencies) {
-                for (let d of newDependencies) {
-                    newContent = newContent.replace(new RegExp(d.stringPosition, "g"), d.stringDependency);
-                }
+            for (let [index, range] of Object.entries(dependencies.references)) {
+                const xc = this.getters.getRangeString(range, sheetId);
+                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
+                newContent = newContent.replace(new RegExp(stringPosition, "g"), xc);
+            }
+            for (let [index, d] of Object.entries(dependencies.strings)) {
+                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}S${index}\\${FORMULA_REF_IDENTIFIER}`;
+                newContent = newContent.replace(new RegExp(stringPosition, "g"), `"${d}"`);
+            }
+            for (let [index, d] of Object.entries(dependencies.numbers)) {
+                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}N${index}\\${FORMULA_REF_IDENTIFIER}`;
+                newContent = newContent.replace(new RegExp(stringPosition, "g"), d.toString());
             }
             return newContent;
         }
@@ -9415,24 +9586,19 @@
             }
         }
         handle(cmd) {
-            var _a;
+            var _a, _b;
             switch (cmd.type) {
                 case "CREATE_CHART":
-                    const chartDefinition = this.createChartDefinition(cmd.definition, cmd.sheetId);
                     const x = cmd.position ? cmd.position.x : 0;
                     const y = cmd.position ? cmd.position.y : 0;
-                    this.dispatch("CREATE_FIGURE", {
-                        sheetId: cmd.sheetId,
-                        figure: {
-                            id: cmd.id,
-                            x,
-                            y,
-                            height: 335,
-                            width: 536,
-                            tag: "chart",
-                        },
+                    this.addChartFigure(cmd.sheetId, this.createChartDefinition(cmd.definition, cmd.sheetId), {
+                        id: cmd.id,
+                        x,
+                        y,
+                        height: 335,
+                        width: 536,
+                        tag: "chart",
                     });
-                    this.history.update("chartFigures", cmd.id, chartDefinition);
                     break;
                 case "UPDATE_CHART": {
                     this.updateChartDefinition(cmd.id, cmd.definition);
@@ -9443,19 +9609,29 @@
                     for (const fig of sheetFiguresFrom) {
                         if (fig.tag === "chart") {
                             const id = this.uuidGenerator.uuidv4();
-                            const chartDefinition = { ...this.chartFigures[fig.id], id };
-                            this.dispatch("CREATE_FIGURE", {
-                                sheetId: cmd.sheetIdTo,
-                                figure: {
-                                    id: id,
-                                    x: fig.x,
-                                    y: fig.y,
-                                    height: fig.height,
-                                    width: fig.width,
-                                    tag: "chart",
-                                },
+                            const chartDefinition = { ...deepCopy(this.chartFigures[fig.id]), id };
+                            chartDefinition.sheetId = cmd.sheetIdTo;
+                            chartDefinition.dataSets.forEach((dataset) => {
+                                var _a;
+                                if (dataset.dataRange.sheetId === cmd.sheetId) {
+                                    dataset.dataRange.sheetId = cmd.sheetIdTo;
+                                }
+                                if (((_a = dataset.labelCell) === null || _a === void 0 ? void 0 : _a.sheetId) === cmd.sheetId) {
+                                    dataset.labelCell.sheetId = cmd.sheetIdTo;
+                                }
                             });
-                            this.history.update("chartFigures", id, chartDefinition);
+                            if (((_a = chartDefinition.labelRange) === null || _a === void 0 ? void 0 : _a.sheetId) === cmd.sheetId) {
+                                chartDefinition.labelRange.sheetId = cmd.sheetIdTo;
+                            }
+                            const figure = {
+                                id: id,
+                                x: fig.x,
+                                y: fig.y,
+                                height: fig.height,
+                                width: fig.width,
+                                tag: "chart",
+                            };
+                            this.addChartFigure(cmd.sheetIdTo, chartDefinition, figure);
                         }
                     }
                     break;
@@ -9465,7 +9641,7 @@
                     break;
                 case "DELETE_SHEET":
                     for (let id of Object.keys(this.chartFigures)) {
-                        if (((_a = this.chartFigures[id]) === null || _a === void 0 ? void 0 : _a.sheetId) === cmd.sheetId) {
+                        if (((_b = this.chartFigures[id]) === null || _b === void 0 ? void 0 : _b.sheetId) === cmd.sheetId) {
                             this.history.update("chartFigures", id, undefined);
                         }
                     }
@@ -9686,6 +9862,13 @@
                 }
             }
             return dataSets;
+        }
+        addChartFigure(sheetId, data, figure) {
+            this.dispatch("CREATE_FIGURE", {
+                sheetId,
+                figure,
+            });
+            this.history.update("chartFigures", figure.id, data);
         }
         createDataSet(sheetId, fullZone, titleZone) {
             if (fullZone.left !== fullZone.right && fullZone.top !== fullZone.bottom) {
@@ -10150,7 +10333,6 @@
         constructor() {
             super(...arguments);
             this.nextId = 1;
-            this.pending = null;
             this.merges = {};
             this.mergeCellMap = {};
         }
@@ -10171,26 +10353,6 @@
                     return 0 /* Success */;
             }
         }
-        beforeHandle(cmd) {
-            switch (cmd.type) {
-                case "REMOVE_COLUMNS_ROWS":
-                    if (cmd.dimension === "COL") {
-                        this.exportAndRemoveMerges(cmd.sheetId, (range) => updateRemoveColumns(range, cmd.elements), true);
-                    }
-                    else {
-                        this.exportAndRemoveMerges(cmd.sheetId, (range) => updateRemoveRows(range, cmd.elements), false);
-                    }
-                    break;
-                case "ADD_COLUMNS_ROWS":
-                    const base = cmd.position === "before" ? cmd.base : cmd.base + 1;
-                    if (cmd.dimension === "COL") {
-                        this.exportAndRemoveMerges(cmd.sheetId, (range) => updateAddColumns(range, base, cmd.quantity), true);
-                    }
-                    else {
-                        this.exportAndRemoveMerges(cmd.sheetId, (range) => updateAddRows(range, base, cmd.quantity), false);
-                    }
-            }
-        }
         handle(cmd) {
             switch (cmd.type) {
                 case "CREATE_SHEET":
@@ -10202,14 +10364,26 @@
                     this.history.update("mergeCellMap", cmd.sheetId, {});
                     break;
                 case "DUPLICATE_SHEET":
-                    this.history.update("merges", cmd.sheetIdTo, Object.assign({}, this.merges[cmd.sheetId]));
+                    const merges = this.merges[cmd.sheetId];
+                    if (!merges)
+                        return;
+                    const mergesCopy = {};
+                    for (const range of Object.values(merges).filter(isDefined)) {
+                        mergesCopy[this.nextId++] = {
+                            sheetId: cmd.sheetIdTo,
+                            zone: { ...range.zone },
+                            parts: [...range.parts],
+                            prefixSheet: range.prefixSheet,
+                            invalidSheetName: range.invalidSheetName,
+                            invalidXc: range.invalidXc,
+                        };
+                    }
+                    this.history.update("merges", cmd.sheetIdTo, mergesCopy);
                     this.history.update("mergeCellMap", cmd.sheetIdTo, Object.assign({}, this.mergeCellMap[cmd.sheetId]));
                     break;
                 case "ADD_MERGE":
-                    if (!cmd.interactive) {
-                        for (const zone of cmd.target) {
-                            this.addMerge(this.getters.getSheet(cmd.sheetId), zone);
-                        }
+                    for (const zone of cmd.target) {
+                        this.addMerge(this.getters.getSheet(cmd.sheetId), zone);
                     }
                     break;
                 case "REMOVE_MERGE":
@@ -10217,20 +10391,21 @@
                         this.removeMerge(cmd.sheetId, zone);
                     }
                     break;
-                case "ADD_COLUMNS_ROWS":
-                case "REMOVE_COLUMNS_ROWS":
-                    if (this.pending) {
-                        this.importMerges(this.pending.sheet, this.pending.merges);
-                        this.pending = null;
-                    }
-                    break;
+            }
+        }
+        adaptRanges(applyChange, sheetId) {
+            const sheetIds = sheetId ? [sheetId] : Object.keys(this.merges);
+            for (const sheetId of sheetIds) {
+                this.applyRangeChangeOnSheet(sheetId, applyChange);
             }
         }
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
         getMerges(sheetId) {
-            return Object.values(this.merges[sheetId] || {}).filter(isDefined);
+            return Object.keys(this.merges[sheetId] || {})
+                .map((mergeId) => this.getMergeById(sheetId, parseInt(mergeId, 10)))
+                .filter(isDefined);
         }
         getMerge(sheetId, col, row) {
             var _a;
@@ -10292,10 +10467,12 @@
             return isEqual(result, zone) ? result : this.expandZone(sheetId, result);
         }
         isInSameMerge(sheetId, colA, rowA, colB, rowB) {
-            if (!this.isInMerge(sheetId, colA, rowA) || !this.isInMerge(sheetId, colB, rowB)) {
+            const mergeA = this.getMerge(sheetId, colA, rowA);
+            const mergeB = this.getMerge(sheetId, colB, rowB);
+            if (!mergeA || !mergeB) {
                 return false;
             }
-            return this.getMerge(sheetId, colA, rowA) === this.getMerge(sheetId, colB, rowB);
+            return isEqual(mergeA, mergeB);
         }
         isInMerge(sheetId, col, row) {
             var _a;
@@ -10367,8 +10544,9 @@
             return false;
         }
         getMergeById(sheetId, mergeId) {
-            const merges = this.merges[sheetId];
-            return merges !== undefined ? merges[mergeId] : undefined;
+            var _a;
+            const range = (_a = this.merges[sheetId]) === null || _a === void 0 ? void 0 : _a[mergeId];
+            return range !== undefined ? rangeToMerge(mergeId, range) : undefined;
         }
         checkDestructiveMerge({ sheetId, target }) {
             const sheet = this.getters.tryGetSheet(sheetId);
@@ -10419,14 +10597,7 @@
             }
             const topLeft = this.getters.getCell(sheet.id, left, top);
             let id = this.nextId++;
-            this.history.update("merges", sheet.id, id, {
-                id,
-                left,
-                top,
-                right,
-                bottom,
-                topLeft: { col: left, row: top },
-            });
+            this.history.update("merges", sheet.id, id, this.getters.getRangeFromSheetXC(sheet.id, zoneToXc({ left, top, right, bottom })));
             let previousMerges = new Set();
             for (let row = top; row <= bottom; row++) {
                 for (let col = left; col <= right; col++) {
@@ -10477,34 +10648,39 @@
                 }
             }
         }
-        // ---------------------------------------------------------------------------
-        // Add/Remove columns
-        // ---------------------------------------------------------------------------
-        removeAllMerges(sheetId) {
-            for (let id in this.merges[sheetId]) {
-                this.history.update("merges", sheetId, parseInt(id), undefined);
-            }
-            for (let colNumber in this.mergeCellMap[sheetId]) {
-                this.history.update("mergeCellMap", sheetId, parseInt(colNumber), undefined);
-            }
-        }
-        exportAndRemoveMerges(sheetId, updater, isCol) {
-            const merges = this.merges[sheetId];
-            if (!merges)
-                return;
-            const mergeXcs = exportMerges(merges);
-            const updatedMerges = [];
-            for (let m of mergeXcs) {
-                const update = updater(m);
-                if (update) {
-                    const [tl, br] = update.split(":");
-                    if (tl !== br) {
-                        updatedMerges.push(update);
+        /**
+         * Apply a range change on merges of a particular sheet.
+         */
+        applyRangeChangeOnSheet(sheetId, applyChange) {
+            const merges = Object.entries(this.merges[sheetId] || {});
+            for (const [mergeId, range] of merges) {
+                if (range) {
+                    const currentZone = range.zone;
+                    const result = applyChange(range);
+                    switch (result.changeType) {
+                        case "NONE":
+                            break;
+                        case "REMOVE":
+                            this.removeMerge(sheetId, currentZone);
+                            break;
+                        default:
+                            const { width, height } = zoneToDimension(result.range.zone);
+                            if (width === 1 && height === 1) {
+                                this.removeMerge(sheetId, currentZone);
+                            }
+                            else {
+                                this.history.update("merges", sheetId, parseInt(mergeId, 10), result.range);
+                            }
+                            break;
                     }
                 }
             }
-            this.removeAllMerges(sheetId);
-            this.pending = { sheet: sheetId, merges: updatedMerges };
+            this.history.update("mergeCellMap", sheetId, {});
+            for (const merge of this.getMerges(sheetId)) {
+                for (const [col, row] of positions(merge)) {
+                    this.history.update("mergeCellMap", sheetId, col, row, merge.id);
+                }
+            }
         }
         // ---------------------------------------------------------------------------
         // Import/Export
@@ -10552,9 +10728,17 @@
         "isSingleCellOrMerge",
     ];
     function exportMerges(merges) {
-        return Object.values(merges)
+        return Object.entries(merges)
+            .map(([mergeId, range]) => (range ? rangeToMerge(parseInt(mergeId, 10), range) : undefined))
             .filter(isDefined)
             .map((merge) => toXC(merge.left, merge.top) + ":" + toXC(merge.right, merge.bottom));
+    }
+    function rangeToMerge(mergeId, range) {
+        return {
+            ...range.zone,
+            topLeft: { col: range.zone.left, row: range.zone.top },
+            id: mergeId,
+        };
     }
 
     class SheetPlugin extends CorePlugin {
@@ -10633,9 +10817,7 @@
                     this.moveSheet(cmd.sheetId, cmd.direction);
                     break;
                 case "RENAME_SHEET":
-                    if (!cmd.interactive) {
-                        this.renameSheet(this.sheets[cmd.sheetId], cmd.name);
-                    }
+                    this.renameSheet(this.sheets[cmd.sheetId], cmd.name);
                     break;
                 case "DUPLICATE_SHEET":
                     this.duplicateSheet(cmd.sheetId, cmd.sheetIdTo);
@@ -10693,7 +10875,7 @@
                 this.sheetIds[sheet.name] = sheet.id;
             }
             for (let sheetData of data.sheets) {
-                const name = sheetData.name || `Sheet${Object.keys(this.sheets).length + 1}`;
+                const name = sheetData.name || _t("Sheet") + (Object.keys(this.sheets).length + 1);
                 const sheet = {
                     id: sheetData.id,
                     name: name,
@@ -10994,9 +11176,6 @@
             return 0 /* Success */;
         }
         isRenameAllowed(cmd) {
-            if (cmd.interactive) {
-                return 0 /* Success */;
-            }
             const name = cmd.name && cmd.name.trim().toLowerCase();
             if (!name) {
                 return 9 /* MissingSheetName */;
@@ -11540,8 +11719,11 @@
                 return { cellData: {} };
             }
             const sheetId = data.sheetId;
-            const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
-            const content = getters.buildFormulaContent(sheetId, data.cell.normalizedText, ranges);
+            const ranges = getters.createAdaptedRanges(data.cell.dependencies.references, x, y, sheetId);
+            const content = getters.buildFormulaContent(sheetId, data.cell.normalizedText, {
+                ...data.cell.dependencies,
+                references: ranges,
+            });
             return {
                 cellData: {
                     border: data.border,
@@ -11812,6 +11994,118 @@
         }
     }
 
+    const SORT_TYPES = [
+        CellValueType.number,
+        CellValueType.error,
+        CellValueType.text,
+        CellValueType.boolean,
+    ];
+    function convertCell(cell, index) {
+        return {
+            index,
+            type: cell ? cell.evaluated.type : CellValueType.empty,
+            value: cell ? cell.evaluated.value : "",
+        };
+    }
+    function sortCells(cells, sortDirection) {
+        const cellsWithIndex = cells.map(convertCell);
+        const emptyCells = cellsWithIndex.filter((x) => x.type === CellValueType.empty);
+        const nonEmptyCells = cellsWithIndex.filter((x) => x.type !== CellValueType.empty);
+        const inverse = sortDirection === "descending" ? -1 : 1;
+        return nonEmptyCells
+            .sort((left, right) => {
+            let typeOrder = SORT_TYPES.indexOf(left.type) - SORT_TYPES.indexOf(right.type);
+            if (typeOrder === 0) {
+                if (left.type === CellValueType.text || left.type === CellValueType.error) {
+                    typeOrder = left.value.localeCompare(right.value);
+                }
+                else
+                    typeOrder = left.value - right.value;
+            }
+            return inverse * typeOrder;
+        })
+            .concat(emptyCells);
+    }
+    function interactiveSortSelection(env, sheetId, anchor, zone, sortDirection) {
+        let result = DispatchResult.Success;
+        //several columns => bypass the contiguity check
+        let multiColumns = zone.right > zone.left;
+        if (env.getters.doesIntersectMerge(sheetId, zone)) {
+            multiColumns = false;
+            let table;
+            for (let r = zone.top; r <= zone.bottom; r++) {
+                table = [];
+                for (let c = zone.left; c <= zone.right; c++) {
+                    let merge = env.getters.getMerge(sheetId, c, r);
+                    if (merge && !table.includes(merge.id.toString())) {
+                        table.push(merge.id.toString());
+                    }
+                }
+                if (table.length >= 2) {
+                    multiColumns = true;
+                    break;
+                }
+            }
+        }
+        if (multiColumns) {
+            result = env.dispatch("SORT_CELLS", { sheetId, anchor, zone, sortDirection });
+        }
+        else {
+            // check contiguity
+            const contiguousZone = env.getters.getContiguousZone(sheetId, zone);
+            if (isEqual(contiguousZone, zone)) {
+                // merge as it is
+                result = env.dispatch("SORT_CELLS", {
+                    sheetId,
+                    anchor,
+                    zone,
+                    sortDirection,
+                });
+            }
+            else {
+                env.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
+                    zone = contiguousZone;
+                    result = env.dispatch("SORT_CELLS", {
+                        sheetId,
+                        anchor,
+                        zone,
+                        sortDirection,
+                    });
+                }, () => {
+                    result = env.dispatch("SORT_CELLS", {
+                        sheetId,
+                        anchor,
+                        zone,
+                        sortDirection,
+                    });
+                });
+            }
+        }
+        if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
+            env.dispatch("SET_SELECTION", {
+                anchor: anchor,
+                zones: [zone],
+                anchorZone: zone,
+            });
+            env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
+        }
+    }
+
+    function handlePasteResult(env, result) {
+        if (!result.isSuccessful) {
+            if (result.reasons.includes(17 /* WrongPasteSelection */)) {
+                env.notifyUser(_lt("This operation is not allowed with multiple selections."));
+            }
+            if (result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                env.notifyUser(_lt("This operation is not possible due to a merge. Please remove the merges first than try again."));
+            }
+        }
+    }
+    function interactivePaste(env, target, pasteOption) {
+        const result = env.dispatch("PASTE", { target, pasteOption });
+        handlePasteResult(env, result);
+    }
+
     //------------------------------------------------------------------------------
     // Helpers
     //------------------------------------------------------------------------------
@@ -11881,7 +12175,7 @@
             });
         }
         else {
-            env.dispatch("PASTE", { target, interactive: true });
+            interactivePaste(env, target);
         }
     };
     const PASTE_VALUE_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), pasteOption: "onlyValue" });
@@ -12019,19 +12313,23 @@
     };
     const INSERT_CELL_SHIFT_DOWN = (env) => {
         const zone = env.getters.getSelectedZone();
-        env.dispatch("INSERT_CELL", { shiftDimension: "ROW", zone, interactive: true });
+        const result = env.dispatch("INSERT_CELL", { zone, shiftDimension: "ROW" });
+        handlePasteResult(env, result);
     };
     const INSERT_CELL_SHIFT_RIGHT = (env) => {
         const zone = env.getters.getSelectedZone();
-        env.dispatch("INSERT_CELL", { shiftDimension: "COL", zone, interactive: true });
+        const result = env.dispatch("INSERT_CELL", { zone, shiftDimension: "COL" });
+        handlePasteResult(env, result);
     };
     const DELETE_CELL_SHIFT_UP = (env) => {
         const zone = env.getters.getSelectedZone();
-        env.dispatch("DELETE_CELL", { shiftDimension: "ROW", zone, interactive: true });
+        const result = env.dispatch("DELETE_CELL", { zone, shiftDimension: "ROW" });
+        handlePasteResult(env, result);
     };
     const DELETE_CELL_SHIFT_LEFT = (env) => {
         const zone = env.getters.getSelectedZone();
-        env.dispatch("DELETE_CELL", { shiftDimension: "COL", zone, interactive: true });
+        const result = env.dispatch("DELETE_CELL", { zone, shiftDimension: "COL" });
+        handlePasteResult(env, result);
     };
     const MENU_INSERT_ROWS_BEFORE_NAME = (env) => {
         const number = getRowsNumber(env);
@@ -12341,23 +12639,13 @@
     //------------------------------------------------------------------------------
     const SORT_CELLS_ASCENDING = (env) => {
         const { anchor, zones } = env.getters.getSelection();
-        env.dispatch("SORT_CELLS", {
-            interactive: true,
-            sheetId: env.getters.getActiveSheetId(),
-            anchor: anchor,
-            zone: zones[0],
-            sortDirection: "ascending",
-        });
+        const sheetId = env.getters.getActiveSheetId();
+        interactiveSortSelection(env, sheetId, anchor, zones[0], "ascending");
     };
     const SORT_CELLS_DESCENDING = (env) => {
         const { anchor, zones } = env.getters.getSelection();
-        env.dispatch("SORT_CELLS", {
-            interactive: true,
-            sheetId: env.getters.getActiveSheetId(),
-            anchor: anchor,
-            zone: zones[0],
-            sortDirection: "descending",
-        });
+        const sheetId = env.getters.getActiveSheetId();
+        interactiveSortSelection(env, sheetId, anchor, zones[0], "descending");
     };
     const IS_ONLY_ONE_RANGE = (env) => {
         return env.getters.getSelectedZones().length === 1;
@@ -12703,6 +12991,29 @@
         action: OPEN_CF_SIDEPANEL_ACTION,
     });
 
+    function interactiveRenameSheet(env, sheetId, message) {
+        const placeholder = env.getters.getSheetName(sheetId);
+        //TODO We should update editText to take a message in addition to the title
+        const t = _lt("Rename Sheet") + (message ? " - " + message : "");
+        env.editText(t, placeholder, (name) => {
+            if (name === null || name === placeholder) {
+                return;
+            }
+            if (name === "") {
+                interactiveRenameSheet(env, sheetId, _lt("The sheet name cannot be empty."));
+            }
+            const result = env.dispatch("RENAME_SHEET", { sheetId, name });
+            if (!result.isSuccessful) {
+                if (result.reasons.includes(10 /* DuplicatedSheetName */)) {
+                    interactiveRenameSheet(env, sheetId, _lt("A sheet with the name %s already exists. Please select another name.", name));
+                }
+                if (result.reasons.includes(11 /* ForbiddenCharactersInSheetName */)) {
+                    interactiveRenameSheet(env, sheetId, _lt("Some used characters are not allowed in a sheet name (Forbidden characters are %s).", FORBIDDEN_SHEET_CHARS.join(" ")));
+                }
+            }
+        });
+    }
+
     const sheetMenuRegistry = new MenuItemRegistry();
     sheetMenuRegistry
         .add("delete", {
@@ -12711,7 +13022,9 @@
         isVisible: (env) => {
             return env.getters.getSheets().length > 1;
         },
-        action: (env) => env.dispatch("DELETE_SHEET_CONFIRMATION", { sheetId: env.getters.getActiveSheetId() }),
+        action: (env) => env.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
+            env.dispatch("DELETE_SHEET", { sheetId: env.getters.getActiveSheetId() });
+        }),
     })
         .add("duplicate", {
         name: _lt("Duplicate"),
@@ -12729,10 +13042,7 @@
         .add("rename", {
         name: _lt("Rename"),
         sequence: 30,
-        action: (env) => env.dispatch("RENAME_SHEET", {
-            interactive: true,
-            sheetId: env.getters.getActiveSheetId(),
-        }),
+        action: (env) => interactiveRenameSheet(env, env.getters.getActiveSheetId()),
     })
         .add("move_right", {
         name: _lt("Move right"),
@@ -13156,13 +13466,19 @@
             "#4c1130",
         ],
     ];
+    const PICKER_VERTICAL_PADDING = 6;
+    const LINE_VERTICAL_PADDING = 3;
+    const LINE_HORIZONTAL_PADDING = 6;
+    const ITEM_HORIZONTAL_MARGIN = 2;
+    const ITEM_EDGE_LENGTH = 18;
+    const ITEM_BORDER_WIDTH = 1;
+    const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
+    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
+        2 * LINE_HORIZONTAL_PADDING;
     class ColorPicker extends Component$r {
         constructor() {
             super(...arguments);
             this.COLORS = COLORS;
-        }
-        isDropdownRight() {
-            return this.props.dropdownDirection !== "left";
         }
         onColorClick(ev) {
             const color = ev.target.dataset.color;
@@ -13172,10 +13488,9 @@
         }
     }
     ColorPicker.template = xml$u /* xml */ `
-  <div class="o-color-picker" t-att-class="{
-    'right': isDropdownRight(),
-    'left': !isDropdownRight()
-    }" t-on-click="onColorClick">
+  <div class="o-color-picker"
+    t-att-class="props.dropdownDirection || 'right'"
+    t-on-click="onColorClick">
     <div class="o-color-picker-line" t-foreach="COLORS" t-as="colors" t-key="colors">
       <t t-foreach="colors" t-as="color" t-key="color">
         <div class="o-color-picker-line-item" t-att-data-color="color" t-attf-style="background-color:{{color}};"></div>
@@ -13189,17 +13504,17 @@
       z-index: 10;
       box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
       background-color: white;
-      padding: 6px 0px;
+      padding: ${PICKER_VERTICAL_PADDING}px 0px;
 
       .o-color-picker-line {
         display: flex;
-        padding: 3px 6px;
+        padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
         .o-color-picker-line-item {
-          width: 18px;
-          height: 18px;
-          margin: 0px 2px;
+          width: ${ITEM_EDGE_LENGTH}px;
+          height: ${ITEM_EDGE_LENGTH}px;
+          margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
           border-radius: 50px;
-          border: 1px solid #c0c0c0;
+          border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
           &:hover {
             cursor: pointer;
             background-color: rgba(0, 0, 0, 0.08);
@@ -13215,6 +13530,9 @@
       &.left {
         right: 0;
       }
+      &.center {
+        left: calc(50% - ${PICKER_WIDTH / 2}px);
+      }
     }
   `;
 
@@ -13226,8 +13544,8 @@
     const CLEAR_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0.27,1.55 L5.43,6.7 L3,12 L5.5,12 L7.14,8.42 L11.73,13 L13,11.73 L1.55,0.27 L0.27,1.55 L0.27,1.55 Z M3.82,0 L5.82,2 L7.58,2 L7.03,3.21 L8.74,4.92 L10.08,2 L14,2 L14,0 L3.82,0 L3.82,0 Z" transform="translate(2 3)"/></svg>`;
     const TRIANGLE_DOWN_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 8 0" transform="translate(5 7)"/></svg>`;
     const TRIANGLE_UP_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 8 4" transform="translate(5 7)"/></svg>`;
-    const TRIANGLE_RIGHT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 0 8" transform="translate(5 3)"/></svg>`;
-    const TRIANGLE_LEFT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 3)"/></svg>`;
+    const TRIANGLE_RIGHT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 0 8" transform="translate(5 5)"/></svg>`;
+    const TRIANGLE_LEFT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 5)"/></svg>`;
     const BOLD_ICON = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M9,3.5 C9,1.57 7.43,0 5.5,0 L1.77635684e-15,0 L1.77635684e-15,12 L6.25,12 C8.04,12 9.5,10.54 9.5,8.75 C9.5,7.45 8.73,6.34 7.63,5.82 C8.46,5.24 9,4.38 9,3.5 Z M5,2 C5.82999992,2 6.5,2.67 6.5,3.5 C6.5,4.33 5.82999992,5 5,5 L3,5 L3,2 L5,2 Z M3,10 L3,7 L5.5,7 C6.32999992,7 7,7.67 7,8.5 C7,9.33 6.32999992,10 5.5,10 L3,10 Z" transform="translate(4 3)"/></svg>`;
     const ITALIC_ICON = `<svg class="o-icon"><polygon fill="#000000" fill-rule="evenodd" points="4 0 4 2 6.58 2 2.92 10 0 10 0 12 8 12 8 10 5.42 10 9.08 2 12 2 12 0" transform="translate(3 3)"/></svg>`;
     const UNDERLINE_ICON = `<svg class="o-icon"><path fill="#000000" d="M6,12 C8.76,12 11,9.76 11,7 L11,0 L9,0 L9,7 C9,8.75029916 7.49912807,10 6,10 C4.50087193,10 3,8.75837486 3,7 L3,0 L1,0 L1,7 C1,9.76 3.24,12 6,12 Z M0,13 L0,15 L12,15 L12,13 L0,13 Z" transform="translate(3 3)"/></svg>`;
@@ -13965,24 +14283,20 @@
         <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:state.style.strikethrough}"
              t-on-click="toggleTool('strikethrough')">${STRIKE_ICON}
         </div>
-        <div class="o-tool o-with-color">
+        <div class="o-tool o-dropdown o-with-color">
               <span t-att-title="env._t('${conditionalFormattingTerms.TEXT_COLOR}')" t-attf-style="border-color:{{state.style.textColor}}"
                     t-on-click.stop="toggleMenu('textColorTool')">
                     ${TEXT_COLOR_ICON}
               </span>
-              <div class="o-colorpicker-container" >
-                <ColorPicker t-if="state.textColorTool" dropdownDirection="'left'" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
-              </div>
+              <ColorPicker t-if="state.textColorTool" dropdownDirection="'center'" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
         </div>
         <div class="o-divider"/>
-        <div class="o-tool o-with-color">
+        <div class="o-tool o-dropdown o-with-color">
           <span t-att-title="env._t('${conditionalFormattingTerms.FILL_COLOR}')" t-attf-style="border-color:{{state.style.fillColor}}"
                 t-on-click.stop="toggleMenu('fillColorTool')">
                 ${FILL_COLOR_ICON}
           </span>
-          <div class="o-colorpicker-container" >
-            <ColorPicker t-if="state.fillColorTool" dropdownDirection="'left'" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
-          </div>
+          <ColorPicker t-if="state.fillColorTool" dropdownDirection="'center'" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
         </div>
     </div>
 </div>
@@ -14000,15 +14314,8 @@
     margin-bottom: 5px;
     width: 96%;
   }
-  .o-colorpicker-container {
-    position: absolute;
-    padding-left: 20px;
-    padding-bottom: 18px;
-    pointer-events: none;
-
-    .o-color-picker {
-      pointer-events: all;
-    }
+  .o-color-picker {
+    pointer-events: all;
   }
 `;
     class CellIsRuleEditor extends Component$o {
@@ -14759,24 +15066,26 @@
     </t>
   </div>`;
     const CSS$j = css$l /* scss */ `
-  label{
+  label {
     vertical-align: middle;
   }
-  .o_cf_radio_item{
-      margin-right: 10%;
+  .o_cf_radio_item {
+    margin-right: 10%;
   }
   .radio input:checked {
     color: #e9ecef;
-    border-color: #00A09D;
-    background-color: #00A09D;
+    border-color: #00a09d;
+    background-color: #00a09d;
   }
-  .o-cf-editor{
+  .o-cf-editor {
     border-bottom: solid;
     border-color: lightgrey;
   }
   .o-cf {
-    .o-cf-type-selector{
-      *, ::after, ::before {
+    .o-cf-type-selector {
+      *,
+      ::after,
+      ::before {
         box-sizing: border-box;
       }
       margin-top: 10px;
@@ -14814,7 +15123,7 @@
         text-align: center;
         width: 50px;
       }
-      .o-cf-preview-icon{
+      .o-cf-preview-icon {
         border: 1px solid lightgrey;
         position: absolute;
         height: 50px;
@@ -14835,17 +15144,17 @@
           margin-bottom: 4px;
           overflow: hidden;
         }
-        .o-cf-preview-description-values{
+        .o-cf-preview-description-values {
           overflow: hidden;
         }
-        .o-cf-preview-range{
+        .o-cf-preview-range {
           text-overflow: ellipsis;
           font-size: 12px;
           overflow: hidden;
         }
       }
-      .o-cf-delete{
-        color:dimgrey;
+      .o-cf-delete {
+        color: dimgrey;
         left: 90%;
         top: 39%;
         position: absolute;
@@ -14854,7 +15163,7 @@
     .o-cf-ruleEditor {
       font-size: 12px;
       line-height: 1.5;
-      .o-selection-cf{
+      .o-selection-cf {
         margin-bottom: 3%;
       }
       .o-dropdown {
@@ -14948,7 +15257,7 @@
       margin-top: 10px;
     }
   }
-  }`;
+`;
     class ConditionalFormattingPanel extends Component$k {
         constructor(parent, props) {
             super(parent, props);
@@ -16089,35 +16398,22 @@
                     }
                     const pasteOption = cmd.pasteOption || (this._isPaintingFormat ? "onlyFormat" : undefined);
                     this._isPaintingFormat = false;
-                    if (cmd.interactive) {
-                        this.interactivePaste(this.state, cmd.target, cmd);
-                    }
-                    else {
-                        this.selectPastedZone(this.state, cmd.target);
-                        this.paste(this.state, cmd.target, pasteOption);
-                        this.status = "invisible";
-                    }
+                    const height = this.state.cells.length;
+                    const width = this.state.cells[0].length;
+                    this.paste(this.state, cmd.target, pasteOption);
+                    this.selectPastedZone(width, height, cmd.target);
+                    this.status = "invisible";
                     break;
                 case "DELETE_CELL": {
                     const { cut, paste } = this.getDeleteCellsTargets(cmd.zone, cmd.shiftDimension);
                     const state = this.getClipboardState(cut, "CUT");
-                    if (cmd.interactive) {
-                        this.interactivePaste(state, paste, cmd);
-                    }
-                    else {
-                        this.paste(state, paste);
-                    }
+                    this.paste(state, paste);
                     break;
                 }
                 case "INSERT_CELL": {
                     const { cut, paste } = this.getInsertCellsTargets(cmd.zone, cmd.shiftDimension);
                     const state = this.getClipboardState(cut, "CUT");
-                    if (cmd.interactive) {
-                        this.interactivePaste(state, paste, cmd);
-                    }
-                    else {
-                        this.paste(state, paste);
-                    }
+                    this.paste(state, paste);
                     break;
                 }
                 case "PASTE_FROM_OS_CLIPBOARD":
@@ -16237,6 +16533,7 @@
                 ({ sheetId, col, row } = target);
                 this.dispatch("ADD_MERGE", {
                     sheetId,
+                    force: true,
                     target: [
                         {
                             left: col,
@@ -16279,32 +16576,39 @@
          * Get the clipboard state from the given zones.
          */
         getClipboardState(zones, operation) {
+            const lefts = new Set(zones.map((z) => z.left));
+            const rights = new Set(zones.map((z) => z.right));
             const tops = new Set(zones.map((z) => z.top));
             const bottoms = new Set(zones.map((z) => z.bottom));
-            const areZonesCompatible = tops.size === 1 && bottoms.size === 1;
-            let clippedZones = areZonesCompatible ? zones : [zones[zones.length - 1]];
-            clippedZones = clippedZones.map((zone) => ({ ...zone }));
-            const rows = [];
+            const areZonesCompatible = (tops.size === 1 && bottoms.size === 1) || (lefts.size === 1 && rights.size === 1);
+            // In order to don't paste several times the same cells in intersected zones
+            // --> we merge zones that have common cells
+            const clippedZones = areZonesCompatible
+                ? mergeOverlappingZones(zones)
+                : [zones[zones.length - 1]];
+            const cellsPosition = clippedZones.map((zone) => positions(zone)).flat();
+            const columnsIndex = [...new Set(cellsPosition.map((p) => p[0]))].sort((a, b) => a - b);
+            const rowsIndex = [...new Set(cellsPosition.map((p) => p[1]))].sort((a, b) => a - b);
+            const cellsInClipboard = [];
             const merges = [];
             const sheetId = this.getters.getActiveSheetId();
-            const { top, bottom } = clippedZones[0];
-            for (let row = top; row <= bottom; row++) {
-                const cells = [];
-                rows.push(cells);
-                for (let zone of clippedZones) {
-                    for (let col = zone.left; col <= zone.right; col++) {
-                        const cell = this.getters.getCell(sheetId, col, row);
-                        const border = this.getters.getCellBorder(sheetId, col, row) || undefined;
-                        cells.push({ cell, border, position: { col, row, sheetId } });
-                        const merge = this.getters.getMerge(sheetId, col, row);
-                        if (merge && merge.top === row && merge.left === col) {
-                            merges.push(merge);
-                        }
+            for (let row of rowsIndex) {
+                let cellsInRow = [];
+                for (let col of columnsIndex) {
+                    cellsInRow.push({
+                        cell: this.getters.getCell(sheetId, col, row),
+                        border: this.getters.getCellBorder(sheetId, col, row) || undefined,
+                        position: { col, row, sheetId },
+                    });
+                    const merge = this.getters.getMerge(sheetId, col, row);
+                    if (merge && merge.top === row && merge.left === col) {
+                        merges.push(merge);
                     }
                 }
+                cellsInClipboard.push(cellsInRow);
             }
             return {
-                cells: rows,
+                cells: cellsInClipboard,
                 operation,
                 sheetId,
                 zones: clippedZones,
@@ -16401,9 +16705,7 @@
         /**
          * Update the selection with the newly pasted zone
          */
-        selectPastedZone(state, target) {
-            const height = state.cells.length;
-            const width = state.cells[0].length;
+        selectPastedZone(width, height, target) {
             const selection = target[0];
             const col = selection.left;
             const row = selection.top;
@@ -16552,7 +16854,7 @@
         getUpdatedContent(sheetId, cell, offsetX, offsetY, zones, operation) {
             if (operation === "CUT") {
                 const ranges = [];
-                for (const range of cell.dependencies) {
+                for (const range of cell.dependencies.references) {
                     if (this.isZoneOverlapClippedZone(zones, range.zone)) {
                         ranges.push(...this.getters.createAdaptedRanges([range], offsetX, offsetY, sheetId));
                     }
@@ -16560,30 +16862,18 @@
                         ranges.push(range);
                     }
                 }
-                return this.getters.buildFormulaContent(sheetId, cell.normalizedText, ranges);
+                const dependencies = { ...cell.dependencies, references: ranges };
+                return this.getters.buildFormulaContent(sheetId, cell.normalizedText, dependencies);
             }
-            const ranges = this.getters.createAdaptedRanges(cell.dependencies, offsetX, offsetY, sheetId);
-            return this.getters.buildFormulaContent(sheetId, cell.normalizedText, ranges);
+            const ranges = this.getters.createAdaptedRanges(cell.dependencies.references, offsetX, offsetY, sheetId);
+            const dependencies = { ...cell.dependencies, references: ranges };
+            return this.getters.buildFormulaContent(sheetId, cell.normalizedText, dependencies);
         }
         /**
          * Check if the given zone and at least one of the clipped zones overlap
          */
         isZoneOverlapClippedZone(zones, zone) {
             return zones.some((clippedZone) => overlap(zone, clippedZone));
-        }
-        interactivePaste(state, target, cmd) {
-            const result = this.isPasteAllowed(state, target, false);
-            if (result !== 0 /* Success */) {
-                if (result === 17 /* WrongPasteSelection */) {
-                    this.ui.notifyUser(_lt("This operation is not allowed with multiple selections."));
-                }
-                if (result === 2 /* WillRemoveExistingMerge */) {
-                    this.ui.notifyUser(_lt("This operation is not possible due to a merge. Please remove the merges first than try again."));
-                }
-            }
-            else {
-                this.dispatch(cmd.type, { ...cmd, interactive: false });
-            }
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -16734,11 +17024,7 @@
                         return 21 /* InvalidSheetId */;
                     }
                 case "MOVE_COLUMNS_ROWS":
-                    const result = this.isMoveElementAllowed(cmd);
-                    if (result === 2 /* WillRemoveExistingMerge */) {
-                        this.ui.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
-                    }
-                    return result;
+                    return this.isMoveElementAllowed(cmd);
             }
             return 0 /* Success */;
         }
@@ -17156,17 +17442,20 @@
         }
         setSelection(anchor, zones, anchorZone, strict = false) {
             this.selectCell(...anchor);
+            const sheetId = this.getters.getActiveSheetId();
+            let selection;
+            zones = uniqueZones(zones);
             if (strict) {
-                this.selection.zones = zones;
-                this.selection.anchorZone = anchorZone;
+                selection = { zones, anchorZone, anchor };
             }
             else {
-                const sheetId = this.getters.getActiveSheetId();
-                this.selection.zones = zones.map((zone) => this.getters.expandZone(sheetId, zone));
-                this.selection.anchorZone = this.getters.expandZone(sheetId, anchorZone);
+                selection = {
+                    anchor,
+                    zones: zones.map((zone) => this.getters.expandZone(sheetId, zone)),
+                    anchorZone: this.getters.expandZone(sheetId, anchorZone),
+                };
             }
-            this.selection.zones = uniqueZones(this.selection.zones);
-            this.selection.anchor = anchor;
+            this.selection = this.clipSelection(sheetId, selection);
         }
         /**
          * Finds a visible cell in the currently selected zone starting with the anchor.
@@ -17634,7 +17923,10 @@
                 case "DELETE_SHEET":
                     if (cmd.sheetId === this.sheet && this.mode !== "inactive") {
                         this.dispatch("STOP_EDITION", { cancel: true });
-                        this.ui.notifyUser(CELL_DELETED_MESSAGE);
+                        this.ui.notifyUI({
+                            type: "NOTIFICATION",
+                            text: CELL_DELETED_MESSAGE,
+                        });
                     }
                     break;
             }
@@ -17693,7 +17985,10 @@
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
                 this.dispatch("STOP_EDITION", { cancel: true });
-                this.ui.notifyUser(CELL_DELETED_MESSAGE);
+                this.ui.notifyUI({
+                    type: "NOTIFICATION",
+                    text: CELL_DELETED_MESSAGE,
+                });
                 return;
             }
             const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "left", cmd.elements);
@@ -17703,7 +17998,10 @@
         onRowsRemoved(cmd) {
             if (cmd.elements.includes(this.row) && this.mode !== "inactive") {
                 this.dispatch("STOP_EDITION", { cancel: true });
-                this.ui.notifyUser(CELL_DELETED_MESSAGE);
+                this.ui.notifyUI({
+                    type: "NOTIFICATION",
+                    text: CELL_DELETED_MESSAGE,
+                });
                 return;
             }
             const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "top", cmd.elements);
@@ -18040,15 +18338,16 @@
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
-        evaluateFormula(formula, sheetId = this.getters.getActiveSheetId()) {
-            let formulaString = normalize(formula);
-            const compiledFormula = compile(formulaString);
+        evaluateFormula(formulaString, sheetId = this.getters.getActiveSheetId()) {
+            let formula = normalize(formulaString);
+            const compiledFormula = compile(formula);
             const params = this.getFormulaParameters(() => { });
             const ranges = [];
-            for (let xc of formulaString.dependencies) {
+            for (let xc of formula.dependencies.references) {
                 ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
             }
-            return compiledFormula(ranges, sheetId, ...params);
+            const dependencies = { ...formula.dependencies, references: ranges };
+            return compiledFormula(dependencies, sheetId, ...params);
         }
         /**
          * Return the value of each cell in the range as they are displayed in the grid.
@@ -18168,12 +18467,7 @@
                 if (!isZoneValid(range$1.zone)) {
                     throw new Error(_lt("Invalid reference"));
                 }
-                const zone = {
-                    left: range$1.zone.left,
-                    top: range$1.zone.top,
-                    right: Math.min(range$1.zone.right, getters.getNumberCols(sheetId) - 1),
-                    bottom: Math.min(range$1.zone.bottom, getters.getNumberRows(sheetId) - 1),
-                };
+                const zone = range$1.zone;
                 return range(zone.left, zone.right + 1).map((col) => getters
                     .getCellsInZone(sheetId, { ...zone, left: col, right: col })
                     .map((cell) => (cell ? getCellValue(cell, range$1.sheetId) : undefined)));
@@ -18616,53 +18910,54 @@
                     if (cell && cell.evaluated.type === CellValueType.error) {
                         return false;
                     }
+                    const values = rule.values.map(parsePrimitiveContent);
                     switch (rule.operator) {
                         case "IsEmpty":
                             return !isDefined(cell) || cell.evaluated.value.toString().trim() === "";
                         case "IsNotEmpty":
                             return isDefined(cell) && cell.evaluated.value.toString().trim() !== "";
                         case "BeginsWith":
-                            if (!cell && rule.values[0] === "") {
+                            if (!cell && values[0] === "") {
                                 return false;
                             }
-                            return isDefined(cell) && (cell === null || cell === void 0 ? void 0 : cell.evaluated.value.toString().startsWith(rule.values[0]));
+                            return (isDefined(cell) && (cell === null || cell === void 0 ? void 0 : cell.evaluated.value.toString().startsWith(values[0].toString())));
                         case "EndsWith":
-                            if (!cell && rule.values[0] === "") {
+                            if (!cell && values[0] === "") {
                                 return false;
                             }
-                            return isDefined(cell) && cell.evaluated.value.toString().endsWith(rule.values[0]);
+                            return isDefined(cell) && cell.evaluated.value.toString().endsWith(values[0].toString());
                         case "Between":
                             return (isDefined(cell) &&
-                                cell.evaluated.value >= rule.values[0] &&
-                                cell.evaluated.value <= rule.values[1]);
+                                cell.evaluated.value >= values[0] &&
+                                cell.evaluated.value <= values[1]);
                         case "NotBetween":
                             return !(isDefined(cell) &&
-                                cell.evaluated.value >= rule.values[0] &&
-                                cell.evaluated.value <= rule.values[1]);
+                                cell.evaluated.value >= values[0] &&
+                                cell.evaluated.value <= values[1]);
                         case "ContainsText":
-                            return isDefined(cell) && cell.evaluated.value.toString().indexOf(rule.values[0]) > -1;
+                            return (isDefined(cell) && cell.evaluated.value.toString().indexOf(values[0].toString()) > -1);
                         case "NotContains":
                             return (!isDefined(cell) ||
                                 !cell.evaluated.value ||
-                                cell.evaluated.value.toString().indexOf(rule.values[0]) == -1);
+                                cell.evaluated.value.toString().indexOf(values[0].toString()) == -1);
                         case "GreaterThan":
-                            return isDefined(cell) && cell.evaluated.value > rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value > values[0];
                         case "GreaterThanOrEqual":
-                            return isDefined(cell) && cell.evaluated.value >= rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value >= values[0];
                         case "LessThan":
-                            return isDefined(cell) && cell.evaluated.value < rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value < values[0];
                         case "LessThanOrEqual":
-                            return isDefined(cell) && cell.evaluated.value <= rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value <= values[0];
                         case "NotEqual":
-                            if (!isDefined(cell) && rule.values[0] === "") {
+                            if (!isDefined(cell) && values[0] === "") {
                                 return false;
                             }
-                            return isDefined(cell) && cell.evaluated.value !== rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value !== values[0];
                         case "Equal":
-                            if (!cell && rule.values[0] === "") {
+                            if (!cell && values[0] === "") {
                                 return true;
                             }
-                            return isDefined(cell) && cell.evaluated.value.toString() === rule.values[0];
+                            return isDefined(cell) && cell.evaluated.value === values[0];
                         default:
                             console.warn(_lt("Not implemented operator %s for kind of conditional formatting:  %s", rule.operator, rule.type));
                     }
@@ -20588,39 +20883,6 @@
     SelectionMultiUserPlugin.layers = [5 /* Selection */];
     SelectionMultiUserPlugin.modes = ["normal"];
 
-    const SORT_TYPES = [
-        CellValueType.number,
-        CellValueType.error,
-        CellValueType.text,
-        CellValueType.boolean,
-    ];
-    function convertCell(cell, index) {
-        return {
-            index,
-            type: cell ? cell.evaluated.type : CellValueType.empty,
-            value: cell ? cell.evaluated.value : "",
-        };
-    }
-    function sortCells(cells, sortDirection) {
-        const cellsWithIndex = cells.map(convertCell);
-        const emptyCells = cellsWithIndex.filter((x) => x.type === CellValueType.empty);
-        const nonEmptyCells = cellsWithIndex.filter((x) => x.type !== CellValueType.empty);
-        const inverse = sortDirection === "descending" ? -1 : 1;
-        return nonEmptyCells
-            .sort((left, right) => {
-            let typeOrder = SORT_TYPES.indexOf(left.type) - SORT_TYPES.indexOf(right.type);
-            if (typeOrder === 0) {
-                if (left.type === CellValueType.text || left.type === CellValueType.error) {
-                    typeOrder = left.value.localeCompare(right.value);
-                }
-                else
-                    typeOrder = left.value - right.value;
-            }
-            return inverse * typeOrder;
-        })
-            .concat(emptyCells);
-    }
-
     class SortPlugin extends UIPlugin {
         allowDispatch(cmd) {
             switch (cmd.type) {
@@ -20635,12 +20897,7 @@
         handle(cmd) {
             switch (cmd.type) {
                 case "SORT_CELLS":
-                    if (cmd.interactive) {
-                        this.interactiveSortSelection(cmd.sheetId, cmd.anchor, cmd.zone, cmd.sortDirection);
-                    }
-                    else {
-                        this.sortZone(cmd.sheetId, cmd.anchor, cmd.zone, cmd.sortDirection);
-                    }
+                    this.sortZone(cmd.sheetId, cmd.anchor, cmd.zone, cmd.sortDirection);
                     break;
             }
         }
@@ -20676,70 +20933,6 @@
                 return 46 /* InvalidSortZone */;
             }
             return 0 /* Success */;
-        }
-        interactiveSortSelection(sheetId, anchor, zone, sortDirection) {
-            let result = DispatchResult.Success;
-            //several columns => bypass the contiguity check
-            let multiColumns = zone.right > zone.left;
-            if (this.getters.doesIntersectMerge(sheetId, zone)) {
-                multiColumns = false;
-                let table;
-                for (let r = zone.top; r <= zone.bottom; r++) {
-                    table = [];
-                    for (let c = zone.left; c <= zone.right; c++) {
-                        let merge = this.getters.getMerge(sheetId, c, r);
-                        if (merge && !table.includes(merge.id.toString())) {
-                            table.push(merge.id.toString());
-                        }
-                    }
-                    if (table.length >= 2) {
-                        multiColumns = true;
-                        break;
-                    }
-                }
-            }
-            if (multiColumns) {
-                result = this.dispatch("SORT_CELLS", { sheetId, anchor, zone, sortDirection });
-            }
-            else {
-                // check contiguity
-                const contiguousZone = this.getContiguousZone(sheetId, zone);
-                if (isEqual(contiguousZone, zone)) {
-                    // merge as it is
-                    result = this.dispatch("SORT_CELLS", {
-                        sheetId,
-                        anchor,
-                        zone,
-                        sortDirection,
-                    });
-                }
-                else {
-                    this.ui.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
-                        zone = contiguousZone;
-                        result = this.dispatch("SORT_CELLS", {
-                            sheetId,
-                            anchor,
-                            zone,
-                            sortDirection,
-                        });
-                    }, () => {
-                        result = this.dispatch("SORT_CELLS", {
-                            sheetId,
-                            anchor,
-                            zone,
-                            sortDirection,
-                        });
-                    });
-                }
-            }
-            if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
-                this.dispatch("SET_SELECTION", {
-                    anchor: anchor,
-                    zones: [zone],
-                    anchorZone: zone,
-                });
-                this.ui.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
-            }
         }
         // getContiguousZone helpers
         /**
@@ -20816,7 +21009,6 @@
          *
          */
         getContiguousZone(sheetId, zone) {
-            // public only for tests :/
             let { top, bottom, left, right } = zone;
             let canExpand;
             const sheet = this.getters.getSheet(sheetId);
@@ -20938,8 +21130,11 @@
                             const position = this.getters.getCellPosition(cell.id);
                             const offsetY = newRow - position.row;
                             // we only have a vertical offset
-                            const ranges = this.getters.createAdaptedRanges(cell.dependencies, 0, offsetY, sheetId);
-                            content = this.getters.buildFormulaContent(sheetId, cell.normalizedText, ranges);
+                            const ranges = this.getters.createAdaptedRanges(cell.dependencies.references, 0, offsetY, sheetId);
+                            content = this.getters.buildFormulaContent(sheetId, cell.normalizedText, {
+                                ...cell.dependencies,
+                                references: ranges,
+                            });
                         }
                         newCellValues.style = cell.style;
                         newCellValues.content = content;
@@ -21018,7 +21213,6 @@
             switch (cmd.type) {
                 case "AUTORESIZE_ROWS":
                 case "AUTORESIZE_COLUMNS":
-                case "DELETE_SHEET_CONFIRMATION":
                     try {
                         this.getters.getSheet(cmd.sheetId);
                         break;
@@ -21031,19 +21225,6 @@
         }
         handle(cmd) {
             switch (cmd.type) {
-                case "RENAME_SHEET":
-                    if (cmd.interactive) {
-                        this.interactiveRenameSheet(cmd.sheetId, _lt("Rename Sheet"));
-                    }
-                    break;
-                case "DELETE_SHEET_CONFIRMATION":
-                    this.interactiveDeleteSheet(cmd.sheetId);
-                    break;
-                case "ADD_MERGE":
-                    if (cmd.interactive) {
-                        this.interactiveMerge(cmd.sheetId, cmd.target);
-                    }
-                    break;
                 case "AUTORESIZE_COLUMNS":
                     for (let col of cmd.cols) {
                         const size = this.getColMaxWidth(cmd.sheetId, col);
@@ -21116,43 +21297,6 @@
                 .map((cellId) => this.getters.getCellById(cellId));
             const sizes = cells.map((cell) => this.getCellHeight(cell));
             return Math.max(0, ...sizes);
-        }
-        interactiveRenameSheet(sheetId, title) {
-            const placeholder = this.getters.getSheetName(sheetId);
-            this.ui.editText(title, placeholder, (name) => {
-                if (name === "") {
-                    this.interactiveRenameSheet(sheetId, _lt("The sheet name cannot be empty."));
-                    return;
-                }
-                if (!name) {
-                    return;
-                }
-                const result = this.dispatch("RENAME_SHEET", { sheetId: sheetId, name });
-                const sheetName = this.getters.getSheetName(sheetId);
-                if (!result.isSuccessful && sheetName !== name) {
-                    if (result.reasons.includes(10 /* DuplicatedSheetName */)) {
-                        this.interactiveRenameSheet(sheetId, _lt("A sheet with the name %s already exists. Please select another name.", name));
-                    }
-                    if (result.reasons.includes(11 /* ForbiddenCharactersInSheetName */)) {
-                        this.interactiveRenameSheet(sheetId, _lt("Some used characters are not allowed in a sheet name (Forbidden characters are %s).", FORBIDDEN_SHEET_CHARS.join(" ")));
-                    }
-                }
-            });
-        }
-        interactiveDeleteSheet(sheetId) {
-            this.ui.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
-                this.dispatch("DELETE_SHEET", { sheetId: sheetId });
-            });
-        }
-        interactiveMerge(sheet, target) {
-            const result = this.dispatch("ADD_MERGE", { sheetId: sheet, target });
-            if (!result.isSuccessful) {
-                if (result.isCancelledBecause(3 /* MergeIsDestructive */)) {
-                    this.ui.askConfirmation(_lt("Merging these cells will only preserve the top-leftmost value. Merge anyway?"), () => {
-                        this.dispatch("ADD_MERGE", { sheetId: sheet, target, force: true });
-                    });
-                }
-            }
         }
     }
     SheetUIPlugin.getters = ["getCellWidth", "getCellHeight", "getTextWidth", "getCellText"];
@@ -21291,6 +21435,13 @@
             const height = lastRow.end +
                 Math.max(DEFAULT_CELL_HEIGHT + 5, Math.min(topRow.size, this.viewportHeight - lastRow.size));
             return { width, height };
+        }
+        getMaximumViewportOffset(sheet) {
+            const { width, height } = this.getters.getMaxViewportSize(sheet);
+            return {
+                maxOffsetX: Math.max(0, width - this.viewportWidth + 1),
+                maxOffsetY: Math.max(0, height - this.viewportHeight + 1),
+            };
         }
         // ---------------------------------------------------------------------------
         // Private
@@ -21530,6 +21681,7 @@
         "getActiveSnappedViewport",
         "getViewportDimensionWithHeaders",
         "getMaxViewportSize",
+        "getMaximumViewportOffset",
     ];
     ViewportPlugin.modes = ["normal"];
 
@@ -21575,264 +21727,6 @@
         leave(id) {
             this.listeners = this.listeners.filter((listener) => listener.id !== id);
         }
-    }
-
-    /**
-     * This is the current state version number. It should be incremented each time
-     * a breaking change is made in the way the state is handled, and an upgrade
-     * function should be defined
-     */
-    const CURRENT_VERSION = 9;
-    /**
-     * This function tries to load anything that could look like a valid
-     * workbookData object. It applies any migrations, if needed, and return a
-     * current, complete workbookData object.
-     *
-     * It also ensures that there is at least one sheet.
-     */
-    function load(data) {
-        if (!data) {
-            return createEmptyWorkbookData();
-        }
-        data = JSON.parse(JSON.stringify(data));
-        // apply migrations, if needed
-        if ("version" in data) {
-            if (data.version < CURRENT_VERSION) {
-                data = migrate(data);
-            }
-        }
-        // sanity check: try to fix missing fields/corrupted state by providing
-        // sensible default values
-        data = Object.assign(createEmptyWorkbookData(), data, { version: CURRENT_VERSION });
-        data.sheets = data.sheets.map((s, i) => Object.assign(createEmptySheet(`Sheet${i + 1}`), s));
-        if (data.sheets.length === 0) {
-            data.sheets.push(createEmptySheet());
-        }
-        return data;
-    }
-    function migrate(data) {
-        const index = MIGRATIONS.findIndex((m) => m.from === data.version);
-        for (let i = index; i < MIGRATIONS.length; i++) {
-            data = MIGRATIONS[i].applyMigration(data);
-        }
-        return data;
-    }
-    const MIGRATIONS = [
-        {
-            description: "add the `activeSheet` field on data",
-            from: 1,
-            to: 2,
-            applyMigration(data) {
-                if (data.sheets && data.sheets[0]) {
-                    data.activeSheet = data.sheets[0].name;
-                }
-                return data;
-            },
-        },
-        {
-            description: "add an id field in each sheet",
-            from: 2,
-            to: 3,
-            applyMigration(data) {
-                if (data.sheets && data.sheets.length) {
-                    for (let sheet of data.sheets) {
-                        sheet.id = sheet.id || sheet.name;
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "activeSheet is now an id, not the name of a sheet",
-            from: 3,
-            to: 4,
-            applyMigration(data) {
-                if (data.sheets && data.activeSheet) {
-                    const activeSheet = data.sheets.find((s) => s.name === data.activeSheet);
-                    data.activeSheet = activeSheet.id;
-                }
-                return data;
-            },
-        },
-        {
-            description: "add figures object in each sheets",
-            from: 4,
-            to: 5,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    sheet.figures = sheet.figures || [];
-                }
-                return data;
-            },
-        },
-        {
-            description: "normalize the content of the cell if it is a formula to avoid parsing all the formula that vary only by the cells they use",
-            from: 5,
-            to: 6,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    for (let xc in sheet.cells || []) {
-                        const cell = sheet.cells[xc];
-                        if (cell.content && cell.content.startsWith("=")) {
-                            cell.formula = normalize(cell.content);
-                        }
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "transform chart data structure",
-            from: 6,
-            to: 7,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    for (let f in sheet.figures || []) {
-                        const { dataSets, ...newData } = sheet.figures[f].data;
-                        const newDataSets = [];
-                        for (let ds of dataSets) {
-                            if (ds.labelCell) {
-                                const dataRange = toZone(ds.dataRange);
-                                const newRange = ds.labelCell + ":" + toXC(dataRange.right, dataRange.bottom);
-                                newDataSets.push(newRange);
-                            }
-                            else {
-                                newDataSets.push(ds.dataRange);
-                            }
-                        }
-                        newData.dataSetsHaveTitle = Boolean(dataSets[0].labelCell);
-                        newData.dataSets = newDataSets;
-                        sheet.figures[f].data = newData;
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "remove single quotes in sheet names",
-            from: 7,
-            to: 8,
-            applyMigration(data) {
-                var _a;
-                const namesTaken = [];
-                const globalForbiddenInExcel = new RegExp(FORBIDDEN_IN_EXCEL_REGEX, "g");
-                for (let sheet of data.sheets || []) {
-                    if (!sheet.name) {
-                        continue;
-                    }
-                    const oldName = sheet.name;
-                    const escapedName = oldName.replace(globalForbiddenInExcel, "_");
-                    let i = 1;
-                    let newName = escapedName;
-                    while (namesTaken.includes(newName)) {
-                        newName = `${escapedName}${i}`;
-                        i++;
-                    }
-                    sheet.name = newName;
-                    namesTaken.push(newName);
-                    const replaceName = (str) => {
-                        if (str === undefined) {
-                            return str;
-                        }
-                        // replaceAll is only available in next Typescript version
-                        let newString = str.replace(oldName, newName);
-                        let currentString = str;
-                        while (currentString !== newString) {
-                            currentString = newString;
-                            newString = currentString.replace(oldName, newName);
-                        }
-                        return currentString;
-                    };
-                    //cells
-                    for (let xc in sheet.cells) {
-                        const cell = sheet.cells[xc];
-                        if (cell.formula) {
-                            cell.formula.dependencies = cell.formula.dependencies.map(replaceName);
-                        }
-                    }
-                    //charts
-                    for (let figure of sheet.figures || []) {
-                        if (figure.type === "chart") {
-                            const dataSets = figure.data.dataSets.map(replaceName);
-                            const labelRange = replaceName(figure.data.labelRange);
-                            figure.data = { ...figure.data, dataSets, labelRange };
-                        }
-                    }
-                    //ConditionalFormats
-                    for (let cf of sheet.conditionalFormats || []) {
-                        cf.ranges = cf.ranges.map(replaceName);
-                        for (const thresholdName of [
-                            "minimum",
-                            "maximum",
-                            "midpoint",
-                            "upperInflectionPoint",
-                            "lowerInflectionPoint",
-                        ]) {
-                            if (((_a = cf.rule[thresholdName]) === null || _a === void 0 ? void 0 : _a.type) === "formula") {
-                                cf.rule[thresholdName].value = replaceName(cf.rule[thresholdName].value);
-                            }
-                        }
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "transform chart data structure with design attributes",
-            from: 8,
-            to: 9,
-            applyMigration(data) {
-                for (const sheet of data.sheets || []) {
-                    for (const chart of sheet.figures || []) {
-                        chart.data.background = BACKGROUND_CHART_COLOR;
-                        chart.data.verticalAxisPosition = "left";
-                        chart.data.legendPosition = "top";
-                        chart.data.stackedBar = false;
-                    }
-                }
-                return data;
-            },
-        },
-    ];
-    // -----------------------------------------------------------------------------
-    // Helpers
-    // -----------------------------------------------------------------------------
-    function createEmptySheet(name = "Sheet1") {
-        return {
-            id: name,
-            name,
-            colNumber: 26,
-            rowNumber: 100,
-            cells: {},
-            cols: {},
-            rows: {},
-            merges: [],
-            conditionalFormats: [],
-            figures: [],
-        };
-    }
-    function createEmptyWorkbookData() {
-        const data = {
-            version: CURRENT_VERSION,
-            sheets: [createEmptySheet("Sheet1")],
-            entities: {},
-            styles: {},
-            borders: {},
-            revisionId: DEFAULT_REVISION_ID,
-        };
-        return data;
-    }
-    function createEmptyExcelSheet(name = "Sheet1") {
-        return {
-            ...createEmptySheet(name),
-            charts: [],
-        };
-    }
-    function createEmptyExcelWorkbookData() {
-        return {
-            ...createEmptyWorkbookData(),
-            sheets: [createEmptyExcelSheet("Sheet1")],
-        };
     }
 
     /**
@@ -23040,6 +22934,331 @@
         }
     }
 
+    /**
+     * parses a formula (as a string) into the same formula,
+     * but with the references to other cells extracted
+     *
+     * =sum(a3:b1) + c3 --> =sum(|0|) + |1|
+     *
+     * @param formula
+     */
+    function normalizeV9(formula) {
+        const tokens = rangeTokenize(formula);
+        let dependencies = [];
+        let noRefFormula = "".concat(...tokens.map((token) => {
+            if (token.type === "SYMBOL" && cellReference.test(token.value)) {
+                const value = token.value.trim();
+                if (!dependencies.includes(value)) {
+                    dependencies.push(value);
+                }
+                return `${FORMULA_REF_IDENTIFIER}${dependencies.indexOf(value)}${FORMULA_REF_IDENTIFIER}`;
+            }
+            else {
+                return token.value;
+            }
+        }));
+        return { text: noRefFormula, dependencies };
+    }
+
+    /**
+     * This is the current state version number. It should be incremented each time
+     * a breaking change is made in the way the state is handled, and an upgrade
+     * function should be defined
+     */
+    const CURRENT_VERSION = 11;
+    /**
+     * This function tries to load anything that could look like a valid
+     * workbookData object. It applies any migrations, if needed, and return a
+     * current, complete workbookData object.
+     *
+     * It also ensures that there is at least one sheet.
+     */
+    function load(data) {
+        if (!data) {
+            return createEmptyWorkbookData();
+        }
+        data = JSON.parse(JSON.stringify(data));
+        // apply migrations, if needed
+        if ("version" in data) {
+            if (data.version < CURRENT_VERSION) {
+                data = migrate(data);
+            }
+        }
+        // sanity check: try to fix missing fields/corrupted state by providing
+        // sensible default values
+        data = Object.assign(createEmptyWorkbookData(), data, { version: CURRENT_VERSION });
+        data.sheets = data.sheets.map((s, i) => Object.assign(createEmptySheet(`Sheet${i + 1}`), s));
+        if (data.sheets.length === 0) {
+            data.sheets.push(createEmptySheet());
+        }
+        return data;
+    }
+    function migrate(data) {
+        const index = MIGRATIONS.findIndex((m) => m.from === data.version);
+        for (let i = index; i < MIGRATIONS.length; i++) {
+            data = MIGRATIONS[i].applyMigration(data);
+        }
+        return data;
+    }
+    const MIGRATIONS = [
+        {
+            description: "add the `activeSheet` field on data",
+            from: 1,
+            to: 2,
+            applyMigration(data) {
+                if (data.sheets && data.sheets[0]) {
+                    data.activeSheet = data.sheets[0].name;
+                }
+                return data;
+            },
+        },
+        {
+            description: "add an id field in each sheet",
+            from: 2,
+            to: 3,
+            applyMigration(data) {
+                if (data.sheets && data.sheets.length) {
+                    for (let sheet of data.sheets) {
+                        sheet.id = sheet.id || sheet.name;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "activeSheet is now an id, not the name of a sheet",
+            from: 3,
+            to: 4,
+            applyMigration(data) {
+                if (data.sheets && data.activeSheet) {
+                    const activeSheet = data.sheets.find((s) => s.name === data.activeSheet);
+                    data.activeSheet = activeSheet.id;
+                }
+                return data;
+            },
+        },
+        {
+            description: "add figures object in each sheets",
+            from: 4,
+            to: 5,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    sheet.figures = sheet.figures || [];
+                }
+                return data;
+            },
+        },
+        {
+            description: "normalize the content of the cell if it is a formula to avoid parsing all the formula that vary only by the cells they use",
+            from: 5,
+            to: 6,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    for (let xc in sheet.cells || []) {
+                        const cell = sheet.cells[xc];
+                        if (cell.content && cell.content.startsWith("=")) {
+                            cell.formula = normalizeV9(cell.content);
+                        }
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "transform chart data structure",
+            from: 6,
+            to: 7,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    for (let f in sheet.figures || []) {
+                        const { dataSets, ...newData } = sheet.figures[f].data;
+                        const newDataSets = [];
+                        for (let ds of dataSets) {
+                            if (ds.labelCell) {
+                                const dataRange = toZone(ds.dataRange);
+                                const newRange = ds.labelCell + ":" + toXC(dataRange.right, dataRange.bottom);
+                                newDataSets.push(newRange);
+                            }
+                            else {
+                                newDataSets.push(ds.dataRange);
+                            }
+                        }
+                        newData.dataSetsHaveTitle = Boolean(dataSets[0].labelCell);
+                        newData.dataSets = newDataSets;
+                        sheet.figures[f].data = newData;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "remove single quotes in sheet names",
+            from: 7,
+            to: 8,
+            applyMigration(data) {
+                var _a;
+                const namesTaken = [];
+                const globalForbiddenInExcel = new RegExp(FORBIDDEN_IN_EXCEL_REGEX, "g");
+                for (let sheet of data.sheets || []) {
+                    if (!sheet.name) {
+                        continue;
+                    }
+                    const oldName = sheet.name;
+                    const escapedName = oldName.replace(globalForbiddenInExcel, "_");
+                    let i = 1;
+                    let newName = escapedName;
+                    while (namesTaken.includes(newName)) {
+                        newName = `${escapedName}${i}`;
+                        i++;
+                    }
+                    sheet.name = newName;
+                    namesTaken.push(newName);
+                    const replaceName = (str) => {
+                        if (str === undefined) {
+                            return str;
+                        }
+                        // replaceAll is only available in next Typescript version
+                        let newString = str.replace(oldName, newName);
+                        let currentString = str;
+                        while (currentString !== newString) {
+                            currentString = newString;
+                            newString = currentString.replace(oldName, newName);
+                        }
+                        return currentString;
+                    };
+                    //cells
+                    for (let xc in sheet.cells) {
+                        const cell = sheet.cells[xc];
+                        if (cell.formula) {
+                            cell.formula.dependencies = cell.formula.dependencies.map(replaceName);
+                        }
+                    }
+                    //charts
+                    for (let figure of sheet.figures || []) {
+                        if (figure.type === "chart") {
+                            const dataSets = figure.data.dataSets.map(replaceName);
+                            const labelRange = replaceName(figure.data.labelRange);
+                            figure.data = { ...figure.data, dataSets, labelRange };
+                        }
+                    }
+                    //ConditionalFormats
+                    for (let cf of sheet.conditionalFormats || []) {
+                        cf.ranges = cf.ranges.map(replaceName);
+                        for (const thresholdName of [
+                            "minimum",
+                            "maximum",
+                            "midpoint",
+                            "upperInflectionPoint",
+                            "lowerInflectionPoint",
+                        ]) {
+                            if (((_a = cf.rule[thresholdName]) === null || _a === void 0 ? void 0 : _a.type) === "formula") {
+                                cf.rule[thresholdName].value = replaceName(cf.rule[thresholdName].value);
+                            }
+                        }
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "transform chart data structure with design attributes",
+            from: 8,
+            to: 9,
+            applyMigration(data) {
+                for (const sheet of data.sheets || []) {
+                    for (const chart of sheet.figures || []) {
+                        chart.data.background = BACKGROUND_CHART_COLOR;
+                        chart.data.verticalAxisPosition = "left";
+                        chart.data.legendPosition = "top";
+                        chart.data.stackedBar = false;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "de-normalize formula to reduce exported json size (~30%)",
+            from: 9,
+            to: 10,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    for (let xc in sheet.cells || []) {
+                        const cell = sheet.cells[xc];
+                        if (cell.formula) {
+                            let { text, dependencies } = cell.formula;
+                            for (let [index, d] of Object.entries(dependencies)) {
+                                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
+                                text = text.replace(new RegExp(stringPosition, "g"), d);
+                            }
+                            cell.content = text;
+                            delete cell.formula;
+                        }
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "normalize the formats of the cells",
+            from: 10,
+            to: 11,
+            applyMigration(data) {
+                const formats = {};
+                for (let sheet of data.sheets || []) {
+                    for (let xc in sheet.cells || []) {
+                        const cell = sheet.cells[xc];
+                        if (cell.format) {
+                            cell.format = getItemId(cell.format, formats);
+                        }
+                    }
+                }
+                data.formats = formats;
+                return data;
+            },
+        },
+    ];
+    // -----------------------------------------------------------------------------
+    // Helpers
+    // -----------------------------------------------------------------------------
+    function createEmptySheet(name = _t("Sheet") + 1) {
+        return {
+            id: name,
+            name,
+            colNumber: 26,
+            rowNumber: 100,
+            cells: {},
+            cols: {},
+            rows: {},
+            merges: [],
+            conditionalFormats: [],
+            figures: [],
+        };
+    }
+    function createEmptyWorkbookData() {
+        const data = {
+            version: CURRENT_VERSION,
+            sheets: [createEmptySheet(_t("Sheet") + 1)],
+            entities: {},
+            styles: {},
+            formats: {},
+            borders: {},
+            revisionId: DEFAULT_REVISION_ID,
+        };
+        return data;
+    }
+    function createEmptyExcelSheet(name = _t("Sheet") + 1) {
+        return {
+            ...createEmptySheet(name),
+            charts: [],
+        };
+    }
+    function createEmptyExcelWorkbookData() {
+        return {
+            ...createEmptyWorkbookData(),
+            sheets: [createEmptyExcelSheet(_t("Sheet") + 1)],
+        };
+    }
+
     class RangeAdapter {
         constructor(getters) {
             this.providers = [];
@@ -23639,6 +23858,7 @@
         if (cell.style) {
             style = data.styles[cell.style];
         }
+        const format = cell.format ? data.formats[cell.format] : undefined;
         let border = {};
         if (cell.border) {
             border = data.borders[cell.border];
@@ -23655,7 +23875,7 @@
                     fgColor: style.fillColor,
                 }
                 : { reservedAttribute: "none" },
-            numFmt: cell.format,
+            numFmt: format,
             border: border || {},
             verticalAlignment: "center",
             horizontalAlignment: style === null || style === void 0 ? void 0 : style.align,
@@ -24213,9 +24433,10 @@
   `;
     }
 
-    function addFormula(formula) {
+    function addFormula(cell) {
+        const formula = cell.content;
         const functions = functionRegistry.content;
-        const tokens = tokenize(formula.text);
+        const tokens = tokenize(formula);
         const attrs = [];
         let node = escapeXml ``;
         const isExported = tokens
@@ -24226,9 +24447,9 @@
             const XlsxFormula = adaptFormulaToExcel(formula);
             // hack for cycles : if we don't set a value (be it 0 or #VALUE!), it will appear as invisible on excel,
             // Making it very hard for the client to find where the recursion is.
-            if (formula.value === "#CYCLE") {
+            if (cell.value === "#CYCLE") {
                 attrs.push(["t", "str"]);
-                cycle = escapeXml /*xml*/ `<v>${formula.value}</v>`;
+                cycle = escapeXml /*xml*/ `<v>${cell.value}</v>`;
             }
             node = escapeXml /*xml*/ `
       <f>
@@ -24240,7 +24461,7 @@
         }
         else {
             // Shouldn't we always output the value then ?
-            const value = formula.value;
+            const value = cell.value;
             // what if value = 0? Is this condition correct?
             if (value) {
                 const type = getCellType(value);
@@ -24264,87 +24485,81 @@
         }
         return { attrs, node: escapeXml /*xml*/ `<v>${value}</v>` };
     }
-    function adaptFormulaToExcel(formula) {
-        let formulaText = formula.text;
+    function adaptFormulaToExcel(formulaText) {
         if (formulaText[0] === "=") {
             formulaText = formulaText.slice(1);
         }
-        const ast = parse(formulaText);
-        let newFormulaText = ast ? astToExcelFormula(ast) : formula.text;
-        return getFormulaContent(newFormulaText, formula.dependencies);
+        let ast;
+        try {
+            ast = parse(formulaText);
+        }
+        catch (error) {
+            return formulaText;
+        }
+        ast = convertAstNodes(ast, "STRING", convertDateFormat);
+        ast = convertAstNodes(ast, "FUNCALL", (ast) => {
+            ast = { ...ast, value: ast.value.toUpperCase() };
+            ast = prependNonRetrocompatibleFunction(ast);
+            ast = addMissingRequiredArgs(ast);
+            return ast;
+        });
+        return ast ? astToFormula(ast) : formulaText;
     }
     /**
-     * Converts an ast formula to the corresponding string
-     *
-     * We cannot use astToFormula directly; since the function is of recursive form,
-     * it will call itself when we'd need it to call astToExcelFormula to process
-     * the specific cases of FUNCALL.
-     * Function calls are different because:
-     * - non retrocompatible function needs to be prepended
-     * - required args which are optional in o-spreadsheet
+     * Some Excel function need required args that might not be mandatory in o-spreadsheet.
+     * This adds those missing args.
      */
-    function astToExcelFormula(ast) {
-        let value;
-        switch (ast.type) {
-            case "FUNCALL":
-                value = ast.value.toUpperCase();
-                // In this case, the Excel function will need required args that might not be mandatory in Spreadsheet
-                const exportDefaultArgs = FORCE_DEFAULT_ARGS_FUNCTIONS[value];
-                if (exportDefaultArgs) {
-                    const requiredArgs = functionRegistry.content[value].args.filter((el) => !el.optional);
-                    const diffArgs = requiredArgs.length - ast.args.length;
-                    if (diffArgs) {
-                        // We know that we have at least 1 default Value missing
-                        for (let i = ast.args.length; i < requiredArgs.length; i++) {
-                            const currentDefaultArg = exportDefaultArgs[i - diffArgs];
-                            ast.args.push({ type: currentDefaultArg.type, value: currentDefaultArg.value });
-                        }
-                    }
+    function addMissingRequiredArgs(ast) {
+        const formulaName = ast.value.toUpperCase();
+        const args = ast.args;
+        const exportDefaultArgs = FORCE_DEFAULT_ARGS_FUNCTIONS[formulaName];
+        if (exportDefaultArgs) {
+            const requiredArgs = functionRegistry.content[formulaName].args.filter((el) => !el.optional);
+            const diffArgs = requiredArgs.length - ast.args.length;
+            if (diffArgs) {
+                // We know that we have at least 1 default Value missing
+                for (let i = ast.args.length; i < requiredArgs.length; i++) {
+                    const currentDefaultArg = exportDefaultArgs[i - diffArgs];
+                    args.push({ type: currentDefaultArg.type, value: currentDefaultArg.value });
                 }
-                // Prepend function names that are not compatible with Old Excel versions
-                ast.value = NON_RETROCOMPATIBLE_FUNCTIONS.includes(value) ? `_xlfn.${value}` : value;
-                const args = ast.args.map((arg) => astToExcelFormula(arg));
-                return `${ast.value}(${args.join(",")})`;
-            case "NUMBER":
-                return ast.value.toString();
-            case "STRING":
-                // strings that correspond to a date should be converted to the format YYYY-DD-MM
-                value = ast.value.replace(new RegExp('"', "g"), "");
-                const internalDate = parseDateTime(value);
-                if (internalDate) {
-                    let format = [];
-                    if (value.match(mdyDateRegexp) || value.match(ymdDateRegexp)) {
-                        format.push("yyyy-mm-dd");
-                    }
-                    if (value.match(timeRegexp)) {
-                        format.push("hh:mm:ss");
-                    }
-                    return `"${formatDateTime({ value: internalDate.value, format: format.join(" ") })}"`;
-                }
-                else {
-                    return ast.value.replace(/\\"/g, `""`);
-                }
-            case "BOOLEAN":
-                return ast.value ? "TRUE" : "FALSE";
-            case "UNARY_OPERATION":
-                return ast.value + astToExcelFormula(ast.right);
-            case "BIN_OPERATION":
-                return astToExcelFormula(ast.left) + ast.value + astToExcelFormula(ast.right);
-            case "REFERENCE":
-                return `${FORMULA_REF_IDENTIFIER}${ast.value}${FORMULA_REF_IDENTIFIER}`;
-            default:
-                return ast.value;
-        }
-    }
-    function getFormulaContent(formula, dependencies) {
-        let newContent = formula;
-        if (dependencies) {
-            for (let [index, d] of Object.entries(dependencies)) {
-                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
-                newContent = newContent.replace(new RegExp(stringPosition, "g"), d);
             }
         }
-        return newContent;
+        return { ...ast, args };
+    }
+    /**
+     * Prepend function names that are not compatible with Old Excel versions
+     */
+    function prependNonRetrocompatibleFunction(ast) {
+        const formulaName = ast.value.toUpperCase();
+        return {
+            ...ast,
+            value: NON_RETROCOMPATIBLE_FUNCTIONS.includes(formulaName)
+                ? `_xlfn.${formulaName}`
+                : formulaName,
+        };
+    }
+    /**
+     * Convert strings that correspond to a date to the format YYYY-DD-MM
+     */
+    function convertDateFormat(ast) {
+        const value = ast.value.replace(new RegExp('"', "g"), "");
+        const internalDate = parseDateTime(value);
+        if (internalDate) {
+            let format = [];
+            if (value.match(mdyDateRegexp) || value.match(ymdDateRegexp)) {
+                format.push("yyyy-mm-dd");
+            }
+            if (value.match(timeRegexp)) {
+                format.push("hh:mm:ss");
+            }
+            return {
+                ...ast,
+                value: `"${formatDateTime({ value: internalDate.value, format: format.join(" ") })}"`,
+            };
+        }
+        else {
+            return { ...ast, value: ast.value.replace(/\\"/g, `""`) };
+        }
     }
 
     function addConditionalFormatting(dxfs, conditionalFormats) {
@@ -24504,7 +24719,7 @@
             if (type === "formula") {
                 try {
                     checkRelativeReferences(threshold.value);
-                    val = adaptFormulaToExcel(normalize(threshold.value));
+                    val = adaptFormulaToExcel(threshold.value);
                 }
                 catch (error) {
                     val = threshold.value;
@@ -24539,7 +24754,7 @@
      */
     function checkRelativeReferences(formula) {
         const { dependencies } = normalize(formula);
-        if (dependencies.length) {
+        if (dependencies.references.length) {
             console.warn("Relative references might not work in conditional format formula thresholds in Excel.");
         }
     }
@@ -24852,8 +25067,8 @@
                     let additionalAttrs = [];
                     let cellNode = escapeXml ``;
                     // Either formula or static value inside the cell
-                    if (cell.formula) {
-                        ({ attrs: additionalAttrs, node: cellNode } = addFormula(cell.formula));
+                    if (cell.isFormula) {
+                        ({ attrs: additionalAttrs, node: cellNode } = addFormula(cell));
                     }
                     else if (cell.content && isMarkdownLink(cell.content)) {
                         const { label } = parseMarkdownLink(cell.content);
@@ -25131,7 +25346,6 @@
         Status[Status["Running"] = 1] = "Running";
         Status[Status["RunningCore"] = 2] = "RunningCore";
         Status[Status["Finalizing"] = 3] = "Finalizing";
-        Status[Status["Interactive"] = 4] = "Interactive";
     })(Status || (Status = {}));
     class Model extends owl__namespace.core.EventBus {
         constructor(data = {}, config = {}, stateUpdateMessages = [], uuidGenerator = new UuidGenerator()) {
@@ -25167,7 +25381,7 @@
              */
             this.dispatch = (type, payload) => {
                 const command = { type, ...payload };
-                let status = command.interactive ? 4 /* Interactive */ : this.status;
+                let status = this.status;
                 if (this.config.isReadonly && !canExecuteInReadonly(command)) {
                     return new DispatchResult(50 /* Readonly */);
                 }
@@ -25203,12 +25417,6 @@
                         else {
                             this.dispatchToHandlers(this.handlers, command);
                         }
-                        break;
-                    case 4 /* Interactive */:
-                        if (isCoreCommand(command)) {
-                            this.state.addCommand(command);
-                        }
-                        this.dispatchToHandlers(this.handlers, command);
                         break;
                     case 3 /* Finalizing */:
                         throw new Error(_lt("Cannot dispatch commands in the finalize state"));
@@ -25345,10 +25553,6 @@
             const transportService = config.transportService || new LocalTransportService();
             return {
                 mode: config.mode || "normal",
-                openSidePanel: config.openSidePanel || (() => { }),
-                notifyUser: config.notifyUser || (() => { }),
-                askConfirmation: config.askConfirmation || (() => { }),
-                editText: config.editText || (() => { }),
                 evalContext: config.evalContext || {},
                 transportService,
                 client,
@@ -25357,6 +25561,7 @@
                 isReadonly: config.isReadonly || false,
                 snapshotRequested: false,
                 dataSources: this.dataSources,
+                notifyUI: (payload) => this.trigger("notify-ui", payload),
             };
         }
         // ---------------------------------------------------------------------------
@@ -25987,7 +26192,7 @@
             });
         }
         onDblClick(sheetId) {
-            this.env.dispatch("RENAME_SHEET", { interactive: true, sheetId });
+            interactiveRenameSheet(this.env, sheetId);
         }
         openContextMenu(x, y, registry) {
             this.menuState.isOpen = true;
@@ -28572,12 +28777,15 @@
             for (let colIndex = start; colIndex <= end; colIndex++) {
                 elements.push(colIndex);
             }
-            this.dispatch("MOVE_COLUMNS_ROWS", {
+            const result = this.dispatch("MOVE_COLUMNS_ROWS", {
                 sheetId: this.getters.getActiveSheetId(),
                 dimension: "COL",
                 base: this.state.base,
                 elements,
             });
+            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+            }
         }
         _selectElement(index, ctrlKey) {
             this.dispatch("SELECT_COLUMN", { index, createRange: ctrlKey });
@@ -28706,6 +28914,10 @@
         z-index: 1;
         background-color: lightgrey;
       }
+      .o-unhide > svg {
+        position: relative;
+        top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+      }
     }
   `;
     class RowResizer extends AbstractResizer {
@@ -28770,12 +28982,15 @@
             for (let rowIndex = start; rowIndex <= end; rowIndex++) {
                 elements.push(rowIndex);
             }
-            this.dispatch("MOVE_COLUMNS_ROWS", {
+            const result = this.dispatch("MOVE_COLUMNS_ROWS", {
                 sheetId: this.getters.getActiveSheetId(),
                 dimension: "ROW",
                 base: this.state.base,
                 elements,
             });
+            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+            }
         }
         _selectElement(index, ctrlKey) {
             this.dispatch("SELECT_ROW", { index, createRange: ctrlKey });
@@ -29389,9 +29604,10 @@
         onScroll() {
             const { offsetX, offsetY } = this.getters.getActiveViewport();
             if (offsetX !== this.hScrollbar.scroll || offsetY !== this.vScrollbar.scroll) {
+                const { maxOffsetX, maxOffsetY } = this.getters.getMaximumViewportOffset(this.getters.getActiveSheet());
                 this.dispatch("SET_VIEWPORT_OFFSET", {
-                    offsetX: this.hScrollbar.scroll,
-                    offsetY: this.vScrollbar.scroll,
+                    offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
+                    offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
                 });
             }
         }
@@ -29989,12 +30205,19 @@
         toggleMerge() {
             const zones = this.getters.getSelectedZones();
             const target = [zones[zones.length - 1]];
-            const sheet = this.getters.getActiveSheetId();
+            const sheetId = this.getters.getActiveSheetId();
             if (this.inMerge) {
-                this.dispatch("REMOVE_MERGE", { sheetId: sheet, target });
+                this.dispatch("REMOVE_MERGE", { sheetId, target });
             }
             else {
-                this.dispatch("ADD_MERGE", { sheetId: sheet, target, interactive: true });
+                const result = this.dispatch("ADD_MERGE", { sheetId, target });
+                if (!result.isSuccessful) {
+                    if (result.isCancelledBecause(3 /* MergeIsDestructive */)) {
+                        this.env.askConfirmation(_lt("Merging these cells will only preserve the top-leftmost value. Merge anyway?"), () => {
+                            this.dispatch("ADD_MERGE", { sheetId, target, force: true });
+                        });
+                    }
+                }
             }
         }
         setColor(target, ev) {
@@ -30138,7 +30361,7 @@
               </div>
             </div>
           </div>
-          <div class="o-tool" title="Merge Cells"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
+          <div class="o-tool o-merge-tool" title="Merge Cells"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
           <div class="o-divider"/>
           <div class="o-tool o-dropdown" title="Horizontal align" t-on-click="toggleDropdownTool('alignTool')">
             <span>
@@ -30417,10 +30640,6 @@
         constructor(parent, props = {}) {
             super(parent, props);
             this.model = new Model(this.props.data, {
-                notifyUser: (content) => this.trigger("notify-user", { content }),
-                askConfirmation: (content, confirm, cancel) => this.trigger("ask-confirmation", { content, confirm, cancel }),
-                editText: (title, placeholder, callback) => this.trigger("edit-text", { title, placeholder, callback }),
-                openSidePanel: (panel, panelProps = {}) => this.openSidePanel(panel, panelProps),
                 evalContext: { env: this.env },
                 transportService: this.props.transportService,
                 client: this.props.client,
@@ -30480,9 +30699,17 @@
         }
         initiateModelEvents() {
             this.model.on("update", this, this.render);
+            this.model.on("notify-ui", this, this.onNotifyUI);
             this.model.on("unexpected-revision-id", this, () => this.trigger("unexpected-revision-id"));
             if (this.props.client) {
                 this.model.joinSession(this.props.client);
+            }
+        }
+        onNotifyUI(payload) {
+            switch (payload.type) {
+                case "NOTIFICATION":
+                    this.env.notifyUser(payload.text);
+                    break;
             }
         }
         checkReadonly(nextProps) {
@@ -30555,7 +30782,7 @@
                 const target = this.model.getters.getSelectedZones();
                 if (this.clipBoardString === content) {
                     // the paste actually comes from o-spreadsheet itself
-                    this.model.dispatch("PASTE", { target, interactive: true });
+                    interactivePaste(this.env, target);
                 }
                 else {
                     this.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
@@ -30709,6 +30936,7 @@
     exports.__info__ = __info__;
     exports.astToFormula = astToFormula;
     exports.cellTypes = cellTypes;
+    exports.convertAstNodes = convertAstNodes;
     exports.coreTypes = coreTypes;
     exports.functionCache = functionCache;
     exports.helpers = helpers;
@@ -30722,8 +30950,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-12-01T10:52:04.411Z';
-    exports.__info__.hash = '3017e3b';
+    exports.__info__.date = '2022-01-20T17:24:45.505Z';
+    exports.__info__.hash = '434b21e';
 
-}(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
+})(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

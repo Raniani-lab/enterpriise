@@ -249,23 +249,25 @@ class AccountGenericTaxReport(models.AbstractModel):
             self._cr.execute(f'''
                 SELECT
                     {select_clause_str},
+                    trl.refund_tax_id AS is_refund,
                     SUM(tdr.base_amount) AS base_amount,
                     SUM(tdr.tax_amount) AS tax_amount
                 FROM ({tax_details_query}) AS tdr
+                JOIN account_tax_repartition_line trl ON trl.id = tdr.tax_repartition_line_id
                 JOIN account_tax tax ON tax.id = tdr.tax_id
                 JOIN account_tax src_tax ON
                     src_tax.id = COALESCE(tdr.group_tax_id, tdr.tax_id)
                     AND src_tax.type_tax_use IN ('sale', 'purchase')
                 JOIN account_account account ON account.id = tdr.base_account_id
                 WHERE tdr.tax_exigible
-                GROUP BY tax.sequence, tax.id, tdr.tax_repartition_line_id, {groupby_query_str}
+                GROUP BY tax.sequence, tax.id, tdr.tax_repartition_line_id, trl.refund_tax_id, {groupby_query_str}
                 ORDER BY src_tax.sequence, src_tax.id, tax.sequence, tax.id
             ''', tax_details_params)
 
             for row in self._cr.dictfetchall():
                 node = res
 
-                cumulated_row_key = []
+                cumulated_row_key = [row['is_refund']]
                 for alias, field in groupby_fields:
                     grouping_key = '%s_%s' % (alias, field)
                     row_key = row[grouping_key]

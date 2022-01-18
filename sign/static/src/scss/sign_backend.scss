@@ -327,3 +327,13 @@
         }
     }
 }
+
+@include media-breakpoint-down(sm) {
+    .o_sign_signer_status_wrapper {
+        padding-right: 16px;
+    }
+}
+
+.o_sign_signer_status_wrapper {
+    height: 2.7rem;
+}

@@ -87,10 +87,9 @@ const EditableDocumentBackend = DocumentBackend.extend({
     await this._super.apply(this, arguments);
 
     if (this.is_author && this.is_sent) {
-      this.$(".o_sign_signer_status")
-        .not(".o_sign_signer_signed")
+      this.cp_content.$pager.find(".o_sign_signer_status.o_sign_signer_waiting")
         .each((i, el) => {
-          $(el).append(
+          $(el).prepend(
             $("<button/>", {
               type: "button",
               title:

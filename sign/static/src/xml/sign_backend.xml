@@ -130,9 +130,7 @@
         </div>
     </t>
     <t t-name="sign.edit_mode_info">
-        <div>
-            <i>Ctrl + Left click to add a field</i>
-        </div>
+        <i>Ctrl + Left click to add a field</i>
     </t>
     <t t-name="sign.rotate_pdf_button">
         <button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' t-att-title='title'/>

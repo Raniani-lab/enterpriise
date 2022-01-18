@@ -74,54 +74,26 @@ export const DocumentBackend = AbstractAction.extend({
       params: { message: this.message },
     });
     const $html = $(html.trim());
-    const newButtons = $html
-      .find(".o_sign_sign_document_button, .o_sign_refuse_document_button")
-      .detach();
 
     this.$(".o_content").append($html);
     this.$(".o_content").addClass("o_sign_document");
 
-    const $cols = this.$(".col-lg-4");
-    const $buttonsContainer = $cols.first().remove();
-    $cols.eq(1).toggleClass("col-lg-3 col-lg-4");
-    $cols
-      .eq(1)
-      .find(".o_sign_request_from")
-      .removeClass("d-flex justify-content-center flex-wrap");
-    $cols.eq(2).toggleClass("col-lg-9 col-lg-4");
+    const newButtons =this.$(".o_sign_cp_buttons :is(button, a)").detach();
+    this.$signer_info = this.$(".o_sign_signer_status_wrapper").detach();
 
-    const url = $buttonsContainer
-      .find(".o_sign_download_document_button")
-      .attr("href");
-    const logUrl = $buttonsContainer
-      .find(".o_sign_download_log_button")
-      .attr("href");
     this.$buttons =
       this.cp_content &&
       this.cp_content.$buttons &&
       this.cp_content.$buttons.length
         ? this.cp_content.$buttons
         : $("");
-    if (url) {
-      this.$downloadButton = $("<a/>", {
-        html: _t("Download Document"),
-      }).addClass("btn btn-primary mr-2");
-      this.$downloadButton.attr("href", url);
-      this.$buttons = this.$buttons.add(this.$downloadButton);
-    }
-    if (logUrl) {
-      this.$downloadLogButton = $("<a/>", {
-        html: _t("Certificate"),
-      }).addClass(url ? "btn btn-secondary" : "btn btn-primary");
-      this.$downloadLogButton.attr("href", logUrl);
-      this.$buttons = this.$buttons.add(this.$downloadLogButton);
-    }
 
     this.$buttons = $.merge(this.$buttons, newButtons);
 
-    if (this.$buttons.length) {
-      this.cp_content = { $buttons: this.$buttons };
-    }
+    this.cp_content = {
+      $buttons: this.$buttons,
+      $pager: this.$signer_info,
+    };
   },
 
   on_attach_callback: function () {

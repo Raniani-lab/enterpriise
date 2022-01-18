@@ -1560,15 +1560,6 @@ const SignableDocument = Document.extend({
     "click .o_sign_refuse_document_button": "refuseDocument",
   },
 
-  custom_events: {
-    // do_notify is not supported in backend so it is simulated with a bootstrap alert inserted in a frontend-only DOM element
-    notification: function (e) {
-      $("<div/>", { html: e.data.message })
-        .addClass("alert alert-success")
-        .insertAfter(this.$(".o_sign_request_reference_title"));
-    },
-  },
-
   init: function (parent, options) {
     this._super(parent, options);
     if (parent) {
@@ -1592,6 +1583,13 @@ const SignableDocument = Document.extend({
     return NextDirectSignDialog;
   },
   signItemDocument: function (e) {
+    if (!(
+      this.iframeWidget &&
+      this.iframeWidget.configuration &&
+      Object.keys(this.iframeWidget.configuration[1]).length > 0
+    )) {
+      return this.signDocument();
+    }
     const $btn = this.$(".o_sign_validate_banner button");
     const init_btn_text = $btn.text();
     $btn.prepend('<i class="fa fa-spin fa-circle-o-notch" />');

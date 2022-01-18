@@ -1,78 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="sign._doc_sign" name="Document Sign">
-        <div t-if="current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent' and hasItems" class="o_sign_validate_banner">
+        <div t-if="current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent'" class="o_sign_validate_banner">
             <button type="button" class="btn btn-primary o_validate_button">Validate &amp; Send Completed Document</button>
         </div>
-        <div class="container-fluid">
-            <button t-if="current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent' and not hasItems" type="button" class="o_sign_sign_document_button btn btn-primary">Sign Document</button>
-            <button t-if="current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent' and sign_request.refusal_allowed" type="button" class="o_sign_refuse_document_button btn btn-secondary">Refuse Document</button>
-            <div class="row o_sign_page_info mobile-hide">
-                <div class="col-lg-4">
-                    <div class="o_sign_request_from">
-                         <span t-if="portal" class="o_sign_breadcrumb"><a t-attf-href="/my/signature/{{current_request_item.id}}?{{ keep_query() }}"
-                            class="o_sign_portal_link">Portal</a> / </span>
-                         <span class="o_sign_request_reference_title o_sign_breadcrumb"><t t-esc="sign_request.reference"/></span>
-                    </div>
-                    <div class="o_sign_document_buttons">
-                        <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="btn btn-primary o_sign_download_document_button">Download Document</a>
-                        <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="btn btn-secondary o_sign_download_log_button">Certificate</a>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mobile-hide">
-                    <div class="o_sign_request_from d-flex justify-content-center flex-wrap">
-                        <img class="float-left mr-2 my-1" t-attf-src="#{image_data_uri(sign_request.create_uid.avatar_128)}" alt="Signature" style="max-width: 32px;"/>
-                        <div>
-                            <t t-if="sign_request.create_uid.name">Requested by <b><t t-esc="sign_request.create_uid.name"/></b><br/></t>
-                            <t t-if="sign_request.create_uid.email"><a t-attf-href="mailto:{{sign_request.create_uid.email}}"><t t-esc="sign_request.create_uid.email"/></a><br/></t>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="o_sign_signer_status_wrapper col-lg-4 d-flex justify-content-end flex-wrap mobile-hide">
-                    <div t-if="current_request_item and current_request_item.state == 'sent'" class="o_sign_signer_status clearfix pl-4 d-flex" t-att-data-id="current_request_item.id">
-                        <div class="o_sign_signer_status_info d-flex flex-column">
-                            <div class="text-left"><b><t t-esc="current_request_item.partner_id.name if current_request_item.partner_id else 'Public user'"/></b></div>
-                            <div class="text-left"><small><i> Is Signing </i></small></div>
-                        </div>
-                    </div>
-                    <t t-foreach="state_to_sign_request_items_map.get('sent')" t-as="sign">
-                        <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_waiting clearfix pl-4 d-flex" t-att-data-id="sign.id">
-                            <div class="o_sign_signer_status_info d-flex flex-column">
-                                <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                                <div class="text-left"><small><i> Waiting Signature </i></small></div>
-                            </div>
-                        </div>
-                    </t>
-                    <t t-foreach="state_to_sign_request_items_map.get('canceled')" t-as="sign">
-                        <div class="o_sign_signer_status o_sign_signer_waiting clearfix pl-4 d-flex" t-att-data-id="sign.id">
-                            <div class="o_sign_signer_status_info d-flex flex-column">
-                                <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                                <div class="text-left"><small><i> Canceled </i></small></div>
-                            </div>
-                        </div>
-                    </t>
-                    <t t-foreach="state_to_sign_request_items_map.get('refused')" t-as="sign">
-                        <div class="o_sign_signer_status o_sign_signer_refused clearfix pl-4 d-flex">
-                            <div class="o_sign_signer_status_info d-flex flex-column">
-                                <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                                <div class="text-left"><small><i> Refused on <t t-esc="sign.signing_date"/></i></small></div>
-                            </div>
-                        </div>
-                    </t>
-                    <t t-foreach="state_to_sign_request_items_map.get('completed')" t-as="sign">
-                        <div class="o_sign_signer_status o_sign_signer_signed clearfix pl-4 d-flex">
-                            <div class="o_sign_signer_status_info d-flex flex-column">
-                                <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                                <div class="text-left"><small><i> Signed on <t t-esc="sign.signing_date"/></i></small></div>
-                            </div>
-                            <img t-if="sign.signature" t-attf-src="/web/image/sign.request.item/{{sign.id}}/signature" alt="Signature"/>
-                        </div>
-                    </t>
-                </div>
+        <div class="o_sign_cp d-none" t-if="not no_sign_cp">
+            <div class="o_sign_cp_buttons">
+                <button t-if="current_request_item and current_request_item.state == 'sent' and sign_request.state == 'sent' and sign_request.refusal_allowed" type="button" class="o_sign_refuse_document_button btn btn-secondary">Refuse Document</button>
+                <a t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="btn btn-primary o_sign_download_document_button">Document <i class="fa fa-download"/></a>
+                <a t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="btn btn-secondary o_sign_download_log_button">Certificate <i class="fa fa-download"/></a>
             </div>
-
+            <div class="o_sign_cp_pager">
+                <t t-call="sign.signer_status_wrapper"/>
+            </div>
+        </div>
+        <div class="container-fluid">
             <div t-if="not hasItems and not isPDF" class="row">
                 <div class="col-lg-12">
                     <a class="o_sign_image_document" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/origin" target="_blank">
@@ -137,34 +79,87 @@
             <t t-set="body_classname" t-value="'o_sign_document_body'"/>
             <div class="o_sign_document">
                 <header>
-                    <div class="container-fluid">
-                    <div class="d-flex justify-content-between flex-fill">
-                        <div class="col-lg-4 justify-content-start">
-                            <div class="o_logo">
+                    <div class="o_sign_info justify-content-between d-flex">
+                        <div class="o_logo_wrapper justify-content-start d-flex">
+                            <div class="o_logo d-flex">
                                 <a href="/"><img src="/logo.png" alt="Logo"/></a>
                             </div>
+                            <div class="o_odoo">
+                                <a href="https://www.odoo.com/app/sign?utm_source=db&amp;utm_medium=sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
+                            </div>
                         </div>
-                        <div class="col-lg-4 justify-content-center mobile-hide">
-                        <div t-if="sign_request" class="o_sign_header_instruction">
-                            <t t-if="not current_request_item">Need to sign? Check your inbox to get your secure access</t>
-                            <t t-if="current_request_item.sign_request_id.state in ['sent', 'signed']">
-                                <t t-if="current_request_item and current_request_item.state == 'sent'">Please Review And Act On This Document</t>
-                                <t t-if="current_request_item and current_request_item.state == 'completed'">You have completed the document</t>
-                            </t>
-                            <t t-if="current_request_item.sign_request_id.state == 'refused'">The document has been rejected</t>
+                        <div class="justify-content-end d-flex">
+                            <t t-call="sign.signer_status_wrapper"/>
+                            <t t-set="has_actions" t-value="(current_request_item and current_request_item.state == 'sent' and sign_request.refusal_allowed) or sign_request.state == 'signed'"/>
+                            <div class="dropdown" t-if="portal or has_actions">
+                                <a role="button" class="fa fa-bars btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu"/>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a t-if="sign_request.state == 'sent' and sign_request.refusal_allowed" role="menuitem" href="#" class="dropdown-item o_sign_refuse_document_button">Refuse Document</a>
+                                    <a t-if="sign_request.state == 'signed'" role="menuitem" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="dropdown-item">Document <i class="fa fa-download"/></a>
+                                    <a t-if="sign_request.state == 'signed'" role="menuitem" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="dropdown-item">Certificate <i class="fa fa-download"/></a>
+                                    <div t-if="portal and has_actions" class="dropdown-divider"></div>
+                                    <a t-if="portal" role="menuitem" t-attf-href="/my/" class="dropdown-item">Home</a>
+                                    <a t-if="portal" role="menuitem" t-attf-href="/my/signature/{{current_request_item.id}}?{{ keep_query() }}" class="dropdown-item">Details</a>
+                                </div>
+                            </div>
+                            <div class="o_sign_dropdown_placeholder" t-if="not (portal or has_actions)"/>
                         </div>
-                        </div>
-                        <div class="col-lg-4 justify-content-end">
-                        <div class="o_odoo">
-                            <a href="https://www.odoo.com/app/sign?utm_source=db&amp;utm_medium=sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
-                        </div>
-                        </div>
-                    </div>
                     </div>
                 </header>
+                <t t-set="no_sign_cp" t-value="True"/>
                 <t t-call="sign._doc_sign"/>
             </div>
         </t>
+    </template>
+
+    <template id="sign.signer_status_wrapper" name="">
+        <div class="o_sign_signer_status_wrapper justify-content-end d-flex">
+            <div t-if="current_request_item" t-attf-class="o_sign_signer_status pl-4 {{{'refused': 'o_sign_signer_refused', 'completed': 'o_sign_signer_completed'}.get(current_request_item.state, '')}}" t-att-data-id="current_request_item.id">
+                <img t-if="current_request_item.state == 'completed' and current_request_item.signature" class="mobile-hide" t-attf-src="data:image/png;base64,{{current_request_item.signature}}" alt="Signature"/>
+                <div class="o_sign_signer_status_info flex-column">
+                    <div class="text-left"><b><t t-esc="current_request_item.partner_id.name if current_request_item.partner_id else 'Public user'"/></b></div>
+                    <div t-if="current_request_item.state == 'sent'" class="text-left"><small><i> Is Signing </i></small></div>
+                    <div t-if="current_request_item.state == 'canceled'" class="text-left"><small><i> Canceled </i></small></div>
+                    <div t-if="current_request_item.state == 'refused'" class="text-left"><small><i> Refused on <t t-esc="current_request_item.signing_date"/></i></small></div>
+                    <div t-if="current_request_item.state == 'completed'" class="text-left"><small><i> Signed on <t t-esc="current_request_item.signing_date"/></i></small></div>
+                </div>
+            </div>
+            <div class="o_sign_non_current_signers justify-content-end">  <!-- this div makes sure all non-current signers will be shown/hidden together when the space is/isn't enough -->
+                <t t-foreach="state_to_sign_request_items_map.get('sent')" t-as="sign">
+                    <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_waiting pl-4" t-att-data-id="sign.id">
+                        <div class="o_sign_signer_status_info flex-column">
+                            <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
+                            <div class="text-left"><small><i> Waiting Signature </i></small></div>
+                        </div>
+                    </div>
+                </t>
+                <t t-foreach="state_to_sign_request_items_map.get('canceled')" t-as="sign">
+                    <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_waiting" t-att-data-id="sign.id">
+                        <div class="o_sign_signer_status_info flex-column pl-4">
+                            <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
+                            <div class="text-left"><small><i> Canceled </i></small></div>
+                        </div>
+                    </div>
+                </t>
+                <t t-foreach="state_to_sign_request_items_map.get('refused')" t-as="sign">
+                    <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_refused">
+                        <div class="o_sign_signer_status_info flex-column pl-4">
+                            <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
+                            <div class="text-left"><small><i> Refused on <t t-esc="sign.signing_date"/></i></small></div>
+                        </div>
+                    </div>
+                </t>
+                <t t-foreach="state_to_sign_request_items_map.get('completed')" t-as="sign">
+                    <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_completed d-flex">
+                        <img t-if="sign.signature" class="mobile-hide" t-attf-src="data:image/png;base64,{{sign.signature}}" alt="Signature"/>
+                        <div class="o_sign_signer_status_info flex-column pl-4">
+                            <div class="text-left"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
+                            <div class="text-left"><small><i> Signed on <t t-esc="sign.signing_date"/></i></small></div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
     </template>
 
     <template id="sign.encrypted_ask_password" name="PDF Encrypted Password Request">

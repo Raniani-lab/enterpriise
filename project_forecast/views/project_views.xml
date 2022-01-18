@@ -82,7 +82,7 @@
             <xpath expr="//button[@name='%(project.project_task_action_sub_task)d']" position="before">
                 <field name="allow_forecast" invisible="1"/>
                 <button class="oe_stat_button" name="action_get_project_forecast_by_user"
-                    type="object" icon="fa-tasks" context="{'default_task_id': id, 'default_project_id': project_id}" help="Forecasts" attrs="{'invisible': [('allow_forecast', '=', False)]}">
+                    type="object" icon="fa-tasks" context="{'default_task_id': id, 'default_project_id': project_id}" attrs="{'invisible': [('allow_forecast', '=', False)]}">
                     <div class="o_stat_info">
                         <div class="oe_inline">
                             <span class="o_stat_value mr-1">

@@ -160,54 +160,12 @@
         <field name="view_mode">kanban,tree,form,calendar,gantt,map,pivot,graph,activity</field>
     </record>
 
-    <!-- Set map view and rearrange order -->
-    <record id="project_task_kanban_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
-        <field name="view_mode">kanban</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
-    </record>
-
-    <record id="project_task_tree_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="20"/>
-        <field name="view_mode">tree</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
-    </record>
-
-    <record id="project_task_form_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="30"/>
-        <field name="view_mode">form</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
-    </record>
-
-    <record id="project_all_task_calendar_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="40"/>
-        <field name="view_mode">calendar</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
-    </record>
-
-    <record id="project_all_task_pivot_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="70"/>
-        <field name="view_mode">pivot</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
-    </record>
-
-    <record id="project_all_task_graph_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="80"/>
-        <field name="view_mode">graph</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
-    </record>
-
+    <!-- Set map view and gantt view -->
     <record id="project_all_task_gantt_action_view" model="ir.actions.act_window.view">
         <field name="sequence" eval="50"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
         <field name="view_id" ref="project_enterprise.project_task_dependency_view_gantt"/>
-    </record>
-
-    <record id="project_all_task_activity_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="90"/>
-        <field name="view_mode">activity</field>
-        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
     </record>
 
     <record id="project_all_task_map_action_view" model="ir.actions.act_window.view">

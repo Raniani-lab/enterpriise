@@ -11,12 +11,10 @@ class ReportProjectTaskUser(models.Model):
     _inherit = 'report.project.task.user.fsm'
 
     invoice_status = fields.Selection(INVOICE_STATUS, string='Invoice Status', readonly=True)
-    sale_line_id = fields.Many2one('sale.order.line', 'Sales Order Item', readonly=True)
     remaining_hours_so = fields.Float('Remaining Hours on SO', readonly=True)
 
     def _select(self):
         select_to_append = """,
-            t.sale_line_id as sale_line_id,
             sol.remaining_hours as remaining_hours_so,
             so.invoice_status as invoice_status
         """
@@ -24,7 +22,6 @@ class ReportProjectTaskUser(models.Model):
 
     def _group_by(self):
         group_by_to_append = """,
-            t.sale_line_id,
             sol.remaining_hours,
             so.invoice_status
         """

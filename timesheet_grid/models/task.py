@@ -76,6 +76,15 @@ class Task(models.Model):
             )
         return super()._gantt_progress_bar(field, res_ids, start, stop)
 
+    def action_view_subtask_timesheet(self):
+        action = super().action_view_subtask_timesheet()
+        grid_view_id = self.env.ref('timesheet_grid.timesheet_view_grid_by_employee').id
+        action['views'] = [
+            [grid_view_id, view_mode] if view_mode == 'grid' else [view_id, view_mode]
+            for view_id, view_mode in action['views']
+        ]
+        return action
+
     def action_timer_start(self):
         if not self.user_timer_id.timer_start and self.display_timesheet_timer:
             super(Task, self).action_timer_start()

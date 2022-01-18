@@ -8,7 +8,7 @@
             <form string="Save time">
                 <group>
                     <field name="ticket_id" invisible="True"/>
-                    <field name="time_spent" string="Duration" class="oe_inline" widget="float_time" required="True"/>
+                    <field name="time_spent" string="Hours Spent" class="oe_inline" widget="float_time" required="True"/>
                 </group>
                 <field name="description" widget="text" required="False" placeholder="Describe your activity..."/>
                 <footer>

@@ -26,12 +26,9 @@ class Project(models.Model):
     # Actions
     # -------------------------------------------
 
-    def action_open_project_subscriptions(self):
-        self.ensure_one()
-        subscriptions = self.env['sale.subscription'].search([
-            ('analytic_account_id', '!=', False),
-            ('analytic_account_id', 'in', self.analytic_account_id.ids)
-        ])
+    def _get_subscription_action(self, domain=None, subscription_ids=None):
+        if not domain and not subscription_ids:
+            return {}
         action = self.env["ir.actions.actions"]._for_xml_id("sale_subscription.sale_subscription_action")
         action_context = {'default_analytic_account_id': self.analytic_account_id.id}
         if self.commercial_partner_id:
@@ -39,12 +36,19 @@ class Project(models.Model):
         action.update({
             'views': [[False, 'tree'], [False, 'form'], [False, 'pivot'], [False, 'graph'], [False, 'cohort']],
             'context': action_context,
-            'domain': [('id', 'in', subscriptions.ids)]
+            'domain': domain or [('id', 'in', subscription_ids)]
         })
-        if(len(subscriptions) == 1):
+        if subscription_ids and len(subscription_ids) == 1:
             action["views"] = [[False, 'form']]
-            action["res_id"] = subscriptions.id
+            action["res_id"] = subscription_ids[0]
         return action
+
+    def action_open_project_subscriptions(self):
+        self.ensure_one()
+        if not self.analytic_account_id:
+            return {}
+        subscription_ids = self.env['sale.subscription']._search([('analytic_account_id', 'in', self.analytic_account_id.ids)])
+        return self._get_subscription_action(subscription_ids=subscription_ids)
 
     # -------------------------------------------
     # Project Update

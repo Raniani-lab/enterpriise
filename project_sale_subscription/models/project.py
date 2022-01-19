@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _lt
+from odoo.osv import expression
+
 
 class Project(models.Model):
     _inherit = 'project.project'
@@ -41,3 +43,71 @@ class Project(models.Model):
             action["views"] = [[False, 'form']]
             action["res_id"] = subscriptions.id
         return action
+
+    # -------------------------------------------
+    # Project Update
+    # -------------------------------------------
+
+    def _get_profitability_labels(self):
+        labels = super()._get_profitability_labels()
+        labels['subscriptions'] = _lt('Subscriptions')
+        return labels
+
+    def _get_profitability_aal_domain(self):
+        return expression.AND([
+            super()._get_profitability_aal_domain(),
+            ['|', ('move_id', '=', False), ('move_id.subscription_id', '=', False)],
+        ])
+
+    def _get_profitability_items(self):
+        profitability_items = super()._get_profitability_items()
+        if not self.analytic_account_id:
+            return profitability_items
+        subscription_read_group = self.env['sale.subscription'].sudo()._read_group(
+            [('analytic_account_id', 'in', self.analytic_account_id.ids),
+             ('stage_category', '!=', 'draft'),
+             ('recurring_total', '>', 0.0),
+            ],
+            ['stage_category', 'template_id', 'recurring_total', 'ids:array_agg(id)'],
+            ['template_id', 'stage_category'],
+            lazy=False,
+        )
+        if not subscription_read_group:
+            return profitability_items
+        all_subscription_ids = []
+        subscription_data_per_template_id = {}
+        for res in subscription_read_group:
+            subscription_data_per_template_id.setdefault(res['template_id'][0], {})[res['stage_category']] = res['recurring_total']
+            all_subscription_ids.extend(res['ids'])
+
+        subscription_template_dict = {
+            res['id']: res['recurring_rule_count']
+            for res in self.env['sale.subscription.template'].sudo().search_read(
+                [('id', 'in', list(subscription_data_per_template_id.keys())), ('recurring_rule_boundary', '=', 'limited')],
+                ['id', 'recurring_rule_count'],
+            )
+        }
+        amount_to_invoice = 0.0
+        for subcription_template_id, subscription_data_per_stage_category in subscription_data_per_template_id.items():
+            nb_period = subscription_template_dict.get(subcription_template_id, 1)
+            for category, recurring_total in subscription_data_per_stage_category.items():
+                amount_to_invoice += recurring_total * (nb_period if category != 'closed' else 1)  # if the category is closen the subscriptions are supposed to be end.
+
+        aal_read_group = self.env['account.analytic.line'].sudo()._read_group(
+            [('move_id.subscription_id', 'in', all_subscription_ids), ('account_id', 'in', self.analytic_account_id.ids)],
+            ['amount'],
+            [],
+        )
+        amount_invoiced = aal_read_group[0]['amount'] if aal_read_group and aal_read_group[0]['__count'] else 0.0
+        amount_to_invoice -= amount_invoiced  # because the amount_to_invoice included the amount_invoiced.
+        revenues = profitability_items['revenues']
+        section_id = 'subscriptions'
+        revenues['data'].append({
+            'id': section_id,
+            'invoiced': amount_invoiced,
+            'to_invoice': amount_to_invoice,
+            'record_ids': all_subscription_ids if self.user_has_groups('sale_subscription.group_sale_subscription_view') else [],
+        })
+        revenues['total']['invoiced'] += amount_invoiced
+        revenues['total']['to_invoice'] += amount_to_invoice
+        return profitability_items

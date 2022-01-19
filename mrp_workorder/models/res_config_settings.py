@@ -11,10 +11,8 @@ class ResConfigSettings(models.TransientModel):
 
     def set_values(self):
         super().set_values()
-
         if not self.user_has_groups('mrp.group_mrp_manager'):
             return
-
-        self.env.ref('mrp_workorder.test_type_register_byproducts').sudo().write({
-            'active': self.group_mrp_byproducts
-        })
+        register_byproducts = self.env.ref('mrp_workorder.test_type_register_byproducts').sudo()
+        if register_byproducts.active != self.group_mrp_byproducts:
+            register_byproducts.active = self.group_mrp_byproducts

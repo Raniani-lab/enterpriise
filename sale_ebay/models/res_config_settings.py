@@ -82,7 +82,8 @@ class ResConfigSettings(models.TransientModel):
         super(ResConfigSettings, self).set_values()
         set_param = self.env['ir.config_parameter'].sudo().set_param
         # by default all currencies active field is set to False except EUR and USD
-        self.ebay_currency.active = True
+        if not self.ebay_currency.active:
+            self.ebay_currency.active = True
 
         out_of_stock = self.ebay_out_of_stock
         if out_of_stock != str2bool(self.env['ir.config_parameter'].get_param('ebay_out_of_stock')):

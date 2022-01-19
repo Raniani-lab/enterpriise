@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import models
 
 
 class ResConfigSettings(models.TransientModel):
@@ -9,5 +9,6 @@ class ResConfigSettings(models.TransientModel):
 
     def set_values(self):
         fsm_projects = self.env['project.project'].sudo().search([('is_fsm', '=', True)])
-        fsm_projects.sudo().write({'allow_quotations': self.group_industry_fsm_quotations})
-        return super(ResConfigSettings, self).set_values()
+        if fsm_projects:
+            fsm_projects.write({'allow_quotations': self.group_industry_fsm_quotations})
+        return super().set_values()

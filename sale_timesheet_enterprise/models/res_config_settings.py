@@ -52,4 +52,4 @@ class ResConfigSettings(models.TransientModel):
                     sale_order_lines._compute_qty_delivered()
                     sale_order_lines._compute_qty_to_invoice()
                     sale_order_lines._compute_invoice_status()
-        return super(ResConfigSettings, self).set_values()
+        return super().set_values()

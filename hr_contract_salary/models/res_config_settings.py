@@ -19,5 +19,8 @@ class ResConfigSettings(models.TransientModel):
         return res
 
     def set_values(self):
-        super(ResConfigSettings, self).set_values()
-        self.env['ir.config_parameter'].sudo().set_param("hr_contract_salary.access_token_validity", self.access_token_validity)
+        super().set_values()
+        IrConfigParameter = self.env['ir.config_parameter'].sudo()
+        # get_param is cached, and thus could avoid unnecessary requests if the parameter doesn't change
+        if int(IrConfigParameter.get_param("hr_contract_salary.access_token_validity")) != self.access_token_validity:
+            IrConfigParameter.set_param("hr_contract_salary.access_token_validity", self.access_token_validity)

@@ -7,6 +7,8 @@ import { useEffect } from "@web/core/utils/hooks";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { decodeObjectForTemplate } from "./dashboard_compiler/compile_helpers";
 
+const { Component, xml } = owl;
+
 /**
  * A Component that supports rendering `<widget />` tags in a view arch
  * It should have minimum legacy support that is:
@@ -15,7 +17,7 @@ import { decodeObjectForTemplate } from "./dashboard_compiler/compile_helpers";
  * - passing to it a "legacy node", which is a representation of the arch's node
  * It supports instancing components from the "view_widgets" new registry
  */
-export class ViewWidget extends owl.Component {
+export class ViewWidget extends Component {
     setup() {
         this.wowlEnv = this.env;
         this.renderId = 1;
@@ -26,10 +28,10 @@ export class ViewWidget extends owl.Component {
         const Widget = registry.category("view_widgets").get(widgetName, null);
         if (!Widget) {
             this.isLegacyOwl = true;
-            this.env = owl.Component.env;
+            this.env = Component.env;
         }
         this.Widget = Widget || widgetRegistryOwl.get(widgetName) || widgetRegistry.get(widgetName);
-        this.isLegacy = !(this.Widget instanceof owl.Component);
+        this.isLegacy = !(this.Widget instanceof Component);
     }
 
     get widgetProps() {
@@ -52,7 +54,7 @@ export class ViewWidget extends owl.Component {
         return [record, node];
     }
 }
-ViewWidget.template = owl.tags.xml/*xml*/ `<t>
+ViewWidget.template = xml/*xml*/ `<t>
     <ComponentAdapter t-if="isLegacy" Component="Widget" widgetArgs="widgetArgs" t-key="renderId" class="o_widget" />
     <t t-else="" t-component="Widget" t-props="widgetProps" class="o_widget" />
 </t>

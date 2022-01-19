@@ -8,6 +8,8 @@ var dom = require('web.dom');
 var FormRenderer = require('web.FormRenderer');
 var SystrayMenu = require('web.SystrayMenu');
 
+const { Component } = owl;
+
 var QWeb = core.qweb;
 var _t = core._t;
 
@@ -45,7 +47,7 @@ var FollowupFormRenderer = FormRenderer.extend({
      * Remove the mail alert above the report.
      */
     removeMailAlert: function () {
-        owl.Component.env.services.messaging.get().then(messaging => {
+        Component.env.services.messaging.get().then(messaging => {
             const thread = messaging.models['Thread'].findFromIdentifyingData({
                 id: this.state.res_id,
                 model: this.state.model,

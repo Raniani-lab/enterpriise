@@ -2,6 +2,7 @@
 import { registry } from "@web/core/registry";
 import DeviceProxy from "iot.DeviceProxy";
 import { ComponentAdapter } from "web.OwlCompatibility";
+
 const { Component } = owl;
 
 

@@ -8,9 +8,9 @@ import { useModel } from "web.Model";
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { sprintf } from "@web/core/utils/strings"
 
-
-
 const { Component } = owl;
+
+
 
 export class InsertViewSpreadsheet extends Component {
     constructor() {

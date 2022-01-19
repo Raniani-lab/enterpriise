@@ -2,7 +2,7 @@
 import { registry } from "@web/core/registry";
 import legacyBus from "web_studio.bus";
 
-const { core } = owl;
+const { EventBus } = owl;
 
 const URL_VIEW_KEY = "_view_type";
 const URL_ACTION_KEY = "_action";
@@ -70,7 +70,7 @@ export const studioService = {
             return view && SUPPORTED_VIEW_TYPES.includes(view);
         }
 
-        const bus = new core.EventBus();
+        const bus = new EventBus();
         let inStudio = false;
 
         const state = {

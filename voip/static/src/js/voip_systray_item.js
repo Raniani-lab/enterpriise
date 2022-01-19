@@ -2,6 +2,7 @@
 
 const { Component } = owl;
 
+
 /**
  * Systray item allowing to toggle the voip DialingPanel.
  */

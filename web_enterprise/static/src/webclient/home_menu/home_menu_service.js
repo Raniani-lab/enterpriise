@@ -7,7 +7,7 @@ import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
 import { ControllerNotFoundError } from "@web/webclient/actions/action_service";
 import { HomeMenu } from "./home_menu";
 
-const { Component, tags } = owl;
+const { Component, xml } = owl;
 
 export const homeMenuService = {
     dependencies: ["action", "router"],
@@ -43,7 +43,7 @@ export const homeMenuService = {
         }
         HomeMenuAction.components = { HomeMenu };
         HomeMenuAction.target = "current";
-        HomeMenuAction.template = tags.xml`<HomeMenu t-props="homeMenuProps"/>`;
+        HomeMenuAction.template = xml`<HomeMenu t-props="homeMenuProps"/>`;
 
         registry.category("actions").add("menu", HomeMenuAction);
 

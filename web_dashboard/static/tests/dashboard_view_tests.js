@@ -44,6 +44,7 @@ import PieChart from "web.PieChart";
 import Widget from "web.Widget";
 import widgetRegistry from "web.widget_registry";
 
+const { Component, xml } = owl;
 const serviceRegistry = registry.category("services");
 
 QUnit.module("Views", (hooks) => {
@@ -3534,38 +3535,41 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
-    QUnit.test("basic rendering of a many2one aggregate with empty result set", async function (assert) {
-        assert.expect(3);
+    QUnit.test(
+        "basic rendering of a many2one aggregate with empty result set",
+        async function (assert) {
+            assert.expect(3);
 
-        const dashboard = await makeView({
-            type: "dashboard",
-            resModel: "test_time_range",
-            serverData,
-            arch: `
+            const dashboard = await makeView({
+                type: "dashboard",
+                resModel: "test_time_range",
+                serverData,
+                arch: `
                 <dashboard>
                     <group>
                         <aggregate name="category_count" field="categ_id" help="some help" />
                     </group>
                 </dashboard>
             `,
-            mockRPC(route, args) {
-                if (args.method === "read_group") {
-                    return [{ category_count: 0, __count: 0 }];
-                }
-            },
-        });
+                mockRPC(route, args) {
+                    if (args.method === "read_group") {
+                        return [{ category_count: 0, __count: 0 }];
+                    }
+                },
+            });
 
-        assert.strictEqual(
-            dashboard.el.querySelector(".o_value").textContent.trim(),
-            "0",
-            "should correctly display the aggregate's value"
-        );
+            assert.strictEqual(
+                dashboard.el.querySelector(".o_value").textContent.trim(),
+                "0",
+                "should correctly display the aggregate's value"
+            );
 
-        const agg = dashboard.el.querySelector(".o_aggregate");
-        const tooltipInfo = JSON.parse(agg.dataset.tooltipInfo);
-        assert.strictEqual(serverData.models.test_time_range.fields.categ_id.type, "many2one");
-        assert.strictEqual(tooltipInfo.formatter, "integer");
-    });
+            const agg = dashboard.el.querySelector(".o_aggregate");
+            const tooltipInfo = JSON.parse(agg.dataset.tooltipInfo);
+            assert.strictEqual(serverData.models.test_time_range.fields.categ_id.type, "many2one");
+            assert.strictEqual(tooltipInfo.formatter, "integer");
+        }
+    );
 
     QUnit.test(
         "click on a non empty cell in an embedded pivot view redirects to a list view",
@@ -4060,7 +4064,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("dashboard statistic support wowl field", async (assert) => {
         assert.expect(5);
 
-        class CustomField extends owl.Component {
+        class CustomField extends Component {
             setup() {
                 assert.ok(this.props.model instanceof DashboardModel);
                 assert.ok("record" in this.props);
@@ -4069,7 +4073,7 @@ QUnit.module("Views", (hooks) => {
                 assert.strictEqual(this.props.record.data[this.props.name], 8);
             }
         }
-        CustomField.template = owl.tags.xml`<div />`;
+        CustomField.template = xml`<div />`;
 
         registry.category("fields").add("custom", CustomField);
 
@@ -4088,7 +4092,7 @@ QUnit.module("Views", (hooks) => {
         assert.expect(31);
 
         const expectedFieldValues = [8, 16, 4];
-        class CustomField extends owl.Component {
+        class CustomField extends Component {
             setup() {
                 assert.ok(this.props.model instanceof DashboardModel);
                 assert.ok("record" in this.props);
@@ -4100,8 +4104,7 @@ QUnit.module("Views", (hooks) => {
                 );
             }
         }
-        CustomField.template = owl.tags
-            .xml`<div>The value is <t t-esc="props.record.data[props.name]"/></div>`;
+        CustomField.template = xml`<div>The value is <t t-esc="props.record.data[props.name]"/></div>`;
 
         registry.category("fields").add("custom", CustomField);
 

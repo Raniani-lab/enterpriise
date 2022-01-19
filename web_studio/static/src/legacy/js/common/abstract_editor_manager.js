@@ -8,6 +8,8 @@ var Widget = require('web.Widget');
 var bus = require('web_studio.bus');
 var XMLEditor = require('web_studio.XMLEditor');
 
+const { Component } = owl;
+
 var _lt = core._lt;
 var _t = core._t;
 
@@ -59,7 +61,7 @@ var AbstractEditorManager = Widget.extend({
                     class: 'o_web_studio_view_renderer',
                 });
                 self.editor = editor;
-                if (self.editor instanceof owl.Component) {
+                if (self.editor instanceof Component) {
                     defs.push(self.editor.mount($editorFragment[0]));
                 } else {
                     defs.push(self.editor.appendTo($editorFragment));

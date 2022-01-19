@@ -22,6 +22,8 @@ const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 const { MockServer } = require("@web/../tests/helpers/mock_server");
 
+const { xml } = owl;
+
 let serverData;
 
 QUnit.module('web_studio', {}, function () {
@@ -5800,7 +5802,7 @@ QUnit.module('ViewEditorManager', {
         assert.expect(1);
 
         class CompField extends AbstractFieldOwl {}
-        CompField.template = owl.tags.xml`<div></div>`;
+        CompField.template = xml`<div></div>`;
         CompField.description = 'Component Field';
         CompField.supportedFieldTypes = ['char'];
 

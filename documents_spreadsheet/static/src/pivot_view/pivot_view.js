@@ -6,9 +6,8 @@ import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 
+const { onWillStart } = owl;
 
-const { hooks } = owl;
-const { onWillStart } = hooks;
 
 patch(PivotView.prototype, "pivot_spreadsheet", {
     setup() {

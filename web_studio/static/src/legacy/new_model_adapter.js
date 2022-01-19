@@ -4,14 +4,16 @@ import NewModel from "web_studio.NewModel";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { useService } from "@web/core/utils/hooks";
 
-export class NewModelItem extends owl.Component {
+const { Component, onWillUpdateProps, xml } = owl;
+
+export class NewModelItem extends Component {
     setup() {
         this.NewModel = NewModel;
         this.menus = useService("menu");
         this.studio = useService("studio");
         this.action = useService("action");
         this.localId = 0;
-        owl.hooks.onWillUpdateProps(() => this.localId++);
+        onWillUpdateProps(() => this.localId++);
     }
 
     async editNewModel(ev) {
@@ -20,7 +22,7 @@ export class NewModelItem extends owl.Component {
         this.studio.setParams({ action, viewType: (options && options.viewType) || "form" });
     }
 }
-NewModelItem.template = owl.tags.xml`
+NewModelItem.template = xml`
   <t>
     <t t-set="currentApp" t-value="menus.getCurrentApp()" />
     <t t-if="currentApp"
@@ -36,6 +38,6 @@ NewModelItem.template = owl.tags.xml`
 NewModelItem.components.ComponentAdapter = class extends ComponentAdapter {
     setup() {
         super.setup();
-        this.env = owl.Component.env;
+        this.env = Component.env;
     }
 };

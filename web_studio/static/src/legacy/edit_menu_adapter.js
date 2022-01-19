@@ -4,12 +4,14 @@ import { useService } from "@web/core/utils/hooks";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { MenuItem } from "web_studio.EditMenu";
 
+const { Component, onPatched, onWillUpdateProps, xml } = owl;
+
 class EditMenuItemAdapter extends ComponentAdapter {
     constructor(parent, props) {
         props.Component = MenuItem;
         super(...arguments);
         this.menus = useService("menu");
-        this.env = owl.Component.env;
+        this.env = Component.env;
     }
 
     get currentMenuId() {
@@ -37,14 +39,14 @@ class EditMenuItemAdapter extends ComponentAdapter {
 // - support navbar re-rendering without having to fiddle too much in
 // the legacy widget's code
 // - allow to support the keepopen, and autoscroll features (yet to come)
-export class EditMenuItem extends owl.Component {
+export class EditMenuItem extends Component {
     constructor() {
         super(...arguments);
         this.localId = 0;
         this.menus = useService("menu");
-        owl.hooks.onWillUpdateProps(() => this.localId++);
+        onWillUpdateProps(() => this.localId++);
         this.editMenuParams = {};
-        owl.hooks.onPatched(() => {
+        onPatched(() => {
             this.editMenuParams = {};
         });
     }
@@ -55,7 +57,7 @@ export class EditMenuItem extends owl.Component {
     }
 }
 EditMenuItem.components = { EditMenuItemAdapter };
-EditMenuItem.template = owl.tags.xml`
+EditMenuItem.template = xml`
   <t>
     <div t-if="!menus.getCurrentApp()"/>
     <t t-else="" t-component="EditMenuItemAdapter" t-props="editMenuParams" t-key="localId" t-on-reload-menu-data="reloadMenuData" />

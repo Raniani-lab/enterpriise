@@ -29,6 +29,8 @@ var utils = require('web_studio.utils');
 var ViewEditorSidebar = require('web_studio.ViewEditorSidebar');
 const { isComponent } = require('web.utils');
 
+const { Component } = owl;
+
 var _t = core._t;
 var QWeb = core.qweb;
 
@@ -175,7 +177,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         return this._instantiateEditor(options).then(function (editor) {
             var fragment = document.createDocumentFragment();
             let prom = undefined;
-            if (editor instanceof owl.Component) {
+            if (editor instanceof Component) {
                 prom = editor.mount(fragment);
             } else {
                 prom = editor.appendTo(fragment);

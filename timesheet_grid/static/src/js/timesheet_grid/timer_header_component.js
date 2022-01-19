@@ -4,8 +4,9 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
     const fieldUtils = require('web.field_utils');
     const TimerHeaderM2O = require('timesheet_grid.TimerHeaderM2O');
 
-    const { useState, useRef } = owl.hooks;
     const { ComponentAdapter } = require('web.OwlCompatibility');
+
+    const { Component, useRef, useState } = owl;
 
     class TimerHeaderM2OAdapter extends ComponentAdapter {
         async updateWidget(nextProps) {
@@ -25,7 +26,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
         }
     }
 
-    class TimerHeaderComponent extends owl.Component {
+    class TimerHeaderComponent extends Component {
         constructor() {
             super(...arguments);
 

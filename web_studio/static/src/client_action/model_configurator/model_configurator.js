@@ -3,10 +3,10 @@ odoo.define("web_studio.ModelConfigurator", function (require) {
 
     const config = require("web.config");
     const Dialog = require("web.Dialog");
+    const { _t } = require("web.core");
     const { WidgetAdapterMixin, ComponentWrapper } = require("web.OwlCompatibility");
 
-    const { Component, hooks } = owl;
-    const { useState } = hooks;
+    const { Component, useState } = owl;
 
     class ModelConfigurator extends Component {
         constructor(parent, props) {
@@ -55,9 +55,9 @@ odoo.define("web_studio.ModelConfigurator", function (require) {
                         value: false,
                     },
                     lines: {
-                        label: this.env._t('Lines'),
-                        help: this.env._t('Add details to your records with an embedded list view'),
-                        value: false
+                        label: this.env._t("Lines"),
+                        help: this.env._t("Add details to your records with an embedded list view"),
+                        value: false,
                     },
                     use_notes: {
                         label: this.env._t("Notes"),
@@ -144,7 +144,6 @@ odoo.define("web_studio.ModelConfigurator", function (require) {
         },
     };
 
-    const _t = require("web.core")._t;
     /**
      * Wrapper to make the ModelConfigurator usable as a standalone dialog. Used notably
      * by the 'NewMenuDialog' in Studio. Note that since the ModelConfigurator does not

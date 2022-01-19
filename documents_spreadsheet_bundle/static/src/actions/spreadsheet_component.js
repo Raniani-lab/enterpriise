@@ -11,12 +11,12 @@ import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import CachedRPC from "../o_spreadsheet/cached_rpc";
 import { legacyRPC, jsonToBase64 } from "../o_spreadsheet/helpers";
 
+const { Component, useExternalListener, useRef, useState, useSubEnv } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
-const { useState, useRef, useSubEnv, useExternalListener } = owl.hooks;
 
-export default class SpreadsheetComponent extends owl.Component {
+export default class SpreadsheetComponent extends Component {
   setup() {
     this.orm = useService("orm");
     const rpc = legacyRPC(this.orm);

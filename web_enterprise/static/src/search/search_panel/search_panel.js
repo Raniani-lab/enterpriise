@@ -3,7 +3,7 @@
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { patch } from "@web/core/utils/patch";
 
-const { Portal } = owl.misc;
+const { Portal } = owl;
 
 //-------------------------------------------------------------------------
 // Helpers

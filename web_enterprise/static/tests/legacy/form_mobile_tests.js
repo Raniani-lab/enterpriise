@@ -4,8 +4,9 @@ odoo.define('web_enterprise.form_tests', function (require) {
 var FormView = require('web.FormView');
 var testUtils = require('web.test_utils');
 
+const { loadJS } = owl;
+
 var createView = testUtils.createView;
-const { loadJS } = owl.utils;
 
 QUnit.module('web_enterprise', {
     beforeEach: function () {

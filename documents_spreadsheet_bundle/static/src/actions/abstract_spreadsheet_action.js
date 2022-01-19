@@ -7,9 +7,9 @@ import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants"
 import { getDataFromTemplate } from "../o_spreadsheet/helpers";
 import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
 
-const { useState } = owl.hooks;
+const { Component, useState } = owl;
 
-export class AbstractSpreadsheetAction extends owl.Component {
+export class AbstractSpreadsheetAction extends Component {
     setup() {
         if (!this.props.action.params) {
             // the action is coming from a this.trigger("do-action", ... ) of owl (not wowl and not legacy)

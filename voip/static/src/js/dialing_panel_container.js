@@ -3,7 +3,7 @@
 import DialingPanel from "voip.DialingPanel";
 import { DialingPanelAdapter } from "./legacy_compatibility";
 
-const { Component, tags } = owl;
+const { Component, xml } = owl;
 
 /**
  * Main component to wrap the DialingPanel. Ideally, it should conditionally
@@ -17,7 +17,7 @@ export class DialingPanelContainer extends Component {
         this.DialingPanel = DialingPanel;
     }
 }
-DialingPanelContainer.template = tags.xml`
+DialingPanelContainer.template = xml`
     <div class="o_voip_dialing_panel_container">
         <DialingPanelAdapter Component="DialingPanel" bus="props.bus" />
     </div>`;

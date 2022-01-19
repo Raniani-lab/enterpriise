@@ -2,13 +2,13 @@
 
 import { UNTITLED_SPREADSHEET_NAME } from "../../o_spreadsheet/constants";
 
-const { useState, useRef } = owl.hooks;
+const { Component, useRef, useState } = owl;
 
 const WIDTH_MARGIN = 3;
 const PADDING_RIGHT = 5;
 const PADDING_LEFT = PADDING_RIGHT - WIDTH_MARGIN;
 
-export class SpreadsheetName extends owl.Component {
+export class SpreadsheetName extends Component {
   constructor() {
     super(...arguments);
     this.placeholder = UNTITLED_SPREADSHEET_NAME;

@@ -11,7 +11,7 @@ import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants";
 
-const { useState, useRef } = owl.hooks;
+const { Component, useRef, useState } = owl;
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
   setup() {
@@ -33,7 +33,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
   async willStart() {
     await super.willStart();
-    this.transportService = useService("spreadsheet_collaborative").getCollaborativeChannel(owl.Component.env, this.resId);
+    this.transportService = useService("spreadsheet_collaborative").getCollaborativeChannel(Component.env, this.resId);
   }
 
   async _fetchData() {

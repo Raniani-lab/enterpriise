@@ -4,8 +4,7 @@ import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator
 import makeTestEnvironment from "web.test_env";
 import testUtils from "web.test_utils";
 
-const { Component, tags } = owl;
-const { xml } = tags;
+const { Component, xml } = owl;
 const sampleIconUrl = "/web_enterprise/Parent.src/img/default_icon_app.png";
 
 QUnit.module("Studio", (hooks) => {

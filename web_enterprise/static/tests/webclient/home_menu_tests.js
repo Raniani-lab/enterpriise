@@ -2,7 +2,7 @@
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
-import { getFixture, nextTick, patchWithCleanup, triggerHotkey } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick, triggerHotkey } from "@web/../tests/helpers/utils";
 import { commandService } from "@web/core/commands/command_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { ormService } from "@web/core/orm_service";
@@ -12,8 +12,7 @@ import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import testUtils from "web.test_utils";
 import { makeFakeEnterpriseService } from "../mocks";
 
-const { Component, core, hooks, mount, tags } = owl;
-const { EventBus } = core;
+const { Component, EventBus, mount, useRef, xml } = owl;
 const patchDate = testUtils.mock.patchDate;
 const serviceRegistry = registry.category("services");
 
@@ -25,12 +24,12 @@ async function createHomeMenu(homeMenuProps) {
     class Parent extends Component {
         constructor() {
             super();
-            this.homeMenuRef = hooks.useRef("home-menu");
+            this.homeMenuRef = useRef("home-menu");
             this.homeMenuProps = homeMenuProps;
         }
     }
     Parent.components = { HomeMenu };
-    Parent.template = tags.xml`<HomeMenu t-ref="home-menu" t-props="homeMenuProps"/>`;
+    Parent.template = xml`<HomeMenu t-ref="home-menu" t-props="homeMenuProps"/>`;
     const env = await makeTestEnv();
     const target = getFixture();
     const parent = await mount(Parent, { env, target });

@@ -18,6 +18,8 @@ var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
 var Domain = require("web.Domain");
 
+const { Component } = owl;
+
 var py = window.py; // look py.js
 var qweb = core.qweb;
 
@@ -345,7 +347,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             _.each(self.fieldSelector, function (fieldType, directiveKey) {
                 var directiveTarget = self.fieldSelector[directiveKey];
                 var target = e.target;
-                if (directiveTarget instanceof owl.Component) {
+                if (directiveTarget instanceof Component) {
                     directiveTarget = directiveTarget.componentRef.comp;
                     target = e.data.__originalComponent
                 }
@@ -1411,7 +1413,7 @@ var TOptions = AbstractEditComponent.extend( {
         var defs = _.map(this.widget.options, function (option) {
             var $option = $options.find('.o_web_studio_toption_option_' + self.widget.key + '_' + option.key);
             var field = self.fieldSelector[self.widget.key + ':' + option.key];
-            if (field instanceof owl.Component) {
+            if (field instanceof Component) {
                 mountedComponents.push(field);
                 if (option.type === "boolean") {
                     return field.mount($option.find('label')[0], {position: 'first-child'});

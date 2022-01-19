@@ -5,11 +5,12 @@ odoo.define("web.SearchPanelMobile", function (require) {
     const { device } = require("web.config");
     const { patch } = require('web.utils');
 
+    const { Portal } = owl;
+
     if (!device.isMobile) {
         return;
     }
 
-    const { Portal } = owl.misc;
 
     //-------------------------------------------------------------------------
     // Helpers

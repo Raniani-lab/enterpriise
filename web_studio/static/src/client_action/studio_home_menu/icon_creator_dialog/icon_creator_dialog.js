@@ -5,6 +5,8 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
 import { useService } from "@web/core/utils/hooks";
 
+const { useState } = owl;
+
 export class IconCreatorDialog extends Dialog {
     setup() {
         super.setup();
@@ -12,7 +14,7 @@ export class IconCreatorDialog extends Dialog {
         this.rpc = useService("rpc");
         this.menus = useService("menu");
         this.initialAppData = Object.assign({}, this.props.editedAppData);
-        this.editedAppData = owl.hooks.useState(this.props.editedAppData);
+        this.editedAppData = useState(this.props.editedAppData);
     }
 
     /**

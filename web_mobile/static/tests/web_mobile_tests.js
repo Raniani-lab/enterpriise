@@ -22,8 +22,7 @@ odoo.define("web_mobile.tests", function (require) {
 
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
-    const { Component, tags, useState } = owl;
-    const { xml } = tags;
+    const { Component, useState, xml } = owl;
 
     const { createParent, createView, mock } = testUtils;
 

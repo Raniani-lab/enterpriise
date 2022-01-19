@@ -6,9 +6,10 @@ import { sprintf } from "@web/core/utils/strings";
 import { localization } from "@web/core/l10n/localization";
 import { registry } from "@web/core/registry";
 
+const { Component } = owl;
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
-export class EditorMenu extends owl.Component {
+export class EditorMenu extends Component {
     setup() {
         this.l10n = localization;
         this.studio = useService("studio");

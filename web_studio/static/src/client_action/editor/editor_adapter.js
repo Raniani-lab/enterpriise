@@ -14,7 +14,7 @@ const { Component } = owl;
 export class EditorAdapter extends ComponentAdapter {
     constructor(parent, props) {
         // force dummy Component not to crash
-        props.Component = owl.Component;
+        props.Component = Component;
         super(...arguments);
     }
 

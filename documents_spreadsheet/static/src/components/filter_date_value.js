@@ -3,6 +3,8 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
 
     const { getPeriodOptions } = require("web.searchUtils");
     const { _lt } = require('web.core');
+
+    const { Component } = owl;
     const dateTypeOptions = {
         quarter: ["first_quarter", "second_quarter", "third_quarter", "fourth_quarter"],
         year: ["this_year", "last_year", "antepenultimate_year"],
@@ -37,7 +39,7 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
         }
     }
 
-    class DateFilterValue extends owl.Component {
+    class DateFilterValue extends Component {
         dateOptions(type) {
             return type ? dateOptions(type) : [];
         }

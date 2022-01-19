@@ -3,8 +3,8 @@
 
 import { registry } from "@web/core/registry";
 
+const { loadJS } = owl;
 const actionRegistry = registry.category('actions');
-const { loadJS } = owl.utils;
 /* global OdooFin */
 
 function OdooFinConnector(parent, action) {

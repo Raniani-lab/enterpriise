@@ -73,7 +73,7 @@ StudioClientAction.components = {
     ComponentAdapter: class extends ComponentAdapter {
         setup() {
             super.setup();
-            this.env = owl.Component.env;
+            this.env = Component.env;
         }
     },
 };

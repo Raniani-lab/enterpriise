@@ -9,13 +9,14 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
     } = require("documents_spreadsheet.tag_selector_widget");
     const { getPeriodOptions } = require("web.searchUtils");
 
+    const { Component } = owl;
     const _t = core._t;
 
     /**
      * This is the side panel to define/edit a global filter.
      * It can be of 3 different type: text, date and relation.
      */
-    class GlobalFiltersSidePanel extends owl.Component {
+    class GlobalFiltersSidePanel extends Component {
         /**
          * @constructor
          */

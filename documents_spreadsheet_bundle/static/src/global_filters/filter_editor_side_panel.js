@@ -21,7 +21,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     } = require("documents_spreadsheet.tag_selector_widget");
     const { useService } = require("@web/core/utils/hooks");
     const _t = core._t;
-    const { useState } = owl.hooks;
+    const { Component, useState } = owl;
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     /**
@@ -32,7 +32,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
      * This is the side panel to define/edit a global filter.
      * It can be of 3 different type: text, date and relation.
      */
-    class FilterEditorSidePanel extends owl.Component {
+    class FilterEditorSidePanel extends Component {
         /**
          * @constructor
          */

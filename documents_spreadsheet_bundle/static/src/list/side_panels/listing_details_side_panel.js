@@ -6,7 +6,9 @@ import { time_to_str } from "web.time";
 
 import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 
-export class ListingDetailsSidePanel extends owl.Component {
+const { Component } = owl;
+
+export class ListingDetailsSidePanel extends Component {
     constructor() {
         super(...arguments);
         this.getters = this.env.getters;

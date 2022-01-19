@@ -5,7 +5,8 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     const GridRenderer = require('web_grid.GridRenderer');
     const TimerHeaderComponent = require('timesheet_grid.TimerHeaderComponent');
     const TimerStartComponent = require('timesheet_grid.TimerStartComponent');
-    const { useState, useExternalListener, useRef } = owl.hooks;
+
+    const { useExternalListener, useRef, useState } = owl;
 
     class TimerGridRenderer extends GridRenderer {
         constructor(parent, props) {

@@ -7,7 +7,8 @@ odoo.define('web_grid.GridRenderer', function (require) {
 
     const gridComponentRegistry = require('web_grid.component_registry');
     const { useListener } = require('web.custom_hooks');
-    const {useRef, useState} = owl.hooks;
+
+    const { useRef, useState } = owl;
 
     class GridRenderer extends AbstractRenderer {
         constructor(parent, props) {

@@ -8,8 +8,7 @@ import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
 import { ModelConfigurator } from "web_studio.ModelConfigurator";
 import { IconCreator } from "../icon_creator/icon_creator";
 
-const { Component, hooks, useState } = owl;
-const { useExternalListener } = hooks;
+const { Component, useExternalListener, useState } = owl;
 
 class ModelSelector extends ComponentAdapter {
     constructor(parent, props) {

@@ -1,8 +1,9 @@
 odoo.define('web_studio.ApprovalComponent', function (require) {
     'use strict';
 
-    const { Component, useState } = owl;
     const Dialog = require('web.OwlDialog');
+
+    const { Component, useState } = owl;
 
     class ApprovalComponent extends Component {
         //--------------------------------------------------------------------------

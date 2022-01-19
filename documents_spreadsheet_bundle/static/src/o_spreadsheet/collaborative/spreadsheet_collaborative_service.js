@@ -3,10 +3,12 @@
 import { registry } from "@web/core/registry";
 import SpreadsheetCollaborativeChannel from "./spreadsheet_collaborative_channel";
 
+const { Component } = owl;
+
 class SpreadsheetCollaborativeService {
     /**
      * Get a new collaborative channel for the given spreadsheet id
-     * @param {Env} env Env of owl (owl.Component.env)
+     * @param {Env} env Env of owl (Component.env)
      * @param {number} spreadsheetId id of the spreadsheet
      */
     getCollaborativeChannel(env, spreadsheetId) {

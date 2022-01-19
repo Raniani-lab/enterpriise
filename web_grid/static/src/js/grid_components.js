@@ -4,11 +4,10 @@ odoo.define('web_grid.components', function (require) {
     const fieldUtils = require('web.field_utils');
     const utils = require('web.utils');
 
-    const { useRef, useState } = owl.hooks;
-    const { debounce } = owl.utils;
+    const { Component, debounce, useRef, useState } = owl;
 
 
-    class BaseGridComponent extends owl.Component {
+    class BaseGridComponent extends Component {
         constructor() {
             super(...arguments);
             this.currentInput = useRef("currentInput");

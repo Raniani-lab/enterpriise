@@ -4,8 +4,7 @@
 
 import { useEffect } from "@web/core/utils/hooks";
 
-const { Component } = owl;
-const { useRef, useState } = owl.hooks;
+const { Component, useRef, useState } = owl;
 
 const apiTilesRouteWithToken =
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";

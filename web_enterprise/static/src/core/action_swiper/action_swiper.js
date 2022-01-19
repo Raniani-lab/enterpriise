@@ -4,8 +4,7 @@ import { localization } from "@web/core/l10n/localization";
 import { clamp } from "@web/core/utils/numbers";
 import { useEffect } from "@web/core/utils/hooks";
 
-const { Component, hooks } = owl;
-const { onMounted, onWillUnmount, useRef, useState } = hooks;
+const { Component, onMounted, onWillUnmount, useRef, useState } = owl;
 
 const isScrollSwipable = (scrollables) => {
     return {

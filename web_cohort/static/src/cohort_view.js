@@ -11,7 +11,9 @@ import { CohortArchParser } from "./cohort_arch_parser";
 import { CohortModel } from "./cohort_model";
 import { CohortRenderer } from "./cohort_renderer";
 
-class CohortView extends owl.Component {
+const { Component } = owl;
+
+class CohortView extends Component {
     setup() {
         this.actionService = useService("action");
 

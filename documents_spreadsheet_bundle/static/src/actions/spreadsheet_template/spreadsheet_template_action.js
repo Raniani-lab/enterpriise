@@ -8,7 +8,7 @@ import { base64ToJson, jsonToBase64 } from "../../o_spreadsheet/helpers";
 import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "../abstract_spreadsheet_action";
 
-const { useRef } = owl.hooks;
+const { useRef } = owl;
 
 export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
   setup() {

@@ -1,7 +1,9 @@
 odoo.define('timesheet_grid.TimerStartComponent', function (require) {
     "use strict";
 
-    class TimerStartComponent extends owl.Component {
+    const { Component } = owl;
+
+    class TimerStartComponent extends Component {
 
         //----------------------------------------------------------------------
         // Getters

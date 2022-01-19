@@ -7,7 +7,8 @@ odoo.define('timesheet_grid.GridView', function (require) {
     const TimesheetGridController = require('timesheet_grid.GridController');
     const TimesheetGridModel = require('timesheet_grid.GridModel');
     const GridRenderer = require('timesheet_grid.GridRenderer');
-    const { onMounted, onPatched } = owl.hooks;
+
+    const { onMounted, onPatched } = owl;
 
     class TimesheetGridRenderer extends GridRenderer {
         constructor() {

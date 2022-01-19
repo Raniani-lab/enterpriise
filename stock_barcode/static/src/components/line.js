@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
-export default class LineComponent extends owl.Component {
+const { Component } = owl;
+
+export default class LineComponent extends Component {
     get displayResultPackage() {
         return this.env.model.displayResultPackage;
     }

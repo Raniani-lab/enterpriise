@@ -7,7 +7,7 @@ import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 
 import { nextTick, triggerEvent, getFixture, mockTimeout } from "@web/../tests/helpers/utils";
 
-const { mount } = owl;
+const { Component, mount, xml } = owl;
 const serviceRegistry = registry.category("services");
 
 let env;
@@ -25,9 +25,9 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
     // TouchEvent by default. It might be an option to activate on some browser.
 
     QUnit.test("render only its target if no props is given", async (assert) => {
-        class Parent extends owl.Component {}
+        class Parent extends Component {}
         Parent.components = { ActionSwiper };
-        Parent.template = owl.tags.xml`
+        Parent.template = xml`
             <div class="d-flex">
                 <ActionSwiper>
                     <div class="target-component"/>
@@ -70,13 +70,13 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
 
     QUnit.test("render with the height of its content", async (assert) => {
         assert.expect(2);
-        class Parent extends owl.Component {
+        class Parent extends Component {
             onRightSwipe() {
                 assert.step("onRightSwipe");
             }
         }
         Parent.components = { ActionSwiper };
-        Parent.template = owl.tags.xml`
+        Parent.template = xml`
             <div class="o-container d-flex" style="width: 200px; height: 200px; overflow: auto">
                 <ActionSwiper onRightSwipe = "{
                     action: onRightSwipe,
@@ -105,13 +105,13 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(5);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends owl.Component {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
             }
             Parent.components = { ActionSwiper };
-            Parent.template = owl.tags.xml`
+            Parent.template = xml`
                 <div class="d-flex">
                     <ActionSwiper onRightSwipe = "{
                         action: onRightSwipe,
@@ -206,7 +206,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(7);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends owl.Component {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -215,7 +215,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 }
             }
             Parent.components = { ActionSwiper };
-            Parent.template = owl.tags.xml`
+            Parent.template = xml`
                 <div class="d-flex">
                     <ActionSwiper 
                         onRightSwipe = "{
@@ -343,7 +343,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(7);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends owl.Component {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -352,7 +352,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 }
             }
             Parent.components = { ActionSwiper };
-            Parent.template = owl.tags.xml`
+            Parent.template = xml`
                 <div class="d-flex">
                     <ActionSwiper 
                         onRightSwipe = "{
@@ -482,7 +482,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(9);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends owl.Component {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -491,7 +491,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 }
             }
             Parent.components = { ActionSwiper };
-            Parent.template = owl.tags.xml`
+            Parent.template = xml`
                 <div class="d-flex">
                     <ActionSwiper 
                         onRightSwipe = "{
@@ -683,7 +683,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(8);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends owl.Component {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -692,7 +692,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 }
             }
             Parent.components = { ActionSwiper };
-            Parent.template = owl.tags.xml`
+            Parent.template = xml`
                 <div class="d-flex">
                     <ActionSwiper 
                         onRightSwipe = "{

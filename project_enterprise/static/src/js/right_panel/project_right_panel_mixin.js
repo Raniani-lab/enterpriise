@@ -4,7 +4,8 @@ import config from 'web.config';
 import { patch } from 'web.utils';
 import { RightPanelControllerMixin } from '@project/js/right_panel/project_right_panel_mixin';
 import ProjectRightPanel from '@project/js/right_panel/project_right_panel';
-const { useState } = owl.hooks;
+
+const { useState } = owl;
 
 if (config.device.isMobile) {
     patch(RightPanelControllerMixin, 'project_enterprise.project_right_panel_mixin', {

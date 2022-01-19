@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 /**
- * This file can be removed as soon as voip code will be converted to owl.
+ * This file can be removed as soon as voip code will be converted to 
  */
 
 import { browser } from "@web/core/browser/browser";
@@ -11,10 +11,9 @@ import { registry } from "@web/core/registry";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 
+const { Component, EventBus } = owl;
 const serviceRegistry = registry.category("services");
 
-const { Component } = owl;
-const { EventBus } = owl.core;
 
 /**
  * Specialization of a ComponentAdapter for the DialingPanel. Uses the voip

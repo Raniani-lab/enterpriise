@@ -7,8 +7,8 @@ import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@d
 import { spreadsheetCollaborativeService } from "../../src/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 
+const { loadJS } = owl;
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
-const { loadJS } = owl.utils;
 const serviceRegistry = registry.category("services");
 
 export async function prepareWebClientForSpreadsheet() {

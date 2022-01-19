@@ -13,8 +13,7 @@ import { MapArchParser } from "./map_arch_parser";
 import { MapModel } from "./map_model";
 import { MapRenderer } from "./map_renderer";
 
-const { Component } = owl;
-const { onWillUnmount } = owl.hooks;
+const { Component, onWillUnmount } = owl;
 
 export class MapView extends Component {
     setup() {

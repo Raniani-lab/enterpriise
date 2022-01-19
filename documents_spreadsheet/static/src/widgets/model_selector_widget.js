@@ -1,9 +1,11 @@
 odoo.define("documents_spreadsheet.model_selector_widget", function (require) {
     const { ComponentAdapter } = require("web.OwlCompatibility");
 
+    const { Component } = owl;
+
     class ModelSelectorWidgetAdapter extends ComponentAdapter {
         setup() {
-            this.env = owl.Component.env;
+            this.env = Component.env;
         }
         /**
          * @override

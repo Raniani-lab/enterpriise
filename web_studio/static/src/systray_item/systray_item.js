@@ -2,7 +2,9 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-class StudioSystray extends owl.Component {
+const { Component } = owl;
+
+class StudioSystray extends Component {
     setup() {
         this.hm = useService("home_menu");
         this.studio = useService("studio");

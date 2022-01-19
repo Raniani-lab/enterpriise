@@ -2,11 +2,13 @@
 
 import { ComponentAdapter } from 'web.OwlCompatibility';
 
+const { Component } = owl;
+
 export default class ViewsWidgetAdapter extends ComponentAdapter {
     setup() {
         super.setup(...arguments);
         // Overwrite the OWL/legacy env with the WOWL's one.
-        this.env = owl.Component.env;
+        this.env = Component.env;
     }
 
     get widgetArgs() {

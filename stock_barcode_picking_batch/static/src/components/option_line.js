@@ -2,6 +2,7 @@
 
 const { Component } = owl;
 
+
 export default class OptionLine extends Component {
     setup() {
         super.setup(...arguments);

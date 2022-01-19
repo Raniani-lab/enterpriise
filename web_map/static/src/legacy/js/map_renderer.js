@@ -5,7 +5,7 @@ odoo.define('web_map.MapRenderer', function (require) {
 
     const AbstractRendererOwl = require('web.AbstractRendererOwl');
 
-    const { useRef, useState } = owl.hooks;
+    const { useRef, useState } = owl;
 
     const apiTilesRouteWithToken =
         'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';

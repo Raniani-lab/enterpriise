@@ -1,9 +1,9 @@
 odoo.define('documents.component.PdfGroupName', function (require) {
 'use strict';
 
-const { useRef, useState } = owl.hooks;
+const { Component, useRef, useState } = owl;
 
-class PdfGroupName extends owl.Component {
+class PdfGroupName extends Component {
 
     /**
      * @override

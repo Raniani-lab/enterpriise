@@ -1,12 +1,12 @@
 odoo.define('documents.component.PdfPage', function (require) {
 'use strict';
 
-const { useState, useRef } = owl.hooks;
+const { Component, useRef, useState } = owl;
 
 /**
  * Represents the page of a PDF.
  */
-class PdfPage extends owl.Component {
+class PdfPage extends Component {
 
     /**
      * @override

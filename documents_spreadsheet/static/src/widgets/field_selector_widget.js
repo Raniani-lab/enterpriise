@@ -3,6 +3,7 @@ odoo.define("documents_spreadsheet.field_selector_widget", function (require) {
     const FieldSelectorWidget = require("web.ModelFieldSelector");
     const { ComponentAdapter } = require("web.OwlCompatibility");
 
+    const { Component } = owl;
     const filters = {
         text: ["many2one", "text", "char"],
         date: ["datetime", "date"],
@@ -17,7 +18,7 @@ odoo.define("documents_spreadsheet.field_selector_widget", function (require) {
     class FieldSelectorAdapter extends ComponentAdapter {
 
         setup() {
-            this.env = owl.Component.env;
+            this.env = Component.env;
         }
         /**
          * Only display the relevant fields

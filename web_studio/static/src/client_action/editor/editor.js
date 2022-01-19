@@ -9,7 +9,7 @@ import { EditorMenu } from "./editor_menu/editor_menu";
 
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
-const { Component, core, hooks } = owl;
+const { Component, EventBus, useSubEnv } = owl;
 
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
@@ -36,8 +36,8 @@ export class Editor extends Component {
     setup() {
         this.studio = useService("studio");
 
-        hooks.useSubEnv({
-            bus: new core.EventBus(),
+        useSubEnv({
+            bus: new EventBus(),
         });
         this.env.services = Object.assign({}, this.env.services);
         this.env.services.router = {

@@ -7,6 +7,7 @@ odoo.define("documents_spreadsheet.tag_selector_widget", function (require) {
     const StandaloneFieldManagerMixin = require("web.StandaloneFieldManagerMixin");
     const Widget = require("web.Widget");
 
+    const { Component } = owl;
     const QWeb = core.qweb;
 
     /**
@@ -102,7 +103,7 @@ odoo.define("documents_spreadsheet.tag_selector_widget", function (require) {
 
     class TagSelectorWidgetAdapter extends ComponentAdapter {
         setup() {
-            this.env = owl.Component.env;
+            this.env = Component.env;
         }
         /**
          * @override

@@ -8,9 +8,9 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
 
     const { DropPrevious } = require("web.concurrency");
 
-    const { useState, useSubEnv } = owl.hooks;
+    const { Component, useState, useSubEnv } = owl;
 
-    class TemplateDialog extends owl.Component {
+    class TemplateDialog extends Component {
         constructor() {
             super(...arguments);
             this.dialogTitle = this.env._t("New Spreadsheet");
@@ -27,7 +27,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
             const searchModelConfig = {
                 context: this.props.context,
                 domain: [],
-                env: owl.Component.env,
+                env: Component.env,
             };
             const archs = { search: this.props.searchView.arch };
             const { ControlPanel: controlPanelInfo } = ActionModel.extractArchInfo(archs);

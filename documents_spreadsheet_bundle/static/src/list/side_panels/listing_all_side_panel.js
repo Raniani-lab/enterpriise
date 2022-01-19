@@ -2,7 +2,9 @@
 
 import { ListingDetailsSidePanel } from "./listing_details_side_panel";
 
-export default class ListingAllSidePanel extends owl.Component {
+const { Component } = owl;
+
+export default class ListingAllSidePanel extends Component {
     constructor() {
         super(...arguments);
         this.getters = this.env.getters;

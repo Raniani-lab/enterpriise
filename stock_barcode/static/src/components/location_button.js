@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
-export default class LocationButton extends owl.Component {
+const { Component } = owl;
+
+export default class LocationButton extends Component {
     select(source) {
         if (source) {
             this.env.model.changeSourceLocation(this.props.location.id, true);

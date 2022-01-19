@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
-export default class PackageLineComponent extends owl.Component {
+const { Component } = owl;
+
+export default class PackageLineComponent extends Component {
     get isSelected() {
         return this.line.package_id.id === this.env.model.lastScannedPackage;
     }

@@ -9,9 +9,9 @@ const { isEventHandled, markEventHandled } = require('@mail/utils/utils');
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');
 
-const { useState } = owl.hooks;
+const { Component, useState } = owl;
 
-class PdfManager extends owl.Component {
+class PdfManager extends Component {
 
     /**
      * @override

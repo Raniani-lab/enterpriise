@@ -5,10 +5,10 @@ import Dialog from "web.OwlDialog";
 import { delay } from "web.concurrency";
 import { loadAssets } from "@web/core/assets";
 
-const { core, Component, hooks, mount } = owl;
-import { _t } from 'web.core';
-const { useRef } = hooks;
-const bus = new core.EventBus();
+import { _t } from "web.core";
+
+const { Component, EventBus, mount, useRef } = owl;
+const bus = new EventBus();
 const busOk = "BarcodeDialog-Ok";
 const busError = "BarcodeDialog-Error";
 
@@ -60,7 +60,10 @@ function buildZXingBarcodeDetector(ZXing) {
         constructor(opts = {}) {
             const formats = opts.formats || allSupportedFormats;
             const hints = new Map([
-                [ZXing.DecodeHintType.POSSIBLE_FORMATS, formats.map((format) => ZXingFormats.get(format))],
+                [
+                    ZXing.DecodeHintType.POSSIBLE_FORMATS,
+                    formats.map((format) => ZXingFormats.get(format)),
+                ],
                 // Enable Scanning at 90 degrees rotation
                 // https://github.com/zxing-js/library/issues/291
                 [ZXing.DecodeHintType.TRY_HARDER, true],
@@ -77,7 +80,10 @@ function buildZXingBarcodeDetector(ZXing) {
          */
         async detect(video) {
             if (!video instanceof HTMLVideoElement) {
-                throw new DOMException("imageDataFrom() requires an HTMLVideoElement", "InvalidArgumentError");
+                throw new DOMException(
+                    "imageDataFrom() requires an HTMLVideoElement",
+                    "InvalidArgumentError"
+                );
             }
             if (!isVideoElementReady(video)) {
                 throw new DOMException("HTMLVideoElement is not ready", "InvalidStateError");
@@ -94,7 +100,9 @@ function buildZXingBarcodeDetector(ZXing) {
             const binaryBitmap = new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(luminanceSource));
             try {
                 const result = this.reader.decode(binaryBitmap);
-                const format = Array.from(ZXingFormats).find(([k, val]) => val === result.getBarcodeFormat());
+                const format = Array.from(ZXingFormats).find(
+                    ([k, val]) => val === result.getBarcodeFormat()
+                );
                 const rawValue = result.getText();
                 return [
                     {
@@ -160,10 +168,11 @@ class BarcodeDialog extends Component {
             this.stream = await navigator.mediaDevices.getUserMedia(constraints);
         } catch (err) {
             const errors = {
-                NotFoundError: _t('No device can be found.'),
-                NotAllowedError: _t('Odoo needs your authorization first.'),
+                NotFoundError: _t("No device can be found."),
+                NotAllowedError: _t("Odoo needs your authorization first."),
             };
-            const errorMessage = _t('Could not start scanning. ') + (errors[err.name] || err.message);
+            const errorMessage =
+                _t("Could not start scanning. ") + (errors[err.name] || err.message);
             this.onError(new Error(errorMessage));
             return;
         }

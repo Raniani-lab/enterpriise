@@ -5,11 +5,11 @@ import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
-const { useState } = owl.hooks;
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import PivotCache from "./pivot_cache";
 
+const { useState } = owl;
 const formatDecimal = spreadsheet.helpers.formatDecimal;
 
 /**

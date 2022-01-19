@@ -1,6 +1,7 @@
 /** @odoo-module */
 
-const { Component } = owl;
+const { Component } = owl;
+
 
 export class ReconciliationRainbowManComponent extends Component {}
 

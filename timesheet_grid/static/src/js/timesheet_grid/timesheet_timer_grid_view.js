@@ -7,7 +7,8 @@ odoo.define('timesheet_grid.TimerGridView', function (require) {
     const TimerGridModel = require('timesheet_grid.TimerGridModel');
     const GridRenderer = require('timesheet_grid.TimerGridRenderer');
     const TimesheetConfigQRCodeMixin = require('timesheet_grid.TimesheetConfigQRCodeMixin');
-    const { onMounted, onPatched } = owl.hooks;
+
+    const { onMounted, onPatched } = owl;
 
     class TimerGridRenderer extends GridRenderer {
         constructor() {

@@ -6,6 +6,8 @@ import { BurgerUserMenu } from "./user_menu/user_menu";
 import { MobileSwitchCompanyMenu } from "./mobile_switch_company_menu/mobile_switch_company_menu";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
+const { Component, Portal, onMounted, useState } = owl;
+
 /**
  * This file includes the widget Menu in mobile to render the BurgerMenu which
  * opens fullscreen and displays the user menu and the current app submenus.
@@ -13,18 +15,18 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
 const SWIPE_ACTIVATION_THRESHOLD = 100;
 
-export class BurgerMenu extends owl.Component {
+export class BurgerMenu extends Component {
     setup() {
         this.company = useService("company");
         this.user = useService("user");
         this.menuRepo = useService("menu");
         this.hm = useService("home_menu");
-        this.state = owl.hooks.useState({
+        this.state = useState({
             isUserMenuOpened: false,
             isBurgerOpened: false,
         });
         this.swipeStartX = null;
-        owl.hooks.onMounted(() => {
+        onMounted(() => {
             this.env.bus.on("HOME-MENU:TOGGLED", this, () => {
                 this._closeBurger();
             });
@@ -73,7 +75,7 @@ export class BurgerMenu extends owl.Component {
 }
 BurgerMenu.template = "web_enterprise.BurgerMenu";
 BurgerMenu.components = {
-    Portal: owl.misc.Portal,
+    Portal: Portal,
     DropdownItem,
     BurgerUserMenu,
     MobileSwitchCompanyMenu,

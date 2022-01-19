@@ -4,6 +4,8 @@ import ReportEditorManager from "web_studio.ReportEditorManager";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 
+const { Component, xml } = owl;
+
 class ReportEditorAdapter extends ComponentAdapter {
     constructor(parent, props) {
         props.Component = ReportEditorManager;
@@ -14,7 +16,7 @@ class ReportEditorAdapter extends ComponentAdapter {
         this.orm = useService("orm");
         this.studio = useService("studio");
         this.reportEnv = {};
-        this.env = owl.Component.env;
+        this.env = Component.env;
     }
 
     get handle() {
@@ -190,8 +192,7 @@ class ReportEditorAdapter extends ComponentAdapter {
 
 // We need this to wrap in a div
 // ViewEditor doesn't need this because it extends AbstractEditor, and defines a template
-export class ReportEditor extends owl.Component {}
-ReportEditor.template = owl.tags
-    .xml`<div class="o_web_studio_client_action"><ReportEditorAdapter /></div>`;
+export class ReportEditor extends Component {}
+ReportEditor.template = xml`<div class="o_web_studio_client_action"><ReportEditorAdapter /></div>`;
 ReportEditor.components = { ReportEditorAdapter };
 registry.category("actions").add("web_studio.report_editor", ReportEditor);

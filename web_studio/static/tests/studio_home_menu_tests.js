@@ -18,8 +18,7 @@ import testUtils from "web.test_utils";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { makeFakeRPCService } from "@web/../tests/helpers/mock_services";
 
-const { Component, core, hooks, mount, tags } = owl;
-const { EventBus } = core;
+const { Component, EventBus, mount, useRef, xml } = owl;
 const serviceRegistry = registry.category("services");
 
 // -----------------------------------------------------------------------------
@@ -30,7 +29,7 @@ async function createStudioHomeMenu(homeMenuProps) {
     class Parent extends Component {
         constructor() {
             super(...arguments);
-            this.homeMenuRef = hooks.useRef("home-menu");
+            this.homeMenuRef = useRef("home-menu");
             this.homeMenuProps = homeMenuProps;
         }
         get DialogContainer() {
@@ -38,7 +37,7 @@ async function createStudioHomeMenu(homeMenuProps) {
         }
     }
     Parent.components = { StudioHomeMenu };
-    Parent.template = tags.xml`
+    Parent.template = xml`
         <div>
             <StudioHomeMenu t-ref="home-menu" t-props="homeMenuProps"/>
             <div class="o_dialog_container"/>

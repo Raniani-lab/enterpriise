@@ -5,7 +5,8 @@ odoo.define('pos_blackbox_be.WorkInButton', function(require) {
     const ProductScreen = require('point_of_sale.ProductScreen');
     const { useListener } = require('web.custom_hooks');
     const Registries = require('point_of_sale.Registries');
-    const { useState } = owl.hooks;
+
+    const { useState } = owl;
 
     class WorkInButton extends PosComponent {
         // TODO: add the clock in/out ticket and push it to the blackbox.

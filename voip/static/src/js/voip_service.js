@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { VoipSystrayItem } from "./voip_systray_item";
 import { DialingPanelContainer } from "./dialing_panel_container";
 
-const { EventBus } = owl.core;
+const { EventBus } = owl;
 
 const serviceRegistry = registry.category("services");
 const systrayRegistry = registry.category("systray");

@@ -3,8 +3,7 @@
 import { useEffect } from "@web/core/utils/hooks";
 import { View } from "@web/views/view";
 
-const { Component, hooks } = owl;
-const { useSubEnv } = hooks;
+const { Component, useSubEnv } = owl;
 
 /**
  * This file defines the ViewWrapper component, used to wrap sub views in the

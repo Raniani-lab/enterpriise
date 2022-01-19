@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
 import { deepMerge } from "./connector_utils";
-const { Component } = owl;
-const { css } = owl.tags;
+
+const { Component, css } = owl;
 
 
 const STYLE = css`

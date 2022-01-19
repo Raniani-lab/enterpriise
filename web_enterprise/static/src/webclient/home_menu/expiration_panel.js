@@ -2,8 +2,7 @@
 import { browser } from "@web/core/browser/browser";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component, hooks } = owl;
-const { useState, useRef } = hooks;
+const { Component, useRef, useState } = owl;
 const { DateTime } = luxon;
 
 /**

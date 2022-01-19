@@ -5,14 +5,14 @@ import { useService } from "@web/core/utils/hooks";
 import { EnterpriseNavBar } from "./navbar/navbar";
 import { hasTouch } from "@web/core/browser/feature_detection";
 
-const { hooks } = owl;
+const { onMounted } = owl;
 
 export class WebClientEnterprise extends WebClient {
     setup() {
         super.setup();
         this.hm = useService("home_menu");
         useService("enterprise_legacy_service_provider");
-        hooks.onMounted(() => {
+        onMounted(() => {
             this.env.bus.on("HOME-MENU:TOGGLED", this, () => {
                 if (!this.el) {
                     return;

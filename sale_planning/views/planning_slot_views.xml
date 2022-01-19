@@ -8,7 +8,6 @@
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="before">
-                <!-- TODO TLE : Handle group visibility -->
                 <field name="sale_order_id" string="Sales Order"/>
                 <field name="role_product_ids" string="Service"/>
             </xpath>
@@ -25,7 +24,6 @@
                 <filter name="to_schedule" string="To Schedule" domain="[('start_datetime', '=', False)]" groups="planning.group_planning_manager"/>
             </xpath>
             <xpath expr="//filter[@name='group_by_role']" position="after">
-                <!-- TODO TLE : Handle group visibility -->
                 <filter name="group_by_sale_order" string="Sales Order" context="{'group_by': 'sale_order_id'}"/>
                 <filter name="group_by_sale_order_line" string="Sales Order Item" context="{'group_by': 'sale_line_id'}"/>
             </xpath>

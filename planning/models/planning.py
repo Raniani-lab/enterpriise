@@ -1173,7 +1173,7 @@ class Planning(models.Model):
                 # Either the company has, at least, some attendance that are not during the company unavailability
 
                 if slot.allocation_type == 'planning':
-                    # /!\ It can be an "Extended Attendance" (see hereabove), and the slot may be unassigned. (TODO TLE: Check functionnaly)
+                    # /!\ It can be an "Extended Attendance" (see hereabove), and the slot may be unassigned.
                     if unavailable_interval_resource or not attendance_interval_resource:
                         # if the slot is during an resourece unavailability, or the employee is not attending during the slot
                         if slot.resource_type != 'user':

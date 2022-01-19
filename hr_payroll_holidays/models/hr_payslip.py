@@ -10,6 +10,8 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     def compute_sheet(self):
+        if self.env.context.get('salary_simulation'):
+            return super().compute_sheet()
         if self.filtered(lambda p: p.is_regular):
             employees = self.mapped('employee_id')
             leaves = self.env['hr.leave'].search([

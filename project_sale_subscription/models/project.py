@@ -12,8 +12,10 @@ class Project(models.Model):
 
     @api.depends('analytic_account_id')
     def _compute_subscriptions_count(self):
+        if not self.analytic_account_id:
+            self.subscriptions_count = 0
+            return
         subscriptions_data = self.env['sale.subscription']._read_group([
-            ('analytic_account_id', '!=', False),
             ('analytic_account_id', 'in', self.analytic_account_id.ids)
         ], ['analytic_account_id'], ['analytic_account_id'])
         mapped_data = {data['analytic_account_id'][0]: data['analytic_account_id_count'] for data in subscriptions_data}

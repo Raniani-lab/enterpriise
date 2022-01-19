@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { addFields, patchModelMethods } from '@mail/model/model_core';
-import { one2one } from '@mail/model/model_field';
+import { one } from '@mail/model/model_field';
 import { insert, unlinkAll } from '@mail/model/model_field_command';
 // ensure that the model definition is loaded before the patch
 import '@mail/models/activity/activity';
@@ -26,7 +26,7 @@ patchModelMethods('Activity', {
 });
 
 addFields('Activity', {
-    approval: one2one('Approval', {
+    approval: one('Approval', {
         inverse: 'activity',
     }),
 });

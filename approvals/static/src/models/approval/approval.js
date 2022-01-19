@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from '@mail/model/model_core';
-import { attr, one2one } from '@mail/model/model_field';
+import { attr, one } from '@mail/model/model_field';
 
 registerModel({
     name: 'Approval',
@@ -37,7 +37,7 @@ registerModel({
         },
     },
     fields: {
-        activity: one2one('Activity', {
+        activity: one('Activity', {
             inverse: 'approval',
         }),
         id: attr({

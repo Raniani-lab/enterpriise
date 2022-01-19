@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from '@mail/model/model_core';
-import { attr, one2one } from '@mail/model/model_field';
+import { attr, one } from '@mail/model/model_field';
 import { clear, replace } from '@mail/model/model_field_command';
 
 registerModel({
@@ -188,15 +188,15 @@ registerModel({
         leftSwipeIcon: attr({
             compute: '_computeLeftSwipeIcon',
         }),
-        messageViewOwner: one2one('MessageView', {
+        messageViewOwner: one('MessageView', {
             inverse: 'swiperView',
             readonly: true,
         }),
-        notificationGroupViewOwner: one2one('NotificationGroupView', {
+        notificationGroupViewOwner: one('NotificationGroupView', {
             inverse: 'swiperView',
             readonly: true,
         }),
-        record: one2one('Model', {
+        record: one('Model', {
             compute: '_computeRecord',
             readonly: true,
             required: true,
@@ -207,11 +207,11 @@ registerModel({
         rightSwipeIcon: attr({
             compute: '_computeRightSwipeIcon',
         }),
-        threadNeedactionPreviewViewOwner: one2one('ThreadNeedactionPreviewView', {
+        threadNeedactionPreviewViewOwner: one('ThreadNeedactionPreviewView', {
             inverse: 'swiperView',
             readonly: true,
         }),
-        threadPreviewViewOwner: one2one('ThreadPreviewView', {
+        threadPreviewViewOwner: one('ThreadPreviewView', {
             inverse: 'swiperView',
             readonly: true,
         }),

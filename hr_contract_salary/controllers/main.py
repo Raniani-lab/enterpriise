@@ -804,6 +804,9 @@ class HrContractSalary(http.Controller):
                         new_value = new_contract.car_id.model_id.name
                     elif new_contract.new_car and new_contract.new_car_model_id:
                         new_value = new_contract.new_car_model_id.name
+                # YTI FIXME: Clean that brol
+                if elem == 'l10n_be_group_insurance_rate':
+                    new_value = 1 if new_value else 0
             if isinstance(new_value, models.BaseModel):
                 new_value = ''
             if isinstance(new_value, float):

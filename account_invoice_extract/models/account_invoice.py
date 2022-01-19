@@ -35,6 +35,7 @@ ERROR_NO_CONNECTION = 8
 ERROR_SERVER_IN_MAINTENANCE = 9
 ERROR_PASSWORD_PROTECTED = 10
 ERROR_TOO_MANY_PAGES = 11
+ERROR_INVALID_ACCOUNT_TOKEN = 12
 
 # codes above 100 are reserved for warnings
 # as warnings aren't mutually exclusive, the warning codes are summed, the result represent the combination of warnings
@@ -54,6 +55,7 @@ ERROR_MESSAGES = {
     ERROR_SERVER_IN_MAINTENANCE: _lt("Server is currently under maintenance. Please retry later"),
     ERROR_PASSWORD_PROTECTED: _lt("Your PDF file is protected by a password. The OCR can't extract data from it"),
     ERROR_TOO_MANY_PAGES: _lt("Your invoice is too heavy to be processed by the OCR. Try to reduce the number of pages and avoid pages with too many text"),
+    ERROR_INVALID_ACCOUNT_TOKEN: _lt("The 'invoice_ocr' IAP account token is invalid. Please delete it to let Odoo generate a new one or fill it with a valid token."),
 }
 WARNING_MESSAGES = {
     WARNING_DUPLICATE_VENDOR_REFERENCE: _lt("Warning: there is already a vendor bill with this reference (%s)"),
@@ -214,6 +216,10 @@ class AccountMove(models.Model):
             user_infos = self.get_user_infos()
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
+            if not account_token.account_token:
+                self.extract_state = 'error_status'
+                self.extract_status_code = ERROR_INVALID_ACCOUNT_TOKEN
+                return
             baseurl = self.get_base_url()
             webhook_url = f"{baseurl}/account_invoice_extract/request_done"
             params = {

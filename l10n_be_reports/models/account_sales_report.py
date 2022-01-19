@@ -3,7 +3,7 @@
 
 from markupsafe import Markup
 import time
-from odoo import models, fields, api, _
+from odoo import models, api, _
 from odoo.tools.misc import formatLang
 from odoo.exceptions import UserError
 
@@ -62,8 +62,6 @@ class ECSalesReport(models.AbstractModel):
 
         if options.get('get_file_data'):
             code = ec_sale_code_options_data[row['tax_code']]['code']
-            options['be_report_extra_data']['amount_sum'] += row['amount']
-            options['be_report_extra_data']['seq'] += 1
             return [row['vat'], code, row['amount']]
         else:
             name = ec_sale_code_options_data[row['tax_code']]['name']
@@ -73,9 +71,32 @@ class ECSalesReport(models.AbstractModel):
         if self._get_report_country_code(options) != 'BE' or options.get('get_file_data'):
             return super(ECSalesReport, self)._process_query_result(options, query_result)
 
-            res = super(ECSalesReport, self)._process_query_result(options, query_result)
-
+        res = super(ECSalesReport, self)._process_query_result(options, query_result)
+        total = res[-1]['columns'][0]['no_format']
+        options['be_tax_cross_check_warning'] = not self._total_consistent_with_tax_report(options, total)
         return res
+
+    def _total_consistent_with_tax_report(self, options, total):
+        """ Belgian EC Sales taxes report total must match
+            Tax Report lines 44 + 46L + 46T - 48s44 - 48s46L - 48s46T.
+        """
+        codes = self._get_ec_sale_code_options_data(options)
+        tax_report_line_ids = [id for k in codes for id in codes[k]['tax_report_line_ids']]
+        dict_to_fill = {id: [{
+            'periods': [{'balance': 0}],
+            'show': False
+        }] for id in tax_report_line_ids}
+        domain = [('tax_tag_ids.tax_report_line_ids.id', 'in', tax_report_line_ids)]
+        tax_report_options = self.env['account.generic.tax.report']._get_options(options)
+        self.env['account.generic.tax.report']._compute_from_amls_grids(tax_report_options, dict_to_fill, 0, domain)
+        tax_total = 0.0
+        for line in self.env['account.tax.report.line'].browse(tax_report_line_ids):
+            if line.tag_name[:2] == '48':
+                tax_total -= dict_to_fill[line.id][0]['periods'][0]['balance']
+            else:
+                tax_total += dict_to_fill[line.id][0]['periods'][0]['balance']
+
+        return self.env.company.currency_id.compare_amounts(tax_total, total) == 0
 
     @api.model
     def _get_reports_buttons(self, options):
@@ -132,14 +153,12 @@ class ECSalesReport(models.AbstractModel):
         date_to = options['date'].get('date_to')
 
         options['get_file_data'] = True
-        options['be_report_extra_data'] = {'seq': 0, 'amount_sum': 0.0}
         lines = self.with_context(no_format=True)._get_lines(options)
         xml_data = {
             'lines': lines,
-            'clientnbr': str(options['be_report_extra_data']['seq']),
-            'amountsum': options['be_report_extra_data']['amount_sum'],
+            'clientnbr': len(lines),
+            'amountsum': sum(line_vals[-1] for line_vals in lines),
         }
-        options.pop('be_report_extra_data', None)
 
         ctx_date_from = date_from[5:10]
         ctx_date_to = date_to[5:10]
@@ -200,15 +219,15 @@ class ECSalesReport(models.AbstractModel):
         seq = 0
         for line in xml_data['lines']:
             seq += 1
-            vat = line['columns'][0].get('name', False)
+            vat = line[0]
             if not vat:
                 raise UserError(_('No vat number defined for %s.', line['name']))
             client = {
                 'vatnum': vat[2:].replace(' ', '').upper(),
                 'vat': vat,
                 'country': vat[:2],
-                'amount': line['columns'][2].get('name', 0.0),
-                'code': line['columns'][1].get('name', ''),
+                'amount': line[2],
+                'code': line[1],
                 'seq': seq,
             }
             data_clientinfo += Markup("""

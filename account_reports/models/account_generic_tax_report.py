@@ -839,12 +839,12 @@ class AccountGenericTaxReport(models.AbstractModel):
         rslt['main_template'] = 'account_reports.template_tax_report'
         return rslt
 
-    def _compute_from_amls_grids(self, options, dict_to_fill, period_number):
+    def _compute_from_amls_grids(self, options, dict_to_fill, period_number, additional_domain=None):
         """Fill dict_to_fill with the data needed to generate the report.
 
         Used when the report is set to group its line by tax grid.
         """
-        tables, where_clause, where_params = self._query_get(options)
+        tables, where_clause, where_params = self._query_get(options, additional_domain)
         sql = """
             SELECT
                    account_tax_report_line_tags_rel.account_tax_report_line_id,

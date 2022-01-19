@@ -94,6 +94,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
                 (self.partner_b.name, self.partner_b.vat[:2], self.partner_b.vat[2:], 'T', f'500.00{NON_BREAKING_SPACE}€'),
                 (self.partner_a.name, self.partner_a.vat[:2], self.partner_a.vat[2:], 'S', f'700.00{NON_BREAKING_SPACE}€'),
                 (self.partner_b.name, self.partner_b.vat[:2], self.partner_b.vat[2:], 'S', f'700.00{NON_BREAKING_SPACE}€'),
+                ('Total',              '',                      '',                   '',  f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
         )
 

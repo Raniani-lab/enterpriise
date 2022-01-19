@@ -31,6 +31,7 @@ class ECSalesReport(models.AbstractModel):
     def _get_templates(self):
         templates = super(ECSalesReport, self)._get_templates()
         templates['main_template'] = 'account_reports.account_reports_sales_report_main_template'
+        templates['line_caret_options'] = 'account_reports.ec_sales_line_caret_options'
         return templates
 
     def _get_non_generic_country_codes(self, options):
@@ -62,9 +63,9 @@ class ECSalesReport(models.AbstractModel):
         # it defines which tax report line ids are linked to goods, triangular & services
         # and it defines country specific names
         return {
-            'goods': {'name': _('Goods'), 'tax_report_line_ids': ()},
-            'triangular': {'name': _('Triangular'), 'tax_report_line_ids': ()},
-            'services': {'name': _('Services'), 'tax_report_line_ids': ()},
+            'goods': {'name': _('Goods'), 'tax_report_line_ids': []},
+            'triangular': {'name': _('Triangular'), 'tax_report_line_ids': []},
+            'services': {'name': _('Services'), 'tax_report_line_ids': []},
         }
 
     def _init_filter_ec_sale_code(self, options, previous_options=None):
@@ -176,6 +177,7 @@ class ECSalesReport(models.AbstractModel):
         ec_country_to_check = self.get_ec_country_codes(options)
         lines = []
         ec_sale_code_options_data = self._get_ec_sale_code_options_data(options)
+        total_value = 0
         for row in query_result:
             if not row['vat']:
                 row['vat'] = ''
@@ -185,28 +187,167 @@ class ECSalesReport(models.AbstractModel):
                 if not row['vat']:
                     if get_file_data:
                         raise UserError(_('One or more partners has no VAT Number.'))
-                    else:
+                    elif row['partner_country_code'] in ec_country_to_check:
+                        # if country is not ec country, "no VAT" warning is redundant and potentially confusing
                         options['missing_vat_warning'] = True
 
-                if row.get('same_country') or row['partner_country_code'] not in ec_country_to_check:
-                    options['unexpected_intrastat_tax_warning'] = True
+                if row['partner_country_code'] not in ec_country_to_check:
+                    options['non_ec_country_warning'] = True
+
+                if row.get('same_country'):
+                    options['same_country_warning'] = True
+
+                total_value += amt
 
                 if not options.get('get_file_data') and not self.env.context.get('no_format'):
                     currency_id = self.env.company.currency_id
                     row['amount'] = formatLang(self.env, row['amount'], currency_obj=currency_id)
 
                 columns = self._get_row_columns(options, row, ec_sale_code_options_data)
+
                 if get_file_data:
                     lines.append(columns)
                 else:
+                    if row.get('tax_code'):  # generic report results have no tax_code column
+                        tax_report_line_ids = ec_sale_code_options_data[row['tax_code']]['tax_report_line_ids']
+                    else:
+                        tax_report_line_ids = None
                     lines.append({
-                        'id': row['partner_id'],
+                        'id': self._get_generic_line_id('res.partner', row['partner_id']),
                         'caret_options': 'res.partner',
                         'model': 'res.partner',
                         'name': row['partner_name'],
                         'columns': [{'name': v} for v in columns],
+                        'tax_report_line_ids': tax_report_line_ids,
                     })
+
+        if not get_file_data:
+            lines.append({
+                'id': self._get_generic_line_id('', '', 'total_value'),
+                'name': _('Total'),
+                'class': 'total',
+                'level': 2,
+                'columns': [{'name': self.format_value(total_value), 'no_format': total_value}],
+                'colspan': len(self._get_columns_name(options)) - 1,
+            })
         return lines
+
+    def _get_partner_amls_domain(self, options, params):
+        model, model_id = self._get_model_info_from_id(params['id'])
+        if model != 'res.partner':
+            raise UserError(_("Wrong model on line %s ; expected res.partner", params['id']))
+
+        return [
+            ('partner_id', '=', model_id),
+            ('tax_tag_ids.tax_report_line_ids', 'in', params['tax_report_line_ids']),
+            ('move_id.date', '>=', options['date']['date_from']),
+            ('move_id.date', '<=', options['date']['date_to']),
+        ]
+
+    def get_partner_amls(self, options, params):
+        return {
+            'name': _("Partner Audit"),
+            'type': 'ir.actions.act_window',
+            'views': [[self.env.ref('account.view_move_line_tree').id, 'list'], (False, 'form')],
+            'res_model': 'account.move.line',
+            'context': {},
+            'domain': self._get_partner_amls_domain(options, params),
+        }
+
+    def get_non_vat_actions_window(self, options, params):
+        res = {
+            'name': _("Entries with partners with no VAT"),
+            'type': 'ir.actions.act_window',
+            'context': {
+                'search_default_group_by_partner': 1,
+                'expand': 1
+            },
+        }
+        amls = self._get_act_window_amls(options, [
+            ('partner_id.vat', '=', None),
+            # this warning only shows for EC country partners (if not EC country, an other warning is triggered)
+            ('partner_id.country_id.code', 'in', tuple(self.get_ec_country_codes(options)))
+        ],)
+        if params.get('model') == 'move':
+            res.update({
+                'views': [[self.env.ref('account.view_move_tree').id, 'list'], (False, 'form')],
+                'res_model': 'account.move',
+                'domain': [('id', 'in', amls.move_id.ids)],
+            })
+        else:
+            res.update({
+                'views': [(False, 'list'), (False, 'form')],
+                'res_model': 'res.partner',
+                'domain': [('id', 'in', amls.move_id.partner_id.ids)],
+            })
+        return res
+
+    def get_non_ec_countries_actions_window(self, options, params):
+        res = {
+            'name': _("EC tax on non EC countries"),
+            'type': 'ir.actions.act_window',
+            'context': {},
+        }
+        amls = self._get_act_window_amls(options, [
+            ('partner_id.country_id.code', 'not in', tuple(self.get_ec_country_codes(options)))
+        ])
+        if params.get('model') == 'move':
+            res.update({
+                'views': [[self.env.ref('account.view_move_tree').id, 'list'], (False, 'form')],
+                'res_model': 'account.move',
+                'domain': [('id', 'in', amls.move_id.ids)],
+            })
+        else:
+            res.update({
+                'views': [(False, 'list'), (False, 'form')],
+                'res_model': 'res.partner',
+                'domain': [('id', 'in', amls.move_id.partner_id.ids)],
+            })
+        return res
+
+    def get_same_country_actions_window(self, options, params):
+        res = {
+            'name': _("EC tax on same country"),
+            'type': 'ir.actions.act_window',
+            'context': {},
+        }
+        amls = self._get_act_window_amls(options, [
+            ('partner_id.country_id.code', '=', self._get_report_country_code(options))
+        ])
+        if params.get('model') == 'move':
+            res.update({
+                'views': [[self.env.ref('account.view_move_tree').id, 'list'], (False, 'form')],
+                'res_model': 'account.move',
+                'domain': [('id', 'in', amls.move_id.ids)],
+            })
+        else:
+            res.update({
+                'views': [(False, 'list'), (False, 'form')],
+                'res_model': 'res.partner',
+                'domain': [('id', 'in', amls.move_id.partner_id.ids)],
+            })
+        return res
+
+    def _get_act_window_amls(self, options, domain):
+        if not domain:
+            domain = []
+
+        selected_tax_report_line_ids = []
+        all_tax_report_line_ids = []
+        for ec_sale_code_opt in options['ec_sale_code']:
+            if ec_sale_code_opt['selected']:
+                selected_tax_report_line_ids += ec_sale_code_opt['tax_report_line_ids']
+            all_tax_report_line_ids += ec_sale_code_opt['tax_report_line_ids']
+
+        tax_report_line_ids = selected_tax_report_line_ids or all_tax_report_line_ids # Nothing selected means everything needs to be considered
+        if tax_report_line_ids:
+            domain.append(('tax_tag_ids.tax_report_line_ids', 'in', tax_report_line_ids))
+
+        domain += [
+            ('date', '>=', options['date']['date_from']),
+            ('date', '<=', options['date']['date_to']),
+        ]
+        return self.env['account.move.line'].search(domain)
 
     @api.model
     def get_ec_country_codes(self, options):

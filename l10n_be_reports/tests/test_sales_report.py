@@ -47,6 +47,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
+            # pylint: disable=C0326
             #   Partner                country code,            VAT Number,              Tax         Amount
             [   0,                     1,                       2,                       3,          4],
             [
@@ -55,6 +56,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
                 (self.partner_b.name, self.partner_b.vat[:2], self.partner_b.vat[2:], 'T (46T)', f'500.00{NON_BREAKING_SPACE}€'),
                 (self.partner_a.name, self.partner_a.vat[:2], self.partner_a.vat[2:], 'S (44)', f'700.00{NON_BREAKING_SPACE}€'),
                 (self.partner_b.name, self.partner_b.vat[:2], self.partner_b.vat[2:], 'S (44)', f'700.00{NON_BREAKING_SPACE}€'),
+                ('Total',              '',                      '',                   '',       f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
         )
 

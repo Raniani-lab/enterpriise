@@ -22,7 +22,8 @@ class ShiftControllerProject(ShiftController):
         slot_ids = request.env['planning.slot'].sudo().browse(list(mapped_data.keys()))
         for slot_sudo in slot_ids:
             slot_data = mapped_data[slot_sudo.id]
-            slot_data['sale_line'] = slot_sudo.sale_line_id.name
+            if slot_sudo.sale_line_id:
+                slot_data['sale_line'] = f'{slot_sudo.sale_line_id.order_id.name} - {slot_sudo.sale_line_id.name}'
             # Reset the title according to the project and task name
             title = slot_sudo.role_id.name or ''
             title_full = " - ".join([x for x in (title, slot_sudo.sale_line_id.name) if x])

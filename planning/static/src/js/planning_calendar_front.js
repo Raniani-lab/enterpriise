@@ -3,6 +3,7 @@ odoo.define('planning.calendar_frontend', function (require) {
 "use strict";
 
 const publicWidget = require('web.public.widget');
+const time = require('web.time');
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     selector: '#calendar_employee',
@@ -112,17 +113,15 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         const employeeToken = $('.employee_token').attr('value');
         $(".modal-title").text(calEvent.event.title);
         $(".modal-header").css("background-color", calEvent.event.backgroundColor);
-        $("#start").text(moment(calEvent.event.start).format("YYYY-MM-DD hh:mm A"));
-        $("#stop").text(moment(calEvent.event.end).format("YYYY-MM-DD hh:mm A"));
-        $("#alloc_hours").text(calEvent.event.extendedProps.alloc_hours);
-        $("#role").text(calEvent.event.extendedProps.role);
-        if (calEvent.event.extendedProps.alloc_perc !== 100) {
-            $("#alloc_perc_value").text(calEvent.event.extendedProps.alloc_perc);
-            $("#alloc_perc").css("display", "");
-        } else {
-            $("#alloc_perc").css("display", "none");
+        $('.o_start_date').text(`${moment(calEvent.event.start).format('ddd')}. ${moment(calEvent.event.start).format(time.getLangDatetimeFormat())}`);
+        let textValue = `${moment(calEvent.event.end).format('ddd')}. ${moment(calEvent.event.end).format(time.getLangDatetimeFormat())}`;
+        if (calEvent.event.extendedProps.alloc_hours) {
+            textValue += ` (${calEvent.event.extendedProps.alloc_hours})`;
         }
-
+        if (parseFloat(calEvent.event.extendedProps.alloc_perc) < 100) {
+            textValue += ` (${calEvent.event.extendedProps.alloc_perc}%)`;
+        }
+        $('.o_end_date').text(textValue);
         if (calEvent.event.extendedProps.role) {
             $("#role").prev().css("display", "");
             $("#role").text(calEvent.event.extendedProps.role);

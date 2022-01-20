@@ -471,7 +471,7 @@ class AccountReport(models.AbstractModel):
         def create_date_domain(options_date):
             date_field = options_date.get('date_field', 'date')
             domain = [(date_field, '<=', options_date['date_to'])]
-            if options_date['mode'] == 'range':
+            if options_date['mode'] == 'range' and options_date['date_from']:
                 strict_range = options_date.get('strict_range')
                 if not strict_range:
                     domain += [

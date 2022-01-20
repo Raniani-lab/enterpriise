@@ -159,6 +159,15 @@ select {
 //------------------------------------------------------------------------------
 // Misc.
 //------------------------------------------------------------------------------
+
+// By default, <b> and <strong> are set to `$font-weight-bolder`.
+// Override with `$font-weight-bold` in order to ensure consistency with default
+// bold text, while keeping `$font-weight-bolder` variable untouched for specific
+// uses (eg. '.font-weight-bolder' class).
+b, strong {
+  font-weight: $font-weight-bold;
+}
+
 .oe_clear {
   clear: both;
 }

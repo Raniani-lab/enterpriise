@@ -61,6 +61,14 @@ class TestWebGrid(common.SingleTransactionCase):
             'validated': True,
         })
 
+        cls.grid_obj_3 = cls.env['test.web.grid'].create({
+            'employee_id': cls.employee.id,
+            'project_id': False,  # used to check if the `read_grid_grouped` using this field as section field does not crash.
+            'task_id': cls.task.id,
+            'resource_hours': 10,
+            'start_date': "2019-06-10",
+        })
+
         # Combinations of different ranges
         cls.range_day = {'name': 'days', 'string': 'Day', 'span': 'month', 'step': 'day'}
 

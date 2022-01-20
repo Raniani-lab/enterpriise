@@ -105,7 +105,7 @@ class Base(models.AbstractModel):
         for group in groups:
             section_group = section_groups[group[section_field]]
             section_all_groups.pop(group[section_field], None)
-            if self._fields[section_field].type == 'many2one':
+            if self._fields[section_field].type == 'many2one' and group[section_field]:
                 section_field_value = group[section_field][0]
             else:
                 section_field_value = group[section_field]

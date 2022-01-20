@@ -122,8 +122,7 @@ class AccountMove(models.Model):
         store=True,
         readonly=False,
         help="Indicates the way the invoice was/will be paid, where the options could be: "
-             "Cash, Nominal Check, Credit Card, etc. Leave empty if unkown and the XML will show 'Unidentified'.",
-        default=lambda self: self.env.ref('l10n_mx_edi.payment_method_otros', raise_if_not_found=False))
+             "Cash, Nominal Check, Credit Card, etc. Leave empty if unkown and the XML will show 'Unidentified'.")
     l10n_mx_edi_payment_policy = fields.Selection(string='Payment Policy',
         selection=[('PPD', 'PPD'), ('PUE', 'PUE')],
         compute='_compute_l10n_mx_edi_payment_policy')
@@ -352,7 +351,7 @@ class AccountMove(models.Model):
             elif move.journal_id.l10n_mx_edi_payment_method_id:
                 move.l10n_mx_edi_payment_method_id = move.journal_id.l10n_mx_edi_payment_method_id
             else:
-                move.l10n_mx_edi_payment_method_id = None
+                move.l10n_mx_edi_payment_method_id = self.env.ref('l10n_mx_edi.payment_method_otros', raise_if_not_found=False)
 
     # -------------------------------------------------------------------------
     # CONSTRAINTS

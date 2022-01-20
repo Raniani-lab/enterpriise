@@ -43,10 +43,13 @@ class ResConfigSettings(models.TransientModel):
         # fields, the inverse write is done one value at a time, and thus the constraint is verified
         # one value at a time... so it is likely to fail.
         for vals in vals_list:
-            self.env.company.write({
-                'fiscalyear_last_day': vals.get('fiscalyear_last_day') or self.env.company.fiscalyear_last_day,
-                'fiscalyear_last_month': vals.get('fiscalyear_last_month') or self.env.company.fiscalyear_last_month,
-            })
-            vals.pop('fiscalyear_last_day', None)
-            vals.pop('fiscalyear_last_month', None)
+            fiscalyear_last_day = vals.pop('fiscalyear_last_day', False) or self.env.company.fiscalyear_last_day
+            fiscalyear_last_month = vals.pop('fiscalyear_last_month', False) or self.env.company.fiscalyear_last_month
+            vals = {}
+            if fiscalyear_last_day != self.env.company.fiscalyear_last_day:
+                vals['fiscalyear_last_day'] = fiscalyear_last_day
+            if fiscalyear_last_month != self.env.company.fiscalyear_last_month:
+                vals['fiscalyear_last_month'] = fiscalyear_last_month
+            if vals:
+                self.env.company.write(vals)
         return super().create(vals_list)

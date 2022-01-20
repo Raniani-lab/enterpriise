@@ -23,7 +23,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
         return {
             'name': _('VAT Listing Audit'),
             'type': 'ir.actions.act_window',
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [[self.env.ref('account.view_move_line_tree').id, 'list'], [False, 'form']],
             'res_model': 'account.move.line',
             'context': {
                 'search_default_partner_id': params['id'],

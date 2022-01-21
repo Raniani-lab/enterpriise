@@ -37,8 +37,9 @@ class Sign(http.Controller):
                     except Exception:
                         item_type['auto_value'] = ''
                 if item_type['item_type'] in ['signature', 'initial']:
-                    user_signature = current_request_item.sign_get_user_signature(item_type['item_type'])
-                    item_type['auto_value'] = 'data:image/png;base64,%s' % user_signature.decode() if user_signature else user_signature
+                    signature_field_name = 'sign_signature' if item_type['item_type'] == 'signature' else 'sign_initials'
+                    user_signature = current_request_item._get_user_signature(signature_field_name)
+                    item_type['auto_value'] = 'data:image/png;base64,%s' % user_signature.decode() if user_signature else False
 
             if current_request_item.state == 'sent':
                 """ When signer attempts to sign the request again,

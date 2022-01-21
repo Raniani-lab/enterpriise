@@ -34,14 +34,16 @@ const SignNameAndSignature = NameAndSignature.extend({
    * @param {Object} options
    * @param {number} requestID
    * @param {string} accessToken
+   * @param {Array<String>} signatureFonts array of base64 encoded fonts
    */
-  init: function (parent, options, requestID, accessToken) {
+  init: function (parent, options, requestID, accessToken, signatureFonts) {
     this._super.apply(this, arguments);
 
     this.requestID = requestID;
     this.accessToken = accessToken;
     this.defaultSignature = options.defaultSignature || "";
     this.signatureChanged = false;
+    this.fonts = signatureFonts
   },
   /**
    * Sets the existing signature.
@@ -140,8 +142,9 @@ const SignatureDialog = Dialog.extend({
    *  @see NameAndSignature.init()
    * @param {number} requestID
    * @param {string} accessToken
+   * @param {Array<String>} signatureFonts array of base64 encoded fonts
    */
-  init: function (parent, options, requestID, accessToken) {
+  init: function (parent, options, requestID, accessToken, signatureFonts) {
     options = options || {};
 
     options.title = options.title || _t("Adopt Your Signature");
@@ -164,7 +167,8 @@ const SignatureDialog = Dialog.extend({
       this,
       options.nameAndSignatureOptions,
       requestID,
-      accessToken
+      accessToken,
+      signatureFonts
     );
   },
   /**
@@ -963,10 +967,20 @@ const SignablePDFIframe = PDFIframe.extend({
         this.signatureItemNav.goToNextSignItem();
       },
     });
+    this.fonts = [];
   },
-
+  fetchSignatureFonts: function () {
+    return this._rpc({
+      route: `/web/sign/get_fonts/`
+    }).then(data => {
+      this.fonts = data;
+    })
+  },
   doPDFPostLoad: function () {
-    this.fullyLoaded.then(() => {
+    Promise.all([
+      this.fullyLoaded,
+      this.fetchSignatureFonts()
+    ]).then(() => {
       this.signatureItemNav = new SignItemNavigator(this, this.types);
       return this.signatureItemNav
         .prependTo(this.$("#viewerContainer"))
@@ -1160,7 +1174,8 @@ const SignablePDFIframe = PDFIframe.extend({
       this,
       { nameAndSignatureOptions: nameAndSignatureOptions },
       this.getParent().requestID,
-      this.getParent().accessToken
+      this.getParent().accessToken,
+      this.fonts
     );
 
     signDialog.open().onConfirm(() => {

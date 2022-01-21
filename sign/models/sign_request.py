@@ -889,17 +889,15 @@ class SignRequestItem(models.Model):
                 body += sign_request_item.sign_request_id.message
             sign_request_item.sign_request_id.message_post(body=body, attachment_ids=sign_request_item.sign_request_id.attachment_ids.ids)
 
-    def sign_get_user_signature(self, signature_type='signature'):
-        """ Gets the user's stored signature/initial
-            :param signature_type: string 'signature' or 'initial'
+    def _get_user_signature(self, signature_type='sign_signature'):
+        """ Gets the user's stored sign_signature/sign_initials (needs sudo permission)
+            :param str signature_type: 'sign_signature' or 'sign_initials'
             :returns bytes or False
         """
         self.ensure_one()
-        sign_request_user = self.env['res.users'].search([('partner_id', '=', self.partner_id.id)], limit=1)
-        if sign_request_user and signature_type == 'signature':
-            return sign_request_user.sign_signature
-        elif sign_request_user and signature_type == 'initial':
-            return sign_request_user.sign_initials
+        sign_user = self.partner_id.user_ids[:1]
+        if sign_user and signature_type in ['sign_signature', 'sign_initials']:
+            return sign_user[signature_type]
         return False
 
     def _reset_sms_token(self):

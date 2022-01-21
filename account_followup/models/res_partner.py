@@ -30,7 +30,12 @@ class ResPartner(models.Model):
         compute='_compute_for_followup',
         string='Follow-up Status',
         search='_search_status')
-    followup_level = fields.Many2one('account_followup.followup.line', compute="_compute_for_followup", string="Follow-up Level")
+    followup_level = fields.Many2one(
+        comodel_name='account_followup.followup.line',
+        compute="_compute_for_followup",
+        string="Follow-up Level",
+        search='_search_followup_level',
+    )
     payment_responsible_id = fields.Many2one('res.users', ondelete='set null', string='Follow-up Responsible',
                                              help="Optionally you can assign a user to this field, which will make him responsible for the action.",
                                              tracking=True, copy=False, company_dependent=True)
@@ -46,6 +51,28 @@ class ResPartner(models.Model):
             return []
         followup_data = self._query_followup_level(all_partners=True)
         return [('id', 'in', [d['partner_id'] for d in followup_data.values() if d['followup_status'] in value])]
+
+    def _search_followup_level(self, operator, value):
+        company_domain = [('company_id', '=', self.env.company.id)]
+        if isinstance(value, str):
+            domain = [('name', operator, value)]
+        elif isinstance(value, (int, list, tuple)):
+            domain = [('id', operator, value)]
+
+        first_followup_level = self.env['account_followup.followup.line'].search(company_domain, order="delay asc", limit=1)
+        level_ids = set(self.env['account_followup.followup.line'].search(domain+company_domain).ids)
+        if first_followup_level.id in level_ids:
+            # the result from the query is None when it is not  yet at a followup level
+            # but it is set to the first level in the compute method
+            level_ids.add(None)
+
+        followup_data = self._query_followup_level(all_partners=True)
+
+        return [('id', 'in', [
+            d['partner_id']
+            for d in followup_data.values()
+            if d['followup_level'] in level_ids
+        ])]
 
     def _compute_for_followup(self):
         """

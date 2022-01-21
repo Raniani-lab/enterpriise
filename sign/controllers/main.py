@@ -33,9 +33,12 @@ class Sign(http.Controller):
                 if item_type['auto_field']:
                     try:
                         auto_field = current_request_item.partner_id.mapped(item_type['auto_field'])
-                        item_type['auto_field'] = auto_field[0] if auto_field and not isinstance(auto_field, models.BaseModel) else ''
+                        item_type['auto_value'] = auto_field[0] if auto_field and not isinstance(auto_field, models.BaseModel) else ''
                     except Exception:
-                        item_type['auto_field'] = ''
+                        item_type['auto_value'] = ''
+                if item_type['item_type'] in ['signature', 'initial']:
+                    user_signature = current_request_item.sign_get_user_signature(item_type['item_type'])
+                    item_type['auto_value'] = 'data:image/png;base64,%s' % user_signature.decode() if user_signature else user_signature
 
             if current_request_item.state == 'sent':
                 """ When signer attempts to sign the request again,
@@ -212,22 +215,6 @@ class Sign(http.Controller):
             existing = ResPartner.search([('email', '=', p[1])], limit=1)
             pIDs.append(existing.id if existing else ResPartner.create({'name': p[0], 'email': p[1]}).id)
         return pIDs
-
-    @http.route(['/sign/get_signature/<int:request_id>/<item_access_token>'], type='json', auth='public')
-    def sign_get_user_signature(self, request_id, item_access_token, signature_type='signature'):
-        sign_request_item = http.request.env['sign.request.item'].sudo().search([
-            ('sign_request_id', '=', request_id),
-            ('access_token', '=', item_access_token)
-        ])
-        if not sign_request_item:
-            return False
-
-        sign_request_user = http.request.env['res.users'].sudo().search([('partner_id', '=', sign_request_item.partner_id.id)], limit=1)
-        if sign_request_user and signature_type == 'signature':
-            return sign_request_user.sign_signature
-        elif sign_request_user and signature_type == 'initial':
-            return sign_request_user.sign_initials
-        return False
 
     @http.route(['/sign/send_public/<int:id>/<token>'], type='json', auth='public')
     def make_public_user(self, id, token, name=None, mail=None):

@@ -889,6 +889,19 @@ class SignRequestItem(models.Model):
                 body += sign_request_item.sign_request_id.message
             sign_request_item.sign_request_id.message_post(body=body, attachment_ids=sign_request_item.sign_request_id.attachment_ids.ids)
 
+    def sign_get_user_signature(self, signature_type='signature'):
+        """ Gets the user's stored signature/initial
+            :param signature_type: string 'signature' or 'initial'
+            :returns bytes or False
+        """
+        self.ensure_one()
+        sign_request_user = self.env['res.users'].search([('partner_id', '=', self.partner_id.id)], limit=1)
+        if sign_request_user and signature_type == 'signature':
+            return sign_request_user.sign_signature
+        elif sign_request_user and signature_type == 'initial':
+            return sign_request_user.sign_initials
+        return False
+
     def _reset_sms_token(self):
         for record in self:
             record.sms_token = randint(100000, 999999)

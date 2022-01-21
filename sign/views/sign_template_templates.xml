@@ -47,7 +47,7 @@
                 t-att-data-placeholder="item_type['placeholder']"
                 t-att-data-default-height="item_type['default_height']"
                 t-att-data-default-width="item_type['default_width']"
-                t-att-data-auto_field="item_type['auto_field']"/>
+                t-att-data-auto_value="item_type.get('auto_value')"/>
         </t>
     </template>
 

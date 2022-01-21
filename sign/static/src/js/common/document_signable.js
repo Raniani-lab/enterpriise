@@ -40,34 +40,8 @@ const SignNameAndSignature = NameAndSignature.extend({
 
     this.requestID = requestID;
     this.accessToken = accessToken;
-
-    this.defaultSignature = "";
+    this.defaultSignature = options.defaultSignature || "";
     this.signatureChanged = false;
-  },
-  /**
-   * Fetches the existing signature.
-   *
-   * @override
-   */
-  willStart: function () {
-    const self = this;
-    return Promise.all([
-      this._super.apply(this, arguments),
-      self
-        ._rpc({
-          route:
-            "/sign/get_signature/" + self.requestID + "/" + self.accessToken,
-          params: {
-            signature_type: self.signatureType,
-          },
-        })
-        .then(function (signature) {
-          if (signature) {
-            signature = "data:image/png;base64," + signature;
-            self.defaultSignature = signature;
-          }
-        }),
-    ]);
   },
   /**
    * Sets the existing signature.
@@ -989,50 +963,10 @@ const SignablePDFIframe = PDFIframe.extend({
         this.signatureItemNav.goToNextSignItem();
       },
     });
-    this.nextSignature = "";
-    this.nextInitial = "";
-  },
-  /**
-   * Fetches the signature of the user
-   * @param { String } signatureType 'signature' or 'initial'
-   * @returns
-   */
-  fetchSignature: function (signatureType = "signature") {
-    const shouldRequestSignature = Object.values(this.signatureItems).some(
-      (currentSignature) => {
-        return this.types[currentSignature.type].item_type === signatureType;
-      }
-    );
-
-    if (shouldRequestSignature) {
-      return this._rpc({
-        route:
-          "/sign/get_signature/" +
-          this.getParent().requestID +
-          "/" +
-          this.getParent().accessToken,
-        params: {
-          signature_type: signatureType,
-        },
-      }).then((signature) => {
-        if (signature) {
-          signature = "data:image/png;base64," + signature;
-          if (signatureType === "signature") {
-            this.nextSignature = signature;
-          } else {
-            this.nextInitial = signature;
-          }
-        }
-      });
-    }
   },
 
   doPDFPostLoad: function () {
-    Promise.all([
-      this.fullyLoaded,
-      this.fetchSignature("signature"),
-      this.fetchSignature("initial"),
-    ]).then(() => {
+    this.fullyLoaded.then(() => {
       this.signatureItemNav = new SignItemNavigator(this, this.types);
       return this.signatureItemNav
         .prependTo(this.$("#viewerContainer"))
@@ -1144,10 +1078,9 @@ const SignablePDFIframe = PDFIframe.extend({
         )
       );
     }
-
-    if (type.auto_field) {
+    if (type.auto_value && ['text', 'textarea'].includes(type.item_type)) {
       $signatureItem.on("focus", (e) =>
-        this.fillTextSignItem($signatureItem, type.auto_field)
+        this.fillTextSignItem($signatureItem, type.auto_value)
       );
     }
 
@@ -1185,9 +1118,7 @@ const SignablePDFIframe = PDFIframe.extend({
   },
   /**
    * Logic for wizard/mark behavior is:
-   * If type is signature, nextSignature is defined and the item is not marked yet, the default signature is used
-   * Else, wizard is opened.
-   * If type is initial, other initial items were already signed and item is not marked yet, the previous initial is used
+   * If auto_value is defined and the item is not marked yet, auto_value is used
    * Else, wizard is opened.
    * @param { jQuery } $signatureItem
    * @param { Object } type
@@ -1195,28 +1126,10 @@ const SignablePDFIframe = PDFIframe.extend({
   handleSignatureDialogClick($signatureItem, type) {
     this.refreshSignItems();
     if (
-      type.item_type === "signature" &&
-      this.nextSignature &&
+      type.auto_value &&
       !$signatureItem.data("signature")
     ) {
-      this.adjustSignatureSize(this.nextSignature, $signatureItem).then(
-        (data) => {
-          $signatureItem
-            .data("signature", data)
-            .empty()
-            .append(
-              $("<span/>").addClass("o_sign_helper"),
-              $("<img/>", { src: $signatureItem.data("signature") })
-            );
-          $signatureItem.trigger("input");
-        }
-      );
-    } else if (
-      type.item_type === "initial" &&
-      this.nextInitial &&
-      !$signatureItem.data("signature")
-    ) {
-      this.adjustSignatureSize(this.nextInitial, $signatureItem).then(
+      this.adjustSignatureSize(type.auto_value, $signatureItem).then(
         (data) => {
           $signatureItem
             .data("signature", data)
@@ -1238,6 +1151,7 @@ const SignablePDFIframe = PDFIframe.extend({
       defaultName: this.getParent().signerName || "",
       fontColor: "DarkBlue",
       signatureType: type.item_type,
+      defaultSignature: type.auto_value,
       displaySignatureRatio:
         parseFloat($signatureItem.css("width")) /
         parseFloat($signatureItem.css("height")),
@@ -1255,10 +1169,10 @@ const SignablePDFIframe = PDFIframe.extend({
         const signature = signDialog.getSignatureImageSrc();
         this.getParent().signerName = name;
 
-        this.updateNextSignatureOrInitial(type.item_type, signature);
+        type.auto_value = signature;
 
         if (signDialog.nameAndSignature.signatureChanged) {
-          this.updateUserSignature(type.item_type, signature);
+          this.updateUserSignature(type);
         }
 
         $signatureItem
@@ -1286,10 +1200,10 @@ const SignablePDFIframe = PDFIframe.extend({
       const signature = signDialog.getSignatureImageSrc();
       this.getParent().signerName = name;
 
-      this.updateNextSignatureOrInitial(type.item_type, signature);
+      type.auto_value = signature;
 
       if (signDialog.nameAndSignature.signatureChanged) {
-        this.updateUserSignature(type.item_type, signature);
+        this.updateUserSignature(type);
       }
 
       for (const pageNumber of Object.keys(this.configuration)) {
@@ -1320,34 +1234,19 @@ const SignablePDFIframe = PDFIframe.extend({
       signDialog.close();
     });
   },
-
-  /**
-   * Updates the next signature variable for signature or initial
-   * @param { Object } type
-   * @param { String } signature base64 encoded image
-   */
-  updateNextSignatureOrInitial(type, signature) {
-    if (type === "signature") {
-      this.nextSignature = signature;
-    } else {
-      this.nextInitial = signature;
-    }
-  },
-
   /**
    * Updates the user's signature in the res.user model
    * @param { Object } type
-   * @param { String } signature base64 encoded image
    */
-  updateUserSignature(type, signature) {
+  updateUserSignature(type) {
     this._rpc({
       route: "/sign/update_user_signature/",
       params: {
         sign_request_id: this.getParent().requestID,
         role: this.role,
         signature_type:
-          type === "signature" ? "sign_signature" : "sign_initials",
-        datas: signature,
+          type.item_type === "signature" ? "sign_signature" : "sign_initials",
+        datas: type.auto_value,
       },
     });
   },

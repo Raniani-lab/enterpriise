@@ -224,6 +224,7 @@ class Picking(models.Model):
             'mnt_value': float_repr(self._l10n_cl_get_tax_amounts()[0]['total_amount'], 0),
             'picking': self,
             'it1_value': self._format_length(move_ids[0].product_id.name, 40) if move_ids else '',
+            '__keep_empty_lines': True,
         }
         return values
 

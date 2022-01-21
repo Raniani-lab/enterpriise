@@ -200,6 +200,46 @@
             <field name="project_id" ref="project.project_project_3"/>
         </record>
 
+        <record id="planning.planning_slot_260" model="planning.slot">
+            <field name="project_id" ref="project.project_project_3"/>
+        </record>
+
+        <record id="planning.planning_slot_263" model="planning.slot">
+            <field name="project_id" ref="project.project_project_1"/>
+        </record>
+
+        <record id="planning.planning_slot_265" model="planning.slot">
+            <field name="project_id" ref="project.project_project_2"/>
+        </record>
+
+        <record id="planning.planning_slot_270" model="planning.slot">
+            <field name="project_id" ref="project.project_project_1"/>
+        </record>
+
+        <record id="planning.planning_slot_272" model="planning.slot">
+            <field name="project_id" ref="project.project_project_2"/>
+        </record>
+
+        <record id="planning.planning_slot_275" model="planning.slot">
+            <field name="project_id" ref="project.project_project_1"/>
+        </record>
+
+        <record id="planning.planning_slot_276" model="planning.slot">
+            <field name="project_id" ref="project.project_project_1"/>
+        </record>
+
+        <record id="planning.planning_slot_279" model="planning.slot">
+            <field name="project_id" ref="project.project_project_3"/>
+        </record>
+
+        <record id="planning.planning_slot_283" model="planning.slot">
+            <field name="project_id" ref="project.project_project_2"/>
+        </record>
+
+        <record id="planning.planning_slot_285" model="planning.slot">
+            <field name="project_id" ref="project.project_project_1"/>
+        </record>
+
     </data>
 
 </odoo>

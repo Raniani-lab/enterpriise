@@ -27,6 +27,54 @@
             <field name="task_id" ref="project.project_2_task_8"/>
         </record>
 
+        <!--                                        Previous week                                        -->
+        <!-- Monday evening shifts -->
+        <record id="project_forecast_slot112" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d 15:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
+            <field name="role_id" ref="planning.planning_role_developer"/>
+            <field name="project_id" ref="project.project_project_1"/>
+            <field name="task_id" ref="project.project_1_task_11"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+
+        <!-- Wednesday morning shifts -->
+        <record id="project_forecast_slot113" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 5)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 5)).strftime('%Y-%m-%d 10:00:00')"/>
+            <field name="role_id" ref="planning.planning_role_developer"/>
+            <field name="project_id" ref="project.project_project_1"/>
+            <field name="task_id" ref="project.project_1_task_11"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+
+        <!-- Thursday evening shifts -->
+        <record id="project_forecast_slot114" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 4)).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 4)).strftime('%Y-%m-%d 15:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jep').resource_id.id"/>
+            <field name="role_id" ref="planning.planning_role_cm"/>
+            <field name="project_id" ref="project.project_project_1"/>
+            <field name="task_id" ref="project.project_1_task_9"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+
+        <!-- Friday morning shifts -->
+        <record id="project_forecast_slot115" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d 10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jth').resource_id.id"/>
+            <field name="role_id" ref="planning.planning_role_management"/>
+            <field name="project_id" ref="project.project_project_1"/>
+            <field name="task_id" ref="project.project_1_task_12"/>
+            <field name="publication_warning" eval="False"/>
+            <field name="state">published</field>
+        </record>
+
         <!--                                        Week 1                                        -->
         <!-- Monday afternoon shifts -->
         <record id="project_forecast_slot111" model="planning.slot">
@@ -45,6 +93,7 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 10:00:00')"/>
             <field name="role_id" ref="planning.planning_role_developer"/>
             <field name="publication_warning" eval="False"/>
+            <field name="project_id" ref="project.project_project_1"/>
             <field name="task_id" ref="project.project_1_task_11"/>
             <field name="state">published</field>
         </record>

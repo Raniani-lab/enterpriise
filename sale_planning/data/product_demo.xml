@@ -160,6 +160,117 @@
 
         <!-- Planning house keeper -->
         <!-- Role Technicial -->
+        <!-- PREVIOUS WEEK -->
+        <record id="sale_planning_slot_123" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_4"/>
+        </record>
+        <record id="sale_planning_slot_124" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_5"/>
+        </record>
+        <record id="sale_planning_slot_125" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d  15:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_5"/>
+        </record>
+
+        <!-- Tuesday -->
+        <record id="sale_planning_slot_126" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_6"/>
+        </record>
+        <record id="sale_planning_slot_127" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d  15:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_6"/>
+        </record>
+
+        <!-- Thursday -->
+        <record id="sale_planning_slot_128" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 4)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 4)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_4"/>
+        </record>
+
+        <!-- Friday -->
+        <record id="sale_planning_slot_129" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_4"/>
+        </record>
+        <record id="sale_planning_slot_130" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
+            <field name="role_id" ref="planning_role_technician"/>
+            <field name="sale_line_id" ref="sale.sale_order_line_5"/>
+        </record>
+
+        <!-- Role Tester planner -->
+        <!-- PREVIOUS WEEK -->
+        <!-- Monday -->
+        <record id="sale_planning_slot_131" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 7)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jve').resource_id.id"/>
+            <field name="role_id" ref="planning_role_tester"/>
+            <field name="sale_line_id" ref="sale_order_line_53"/>
+        </record>
+
+        <!-- Tuesday -->
+        <record id="sale_planning_slot_132" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_hne').resource_id.id"/>
+            <field name="role_id" ref="planning_role_tester"/>
+            <field name="sale_line_id" ref="sale_order_line_51"/>
+        </record>
+        <record id="sale_planning_slot_133" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 6)).strftime('%Y-%m-%d  15:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jgo').resource_id.id"/>
+            <field name="role_id" ref="planning_role_planner"/>
+            <field name="sale_line_id" ref="sale_order_line_53"/>
+        </record>
+
+        <!-- Thursday -->
+        <record id="sale_planning_slot_134" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 4)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 4)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_hne').resource_id.id"/>
+            <field name="role_id" ref="planning_role_tester"/>
+            <field name="sale_line_id" ref="sale_order_line_52"/>
+        </record>
+
+        <!-- Friday -->
+        <record id="sale_planning_slot_135" model="planning.slot">
+            <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d 06:00:00')"/>
+            <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() + 3)).strftime('%Y-%m-%d  10:00:00')"/>
+            <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jgo').resource_id.id"/>
+            <field name="role_id" ref="planning_role_planner"/>
+            <field name="sale_line_id" ref="sale_order_line_51"/>
+        </record>
+
+        <!-- Planning house keeper -->
+        <!-- Role Technicial -->
         <!-- WEEK 1 -->
         <!-- Monday -->
         <record id="sale_planning_slot_11" model="planning.slot">
@@ -168,9 +279,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_4"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_12" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
@@ -178,9 +287,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_5"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_13" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 11:00:00')"/>
@@ -188,9 +295,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_5"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Tuesday -->
@@ -200,9 +305,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_6"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_22" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -210,9 +313,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_4"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_23" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -220,9 +321,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_5"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_24" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -230,9 +329,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_6"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Thursday -->
@@ -242,9 +339,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_4"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_33" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -252,9 +347,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_5"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_34" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -262,9 +355,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_6"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Friday -->
@@ -274,9 +365,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jog').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_4"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_42" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -284,9 +373,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_chs').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_technician"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale.sale_order_line_5"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Week 2 -->
@@ -351,9 +438,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jve').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_53"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_72" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
@@ -361,9 +446,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_lur').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_52"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_73" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 11:00:00')"/>
@@ -371,9 +454,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jve').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_52"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Tuesday -->
@@ -383,9 +464,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_hne').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_51"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_82" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -393,9 +472,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_hne').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_51"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_83" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -403,9 +480,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jve').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_53"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_84" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -413,9 +488,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jgo').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_53"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Thursday -->
@@ -425,9 +498,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_hne').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_52"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_93" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -435,9 +506,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jve').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_52"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_94" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -445,9 +514,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_lur').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_51"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Friday -->
@@ -457,9 +524,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jgo').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_51"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_102" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -467,9 +532,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_lur').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_53"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Week 2 -->
@@ -481,9 +544,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_hne').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_53"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_113" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 8)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -491,9 +552,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_lur').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_52"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_114" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 8)).strftime('%Y-%m-%d 11:00:00')"/>
@@ -501,9 +560,7 @@
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jgo').resource_id.id"/>
             <field name="allocated_hours" eval="4.0"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_52"/>
-            <field name="state">draft</field>
         </record>
 
         <!-- Wednesday -->
@@ -512,18 +569,14 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 9)).strftime('%Y-%m-%d  10:00:00')"/>
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jgo').resource_id.id"/>
             <field name="role_id" ref="planning_role_planner"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_51"/>
-            <field name="state">draft</field>
         </record>
         <record id="sale_planning_slot_122" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 9)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 9)).strftime('%Y-%m-%d  10:00:00')"/>
             <field name="resource_id" model="resource.resource" eval="obj().env.ref('hr.employee_jve').resource_id.id"/>
             <field name="role_id" ref="planning_role_tester"/>
-            <field name="publication_warning" eval="False"/>
             <field name="sale_line_id" ref="sale_order_line_51"/>
-            <field name="state">draft</field>
         </record>
 
     </data>

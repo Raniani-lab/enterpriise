@@ -125,6 +125,9 @@ class HrContract(models.Model):
     def _get_advantage_values_insured_relative_spouse(self, contract, advantages):
         return {'insured_relative_spouse': advantages['fold_insured_relative_spouse']}
 
+    def _get_advantage_values_l10n_be_ambulatory_insured_spouse(self, contract, advantages):
+        return {'l10n_be_ambulatory_insured_spouse': advantages['fold_l10n_be_ambulatory_insured_spouse']}
+
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):
         advantage = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')
         description = advantage.description

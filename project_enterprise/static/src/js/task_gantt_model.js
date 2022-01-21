@@ -80,9 +80,19 @@ export default GanttModel.extend({
             }
         }
         const rows = this._super(params);
-        // always move an empty row to the head
-        if (groupedBy && groupedBy.length && rows.length > 1 && rows[0].resId) {
-            this._reorderEmptyRow(rows);
+
+        // Sort rows alphabetically, except when grouping by stage or personal stage
+        if (!['stage_id', 'personal_stage_type_ids'].includes(rows[0].groupedByField)) {
+            rows.sort((a, b) => {
+                if (a.resId && !b.resId) return 1;
+                if (!a.resId && b.resId) return -1;
+                return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+            });
+        } else {
+            // When not sorting, move empty rows to the top
+            if (groupedBy && groupedBy.length && rows.length > 1 && rows[0].resId) {
+                this._reorderEmptyRow(rows);
+            }
         }
         return rows;
     },

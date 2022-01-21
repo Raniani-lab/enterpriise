@@ -53,6 +53,11 @@ class Applicant(models.Model):
         self._check_referral_fields_access(fields)
         return super().read(fields, load)
 
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        self._check_referral_fields_access(fields)
+        return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
+
     @api.depends('referral_points_ids')
     def _compute_shared_item_infos(self):
         for applicant in self:

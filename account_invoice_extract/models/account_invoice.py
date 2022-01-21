@@ -863,11 +863,11 @@ class AccountMove(models.Model):
                 for taxes_record in line_val['tax_ids']:
                     tax_tuple = (taxes_record.amount, taxes_record.amount_type, taxes_record.price_include)
                     if tax_tuple not in taxes_dict:
-                        if taxes_record.price_include:
-                            line.price_unit *= 1 + taxes_record.amount / 100
                         line.tax_ids.add(taxes_record)
                     else:
                         taxes_dict[tax_tuple]['found_by_OCR'] = True
+                    if taxes_record.price_include:
+                        line.price_unit *= 1 + taxes_record.amount / 100
                 for tax_info in taxes_dict.values():
                     if not tax_info['found_by_OCR']:
                         amount_before = line.price_total

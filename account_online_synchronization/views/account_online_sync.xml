@@ -42,6 +42,7 @@
                             <group>
                                 <field name="last_refresh" readonly="1" string="Last refresh" attrs="{'invisible': [('provider_data', '=', False)]}"/>
                                 <field name="next_refresh" readonly="1" attrs="{'invisible': ['|', ('provider_data', '=', False), ('auto_sync', '=', False)]}"/>
+                                <field name="expiring_synchronization_date" readonly="1" attrs="{'invisible': [('provider_data', '=', False)]}"/>
                             </group>
                         </group>
                         <group>
@@ -63,6 +64,7 @@
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids"/>
                     </div>
                 </form>
             </field>
@@ -149,6 +151,8 @@
             <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
             <field name="arch" type="xml">
                 <field name="kanban_dashboard" position="after">
+                    <field name="expiring_synchronization_date"/>
+                    <field name="expiring_synchronization_due_day"/>
                     <field name="next_link_synchronization"/>
                     <field name="account_online_account_id"/>
                     <field name="account_online_link_state"/>
@@ -157,6 +161,25 @@
                 <xpath expr='//div[@name="bank_journal_cta"]' position='inside'>
                     <t t-if="dashboard.bank_statements_source === 'online_sync'">
                         <t t-if="record.account_online_link_state.raw_value === 'connected'">
+                            <t t-set="test_danger_expiring_date" t-value="record.expiring_synchronization_due_day.value &lt;= 3"/>
+                            <t t-set="test_warning_expiring_date" t-value="record.expiring_synchronization_due_day.value &lt;= 7"/>
+                            <a groups="account.group_account_user" attrs="{'invisible': [('expiring_synchronization_date', '=', None)]}"
+                               type="object" name="action_open_account_online_link"
+                               t-att-class="'oe_inline ' + (test_warning_expiring_date ? test_danger_expiring_date ? 'text-danger' : 'text-warning' : '')">
+                                <t t-if="record.expiring_synchronization_due_day.value &gt; 7">
+                                    Consent expires on <t t-esc="moment(record.expiring_synchronization_date.value).format('DD MMM')"/>
+                                </t>
+                                <t t-elif="record.expiring_synchronization_due_day.value == 0">
+                                    Consent expires today
+                                </t>
+                                <t t-elif="record.expiring_synchronization_due_day.value &lt; 0">
+                                    Consent expired
+                                </t>
+                                <t t-else="">
+                                    Consent expires in <t t-esc="record.expiring_synchronization_due_day.value"/> day<t t-if="record.expiring_synchronization_due_day.value &gt; 1">s</t>
+                                </t>
+                            </a>
+                            <br attrs="{'invisible': [('expiring_synchronization_date', '=', None)]}"/>
                             <a attrs="{'invisible': [('account_online_account_id', '=', False)]}" type="object"
                                 name="manual_sync" class="oe_inline" groups="account.group_account_user">Synchronize now</a>
                             <br/>
@@ -164,8 +187,8 @@
                     </t>
 
                     <t t-if="record.account_online_link_state.raw_value === 'connected'">
-                        <span groups="account.group_account_user" class="text-muted" t-if="(record.account_online_account_id.value != '')" t-att-title="record.next_link_synchronization.value">
-                            Next sync: <t t-esc="record.next_link_synchronization.value"/>
+                        <span groups="account.group_account_user" class="text-muted" t-if="(record.next_link_synchronization !== undefined)">
+                            Next sync: <t t-esc="moment(record.next_link_synchronization.value).format('DD MMM HH:MM:ss')"/>
                         </span>
                         <br/>
                     </t>
@@ -193,6 +216,14 @@
                     <attribute name="t-if">dashboard.bank_statements_source != 'online_sync'</attribute>
                 </xpath>
             </field>
+        </record>
+
+        <record id="bank_sync_activity_update_consent" model="mail.activity.type">
+            <field name="name">Bank Synchronization: Update consent</field>
+            <field name="icon">fa-university</field>
+            <field name="decoration_type">warning</field>
+            <field name="res_model">account.online.link</field>
+            <field name="delay_count">0</field>
         </record>
 
         <record id="view_bank_statement_line_tree_inherit" model="ir.ui.view">

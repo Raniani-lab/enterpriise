@@ -107,8 +107,8 @@ class AccountOnlineAccount(models.Model):
 
 class AccountOnlineLink(models.Model):
     _name = 'account.online.link'
-    _description = 'connection to an online banking institution'
-    _inherit = ['mail.thread']
+    _description = 'Bank Connection'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     def _compute_next_synchronization(self):
         for rec in self:
@@ -128,6 +128,7 @@ class AccountOnlineLink(models.Model):
     refresh_token = fields.Char(help="Token used to sign API request, Never disclose it", readonly=True, groups="base.group_system")
     access_token = fields.Char(help="Token used to access API.", readonly=True, groups="account.group_account_user")
     provider_data = fields.Char(help="Information needed to interract with third party provider", readonly=True)
+    expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires", readonly=True)
 
     ##########################
     # Wizard opening actions #
@@ -373,6 +374,36 @@ class AccountOnlineLink(models.Model):
 
         return self._show_fetched_transactions_action(bank_statement_line_ids)
 
+    def _get_consent_expiring_date(self):
+        self.ensure_one()
+        resp_json = self._fetch_odoo_fin('/proxy/v1/consent_expiring_date', ignore_status=True)
+
+        if resp_json.get('consent_expiring_date'):
+            expiring_synchronization_date = fields.Date.to_date(resp_json['consent_expiring_date'])
+            if expiring_synchronization_date != self.expiring_synchronization_date:
+                bank_sync_activity_type_id = self.env.ref('account_online_synchronization.bank_sync_activity_update_consent')
+                account_online_link_model_id = self.env['ir.model'].search([('model', '=', 'account.online.link')], limit=1).id
+
+                # Remove old activities
+                self.env['mail.activity'].search([
+                    ('res_id', '=', self.id),
+                    ('res_model_id', '=', account_online_link_model_id),
+                    ('activity_type_id', '=', bank_sync_activity_type_id.id),
+                    ('date_deadline', '<=', self.expiring_synchronization_date),
+                    ('user_id', '=', self.env.user.id),
+                ]).unlink()
+
+                # Create a new activity
+                self.expiring_synchronization_date = expiring_synchronization_date
+                self.env['mail.activity'].create({
+                    'res_id': self.id,
+                    'res_model_id': account_online_link_model_id,
+                    'date_deadline': self.expiring_synchronization_date,
+                    'summary': _("Bank Synchronization: Update your consent"),
+                    'note': resp_json.get('activity_message') or '',
+                    'activity_type_id': bank_sync_activity_type_id.id,
+                })
+
     ################################
     # Callback methods from iframe #
     ################################
@@ -387,6 +418,8 @@ class AccountOnlineLink(models.Model):
             # that provider_data is commited in database as soon as we received it.
             if data.get('provider_data'):
                 self.env.cr.commit()
+
+            self._get_consent_expiring_date()
         # if for some reason we just have to update the record without doing anything else, the mode will be set to 'none'
         if mode == 'none':
             return {'type': 'ir.actions.client', 'tag': 'reload'}

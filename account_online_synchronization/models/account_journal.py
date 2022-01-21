@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
 
 class AccountJournal(models.Model):
     _inherit = "account.journal"
@@ -20,6 +19,8 @@ class AccountJournal(models.Model):
                 ('month', _('Create monthly statements'))]
 
     next_link_synchronization = fields.Datetime("Online Link Next synchronization", related='account_online_link_id.next_refresh')
+    expiring_synchronization_date = fields.Date(related='account_online_link_id.expiring_synchronization_date')
+    expiring_synchronization_due_day = fields.Integer(compute='_compute_expiring_synchronization_due_day')
     account_online_account_id = fields.Many2one('account.online.account', ondelete='set null')
     account_online_link_id = fields.Many2one('account.online.link', related='account_online_account_id.account_online_link_id', readonly=True, store=True)
     account_online_link_state = fields.Selection(related="account_online_link_id.state", readonly=True)
@@ -28,6 +29,15 @@ class AccountJournal(models.Model):
                                                     "new transactions from your bank account.",
                                                default='month',
                                                string='Creation of Bank Statements')
+
+    @api.depends('expiring_synchronization_date')
+    def _compute_expiring_synchronization_due_day(self):
+        for record in self:
+            if record.expiring_synchronization_date:
+                due_day_delta = record.expiring_synchronization_date - fields.Date.context_today(record)
+                record.expiring_synchronization_due_day = due_day_delta.days
+            else:
+                record.expiring_synchronization_due_day = 0
 
     @api.model
     def _cron_fetch_online_transactions(self):
@@ -61,3 +71,15 @@ class AccountJournal(models.Model):
         "Configure" button in dashboard.
         '''
         return self.env['account.online.link'].action_new_synchronization()
+
+    def action_open_account_online_link(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.account_online_link_id.name,
+            'res_model': 'account.online.link',
+            'target': 'main',
+            'view_mode': 'form',
+            'views': [[False, 'form']],
+            'res_id': self.account_online_link_id.id,
+        }

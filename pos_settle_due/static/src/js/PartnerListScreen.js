@@ -16,7 +16,8 @@ odoo.define('pos_settle_due.PartnerListScreen', function (require) {
                 return `/web#model=res.partner&id=${this.state.editModeProps.partner.id}`;
             }
             async settleCustomerDue() {
-                const totalDue = this.state.editModeProps.partner.total_due;
+                let updatedDue = await this.env.pos.refreshTotalDueOfPartner(this.state.editModeProps.partner);
+                const totalDue = updatedDue ? updatedDue[0].total_due : this.state.editModeProps.partner.total_due;
                 const paymentMethods = this.env.pos.payment_methods.filter(
                     (method) => this.env.pos.config.payment_method_ids.includes(method.id) && method.type != 'pay_later'
                 );
@@ -37,15 +38,6 @@ odoo.define('pos_settle_due.PartnerListScreen', function (require) {
                 payment.set_amount(totalDue);
                 newOrder.set_partner(this.state.selectedPartner);
                 this.showScreen('PaymentScreen');
-            }
-            async refreshTotalDue() {
-                const partnersWithUpdatedFields = await this.rpc({
-                    model: 'res.partner',
-                    method: 'search_read',
-                    args: [[['id', 'in', this.env.pos.db.partner_sorted]], ['total_due']],
-                });
-                this.env.pos.db.update_partners(partnersWithUpdatedFields);
-                this.render();
             }
         };
 

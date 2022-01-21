@@ -66,6 +66,15 @@ odoo.define('pos_settle_due.PaymentScreen', function (require) {
                     return super.validateOrder(...arguments);
                 }
             }
+            async _finalizeValidation() {
+                await super._finalizeValidation(...arguments);
+                const hasCustomerAccountAsPaymentMethod = this.currentOrder.get_paymentlines().find(
+                    paymentline => paymentline.payment_method.type === 'pay_later'
+                );
+                if (hasCustomerAccountAsPaymentMethod) {
+                    this.env.pos.refreshTotalDueOfPartner(this.currentOrder.get_partner());
+                }
+            }
         };
 
     Registries.Component.extend(PaymentScreen, PosSettleDuePaymentScreen);

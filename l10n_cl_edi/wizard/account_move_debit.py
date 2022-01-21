@@ -61,7 +61,7 @@ class AccountDebitNote(models.TransientModel):
             tax_amount = sum([(taxes.price_unit if taxes.move_id.move_type in [
                 'out_refund', 'in_refund'] else -taxes.price_unit) for taxes in move.line_ids.filtered(
                 lambda x: self._is_tax(x.account_id))])
-            for line in move.line_ids:
+            for line in move.line_ids.filtered(lambda x: not x.display_type):
                 if self._is_tax(line.account_id):
                     # if we have a line with a tax, there will be an unbalanced move entry. We must leave the tax
                     # apart and let the tax calculation to happen during the post

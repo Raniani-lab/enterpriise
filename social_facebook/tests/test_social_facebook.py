@@ -5,6 +5,7 @@ import json
 import requests
 
 from freezegun import freeze_time
+from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.addons.social_facebook.models.social_post import SocialPostFacebook
 from odoo.addons.social_facebook.models.social_stream import SocialStreamFacebook
 from odoo.addons.social_facebook.tests.common import SocialFacebookCommon
@@ -40,14 +41,15 @@ class SocialFacebookCase(SocialFacebookCommon):
     def _get_social_media(cls):
         return cls.env.ref('social_facebook.social_media_facebook')
 
+    @mock_void_external_calls()
     def test_format_facebook_message(self):
-        with patch.object(SocialStreamFacebook, '_fetch_stream_data', lambda *args, **kwargs: None):
-            social_stream = self.env['social.stream'].create({
-                'media_id': self.social_account.media_id.id,
-                'account_id': self.social_account.id,
-                'stream_type_id': self.env.ref('social_facebook.stream_type_page_posts').id,
+        social_stream = self.env['social.stream'].create({
+            'media_id': self.social_account.media_id.id,
+            'account_id': self.social_account.id,
+            'stream_type_id': self.env.ref('social_facebook.stream_type_page_posts').id,
 
-            })
+        })
+
         message = "Hi, Social is so cool :) Thanks Odoo"
         tags = [{
             'id': 1337,

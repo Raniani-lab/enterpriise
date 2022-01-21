@@ -3,53 +3,56 @@
 
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.social.tests import common
+from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.tests.common import Form, users
 
 
 class TestSocialCrmConvert(common.SocialCase):
     @classmethod
     def setUpClass(cls):
-        super(TestSocialCrmConvert, cls).setUpClass()
+        with mock_void_external_calls():
+            super(TestSocialCrmConvert, cls).setUpClass()
 
-        cls.user_social_crm = mail_new_test_user(
-            cls.env, login='user_social_crm',
-            name='Christine SocialUser', email='christine.socialuser@test.example.com',
-            tz='Europe/Brussels', notification_type='inbox',
-            company_id=cls.env.ref("base.main_company").id,
-            groups='base.group_user,social.group_social_user,base.group_partner_manager',
-        )
+            cls.user_social_crm = mail_new_test_user(
+                cls.env, login='user_social_crm',
+                name='Christine SocialUser', email='christine.socialuser@test.example.com',
+                tz='Europe/Brussels', notification_type='inbox',
+                company_id=cls.env.ref("base.main_company").id,
+                groups='base.group_user,social.group_social_user,base.group_partner_manager',
+            )
 
-        cls.utm_campaign_id = cls.env['utm.campaign'].create({
-            'name': 'Social Campaign'
-        })
+            cls.utm_campaign_id = cls.env['utm.campaign'].create({
+                'name': 'Social Campaign'
+            })
 
-        cls.social_stream = cls.env['social.stream'].create({
-            'name': 'Social Stream',
-            'stream_type_id': cls.env.ref('social_facebook.stream_type_page_posts').id,
-            'media_id': cls._get_social_media().id,
-            'account_id': cls.social_account.id
-        })
+            cls.social_stream = cls.env['social.stream'].create({
+                'name': 'Social Stream',
+                'stream_type_id': cls.env.ref('social_facebook.stream_type_page_posts').id,
+                'media_id': cls._get_social_media().id,
+                'account_id': cls.social_account.id
+            })
 
-        cls.social_post.write({
-            'utm_campaign_id': cls.utm_campaign_id.id,
-        })
+            cls.social_post.write({
+                'utm_campaign_id': cls.utm_campaign_id.id,
+            })
 
-        cls.social_live_post = cls.env['social.live.post'].create({
-            'post_id': cls.social_post.id,
-            'account_id': cls.social_account.id,
-            'facebook_post_id': 'abc123'
-        })
+            cls.social_live_post = cls.env['social.live.post'].create({
+                'post_id': cls.social_post.id,
+                'account_id': cls.social_account.id,
+                'facebook_post_id': 'abc123'
+            })
 
-        cls.social_stream_post = cls.env['social.stream.post'].create({
-            'author_name': 'John Doe',
-            'stream_id': cls.social_stream.id,
-        })
+            cls.social_stream_post = cls.env['social.stream.post'].create({
+                'author_name': 'John Doe',
+                'stream_id': cls.social_stream.id,
+            })
 
     @classmethod
     def _get_social_media(cls):
         return cls.env.ref('social_facebook.social_media_facebook')
 
     @users('user_social_crm')
+    @mock_void_external_calls()
     def test_social_crm_convert_from_post(self):
         """ When converting from a stream.post with a matching social.post, the wizard will be
         initialized with the data from the stream.post and the resulting lead after conversion will
@@ -82,6 +85,7 @@ class TestSocialCrmConvert(common.SocialCase):
         self.assertEqual(created_lead.source_id, self.social_post.utm_source_id)
 
     @users('user_social_crm')
+    @mock_void_external_calls()
     def test_social_crm_convert_from_comment(self):
         """ When converting from a comment the resulting lead after conversion will have as UTMs:
         no campaign, the medium from the related social.account and source set to our master data. """

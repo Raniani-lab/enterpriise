@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.social.tests import common
+from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.exceptions import AccessError
 from odoo.tests import tagged
 from odoo.tests.common import users
@@ -15,35 +16,37 @@ class TestAccess(common.SocialCase):
         """ Create some more dummy data for security tests. """
         super(TestAccess, cls).setUpClass()
 
-        cls.social_live_post = cls.env['social.live.post'].create({
-            'post_id': cls.social_post.id,
-            'account_id': cls.social_account.id
-        })
+        with mock_void_external_calls():
+            cls.social_live_post = cls.env['social.live.post'].create({
+                'post_id': cls.social_post.id,
+                'account_id': cls.social_account.id
+            })
 
-        cls.social_stream_type = cls.env['social.stream.type'].create({
-            'name': 'My Stream Type',
-            'stream_type': 'my_stream_type',
-            'media_id': cls.social_media.id
-        })
+            cls.social_stream_type = cls.env['social.stream.type'].create({
+                'name': 'My Stream Type',
+                'stream_type': 'my_stream_type',
+                'media_id': cls.social_media.id
+            })
 
-        cls.social_stream = cls.env['social.stream'].create({
-            'account_id': cls.social_account.id,
-            'stream_type_id': cls.social_stream_type.id,
-            'media_id': cls.social_media.id
-        })
+            cls.social_stream = cls.env['social.stream'].create({
+                'account_id': cls.social_account.id,
+                'stream_type_id': cls.social_stream_type.id,
+                'media_id': cls.social_media.id
+            })
 
-        cls.social_stream_post = cls.env['social.stream.post'].create({
-            'message': 'A stream post',
-            'stream_id': cls.social_stream.id,
-        })
+            cls.social_stream_post = cls.env['social.stream.post'].create({
+                'message': 'A stream post',
+                'stream_id': cls.social_stream.id,
+            })
 
-        cls.social_stream_post_image = cls.env['social.stream.post.image'].create({
-            'stream_post_id': cls.social_stream_post.id,
-            'image_url': 'dummy.png'
-        })
+            cls.social_stream_post_image = cls.env['social.stream.post.image'].create({
+                'stream_post_id': cls.social_stream_post.id,
+                'image_url': 'dummy.png'
+            })
 
     @mute_logger('odoo.addons.base.models.ir_model')
     @users('user_emp')
+    @mock_void_external_calls()
     def test_access_social_employee(self):
         # Create: not allowed
         with self.assertRaises(AccessError):
@@ -119,6 +122,7 @@ class TestAccess(common.SocialCase):
 
     @mute_logger('odoo.addons.base.models.ir_model')
     @users('social_user')
+    @mock_void_external_calls()
     def test_access_social_social_user(self):
         # Create: not allowed except for posts, live posts (as able to post a post) and streams
         new_post = self.env['social.post'].create({'message': 'A Post'})
@@ -212,6 +216,7 @@ class TestAccess(common.SocialCase):
 
     @mute_logger('odoo.addons.base.models.ir_model')
     @users('social_manager')
+    @mock_void_external_calls()
     def test_access_social_social_manager(self):
         # Create: allowed except for media and stream types
         new_post = self.env['social.post'].create({'message': 'A Post', 'account_ids': [(4, self.social_account.id)]})

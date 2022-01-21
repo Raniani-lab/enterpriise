@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.social.tests import common
+from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests.common import users
 
@@ -11,62 +12,63 @@ class TestSocialMultiCompany(common.SocialCase):
     def setUpClass(cls):
         super(TestSocialMultiCompany, cls).setUpClass()
 
-        cls.media_id = cls.env['social.media'].create({'name': 'Social Media'})
+        with mock_void_external_calls():
+            cls.media_id = cls.env['social.media'].create({'name': 'Social Media'})
 
-        cls.company_1 = cls.social_manager.company_id
-        cls.company_2 = cls.env['res.company'].create({'name': 'Company 2'})
+            cls.company_1 = cls.social_manager.company_id
+            cls.company_2 = cls.env['res.company'].create({'name': 'Company 2'})
 
-        cls.account_1, cls.account_2 = cls.social_accounts
-        cls.account_1.company_id = cls.company_1
-        cls.account_2.company_id = cls.company_2
+            cls.account_1, cls.account_2 = cls.social_accounts
+            cls.account_1.company_id = cls.company_1
+            cls.account_2.company_id = cls.company_2
 
-        cls.account_3 = cls.env['social.account'].create({
-            'name': 'Account 3',
-            'media_id': cls.media_id.id,
-            'company_id': False,
-        })
+            cls.account_3 = cls.env['social.account'].create({
+                'name': 'Account 3',
+                'media_id': cls.media_id.id,
+                'company_id': False,
+            })
 
-        cls.stream_type_id = cls.env['social.stream.type'].create({
-            'name': 'Stream Type',
-            'stream_type': 'stream_type',
-            'media_id': cls.media_id.id,
-        })
+            cls.stream_type_id = cls.env['social.stream.type'].create({
+                'name': 'Stream Type',
+                'stream_type': 'stream_type',
+                'media_id': cls.media_id.id,
+            })
 
-        cls.stream_1 = cls.env['social.stream'].create({
-            'name': 'Stream 1',
-            'media_id': cls.media_id.id,
-            'account_id': cls.account_1.id,
-            'stream_type_id': cls.stream_type_id.id,
-        })
-        cls.stream_2 = cls.env['social.stream'].create({
-            'name': 'Stream 2',
-            'media_id': cls.media_id.id,
-            'account_id': cls.account_2.id,
-            'stream_type_id': cls.stream_type_id.id,
-        })
+            cls.stream_1 = cls.env['social.stream'].create({
+                'name': 'Stream 1',
+                'media_id': cls.media_id.id,
+                'account_id': cls.account_1.id,
+                'stream_type_id': cls.stream_type_id.id,
+            })
+            cls.stream_2 = cls.env['social.stream'].create({
+                'name': 'Stream 2',
+                'media_id': cls.media_id.id,
+                'account_id': cls.account_2.id,
+                'stream_type_id': cls.stream_type_id.id,
+            })
 
-        cls.stream_post_1 = cls.env['social.stream.post'].create({
-            'stream_id': cls.stream_1.id,
-        })
+            cls.stream_post_1 = cls.env['social.stream.post'].create({
+                'stream_id': cls.stream_1.id,
+            })
 
-        cls.stream_post_2 = cls.env['social.stream.post'].create({
-            'stream_id': cls.stream_2.id,
-        })
+            cls.stream_post_2 = cls.env['social.stream.post'].create({
+                'stream_id': cls.stream_2.id,
+            })
 
-        cls.social_manager.company_ids |= cls.company_1 | cls.company_2
+            cls.social_manager.company_ids |= cls.company_1 | cls.company_2
 
-        cls.social_manager_2 = cls.social_manager.copy()
-        cls.social_manager_2.company_id = cls.company_2
-        cls.social_manager_2.company_ids = cls.company_2
+            cls.social_manager_2 = cls.social_manager.copy()
+            cls.social_manager_2.company_id = cls.company_2
+            cls.social_manager_2.company_ids = cls.company_2
 
-        cls.social_user.company_ids |= cls.company_1
+            cls.social_user.company_ids |= cls.company_1
 
     @classmethod
     def _get_social_media(cls):
         return cls.env['social.media'].create({'name': 'Social Media'})
 
-
     @users('social_manager')
+    @mock_void_external_calls()
     def test_allowed_company_ids(self):
         """If no company is set on the post, we should see the social accounts based on
         the ACLs (so the social manager should be able to see all social accounts).
@@ -89,8 +91,8 @@ class TestSocialMultiCompany(common.SocialCase):
         with self.assertRaises(ValidationError, msg='Should not be able to add a social account of an other company'):
             post_2.account_ids |= self.account_2
 
-
     @users('social_user')
+    @mock_void_external_calls()
     def test_social_account_acls(self):
         """Test the company based ACLs of the <social.account>."""
         self.assertEqual(self.account_1.company_id, self.company_1)
@@ -112,6 +114,7 @@ class TestSocialMultiCompany(common.SocialCase):
             self.env['social.account'].browse(self.account_2.id).name
 
     @users('social_manager')
+    @mock_void_external_calls()
     def test_social_post_acls(self):
         # Create a social post with a message on 2 different accounts
         # In 2 different companies
@@ -144,6 +147,7 @@ class TestSocialMultiCompany(common.SocialCase):
         )
 
     @users('social_manager')
+    @mock_void_external_calls()
     def test_social_post_click_count(self):
         # An UTM medium is created for each social account
         # That's how we can compute the click based on the current company
@@ -198,6 +202,7 @@ class TestSocialMultiCompany(common.SocialCase):
         self.assertEqual(post.with_company(self.company_2).click_count, 7, 'There should be 7 clicks for a user who is only in the second company')
 
     @users('social_user')
+    @mock_void_external_calls()
     def test_social_stream_post_acls(self):
         self.env['social.stream.post'].invalidate_cache()
 

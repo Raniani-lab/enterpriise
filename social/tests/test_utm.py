@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.social.tests.common import SocialCase
+from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.addons.utm.tests.common import TestUTMCommon
 from odoo.exceptions import UserError
 from odoo.tests.common import tagged, users
@@ -22,6 +23,7 @@ class TestUTMConsistencySocial(TestUTMCommon, SocialCase):
         })
 
     @users('user_social_manager')
+    @mock_void_external_calls()
     def test_utm_consistency_mass_mailing_user(self):
         # social manager user should be able to unlink all UTM models
         self.utm_campaign.unlink()
@@ -29,6 +31,7 @@ class TestUTMConsistencySocial(TestUTMCommon, SocialCase):
         self.utm_source.unlink()
 
     @users('__system__')
+    @mock_void_external_calls()
     def test_utm_consistency_social_account(self):
         # the medium is automatically created when creating a social account
         utm_medium = self.social_account.utm_medium_id
@@ -39,6 +42,7 @@ class TestUTMConsistencySocial(TestUTMCommon, SocialCase):
             utm_medium.unlink()
 
     @users('__system__')
+    @mock_void_external_calls()
     def test_utm_consistency_social_post(self):
         social_post = self.env['social.post'].create({
             'account_ids': [(4, self.social_account.id)],

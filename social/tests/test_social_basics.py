@@ -5,11 +5,13 @@ from datetime import timedelta
 
 from odoo import fields
 from odoo.addons.social.tests import common
+from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
 from odoo.tests.common import users
 
 
 class TestSocialBasics(common.SocialCase, CronMixinCase):
+    @mock_void_external_calls()
     def test_cron_triggers(self):
         """ When scheduling social posts, CRON triggers should be created to run the CRON sending
         the post as close to the time frame as possible. """
@@ -41,6 +43,7 @@ class TestSocialBasics(common.SocialCase, CronMixinCase):
         self.assertEqual(captured_trigger.cron_id, self.env.ref('social.ir_cron_post_scheduled'))
 
     @users('social_manager')
+    @mock_void_external_calls()
     def test_social_account_internals(self):
         """ Test social account creation, notably medium generation """
         vals_list = [{
@@ -62,6 +65,7 @@ class TestSocialBasics(common.SocialCase, CronMixinCase):
         )
 
     @users('social_user')
+    @mock_void_external_calls()
     def test_social_post_create_multi(self):
         """ Ensure that a 'multi' creation of 2 social.posts also
         creates 2 associated utm.sources. """

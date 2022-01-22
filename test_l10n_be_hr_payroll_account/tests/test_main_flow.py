@@ -33,7 +33,7 @@ class TestHR(common.TransactionCase):
 
     def setUp(self):
         super(TestHR, self).setUp()
-        self.user = self.create_user_employee(login='fgh', groups='base.group_user')
+        self.user = self.create_user_employee(login='fgh', groups='sign.group_sign_user')
         self.user_leave_team_leader = self.create_user_employee(login='sef', groups='base.group_user')
         self.user.employee_id.leave_manager_id = self.user_leave_team_leader
         self.hr_user = self.create_user_employee(login='srt', groups='hr.group_hr_user')

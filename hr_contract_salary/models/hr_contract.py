@@ -53,6 +53,12 @@ class HrContract(models.Model):
         compute='_compute_monthly_yearly_costs', string='Monthly Cost (Real)', readonly=True,
         help="Total real monthly cost of the employee for the employer.")
 
+    @api.constrains('hr_responsible_id', 'sign_template_id')
+    def _check_hr_responsible_id(self):
+        for contract in self:
+            if contract.sign_template_id and not (contract.hr_responsible_id.has_group('sign.group_sign_user') and contract.hr_responsible_id.email_formatted):
+                raise ValidationError(_("HR Responsible %s should be a User of Sign and have a valid email address when New Contract Document Template is specified", contract.hr_responsible_id.name))
+
     @api.depends('wage', 'wage_on_signature')
     def _compute_contract_wage(self):
         super()._compute_contract_wage()

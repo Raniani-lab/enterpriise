@@ -4,7 +4,7 @@
 import hashlib
 
 from collections import defaultdict, OrderedDict
-from odoo import fields, http, models, SUPERUSER_ID, _, Command
+from odoo import fields, http, models, _, Command
 
 from odoo.addons.sign.controllers.main import Sign
 from odoo.http import request
@@ -79,10 +79,8 @@ class SignContract(Sign):
             ('structure_type_id', '=', contract.structure_type_id.id),
             ('sign_template_id', '!=', False)])
 
-        if not request.env.user.email_formatted:
-            sign_request = request.env['sign.request'].with_user(SUPERUSER_ID)
-        else:
-            sign_request = request.env['sign.request'].sudo()
+        # ask the contract responsible to create sign requests
+        SignRequestSudo = request.env['sign.request'].with_user(contract.hr_responsible_id).sudo()
 
         sent_templates = request.env['sign.template']
         for advantage in advantages:
@@ -96,7 +94,7 @@ class SignContract(Sign):
 
                 sent_templates |= sign_template
 
-                sign_request = sign_request.create({
+                sign_request_sudo = SignRequestSudo.create({
                     'template_id': sign_template.id,
                     'request_item_ids': [
                         Command.create({'role_id': request.env.ref('sign.sign_item_role_employee').id,
@@ -107,10 +105,10 @@ class SignContract(Sign):
                     'cc_partner_ids': [Command.set(contract.hr_responsible_id.partner_id.ids + advantage.sign_copy_partner_id.ids)],
                     'reference': _('Signature Request - %s', advantage.name or contract.name),
                     'subject': _('Signature Request - %s', advantage.name or contract.name),
-                }).sudo()
-                sign_request.toggle_favorited()
+                })
+                sign_request_sudo.toggle_favorited()
 
-                contract.sign_request_ids += sign_request
+                contract.sign_request_ids += sign_request_sudo
 
 class HrContractSalary(http.Controller):
 
@@ -781,12 +779,10 @@ class HrContractSalary(http.Controller):
         if not new_contract.hr_responsible_id:
             return {'error': 1, 'error_msg': _('No HR responsible defined on the job position. Please contact an administrator.')}
 
-        if not request.env.user.email_formatted:
-            sign_request = request.env['sign.request'].with_user(SUPERUSER_ID)
-        else:
-            sign_request = request.env['sign.request'].sudo()
+        # ask the contract responsible to create a sign request
+        SignRequestSudo = request.env['sign.request'].with_user(new_contract.hr_responsible_id).sudo()
 
-        sign_request = sign_request.create({
+        sign_request_sudo = SignRequestSudo.create({
             'template_id': sign_template.id,
             'request_item_ids': [
                 Command.create({'role_id': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id}),
@@ -796,7 +792,7 @@ class HrContractSalary(http.Controller):
             'reference': _('Signature Request - %s', new_contract.name),
             'subject': _('Signature Request - %s', new_contract.name),
         })
-        sign_request.toggle_favorited()
+        sign_request_sudo.toggle_favorited()
 
         # Prefill the sign boxes
         items = request.env['sign.item'].sudo().search([
@@ -824,22 +820,22 @@ class HrContractSalary(http.Controller):
                 new_value = round(new_value, 2)
             if new_value or (new_value == 0.0):
                 sign_request_item_id = http.request.env['sign.request.item'].sudo().search([
-                    ('sign_request_id', '=', sign_request.id),
+                    ('sign_request_id', '=', sign_request_sudo.id),
                     ('role_id', '=', item.responsible_id.id)
                 ])
                 request.env['sign.request.item.value'].sudo().create({
                     'sign_item_id': item.id,
-                    'sign_request_id': sign_request.id,
+                    'sign_request_id': sign_request_sudo.id,
                     'value': new_value,
                     'sign_request_item_id': sign_request_item_id.id
                 })
 
         access_token = request.env['sign.request.item'].sudo().search([
-            ('sign_request_id', '=', sign_request.id),
+            ('sign_request_id', '=', sign_request_sudo.id),
             ('role_id', '=', request.env.ref('sign.sign_item_role_employee').id)
         ]).access_token
 
-        new_contract.sign_request_ids += sign_request
+        new_contract.sign_request_ids += sign_request_sudo
 
         if new_contract:
             if kw.get('applicant_id'):
@@ -847,4 +843,4 @@ class HrContractSalary(http.Controller):
             if kw.get('employee_contract_id'):
                 new_contract.sudo().origin_contract_id = kw.get('employee_contract_id')
 
-        return {'job_id': new_contract.job_id.id, 'request_id': sign_request.id, 'token': access_token, 'error': 0, 'new_contract_id': new_contract.id}
+        return {'job_id': new_contract.job_id.id, 'request_id': sign_request_sudo.id, 'token': access_token, 'error': 0, 'new_contract_id': new_contract.id}

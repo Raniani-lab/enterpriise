@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
+
 from odoo import api, fields, models, _lt
 from odoo.osv import expression
 
@@ -34,7 +36,7 @@ class Project(models.Model):
         if self.commercial_partner_id:
             action_context['default_partner_id'] = self.commercial_partner_id.id
         action.update({
-            'views': [[False, 'tree'], [False, 'form'], [False, 'pivot'], [False, 'graph'], [False, 'cohort']],
+            'views': [[False, 'tree'], [False, 'kanban'], [False, 'form'], [False, 'pivot'], [False, 'graph'], [False, 'cohort']],
             'context': action_context,
             'domain': domain or [('id', 'in', subscription_ids)]
         })
@@ -49,6 +51,11 @@ class Project(models.Model):
             return {}
         subscription_ids = self.env['sale.subscription']._search([('analytic_account_id', 'in', self.analytic_account_id.ids)])
         return self._get_subscription_action(subscription_ids=subscription_ids)
+
+    def action_profitability_items(self, section_name, domain=None, res_id=False):
+        if section_name == 'subscriptions':
+            return self._get_subscription_action(domain, [res_id] if res_id else [])
+        return super().action_profitability_items(section_name, domain, res_id)
 
     # -------------------------------------------
     # Project Update
@@ -65,8 +72,8 @@ class Project(models.Model):
             ['|', ('move_id', '=', False), ('move_id.subscription_id', '=', False)],
         ])
 
-    def _get_profitability_items(self):
-        profitability_items = super()._get_profitability_items()
+    def _get_profitability_items(self, with_action=True):
+        profitability_items = super()._get_profitability_items(with_action)
         if not self.analytic_account_id:
             return profitability_items
         subscription_read_group = self.env['sale.subscription'].sudo()._read_group(
@@ -108,12 +115,17 @@ class Project(models.Model):
         amount_to_invoice -= amount_invoiced  # because the amount_to_invoice included the amount_invoiced.
         revenues = profitability_items['revenues']
         section_id = 'subscriptions'
-        revenues['data'].append({
+        subscription_revenue = {
             'id': section_id,
             'invoiced': amount_invoiced,
             'to_invoice': amount_to_invoice,
-            'record_ids': all_subscription_ids if self.user_has_groups('sale_subscription.group_sale_subscription_view') else [],
-        })
+        }
+        if with_action and all_subscription_ids and self.user_has_groups('sale_subscription.group_sale_subscription_view'):
+            action = {'name': 'action_profitability_items', 'type': 'object', 'section': section_id, 'domain': json.dumps([('id', 'in', all_subscription_ids)])}
+            if len(all_subscription_ids) == 1:
+                action['res_id'] = all_subscription_ids[0]
+            subscription_revenue['action'] = action
+        revenues['data'].append(subscription_revenue)
         revenues['total']['invoiced'] += amount_invoiced
         revenues['total']['to_invoice'] += amount_to_invoice
         return profitability_items

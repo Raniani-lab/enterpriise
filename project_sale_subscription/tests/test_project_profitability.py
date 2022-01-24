@@ -23,7 +23,7 @@ class TestProjectProfitability(TestSubscriptionCommon, TestProjectProfitabilityC
 
     def test_project_profitability(self):
         self.assertDictEqual(
-            self.project._get_profitability_items(),
+            self.project._get_profitability_items(False),
             self.project_profitability_items_empty,
             'No data should be found since the subscription is always in draft.'
         )
@@ -32,14 +32,14 @@ class TestProjectProfitability(TestSubscriptionCommon, TestProjectProfitabilityC
         self.assertEqual(self.subscription.stage_id.category, 'progress')
         self.assertFalse(self.subscription.recurring_invoice_line_ids)
         self.assertDictEqual(
-            self.project._get_profitability_items(),
+            self.project._get_profitability_items(False),
             self.project_profitability_items_empty,
             'No data since the subscription contains no subscription lines.'
         )
         self.sale_order.action_confirm()
         self.assertEqual(len(self.subscription.recurring_invoice_line_ids), 1)
         self.assertDictEqual(
-            self.project._get_profitability_items(),
+            self.project._get_profitability_items(False),
             {
                 'revenues': {
                     'data': [{'id': 'subscriptions', 'to_invoice': self.subscription.recurring_total, 'invoiced': 0.0}],

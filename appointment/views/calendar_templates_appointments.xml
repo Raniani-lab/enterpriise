@@ -148,7 +148,7 @@
     <template id="appointment_calendar" name="Online Appointment">
         <div id="slots_availabilities" class="d-lg-flex mt-3">
             <div id="calendar" class="col-lg-8 px-0">
-                <div t-foreach="slots" t-as="month" t-attf-id="month-#{month['id']}" t-attf-class="o_appointment_month px-1 px-md-3 #{'d-none' if month['id'] > 0 else ''}">
+                <div t-foreach="slots" t-as="month" t-attf-id="month-#{month['id']}" t-attf-class="o_appointment_month px-1 px-md-3 #{'d-none' if month['id'] != month_first_available else ''}">
                     <div id="calendarHeader" class="d-inline-flex align-items-baseline container-fluid">
                         <button t-if="month['id'] > 0" type="button" id="prevCal" t-attf-class="btn btn-primary o_js_calendar_navigate"><i class="fa fa-arrow-left"/></button>
                         <div t-else="" class="btn disabled fa fa-arrow-left mr-1 text-white"/>

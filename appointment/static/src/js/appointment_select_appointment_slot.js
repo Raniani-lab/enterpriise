@@ -19,11 +19,13 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
      * Navigate between the months available in the calendar displayed
      */
     _onCalendarNavigate: function (ev) {
-        var parent = this.$('.o_appointment_month:not(.d-none)');
+        const parent = this.$('.o_appointment_month:not(.d-none)');
         let monthID = parseInt(parent.attr('id').split('-')[1]);
         monthID += ((this.$(ev.currentTarget).attr('id') === 'nextCal') ? 1 : -1);
         parent.addClass('d-none');
         this.$(`div#month-${monthID}`).removeClass('d-none');
+        this.$('.o_slot_selected').removeClass('o_slot_selected');
+        this.$('#slotsList').empty()
     },
 
     /**
@@ -38,13 +40,12 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const slotDate = this.$(ev.currentTarget.firstElementChild).attr('id');
         const slots = JSON.parse(this.$(ev.currentTarget).find('div')[0].dataset['availableSlots']);
 
-        let $slotsList = this.$('#slotsList').empty();
-        $(qweb.render('appointment.slots_list', {
+        this.$('#slotsList').empty().append(qweb.render('appointment.slots_list', {
             slotDate: moment(slotDate).format("dddd D MMMM"),
             slots: slots,
             appointment_type_id: appointmentTypeID,
             filter_appointment_type_ids: appointmentTypeIDs,
-        })).appendTo($slotsList);
+        }));
     },
 
     /**

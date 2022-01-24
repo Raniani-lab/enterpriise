@@ -99,6 +99,7 @@ class Appointment(http.Controller):
             suggested_staff_users[0] if suggested_staff_users else request.env['res.users']
         )
         formated_days = [format_date(fields.Date.from_string('2021-03-0%s' % str(day + 1)), "EEE", get_lang(request.env).code) for day in range(7)]
+        month_first_available = next((month['id'] for month in slots if month['has_availabilities']), 0)
 
         # Get the first weekday based on the lang used on the website
         first_weekday_index = babel_locale_parse(get_lang(request.env).code).first_week_day
@@ -114,6 +115,7 @@ class Appointment(http.Controller):
             'state': state,
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'formated_days': formated_days,
+            'month_first_available': month_first_available,
         })
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/appointment'],
@@ -312,8 +314,10 @@ class Appointment(http.Controller):
         request.session['timezone'] = timezone or appointment_type.appointment_tz
         staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)) if staff_user_id else None
         slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], staff_user)
+        month_first_available = next((month['id'] for month in slots if month['has_availabilities']), 0)
 
         return request.env.ref('appointment.appointment_calendar')._render({
             'appointment_type': appointment_type,
             'slots': slots,
+            'month_first_available': month_first_available,
         })

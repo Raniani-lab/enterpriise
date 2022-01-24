@@ -284,6 +284,7 @@ class CalendarAppointmentType(models.Model):
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []
         while (start.year, start.month) <= (last_day.year, last_day.month):
+            has_availabilities = False
             dates = month_dates_calendar(start.year, start.month)
             for week_index, week in enumerate(dates):
                 for day_index, day in enumerate(week):
@@ -326,10 +327,13 @@ class CalendarAppointmentType(models.Model):
                         'today_cls': today_cls
                     }
 
+                    has_availabilities = has_availabilities or bool(today_slots)
+
             months.append({
                 'id': len(months),
                 'month': format_datetime(start, 'MMMM Y', locale=get_lang(self.env).code),
                 'weeks': dates,
+                'has_availabilities': has_availabilities
             })
             start = start + relativedelta(months=1)
         return months

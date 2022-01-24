@@ -2,7 +2,6 @@
 
 from odoo import api, fields, models, _
 from odoo.tools import float_is_zero, date_utils
-from odoo.tools.misc import format_date
 
 class AccountBankStatement(models.Model):
     _inherit = "account.bank.statement"

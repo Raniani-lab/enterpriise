@@ -52,7 +52,7 @@ class AccountOnlineAccount(models.Model):
             # 2 calls, the reason is that those field contains the encrypted information needed to access the provider
             # and first call can result in an error due to the encrypted token inside provider_data being expired for example.
             # In such a case, we renew the token with the provider and send back the newly encrypted token inside provider_data
-            # which result in the information having changed, henceforth why those field are passed at every loop.
+            # which result in the information having changed, henceforth why those fields are passed at every loop.
             data.update({
                 'provider_data': self.account_online_link_id.provider_data,
                 'account_data': self.account_data
@@ -70,7 +70,7 @@ class AccountOnlineAccount(models.Model):
     def _retrieve_transactions(self):
         start_date = self.last_sync or fields.Date().today() - relativedelta(days=15)
         last_stmt_line = self.env['account.bank.statement.line'].search([
-                ('date', '<=', start_date), 
+                ('date', '<=', start_date),
                 ('online_transaction_identifier', '!=', False),
                 ('journal_id', 'in', self.journal_ids.ids),
                 ('online_account_id', '=', self.id)
@@ -87,7 +87,7 @@ class AccountOnlineAccount(models.Model):
             # 2 calls, the reason is that those field contains the encrypted information needed to access the provider
             # and first call can result in an error due to the encrypted token inside provider_data being expired for example.
             # In such a case, we renew the token with the provider and send back the newly encrypted token inside provider_data
-            # which result in the information having changed, henceforth why those field are passed at every loop.
+            # which result in the information having changed, henceforth why those fields are passed at every loop.
             data.update({
                 'provider_data': self.account_online_link_id.provider_data,
                 'account_data': self.account_data
@@ -117,18 +117,21 @@ class AccountOnlineLink(models.Model):
     account_online_account_ids = fields.One2many('account.online.account', 'account_online_link_id')
     last_refresh = fields.Datetime(readonly=True, default=fields.Datetime.now())
     next_refresh = fields.Datetime("Next synchronization", compute='_compute_next_synchronization')
-    state = fields.Selection([('connected', 'Connected'), ('error', 'Error'), ('disconnected', 'Not Connected')], default='disconnected',
-        tracking=True, required=True, readonly=True)
-    auto_sync = fields.Boolean(default=True, string="Automatic synchronization", help="If possible, we will try to automatically fetch new transactions for this record")
+    state = fields.Selection([('connected', 'Connected'), ('error', 'Error'), ('disconnected', 'Not Connected')],
+                             default='disconnected', tracking=True, required=True, readonly=True)
+    auto_sync = fields.Boolean(default=True, string="Automatic synchronization",
+                               help="If possible, we will try to automatically fetch new transactions for this record")
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     # Information received from OdooFin, should not be tampered with
     name = fields.Char(help="Institution Name", readonly=True)
     client_id = fields.Char(help="Represent a link for a given user towards a banking institution", readonly=True)
-    refresh_token = fields.Char(help="Token used to sign API request, Never disclose it", readonly=True, groups="base.group_system")
+    refresh_token = fields.Char(help="Token used to sign API request, Never disclose it",
+                                readonly=True, groups="base.group_system")
     access_token = fields.Char(help="Token used to access API.", readonly=True, groups="account.group_account_user")
     provider_data = fields.Char(help="Information needed to interract with third party provider", readonly=True)
-    expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires", readonly=True)
+    expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires",
+                                                readonly=True)
 
     ##########################
     # Wizard opening actions #
@@ -152,11 +155,11 @@ class AccountOnlineLink(models.Model):
         }
 
     def _link_accounts_to_journals_action(self, accounts):
-        '''
+        """
         This method opens a wizard allowing the user to link
-        his bank accounts with new or existing journal.\n
+        his bank accounts with new or existing journal.
         :return: An action openning a wizard to link bank accounts with account journal.
-        '''
+        """
         self.ensure_one()
         account_link_journal_wizard = self.env['account.link.journal'].create({
             'number_added': len(accounts),
@@ -189,12 +192,12 @@ class AccountOnlineLink(models.Model):
     #######################################################
 
     def _fetch_odoo_fin(self, url, data=None, ignore_status=False):
-        '''
+        """
         Method used to fetch data from the Odoo Fin proxy.
         :param url: Proxy's URL end point.
         :param data: HTTP data request.
         :return: A dict containing all data.
-        '''
+        """
         if not data:
             data = {}
         if self.state == 'disconnected' and not ignore_status:
@@ -214,7 +217,7 @@ class AccountOnlineLink(models.Model):
         }
 
         try:
-            # We have to use sudo to pass record as some field are protected from read for common users.
+            # We have to use sudo to pass record as some fields are protected from read for common users.
             resp = requests.post(url=endpoint_url, json=data, timeout=timeout, auth=OdooFinAuth(record=self.sudo()))
             resp_json = resp.json()
             return self._handle_response(resp_json, url, data, ignore_status)
@@ -253,7 +256,7 @@ class AccountOnlineLink(models.Model):
                 self._get_access_token()
                 # We need to commit here because if we got a new refresh token, and a new access token
                 # It means that the token is active on the proxy and any further call resulting in an
-                # error would loose the new refresh_token hence blocking the account ad vitam eternam
+                # error would lose the new refresh_token hence blocking the account ad vitam eternam
                 self.env.cr.commit()
                 return self._fetch_odoo_fin(url, data, ignore_status)
             elif error.get('code') == 300: # redirect, not an error
@@ -271,12 +274,11 @@ class AccountOnlineLink(models.Model):
             state = error_details.get('odoofin_state') or 'error'
 
             self._log_information(state=state, subject=subject, message=message, reset_tx=True)
-            
 
     def _log_information(self, state, subject=None, message=None, reset_tx=False):
-        # If the reset_tx flag is passed, it means that we have an error and we want to log it on the record
-        # and then raise the error to the end user. To do that we first rollback the current transaction,
-        # then we write the error on the record, we commit those changes and finally we raise the error.
+        # If the reset_tx flag is passed, it means that we have an error, and we want to log it on the record
+        # and then raise the error to the end user. To do that we first roll back the current transaction,
+        # then we write the error on the record, we commit those changes, and finally we raise the error.
         if reset_tx:
             self.env.cr.rollback()
         try:
@@ -428,7 +430,7 @@ class AccountOnlineLink(models.Model):
             method = getattr(self, method_name)
         except AttributeError:
             message = _("This version of Odoo appears to be outdated and does not support the '%s' sync mode. "
-                "Installing the latest update might solve this.", mode)
+                        "Installing the latest update might solve this.", mode)
             _logger.info('Online sync: %s' % (message,))
             self.env.cr.rollback()
             self._log_information(state='error', subject=_('Internal Error'), message=message, reset_tx=True)

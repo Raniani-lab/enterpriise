@@ -59,9 +59,9 @@ class AccountLinkJournal(models.TransientModel):
         return vals
 
     def sync_now(self):
-        '''
+        """
         This method is called when the user click on "Synchronize now".
-        '''
+        """
         # Link account to journal
         journal_already_linked = []
         if not len(self.account_ids):

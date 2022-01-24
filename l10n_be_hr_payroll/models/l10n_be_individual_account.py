@@ -69,6 +69,7 @@ class L10nBeIndividualAccount(models.Model):
             ('struct_id.country_id', '=', False),
             ('struct_id.country_id.code', '=', "BE"),
         ])
+        employees = payslips.employee_id
         lines = payslips.line_ids.filtered(lambda l: l.salary_rule_id.appears_on_payslip)
         payslip_rules = [(rule.code, rule.sequence) for rule in lines.salary_rule_id]
         payslip_rules = sorted(payslip_rules, key=lambda x: x[1])

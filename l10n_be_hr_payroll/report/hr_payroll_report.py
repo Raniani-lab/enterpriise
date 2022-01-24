@@ -43,7 +43,7 @@ class HrPayrollReport(models.Model):
                 CASE WHEN wd.id = min_id.min_line THEN l10n_be_mobile_atn.total ELSE 0 END as l10n_be_mobile_atn,
                 CASE WHEN wd.id = min_id.min_line THEN l10n_be_internet_atn.total ELSE 0 END as l10n_be_internet_atn,
                 CASE WHEN wd.id = min_id.min_line THEN l10n_be_laptop_atn.total ELSE 0 END as l10n_be_laptop_atn,
-                CASE WHEN wd.id = min_id.min_line THEN -l10n_be_car_atn.total-l10n_be_mobile_atn.total-l10n_be_internet_atn.total-l10n_be_laptop_atn.total ELSE 0 END as l10n_be_atn_deduction,
+                CASE WHEN wd.id = min_id.min_line THEN -SUM(COALESCE(l10n_be_deduction_atn.total, 0)) ELSE 0 END as l10n_be_atn_deduction,
                 CASE WHEN wd.id = min_id.min_line THEN l10n_be_onss_employer.total ELSE 0 END as l10n_be_onss_employer,
                 CASE WHEN wd.id = min_id.min_line THEN l10n_be_onss_employer.total * %s ELSE 0 END as l10n_be_onss_ffe,
                 l10n_be_274_xx_line.amount as l10n_be_withholding_taxes_exemption
@@ -64,6 +64,7 @@ class HrPayrollReport(models.Model):
                 left join hr_payslip_line l10n_be_mobile_atn on (l10n_be_mobile_atn.slip_id = p.id and l10n_be_mobile_atn.code = 'ATN.MOB')
                 left join hr_payslip_line l10n_be_internet_atn on (l10n_be_internet_atn.slip_id = p.id and l10n_be_internet_atn.code = 'ATN.INT')
                 left join hr_payslip_line l10n_be_laptop_atn on (l10n_be_laptop_atn.slip_id = p.id and l10n_be_laptop_atn.code = 'ATN.LAP')
+                left join hr_payslip_line l10n_be_deduction_atn on (l10n_be_deduction_atn.slip_id = p.id and l10n_be_deduction_atn.code in ('ATN.LAP', 'ATN.INT', 'ATN.MOB', 'ATN.CAR'))
                 left join hr_payslip_line l10n_be_onss_employer on (l10n_be_onss_employer.slip_id = p.id and l10n_be_onss_employer.code = 'ONSSEMPLOYER')"""
                 # left join hr_payslip_line l10n_be_rep_fees_volatile on (l10n_be_rep_fees_volatile.slip_id = p.id and l10n_be_rep_fees_volatile.code = 'REP.FEES.VOLATILE')
 

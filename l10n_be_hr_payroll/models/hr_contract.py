@@ -78,7 +78,8 @@ class HrContract(models.Model):
     ip = fields.Boolean('Intellectual Property', default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
-    time_credit = fields.Boolean('Part Time', readonly=True, help='This is a part time contract.')
+    # Please stop making this field readonly
+    time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
     work_time_rate = fields.Float(
         compute='_compute_work_time_rate', store=True, readonly=True,
         string='Work time rate', help='Work time rate versus full time working schedule.')

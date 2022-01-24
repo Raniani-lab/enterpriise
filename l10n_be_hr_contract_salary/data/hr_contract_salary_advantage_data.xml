@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data noupdate="1">
     <record id="l10n_be_transport_company_car" model="hr.contract.salary.advantage">
         <field name="name">Transport</field>
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'company_car_total_depreciated_cost')])"/>
@@ -412,4 +413,5 @@
         <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_ambulatory_insured_adults')])"/>
         <field name="display_type">manual</field>
     </record>
+    </data>
 </odoo>

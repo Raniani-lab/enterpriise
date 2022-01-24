@@ -174,6 +174,50 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
+    QUnit.test(
+        "basic rendering of a dashboard with quotes in string attributes",
+        async function (assert) {
+            assert.expect(4);
+
+            serverData.models.test_report.fields.my_field = {
+                type: "float",
+                group_operator: "sum",
+            };
+            const dashboard = await makeView({
+                type: "dashboard",
+                resModel: "test_report",
+                serverData,
+                arch: `
+                    <dashboard>
+                        <group>
+                            <aggregate
+                                name='my_field'
+                                string='test " 1'
+                                value_label='test " 2'
+                                help='test " 3'
+                                field="my_field"
+                            />
+                        </group>
+                    </dashboard>
+                `,
+            });
+            const agg = dashboard.el.querySelector(".o_aggregate");
+            const tooltipInfo = JSON.parse(agg.dataset.tooltipInfo);
+            assert.strictEqual(tooltipInfo.name, "my_field", "the help value should be `my_field`");
+            assert.strictEqual(
+                tooltipInfo.displayName,
+                'test " 1',
+                'the help value should be `test " 1`'
+            );
+            assert.strictEqual(
+                tooltipInfo.valueLabel,
+                'test " 2',
+                'the valueLabel should be `test " 2`'
+            );
+            assert.strictEqual(tooltipInfo.help, 'test " 3', 'the help value should be `test " 3`');
+        }
+    );
+
     QUnit.test("basic rendering of a widget tag", async function (assert) {
         assert.expect(1);
 

@@ -18,6 +18,12 @@ class ResCompany(models.Model):
         ('commercial', 'Employers with industrial or commercial purposes'),
         ('non_commercial', 'Employers without industrial or commercial purposes'),
     ], default='commercial')
+    sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
+
+    @api.constrains('sdworx_code')
+    def _check_sdworx_code(self):
+        if self.sdworx_code and len(self.sdworx_code) != 7:
+            raise ValidationError(_('The code should have 7 characters!'))
 
     @api.constrains('l10n_be_company_number')
     def _check_l10n_be_company_number(self):

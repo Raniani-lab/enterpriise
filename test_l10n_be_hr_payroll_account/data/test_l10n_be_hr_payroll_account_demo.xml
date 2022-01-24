@@ -291,21 +291,21 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[
-        ref('hr_payslip_demo_lap_january'),
-        ref('hr_payslip_demo_lap_february'),
-        ref('hr_payslip_demo_lap_march'),
-        ref('hr_payslip_demo_lap_april'),
-        ref('hr_payslip_demo_lap_may'),
-        ref('hr_payslip_demo_lap_june'),
-        ref('hr_payslip_demo_lap_july'),
-        ref('hr_payslip_demo_lap_august'),
-        ref('hr_payslip_demo_lap_september'),
-        ref('hr_payslip_demo_lap_october'),
-        ref('hr_payslip_demo_lap_november'),
-        ref('hr_payslip_demo_lap_december'),
-        ref('hr_payslip_demo_lap_13th_month'),
-    ]]"/>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[p.id for p in [
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_january'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_february'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_march'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_april'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_may'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_june'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_july'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_august'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_september'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_october'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_november'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_december'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_lap_13th_month'),
+    ] if p.state in ['draft', 'verify']]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[
         ref('hr_payslip_demo_lap_january'),
         ref('hr_payslip_demo_lap_february'),
@@ -685,6 +685,13 @@
     </record>
 
     <!--Employees-->
+    <record id="l10n_be_hr_contract_salary.employee_max" model="hr.employee">
+        <field name="sdworx_code">0000023</field>
+    </record>
+
+    <record id="l10n_be_hr_contract_salary.hr_employee_laurie_poiret" model="hr.employee">
+        <field name="sdworx_code">0000024</field>
+    </record>
 
     <record id="res_partner_employee_admin" model="res.partner">
         <field name="name">Mitchell Admin</field>
@@ -731,6 +738,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
         <field name="gender">male</field>
         <field name="certificate">civil_engineer</field>
+        <field name="sdworx_code">0000001</field>
     </record>
 
     <record id="res_partner_employee_al" model="res.partner">
@@ -769,6 +777,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_al"/>
         <field name="gender">female</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000002</field>
     </record>
 
     <record id="res_partner_employee_mit" model="res.partner">
@@ -809,6 +818,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_mit"/>
         <field name="gender">female</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000003</field>
     </record>
 
     <record id="res_partner_employee_niv" model="res.partner">
@@ -848,6 +858,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_niv"/>
         <field name="gender">female</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000004</field>
     </record>
 
     <record id="res_partner_employee_stw" model="res.partner">
@@ -887,6 +898,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_stw"/>
         <field name="gender">male</field>
         <field name="certificate">doctor</field>
+        <field name="sdworx_code">0000005</field>
     </record>
 
     <record id="res_partner_employee_chs" model="res.partner">
@@ -926,6 +938,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_chs"/>
         <field name="gender">male</field>
         <field name="certificate">doctor</field>
+        <field name="sdworx_code">0000006</field>
     </record>
 
     <record id="res_partner_employee_qdp" model="res.partner">
@@ -966,6 +979,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_qdp"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000007</field>
     </record>
 
     <record id="res_partner_employee_fme" model="res.partner">
@@ -1005,6 +1019,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fme"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000008</field>
     </record>
 
     <record id="res_partner_employee_fpi" model="res.partner">
@@ -1044,6 +1059,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fpi"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000009</field>
     </record>
 
     <record id="res_partner_employee_jth" model="res.partner">
@@ -1083,6 +1099,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jth"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000010</field>
     </record>
 
     <record id="res_partner_employee_ngh" model="res.partner">
@@ -1122,6 +1139,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_ngh"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000011</field>
     </record>
 
     <record id="res_partner_employee_vad" model="res.partner">
@@ -1161,6 +1179,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_vad"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000012</field>
     </record>
 
     <record id="res_partner_employee_han" model="res.partner">
@@ -1198,6 +1217,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_han"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000013</field>
     </record>
 
     <record id="res_partner_employee_jve" model="res.partner">
@@ -1235,6 +1255,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jve"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000014</field>
     </record>
 
     <record id="res_partner_employee_jep" model="res.partner">
@@ -1272,6 +1293,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jep"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000015</field>
     </record>
 
     <record id="res_partner_employee_jod" model="res.partner">
@@ -1309,6 +1331,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jod"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
+        <field name="sdworx_code">0000016</field>
     </record>
 
     <record id="res_partner_employee_jog" model="res.partner">
@@ -1346,6 +1369,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jog"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000017</field>
     </record>
 
     <record id="res_partner_employee_jgo" model="res.partner">
@@ -1383,6 +1407,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jgo"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000018</field>
     </record>
 
     <record id="res_partner_employee_lur" model="res.partner">
@@ -1420,6 +1445,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_lur"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000019</field>
     </record>
 
     <record id="res_partner_employee_hne" model="res.partner">
@@ -1457,6 +1483,7 @@
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_hne"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
+        <field name="sdworx_code">0000020</field>
     </record>
 
     <record id="hr_contract_admin" model="hr.contract">
@@ -2255,6 +2282,7 @@
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jon-image.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="gender">male</field>
+        <field name="sdworx_code">0000021</field>
     </record>
 
     <record id="fleet_vehicle_audi_a3_joseph_noluck" model="fleet.vehicle">
@@ -2723,47 +2751,47 @@
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
 
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[
-        ref('hr_payslip_demo_jon_march_2020'),
-        ref('hr_payslip_demo_jon_january_2019'),
-        ref('hr_payslip_demo_jon_february_2019'),
-        ref('hr_payslip_demo_jon_march_2019'),
-        ref('hr_payslip_demo_jon_april_2019'),
-        ref('hr_payslip_demo_jon_warrant_2019'),
-        ref('hr_payslip_demo_jon_may_2019'),
-        ref('hr_payslip_demo_jon_june_2019'),
-        ref('hr_payslip_demo_jon_double_holiday_2019'),
-        ref('hr_payslip_demo_jon_july_2019'),
-        ref('hr_payslip_demo_jon_august_2019'),
-        ref('hr_payslip_demo_jon_september_2019'),
-        ref('hr_payslip_demo_jon_october_2019'),
-        ref('hr_payslip_demo_jon_november_2019'),
-        ref('hr_payslip_demo_jon_december_2019'),
-        ref('hr_payslip_demo_jon_13th_month_2019'),
-        ref('hr_payslip_demo_jon_january_2020'),
-        ref('hr_payslip_demo_jon_february_2020'),
-    ]]"/>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[p.id for p in [
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_march_2020'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_january_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_february_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_march_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_april_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_warrant_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_may_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_june_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_double_holiday_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_july_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_august_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_september_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_october_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_november_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_december_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_13th_month_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_january_2020'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_february_2020'),
+    ] if p.state in ['draft', 'verify']]]"/>
 
-    <function model="hr.payslip" name="action_payslip_done" eval="[[
-        ref('hr_payslip_demo_jon_march_2020'),
-        ref('hr_payslip_demo_jon_january_2019'),
-        ref('hr_payslip_demo_jon_february_2019'),
-        ref('hr_payslip_demo_jon_march_2019'),
-        ref('hr_payslip_demo_jon_april_2019'),
-        ref('hr_payslip_demo_jon_warrant_2019'),
-        ref('hr_payslip_demo_jon_may_2019'),
-        ref('hr_payslip_demo_jon_june_2019'),
-        ref('hr_payslip_demo_jon_double_holiday_2019'),
-        ref('hr_payslip_demo_jon_july_2019'),
-        ref('hr_payslip_demo_jon_august_2019'),
-        ref('hr_payslip_demo_jon_september_2019'),
-        ref('hr_payslip_demo_jon_october_2019'),
-        ref('hr_payslip_demo_jon_november_2019'),
-        ref('hr_payslip_demo_jon_december_2019'),
-        ref('hr_payslip_demo_jon_13th_month_2019'),
-        ref('hr_payslip_demo_jon_january_2020'),
-        ref('hr_payslip_demo_jon_february_2020'),
-    ]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[p.id for p in [
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_march_2020'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_january_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_february_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_march_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_april_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_warrant_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_may_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_june_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_double_holiday_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_july_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_august_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_september_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_october_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_november_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_december_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_13th_month_2019'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_january_2020'),
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_february_2020'),
+    ] if p.state in ['draft', 'verify']]]"/>
 
     <record id="notice_period_wizard" model="hr.payslip.employee.depature.notice" forcecreate="False">
         <field name="employee_id" ref="hr_employee_joseph_noluck"/>
@@ -2815,8 +2843,12 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
         <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
     </record>
-    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_april_2020')]]"/>
-    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_april_2020')]]"/>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[p.id for p in [
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_april_2020')
+    ] if p.state in ['draft', 'verify']]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[p.id for p in [
+        obj().env.ref('test_l10n_be_hr_payroll_account.hr_payslip_demo_jon_april_2020')
+    ] if p.state in ['draft', 'verify']]]"/>
 
     <!-- Clemence Student -->
     <record id="resource_calendar_1_5_monday_student" model="resource.calendar">
@@ -2875,6 +2907,7 @@
         <field name="bank_account_id" ref="res_partner_bank_account_clemence_student"/>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_student-image.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="sdworx_code">0000022</field>
     </record>
 
     <record id="hr_job_student" model="hr.job">

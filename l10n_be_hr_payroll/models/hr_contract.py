@@ -170,9 +170,12 @@ class HrContract(models.Model):
     def _compute_work_time_rate(self):
         for contract in self:
             if contract.time_credit:
-                contract.work_time_rate = contract.resource_calendar_id.hours_per_week / contract.standard_calendar_id.hours_per_week
+                hours_per_week = contract.resource_calendar_id.hours_per_week
+                hours_per_week_ref = contract.standard_calendar_id.hours_per_week
             else:
-                contract.work_time_rate = contract.resource_calendar_id.hours_per_week / contract.company_id.resource_calendar_id.hours_per_week
+                hours_per_week = contract.resource_calendar_id.hours_per_week
+                hours_per_week_ref = contract.company_id.resource_calendar_id.hours_per_week
+            contract.work_time_rate = hours_per_week / (hours_per_week_ref or hours_per_week)
 
     @api.depends(
         'wage', 'state', 'employee_id.l10n_be_scale_seniority', 'job_id.l10n_be_scale_category',

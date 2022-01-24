@@ -11,6 +11,7 @@
         <field name="city">Eghezee</field>
         <field name="vat">BE0897223670</field>
         <field name="phone">061928374</field>
+        <field name="sdworx_code">1111111</field>
     </record>
     <record id="base.user_admin" model="res.users">
         <field name="company_ids" eval="[(4, ref('l10n_be_hr_payroll.res_company_be'))]"/>

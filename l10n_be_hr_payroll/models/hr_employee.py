@@ -4,6 +4,7 @@
 from functools import reduce
 
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 EMPLOYER_ONSS = 0.2714
 
@@ -76,6 +77,12 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
     double_pay_line_ids = fields.One2many(
         'l10n.be.double.pay.recovery.line', 'employee_id',
         string='Previous Occupations', groups="hr_payroll.group_hr_payroll_user")
+    sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
+
+    @api.constrains('sdworx_code')
+    def _check_sdworx_code(self):
+        if self.sdworx_code and len(self.sdworx_code) != 7:
+            raise ValidationError(_('The SDWorx code should have 7 characters or should be left empty!'))
 
     def _compute_l10n_be_holiday_pay_recovered(self):
         payslips = self.env['hr.payslip'].search([

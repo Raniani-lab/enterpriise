@@ -348,7 +348,6 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
 
         self.social_balance_filename = filename
         self.social_balance_sheet = base64.encodebytes(export_274_sheet_pdf)
-        # YTI TODO: Bind to documents
         self.state = 'done'
         return {
             'type': 'ir.actions.act_window',

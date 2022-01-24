@@ -26,9 +26,7 @@ result = (inputs.GROSS_REF.amount if inputs.GROSS_REF else 0) * qty
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result_qty = 1
-result_rate = 6.8
-result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
+result_qty, result_rate, result = compute_termination_n_basic_double(payslip, categories, worked_days, inputs)
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>

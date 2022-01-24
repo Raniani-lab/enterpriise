@@ -6728,3 +6728,97 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip_1, payslip_1_results)
         self._validate_payslip(payslip_2, payslip_2_results)
+
+    def test_holiday_attest_n_before_june(self):
+        self._generate_departure_data()
+
+        holiday_attest = self.env['hr.payslip.employee.depature.holiday.attests'].with_context(
+            active_id=self.employee.id).create({})
+        holiday_attest.write(
+            holiday_attest.with_context(active_id=self.employee.id).default_get(holiday_attest._fields))
+        holiday_pay_ids = holiday_attest.compute_termination_holidays()['domain'][0][2]
+        holiday_pays = self.env['hr.payslip'].browse(holiday_pay_ids)
+        struct_n_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+
+        holiday_pay_2020 = holiday_pays.filtered(lambda p: p.struct_id == struct_n_id)
+        holiday_pay_2020.write({
+            'date_from': datetime.date(2020, 4, 1),
+            'date_to': datetime.date(2020, 4, 30),
+        })
+        holiday_pay_2020.compute_sheet()
+
+        payslip_results = {
+            'PAY_SIMPLE': 1137.92,
+            'DOUBLE_BASIC': 1008.85,
+            'PAY DOUBLE': 1008.85,
+            'PAY DOUBLE COMPLEMENTARY': 129.07,
+            'BASIC': 2275.84,
+            'ONSS1': -148.73,
+            'ONSS2': -131.86,
+            'ONSSTOTAL': 280.58,
+            'GROSS': 1995.26,
+            'PROF_TAX': -725.08,
+            'PPTOTAL': 725.08,
+            'NET': 1270.18,
+        }
+        self._validate_payslip(holiday_pay_2020, payslip_results)
+
+    def test_holiday_attest_n_after_june(self):
+        self._generate_departure_data()
+
+        double_pay_payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract_2020.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2020, 3, 1),
+            'date_to': datetime.date(2020, 3, 31),
+            'journal_id': self.journal.id,
+            'payslip_run_id': self.batch.id,
+        })
+        double_pay_payslip.compute_sheet()
+        double_pay_payslip.action_payslip_done()
+
+        payslip_results = {
+            'BASIC': 3404.0,
+            'SALARY': 3145.0,
+            'ONSS': -411.05,
+            'GROSS': 2992.95,
+            'P.P': -1268.71,
+            'PPTOTAL': 1268.71,
+            'NET': 1724.24,
+        }
+        self._validate_payslip(double_pay_payslip, payslip_results)
+
+        holiday_attest = self.env['hr.payslip.employee.depature.holiday.attests'].with_context(
+            active_id=self.employee.id).create({})
+        holiday_attest.write(
+            holiday_attest.with_context(active_id=self.employee.id).default_get(holiday_attest._fields))
+        holiday_pay_ids = holiday_attest.compute_termination_holidays()['domain'][0][2]
+        holiday_pays = self.env['hr.payslip'].browse(holiday_pay_ids)
+        struct_n_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+
+        holiday_pay_2020 = holiday_pays.filtered(lambda p: p.struct_id == struct_n_id)
+        holiday_pay_2020.write({
+            'date_from': datetime.date(2020, 4, 1),
+            'date_to': datetime.date(2020, 4, 30),
+        })
+        holiday_pay_2020.compute_sheet()
+
+        payslip_results = {
+            'PAY_SIMPLE': 1137.92,
+            'DOUBLE_BASIC': 0.0,
+            'PAY DOUBLE': 0.0,
+            'PAY DOUBLE COMPLEMENTARY': 0.0,
+            'BASIC': 1137.92,
+            'ONSS1': -148.73,
+            'ONSS2': 0.0,
+            'ONSSTOTAL': 148.73,
+            'GROSS': 989.19,
+            'PROF_TAX': -359.47,
+            'PPTOTAL': 359.47,
+            'NET': 629.72,
+        }
+        self._validate_payslip(holiday_pay_2020, payslip_results)

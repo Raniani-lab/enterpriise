@@ -369,6 +369,7 @@ class Payslip(models.Model):
             'compute_volatile_representation_fees': compute_volatile_representation_fees,
             'compute_holiday_pay_recovery_n': compute_holiday_pay_recovery_n,
             'compute_holiday_pay_recovery_n1': compute_holiday_pay_recovery_n1,
+            'compute_termination_n_basic_double': compute_termination_n_basic_double,
             'EMPLOYER_ONSS': EMPLOYER_ONSS,
         })
         return res
@@ -1207,3 +1208,19 @@ def compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs):
     recovered_amount = employee.l10n_be_holiday_pay_recovered_n1
     remaining_amount = employee.l10n_be_holiday_pay_to_recover_n1 - recovered_amount
     return - min(remaining_amount, holiday_amount)
+
+def compute_termination_n_basic_double(payslip, categories, worked_days, inputs):
+    result_qty = 1
+    result_rate = 6.8
+    result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
+    date_from = payslip.dict.date_from
+    existing_double_pay = payslip.dict.env['hr.payslip'].search([
+        ('employee_id', '=', payslip.employee_id),
+        ('state', 'in', ['done', 'paid']),
+        ('struct_id', '=', payslip.dict.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id),
+        ('date_from', '>=', date(date_from.year, 1, 1)),
+        ('date_to', '<=', date(date_from.year, 12, 31)),
+    ])
+    if existing_double_pay:
+        result = 0
+    return (result_qty, result_rate, result)

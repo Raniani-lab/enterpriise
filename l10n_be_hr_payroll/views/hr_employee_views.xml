@@ -21,7 +21,7 @@
                 </div>
                 <field name="disabled_spouse_bool" attrs="{'invisible': ['|', ('marital', 'not in', ['married', 'cohabitant']), ('company_country_code', '!=', 'BE')]}"/>
             </xpath>
-            <xpath expr="//field[@name='gender']" position="after">
+            <xpath expr="//group[@name='gender_birthday']" position="after">
                 <field name="disabled" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </xpath>
             <xpath expr="//field[@name='children']" position="after">

@@ -94,7 +94,12 @@ export class DashboardView extends Component {
 
     async willStart() {
         let loadViewProms = [];
-        let additionalMeasures = this.aggregates.map((a) => a.field);
+        let additionalMeasures = this.aggregates
+            .filter((a) => {
+                const { type } = this.props.fields[a.field];
+                return type === "many2one";
+            })
+            .map((a) => a.field);
 
         const allViews = Object.entries(this.subViews);
         if (!allViews.length) {

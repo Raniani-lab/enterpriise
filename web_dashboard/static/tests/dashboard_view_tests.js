@@ -695,10 +695,10 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("graph tag with aggregate and invisible field", async function (assert) {
+        assert.expect(2);
         serverData.views["test_report,some_xmlid,graph"] = `
             <graph>
-                <field name="categ_id"/>
-                <field name="sold" invisible="1"/>
+                <field name="categ_id" invisible="1"/>
             </graph>
         `;
         const dashboard = await makeView({
@@ -709,7 +709,7 @@ QUnit.module("Views", (hooks) => {
                 <dashboard>
                     <view type="graph" ref="some_xmlid"/>
                     <group>
-                        <aggregate name="sold" string="Avg Sold" group_operator="avg" field="sold"/>
+                        <aggregate name="categ_id_agg" field="categ_id"/>
                     </group>
                 </dashboard>
             `,
@@ -718,7 +718,83 @@ QUnit.module("Views", (hooks) => {
         assert.containsOnce(
             dashboard,
             '.o_menu_item:contains("Sold")',
-            "the sold field should be in the measures"
+            "the sold field should be available as a graph measure"
+        );
+        assert.containsOnce(
+            dashboard,
+            '.o_menu_item:contains("categ_id")',
+            "the categ_id field should be available as a graph measure"
+        );
+    });
+
+    QUnit.test("graph tag with no aggregate and invisible field", async function (assert) {
+        assert.expect(2);
+        serverData.views["test_report,some_xmlid,graph"] = `
+            <graph>
+                <field name="categ_id" invisible="1"/>
+            </graph>
+        `;
+
+        const dashboard = await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            arch: `
+                <dashboard>
+                    <view type="graph" ref="some_xmlid"/>
+                </dashboard>`,
+        });
+
+        await toggleMenu(dashboard, "Measures");
+        assert.containsOnce(
+            dashboard,
+            '.o_menu_item:contains("Sold")',
+            "the sold field should be available as a graph measure"
+        );
+        assert.containsNone(
+            dashboard,
+            '.o_menu_item:contains("categ_id")',
+            "the categ field should not be available as a graph measure"
+        );
+    });
+
+    QUnit.test("graph tag and date aggregate", async function (assert) {
+        assert.expect(2);
+        serverData.views["test_time_range,some_xmlid,graph"] = `<graph/>`;
+
+        const dashboard = await makeView({
+            type: "dashboard",
+            resModel: "test_time_range",
+            serverData,
+            arch: `
+                <dashboard>
+                    <view type="graph" ref="some_xmlid"/>
+                    <group>
+                        <aggregate name="date_agg" group_operator="max" field="date"/>
+                    </group>
+                </dashboard>`,
+            mockRPC: function (route, args) {
+                if (args.method === "read_group") {
+                    return Promise.resolve([
+                        {
+                            __count: 1,
+                            date: "1983-07-15",
+                        },
+                    ]);
+                }
+            },
+        });
+
+        await toggleMenu(dashboard, "Measures");
+        assert.containsOnce(
+            dashboard,
+            '.o_menu_item:contains("Sold")',
+            "the sold field should be available as a graph measure"
+        );
+        assert.containsNone(
+            dashboard,
+            '.o_menu_item:contains("Date")',
+            "the Date field should not be available as a graph measure"
         );
     });
 
@@ -796,10 +872,10 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("pivot tag with aggregate and invisible field", async function (assert) {
+        assert.expect(2);
         serverData.views["test_report,some_xmlid,pivot"] = `
             <pivot>
-                <field name="categ_id" type="row"/>
-                <field name="sold" invisible="1"/>
+                <field name="categ_id" invisible="1" type="measure"/>
             </pivot>
         `;
         const dashboard = await makeView({
@@ -810,7 +886,7 @@ QUnit.module("Views", (hooks) => {
                 <dashboard>
                     <view type="pivot" ref="some_xmlid"/>
                     <group>
-                        <aggregate name="sold" string="Avg Sold" group_operator="avg" field="sold"/>
+                        <aggregate name="categ_id_agg" field="categ_id"/>
                     </group>
                 </dashboard>
             `,
@@ -820,7 +896,12 @@ QUnit.module("Views", (hooks) => {
         assert.containsOnce(
             dashboard,
             '.o_menu_item:contains("Sold")',
-            "the sold field should be in the measures"
+            "the sold field should be available as a pivot measure"
+        );
+        assert.containsOnce(
+            dashboard,
+            '.o_menu_item:contains("categ_id")',
+            "the categ_id field should be available as a pivot measure"
         );
     });
 
@@ -927,7 +1008,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("cohort tag with aggregate and invisible field", async function (assert) {
         serverData.views["test_report,some_xmlid,cohort"] = `
             <cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week">
-                <field name="sold" invisible="1"/>
+                <field name="categ_id" invisible="1"/>
             </cohort>
         `;
         serverData.models.test_report.fields.create_date = {
@@ -952,7 +1033,7 @@ QUnit.module("Views", (hooks) => {
                 <dashboard>
                     <view type="cohort" ref="some_xmlid"/>
                     <group>
-                        <aggregate name="sold" string="Avg Sold" group_operator="avg" field="sold"/>
+                        <aggregate name="categ_id_agg" field="categ_id"/>
                     </group>
                 </dashboard>
             `,
@@ -964,6 +1045,11 @@ QUnit.module("Views", (hooks) => {
             '.o_menu_item:contains("Sold")',
             "the sold field should be in the measures"
         );
+        assert.containsNone(
+            dashboard,
+            '.o_cohort_measures_list button[data-field="categ_id"]',
+            "the categ_id field should not be in the measures"
+        ); // this is wrong and should be fixed!
     });
 
     QUnit.test("rendering of an aggregate with widget monetary", async function (assert) {

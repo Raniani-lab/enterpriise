@@ -234,16 +234,26 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return new_options
 
     @api.model
+    def _get_filter_accounts_domain(self, options, prefix=''):
+        if options.get('filter_accounts'):
+            account_name_label = 'name'
+            account_code_label = 'code'
+            if prefix:
+                account_name_label = '%s.%s' % (prefix, account_name_label)
+                account_code_label = '%s.%s' % (prefix, account_code_label)
+            return [
+                '|',
+                (account_name_label, 'ilike', options['filter_accounts']),
+                (account_code_label, 'ilike', options['filter_accounts'])
+            ]
+        return []
+
+    @api.model
     def _get_options_domain(self, options):
         # OVERRIDE
         domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
         # Filter accounts based on the search bar.
-        if options.get('filter_accounts'):
-            domain += [
-                '|',
-                ('account_id.name', 'ilike', options['filter_accounts']),
-                ('account_id.code', 'ilike', options['filter_accounts'])
-            ]
+        domain += self._get_filter_accounts_domain(options, 'account_id')
         return domain
 
     @api.model
@@ -282,6 +292,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
+        new_options.pop('filter_accounts', None)
         fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         new_date_to = fiscalyear_dates['date_from'] - timedelta(days=1)
         new_options['date'] = {
@@ -635,10 +646,12 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         # There is an unaffected earnings for each company but it's less costly to fetch all candidate accounts in
         # a single search and then iterate it.
         if groupby_companies:
+            options = options_list[0]
             unaffected_earnings_type = self.env.ref('account.data_unaffected_earnings')
-            candidates_accounts = self.env['account.account'].search([
-                ('user_type_id', '=', unaffected_earnings_type.id), ('company_id', 'in', list(groupby_companies.keys()))
-            ])
+            search_domain = [('user_type_id', '=', unaffected_earnings_type.id),
+                             ('company_id', 'in', list(groupby_companies.keys()))] + self._get_filter_accounts_domain(options)
+
+            candidates_accounts = self.env['account.account'].search(search_domain)
             for account in candidates_accounts:
                 company_unaffected_earnings = groupby_companies.get(account.company_id.id)
                 if not company_unaffected_earnings:

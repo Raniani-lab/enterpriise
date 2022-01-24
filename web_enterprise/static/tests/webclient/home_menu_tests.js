@@ -322,5 +322,43 @@ QUnit.module(
                 assert.strictEqual(document.activeElement, input);
             }
         );
+
+        QUnit.test(
+            "The HomeMenu input does not take the focus if it is already on another input",
+            async function (assert) {
+                const homeMenu = await createHomeMenu(homeMenuProps);
+                const otherInput = document.createElement("input");
+                document.querySelector(".o_home_menu").appendChild(otherInput);
+                otherInput.focus();
+                await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
+                await nextTick();
+                const homeMenuInput = homeMenu.el.querySelector(".o_search_hidden");
+                assert.notEqual(document.activeElement, homeMenuInput);
+
+                otherInput.remove();
+                await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
+                await nextTick();
+                assert.strictEqual(document.activeElement, homeMenuInput);
+            }
+        );
+
+        QUnit.test(
+            "The HomeMenu input does not take the focus if it is already on a textarea",
+            async function (assert) {
+                const homeMenu = await createHomeMenu(homeMenuProps);
+                const textarea = document.createElement("textarea");
+                document.querySelector(".o_home_menu").appendChild(textarea);
+                textarea.focus();
+                await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
+                await nextTick();
+                const homeMenuInput = homeMenu.el.querySelector(".o_search_hidden");
+                assert.notEqual(document.activeElement, homeMenuInput);
+
+                textarea.remove();
+                await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
+                await nextTick();
+                assert.strictEqual(document.activeElement, homeMenuInput);
+            }
+        );
     }
 );

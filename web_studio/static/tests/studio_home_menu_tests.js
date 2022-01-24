@@ -4,7 +4,10 @@ import { StudioHomeMenu } from "@web_studio/client_action/studio_home_menu/studi
 import { MODES } from "@web_studio/studio_service";
 
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
-import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
+import {
+    fakeCommandService,
+    makeFakeNotificationService,
+} from "@web/../tests/helpers/mock_services";
 import { userService } from "@web/core/user_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
@@ -113,7 +116,7 @@ QUnit.module("Studio", (hooks) => {
         serviceRegistry.add("hotkey", hotkeyService);
         serviceRegistry.add("dialog", dialogService);
         serviceRegistry.add("ui", uiService);
-
+        serviceRegistry.add("command", fakeCommandService);
         homeMenuProps = {
             apps: [
                 {

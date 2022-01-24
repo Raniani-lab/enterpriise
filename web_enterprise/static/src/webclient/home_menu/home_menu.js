@@ -40,8 +40,10 @@ export class HomeMenu extends Component {
      */
     setup() {
         super.setup();
+        this.command = useService("command");
         this.menus = useService("menu");
         this.homeMenuService = useService("home_menu");
+        this.ui = useService("ui");
         this.mainContentRef = useRef("mainContent");
         this.state = useState({
             focusedIndex: null,
@@ -216,14 +218,17 @@ export class HomeMenu extends Component {
     }
 
     _openCommandPalette() {
-        if (this.env.services.ui.activeElement === document) {
+        if (
+            this.ui.activeElement === document &&
+            !["TEXTAREA", "INPUT"].includes(document.activeElement.tagName)
+        ) {
             this.inputRef.el.value = "";
             this.inputRef.el.focus();
         }
     }
 
     _onInputSearch() {
-        this.env.services.command.openMainPalette({
+        this.command.openMainPalette({
             searchValue: `/${this.inputRef.el.value}`,
             FooterComponent,
         });

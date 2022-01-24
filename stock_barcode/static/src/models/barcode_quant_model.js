@@ -211,6 +211,13 @@ export default class BarcodeQuantModel extends BarcodeModel {
         // When creating a new line, we need to know if a quant already exists
         // for this line, and in this case, update the new line fields.
         const product = params.fieldsParams.product_id;
+        if (product.detailed_type != 'product') {
+            const productName = (product.default_code ? `[${product.default_code}] ` : '') + product.display_name;
+            const message = sprintf(
+                _t("%s can't be inventoried. Only storable products can be inventoried."), productName);
+            this.notification.add(message, { type: 'warning' });
+            return false;
+        }
         const domain = [
             ['location_id', '=', this.location.id],
             ['product_id', '=', product.id],

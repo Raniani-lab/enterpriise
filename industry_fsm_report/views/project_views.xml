@@ -133,7 +133,7 @@
                         </div>
                         <div class="mt-3" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
                             <label for="worksheet_template_id" string="Worksheet Template"/>
-                            <field name="worksheet_template_id"/>
+                            <field name="worksheet_template_id" class="oe_inline"/>
                         </div>
                     </div>
                 </div>

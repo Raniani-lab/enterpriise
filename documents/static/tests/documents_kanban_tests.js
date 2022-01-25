@@ -2195,7 +2195,24 @@ QUnit.module('documents_kanban_tests.js', {
         assert.expect(3);
 
         this.data['documents.document'].records[0].message_follower_ids = [301, 302];
-
+        this.data['mail.followers'].records.push(
+            {
+                email: 'raoul@grosbedon.fr',
+                id: 301,
+                name: 'Raoul Grosbedon',
+                partner_id: 31,
+                res_id: 1,
+                res_model: 'documents.document',
+            },
+            {
+                email: 'raoulette@grosbedon.fr',
+                id: 302,
+                name: 'Raoulette Grosbedon',
+                partner_id: 32,
+                res_id: 1,
+                res_model: 'documents.document',
+            },
+        );
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -2205,25 +2222,6 @@ QUnit.module('documents_kanban_tests.js', {
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
-            mockRPC: function (route) {
-                if (route === '/mail/read_followers') {
-                    return Promise.resolve({
-                        followers: [{
-                            email: 'raoul@grosbedon.fr',
-                            id: 301,
-                            name: 'Raoul Grosbedon',
-                            partner_id: 31,
-                        }, {
-                            email: 'raoulette@grosbedon.fr',
-                            id: 302,
-                            name: 'Raoulette Grosbedon',
-                            partner_id: 32,
-                        }],
-                        subtypes: [],
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));

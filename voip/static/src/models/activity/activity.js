@@ -49,7 +49,6 @@ addRecordMethods('Activity', {
         if (!this.thread) {
             return;
         }
-        this.thread.refreshActivities();
-        this.thread.refresh();
+        this.thread.fetchData(['activities', 'attachments', 'messages']);
     },
 });

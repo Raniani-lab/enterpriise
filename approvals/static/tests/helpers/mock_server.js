@@ -48,8 +48,8 @@ MockServer.include({
     /**
      * @override
      */
-    _mockMailActivityActivityFormat(args) {
-        const activities = this._super(...arguments);
+    _mockMailActivityActivityFormat(ids) {
+        const activities = this._super(ids);
         for (const activity of activities) {
             if (activity.res_model === 'approval.request') {
                 // check on activity type being approval not done here for simplicity

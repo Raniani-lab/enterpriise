@@ -53,9 +53,7 @@ var FollowupFormRenderer = FormRenderer.extend({
                 model: this.state.model,
             });
             if (thread) {
-                thread.refresh();
-                thread.refreshActivities();
-                thread.refreshFollowers();
+                thread.fetchData(['activities', 'attachments', 'followers', 'messages']);
             }
         });
         this.$('div.alert.alert-info.alert-dismissible').remove();

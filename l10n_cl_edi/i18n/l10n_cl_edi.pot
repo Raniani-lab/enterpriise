@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-19 11:49+0000\n"
-"PO-Revision-Date: 2022-01-19 11:49+0000\n"
+"POT-Creation-Date: 2022-01-28 20:54+0000\n"
+"PO-Revision-Date: 2022-01-28 20:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2060,6 +2060,14 @@ msgstr ""
 msgid ""
 "This value must be provided and must appear in your pdf or printed tribute "
 "document, under the electronic stamp to be legally valid."
+msgstr ""
+
+#. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"Ticket is not allowed, please contact your administrator to install the "
+"l10n_cl_edi_boletas module"
 msgstr ""
 
 #. module: l10n_cl_edi

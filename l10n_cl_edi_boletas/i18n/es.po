@@ -492,7 +492,7 @@ msgid ""
 "Tax included in price is not supported for boletas. "
 "Please change the tax to not included in price."
 msgstr ""
-"Los impuestos incluídos en el precio no son soportados para boletas.
+"Los impuestos incluídos en el precio no son soportados para boletas. "
 "Por favor cambie el impuesto a no incluido en el precio."
 
 #. module: l10n_cl_edi_boletas

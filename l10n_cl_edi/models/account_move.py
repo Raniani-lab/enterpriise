@@ -584,6 +584,13 @@ class AccountMove(models.Model):
                               ' If you need to bill exempt items you must either use exempt invoice document type (34),'
                               ' or at least one of the items should have vat tax.') % self.name)
 
+        self._l10n_cl_edi_validate_boletas()
+
+    def _l10n_cl_edi_validate_boletas(self):
+        if self.l10n_latam_document_type_id.code == '39':
+            raise UserError(_('Ticket is not allowed, please contact your administrator to install the '
+                            'l10n_cl_edi_boletas module'))
+
     def _l10n_cl_get_sii_reception_status_message(self, sii_response_status):
         """
         Get the value of the code returns by SII once the DTE has been sent to the SII.

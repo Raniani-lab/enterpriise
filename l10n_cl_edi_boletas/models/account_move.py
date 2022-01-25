@@ -27,6 +27,10 @@ class AccountMove(models.Model):
                                   'Please select a different date for this ticket.'))
         super()._l10n_cl_edi_post_validation()
 
+    def _l10n_cl_edi_validate_boletas(self):
+        # Override the method to allow create ticket.
+        return None
+
     def l10n_cl_send_dte_to_sii(self, retry_send=True):
         if not self.l10n_latam_document_type_id._is_doc_type_ticket():
             return super().l10n_cl_send_dte_to_sii(retry_send)

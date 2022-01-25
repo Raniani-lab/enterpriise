@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-19 11:49+0000\n"
-"PO-Revision-Date: 2022-01-19 08:59-0300\n"
+"POT-Creation-Date: 2022-02-14 23:32+0000\n"
+"PO-Revision-Date: 2022-02-14 23:32+0000\n"
 "Last-Translator: Daniel Blanco <daniel@blancomartin.cl>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -2407,6 +2407,15 @@ msgstr ""
 "Este valor debe ser provisto y debe aparecer en su PDF o documento "
 "tributario impreso, debajo del timbre electrónica para que el mismo sea "
 "válido."
+
+#. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"Ticket is not allowed, please contact your administrator to install the "
+"l10n_cl_edi_boletas module"
+msgstr "La Boleta no está permitida, por favor, contacte con su administrador "
+"para instalar el módulo l10n_cl_edi_boletas"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer

@@ -18,7 +18,7 @@
         o_in_home_menu"
     t-name="voip.DialingPanel">
     <div
-        class="o_dial_fold position-relative rounded-lg-top overflow-hidden bg-odoo">
+        class="o_dial_fold position-relative rounded-lg-top overflow-hidden text-bg-odoo">
         <div
             class="o_dial_window_title d-flex align-items-center justify-content-between o_cursor_pointer">
             <t t-call="voip.DialingPanel.HeaderContent">

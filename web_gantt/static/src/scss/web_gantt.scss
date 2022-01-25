@@ -26,13 +26,13 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 // Generate background and text for each color.
 @mixin o-gantt-hoverable-colors($color) {
     $color-subdle: mix($color, white, 60%);
-    color: color-yiq($color-subdle);
+    color: color-contrast($color-subdle);
     background-color: $color-subdle;
     cursor: pointer;
 
     @include o-gantt-hover() {
         background-color: $color;
-        color: color-yiq($color);
+        color: color-contrast($color);
     }
 }
 
@@ -636,7 +636,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
                         $color: nth($o-colors-complete, $index);
                         &.highlight {
                             background-color: $color;
-                            color: color-yiq($color);
+                            color: color-contrast($color);
                         }
                         .o_gantt_progress {
                             opacity: 0.2;
@@ -649,7 +649,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
                         $color: nth($o-colors-complete, $index);
                         .o_connector_creator_bullet {
                             background-color: $color;
-                            color: color-yiq($color);
+                            color: color-contrast($color);
                             @include o-grab-cursor;
                         }
                         .o_connector_creator_top {

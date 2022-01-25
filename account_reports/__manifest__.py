@@ -31,6 +31,7 @@ Accounting Reports
         'views/account_sales_report_view.xml',
         'views/account_account_views.xml',
         'views/account_tax_views.xml',
+        'views/account_report_journal.xml',
     ],
     'auto_install': True,
     'installable': True,

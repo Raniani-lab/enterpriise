@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models, fields, tools, _
 from odoo.tools.xml_utils import _check_with_xsd
-from odoo.tools.float_utils import float_round
+from odoo.tools.float_utils import float_round, float_is_zero
 
 import logging
 import re
@@ -144,7 +144,7 @@ class AccountEdiFormat(models.Model):
             if amount is None or amount is False:
                 return None
             # Avoid things like -0.0, see: https://stackoverflow.com/a/11010869
-            return '%.*f' % (precision, amount if amount != 0 else 0.0)
+            return '%.*f' % (precision, amount if not float_is_zero(amount, precision_digits=precision) else 0.0)
 
         company = move.company_id
         certificate = company.l10n_mx_edi_certificate_ids.sudo().get_valid_certificate()

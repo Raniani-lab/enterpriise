@@ -457,6 +457,8 @@
                             </div>
                             <field name="activity_user_id"/>
                         </group>
+                    </group>
+                    <group>
                         <field name="activity_note" placeholder="Log a note..."/>
                     </group>
                     <field name="document_ids" groups="base.group_no_one" readonly="1"/>
@@ -534,6 +536,8 @@
                             </div>
                             <field name="activity_user_id"/>
                         </group>
+                    </group>
+                    <group>
                         <field name="activity_note" placeholder="Log a note..."/>
                     </group>
                     <field name="document_ids" invisible="1" readonly="1"/>

@@ -795,6 +795,8 @@
                                 attrs="{'invisible': ['|', ('action', '!=', 'next_activity'), ('activity_user', '!=', 'users')],
                                         'required': [('action', '=', 'next_activity'), ('activity_user', '=', 'users')]}"/>
                         </group>
+                    </group>
+                    <group>
                         <field name="activity_note" placeholder="Log a note..."/>
                     </group>
                 </sheet>

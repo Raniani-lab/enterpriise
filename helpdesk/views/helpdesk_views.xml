@@ -704,7 +704,7 @@
                             <field name="email_cc" groups="base.group_no_one"/>
                         </group>
                     </group>
-                    <field name="description" class="field_description" placeholder="Description of the ticket..."/>
+                    <field name="description" class="oe-bordered-editor field_description" placeholder="Description of the ticket..."/>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids"/>

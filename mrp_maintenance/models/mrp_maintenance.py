@@ -160,6 +160,7 @@ class MrpProductionWorkcenterLine(models.Model):
         return {
             'name': _('New Maintenance Request'),
             'view_mode': 'form',
+            'views': [(self.env.ref('mrp_maintenance.maintenance_request_view_form_inherit_mrp').id, 'form')],
             'res_model': 'maintenance.request',
             'type': 'ir.actions.act_window',
             'context': {

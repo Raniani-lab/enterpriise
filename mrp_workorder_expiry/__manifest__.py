@@ -11,7 +11,7 @@ Technical module.
     """,
     'depends': ['mrp_workorder', 'product_expiry'],
     'data': [
-        'views/mrp_workorder_views.xml',
+        'views/quality_views.xml',
         'wizard/confirm_expiry_view.xml',
     ],
     'installable': True,

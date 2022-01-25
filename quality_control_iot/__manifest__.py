@@ -8,7 +8,7 @@
     'description': """
 Use devices connected to an IoT Box to control the quality of your products.
 """,
-    'depends': ['quality_control', 'iot'],
+    'depends': ['quality_control', 'quality_iot'],
     'data': [
         'wizard/quality_check_wizard_views.xml',
     ],

@@ -17,10 +17,6 @@ class MrpProduction(models.Model):
         if not backorders:
             return productions
         for wo in backorders.workorder_ids:
-            if wo.component_id:
-                wo._update_component_quantity()
+            if wo.current_quality_check_id.component_id:
+                wo.current_quality_check_id._update_component_quantity()
         return productions
-
-    def _button_mark_done_sanity_checks(self):
-        self.workorder_ids._check_remaining_quality_checks()
-        return super()._button_mark_done_sanity_checks()

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="mrp_workorder.MenuPopup" owl="1">
+        <div role="dialog" class="popup">
+            <div class="popup-selection">
+                <header class="title h3" t-esc="title"/>
+                <div class="button_list">
+                    <button class="btn btn-danger text-uppercase" t-on-click="block">Block</button>
+                    <button class="btn btn-primary" t-on-click="() => this.callAction('button_scrap')">Scrap</button>
+                    <button class="btn btn-primary" t-on-click="() => this.callAction('action_add_component')">Add Component</button>
+                    <button class="btn btn-primary" t-on-click="() => this.callAction('action_add_byproduct')" name="addByProduct">Add By-product</button>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="btn cancel text-uppercase" t-on-click="cancel">Cancel</div>
+            </footer>
+        </div>
+    </t>
+</templates>

@@ -32,7 +32,7 @@ odoo.define('mrp_workorder_navigation.tests', function (require) {
                           '<field name="name"/>' +
                   '</group>' +
                   '</form>',
-              'mrp.workorder,1,form': '<form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet" js_class="tablet_pdf_viewer">' +
+              'mrp.workorder,1,form': '<form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet_form">' +
                   '<div class="workorder_bar">'+
                       '<div class="workorder_bar_left o_workorder_bar_content">'+
                           '<field name="id" class="o_workorder_icon_btn" widget="back_arrow" readonly="1"/>'+

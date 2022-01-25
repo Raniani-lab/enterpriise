@@ -11,7 +11,7 @@
     Create customizable quality worksheet for workorder.
 """,
     "data": [
-        'views/mrp_workorder_views.xml',
+        'views/quality_views.xml',
     ],
     "demo": [
         'data/mrp_workorder_demo.xml',

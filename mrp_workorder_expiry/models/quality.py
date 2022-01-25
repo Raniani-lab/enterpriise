@@ -4,7 +4,7 @@
 from odoo import fields, models
 
 
-class MrpWorkorder(models.Model):
-    _inherit = 'mrp.workorder'
+class QualityCheck(models.Model):
+    _inherit = 'quality.check'
 
     is_expired = fields.Boolean(related='lot_id.product_expiry_alert')

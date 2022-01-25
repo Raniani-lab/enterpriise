@@ -1,37 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-import json
-
 from odoo import fields, models
-
-
-class MrpProductionWorkcenterLine(models.Model):
-    _inherit = "mrp.workorder"
-
-    ip = fields.Char(related='current_quality_check_id.point_id.device_id.iot_id.ip')
-    identifier = fields.Char(related='current_quality_check_id.point_id.device_id.identifier')
-    boxes = fields.Char(compute='_compute_boxes')
-    device_name = fields.Char(related='current_quality_check_id.point_id.device_id.name', size=30, string='Device Name: ')
-
-    def _compute_boxes(self):
-        for wo in self:
-            triggers = wo.workcenter_id.trigger_ids
-            box_dict = {}
-            for trigger in triggers:
-                box = trigger.device_id.iot_id.ip
-                box_dict.setdefault(box, [])
-                box_dict[box].append([trigger.device_id.identifier, trigger.key, trigger.action])
-            wo.boxes = json.dumps(box_dict)
-
-    def action_print(self):
-        quality_point_id = self.current_quality_check_id.point_id
-        res = super(MrpProductionWorkcenterLine, self).action_print()
-
-        if quality_point_id.device_id:
-            res['device_id'] = quality_point_id.device_id.id
-
-        return res
 
 
 class MrpWorkcenter(models.Model):

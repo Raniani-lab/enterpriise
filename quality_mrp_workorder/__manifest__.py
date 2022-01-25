@@ -19,6 +19,11 @@
     "demo": [
         'data/mrp_workorder_demo.xml'
     ],
+    'assets': {
+        'web.assets_qweb': [
+            'quality_mrp_workorder/static/src/**/*.xml',
+        ],
+    },
     'auto_install': True,
     'license': 'OEEL-1',
 }

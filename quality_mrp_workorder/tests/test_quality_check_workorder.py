@@ -54,7 +54,7 @@ class TestQualityCheckWorkorder(TestMrpCommon):
         wo = production.workorder_ids[0]
         wo.open_tablet_view()
         wo.qty_done = 10.0
-        wo.action_next()
+        wo.current_quality_check_id.action_next()
         self.assertEqual(len(production.move_raw_ids[0].move_line_ids.check_ids), 2)
 
     def test_register_consumed_materials(self):
@@ -108,7 +108,7 @@ class TestQualityCheckWorkorder(TestMrpCommon):
         self.assertEqual(mo.workorder_ids.finished_lot_id, finished_sn)
         self.assertEqual(mo.workorder_ids.lot_id, component_sn)
 
-        mo.workorder_ids.action_next()
+        mo.workorder_ids.current_quality_check_id.action_next()
         mo.workorder_ids.do_finish()
         mo.button_mark_done()
 

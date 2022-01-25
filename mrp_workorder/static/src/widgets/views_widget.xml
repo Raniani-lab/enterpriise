@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mrp_workorder_view_widget">
+        <div>
+            <div class="o_workorder_generic_view"></div>
+        </div>
+    </t>
+
+</templates>

@@ -55,19 +55,4 @@
             </div>
         </field>
     </record>
-
-    <!-- MRP.WORKORDER TABLET VIEW -->
-    <record id="mrp_workorder_tablet_view_form_inherit_maintenance" model="ir.ui.view">
-        <field name="name">mrp.workorder.view.form.inherit.maintenance1</field>
-        <field name="model">mrp.workorder</field>
-        <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet_menu"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('workorder_menu')]" position="inside">
-                <div class="col-6 d-grid">
-                    <button name="button_maintenance_req" type="object" class="btn btn-warning" string="Maintenance request"/>
-                </div>
-            </xpath>
-        </field>
-    </record>
-
 </odoo>

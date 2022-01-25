@@ -168,24 +168,26 @@ class TestDuplicateProducts(common.TransactionCase):
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         # Components
         wo_form.finished_lot_id = self.pb1
-        wo_form.lot_id = self.bb1
         wo = wo_form.save()
-        wo._next()
+        qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')
+        qc_form.lot_id = self.bb1
+        qc = qc_form.save()
+        qc._next()
         # First layer
-        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.lot_id = self.p1
-        wo = wo_form.save()
-        wo._next()
+        qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')
+        qc_form.lot_id = self.p1
+        qc = qc_form.save()
+        qc._next()
         # Second layer
-        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.lot_id = self.p1
-        wo = wo_form.save()
-        wo._next()
-        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')
+        qc_form.lot_id = self.p1
+        qc = qc_form.save()
+        qc._next()
+        qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')
         # Byproduct
-        wo_form.lot_id = self.p2
-        wo = wo_form.save()
-        wo._next()
+        qc_form.lot_id = self.p2
+        qc = qc_form.save()
+        qc._next()
         wo.do_finish()
         production.button_mark_done()
 

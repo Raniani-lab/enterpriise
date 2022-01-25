@@ -22,6 +22,11 @@ Maintenance in MRP
         'views/mrp_views.xml'
     ],
     'demo': ['data/mrp_maintenance_demo.xml'],
+    'assets': {
+        'web.assets_qweb': [
+            'mrp_maintenance/static/src/**/*.xml',
+        ],
+    },
     'auto_install': True,
     'license': 'OEEL-1',
 }

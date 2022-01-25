@@ -1,7 +1,6 @@
 odoo.define('mrp_workorder.update_kanban', function (require) {
 "use strict";
 
-var basic_fields = require('web.basic_fields');
 var field_registry = require('web.field_registry');
 var KanbanController = require('web.KanbanController');
 var KanbanView = require('web.KanbanView');
@@ -9,7 +8,8 @@ var view_registry = require('web.view_registry');
 var ListController = require('web.ListController');
 var ListView = require('web.ListView');
 
-var FieldInteger = basic_fields.FieldInteger;
+const { qweb } = require('web.core');
+const { FieldInteger } = require('web.basic_fields');
 
 var BackArrow = FieldInteger.extend({
     events: {
@@ -31,20 +31,30 @@ var BackArrow = FieldInteger.extend({
 });
 
 function tabletRenderButtons($node) {
-        var self = this;
-        this.$buttons = $('<div/>');
-        this.$buttons.html('<button class="btn btn-secondary back-button"><i class="fa fa-arrow-left"/></button>');
-        this.$buttons.find('button').on('click', function () {
-            self.do_action('mrp.mrp_workcenter_kanban_action', {clear_breadcrumbs: true});
-        });
-        if ($node) {
-            this.$buttons.appendTo($node);
-        }
+    this.$buttons = $(qweb.render('mrp_workorder.overviewButtons'), { widget: this });
+    this.$buttons.find('.o_back_button').on('click', () => {
+        this.do_action('mrp.mrp_workcenter_kanban_action', { clear_breadcrumbs: true });
+    });
+    if ($node) {
+        this.$buttons.appendTo($node);
+    }
 }
 
 var TabletKanbanController = KanbanController.extend({
     renderButtons: function () {
-        return tabletRenderButtons.apply(this, arguments);
+        this._super.apply(this, arguments);
+        tabletRenderButtons.apply(this, arguments);
+    },
+
+    _onOpenRecord: async function (ev) {
+        ev.stopPropagation();
+        const additional_context = Object.assign({ active_id: ev.target.id }, ev.data.context || {});
+        const action = await this._rpc({
+            method: 'open_tablet_view',
+            model: 'mrp.workorder',
+            args: [ev.target.recordData.id],
+        });
+        this.do_action(action, { additional_context: additional_context });
     },
 });
 
@@ -56,6 +66,7 @@ var TabletKanbanView = KanbanView.extend({
 
 var TabletListController = ListController.extend({
     renderButtons: function () {
+        this._super(...arguments);
         return tabletRenderButtons.apply(this, arguments);
     },
 });
@@ -74,5 +85,6 @@ return {
     BackArrow: BackArrow,
     TabletKanbanView: TabletKanbanView,
     TabletListView: TabletListView,
+    TabletKanbanController,
 };
 });

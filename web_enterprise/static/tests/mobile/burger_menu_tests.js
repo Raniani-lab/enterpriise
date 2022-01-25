@@ -3,7 +3,7 @@ import { click, legacyExtraNextTick } from "@web/../tests/helpers/utils";
 import { doAction, getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
-import { BurgerMenu } from "@web_enterprise/webclient/burger_menu/burger_menu";
+import { BurgerMenu } from "@web/webclient/burger_menu/burger_menu";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { companyService } from "@web/webclient/company_service";
 import { makeFakeEnterpriseService } from "../mocks";

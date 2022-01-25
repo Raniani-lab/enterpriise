@@ -46,12 +46,12 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_model_configurator_next',
 }, {
     // toggle the home menu outside of studio and come back in studio
-    extra_trigger: '.o_menu_toggle.fa-th',
+    extra_trigger: '.o_menu_toggle:not(.o_menu_toggle_back)',
     trigger: '.o_web_studio_leave > a.btn',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     extra_trigger: `.o_web_client:not(.o_in_studio)`,  /* wait to be out of studio */
-    trigger: '.o_menu_toggle.fa-th',
+    trigger: '.o_menu_toggle:not(.o_menu_toggle_back)',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
@@ -74,7 +74,7 @@ tour.register('web_studio_tests_tour', {
     // this should open the previous app outside of studio
     extra_trigger: `.o_web_client:not(.o_in_studio) .o_menu_brand:contains(${createdAppString})`,
     // go back to the home menu
-    trigger: '.o_menu_toggle.fa-th',
+    trigger: '.o_menu_toggle:not(.o_menu_toggle_back)',
 }, {
     trigger: 'input.o_search_hidden',
     // Open Command Palette
@@ -282,7 +282,7 @@ tour.register('web_studio_tests_tour', {
 }, {
     // come back to the home menu to check if the menu data have changed
     extra_trigger: '.o_web_client:not(.o_in_studio)',
-    trigger: '.o_menu_toggle.fa-th',
+    trigger: '.o_menu_toggle:not(.o_menu_toggle_back)',
 }, {
     trigger: 'input.o_search_hidden',
     // Open Command Palette
@@ -375,7 +375,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_view_category .o_web_studio_view_type[data-type="search"] .o_web_studio_thumbnail',
 }, {
     extra_trigger: '.o_web_studio_search_view_editor',
-    trigger: '.o_menu_toggle.fa-th',
+    trigger: '.o_menu_toggle:not(.o_menu_toggle_back)',
 }, {
     trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',
 }, {

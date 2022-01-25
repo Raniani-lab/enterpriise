@@ -66,7 +66,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.containsOnce(webClient, ".o_app.o_menuitem");
         });
         QUnit.test("2 -- navbar updates on displaying an action", async function (assert) {
-            assert.expect(12);
+            assert.expect(11);
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(webClient.el.querySelector(".o_app.o_menuitem"));
@@ -84,8 +84,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.isVisible(webClient.el.querySelector(".o_kanban_view"));
             const menuToggle = webClient.el.querySelector(".o_menu_toggle");
             assert.isVisible(menuToggle);
-            assert.ok(menuToggle.classList.contains("fa-th"));
-            assert.notOk(menuToggle.classList.contains("fa-chevron-left"));
+            assert.notOk(menuToggle.classList.contains("o_menu_toggle_back"));
         });
         QUnit.test("3 -- push another action in the breadcrumb", async function (assert) {
             assert.expect(11);
@@ -144,7 +143,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         QUnit.test(
             "5 -- switch to HomeMenu from an action with 2 breadcrumbs",
             async function (assert) {
-                assert.expect(17);
+                assert.expect(16);
                 const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
                 assert.verifySteps(["/web/webclient/load_menus"]);
                 await click(webClient.el.querySelector(".o_app.o_menuitem"));
@@ -171,14 +170,13 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 await click(menuToggle);
                 await nextTick();
                 assert.verifySteps([]);
-                assert.notOk(menuToggle.classList.contains("fa-th"));
-                assert.ok(menuToggle.classList.contains("fa-chevron-left"));
+                assert.ok(menuToggle.classList.contains("o_menu_toggle_back"));
                 assert.containsOnce(webClient, ".o_home_menu");
                 assert.isNotVisible(webClient.el.querySelector(".o_form_view"));
             }
         );
         QUnit.test("6 -- back to underlying action with many breadcrumbs", async function (assert) {
-            assert.expect(20);
+            assert.expect(19);
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(webClient.el.querySelector(".o_app.o_menuitem"));
@@ -220,8 +218,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             // endif
             assert.containsNone(webClient, ".o_home_menu");
             assert.containsOnce(webClient, ".o_form_view");
-            assert.ok(menuToggle.classList.contains("fa-th"));
-            assert.notOk(menuToggle.classList.contains("fa-chevron-left"));
+            assert.notOk(menuToggle.classList.contains("o_menu_toggle_back"));
             assert.strictEqual(
                 webClient.el.querySelector(".breadcrumb-item.active").textContent,
                 "Second record"
@@ -571,8 +568,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
 
         const webClient = await createEnterpriseWebClient({ serverData });
         assert.verifySteps(["clientAction setup"]);
-        assert.containsOnce(webClient, "nav .o_menu_toggle.fa-th");
-        assert.isVisible(webClient.el.querySelector("nav .o_menu_toggle.fa-th"));
+        assert.containsOnce(webClient, "nav .o_menu_toggle");
+        assert.isVisible(webClient.el.querySelector("nav .o_menu_toggle"));
         assert.strictEqual(webClient.el.querySelector(".o_action_manager").innerHTML, "");
         assert.deepEqual(webClient.env.services.router.current.hash, {
             action: "__test__client__action__",

@@ -20,7 +20,7 @@
   </t>
 
   <t t-name="web_studio.menuButtons" owl="1">
-    <div class="o-studio--menu">
+    <div class="o-studio--menu ml-auto">
       <t t-if="studio.mode === studio.MODES.EDITOR" >
           <EditMenuItem />
           <NewModelItem />

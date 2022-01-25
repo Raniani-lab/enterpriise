@@ -5,8 +5,7 @@
   // When applied on webclient (note: we do not specify the webclient class
   // here to avoid breaking studio custom style)
   &:not(.o_home_menu_background_custom) .o_main_navbar {
-    background-color: transparent;
-    border-color: transparent;
+    background: transparent;
 
     .dropdown-menu {
       border-color: $dropdown-bg;
@@ -14,6 +13,10 @@
 
     .o_dropdown_active, > ul > li.show > a {
       outline: none;
+    }
+
+    .o_menu_systray {
+      @include print-variable(o-navbar-badge-bg, $o-navbar-home-menu-badge-bg);
     }
   }
   &.o_home_menu_background_custom .o_home_menu {

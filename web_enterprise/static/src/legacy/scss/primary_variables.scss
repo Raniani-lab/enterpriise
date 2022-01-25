@@ -19,6 +19,7 @@ $o-gray-900: #091124;
 
 $o-enterprise-color: #714B67;
 $o-enterprise-primary-color: #017e84;
+$o-enterprise-primary-color-light: scale-color($o-enterprise-primary-color, $lightness: 6%);
 
 $o-brand-odoo: $o-enterprise-color;
 $o-brand-primary: $o-enterprise-primary-color;
